@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{87F519B8-5A2F-48C6-AD53-C5F13A82EA6B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OxyPlot</RootNamespace>
+    <AssemblyName>OxyPlot</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\OxyPlot.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Axes\IAxis.cs" />
+    <Compile Include="Axes\LinearAxis.cs" />
+    <Compile Include="Axes\RangeAxis.cs" />
+    <Compile Include="Axes\TimeAxis.cs" />
+    <Compile Include="Foundation\CanonicalSplineHelper.cs" />
+    <Compile Include="Foundation\Rectangle.cs" />
+    <Compile Include="Foundation\Size.cs" />
+    <Compile Include="Render\AxisRenderer.cs" />
+    <Compile Include="Foundation\CohenSutherlandClipping.cs" />
+    <Compile Include="Render\IRenderContext.cs" />
+    <Compile Include="Render\SeriesRenderer.cs" />
+    <Compile Include="Report\Content.cs" />
+    <Compile Include="Report\Drawing.cs" />
+    <Compile Include="Report\Figure.cs" />
+    <Compile Include="Report\Header.cs" />
+    <Compile Include="Report\Writers\HtmlReportWriter.cs" />
+    <Compile Include="Report\Image.cs" />
+    <Compile Include="Report\Writers\IReportWriter.cs" />
+    <Compile Include="Report\HeaderHelper.cs" />
+    <Compile Include="Report\Paragraph.cs" />
+    <Compile Include="Report\PropertyTable.cs" />
+    <Compile Include="Report\Report.cs" />
+    <Compile Include="Report\ReportItem.cs" />
+    <Compile Include="Report\ReportSection.cs" />
+    <Compile Include="Report\Table.cs" />
+    <Compile Include="Report\TableColumn.cs" />
+    <Compile Include="Report\Writers\TextReportWriter.cs" />
+    <Compile Include="Series\AreaSeries.cs" />
+    <Compile Include="Foundation\Pen.cs" />
+    <Compile Include="Render\PlotRenderer.cs" />
+    <Compile Include="Foundation\LineStyleHelper.cs" />
+    <Compile Include="Foundation\Point.cs" />
+    <Compile Include="Svg\SvgRenderContext.cs" />
+    <Compile Include="Svg\SvgWriter.cs" />
+    <Compile Include="Foundation\Color.cs" />
+    <Compile Include="Foundation\Colors.cs" />
+    <Compile Include="Series\DataSeries.cs" />
+    <Compile Include="Series\LineSeries.cs" />
+    <Compile Include="Foundation\LineStyle.cs" />
+    <Compile Include="Axes\LogarithmicAxis.cs" />
+    <Compile Include="Foundation\MarkerType.cs" />
+    <Compile Include="PlotModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

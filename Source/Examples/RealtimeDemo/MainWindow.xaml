@@ -1,0 +1,15 @@
+﻿<Window x:Class="RealtimeDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        Title="RealtimeDemo" Height="480" Width="640">
+    <DockPanel>
+        <oxy:PlotControl x:Name="plot1" Title="Simulation">
+            <oxy:PlotControl.Axes>
+                <oxy:LinearAxis Position="Left" Maximum="2" Minimum="-2"/>
+            </oxy:PlotControl.Axes>
+            <oxy:LineSeries ItemsSource="{Binding Results1}" DataFieldX="X" DataFieldY="Y" Title="cos(t)*sin(x)/x" Color="Red"/>
+            <oxy:LineSeries ItemsSource="{Binding Results2}" DataFieldX="X" DataFieldY="Y" Title="cos(1.2t)*sin(1.2x)/x" Color="Green"/>
+        </oxy:PlotControl>
+    </DockPanel>
+</Window>
