@@ -4,12 +4,7 @@
         xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
         Title="RealtimeDemo" Height="480" Width="640">
     <DockPanel>
-        <oxy:PlotControl x:Name="plot1" Title="Simulation">
-            <oxy:PlotControl.Axes>
-                <oxy:LinearAxis Position="Left" Maximum="2" Minimum="-2"/>
-            </oxy:PlotControl.Axes>
-            <oxy:LineSeries ItemsSource="{Binding Results1}" DataFieldX="X" DataFieldY="Y" Title="cos(t)*sin(x)/x" Color="Red"/>
-            <oxy:LineSeries ItemsSource="{Binding Results2}" DataFieldX="X" DataFieldY="Y" Title="cos(1.2t)*sin(1.2x)/x" Color="Green"/>
-        </oxy:PlotControl>
+        <TextBlock DockPanel.Dock="Bottom" Margin="8" Text="{Binding TotalNumberOfPoints, StringFormat='Total number of data points: {0}'}"/>
+        <oxy:PlotControl x:Name="plot1" Title="Waves" Model="{Binding PlotModel}"/>
     </DockPanel>
 </Window>

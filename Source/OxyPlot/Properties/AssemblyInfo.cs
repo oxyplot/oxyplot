@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OxyPlot")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Det Norske Veritas")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("OxyPlot")]
 [assembly: AssemblyCopyright("Copyright © OBJO 2010")]
 [assembly: AssemblyTrademark("")]

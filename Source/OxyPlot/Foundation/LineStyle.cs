@@ -7,6 +7,7 @@
         Dot,
         DashDot,
         DashDashDot,
-        DashDotDot
+        DashDotDot,
+        None
     } ;
 }

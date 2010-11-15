@@ -16,8 +16,8 @@ namespace OxyPlot.Tests
             for (double i = 0; i < 30; i += 0.1)
                 ls.Points.Add(new Point(i, Math.Sin(i) * 20));
             plot.Series.Add(ls);
-            plot.Axes.Add(new LinearAxis { Title = "Y-axis1", Position = AxisPosition.Left, MajorGridlines = true });
-            plot.Axes.Add(new LinearAxis { Title = "X-axis1", Position = AxisPosition.Bottom, MajorGridlines = true });
+            plot.Axes.Add(new LinearAxis { Title = "Y-axis1", Position = AxisPosition.Left });
+            plot.Axes.Add(new LinearAxis { Title = "X-axis1", Position = AxisPosition.Bottom });
             plot.Axes.Add(new LinearAxis { Title = "Y-axis2", Position = AxisPosition.Right });
             plot.Axes.Add(new LinearAxis { Title = "X-axis2", Position = AxisPosition.Top });
 

@@ -1,42 +1,52 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Windows;
+using OxyPlot;
 
 namespace RealtimeDemo
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private Func<double, double, double> Function1 { get; set; }
-        private Func<double, double, double> Function2 { get; set; }
-
+        public int TotalNumberOfPoints { get; set; }
         private readonly Stopwatch watch = new Stopwatch();
+        private int N = 20;
 
         public MainViewModel()
         {
-            Function1 = (t, x) => Math.Cos(t) * (x == 0 ? 1 : Math.Sin(x) / x);
-            Function2 = (t, x) => Math.Sin(t * 1.2) * (x == 0 ? 1 : Math.Sin(x * 1.2) / x);
-            Results1 = new Collection<Point>();
-            Results2 = new Collection<Point>();
+            Function = (t, x, a) => Math.Cos(t*a)*(x == 0 ? 1 : Math.Sin(x*a)/x);
+
+            PlotModel = new PlotModel();
+            PlotModel.Axes.Add(new LinearAxis(AxisPosition.Left, -2, 2));
+
+            for (int i = 0; i < N; i++)
+            {
+                // cos(at)*sin(ax)/x            }
+                PlotModel.Series.Add(new LineSeries());
+            }
             watch.Start();
         }
 
-        public Collection<Point> Results1 { get; private set; }
-        public Collection<Point> Results2 { get; private set; }
+        private Func<double, double, double, double> Function { get; set; }
+        public PlotModel PlotModel { get; set; }
 
         public void Update()
         {
-            double t = watch.ElapsedMilliseconds * 0.001;
-            Results1.Clear();
-            Results2.Clear();
-            for (double x = -5; x <= 5; x += 0.1)
+            double t = watch.ElapsedMilliseconds*0.001;
+            int n = 0;
+            for (int i = 0; i < PlotModel.Series.Count; i++)
             {
-                Results1.Add(new Point(x, Function1(t, x)));
-                Results2.Add(new Point(x, Function2(t, x)));
+                DataSeries s = PlotModel.Series[i];
+                s.Points.Clear();
+                double a = 0.5 + i*0.05;
+                for (double x = -5; x <= 5; x += 0.1)
+                {
+                    s.Points.Add(new Point(x, Function(t, x, a)));
+                    n++;
+                }
             }
-            RaisePropertyChanged("Results1");
-            RaisePropertyChanged("Results2");
+            TotalNumberOfPoints = n;
+            RaisePropertyChanged("TotalNumberOfPoints");
+           // RaisePropertyChanged("PlotModel");
         }
 
         #region PropertyChanged Block

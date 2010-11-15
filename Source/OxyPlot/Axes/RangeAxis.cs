@@ -20,13 +20,12 @@ namespace OxyPlot
             MinimumPadding = 0.01;
             MaximumPadding = 0.01;
 
-            MajorTickType = TickType.ShortInside;
-            MinorTickType = TickType.ShortInside;
-            MajorGridlineStyle = LineStyle.Solid;
-            MinorGridlineStyle = LineStyle.Solid;
-            MajorTicklineColor = Colors.Black;
+            TickStyle = TickStyle.Inside;
+            MajorGridlineStyle = LineStyle.None;
+            MinorGridlineStyle = LineStyle.None;
+            TicklineColor = Colors.Black;
             MajorGridlineColor = Color.FromARGB(0x40, 0, 0, 0);
-            MinorTicklineColor = Colors.Black;
+            TicklineColor = Colors.Black;
             MinorGridlineColor = Color.FromARGB(0x20, 0, 0, 0x00);
             MajorGridlineThickness = 1;
             MinorGridlineThickness = 1;
@@ -49,6 +48,13 @@ namespace OxyPlot
             Angle = 0;
         }
 
+        public RangeAxis(AxisPosition pos, double minimum, double maximum)
+            : this()
+        {
+            Position = pos;
+            Minimum = minimum;
+            Maximum = maximum;
+        }
         public string Key { get; set; }
 
         public AxisPosition Position { get; set; }
@@ -70,15 +76,11 @@ namespace OxyPlot
         public double MinimumPadding { get; set; }
         public double MaximumPadding { get; set; }
 
-        public bool MajorGridlines { get; set; }
-        public bool MinorGridlines { get; set; }
 
-        public TickType MajorTickType { get; set; }
-        public TickType MinorTickType { get; set; }
+        public TickStyle TickStyle { get; set; }
         public double MinorTickSize { get; set; }
         public double MajorTickSize { get; set; }
-        public Color MajorTicklineColor { get; set; }
-        public Color MinorTicklineColor { get; set; }
+        public Color TicklineColor { get; set; }
         public bool ShowMinorTicks { get; set; }
 
         public LineStyle MajorGridlineStyle { get; set; }
@@ -113,7 +115,7 @@ namespace OxyPlot
 
         public override string ToString()
         {
-            return String.Format(CultureInfo.InvariantCulture, "AXIS({0}, {1}, {2}, {3})", Position, ActualMinimum, ActualMaximum, ActualMajorStep);
+            return String.Format(CultureInfo.InvariantCulture, "{0}({1}, {2}, {3}, {4})", GetType().Name, Position, ActualMinimum, ActualMaximum, ActualMajorStep);
         }
         public virtual void GetTickValues(out ICollection<double> majorValues, out ICollection<double> minorValues)
         {

@@ -15,6 +15,7 @@ namespace OxyReporter
         public Table()
         {
             Fields = new List<TableColumn>();
+            Class = "table";
         }
 
         public override void Update()

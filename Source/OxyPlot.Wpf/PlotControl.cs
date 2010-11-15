@@ -11,6 +11,27 @@ namespace OxyPlot.Wpf
     [ContentProperty("Series")]
     public class PlotControl : Grid
     {
+        public Thickness AxisMargin
+        {
+            get { return (Thickness)GetValue(AxisMarginProperty); }
+            set { SetValue(AxisMarginProperty, value); }
+        }
+
+        public static readonly DependencyProperty AxisMarginProperty =
+            DependencyProperty.Register("AxisMargin", typeof(Thickness), typeof(PlotControl), new UIPropertyMetadata(new Thickness(40)));
+
+
+        public double BorderThickness
+        {
+            get { return (double)GetValue(BorderThicknessProperty); }
+            set { SetValue(BorderThicknessProperty, value); }
+        }
+
+        public static readonly DependencyProperty BorderThicknessProperty =
+            DependencyProperty.Register("BorderThickness", typeof(double), typeof(PlotControl), new UIPropertyMetadata(2.0));
+
+
+
         public static readonly DependencyProperty ModelProperty =
             DependencyProperty.Register("Model", typeof(PlotModel), typeof(PlotControl),
                                         new UIPropertyMetadata(null, ModelChanged));
@@ -44,11 +65,11 @@ namespace OxyPlot.Wpf
 
             canvas = new Canvas();
             Children.Add(canvas);
-            
+
             // Slider
             slider = new Slider(this);
             Children.Add(slider);
-            
+
             // Overlays
             overlays = new Canvas();
             Children.Add(overlays);
@@ -127,6 +148,14 @@ namespace OxyPlot.Wpf
                 if (internalModel == null)
                     internalModel = new PlotModel();
                 UpdateModel(internalModel);
+                if (AxisMargin != null)
+                {
+                    internalModel.MarginLeft = AxisMargin.Left;
+                    internalModel.MarginRight = AxisMargin.Right;
+                    internalModel.MarginTop = AxisMargin.Top;
+                    internalModel.MarginBottom = AxisMargin.Bottom;
+                }
+                internalModel.BorderThickness = BorderThickness;
             }
             else
                 internalModel = Model;

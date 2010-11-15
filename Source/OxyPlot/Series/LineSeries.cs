@@ -1,4 +1,6 @@
-﻿namespace OxyPlot
+﻿using System;
+
+namespace OxyPlot
 {
     public class LineSeries : DataSeries
     {
@@ -9,6 +11,14 @@
 
             MarkerSize = 3;
             MarkerStrokeThickness = 1;
+        }
+
+        public LineSeries(Color c, double thickness = 1, string title = null)
+            : this()
+        {
+            this.Color = c;
+            this.Thickness = thickness;
+            this.Title = title;
         }
 
         public Color Color { get; set; }
@@ -30,5 +40,22 @@
         /// but make the curve less accurate
         /// </summary>
         public double MinimumSegmentLength { get; set; }
+    }
+
+    public class FunctionSeries : LineSeries
+    {
+        public FunctionSeries(Func<double, double> f, double xmin, double xmax, double dx, string title = null)
+        {
+            Title = title;
+            for (double x = xmin; x <= xmax+dx/2; x += dx)
+                Points.Add(new Point(x, f(x)));
+        }
+
+        public FunctionSeries(Func<double, double> fx, Func<double, double> fy, double t0, double t1, double dt, string title = null)
+        {
+            Title = title;
+            for (double t = t0; t <= t1+dt/2; t += dt)
+                Points.Add(new Point(fx(t), fy(t)));
+        }
     }
 }

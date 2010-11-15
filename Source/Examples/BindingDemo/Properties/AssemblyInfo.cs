@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("BindingDemo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Det Norske Veritas")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("BindingDemo")]
 [assembly: AssemblyCopyright("Copyright © OBJO 2010")]
 [assembly: AssemblyTrademark("")]

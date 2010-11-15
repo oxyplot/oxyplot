@@ -33,15 +33,18 @@ namespace OxyPlot
 
         private void RenderGridline(double x0, double y0, double x1, double y1, Pen pen)
         {
+            if (pen == null)
+                return;
+
             rc.DrawLine(new[]
                             {
                                 new Point(x0, y0),
                                 new Point(x1, y1)
-                            }, pen.Color, pen.Thickness, pen.DashArray);
+                            }, pen.Color, pen.Thickness, pen.DashArray, true);
         }
 
 
-        private void GetVerticalTickPositions(IAxis axis, TickType glt, double ticksize,
+        private void GetVerticalTickPositions(IAxis axis, TickStyle glt, double ticksize,
                                               out double y0, out double y1)
         {
             y0 = 0;
@@ -50,20 +53,20 @@ namespace OxyPlot
             double topsign = istop ? -1 : 1;
             switch (glt)
             {
-                case TickType.Short:
+                case TickStyle.Crossing:
                     y0 = -ticksize * topsign;
                     y1 = ticksize * topsign;
                     break;
-                case TickType.ShortInside:
+                case TickStyle.Inside:
                     y0 = -ticksize * topsign;
                     break;
-                case TickType.ShortOutside:
+                case TickStyle.Outside:
                     y1 = ticksize * topsign;
                     break;
             }
         }
 
-        private void GetHorizontalTickPositions(IAxis axis, TickType glt, double ticksize, out double x0,
+        private void GetHorizontalTickPositions(IAxis axis, TickStyle glt, double ticksize, out double x0,
                                                 out double x1)
         {
             x0 = 0;
@@ -72,14 +75,14 @@ namespace OxyPlot
             double leftSign = isLeft ? -1 : 1;
             switch (glt)
             {
-                case TickType.Short:
+                case TickStyle.Crossing:
                     x0 = -ticksize * leftSign;
                     x1 = ticksize * leftSign;
                     break;
-                case TickType.ShortInside:
+                case TickStyle.Inside:
                     x0 = -ticksize * leftSign;
                     break;
-                case TickType.ShortOutside:
+                case TickStyle.Outside:
                     x1 = ticksize * leftSign;
                     break;
             }
@@ -87,12 +90,12 @@ namespace OxyPlot
 
         private void RenderHorizontalAxis(RangeAxis axis, IAxis perpendicularAxis)
         {
-            var minorPen = new Pen(axis.MinorGridlineColor, axis.MinorGridlineThickness, axis.MinorGridlineStyle);
-            var minorTickPen = new Pen(axis.MinorTicklineColor, axis.MinorGridlineThickness, LineStyle.Solid);
-            var majorPen = new Pen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
-            var majorTickPen = new Pen(axis.MajorTicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
-            var zeroPen = new Pen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
-            var extraPen = new Pen(axis.ExtraGridlineColor, axis.ExtraGridlineThickness, axis.ExtraGridlineStyle);
+            var minorPen = CreatePen(axis.MinorGridlineColor, axis.MinorGridlineThickness, axis.MinorGridlineStyle);
+            var majorPen = CreatePen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
+            var minorTickPen = CreatePen(axis.TicklineColor, axis.MinorGridlineThickness, LineStyle.Solid);
+            var majorTickPen = CreatePen(axis.TicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
+            var zeroPen = CreatePen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
+            var extraPen = CreatePen(axis.ExtraGridlineColor, axis.ExtraGridlineThickness, axis.ExtraGridlineStyle);
 
             ICollection<double> minorValues;
             ICollection<double> majorValues;
@@ -115,7 +118,7 @@ namespace OxyPlot
 
             if (axis.ShowMinorTicks)
             {
-                GetVerticalTickPositions(axis, axis.MinorTickType, axis.MinorTickSize, out y0, out y1);
+                GetVerticalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out y0, out y1);
 
                 foreach (double xValue in minorValues)
                 {
@@ -130,7 +133,7 @@ namespace OxyPlot
                     }
 
                     double x = axis.Transform(xValue);
-                    if (axis.MinorGridlines)
+                    if (minorPen != null)
                     {
                         RenderGridline(x, plotBounds.Top, x, plotBounds.Bottom, minorPen);
                     }
@@ -138,7 +141,7 @@ namespace OxyPlot
                 }
             }
 
-            GetVerticalTickPositions(axis, axis.MajorTickType, axis.MajorTickSize, out y0, out y1);
+            GetVerticalTickPositions(axis, axis.TickStyle, axis.MajorTickSize, out y0, out y1);
 
             double maxh = 0;
             bool istop = axis.Position == AxisPosition.Top;
@@ -151,7 +154,7 @@ namespace OxyPlot
 
                 double x = axis.Transform(xValue);
 
-                if (axis.MajorGridlines)
+                if (majorPen != null)
                 {
                     RenderGridline(x, plotBounds.Top, x, plotBounds.Bottom, majorPen);
                 }
@@ -206,14 +209,21 @@ namespace OxyPlot
                         axis.FontFamily, axis.FontSize, axis.FontWeight, 0, halign, valign);
         }
 
+        private Pen CreatePen(Color c, double th, LineStyle ls)
+        {
+            if (ls == LineStyle.None || th == 0)
+                return null;
+            return new Pen(c, th, ls);
+        }
+
         private void RenderVerticalAxis(RangeAxis axis, IAxis perpendicularAxis)
         {
-            var minorPen = new Pen(axis.MinorGridlineColor, axis.MinorGridlineThickness, axis.MinorGridlineStyle);
-            var minorTickPen = new Pen(axis.MinorTicklineColor, axis.MinorGridlineThickness, LineStyle.Solid);
-            var majorPen = new Pen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
-            var majorTickPen = new Pen(axis.MajorTicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
-            var zeroPen = new Pen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
-            var extraPen = new Pen(axis.ExtraGridlineColor, axis.ExtraGridlineThickness, axis.ExtraGridlineStyle);
+            var minorPen = CreatePen(axis.MinorGridlineColor, axis.MinorGridlineThickness, axis.MinorGridlineStyle);
+            var minorTickPen = CreatePen(axis.TicklineColor, axis.MinorGridlineThickness, LineStyle.Solid);
+            var majorPen = CreatePen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
+            var majorTickPen = CreatePen(axis.TicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
+            var zeroPen = CreatePen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
+            var extraPen = CreatePen(axis.ExtraGridlineColor, axis.ExtraGridlineThickness, axis.ExtraGridlineStyle);
 
             double x = plotBounds.Left;
             switch (axis.Position)
@@ -236,7 +246,7 @@ namespace OxyPlot
 
             if (axis.ShowMinorTicks)
             {
-                GetHorizontalTickPositions(axis, axis.MinorTickType, axis.MinorTickSize, out x0, out x1);
+                GetHorizontalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out x0, out x1);
                 foreach (double yValue in minorValues)
                 {
                     if (yValue < axis.ActualMinimum || yValue > axis.ActualMaximum)
@@ -250,7 +260,7 @@ namespace OxyPlot
                     }
                     double y = axis.Transform(yValue);
 
-                    if (axis.MinorGridlines)
+                    if (minorPen != null)
                     {
                         RenderGridline(plotBounds.Left, y, plotBounds.Right, y, minorPen);
                     }
@@ -259,7 +269,7 @@ namespace OxyPlot
                 }
             }
 
-            GetHorizontalTickPositions(axis, axis.MajorTickType, axis.MajorTickSize, out x0, out x1);
+            GetHorizontalTickPositions(axis, axis.TickStyle, axis.MajorTickSize, out x0, out x1);
             double maxw = 0;
 
             bool isleft = axis.Position == AxisPosition.Left;
@@ -271,7 +281,7 @@ namespace OxyPlot
 
                 double y = axis.Transform(yValue);
 
-                if (axis.MajorGridlines)
+                if (majorPen != null)
                 {
                     RenderGridline(plotBounds.Left, y, plotBounds.Right, y, majorPen);
                 }

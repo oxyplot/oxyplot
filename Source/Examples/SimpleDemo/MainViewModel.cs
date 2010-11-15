@@ -128,13 +128,13 @@ namespace SimpleDemo
                                   Position = AxisPosition.Left,
                                   MaximumPadding = 0.3,
                                   MinimumPadding = 0.3,
-                                  MajorGridlines = true
+                                  MajorGridlineStyle = LineStyle.Solid
                               });
             plot.Axes.Add(new LinearAxis
                               {
                                   Title = "X-axis",
                                   Position = AxisPosition.Bottom,
-                                  MajorGridlines = true
+                                  MajorGridlineStyle = LineStyle.Solid
                               });
 
             return plot;
@@ -166,9 +166,7 @@ namespace SimpleDemo
                                   Maximum = 1.05,
                                   MajorStep = 0.2,
                                   MinorStep = 0.05,
-                                  MajorGridlines = true,
-                                  MajorTickType = TickType.ShortInside,
-                                  MinorTickType = TickType.ShortInside
+                                  TickStyle = TickStyle.Inside
                               });
             plot.Axes.Add(new LinearAxis
                               {
@@ -177,9 +175,7 @@ namespace SimpleDemo
                                   Maximum = 5.25,
                                   MajorStep = 1,
                                   MinorStep = 0.25,
-                                  MajorGridlines = true,
-                                  MajorTickType = TickType.ShortInside,
-                                  MinorTickType = TickType.ShortInside
+                                  TickStyle = TickStyle.Inside
                               });
             plot.Series.Add(CreateNormalDistributionSeries(-5, 5, 0, 0.2));
             plot.Series.Add(CreateNormalDistributionSeries(-5, 5, 0, 1));
@@ -207,7 +203,7 @@ namespace SimpleDemo
 
         private static PlotModel CreateSquareWave(int n = 25)
         {
-            var plot = new PlotModel { Title = "Square wave with Gibbs phenomenon" };
+            var plot = new PlotModel { Title = "Square wave (Gibbs phenomenon)" };
 
             var ls = new LineSeries
                          {
@@ -228,13 +224,11 @@ namespace SimpleDemo
                               {
                                   Position = AxisPosition.Left,
                                   Minimum = -4,
-                                  Maximum = 4,
-                                  MajorGridlines = true
+                                  Maximum = 4
                               });
             plot.Axes.Add(new LinearAxis
                               {
-                                  Position = AxisPosition.Bottom,
-                                  MajorGridlines = true
+                                  Position = AxisPosition.Bottom
                               });
 
             plot.Series.Add(ls);
@@ -272,14 +266,16 @@ namespace SimpleDemo
                                   Position = AxisPosition.Left,
                                   Minimum = 0.1,
                                   Maximum = 100,
-                                  MajorGridlines = true
+                                  MajorGridlineStyle = LineStyle.Solid,
+                                  MinorGridlineStyle = LineStyle.Solid
                               });
             plot.Axes.Add(new LinearAxis
                               {
                                   Position = AxisPosition.Bottom,
                                   Minimum = 0.1,
                                   Maximum = 100,
-                                  MajorGridlines = true
+                                  MajorGridlineStyle = LineStyle.Solid,
+                                  MinorGridlineStyle = LineStyle.Solid
                               });
 
             return plot;
@@ -299,14 +295,16 @@ namespace SimpleDemo
                                   Position = AxisPosition.Bottom,
                                   Minimum = 0.1,
                                   Maximum = 100,
-                                  MajorGridlines = true
+                                  MajorGridlineStyle = LineStyle.Solid,
+                                  MinorGridlineStyle = LineStyle.Solid
                               });
             plot.Axes.Add(new LinearAxis
                               {
                                   Position = AxisPosition.Left,
                                   Minimum = 0.1,
                                   Maximum = 100,
-                                  MajorGridlines = true
+                                  MajorGridlineStyle = LineStyle.Solid,
+                                  MinorGridlineStyle = LineStyle.Solid
                               });
 
             return plot;
@@ -326,14 +324,16 @@ namespace SimpleDemo
                                   Position = AxisPosition.Left,
                                   Minimum = 0.1,
                                   Maximum = 100,
-                                  MajorGridlines = true
+                                  MajorGridlineStyle = LineStyle.Solid,
+                                  MinorGridlineStyle = LineStyle.Solid
                               });
             plot.Axes.Add(new LogarithmicRangeAxis
                               {
                                   Position = AxisPosition.Bottom,
                                   Minimum = 0.1,
                                   Maximum = 100,
-                                  MajorGridlines = true
+                                  MajorGridlineStyle = LineStyle.Solid,
+                                  MinorGridlineStyle = LineStyle.Solid
                               });
 
             return plot;
@@ -364,7 +364,7 @@ namespace SimpleDemo
             foreach (var s in Model.Series)
             {
                 main.AddHeader(3, "Data series " + (i++));
-                main.AddPropertyTable("Properties", new[] { s });
+                main.AddPropertyTable("Properties of the "+s.GetType().Name, new[] { s });
                 var fields = new List<TableColumn>();
                 fields.Add(new TableColumn("X", "X"));
                 fields.Add(new TableColumn("Y", "Y"));
@@ -372,11 +372,15 @@ namespace SimpleDemo
             }
 
             string style =
-                @"body { font-family: Verdana,Arial; }
+                @"body { font-family: Verdana,Arial; margin:20pt; }
 table { border: solid 1px black; margin: 8pt; border-collapse:collapse; }
 td { padding: 0 2pt 0 2pt; border-left: solid 1px black; border-right: solid 1px black;}
 thead { border:solid 1px black; }
-.content, .content td { border: none; }";
+.content, .content td { border: none; }
+.figure { margin: 8pt;}
+.table { margin: 8pt;}
+.table caption { margin: 4pt;}
+.table thead td { padding: 2pt;}";
 
             using (var hw = new HtmlReportWriter(fileName, "OxyPlot example file", null, style))
             {
