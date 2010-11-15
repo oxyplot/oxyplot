@@ -12,8 +12,11 @@ namespace OxyPlot
         internal IAxis DefaultXAxis;
         internal IAxis DefaultYAxis;
 
-        public PlotModel()
+        public PlotModel(string title=null, string subtitle=null)
         {
+            Title = title;
+            Subtitle = subtitle;
+
             Axes = new Collection<IAxis>();
             Series = new Collection<DataSeries>();
             MarginLeft = 60;
@@ -68,6 +71,7 @@ namespace OxyPlot
         public double MarginRight { get; set; }
         public double MarginTop { get; set; }
         public double MarginBottom { get; set; }
+        public double Margins { set { MarginLeft = MarginRight = MarginTop = MarginBottom = value; } }
 
         public Color TextColor { get; set; }
 

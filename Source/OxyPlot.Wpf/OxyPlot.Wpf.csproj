@@ -53,6 +53,7 @@
     <Compile Include="Axes\Axis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
+    <Compile Include="Axes\RangeAxis.cs" />
     <Compile Include="MouseActions\MouseAction.cs" />
     <Compile Include="MouseActions\PanAction.cs" />
     <Compile Include="MouseActions\SliderAction.cs" />

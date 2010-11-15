@@ -1,6 +1,6 @@
 ﻿namespace OxyPlot.Wpf
 {
-    public class LogarithmicAxis : LinearAxis
+    public class LogarithmicAxis : RangeAxis
     {
         public LogarithmicAxis()
         {
@@ -10,6 +10,7 @@
         public override void UpdateModelProperties()
         {
             var a = ModelAxis as LogarithmicAxis;
+            base.UpdateModelProperties();
         }
     }
 }

@@ -220,10 +220,11 @@ namespace OxyReporter
 
         int FigureCounter;
 
-        public void WriteStartFigure()
+        public void WriteStartFigure(Figure f)
         {
             FigureCounter++;
             WriteStartElement("p");
+            WriteClassID(f);
         }
         public void WriteEndFigure(string text)
         {
@@ -233,8 +234,7 @@ namespace OxyReporter
 
         public void WriteImage(Image i)
         {
-            WriteStartFigure();
-            WriteClassID(i);
+            WriteStartFigure(i);
             WriteStartElement("img");
             WriteAttributeString("src", i.Source);
             WriteAttributeString("alt", i.FigureText);
@@ -244,8 +244,7 @@ namespace OxyReporter
 
         public void WriteDrawing(Drawing d)
         {
-            WriteStartFigure();
-            WriteClassID(d);
+            WriteStartFigure(d);
             WriteRaw(d.Content);
             WriteEndFigure(d.FigureText);
         }

@@ -10,11 +10,11 @@ namespace OxyPlot
         Bottom
     } ;
 
-    public enum TickType
+    public enum TickStyle
     {
-        Short,
-        ShortInside,
-        ShortOutside,
+        Crossing,
+        Inside,
+        Outside,
         None
     } ;
 
@@ -26,9 +26,8 @@ namespace OxyPlot
         double ActualMinimum { get; set; }
         AxisPosition Position { get; }
         Color MinorGridlineColor { get; }
-        Color MinorTicklineColor { get; }
+        Color TicklineColor { get; }
         Color MajorGridlineColor { get; }
-        Color MajorTicklineColor { get; }
         Color ExtraGridlineColor { get; }
         double MinorGridlineThickness { get; }
         double MajorGridlineThickness { get; }
@@ -38,12 +37,9 @@ namespace OxyPlot
         LineStyle ExtraGridlineStyle { get; }
         bool PositionAtZeroCrossing { get; }
         bool ShowMinorTicks { get; }
-        TickType MinorTickType { get; }
+        TickStyle TickStyle { get; }
         double MinorTickSize { get; }
-        bool MinorGridlines { get; }
-        TickType MajorTickType { get; }
         double MajorTickSize { get; }
-        bool MajorGridlines { get; }
         string FontFamily { get; }
         double FontSize { get; }
         double FontWeight { get; }

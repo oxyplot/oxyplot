@@ -6,7 +6,6 @@
     <DockPanel>
         <oxy:PlotControl x:Name="plot1" Title="LineSeries and AreaSeries">
             <oxy:AreaSeries ItemsSource="{Binding Measurements}" DataFieldX="Time" DataFieldY="Maximum" DataFieldBase="Minimum" Fill="LightBlue" Thickness="0"/>
-            <oxy:LineSeries ItemsSource="{Binding Measurements}" DataFieldX="Time" DataFieldY="Value" Color="Black" Thickness="2" Smooth="True"/>
             <oxy:LineSeries ItemsSource="{Binding Measurements}" DataFieldX="Time" DataFieldY="Value" Color="Blue" Thickness="2" Smooth="False"/>
         </oxy:PlotControl>
     </DockPanel>

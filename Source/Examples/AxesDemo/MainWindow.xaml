@@ -1,0 +1,119 @@
+﻿<Window x:Class="AxesDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        Title="OxyPlot features demo" Height="720" Width="1280">
+
+    <DockPanel>
+        <TabControl Margin="8">
+            <TabItem Header="TickStyle">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <oxy:PlotControl Title="None" Grid.Row="0" Grid.Column="0">
+                        <oxy:PlotControl.Axes>
+                            <oxy:LinearAxis Position="Left" TickStyle="None" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Position="Bottom" TickStyle="None" MinorGridlineStyle="Dot" />
+                        </oxy:PlotControl.Axes>
+                    </oxy:PlotControl>
+                    <oxy:PlotControl Title="Crossing" Grid.Row="0" Grid.Column="1">
+                        <oxy:PlotControl.Axes>
+                            <oxy:LinearAxis Position="Left" TickStyle="Crossing" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Position="Bottom" TickStyle="Crossing" MinorGridlineStyle="Dot" />
+                        </oxy:PlotControl.Axes>
+                    </oxy:PlotControl>
+                    <oxy:PlotControl Title="Inside" Grid.Row="1" Grid.Column="0">
+                        <oxy:PlotControl.Axes>
+                            <oxy:LinearAxis Position="Left" TickStyle="Inside" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Position="Bottom" TickStyle="Inside" MinorGridlineStyle="Dot" />
+                        </oxy:PlotControl.Axes>
+                    </oxy:PlotControl>
+                    <oxy:PlotControl Title="Outside" Grid.Row="1" Grid.Column="1">
+                        <oxy:PlotControl.Axes>
+                            <oxy:LinearAxis Position="Left" TickStyle="Outside" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Position="Bottom" TickStyle="Outside" MinorGridlineStyle="Dot" />
+                        </oxy:PlotControl.Axes>
+                    </oxy:PlotControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="LinearAxis position">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <oxy:PlotControl AxisMargin="40">
+                        <oxy:PlotControl.Axes>
+                            <oxy:LinearAxis Title="Left" Position="Left" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Title="Bottom" Position="Bottom" MinorGridlineStyle="Dot" />
+                        </oxy:PlotControl.Axes>
+                    </oxy:PlotControl>
+                    <oxy:PlotControl Grid.Column="1" AxisMargin="40">
+                        <oxy:PlotControl.Axes>
+                            <oxy:LinearAxis Title="Right" Position="Right" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Title="Top" Position="Top" MinorGridlineStyle="Dot" />
+                        </oxy:PlotControl.Axes>
+                    </oxy:PlotControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Angled LinearAxis numbers">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Slider x:Name="Angle" Orientation="Vertical" Grid.Column="1" Minimum="-180" Maximum="180" Value="40" Height="200"/>
+                    <oxy:PlotControl>
+                        <oxy:PlotControl.Axes>
+                            <oxy:LinearAxis Title="Left" Position="Left" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Title="Bottom" Position="Bottom" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
+                        </oxy:PlotControl.Axes>
+                    </oxy:PlotControl>
+                    <oxy:PlotControl Grid.Column="2">
+                        <oxy:PlotControl.Axes>
+                            <oxy:LinearAxis Title="Right" Position="Right" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Title="Top" Position="Top" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
+                        </oxy:PlotControl.Axes>
+                    </oxy:PlotControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Zero crossing axes">
+                <oxy:PlotControl BorderThickness="0" AxisMargin="10">
+                    <oxy:PlotControl.Axes>
+                        <oxy:LinearAxis Minimum="-30" Maximum="50" Position="Left" TickStyle="Crossing" PositionAtZeroCrossing="True"/>
+                        <oxy:LinearAxis Minimum="-50" Maximum="70" Position="Bottom" TickStyle="Crossing" PositionAtZeroCrossing="True"/>
+                    </oxy:PlotControl.Axes>
+                </oxy:PlotControl>
+            </TabItem>
+            <TabItem Header="Reversed">
+                <oxy:PlotControl AxisMargin="40 10 10 30" >
+                    <oxy:PlotControl.Axes>
+                        <oxy:LinearAxis Minimum="-30" Maximum="50" Position="Left" StartPosition="1" EndPosition="0"/>
+                        <oxy:LinearAxis Minimum="-50" Maximum="70" Position="Bottom" StartPosition="1" EndPosition="0"/>
+                    </oxy:PlotControl.Axes>
+                </oxy:PlotControl>
+            </TabItem>
+            <TabItem Header="Logarithmic axes">
+                <oxy:PlotControl AxisMargin="80 10 20 30">
+                    <oxy:PlotControl.Axes>
+                        <oxy:LogarithmicAxis Minimum="1" Maximum="1e6" Position="Left"/>
+                        <oxy:LogarithmicAxis Minimum="1e-3" Maximum="1e4" Position="Bottom"/>
+                    </oxy:PlotControl.Axes>
+                </oxy:PlotControl>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>
