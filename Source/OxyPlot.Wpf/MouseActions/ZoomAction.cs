@@ -6,19 +6,19 @@ namespace OxyPlot.Wpf
 {
     public class ZoomAction : MouseAction
     {
+        public Point DownPoint;
+        private bool isZooming;
+        private OxyPlot.Axis xaxis;
+        private OxyPlot.Axis yaxis;
+
+        private Rect zoomRectangle;
+
         public ZoomAction(PlotControl pc)
             : base(pc)
         {
         }
 
-        private OxyPlot.Axis xaxis;
-        private OxyPlot.Axis yaxis;
-
-        private Rect zoomRectangle;
-        private bool isZooming;
-        public System.Windows.Point DownPoint;
-
-        public override void OnMouseDown(System.Windows.Point pt, MouseButton button, int clickCount, bool control, bool shift)
+        public override void OnMouseDown(Point pt, MouseButton button, int clickCount, bool control, bool shift)
         {
             base.OnMouseDown(pt, button, clickCount, control, shift);
 
@@ -46,7 +46,7 @@ namespace OxyPlot.Wpf
             isZooming = true;
         }
 
-        public override void OnMouseMove(System.Windows.Point pt, bool control, bool shift)
+        public override void OnMouseMove(Point pt, bool control, bool shift)
         {
             if (!isZooming)
                 return;
@@ -67,7 +67,7 @@ namespace OxyPlot.Wpf
             pc.ShowZoomRectangle(zoomRectangle);
         }
 
-        private static Rect CreateRect(System.Windows.Point p0, System.Windows.Point p1)
+        private static Rect CreateRect(Point p0, Point p1)
         {
             double x = Math.Min(p0.X, p1.X);
             double w = Math.Abs(p0.X - p1.X);
@@ -87,8 +87,8 @@ namespace OxyPlot.Wpf
 
             if (zoomRectangle.Width > 10 && zoomRectangle.Height > 10)
             {
-                var p0 = pc.InverseTransform(zoomRectangle.TopLeft, xaxis, yaxis);
-                var p1 = pc.InverseTransform(zoomRectangle.BottomRight, xaxis, yaxis);
+                DataPoint p0 = pc.InverseTransform(zoomRectangle.TopLeft, xaxis, yaxis);
+                DataPoint p1 = pc.InverseTransform(zoomRectangle.BottomRight, xaxis, yaxis);
 
                 if (xaxis != null)
                     xaxis.Zoom(p0.X, p1.X);
@@ -100,14 +100,14 @@ namespace OxyPlot.Wpf
             base.OnMouseUp();
         }
 
-        public override void OnMouseWheel(System.Windows.Point pt, double delta, bool control, bool shift)
+        public override void OnMouseWheel(Point pt, double delta, bool control, bool shift)
         {
             OxyPlot.Axis xa, ya;
             pc.GetAxesFromPoint(pt, out xa, out ya);
-            var current = pc.InverseTransform(pt, xa, ya);
+            DataPoint current = pc.InverseTransform(pt, xa, ya);
             double f = 0.001;
             if (control) f *= 0.2;
-            double s = 1 + delta * f;
+            double s = 1 + delta*f;
             if (xa != null)
                 xa.ScaleAt(s, current.X);
             if (ya != null)

@@ -60,5 +60,31 @@ namespace SimpleDemo
                 Process.Start(dlg.FileName);
             }
         }
+
+        private void SaveXaml_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new SaveFileDialog();
+            dlg.Filter = ".xaml files|*.xaml";
+            dlg.DefaultExt = ".xaml";
+            if (dlg.ShowDialog(this).Value)
+            {
+                plot1.SaveXaml(dlg.FileName);
+            }
+        }
+
+        private void CopySvg_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(vm.Model.ToSvg(plot1.ActualWidth, plot1.ActualHeight, true));
+        }
+
+        private void CopyBitmap_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetImage(plot1.ToBitmap());
+        }
+
+        private void CopyXaml_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(plot1.ToXaml());
+        }
     }
 }

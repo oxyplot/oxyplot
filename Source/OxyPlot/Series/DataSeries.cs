@@ -5,18 +5,23 @@ using System.Reflection;
 
 namespace OxyPlot
 {
+    public interface IDataPointProvider
+    {
+        DataPoint GetDataPoint();
+    }
+
     public abstract class DataSeries
     {
         protected DataSeries()
         {
-            Points = new Collection<Point>();
+            Points = new Collection<DataPoint>();
         }
 
         public IEnumerable ItemsSource { get; set; }
         public string DataFieldX { get; set; }
         public string DataFieldY { get; set; }
 
-        public Collection<Point> Points { get; set; }
+        public Collection<DataPoint> Points { get; set; }
 
         public Axis XAxis { get; internal set; }
         public Axis YAxis { get; internal set; }
@@ -38,12 +43,25 @@ namespace OxyPlot
             if (ItemsSource == null) return;
             Points.Clear();
 
-            // Do nothing if ItemsSource is set before DataFields are set
+            // Get DataPoints from the items in ItemsSource 
+            // if they implement IDataPointProvider
+            // If DataFields are set, this is not used
             if (DataFieldX == null || DataFieldY == null)
+            {
+                foreach (var item in ItemsSource)
+                {
+                    var idpp = item as IDataPointProvider;
+                    if (idpp == null)
+                        continue;
+                    Points.Add(idpp.GetDataPoint());
+                }
                 return;
+            }
 
             // TODO: is there a better way to do this?
             // http://msdn.microsoft.com/en-us/library/bb613546.aspx
+
+            // Using reflection on DataFieldX and DataFieldY
 
             PropertyInfo pix = null;
             PropertyInfo piy = null;
@@ -67,7 +85,7 @@ namespace OxyPlot
                 var y = (double)piy.GetValue(o, null);
 
 
-                var pp = new Point(x, y);
+                var pp = new DataPoint(x, y);
                 Points.Add(pp);
             }
         }
@@ -80,7 +98,7 @@ namespace OxyPlot
                 return;
             MinX = MaxX = Points[0].x;
             MinY = MaxY = Points[0].y;
-            foreach (Point pt in Points)
+            foreach (DataPoint pt in Points)
             {
                 MinX = Math.Min(MinX, pt.x);
                 MaxX = Math.Max(MaxX, pt.x);
@@ -90,10 +108,10 @@ namespace OxyPlot
             }
         }
 
-        public Point? GetNearestPoint(Point p3)
+        public DataPoint? GetNearestPoint(DataPoint p3)
         {
             double mindist = double.MaxValue;
-            Point? pt = null;
+            DataPoint? pt = null;
             foreach (var p in Points)
             {
                 double dx = p3.X - p.X;
@@ -109,11 +127,11 @@ namespace OxyPlot
             return pt;
         }
 
-        public Point? GetNearestPointOnLine(Point p3)
+        public DataPoint? GetNearestPointOnLine(DataPoint p3)
         {
             // http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
             double mindist = double.MaxValue;
-            Point? pt = null;
+            DataPoint? pt = null;
             for (int i = 0; i + 1 < Points.Count; i++)
             {
                 var p1 = Points[i];
@@ -137,7 +155,7 @@ namespace OxyPlot
 
                 if (d2 < mindist)
                 {
-                    pt = new Point(x, y);
+                    pt = new DataPoint(x, y);
                     mindist = d2;
                 }
             }

@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace OxyReporter
+﻿namespace OxyReporter
 {
     public interface IReportWriter
     {
@@ -11,5 +8,4 @@ namespace OxyReporter
         void WriteImage(Image i);
         void WriteDrawing(Drawing d);
     }
-
 }

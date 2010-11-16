@@ -5,40 +5,40 @@
     /// </summary>
     public class CohenSutherlandClipping
     {
-        const int INSIDE = 0; // 0000
-        const int LEFT = 1;   // 0001
-        const int RIGHT = 2;  // 0010
-        const int BOTTOM = 4; // 0100
-        const int TOP = 8;    // 1000
+        private const int INSIDE = 0; // 0000
+        private const int LEFT = 1; // 0001
+        private const int RIGHT = 2; // 0010
+        private const int BOTTOM = 4; // 0100
+        private const int TOP = 8; // 1000
 
-        private double xmin;
-        private double xmax;
-        private double ymin;
-        private double ymax;
+        private readonly double xmax;
+        private readonly double xmin;
+        private readonly double ymax;
+        private readonly double ymin;
 
         public CohenSutherlandClipping(double xmin, double xmax, double ymin, double ymax)
         {
             this.xmin = xmin;
             this.ymin = ymin;
             this.xmax = xmax;
-            this.ymax = ymax;            
+            this.ymax = ymax;
         }
 
         // Compute the bit code for a point (x, y) using the clip rectangle
         // bounded diagonally by (xmin, ymin), and (xmax, ymax)
-        int ComputeOutCode(double x, double y)
+        private int ComputeOutCode(double x, double y)
         {
             int code;
 
-            code = INSIDE;          // initialized as being inside of clip window
+            code = INSIDE; // initialized as being inside of clip window
 
-            if (x < xmin)           // to the left of clip window
+            if (x < xmin) // to the left of clip window
                 code |= LEFT;
-            else if (x > xmax)      // to the right of clip window
+            else if (x > xmax) // to the right of clip window
                 code |= RIGHT;
-            if (y < ymin)           // below the clip window
+            if (y < ymin) // below the clip window
                 code |= BOTTOM;
-            else if (y > ymax)      // above the clip window
+            else if (y > ymax) // above the clip window
                 code |= TOP;
 
             return code;
@@ -63,42 +63,48 @@
 
             while (true)
             {
-                if ((outcode0 | outcode1)==0)
-                {     //logical or is 0. Trivially accept and get out of loop
+                if ((outcode0 | outcode1) == 0)
+                {
+                    //logical or is 0. Trivially accept and get out of loop
                     accept = true;
                     break;
                 }
-                if ((outcode0 & outcode1)!=0)
-                { //logical and is not 0. Trivially reject and get out of loop
+                if ((outcode0 & outcode1) != 0)
+                {
+                    //logical and is not 0. Trivially reject and get out of loop
                     break;
                 }
 
                 // failed both tests, so calculate the line segment to clip
                 // from an outside point to an intersection with clip edge
-                double x=0, y=0;
+                double x = 0, y = 0;
 
                 // At least one endpoint is outside the clip rectangle; pick it.
-                int outcodeOut = outcode0 !=0 ? outcode0 : outcode1;
+                int outcodeOut = outcode0 != 0 ? outcode0 : outcode1;
 
                 // Now find the intersection point;
                 // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
-                if ((outcodeOut & TOP)!=0)
-                {           // point is above the clip rectangle
+                if ((outcodeOut & TOP) != 0)
+                {
+                    // point is above the clip rectangle
                     x = x0 + (x1 - x0) * (ymax - y0) / (y1 - y0);
                     y = ymax;
                 }
-                else if ((outcodeOut & BOTTOM)!=0)
-                { // point is below the clip rectangle
+                else if ((outcodeOut & BOTTOM) != 0)
+                {
+                    // point is below the clip rectangle
                     x = x0 + (x1 - x0) * (ymin - y0) / (y1 - y0);
                     y = ymin;
                 }
-                else if ((outcodeOut & RIGHT)!=0)
-                {  // point is to the right of clip rectangle
+                else if ((outcodeOut & RIGHT) != 0)
+                {
+                    // point is to the right of clip rectangle
                     y = y0 + (y1 - y0) * (xmax - x0) / (x1 - x0);
                     x = xmax;
                 }
-                else if ((outcodeOut & LEFT)!=0)
-                {   // point is to the left of clip rectangle
+                else if ((outcodeOut & LEFT) != 0)
+                {
+                    // point is to the left of clip rectangle
                     y = y0 + (y1 - y0) * (xmin - x0) / (x1 - x0);
                     x = xmin;
                 }

@@ -1,12 +1,13 @@
 ﻿namespace OxyPlot
 {
-    public struct Point
+    public struct DataPoint
     {
         internal double x;
-
         internal double y;
 
-        public Point(double x, double y)
+        public static readonly DataPoint Undefined = new DataPoint(double.NaN, double.NaN);
+
+        public DataPoint(double x, double y)
         {
             this.x = x;
             this.y = y;

@@ -6,7 +6,7 @@ namespace OxyPlot.Wpf
     {
         protected PlotControl pc;
 
-        public MouseAction(PlotControl pc)
+        protected MouseAction(PlotControl pc)
         {
             this.pc = pc;
             SubscribeEvents(pc);

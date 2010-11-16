@@ -8,9 +8,19 @@
             <MenuItem Header="File">
                 <MenuItem Header="Save svg..." Click="SaveSvg_Click"/>
                 <MenuItem Header="Savg png..." Click="SavePng_Click"/>
-                <MenuItem Header="Savg html5..." Click="SaveHtml_Click"/>
+                <MenuItem Header="Savg xaml..." Click="SaveXaml_Click"/>
+                <Separator/>
+                <MenuItem Header="Savg html5 report..." Click="SaveHtml_Click"/>
                 <Separator/>
                 <MenuItem Header="Exit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Copy svg" Click="CopySvg_Click"/>
+                <MenuItem Header="Copy bitmap" Click="CopyBitmap_Click"/>
+                <MenuItem Header="Copy xaml" Click="CopyXaml_Click"/>
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="RenderToCanvas" IsCheckable="True" IsChecked="{Binding RenderToCanvas}"/>
             </MenuItem>
             <MenuItem Header="Model" ItemsSource="{Binding ModelNames}">
                 <MenuItem.ItemContainerStyle>
@@ -26,9 +36,13 @@
                 <TextBlock Text="{Binding TotalNumberOfPoints, StringFormat='Total number of data points: {0}'}"/>
             </StatusBarItem>
         </StatusBar>
-        <oxy:PlotControl 
+        <Grid>
+            <oxy:PlotControl 
             x:Name="plot1" 
             Model="{Binding Model}" 
-            Background="White"/>
+            Background="White"
+            RenderToCanvas="{Binding RenderToCanvas}"
+            />
+        </Grid>
     </DockPanel>
 </Window>

@@ -20,9 +20,9 @@ namespace OxyPlot
         double Width { get; }
         double Height { get; }
 
-        void DrawLine(IEnumerable<Point> points, Color stroke, double thickness = 1.0, double[] dashArray = null, bool aliased = false);
-        void DrawPolygon(IEnumerable<Point> points, Color fill, Color stroke, double thickness = 1.0, double[] dashArray = null, bool aliased = false);
-        void DrawText(Point p, string text, Color fill, string fontFamily = null, double fontSize = 10, double fontWeight = 500, double rotate = 0, HorizontalTextAlign halign = HorizontalTextAlign.Left, VerticalTextAlign valign = VerticalTextAlign.Top);
-        Size MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500);
+        void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness = 1.0, double[] dashArray = null, bool aliased = false);
+        void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness = 1.0, double[] dashArray = null, bool aliased = false);
+        void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily = null, double fontSize = 10, double fontWeight = 500, double rotate = 0, HorizontalTextAlign halign = HorizontalTextAlign.Left, VerticalTextAlign valign = VerticalTextAlign.Top);
+        OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500);
     }
 }

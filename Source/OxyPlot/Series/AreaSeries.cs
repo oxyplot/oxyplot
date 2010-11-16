@@ -6,7 +6,7 @@ namespace OxyPlot
 {
     public class AreaSeries : LineSeries
     {
-        public Color Fill { get; set; }
+        public OxyColor Fill { get; set; }
         public string DataFieldBase { get; set; }
         public double Baseline { get; set; }
         public Collection<double> BaselineValues { get; set; }

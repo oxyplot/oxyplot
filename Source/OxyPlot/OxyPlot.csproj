@@ -43,11 +43,12 @@
   <ItemGroup>
     <Compile Include="Axes\IAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
-    <Compile Include="Axes\RangeAxis.cs" />
+    <Compile Include="Axes\Axis.cs" />
     <Compile Include="Axes\TimeAxis.cs" />
     <Compile Include="Foundation\CanonicalSplineHelper.cs" />
-    <Compile Include="Foundation\Rectangle.cs" />
-    <Compile Include="Foundation\Size.cs" />
+    <Compile Include="Foundation\ScreenPoint.cs" />
+    <Compile Include="Foundation\OxyRect.cs" />
+    <Compile Include="Foundation\OxySize.cs" />
     <Compile Include="Render\AxisRenderer.cs" />
     <Compile Include="Foundation\CohenSutherlandClipping.cs" />
     <Compile Include="Render\IRenderContext.cs" />
@@ -69,14 +70,14 @@
     <Compile Include="Report\TableColumn.cs" />
     <Compile Include="Report\Writers\TextReportWriter.cs" />
     <Compile Include="Series\AreaSeries.cs" />
-    <Compile Include="Foundation\Pen.cs" />
+    <Compile Include="Foundation\OxyPen.cs" />
     <Compile Include="Render\PlotRenderer.cs" />
     <Compile Include="Foundation\LineStyleHelper.cs" />
-    <Compile Include="Foundation\Point.cs" />
+    <Compile Include="Foundation\DataPoint.cs" />
     <Compile Include="Svg\SvgRenderContext.cs" />
     <Compile Include="Svg\SvgWriter.cs" />
-    <Compile Include="Foundation\Color.cs" />
-    <Compile Include="Foundation\Colors.cs" />
+    <Compile Include="Foundation\OxyColor.cs" />
+    <Compile Include="Foundation\OxyColors.cs" />
     <Compile Include="Series\DataSeries.cs" />
     <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Foundation\LineStyle.cs" />

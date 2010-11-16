@@ -14,7 +14,7 @@ namespace OxyPlot.Tests
             plot.Subtitle = "subtitle";
             var ls = new LineSeries();
             for (double i = 0; i < 30; i += 0.1)
-                ls.Points.Add(new Point(i, Math.Sin(i) * 20));
+                ls.Points.Add(new DataPoint(i, Math.Sin(i) * 20));
             plot.Series.Add(ls);
             plot.Axes.Add(new LinearAxis { Title = "Y-axis1", Position = AxisPosition.Left });
             plot.Axes.Add(new LinearAxis { Title = "X-axis1", Position = AxisPosition.Bottom });

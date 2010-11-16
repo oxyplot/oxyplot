@@ -1,12 +1,13 @@
 ﻿namespace OxyPlot
 {
-    public struct Point
+    public struct ScreenPoint
     {
-        internal double x;
+        public static readonly ScreenPoint Undefined = new ScreenPoint(double.NaN, double.NaN);
 
+        internal double x;
         internal double y;
 
-        public Point(double x, double y)
+        public ScreenPoint(double x, double y)
         {
             this.x = x;
             this.y = y;

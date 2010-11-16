@@ -31,9 +31,9 @@ namespace HistogramDemo
             var throttledEvent = new ThrottledMouseMoveEvent(image);
             throttledEvent.ThrottledMouseMove += ThrottledEvent_ThrottledMouseMove;
             var pm = new PlotModel("RGB histogram");
-            redLine = new LineSeries(Colors.Red);
-            greenLine = new LineSeries(Colors.Green);
-            blueLine = new LineSeries(Colors.Blue);
+            redLine = new LineSeries(OxyColors.Red);
+            greenLine = new LineSeries(OxyColors.Green);
+            blueLine = new LineSeries(OxyColors.Blue);
             redLine.Smooth = true;
             greenLine.Smooth = true;
             blueLine.Smooth = true;
@@ -146,9 +146,9 @@ namespace HistogramDemo
             for (int i = 0; i < histoR.Length; i++)
             {
                 double x = i * xScale;
-                redLine.Points.Add(new OxyPlot.Point(x,(double)histoR[i] / n));
-                greenLine.Points.Add(new OxyPlot.Point(x,(double)histoG[i] / n));
-                blueLine.Points.Add(new OxyPlot.Point(x,(double)histoB[i] / n));
+                redLine.Points.Add(new DataPoint(x,(double)histoR[i] / n));
+                greenLine.Points.Add(new DataPoint(x, (double)histoG[i] / n));
+                blueLine.Points.Add(new DataPoint(x, (double)histoB[i] / n));
             }
 
             chart.Refresh();

@@ -5,8 +5,6 @@
     /// </summary>
     public class LinearAxis : Axis
     {
-
-
         public LinearAxis()
         {
 

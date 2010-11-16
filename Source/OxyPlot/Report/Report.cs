@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
-
-namespace OxyReporter
+﻿namespace OxyReporter
 {
     public class Report : ReportItem
     {
-
     }
 }

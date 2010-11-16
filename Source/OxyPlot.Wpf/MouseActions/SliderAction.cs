@@ -45,7 +45,7 @@ namespace OxyPlot.Wpf
                 pc.ShowSlider(currentSeries, current.Value);
         }
 
-        private Point? GetNearestPoint(OxyPlot.DataSeries s, System.Windows.Point pt, bool snap, bool pointsOnly)
+        private DataPoint? GetNearestPoint(OxyPlot.DataSeries s, System.Windows.Point pt, bool snap, bool pointsOnly)
         {
             if (s == null)
                 return null;
