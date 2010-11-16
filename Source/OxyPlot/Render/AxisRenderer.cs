@@ -13,22 +13,171 @@ namespace OxyPlot
         {
         }
 
-        public void Render(IAxis axis)
+
+        ICollection<double> minorValues;
+        ICollection<double> majorValues;
+
+        public void Render(Axis axis)
         {
-            var ra = axis as RangeAxis;
-            if (ra != null)
-                Render(ra);
-        }
-        public void Render(RangeAxis axis)
-        {
+            if (axis == null)
+                return;
+
+            axis.GetTickValues(out majorValues, out minorValues);
+
+            CreatePens(axis);
+
             if (axis.IsHorizontal)
             {
                 RenderHorizontalAxis(axis, plot.DefaultYAxis);
             }
-            else
+            if (axis.IsVertical)
             {
                 RenderVerticalAxis(axis, plot.DefaultXAxis);
             }
+            if (axis.Position == AxisPosition.Angle)
+            {
+                RenderAngleAxis(axis, plot.DefaultMagnitudeAxis);
+            }
+            if (axis.Position == AxisPosition.Magnitude)
+            {
+                RenderMagnitudeAxis(axis, plot.DefaultAngleAxis);
+            }
+        }
+
+        private void RenderMagnitudeAxis(Axis axis, Axis angleAxis)
+        {
+            if (axis.RelatedAxis != null)
+                angleAxis = axis.RelatedAxis;
+
+            if (axis.ShowMinorTicks)
+            {
+                //  GetVerticalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out y0, out y1);
+
+                foreach (double xValue in minorValues)
+                {
+                    if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
+                    {
+                        continue;
+                    }
+
+                    if (majorValues.Contains(xValue))
+                    {
+                        continue;
+                    }
+
+                    var pts = new List<Point>();
+                    for (double th = angleAxis.ActualMinimum; th <= angleAxis.ActualMaximum; th += angleAxis.MinorStep * 0.1)
+                    {
+                        pts.Add(axis.Transform(xValue, th, angleAxis));
+                    }
+
+                    if (minorPen != null)
+                    {
+                        rc.DrawLine(pts, minorPen.Color, minorPen.Thickness, minorPen.DashArray);
+                    }
+                    // RenderGridline(x, y + y0, x, y + y1, minorTickPen);
+                }
+            }
+
+            //  GetVerticalTickPositions(axis, axis.TickStyle, axis.MajorTickSize, out y0, out y1);
+
+            foreach (double xValue in majorValues)
+            {
+                if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
+                {
+                    continue;
+                }
+
+                var pts = new List<Point>();
+                for (double th = angleAxis.ActualMinimum; th <= angleAxis.ActualMaximum; th += angleAxis.MinorStep * 0.1)
+                {
+                    pts.Add(axis.Transform(xValue, th, angleAxis));
+                }
+
+                if (majorPen != null)
+                {
+                    rc.DrawLine(pts, majorPen.Color, majorPen.Thickness, majorPen.DashArray);
+                }
+
+                // RenderGridline(x, y + y0, x, y + y1, majorTickPen);
+
+
+                //var pt = new Point(x, istop ? y + y1 - TICK_DIST : y + y1 + TICK_DIST);
+                //string text = axis.FormatValue(xValue);
+                //double h = rc.MeasureText(text, axis.FontFamily, axis.FontSize, axis.FontWeight).Height;
+
+                //rc.DrawText(pt, text, plot.TextColor,
+                //            axis.FontFamily, axis.FontSize, axis.FontWeight,
+                //            axis.Angle,
+                //            HorizontalTextAlign.Center, istop ? VerticalTextAlign.Bottom : VerticalTextAlign.Top);
+
+                //maxh = Math.Max(maxh, h);
+            }
+
+        }
+
+        private void RenderAngleAxis(Axis axis, Axis magnitudeAxis)
+        {
+            if (axis.RelatedAxis != null)
+                magnitudeAxis = axis.RelatedAxis;
+
+            if (axis.ShowMinorTicks)
+            {
+                //  GetVerticalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out y0, out y1);
+
+                foreach (double xValue in minorValues)
+                {
+                    if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
+                    {
+                        continue;
+                    }
+
+                    if (majorValues.Contains(xValue))
+                    {
+                        continue;
+                    }
+
+                    var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, xValue, axis);
+
+                    if (minorPen != null)
+                    {
+                        RenderGridline(axis.MidPoint.X, axis.MidPoint.Y, pt.x, pt.y, minorPen);
+                    }
+                    // RenderGridline(x, y + y0, x, y + y1, minorTickPen);
+                }
+            }
+
+            //  GetVerticalTickPositions(axis, axis.TickStyle, axis.MajorTickSize, out y0, out y1);
+
+            foreach (double xValue in majorValues)
+            {
+                if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
+                {
+                    continue;
+                }
+
+                var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, xValue, axis);
+
+                if (majorPen != null)
+                {
+                    RenderGridline(axis.MidPoint.X, axis.MidPoint.Y, pt.x, pt.y, majorPen);
+                }
+                // RenderGridline(x, y + y0, x, y + y1, majorTickPen);
+
+
+                //var pt = new Point(x, istop ? y + y1 - TICK_DIST : y + y1 + TICK_DIST);
+                //string text = axis.FormatValue(xValue);
+                //double h = rc.MeasureText(text, axis.FontFamily, axis.FontSize, axis.FontWeight).Height;
+
+                //rc.DrawText(pt, text, plot.TextColor,
+                //            axis.FontFamily, axis.FontSize, axis.FontWeight,
+                //            axis.Angle,
+                //            HorizontalTextAlign.Center, istop ? VerticalTextAlign.Bottom : VerticalTextAlign.Top);
+
+                //maxh = Math.Max(maxh, h);
+            }
+
+
         }
 
         private void RenderGridline(double x0, double y0, double x1, double y1, Pen pen)
@@ -44,7 +193,7 @@ namespace OxyPlot
         }
 
 
-        private void GetVerticalTickPositions(IAxis axis, TickStyle glt, double ticksize,
+        private void GetVerticalTickPositions(Axis axis, TickStyle glt, double ticksize,
                                               out double y0, out double y1)
         {
             y0 = 0;
@@ -66,7 +215,7 @@ namespace OxyPlot
             }
         }
 
-        private void GetHorizontalTickPositions(IAxis axis, TickStyle glt, double ticksize, out double x0,
+        private void GetHorizontalTickPositions(Axis axis, TickStyle glt, double ticksize, out double x0,
                                                 out double x1)
         {
             x0 = 0;
@@ -88,18 +237,25 @@ namespace OxyPlot
             }
         }
 
-        private void RenderHorizontalAxis(RangeAxis axis, IAxis perpendicularAxis)
-        {
-            var minorPen = CreatePen(axis.MinorGridlineColor, axis.MinorGridlineThickness, axis.MinorGridlineStyle);
-            var majorPen = CreatePen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
-            var minorTickPen = CreatePen(axis.TicklineColor, axis.MinorGridlineThickness, LineStyle.Solid);
-            var majorTickPen = CreatePen(axis.TicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
-            var zeroPen = CreatePen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
-            var extraPen = CreatePen(axis.ExtraGridlineColor, axis.ExtraGridlineThickness, axis.ExtraGridlineStyle);
+        private Pen minorPen;
+        private Pen majorPen;
+        private Pen minorTickPen;
+        private Pen majorTickPen;
+        private Pen zeroPen;
+        private Pen extraPen;
 
-            ICollection<double> minorValues;
-            ICollection<double> majorValues;
-            axis.GetTickValues(out majorValues, out minorValues);
+        public void CreatePens(Axis axis)
+        {
+            minorPen = CreatePen(axis.MinorGridlineColor, axis.MinorGridlineThickness, axis.MinorGridlineStyle);
+            majorPen = CreatePen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
+            minorTickPen = CreatePen(axis.TicklineColor, axis.MinorGridlineThickness, LineStyle.Solid);
+            majorTickPen = CreatePen(axis.TicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
+            zeroPen = CreatePen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
+            extraPen = CreatePen(axis.ExtraGridlineColor, axis.ExtraGridlineThickness, axis.ExtraGridlineStyle);
+        }
+
+        private void RenderHorizontalAxis(Axis axis, Axis perpendicularAxis)
+        {
 
             double y = plotBounds.Bottom;
             switch (axis.Position)
@@ -112,7 +268,9 @@ namespace OxyPlot
                     break;
             }
             if (axis.PositionAtZeroCrossing)
-                y = perpendicularAxis.Transform(0);
+            {
+                y = axis.TransformX(0);
+            }
 
             double y0, y1;
 
@@ -132,7 +290,7 @@ namespace OxyPlot
                         continue;
                     }
 
-                    double x = axis.Transform(xValue);
+                    double x = axis.TransformX(xValue);
                     if (minorPen != null)
                     {
                         RenderGridline(x, plotBounds.Top, x, plotBounds.Bottom, minorPen);
@@ -152,7 +310,7 @@ namespace OxyPlot
                     continue;
                 }
 
-                double x = axis.Transform(xValue);
+                double x = axis.TransformX(xValue);
 
                 if (majorPen != null)
                 {
@@ -177,26 +335,26 @@ namespace OxyPlot
 
             if (axis.PositionAtZeroCrossing)
             {
-                double x = axis.Transform(0);
+                double x = axis.TransformX(0);
                 RenderGridline(x, plotBounds.Top, x, plotBounds.Bottom, zeroPen);
             }
 
             if (axis.ExtraGridlines != null)
                 foreach (double x in axis.ExtraGridlines)
                 {
-                    double sx = axis.Transform(x);
+                    double sx = axis.TransformX(x);
                     RenderGridline(sx, plotBounds.Top, sx, plotBounds.Bottom, extraPen);
                 }
 
             RenderGridline(plotBounds.Left, y, plotBounds.Right, y, majorPen);
 
-            double legendX = axis.Transform((axis.ActualMinimum + axis.ActualMaximum) / 2);
+            double legendX = axis.TransformX((axis.ActualMinimum + axis.ActualMaximum) / 2);
             var halign = HorizontalTextAlign.Center;
             var valign = VerticalTextAlign.Bottom;
 
             if (axis.PositionAtZeroCrossing)
             {
-                legendX = axis.Transform(axis.ActualMaximum);
+                legendX = axis.TransformX(axis.ActualMaximum);
                 // halign = axis.IsReversed ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
             }
             y = rc.Height - AXIS_LEGEND_DIST;
@@ -216,15 +374,8 @@ namespace OxyPlot
             return new Pen(c, th, ls);
         }
 
-        private void RenderVerticalAxis(RangeAxis axis, IAxis perpendicularAxis)
+        private void RenderVerticalAxis(Axis axis, Axis perpendicularAxis)
         {
-            var minorPen = CreatePen(axis.MinorGridlineColor, axis.MinorGridlineThickness, axis.MinorGridlineStyle);
-            var minorTickPen = CreatePen(axis.TicklineColor, axis.MinorGridlineThickness, LineStyle.Solid);
-            var majorPen = CreatePen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
-            var majorTickPen = CreatePen(axis.TicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
-            var zeroPen = CreatePen(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
-            var extraPen = CreatePen(axis.ExtraGridlineColor, axis.ExtraGridlineThickness, axis.ExtraGridlineStyle);
-
             double x = plotBounds.Left;
             switch (axis.Position)
             {
@@ -236,11 +387,7 @@ namespace OxyPlot
                     break;
             }
             if (axis.PositionAtZeroCrossing)
-                x = perpendicularAxis.Transform(0);
-
-            ICollection<double> minorValues;
-            ICollection<double> majorValues;
-            axis.GetTickValues(out majorValues, out minorValues);
+                x = perpendicularAxis.TransformX(0);
 
             double x0, x1;
 
@@ -258,7 +405,7 @@ namespace OxyPlot
                     {
                         continue;
                     }
-                    double y = axis.Transform(yValue);
+                    double y = axis.TransformX(yValue);
 
                     if (minorPen != null)
                     {
@@ -279,7 +426,7 @@ namespace OxyPlot
                 if (yValue < axis.ActualMinimum || yValue > axis.ActualMaximum)
                     continue;
 
-                double y = axis.Transform(yValue);
+                double y = axis.TransformX(yValue);
 
                 if (majorPen != null)
                 {
@@ -303,27 +450,27 @@ namespace OxyPlot
 
             if (axis.PositionAtZeroCrossing)
             {
-                double y = axis.Transform(0);
+                double y = axis.TransformX(0);
                 RenderGridline(plotBounds.Left, y, plotBounds.Right, y, zeroPen);
             }
 
             if (axis.ExtraGridlines != null)
                 foreach (double y in axis.ExtraGridlines)
                 {
-                    double sy = axis.Transform(y);
+                    double sy = axis.TransformX(y);
                     RenderGridline(plotBounds.Left, sy, plotBounds.Right, sy, extraPen);
                 }
 
             RenderGridline(x, plotBounds.Top, x, plotBounds.Bottom, majorPen);
 
-            double ymid = axis.Transform((axis.ActualMinimum + axis.ActualMaximum) / 2);
+            double ymid = axis.TransformX((axis.ActualMinimum + axis.ActualMaximum) / 2);
 
             HorizontalTextAlign halign = HorizontalTextAlign.Center;
             VerticalTextAlign valign = VerticalTextAlign.Top;
 
             if (axis.PositionAtZeroCrossing)
             {
-                ymid = axis.Transform(axis.ActualMaximum);
+                ymid = axis.TransformX(axis.ActualMaximum);
                 // valign = axis.IsReversed ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
             }
 

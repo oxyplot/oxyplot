@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.WindowsForms", "Oxy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxesDemo", "Examples\AxesDemo\AxesDemo.csproj", "{97E99979-1E50-4889-8535-850172F973AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarDemo", "Examples\PolarDemo\PolarDemo.csproj", "{26982CC0-1562-4762-B874-97082BF640A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +147,16 @@ Global
 		{97E99979-1E50-4889-8535-850172F973AD}.Release|Mixed Platforms.Build.0 = Release|x86
 		{97E99979-1E50-4889-8535-850172F973AD}.Release|x86.ActiveCfg = Release|x86
 		{97E99979-1E50-4889-8535-850172F973AD}.Release|x86.Build.0 = Release|x86
+		{26982CC0-1562-4762-B874-97082BF640A5}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{26982CC0-1562-4762-B874-97082BF640A5}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{26982CC0-1562-4762-B874-97082BF640A5}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{26982CC0-1562-4762-B874-97082BF640A5}.Debug|x86.ActiveCfg = Debug|x86
+		{26982CC0-1562-4762-B874-97082BF640A5}.Debug|x86.Build.0 = Debug|x86
+		{26982CC0-1562-4762-B874-97082BF640A5}.Release|Any CPU.ActiveCfg = Release|x86
+		{26982CC0-1562-4762-B874-97082BF640A5}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{26982CC0-1562-4762-B874-97082BF640A5}.Release|Mixed Platforms.Build.0 = Release|x86
+		{26982CC0-1562-4762-B874-97082BF640A5}.Release|x86.ActiveCfg = Release|x86
+		{26982CC0-1562-4762-B874-97082BF640A5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,5 +169,6 @@ Global
 		{70915DE3-437C-4D49-8ABA-1FF2F82FF21C} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{BBAECBB8-149A-42EE-A4F4-6207D7954F8B} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{97E99979-1E50-4889-8535-850172F973AD} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
+		{26982CC0-1562-4762-B874-97082BF640A5} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 	EndGlobalSection
 EndGlobal

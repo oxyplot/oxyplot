@@ -9,8 +9,8 @@ namespace OxyPlot.Wpf
         {
         }
        
-        private IAxis xaxis;
-        private IAxis yaxis;
+        private OxyPlot.Axis xaxis;
+        private OxyPlot.Axis yaxis;
         private Point prevPoint;
 
         private bool isPanning;

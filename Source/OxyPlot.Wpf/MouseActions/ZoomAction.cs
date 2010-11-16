@@ -11,8 +11,8 @@ namespace OxyPlot.Wpf
         {
         }
 
-        private IAxis xaxis;
-        private IAxis yaxis;
+        private OxyPlot.Axis xaxis;
+        private OxyPlot.Axis yaxis;
 
         private Rect zoomRectangle;
         private bool isZooming;
@@ -102,7 +102,7 @@ namespace OxyPlot.Wpf
 
         public override void OnMouseWheel(System.Windows.Point pt, double delta, bool control, bool shift)
         {
-            IAxis xa, ya;
+            OxyPlot.Axis xa, ya;
             pc.GetAxesFromPoint(pt, out xa, out ya);
             var current = pc.InverseTransform(pt, xa, ya);
             double f = 0.001;

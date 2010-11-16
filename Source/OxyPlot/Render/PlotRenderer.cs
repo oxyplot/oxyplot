@@ -7,6 +7,7 @@ namespace OxyPlot
         protected readonly PlotModel plot;
         protected readonly IRenderContext rc;
         protected Rectangle plotBounds;
+        protected Point midPoint;
 
         public PlotRenderer(IRenderContext rc, PlotModel p)
         {
@@ -19,6 +20,7 @@ namespace OxyPlot
                                  Top = p.MarginTop,
                                  Bottom = rc.Height - p.MarginBottom
                              };
+            midPoint = new Point((plotBounds.Left + plotBounds.Right) * 0.5, (plotBounds.Top + plotBounds.Bottom) * 0.5);
         }
 
         public void RenderTitle(string title, string subtitle)
@@ -40,5 +42,6 @@ namespace OxyPlot
                             plot.TitleFont, plot.SubtitleFontSize, plot.SubtitleFontWeight, 0,
                             HorizontalTextAlign.Center, VerticalTextAlign.Top);
         }
+
     }
 }

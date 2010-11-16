@@ -6,18 +6,24 @@ using System.Linq;
 
 namespace OxyPlot
 {
+    public enum PlotType { Cartesian, Polar };
+
     public class PlotModel
     {
+        public PlotType PlotType { get; set; }
         private int currentColorIndex;
-        internal IAxis DefaultXAxis;
-        internal IAxis DefaultYAxis;
+        internal Axis DefaultXAxis;
+        internal Axis DefaultYAxis;
+        internal Axis DefaultAngleAxis;
+        internal Axis DefaultMagnitudeAxis;
 
-        public PlotModel(string title=null, string subtitle=null)
+        public PlotModel(string title = null, string subtitle = null)
         {
             Title = title;
             Subtitle = subtitle;
 
-            Axes = new Collection<IAxis>();
+            PlotType = PlotType.Cartesian;
+            Axes = new Collection<Axis>();
             Series = new Collection<DataSeries>();
             MarginLeft = 60;
             MarginTop = 60;
@@ -54,7 +60,7 @@ namespace OxyPlot
 
         public List<Color> DefaultColors { get; set; }
 
-        public Collection<IAxis> Axes { get; set; }
+        public Collection<Axis> Axes { get; set; }
         public Collection<DataSeries> Series { get; set; }
 
         public string TitleFont { get; set; }
@@ -107,7 +113,7 @@ namespace OxyPlot
         /// </summary>
         private void EnsureDefaultAxes()
         {
-            foreach (IAxis a in Axes)
+            foreach (var a in Axes)
             {
                 if (a.IsHorizontal)
                 {
@@ -116,29 +122,60 @@ namespace OxyPlot
                         DefaultXAxis = a;
                     }
                 }
-                else
+                if (a.IsVertical)
                 {
                     if (DefaultYAxis == null)
                     {
                         DefaultYAxis = a;
                     }
                 }
+                if (a.Position == AxisPosition.Magnitude)
+                {
+                    if (DefaultMagnitudeAxis == null)
+                    {
+                        DefaultMagnitudeAxis = a;
+                    }
+                }
+                if (a.Position == AxisPosition.Angle)
+                {
+                    if (DefaultAngleAxis == null)
+                        DefaultAngleAxis = a;
+                }
+            }
+            if (DefaultXAxis == null)
+                DefaultXAxis = DefaultMagnitudeAxis;
+            if (DefaultYAxis == null)
+                DefaultYAxis = DefaultAngleAxis;
+
+            if (PlotType == PlotType.Polar)
+            {
+                if (DefaultXAxis == null)
+                {
+                    DefaultXAxis = DefaultMagnitudeAxis = new LinearAxis { Position = AxisPosition.Magnitude };
+                }
+
+                if (DefaultYAxis == null)
+                {
+                    DefaultYAxis = DefaultAngleAxis = new LinearAxis { Position = AxisPosition.Angle };
+                }
+            }
+            else
+            {
+                if (DefaultXAxis == null)
+                {
+                    DefaultXAxis = new LinearAxis { Position = AxisPosition.Bottom };
+                }
+
+                if (DefaultYAxis == null)
+                {
+                    DefaultYAxis = new LinearAxis { Position = AxisPosition.Left };
+                }
             }
 
-            if (DefaultXAxis == null)
-            {
-                DefaultXAxis = new LinearAxis { Position = AxisPosition.Bottom };
-            }
             if (!Axes.Contains(DefaultXAxis))
                 Axes.Add(DefaultXAxis);
-
-            if (DefaultYAxis == null)
-            {
-                DefaultYAxis = new LinearAxis { Position = AxisPosition.Left };
-            }
             if (!Axes.Contains(DefaultYAxis))
                 Axes.Add(DefaultYAxis);
-
 
             // Update the x/y axes of series without axes defined
             foreach (var s in Series)
@@ -163,7 +200,7 @@ namespace OxyPlot
             }
         }
 
-        private IAxis FindAxis(string key)
+        private Axis FindAxis(string key)
         {
             return Axes.FirstOrDefault(a => a.Key == key);
         }
@@ -187,7 +224,7 @@ namespace OxyPlot
                 s.YAxis.Include(s.MinY);
                 s.YAxis.Include(s.MaxY);
             }
-            foreach (IAxis a in Axes)
+            foreach (Axis a in Axes)
             {
                 if (!double.IsNaN(a.Maximum))
                 {
@@ -304,5 +341,7 @@ namespace OxyPlot
             ms.Close();
             return svg;
         }
+
+
     }
 }
