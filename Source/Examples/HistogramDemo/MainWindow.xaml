@@ -14,7 +14,8 @@
         <StackPanel DockPanel.Dock="Bottom" Width="300">
             <TextBlock x:Name="instructions"
                    Text="Use the mouse to 'drag' a line across the image below ..."
-                   FontSize="10" Foreground="#333333" Margin="5" TextWrapping="Wrap"/>
+                   FontSize="10" Foreground="#333333" Margin="5" 
+                       TextWrapping="Wrap"/>
             <Grid x:Name="grid"
             MouseLeftButtonUp="Grid_MouseLeftButtonUp"
             MouseLeftButtonDown="Grid_MouseLeftButtonDown">

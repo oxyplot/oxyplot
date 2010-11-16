@@ -18,8 +18,8 @@ namespace OxyPlot
 
         public Collection<Point> Points { get; set; }
 
-        public IAxis XAxis { get; internal set; }
-        public IAxis YAxis { get; internal set; }
+        public Axis XAxis { get; internal set; }
+        public Axis YAxis { get; internal set; }
 
         public string XAxisKey { get; set; }
         public string YAxisKey { get; set; }

@@ -11,6 +11,16 @@ namespace OxyPlot.Wpf
     [ContentProperty("Series")]
     public class PlotControl : Grid
     {
+        public PlotType PlotType
+        {
+            get { return (PlotType)GetValue(PlotTypeProperty); }
+            set { SetValue(PlotTypeProperty, value); }
+        }
+
+        public static readonly DependencyProperty PlotTypeProperty =
+            DependencyProperty.Register("PlotType", typeof(PlotType), typeof(PlotControl), new UIPropertyMetadata(PlotType.Cartesian));
+
+
         public Thickness AxisMargin
         {
             get { return (Thickness)GetValue(AxisMarginProperty); }
@@ -147,7 +157,10 @@ namespace OxyPlot.Wpf
             {
                 if (internalModel == null)
                     internalModel = new PlotModel();
+
                 UpdateModel(internalModel);
+
+                // Override with values from the Dependency Properties 
                 if (AxisMargin != null)
                 {
                     internalModel.MarginLeft = AxisMargin.Left;
@@ -155,6 +168,7 @@ namespace OxyPlot.Wpf
                     internalModel.MarginTop = AxisMargin.Top;
                     internalModel.MarginBottom = AxisMargin.Bottom;
                 }
+                internalModel.PlotType = PlotType;
                 internalModel.BorderThickness = BorderThickness;
             }
             else
@@ -226,39 +240,52 @@ namespace OxyPlot.Wpf
             }
         }
 
-        public System.Windows.Point Transform(Point pt, IAxis xaxis, IAxis yaxis)
+        public System.Windows.Point Transform(Point pt, OxyPlot.Axis xaxis, OxyPlot.Axis yaxis)
         {
             return Transform(pt.X, pt.Y, xaxis, yaxis);
         }
 
-        public System.Windows.Point Transform(double x, double y, IAxis xaxis, IAxis yaxis)
+        public System.Windows.Point Transform(double x, double y, OxyPlot.Axis xaxis, OxyPlot.Axis yaxis)
         {
-            return new System.Windows.Point(xaxis.Transform(x), yaxis.Transform(y));
+            var pt = xaxis.Transform(x, y, yaxis);
+            return new System.Windows.Point(pt.X, pt.Y);
         }
 
-        public Point InverseTransform(System.Windows.Point pt, IAxis xaxis, IAxis yaxis)
+        public Point InverseTransform(System.Windows.Point pt, OxyPlot.Axis xaxis, OxyPlot.Axis yaxis)
         {
-            double x = 0;
-            if (xaxis != null)
-                x = xaxis.InverseTransform(pt.X);
-            double y = 0;
-            if (yaxis != null)
-                y = yaxis.InverseTransform(pt.Y);
-            return new Point(x, y);
+            if (xaxis == null)
+            {
+                if (yaxis != null)
+                    return new Point(double.NaN, yaxis.InverseTransformX(pt.Y));
+                return Point.Undefined;
+            }
+            if (yaxis == null)
+                return new Point(double.NaN, xaxis.InverseTransformX(pt.X));
+
+            return xaxis.InverseTransform(pt.X, pt.Y, yaxis);
         }
 
-        public void GetAxesFromPoint(System.Windows.Point pt, out IAxis xaxis, out IAxis yaxis)
+        public void GetAxesFromPoint(System.Windows.Point pt, out OxyPlot.Axis xaxis, out OxyPlot.Axis yaxis)
         {
             xaxis = yaxis = null;
-            foreach (IAxis axis in internalModel.Axes)
+            foreach (var axis in internalModel.Axes)
             {
-                double x = axis.InverseTransform(axis.IsHorizontal ? pt.X : pt.Y);
-                if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
+                if (axis.IsHorizontal)
                 {
-                    if (axis.IsHorizontal)
+                    double x = axis.InverseTransform(pt.X, pt.Y, axis).X;
+                    if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
+                    {
                         xaxis = axis;
-                    else
+                    }
+                }
+                if (axis.IsVertical)
+                {
+                    double y = axis.InverseTransform(pt.X, pt.Y, axis).Y;
+                    if (y >= axis.ActualMinimum && y <= axis.ActualMaximum)
+                    {
                         yaxis = axis;
+                    }
+
                 }
             }
         }

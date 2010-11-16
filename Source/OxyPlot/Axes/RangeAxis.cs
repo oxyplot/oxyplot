@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace OxyPlot
 {
-    public class RangeAxis : IAxis
+    public class Axis : IAxis
     {
-        public RangeAxis()
+        public Axis()
         {
             Position = AxisPosition.Left;
             IsVisible = true;
@@ -48,7 +49,7 @@ namespace OxyPlot
             Angle = 0;
         }
 
-        public RangeAxis(AxisPosition pos, double minimum, double maximum)
+        public Axis(AxisPosition pos, double minimum, double maximum)
             : this()
         {
             Position = pos;
@@ -60,6 +61,8 @@ namespace OxyPlot
         public AxisPosition Position { get; set; }
         public bool PositionAtZeroCrossing { get; set; }
         public bool IsHorizontal { get { return Position == AxisPosition.Top || Position == AxisPosition.Bottom; } }
+        public bool IsVertical { get { return Position == AxisPosition.Left || Position == AxisPosition.Right; } }
+        public bool IsPolar { get { return Position == AxisPosition.Magnitude || Position == AxisPosition.Angle; } }
 
         public bool IsVisible { get; set; }
 
@@ -108,15 +111,21 @@ namespace OxyPlot
         public double StartPosition { get; set; }
         public double EndPosition { get; set; }
 
+        public Axis RelatedAxis { get; set; }
+
         public bool IsReversed { get { return StartPosition > EndPosition; } }
 
         internal double Offset;
         internal double Scale;
+        internal Point MidPoint;
+        internal Point ScreenMin;
+        internal Point ScreenMax;
 
         public override string ToString()
         {
             return String.Format(CultureInfo.InvariantCulture, "{0}({1}, {2}, {3}, {4})", GetType().Name, Position, ActualMinimum, ActualMaximum, ActualMajorStep);
         }
+
         public virtual void GetTickValues(out ICollection<double> majorValues, out ICollection<double> minorValues)
         {
             minorValues = CreateTickValues(ActualMinimum, ActualMaximum, ActualMinorStep);
@@ -165,18 +174,68 @@ namespace OxyPlot
             return x;
         }
 
-        public virtual double Transform(double x)
+        public virtual Point Transform(double x, double y, Axis yAxis)
+        {
+            Debug.Assert(yAxis != null);
+            if (IsPolar)
+            {
+                double r = (x - Offset) * Scale;
+                double th = yAxis != null ? (y - yAxis.Offset) * yAxis.Scale : double.NaN;
+                return new Point(MidPoint.X + r * Math.Cos(th), MidPoint.Y + r * Math.Sin(th));
+            }
+            if (yAxis == null)
+                return new Point();
+            return new Point(TransformX(x), yAxis != null ? yAxis.TransformX(y) : double.NaN);
+        }
+
+        public double TransformX(double x)
         {
             return (PreTransform(x) - Offset) * Scale;
         }
 
-        public virtual double InverseTransform(double x)
+        public virtual Point InverseTransform(double x, double y, Axis yAxis)
+        {
+            Debug.Assert(yAxis != null);
+            if (IsPolar)
+            {
+                x -= MidPoint.X;
+                y -= MidPoint.Y;
+                double th = Math.Atan2(y, x);
+                double r = Math.Sqrt(x * x + y * y);
+                x = r / Scale + Offset;
+                y = yAxis != null ? th / yAxis.Scale + yAxis.Offset : double.NaN;
+                return new Point(x, y);
+            }
+
+            return new Point(InverseTransformX(x), yAxis.InverseTransformX(y));
+        }
+
+        public double InverseTransformX(double x)
         {
             return PostInverseTransform(x / Scale + Offset);
         }
 
         public double UpdateTransform(double x0, double x1, double y0, double y1)
         {
+            ScreenMin = new Point(x0, y1);
+            ScreenMax = new Point(x1, y0);
+
+            if (Position == AxisPosition.Angle)
+            {
+                MidPoint = new Point((x0 + x1) / 2, (y0 + y1) / 2);
+                Scale = 2 * Math.PI / (ActualMaximum - ActualMinimum);
+                Offset = ActualMinimum;
+                return Scale;
+            }
+            if (Position == AxisPosition.Magnitude)
+            {
+                ActualMinimum = 0;
+                MidPoint = new Point((x0 + x1) / 2, (y0 + y1) / 2);
+                double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
+                Scale = 0.5 * r / (ActualMaximum - ActualMinimum);
+                Offset = ActualMinimum;
+                return Scale;
+            }
             double a0 = IsHorizontal ? x0 : y0;
             double a1 = IsHorizontal ? x1 : y1;
 
@@ -253,7 +312,6 @@ namespace OxyPlot
                 ActualMajorStep = MajorStep;
             else
                 ActualMajorStep = CalculateActualInterval(length, labelSize);
-            // ActualMajorStep = CalculateStepSize(length, labelSize);
 
             if (!double.IsNaN(MinorStep))
                 ActualMinorStep = MinorStep;
@@ -273,8 +331,13 @@ namespace OxyPlot
         {
             if (IsHorizontal)
                 return 100;
-            else
+            if (IsVertical)
                 return 30;
+            if (Position == AxisPosition.Angle)
+                return 50;
+            if (Position == AxisPosition.Magnitude)
+                return 100;
+            return 50;
         }
 
         protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize)

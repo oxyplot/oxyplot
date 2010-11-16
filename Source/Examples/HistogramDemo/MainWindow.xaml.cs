@@ -30,15 +30,19 @@ namespace HistogramDemo
 
             var throttledEvent = new ThrottledMouseMoveEvent(image);
             throttledEvent.ThrottledMouseMove += ThrottledEvent_ThrottledMouseMove;
-            var pm = new PlotModel();
+            var pm = new PlotModel("RGB histogram");
             redLine = new LineSeries(Colors.Red);
             greenLine = new LineSeries(Colors.Green);
             blueLine = new LineSeries(Colors.Blue);
+            redLine.Smooth = true;
+            greenLine.Smooth = true;
+            blueLine.Smooth = true;
             pm.Series.Add(redLine);
             pm.Series.Add(greenLine);
             pm.Series.Add(blueLine);
-            pm.Margins = 30;
-            pm.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 255));
+            pm.Margins = 40;
+            pm.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 1, 0.2, 0.05, "Frequency"));
+            pm.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 100, "Lightness"));
             chart.Model = pm;
         }
 
@@ -47,18 +51,18 @@ namespace HistogramDemo
         /// </summary>
         private void LoadPixelData()
         {
-                var bitmapImage = new BitmapImage(new Uri("pack://application:,,,/hare.jpg"));
-                // bitmap = new WriteableBitmap((BitmapImage)image.Source);
-                //image.Source = bitmap;
-                //pixelData = bitmap.Pixels;
+            var bitmapImage = new BitmapImage(new Uri("pack://application:,,,/hare.jpg"));
+            // bitmap = new WriteableBitmap((BitmapImage)image.Source);
+            //image.Source = bitmap;
+            //pixelData = bitmap.Pixels;
 
-                int height = bitmapImage.PixelHeight;
-                int width = bitmapImage.PixelWidth;
-                int nStride = (bitmapImage.PixelWidth * bitmapImage.Format.BitsPerPixel + 7) / 8;
-                var pixelByteArray = new byte[bitmapImage.PixelHeight * nStride];
-                bitmapImage.CopyPixels(pixelByteArray, nStride, 0);
-                pixelData = new int[pixelByteArray.Length / 4];
-                Buffer.BlockCopy(pixelByteArray, 0, pixelData, 0, pixelByteArray.Length);
+            int height = bitmapImage.PixelHeight;
+            int width = bitmapImage.PixelWidth;
+            int nStride = (bitmapImage.PixelWidth * bitmapImage.Format.BitsPerPixel + 7) / 8;
+            var pixelByteArray = new byte[bitmapImage.PixelHeight * nStride];
+            bitmapImage.CopyPixels(pixelByteArray, nStride, 0);
+            pixelData = new int[pixelByteArray.Length / 4];
+            Buffer.BlockCopy(pixelByteArray, 0, pixelData, 0, pixelByteArray.Length);
         }
 
         //[StructLayout(LayoutKind.Sequential)]
@@ -103,7 +107,13 @@ namespace HistogramDemo
             greenLine.Points.Clear();
             blueLine.Points.Clear();
 
+            int b = 16;
+            int[] histoR = new int[256 / b];
+            int[] histoG = new int[256 / b];
+            int[] histoB = new int[256 / b];
+
             // build the charts
+            int n = 0;
             for (double pt = 0; pt < distance; pt++)
             {
                 double xPos = line.X1 + (line.X2 - line.X1) * pt / distance;
@@ -123,10 +133,22 @@ namespace HistogramDemo
                 pixel >>= 8;
                 var A = (byte)(pixel & 0xFF);
 
-                // add each datapoint
-                redLine.Points.Add(new OxyPlot.Point(pt, R));
-                greenLine.Points.Add(new OxyPlot.Point(pt, G));
-                blueLine.Points.Add(new OxyPlot.Point(pt, B));
+                //redLine.Points.Add(new OxyPlot.Point(pt, R));
+                //greenLine.Points.Add(new OxyPlot.Point(pt, G));
+                //blueLine.Points.Add(new OxyPlot.Point(pt, B));
+
+                histoR[R / b]++;
+                histoG[G / b]++;
+                histoB[B / b]++;
+                n++;
+            }
+            double xScale = 100.0 / histoR.Length;
+            for (int i = 0; i < histoR.Length; i++)
+            {
+                double x = i * xScale;
+                redLine.Points.Add(new OxyPlot.Point(x,(double)histoR[i] / n));
+                greenLine.Points.Add(new OxyPlot.Point(x,(double)histoG[i] / n));
+                blueLine.Points.Add(new OxyPlot.Point(x,(double)histoB[i] / n));
             }
 
             chart.Refresh();

@@ -261,7 +261,7 @@ namespace SimpleDemo
             plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "y=x²"));
             plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "y=x³"));
 
-            plot.Axes.Add(new LogarithmicRangeAxis
+            plot.Axes.Add(new LogarithmicAxis
                               {
                                   Position = AxisPosition.Left,
                                   Minimum = 0.1,
@@ -290,7 +290,7 @@ namespace SimpleDemo
             plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "y=x²"));
             plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "y=x³"));
 
-            plot.Axes.Add(new LogarithmicRangeAxis
+            plot.Axes.Add(new LogarithmicAxis
                               {
                                   Position = AxisPosition.Bottom,
                                   Minimum = 0.1,
@@ -319,7 +319,7 @@ namespace SimpleDemo
             plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "y=x²"));
             plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "y=x³"));
 
-            plot.Axes.Add(new LogarithmicRangeAxis
+            plot.Axes.Add(new LogarithmicAxis
                               {
                                   Position = AxisPosition.Left,
                                   Minimum = 0.1,
@@ -327,7 +327,7 @@ namespace SimpleDemo
                                   MajorGridlineStyle = LineStyle.Solid,
                                   MinorGridlineStyle = LineStyle.Solid
                               });
-            plot.Axes.Add(new LogarithmicRangeAxis
+            plot.Axes.Add(new LogarithmicAxis
                               {
                                   Position = AxisPosition.Bottom,
                                   Minimum = 0.1,

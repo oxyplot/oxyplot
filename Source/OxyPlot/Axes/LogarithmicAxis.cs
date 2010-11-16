@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OxyPlot
 {
-    public class LogarithmicRangeAxis : RangeAxis
+    public class LogarithmicAxis : Axis
     {
         public override void GetTickValues(out ICollection<double> majorValues, out ICollection<double> minorValues)
         {

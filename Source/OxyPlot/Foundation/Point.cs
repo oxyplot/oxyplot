@@ -2,6 +2,8 @@
 {
     public struct Point
     {
+        public static readonly Point Undefined = new Point(double.NaN, double.NaN);
+
         internal double x;
 
         internal double y;
