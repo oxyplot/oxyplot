@@ -11,7 +11,7 @@ namespace OxyPlot.Wpf
        
         private OxyPlot.Axis xaxis;
         private OxyPlot.Axis yaxis;
-        private Point prevPoint;
+        private DataPoint previousPoint;
 
         private bool isPanning;
 
@@ -29,7 +29,7 @@ namespace OxyPlot.Wpf
                 pc.Refresh();
             }
 
-            prevPoint = pc.InverseTransform(pt, xaxis, yaxis);
+            previousPoint = pc.InverseTransform(pt, xaxis, yaxis);
             pc.CaptureMouse();
             pc.Cursor = Cursors.SizeAll;
             isPanning = true;
@@ -40,14 +40,14 @@ namespace OxyPlot.Wpf
             if (!isPanning)
                 return;
             var currentPoint = pc.InverseTransform(pt, xaxis, yaxis);
-            double dx = currentPoint.X - prevPoint.X;
-            double dy = currentPoint.Y - prevPoint.Y;
+            double dx = currentPoint.X - previousPoint.X;
+            double dy = currentPoint.Y - previousPoint.Y;
             if (xaxis != null)
                 xaxis.Pan(-dx);
             if (yaxis != null)
                 yaxis.Pan(-dy);
             pc.Refresh();
-            prevPoint = pc.InverseTransform(pt, xaxis, yaxis);
+            previousPoint = pc.InverseTransform(pt, xaxis, yaxis);
         }
 
         public override void OnMouseUp()

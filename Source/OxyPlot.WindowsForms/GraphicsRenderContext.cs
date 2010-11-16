@@ -29,7 +29,7 @@ namespace Oxyplot.WindowsForms
             get { return pc.Height; }
         }
 
-        public void DrawLine(IEnumerable<OxyPlot.Point> points, OxyPlot.Color stroke, double thickness, double[] dashArray, bool aliased)
+        public void DrawLine(IEnumerable<OxyPlot.ScreenPoint> points, OxyPlot.OxyColor stroke, double thickness, double[] dashArray, bool aliased)
         {
             if (stroke == null || thickness <= 0)
                 return;
@@ -42,7 +42,7 @@ namespace Oxyplot.WindowsForms
             g.DrawLines(pen, ToPoints(points));
         }
 
-        public void DrawPolygon(IEnumerable<OxyPlot.Point> points, OxyPlot.Color fill, OxyPlot.Color stroke, double thickness,
+        public void DrawPolygon(IEnumerable<OxyPlot.ScreenPoint> points, OxyPlot.OxyColor fill, OxyPlot.OxyColor stroke, double thickness,
                                 double[] dashArray, bool aliased)
         {
 
@@ -63,14 +63,14 @@ namespace Oxyplot.WindowsForms
             }
         }
 
-        private Brush ToBrush(OxyPlot.Color fill)
+        private Brush ToBrush(OxyPlot.OxyColor fill)
         {
             if (fill != null)
                 return new SolidBrush(ToColor(fill));
             return null;
         }
 
-        public void DrawText(OxyPlot.Point p, string text, OxyPlot.Color fill, string fontFamily, double fontSize, double fontWeight,
+        public void DrawText(OxyPlot.ScreenPoint p, string text, OxyPlot.OxyColor fill, string fontFamily, double fontSize, double fontWeight,
                              double rotate, OxyPlot.HorizontalTextAlign halign, OxyPlot.VerticalTextAlign valign)
         {
             var fs = FontStyle.Regular;
@@ -118,7 +118,7 @@ namespace Oxyplot.WindowsForms
             g.ResetTransform();
         }
 
-        public OxyPlot.Size MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public OxyPlot.OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             var fs = FontStyle.Regular;
             if (fontWeight >= 500)
@@ -129,12 +129,12 @@ namespace Oxyplot.WindowsForms
             sf.Alignment = StringAlignment.Near;
 
             var size = g.MeasureString(text, font);
-            return new OxyPlot.Size(size.Width, size.Height);
+            return new OxyPlot.OxySize(size.Width, size.Height);
         }
 
         #endregion
 
-        private PointF[] ToPoints(IEnumerable<OxyPlot.Point> points)
+        private PointF[] ToPoints(IEnumerable<OxyPlot.ScreenPoint> points)
         {
             if (points == null)
                 return null;
@@ -145,7 +145,7 @@ namespace Oxyplot.WindowsForms
             return r;
         }
 
-        private Color ToColor(OxyPlot.Color c)
+        private Color ToColor(OxyPlot.OxyColor c)
         {
             return Color.FromArgb(c.A, c.R, c.G, c.B);
         }

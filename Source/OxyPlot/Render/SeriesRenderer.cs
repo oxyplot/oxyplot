@@ -34,14 +34,14 @@ namespace OxyPlot
             var clipping = new CohenSutherlandClipping(ls.XAxis.ScreenMin.X, ls.XAxis.ScreenMax.X,
                                                        ls.YAxis.ScreenMin.Y, ls.YAxis.ScreenMax.Y);
 
-            var pts = new List<Point>();
-            // Point p0 = ls.Points[0];
-            var s0 = new Point();
+            var pts = new List<ScreenPoint>();
+            // ScreenPoint p0 = ls.Points[0];
+            var s0 = new ScreenPoint();
             bool first = true;
             int n = ls.Points.Count;
             for (int i = 0; i < n; i++)
             {
-                Point p1 = ls.Points[i];
+                var p1 = ls.Points[i];
 
 
                 var s1 = ls.XAxis.Transform(p1.X, p1.Y, ls.YAxis);
@@ -86,7 +86,7 @@ namespace OxyPlot
 
             if (ls.MarkerType != MarkerType.None)
             {
-                foreach (Point p in pts)
+                foreach (ScreenPoint p in pts)
                 {
                     RenderMarker(ls.MarkerType, p, ls.MarkerSize, ls.MarkerFill, ls.MarkerStroke,
                                  ls.MarkerStrokeThickness);
@@ -106,21 +106,21 @@ namespace OxyPlot
             var clipping = new CohenSutherlandClipping(ls.XAxis.ScreenMin.X, ls.XAxis.ScreenMax.X,
                                                        ls.YAxis.ScreenMin.Y, ls.YAxis.ScreenMax.Y);
 
-            var pts0 = new List<Point>();
-            var pts1 = new List<Point>();
+            var pts0 = new List<ScreenPoint>();
+            var pts1 = new List<ScreenPoint>();
 
-            var p0 = new Point();
-            var b0 = new Point();
+            var p0 = new ScreenPoint();
+            var b0 = new ScreenPoint();
 
             bool first = true;
 
-            Point pt0 = ls.Points[0];
-            Point s0 = Point.Undefined;
+            var pt0 = ls.Points[0];
+            var s0 = ScreenPoint.Undefined;
             int n = ls.Points.Count;
 
             for (int i = 0; i < n; i++)
             {
-                Point pt1 = ls.Points[i];
+                var pt1 = ls.Points[i];
 
                 var s1 = ls.XAxis.Transform(pt1.X, pt1.Y, ls.YAxis);
                 if (i == 0) s0 = s1;
@@ -161,7 +161,7 @@ namespace OxyPlot
                 double b = ls.Baseline;
                 if (i < ls.BaselineValues.Count)
                     b = ls.BaselineValues[i];
-                var pt2 = new Point(ls.Points[i].X, b);
+                var pt2 = new ScreenPoint(ls.Points[i].X, b);
 
                 var s2 = ls.XAxis.Transform(pt2.X, pt2.Y, ls.YAxis);
 
@@ -218,7 +218,7 @@ namespace OxyPlot
 
             if (ls.MarkerType != MarkerType.None)
             {
-                foreach (Point p in pts0)
+                foreach (ScreenPoint p in pts0)
                 {
                     RenderMarker(ls.MarkerType, p, ls.MarkerSize, ls.MarkerFill, ls.MarkerStroke,
                                  ls.MarkerStrokeThickness);
@@ -226,7 +226,7 @@ namespace OxyPlot
             }
         }
 
-        public void RenderMarker(MarkerType markerType, Point p, double markerSize, Color fill, Color stroke,
+        public void RenderMarker(MarkerType markerType, ScreenPoint p, double markerSize, OxyColor fill, OxyColor stroke,
                                  double strokeThickness)
         {
             switch (markerType)
@@ -234,11 +234,11 @@ namespace OxyPlot
                 case MarkerType.Circle:
                     {
                         int n = 20;
-                        var pts = new Point[n];
+                        var pts = new ScreenPoint[n];
                         for (int i = 0; i < n; i++)
                         {
                             double th = 2 * Math.PI * i / (n - 1);
-                            pts[i] = new Point(p.X + markerSize * Math.Cos(th), p.Y + markerSize * Math.Sin(th));
+                            pts[i] = new ScreenPoint(p.X + markerSize * Math.Cos(th), p.Y + markerSize * Math.Sin(th));
                         }
                         rc.DrawPolygon(pts, fill, stroke, strokeThickness);
                         break;
@@ -247,10 +247,10 @@ namespace OxyPlot
                     {
                         var pts = new[]
                                       {
-                                          new Point(p.X - markerSize, p.Y - markerSize),
-                                          new Point(p.X + markerSize, p.Y - markerSize),
-                                          new Point(p.X + markerSize, p.Y + markerSize),
-                                          new Point(p.X - markerSize, p.Y + markerSize)
+                                          new ScreenPoint(p.X - markerSize, p.Y - markerSize),
+                                          new ScreenPoint(p.X + markerSize, p.Y - markerSize),
+                                          new ScreenPoint(p.X + markerSize, p.Y + markerSize),
+                                          new ScreenPoint(p.X - markerSize, p.Y + markerSize)
                                       };
                         rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, true);
                         break;
@@ -259,10 +259,10 @@ namespace OxyPlot
                     {
                         var pts = new[]
                                       {
-                                          new Point(p.X, p.Y - M2*markerSize),
-                                          new Point(p.X + M2*markerSize, p.Y),
-                                          new Point(p.X, p.Y + M2*markerSize),
-                                          new Point(p.X - M2*markerSize, p.Y)
+                                          new ScreenPoint(p.X, p.Y - M2*markerSize),
+                                          new ScreenPoint(p.X + M2*markerSize, p.Y),
+                                          new ScreenPoint(p.X, p.Y + M2*markerSize),
+                                          new ScreenPoint(p.X - M2*markerSize, p.Y)
                                       };
                         rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, true);
                         break;
@@ -271,9 +271,9 @@ namespace OxyPlot
                     {
                         var pts = new[]
                                       {
-                                          new Point(p.X - markerSize, p.Y + M1*markerSize),
-                                          new Point(p.X + markerSize, p.Y + M1*markerSize),
-                                          new Point(p.X, p.Y - M2*markerSize)
+                                          new ScreenPoint(p.X - markerSize, p.Y + M1*markerSize),
+                                          new ScreenPoint(p.X + markerSize, p.Y + M1*markerSize),
+                                          new ScreenPoint(p.X, p.Y - M2*markerSize)
                                       };
                         rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, true);
                         break;
@@ -283,13 +283,13 @@ namespace OxyPlot
                     {
                         var pts1 = new[]
                                        {
-                                           new Point(p.X - markerSize, p.Y),
-                                           new Point(p.X + markerSize, p.Y)
+                                           new ScreenPoint(p.X - markerSize, p.Y),
+                                           new ScreenPoint(p.X + markerSize, p.Y)
                                        };
                         var pts2 = new[]
                                        {
-                                           new Point(p.X, p.Y - markerSize),
-                                           new Point(p.X, p.Y + markerSize)
+                                           new ScreenPoint(p.X, p.Y - markerSize),
+                                           new ScreenPoint(p.X, p.Y + markerSize)
                                        };
                         rc.DrawLine(pts1, stroke, strokeThickness);
                         rc.DrawLine(pts2, stroke, strokeThickness);
@@ -303,13 +303,13 @@ namespace OxyPlot
                     {
                         var pts1 = new[]
                                        {
-                                           new Point(p.X - markerSize*M3, p.Y - markerSize*M3),
-                                           new Point(p.X + markerSize*M3, p.Y + markerSize*M3)
+                                           new ScreenPoint(p.X - markerSize*M3, p.Y - markerSize*M3),
+                                           new ScreenPoint(p.X + markerSize*M3, p.Y + markerSize*M3)
                                        };
                         var pts2 = new[]
                                        {
-                                           new Point(p.X - markerSize*M3, p.Y + markerSize*M3),
-                                           new Point(p.X + markerSize*M3, p.Y - markerSize*M3)
+                                           new ScreenPoint(p.X - markerSize*M3, p.Y + markerSize*M3),
+                                           new ScreenPoint(p.X + markerSize*M3, p.Y - markerSize*M3)
                                        };
                         rc.DrawLine(pts1, stroke, strokeThickness);
                         rc.DrawLine(pts2, stroke, strokeThickness);
@@ -329,10 +329,10 @@ namespace OxyPlot
             {
                 if (String.IsNullOrEmpty(s.Title))
                     continue;
-                Size size = rc.MeasureText(s.Title, plot.LegendFont, plot.LegendFontSize);
-                if (size.Width > maxWidth) maxWidth = size.Width;
-                if (size.Height > maxHeight) maxHeight = size.Height;
-                totalHeight += size.Height;
+                OxySize oxySize = rc.MeasureText(s.Title, plot.LegendFont, plot.LegendFontSize);
+                if (oxySize.Width > maxWidth) maxWidth = oxySize.Width;
+                if (oxySize.Height > maxHeight) maxHeight = oxySize.Height;
+                totalHeight += oxySize.Height;
             }
             double ll = plot.LegendLineLength;
             double x0 = plotBounds.Right - LEGEND_PADDING;
@@ -342,20 +342,20 @@ namespace OxyPlot
             {
                 if (String.IsNullOrEmpty(s.Title))
                     continue;
-                rc.DrawText(new Point(x0 - ll - LEGEND_PADDING, y0), s.Title, plot.TextColor,
+                rc.DrawText(new ScreenPoint(x0 - ll - LEGEND_PADDING, y0), s.Title, plot.TextColor,
                             plot.LegendFont, plot.LegendFontSize, 500, 0,
                             HorizontalTextAlign.Right, VerticalTextAlign.Middle);
-                RenderLegend(s, new Point(x0 - ll, y0), ll, maxHeight);
+                RenderLegend(s, new ScreenPoint(x0 - ll, y0), ll, maxHeight);
                 y0 += maxHeight;
             }
         }
 
-        private void RenderLegend(DataSeries dataSeries, Point point, double linew, double maxh)
+        private void RenderLegend(DataSeries dataSeries, ScreenPoint ScreenPoint, double linew, double maxh)
         {
             var ls = dataSeries as LineSeries;
-            var pts = new[] { point, new Point(point.X + linew, point.Y) };
+            var pts = new[] { ScreenPoint, new ScreenPoint(ScreenPoint.X + linew, ScreenPoint.Y) };
             rc.DrawLine(pts, ls.Color, ls.Thickness, LineStyleHelper.GetDashArray(ls.LineStyle));
-            var pm = new Point(point.X + linew / 2, point.Y);
+            var pm = new ScreenPoint(ScreenPoint.X + linew / 2, ScreenPoint.Y);
             RenderMarker(ls.MarkerType, pm, ls.MarkerSize, ls.MarkerFill, ls.MarkerStroke, ls.MarkerStrokeThickness);
         }
 

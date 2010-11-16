@@ -9,11 +9,11 @@ namespace OxyPlot
     /// </summary>
     internal static class CanonicalSplineHelper
     {
-        internal static List<Point> CreateSpline(IList<Point> pts,
-            double tension, IList<double> tensions, 
-            bool isClosed, double tolerance)
+        internal static List<ScreenPoint> CreateSpline(IList<ScreenPoint> pts,
+                                                       double tension, IList<double> tensions,
+                                                       bool isClosed, double tolerance)
         {
-            var result = new List<Point>();
+            var result = new List<ScreenPoint>();
             if (pts == null)
                 return result;
 
@@ -52,13 +52,13 @@ namespace OxyPlot
                     if (i == 0)
                     {
                         Segment(result, isClosed ? pts[n - 1] : pts[0],
-                                                        pts[0], pts[1], pts[2], t1, t2, tolerance);
+                                pts[0], pts[1], pts[2], t1, t2, tolerance);
                     }
 
                     else if (i == n - 2)
                     {
                         Segment(result, pts[i - 1], pts[i], pts[i + 1],
-                                                        isClosed ? pts[0] : pts[i + 1], t1, t2, tolerance);
+                                isClosed ? pts[0] : pts[i + 1], t1, t2, tolerance);
                     }
 
                     else if (i == n - 1)
@@ -79,9 +79,9 @@ namespace OxyPlot
             return result;
         }
 
-        static void Segment(ICollection<Point> points, 
-            Point pt0, Point pt1, Point pt2, Point pt3, 
-            double t1, double t2, double tolerance)
+        private static void Segment(ICollection<ScreenPoint> points,
+                                    ScreenPoint pt0, ScreenPoint pt1, ScreenPoint pt2, ScreenPoint pt3,
+                                    double t1, double t2, double tolerance)
         {
             // See Petzold, "Programming Microsoft Windows with C#", pages 645-646 or 
             //     Petzold, "Programming Microsoft Windows with Microsoft Visual Basic .NET", pages 638-639
@@ -102,14 +102,14 @@ namespace OxyPlot
             double dx = pt1.X;
             double dy = pt1.Y;
 
-            int num = (int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y)) / tolerance);
+            var num = (int)((Math.Abs(pt1.X - pt2.X) + Math.Abs(pt1.Y - pt2.Y)) / tolerance);
 
             // Notice begins at 1 so excludes the first point (which is just pt1)
             for (int i = 1; i < num; i++)
             {
                 double t = (double)i / (num - 1);
-                var pt = new Point(ax * t * t * t + bx * t * t + cx * t + dx,
-                                     ay * t * t * t + by * t * t + cy * t + dy);
+                var pt = new ScreenPoint(ax * t * t * t + bx * t * t + cx * t + dx,
+                                         ay * t * t * t + by * t * t + cy * t + dy);
                 points.Add(pt);
             }
         }

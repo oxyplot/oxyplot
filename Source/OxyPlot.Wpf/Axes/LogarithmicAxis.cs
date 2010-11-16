@@ -1,6 +1,6 @@
 ﻿namespace OxyPlot.Wpf
 {
-    public class LogarithmicAxis : Axis
+    public class LogarithmicAxis : RangeAxis
     {
         public LogarithmicAxis()
         {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System.Reflection;
 
 namespace OxyReporter
 {
@@ -14,11 +13,11 @@ namespace OxyReporter
 
         public override void Update()
         {
-            var type = GetItemType(Items);
+            Type type = GetItemType(Items);
             if (type == null)
                 return;
             Fields.Clear();
-            foreach (var pi in type.GetProperties())
+            foreach (PropertyInfo pi in type.GetProperties())
             {
                 Fields.Add(new TableColumn(pi.Name, pi.Name));
             }
@@ -28,9 +27,9 @@ namespace OxyReporter
         private Type GetItemType(IEnumerable items)
         {
             Type result = null;
-            foreach (var item in items)
+            foreach (object item in items)
             {
-                var t = item.GetType();
+                Type t = item.GetType();
                 if (result == null)
                     result = t;
                 if (t != result)

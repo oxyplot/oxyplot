@@ -6,16 +6,21 @@ using System.Linq;
 
 namespace OxyPlot
 {
-    public enum PlotType { Cartesian, Polar };
+    public enum PlotType
+    {
+        Cartesian,
+        Polar
+    } ;
 
     public class PlotModel
     {
-        public PlotType PlotType { get; set; }
-        private int currentColorIndex;
-        internal Axis DefaultXAxis;
-        internal Axis DefaultYAxis;
+        public const string DEFAULT_FONT = "Segoe UI";
         internal Axis DefaultAngleAxis;
         internal Axis DefaultMagnitudeAxis;
+        internal Axis DefaultXAxis;
+        internal Axis DefaultYAxis;
+
+        private int currentColorIndex;
 
         public PlotModel(string title = null, string subtitle = null)
         {
@@ -29,36 +34,38 @@ namespace OxyPlot
             MarginTop = 60;
             MarginBottom = 50;
             MarginRight = 30;
-            TitleFont = "Segoe UI";
+            TitleFont = DEFAULT_FONT;
             TitleFontSize = 18;
             SubtitleFontSize = 14;
             TitleFontWeight = 800;
             SubtitleFontWeight = 500;
-            TextColor = Colors.Black;
-            BorderColor = Colors.Black;
+            TextColor = OxyColors.Black;
+            BorderColor = OxyColors.Black;
             BorderThickness = 2;
 
-            LegendFont = "Segoe UI";
+            LegendFont = DEFAULT_FONT;
             LegendFontSize = 12;
             LegendLineLength = 16;
 
-            DefaultColors = new List<Color>
+            DefaultColors = new List<OxyColor>
                                 {
-                                    Color.FromRGB(0x4E, 0x9A, 0x06),
-                                    Color.FromRGB(0xC8, 0x8D, 0x00),
-                                    Color.FromRGB(0xCC, 0x00, 0x00),
-                                    Color.FromRGB(0x20, 0x4A, 0x87),
-                                    Colors.Red,
-                                    Colors.Orange,
-                                    Colors.Yellow,
-                                    Colors.Green,
-                                    Colors.Blue,
-                                    Colors.Indigo,
-                                    Colors.Violet
+                                    OxyColor.FromRGB(0x4E, 0x9A, 0x06),
+                                    OxyColor.FromRGB(0xC8, 0x8D, 0x00),
+                                    OxyColor.FromRGB(0xCC, 0x00, 0x00),
+                                    OxyColor.FromRGB(0x20, 0x4A, 0x87),
+                                    OxyColors.Red,
+                                    OxyColors.Orange,
+                                    OxyColors.Yellow,
+                                    OxyColors.Green,
+                                    OxyColors.Blue,
+                                    OxyColors.Indigo,
+                                    OxyColors.Violet
                                 };
         }
 
-        public List<Color> DefaultColors { get; set; }
+        public PlotType PlotType { get; set; }
+
+        public List<OxyColor> DefaultColors { get; set; }
 
         public Collection<Axis> Axes { get; set; }
         public Collection<DataSeries> Series { get; set; }
@@ -77,11 +84,15 @@ namespace OxyPlot
         public double MarginRight { get; set; }
         public double MarginTop { get; set; }
         public double MarginBottom { get; set; }
-        public double Margins { set { MarginLeft = MarginRight = MarginTop = MarginBottom = value; } }
 
-        public Color TextColor { get; set; }
+        public double Margins
+        {
+            set { MarginLeft = MarginRight = MarginTop = MarginBottom = value; }
+        }
 
-        public Color BorderColor { get; set; }
+        public OxyColor TextColor { get; set; }
+
+        public OxyColor BorderColor { get; set; }
         public double BorderThickness { get; set; }
 
         public string Title { get; set; }
@@ -89,7 +100,12 @@ namespace OxyPlot
 
         public bool CartesianAxes { get; set; }
 
-        public Color GetDefaultColor()
+        private void ResetDefaultColor()
+        {
+            currentColorIndex = 0;
+        }
+
+        private OxyColor GetDefaultColor()
         {
             if (currentColorIndex >= DefaultColors.Count)
                 currentColorIndex = 0;
@@ -98,7 +114,7 @@ namespace OxyPlot
 
         public void UpdateData()
         {
-            foreach (var s in Series)
+            foreach (DataSeries s in Series)
             {
                 s.UpdatePointsFromItemsSource();
             }
@@ -113,7 +129,7 @@ namespace OxyPlot
         /// </summary>
         private void EnsureDefaultAxes()
         {
-            foreach (var a in Axes)
+            foreach (Axis a in Axes)
             {
                 if (a.IsHorizontal)
                 {
@@ -151,24 +167,24 @@ namespace OxyPlot
             {
                 if (DefaultXAxis == null)
                 {
-                    DefaultXAxis = DefaultMagnitudeAxis = new LinearAxis { Position = AxisPosition.Magnitude };
+                    DefaultXAxis = DefaultMagnitudeAxis = new LinearAxis {Position = AxisPosition.Magnitude};
                 }
 
                 if (DefaultYAxis == null)
                 {
-                    DefaultYAxis = DefaultAngleAxis = new LinearAxis { Position = AxisPosition.Angle };
+                    DefaultYAxis = DefaultAngleAxis = new LinearAxis {Position = AxisPosition.Angle};
                 }
             }
             else
             {
                 if (DefaultXAxis == null)
                 {
-                    DefaultXAxis = new LinearAxis { Position = AxisPosition.Bottom };
+                    DefaultXAxis = new LinearAxis {Position = AxisPosition.Bottom};
                 }
 
                 if (DefaultYAxis == null)
                 {
-                    DefaultYAxis = new LinearAxis { Position = AxisPosition.Left };
+                    DefaultYAxis = new LinearAxis {Position = AxisPosition.Left};
                 }
             }
 
@@ -178,7 +194,7 @@ namespace OxyPlot
                 Axes.Add(DefaultYAxis);
 
             // Update the x/y axes of series without axes defined
-            foreach (var s in Series)
+            foreach (DataSeries s in Series)
             {
                 if (s.XAxisKey != null)
                 {
@@ -211,12 +227,12 @@ namespace OxyPlot
         /// </summary>
         private void UpdateMaxMin()
         {
-            foreach (var a in Axes)
+            foreach (Axis a in Axes)
             {
                 a.ActualMaximum = double.NaN;
                 a.ActualMinimum = double.NaN;
             }
-            foreach (var s in Series)
+            foreach (DataSeries s in Series)
             {
                 s.UpdateMaxMin();
                 s.XAxis.Include(s.MinX);
@@ -232,7 +248,7 @@ namespace OxyPlot
                 }
                 else
                 {
-                    a.ActualMaximum += a.MaximumPadding * (a.ActualMaximum - a.ActualMinimum);
+                    a.ActualMaximum += a.MaximumPadding*(a.ActualMaximum - a.ActualMinimum);
                 }
                 if (!double.IsNaN(a.Minimum))
                 {
@@ -240,7 +256,7 @@ namespace OxyPlot
                 }
                 else
                 {
-                    a.ActualMinimum -= a.MinimumPadding * (a.ActualMaximum - a.ActualMinimum);
+                    a.ActualMinimum -= a.MinimumPadding*(a.ActualMaximum - a.ActualMinimum);
                 }
 
                 if (double.IsNaN(a.ActualMaximum))
@@ -256,6 +272,13 @@ namespace OxyPlot
 
         public void Render(IRenderContext rc)
         {
+            RenderAxes(rc);
+            RenderSeries(rc);
+            RenderBox(rc);
+        }
+
+        public void RenderAxes(IRenderContext rc)
+        {
             double x0 = MarginLeft;
             double x1 = rc.Width - MarginRight;
             double y0 = rc.Height - MarginBottom;
@@ -263,7 +286,7 @@ namespace OxyPlot
 
             // Update the transforms
             double minScale = double.MaxValue;
-            foreach (var a in Axes)
+            foreach (Axis a in Axes)
             {
                 double s = a.UpdateTransform(x0, x1, y0, y1);
                 minScale = Math.Min(minScale, Math.Abs(s));
@@ -279,9 +302,7 @@ namespace OxyPlot
             {
                 a.UpdateIntervals(x1 - x0, y0 - y1);
             }
-            var pp = new PlotRenderer(rc, this);
             var ap = new AxisRenderer(rc, this);
-            var sp = new SeriesRenderer(rc, this);
 
             foreach (var a in Axes)
             {
@@ -290,8 +311,20 @@ namespace OxyPlot
                     ap.Render(a);
                 }
             }
+        }
 
-            currentColorIndex = 0;
+        public void RenderBox(IRenderContext rc)
+        {
+            var pp = new PlotRenderer(rc, this);
+            pp.RenderBorder();
+            pp.RenderTitle(Title, Subtitle);
+        }
+
+        public void RenderSeries(IRenderContext rc)
+        {
+            var sp = new SeriesRenderer(rc, this);
+
+            ResetDefaultColor();
             foreach (var s in Series)
             {
                 var ls = s as LineSeries;
@@ -303,20 +336,7 @@ namespace OxyPlot
                 sp.Render(s);
             }
 
-            var border = new[]
-                             {
-                                 new Point(x0, y0), new Point(x1, y0), 
-                                 new Point(x1, y1), new Point(x0, y1),
-                                 new Point(x0, y0)
-                             };
-
-            if (!Equals(BorderColor, Colors.Transparent) && BorderThickness > 0)
-                rc.DrawPolygon(border, null, BorderColor, BorderThickness);
-
-            pp.RenderTitle(Title, Subtitle);
-
             sp.RenderLegends();
-
         }
 
         public void SaveSvg(string fileName, double width, double height)
@@ -327,21 +347,22 @@ namespace OxyPlot
             }
         }
 
-        public string ToSvg(double width, double height)
+        public string ToSvg(double width, double height, bool isDocument = false)
         {
-            var ms = new MemoryStream();
-            var svgrc = new SvgRenderContext(ms, width, height, false);
-            Render(svgrc);
-            svgrc.Flush();
-            ms.Flush();
-            ms.Position = 0;
-            var sr = new StreamReader(ms);
-            var svg = sr.ReadToEnd();
-            svgrc.Close();
-            ms.Close();
+            string svg;
+            using (var ms = new MemoryStream())
+            {
+                var svgrc = new SvgRenderContext(ms, width, height, isDocument);
+                Render(svgrc);
+                svgrc.Complete();
+                svgrc.Flush();
+                ms.Flush();
+                ms.Position = 0;
+                var sr = new StreamReader(ms);
+                svg = sr.ReadToEnd();
+                svgrc.Close();
+            }
             return svg;
         }
-
-
     }
 }

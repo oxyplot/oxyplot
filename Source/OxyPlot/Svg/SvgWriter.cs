@@ -11,17 +11,21 @@ namespace OxyPlot
     public class SvgWriter : XmlTextWriter
     {
         public bool IsDocument { get; set; }
+        public string NumberFormat { get; set; }
 
         public SvgWriter(Stream s, double width, double height, bool isDocument = true) :
             base(s, Encoding.UTF8)
         {
             IsDocument = isDocument;
+            NumberFormat = "0.####";
             WriteHeader(width, height);
         }
+
         public SvgWriter(string path, double width, double height)
             : base(path, Encoding.UTF8)
         {
             IsDocument = true;
+            NumberFormat = "0.####";
             WriteHeader(width, height);
         }
 
@@ -47,15 +51,17 @@ namespace OxyPlot
         {
             if (double.IsNaN(value))
                 return auto;
-            return value.ToString(CultureInfo.InvariantCulture);
+            return value.ToString(NumberFormat, CultureInfo.InvariantCulture);
         }
 
-        protected static string ColorToString(Color color)
+        protected string ColorToString(OxyColor color)
         {
-            return String.Format("rgb({0},{1},{2})", color.R, color.G, color.B);
+            if (color == OxyColors.Black)
+                return "black";
+            return String.Format("rgb({0:" + NumberFormat + "},{1:" + NumberFormat + "},{2:" + NumberFormat + "})", color.R, color.G, color.B);
         }
 
-        public static string CreateStyle(Color fill, Color stroke, double thickness, double[] dashArray)
+        public string CreateStyle(OxyColor fill, OxyColor stroke, double thickness, double[] dashArray)
         {
             // http://oreilly.com/catalog/svgess/chapter/ch03.html
             var style = new StringBuilder();
@@ -74,7 +80,7 @@ namespace OxyPlot
 
             }
             else
-                style.AppendFormat("stroke:{0};stroke-width:{1}", ColorToString(stroke), thickness);
+                style.AppendFormat("stroke:{0};stroke-width:{1:" + NumberFormat + "}", ColorToString(stroke), thickness);
 
             if (stroke.A != 0xFF)
                 style.AppendFormat(CultureInfo.InvariantCulture, ";stroke-opacity:{0}", stroke.A / 255.0);
@@ -99,10 +105,10 @@ namespace OxyPlot
 
         protected void WriteAttributeString(string name, double value)
         {
-            WriteAttributeString(name, value.ToString(CultureInfo.InvariantCulture));
+            WriteAttributeString(name, value.ToString(NumberFormat, CultureInfo.InvariantCulture));
         }
 
-        public void WriteLine(Point p1, Point p2, string style)
+        public void WriteLine(ScreenPoint p1, ScreenPoint p2, string style)
         {
             // http://www.w3.org/TR/SVG/shapes.html#LineElement
             // http://www.w3schools.com/svg/svg_line.asp
@@ -115,33 +121,34 @@ namespace OxyPlot
             WriteEndElement();
         }
 
-        public void WritePolyline(IEnumerable<Point> pts, string style)
+        public void WritePolyline(IEnumerable<ScreenPoint> pts, string style)
         {
             // http://www.w3.org/TR/SVG/shapes.html#PolylineElement
             WriteStartElement("polyline");
-            var sb = new StringBuilder();
-            foreach (var p in pts)
-                sb.AppendFormat(CultureInfo.InvariantCulture, "{0},{1} ", p.X, p.Y);
-
-            WriteAttributeString("points", sb.ToString().Trim());
+            WriteAttributeString("points", PointsToString(pts));
             WriteAttributeString("style", style);
             WriteEndElement();
         }
 
-        public void WritePolygon(IEnumerable<Point> pts, string style)
+        private string PointsToString(IEnumerable<ScreenPoint> pts)
+        {
+            var sb = new StringBuilder();
+            string fmt = "{0:" + NumberFormat + "},{1:" + NumberFormat + "} ";
+            foreach (var p in pts)
+                sb.AppendFormat(CultureInfo.InvariantCulture, fmt, p.X, p.Y);
+            return sb.ToString().Trim();
+        }
+
+        public void WritePolygon(IEnumerable<ScreenPoint> pts, string style)
         {
             // http://www.w3.org/TR/SVG/shapes.html#PolygonElement
             WriteStartElement("polygon");
-            var sb = new StringBuilder();
-            foreach (var p in pts)
-                sb.AppendFormat(CultureInfo.InvariantCulture, "{0},{1} ", p.X, p.Y);
-
-            WriteAttributeString("points", sb.ToString().Trim());
+            WriteAttributeString("points", PointsToString(pts));
             WriteAttributeString("style", style);
             WriteEndElement();
         }
 
-        public void WriteText(Point pt, string text, Color fill, string fontFamily = null, double fontSize = 10, double fontWeight = 500, double rotate = 0, HorizontalTextAlign halign = HorizontalTextAlign.Left, VerticalTextAlign valign = VerticalTextAlign.Top)
+        public void WriteText(ScreenPoint pt, string text, OxyColor fill, string fontFamily = null, double fontSize = 10, double fontWeight = 500, double rotate = 0, HorizontalTextAlign halign = HorizontalTextAlign.Left, VerticalTextAlign valign = VerticalTextAlign.Top)
         {
             // http://www.w3.org/TR/SVG/text.html
             WriteStartElement("text");
@@ -156,13 +163,14 @@ namespace OxyPlot
             if (halign == HorizontalTextAlign.Center) textAnchor = "middle";
             if (halign == HorizontalTextAlign.Right) textAnchor = "end";
             WriteAttributeString("text-anchor", textAnchor);
-            string transform = string.Format(CultureInfo.InvariantCulture, "translate({0},{1})", pt.X, pt.Y);
+
+            string fmt = "translate({0:" + NumberFormat + "},{1:" + NumberFormat + "})";
+            string transform = string.Format(CultureInfo.InvariantCulture, fmt, pt.X, pt.Y);
             Debug.WriteLine(transform);
             if (rotate != 0)
                 transform += string.Format(CultureInfo.InvariantCulture, " rotate({0})", rotate);
             WriteAttributeString("transform", transform);
-            //            if (rotate != 0)
-            //              WriteAttributeString("transform", "rotate("+rotate+")");
+
             if (fontFamily != null)
                 WriteAttributeString("font-family", fontFamily);
             if (fontSize > 0)
@@ -175,10 +183,20 @@ namespace OxyPlot
             WriteEndElement();
         }
 
-        public override void Close()
+        private bool endIsWritten = false;
+
+        public void Complete()
         {
+            WriteEndElement();
             if (IsDocument)
                 WriteEndDocument();
+            endIsWritten = true;
+        }
+
+        public override void Close()
+        {
+            if (!endIsWritten)
+                Complete();
             base.Close();
         }
     }

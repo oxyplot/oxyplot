@@ -13,7 +13,7 @@ namespace OxyPlot
             MarkerStrokeThickness = 1;
         }
 
-        public LineSeries(Color c, double thickness = 1, string title = null)
+        public LineSeries(OxyColor c, double thickness = 1, string title = null)
             : this()
         {
             this.Color = c;
@@ -21,7 +21,7 @@ namespace OxyPlot
             this.Title = title;
         }
 
-        public Color Color { get; set; }
+        public OxyColor Color { get; set; }
 
 
         public double Thickness { get; set; }
@@ -30,9 +30,9 @@ namespace OxyPlot
 
         public MarkerType MarkerType { get; set; }
         public double MarkerSize { get; set; }
-        public Color MarkerStroke { get; set; }
+        public OxyColor MarkerStroke { get; set; }
         public double MarkerStrokeThickness { get; set; }
-        public Color MarkerFill { get; set; }
+        public OxyColor MarkerFill { get; set; }
 
         /// <summary>
         /// Minimum length of a segment on the curve
@@ -48,14 +48,14 @@ namespace OxyPlot
         {
             Title = title;
             for (double x = xmin; x <= xmax+dx/2; x += dx)
-                Points.Add(new Point(x, f(x)));
+                Points.Add(new DataPoint(x, f(x)));
         }
 
         public FunctionSeries(Func<double, double> fx, Func<double, double> fy, double t0, double t1, double dt, string title = null)
         {
             Title = title;
             for (double t = t0; t <= t1+dt/2; t += dt)
-                Points.Add(new Point(fx(t), fy(t)));
+                Points.Add(new DataPoint(fx(t), fy(t)));
         }
     }
 }

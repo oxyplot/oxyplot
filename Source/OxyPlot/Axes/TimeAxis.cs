@@ -12,8 +12,8 @@ namespace OxyPlot
 
         public override string FormatValue(double x)
         {
-            var span = TimeSpan.FromSeconds(x);
-            var s = ActualStringFormat;
+            TimeSpan span = TimeSpan.FromSeconds(x);
+            string s = ActualStringFormat;
             s = s.Replace("mm", span.Minutes.ToString("00"));
             s = s.Replace("ss", span.Seconds.ToString("00"));
             s = s.Replace("hh", span.Hours.ToString("00"));

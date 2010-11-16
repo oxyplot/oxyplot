@@ -40,7 +40,7 @@ namespace RealtimeDemo
                 double a = 0.5 + i*0.05;
                 for (double x = -5; x <= 5; x += 0.1)
                 {
-                    s.Points.Add(new Point(x, Function(t, x, a)));
+                    s.Points.Add(new DataPoint(x, Function(t, x, a)));
                     n++;
                 }
             }
