@@ -7,7 +7,7 @@ namespace OxyPlot
     public class SvgRenderContext : SvgWriter, IRenderContext
     {
         public SvgRenderContext(Stream s, double width, double height, bool isDocument)
-            : base(s, width, height,isDocument)
+            : base(s, width, height, isDocument)
         {
             this.Width = width;
             this.Height = height;
@@ -28,9 +28,15 @@ namespace OxyPlot
         {
             WritePolyline(points, CreateStyle(null, stroke, thickness, dashArray));
         }
+
         public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, bool aliased)
         {
             WritePolygon(points, CreateStyle(fill, stroke, thickness, dashArray));
+        }
+
+        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            WriteEllipse(x, y, width, height, CreateStyle(fill, stroke, thickness, null));
         }
 
         public void DrawText(ScreenPoint p, string text, OxyColor c, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)

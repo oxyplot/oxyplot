@@ -25,6 +25,7 @@ namespace OxyPlot
 
     public interface IAxis
     {
+        void Render(IRenderContext rc, PlotModel model);
         //double UpdateTransform(double x0, double x1, double y0, double y1);
         //void UpdateIntervals(double length, double labelSize);
         //void Include(double p);

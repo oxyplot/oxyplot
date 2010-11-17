@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxesDemo", "Examples\AxesDe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarDemo", "Examples\PolarDemo\PolarDemo.csproj", "{26982CC0-1562-4762-B874-97082BF640A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf", "OxyPlot.Pdf\OxyPlot.Pdf.csproj", "{12737C3F-5770-403F-90A1-BC12EBD1BB31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -157,6 +159,16 @@ Global
 		{26982CC0-1562-4762-B874-97082BF640A5}.Release|Mixed Platforms.Build.0 = Release|x86
 		{26982CC0-1562-4762-B874-97082BF640A5}.Release|x86.ActiveCfg = Release|x86
 		{26982CC0-1562-4762-B874-97082BF640A5}.Release|x86.Build.0 = Release|x86
+		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

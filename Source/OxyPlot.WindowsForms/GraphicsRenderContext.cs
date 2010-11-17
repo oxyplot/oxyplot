@@ -2,10 +2,11 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using OxyPlot;
 
 namespace Oxyplot.WindowsForms
 {
-    public class GraphicsRenderContext : OxyPlot.IRenderContext
+    public class GraphicsRenderContext : IRenderContext
     {
         private readonly Graphics g;
         private readonly PlotControl pc;
@@ -29,7 +30,8 @@ namespace Oxyplot.WindowsForms
             get { return pc.Height; }
         }
 
-        public void DrawLine(IEnumerable<OxyPlot.ScreenPoint> points, OxyPlot.OxyColor stroke, double thickness, double[] dashArray, bool aliased)
+        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+                             bool aliased)
         {
             if (stroke == null || thickness <= 0)
                 return;
@@ -42,13 +44,12 @@ namespace Oxyplot.WindowsForms
             g.DrawLines(pen, ToPoints(points));
         }
 
-        public void DrawPolygon(IEnumerable<OxyPlot.ScreenPoint> points, OxyPlot.OxyColor fill, OxyPlot.OxyColor stroke, double thickness,
+        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
                                 double[] dashArray, bool aliased)
         {
-
             g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
 
-            var pts = ToPoints(points);
+            PointF[] pts = ToPoints(points);
             if (fill != null)
                 g.FillPolygon(ToBrush(fill), pts);
 
@@ -63,17 +64,11 @@ namespace Oxyplot.WindowsForms
             }
         }
 
-        private Brush ToBrush(OxyPlot.OxyColor fill)
+        public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
+                             double fontWeight,
+                             double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
         {
-            if (fill != null)
-                return new SolidBrush(ToColor(fill));
-            return null;
-        }
-
-        public void DrawText(OxyPlot.ScreenPoint p, string text, OxyPlot.OxyColor fill, string fontFamily, double fontSize, double fontWeight,
-                             double rotate, OxyPlot.HorizontalTextAlign halign, OxyPlot.VerticalTextAlign valign)
-        {
-            var fs = FontStyle.Regular;
+            FontStyle fs = FontStyle.Regular;
             if (fontWeight >= 700)
                 fs = FontStyle.Bold;
             var font = new Font(fontFamily, (float)fontSize * FONTSIZEFACTOR, fs);
@@ -81,15 +76,15 @@ namespace Oxyplot.WindowsForms
             var sf = new StringFormat();
             sf.Alignment = StringAlignment.Near;
 
-            var size = g.MeasureString(text, font);
+            SizeF size = g.MeasureString(text, font);
 
             float dx = 0;
-            if (halign == OxyPlot.HorizontalTextAlign.Center)
+            if (halign == HorizontalTextAlign.Center)
             {
                 dx = -size.Width / 2;
                 //              sf.Alignment = StringAlignment.Center;
             }
-            if (halign == OxyPlot.HorizontalTextAlign.Right)
+            if (halign == HorizontalTextAlign.Right)
             {
                 dx = -size.Width;
                 //                sf.Alignment = StringAlignment.Far;
@@ -97,12 +92,12 @@ namespace Oxyplot.WindowsForms
 
             float dy = 0;
             sf.LineAlignment = StringAlignment.Near;
-            if (valign == OxyPlot.VerticalTextAlign.Middle)
+            if (valign == VerticalTextAlign.Middle)
             {
                 // sf.LineAlignment = StringAlignment.Center;
                 dy = -size.Height / 2;
             }
-            if (valign == OxyPlot.VerticalTextAlign.Bottom)
+            if (valign == VerticalTextAlign.Bottom)
             {
                 //  sf.LineAlignment = StringAlignment.Far;
                 dy = -size.Height;
@@ -118,9 +113,12 @@ namespace Oxyplot.WindowsForms
             g.ResetTransform();
         }
 
-        public OxyPlot.OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
-            var fs = FontStyle.Regular;
+            if (text == null)
+                return OxySize.Empty;
+
+            FontStyle fs = FontStyle.Regular;
             if (fontWeight >= 500)
                 fs = FontStyle.Bold;
             var font = new Font(fontFamily, (float)fontSize * FONTSIZEFACTOR, fs);
@@ -128,24 +126,40 @@ namespace Oxyplot.WindowsForms
             var sf = new StringFormat();
             sf.Alignment = StringAlignment.Near;
 
-            var size = g.MeasureString(text, font);
-            return new OxyPlot.OxySize(size.Width, size.Height);
+            SizeF size = g.MeasureString(text, font);
+            return new OxySize(size.Width, size.Height);
         }
 
+        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            if (fill != null)
+                g.FillEllipse(ToBrush(fill), (float)x, (float)y, (float)width, (float)height);
+            if (stroke == null || thickness <= 0)
+                return;
+            var pen = new Pen(ToColor(stroke), (float)thickness);
+            g.DrawEllipse(pen, (float)x, (float)y, (float)width, (float)height);
+        }
         #endregion
 
-        private PointF[] ToPoints(IEnumerable<OxyPlot.ScreenPoint> points)
+        private Brush ToBrush(OxyColor fill)
+        {
+            if (fill != null)
+                return new SolidBrush(ToColor(fill));
+            return null;
+        }
+
+        private PointF[] ToPoints(IEnumerable<ScreenPoint> points)
         {
             if (points == null)
                 return null;
             var r = new PointF[points.Count()];
             int i = 0;
-            foreach (var p in points)
+            foreach (ScreenPoint p in points)
                 r[i++] = new PointF((float)p.X, (float)p.Y);
             return r;
         }
 
-        private Color ToColor(OxyPlot.OxyColor c)
+        private Color ToColor(OxyColor c)
         {
             return Color.FromArgb(c.A, c.R, c.G, c.B);
         }

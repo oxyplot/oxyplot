@@ -7,6 +7,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Save svg..." Click="SaveSvg_Click"/>
+                <MenuItem Header="Save pdf..." Click="SavePdf_Click"/>
                 <MenuItem Header="Savg png..." Click="SavePng_Click"/>
                 <MenuItem Header="Savg xaml..." Click="SaveXaml_Click"/>
                 <Separator/>

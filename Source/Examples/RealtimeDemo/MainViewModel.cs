@@ -38,7 +38,7 @@ namespace RealtimeDemo
                 DataSeries s = PlotModel.Series[i];
                 s.Points.Clear();
                 double a = 0.5 + i*0.05;
-                for (double x = -5; x <= 5; x += 0.1)
+                for (double x = -5; x <= 5; x += 0.01)
                 {
                     s.Points.Add(new DataPoint(x, Function(t, x, a)));
                     n++;

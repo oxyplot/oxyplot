@@ -33,6 +33,7 @@ namespace OxyPlot.Wpf
             // todo: this is not working properly...
             if (Aliased)
             {
+                Model.RenderInit(drc);
                 Model.RenderAxes(drc);
                 Model.RenderBox(drc);
             }

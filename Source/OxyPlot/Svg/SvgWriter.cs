@@ -148,6 +148,18 @@ namespace OxyPlot
             WriteEndElement();
         }
 
+        public void WriteEllipse(double x, double y, double width, double height, string style)
+        {
+            WriteStartElement("polygon");
+            WriteAttributeString("cx", x - width / 2);
+            WriteAttributeString("cy", y - height / 2);
+            WriteAttributeString("cy", y - height / 2);
+            WriteAttributeString("rx", width / 2);
+            WriteAttributeString("ry", height / 2);
+            WriteAttributeString("style", style);
+            WriteEndElement();
+        }
+
         public void WriteText(ScreenPoint pt, string text, OxyColor fill, string fontFamily = null, double fontSize = 10, double fontWeight = 500, double rotate = 0, HorizontalTextAlign halign = HorizontalTextAlign.Left, VerticalTextAlign valign = VerticalTextAlign.Top)
         {
             // http://www.w3.org/TR/SVG/text.html
