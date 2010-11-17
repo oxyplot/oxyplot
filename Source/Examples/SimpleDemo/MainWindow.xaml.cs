@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
+using OxyPlot.Pdf;
 
 namespace SimpleDemo
 {
@@ -30,7 +32,17 @@ namespace SimpleDemo
             dlg.Filter = ".png files|*.png";
             dlg.DefaultExt = ".png";
             if (dlg.ShowDialog(this).Value)
+            {
                 plot1.SaveBitmap(dlg.FileName);
+                OpenContainingFolder(dlg.FileName);
+            }
+        }
+
+        private void OpenContainingFolder(string fileName)
+        {
+            // var folder = Path.GetDirectoryName(fileName);
+            var psi = new ProcessStartInfo("Explorer.exe", "/select,"+fileName);
+            Process.Start(psi);
         }
 
         private void SaveSvg_Click(object sender, RoutedEventArgs e)
@@ -40,6 +52,18 @@ namespace SimpleDemo
             dlg.DefaultExt = ".svg";
             if (dlg.ShowDialog(this).Value)
                 vm.Model.SaveSvg(dlg.FileName, plot1.ActualWidth, plot1.ActualHeight);
+        }
+
+        private void SavePdf_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new SaveFileDialog();
+            dlg.Filter = ".pdf files|*.pdf";
+            dlg.DefaultExt = ".pdf";
+            if (dlg.ShowDialog(this).Value)
+            {
+                PdfPlotWriter.Save(vm.Model, dlg.FileName, plot1.ActualWidth, plot1.ActualHeight);
+                OpenContainingFolder(dlg.FileName);
+            }
         }
 
         private void ModelChange_Click(object sender, RoutedEventArgs e)
@@ -57,7 +81,7 @@ namespace SimpleDemo
             if (dlg.ShowDialog(this).Value)
             {
                 vm.SaveReport(dlg.FileName);
-                Process.Start(dlg.FileName);
+                OpenContainingFolder(dlg.FileName);
             }
         }
 
@@ -69,6 +93,7 @@ namespace SimpleDemo
             if (dlg.ShowDialog(this).Value)
             {
                 plot1.SaveXaml(dlg.FileName);
+                OpenContainingFolder(dlg.FileName);
             }
         }
 

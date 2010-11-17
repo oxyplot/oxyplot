@@ -90,6 +90,17 @@ namespace OxyPlot.Wpf
             dc.DrawGeometry(brush, pen, g);
         }
 
+        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            Brush brush = null;
+            if (fill != null)
+                brush = fill.ToBrush();
+
+            var pen = CreatePen(stroke, thickness, null);
+            var center = new Point(x + width / 2, y + height / 2);
+            dc.DrawEllipse(brush, pen, center, width / 2, height / 2);
+        }
+
         public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
         {
             if (text == null)

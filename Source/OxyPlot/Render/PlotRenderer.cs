@@ -6,21 +6,11 @@ namespace OxyPlot
     {
         protected readonly PlotModel plot;
         protected readonly IRenderContext rc;
-        internal OxyRect plotBounds;
-        protected ScreenPoint midPoint;
 
         public PlotRenderer(IRenderContext rc, PlotModel p)
         {
             this.rc = rc;
             plot = p;
-            plotBounds = new OxyRect
-                             {
-                                 Left = p.MarginLeft,
-                                 Right = rc.Width - p.MarginRight,
-                                 Top = p.MarginTop,
-                                 Bottom = rc.Height - p.MarginBottom
-                             };
-            midPoint = new ScreenPoint((plotBounds.Left + plotBounds.Right) * 0.5, (plotBounds.Top + plotBounds.Bottom) * 0.5);
         }
 
         public void RenderTitle(string title, string subtitle)
@@ -29,7 +19,7 @@ namespace OxyPlot
             OxySize size2 = rc.MeasureText(subtitle, plot.TitleFont, plot.TitleFontSize, plot.TitleFontWeight);
             double height = size1.Height + size2.Height;
             double dy = (plot.MarginTop - height) * 0.5;
-            double dx = (plotBounds.Left + plotBounds.Right) * 0.5;
+            double dx = (plot.bounds.Left + plot.bounds.Right) * 0.5;
 
             if (!String.IsNullOrEmpty(title))
                 rc.DrawText(
@@ -47,9 +37,9 @@ namespace OxyPlot
         {
             var border = new[]
                              {
-                                 new ScreenPoint(plotBounds.Left, plotBounds.Top), new ScreenPoint(plotBounds.Right, plotBounds.Top),
-                                 new ScreenPoint(plotBounds.Right, plotBounds.Bottom), new ScreenPoint(plotBounds.Left, plotBounds.Bottom),
-                                 new ScreenPoint(plotBounds.Left, plotBounds.Top)
+                                 new ScreenPoint(plot.bounds.Left, plot.bounds.Top), new ScreenPoint(plot.bounds.Right, plot.bounds.Top),
+                                 new ScreenPoint(plot.bounds.Right, plot.bounds.Bottom), new ScreenPoint(plot.bounds.Left, plot.bounds.Bottom),
+                                 new ScreenPoint(plot.bounds.Left, plot.bounds.Top)
                              };
 
             if (!Equals(plot.BorderColor, OxyColors.Transparent) && plot.BorderThickness > 0)

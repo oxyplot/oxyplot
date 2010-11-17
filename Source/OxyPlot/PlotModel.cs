@@ -167,24 +167,24 @@ namespace OxyPlot
             {
                 if (DefaultXAxis == null)
                 {
-                    DefaultXAxis = DefaultMagnitudeAxis = new LinearAxis {Position = AxisPosition.Magnitude};
+                    DefaultXAxis = DefaultMagnitudeAxis = new LinearAxis { Position = AxisPosition.Magnitude };
                 }
 
                 if (DefaultYAxis == null)
                 {
-                    DefaultYAxis = DefaultAngleAxis = new LinearAxis {Position = AxisPosition.Angle};
+                    DefaultYAxis = DefaultAngleAxis = new LinearAxis { Position = AxisPosition.Angle };
                 }
             }
             else
             {
                 if (DefaultXAxis == null)
                 {
-                    DefaultXAxis = new LinearAxis {Position = AxisPosition.Bottom};
+                    DefaultXAxis = new LinearAxis { Position = AxisPosition.Bottom };
                 }
 
                 if (DefaultYAxis == null)
                 {
-                    DefaultYAxis = new LinearAxis {Position = AxisPosition.Left};
+                    DefaultYAxis = new LinearAxis { Position = AxisPosition.Left };
                 }
             }
 
@@ -227,12 +227,12 @@ namespace OxyPlot
         /// </summary>
         private void UpdateMaxMin()
         {
-            foreach (Axis a in Axes)
+            foreach (var a in Axes)
             {
                 a.ActualMaximum = double.NaN;
                 a.ActualMinimum = double.NaN;
             }
-            foreach (DataSeries s in Series)
+            foreach (var s in Series)
             {
                 s.UpdateMaxMin();
                 s.XAxis.Include(s.MinX);
@@ -240,75 +240,64 @@ namespace OxyPlot
                 s.YAxis.Include(s.MinY);
                 s.YAxis.Include(s.MaxY);
             }
-            foreach (Axis a in Axes)
+            foreach (var a in Axes)
             {
-                if (!double.IsNaN(a.Maximum))
-                {
-                    a.ActualMaximum = a.Maximum;
-                }
-                else
-                {
-                    a.ActualMaximum += a.MaximumPadding*(a.ActualMaximum - a.ActualMinimum);
-                }
-                if (!double.IsNaN(a.Minimum))
-                {
-                    a.ActualMinimum = a.Minimum;
-                }
-                else
-                {
-                    a.ActualMinimum -= a.MinimumPadding*(a.ActualMaximum - a.ActualMinimum);
-                }
-
-                if (double.IsNaN(a.ActualMaximum))
-                {
-                    a.ActualMaximum = 100;
-                }
-                if (double.IsNaN(a.ActualMinimum))
-                {
-                    a.ActualMinimum = 0;
-                }
+                a.UpdateActualMaxMin();
             }
         }
 
         public void Render(IRenderContext rc)
         {
+            RenderInit(rc);
+
             RenderAxes(rc);
             RenderSeries(rc);
             RenderBox(rc);
         }
 
+        public void RenderInit(IRenderContext rc)
+        {
+            bounds = new OxyRect
+            {
+                Left = MarginLeft,
+                Right = rc.Width - MarginRight,
+                Top = MarginTop,
+                Bottom = rc.Height - MarginBottom
+            };
+            midPoint = new ScreenPoint((bounds.Left + bounds.Right) * 0.5, (bounds.Top + bounds.Bottom) * 0.5);
+        }
+
         public void RenderAxes(IRenderContext rc)
         {
-            double x0 = MarginLeft;
-            double x1 = rc.Width - MarginRight;
-            double y0 = rc.Height - MarginBottom;
-            double y1 = MarginTop;
+            double x0 = bounds.Left;
+            double x1 = bounds.Right;
+            double y0 = bounds.Bottom;
+            double y1 = bounds.Top;
 
             // Update the transforms
-            double minScale = double.MaxValue;
-            foreach (Axis a in Axes)
+            double minimumScale = double.MaxValue;
+            foreach (var a in Axes)
             {
                 double s = a.UpdateTransform(x0, x1, y0, y1);
-                minScale = Math.Min(minScale, Math.Abs(s));
+                minimumScale = Math.Min(minimumScale, Math.Abs(s));
             }
 
             if (CartesianAxes)
             {
                 foreach (var a in Axes)
-                    a.SetScale(minScale);
+                    a.SetScale(minimumScale);
             }
 
             foreach (var a in Axes)
             {
                 a.UpdateIntervals(x1 - x0, y0 - y1);
             }
-            var ap = new AxisRenderer(rc, this);
 
             foreach (var a in Axes)
             {
                 if (a.IsVisible)
                 {
-                    ap.Render(a);
+                    a.Render(rc,this);
                 }
             }
         }
@@ -320,9 +309,11 @@ namespace OxyPlot
             pp.RenderTitle(Title, Subtitle);
         }
 
+        internal OxyRect bounds;
+        internal ScreenPoint midPoint;
+
         public void RenderSeries(IRenderContext rc)
         {
-            var sp = new SeriesRenderer(rc, this);
 
             ResetDefaultColor();
             foreach (var s in Series)
@@ -333,9 +324,10 @@ namespace OxyPlot
                     ls.Color = ls.MarkerFill = GetDefaultColor();
                 }
 
-                sp.Render(s);
+                s.Render(rc,this);
             }
 
+            var sp = new SeriesRenderer(rc, this);
             sp.RenderLegends();
         }
 

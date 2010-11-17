@@ -29,7 +29,7 @@ namespace OxyPlot.Wpf
             var pl = new Polyline();
             if (stroke != null)
                 pl.Stroke = new SolidColorBrush(stroke.ToColor());
-         //   pl.StrokeLineJoin = PenLineJoin.Miter;
+            //   pl.StrokeLineJoin = PenLineJoin.Miter;
             pl.StrokeLineJoin = PenLineJoin.Round;
             foreach (var p in points)
                 pl.Points.Add(ToPoint(p));
@@ -62,6 +62,22 @@ namespace OxyPlot.Wpf
                 po.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
             canvas.Children.Add(po);
+        }
+
+        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            var el = new Ellipse();
+            if (stroke != null)
+                el.Stroke = new SolidColorBrush(stroke.ToColor());
+            if (fill != null)
+                el.Fill = new SolidColorBrush(fill.ToColor());
+
+            el.StrokeThickness = thickness;
+            el.Width = width;
+            el.Height = height;
+            Canvas.SetLeft(el, x);
+            Canvas.SetTop(el, y);
+            canvas.Children.Add(el);
         }
 
         private static System.Windows.Point ToPoint(ScreenPoint point)

@@ -10,7 +10,7 @@ namespace OxyPlot
         DataPoint GetDataPoint();
     }
 
-    public abstract class DataSeries
+    public abstract class DataSeries : ISeries
     {
         protected DataSeries()
         {
@@ -179,6 +179,12 @@ namespace OxyPlot
             if (x >= x0 && x <= x1) return true;
             if (x >= x1 && x <= x0) return true;
             return false;
+        }
+
+        public virtual void Render(IRenderContext rc, PlotModel model)
+        {
+            var r = new SeriesRenderer(rc, model);
+            r.Render(this);
         }
     }
 }

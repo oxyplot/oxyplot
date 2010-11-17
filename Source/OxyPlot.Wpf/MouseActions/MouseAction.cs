@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Diagnostics;
+using System.Windows.Input;
 
 namespace OxyPlot.Wpf
 {
@@ -17,7 +18,6 @@ namespace OxyPlot.Wpf
             pc.MouseDown += PlotControl_MouseDown;
             pc.MouseMove += PlotControl_MouseMove;
             pc.MouseUp += PlotControl_MouseUp;
-            pc.MouseDown += PlotControl_MouseDown;
             pc.MouseWheel += PlotControl_MouseWheel;
         }
 
@@ -38,7 +38,7 @@ namespace OxyPlot.Wpf
         {
             bool control = (Keyboard.IsKeyDown(Key.LeftCtrl));
             bool shift = (Keyboard.IsKeyDown(Key.LeftShift));
-            OnMouseMove(e.GetPosition(pc),control,shift);
+            OnMouseMove(e.GetPosition(pc), control, shift);
         }
 
         private void PlotControl_MouseDown(object sender, MouseButtonEventArgs e)
@@ -57,7 +57,6 @@ namespace OxyPlot.Wpf
                 button = MouseButton.XButton1;
             if (e.XButton2 == MouseButtonState.Pressed)
                 button = MouseButton.XButton2;
-
             OnMouseDown(e.GetPosition(pc), button, e.ClickCount, control, shift);
         }
 

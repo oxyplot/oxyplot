@@ -57,7 +57,12 @@ namespace OxyPlot
                 s1.Y = y1;
 
                 if (outside)
+                {
+                    RenderLine(ls, pts);
+                    pts.Clear();
                     continue;
+
+                }
 
                 if (first || i == n - 1)
                 {
@@ -77,12 +82,7 @@ namespace OxyPlot
                 }
             }
 
-            if (ls.Smooth)
-            {
-                pts = CanonicalSplineHelper.CreateSpline(pts, 0.5, null, false, 0.25);
-            }
-
-            rc.DrawLine(pts.ToArray(), ls.Color, ls.Thickness, LineStyleHelper.GetDashArray(ls.LineStyle));
+            RenderLine(ls, pts);
 
             if (ls.MarkerType != MarkerType.None)
             {
@@ -92,6 +92,19 @@ namespace OxyPlot
                                  ls.MarkerStrokeThickness);
                 }
             }
+        }
+        public void RenderLine(LineSeries ls, List<ScreenPoint> pts)
+        {
+            if (pts.Count == 0)
+                return;
+
+            if (ls.Smooth)
+            {
+                pts = CanonicalSplineHelper.CreateSpline(pts, 0.5, null, false, 0.25);
+            }
+
+            rc.DrawLine(pts.ToArray(), ls.Color, ls.Thickness, LineStyleHelper.GetDashArray(ls.LineStyle));
+
         }
 
         public void Render(AreaSeries ls)
@@ -114,7 +127,6 @@ namespace OxyPlot
 
             bool first = true;
 
-            var pt0 = ls.Points[0];
             var s0 = ScreenPoint.Undefined;
             int n = ls.Points.Count;
 
@@ -218,7 +230,7 @@ namespace OxyPlot
 
             if (ls.MarkerType != MarkerType.None)
             {
-                foreach (ScreenPoint p in pts0)
+                foreach (var p in pts0)
                 {
                     RenderMarker(ls.MarkerType, p, ls.MarkerSize, ls.MarkerFill, ls.MarkerStroke,
                                  ls.MarkerStrokeThickness);
@@ -233,14 +245,16 @@ namespace OxyPlot
             {
                 case MarkerType.Circle:
                     {
-                        int n = 20;
-                        var pts = new ScreenPoint[n];
-                        for (int i = 0; i < n; i++)
-                        {
-                            double th = 2 * Math.PI * i / (n - 1);
-                            pts[i] = new ScreenPoint(p.X + markerSize * Math.Cos(th), p.Y + markerSize * Math.Sin(th));
-                        }
-                        rc.DrawPolygon(pts, fill, stroke, strokeThickness);
+                        rc.DrawEllipse(p.X - markerSize, p.Y - markerSize, markerSize * 2, markerSize * 2, fill, stroke, strokeThickness);
+
+                        //int n = 20;
+                        //var pts = new ScreenPoint[n];
+                        //for (int i = 0; i < n; i++)
+                        //{
+                        //    double th = 2 * Math.PI * i / (n - 1);
+                        //    pts[i] = new ScreenPoint(p.X + markerSize * Math.Cos(th), p.Y + markerSize * Math.Sin(th));
+                        //}
+                        //rc.DrawPolygon(pts, fill, stroke, strokeThickness);
                         break;
                     }
                 case MarkerType.Square:
@@ -325,37 +339,44 @@ namespace OxyPlot
             double maxWidth = 0;
             double maxHeight = 0;
             double totalHeight = 0;
+
             foreach (var s in plot.Series)
             {
                 if (String.IsNullOrEmpty(s.Title))
                     continue;
-                OxySize oxySize = rc.MeasureText(s.Title, plot.LegendFont, plot.LegendFontSize);
+                var oxySize = rc.MeasureText(s.Title, plot.LegendFont, plot.LegendFontSize);
                 if (oxySize.Width > maxWidth) maxWidth = oxySize.Width;
                 if (oxySize.Height > maxHeight) maxHeight = oxySize.Height;
                 totalHeight += oxySize.Height;
             }
-            double ll = plot.LegendLineLength;
-            double x0 = plotBounds.Right - LEGEND_PADDING;
-            double y0 = plotBounds.Top + LEGEND_PADDING + maxHeight / 2;
 
-            foreach (DataSeries s in plot.Series)
+            double length = plot.LegendLineLength;
+            double x0 = plot.bounds.Right - LEGEND_PADDING;
+            double y0 = plot.bounds.Top + LEGEND_PADDING + maxHeight / 2;
+
+            foreach (var s in plot.Series)
             {
                 if (String.IsNullOrEmpty(s.Title))
                     continue;
-                rc.DrawText(new ScreenPoint(x0 - ll - LEGEND_PADDING, y0), s.Title, plot.TextColor,
+                rc.DrawText(new ScreenPoint(x0 - length - LEGEND_PADDING, y0),
+                            s.Title, plot.TextColor,
                             plot.LegendFont, plot.LegendFontSize, 500, 0,
                             HorizontalTextAlign.Right, VerticalTextAlign.Middle);
-                RenderLegend(s, new ScreenPoint(x0 - ll, y0), ll, maxHeight);
+                RenderLegend(s, new ScreenPoint(x0 - length, y0), length, maxHeight);
                 y0 += maxHeight;
             }
         }
 
-        private void RenderLegend(DataSeries dataSeries, ScreenPoint ScreenPoint, double linew, double maxh)
+        private void RenderLegend(DataSeries s, ScreenPoint screenPoint, double length, double maxh)
         {
-            var ls = dataSeries as LineSeries;
-            var pts = new[] { ScreenPoint, new ScreenPoint(ScreenPoint.X + linew, ScreenPoint.Y) };
+            var ls = s as LineSeries;
+            if (ls == null)
+                return;
+
+            var pts = new[] { screenPoint, 
+                new ScreenPoint(screenPoint.X + length, screenPoint.Y) };
             rc.DrawLine(pts, ls.Color, ls.Thickness, LineStyleHelper.GetDashArray(ls.LineStyle));
-            var pm = new ScreenPoint(ScreenPoint.X + linew / 2, ScreenPoint.Y);
+            var pm = new ScreenPoint(screenPoint.X + length / 2, screenPoint.Y);
             RenderMarker(ls.MarkerType, pm, ls.MarkerSize, ls.MarkerFill, ls.MarkerStroke, ls.MarkerStrokeThickness);
         }
 

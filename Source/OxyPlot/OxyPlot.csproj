@@ -74,6 +74,7 @@
     <Compile Include="Render\PlotRenderer.cs" />
     <Compile Include="Foundation\LineStyleHelper.cs" />
     <Compile Include="Foundation\DataPoint.cs" />
+    <Compile Include="Series\ISeries.cs" />
     <Compile Include="Svg\SvgRenderContext.cs" />
     <Compile Include="Svg\SvgWriter.cs" />
     <Compile Include="Foundation\OxyColor.cs" />
