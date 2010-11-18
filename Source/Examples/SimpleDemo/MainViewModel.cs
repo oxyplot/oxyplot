@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OxyPlot;
-using OxyReporter;
+using OxyPlot.Reporting;
 
 namespace SimpleDemo
 {
@@ -112,11 +112,11 @@ namespace SimpleDemo
                     // http://people.reed.edu/~jerry/Clover/cloverexcerpt.pdf
                     // http://www-math.bgsu.edu/z/calc3/vectorvalued1.html
                     Model = CreateParametricPlot(
-                        t => 2*Math.Cos(2*t)*Math.Cos(t),
-                        t => 2*Math.Cos(2*t)*Math.Sin(t),
+                        t => 2 * Math.Cos(2 * t) * Math.Cos(t),
+                        t => 2 * Math.Cos(2 * t) * Math.Sin(t),
                         // t=>-4*Math.Sin(2*t)*Math.Cos(t)-2*Math.Cos(2*t)*Math.Sin(t),
                         // t=>-4*Math.Sin(2*t)*Math.Sin(t)+2*Math.Cos(2*t)*Math.Cos(t),))))
-                        0, Math.PI*2, 0.01,
+                        0, Math.PI * 2, 0.01,
                         "Parametric function",
                         "Using the CartesianAxes property",
                         "2cos(2t)cos(t) , 2cos(2t)sin(t)");
@@ -132,7 +132,7 @@ namespace SimpleDemo
                                Title = "Sine wave"
                            };
 
-            LineSeries ls = CreateLineSeries(Math.Sin, 0, 10, stepSize, "sin(x)");
+            var ls = CreateLineSeries(Math.Sin, 0, 10, stepSize, "sin(x)");
             plot.Series.Add(ls);
             plot.Axes.Add(new LinearAxis
                               {
@@ -155,7 +155,7 @@ namespace SimpleDemo
         private static LineSeries CreateLineSeries(Func<double, double> f, double x0, double x1, double dx,
                                                    string title)
         {
-            var ls = new LineSeries {Title = title};
+            var ls = new LineSeries { Title = title };
             for (double x = x0; x <= x1; x += dx)
                 ls.Points.Add(new DataPoint(x, f(x)));
             return ls;
@@ -206,8 +206,8 @@ namespace SimpleDemo
 
             for (int i = 0; i < n; i++)
             {
-                double x = x0 + (x1 - x0)*i/(n - 1);
-                double f = 1.0/Math.Sqrt(2*Math.PI*variance)*Math.Exp(-(x - mean)*(x - mean)/2/variance);
+                double x = x0 + (x1 - x0) * i / (n - 1);
+                double f = 1.0 / Math.Sqrt(2 * Math.PI * variance) * Math.Exp(-(x - mean) * (x - mean) / 2 / variance);
                 ls.Points.Add(new DataPoint(x, f));
             }
             return ls;
@@ -215,11 +215,11 @@ namespace SimpleDemo
 
         private static PlotModel CreateSquareWave(int n = 25)
         {
-            var plot = new PlotModel {Title = "Square wave (Gibbs phenomenon)"};
+            var plot = new PlotModel { Title = "Square wave (Gibbs phenomenon)" };
 
             var ls = new LineSeries
                          {
-                             Title = "sin(x)+sin(3x)/3+sin(5x)/5+...+sin(" + (2*n - 1) + ")/" + (2*n - 1)
+                             Title = "sin(x)+sin(3x)/3+sin(5x)/5+...+sin(" + (2 * n - 1) + ")/" + (2 * n - 1)
                          };
 
             for (double x = -10; x < 10; x += 0.0001)
@@ -227,8 +227,8 @@ namespace SimpleDemo
                 double y = 0;
                 for (int i = 0; i < n; i++)
                 {
-                    int j = i*2 + 1;
-                    y += Math.Sin(j*x)/j;
+                    int j = i * 2 + 1;
+                    y += Math.Sin(j * x) / j;
                 }
                 ls.Points.Add(new DataPoint(x, y));
             }
@@ -252,9 +252,9 @@ namespace SimpleDemo
                                                       double t1, double dt, string title, string subtitle,
                                                       string seriesTitle)
         {
-            var plot = new PlotModel {Title = title, Subtitle = subtitle, CartesianAxes = true};
+            var plot = new PlotModel { Title = title, Subtitle = subtitle, CartesianAxes = true };
 
-            var ls = new LineSeries {Title = seriesTitle};
+            var ls = new LineSeries { Title = seriesTitle };
 
             for (double t = t0; t <= t1; t += dt)
             {
@@ -268,11 +268,11 @@ namespace SimpleDemo
         {
             // http://en.wikipedia.org/wiki/Lin-log_graph
 
-            var plot = new PlotModel {Title = "Log-Lin plot"};
+            var plot = new PlotModel { Title = "Log-Lin plot" };
 
             plot.Series.Add(CreateLineSeries(x => x, 0.1, 100, 0.1, "y=x"));
-            plot.Series.Add(CreateLineSeries(x => x*x, 0.1, 100, 0.1, "y=x²"));
-            plot.Series.Add(CreateLineSeries(x => x*x*x, 0.1, 100, 0.1, "y=x³"));
+            plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "y=x²"));
+            plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "y=x³"));
 
             plot.Axes.Add(new LogarithmicAxis
                               {
@@ -297,11 +297,11 @@ namespace SimpleDemo
         private static PlotModel CreateLinLogPlot()
         {
             // http://en.wikipedia.org/wiki/Lin-log_graph
-            var plot = new PlotModel {Title = "Lin-Log plot"};
+            var plot = new PlotModel { Title = "Lin-Log plot" };
 
             plot.Series.Add(CreateLineSeries(x => x, 0.1, 100, 0.1, "y=x"));
-            plot.Series.Add(CreateLineSeries(x => x*x, 0.1, 100, 0.1, "y=x²"));
-            plot.Series.Add(CreateLineSeries(x => x*x*x, 0.1, 100, 0.1, "y=x³"));
+            plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "y=x²"));
+            plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "y=x³"));
 
             plot.Axes.Add(new LogarithmicAxis
                               {
@@ -326,11 +326,11 @@ namespace SimpleDemo
         private static PlotModel CreateLogLogPlot()
         {
             // http://en.wikipedia.org/wiki/Log-log_plot
-            var plot = new PlotModel {Title = "Log-log plot"};
+            var plot = new PlotModel { Title = "Log-log plot" };
 
             plot.Series.Add(CreateLineSeries(x => x, 0.1, 100, 0.1, "y=x"));
-            plot.Series.Add(CreateLineSeries(x => x*x, 0.1, 100, 0.1, "y=x²"));
-            plot.Series.Add(CreateLineSeries(x => x*x*x, 0.1, 100, 0.1, "y=x³"));
+            plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "y=x²"));
+            plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "y=x³"));
 
             plot.Axes.Add(new LogarithmicAxis
                               {
@@ -378,15 +378,17 @@ namespace SimpleDemo
             foreach (DataSeries s in Model.Series)
             {
                 main.AddHeader(3, "Data series " + (i++));
-                main.AddPropertyTable("Properties of the " + s.GetType().Name, new[] {s});
-                var fields = new List<TableColumn>();
-                fields.Add(new TableColumn("X", "X"));
-                fields.Add(new TableColumn("Y", "Y"));
+                main.AddPropertyTable("Properties of the " + s.GetType().Name, new[] { s });
+                var fields = new List<TableColumn>
+                                 {
+                                     new TableColumn("X", "X"), 
+                                     new TableColumn("Y", "Y")
+                                 };
                 main.AddTable("Data", s.Points, fields);
             }
 
-            string style =
-                @"body { font-family: Verdana,Arial; margin:20pt; }
+            const string style = 
+@"body { font-family: Verdana,Arial; margin:20pt; }
 table { border: solid 1px black; margin: 8pt; border-collapse:collapse; }
 td { padding: 0 2pt 0 2pt; border-left: solid 1px black; border-right: solid 1px black;}
 thead { border:solid 1px black; }
@@ -396,10 +398,18 @@ thead { border:solid 1px black; }
 .table caption { margin: 4pt;}
 .table thead td { padding: 2pt;}";
 
+            string ext = Path.GetExtension(fileName).ToLower();
+            if (ext==".html")
             using (var hw = new HtmlReportWriter(fileName, "OxyPlot example file", null, style))
             {
                 r.Write(hw);
             }
+
+            if (ext == ".pdf")
+                using (var pw = new PdfReportWriter(fileName))
+                {
+                    r.Write(pw);
+                }
 
             using (var tw = new TextReportWriter(Path.ChangeExtension(fileName, ".txt")))
             {

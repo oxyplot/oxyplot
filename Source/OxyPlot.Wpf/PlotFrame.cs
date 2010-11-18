@@ -38,7 +38,9 @@ namespace OxyPlot.Wpf
                 Model.RenderBox(drc);
             }
             else
+            {
                 Model.RenderSeries(drc);
+            }
         }
     }
 }

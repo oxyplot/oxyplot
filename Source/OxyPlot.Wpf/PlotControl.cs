@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Xml;
 
 namespace OxyPlot.Wpf
@@ -37,18 +38,22 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("RenderToCanvas", typeof(bool), typeof(PlotControl),
                                         new UIPropertyMetadata(true, RenderToCanvasChanged));
 
+        public static readonly DependencyProperty SliderTemplateProperty =
+            DependencyProperty.Register("SliderTemplate", typeof(DataTemplate), typeof(PlotControl),
+                                        new UIPropertyMetadata(null));
+
         private readonly Canvas overlays;
         private readonly Slider slider;
 
-        private readonly System.Windows.Shapes.Rectangle zoomRectangle;
+        private readonly Rectangle zoomRectangle;
         private Canvas canvas;
 
         internal PlotModel internalModel;
+        private PanAction panAction;
 
         private PlotFrame plotAliasedFrame;
         private PlotFrame plotFrame;
 
-        private PanAction panAction;
         private SliderAction sliderAction;
         private ZoomAction zoomAction;
 
@@ -73,10 +78,10 @@ namespace OxyPlot.Wpf
             overlays.Children.Add(slider);
 
             // Zoom rectangle (must belong to a Canvas)
-            zoomRectangle = new System.Windows.Shapes.Rectangle
+            zoomRectangle = new Rectangle
                                 {
-                                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(20, 255, 255, 0)),
-                                    Stroke = new SolidColorBrush(System.Windows.Media.Colors.Yellow),
+                                    Fill = new SolidColorBrush(Color.FromArgb(20, 255, 255, 0)),
+                                    Stroke = new SolidColorBrush(Colors.Yellow),
                                     StrokeThickness = 1,
                                     Visibility = Visibility.Hidden
                                 };
@@ -91,6 +96,12 @@ namespace OxyPlot.Wpf
             Loaded += PlotControl_Loaded;
             DataContextChanged += PlotControl_DataContextChanged;
             SizeChanged += PlotControl_SizeChanged;
+        }
+
+        public DataTemplate SliderTemplate
+        {
+            get { return (DataTemplate)GetValue(SliderTemplateProperty); }
+            set { SetValue(SliderTemplateProperty, value); }
         }
 
         public bool RenderToCanvas
@@ -230,7 +241,7 @@ namespace OxyPlot.Wpf
             if (Series != null)
             {
                 p.Series.Clear();
-                foreach (var s in Series)
+                foreach (DataSeries s in Series)
                 {
                     p.Series.Add(s.CreateModel());
                 }
@@ -238,7 +249,7 @@ namespace OxyPlot.Wpf
             if (Axes != null)
             {
                 p.Axes.Clear();
-                foreach (var a in Axes)
+                foreach (Axis a in Axes)
                 {
                     a.UpdateModelProperties();
                     p.Axes.Add(a.ModelAxis);
@@ -282,12 +293,12 @@ namespace OxyPlot.Wpf
 
         public void SaveBitmap(string fileName)
         {
-            var bmp = ToBitmap();
+            RenderTargetBitmap bmp = ToBitmap();
 
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bmp));
 
-            using (var s = File.Create(fileName))
+            using (FileStream s = File.Create(fileName))
             {
                 encoder.Save(s);
             }
@@ -355,10 +366,10 @@ namespace OxyPlot.Wpf
             xaxis = yaxis = null;
             foreach (OxyPlot.Axis axis in internalModel.Axes)
             {
-                double x = axis.InverseTransformX(axis.IsHorizontal ? pt.X : pt.Y);
+                double x = axis.InverseTransformX(axis.IsHorizontal() ? pt.X : pt.Y);
                 if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
                 {
-                    if (axis.IsHorizontal)
+                    if (axis.IsHorizontal())
                         xaxis = axis;
                     else
                         yaxis = axis;
@@ -407,6 +418,7 @@ namespace OxyPlot.Wpf
 
         public void ShowSlider(OxyPlot.DataSeries s, DataPoint dp)
         {
+            slider.ContentTemplate = SliderTemplate;
             slider.SetPosition(dp, s);
         }
 

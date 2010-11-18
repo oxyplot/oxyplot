@@ -48,7 +48,7 @@ namespace OxyPlot.Wpf
             base.ConvertProperties(s);
             var ls = s as OxyPlot.LineSeries;
             ls.Color = Color.ToModelColor();
-            ls.Thickness = Thickness;
+            ls.StrokeThickness = Thickness;
             ls.LineStyle = LineStyle;
             s.Smooth = Smooth;
         }

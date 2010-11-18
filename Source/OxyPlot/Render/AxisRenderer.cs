@@ -3,44 +3,54 @@ using System.Collections.Generic;
 
 namespace OxyPlot
 {
-    public class AxisRenderer : PlotRenderer
+    public class AxisRenderer 
     {
         private const double AXIS_LEGEND_DIST = 4; // distance from axis number to axis legend
         private const double TICK_DIST = 8; // distance from axis tick to number
 
-        public AxisRenderer(IRenderContext rc, PlotModel p)
-            : base(rc, p)
+        private OxyPen extraPen;
+        private OxyPen majorPen;
+        private OxyPen majorTickPen;
+
+        private ICollection<double> majorTickValues;
+        private OxyPen minorPen;
+        private OxyPen minorTickPen;
+        private ICollection<double> minorTickValues;
+        private OxyPen zeroPen;
+
+        protected readonly PlotModel Plot;
+        protected readonly IRenderContext rc;
+
+        public AxisRenderer(IRenderContext rc, PlotModel plot)
         {
+            this.Plot = plot;
+            this.rc = rc;
         }
-
-
-        ICollection<double> minorValues;
-        ICollection<double> majorValues;
 
         public void Render(Axis axis)
         {
             if (axis == null)
                 return;
 
-            axis.GetTickValues(out majorValues, out minorValues);
+            axis.GetTickValues(out majorTickValues, out minorTickValues);
 
             CreatePens(axis);
 
-            if (axis.IsHorizontal)
+            if (axis.IsHorizontal())
             {
-                RenderHorizontalAxis(axis, plot.DefaultYAxis);
+                RenderHorizontalAxis(axis, Plot.DefaultYAxis);
             }
-            if (axis.IsVertical)
+            if (axis.IsVertical())
             {
-                RenderVerticalAxis(axis, plot.DefaultXAxis);
+                RenderVerticalAxis(axis, Plot.DefaultXAxis);
             }
             if (axis.Position == AxisPosition.Angle)
             {
-                RenderAngleAxis(axis, plot.DefaultMagnitudeAxis);
+                RenderAngleAxis(axis, Plot.DefaultMagnitudeAxis);
             }
             if (axis.Position == AxisPosition.Magnitude)
             {
-                RenderMagnitudeAxis(axis, plot.DefaultAngleAxis);
+                RenderMagnitudeAxis(axis, Plot.DefaultAngleAxis);
             }
         }
 
@@ -53,20 +63,22 @@ namespace OxyPlot
             {
                 //  GetVerticalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out y0, out y1);
 
-                foreach (double xValue in minorValues)
+                foreach (double xValue in minorTickValues)
                 {
                     if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
                     {
                         continue;
                     }
 
-                    if (majorValues.Contains(xValue))
+                    if (majorTickValues.Contains(xValue))
                     {
                         continue;
                     }
 
                     var pts = new List<ScreenPoint>();
-                    for (double th = angleAxis.ActualMinimum; th <= angleAxis.ActualMaximum; th += angleAxis.MinorStep * 0.1)
+                    for (double th = angleAxis.ActualMinimum;
+                         th <= angleAxis.ActualMaximum;
+                         th += angleAxis.MinorStep*0.1)
                     {
                         pts.Add(axis.Transform(xValue, th, angleAxis));
                     }
@@ -81,7 +93,7 @@ namespace OxyPlot
 
             //  GetVerticalTickPositions(axis, axis.TickStyle, axis.MajorTickSize, out y0, out y1);
 
-            foreach (double xValue in majorValues)
+            foreach (double xValue in majorTickValues)
             {
                 if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
                 {
@@ -89,7 +101,7 @@ namespace OxyPlot
                 }
 
                 var pts = new List<ScreenPoint>();
-                for (double th = angleAxis.ActualMinimum; th <= angleAxis.ActualMaximum; th += angleAxis.MinorStep * 0.1)
+                for (double th = angleAxis.ActualMinimum; th <= angleAxis.ActualMaximum; th += angleAxis.MinorStep*0.1)
                 {
                     pts.Add(axis.Transform(xValue, th, angleAxis));
                 }
@@ -113,7 +125,6 @@ namespace OxyPlot
 
                 //maxh = Math.Max(maxh, h);
             }
-
         }
 
         private void RenderAngleAxis(Axis axis, Axis magnitudeAxis)
@@ -125,14 +136,14 @@ namespace OxyPlot
             {
                 //  GetVerticalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out y0, out y1);
 
-                foreach (double xValue in minorValues)
+                foreach (double xValue in minorTickValues)
                 {
                     if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
                     {
                         continue;
                     }
 
-                    if (majorValues.Contains(xValue))
+                    if (majorTickValues.Contains(xValue))
                     {
                         continue;
                     }
@@ -141,7 +152,7 @@ namespace OxyPlot
 
                     if (minorPen != null)
                     {
-                        RenderLine(axis.MidPoint.X, axis.MidPoint.Y, pt.x, pt.y, minorPen,false);
+                        RenderLine(axis.MidPoint.x, axis.MidPoint.y, pt.x, pt.y, minorPen, false);
                     }
                     // RenderGridline(x, y + y0, x, y + y1, minorTickPen);
                 }
@@ -149,7 +160,7 @@ namespace OxyPlot
 
             //  GetVerticalTickPositions(axis, axis.TickStyle, axis.MajorTickSize, out y0, out y1);
 
-            foreach (double xValue in majorValues)
+            foreach (double xValue in majorTickValues)
             {
                 if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
                 {
@@ -160,7 +171,7 @@ namespace OxyPlot
 
                 if (majorPen != null)
                 {
-                    RenderLine(axis.MidPoint.X, axis.MidPoint.Y, pt.x, pt.y, majorPen,false);
+                    RenderLine(axis.MidPoint.x, axis.MidPoint.y, pt.x, pt.y, majorPen, false);
                 }
                 // RenderGridline(x, y + y0, x, y + y1, majorTickPen);
 
@@ -176,8 +187,6 @@ namespace OxyPlot
 
                 //maxh = Math.Max(maxh, h);
             }
-
-
         }
 
         private void RenderLine(double x0, double y0, double x1, double y1, OxyPen pen, bool aliased = true)
@@ -203,14 +212,14 @@ namespace OxyPlot
             switch (glt)
             {
                 case TickStyle.Crossing:
-                    y0 = -ticksize * topsign;
-                    y1 = ticksize * topsign;
+                    y0 = -ticksize*topsign;
+                    y1 = ticksize*topsign;
                     break;
                 case TickStyle.Inside:
-                    y0 = -ticksize * topsign;
+                    y0 = -ticksize*topsign;
                     break;
                 case TickStyle.Outside:
-                    y1 = ticksize * topsign;
+                    y1 = ticksize*topsign;
                     break;
             }
         }
@@ -225,24 +234,17 @@ namespace OxyPlot
             switch (glt)
             {
                 case TickStyle.Crossing:
-                    x0 = -ticksize * leftSign;
-                    x1 = ticksize * leftSign;
+                    x0 = -ticksize*leftSign;
+                    x1 = ticksize*leftSign;
                     break;
                 case TickStyle.Inside:
-                    x0 = -ticksize * leftSign;
+                    x0 = -ticksize*leftSign;
                     break;
                 case TickStyle.Outside:
-                    x1 = ticksize * leftSign;
+                    x1 = ticksize*leftSign;
                     break;
             }
         }
-
-        private OxyPen minorPen;
-        private OxyPen majorPen;
-        private OxyPen minorTickPen;
-        private OxyPen majorTickPen;
-        private OxyPen zeroPen;
-        private OxyPen extraPen;
 
         public void CreatePens(Axis axis)
         {
@@ -256,15 +258,14 @@ namespace OxyPlot
 
         private void RenderHorizontalAxis(Axis axis, Axis perpendicularAxis)
         {
-
-            double y = plot.bounds.Bottom;
+            double y = Plot.bounds.Bottom;
             switch (axis.Position)
             {
                 case AxisPosition.Top:
-                    y = plot.bounds.Top;
+                    y = Plot.bounds.Top;
                     break;
                 case AxisPosition.Bottom:
-                    y = plot.bounds.Bottom;
+                    y = Plot.bounds.Bottom;
                     break;
             }
             if (axis.PositionAtZeroCrossing)
@@ -278,14 +279,14 @@ namespace OxyPlot
             {
                 GetVerticalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out y0, out y1);
 
-                foreach (double xValue in minorValues)
+                foreach (double xValue in minorTickValues)
                 {
                     if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
                     {
                         continue;
                     }
 
-                    if (majorValues.Contains(xValue))
+                    if (majorTickValues.Contains(xValue))
                     {
                         continue;
                     }
@@ -293,7 +294,7 @@ namespace OxyPlot
                     double x = axis.TransformX(xValue);
                     if (minorPen != null)
                     {
-                        RenderLine(x, plot.bounds.Top, x, plot.bounds.Bottom, minorPen);
+                        RenderLine(x, Plot.bounds.Top, x, Plot.bounds.Bottom, minorPen);
                     }
                     RenderLine(x, y + y0, x, y + y1, minorTickPen);
                 }
@@ -303,7 +304,7 @@ namespace OxyPlot
 
             double maxh = 0;
             bool istop = axis.Position == AxisPosition.Top;
-            foreach (double xValue in majorValues)
+            foreach (double xValue in majorTickValues)
             {
                 if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
                 {
@@ -314,7 +315,7 @@ namespace OxyPlot
 
                 if (majorPen != null)
                 {
-                    RenderLine(x, plot.bounds.Top, x, plot.bounds.Bottom, majorPen);
+                    RenderLine(x, Plot.bounds.Top, x, Plot.bounds.Bottom, majorPen);
                 }
                 RenderLine(x, y + y0, x, y + y1, majorTickPen);
 
@@ -325,7 +326,7 @@ namespace OxyPlot
                 string text = axis.FormatValue(xValue);
                 double h = rc.MeasureText(text, axis.FontFamily, axis.FontSize, axis.FontWeight).Height;
 
-                rc.DrawText(pt, text, plot.TextColor,
+                rc.DrawText(pt, text, Plot.TextColor,
                             axis.FontFamily, axis.FontSize, axis.FontWeight,
                             axis.Angle,
                             HorizontalTextAlign.Center, istop ? VerticalTextAlign.Bottom : VerticalTextAlign.Top);
@@ -336,34 +337,41 @@ namespace OxyPlot
             if (axis.PositionAtZeroCrossing)
             {
                 double x = axis.TransformX(0);
-                RenderLine(x, plot.bounds.Top, x, plot.bounds.Bottom, zeroPen);
+                RenderLine(x, Plot.bounds.Top, x, Plot.bounds.Bottom, zeroPen);
             }
 
             if (axis.ExtraGridlines != null)
+            {
                 foreach (double x in axis.ExtraGridlines)
                 {
+                    if (!IsWithin(x, axis.ActualMinimum, axis.ActualMaximum))
+                        continue;
                     double sx = axis.TransformX(x);
-                    RenderLine(sx, plot.bounds.Top, sx, plot.bounds.Bottom, extraPen);
+                    RenderLine(sx, Plot.bounds.Top, sx, Plot.bounds.Bottom, extraPen);
                 }
+            }
 
-            RenderLine(plot.bounds.Left, y, plot.bounds.Right, y, majorPen);
+            // The horizontal axis line
+            RenderLine(Plot.bounds.Left, y, Plot.bounds.Right, y, majorPen);
 
-            double legendX = axis.TransformX((axis.ActualMinimum + axis.ActualMaximum) / 2);
-            var halign = HorizontalTextAlign.Center;
-            var valign = VerticalTextAlign.Bottom;
+            // The horizontal axis legend (centered horizontally)
+            double legendX = axis.TransformX((axis.ActualMinimum + axis.ActualMaximum)/2);
+            HorizontalTextAlign halign = HorizontalTextAlign.Center;
+            VerticalTextAlign valign = VerticalTextAlign.Bottom;
 
             if (axis.PositionAtZeroCrossing)
             {
                 legendX = perpendicularAxis.TransformX(perpendicularAxis.ActualMaximum);
-                // halign = axis.IsReversed ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
             }
-            y = rc.Height - AXIS_LEGEND_DIST;
+
+            double legendY = rc.Height - AXIS_LEGEND_DIST;
             if (istop)
             {
-                y = AXIS_LEGEND_DIST;
+                legendY = AXIS_LEGEND_DIST;
                 valign = VerticalTextAlign.Top;
             }
-            rc.DrawText(new ScreenPoint(legendX, y), axis.Title, plot.TextColor,
+            rc.DrawText(new ScreenPoint(legendX, legendY),
+                        axis.Title, Plot.TextColor,
                         axis.FontFamily, axis.FontSize, axis.FontWeight, 0, halign, valign);
         }
 
@@ -376,14 +384,14 @@ namespace OxyPlot
 
         private void RenderVerticalAxis(Axis axis, Axis perpendicularAxis)
         {
-            double x = plot.bounds.Left;
+            double x = Plot.bounds.Left;
             switch (axis.Position)
             {
                 case AxisPosition.Left:
-                    x = plot.bounds.Left;
+                    x = Plot.bounds.Left;
                     break;
                 case AxisPosition.Right:
-                    x = plot.bounds.Right;
+                    x = Plot.bounds.Right;
                     break;
             }
             if (axis.PositionAtZeroCrossing)
@@ -394,14 +402,14 @@ namespace OxyPlot
             if (axis.ShowMinorTicks)
             {
                 GetHorizontalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out x0, out x1);
-                foreach (double yValue in minorValues)
+                foreach (double yValue in minorTickValues)
                 {
                     if (yValue < axis.ActualMinimum || yValue > axis.ActualMaximum)
                     {
                         continue;
                     }
 
-                    if (majorValues.Contains(yValue))
+                    if (majorTickValues.Contains(yValue))
                     {
                         continue;
                     }
@@ -409,7 +417,7 @@ namespace OxyPlot
 
                     if (minorPen != null)
                     {
-                        RenderLine(plot.bounds.Left, y, plot.bounds.Right, y, minorPen);
+                        RenderLine(Plot.bounds.Left, y, Plot.bounds.Right, y, minorPen);
                     }
 
                     RenderLine(x + x0, y, x + x1, y, minorTickPen);
@@ -421,7 +429,7 @@ namespace OxyPlot
 
             bool isleft = axis.Position == AxisPosition.Left;
 
-            foreach (double yValue in majorValues)
+            foreach (double yValue in majorTickValues)
             {
                 if (yValue < axis.ActualMinimum || yValue > axis.ActualMaximum)
                     continue;
@@ -430,7 +438,7 @@ namespace OxyPlot
 
                 if (majorPen != null)
                 {
-                    RenderLine(plot.bounds.Left, y, plot.bounds.Right, y, majorPen);
+                    RenderLine(Plot.bounds.Left, y, Plot.bounds.Right, y, majorPen);
                 }
 
                 RenderLine(x + x0, y, x + x1, y, majorTickPen);
@@ -441,7 +449,7 @@ namespace OxyPlot
                 var pt = new ScreenPoint(isleft ? x + x1 - TICK_DIST : x + x1 + TICK_DIST, y);
                 string text = axis.FormatValue(yValue);
                 double w = rc.MeasureText(text, axis.FontFamily, axis.FontSize, axis.FontWeight).Height;
-                rc.DrawText(pt, text, plot.TextColor,
+                rc.DrawText(pt, text, Plot.TextColor,
                             axis.FontFamily, axis.FontSize, axis.FontWeight,
                             axis.Angle,
                             isleft ? HorizontalTextAlign.Right : HorizontalTextAlign.Left, VerticalTextAlign.Middle);
@@ -451,19 +459,21 @@ namespace OxyPlot
             if (axis.PositionAtZeroCrossing)
             {
                 double y = axis.TransformX(0);
-                RenderLine(plot.bounds.Left, y, plot.bounds.Right, y, zeroPen);
+                RenderLine(Plot.bounds.Left, y, Plot.bounds.Right, y, zeroPen);
             }
 
             if (axis.ExtraGridlines != null)
                 foreach (double y in axis.ExtraGridlines)
                 {
+                    if (!IsWithin(y, axis.ActualMinimum, axis.ActualMaximum))
+                        continue;
                     double sy = axis.TransformX(y);
-                    RenderLine(plot.bounds.Left, sy, plot.bounds.Right, sy, extraPen);
+                    RenderLine(Plot.bounds.Left, sy, Plot.bounds.Right, sy, extraPen);
                 }
 
-            RenderLine(x, plot.bounds.Top, x, plot.bounds.Bottom, majorPen);
+            RenderLine(x, Plot.bounds.Top, x, Plot.bounds.Bottom, majorPen);
 
-            double ymid = axis.TransformX((axis.ActualMinimum + axis.ActualMaximum) / 2);
+            double ymid = axis.TransformX((axis.ActualMinimum + axis.ActualMaximum)/2);
 
             HorizontalTextAlign halign = HorizontalTextAlign.Center;
             VerticalTextAlign valign = VerticalTextAlign.Top;
@@ -484,9 +494,16 @@ namespace OxyPlot
                 valign = VerticalTextAlign.Bottom;
             }
 
-            rc.DrawText(new ScreenPoint(x, ymid), axis.Title, plot.TextColor,
+            rc.DrawText(new ScreenPoint(x, ymid), axis.Title, Plot.TextColor,
                         axis.FontFamily, axis.FontSize, axis.FontWeight,
                         -90, halign, valign);
+        }
+
+        private bool IsWithin(double d, double min, double max)
+        {
+            if (d < min) return false;
+            if (d > max) return false;
+            return true;
         }
     }
 }

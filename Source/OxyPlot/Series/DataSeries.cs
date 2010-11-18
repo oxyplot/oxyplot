@@ -14,17 +14,22 @@ namespace OxyPlot
     {
         protected DataSeries()
         {
-            Points = new Collection<DataPoint>();
+            points = new Collection<DataPoint>();
         }
 
         public IEnumerable ItemsSource { get; set; }
         public string DataFieldX { get; set; }
         public string DataFieldY { get; set; }
 
-        public Collection<DataPoint> Points { get; set; }
+        internal Collection<DataPoint> points;
+        public Collection<DataPoint> Points
+        {
+            get { return points; }
+            set { points = value; }
+        }
 
-        public Axis XAxis { get; internal set; }
-        public Axis YAxis { get; internal set; }
+        public Axis XAxis { get; set; }
+        public Axis YAxis { get; set; }
 
         public string XAxisKey { get; set; }
         public string YAxisKey { get; set; }
@@ -41,7 +46,7 @@ namespace OxyPlot
         internal virtual void UpdatePointsFromItemsSource()
         {
             if (ItemsSource == null) return;
-            Points.Clear();
+            points.Clear();
 
             // Get DataPoints from the items in ItemsSource 
             // if they implement IDataPointProvider
@@ -53,7 +58,7 @@ namespace OxyPlot
                     var idpp = item as IDataPointProvider;
                     if (idpp == null)
                         continue;
-                    Points.Add(idpp.GetDataPoint());
+                    points.Add(idpp.GetDataPoint());
                 }
                 return;
             }
@@ -86,7 +91,7 @@ namespace OxyPlot
 
 
                 var pp = new DataPoint(x, y);
-                Points.Add(pp);
+                points.Add(pp);
             }
         }
 
@@ -94,11 +99,11 @@ namespace OxyPlot
         {
             MinX = MinY = MaxX = MaxY = double.NaN;
 
-            if (Points == null || Points.Count == 0)
+            if (points == null || points.Count == 0)
                 return;
-            MinX = MaxX = Points[0].x;
-            MinY = MaxY = Points[0].y;
-            foreach (DataPoint pt in Points)
+            MinX = MaxX = points[0].x;
+            MinY = MaxY = points[0].y;
+            foreach (DataPoint pt in points)
             {
                 MinX = Math.Min(MinX, pt.x);
                 MaxX = Math.Max(MaxX, pt.x);
@@ -112,10 +117,10 @@ namespace OxyPlot
         {
             double mindist = double.MaxValue;
             DataPoint? pt = null;
-            foreach (var p in Points)
+            foreach (var p in points)
             {
-                double dx = p3.X - p.X;
-                double dy = p3.Y - p.Y;
+                double dx = p3.x - p.x;
+                double dy = p3.y - p.y;
                 double d2 = dx * dx + dy * dy;
 
                 if (d2 < mindist)
@@ -132,25 +137,25 @@ namespace OxyPlot
             // http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
             double mindist = double.MaxValue;
             DataPoint? pt = null;
-            for (int i = 0; i + 1 < Points.Count; i++)
+            for (int i = 0; i + 1 < points.Count; i++)
             {
-                var p1 = Points[i];
-                var p2 = Points[i + 1];
+                var p1 = points[i];
+                var p2 = points[i + 1];
 
-                double p21X = p2.X - p1.X;
-                double p21Y = p2.Y - p1.Y;
-                double u1 = (p3.X - p1.X) * p21X + (p3.Y - p1.Y) * p21Y;
+                double p21X = p2.x - p1.x;
+                double p21Y = p2.y - p1.y;
+                double u1 = (p3.x - p1.x) * p21X + (p3.y - p1.y) * p21Y;
                 double u2 = p21X * p21X + p21Y * p21Y;
                 if (u2 == 0)
                     continue; // P1 && P2 coincident
                 double u = u1 / u2;
                 if (u < 0 || u > 1)
                     continue; // outside line
-                double x = p1.X + u * p21X;
-                double y = p1.Y + u * p21Y;
+                double x = p1.x + u * p21X;
+                double y = p1.y + u * p21Y;
 
-                double dx = p3.X - x;
-                double dy = p3.Y - y;
+                double dx = p3.x - x;
+                double dy = p3.y - y;
                 double d2 = dx * dx + dy * dy;
 
                 if (d2 < mindist)
@@ -164,11 +169,11 @@ namespace OxyPlot
 
         public double? GetValueFromX(double x)
         {
-            for (int i = 0; i + 1 < Points.Count; i++)
+            for (int i = 0; i + 1 < points.Count; i++)
             {
-                if (IsBetween(x, Points[i].X, Points[i + 1].X))
+                if (IsBetween(x, points[i].x, points[i + 1].x))
                 {
-                   return Points[i].Y + (Points[i + 1].Y - Points[i].Y) / (Points[i + 1].X - Points[i].X) * (x - Points[i].X);
+                   return points[i].y + (points[i + 1].y - points[i].y) / (points[i + 1].x - points[i].x) * (x - points[i].x);
                 }
             }
             return null;
@@ -183,8 +188,10 @@ namespace OxyPlot
 
         public virtual void Render(IRenderContext rc, PlotModel model)
         {
-            var r = new SeriesRenderer(rc, model);
-            r.Render(this);
+        }
+
+        public virtual void RenderLegend(IRenderContext rc, OxyRect rect)
+        {            
         }
     }
 }
