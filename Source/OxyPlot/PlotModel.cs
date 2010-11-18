@@ -93,6 +93,7 @@ namespace OxyPlot
         public OxyColor TextColor { get; set; }
 
         public OxyColor BorderColor { get; set; }
+        public OxyColor Background { get; set; }
         public double BorderThickness { get; set; }
 
         public string Title { get; set; }
@@ -129,16 +130,19 @@ namespace OxyPlot
         /// </summary>
         private void EnsureDefaultAxes()
         {
-            foreach (Axis a in Axes)
+            DefaultXAxis = null;
+            DefaultYAxis = null;
+
+            foreach (var a in Axes)
             {
-                if (a.IsHorizontal)
+                if (a.IsHorizontal())
                 {
                     if (DefaultXAxis == null)
                     {
                         DefaultXAxis = a;
                     }
                 }
-                if (a.IsVertical)
+                if (a.IsVertical())
                 {
                     if (DefaultYAxis == null)
                     {
@@ -253,6 +257,7 @@ namespace OxyPlot
             RenderAxes(rc);
             RenderSeries(rc);
             RenderBox(rc);
+
         }
 
         public void RenderInit(IRenderContext rc)
@@ -297,7 +302,7 @@ namespace OxyPlot
             {
                 if (a.IsVisible)
                 {
-                    a.Render(rc,this);
+                    a.Render(rc, this);
                 }
             }
         }
@@ -305,8 +310,23 @@ namespace OxyPlot
         public void RenderBox(IRenderContext rc)
         {
             var pp = new PlotRenderer(rc, this);
-            pp.RenderBorder();
+            pp.RenderRect(bounds, Background, BorderColor, BorderThickness);
             pp.RenderTitle(Title, Subtitle);
+            foreach (var s in Series)
+            {
+                var ls = s as LineSeries;
+                if (ls == null)
+                    continue;
+                if (ls.Background == null)
+                    continue;
+                var axisBounds = new OxyRect(
+                    ls.XAxis.ScreenMin.X,
+                    ls.YAxis.ScreenMin.Y,
+                    ls.XAxis.ScreenMax.X - ls.XAxis.ScreenMin.X,
+                    ls.YAxis.ScreenMax.Y - ls.YAxis.ScreenMin.Y);
+                pp.RenderRect(axisBounds, ls.Background, null, 0);
+            }
+            pp.RenderLegends();
         }
 
         internal OxyRect bounds;
@@ -314,7 +334,6 @@ namespace OxyPlot
 
         public void RenderSeries(IRenderContext rc)
         {
-
             ResetDefaultColor();
             foreach (var s in Series)
             {
@@ -324,11 +343,8 @@ namespace OxyPlot
                     ls.Color = ls.MarkerFill = GetDefaultColor();
                 }
 
-                s.Render(rc,this);
+                s.Render(rc, this);
             }
-
-            var sp = new SeriesRenderer(rc, this);
-            sp.RenderLegends();
         }
 
         public void SaveSvg(string fileName, double width, double height)

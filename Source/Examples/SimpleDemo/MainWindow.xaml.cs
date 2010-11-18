@@ -73,7 +73,7 @@ namespace SimpleDemo
             vm.ChangeModel(index);
         }
 
-        private void SaveHtml_Click(object sender, RoutedEventArgs e)
+        private void SaveHtmlReport_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new SaveFileDialog();
             dlg.Filter = ".html files|*.html";
@@ -110,6 +110,18 @@ namespace SimpleDemo
         private void CopyXaml_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(plot1.ToXaml());
+        }
+
+        private void SavePdfReport_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new SaveFileDialog();
+            dlg.Filter = ".pdf files|*.pdf";
+            dlg.DefaultExt = ".pdf";
+            if (dlg.ShowDialog(this).Value)
+            {
+                vm.SaveReport(dlg.FileName);
+                OpenContainingFolder(dlg.FileName);
+            }
         }
     }
 }

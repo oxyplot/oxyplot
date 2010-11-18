@@ -11,7 +11,8 @@ namespace OxyPlot.Pdf
         private readonly PdfDocument doc;
         private readonly XGraphics g;
         private readonly PdfPage page;
-        private double FONTSIZEFACTOR = 1.0;
+        private const double FONTSIZE_FACTOR = 1.0;
+
 
         public PdfRenderContext(double width, double height)
         {
@@ -74,7 +75,7 @@ namespace OxyPlot.Pdf
             XFontStyle fs = XFontStyle.Regular;
             if (fontWeight >= 700)
                 fs = XFontStyle.Bold;
-            var font = new XFont(fontFamily, (float)fontSize * FONTSIZEFACTOR, fs);
+            var font = new XFont(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
 
             var sf = new XStringFormat();
             sf.Alignment = XStringAlignment.Near;
@@ -120,7 +121,7 @@ namespace OxyPlot.Pdf
             XFontStyle fs = XFontStyle.Regular;
             if (fontWeight >= 500)
                 fs = XFontStyle.Bold;
-            var font = new XFont(fontFamily, (float)fontSize * FONTSIZEFACTOR, fs);
+            var font = new XFont(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
 
             var sf = new XStringFormat();
             sf.Alignment = XStringAlignment.Near;

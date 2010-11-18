@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 
 namespace OxyPlot
@@ -13,6 +12,8 @@ namespace OxyPlot
         internal double Scale;
         internal ScreenPoint ScreenMax;
         internal ScreenPoint ScreenMin;
+        internal bool isVisible;
+        internal AxisPosition position;
 
         public Axis()
         {
@@ -65,25 +66,19 @@ namespace OxyPlot
 
         public string Key { get; set; }
 
-        public AxisPosition Position { get; set; }
+        public AxisPosition Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+
         public bool PositionAtZeroCrossing { get; set; }
 
-        public bool IsHorizontal
+        public bool IsVisible
         {
-            get { return Position == AxisPosition.Top || Position == AxisPosition.Bottom; }
+            get { return isVisible; }
+            set { isVisible = value; }
         }
-
-        public bool IsVertical
-        {
-            get { return Position == AxisPosition.Left || Position == AxisPosition.Right; }
-        }
-
-        public bool IsPolar
-        {
-            get { return Position == AxisPosition.Magnitude || Position == AxisPosition.Angle; }
-        }
-
-        public bool IsVisible { get; set; }
 
         public double ActualMinimum { get; set; }
         public double ActualMaximum { get; set; }
@@ -137,6 +132,31 @@ namespace OxyPlot
             get { return StartPosition > EndPosition; }
         }
 
+        #region IAxis Members
+
+        public virtual void Render(IRenderContext rc, PlotModel model)
+        {
+            var r = new AxisRenderer(rc, model);
+            r.Render(this);
+        }
+
+        #endregion
+
+        public bool IsHorizontal()
+        {
+            return position == AxisPosition.Top || position == AxisPosition.Bottom;
+        }
+
+        public bool IsVertical()
+        {
+            return position == AxisPosition.Left || position == AxisPosition.Right;
+        }
+
+        public bool IsPolar()
+        {
+            return position == AxisPosition.Magnitude || position == AxisPosition.Angle;
+        }
+
         public override string ToString()
         {
             return String.Format(CultureInfo.InvariantCulture, "{0}({1}, {2}, {3}, {4})", GetType().Name, Position,
@@ -161,13 +181,13 @@ namespace OxyPlot
             if (step <= 0)
                 throw new InvalidOperationException("Axis: Step cannot be negative.");
 
-            double x = (int)Math.Round(min / step) * step;
+            double x = (int) Math.Round(min/step)*step;
 
             var values = new Collection<double>();
             // Maximum number of iterations (in case of very small step size)
             int it = 0;
             const int maxit = 1000;
-            double epsilon = Math.Abs(max - min) * 1e-6;
+            double epsilon = Math.Abs(max - min)*1e-6;
             while (x <= max + epsilon && it++ < maxit)
             {
                 if (x >= min - epsilon && x <= max + epsilon)
@@ -188,11 +208,11 @@ namespace OxyPlot
 
         public virtual void ScaleAt(double factor, double x)
         {
-            double dx0 = (ActualMinimum - x) * Scale;
-            double dx1 = (ActualMaximum - x) * Scale;
+            double dx0 = (ActualMinimum - x)*Scale;
+            double dx1 = (ActualMaximum - x)*Scale;
             Scale *= factor;
-            Minimum = dx0 / Scale + x;
-            Maximum = dx1 / Scale + x;
+            Minimum = dx0/Scale + x;
+            Maximum = dx1/Scale + x;
         }
 
         public virtual void Zoom(double x0, double x1)
@@ -213,7 +233,8 @@ namespace OxyPlot
         public void UpdateIntervals(double dx, double dy)
         {
             double labelSize = GetLabelSize();
-            double length = IsHorizontal ? dx : dy;
+            double length = IsHorizontal() ? dx : dy;
+            length *= (EndPosition - StartPosition);
 
             if (!double.IsNaN(MajorStep))
                 ActualMajorStep = MajorStep;
@@ -223,7 +244,7 @@ namespace OxyPlot
             if (!double.IsNaN(MinorStep))
                 ActualMinorStep = MinorStep;
             else
-                ActualMinorStep = ActualMajorStep / 5;
+                ActualMinorStep = ActualMajorStep/5;
 
 
             if (double.IsNaN(ActualMinorStep))
@@ -236,15 +257,21 @@ namespace OxyPlot
 
         private double GetLabelSize()
         {
-            if (IsHorizontal)
-                return 100;
-            if (IsVertical)
-                return 30;
-            if (Position == AxisPosition.Angle)
-                return 50;
-            if (Position == AxisPosition.Magnitude)
-                return 100;
-            return 50;
+            switch (position)
+            {
+                case AxisPosition.Top:
+                case AxisPosition.Bottom:
+                    return 60;
+                case AxisPosition.Left:
+                case AxisPosition.Right:
+                    return 30;
+                case AxisPosition.Angle:
+                    return 50;
+                case AxisPosition.Magnitude:
+                    return 100;
+                default:
+                    return 50;
+            }
         }
 
         protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize)
@@ -256,16 +283,16 @@ namespace OxyPlot
         {
             int minTags = 5;
             int maxTags = 20;
-            var numberOfTags = (int)(availableSize / maxIntervalSize);
+            var numberOfTags = (int) (availableSize/maxIntervalSize);
             double range = ActualMaximum - ActualMinimum;
-            double interval = range / numberOfTags;
+            double interval = range/numberOfTags;
             const int k1 = 10;
-            interval = Math.Log10(interval / k1);
+            interval = Math.Log10(interval/k1);
             interval = Math.Ceiling(interval);
-            interval = Math.Pow(10, interval) * k1;
+            interval = Math.Pow(10, interval)*k1;
 
-            if (range / interval > maxTags) interval *= 5;
-            if (range / interval < minTags) interval *= 0.5;
+            if (range/interval > maxTags) interval *= 5;
+            if (range/interval < minTags) interval *= 0.5;
 
             if (interval <= 0) interval = 1;
             return interval;
@@ -282,12 +309,12 @@ namespace OxyPlot
         private double CalculateActualInterval2(double availableSize, double maxIntervalSize)
         {
             Func<double, double> Exponent = x => Math.Ceiling(Math.Log(x, 10));
-            Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x) - 1);
+            Func<double, double> Mantissa = x => x/Math.Pow(10, Exponent(x) - 1);
 
             // reduce intervals for horizontal axis.
-            // double maxIntervals = Orientation == AxisOrientation.X ? MaximumAxisIntervalsPer200Pixels * 0.8 : MaximumAxisIntervalsPer200Pixels;
+            // double maxIntervals = Orientation == AxisOrientation.x ? MaximumAxisIntervalsPer200Pixels * 0.8 : MaximumAxisIntervalsPer200Pixels;
             // real maximum interval count
-            double maxIntervalCount = availableSize / maxIntervalSize;
+            double maxIntervalCount = availableSize/maxIntervalSize;
 
             double range = Math.Abs(ActualMinimum - ActualMaximum);
             double interval = Math.Pow(10, Exponent(range));
@@ -296,19 +323,19 @@ namespace OxyPlot
             // decrease interval until interval count becomes less than maxIntervalCount
             while (true)
             {
-                var mantissa = (int)Mantissa(tempInterval);
+                var mantissa = (int) Mantissa(tempInterval);
                 if (mantissa == 5)
                 {
                     // reduce 5 to 2
-                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.5);
+                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval/2.5);
                 }
                 else if (mantissa == 2 || mantissa == 1 || mantissa == 10)
                 {
                     // reduce 2 to 1,10 to 5,1 to 0.5
-                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.0);
+                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval/2.0);
                 }
 
-                if (range / tempInterval > maxIntervalCount)
+                if (range/tempInterval > maxIntervalCount)
                 {
                     break;
                 }
@@ -327,7 +354,7 @@ namespace OxyPlot
         {
             if (value == 0.0 || Math.Abs((Math.Log10(Math.Abs(value)))) < 27)
             {
-                return (double)((decimal)value);
+                return (double) ((decimal) value);
             }
             return Double.Parse(value.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
         }
@@ -348,6 +375,36 @@ namespace OxyPlot
                 ActualMaximum = Math.Max(ActualMaximum, p);
         }
 
+        public void UpdateActualMaxMin()
+        {
+            if (!double.IsNaN(Maximum))
+            {
+                ActualMaximum = Maximum;
+            }
+            else
+            {
+                ActualMaximum += MaximumPadding*(ActualMaximum - ActualMinimum);
+            }
+
+            if (!double.IsNaN(Minimum))
+            {
+                ActualMinimum = Minimum;
+            }
+            else
+            {
+                ActualMinimum -= MinimumPadding*(ActualMaximum - ActualMinimum);
+            }
+
+            if (double.IsNaN(ActualMaximum))
+            {
+                ActualMaximum = 100;
+            }
+            if (double.IsNaN(ActualMinimum))
+            {
+                ActualMinimum = 0;
+            }
+        }
+
         #region Transformations
 
         protected virtual double PreTransform(double x)
@@ -362,34 +419,35 @@ namespace OxyPlot
 
         public virtual ScreenPoint Transform(double x, double y, Axis yAxis)
         {
-            Debug.Assert(yAxis != null);
-            if (IsPolar)
+            if (IsPolar())
             {
-                double r = (x - Offset) * Scale;
-                double th = yAxis != null ? (y - yAxis.Offset) * yAxis.Scale : double.NaN;
-                return new ScreenPoint(MidPoint.X + r * Math.Cos(th), MidPoint.Y + r * Math.Sin(th));
+                double r = (x - Offset)*Scale;
+                double th = yAxis != null ? (y - yAxis.Offset)*yAxis.Scale : double.NaN;
+                return new ScreenPoint(MidPoint.x + r*Math.Cos(th), MidPoint.y + r*Math.Sin(th));
             }
             if (yAxis == null)
                 return new ScreenPoint();
-            return new ScreenPoint(TransformX(x), yAxis != null ? yAxis.TransformX(y) : double.NaN);
+
+            return new ScreenPoint(TransformX(x), yAxis.TransformX(y));
         }
 
+        // todo: should write this 
+        // smarter - this is the current bottleneck for performance...
         public double TransformX(double x)
         {
-            return (PreTransform(x) - Offset) * Scale;
+            return (PreTransform(x) - Offset)*Scale;
         }
 
         public virtual DataPoint InverseTransform(double x, double y, Axis yAxis)
         {
-            Debug.Assert(yAxis != null);
-            if (IsPolar)
+            if (IsPolar())
             {
-                x -= MidPoint.X;
-                y -= MidPoint.Y;
+                x -= MidPoint.x;
+                y -= MidPoint.y;
                 double th = Math.Atan2(y, x);
-                double r = Math.Sqrt(x * x + y * y);
-                x = r / Scale + Offset;
-                y = yAxis != null ? th / yAxis.Scale + yAxis.Offset : double.NaN;
+                double r = Math.Sqrt(x*x + y*y);
+                x = r/Scale + Offset;
+                y = yAxis != null ? th/yAxis.Scale + yAxis.Offset : double.NaN;
                 return new DataPoint(x, y);
             }
 
@@ -398,7 +456,7 @@ namespace OxyPlot
 
         public double InverseTransformX(double x)
         {
-            return PostInverseTransform(x / Scale + Offset);
+            return PostInverseTransform(x/Scale + Offset);
         }
 
         public double UpdateTransform(double x0, double x1, double y0, double y1)
@@ -408,26 +466,29 @@ namespace OxyPlot
 
             if (Position == AxisPosition.Angle)
             {
-                MidPoint = new ScreenPoint((x0 + x1) / 2, (y0 + y1) / 2);
-                Scale = 2 * Math.PI / (ActualMaximum - ActualMinimum);
+                MidPoint = new ScreenPoint((x0 + x1)/2, (y0 + y1)/2);
+                Scale = 2*Math.PI/(ActualMaximum - ActualMinimum);
                 Offset = ActualMinimum;
                 return Scale;
             }
             if (Position == AxisPosition.Magnitude)
             {
                 ActualMinimum = 0;
-                MidPoint = new ScreenPoint((x0 + x1) / 2, (y0 + y1) / 2);
+                MidPoint = new ScreenPoint((x0 + x1)/2, (y0 + y1)/2);
                 double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
-                Scale = 0.5 * r / (ActualMaximum - ActualMinimum);
+                Scale = 0.5*r/(ActualMaximum - ActualMinimum);
                 Offset = ActualMinimum;
                 return Scale;
             }
-            double a0 = IsHorizontal ? x0 : y0;
-            double a1 = IsHorizontal ? x1 : y1;
+
+            double a0 = IsHorizontal() ? x0 : y0;
+            double a1 = IsHorizontal() ? x1 : y1;
 
             double dx = a1 - a0;
-            a1 = a0 + EndPosition * dx;
-            a0 = a0 + StartPosition * dx;
+            a1 = a0 + EndPosition*dx;
+            a0 = a0 + StartPosition*dx;
+            ScreenMin = new ScreenPoint(a0, a1);
+            ScreenMax = new ScreenPoint(a1, a0);
 
             if (ActualMaximum - ActualMinimum < double.Epsilon)
                 ActualMaximum = ActualMinimum + 1;
@@ -439,66 +500,30 @@ namespace OxyPlot
             if (max - min < eps) max = min + 1;
 
             if (Math.Abs(a0 - a1) != 0)
-                Offset = (a0 * max - min * a1) / (a0 - a1);
+                Offset = (a0*max - min*a1)/(a0 - a1);
             else
                 Offset = 0;
 
-            Scale = (a1 - a0) / (max - min);
+            Scale = (a1 - a0)/(max - min);
 
             return Scale;
         }
 
         public void SetScale(double scale)
         {
-            double sx1 = (ActualMaximum - Offset) * Scale;
-            double sx0 = (ActualMinimum - Offset) * Scale;
+            double sx1 = (ActualMaximum - Offset)*Scale;
+            double sx0 = (ActualMinimum - Offset)*Scale;
 
             double sgn = Math.Sign(Scale);
-            double mid = (ActualMaximum + ActualMinimum) / 2;
+            double mid = (ActualMaximum + ActualMinimum)/2;
 
-            double dx = (Offset - mid) * Scale;
-            Scale = sgn * scale;
-            Offset = dx / Scale + mid;
-            ActualMaximum = sx1 / Scale + Offset;
-            ActualMinimum = sx0 / Scale + Offset;
+            double dx = (Offset - mid)*Scale;
+            Scale = sgn*scale;
+            Offset = dx/Scale + mid;
+            ActualMaximum = sx1/Scale + Offset;
+            ActualMinimum = sx0/Scale + Offset;
         }
 
         #endregion
-
-        public virtual void Render(IRenderContext rc, PlotModel model)
-        {
-            var r = new AxisRenderer(rc, model);
-            r.Render(this);
-        }
-
-        public void UpdateActualMaxMin()
-        {
-            if (!double.IsNaN(Maximum))
-            {
-                ActualMaximum = Maximum;
-            }
-            else
-            {
-                ActualMaximum += MaximumPadding * (ActualMaximum - ActualMinimum);
-            }
-
-            if (!double.IsNaN(Minimum))
-            {
-                ActualMinimum = Minimum;
-            }
-            else
-            {
-                ActualMinimum -= MinimumPadding * (ActualMaximum - ActualMinimum);
-            }
-
-            if (double.IsNaN(ActualMaximum))
-            {
-                ActualMaximum = 100;
-            }
-            if (double.IsNaN(ActualMinimum))
-            {
-                ActualMinimum = 0;
-            }
-        }
     }
 }

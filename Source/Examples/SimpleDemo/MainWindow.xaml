@@ -8,10 +8,11 @@
             <MenuItem Header="File">
                 <MenuItem Header="Save svg..." Click="SaveSvg_Click"/>
                 <MenuItem Header="Save pdf..." Click="SavePdf_Click"/>
-                <MenuItem Header="Savg png..." Click="SavePng_Click"/>
-                <MenuItem Header="Savg xaml..." Click="SaveXaml_Click"/>
+                <MenuItem Header="Save png..." Click="SavePng_Click"/>
+                <MenuItem Header="Save xaml..." Click="SaveXaml_Click"/>
                 <Separator/>
-                <MenuItem Header="Savg html5 report..." Click="SaveHtml_Click"/>
+                <MenuItem Header="Save html5 report..." Click="SaveHtmlReport_Click"/>
+                <MenuItem Header="Save pdf report..." Click="SavePdfReport_Click"/>
                 <Separator/>
                 <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>

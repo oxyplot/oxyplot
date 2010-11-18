@@ -47,6 +47,8 @@ namespace OxyPlot.Wpf
 
         private static System.Windows.Media.Pen CreatePen(OxyColor stroke, double thickness, double[] dashArray)
         {
+            if (stroke == null)
+                return null;
             var pen = new System.Windows.Media.Pen(stroke.ToBrush(), thickness);
             if (dashArray != null)
             {

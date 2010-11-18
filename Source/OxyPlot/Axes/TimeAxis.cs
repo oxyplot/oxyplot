@@ -5,7 +5,8 @@ namespace OxyPlot
 {
     public class TimeAxis : LinearAxis
     {
-        public TimeAxis()
+        public TimeAxis(AxisPosition pos=AxisPosition.Bottom, double min=double.NaN, double max=double.NaN, string title=null)
+            :base(pos,min,max,title)
         {
             StringFormat = "m:ss";
         }

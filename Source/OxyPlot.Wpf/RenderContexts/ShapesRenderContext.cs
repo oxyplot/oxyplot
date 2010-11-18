@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -16,23 +17,28 @@ namespace OxyPlot.Wpf
         public ShapesRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
-            this.Width = canvas.ActualWidth;
-            this.Height = canvas.ActualHeight;
+            Width = canvas.ActualWidth;
+            Height = canvas.ActualHeight;
         }
 
+        #region IRenderContext Members
+
         public double Width { get; private set; }
+
         public double Height { get; private set; }
 
-
-        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, bool aliased)
+        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+                             bool aliased)
         {
             var pl = new Polyline();
             if (stroke != null)
                 pl.Stroke = new SolidColorBrush(stroke.ToColor());
             //   pl.StrokeLineJoin = PenLineJoin.Miter;
             pl.StrokeLineJoin = PenLineJoin.Round;
+            var pc = new PointCollection();
             foreach (var p in points)
-                pl.Points.Add(ToPoint(p));
+                pc.Add(ToPoint(p));
+            pl.Points = pc;
             pl.StrokeThickness = thickness;
             pl.Fill = null;
             if (dashArray != null)
@@ -44,7 +50,8 @@ namespace OxyPlot.Wpf
             canvas.Children.Add(pl);
         }
 
-        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, bool aliased)
+        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
+                                double[] dashArray, bool aliased)
         {
             var po = new Polygon();
             if (stroke != null)
@@ -52,8 +59,10 @@ namespace OxyPlot.Wpf
             if (fill != null)
                 po.Fill = new SolidColorBrush(fill.ToColor());
             po.StrokeLineJoin = PenLineJoin.Miter;
+            var pc = new PointCollection();
             foreach (var p in points)
-                po.Points.Add(ToPoint(p));
+                pc.Add(ToPoint(p));
+            po.Points = pc;
             po.StrokeThickness = thickness;
             if (dashArray != null)
                 po.StrokeDashArray = new DoubleCollection(dashArray);
@@ -64,7 +73,8 @@ namespace OxyPlot.Wpf
             canvas.Children.Add(po);
         }
 
-        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
+                                double thickness)
         {
             var el = new Ellipse();
             if (stroke != null)
@@ -80,12 +90,8 @@ namespace OxyPlot.Wpf
             canvas.Children.Add(el);
         }
 
-        private static System.Windows.Point ToPoint(ScreenPoint point)
-        {
-            return new System.Windows.Point(point.X, point.Y);
-        }
-
-        public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
+        public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
+                             double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
         {
             var tb = new TextBlock
                          {
@@ -97,9 +103,9 @@ namespace OxyPlot.Wpf
             if (fontSize > 0)
                 tb.FontSize = fontSize;
             if (fontWeight > 0)
-                tb.FontWeight = System.Windows.FontWeight.FromOpenTypeWeight((int)fontWeight);
+                tb.FontWeight = FontWeight.FromOpenTypeWeight((int)fontWeight);
 
-            tb.Measure(new System.Windows.Size(1000, 1000));
+            tb.Measure(new Size(1000, 1000));
 
             double dx = 0;
             if (halign == HorizontalTextAlign.Center)
@@ -141,11 +147,18 @@ namespace OxyPlot.Wpf
             if (fontSize > 0)
                 tb.FontSize = fontSize;
             if (fontWeight > 0)
-                tb.FontWeight = System.Windows.FontWeight.FromOpenTypeWeight((int)fontWeight);
+                tb.FontWeight = FontWeight.FromOpenTypeWeight((int)fontWeight);
 
-            tb.Measure(new System.Windows.Size(1000, 1000));
+            tb.Measure(new Size(1000, 1000));
 
             return new OxySize(tb.DesiredSize.Width, tb.DesiredSize.Height);
+        }
+
+        #endregion
+
+        private static Point ToPoint(ScreenPoint point)
+        {
+            return new Point(point.X, point.Y);
         }
     }
 }

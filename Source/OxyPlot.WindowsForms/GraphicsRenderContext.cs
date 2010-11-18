@@ -10,7 +10,8 @@ namespace Oxyplot.WindowsForms
     {
         private readonly Graphics g;
         private readonly PlotControl pc;
-        private float FONTSIZEFACTOR = 0.8f;
+        private const float FONTSIZE_FACTOR = 0.8f;
+
 
         public GraphicsRenderContext(PlotControl pc, Graphics graphics, Rectangle clipRectangle)
         {
@@ -71,7 +72,7 @@ namespace Oxyplot.WindowsForms
             FontStyle fs = FontStyle.Regular;
             if (fontWeight >= 700)
                 fs = FontStyle.Bold;
-            var font = new Font(fontFamily, (float)fontSize * FONTSIZEFACTOR, fs);
+            var font = new Font(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
 
             var sf = new StringFormat();
             sf.Alignment = StringAlignment.Near;
@@ -121,7 +122,7 @@ namespace Oxyplot.WindowsForms
             FontStyle fs = FontStyle.Regular;
             if (fontWeight >= 500)
                 fs = FontStyle.Bold;
-            var font = new Font(fontFamily, (float)fontSize * FONTSIZEFACTOR, fs);
+            var font = new Font(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
 
             var sf = new StringFormat();
             sf.Alignment = StringAlignment.Near;

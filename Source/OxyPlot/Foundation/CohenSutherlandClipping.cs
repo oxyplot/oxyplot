@@ -1,4 +1,6 @@
-﻿namespace OxyPlot
+﻿using System;
+
+namespace OxyPlot
 {
     /// <summary>
     /// http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland
@@ -124,6 +126,31 @@
                 }
             }
             return accept;
+        }
+
+        public bool IsInside(double x, double y)
+        {
+            return ComputeOutCode(x, y) == INSIDE;
+        }
+
+        public bool IsInside(ScreenPoint s)
+        {
+            return ComputeOutCode(s.X, s.Y) == INSIDE;
+        }
+
+        /// <summary>
+        /// Cohen–Sutherland clipping algorithm clips a line from
+        /// P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with 
+        /// diagonal from (xmin, ymin) to (xmax, ymax).
+        /// </summary>
+        /// <param name="x0"></param>
+        /// <param name="y0"></param>
+        /// <param name="x1"></param>
+        /// <param name="y1"></param>
+        /// <returns>true if the line is inside</returns>
+        public bool ClipLine(ref ScreenPoint s0, ref ScreenPoint s1)
+        {
+            return ClipLine(ref s0.x, ref s0.y, ref s1.x, ref s1.y);
         }
     }
 }
