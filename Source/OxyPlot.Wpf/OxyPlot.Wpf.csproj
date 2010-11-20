@@ -51,9 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axes\Axis.cs" />
+    <Compile Include="Axes\TimeAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
-    <Compile Include="Axes\RangeAxis.cs" />
     <Compile Include="RenderContexts\DrawingRenderContext.cs" />
     <Compile Include="MouseActions\MouseAction.cs" />
     <Compile Include="MouseActions\PanAction.cs" />
@@ -98,6 +98,12 @@
       <Project>{87F519B8-5A2F-48C6-AD53-C5F13A82EA6B}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

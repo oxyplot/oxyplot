@@ -1,7 +1,10 @@
 ﻿namespace OxyPlot.Wpf
 {
-    public class LinearAxis : RangeAxis
+    public class LinearAxis : Axis
     {
-
+        public LinearAxis()
+        {
+            ModelAxis = new OxyPlot.LinearAxis();
+        }
     }
 }

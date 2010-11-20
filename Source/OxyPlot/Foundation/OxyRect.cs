@@ -1,18 +1,21 @@
-﻿namespace OxyPlot
+﻿using System.Diagnostics;
+
+namespace OxyPlot
 {
     public struct OxyRect
     {
-        private double bottom;
         private double left;
-        private double right;
         private double top;
+        private double width;
+        private double height;
 
         public OxyRect(double left, double top, double width, double height)
         {
             this.left = left;
             this.top = top;
-            this.right= left+width;
-            this.bottom = top+height;
+            this.width = width;
+            this.height = height;
+            Debug.Assert(width >= 0 && height >= 0);
         }
 
         public double Top
@@ -23,8 +26,8 @@
 
         public double Bottom
         {
-            get { return bottom; }
-            set { bottom = value; }
+            get { return top + height; }
+            set { height = value - top; }
         }
 
         public double Left
@@ -35,18 +38,20 @@
 
         public double Right
         {
-            get { return right; }
-            set { right = value; }
+            get { return left + width; }
+            set { width = value - left; }
         }
 
         public double Width
         {
-            get { return Right - Left; }
+            get { return width; }
+            set { width = value; }
         }
 
         public double Height
         {
-            get { return Bottom - Top; }
+            get { return height; }
+            set { height = value; }
         }
     }
 }

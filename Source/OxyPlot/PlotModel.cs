@@ -19,8 +19,10 @@ namespace OxyPlot
         internal Axis DefaultMagnitudeAxis;
         internal Axis DefaultXAxis;
         internal Axis DefaultYAxis;
+        internal OxyRect bounds;
 
         private int currentColorIndex;
+        internal ScreenPoint midPoint;
 
         public PlotModel(string title = null, string subtitle = null)
         {
@@ -30,18 +32,20 @@ namespace OxyPlot
             PlotType = PlotType.Cartesian;
             Axes = new Collection<Axis>();
             Series = new Collection<DataSeries>();
-            MarginLeft = 60;
-            MarginTop = 60;
-            MarginBottom = 50;
-            MarginRight = 30;
+
+            LegendPosition = LegendPosition.TopRight;
+            IsLegendOutsidePlotArea = false;
+
+            AxisMargins = new OxyThickness(60, 60, 50, 50);
+
             TitleFont = DEFAULT_FONT;
             TitleFontSize = 18;
             SubtitleFontSize = 14;
             TitleFontWeight = 800;
             SubtitleFontWeight = 500;
             TextColor = OxyColors.Black;
-            BorderColor = OxyColors.Black;
-            BorderThickness = 2;
+            BoxColor = OxyColors.Black;
+            BoxThickness = 1;
 
             LegendFont = DEFAULT_FONT;
             LegendFontSize = 12;
@@ -63,6 +67,9 @@ namespace OxyPlot
                                 };
         }
 
+        public LegendPosition LegendPosition { get; set; }
+        public bool IsLegendOutsidePlotArea { get; set; }
+
         public PlotType PlotType { get; set; }
 
         public List<OxyColor> DefaultColors { get; set; }
@@ -80,21 +87,17 @@ namespace OxyPlot
         public double LegendFontSize { get; set; }
         public double LegendLineLength { get; set; }
 
-        public double MarginLeft { get; set; }
-        public double MarginRight { get; set; }
-        public double MarginTop { get; set; }
-        public double MarginBottom { get; set; }
-
-        public double Margins
-        {
-            set { MarginLeft = MarginRight = MarginTop = MarginBottom = value; }
-        }
+        //public double MarginLeft { get; set; }
+        //public double MarginRight { get; set; }
+        //public double MarginTop { get; set; }
+        //public double MarginBottom { get; set; }
+        public OxyThickness AxisMargins { get; set; }
 
         public OxyColor TextColor { get; set; }
 
-        public OxyColor BorderColor { get; set; }
+        public OxyColor BoxColor { get; set; }
         public OxyColor Background { get; set; }
-        public double BorderThickness { get; set; }
+        public double BoxThickness { get; set; }
 
         public string Title { get; set; }
         public string Subtitle { get; set; }
@@ -133,7 +136,7 @@ namespace OxyPlot
             DefaultXAxis = null;
             DefaultYAxis = null;
 
-            foreach (var a in Axes)
+            foreach (Axis a in Axes)
             {
                 if (a.IsHorizontal())
                 {
@@ -231,12 +234,12 @@ namespace OxyPlot
         /// </summary>
         private void UpdateMaxMin()
         {
-            foreach (var a in Axes)
+            foreach (Axis a in Axes)
             {
                 a.ActualMaximum = double.NaN;
                 a.ActualMinimum = double.NaN;
             }
-            foreach (var s in Series)
+            foreach (DataSeries s in Series)
             {
                 s.UpdateMaxMin();
                 s.XAxis.Include(s.MinX);
@@ -244,7 +247,7 @@ namespace OxyPlot
                 s.YAxis.Include(s.MinY);
                 s.YAxis.Include(s.MaxY);
             }
-            foreach (var a in Axes)
+            foreach (Axis a in Axes)
             {
                 a.UpdateActualMaxMin();
             }
@@ -257,48 +260,82 @@ namespace OxyPlot
             RenderAxes(rc);
             RenderSeries(rc);
             RenderBox(rc);
-
         }
 
         public void RenderInit(IRenderContext rc)
         {
+
             bounds = new OxyRect
+                         {
+                             Left = AxisMargins.Left,
+                             Width = rc.Width - AxisMargins.Left - AxisMargins.Right,
+                             Top = AxisMargins.Top,
+                             Height = rc.Height - AxisMargins.Top - AxisMargins.Bottom
+                         };
+
+            // todo...
+            /*
+            // check the length of the maximum/minimum labels and 
+            // extended margins if neccessary
+            foreach (var axis in Axes)
             {
-                Left = MarginLeft,
-                Right = rc.Width - MarginRight,
-                Top = MarginTop,
-                Bottom = rc.Height - MarginBottom
-            };
+                if (!axis.IsVertical())
+                    continue;
+
+                double x = axis.ActualMaximum;
+                x = (int)(x / axis.ActualMajorStep)*axis.ActualMajorStep;
+                x = Axis.RemoveNoiseFromDoubleMath(x);
+                 
+                var smax = axis.FormatValue(x);
+                var smin = axis.FormatValue(x);
+                var sizeMax = rc.MeasureText(smax, axis.FontFamily, axis.FontSize, axis.FontWeight);
+                var sizeMin = rc.MeasureText(smin, axis.FontFamily, axis.FontSize, axis.FontWeight);
+                var maxWidth = Math.Max(sizeMax.Width, sizeMin.Width)+axis.MajorTickSize*2;
+
+                if (axis.Position == AxisPosition.Left)
+                {
+                    if (maxWidth > bounds.Left)
+                    {
+                        double r = bounds.Right;
+                        bounds.Left = maxWidth;
+                        bounds.Right = r;
+                    }
+                }
+                if (axis.Position == AxisPosition.Right)
+                {
+                    if (maxWidth > rc.Width - bounds.Right)
+                        bounds.Right = rc.Width - maxWidth;
+                }
+            }
+              */         
             midPoint = new ScreenPoint((bounds.Left + bounds.Right) * 0.5, (bounds.Top + bounds.Bottom) * 0.5);
         }
 
         public void RenderAxes(IRenderContext rc)
         {
-            double x0 = bounds.Left;
-            double x1 = bounds.Right;
-            double y0 = bounds.Bottom;
-            double y1 = bounds.Top;
-
             // Update the transforms
-            double minimumScale = double.MaxValue;
-            foreach (var a in Axes)
+            foreach (Axis a in Axes)
             {
-                double s = a.UpdateTransform(x0, x1, y0, y1);
-                minimumScale = Math.Min(minimumScale, Math.Abs(s));
+                a.UpdateTransform(bounds);
             }
 
+            // Set the same scaling to all axes if CartesianAxes is selected
             if (CartesianAxes)
             {
-                foreach (var a in Axes)
+                double minimumScale = double.MaxValue;
+                foreach (Axis a in Axes)
+                    minimumScale = Math.Min(minimumScale, Math.Abs(a.Scale));
+                foreach (Axis a in Axes)
                     a.SetScale(minimumScale);
             }
 
-            foreach (var a in Axes)
+            // Update the intervals for all axes
+            foreach (Axis a in Axes)
             {
-                a.UpdateIntervals(x1 - x0, y0 - y1);
+                a.UpdateIntervals(bounds.Width, bounds.Height);
             }
 
-            foreach (var a in Axes)
+            foreach (Axis a in Axes)
             {
                 if (a.IsVisible)
                 {
@@ -310,9 +347,9 @@ namespace OxyPlot
         public void RenderBox(IRenderContext rc)
         {
             var pp = new PlotRenderer(rc, this);
-            pp.RenderRect(bounds, Background, BorderColor, BorderThickness);
+            pp.RenderRect(bounds, Background, BoxColor, BoxThickness);
             pp.RenderTitle(Title, Subtitle);
-            foreach (var s in Series)
+            foreach (DataSeries s in Series)
             {
                 var ls = s as LineSeries;
                 if (ls == null)
@@ -329,13 +366,10 @@ namespace OxyPlot
             pp.RenderLegends();
         }
 
-        internal OxyRect bounds;
-        internal ScreenPoint midPoint;
-
         public void RenderSeries(IRenderContext rc)
         {
             ResetDefaultColor();
-            foreach (var s in Series)
+            foreach (DataSeries s in Series)
             {
                 var ls = s as LineSeries;
                 if (ls != null && ls.Color == null)

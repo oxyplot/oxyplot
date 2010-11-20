@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace OxyPlot
 {
+    /// <summary>
+    /// LineSeries are rendered to a polyline.
+    /// </summary>
     public class LineSeries : DataSeries
     {
         public LineSeries()
@@ -28,12 +32,21 @@ namespace OxyPlot
             this.Title = title;
         }
 
+        /// <summary>
+        /// Gets or sets the background of the series.
+        /// The background area is defined by the x and y axes.
+        /// </summary>
+        /// <value>The background.</value>
         public OxyColor Background { get; set; }
 
+        /// <summary>
+        /// Gets or sets the color of the curve.
+        /// </summary>
+        /// <value>The color.</value>
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the stroke thickness.
+        /// Gets or sets the thickness of the curve.
         /// </summary>
         /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
@@ -81,7 +94,6 @@ namespace OxyPlot
         /// <value>The marker fill.</value>
         public OxyColor MarkerFill { get; set; }
 
-
         /// <summary>
         /// Gets or sets the minimum length of the segment.
         /// Increasing this number will increase performance, 
@@ -96,38 +108,42 @@ namespace OxyPlot
 
             if (points.Count == 0)
                 return;
+            Debug.Assert(XAxis != null && YAxis != null);
 
-            double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
+            double minDistSquared = MinimumSegmentLength*MinimumSegmentLength;
 
-            var clipping = new CohenSutherlandClipping(XAxis.ScreenMin.x, XAxis.ScreenMax.x,
-                                                       YAxis.ScreenMin.y, YAxis.ScreenMax.y);
+            var clipping = new CohenSutherlandClipping(
+                XAxis.ScreenMin.X, XAxis.ScreenMax.X,
+                YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);
 
-            // Transform all points
             int n = points.Count;
-            var markerPoints = new ScreenPoint[n];
 
+            // Transform all points to screen coordinates
+            var markerPoints = new ScreenPoint[n];
             for (int i = 0; i < n; i++)
                 markerPoints[i] = XAxis.Transform(points[i].x, points[i].y, YAxis);
 
-
-            ScreenPoint[] SP;
+            // spline smoothing (should only be used on small datasets)
+            // todo: could do spline smoothing only on the visible part of the curve... more difficult...
+            ScreenPoint[] spts;
             if (Smooth)
             {
-                SP = CanonicalSplineHelper.CreateSpline(markerPoints, 0.5, null, false, 0.25).ToArray();
+                spts = CanonicalSplineHelper.CreateSpline(markerPoints, 0.5, null, false, 0.25).ToArray();
             }
             else
             {
-                SP = markerPoints;
+                spts = markerPoints;
             }
 
+            // clip the line segments with the clipping rectangle
             var pts = new List<ScreenPoint>();
-            var s0 = SP[0];
-            var last = SP[0];
+            var s0 = spts[0];
+            var last = spts[0];
 
-            n = SP.Length;
+            n = spts.Length;
             for (int i = 1; i < n; i++)
             {
-                var s1 = SP[i];
+                var s1 = spts[i];
 
                 var s0c = s0;
                 var s1c = s1;
@@ -145,44 +161,29 @@ namespace OxyPlot
                 double dx = s0c.x - last.x;
                 double dy = s1c.y - last.y;
 
-                if (dx * dx + dy * dy > minDistSquared || i == 0)
+                if (dx*dx + dy*dy > minDistSquared || i == 0)
                 {
-                if (!s0c.Equals(last) || i == 1)
-                    pts.Add(s0c);
-                pts.Add(s1c);
-                last = s1c;
-            }
+                    if (!s0c.Equals(last) || i == 1)
+                        pts.Add(s0c);
+                    pts.Add(s1c);
+                    last = s1c;
+                }
 
-            // render the line if we are leaving the clipping region););
+                // render the line if we are leaving the clipping region););
                 if (!clipping.IsInside(s1))
                 {
                     RenderLine(rc, pts);
                     pts.Clear();
-                    continue;
                 }
-
-                continue;
-                // always add the first and last point
-                //if (i==0 || i == n - 1)
-                //{
-                //    pts.Add(s1c);
-                //    s0 = s1c;
-                //}
-                //else
-                //{
-                //    double dx = s1.x - s0.x;
-                //    double dy = s1.y - s0.y;
-                //    if (dx * dx + dy * dy > minDistSquared)
-                //    {
-                //        s0 = s1;
-                //        if (clipping.IsInside(s1))
-                //            pts.Add(s1);
-                //    }
-                //}
             }
 
             RenderLine(rc, pts);
 
+            RenderMarkers(rc, markerPoints,clipping);
+        }
+
+        protected void RenderMarkers(IRenderContext rc, ScreenPoint[] markerPoints, CohenSutherlandClipping clipping)
+        {
             if (MarkerType != MarkerType.None)
             {
                 foreach (var p in markerPoints)
@@ -320,13 +321,19 @@ namespace OxyPlot
             }
         }
 
-        public override void RenderLegend(IRenderContext rc, OxyRect rect)
+        /// <summary>
+        /// Renders the legend symbol for the line series on the 
+        /// specified rendering context.
+        /// </summary>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="legendBox">The bounding rectangle of the legend box.</param>
+        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (rect.Left + rect.Right) / 2;
-            double ymid = (rect.Top + rect.Bottom) / 2;
+            double xmid = (legendBox.Left + legendBox.Right) / 2;
+            double ymid = (legendBox.Top + legendBox.Bottom) / 2;
             var pts = new[] { 
-                new ScreenPoint(rect.Left,ymid), 
-                new ScreenPoint(rect.Right,ymid) };
+                new ScreenPoint(legendBox.Left,ymid), 
+                new ScreenPoint(legendBox.Right,ymid) };
             rc.DrawLine(pts, Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
             var pm = new ScreenPoint(xmid, ymid);
             RenderMarker(rc, MarkerType, pm, MarkerSize, MarkerFill, MarkerStroke, MarkerStrokeThickness);

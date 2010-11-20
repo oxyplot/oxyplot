@@ -5,8 +5,14 @@ namespace OxyPlot
 {
     public class TimeAxis : LinearAxis
     {
-        public TimeAxis(AxisPosition pos=AxisPosition.Bottom, double min=double.NaN, double max=double.NaN, string title=null)
-            :base(pos,min,max,title)
+        public TimeAxis(AxisPosition pos, string title = null, string format = "m:ss")
+            : base(pos, title)
+        {
+            StringFormat = "m:ss";
+        }
+
+        public TimeAxis(AxisPosition pos = AxisPosition.Bottom, double min = double.NaN, double max = double.NaN, string title = null)
+            : base(pos, min, max, title)
         {
             StringFormat = "m:ss";
         }
@@ -15,6 +21,9 @@ namespace OxyPlot
         {
             TimeSpan span = TimeSpan.FromSeconds(x);
             string s = ActualStringFormat;
+            if (s == null)
+                s = "h:mm:ss";
+
             s = s.Replace("mm", span.Minutes.ToString("00"));
             s = s.Replace("ss", span.Seconds.ToString("00"));
             s = s.Replace("hh", span.Hours.ToString("00"));

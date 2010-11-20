@@ -14,7 +14,7 @@ namespace PolarDemo
             InitializeComponent();
             var model = new PlotModel("Polar plot", "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π");
             model.PlotType = PlotType.Polar;
-            model.BorderThickness = 0;
+            model.BoxThickness = 0;
             model.Axes.Add(
                 new LinearAxis(AxisPosition.Angle, 0, Math.PI*2, Math.PI/4, Math.PI/16)
                     {

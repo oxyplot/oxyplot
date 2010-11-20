@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace OxyPlot
@@ -17,83 +18,128 @@ namespace OxyPlot
         public OxyColor Fill { get; set; }
 
         /// <summary>
-        /// Gets or sets the data field used to find 
-        /// the basis values of the area.
+        /// Gets or sets the second Y data field.
         /// </summary>
-        /// <value>The data field base.</value>
-        public string DataFieldBase { get; set; }
+        /// <value>The data field x2.</value>
+        public string DataFieldX2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the constant baseline.
+        /// Gets or sets the second X data field.
+        /// </summary>
+        /// <value>The data field y2.</value>
+        public string DataFieldY2 { get; set; }
+
+        /// <summary>
+        /// Gets or sets a constant baseline (e.g. Y=0)
         /// This is used if DataFieldBase and BaselineValues are null.
         /// </summary>
         /// <value>The baseline.</value>
-        public double Baseline { get; set; }
+        public double ConstantY2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the baseline values.
+        /// Gets or sets the points.
         /// </summary>
-        /// <value>The baseline values.</value>
-        public Collection<double> BaselineValues { get; set; }
+        /// <value>The points.</value>
+        public Collection<DataPoint> Points2
+        {
+            get { return points2; }
+            set { points2 = value; }
+        }
+
+        internal Collection<DataPoint> points2;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the second 
+        /// data collection should be reversed.
+        /// The first dataset is not reversed, and normally
+        /// the second dataset must be reversed to get a 
+        /// closed polygon.
+        /// </summary>
+        public bool Reverse2 { get; set; }
 
         public AreaSeries()
         {
-            BaselineValues = new Collection<double>();
+            points = new Collection<DataPoint>();
+            Reverse2 = true;
         }
 
-        internal override void UpdatePointsFromItemsSource()
+        internal virtual void UpdatePointsFromItemsSource()
         {
-            base.UpdatePointsFromItemsSource();
-
             if (ItemsSource == null) return;
-            BaselineValues.Clear();
+            points2.Clear();
 
-            // Do nothing if ItemsSource is set before DataFields are set
-            if (DataFieldBase == null)
-                return;
+            // Get DataPoints from the items in ItemsSource 
+            // if they implement IDataPointProvider
+            // If DataFields are set, this is not used
+            //if (DataFieldX == null || DataFieldY == null)
+            //{
+            //    foreach (object item in ItemsSource)
+            //    {
+            //        var idpp = item as IDataPointProvider;
+            //        if (idpp == null)
+            //            continue;
+            //        points.Add(idpp.GetDataPoint());
+            //    }
+            //    return;
+            //}
 
+            // Using reflection on DataFieldX2 and DataFieldY2
+
+            PropertyInfo pix = null;
             PropertyInfo piy = null;
             Type t = null;
 
             foreach (object o in ItemsSource)
             {
-                if (piy == null || o.GetType() != t)
+                if (pix == null || o.GetType() != t)
                 {
                     t = o.GetType();
-                    piy = t.GetProperty(DataFieldBase);
+                    pix = t.GetProperty(DataFieldX2);
+                    piy = t.GetProperty(DataFieldY2);
+                    if (pix == null)
+                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
+                                                                          DataFieldX2, t));
                     if (piy == null)
                         throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
-                                                                          DataFieldBase, t));
+                                                                          DataFieldY2, t));
                 }
+                var x = (double)pix.GetValue(o, null);
                 var y = (double)piy.GetValue(o, null);
 
-                BaselineValues.Add(y);
+
+                var pp = new DataPoint(x, y);
+                points2.Add(pp);
             }
         }
+
         public override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
 
-            if (BaselineValues != null)
-                foreach (double d in BaselineValues)
+                foreach (var pt in points2)
                 {
-                    MinY = Math.Min(MinY, d);
-                    MaxY = Math.Max(MaxY, d);
+                    MinX = Math.Min(MinX, pt.x);
+                    MaxX = Math.Max(MaxX, pt.x);
+
+                    MinY = Math.Min(MinY, pt.y);
+                    MaxY = Math.Max(MaxY, pt.y);
                 }
         }
 
         public override void Render(IRenderContext rc, PlotModel model)
         {
             // base.Render(rc, model);
-            if (Points.Count == 0)
+            if (points.Count == 0)
                 return;
+            Debug.Assert(XAxis != null && YAxis != null);
 
             double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
 
             // todo: polygon clipping...
 
-            var clipping = new CohenSutherlandClipping(XAxis.ScreenMin.x, XAxis.ScreenMax.x,
-                                                       YAxis.ScreenMin.y, YAxis.ScreenMax.y);
+            var clipping = new CohenSutherlandClipping(
+                XAxis.ScreenMin.X, XAxis.ScreenMax.X,                                                       
+                YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);
 
             var pts0 = new List<ScreenPoint>();
             var pts1 = new List<ScreenPoint>();
@@ -146,10 +192,14 @@ namespace OxyPlot
 
             for (int i = 0; i < n; i++)
             {
-                double b = Baseline;
-                if (i < BaselineValues.Count)
-                    b = BaselineValues[i];
-                var pt2 = new ScreenPoint(Points[i].x, b);
+                double x2 = Points[i].x;
+                double y2 = ConstantY2;
+                if (i < Points2.Count)
+                {
+                    x2 = Points2[i].x;
+                    y2 = Points2[i].y;
+                }
+                var pt2 = new ScreenPoint(x2, y2);
 
                 var s2 = XAxis.Transform(pt2.x, pt2.y, YAxis);
 
@@ -188,7 +238,8 @@ namespace OxyPlot
                 }
             }
 
-            pts1.Reverse();
+            if (Reverse2)
+                pts1.Reverse();
 
             if (Smooth)
             {

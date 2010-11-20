@@ -15,6 +15,14 @@ namespace OxyPlot
         Magnitude
     } ;
 
+    public enum LegendPosition
+    {
+        TopLeft,
+        BottomLeft,
+        TopRight,
+        BottomRight
+    }
+
     public enum TickStyle
     {
         Crossing,
