@@ -18,7 +18,7 @@ namespace OxyPlot
             OxySize size1 = rc.MeasureText(title, plot.TitleFont, plot.TitleFontSize, plot.TitleFontWeight);
             OxySize size2 = rc.MeasureText(subtitle, plot.TitleFont, plot.TitleFontSize, plot.TitleFontWeight);
             double height = size1.Height + size2.Height;
-            double dy = (plot.MarginTop - height) * 0.5;
+            double dy = (plot.AxisMargins.Top - height) * 0.5;
             double dx = (plot.bounds.Left + plot.bounds.Right) * 0.5;
 
             if (!String.IsNullOrEmpty(title))
@@ -53,6 +53,7 @@ namespace OxyPlot
             double maxHeight = 0;
             double totalHeight = 0;
 
+            // Measure
             foreach (var s in plot.Series)
             {
                 if (String.IsNullOrEmpty(s.Title))
@@ -63,21 +64,69 @@ namespace OxyPlot
                 totalHeight += oxySize.Height;
             }
 
-            double length = plot.LegendLineLength;
-            double x0 = plot.bounds.Right - LEGEND_PADDING;
-            double y0 = plot.bounds.Top + LEGEND_PADDING + maxHeight / 2;
+            double lineLength = plot.LegendLineLength;
+
+            // Arrange
+            double x0 = double.NaN, x1 = double.NaN, y0 = double.NaN;
+
+            //   padding          padding
+            //          lineLength
+            // y0       -----o----       seriesName
+            //          x0               x1
+            
+            double sign = 1;
+            if (plot.IsLegendOutsidePlotArea)
+                sign = -1;
+
+            // Horizontal alignment
+            HorizontalTextAlign ha = HorizontalTextAlign.Left;
+            switch (plot.LegendPosition)
+            {
+                case LegendPosition.TopRight:
+                case LegendPosition.BottomRight:
+                    x0 = plot.bounds.Right - LEGEND_PADDING * sign;
+                    x1 = x0 - lineLength * sign - LEGEND_PADDING * sign;
+                    ha = sign == 1 ? HorizontalTextAlign.Right : HorizontalTextAlign.Left;
+                    break;
+                case LegendPosition.TopLeft:
+                case LegendPosition.BottomLeft:
+                    x0 = plot.bounds.Left + LEGEND_PADDING * sign;
+                    x1 = x0 + lineLength * sign + LEGEND_PADDING * sign;
+                    ha = sign == 1 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
+                    break;
+            }
+
+            // Vertical alignment
+            VerticalTextAlign va = VerticalTextAlign.Middle;
+            switch (plot.LegendPosition)
+            {
+                case LegendPosition.TopRight:
+                case LegendPosition.TopLeft:
+                    y0 = plot.bounds.Top + LEGEND_PADDING + maxHeight / 2;
+                    break;
+                case LegendPosition.BottomRight:
+                case LegendPosition.BottomLeft:
+                    y0 = plot.bounds.Bottom - maxHeight + LEGEND_PADDING;
+                    break;
+            }
 
             foreach (var s in plot.Series)
             {
                 if (String.IsNullOrEmpty(s.Title))
                     continue;
-                rc.DrawText(new ScreenPoint(x0 - length - LEGEND_PADDING, y0),
+                rc.DrawText(new ScreenPoint(x1, y0),
                             s.Title, plot.TextColor,
                             plot.LegendFont, plot.LegendFontSize, 500, 0,
-                            HorizontalTextAlign.Right, VerticalTextAlign.Middle);
-                var rect = new OxyRect(x0 - length, y0 - maxHeight / 2, length, maxHeight);
+                            ha, va);
+                OxyRect rect = new OxyRect(x0 - lineLength, y0 - maxHeight / 2, lineLength, maxHeight);
+                if (ha == HorizontalTextAlign.Left)
+                    rect = new OxyRect(x0, y0 - maxHeight / 2, lineLength, maxHeight);
+
                 s.RenderLegend(rc, rect);
-                y0 += maxHeight;
+                if (plot.LegendPosition == LegendPosition.TopLeft || plot.LegendPosition == LegendPosition.TopRight)
+                    y0 += maxHeight;
+                else
+                    y0 -= maxHeight;
             }
         }
     }

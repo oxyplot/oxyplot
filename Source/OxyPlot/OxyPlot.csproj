@@ -46,6 +46,7 @@
     <Compile Include="Axes\Axis.cs" />
     <Compile Include="Axes\TimeAxis.cs" />
     <Compile Include="Foundation\CanonicalSplineHelper.cs" />
+    <Compile Include="Foundation\OxyThickness.cs" />
     <Compile Include="Foundation\ScreenPoint.cs" />
     <Compile Include="Foundation\OxyRect.cs" />
     <Compile Include="Foundation\OxySize.cs" />

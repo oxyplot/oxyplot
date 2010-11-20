@@ -10,6 +10,12 @@
 
         }
 
+        public LinearAxis(AxisPosition pos, string title)
+        {
+            this.Position = pos;
+            this.Title = title;
+        }
+
         public LinearAxis(AxisPosition pos, double minimum = double.NaN, double maximum = double.NaN, string title = null)
             : this(pos, minimum, maximum, double.NaN, double.NaN, title)
         {

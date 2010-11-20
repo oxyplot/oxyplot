@@ -136,7 +136,7 @@ namespace SimpleDemo
             plot.Series.Add(ls);
             plot.Axes.Add(new LinearAxis
                               {
-                                  Title = "Y-axis",
+                                  Title = "Y",
                                   Position = AxisPosition.Left,
                                   MaximumPadding = 0.3,
                                   MinimumPadding = 0.3,
@@ -144,7 +144,7 @@ namespace SimpleDemo
                               });
             plot.Axes.Add(new LinearAxis
                               {
-                                  Title = "X-axis",
+                                  Title = "X",
                                   Position = AxisPosition.Bottom,
                                   MajorGridlineStyle = LineStyle.Solid
                               });
@@ -387,7 +387,7 @@ namespace SimpleDemo
                 main.AddTable("Data", s.Points, fields);
             }
 
-            const string style = 
+            const string style =
 @"body { font-family: Verdana,Arial; margin:20pt; }
 table { border: solid 1px black; margin: 8pt; border-collapse:collapse; }
 td { padding: 0 2pt 0 2pt; border-left: solid 1px black; border-right: solid 1px black;}
@@ -399,11 +399,11 @@ thead { border:solid 1px black; }
 .table thead td { padding: 2pt;}";
 
             string ext = Path.GetExtension(fileName).ToLower();
-            if (ext==".html")
-            using (var hw = new HtmlReportWriter(fileName, "OxyPlot example file", null, style))
-            {
-                r.Write(hw);
-            }
+            if (ext == ".html")
+                using (var hw = new HtmlReportWriter(fileName, "OxyPlot example file", null, style))
+                {
+                    r.Write(hw);
+                }
 
             if (ext == ".pdf")
                 using (var pw = new PdfReportWriter(fileName))

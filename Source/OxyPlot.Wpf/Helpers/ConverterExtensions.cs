@@ -6,7 +6,7 @@ namespace OxyPlot.Wpf
 {
     internal static class ConverterExtensions
     {
-        public static OxyColor ToModelColor(this System.Windows.Media.Color color)
+        public static OxyColor ToOxyColor(this System.Windows.Media.Color color)
         {
             return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
         }

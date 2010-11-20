@@ -40,7 +40,7 @@ namespace HistogramDemo
             pm.Series.Add(redLine);
             pm.Series.Add(greenLine);
             pm.Series.Add(blueLine);
-            pm.Margins = 40;
+            pm.AxisMargins = new OxyThickness(40);
             pm.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 1, 0.2, 0.05, "Frequency"));
             pm.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 100, "Lightness"));
             chart.Model = pm;

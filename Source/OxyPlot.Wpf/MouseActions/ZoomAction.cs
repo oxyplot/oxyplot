@@ -51,16 +51,18 @@ namespace OxyPlot.Wpf
             if (!isZooming)
                 return;
             // var currentPoint = pc.InverseTransform(pt, xaxis, yaxis);
+            if (pc.Model==null)
+                return;
 
             if (yaxis == null)
             {
-                DownPoint.Y = pc.Model.MarginTop;
-                pt.Y = pc.ActualHeight - pc.Model.MarginBottom;
+                DownPoint.Y = pc.Model.AxisMargins.Top;
+                pt.Y = pc.ActualHeight - pc.Model.AxisMargins.Bottom;
             }
             if (xaxis == null)
             {
-                DownPoint.X = pc.Model.MarginLeft;
-                pt.X = pc.ActualWidth - pc.Model.MarginRight;
+                DownPoint.X = pc.Model.AxisMargins.Left;
+                pt.X = pc.ActualWidth - pc.Model.AxisMargins.Right;
             }
 
             zoomRectangle = CreateRect(DownPoint, pt);

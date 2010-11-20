@@ -40,9 +40,9 @@ namespace OxyPlot.Wpf
         {
             var s = new OxyPlot.AreaSeries();
             ConvertProperties(s);
-            s.DataFieldBase = DataFieldBase;
-            s.Baseline = Baseline;
-            s.Fill = Fill.ToModelColor();
+            s.DataFieldY2 = DataFieldBase;
+            s.ConstantY2 = Baseline;
+            s.Fill = Fill.ToOxyColor();
             return s;
         }
     }
