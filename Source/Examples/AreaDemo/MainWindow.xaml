@@ -5,7 +5,7 @@
         Title="AreaDemo" Height="480" Width="640">
     <DockPanel>
         <oxy:PlotControl x:Name="plot1" Title="LineSeries and AreaSeries">
-            <oxy:AreaSeries ItemsSource="{Binding Measurements}" DataFieldX="Time" DataFieldY="Maximum" DataFieldBase="Minimum" Fill="LightBlue" Thickness="0"/>
+            <oxy:AreaSeries ItemsSource="{Binding Measurements}" DataFieldX="Time" DataFieldY="Maximum" DataFieldX2="Time" DataFieldY2="Minimum" Fill="LightBlue" Thickness="0"/>
             <oxy:LineSeries ItemsSource="{Binding Measurements}" DataFieldX="Time" DataFieldY="Value" Color="Blue" Thickness="2" Smooth="False"/>
         </oxy:PlotControl>
     </DockPanel>

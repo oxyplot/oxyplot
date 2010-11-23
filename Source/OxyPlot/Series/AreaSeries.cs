@@ -59,12 +59,14 @@ namespace OxyPlot
 
         public AreaSeries()
         {
-            points = new Collection<DataPoint>();
+            points2 = new Collection<DataPoint>();
             Reverse2 = true;
         }
 
-        internal virtual void UpdatePointsFromItemsSource()
+        internal override void UpdatePointsFromItemsSource()
         {
+            base.UpdatePointsFromItemsSource();
+
             if (ItemsSource == null) return;
             points2.Clear();
 
@@ -115,7 +117,8 @@ namespace OxyPlot
         public override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-
+            if (points2 != null)
+            {
                 foreach (var pt in points2)
                 {
                     MinX = Math.Min(MinX, pt.x);
@@ -124,6 +127,7 @@ namespace OxyPlot
                     MinY = Math.Min(MinY, pt.y);
                     MaxY = Math.Max(MaxY, pt.y);
                 }
+            }
         }
 
         public override void Render(IRenderContext rc, PlotModel model)

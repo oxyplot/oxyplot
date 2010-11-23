@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -41,7 +39,7 @@ namespace SimpleDemo
         private void OpenContainingFolder(string fileName)
         {
             // var folder = Path.GetDirectoryName(fileName);
-            var psi = new ProcessStartInfo("Explorer.exe", "/select,"+fileName);
+            var psi = new ProcessStartInfo("Explorer.exe", "/select," + fileName);
             Process.Start(psi);
         }
 

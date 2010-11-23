@@ -5,7 +5,9 @@ using System.Diagnostics;
 namespace OxyPlot
 {
     /// <summary>
+    /// This is a WPF wrapper of OxyPlot.LineSeries
     /// LineSeries are rendered to a polyline.
+    /// Note that property changes are not currently making the plot refresh itself.
     /// </summary>
     public class LineSeries : DataSeries
     {
@@ -102,12 +104,18 @@ namespace OxyPlot
         /// <value>The minimum length of the segment.</value>
         public double MinimumSegmentLength { get; set; }
 
+        /// <summary>
+        /// Renders the LineSeries on the specified rendering context.
+        /// </summary>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             base.Render(rc, model);
 
             if (points.Count == 0)
                 return;
+            
             Debug.Assert(XAxis != null && YAxis != null);
 
             double minDistSquared = MinimumSegmentLength*MinimumSegmentLength;
@@ -184,6 +192,7 @@ namespace OxyPlot
 
         protected void RenderMarkers(IRenderContext rc, ScreenPoint[] markerPoints, CohenSutherlandClipping clipping)
         {
+            // todo: Markers should be rendered to a DrawingContext for performance.
             if (MarkerType != MarkerType.None)
             {
                 foreach (var p in markerPoints)
@@ -199,7 +208,7 @@ namespace OxyPlot
         private static readonly double M2 = Math.Sqrt(1 + M1 * M1);
         private static readonly double M3 = Math.Tan(Math.PI / 4);
 
-        public void RenderLine(IRenderContext rc, List<ScreenPoint> pts)
+        protected void RenderLine(IRenderContext rc, List<ScreenPoint> pts)
         {
             if (pts.Count == 0)
                 return;
@@ -227,7 +236,7 @@ namespace OxyPlot
 
         }
 
-        public void RenderMarker(IRenderContext rc, MarkerType markerType, ScreenPoint p, double markerSize, OxyColor fill, OxyColor stroke,
+        protected void RenderMarker(IRenderContext rc, MarkerType markerType, ScreenPoint p, double markerSize, OxyColor fill, OxyColor stroke,
                                 double strokeThickness)
         {
             switch (markerType)
