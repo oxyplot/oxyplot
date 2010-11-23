@@ -252,7 +252,7 @@ namespace SimpleDemo
                                                       double t1, double dt, string title, string subtitle,
                                                       string seriesTitle)
         {
-            var plot = new PlotModel { Title = title, Subtitle = subtitle, CartesianAxes = true };
+            var plot = new PlotModel { Title = title, Subtitle = subtitle, PlotType = PlotType.Cartesian };
 
             var ls = new LineSeries { Title = seriesTitle };
 

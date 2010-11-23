@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace OxyPlot
+﻿namespace OxyPlot
 {
     public enum AxisPosition
     {

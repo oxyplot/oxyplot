@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -15,38 +17,38 @@ namespace OxyPlot.Wpf
     public class PlotControl : Control
     {
         public static readonly DependencyProperty AxisMarginsProperty =
-            DependencyProperty.Register("AxisMargins", typeof (Thickness?), typeof (PlotControl),
+            DependencyProperty.Register("AxisMargins", typeof(Thickness?), typeof(PlotControl),
                                         new UIPropertyMetadata(null));
 
         public static readonly DependencyProperty BoxColorProperty =
-            DependencyProperty.Register("BoxColor", typeof (Color), typeof (PlotControl),
+            DependencyProperty.Register("BoxColor", typeof(Color), typeof(PlotControl),
                                         new UIPropertyMetadata(Colors.Black));
 
         public static readonly DependencyProperty BoxThicknessProperty =
-            DependencyProperty.Register("BoxThickness", typeof (double), typeof (PlotControl),
+            DependencyProperty.Register("BoxThickness", typeof(double), typeof(PlotControl),
                                         new UIPropertyMetadata(1.0));
 
         public static readonly DependencyProperty ModelProperty =
-            DependencyProperty.Register("Model", typeof (PlotModel), typeof (PlotControl),
+            DependencyProperty.Register("Model", typeof(PlotModel), typeof(PlotControl),
                                         new UIPropertyMetadata(null, ModelChanged));
 
         public static readonly DependencyProperty SubtitleProperty =
-            DependencyProperty.Register("Subtitle", typeof (string), typeof (PlotControl), new UIPropertyMetadata(null));
+            DependencyProperty.Register("Subtitle", typeof(string), typeof(PlotControl), new UIPropertyMetadata(null));
 
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof (string), typeof (PlotControl),
+            DependencyProperty.Register("Title", typeof(string), typeof(PlotControl),
                                         new UIPropertyMetadata(null, VisualChanged));
 
         public static readonly DependencyProperty RenderToCanvasProperty =
-            DependencyProperty.Register("RenderToCanvas", typeof (bool), typeof (PlotControl),
+            DependencyProperty.Register("RenderToCanvas", typeof(bool), typeof(PlotControl),
                                         new UIPropertyMetadata(true, RenderToCanvasChanged));
 
         public static readonly DependencyProperty SliderTemplateProperty =
-            DependencyProperty.Register("SliderTemplate", typeof (DataTemplate), typeof (PlotControl),
+            DependencyProperty.Register("SliderTemplate", typeof(DataTemplate), typeof(PlotControl),
                                         new UIPropertyMetadata(null));
 
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
-            DependencyProperty.Register("ZoomRectangleTemplate", typeof (ControlTemplate), typeof (PlotControl),
+            DependencyProperty.Register("ZoomRectangleTemplate", typeof(ControlTemplate), typeof(PlotControl),
                                         new UIPropertyMetadata(null));
 
 
@@ -65,12 +67,12 @@ namespace OxyPlot.Wpf
 
         private SliderAction sliderAction;
         private ZoomAction zoomAction;
-        private ContentControl zoomRectangle;
+        private ContentControl zoomControl;
 
         static PlotControl()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof (PlotControl),
-                                                     new FrameworkPropertyMetadata(typeof (PlotControl)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(PlotControl),
+                                                     new FrameworkPropertyMetadata(typeof(PlotControl)));
         }
 
         public PlotControl()
@@ -81,12 +83,11 @@ namespace OxyPlot.Wpf
             zoomAction = new ZoomAction(this);
             sliderAction = new SliderAction(this);
 
-            Series = new ObservableCollection<DataSeries>();
-            Axes = new ObservableCollection<Axis>();
-
-            // todo: subscribe to changes in Series and Axes collections
-            // todo: make datacontext propagate into series and axes
-
+            series = new ObservableCollection<DataSeries>();
+            axes = new ObservableCollection<Axis>();
+            series.CollectionChanged += OnSeriesChanged;
+            axes.CollectionChanged += OnAxesChanged;
+            
             Loaded += PlotControl_Loaded;
             DataContextChanged += PlotControl_DataContextChanged;
             SizeChanged += PlotControl_SizeChanged;
@@ -96,63 +97,99 @@ namespace OxyPlot.Wpf
             // CommandBindings.Add(new KeyBinding())
         }
 
-        // todo... Keybinding?
+        private void OnSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            SyncLogicalTree(e);
+        }
+
+        private void OnAxesChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            SyncLogicalTree(e);
+        }
+
+        private void SyncLogicalTree(NotifyCollectionChangedEventArgs e)
+        {
+            // In order to get DataContext and binding to work with the series and axes
+            // we add the items to the logical tree
+            if (e.NewItems != null)
+            {
+                foreach (var item in e.NewItems)
+                {
+                    this.AddLogicalChild(item);
+                }
+            }
+            if (e.OldItems != null)
+            {
+                foreach (var item in e.OldItems)
+                {
+                    this.RemoveLogicalChild(item);
+                }
+            }
+        }
 
         public ControlTemplate ZoomRectangleTemplate
         {
-            get { return (ControlTemplate) GetValue(ZoomRectangleTemplateProperty); }
+            get { return (ControlTemplate)GetValue(ZoomRectangleTemplateProperty); }
             set { SetValue(ZoomRectangleTemplateProperty, value); }
         }
 
         public Color BoxColor
         {
-            get { return (Color) GetValue(BoxColorProperty); }
+            get { return (Color)GetValue(BoxColorProperty); }
             set { SetValue(BoxColorProperty, value); }
         }
 
         public DataTemplate SliderTemplate
         {
-            get { return (DataTemplate) GetValue(SliderTemplateProperty); }
+            get { return (DataTemplate)GetValue(SliderTemplateProperty); }
             set { SetValue(SliderTemplateProperty, value); }
         }
 
         public bool RenderToCanvas
         {
-            get { return (bool) GetValue(RenderToCanvasProperty); }
+            get { return (bool)GetValue(RenderToCanvasProperty); }
             set { SetValue(RenderToCanvasProperty, value); }
         }
 
         public Thickness? AxisMargins
         {
-            get { return (Thickness?) GetValue(AxisMarginsProperty); }
+            get { return (Thickness?)GetValue(AxisMarginsProperty); }
             set { SetValue(AxisMarginsProperty, value); }
         }
 
         public double BoxThickness
         {
-            get { return (double) GetValue(BoxThicknessProperty); }
+            get { return (double)GetValue(BoxThicknessProperty); }
             set { SetValue(BoxThicknessProperty, value); }
         }
 
-        public ObservableCollection<DataSeries> Series { get; set; }
+        private ObservableCollection<DataSeries> series;
+        public ObservableCollection<DataSeries> Series
+        {
+            get { return series; }
+        }
 
-        public ObservableCollection<Axis> Axes { get; set; }
+        private ObservableCollection<Axis> axes;
+        public ObservableCollection<Axis> Axes
+        {
+            get { return axes; }
+        }
 
         public PlotModel Model
         {
-            get { return (PlotModel) GetValue(ModelProperty); }
+            get { return (PlotModel)GetValue(ModelProperty); }
             set { SetValue(ModelProperty, value); }
         }
 
         public string Subtitle
         {
-            get { return (string) GetValue(SubtitleProperty); }
+            get { return (string)GetValue(SubtitleProperty); }
             set { SetValue(SubtitleProperty, value); }
         }
 
         public string Title
         {
-            get { return (string) GetValue(TitleProperty); }
+            get { return (string)GetValue(TitleProperty); }
             set { SetValue(TitleProperty, value); }
         }
 
@@ -195,22 +232,13 @@ namespace OxyPlot.Wpf
             slider = new Slider(this);
             overlays.Children.Add(slider);
 
-            // Zoom rectangle (must belong to a Canvas)
-            //zoomRectangle = new Rectangle
-            //                    {
-            //                        Fill = new SolidColorBrush(Color.FromArgb(20, 255, 255, 0)),
-            //                        Stroke = new SolidColorBrush(Colors.Yellow),
-            //                        StrokeThickness = 1,
-            //                        Visibility = Visibility.Hidden
-            //                    };
-            zoomRectangle = new ContentControl();
-
-            overlays.Children.Add(zoomRectangle);
+            zoomControl = new ContentControl();
+            overlays.Children.Add(zoomControl);
         }
 
         private static void RenderToCanvasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((PlotControl) d).OnRenderToCanvasChanged();
+            ((PlotControl)d).OnRenderToCanvasChanged();
         }
 
         private void OnRenderToCanvasChanged()
@@ -270,12 +298,12 @@ namespace OxyPlot.Wpf
 
         private static void VisualChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((PlotControl) d).UpdateVisuals();
+            ((PlotControl)d).UpdateVisuals();
         }
 
         private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((PlotControl) d).OnModelChanged();
+            ((PlotControl)d).OnModelChanged();
         }
 
         private void OnModelChanged()
@@ -296,8 +324,11 @@ namespace OxyPlot.Wpf
                         AxisMargins.Value.Left, AxisMargins.Value.Top,
                         AxisMargins.Value.Right, AxisMargins.Value.Bottom);
                 }
+                // Box around the plot area
                 internalModel.BoxColor = BoxColor.ToOxyColor();
                 internalModel.BoxThickness = BoxThickness;
+                
+                // internalModel.LegendPosition = LegendPosition;
             }
             else
                 internalModel = Model;
@@ -384,8 +415,8 @@ namespace OxyPlot.Wpf
 
         public RenderTargetBitmap ToBitmap()
         {
-            var height = (int) ActualHeight;
-            var width = (int) ActualWidth;
+            var height = (int)ActualHeight;
+            var width = (int)ActualWidth;
 
             var bmp = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
             bmp.Render(this);
@@ -396,7 +427,7 @@ namespace OxyPlot.Wpf
         {
             var sb = new StringBuilder();
             var tw = new StringWriter(sb);
-            var xw = new XmlTextWriter(tw) {Formatting = Formatting.Indented};
+            var xw = new XmlTextWriter(tw) { Formatting = Formatting.Indented };
             if (canvas != null)
                 XamlWriter.Save(canvas, xw);
             xw.Close();
@@ -454,17 +485,17 @@ namespace OxyPlot.Wpf
 
         public void ShowZoomRectangle(Rect r)
         {
-            zoomRectangle.Width = r.Width;
-            zoomRectangle.Height = r.Height;
-            Canvas.SetLeft(zoomRectangle, r.Left);
-            Canvas.SetTop(zoomRectangle, r.Top);
-            zoomRectangle.Template = ZoomRectangleTemplate;
-            zoomRectangle.Visibility = Visibility.Visible;
+            zoomControl.Width = r.Width;
+            zoomControl.Height = r.Height;
+            Canvas.SetLeft(zoomControl, r.Left);
+            Canvas.SetTop(zoomControl, r.Top);
+            zoomControl.Template = ZoomRectangleTemplate;
+            zoomControl.Visibility = Visibility.Visible;
         }
 
         public void HideZoomRectangle()
         {
-            zoomRectangle.Visibility = Visibility.Hidden;
+            zoomControl.Visibility = Visibility.Hidden;
         }
 
         public OxyPlot.DataSeries GetSeriesFromPoint(Point pt, double limit = 100)

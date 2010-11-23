@@ -19,7 +19,7 @@ namespace OxyPlot
             OxySize size2 = rc.MeasureText(subtitle, plot.TitleFont, plot.TitleFontSize, plot.TitleFontWeight);
             double height = size1.Height + size2.Height;
             double dy = (plot.AxisMargins.Top - height) * 0.5;
-            double dx = (plot.bounds.Left + plot.bounds.Right) * 0.5;
+            double dx = (plot.Bounds.Left + plot.Bounds.Right) * 0.5;
 
             if (!String.IsNullOrEmpty(title))
                 rc.DrawText(
@@ -64,7 +64,7 @@ namespace OxyPlot
                 totalHeight += oxySize.Height;
             }
 
-            double lineLength = plot.LegendLineLength;
+            double lineLength = plot.LegendSymbolLength;
 
             // Arrange
             double x0 = double.NaN, x1 = double.NaN, y0 = double.NaN;
@@ -84,13 +84,13 @@ namespace OxyPlot
             {
                 case LegendPosition.TopRight:
                 case LegendPosition.BottomRight:
-                    x0 = plot.bounds.Right - LEGEND_PADDING * sign;
+                    x0 = plot.Bounds.Right - LEGEND_PADDING * sign;
                     x1 = x0 - lineLength * sign - LEGEND_PADDING * sign;
                     ha = sign == 1 ? HorizontalTextAlign.Right : HorizontalTextAlign.Left;
                     break;
                 case LegendPosition.TopLeft:
                 case LegendPosition.BottomLeft:
-                    x0 = plot.bounds.Left + LEGEND_PADDING * sign;
+                    x0 = plot.Bounds.Left + LEGEND_PADDING * sign;
                     x1 = x0 + lineLength * sign + LEGEND_PADDING * sign;
                     ha = sign == 1 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
                     break;
@@ -102,11 +102,11 @@ namespace OxyPlot
             {
                 case LegendPosition.TopRight:
                 case LegendPosition.TopLeft:
-                    y0 = plot.bounds.Top + LEGEND_PADDING + maxHeight / 2;
+                    y0 = plot.Bounds.Top + LEGEND_PADDING + maxHeight / 2;
                     break;
                 case LegendPosition.BottomRight:
                 case LegendPosition.BottomLeft:
-                    y0 = plot.bounds.Bottom - maxHeight + LEGEND_PADDING;
+                    y0 = plot.Bounds.Bottom - maxHeight + LEGEND_PADDING;
                     break;
             }
 

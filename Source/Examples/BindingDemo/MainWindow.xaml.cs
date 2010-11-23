@@ -24,7 +24,7 @@ namespace BindingDemo
             var vm = new MainViewModel();
             this.DataContext = vm;
             // todo: the DataContext is lost in the PlotControl.Series?
-            plot1.Series[0].ItemsSource = vm.Measurements;
+            // plot1.Series[0].ItemsSource = vm.Measurements;
         }
     }
 }

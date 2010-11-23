@@ -7,7 +7,6 @@ namespace RealtimeDemo
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        public int TotalNumberOfPoints { get; set; }
         private readonly Stopwatch watch = new Stopwatch();
         private int N = 20;
 
@@ -25,6 +24,8 @@ namespace RealtimeDemo
             }
             watch.Start();
         }
+
+        public int TotalNumberOfPoints { get; set; }
 
         private Func<double, double, double, double> Function { get; set; }
         public PlotModel PlotModel { get; set; }
@@ -46,7 +47,7 @@ namespace RealtimeDemo
             }
             TotalNumberOfPoints = n;
             RaisePropertyChanged("TotalNumberOfPoints");
-           // RaisePropertyChanged("PlotModel");
+            RaisePropertyChanged("PlotModel");
         }
 
         #region PropertyChanged Block

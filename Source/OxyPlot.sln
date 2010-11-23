@@ -29,8 +29,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarDemo", "Examples\Polar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf", "OxyPlot.Pdf\OxyPlot.Pdf.csproj", "{12737C3F-5770-403F-90A1-BC12EBD1BB31}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04D96367-9142-4ADC-97F6-7E9DBF6D37DE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Reporting", "Oxyplot.Reporting\OxyPlot.Reporting.csproj", "{11A5A3E4-43C2-46D6-8448-0B1AFB5DD440}"
 EndProject
 Global

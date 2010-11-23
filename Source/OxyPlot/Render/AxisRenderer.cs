@@ -258,14 +258,14 @@ namespace OxyPlot
 
         private void RenderHorizontalAxis(Axis axis, Axis perpendicularAxis)
         {
-            double y = Plot.bounds.Bottom;
+            double y = Plot.Bounds.Bottom;
             switch (axis.Position)
             {
                 case AxisPosition.Top:
-                    y = Plot.bounds.Top;
+                    y = Plot.Bounds.Top;
                     break;
                 case AxisPosition.Bottom:
-                    y = Plot.bounds.Bottom;
+                    y = Plot.Bounds.Bottom;
                     break;
             }
             if (axis.PositionAtZeroCrossing)
@@ -294,7 +294,7 @@ namespace OxyPlot
                     double x = axis.TransformX(xValue);
                     if (minorPen != null)
                     {
-                        RenderLine(x, Plot.bounds.Top, x, Plot.bounds.Bottom, minorPen);
+                        RenderLine(x, Plot.Bounds.Top, x, Plot.Bounds.Bottom, minorPen);
                     }
                     RenderLine(x, y + y0, x, y + y1, minorTickPen);
                 }
@@ -315,7 +315,7 @@ namespace OxyPlot
 
                 if (majorPen != null)
                 {
-                    RenderLine(x, Plot.bounds.Top, x, Plot.bounds.Bottom, majorPen);
+                    RenderLine(x, Plot.Bounds.Top, x, Plot.Bounds.Bottom, majorPen);
                 }
                 RenderLine(x, y + y0, x, y + y1, majorTickPen);
 
@@ -337,7 +337,7 @@ namespace OxyPlot
             if (axis.PositionAtZeroCrossing)
             {
                 double x = axis.TransformX(0);
-                RenderLine(x, Plot.bounds.Top, x, Plot.bounds.Bottom, zeroPen);
+                RenderLine(x, Plot.Bounds.Top, x, Plot.Bounds.Bottom, zeroPen);
             }
 
             if (axis.ExtraGridlines != null)
@@ -347,12 +347,12 @@ namespace OxyPlot
                     if (!IsWithin(x, axis.ActualMinimum, axis.ActualMaximum))
                         continue;
                     double sx = axis.TransformX(x);
-                    RenderLine(sx, Plot.bounds.Top, sx, Plot.bounds.Bottom, extraPen);
+                    RenderLine(sx, Plot.Bounds.Top, sx, Plot.Bounds.Bottom, extraPen);
                 }
             }
 
             // The horizontal axis line
-            RenderLine(Plot.bounds.Left, y, Plot.bounds.Right, y, majorPen);
+            RenderLine(Plot.Bounds.Left, y, Plot.Bounds.Right, y, majorPen);
 
             // The horizontal axis legend (centered horizontally)
             double legendX = axis.TransformX((axis.ActualMinimum + axis.ActualMaximum)/2);
@@ -384,14 +384,14 @@ namespace OxyPlot
 
         private void RenderVerticalAxis(Axis axis, Axis perpendicularAxis)
         {
-            double x = Plot.bounds.Left;
+            double x = Plot.Bounds.Left;
             switch (axis.Position)
             {
                 case AxisPosition.Left:
-                    x = Plot.bounds.Left;
+                    x = Plot.Bounds.Left;
                     break;
                 case AxisPosition.Right:
-                    x = Plot.bounds.Right;
+                    x = Plot.Bounds.Right;
                     break;
             }
             if (axis.PositionAtZeroCrossing)
@@ -417,7 +417,7 @@ namespace OxyPlot
 
                     if (minorPen != null)
                     {
-                        RenderLine(Plot.bounds.Left, y, Plot.bounds.Right, y, minorPen);
+                        RenderLine(Plot.Bounds.Left, y, Plot.Bounds.Right, y, minorPen);
                     }
 
                     RenderLine(x + x0, y, x + x1, y, minorTickPen);
@@ -438,7 +438,7 @@ namespace OxyPlot
 
                 if (majorPen != null)
                 {
-                    RenderLine(Plot.bounds.Left, y, Plot.bounds.Right, y, majorPen);
+                    RenderLine(Plot.Bounds.Left, y, Plot.Bounds.Right, y, majorPen);
                 }
 
                 RenderLine(x + x0, y, x + x1, y, majorTickPen);
@@ -459,7 +459,7 @@ namespace OxyPlot
             if (axis.PositionAtZeroCrossing)
             {
                 double y = axis.TransformX(0);
-                RenderLine(Plot.bounds.Left, y, Plot.bounds.Right, y, zeroPen);
+                RenderLine(Plot.Bounds.Left, y, Plot.Bounds.Right, y, zeroPen);
             }
 
             if (axis.ExtraGridlines != null)
@@ -468,10 +468,10 @@ namespace OxyPlot
                     if (!IsWithin(y, axis.ActualMinimum, axis.ActualMaximum))
                         continue;
                     double sy = axis.TransformX(y);
-                    RenderLine(Plot.bounds.Left, sy, Plot.bounds.Right, sy, extraPen);
+                    RenderLine(Plot.Bounds.Left, sy, Plot.Bounds.Right, sy, extraPen);
                 }
 
-            RenderLine(x, Plot.bounds.Top, x, Plot.bounds.Bottom, majorPen);
+            RenderLine(x, Plot.Bounds.Top, x, Plot.Bounds.Bottom, majorPen);
 
             double ymid = axis.TransformX((axis.ActualMinimum + axis.ActualMaximum)/2);
 

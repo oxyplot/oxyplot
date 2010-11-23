@@ -13,8 +13,6 @@ namespace OxyPlot
         internal ScreenPoint MidPoint;
         internal double Offset;
         internal double Scale;
-        public ScreenPoint ScreenMax { get; set;}
-        public ScreenPoint ScreenMin { get; set; }
         internal AxisPosition position;
 
         /// <summary>
@@ -34,11 +32,10 @@ namespace OxyPlot
             MaximumPadding = 0.01;
 
             TickStyle = TickStyle.Inside;
+            TicklineColor = OxyColors.Black;
             MajorGridlineStyle = LineStyle.None;
             MinorGridlineStyle = LineStyle.None;
-            TicklineColor = OxyColors.Black;
             MajorGridlineColor = OxyColor.FromArgb(0x40, 0, 0, 0);
-            TicklineColor = OxyColors.Black;
             MinorGridlineColor = OxyColor.FromArgb(0x20, 0, 0, 0x00);
             MajorGridlineThickness = 1;
             MinorGridlineThickness = 1;
@@ -49,7 +46,7 @@ namespace OxyPlot
 
             ShowMinorTicks = true;
 
-            FontFamily = PlotModel.DEFAULT_FONT;
+            FontFamily = PlotModel.DefaultFont;
             FontSize = 12;
 
             MinorTickSize = 4;
@@ -76,6 +73,9 @@ namespace OxyPlot
             Maximum = maximum;
             Title = title;
         }
+
+        public ScreenPoint ScreenMax { get; set; }
+        public ScreenPoint ScreenMin { get; set; }
 
         /// <summary>
         /// Gets or sets the key of the axis.
@@ -721,7 +721,7 @@ namespace OxyPlot
             ScreenMin = new ScreenPoint(x0, y1);
             ScreenMax = new ScreenPoint(x1, y0);
 
-            MidPoint = new ScreenPoint((x0 + x1) / 2, (y0 + y1) / 2);
+            MidPoint = new ScreenPoint((x0 + x1)/2, (y0 + y1)/2);
 
             if (Position == AxisPosition.Angle)
             {
