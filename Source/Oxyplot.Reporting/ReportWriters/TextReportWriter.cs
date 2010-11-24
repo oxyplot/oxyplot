@@ -3,6 +3,10 @@ using System.IO;
 
 namespace OxyPlot.Reporting
 {
+    /// <summary>
+    /// ANSI text writer.
+    /// This will not write figures/images.
+    /// </summary>
     public class TextReportWriter : StreamWriter, IReportWriter
     {
         private string sep = " | ";

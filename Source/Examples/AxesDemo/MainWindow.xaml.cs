@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace AxesDemo
 {
@@ -32,6 +20,24 @@ namespace AxesDemo
                 a.GridlineType = vm.GridlineType;
 
             plot1.Invalidate();*/
+        }
+
+        private void Angle_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (AnglePlot1 != null)
+            {
+                // TODO: binding should handle this
+                AnglePlot1.Axes[0].Angle = Angle.Value;
+                AnglePlot1.Axes[1].Angle = Angle.Value;
+                AnglePlot1.Refresh();
+            }
+            if (AnglePlot2 != null)
+            {
+                // TODO: binding should handle this
+                AnglePlot2.Axes[0].Angle = Angle.Value;
+                AnglePlot2.Axes[1].Angle = Angle.Value;
+                AnglePlot2.Refresh();
+            }
         }
     }
 }

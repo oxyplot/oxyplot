@@ -1,5 +1,8 @@
 ﻿namespace OxyPlot.Reporting
 {
+    /// <summary>
+    /// Interface for Report writers.
+    /// </summary>
     public interface IReportWriter
     {
         void WriteHeader(Header h);

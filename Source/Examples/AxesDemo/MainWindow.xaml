@@ -67,7 +67,7 @@
                     <oxy:PlotControl Title="Vertical" Grid.Row="1" Grid.Column="0">
                         <oxy:PlotControl.Axes>
                             <oxy:LinearAxis Position="Left" MajorGridlineStyle="None" MinorGridlineStyle="None" />
-                            <oxy:LinearAxis Position="Bottom" MajorGridlineStyle="DashDot" MinorGridlineStyle="None" />
+                            <oxy:LinearAxis Position="Bottom" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
                         </oxy:PlotControl.Axes>
                     </oxy:PlotControl>
                     <oxy:PlotControl Title="Both" Grid.Row="1" Grid.Column="1">
@@ -111,19 +111,23 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Slider x:Name="Angle" Orientation="Vertical" Grid.Column="1" Minimum="-180" Maximum="180" Value="40" Height="200"/>
-                    <oxy:PlotControl>
+                    <Slider x:Name="Angle" Orientation="Vertical" 
+                            Grid.Column="1" Minimum="-180" Maximum="180" Value="40" Height="200"
+                            ValueChanged="Angle_ValueChanged"/>
+                    <oxy:PlotControl x:Name="AnglePlot1">
                         <oxy:PlotControl.Axes>
                             <oxy:LinearAxis Title="Left" Position="Left" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
                             <oxy:LinearAxis Title="Bottom" Position="Bottom" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
                         </oxy:PlotControl.Axes>
                     </oxy:PlotControl>
-                    <oxy:PlotControl Grid.Column="2">
+                    <oxy:PlotControl x:Name="AnglePlot2" Grid.Column="2">
                         <oxy:PlotControl.Axes>
                             <oxy:LinearAxis Title="Right" Position="Right" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
                             <oxy:LinearAxis Title="Top" Position="Top" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
                         </oxy:PlotControl.Axes>
                     </oxy:PlotControl>
+                    <Label Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="#80000000" FontSize="24" 
+                           HorizontalAlignment="Center" Content="TODO: Binding not working..."/>
                 </Grid>
             </TabItem>
             <TabItem Header="Zero crossing axes">
@@ -172,14 +176,19 @@
                 </oxy:PlotControl>
             </TabItem>
             <TabItem Header="Big numbers">
+                <Grid>
                 <oxy:PlotControl>
                     <oxy:PlotControl.Axes>
-                        <oxy:LinearAxis Position="Left" Minimum="-5e47" Maximum="6e32" Title="big numbers"/>
-                        <oxy:LinearAxis Position="Bottom" Minimum="-4e40" Maximum="3e50" Title="big numbers"/>
+                        <oxy:LinearAxis Position="Left" Minimum="-1e47" Maximum="6e32" Title="big numbers"/>
+                        <oxy:LinearAxis Position="Bottom" Minimum="-1e40" Maximum="3e50" Title="big numbers"/>
                     </oxy:PlotControl.Axes>
                 </oxy:PlotControl>
+                <!--<Label VerticalAlignment="Center" Foreground="#80000000" FontSize="24" 
+                           HorizontalAlignment="Center" Content="TODO: Where are the 0's coming from?"/>-->
+                </Grid>
             </TabItem>
-            <!--<TabItem Header="Small numbers">
+            <!-- TODO: small numbers
+            <TabItem Header="Small numbers">
                 <oxy:PlotControl>
                     <oxy:PlotControl.Axes>
                         <oxy:LinearAxis Position="Left" Minimum="-5e-20" Maximum="6e-20" Title="small numbers"/>

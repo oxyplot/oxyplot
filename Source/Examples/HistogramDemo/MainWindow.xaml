@@ -26,12 +26,7 @@
         </StackPanel>
 
         <Grid>
-            <oxy:PlotControl x:Name="chart">
-                <!-- the series used to render the RGB components -->
-                <oxy:LineSeries Color="#A00"/>
-                <oxy:LineSeries Color="#0A0"/>
-                <oxy:LineSeries Color="#00A"/>
-            </oxy:PlotControl>
+            <oxy:PlotControl x:Name="chart"/>
         </Grid>
 
 

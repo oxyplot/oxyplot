@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
-        Title="OxyPlot demo" Height="480" Width="640">
+        Title="OxyPlot demo" Height="480" Width="640" MouseDown="Window_MouseDown">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
@@ -32,6 +32,9 @@
                     </Style>
                 </MenuItem.ItemContainerStyle>
             </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="Info" Click="Info_Click"/>
+            </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
@@ -45,6 +48,30 @@
             Background="White"
             RenderToCanvas="{Binding RenderToCanvas}"
             />
+            <Border CornerRadius="10" x:Name="info" MouseDown="Window_MouseDown" BorderThickness="2" BorderBrush="Black" Background="#D0FFFFF0"
+                     VerticalAlignment="Center" HorizontalAlignment="Center">
+                <FlowDocumentScrollViewer Width="400" Opacity="0.7">
+                    <FlowDocument  FontSize="12" FontFamily="Segoe UI" >
+                        <List>
+                            <ListItem>
+                                <Paragraph>Right mouse button: Pan</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>Mouse wheel: Zoom</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>Control+right mouse button: Zoom by rectangle.</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>Left mouse button: Display 'slider'.</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>Press 'A' to reset the axes.</Paragraph>
+                            </ListItem>
+                        </List>
+                    </FlowDocument>
+                </FlowDocumentScrollViewer>
+            </Border>
         </Grid>
     </DockPanel>
 </Window>

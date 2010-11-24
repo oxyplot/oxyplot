@@ -121,5 +121,15 @@ namespace SimpleDemo
                 OpenContainingFolder(dlg.FileName);
             }
         }
+
+        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            info.Visibility = Visibility.Hidden;
+        }
+
+        private void Info_Click(object sender, RoutedEventArgs e)
+        {
+            info.Visibility = Visibility.Visible;
+        }
     }
 }

@@ -3,20 +3,46 @@ using System.Linq;
 
 namespace OxyPlot
 {
+    /// <summary>
+    /// Time Axis
+    /// The values should be in seconds.
+    /// The StringFormat value can be used to force formatting of the axis values
+    ///   "h:mm" shows hours and minutes
+    ///   "m:ss" shows minutes and seconds
+    /// </summary>
     public class TimeAxis : LinearAxis
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimeAxis"/> class.
+        /// </summary>
+        /// <param name="pos">The position.</param>
+        /// <param name="title">The axis title.</param>
+        /// <param name="format">The string format for the axis values.</param>
         public TimeAxis(AxisPosition pos, string title = null, string format = "m:ss")
             : base(pos, title)
         {
-            StringFormat = "m:ss";
+            StringFormat = format;
         }
 
-        public TimeAxis(AxisPosition pos = AxisPosition.Bottom, double min = double.NaN, double max = double.NaN, string title = null)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimeAxis"/> class.
+        /// </summary>
+        /// <param name="pos">The position.</param>
+        /// <param name="min">The min.</param>
+        /// <param name="max">The max.</param>
+        /// <param name="title">The axis title.</param>
+        /// <param name="format">The string format for the axis values.</param>
+        public TimeAxis(AxisPosition pos = AxisPosition.Bottom, double min = double.NaN, double max = double.NaN, string title = null, string format = "m:ss")
             : base(pos, min, max, title)
         {
-            StringFormat = "m:ss";
+            StringFormat = format;
         }
 
+        /// <summary>
+        /// Formats the value.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <returns></returns>
         public override string FormatValue(double x)
         {
             TimeSpan span = TimeSpan.FromSeconds(x);
