@@ -37,7 +37,8 @@ namespace OxyPlot.Pdf
             if (stroke == null || thickness <= 0)
                 return;
 
-            // g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
+
+            g.SmoothingMode = aliased ? XSmoothingMode.None : XSmoothingMode.HighQuality;
             var pen = new XPen(ToColor(stroke), (float)thickness);
 
             if (dashArray != null)
@@ -48,13 +49,12 @@ namespace OxyPlot.Pdf
         public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
                                 double[] dashArray, bool aliased)
         {
-            // g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
+            g.SmoothingMode = aliased ? XSmoothingMode.None : XSmoothingMode.HighQuality;
 
-            XPoint[] pts = ToPoints(points);
-            // todo: does not support fill?
+            var pts = ToPoints(points);
 
-            //if (fill != null)
-            //    g.FillPolygon(ToBrush(fill), pts);
+            if (fill != null)
+                g.DrawPolygon(ToBrush(fill), pts, XFillMode.Alternate);
 
             if (stroke != null && thickness > 0)
             {
@@ -72,15 +72,14 @@ namespace OxyPlot.Pdf
         {
             if (text == null)
                 return;
-            XFontStyle fs = XFontStyle.Regular;
+            var fs = XFontStyle.Regular;
             if (fontWeight >= 700)
                 fs = XFontStyle.Bold;
             var font = new XFont(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
 
-            var sf = new XStringFormat();
-            sf.Alignment = XStringAlignment.Near;
+            var sf = new XStringFormat { Alignment = XStringAlignment.Near };
 
-            XSize size = g.MeasureString(text, font);
+            var size = g.MeasureString(text, font);
 
             double dx = 0;
             if (halign == HorizontalTextAlign.Center)
@@ -103,7 +102,7 @@ namespace OxyPlot.Pdf
                 dy = -size.Height;
             }
 
-            XGraphicsState state = g.Save();
+            var state = g.Save();
             g.TranslateTransform(dx, dy);
             if (rotate != 0)
                 g.RotateTransform((float)rotate);
@@ -111,14 +110,13 @@ namespace OxyPlot.Pdf
 
             g.DrawString(text, font, ToBrush(fill), 0, 0, sf);
             g.Restore(state);
-            // g.ResetTransform();
         }
 
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (text == null)
                 return OxySize.Empty;
-            XFontStyle fs = XFontStyle.Regular;
+            var fs = XFontStyle.Regular;
             if (fontWeight >= 500)
                 fs = XFontStyle.Bold;
             var font = new XFont(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
@@ -126,17 +124,20 @@ namespace OxyPlot.Pdf
             var sf = new XStringFormat();
             sf.Alignment = XStringAlignment.Near;
 
-            XSize size = g.MeasureString(text, font);
+            var size = g.MeasureString(text, font);
             return new OxySize(size.Width, size.Height);
         }
 
         public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
         {
-            // todo: does not support fill?
-            if (stroke == null || thickness <= 0)
-                return;
-            var pen = new XPen(ToColor(stroke), (float)thickness);
-            g.DrawEllipse(pen, x, y, width, height);
+            if (fill != null)
+                g.DrawEllipse(ToBrush(fill), x, y, width, height);
+
+            if (stroke != null && thickness > 0)
+            {
+                var pen = new XPen(ToColor(stroke), (float)thickness);
+                g.DrawEllipse(pen, x, y, width, height);
+            }
         }
 
 
@@ -168,24 +169,6 @@ namespace OxyPlot.Pdf
         public void Save(Stream s)
         {
             doc.Save(s);
-        }
-    }
-
-    public static class PdfPlotWriter
-    {
-        public static void Save(PlotModel model, string path, double width, double height)
-        {
-            using (FileStream s = File.OpenWrite(path))
-            {
-                Save(model, s, width, height);
-            }
-        }
-
-        public static void Save(PlotModel model, Stream s, double width, double height)
-        {
-            var svgrc = new PdfRenderContext(width, height);
-            model.Render(svgrc);
-            svgrc.Save(s);
         }
     }
 }

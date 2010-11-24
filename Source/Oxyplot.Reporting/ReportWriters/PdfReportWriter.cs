@@ -9,6 +9,11 @@ using MigraDoc.Rendering;
 
 namespace OxyPlot.Reporting
 {
+    // TODO: This class is 'under construction'.
+
+    /// <summary>
+    /// PDF report writer using MigraDoc.
+    /// </summary>
     public class PdfReportWriter : IDisposable, IReportWriter
     {
         private Document doc;

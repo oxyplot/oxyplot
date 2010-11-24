@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PdfPlotWriter.cs" />
     <Compile Include="PdfRenderContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
