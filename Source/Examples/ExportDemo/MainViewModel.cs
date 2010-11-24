@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OxyPlot;
+using OxyPlot.Pdf;
 using OxyPlot.Reporting;
 
 namespace ExportDemo
