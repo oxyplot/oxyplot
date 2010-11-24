@@ -5,11 +5,31 @@ namespace OxyPlot
 {
     public class LogarithmicAxis : Axis
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogarithmicAxis"/> class.
+        /// </summary>
+        public LogarithmicAxis()
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogarithmicAxis"/> class.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="title">The title.</param>
+        public LogarithmicAxis(AxisPosition position, string title = null)
+            : this()
+        {
+            this.Position = position;
+            this.Title = title;
+        }
+
         public override void GetTickValues(out ICollection<double> majorValues, out ICollection<double> minorValues)
         {
             if (ActualMinimum <= 0) ActualMinimum = 0.1;
-            var e0 = (int) Math.Floor(Math.Log10(ActualMinimum));
-            var e1 = (int) Math.Ceiling(Math.Log10(ActualMaximum));
+            var e0 = (int)Math.Floor(Math.Log10(ActualMinimum));
+            var e1 = (int)Math.Ceiling(Math.Log10(ActualMaximum));
             double d0 = Math.Pow(10, e0);
             double d1 = Math.Pow(10, e1);
             double d = d0;
@@ -21,7 +41,7 @@ namespace OxyPlot
                     majorValues.Add(d);
                 for (int i = 1; i <= 9; i++)
                 {
-                    double d2 = d*(i + 1);
+                    double d2 = d * (i + 1);
                     if (d2 > d1 + double.Epsilon) break;
                     if (d2 > ActualMaximum) break;
                     if (d2 > ActualMinimum)

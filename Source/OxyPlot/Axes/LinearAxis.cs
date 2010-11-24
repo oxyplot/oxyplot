@@ -5,12 +5,21 @@
     /// </summary>
     public class LinearAxis : Axis
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
+        /// </summary>
         public LinearAxis()
         {
 
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
+        /// </summary>
+        /// <param name="pos">The pos.</param>
+        /// <param name="title">The title.</param>
         public LinearAxis(AxisPosition pos, string title)
+            :this()
         {
             this.Position = pos;
             this.Title = title;
@@ -22,10 +31,8 @@
         }
 
         public LinearAxis(AxisPosition pos, double minimum, double maximum, double majorStep, double minorStep, string title = null)
-            : this()
+            : this(pos,title)
         {
-            Title = title;
-            Position = pos;
             Minimum = minimum;
             Maximum = maximum;
             MajorStep = majorStep;
