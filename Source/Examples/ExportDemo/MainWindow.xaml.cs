@@ -64,11 +64,17 @@ namespace ExportDemo
             }
         }
 
+        private MenuItem currentModel;
         private void ModelChange_Click(object sender, RoutedEventArgs e)
         {
             var mi = sender as MenuItem;
             int index = vm.ModelNames.IndexOf(mi.Header as string);
             vm.ChangeModel(index);
+
+            mi.IsChecked = true;
+            if (currentModel != null)
+                currentModel.IsChecked = false;
+            currentModel = mi;
         }
 
         private void SaveHtmlReport_Click(object sender, RoutedEventArgs e)

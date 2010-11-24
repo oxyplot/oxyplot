@@ -29,8 +29,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolarDemo", "Examples\Polar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf", "OxyPlot.Pdf\OxyPlot.Pdf.csproj", "{12737C3F-5770-403F-90A1-BC12EBD1BB31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Reporting", "Oxyplot.Reporting\OxyPlot.Reporting.csproj", "{11A5A3E4-43C2-46D6-8448-0B1AFB5DD440}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvDemo", "Examples\CsvDemo\CsvDemo.csproj", "{C8D018D6-F333-4A56-8E76-6EFD7480C633}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportDemo", "Examples\ExportDemo\ExportDemo.csproj", "{11B45D63-8D63-4527-A537-41F6E8B4F9C0}"
@@ -175,16 +173,6 @@ Global
 		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{12737C3F-5770-403F-90A1-BC12EBD1BB31}.Release|x86.ActiveCfg = Release|Any CPU
-		{11A5A3E4-43C2-46D6-8448-0B1AFB5DD440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11A5A3E4-43C2-46D6-8448-0B1AFB5DD440}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11A5A3E4-43C2-46D6-8448-0B1AFB5DD440}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{11A5A3E4-43C2-46D6-8448-0B1AFB5DD440}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{11A5A3E4-43C2-46D6-8448-0B1AFB5DD440}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{11A5A3E4-43C2-46D6-8448-0B1AFB5DD440}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11A5A3E4-43C2-46D6-8448-0B1AFB5DD440}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11A5A3E4-43C2-46D6-8448-0B1AFB5DD440}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{11A5A3E4-43C2-46D6-8448-0B1AFB5DD440}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{11A5A3E4-43C2-46D6-8448-0B1AFB5DD440}.Release|x86.ActiveCfg = Release|Any CPU
 		{C8D018D6-F333-4A56-8E76-6EFD7480C633}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{C8D018D6-F333-4A56-8E76-6EFD7480C633}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{C8D018D6-F333-4A56-8E76-6EFD7480C633}.Debug|Mixed Platforms.Build.0 = Debug|x86

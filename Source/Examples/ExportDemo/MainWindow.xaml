@@ -24,7 +24,7 @@
             <MenuItem Header="View">
                 <MenuItem Header="RenderToCanvas" IsCheckable="True" IsChecked="{Binding RenderToCanvas}"/>
             </MenuItem>
-            <MenuItem Header="Model" ItemsSource="{Binding ModelNames}">
+            <MenuItem x:Name="ModelMenu" Header="Model" ItemsSource="{Binding ModelNames}">
                 <MenuItem.ItemContainerStyle>
                     <Style TargetType="{x:Type MenuItem}">
                         <Setter Property="MenuItem.Header" Value="{Binding}"/>
@@ -52,6 +52,7 @@
                      VerticalAlignment="Center" HorizontalAlignment="Center">
                 <FlowDocumentScrollViewer Width="400" Opacity="0.7">
                     <FlowDocument  FontSize="12" FontFamily="Segoe UI" >
+                        <Paragraph>Mouse usage:</Paragraph>
                         <List>
                             <ListItem>
                                 <Paragraph>Right mouse button: Pan</Paragraph>
@@ -69,6 +70,7 @@
                                 <Paragraph>Press 'A' to reset the axes.</Paragraph>
                             </ListItem>
                         </List>
+                        <Paragraph>Click outside this box to close it.</Paragraph>
                     </FlowDocument>
                 </FlowDocumentScrollViewer>
             </Border>

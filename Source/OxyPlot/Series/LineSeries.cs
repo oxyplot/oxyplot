@@ -11,6 +11,9 @@ namespace OxyPlot
     /// </summary>
     public class LineSeries : DataSeries
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineSeries"/> class.
+        /// </summary>
         public LineSeries()
         {
             MinimumSegmentLength = 2;
@@ -18,6 +21,16 @@ namespace OxyPlot
 
             MarkerSize = 3;
             MarkerStrokeThickness = 1;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineSeries"/> class.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        public LineSeries(string title)
+            :this()
+        {
+            this.Title = title;
         }
 
         /// <summary>
