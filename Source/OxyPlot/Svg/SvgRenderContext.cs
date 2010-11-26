@@ -48,9 +48,13 @@ namespace OxyPlot
         {
             if (String.IsNullOrEmpty(text))
                 return OxySize.Empty;
+            
+            // todo: should improve text measuring, currently using p/invoke on GDI32
+            // use winforms or wpf text measuring?
 
-            // todo: how to measure svg text?
-            return new OxySize(text.Length * 20, fontSize * 4 / 3);
+            return Gdi32.MeasureString(fontFamily, (int)fontSize, (int)fontWeight, text);
         }
+
+
     }
 }
