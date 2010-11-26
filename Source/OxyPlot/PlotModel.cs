@@ -480,8 +480,8 @@ namespace OxyPlot
         /// <param name="rc">The rc.</param>
         public void RenderBox(IRenderContext rc)
         {
-            var pp = new PlotRenderer(rc, this);
-            pp.RenderRect(Bounds, Background, BoxColor, BoxThickness);
+            var pp = new PlotRenderingHelper(rc, this);
+            rc.DrawRectangle(Bounds, Background, BoxColor, BoxThickness);
             pp.RenderTitle(Title, Subtitle);
             foreach (DataSeries s in Series)
             {
@@ -495,7 +495,7 @@ namespace OxyPlot
                     ls.YAxis.ScreenMin.Y,
                     ls.XAxis.ScreenMax.X - ls.XAxis.ScreenMin.X,
                     ls.YAxis.ScreenMax.Y - ls.YAxis.ScreenMin.Y);
-                pp.RenderRect(axisBounds, ls.Background, null, 0);
+                rc.DrawRectangle(axisBounds, ls.Background, null, 0);
             }
             pp.RenderLegends();
         }

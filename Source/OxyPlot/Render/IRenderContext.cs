@@ -4,15 +4,16 @@ namespace OxyPlot
 {
     public enum HorizontalTextAlign
     {
-        Left,
-        Center,
-        Right
-    } ;
+        Left = -1,
+        Center = 0,
+        Right = 1
+    }
+
     public enum VerticalTextAlign
     {
-        Top,
-        Middle,
-        Bottom
+        Top = -1,
+        Middle = 0,
+        Bottom = 1
     }
 
     public interface IRenderContext
