@@ -6,7 +6,7 @@ namespace OxyPlot.Pdf
     {
         public static void Save(PlotModel model, string path, double width, double height)
         {
-            using (FileStream s = File.OpenWrite(path))
+            using (var s = File.OpenWrite(path))
             {
                 Save(model, s, width, height);
             }

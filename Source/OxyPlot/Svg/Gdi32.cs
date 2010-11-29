@@ -6,7 +6,7 @@ namespace OxyPlot
     public class Gdi32
     {
         [StructLayout(LayoutKind.Sequential)]
-        public struct SIZE
+        public struct Size
         {
             public int cx;
             public int cy;
@@ -22,7 +22,7 @@ namespace OxyPlot
         public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiObj);
 
         [DllImport("gdi32.dll")]
-        public static extern int GetTextExtentPoint32(IntPtr hdc, string str, int len, ref SIZE siz);
+        public static extern int GetTextExtentPoint32(IntPtr hdc, string str, int len, ref Size siz);
 
         [DllImport("gdi32.dll")]
         public static extern int DeleteObject(IntPtr hgdiobj);
@@ -35,7 +35,7 @@ namespace OxyPlot
 
         private static OxySize GetTextExtent(IntPtr hdc, string str)
         {
-            Gdi32.SIZE sz = default(Gdi32.SIZE);
+            var sz = default(Size);
             sz.cx = 0;
             sz.cy = 0;
             GetTextExtentPoint32(hdc, str, str.Length, ref sz);
@@ -45,8 +45,8 @@ namespace OxyPlot
         public static OxySize MeasureString(string faceName, int height, int weight, string str)
         {
             var hfont = CreateFont(height, 0, 0, 0, weight, 0, 0, 0, 0, 0, 0, 0, 0, faceName);
-            IntPtr hdc = GetDC(IntPtr.Zero);
-            IntPtr oldobj = SelectObject(hdc, hfont);
+            var hdc = GetDC(IntPtr.Zero);
+            var oldobj = SelectObject(hdc, hfont);
             var result = GetTextExtent(hdc, str);
             SelectObject(hdc, oldobj);
             DeleteObject(hfont);

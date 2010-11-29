@@ -1,8 +1,7 @@
-﻿using System;
-
-namespace OxyPlot
+﻿namespace OxyPlot
 {
     /// <summary>
+    /// Cohen Sutherland line clipping algorithm
     /// http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland
     /// </summary>
     public class CohenSutherlandClipping
@@ -30,9 +29,7 @@ namespace OxyPlot
         // bounded diagonally by (xmin, ymin), and (xmax, ymax)
         private int ComputeOutCode(double x, double y)
         {
-            int code;
-
-            code = INSIDE; // initialized as being inside of clip window
+            int code = INSIDE; // initialized as being inside of clip window
 
             if (x < xmin) // to the left of clip window
                 code |= LEFT;
@@ -143,10 +140,6 @@ namespace OxyPlot
         /// P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with 
         /// diagonal from (xmin, ymin) to (xmax, ymax).
         /// </summary>
-        /// <param name="x0"></param>
-        /// <param name="y0"></param>
-        /// <param name="x1"></param>
-        /// <param name="y1"></param>
         /// <returns>true if the line is inside</returns>
         public bool ClipLine(ref ScreenPoint s0, ref ScreenPoint s1)
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OxyPlot
 {
-    public class LogarithmicAxis : Axis
+    public class LogarithmicAxis : AxisBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LogarithmicAxis"/> class.

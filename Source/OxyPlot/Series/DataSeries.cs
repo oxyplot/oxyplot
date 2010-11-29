@@ -51,13 +51,13 @@ namespace OxyPlot
         /// Gets or sets the X axis.
         /// </summary>
         /// <value>The X axis.</value>
-        public Axis XAxis { get; set; }
+        public AxisBase XAxis { get; set; }
 
         /// <summary>
         /// Gets or sets the Y axis.
         /// </summary>
         /// <value>The Y axis.</value>
-        public Axis YAxis { get; set; }
+        public AxisBase YAxis { get; set; }
 
         /// <summary>
         /// Gets or sets the X axis key.

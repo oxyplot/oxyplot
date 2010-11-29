@@ -19,9 +19,7 @@ namespace OxyPlot.Pdf
             Width = width;
             Height = height;
             doc = new PdfDocument();
-            page = new PdfPage();
-            page.Width = new XUnit(width);
-            page.Height = new XUnit(height);
+            page = new PdfPage { Width = new XUnit(width), Height = new XUnit(height) };
             doc.AddPage(page);
             g = XGraphics.FromPdfPage(page);
         }
@@ -120,10 +118,6 @@ namespace OxyPlot.Pdf
             if (fontWeight >= 500)
                 fs = XFontStyle.Bold;
             var font = new XFont(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
-
-            var sf = new XStringFormat();
-            sf.Alignment = XStringAlignment.Near;
-
             var size = g.MeasureString(text, font);
             return new OxySize(size.Width, size.Height);
         }
@@ -143,7 +137,7 @@ namespace OxyPlot.Pdf
 
         #endregion
 
-        private XPoint[] ToPoints(IEnumerable<ScreenPoint> points)
+        private static XPoint[] ToPoints(IEnumerable<ScreenPoint> points)
         {
             if (points == null)
                 return null;
@@ -154,12 +148,12 @@ namespace OxyPlot.Pdf
             return r;
         }
 
-        private XColor ToColor(OxyColor c)
+        private static XColor ToColor(OxyColor c)
         {
             return XColor.FromArgb(c.A, c.R, c.G, c.B);
         }
 
-        private XBrush ToBrush(OxyColor fill)
+        private static XBrush ToBrush(OxyColor fill)
         {
             if (fill != null)
                 return new XSolidBrush(ToColor(fill));
