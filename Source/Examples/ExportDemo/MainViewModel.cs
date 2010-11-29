@@ -25,7 +25,8 @@ namespace ExportDemo
                                  "Log-log",
                                  "Log-lin",
                                  "Lin-log",
-                                 "Clover"
+                                 "Clover",
+                                 "MathNotation"
                              };
 
             ChangeModel(0);
@@ -121,6 +122,9 @@ namespace ExportDemo
                         "Parametric function",
                         "Using the CartesianAxes property",
                         "2cos(2t)cos(t) , 2cos(2t)sin(t)");
+                    break;
+                case 8:
+                    Model = CreateMathNotationPlot();
                     break;
             }
         }
@@ -338,6 +342,7 @@ namespace ExportDemo
                                   Position = AxisPosition.Left,
                                   Minimum = 0.1,
                                   Maximum = 100,
+                                  // UseSuperExponentialFormat = true,
                                   MajorGridlineStyle = LineStyle.Solid,
                                   MinorGridlineStyle = LineStyle.Solid
                               });
@@ -346,9 +351,43 @@ namespace ExportDemo
                                   Position = AxisPosition.Bottom,
                                   Minimum = 0.1,
                                   Maximum = 100,
+                                  // UseSuperExponentialFormat = true,
                                   MajorGridlineStyle = LineStyle.Solid,
                                   MinorGridlineStyle = LineStyle.Solid
                               });
+
+            return plot;
+        }
+        private static PlotModel CreateMathNotationPlot()
+        {
+            // http://en.wikipedia.org/wiki/Log-log_plot
+            var plot = new PlotModel { Title = "E_{r}^{2} - (pc)^{2} = (m_{0}c^{2})^{2}", TitleFontSize = 24, LegendFontSize = 14, LegendPosition = LegendPosition.TopRight, IsLegendOutsidePlotArea = true,
+            PlotMargins = new OxyThickness(50,50,100,50)};
+
+            plot.Series.Add(CreateLineSeries(x => x, 0.1, 100, 0.1, "H_{2}O"));
+            plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "C_{6}H_{12}O_{6}"));
+            plot.Series.Add(CreateLineSeries(x => x * x*x, 0.1, 100, 0.1, "A^{2}_{i,j}"));
+
+            plot.Axes.Add(new LogarithmicAxis
+            {
+                Position = AxisPosition.Left,
+                Minimum = 0.1,
+                Maximum = 100,
+                UseSuperExponentialFormat = true,
+                FontSize = 14,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
+            plot.Axes.Add(new LogarithmicAxis
+            {
+                Position = AxisPosition.Bottom,
+                Minimum = 0.1,
+                Maximum = 100,
+                FontSize = 14,
+                UseSuperExponentialFormat = true,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
 
             return plot;
         }

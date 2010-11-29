@@ -32,8 +32,8 @@ namespace OxyPlot.Wpf
             // Middle button double click resets the axis
             if (clickCount == 2)
             {
-                if (xaxis != null) xaxis.Reset();
-                if (yaxis != null) yaxis.Reset();
+                if (xaxis != null) pc.Reset(xaxis);
+                if (yaxis != null) pc.Reset(yaxis);
                 pc.Refresh();
             }
 
@@ -50,19 +50,18 @@ namespace OxyPlot.Wpf
         {
             if (!isZooming)
                 return;
-            // var currentPoint = pc.InverseTransform(pt, xaxis, yaxis);
             if (pc.Model==null)
                 return;
 
             if (yaxis == null)
             {
-                DownPoint.Y = pc.Model.AxisMargins.Top;
-                pt.Y = pc.ActualHeight - pc.Model.AxisMargins.Bottom;
+                DownPoint.Y = pc.Model.PlotMargins.Top;
+                pt.Y = pc.ActualHeight - pc.Model.PlotMargins.Bottom;
             }
             if (xaxis == null)
             {
-                DownPoint.X = pc.Model.AxisMargins.Left;
-                pt.X = pc.ActualWidth - pc.Model.AxisMargins.Right;
+                DownPoint.X = pc.Model.PlotMargins.Left;
+                pt.X = pc.ActualWidth - pc.Model.PlotMargins.Right;
             }
 
             zoomRectangle = CreateRect(DownPoint, pt);
@@ -93,9 +92,9 @@ namespace OxyPlot.Wpf
                 DataPoint p1 = pc.InverseTransform(zoomRectangle.BottomRight, xaxis, yaxis);
 
                 if (xaxis != null)
-                    xaxis.Zoom(p0.X, p1.X);
+                    pc.Zoom(xaxis, p0.X, p1.X);
                 if (yaxis != null)
-                    yaxis.Zoom(p0.Y, p1.Y);
+                    pc.Zoom(yaxis, p0.Y, p1.Y);
                 pc.Refresh();
             }
             isZooming = false;
@@ -111,9 +110,9 @@ namespace OxyPlot.Wpf
             if (control) f *= 0.2;
             double s = 1 + delta*f;
             if (xa != null)
-                xa.ScaleAt(s, current.X);
+                pc.ZoomAt(xa,s, current.X);
             if (ya != null)
-                ya.ScaleAt(s, current.Y);
+                pc.ZoomAt(ya,s, current.Y);
             pc.Refresh();
         }
     }

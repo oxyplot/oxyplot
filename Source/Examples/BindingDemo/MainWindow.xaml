@@ -9,7 +9,9 @@
     <Grid>
         <oxy:PlotControl x:Name="plot1" Title="Test">
             <oxy:PlotControl.Series>
-                <oxy:LineSeries Title="My data" DataFieldX="Time" DataFieldY="Value" ItemsSource="{Binding Measurements}"/>
+                <oxy:LineSeries Title="Simulated Value" DataFieldX="Time" DataFieldY="Value" Thickness="2" Color="Peru" ItemsSource="{Binding Measurements}"/>
+                <oxy:LineSeries Title="Maximum" DataFieldX="Time" DataFieldY="Maximum" LineStyle="Dash" Thickness="2" ItemsSource="{Binding Measurements}"/>
+                <oxy:LineSeries Title="Minimum" DataFieldX="Time" DataFieldY="Minimum" LineStyle="Dot" Thickness="2" ItemsSource="{Binding Measurements}"/>
             </oxy:PlotControl.Series>
         </oxy:PlotControl>
     </Grid>

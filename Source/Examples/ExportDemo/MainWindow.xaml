@@ -12,7 +12,7 @@
                 <MenuItem Header="Save xaml..." Click="SaveXaml_Click"/>
                 <Separator/>
                 <MenuItem Header="Save html5 report..." Click="SaveHtmlReport_Click"/>
-                <MenuItem Header="Save pdf report..." Click="SavePdfReport_Click"/>
+                <MenuItem Header="Save pdf report..." IsEnabled="False" Click="SavePdfReport_Click"/>
                 <Separator/>
                 <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
@@ -49,7 +49,7 @@
             RenderToCanvas="{Binding RenderToCanvas}"
             />
             <Border CornerRadius="10" x:Name="info" MouseDown="Window_MouseDown" BorderThickness="2" BorderBrush="Black" Background="#D0FFFFF0"
-                     VerticalAlignment="Center" HorizontalAlignment="Center">
+                     VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
                 <FlowDocumentScrollViewer Width="400" Opacity="0.7">
                     <FlowDocument  FontSize="12" FontFamily="Segoe UI" >
                         <Paragraph>Mouse usage:</Paragraph>

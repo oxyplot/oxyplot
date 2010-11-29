@@ -68,7 +68,7 @@ namespace OxyPlot
             // base.Pan(dx);
             // TODO...
         }
-        public override void ScaleAt(double factor, double x)
+        public override void ZoomAt(double factor, double x)
         {
             // base.ScaleAt(factor, x);
             // TODO...

@@ -1,21 +1,20 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace OxyPlot.Wpf
 {
-    public abstract class Axis : DependencyObject
+    public abstract class Axis : FrameworkElement
     {
         public OxyPlot.Axis ModelAxis { get; protected set; }
 
-//        public abstract void UpdateModelProperties();
-
-            public double StartPosition
+        public double StartPosition
         {
             get { return (double)GetValue(StartPositionProperty); }
             set { SetValue(StartPositionProperty, value); }
         }
 
         public static readonly DependencyProperty StartPositionProperty =
-            DependencyProperty.Register("StartPosition", typeof(double), typeof(Axis), new UIPropertyMetadata(0.0));
+            DependencyProperty.Register("StartPosition", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public double EndPosition
         {
@@ -24,7 +23,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty EndPositionProperty =
-            DependencyProperty.Register("EndPosition", typeof(double), typeof(Axis), new UIPropertyMetadata(1.0));
+            DependencyProperty.Register("EndPosition", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public bool PositionAtZeroCrossing
         {
@@ -33,7 +32,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty PositionAtZeroCrossingProperty =
-            DependencyProperty.Register("PositionAtZeroCrossing", typeof(bool), typeof(Axis), new UIPropertyMetadata(false));
+            DependencyProperty.Register("PositionAtZeroCrossing", typeof(bool), typeof(Axis), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
 
 
 
@@ -44,7 +43,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty AngleProperty =
-            DependencyProperty.Register("Angle", typeof(double), typeof(Axis), new UIPropertyMetadata(0.0));
+            DependencyProperty.Register("Angle", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
 
         public TickStyle TickStyle
@@ -54,7 +53,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty TickStyleProperty =
-            DependencyProperty.Register("TickStyle", typeof(TickStyle), typeof(Axis), new UIPropertyMetadata(TickStyle.Inside));
+            DependencyProperty.Register("TickStyle", typeof(TickStyle), typeof(Axis), new FrameworkPropertyMetadata(TickStyle.Inside, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public LineStyle MajorGridlineStyle
         {
@@ -63,7 +62,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty MajorGridlineStyleProperty =
-            DependencyProperty.Register("MajorGridlineStyle", typeof(LineStyle), typeof(Axis), new UIPropertyMetadata(LineStyle.Solid));
+            DependencyProperty.Register("MajorGridlineStyle", typeof(LineStyle), typeof(Axis), new FrameworkPropertyMetadata(LineStyle.Solid, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public double MajorGridlineThickness
         {
@@ -72,7 +71,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty MajorGridlineThicknessProperty =
-            DependencyProperty.Register("MajorGridlineThickness", typeof(double), typeof(Axis), new UIPropertyMetadata(1.0));
+            DependencyProperty.Register("MajorGridlineThickness", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
 
         public LineStyle MinorGridlineStyle
@@ -82,7 +81,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty MinorGridlineStyleProperty =
-            DependencyProperty.Register("MinorGridlineStyle", typeof(LineStyle), typeof(Axis), new UIPropertyMetadata(LineStyle.Solid));
+            DependencyProperty.Register("MinorGridlineStyle", typeof(LineStyle), typeof(Axis), new FrameworkPropertyMetadata(LineStyle.Solid, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public double MinorGridlineThickness
         {
@@ -91,7 +90,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty MinorGridlineThicknessProperty =
-            DependencyProperty.Register("MinorGridlineThickness", typeof(double), typeof(Axis), new UIPropertyMetadata(1.0));
+            DependencyProperty.Register("MinorGridlineThickness", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public AxisPosition Position
         {
@@ -100,7 +99,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty PositionProperty =
-            DependencyProperty.Register("Position", typeof(AxisPosition), typeof(Axis), new UIPropertyMetadata(AxisPosition.Left));
+            DependencyProperty.Register("Position", typeof(AxisPosition), typeof(Axis), new FrameworkPropertyMetadata(AxisPosition.Left, FrameworkPropertyMetadataOptions.AffectsRender));
 
 
         public double Minimum
@@ -110,7 +109,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty MinimumProperty =
-            DependencyProperty.Register("Minimum", typeof(double), typeof(Axis), new UIPropertyMetadata(double.NaN));
+            DependencyProperty.Register("Minimum", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public double Maximum
         {
@@ -119,7 +118,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty MaximumProperty =
-            DependencyProperty.Register("Maximum", typeof(double), typeof(Axis), new UIPropertyMetadata(double.NaN));
+            DependencyProperty.Register("Maximum", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public string Title
         {
@@ -128,7 +127,39 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(string), typeof(Axis), new UIPropertyMetadata(null));
+            DependencyProperty.Register("Title", typeof(string), typeof(Axis), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public bool UseSuperExponentialFormat
+        {
+            get { return (bool)GetValue(UseSuperExponentialFormatProperty); }
+            set { SetValue(UseSuperExponentialFormatProperty, value); }
+        }
+
+        public static readonly DependencyProperty UseSuperExponentialFormatProperty =
+            DependencyProperty.Register("UseSuperExponentialFormat", typeof(bool), typeof(Axis), new UIPropertyMetadata(false));
+
+        public string StringFormat
+        {
+            get { return (string)GetValue(StringFormatProperty); }
+            set { SetValue(StringFormatProperty, value); }
+        }
+
+        public static readonly DependencyProperty StringFormatProperty =
+            DependencyProperty.Register("StringFormat", typeof(string), typeof(Axis), new UIPropertyMetadata(null));
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (e.Property.OwnerType == GetType())
+            {
+                var fpm = e.Property.GetMetadata(e.Property.OwnerType) as FrameworkPropertyMetadata;
+                if (fpm != null && fpm.AffectsRender)
+                {
+                    var plot = Parent as PlotControl;
+                    plot.InvalidatePlot();
+                }
+            }
+        }
 
         public virtual void UpdateModelProperties()
         {
@@ -162,8 +193,38 @@ namespace OxyPlot.Wpf
 
             a.StartPosition = StartPosition;
             a.EndPosition = EndPosition;
+            a.StringFormat = StringFormat;
+            a.UseSuperExponentialFormat = UseSuperExponentialFormat;
 
             a.Angle = Angle;
         }
- }
+
+        public void Pan(double dx)
+        {
+            ModelAxis.Pan(dx);
+            Minimum = ModelAxis.Minimum;
+            Maximum = ModelAxis.Maximum;
+        }
+
+        public void Reset()
+        {
+            ModelAxis.Reset();
+            Minimum = ModelAxis.Minimum;
+            Maximum = ModelAxis.Maximum;
+        }
+
+        public void Zoom(double p1, double p2)
+        {
+            ModelAxis.Zoom(p1, p2);
+            Minimum = ModelAxis.Minimum;
+            Maximum = ModelAxis.Maximum;
+        }
+
+        public void ZoomAt(double factor, double d)
+        {
+            ModelAxis.ZoomAt(factor, d);
+            Minimum = ModelAxis.Minimum;
+            Maximum = ModelAxis.Maximum;
+        }
+    }
 }

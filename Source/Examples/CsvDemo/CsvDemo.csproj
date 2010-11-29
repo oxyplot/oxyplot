@@ -94,13 +94,13 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Content Include="GlobalTemperatureAnomaly.csv">
+    <Content Include="Data\GlobalTemperatureAnomaly.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="WorldPopulation.csv">
+    <Content Include="Data\WorldPopulation.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="RiverFlow.csv">
+    <Content Include="Data\RiverFlow.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

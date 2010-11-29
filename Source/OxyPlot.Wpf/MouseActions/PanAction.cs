@@ -8,7 +8,7 @@ namespace OxyPlot.Wpf
             : base(pc)
         {
         }
-       
+
         private OxyPlot.Axis xaxis;
         private OxyPlot.Axis yaxis;
         private DataPoint previousPoint;
@@ -20,7 +20,7 @@ namespace OxyPlot.Wpf
             if (button != MouseButton.Right || control)
                 return;
             pc.GetAxesFromPoint(pt, out xaxis, out yaxis);
-            
+
             // Right button double click resets the axis
             if (clickCount == 2)
             {
@@ -43,9 +43,9 @@ namespace OxyPlot.Wpf
             double dx = currentPoint.X - previousPoint.X;
             double dy = currentPoint.Y - previousPoint.Y;
             if (xaxis != null)
-                xaxis.Pan(-dx);
+                pc.Pan(xaxis, -dx);
             if (yaxis != null)
-                yaxis.Pan(-dy);
+                pc.Pan(yaxis, -dy);
             pc.Refresh();
             previousPoint = pc.InverseTransform(pt, xaxis, yaxis);
         }

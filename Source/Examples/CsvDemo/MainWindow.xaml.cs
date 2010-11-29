@@ -18,9 +18,9 @@ namespace CsvDemo
         {
             InitializeComponent();
             DataContext = vm;
-            vm.Open("GlobalTemperatureAnomaly.csv");
-            // vm.Open("WorldPopulation.csv");
-            vm.Open("RiverFlow.csv");
+            // vm.Open("Data\GlobalTemperatureAnomaly.csv");
+            // vm.Open("Data\WorldPopulation.csv");
+            vm.Open(@"Data\RiverFlow.csv");
         }
 
         private void Window_Drop(object sender, DragEventArgs e)
