@@ -35,7 +35,7 @@ namespace OxyPlot
     public class PlotModel
     {
         /// <summary>
-        /// This is the default font for all text in the plots.
+        /// This is the default font for text on axes, series, legends and plot title.
         /// </summary>
         public static string DefaultFont = "Segoe UI";
 
@@ -43,12 +43,8 @@ namespace OxyPlot
         internal Axis DefaultMagnitudeAxis;
         internal Axis DefaultXAxis;
         internal Axis DefaultYAxis;
+        internal OxyRect PlotArea;         // The PlotArea rectangle is defining the rectangular area inside the margins.
 
-        /// <summary>
-        /// The Bounds rectangle is defining the rectangular 
-        /// area inside the margins.
-        /// </summary>
-        internal OxyRect Bounds;
 
         private int currentColorIndex;
 
@@ -71,7 +67,7 @@ namespace OxyPlot
             LegendPosition = LegendPosition.TopRight;
             IsLegendOutsidePlotArea = false;
 
-            AxisMargins = new OxyThickness(60, 60, 50, 50);
+            PlotMargins = new OxyThickness(60, 60, 50, 50);
 
             TitleFont = DefaultFont;
             TitleFontSize = 18;
@@ -190,7 +186,7 @@ namespace OxyPlot
         /// Gets or sets the axis margins.
         /// </summary>
         /// <value>The axis margins.</value>
-        public OxyThickness AxisMargins { get; set; }
+        public OxyThickness PlotMargins { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the text.
@@ -390,14 +386,19 @@ namespace OxyPlot
 
         public void RenderInit(IRenderContext rc)
         {
+            double w = rc.Width - PlotMargins.Left - PlotMargins.Right;
+            double h = rc.Height - PlotMargins.Top - PlotMargins.Bottom;
+            if (w < 0) w = 0;
+            if (h < 0) h = 0;
 
-            Bounds = new OxyRect
+            PlotArea = new OxyRect
                          {
-                             Left = AxisMargins.Left,
-                             Width = rc.Width - AxisMargins.Left - AxisMargins.Right,
-                             Top = AxisMargins.Top,
-                             Height = rc.Height - AxisMargins.Top - AxisMargins.Bottom
+                             Left = PlotMargins.Left,
+                             Width = w,
+                             Top = PlotMargins.Top,
+                             Height = h
                          };
+
 
             // todo...
             /*
@@ -434,7 +435,7 @@ namespace OxyPlot
                 }
             }
               */
-            MidPoint = new ScreenPoint((Bounds.Left + Bounds.Right) * 0.5, (Bounds.Top + Bounds.Bottom) * 0.5);
+            MidPoint = new ScreenPoint((PlotArea.Left + PlotArea.Right) * 0.5, (PlotArea.Top + PlotArea.Bottom) * 0.5);
         }
 
         /// <summary>
@@ -446,7 +447,7 @@ namespace OxyPlot
             // Update the transforms
             foreach (Axis a in Axes)
             {
-                a.UpdateTransform(Bounds);
+                a.UpdateTransform(PlotArea);
             }
 
             // Set the same scaling to all axes if CartesianAxes is selected
@@ -462,7 +463,7 @@ namespace OxyPlot
             // Update the intervals for all axes
             foreach (Axis a in Axes)
             {
-                a.UpdateIntervals(Bounds.Width, Bounds.Height);
+                a.UpdateIntervals(PlotArea.Width, PlotArea.Height);
             }
 
             foreach (Axis a in Axes)
@@ -481,7 +482,7 @@ namespace OxyPlot
         public void RenderBox(IRenderContext rc)
         {
             var pp = new PlotRenderingHelper(rc, this);
-            rc.DrawRectangle(Bounds, Background, BoxColor, BoxThickness);
+            rc.DrawRectangle(PlotArea, Background, BoxColor, BoxThickness);
             pp.RenderTitle(Title, Subtitle);
             foreach (DataSeries s in Series)
             {

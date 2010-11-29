@@ -33,7 +33,7 @@ namespace CsvDemo
             var tmp = new PlotModel(Path.GetFileNameWithoutExtension(file));
             tmp.LegendPosition = LegendPosition.TopRight;
             tmp.IsLegendOutsidePlotArea = true;
-            tmp.AxisMargins= new OxyThickness(70,40,160,50);
+            tmp.PlotMargins= new OxyThickness(70,40,160,50);
             for (int i = 1; i < doc.Headers.Length; i++)
             {
                 var ls = new LineSeries(doc.Headers[i]);

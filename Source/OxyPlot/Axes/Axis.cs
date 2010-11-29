@@ -18,7 +18,7 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis"/> class.
         /// </summary>
-        public Axis()
+        protected Axis()
         {
             Position = AxisPosition.Left;
             IsVisible = true;
@@ -286,8 +286,8 @@ namespace OxyPlot
         public string StringFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to use the 'Super' exponential format.
-        /// This format will convert 1.5E+03 to 1.5 10^{3} and render the superscript properly
+        /// Gets or sets a value indicating whether to use superscript exponential format.
+        /// This format will convert 1.5E+03 to 1.5·10^{3} and render the superscript properly
         /// If StringFormat is null, 1.0E+03 will be converted to 10^{3}
         /// </summary>
         public bool UseSuperExponentialFormat { get; set; }
@@ -440,12 +440,12 @@ namespace OxyPlot
                     }
                     else
                     {
-                        fmt = "{0} · 10^{{{1:0}}}";
+                        fmt = "{0}·10^{{{1:0}}}";
                     }
                 }
                 else
                 {
-                    fmt = "{0:" + StringFormat + "} · 10^{{{1:0}}}";
+                    fmt = "{0:" + StringFormat + "}·10^{{{1:0}}}";
                 }
                 return String.Format(CultureInfo.InvariantCulture, fmt, mantissa, exp);
             }
@@ -484,7 +484,7 @@ namespace OxyPlot
             Maximum = ActualMaximum + dx;
         }
 
-        public virtual void ScaleAt(double factor, double x)
+        public virtual void ZoomAt(double factor, double x)
         {
             double dx0 = (ActualMinimum - x) * Scale;
             double dx1 = (ActualMaximum - x) * Scale;
@@ -564,8 +564,8 @@ namespace OxyPlot
         // alternative algorithm not in use
         private double CalculateActualInterval1(double availableSize, double maxIntervalSize)
         {
-            int minTags = 5;
-            int maxTags = 20;
+            int minimumTags = 5;
+            int maximumTags = 20;
             var numberOfTags = (int)(availableSize / maxIntervalSize);
             double range = ActualMaximum - ActualMinimum;
             double interval = range / numberOfTags;
@@ -574,8 +574,8 @@ namespace OxyPlot
             interval = Math.Ceiling(interval);
             interval = Math.Pow(10, interval) * k1;
 
-            if (range / interval > maxTags) interval *= 5;
-            if (range / interval < minTags) interval *= 0.5;
+            if (range / interval > maximumTags) interval *= 5;
+            if (range / interval < minimumTags) interval *= 0.5;
 
             if (interval <= 0) interval = 1;
             return interval;
@@ -716,13 +716,13 @@ namespace OxyPlot
 
         /// <summary>
         /// Transforms the specified x and y coordinates to screen coordinates.
-        /// The this object is always the xaxis, and the yaxis is given as
+        /// The this object is always the x-axis, and the y-axis is given as
         /// an argument. This is neccessary to calculate screen coordinates from
         /// polar coordinates.
         /// </summary>
         public virtual ScreenPoint Transform(double x, double y, Axis yAxis)
         {
-            // todo: review architecture here
+            // todo: review architecture here, could this be solved in a better way?
 
             if (IsPolar())
             {
@@ -734,12 +734,12 @@ namespace OxyPlot
             if (yAxis == null)
                 return new ScreenPoint();
 
-            return new ScreenPoint(TransformX(x), yAxis.TransformX(y));
+            return new ScreenPoint(Transform(x), yAxis.Transform(y));
         }
 
         // todo: should find a better way to do this
         // this method seems to be a bottleneck for performance...
-        public double TransformX(double x)
+        public double Transform(double x)
         {
             return (PreTransform(x) - Offset) * Scale;
         }

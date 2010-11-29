@@ -23,26 +23,26 @@ namespace OxyPlot
             switch (axis.Position)
             {
                 case AxisPosition.Left:
-                    apos = Plot.Bounds.Left;
+                    apos = Plot.PlotArea.Left;
                     isHorizontal = false;
                     break;
                 case AxisPosition.Right:
-                    apos = Plot.Bounds.Right;
+                    apos = Plot.PlotArea.Right;
                     isHorizontal = false;
                     break;
                 case AxisPosition.Top:
-                    apos = Plot.Bounds.Top;
+                    apos = Plot.PlotArea.Top;
                     perpendicularAxis = Plot.DefaultYAxis;
                     break;
                 case AxisPosition.Bottom:
-                    apos = Plot.Bounds.Bottom;
+                    apos = Plot.PlotArea.Bottom;
                     perpendicularAxis = Plot.DefaultYAxis;
                     break;
             }
 
             if (axis.PositionAtZeroCrossing)
             {
-                apos = perpendicularAxis.TransformX(0);
+                apos = perpendicularAxis.Transform(0);
             }
 
             double a0, a1;
@@ -63,18 +63,18 @@ namespace OxyPlot
                         continue;
                     }
 
-                    double transformedValue = axis.TransformX(value);
+                    double transformedValue = axis.Transform(value);
 
                     if (MinorPen != null)
                     {
                         if (isHorizontal)
                         {
-                            rc.DrawLine(transformedValue, Plot.Bounds.Top, transformedValue, Plot.Bounds.Bottom, MinorPen);
+                            rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom, MinorPen);
 
                         }
                         else
                         {
-                            rc.DrawLine(Plot.Bounds.Left, transformedValue, Plot.Bounds.Right, transformedValue, MinorPen);
+                            rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue, MinorPen);
                         }
                     }
                     if (isHorizontal)
@@ -99,18 +99,18 @@ namespace OxyPlot
                 if (value < axis.ActualMinimum || value > axis.ActualMaximum)
                     continue;
 
-                double transformedValue = axis.TransformX(value);
+                double transformedValue = axis.Transform(value);
 
                 if (MajorPen != null)
                 {
                     if (isHorizontal)
                     {
-                        rc.DrawLine(transformedValue, Plot.Bounds.Top, transformedValue, Plot.Bounds.Bottom, MajorPen);
+                        rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom, MajorPen);
 
                     }
                     else
                     {
-                        rc.DrawLine(Plot.Bounds.Left, transformedValue, Plot.Bounds.Right, transformedValue, MajorPen);
+                        rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue, MajorPen);
                     }
                 }
 
@@ -162,15 +162,15 @@ namespace OxyPlot
 
             if (axis.PositionAtZeroCrossing)
             {
-                double t0 = axis.TransformX(0);
+                double t0 = axis.Transform(0);
                 if (isHorizontal)
                 {
-                    rc.DrawLine(t0, Plot.Bounds.Top, t0, Plot.Bounds.Bottom, ZeroPen);
+                    rc.DrawLine(t0, Plot.PlotArea.Top, t0, Plot.PlotArea.Bottom, ZeroPen);
 
                 }
                 else
                 {
-                    rc.DrawLine(Plot.Bounds.Left, t0, Plot.Bounds.Right, t0, ZeroPen);
+                    rc.DrawLine(Plot.PlotArea.Left, t0, Plot.PlotArea.Right, t0, ZeroPen);
                 }
             }
 
@@ -181,32 +181,32 @@ namespace OxyPlot
                     if (!IsWithin(value, axis.ActualMinimum, axis.ActualMaximum))
                         continue;
 
-                    double transformedValue = axis.TransformX(value);
+                    double transformedValue = axis.Transform(value);
                     if (isHorizontal)
                     {
-                        rc.DrawLine(transformedValue, Plot.Bounds.Top, transformedValue, Plot.Bounds.Bottom, ExtraPen);
+                        rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom, ExtraPen);
 
                     }
                     else
                     {
-                        rc.DrawLine(Plot.Bounds.Left, transformedValue, Plot.Bounds.Right, transformedValue, ExtraPen);
+                        rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue, ExtraPen);
                     }
                 }
             }
             if (isHorizontal)
             {
-                rc.DrawLine(Plot.Bounds.Left, apos, Plot.Bounds.Right, apos, MajorPen);
+                rc.DrawLine(Plot.PlotArea.Left, apos, Plot.PlotArea.Right, apos, MajorPen);
 
             }
             else
             {
-                rc.DrawLine(apos, Plot.Bounds.Top, apos, Plot.Bounds.Bottom, MajorPen);
+                rc.DrawLine(apos, Plot.PlotArea.Top, apos, Plot.PlotArea.Bottom, MajorPen);
             }
 
             if (!String.IsNullOrWhiteSpace(axis.Title))
             {
                 // Axis legend 
-                double ymid = axis.TransformX((axis.ActualMinimum + axis.ActualMaximum) / 2);
+                double ymid = axis.Transform((axis.ActualMinimum + axis.ActualMaximum) / 2);
                 double angle = -90;
                 var lpt = new ScreenPoint();
 
@@ -215,7 +215,7 @@ namespace OxyPlot
 
                 if (axis.PositionAtZeroCrossing)
                 {
-                    ymid = perpendicularAxis.TransformX(perpendicularAxis.ActualMaximum);
+                    ymid = perpendicularAxis.Transform(perpendicularAxis.ActualMaximum);
                     // valign = axis.IsReversed ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
                 }
 

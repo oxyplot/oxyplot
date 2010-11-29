@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,8 +17,8 @@ namespace OxyPlot.Wpf
     [ContentProperty("Series")]
     public class PlotControl : Control
     {
-        public static readonly DependencyProperty AxisMarginsProperty =
-            DependencyProperty.Register("AxisMargins", typeof(Thickness?), typeof(PlotControl),
+        public static readonly DependencyProperty PlotMarginsProperty =
+            DependencyProperty.Register("PlotMargins", typeof(Thickness?), typeof(PlotControl),
                                         new UIPropertyMetadata(null));
 
         public static readonly DependencyProperty BoxColorProperty =
@@ -87,14 +88,35 @@ namespace OxyPlot.Wpf
             axes = new ObservableCollection<Axis>();
             series.CollectionChanged += OnSeriesChanged;
             axes.CollectionChanged += OnAxesChanged;
-            
+
             Loaded += PlotControl_Loaded;
             DataContextChanged += PlotControl_DataContextChanged;
             SizeChanged += PlotControl_SizeChanged;
             KeyDown += PlotControl_KeyDown;
             MouseDown += PlotControl_MouseDown;
 
+            CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
             // CommandBindings.Add(new KeyBinding())
+        }
+
+        void CompositionTarget_Rendering(object sender, EventArgs e)
+        {
+            lock (this)
+            {
+                if (isPlotInvalidated)
+                {
+                    isPlotInvalidated = false;
+                    Refresh();
+                }
+            }
+        }
+
+        public void InvalidatePlot()
+        {
+            lock (this)
+            {
+                isPlotInvalidated = true;
+            }
         }
 
         private void OnSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -151,10 +173,10 @@ namespace OxyPlot.Wpf
             set { SetValue(RenderToCanvasProperty, value); }
         }
 
-        public Thickness? AxisMargins
+        public Thickness? PlotMargins
         {
-            get { return (Thickness?)GetValue(AxisMarginsProperty); }
-            set { SetValue(AxisMarginsProperty, value); }
+            get { return (Thickness?)GetValue(PlotMarginsProperty); }
+            set { SetValue(PlotMarginsProperty, value); }
         }
 
         public double BoxThickness
@@ -170,6 +192,9 @@ namespace OxyPlot.Wpf
         }
 
         private ObservableCollection<Axis> axes;
+
+        private bool isPlotInvalidated = false;
+
         public ObservableCollection<Axis> Axes
         {
             get { return axes; }
@@ -308,6 +333,14 @@ namespace OxyPlot.Wpf
 
         private void OnModelChanged()
         {
+            UpdateModel();
+            UpdateVisuals();
+        }
+
+        void UpdateModel()
+        {
+            // If no model is set, create an internal model and copy the 
+            // axes/series/properties from the WPF objects to the internal model
             if (Model == null)
             {
                 // Create an internal model
@@ -316,46 +349,43 @@ namespace OxyPlot.Wpf
 
                 // Transfer axes, series and properties from 
                 // the WPF dependency objects to the internal model
-                UpdateModel(internalModel);
-
-                if (AxisMargins.HasValue)
+                if (Series != null)
                 {
-                    internalModel.AxisMargins = new OxyThickness(
-                        AxisMargins.Value.Left, AxisMargins.Value.Top,
-                        AxisMargins.Value.Right, AxisMargins.Value.Bottom);
+                    internalModel.Series.Clear();
+                    foreach (DataSeries s in Series)
+                    {
+                        internalModel.Series.Add(s.CreateModel());
+                    }
                 }
+                if (Axes != null && Axes.Count>0)
+                {
+                    internalModel.Axes.Clear();
+
+                    foreach (Axis a in Axes)
+                    {
+                        a.UpdateModelProperties();
+                        internalModel.Axes.Add(a.ModelAxis);
+                    }
+
+                }
+
+                if (PlotMargins.HasValue)
+                {
+                    internalModel.PlotMargins = new OxyThickness(
+                        PlotMargins.Value.Left, PlotMargins.Value.Top,
+                        PlotMargins.Value.Right, PlotMargins.Value.Bottom);
+                }
+
                 // Box around the plot area
                 internalModel.BoxColor = BoxColor.ToOxyColor();
                 internalModel.BoxThickness = BoxThickness;
-                
+
                 // internalModel.LegendPosition = LegendPosition;
             }
             else
                 internalModel = Model;
 
             internalModel.UpdateData();
-            UpdateVisuals();
-        }
-
-        private void UpdateModel(PlotModel p)
-        {
-            if (Series != null)
-            {
-                p.Series.Clear();
-                foreach (DataSeries s in Series)
-                {
-                    p.Series.Add(s.CreateModel());
-                }
-            }
-            if (Axes != null)
-            {
-                p.Axes.Clear();
-                foreach (Axis a in Axes)
-                {
-                    a.UpdateModelProperties();
-                    p.Axes.Add(a.ModelAxis);
-                }
-            }
         }
 
         public void Refresh()
@@ -448,7 +478,7 @@ namespace OxyPlot.Wpf
 
         public Point Transform(double x, double y, OxyPlot.Axis xaxis, OxyPlot.Axis yaxis)
         {
-            return new Point(xaxis.TransformX(x), yaxis.TransformX(y));
+            return new Point(xaxis.Transform(x), yaxis.Transform(y));
         }
 
         public DataPoint InverseTransform(Point pt, OxyPlot.Axis xaxis, OxyPlot.Axis yaxis)
@@ -498,6 +528,12 @@ namespace OxyPlot.Wpf
             zoomControl.Visibility = Visibility.Hidden;
         }
 
+        /// <summary>
+        /// Gets the series that is nearest the specified point (in screen coordinates).
+        /// </summary>
+        /// <param name="pt">The point.</param>
+        /// <param name="limit">The maximum distance, if this is exceeded the method will return null.</param>
+        /// <returns>The closest DataSeries</returns>
         public OxyPlot.DataSeries GetSeriesFromPoint(Point pt, double limit = 100)
         {
             double mindist = double.MaxValue;
@@ -533,5 +569,52 @@ namespace OxyPlot.Wpf
         {
             slider.Hide();
         }
+
+        public void Pan(OxyPlot.Axis axis, double dx)
+        {
+            if (Model == null)
+            {
+                var a = FindModelAxis(axis);
+                if (a != null)
+                    a.Pan(dx);
+            }
+            // Modify min/max of the PlotModel's axis
+            axis.Pan(dx);
+        }
+
+        private Axis FindModelAxis(OxyPlot.Axis a)
+        {
+            return Axes.FirstOrDefault(axis => axis.ModelAxis == a);
+        }
+
+        public void Reset(OxyPlot.Axis axis)
+        {
+            if (Model == null)
+            {
+                var a = FindModelAxis(axis);
+                if (a != null)
+                    a.Reset();
+            }
+            axis.Reset();
+        }
+
+        public void Zoom(OxyPlot.Axis axis, double p1, double p2)
+        {
+            var a = FindModelAxis(axis);
+            if (a != null)
+                a.Zoom(p1,p2);
+            else
+                axis.Zoom(p1,p2);
+        }
+
+        public void ZoomAt(OxyPlot.Axis axis, double factor, double x)
+        {
+            var a = FindModelAxis(axis);
+            if (a != null)
+                a.ZoomAt(factor,x);
+            else
+                axis.ZoomAt(factor,x);
+        }
+
     }
 }

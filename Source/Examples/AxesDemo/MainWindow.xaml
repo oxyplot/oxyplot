@@ -87,13 +87,13 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <oxy:PlotControl AxisMargins="40">
+                    <oxy:PlotControl PlotMargins="40">
                         <oxy:PlotControl.Axes>
                             <oxy:LinearAxis Title="Left" Position="Left" MinorGridlineStyle="Dot" />
                             <oxy:LinearAxis Title="Bottom" Position="Bottom" MinorGridlineStyle="Dot" />
                         </oxy:PlotControl.Axes>
                     </oxy:PlotControl>
-                    <oxy:PlotControl Grid.Column="1" AxisMargins="40">
+                    <oxy:PlotControl Grid.Column="1" PlotMargins="40">
                         <oxy:PlotControl.Axes>
                             <oxy:LinearAxis Title="Right" Position="Right" MinorGridlineStyle="Dot" />
                             <oxy:LinearAxis Title="Top" Position="Top" MinorGridlineStyle="Dot" />
@@ -111,9 +111,12 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
                     <Slider x:Name="Angle" Orientation="Vertical" 
-                            Grid.Column="1" Minimum="-180" Maximum="180" Value="40" Height="200"
+                           Minimum="-180" Maximum="180" Value="0" Height="200"
                             ValueChanged="Angle_ValueChanged"/>
+                        <TextBlock Width="40" Text="{Binding Value, ElementName=Angle, StringFormat='{}{0:0}º'}"/>
+                    </StackPanel>
                     <oxy:PlotControl x:Name="AnglePlot1">
                         <oxy:PlotControl.Axes>
                             <oxy:LinearAxis Title="Left" Position="Left" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
@@ -126,12 +129,12 @@
                             <oxy:LinearAxis Title="Top" Position="Top" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
                         </oxy:PlotControl.Axes>
                     </oxy:PlotControl>
-                    <Label Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="#80000000" FontSize="24" 
-                           HorizontalAlignment="Center" Content="TODO: Binding not working..."/>
+                    <!--<Label Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="#80000000" FontSize="24" 
+                           HorizontalAlignment="Center" Content="TODO: Binding not working..."/>-->
                 </Grid>
             </TabItem>
             <TabItem Header="Zero crossing axes">
-                <oxy:PlotControl BoxThickness="0" AxisMargins="10">
+                <oxy:PlotControl BoxThickness="0" PlotMargins="10">
                     <oxy:PlotControl.Axes>
                         <oxy:LinearAxis Minimum="-30" Maximum="50" Position="Left" TickStyle="Crossing" PositionAtZeroCrossing="True"/>
                         <oxy:LinearAxis Minimum="-50" Maximum="70" Position="Bottom" TickStyle="Crossing" PositionAtZeroCrossing="True"/>
@@ -139,7 +142,7 @@
                 </oxy:PlotControl>
             </TabItem>
             <TabItem Header="Reversed">
-                <oxy:PlotControl AxisMargins="40 10 10 30" >
+                <oxy:PlotControl PlotMargins="40 10 10 30" >
                     <oxy:PlotControl.Axes>
                         <oxy:LinearAxis Minimum="-30" Maximum="50" Position="Left" StartPosition="1" EndPosition="0"/>
                         <oxy:LinearAxis Minimum="-50" Maximum="70" Position="Bottom" StartPosition="1" EndPosition="0"/>
@@ -168,10 +171,10 @@
                 </oxy:PlotControl>
             </TabItem>
             <TabItem Header="Logarithmic axes">
-                <oxy:PlotControl AxisMargins="80 10 20 30">
+                <oxy:PlotControl PlotMargins="80 10 20 30">
                     <oxy:PlotControl.Axes>
-                        <oxy:LogarithmicAxis Minimum="1" Maximum="1e6" Position="Left"/>
-                        <oxy:LogarithmicAxis Minimum="1e-3" Maximum="1e4" Position="Bottom"/>
+                        <oxy:LogarithmicAxis Minimum="1" Maximum="1e6" Position="Left" UseSuperExponentialFormat="True"/>
+                        <oxy:LogarithmicAxis Minimum="1e-3" Maximum="1e4" Position="Bottom" UseSuperExponentialFormat="True"/>
                     </oxy:PlotControl.Axes>
                 </oxy:PlotControl>
             </TabItem>

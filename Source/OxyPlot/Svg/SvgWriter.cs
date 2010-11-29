@@ -190,8 +190,8 @@ namespace OxyPlot
             if (fontWeight > 0)
                 WriteAttributeString("font-weight", fontWeight);
             WriteAttributeString("fill", ColorToString(fill));
-            WriteString(text);
             // WriteAttributeString("style", style);
+            WriteString(text);
             WriteEndElement();
         }
 
