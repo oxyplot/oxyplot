@@ -23,7 +23,7 @@ namespace OxyPlot
         Cartesian,
 
         /// <summary>
-        /// Polar coordinate system - distance&angle axes
+        /// Polar coordinate system - distance and angle axes
         /// http://en.wikipedia.org/wiki/Polar_coordinate_system
         /// </summary>
         Polar

@@ -595,6 +595,7 @@ namespace OxyPlot
         /// displayed in the axis.
         /// </summary>
         /// <param name="availableSize">The available size.</param>
+        /// <param name="maxIntervalSize">The maximum interval size.</param>
         /// <returns>Actual interval to use to determine which values are 
         /// displayed in the axis.
         /// </returns>
