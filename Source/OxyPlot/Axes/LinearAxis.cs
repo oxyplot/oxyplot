@@ -3,7 +3,7 @@
     /// <summary>
     /// Linear axis class.
     /// </summary>
-    public class LinearAxis : Axis
+    public class LinearAxis : AxisBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearAxis"/> class.

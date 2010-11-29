@@ -82,7 +82,7 @@ namespace OxyPlot
             else
                 style.AppendFormat("stroke:{0};stroke-width:{1:" + NumberFormat + "}", ColorToString(stroke), thickness);
 
-            if (stroke.A != 0xFF)
+            if (stroke!=null && stroke.A != 0xFF)
                 style.AppendFormat(CultureInfo.InvariantCulture, ";stroke-opacity:{0}", stroke.A / 255.0);
 
             if (dashArray != null && dashArray.Length > 0)
@@ -93,16 +93,7 @@ namespace OxyPlot
             }
             return style.ToString();
         }
-
-        /*        public void WriteStrokeStyle(string name, Color color, double thickness, double[] dashArray)
-                {
-                    WriteStyle(name, CreateStrokeStyle(color, thickness, dashArray));
-                }
-
-                private void WriteStyle(string name, string createStrokeStyle)
-                {
-                }*/
-
+      
         protected void WriteAttributeString(string name, double value)
         {
             WriteAttributeString(name, value.ToString(NumberFormat, CultureInfo.InvariantCulture));
@@ -195,7 +186,7 @@ namespace OxyPlot
             WriteEndElement();
         }
 
-        private bool endIsWritten = false;
+        private bool endIsWritten;
 
         public void Complete()
         {

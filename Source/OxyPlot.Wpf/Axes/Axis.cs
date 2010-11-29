@@ -5,7 +5,7 @@ namespace OxyPlot.Wpf
 {
     public abstract class Axis : FrameworkElement
     {
-        public OxyPlot.Axis ModelAxis { get; protected set; }
+        public OxyPlot.AxisBase ModelAxis { get; protected set; }
 
         public double StartPosition
         {
@@ -163,7 +163,7 @@ namespace OxyPlot.Wpf
 
         public virtual void UpdateModelProperties()
         {
-            var a = ModelAxis as OxyPlot.Axis;
+            var a = ModelAxis as OxyPlot.AxisBase;
             a.Minimum = Minimum;
             a.Maximum = Maximum;
             a.Title = Title;

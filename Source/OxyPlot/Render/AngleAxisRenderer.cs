@@ -8,7 +8,7 @@
         {
         }
 
-        public override void Render(Axis axis)
+        public override void Render(AxisBase axis)
         {
             base.Render(axis);
 

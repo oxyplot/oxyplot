@@ -39,13 +39,13 @@ namespace OxyPlot.Pdf
             p.AddFormattedText("Hello, World!", TextFormat.Bold);
         }
 
-        public void WriteParagraph(OxyPlot.Reporting.Paragraph p)
+        public void WriteParagraph(Reporting.Paragraph p)
         {
             var pa = currentSection.AddParagraph(p.Text);
             pa.AddFormattedText("Hello, World!", TextFormat.Bold);
         }
 
-        int tableCounter = 0;
+        int tableCounter;
 
         public void WriteTable(Table t)
         {
@@ -56,11 +56,11 @@ namespace OxyPlot.Pdf
             var table = currentSection.AddTable();
         }
 
-        int FigureCounter;
+        int figureCounter;
 
         public void WriteStartFigure(Figure f)
         {
-            FigureCounter++;
+            figureCounter++;
         }
         public void WriteEndFigure(string text)
         {

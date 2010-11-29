@@ -8,8 +8,8 @@ namespace OxyPlot.Wpf
     {
         public Point DownPoint;
         private bool isZooming;
-        private OxyPlot.Axis xaxis;
-        private OxyPlot.Axis yaxis;
+        private OxyPlot.AxisBase xaxis;
+        private OxyPlot.AxisBase yaxis;
 
         private Rect zoomRectangle;
 
@@ -103,7 +103,7 @@ namespace OxyPlot.Wpf
 
         public override void OnMouseWheel(Point pt, double delta, bool control, bool shift)
         {
-            OxyPlot.Axis xa, ya;
+            OxyPlot.AxisBase xa, ya;
             pc.GetAxesFromPoint(pt, out xa, out ya);
             DataPoint current = pc.InverseTransform(pt, xa, ya);
             double f = 0.001;

@@ -29,6 +29,8 @@ namespace OxyPlot
         Polar
     } ;
 
+    // todo: use IAxis instead of AxisBase?
+
     /// <summary>
     /// PlotModel
     /// </summary>
@@ -39,10 +41,10 @@ namespace OxyPlot
         /// </summary>
         public static string DefaultFont = "Segoe UI";
 
-        internal Axis DefaultAngleAxis;
-        internal Axis DefaultMagnitudeAxis;
-        internal Axis DefaultXAxis;
-        internal Axis DefaultYAxis;
+        internal AxisBase DefaultAngleAxis;
+        internal AxisBase DefaultMagnitudeAxis;
+        internal AxisBase DefaultXAxis;
+        internal AxisBase DefaultYAxis;
         internal OxyRect PlotArea;         // The PlotArea rectangle is defining the rectangular area inside the margins.
 
 
@@ -55,7 +57,7 @@ namespace OxyPlot
 
         public PlotModel(string title = null, string subtitle = null)
         {
-            Axes = new Collection<Axis>();
+            Axes = new Collection<AxisBase>();
             Series = new Collection<DataSeries>();
 
             Title = title;
@@ -127,7 +129,7 @@ namespace OxyPlot
         /// Gets or sets the axes.
         /// </summary>
         /// <value>The axes.</value>
-        public Collection<Axis> Axes { get; set; }
+        public Collection<AxisBase> Axes { get; set; }
 
         /// <summary>
         /// Gets or sets the series.
@@ -258,7 +260,7 @@ namespace OxyPlot
             DefaultXAxis = null;
             DefaultYAxis = null;
 
-            foreach (Axis a in Axes)
+            foreach (AxisBase a in Axes)
             {
                 if (a.IsHorizontal())
                 {
@@ -345,7 +347,7 @@ namespace OxyPlot
             }
         }
 
-        private Axis FindAxis(string key)
+        private AxisBase FindAxis(string key)
         {
             return Axes.FirstOrDefault(a => a.Key == key);
         }
@@ -356,7 +358,7 @@ namespace OxyPlot
         /// </summary>
         private void UpdateMaxMin()
         {
-            foreach (Axis a in Axes)
+            foreach (AxisBase a in Axes)
             {
                 a.ActualMaximum = double.NaN;
                 a.ActualMinimum = double.NaN;
@@ -369,7 +371,7 @@ namespace OxyPlot
                 s.YAxis.Include(s.MinY);
                 s.YAxis.Include(s.MaxY);
             }
-            foreach (Axis a in Axes)
+            foreach (AxisBase a in Axes)
             {
                 a.UpdateActualMaxMin();
             }
@@ -445,28 +447,28 @@ namespace OxyPlot
         public void RenderAxes(IRenderContext rc)
         {
             // Update the transforms
-            foreach (Axis a in Axes)
+            foreach (AxisBase a in Axes)
             {
                 a.UpdateTransform(PlotArea);
             }
 
             // Set the same scaling to all axes if CartesianAxes is selected
-            if (this.PlotType == PlotType.Cartesian)
+            if (PlotType == PlotType.Cartesian)
             {
                 double minimumScale = double.MaxValue;
-                foreach (Axis a in Axes)
+                foreach (var a in Axes)
                     minimumScale = Math.Min(minimumScale, Math.Abs(a.Scale));
-                foreach (Axis a in Axes)
+                foreach (var a in Axes)
                     a.SetScale(minimumScale);
             }
 
             // Update the intervals for all axes
-            foreach (Axis a in Axes)
+            foreach (var a in Axes)
             {
                 a.UpdateIntervals(PlotArea.Width, PlotArea.Height);
             }
 
-            foreach (Axis a in Axes)
+            foreach (AxisBase a in Axes)
             {
                 if (a.IsVisible)
                 {

@@ -8,7 +8,7 @@ namespace OxyPlot.Wpf
     /// This should give the highest performance with WPF.
     /// The problem is currently to mix aliased (axes) and anti-aliased (curves) elements...
     /// Currently we are rendering to two different PlotFrames, with and without the Alias property set.
-    /// todo: any good ideas to do this better?
+    /// todo: any good ideas for a better solution?
     /// </summary>
     internal class PlotFrame : FrameworkElement
     {

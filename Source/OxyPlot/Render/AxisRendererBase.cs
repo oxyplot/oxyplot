@@ -25,7 +25,7 @@ namespace OxyPlot
             this.rc = rc;
         }
 
-        public virtual void Render(Axis axis)
+        public virtual void Render(AxisBase axis)
         {
             if (axis == null)
                 return;
@@ -36,7 +36,7 @@ namespace OxyPlot
 
        
 
-        protected void GetTickPositions(Axis axis, TickStyle glt, double ticksize, AxisPosition position, out double x0, out double x1)
+        protected void GetTickPositions(AxisBase axis, TickStyle glt, double ticksize, AxisPosition position, out double x0, out double x1)
         {
             x0 = 0;
             x1 = 0;
@@ -57,7 +57,7 @@ namespace OxyPlot
             }
         }
 
-        protected void CreatePens(Axis axis)
+        protected void CreatePens(AxisBase axis)
         {
             MinorPen = OxyPen.Create(axis.MinorGridlineColor, axis.MinorGridlineThickness, axis.MinorGridlineStyle);
             MajorPen = OxyPen.Create(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
