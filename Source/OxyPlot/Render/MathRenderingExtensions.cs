@@ -4,38 +4,42 @@ namespace OxyPlot
 {
     public static class MathRenderingExtensions
     {
-        private static double SUPER_SIZE = 0.62; 
-        private static double SUPER_ALIGNMENT = 0.0;
+        private static double SUPER_SIZE = 0.62;
+        private static double SUPER_ALIGNMENT;
         private static double SUB_ALIGNMENT = 0.6;
         private static double SUB_SIZE = 0.62;
 
-        public static OxySize MeasureMathText(this IRenderContext rc, string text, string fontFamily, double fontSize, double fontWeight)
+        public static OxySize MeasureMathText(this IRenderContext rc, string text, string fontFamily, double fontSize,
+                                              double fontWeight)
         {
             if (text.Contains("^{") || text.Contains("_{"))
             {
                 return InternalDrawMathText(rc, 0, 0, text, null, fontFamily, fontSize, fontWeight, true);
             }
+
             return rc.MeasureText(text, fontFamily, fontSize, fontWeight);
         }
 
         /// <summary>
-        /// Draws text supporting sub- and superscript.
-        /// Subscript: H_{2}O
-        /// Superscript: E=mc^{2}
-        /// Both: A^{2}_{i,j}
+        ///   Draws text supporting sub- and superscript.
+        ///   Subscript: H_{2}O
+        ///   Superscript: E=mc^{2}
+        ///   Both: A^{2}_{i,j}
         /// </summary>
-        /// <param name="rc">The rc.</param>
-        /// <param name="pt">The pt.</param>
-        /// <param name="text">The text.</param>
-        /// <param name="textColor">Color of the text.</param>
-        /// <param name="fontFamily">The font family.</param>
-        /// <param name="fontSize">Size of the font.</param>
-        /// <param name="fontWeight">The font weight.</param>
-        /// <param name="angle">The angle.</param>
-        /// <param name="ha">The ha.</param>
-        /// <param name="va">The va.</param>
+        /// <param name = "rc">The rc.</param>
+        /// <param name = "pt">The pt.</param>
+        /// <param name = "text">The text.</param>
+        /// <param name = "textColor">Color of the text.</param>
+        /// <param name = "fontFamily">The font family.</param>
+        /// <param name = "fontSize">Size of the font.</param>
+        /// <param name = "fontWeight">The font weight.</param>
+        /// <param name = "angle">The angle.</param>
+        /// <param name = "ha">The ha.</param>
+        /// <param name = "va">The va.</param>
         /// <returns></returns>
-        public static OxySize DrawMathText(this IRenderContext rc, ScreenPoint pt, string text, OxyColor textColor, string fontFamily, double fontSize, double fontWeight, double angle, HorizontalTextAlign ha, VerticalTextAlign va)
+        public static OxySize DrawMathText(this IRenderContext rc, ScreenPoint pt, string text, OxyColor textColor,
+                                           string fontFamily, double fontSize, double fontWeight, double angle,
+                                           HorizontalTextAlign ha, VerticalTextAlign va)
         {
             // todo: support sub/superscript math notation also with angled text...
 
@@ -55,6 +59,7 @@ namespace OxyPlot
                         x -= size.Width * 0.5;
                         break;
                 }
+
                 switch (va)
                 {
                     case VerticalTextAlign.Bottom:
@@ -64,6 +69,7 @@ namespace OxyPlot
                         y -= size.Height * 0.5;
                         break;
                 }
+
                 InternalDrawMathText(rc, x, y, text, textColor, fontFamily, fontSize, fontWeight, false);
 
                 return size;
@@ -73,13 +79,14 @@ namespace OxyPlot
                 rc.DrawText(pt, text, textColor,
                             fontFamily, fontSize, fontWeight,
                             angle, ha, va);
-
                 var size = rc.MeasureText(text, fontFamily, fontSize, fontWeight);
                 return size;
             }
         }
 
-        private static OxySize InternalDrawMathText(IRenderContext rc, double x, double y, string s, OxyColor textColor, string fontFamily, double fontSize, double fontWeight, bool measureOnly)
+        private static OxySize InternalDrawMathText(IRenderContext rc, double x, double y, string s, OxyColor textColor,
+                                                    string fontFamily, double fontSize, double fontWeight,
+                                                    bool measureOnly)
         {
             int i = 0;
 
@@ -94,11 +101,19 @@ namespace OxyPlot
             double fsSub = fontSize * SUB_SIZE;
 
             Func<double, double, string, double, OxySize> drawText = (xb, yb, text, fSize) =>
-            {
-                if (!measureOnly)
-                    rc.DrawText(new ScreenPoint(xb, yb), text, textColor, fontFamily, fSize, fontWeight, 0, HorizontalTextAlign.Left, VerticalTextAlign.Top);
-                return rc.MeasureText(text, fontFamily, fSize, fontWeight);
-            };
+                                                                         {
+                                                                             if (!measureOnly)
+                                                                             {
+                                                                                 rc.DrawText(new ScreenPoint(xb, yb),
+                                                                                             text, textColor, fontFamily,
+                                                                                             fSize, fontWeight, 0,
+                                                                                             HorizontalTextAlign.Left,
+                                                                                             VerticalTextAlign.Top);
+                                                                             }
+
+                                                                             return rc.MeasureText(text, fontFamily,
+                                                                                                   fSize, fontWeight);
+                                                                         };
 
             while (i < s.Length)
             {
@@ -112,10 +127,14 @@ namespace OxyPlot
                         i = i1 + 1;
                         var size = drawText(currentX, ySup, supString, fsSup);
                         if (currentX + size.Width > maximumX)
+                        {
                             maximumX = currentX + size.Width;
+                        }
+
                         continue;
                     }
                 }
+
                 // Subscript
                 if (i + 1 < s.Length && s[i] == '_' && s[i + 1] == '{')
                 {
@@ -126,7 +145,10 @@ namespace OxyPlot
                         i = i1 + 1;
                         var size = drawText(currentX, ySub, subString, fsSub);
                         if (currentX + size.Width > maximumX)
+                        {
                             maximumX = currentX + size.Width;
+                        }
+
                         continue;
                     }
                 }
@@ -151,6 +173,7 @@ namespace OxyPlot
                 maxHeight = Math.Max(maxHeight, size2.Height);
                 maximumX = currentX;
             }
+
             return new OxySize(maximumX - x, maxHeight);
         }
     }

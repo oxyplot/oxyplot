@@ -1,8 +1,8 @@
 ﻿namespace OxyPlot
 {
     /// <summary>
-    /// Cohen Sutherland line clipping algorithm
-    /// http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland
+    ///   Cohen Sutherland line clipping algorithm
+    ///   http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland
     /// </summary>
     public class CohenSutherlandClipping
     {
@@ -31,27 +31,40 @@
         {
             int code = INSIDE; // initialized as being inside of clip window
 
-            if (x < xmin) // to the left of clip window
+            if (x < xmin)
+            {
+                // to the left of clip window
                 code |= LEFT;
-            else if (x > xmax) // to the right of clip window
+            }
+            else if (x > xmax)
+            {
+                // to the right of clip window
                 code |= RIGHT;
-            if (y < ymin) // below the clip window
+            }
+
+            if (y < ymin)
+            {
+                // below the clip window
                 code |= BOTTOM;
-            else if (y > ymax) // above the clip window
+            }
+            else if (y > ymax)
+            {
+                // above the clip window
                 code |= TOP;
+            }
 
             return code;
         }
 
         /// <summary>
-        /// Cohen–Sutherland clipping algorithm clips a line from
-        /// P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with 
-        /// diagonal from (xmin, ymin) to (xmax, ymax).
+        ///   Cohen–Sutherland clipping algorithm clips a line from
+        ///   P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with 
+        ///   diagonal from (xmin, ymin) to (xmax, ymax).
         /// </summary>
-        /// <param name="x0"></param>
-        /// <param name="y0"></param>
-        /// <param name="x1"></param>
-        /// <param name="y1"></param>
+        /// <param name = "x0"></param>
+        /// <param name = "y0"></param>
+        /// <param name = "x1"></param>
+        /// <param name = "y1"></param>
         /// <returns>true if the line is inside</returns>
         public bool ClipLine(ref double x0, ref double y0, ref double x1, ref double y1)
         {
@@ -64,13 +77,14 @@
             {
                 if ((outcode0 | outcode1) == 0)
                 {
-                    //logical or is 0. Trivially accept and get out of loop
+                    // logical or is 0. Trivially accept and get out of loop
                     accept = true;
                     break;
                 }
+
                 if ((outcode0 & outcode1) != 0)
                 {
-                    //logical and is not 0. Trivially reject and get out of loop
+                    // logical and is not 0. Trivially reject and get out of loop
                     break;
                 }
 
@@ -107,6 +121,7 @@
                     y = y0 + (y1 - y0) * (xmin - x0) / (x1 - x0);
                     x = xmin;
                 }
+
                 // Now we move outside point to intersection point to clip
                 // and get ready for next pass.
                 if (outcodeOut == outcode0)
@@ -122,6 +137,7 @@
                     outcode1 = ComputeOutCode(x1, y1);
                 }
             }
+
             return accept;
         }
 
@@ -136,9 +152,9 @@
         }
 
         /// <summary>
-        /// Cohen–Sutherland clipping algorithm clips a line from
-        /// P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with 
-        /// diagonal from (xmin, ymin) to (xmax, ymax).
+        ///   Cohen–Sutherland clipping algorithm clips a line from
+        ///   P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with 
+        ///   diagonal from (xmin, ymin) to (xmax, ymax).
         /// </summary>
         /// <returns>true if the line is inside</returns>
         public bool ClipLine(ref ScreenPoint s0, ref ScreenPoint s1)

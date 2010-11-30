@@ -15,11 +15,13 @@ namespace OxyPlot
 
             var angleAxis = Plot.DefaultAngleAxis;
             if (axis.RelatedAxis != null)
+            {
                 angleAxis = axis.RelatedAxis;
+            }
 
             if (axis.ShowMinorTicks)
             {
-                //  GetVerticalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out y0, out y1);
+                // GetVerticalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out y0, out y1);
 
                 foreach (double xValue in MinorTickValues)
                 {
@@ -36,7 +38,7 @@ namespace OxyPlot
                     var pts = new List<ScreenPoint>();
                     for (double th = angleAxis.ActualMinimum;
                          th <= angleAxis.ActualMaximum;
-                         th += angleAxis.MinorStep*0.1)
+                         th += angleAxis.MinorStep * 0.1)
                     {
                         pts.Add(axis.Transform(xValue, th, angleAxis));
                     }
@@ -45,11 +47,12 @@ namespace OxyPlot
                     {
                         rc.DrawLine(pts, MinorPen.Color, MinorPen.Thickness, MinorPen.DashArray);
                     }
+
                     // RenderGridline(x, y + y0, x, y + y1, minorTickPen);
                 }
             }
 
-            //  GetVerticalTickPositions(axis, axis.TickStyle, axis.MajorTickSize, out y0, out y1);
+            // GetVerticalTickPositions(axis, axis.TickStyle, axis.MajorTickSize, out y0, out y1);
 
             foreach (double xValue in MajorTickValues)
             {
@@ -59,7 +62,7 @@ namespace OxyPlot
                 }
 
                 var pts = new List<ScreenPoint>();
-                for (double th = angleAxis.ActualMinimum; th <= angleAxis.ActualMaximum; th += angleAxis.MinorStep*0.1)
+                for (double th = angleAxis.ActualMinimum; th <= angleAxis.ActualMaximum; th += angleAxis.MinorStep * 0.1)
                 {
                     pts.Add(axis.Transform(xValue, th, angleAxis));
                 }
@@ -72,19 +75,16 @@ namespace OxyPlot
                 // RenderGridline(x, y + y0, x, y + y1, majorTickPen);
 
 
-                //var pt = new ScreenPoint(x, istop ? y + y1 - TICK_DIST : y + y1 + TICK_DIST);
-                //string text = axis.FormatValue(xValue);
-                //double h = rc.MeasureText(text, axis.FontFamily, axis.FontSize, axis.FontWeight).Height;
+                // var pt = new ScreenPoint(x, istop ? y + y1 - TICK_DIST : y + y1 + TICK_DIST);
+                // string text = axis.FormatValue(xValue);
+                // double h = rc.MeasureText(text, axis.FontFamily, axis.FontSize, axis.FontWeight).Height;
 
-                //rc.DrawText(pt, text, plot.TextColor,
-                //            axis.FontFamily, axis.FontSize, axis.FontWeight,
-                //            axis.Angle,
-                //            HorizontalTextAlign.Center, istop ? VerticalTextAlign.Bottom : VerticalTextAlign.Top);
-
-                //maxh = Math.Max(maxh, h);
+                // rc.DrawText(pt, text, plot.TextColor,
+                // axis.FontFamily, axis.FontSize, axis.FontWeight,
+                // axis.Angle,
+                // HorizontalTextAlign.Center, istop ? VerticalTextAlign.Bottom : VerticalTextAlign.Top);
+                // maxh = Math.Max(maxh, h);
             }
         }
-
-       
     }
 }

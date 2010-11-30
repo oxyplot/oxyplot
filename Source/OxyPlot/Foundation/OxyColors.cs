@@ -2,21 +2,6 @@
 {
     public static class OxyColors
     {
-        /*public static readonly Color Transparent = Color.FromARGB(0, 0, 0, 0);
-        public static readonly Color Black = Color.FromRGB(0, 0, 0);
-        public static readonly Color White = Color.FromRGB(0xFF, 0xFF, 0xFF);
-        public static readonly Color DarkGray = Color.FromRGB(0xA9, 0xA9, 0xA9);
-        public static readonly Color Gray = Color.FromRGB(0x80, 0x80, 0x80);
-        public static readonly Color LightGray = Color.FromRGB(0xD3, 0xD3, 0xD3);
-        public static readonly Color Red = Color.FromRGB(0xFF, 0, 0);
-        public static readonly Color Green = Color.FromRGB(0, 0xFF, 0);
-        public static readonly Color Blue = Color.FromRGB(0, 0, 0xFF);
-        public static readonly Color Orange = Color.FromRGB(0xFF, 0xA5, 0x00);
-        public static readonly Color Indigo = Color.FromRGB(0x4B, 0x00, 0x82);
-        public static readonly Color Violet = Color.FromRGB(0xEE, 0x82, 0xEE);
-        public static readonly Color Yellow = Color.FromRGB(0xFF, 0xFF, 0x00);
-        */
-
         public static readonly OxyColor AliceBlue = OxyColor.FromUInt32(0xFFF0F8FF);
         public static readonly OxyColor AntiqueWhite = OxyColor.FromUInt32(0xFFFAEBD7);
         public static readonly OxyColor Aqua = OxyColor.FromUInt32(0xFF00FFFF);
@@ -158,6 +143,5 @@
         public static readonly OxyColor WhiteSmoke = OxyColor.FromUInt32(0xFFF5F5F5);
         public static readonly OxyColor Yellow = OxyColor.FromUInt32(0xFFFFFF00);
         public static readonly OxyColor YellowGreen = OxyColor.FromUInt32(0xFF9ACD32);
-
     }
 }

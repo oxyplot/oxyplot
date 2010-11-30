@@ -2,13 +2,13 @@
 {
     public enum MarkerType
     {
-        None,
-        Circle,
-        Square,
-        Diamond,
-        Triangle,
-        Cross,
-        Plus,
+        None, 
+        Circle, 
+        Square, 
+        Diamond, 
+        Triangle, 
+        Cross, 
+        Plus, 
         Star
-    } ;
+    }
 }

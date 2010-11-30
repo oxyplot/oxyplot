@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace OxyPlot
 {
     /// <summary>
-    /// Rendering helper class for horizontal and vertical axes (both linear and logarithmic)
+    ///   Rendering helper class for horizontal and vertical axes (both linear and logarithmic)
     /// </summary>
     public class HorizontalAndVerticalAxisRenderer : AxisRendererBase
     {
@@ -72,18 +72,19 @@ namespace OxyPlot
                     {
                         if (isHorizontal)
                         {
-                            rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom, MinorPen);
-
+                            rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom,
+                                        MinorPen);
                         }
                         else
                         {
-                            rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue, MinorPen);
+                            rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue,
+                                        MinorPen);
                         }
                     }
+
                     if (isHorizontal)
                     {
                         rc.DrawLine(transformedValue, apos + a0, transformedValue, apos + a1, MinorTickPen);
-
                     }
                     else
                     {
@@ -100,7 +101,9 @@ namespace OxyPlot
             foreach (double value in MajorTickValues)
             {
                 if (value < axis.ActualMinimum || value > axis.ActualMaximum)
+                {
                     continue;
+                }
 
                 double transformedValue = axis.Transform(value);
 
@@ -108,19 +111,19 @@ namespace OxyPlot
                 {
                     if (isHorizontal)
                     {
-                        rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom, MajorPen);
-
+                        rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom,
+                                    MajorPen);
                     }
                     else
                     {
-                        rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue, MajorPen);
+                        rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue,
+                                    MajorPen);
                     }
                 }
 
                 if (isHorizontal)
                 {
                     rc.DrawLine(transformedValue, apos + a0, transformedValue, apos + a1, MajorTickPen);
-
                 }
                 else
                 {
@@ -128,7 +131,9 @@ namespace OxyPlot
                 }
 
                 if (value == 0 && axis.PositionAtZeroCrossing)
+                {
                     continue;
+                }
 
                 var pt = new ScreenPoint();
                 var ha = HorizontalTextAlign.Right;
@@ -137,27 +142,30 @@ namespace OxyPlot
                 {
                     case AxisPosition.Left:
                         pt = new ScreenPoint(apos + a1 - TICK_DIST, transformedValue);
-                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Right, VerticalTextAlign.Middle, out ha, out va);
+                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Right, VerticalTextAlign.Middle, out ha,
+                                             out va);
                         break;
                     case AxisPosition.Right:
                         pt = new ScreenPoint(apos + a1 + TICK_DIST, transformedValue);
-                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Left, VerticalTextAlign.Middle, out ha, out va);
+                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Left, VerticalTextAlign.Middle, out ha,
+                                             out va);
                         break;
                     case AxisPosition.Top:
                         pt = new ScreenPoint(transformedValue, apos + a1 - TICK_DIST);
-                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Bottom, out ha, out va);
+                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Bottom, out ha,
+                                             out va);
                         break;
                     case AxisPosition.Bottom:
                         pt = new ScreenPoint(transformedValue, apos + a1 + TICK_DIST);
-                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Top, out ha, out va);
+                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Top, out ha,
+                                             out va);
                         break;
-
                 }
 
                 string text = axis.FormatValue(value);
                 var size = rc.DrawMathText(pt, text, Plot.TextColor,
-                             axis.FontFamily, axis.FontSize, axis.FontWeight,
-                             axis.Angle, ha, va);
+                                           axis.FontFamily, axis.FontSize, axis.FontWeight,
+                                           axis.Angle, ha, va);
 
                 maxWidth = Math.Max(maxWidth, size.Width);
                 maxHeight = Math.Max(maxHeight, size.Height);
@@ -169,7 +177,6 @@ namespace OxyPlot
                 if (isHorizontal)
                 {
                     rc.DrawLine(t0, Plot.PlotArea.Top, t0, Plot.PlotArea.Bottom, ZeroPen);
-
                 }
                 else
                 {
@@ -182,24 +189,27 @@ namespace OxyPlot
                 foreach (double value in axis.ExtraGridlines)
                 {
                     if (!IsWithin(value, axis.ActualMinimum, axis.ActualMaximum))
+                    {
                         continue;
+                    }
 
                     double transformedValue = axis.Transform(value);
                     if (isHorizontal)
                     {
-                        rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom, ExtraPen);
-
+                        rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom,
+                                    ExtraPen);
                     }
                     else
                     {
-                        rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue, ExtraPen);
+                        rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue,
+                                    ExtraPen);
                     }
                 }
             }
+
             if (isHorizontal)
             {
                 rc.DrawLine(Plot.PlotArea.Left, apos, Plot.PlotArea.Right, apos, MajorPen);
-
             }
             else
             {
@@ -219,6 +229,7 @@ namespace OxyPlot
                 if (axis.PositionAtZeroCrossing)
                 {
                     ymid = perpendicularAxis.Transform(perpendicularAxis.ActualMaximum);
+
                     // valign = axis.IsReversed ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
                 }
 
@@ -251,18 +262,18 @@ namespace OxyPlot
             }
         }
 
-      
 
         /// <summary>
-        /// Gets the rotated alignments given the specified angle.
+        ///   Gets the rotated alignments given the specified angle.
         /// </summary>
-        /// <param name="angle">The angle.</param>
-        /// <param name="defaultHorizontalAlignment">The default horizontal alignment.</param>
-        /// <param name="defaultVerticalAlignment">The default vertical alignment.</param>
-        /// <param name="ha">The rotated horizontal alignment.</param>
-        /// <param name="va">The rotated vertical alignment.</param>
-        private static void GetRotatedAlignments(double angle, HorizontalTextAlign defaultHorizontalAlignment, VerticalTextAlign defaultVerticalAlignment,
-            out HorizontalTextAlign ha, out VerticalTextAlign va)
+        /// <param name = "angle">The angle.</param>
+        /// <param name = "defaultHorizontalAlignment">The default horizontal alignment.</param>
+        /// <param name = "defaultVerticalAlignment">The default vertical alignment.</param>
+        /// <param name = "ha">The rotated horizontal alignment.</param>
+        /// <param name = "va">The rotated vertical alignment.</param>
+        private static void GetRotatedAlignments(double angle, HorizontalTextAlign defaultHorizontalAlignment,
+                                                 VerticalTextAlign defaultVerticalAlignment,
+                                                 out HorizontalTextAlign ha, out VerticalTextAlign va)
         {
             ha = defaultHorizontalAlignment;
             va = defaultVerticalAlignment;
@@ -270,19 +281,24 @@ namespace OxyPlot
             Debug.Assert(angle <= 180 && angle >= -180, "Axis angle should be in the interval [-180,180] degrees.");
 
             if (angle > -45 && angle < 45)
+            {
                 return;
+            }
+
             if (angle > 135 || angle < -135)
             {
                 ha = (HorizontalTextAlign)(-(int)defaultHorizontalAlignment);
                 va = (VerticalTextAlign)(-(int)defaultVerticalAlignment);
                 return;
             }
+
             if (angle > 45)
             {
                 ha = (HorizontalTextAlign)((int)defaultVerticalAlignment);
                 va = (VerticalTextAlign)(-(int)defaultHorizontalAlignment);
                 return;
             }
+
             if (angle < -45)
             {
                 ha = (HorizontalTextAlign)(-(int)defaultVerticalAlignment);

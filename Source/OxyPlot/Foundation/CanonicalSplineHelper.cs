@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace OxyPlot
 {
     /// <summary>
-    /// CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
-    /// www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html
+    ///   CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
+    ///   www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html
     /// </summary>
     internal static class CanonicalSplineHelper
     {
@@ -15,11 +15,15 @@ namespace OxyPlot
         {
             var result = new List<ScreenPoint>();
             if (pts == null)
+            {
                 return result;
+            }
 
             int n = pts.Count;
             if (n < 1)
+            {
                 return result;
+            }
 
 
             if (n < 2)
@@ -54,13 +58,11 @@ namespace OxyPlot
                         Segment(result, isClosed ? pts[n - 1] : pts[0],
                                 pts[0], pts[1], pts[2], t1, t2, tolerance);
                     }
-
                     else if (i == n - 2)
                     {
                         Segment(result, pts[i - 1], pts[i], pts[i + 1],
                                 isClosed ? pts[0] : pts[i + 1], t1, t2, tolerance);
                     }
-
                     else if (i == n - 1)
                     {
                         if (isClosed)
@@ -68,7 +70,6 @@ namespace OxyPlot
                             Segment(result, pts[i - 1], pts[i], pts[0], pts[1], t1, t2, tolerance);
                         }
                     }
-
                     else
                     {
                         Segment(result, pts[i - 1], pts[i], pts[i + 1], pts[i + 2], t1, t2, tolerance);
@@ -84,9 +85,8 @@ namespace OxyPlot
                                     double t1, double t2, double tolerance)
         {
             // See Petzold, "Programming Microsoft Windows with C#", pages 645-646 or 
-            //     Petzold, "Programming Microsoft Windows with Microsoft Visual Basic .NET", pages 638-639
+            // Petzold, "Programming Microsoft Windows with Microsoft Visual Basic .NET", pages 638-639
             // for derivation of the following formulas:
-
             double sx1 = t1 * (pt2.X - pt0.X);
             double sy1 = t1 * (pt2.Y - pt0.Y);
             double sx2 = t2 * (pt3.X - pt1.X);

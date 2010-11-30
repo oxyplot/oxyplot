@@ -4,6 +4,8 @@
     xmlns:local="clr-namespace:OxyPlot.Wpf">
 
     <Style TargetType="{x:Type local:PlotControl}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+
         <Setter Property="SliderTemplate">
             <Setter.Value>
                 <DataTemplate>

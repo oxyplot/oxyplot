@@ -16,7 +16,10 @@
         public static OxyPen Create(OxyColor color, double thickness, LineStyle lineStyle)
         {
             if (lineStyle == LineStyle.None || thickness == 0)
+            {
                 return null;
+            }
+
             return new OxyPen(color, thickness, lineStyle);
         }
     }
