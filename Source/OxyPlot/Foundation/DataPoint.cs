@@ -2,10 +2,9 @@
 {
     public struct DataPoint
     {
+        public static readonly DataPoint Undefined = new DataPoint(double.NaN, double.NaN);
         internal double x;
         internal double y;
-
-        public static readonly DataPoint Undefined = new DataPoint(double.NaN, double.NaN);
 
         public DataPoint(double x, double y)
         {

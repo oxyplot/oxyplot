@@ -7,37 +7,45 @@ using System.Reflection;
 namespace OxyPlot
 {
     /// <summary>
-    /// AreaSeries
+    ///   AreaSeries
     /// </summary>
     public class AreaSeries : LineSeries
     {
+        internal Collection<DataPoint> points2;
+
+        public AreaSeries()
+        {
+            points2 = new Collection<DataPoint>();
+            Reverse2 = true;
+        }
+
         /// <summary>
-        /// Gets or sets the area fill color.
+        ///   Gets or sets the area fill color.
         /// </summary>
         /// <value>The fill.</value>
         public OxyColor Fill { get; set; }
 
         /// <summary>
-        /// Gets or sets the second Y data field.
+        ///   Gets or sets the second Y data field.
         /// </summary>
         /// <value>The data field x2.</value>
         public string DataFieldX2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the second X data field.
+        ///   Gets or sets the second X data field.
         /// </summary>
         /// <value>The data field y2.</value>
         public string DataFieldY2 { get; set; }
 
         /// <summary>
-        /// Gets or sets a constant baseline (e.g. Y=0)
-        /// This is used if DataFieldBase and BaselineValues are null.
+        ///   Gets or sets a constant baseline (e.g. Y=0)
+        ///   This is used if DataFieldBase and BaselineValues are null.
         /// </summary>
         /// <value>The baseline.</value>
         public double ConstantY2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the points.
+        ///   Gets or sets the points.
         /// </summary>
         /// <value>The points.</value>
         public Collection<DataPoint> Points2
@@ -46,52 +54,47 @@ namespace OxyPlot
             set { points2 = value; }
         }
 
-        internal Collection<DataPoint> points2;
-
         /// <summary>
-        /// Gets or sets a value indicating whether the second 
-        /// data collection should be reversed.
-        /// The first dataset is not reversed, and normally
-        /// the second dataset must be reversed to get a 
-        /// closed polygon.
+        ///   Gets or sets a value indicating whether the second 
+        ///   data collection should be reversed.
+        ///   The first dataset is not reversed, and normally
+        ///   the second dataset must be reversed to get a 
+        ///   closed polygon.
         /// </summary>
         public bool Reverse2 { get; set; }
-
-        public AreaSeries()
-        {
-            points2 = new Collection<DataPoint>();
-            Reverse2 = true;
-        }
 
         internal override void UpdatePointsFromItemsSource()
         {
             base.UpdatePointsFromItemsSource();
 
-            if (ItemsSource == null) return;
+            if (ItemsSource == null)
+            {
+                return;
+            }
+
             points2.Clear();
 
             // Get DataPoints from the items in ItemsSource 
             // if they implement IDataPointProvider
             // If DataFields are set, this is not used
-            //if (DataFieldX == null || DataFieldY == null)
-            //{
-            //    foreach (object item in ItemsSource)
-            //    {
-            //        var idpp = item as IDataPointProvider;
-            //        if (idpp == null)
-            //            continue;
-            //        points.Add(idpp.GetDataPoint());
-            //    }
-            //    return;
-            //}
+            // if (DataFieldX == null || DataFieldY == null)
+            // {
+            // foreach (object item in ItemsSource)
+            // {
+            // var idpp = item as IDataPointProvider;
+            // if (idpp == null)
+            // continue;
+            // points.Add(idpp.GetDataPoint());
+            // }
+            // return;
+            // }
 
             // Using reflection on DataFieldX2 and DataFieldY2
-
             PropertyInfo pix = null;
             PropertyInfo piy = null;
             Type t = null;
 
-            foreach (object o in ItemsSource)
+            foreach (var o in ItemsSource)
             {
                 if (pix == null || o.GetType() != t)
                 {
@@ -99,12 +102,18 @@ namespace OxyPlot
                     pix = t.GetProperty(DataFieldX2);
                     piy = t.GetProperty(DataFieldY2);
                     if (pix == null)
+                    {
                         throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
                                                                           DataFieldX2, t));
+                    }
+
                     if (piy == null)
+                    {
                         throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
                                                                           DataFieldY2, t));
+                    }
                 }
+
                 var x = (double)pix.GetValue(o, null);
                 var y = (double)piy.GetValue(o, null);
 
@@ -134,15 +143,17 @@ namespace OxyPlot
         {
             // base.Render(rc, model);
             if (points.Count == 0)
+            {
                 return;
+            }
+
             Debug.Assert(XAxis != null && YAxis != null);
 
             double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
 
             // todo: polygon clipping...
-
             var clipping = new CohenSutherlandClipping(
-                XAxis.ScreenMin.X, XAxis.ScreenMax.X,                                                       
+                XAxis.ScreenMin.X, XAxis.ScreenMax.X,
                 YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);
 
             var pts0 = new List<ScreenPoint>();
@@ -161,7 +172,10 @@ namespace OxyPlot
                 var pt1 = Points[i];
 
                 var s1 = XAxis.Transform(pt1.x, pt1.y, YAxis);
-                if (i == 0) s0 = s1;
+                if (i == 0)
+                {
+                    s0 = s1;
+                }
 
                 double x0 = s0.x;
                 double y0 = s0.y;
@@ -174,7 +188,9 @@ namespace OxyPlot
                 s1.y = y1;
 
                 if (outside)
+                {
                     continue;
+                }
 
                 if (first || i == n - 1)
                 {
@@ -203,6 +219,7 @@ namespace OxyPlot
                     x2 = Points2[i].x;
                     y2 = Points2[i].y;
                 }
+
                 var pt2 = new ScreenPoint(x2, y2);
 
                 var s2 = XAxis.Transform(pt2.x, pt2.y, YAxis);
@@ -222,7 +239,9 @@ namespace OxyPlot
 
                 s0 = s2;
                 if (outside)
+                {
                     continue;
+                }
 
                 if (first || i == n - 1)
                 {
@@ -243,7 +262,9 @@ namespace OxyPlot
             }
 
             if (Reverse2)
+            {
                 pts1.Reverse();
+            }
 
             if (Smooth)
             {
@@ -263,7 +284,7 @@ namespace OxyPlot
             {
                 foreach (var p in pts0)
                 {
-                    RenderMarker(rc,MarkerType, p, MarkerSize, MarkerFill, MarkerStroke,
+                    RenderMarker(rc, MarkerType, p, MarkerSize, MarkerFill, MarkerStroke,
                                  MarkerStrokeThickness);
                 }
             }

@@ -5,14 +5,18 @@ using System.Diagnostics;
 namespace OxyPlot
 {
     /// <summary>
-    /// This is a WPF wrapper of OxyPlot.LineSeries
-    /// LineSeries are rendered to a polyline.
-    /// Note that property changes are not currently making the plot refresh itself.
+    ///   This is a WPF wrapper of OxyPlot.LineSeries
+    ///   LineSeries are rendered to a polyline.
+    ///   Note that property changes are not currently making the plot refresh itself.
     /// </summary>
     public class LineSeries : DataSeries
     {
+        private static readonly double M1 = Math.Tan(Math.PI / 6);
+        private static readonly double M2 = Math.Sqrt(1 + M1 * M1);
+        private static readonly double M3 = Math.Tan(Math.PI / 4);
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "LineSeries" /> class.
         /// </summary>
         public LineSeries()
         {
@@ -24,114 +28,116 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "LineSeries" /> class.
         /// </summary>
-        /// <param name="title">The title.</param>
+        /// <param name = "title">The title.</param>
         public LineSeries(string title)
-            :this()
+            : this()
         {
-            this.Title = title;
+            Title = title;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "LineSeries" /> class.
         /// </summary>
-        /// <param name="color">The color of the line stroke.</param>
-        /// <param name="strokeThickness">The stroke thickness (optional).</param>
-        /// <param name="title">The title (optional).</param>
+        /// <param name = "color">The color of the line stroke.</param>
+        /// <param name = "strokeThickness">The stroke thickness (optional).</param>
+        /// <param name = "title">The title (optional).</param>
         public LineSeries(OxyColor color, double strokeThickness = 1, string title = null)
             : this()
         {
-            this.Color = color;
-            this.StrokeThickness = strokeThickness;
-            this.Title = title;
+            Color = color;
+            StrokeThickness = strokeThickness;
+            Title = title;
         }
 
         /// <summary>
-        /// Gets or sets the background of the series.
-        /// The background area is defined by the x and y axes.
+        ///   Gets or sets the background of the series.
+        ///   The background area is defined by the x and y axes.
         /// </summary>
         /// <value>The background.</value>
         public OxyColor Background { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the curve.
+        ///   Gets or sets the color of the curve.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the thickness of the curve.
+        ///   Gets or sets the thickness of the curve.
         /// </summary>
         /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the line style.
+        ///   Gets or sets the line style.
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the dashes array. 
-        /// If this is not null it overrides the LineStyle property.
+        ///   Gets or sets the dashes array. 
+        ///   If this is not null it overrides the LineStyle property.
         /// </summary>
         /// <value>The dashes.</value>
         public double[] Dashes { get; set; }
 
         /// <summary>
-        /// Gets or sets the type of the marker.
+        ///   Gets or sets the type of the marker.
         /// </summary>
         /// <value>The type of the marker.</value>
         public MarkerType MarkerType { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the marker.
+        ///   Gets or sets the size of the marker.
         /// </summary>
         /// <value>The size of the marker.</value>
         public double MarkerSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker stroke.
+        ///   Gets or sets the marker stroke.
         /// </summary>
         /// <value>The marker stroke.</value>
         public OxyColor MarkerStroke { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker stroke thickness.
+        ///   Gets or sets the marker stroke thickness.
         /// </summary>
         /// <value>The marker stroke thickness.</value>
         public double MarkerStrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker fill color.
+        ///   Gets or sets the marker fill color.
         /// </summary>
         /// <value>The marker fill.</value>
         public OxyColor MarkerFill { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum length of the segment.
-        /// Increasing this number will increase performance, 
-        /// but make the curve less accurate.
+        ///   Gets or sets the minimum length of the segment.
+        ///   Increasing this number will increase performance, 
+        ///   but make the curve less accurate.
         /// </summary>
         /// <value>The minimum length of the segment.</value>
         public double MinimumSegmentLength { get; set; }
 
         /// <summary>
-        /// Renders the LineSeries on the specified rendering context.
+        ///   Renders the LineSeries on the specified rendering context.
         /// </summary>
-        /// <param name="rc">The rendering context.</param>
-        /// <param name="model">The owner plot model.</param>
+        /// <param name = "rc">The rendering context.</param>
+        /// <param name = "model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             base.Render(rc, model);
 
             if (points.Count == 0)
+            {
                 return;
-            
+            }
+
             Debug.Assert(XAxis != null && YAxis != null);
 
-            double minDistSquared = MinimumSegmentLength*MinimumSegmentLength;
+            double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
 
             var clipping = new CohenSutherlandClipping(
                 XAxis.ScreenMin.X, XAxis.ScreenMax.X,
@@ -142,7 +148,9 @@ namespace OxyPlot
             // Transform all points to screen coordinates
             var markerPoints = new ScreenPoint[n];
             for (int i = 0; i < n; i++)
+            {
                 markerPoints[i] = XAxis.Transform(points[i].x, points[i].y, YAxis);
+            }
 
             // spline smoothing (should only be used on small datasets)
             // todo: could do spline smoothing only on the visible part of the curve... more difficult...
@@ -178,14 +186,16 @@ namespace OxyPlot
                 }
 
                 // render from s0c-s1c
-
                 double dx = s0c.x - last.x;
                 double dy = s1c.y - last.y;
 
-                if (dx*dx + dy*dy > minDistSquared || i == 0)
+                if (dx * dx + dy * dy > minDistSquared || i == 0)
                 {
                     if (!s0c.Equals(last) || i == 1)
+                    {
                         pts.Add(s0c);
+                    }
+
                     pts.Add(s1c);
                     last = s1c;
                 }
@@ -200,7 +210,7 @@ namespace OxyPlot
 
             RenderLine(rc, pts);
 
-            RenderMarkers(rc, markerPoints,clipping);
+            RenderMarkers(rc, markerPoints, clipping);
         }
 
         protected void RenderMarkers(IRenderContext rc, ScreenPoint[] markerPoints, CohenSutherlandClipping clipping)
@@ -211,20 +221,20 @@ namespace OxyPlot
                 foreach (var p in markerPoints)
                 {
                     if (clipping.IsInside(p.x, p.y))
+                    {
                         RenderMarker(rc, MarkerType, p, MarkerSize, MarkerFill, MarkerStroke,
                                      MarkerStrokeThickness);
+                    }
                 }
             }
         }
 
-        private static readonly double M1 = Math.Tan(Math.PI / 6);
-        private static readonly double M2 = Math.Sqrt(1 + M1 * M1);
-        private static readonly double M3 = Math.Tan(Math.PI / 4);
-
         protected void RenderLine(IRenderContext rc, List<ScreenPoint> pts)
         {
             if (pts.Count == 0)
+            {
                 return;
+            }
 
 #if SIMPLIFY_HERE         
             double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
@@ -246,74 +256,79 @@ namespace OxyPlot
 #else
             rc.DrawLine(pts.ToArray(), Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
 #endif
-
         }
 
-        protected void RenderMarker(IRenderContext rc, MarkerType markerType, ScreenPoint p, double markerSize, OxyColor fill, OxyColor stroke,
-                                double strokeThickness)
+        protected void RenderMarker(IRenderContext rc, MarkerType markerType, ScreenPoint p, double markerSize,
+                                    OxyColor fill, OxyColor stroke,
+                                    double strokeThickness)
         {
             switch (markerType)
             {
                 case MarkerType.Circle:
                     {
-                        rc.DrawEllipse(p.x - markerSize, p.y - markerSize, markerSize * 2, markerSize * 2, fill, stroke, strokeThickness);
+                        rc.DrawEllipse(p.x - markerSize, p.y - markerSize, markerSize * 2, markerSize * 2, fill, stroke,
+                                       strokeThickness);
 
-                        //int n = 20;
-                        //var pts = new ScreenPoint[n];
-                        //for (int i = 0; i < n; i++)
-                        //{
-                        //    double th = 2 * Math.PI * i / (n - 1);
-                        //    pts[i] = new ScreenPoint(p.x + markerSize * Math.Cos(th), p.y + markerSize * Math.Sin(th));
-                        //}
-                        //rc.DrawPolygon(pts, fill, stroke, strokeThickness);
+                        // int n = 20;
+                        // var pts = new ScreenPoint[n];
+                        // for (int i = 0; i < n; i++)
+                        // {
+                        // double th = 2 * Math.PI * i / (n - 1);
+                        // pts[i] = new ScreenPoint(p.x + markerSize * Math.Cos(th), p.y + markerSize * Math.Sin(th));
+                        // }
+                        // rc.DrawPolygon(pts, fill, stroke, strokeThickness);
                         break;
                     }
+
                 case MarkerType.Square:
                     {
                         var pts = new[]
                                       {
-                                          new ScreenPoint(p.x - markerSize, p.y - markerSize),
-                                          new ScreenPoint(p.x + markerSize, p.y - markerSize),
-                                          new ScreenPoint(p.x + markerSize, p.y + markerSize),
+                                          new ScreenPoint(p.x - markerSize, p.y - markerSize), 
+                                          new ScreenPoint(p.x + markerSize, p.y - markerSize), 
+                                          new ScreenPoint(p.x + markerSize, p.y + markerSize), 
                                           new ScreenPoint(p.x - markerSize, p.y + markerSize)
                                       };
                         rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, true);
                         break;
                     }
+
                 case MarkerType.Diamond:
                     {
                         var pts = new[]
                                       {
-                                          new ScreenPoint(p.x, p.y - M2*markerSize),
-                                          new ScreenPoint(p.x + M2*markerSize, p.y),
-                                          new ScreenPoint(p.x, p.y + M2*markerSize),
+                                          new ScreenPoint(p.x, p.y - M2*markerSize), 
+                                          new ScreenPoint(p.x + M2*markerSize, p.y), 
+                                          new ScreenPoint(p.x, p.y + M2*markerSize), 
                                           new ScreenPoint(p.x - M2*markerSize, p.y)
                                       };
                         rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, true);
                         break;
                     }
+
                 case MarkerType.Triangle:
                     {
                         var pts = new[]
                                       {
-                                          new ScreenPoint(p.x - markerSize, p.y + M1*markerSize),
-                                          new ScreenPoint(p.x + markerSize, p.y + M1*markerSize),
+                                          new ScreenPoint(p.x - markerSize, p.y + M1*markerSize), 
+                                          new ScreenPoint(p.x + markerSize, p.y + M1*markerSize), 
                                           new ScreenPoint(p.x, p.y - M2*markerSize)
                                       };
                         rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, true);
                         break;
                     }
+
                 case MarkerType.Plus:
                 case MarkerType.Star:
                     {
                         var pts1 = new[]
                                        {
-                                           new ScreenPoint(p.x - markerSize, p.y),
+                                           new ScreenPoint(p.x - markerSize, p.y), 
                                            new ScreenPoint(p.x + markerSize, p.y)
                                        };
                         var pts2 = new[]
                                        {
-                                           new ScreenPoint(p.x, p.y - markerSize),
+                                           new ScreenPoint(p.x, p.y - markerSize), 
                                            new ScreenPoint(p.x, p.y + markerSize)
                                        };
                         rc.DrawLine(pts1, stroke, strokeThickness);
@@ -321,6 +336,7 @@ namespace OxyPlot
                         break;
                     }
             }
+
             switch (markerType)
             {
                 case MarkerType.Cross:
@@ -328,12 +344,12 @@ namespace OxyPlot
                     {
                         var pts1 = new[]
                                        {
-                                           new ScreenPoint(p.x - markerSize*M3, p.y - markerSize*M3),
+                                           new ScreenPoint(p.x - markerSize*M3, p.y - markerSize*M3), 
                                            new ScreenPoint(p.x + markerSize*M3, p.y + markerSize*M3)
                                        };
                         var pts2 = new[]
                                        {
-                                           new ScreenPoint(p.x - markerSize*M3, p.y + markerSize*M3),
+                                           new ScreenPoint(p.x - markerSize*M3, p.y + markerSize*M3), 
                                            new ScreenPoint(p.x + markerSize*M3, p.y - markerSize*M3)
                                        };
                         rc.DrawLine(pts1, stroke, strokeThickness);
@@ -344,18 +360,20 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Renders the legend symbol for the line series on the 
-        /// specified rendering context.
+        ///   Renders the legend symbol for the line series on the 
+        ///   specified rendering context.
         /// </summary>
-        /// <param name="rc">The rendering context.</param>
-        /// <param name="legendBox">The bounding rectangle of the legend box.</param>
+        /// <param name = "rc">The rendering context.</param>
+        /// <param name = "legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;
             double ymid = (legendBox.Top + legendBox.Bottom) / 2;
-            var pts = new[] { 
-                new ScreenPoint(legendBox.Left,ymid), 
-                new ScreenPoint(legendBox.Right,ymid) };
+            var pts = new[]
+                          {
+                              new ScreenPoint(legendBox.Left, ymid), 
+                              new ScreenPoint(legendBox.Right, ymid)
+                          };
             rc.DrawLine(pts, Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
             var pm = new ScreenPoint(xmid, ymid);
             RenderMarker(rc, MarkerType, pm, MarkerSize, MarkerFill, MarkerStroke, MarkerStrokeThickness);

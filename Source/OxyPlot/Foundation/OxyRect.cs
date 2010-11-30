@@ -4,10 +4,10 @@ namespace OxyPlot
 {
     public struct OxyRect
     {
+        private double height;
         private double left;
         private double top;
         private double width;
-        private double height;
 
         public OxyRect(double left, double top, double width, double height)
         {

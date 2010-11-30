@@ -1,14 +1,14 @@
 ﻿namespace OxyPlot
 {
     /// <summary>
-    /// LineStyle helper class.
+    ///   LineStyle helper class.
     /// </summary>
     public static class LineStyleHelper
     {
         /// <summary>
-        /// Gets the stroke dash collection for a given <see cref="LineStyle"/>.
+        ///   Gets the stroke dash collection for a given <see cref = "LineStyle" />.
         /// </summary>
-        /// <param name="style">The line style.</param>
+        /// <param name = "style">The line style.</param>
         /// <returns></returns>
         public static double[] GetDashArray(LineStyle style)
         {

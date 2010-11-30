@@ -9,5 +9,5 @@
         DashDashDot,
         DashDotDot,
         None
-    } ;
+    }
 }
