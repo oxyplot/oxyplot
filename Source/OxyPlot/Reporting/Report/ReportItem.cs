@@ -23,9 +23,8 @@ namespace OxyPlot.Reporting
 
         public virtual void WriteContent(IReportWriter w)
         {
-
         }
-        
+
         public virtual void Write(IReportWriter w)
         {
             Update();
@@ -36,13 +35,13 @@ namespace OxyPlot.Reporting
 
         public virtual void Update()
         {
-
         }
 
         public void AddHeader(int level, string header)
         {
-            Add(new Header() { Level = level, Text = header });
+            Add(new Header {Level = level, Text = header});
         }
+
         public void AddContent(ReportItem b)
         {
             Add(new Content(b));
@@ -50,27 +49,27 @@ namespace OxyPlot.Reporting
 
         public void AddParagraph(string content)
         {
-            Add(new Paragraph() { Text = content });
+            Add(new Paragraph {Text = content});
         }
 
         public void AddTable(string title, IEnumerable items, IList<TableColumn> fields)
         {
-            Add(new Table() { Caption = title, Items = items, Fields = fields });
+            Add(new Table {Caption = title, Items = items, Columns = fields});
         }
 
         public void AddPropertyTable(string title, IEnumerable items)
         {
-            Add(new PropertyTable() { Caption = title, Items = items });
+            Add(new PropertyTable {Caption = title, Items = items});
         }
 
         public void AddImage(string src, string text)
         {
-            Add(new Image() { Source = src, FigureText = text });
+            Add(new Image {Source = src, FigureText = text});
         }
 
         public void AddDrawing(string content, string text)
         {
-            Add(new Drawing() { Content = content, FigureText = text });
+            Add(new Drawing {Content = content, FigureText = text});
         }
     }
 }

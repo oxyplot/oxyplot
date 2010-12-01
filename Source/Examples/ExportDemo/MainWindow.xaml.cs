@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -89,6 +90,18 @@ namespace ExportDemo
             }
         }
 
+        private void SaveLatexReport_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new SaveFileDialog();
+            dlg.Filter = ".tex files|*.tex";
+            dlg.DefaultExt = ".tex";
+            if (dlg.ShowDialog(this).Value)
+            {
+                vm.SaveReport(dlg.FileName);
+                OpenContainingFolder(dlg.FileName);
+            }
+        }
+
         private void SaveXaml_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new SaveFileDialog();
@@ -137,5 +150,6 @@ namespace ExportDemo
         {
             info.Visibility = Visibility.Visible;
         }
+
     }
 }

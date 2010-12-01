@@ -76,7 +76,7 @@ namespace ExportDemo
                     Model = CreateSineModel(0.0001);
                     break;
                 case 1:
-                    PlotModel tmp = CreateSineModel(1);
+                    var tmp = CreateSineModel(1);
                     tmp.Title = "Smooth interpolation";
                     // Add markers to this plot
                     var ls = tmp.Series[0] as LineSeries;
@@ -88,8 +88,8 @@ namespace ExportDemo
                     ls.MarkerStrokeThickness = 2;
                     ls.MarkerSize = 4;
 
-                    LineSeries ls2 = CreateLineSeries(Math.Sin,
-                                                      0, 10, 1, "interpolated curve");
+                    var ls2 = CreateLineSeries(Math.Sin,
+                                               0, 10, 1, "interpolated curve");
                     ls2.Smooth = true;
                     tmp.Series.Add(ls2);
 
@@ -358,36 +358,44 @@ namespace ExportDemo
 
             return plot;
         }
+
         private static PlotModel CreateMathNotationPlot()
         {
             // http://en.wikipedia.org/wiki/Log-log_plot
-            var plot = new PlotModel { Title = "E_{r}^{2} - (pc)^{2} = (m_{0}c^{2})^{2}", TitleFontSize = 24, LegendFontSize = 14, LegendPosition = LegendPosition.TopRight, IsLegendOutsidePlotArea = true,
-            PlotMargins = new OxyThickness(50,50,100,50)};
+            var plot = new PlotModel
+                           {
+                               Title = "E_{r}^{2} - (pc)^{2} = (m_{0}c^{2})^{2}",
+                               TitleFontSize = 24,
+                               LegendFontSize = 14,
+                               LegendPosition = LegendPosition.TopRight,
+                               IsLegendOutsidePlotArea = true,
+                               PlotMargins = new OxyThickness(50, 50, 100, 50)
+                           };
 
             plot.Series.Add(CreateLineSeries(x => x, 0.1, 100, 0.1, "H_{2}O"));
             plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "C_{6}H_{12}O_{6}"));
-            plot.Series.Add(CreateLineSeries(x => x * x*x, 0.1, 100, 0.1, "A^{2}_{i,j}"));
+            plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "A^{2}_{i,j}"));
 
             plot.Axes.Add(new LogarithmicAxis
-            {
-                Position = AxisPosition.Left,
-                Minimum = 0.1,
-                Maximum = 100,
-                UseSuperExponentialFormat = true,
-                FontSize = 14,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Solid
-            });
+                              {
+                                  Position = AxisPosition.Left,
+                                  Minimum = 0.1,
+                                  Maximum = 100,
+                                  UseSuperExponentialFormat = true,
+                                  FontSize = 14,
+                                  MajorGridlineStyle = LineStyle.Solid,
+                                  MinorGridlineStyle = LineStyle.Solid
+                              });
             plot.Axes.Add(new LogarithmicAxis
-            {
-                Position = AxisPosition.Bottom,
-                Minimum = 0.1,
-                Maximum = 100,
-                FontSize = 14,
-                UseSuperExponentialFormat = true,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Solid
-            });
+                              {
+                                  Position = AxisPosition.Bottom,
+                                  Minimum = 0.1,
+                                  Maximum = 100,
+                                  FontSize = 14,
+                                  UseSuperExponentialFormat = true,
+                                  MajorGridlineStyle = LineStyle.Solid,
+                                  MinorGridlineStyle = LineStyle.Solid
+                              });
 
             return plot;
         }
@@ -415,20 +423,20 @@ namespace ExportDemo
 
             main.AddHeader(2, "Data");
             int i = 1;
-            foreach (DataSeries s in Model.Series)
+            foreach (var s in Model.Series)
             {
                 main.AddHeader(3, "Data series " + (i++));
                 main.AddPropertyTable("Properties of the " + s.GetType().Name, new[] { s });
                 var fields = new List<TableColumn>
                                  {
-                                     new TableColumn("X", "X"), 
+                                     new TableColumn("X", "X"),
                                      new TableColumn("Y", "Y")
                                  };
                 main.AddTable("Data", s.Points, fields);
             }
 
             const string style =
-@"body { font-family: Verdana,Arial; margin:20pt; }
+                @"body { font-family: Verdana,Arial; margin:20pt; }
 table { border: solid 1px black; margin: 8pt; border-collapse:collapse; }
 td { padding: 0 2pt 0 2pt; border-left: solid 1px black; border-right: solid 1px black;}
 thead { border:solid 1px black; }
@@ -438,7 +446,10 @@ thead { border:solid 1px black; }
 .table caption { margin: 4pt;}
 .table thead td { padding: 2pt;}";
 
-            string ext = Path.GetExtension(fileName).ToLower();
+            string ext = Path.GetExtension(fileName);
+            if (ext != null)
+                ext = ext.ToLower();
+
             if (ext == ".html")
                 using (var hw = new HtmlReportWriter(fileName, "OxyPlot example file", null, style))
                 {
@@ -451,10 +462,17 @@ thead { border:solid 1px black; }
                     r.Write(pw);
                 }
 
-            using (var tw = new TextReportWriter(Path.ChangeExtension(fileName, ".txt")))
-            {
-                r.Write(tw);
-            }
+            if (ext == ".tex")
+                using (var pw = new LatexReportWriter(fileName, "Example report", "oxyplot"))
+                {
+                    r.Write(pw);
+                }
+
+            if (ext == ".txt")
+                using (var tw = new TextReportWriter(Path.ChangeExtension(fileName, ".txt")))
+                {
+                    r.Write(tw);
+                }
         }
     }
 }

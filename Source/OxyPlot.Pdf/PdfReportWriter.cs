@@ -5,8 +5,6 @@ using OxyPlot.Reporting;
 
 namespace OxyPlot.Pdf
 {
-    // TODO: This class is 'under construction'.
-
     /// <summary>
     /// PDF report writer using MigraDoc.
     /// </summary>
@@ -30,6 +28,7 @@ namespace OxyPlot.Pdf
         }
 
         private Section currentSection;
+
         public void WriteHeader(Header h)
         {
             if (h.Text == null)

@@ -1,15 +1,14 @@
 ﻿namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// Image files (.png, .jpg)
+    /// Equations (Tex or MathML)
     /// </summary>
-    public class Image : Figure
+    public class Equation : ReportItem
     {
-        public string Source { get; set; }
-
+        public string Content { get; set; }
         public override void WriteContent(IReportWriter w)
         {
-            w.WriteImage(this);
+            // w.WriteEquation(this);
         }
     }
 }

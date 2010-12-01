@@ -5,7 +5,7 @@ namespace OxyPlot
     public static class MathRenderingExtensions
     {
         private static double SUPER_SIZE = 0.62;
-        private static double SUPER_ALIGNMENT;
+        private static double SUPER_ALIGNMENT = 0.0;
         private static double SUB_ALIGNMENT = 0.6;
         private static double SUB_SIZE = 0.62;
 

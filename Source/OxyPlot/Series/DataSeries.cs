@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Reflection;
 
 namespace OxyPlot
@@ -41,6 +42,7 @@ namespace OxyPlot
         ///   Gets or sets the points.
         /// </summary>
         /// <value>The points.</value>
+        [Browsable(false)]
         public Collection<DataPoint> Points
         {
             get { return points; }

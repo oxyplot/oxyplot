@@ -55,10 +55,6 @@
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
     <Compile Include="RenderContexts\DrawingRenderContext.cs" />
-    <Compile Include="MouseActions\MouseAction.cs" />
-    <Compile Include="MouseActions\PanAction.cs" />
-    <Compile Include="MouseActions\SliderAction.cs" />
-    <Compile Include="MouseActions\ZoomAction.cs" />
     <Compile Include="PlotFrame.cs" />
     <Compile Include="Series\AreaSeries.cs" />
     <Compile Include="Series\LineSeries.cs" />
@@ -67,7 +63,6 @@
     <Compile Include="Helpers\ConverterExtensions.cs" />
     <Compile Include="Slider.cs" />
     <Compile Include="RenderContexts\ShapesRenderContext.cs" />
-    <Compile Include="MouseActions\IMouseAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -35,8 +35,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -50,6 +48,13 @@
     <Compile Include="Foundation\ScreenPoint.cs" />
     <Compile Include="Foundation\OxyRect.cs" />
     <Compile Include="Foundation\OxySize.cs" />
+    <Compile Include="MouseActions\IMouseAction.cs" />
+    <Compile Include="MouseActions\IPlotControl.cs" />
+    <Compile Include="MouseActions\MouseAction.cs" />
+    <Compile Include="MouseActions\OxyMouseButton.cs" />
+    <Compile Include="MouseActions\PanAction.cs" />
+    <Compile Include="MouseActions\SliderAction.cs" />
+    <Compile Include="MouseActions\ZoomAction.cs" />
     <Compile Include="Render\AxisRendererBase.cs" />
     <Compile Include="Foundation\CohenSutherlandClipping.cs" />
     <Compile Include="Render\AngleAxisRenderer.cs" />
@@ -58,11 +63,14 @@
     <Compile Include="Render\RenderingExtensions.cs" />
     <Compile Include="Render\HorizontalAndVerticalAxisRenderer.cs" />
     <Compile Include="Render\IRenderContext.cs" />
+    <Compile Include="Reporting\ReportWriters\LatexReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\HtmlReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\IReportWriter.cs" />
+    <Compile Include="Reporting\ReportWriters\StringExtensions.cs" />
     <Compile Include="Reporting\ReportWriters\TextReportWriter.cs" />
     <Compile Include="Reporting\Report\Content.cs" />
     <Compile Include="Reporting\Report\Drawing.cs" />
+    <Compile Include="Reporting\Report\Equation.cs" />
     <Compile Include="Reporting\Report\Figure.cs" />
     <Compile Include="Reporting\Report\Header.cs" />
     <Compile Include="Reporting\Report\HeaderHelper.cs" />

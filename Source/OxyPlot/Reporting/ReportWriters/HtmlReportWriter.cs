@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -68,7 +66,7 @@ namespace OxyPlot.Reporting
             WriteElementString("p", p.Text);
         }
 
-        int tableCounter = 0;
+        private int tableCounter;
 
         public void WriteClassID(ReportItem ri)
         {
@@ -77,6 +75,7 @@ namespace OxyPlot.Reporting
             if (ri.ID != null)
                 WriteAttributeString("id", ri.ID);
         }
+
         public void WriteTable(Table t)
         {
             if (t.Items == null)
@@ -93,7 +92,7 @@ namespace OxyPlot.Reporting
                 WriteString(String.Format("Table {0}. {1}", tableCounter, t.Caption));
                 WriteEndElement();
             }
-            if (t.Flipped)
+            if (t.Transposed)
                 WriteFlippedItems(t);
             else
                 WriteItems(t);
@@ -102,12 +101,11 @@ namespace OxyPlot.Reporting
 
         public void WriteItems(Table t)
         {
-            IEnumerable items = t.Items;
-            IList<TableColumn> columns = t.Fields;
+            var items = t.Items;
+            var columns = t.Columns;
 
-            for (int i = 0; i < columns.Count; i++)
+            foreach (var c in columns)
             {
-                var c = columns[i];
                 WriteStartElement("col");
                 WriteAttributeString("align", GetAlignmentString(c.Alignment));
                 WriteAttributeString("width", c.Width + "pt");
@@ -124,9 +122,8 @@ namespace OxyPlot.Reporting
                 WriteStartElement("thead");
                 WriteStartElement("tr");
 
-                for (int i = 0; i < columns.Count; i++)
+                foreach (var c in columns)
                 {
-                    var c = columns[i];
                     WriteStartElement("td");
                     WriteString(c.Header);
                     WriteEndElement();
@@ -138,9 +135,8 @@ namespace OxyPlot.Reporting
             foreach (var item in items)
             {
                 WriteStartElement("tr");
-                for (int i = 0; i < columns.Count; i++)
+                foreach (var c in columns)
                 {
-                    var c = columns[i];
                     var text = c.GetText(item);
                     WriteStartElement("td");
                     WriteString(text);
@@ -148,20 +144,17 @@ namespace OxyPlot.Reporting
                 }
                 WriteEndElement(); // tr
             }
-
-
         }
 
         public void WriteFlippedItems(Table t)
         {
-            IEnumerable items = t.Items;
-            IList<TableColumn> rows = t.Fields;
+            var items = t.Items;
+            var rows = t.Columns;
 
             var columns = items.Cast<object>().ToList();
 
-            for (int i = 0; i < columns.Count; i++)
+            foreach (var c in columns)
             {
-                var c = columns[i];
                 WriteStartElement("col");
                 // WriteAttributeString("align", GetAlignmentString(c.Alignment));
                 //WriteAttributeString("width", c.Width + "pt");
@@ -171,7 +164,7 @@ namespace OxyPlot.Reporting
 
             var hasHead = false;
             foreach (var c in columns)
-                if (c.ToString() != null) hasHead = true;
+                if (!String.IsNullOrEmpty(c.ToString())) hasHead = true;
 
             if (hasHead)
             {
@@ -182,9 +175,8 @@ namespace OxyPlot.Reporting
                 WriteString("");
                 WriteEndElement();
 
-                for (int i = 0; i < columns.Count; i++)
+                foreach (var c in columns)
                 {
-                    var c = columns[i];
                     WriteStartElement("td");
                     WriteString(c.ToString());
                     WriteEndElement();
@@ -201,9 +193,8 @@ namespace OxyPlot.Reporting
                 WriteString(row.Header);
                 WriteEndElement();
 
-                for (int i = 0; i < columns.Count; i++)
+                foreach (var c in columns)
                 {
-                    var c = columns[i];
                     var text = row.GetText(c);
                     WriteStartElement("td");
                     WriteString(text);
@@ -213,22 +204,23 @@ namespace OxyPlot.Reporting
             }
         }
 
-        private string GetAlignmentString(Alignment a)
+        private static string GetAlignmentString(Alignment a)
         {
             return a.ToString().ToLower();
         }
 
-        int FigureCounter;
+        private int figureCounter;
 
         public void WriteStartFigure(Figure f)
         {
-            FigureCounter++;
+            figureCounter++;
             WriteStartElement("p");
             WriteClassID(f);
         }
+
         public void WriteEndFigure(string text)
         {
-            WriteDiv("figuretext", String.Format("Fig {0}. {1}", FigureCounter, text));
+            WriteDiv("figuretext", String.Format("Fig {0}. {1}", figureCounter, text));
             WriteEndElement();
         }
 
@@ -252,7 +244,7 @@ namespace OxyPlot.Reporting
         public void WritePlot(Plot plot)
         {
             WriteStartFigure(plot);
-            WriteRaw(plot.PlotModel.ToSvg(plot.Width,plot.Height));
+            WriteRaw(plot.PlotModel.ToSvg(plot.Width, plot.Height));
             WriteEndFigure(plot.FigureText);
         }
 
