@@ -37,7 +37,7 @@
         <Setter Property="ZoomRectangleTemplate">
             <Setter.Value>
                 <ControlTemplate>
-                    <Rectangle Fill="#40000000" Stroke="Black" StrokeDashArray="3,1"/>
+                    <Rectangle Fill="#40FFFF00" Stroke="Black" StrokeDashArray="3,1"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

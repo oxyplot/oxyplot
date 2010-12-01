@@ -12,14 +12,19 @@ namespace OxyPlot.Wpf
     /// </summary>
     internal class PlotFrame : FrameworkElement
     {
-        private readonly bool Aliased;
+        private readonly bool aliased;
+
+        public bool Aliased
+        {
+            get { return aliased; }
+        }
 
         public PlotFrame(bool aliased = false)
         {
-            Aliased = aliased;
+            this.aliased = aliased;
             SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
 
-            if (Aliased)
+            if (this.aliased)
                 SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
         }
 
@@ -33,8 +38,7 @@ namespace OxyPlot.Wpf
 
             var drc = new DrawingRenderContext(dc, ActualWidth, ActualHeight);
 
-            // todo: this is not working properly...
-            if (Aliased)
+            if (aliased)
             {
                 Model.RenderInit(drc);
                 Model.RenderAxes(drc);

@@ -1,4 +1,6 @@
-﻿namespace OxyPlot
+﻿using System;
+
+namespace OxyPlot
 {
     public struct ScreenPoint
     {
@@ -28,6 +30,13 @@
         public override string ToString()
         {
             return x + " " + y;
+        }
+
+        public double DistanceTo(ScreenPoint pt)
+        {
+            double dx = pt.x - x;
+            double dy = pt.y - y;
+            return Math.Sqrt(dx*dx + dy*dy);
         }
     }
 }

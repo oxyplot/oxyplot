@@ -6,7 +6,7 @@ using OxyPlot;
 
 namespace Oxyplot.WindowsForms
 {
-    public class GraphicsRenderContext : IRenderContext
+    internal class GraphicsRenderContext : IRenderContext
     {
         private readonly Graphics g;
         private readonly PlotControl pc;

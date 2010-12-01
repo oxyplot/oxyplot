@@ -50,7 +50,7 @@ namespace OxyPlot
                 return OxySize.Empty;
             
             // todo: should improve text measuring, currently using p/invoke on GDI32
-            // use winforms or wpf text measuring?
+            // is it better to use winforms or wpf text measuring?
 
             return Gdi32.MeasureString(fontFamily, (int)fontSize, (int)fontWeight, text);
         }

@@ -141,7 +141,6 @@ namespace OxyPlot
 
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            // base.Render(rc, model);
             if (points.Count == 0)
             {
                 return;
@@ -152,6 +151,8 @@ namespace OxyPlot
             double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
 
             // todo: polygon clipping...
+            // simple line clipping is not working
+
             var clipping = new CohenSutherlandClipping(
                 XAxis.ScreenMin.X, XAxis.ScreenMax.X,
                 YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);

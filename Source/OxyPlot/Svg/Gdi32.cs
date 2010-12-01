@@ -54,7 +54,5 @@ namespace OxyPlot
             return result;
         }
 
-
-
     }
 }

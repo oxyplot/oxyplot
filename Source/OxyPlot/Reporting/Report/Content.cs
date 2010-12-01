@@ -12,8 +12,8 @@ namespace OxyPlot.Reporting
             this.Base = b;
             Class = "content";
             Contents = new List<ContentItem>();
-            Fields.Add(new TableColumn(null, "Chapter"));
-            Fields.Add(new TableColumn(null, "Title"));
+            Columns.Add(new TableColumn(null, "Chapter"));
+            Columns.Add(new TableColumn(null, "Title"));
             Items = Contents;
         }
 

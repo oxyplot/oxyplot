@@ -169,7 +169,6 @@ namespace OxyPlot
 
             string fmt = "translate({0:" + NumberFormat + "},{1:" + NumberFormat + "})";
             string transform = string.Format(CultureInfo.InvariantCulture, fmt, pt.X, pt.Y);
-            Debug.WriteLine(transform);
             if (rotate != 0)
                 transform += string.Format(CultureInfo.InvariantCulture, " rotate({0})", rotate);
             WriteAttributeString("transform", transform);

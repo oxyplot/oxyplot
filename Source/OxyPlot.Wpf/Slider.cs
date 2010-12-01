@@ -17,7 +17,6 @@ namespace OxyPlot.Wpf
         private readonly Line sliderLine1 = new Line();
         private readonly Line sliderLine2 = new Line();
         private readonly ContentControl content = new ContentControl();
-        private readonly PlotControl pc;
 
         /// <summary>
         /// Gets or sets the slider label format.
@@ -35,11 +34,10 @@ namespace OxyPlot.Wpf
         /// Initializes a new instance of the <see cref="Slider"/> class.
         /// </summary>
         /// <param name="pc">The parent PlotControl.</param>
-        public Slider(PlotControl pc)
+        public Slider()
         {
             SliderLabelFormat = null; // "{0:0.###} {1:0.###}";
 
-            this.pc = pc;
             Children.Add(sliderLine1);
             Children.Add(sliderLine2);
             Children.Add(content);
@@ -64,12 +62,16 @@ namespace OxyPlot.Wpf
         /// <param name="s">The series.</param>
         public void SetPosition(DataPoint dp, OxyPlot.DataSeries s)
         {
+            var dp1 = new DataPoint(dp.X, s.YAxis.ActualMaximum);
+            var dp2 = new DataPoint(dp.X, s.YAxis.ActualMinimum);
+            var dp3 = new DataPoint(s.XAxis.ActualMinimum, dp.Y);
+            var dp4 = new DataPoint(s.XAxis.ActualMaximum, dp.Y);
 
-            var pt0 = pc.Transform(dp.X, dp.Y, s.XAxis, s.YAxis);
-            var pt1 = pc.Transform(dp.X, s.YAxis.ActualMaximum, s.XAxis, s.YAxis);
-            var pt2 = pc.Transform(dp.X, s.YAxis.ActualMinimum, s.XAxis, s.YAxis);
-            var pt3 = pc.Transform(s.XAxis.ActualMinimum, dp.Y, s.XAxis, s.YAxis);
-            var pt4 = pc.Transform(s.XAxis.ActualMaximum, dp.Y, s.XAxis, s.YAxis);
+            var pt0 = AxisBase.Transform(dp, s.XAxis, s.YAxis);
+            var pt1 = AxisBase.Transform(dp1, s.XAxis, s.YAxis);
+            var pt2 = AxisBase.Transform(dp2, s.XAxis, s.YAxis);
+            var pt3 = AxisBase.Transform(dp3, s.XAxis, s.YAxis);
+            var pt4 = AxisBase.Transform(dp4, s.XAxis, s.YAxis);
 
             if (ContentTemplate != null)
             {
@@ -123,7 +125,7 @@ namespace OxyPlot.Wpf
         /// <value>The format.</value>
         public string Format { get; set; }
 
-        private const string DEFAULT_FORMAT = "{0}: {1:0.#####}, {2}: {3:0.#####}";
+        private const string DefaultFormat = "{0}: {1:0.#####}, {2}: {3:0.#####}";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SliderViewModel"/> class.
@@ -134,11 +136,11 @@ namespace OxyPlot.Wpf
         public SliderViewModel(OxyPlot.DataSeries series, DataPoint point, string fmt = null)
         {
             if (String.IsNullOrEmpty(fmt))
-                fmt = DEFAULT_FORMAT;
+                fmt = DefaultFormat;
 
-            this.Format = fmt;
-            this.Series = series;
-            this.Point = point;
+            Format = fmt;
+            Series = series;
+            Point = point;
         }
 
         /// <summary>
@@ -149,7 +151,11 @@ namespace OxyPlot.Wpf
         /// </returns>
         public override string ToString()
         {
-            return String.Format(CultureInfo.InvariantCulture, Format, Series.XAxis.Title, Point.X, Series.YAxis.Title, Point.Y);
+            var xTitle = Series.XAxis.Title;
+            var yTitle = Series.YAxis.Title;
+            if (String.IsNullOrEmpty(xTitle)) xTitle = "X";
+            if (String.IsNullOrEmpty(yTitle)) yTitle = "Y";
+            return String.Format(CultureInfo.InvariantCulture, Format, xTitle, Point.X, yTitle, Point.Y);
         }
     }
 }

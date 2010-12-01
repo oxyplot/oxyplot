@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Reflection;
 
 namespace OxyPlot.Reporting
@@ -8,7 +9,7 @@ namespace OxyPlot.Reporting
     {
         public PropertyTable()
         {
-            Flipped = true;
+            Transposed = true;
         }
 
         public override void Update()
@@ -16,10 +17,14 @@ namespace OxyPlot.Reporting
             Type type = GetItemType(Items);
             if (type == null)
                 return;
-            Fields.Clear();
-            foreach (PropertyInfo pi in type.GetProperties())
+            Columns.Clear();
+
+            foreach (PropertyDescriptor p in TypeDescriptor.GetProperties(type))
             {
-                Fields.Add(new TableColumn(pi.Name, pi.Name));
+                if (!p.IsBrowsable)
+                    continue;
+                var header = p.DisplayName ?? p.Name;
+                Columns.Add(new TableColumn(header, p.Name));
             }
             base.Update();
         }

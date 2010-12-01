@@ -39,10 +39,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -95,10 +93,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OxyPlot.Pdf\OxyPlot.Pdf.csproj">
-      <Project>{12737C3F-5770-403F-90A1-BC12EBD1BB31}</Project>
-      <Name>OxyPlot.Pdf</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
       <Project>{698CCD8E-ADCC-4565-8517-5EDD36F07155}</Project>
       <Name>OxyPlot.Wpf</Name>

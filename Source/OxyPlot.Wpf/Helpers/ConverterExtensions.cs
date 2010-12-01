@@ -21,6 +21,11 @@ namespace OxyPlot.Wpf
             return new Point(pt.X,pt.Y);
         }
 
+        public static ScreenPoint ToScreenPoint(this Point pt)
+        {
+            return new ScreenPoint(pt.X, pt.Y);
+        }
+
         public static Brush ToBrush(this OxyColor c)
         {
             return new SolidColorBrush(c.ToColor());

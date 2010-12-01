@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
@@ -15,10 +16,8 @@ using System.Xml;
 namespace OxyPlot.Wpf
 {
     [ContentProperty("Series")]
-    public class PlotControl : Control
+    public class PlotControl : Control, IPlotControl
     {
-        // todo: add dependency properties for all properties of the PlotModel
-
         public static readonly DependencyProperty PlotMarginsProperty =
             DependencyProperty.Register("PlotMargins", typeof(Thickness?), typeof(PlotControl),
                                         new UIPropertyMetadata(null));
@@ -61,7 +60,8 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty LegendPositionProperty =
-            DependencyProperty.Register("LegendPosition", typeof(LegendPosition), typeof(PlotControl), new UIPropertyMetadata(LegendPosition.TopRight));
+            DependencyProperty.Register("LegendPosition", typeof(LegendPosition), typeof(PlotControl),
+                                        new UIPropertyMetadata(LegendPosition.TopRight));
 
         public bool IsLegendOutsidePlotArea
         {
@@ -70,10 +70,9 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty IsLegendOutsidePlotAreaProperty =
-            DependencyProperty.Register("IsLegendOutsidePlotArea", typeof(bool), typeof(PlotControl), new UIPropertyMetadata(false));
+            DependencyProperty.Register("IsLegendOutsidePlotArea", typeof(bool), typeof(PlotControl),
+                                        new UIPropertyMetadata(false));
 
-        
-        
         private const string PART_GRID = "PART_Grid";
 
         private Canvas canvas;
@@ -86,13 +85,16 @@ namespace OxyPlot.Wpf
         private PlotFrame plotFrame;
         private Slider slider;
 
-        private PanAction panAction;
-        private SliderAction sliderAction;
-        private ZoomAction zoomAction;
+        public List<MouseAction> MouseActions { get; private set; }
+
+        private readonly PanAction panAction;
+        private readonly SliderAction sliderAction;
+        private readonly ZoomAction zoomAction;
 
         private ContentControl zoomControl;
+        private ScreenPoint mouseDownPoint;
 
-        private bool isPlotInvalidated = false;
+        private bool isPlotInvalidated;
 
         static PlotControl()
         {
@@ -108,23 +110,23 @@ namespace OxyPlot.Wpf
             zoomAction = new ZoomAction(this);
             sliderAction = new SliderAction(this);
 
+            MouseActions = new List<MouseAction> { panAction, zoomAction, sliderAction };
+
             series = new ObservableCollection<DataSeries>();
             axes = new ObservableCollection<Axis>();
             series.CollectionChanged += OnSeriesChanged;
             axes.CollectionChanged += OnAxesChanged;
 
-            Loaded += PlotControlLoaded;
-            DataContextChanged += PlotControlDataContextChanged;
-            SizeChanged += PlotControlSizeChanged;
-            KeyDown += PlotControlKeyDown;
-            MouseDown += PlotControlMouseDown;
+            Loaded += OnLoaded;
+            DataContextChanged += OnDataContextChanged;
+            SizeChanged += OnSizeChanged;
 
             CompositionTarget.Rendering += CompositionTargetRendering;
-            
+
             // CommandBindings.Add(new KeyBinding())
         }
 
-        void CompositionTargetRendering(object sender, EventArgs e)
+        private void CompositionTargetRendering(object sender, EventArgs e)
         {
             lock (this)
             {
@@ -162,14 +164,14 @@ namespace OxyPlot.Wpf
             {
                 foreach (var item in e.NewItems)
                 {
-                    this.AddLogicalChild(item);
+                    AddLogicalChild(item);
                 }
             }
             if (e.OldItems != null)
             {
                 foreach (var item in e.OldItems)
                 {
-                    this.RemoveLogicalChild(item);
+                    RemoveLogicalChild(item);
                 }
             }
         }
@@ -210,13 +212,14 @@ namespace OxyPlot.Wpf
             set { SetValue(BoxThicknessProperty, value); }
         }
 
-        private ObservableCollection<DataSeries> series;
+        private readonly ObservableCollection<DataSeries> series;
+
         public ObservableCollection<DataSeries> Series
         {
             get { return series; }
         }
 
-        private ObservableCollection<Axis> axes;
+        private readonly ObservableCollection<Axis> axes;
 
         public ObservableCollection<Axis> Axes
         {
@@ -241,23 +244,93 @@ namespace OxyPlot.Wpf
             set { SetValue(TitleProperty, value); }
         }
 
-        private void PlotControlMouseDown(object sender, MouseButtonEventArgs e)
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
-            Focus();
+            base.OnMouseWheel(e);
+
+            bool control = (Keyboard.IsKeyDown(Key.LeftCtrl));
+            bool shift = (Keyboard.IsKeyDown(Key.LeftShift));
+            var p = e.GetPosition(this).ToScreenPoint();
+            foreach (var a in MouseActions)
+                a.OnMouseWheel(p, e.Delta, control, shift);
         }
 
-        private void PlotControlKeyDown(object sender, KeyEventArgs e)
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            Focus();
+            CaptureMouse();
+
+            bool control = (Keyboard.IsKeyDown(Key.LeftCtrl));
+            bool shift = (Keyboard.IsKeyDown(Key.LeftShift));
+
+            var button = OxyMouseButton.Left;
+            if (e.MiddleButton == MouseButtonState.Pressed)
+                button = OxyMouseButton.Middle;
+            if (e.RightButton == MouseButtonState.Pressed)
+                button = OxyMouseButton.Right;
+            if (e.XButton1 == MouseButtonState.Pressed)
+                button = OxyMouseButton.XButton1;
+            if (e.XButton2 == MouseButtonState.Pressed)
+                button = OxyMouseButton.XButton2;
+
+            var p = e.GetPosition(this).ToScreenPoint();
+            foreach (var a in MouseActions)
+                a.OnMouseDown(p, button, e.ClickCount, control, shift);
+
+            mouseDownPoint = p;
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            bool control = (Keyboard.IsKeyDown(Key.LeftCtrl));
+            bool shift = (Keyboard.IsKeyDown(Key.LeftShift));
+            var p = e.GetPosition(this).ToScreenPoint();
+            foreach (var a in MouseActions)
+                a.OnMouseMove(p, control, shift);
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+            foreach (var a in MouseActions)
+                a.OnMouseUp();
+            ReleaseMouseCapture();
+            var p = e.GetPosition(this).ToScreenPoint();
+
+            double d = p.DistanceTo(mouseDownPoint);
+            if (ContextMenu != null)
+            {
+                if (d == 0 && e.ChangedButton == MouseButton.Right)
+                {
+                    ContextMenu.Visibility = Visibility.Visible;
+                    // todo: The contextmenu has the wrong placement after panning
+                    //ContextMenu.Placement = PlacementMode.Relative;
+                    //ContextMenu.PlacementTarget = this;
+                    //ContextMenu.PlacementRectangle=new Rect(e.GetPosition(this),new Size(0,0));
+                }
+                else
+                    ContextMenu.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
         {
             if (e.Key == Key.A)
             {
                 e.Handled = true;
                 ZoomAll();
             }
+            base.OnKeyDown(e);
         }
 
         public void ZoomAll()
         {
-            foreach (OxyPlot.AxisBase a in internalModel.Axes)
+            foreach (var a in internalModel.Axes)
                 a.Reset();
             Refresh();
         }
@@ -277,7 +350,7 @@ namespace OxyPlot.Wpf
             grid.Children.Add(overlays);
 
             // Slider
-            slider = new Slider(this);
+            slider = new Slider();
             overlays.Children.Add(slider);
 
             zoomControl = new ContentControl();
@@ -329,17 +402,17 @@ namespace OxyPlot.Wpf
             UpdateVisuals();
         }
 
-        private void PlotControlLoaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
             OnModelChanged();
         }
 
-        private void PlotControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             OnModelChanged();
         }
 
-        private void PlotControlSizeChanged(object sender, SizeChangedEventArgs e)
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             UpdateVisuals();
         }
@@ -356,11 +429,10 @@ namespace OxyPlot.Wpf
 
         private void OnModelChanged()
         {
-            UpdateModel();
-            UpdateVisuals();
+            Refresh();
         }
 
-        void UpdateModel()
+        private void UpdateModel()
         {
             // If no model is set, create an internal model and copy the 
             // axes/series/properties from the WPF objects to the internal model
@@ -375,21 +447,20 @@ namespace OxyPlot.Wpf
                 if (Series != null)
                 {
                     internalModel.Series.Clear();
-                    foreach (DataSeries s in Series)
+                    foreach (var s in Series)
                     {
                         internalModel.Series.Add(s.CreateModel());
                     }
                 }
-                if (Axes != null && Axes.Count>0)
+                if (Axes != null && Axes.Count > 0)
                 {
                     internalModel.Axes.Clear();
 
-                    foreach (Axis a in Axes)
+                    foreach (var a in Axes)
                     {
                         a.UpdateModelProperties();
                         internalModel.Axes.Add(a.ModelAxis);
                     }
-
                 }
 
                 if (PlotMargins.HasValue)
@@ -412,9 +483,11 @@ namespace OxyPlot.Wpf
             internalModel.UpdateData();
         }
 
-        public void Refresh()
+        public void Refresh(bool refreshData = true)
         {
-            OnModelChanged();
+            if (refreshData)
+                UpdateModel();
+            UpdateVisuals();
         }
 
         private void UpdateVisuals()
@@ -448,12 +521,12 @@ namespace OxyPlot.Wpf
 
         public void SaveBitmap(string fileName)
         {
-            RenderTargetBitmap bmp = ToBitmap();
+            var bmp = ToBitmap();
 
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bmp));
 
-            using (FileStream s = File.Create(fileName))
+            using (var s = File.Create(fileName))
             {
                 encoder.Save(s);
             }
@@ -469,10 +542,7 @@ namespace OxyPlot.Wpf
 
         public RenderTargetBitmap ToBitmap()
         {
-            var height = (int)ActualHeight;
-            var width = (int)ActualWidth;
-
-            var bmp = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+            var bmp = new RenderTargetBitmap((int)ActualWidth, (int)ActualHeight, 96, 96, PixelFormats.Pbgra32);
             bmp.Render(this);
             return bmp;
         }
@@ -485,59 +555,15 @@ namespace OxyPlot.Wpf
             if (canvas != null)
                 XamlWriter.Save(canvas, xw);
             xw.Close();
-            string xaml = sb.ToString();
-            /*
-                        xaml = xaml.Replace(string.Format(
-                            "<PlotControl Height=\"{0}\" Width=\"{1}\" ",
-                            this.ActualHeight, this.ActualWidth),
-                                            "<Grid ");
-                        */
-            return xaml;
+            return sb.ToString();
         }
 
-        public Point Transform(DataPoint pt, OxyPlot.AxisBase xaxis, OxyPlot.AxisBase yaxis)
+        public void GetAxesFromPoint(ScreenPoint pt, out AxisBase xaxis, out AxisBase yaxis)
         {
-            return Transform(pt.X, pt.Y, xaxis, yaxis);
+            internalModel.GetAxesFromPoint(pt, out xaxis, out yaxis);
         }
 
-        public Point Transform(double x, double y, OxyPlot.AxisBase xaxis, OxyPlot.AxisBase yaxis)
-        {
-            return new Point(xaxis.Transform(x), yaxis.Transform(y));
-        }
-
-        public DataPoint InverseTransform(Point pt, OxyPlot.AxisBase xaxis, OxyPlot.AxisBase yaxis)
-        {
-            double x = 0;
-            if (xaxis != null)
-                x = xaxis.InverseTransformX(pt.X);
-            double y = 0;
-            if (yaxis != null)
-                y = yaxis.InverseTransformX(pt.Y);
-            return new DataPoint(x, y);
-        }
-
-        public void GetAxesFromPoint(Point pt, out OxyPlot.AxisBase xaxis, out OxyPlot.AxisBase yaxis)
-        {
-            xaxis = yaxis = null;
-            foreach (OxyPlot.AxisBase axis in internalModel.Axes)
-            {
-                double x = axis.InverseTransformX(axis.IsHorizontal() ? pt.X : pt.Y);
-                if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
-                {
-                    if (axis.IsHorizontal())
-                    {
-                        // todo: only accept axis if it is within plot area 
-                        // or the axis area
-
-                        xaxis = axis;
-                    }
-                    else
-                        yaxis = axis;
-                }
-            }
-        }
-
-        public void ShowZoomRectangle(Rect r)
+        public void ShowZoomRectangle(OxyRect r)
         {
             zoomControl.Width = r.Width;
             zoomControl.Height = r.Height;
@@ -552,35 +578,23 @@ namespace OxyPlot.Wpf
             zoomControl.Visibility = Visibility.Hidden;
         }
 
+        public OxyRect GetPlotArea()
+        {
+            if (internalModel != null)
+                return internalModel.PlotArea;
+            // todo
+            return new OxyRect(0, 0, ActualWidth, ActualHeight);
+        }
+
         /// <summary>
         /// Gets the series that is nearest the specified point (in screen coordinates).
         /// </summary>
         /// <param name="pt">The point.</param>
         /// <param name="limit">The maximum distance, if this is exceeded the method will return null.</param>
         /// <returns>The closest DataSeries</returns>
-        public OxyPlot.DataSeries GetSeriesFromPoint(Point pt, double limit = 100)
+        public OxyPlot.DataSeries GetSeriesFromPoint(ScreenPoint pt, double limit = 100)
         {
-            double mindist = double.MaxValue;
-            OxyPlot.DataSeries closest = null;
-            foreach (OxyPlot.DataSeries s in internalModel.Series)
-            {
-                DataPoint dp = InverseTransform(pt, s.XAxis, s.YAxis);
-                DataPoint? np = s.GetNearestPointOnLine(dp);
-                if (np == null)
-                    continue;
-
-                // find distance to this point on the screen
-                Point sp = Transform(np.Value, s.XAxis, s.YAxis);
-                double dist = pt.DistanceTo(sp);
-                if (dist < mindist)
-                {
-                    closest = s;
-                    mindist = dist;
-                }
-            }
-            if (mindist < limit)
-                return closest;
-            return null;
+            return internalModel.GetSeriesFromPoint(pt, limit);
         }
 
         public void ShowSlider(OxyPlot.DataSeries s, DataPoint dp)
@@ -594,7 +608,7 @@ namespace OxyPlot.Wpf
             slider.Hide();
         }
 
-        public void Pan(OxyPlot.AxisBase axis, double dx)
+        public void Pan(AxisBase axis, double dx)
         {
             if (Model == null)
             {
@@ -606,12 +620,12 @@ namespace OxyPlot.Wpf
             axis.Pan(dx);
         }
 
-        private Axis FindModelAxis(OxyPlot.AxisBase a)
+        private Axis FindModelAxis(AxisBase a)
         {
             return Axes.FirstOrDefault(axis => axis.ModelAxis == a);
         }
 
-        public void Reset(OxyPlot.AxisBase axis)
+        public void Reset(AxisBase axis)
         {
             if (Model == null)
             {
@@ -622,23 +636,22 @@ namespace OxyPlot.Wpf
             axis.Reset();
         }
 
-        public void Zoom(OxyPlot.AxisBase axis, double p1, double p2)
+        public void Zoom(AxisBase axis, double p1, double p2)
         {
             var a = FindModelAxis(axis);
             if (a != null)
-                a.Zoom(p1,p2);
+                a.Zoom(p1, p2);
             else
-                axis.Zoom(p1,p2);
+                axis.Zoom(p1, p2);
         }
 
-        public void ZoomAt(OxyPlot.AxisBase axis, double factor, double x)
+        public void ZoomAt(AxisBase axis, double factor, double x)
         {
             var a = FindModelAxis(axis);
             if (a != null)
-                a.ZoomAt(factor,x);
+                a.ZoomAt(factor, x);
             else
-                axis.ZoomAt(factor,x);
+                axis.ZoomAt(factor, x);
         }
-
     }
 }

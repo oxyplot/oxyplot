@@ -9,9 +9,9 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class TextReportWriter : StreamWriter, IReportWriter
     {
-        private string sep = " | ";
-        private string sep0 = "| ";
-        private string sepN = " |";
+        private const string TableCellSeparator = " | ";
+        private const string TableRowStart = "| ";
+        private const string TableRowEnd = " |";
         private int tableCounter;
 
         public TextReportWriter(Stream s)
@@ -37,26 +37,16 @@ namespace OxyPlot.Reporting
             WriteLine(h);
             if (h.Level == 1)
             {
-                for (int i = 0; i < h.Text.Length; i++)
-                    Write('=');
-                WriteLine();
+                WriteLine("=".Repeat(h.Text.Length));
             }
             WriteLine();
         }
 
         public void WriteParagraph(Paragraph p)
         {
-            int i = 0;
-            while (i < p.Text.Length)
+            foreach (var line in p.Text.SplitLines(MaxLineLength))
             {
-                int len = FindLineLength(p.Text, i);
-                if (len == 0)
-                    WriteLine(p.Text.Substring(i).Trim());
-                else
-                    WriteLine(p.Text.Substring(i, len).Trim());
-                i += len;
-                if (len == 0)
-                    break;
+                WriteLine(line);
             }
             WriteLine();
         }
@@ -82,14 +72,14 @@ namespace OxyPlot.Reporting
                 }
                 totalLength += columnWidth[j];
             }
-            // WriteLine("".PadRight(totalLength, '-'));
+            // WriteLine("-".Repeat(totalLength));
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < cols; j++)
                 {
                     string text = cells[i, j];
-                    Write(GetCellText(j, cols, Format(text, Alignment.Left,
-                        columnWidth[j])));
+                    Write(GetCellText(j, cols, PadString(text, Alignment.Left,
+                                                      columnWidth[j])));
                 }
                 WriteLine();
             }
@@ -110,34 +100,19 @@ namespace OxyPlot.Reporting
 
         #endregion
 
-        private int FindLineLength(string text, int i)
-        {
-            int i2 = i + 1;
-            int len = 0;
-            while (i2 < i + MaxLineLength && i2 < text.Length)
-            {
-                i2 = text.IndexOfAny(" \n\r".ToCharArray(), i2 + 1);
-                if (i2 == -1)
-                    i2 = text.Length;
-                if (i2 - i < MaxLineLength)
-                    len = i2 - i;
-            }
-            return len;
-        }
-
-        private string GetCellText(int i, int count, string p)
+        private static string GetCellText(int i, int count, string p)
         {
             if (i == 0)
-                p = sep0 + p;
+                p = TableRowStart + p;
             if (i + 1 < count)
-                p += sep;
+                p += TableCellSeparator;
             if (i == count - 1)
-                p += sepN;
+                p += TableRowEnd;
             return p;
         }
 
 
-        private string Format(string text, Alignment alignment, int width)
+        private static string PadString(string text, Alignment alignment, int width)
         {
             if (text == null)
                 return "".PadLeft(width);

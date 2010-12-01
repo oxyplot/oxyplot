@@ -12,6 +12,7 @@
                 <MenuItem Header="Save xaml..." Click="SaveXaml_Click"/>
                 <Separator/>
                 <MenuItem Header="Save html5 report..." Click="SaveHtmlReport_Click"/>
+                <MenuItem Header="Save latex report..." Click="SaveLatexReport_Click"/>
                 <MenuItem Header="Save pdf report..." IsEnabled="False" Click="SavePdfReport_Click"/>
                 <Separator/>
                 <MenuItem Header="Exit" Click="Exit_Click"/>
@@ -47,7 +48,15 @@
             Model="{Binding Model}" 
             Background="White"
             RenderToCanvas="{Binding RenderToCanvas}"
-            />
+            >
+                <oxy:PlotControl.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy svg" Click="CopySvg_Click"/>
+                        <MenuItem Header="Copy bitmap" Click="CopyBitmap_Click"/>
+                        <MenuItem Header="Copy xaml" Click="CopyXaml_Click"/>
+                    </ContextMenu>
+                </oxy:PlotControl.ContextMenu>
+            </oxy:PlotControl>
             <Border CornerRadius="10" x:Name="info" MouseDown="Window_MouseDown" BorderThickness="2" BorderBrush="Black" Background="#D0FFFFF0"
                      VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
                 <FlowDocumentScrollViewer Width="400" Opacity="0.7">

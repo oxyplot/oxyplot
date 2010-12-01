@@ -6,7 +6,7 @@ using PdfSharp.Pdf;
 
 namespace OxyPlot.Pdf
 {
-    public class PdfRenderContext : IRenderContext
+    internal class PdfRenderContext : IRenderContext
     {
         private readonly PdfDocument doc;
         private readonly XGraphics g;

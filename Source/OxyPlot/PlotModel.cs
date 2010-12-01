@@ -12,27 +12,26 @@ namespace OxyPlot
     public enum PlotType
     {
         /// <summary>
-        ///   XY coordinate system - two perpendicular axes
+        /// XY coordinate system - two perpendicular axes
         /// </summary>
         XY,
 
         /// <summary>
-        ///   Cartesian coordinate system - perpendicular axes with the same unit length
-        ///   http://en.wikipedia.org/wiki/Cartesian_coordinate_system
+        /// Cartesian coordinate system - perpendicular axes with the same unit length
+        /// http://en.wikipedia.org/wiki/Cartesian_coordinate_system
         /// </summary>
         Cartesian,
 
         /// <summary>
-        ///   Polar coordinate system - distance and angle axes
-        ///   http://en.wikipedia.org/wiki/Polar_coordinate_system
+        /// Polar coordinate system - distance and angle axes
+        /// http://en.wikipedia.org/wiki/Polar_coordinate_system
         /// </summary>
         Polar
     }
 
-    // todo: use IAxis instead of AxisBase?
 
     /// <summary>
-    ///   Plot Model
+    /// PlotModel
     /// </summary>
     public class PlotModel
     {
@@ -41,14 +40,22 @@ namespace OxyPlot
         internal AxisBase DefaultMagnitudeAxis;
         internal AxisBase DefaultXAxis;
         internal AxisBase DefaultYAxis;
-        internal ScreenPoint MidPoint; // The midpoint of the plot area, used for the polar coordinate system.
-        internal OxyRect PlotArea; // The PlotArea rectangle is defining the rectangular area inside the margins.
+        internal OxyRect plotArea; // The PlotArea rectangle is defining the rectangular area inside the margins.
+
+        public OxyRect PlotArea
+        {
+            get { return plotArea; }
+        }
 
         private int currentColorIndex;
 
+        internal ScreenPoint MidPoint; // The midpoint of the plot area, used for the polar coordinate system.
+
         public PlotModel(string title = null, string subtitle = null)
         {
+            // todo: use IAxis instead of AxisBase?
             Axes = new Collection<AxisBase>();
+            // todo: use interface instead of DataSeries?
             Series = new Collection<DataSeries>();
 
             Title = title;
@@ -77,16 +84,16 @@ namespace OxyPlot
 
             DefaultColors = new List<OxyColor>
                                 {
-                                    OxyColor.FromRGB(0x4E, 0x9A, 0x06), 
-                                    OxyColor.FromRGB(0xC8, 0x8D, 0x00), 
-                                    OxyColor.FromRGB(0xCC, 0x00, 0x00), 
-                                    OxyColor.FromRGB(0x20, 0x4A, 0x87), 
-                                    OxyColors.Red, 
-                                    OxyColors.Orange, 
-                                    OxyColors.Yellow, 
-                                    OxyColors.Green, 
-                                    OxyColors.Blue, 
-                                    OxyColors.Indigo, 
+                                    OxyColor.FromRGB(0x4E, 0x9A, 0x06),
+                                    OxyColor.FromRGB(0xC8, 0x8D, 0x00),
+                                    OxyColor.FromRGB(0xCC, 0x00, 0x00),
+                                    OxyColor.FromRGB(0x20, 0x4A, 0x87),
+                                    OxyColors.Red,
+                                    OxyColors.Orange,
+                                    OxyColors.Yellow,
+                                    OxyColors.Green,
+                                    OxyColors.Blue,
+                                    OxyColors.Indigo,
                                     OxyColors.Violet
                                 };
         }
@@ -100,126 +107,126 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the legend position.
+        /// Gets or sets the legend position.
         /// </summary>
         /// <value>The legend position.</value>
         public LegendPosition LegendPosition { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether the legend 
-        ///   should be shown outside the plot area. The default
-        ///   value is false - legend should be shown inside the plot area.
+        /// Gets or sets a value indicating whether the legend 
+        /// should be shown outside the plot area. The default
+        /// value is false - legend should be shown inside the plot area.
         /// </summary>
         public bool IsLegendOutsidePlotArea { get; set; }
 
         /// <summary>
-        ///   Gets or sets the type of the plot.
+        /// Gets or sets the type of the plot.
         /// </summary>
         /// <value>The type of the plot.</value>
         public PlotType PlotType { get; set; }
 
         /// <summary>
-        ///   Gets or sets the default colors.
+        /// Gets or sets the default colors.
         /// </summary>
         /// <value>The default colors.</value>
         public List<OxyColor> DefaultColors { get; set; }
 
         /// <summary>
-        ///   Gets or sets the axes.
+        /// Gets or sets the axes.
         /// </summary>
         /// <value>The axes.</value>
         public Collection<AxisBase> Axes { get; set; }
 
         /// <summary>
-        ///   Gets or sets the series.
+        /// Gets or sets the series.
         /// </summary>
         /// <value>The series.</value>
         public Collection<DataSeries> Series { get; set; }
 
         /// <summary>
-        ///   Gets or sets the title font.
+        /// Gets or sets the title font.
         /// </summary>
         /// <value>The title font.</value>
         public string TitleFont { get; set; }
 
         /// <summary>
-        ///   Gets or sets the size of the title font.
+        /// Gets or sets the size of the title font.
         /// </summary>
         /// <value>The size of the title font.</value>
         public double TitleFontSize { get; set; }
 
         /// <summary>
-        ///   Gets or sets the size of the subtitle font.
+        /// Gets or sets the size of the subtitle font.
         /// </summary>
         /// <value>The size of the subtitle font.</value>
         public double SubtitleFontSize { get; set; }
 
         /// <summary>
-        ///   Gets or sets the title font weight.
+        /// Gets or sets the title font weight.
         /// </summary>
         /// <value>The title font weight.</value>
         public double TitleFontWeight { get; set; }
 
         /// <summary>
-        ///   Gets or sets the subtitle font weight.
+        /// Gets or sets the subtitle font weight.
         /// </summary>
         /// <value>The subtitle font weight.</value>
         public double SubtitleFontWeight { get; set; }
 
         /// <summary>
-        ///   Gets or sets the legend font.
+        /// Gets or sets the legend font.
         /// </summary>
         /// <value>The legend font.</value>
         public string LegendFont { get; set; }
 
         /// <summary>
-        ///   Gets or sets the size of the legend font.
+        /// Gets or sets the size of the legend font.
         /// </summary>
         /// <value>The size of the legend font.</value>
         public double LegendFontSize { get; set; }
 
         /// <summary>
-        ///   Gets or sets the length of the legend symbol.
+        /// Gets or sets the length of the legend symbol.
         /// </summary>
         public double LegendSymbolLength { get; set; }
 
         /// <summary>
-        ///   Gets or sets the axis margins.
+        /// Gets or sets the axis margins.
         /// </summary>
         /// <value>The axis margins.</value>
         public OxyThickness PlotMargins { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the text.
+        /// Gets or sets the color of the text.
         /// </summary>
         /// <value>The color of the text.</value>
         public OxyColor TextColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the box.
+        /// Gets or sets the color of the box.
         /// </summary>
         /// <value>The color of the box.</value>
         public OxyColor BoxColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the background of the plot area.
+        /// Gets or sets the color of the background of the plot area.
         /// </summary>
         public OxyColor Background { get; set; }
 
         /// <summary>
-        ///   Gets or sets the box thickness.
+        /// Gets or sets the box thickness.
         /// </summary>
         /// <value>The box thickness.</value>
         public double BoxThickness { get; set; }
 
         /// <summary>
-        ///   Gets or sets the title.
+        /// Gets or sets the title.
         /// </summary>
         /// <value>The title.</value>
         public string Title { get; set; }
 
         /// <summary>
-        ///   Gets or sets the subtitle.
+        /// Gets or sets the subtitle.
         /// </summary>
         /// <value>The subtitle.</value>
         public string Subtitle { get; set; }
@@ -232,15 +239,12 @@ namespace OxyPlot
         private OxyColor GetDefaultColor()
         {
             if (currentColorIndex >= DefaultColors.Count)
-            {
                 currentColorIndex = 0;
-            }
-
             return DefaultColors[currentColorIndex++];
         }
 
         /// <summary>
-        ///   Force an update of the data.
+        /// Force an update of the data.
         /// </summary>
         public void UpdateData()
         {
@@ -255,7 +259,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Find the default x/y axes (first in collection)
+        /// Find the default x/y axes (first in collection)
         /// </summary>
         private void EnsureDefaultAxes()
         {
@@ -271,7 +275,6 @@ namespace OxyPlot
                         DefaultXAxis = a;
                     }
                 }
-
                 if (a.IsVertical())
                 {
                     if (DefaultYAxis == null)
@@ -279,7 +282,6 @@ namespace OxyPlot
                         DefaultYAxis = a;
                     }
                 }
-
                 if (a.Position == AxisPosition.Magnitude)
                 {
                     if (DefaultMagnitudeAxis == null)
@@ -287,25 +289,16 @@ namespace OxyPlot
                         DefaultMagnitudeAxis = a;
                     }
                 }
-
                 if (a.Position == AxisPosition.Angle)
                 {
                     if (DefaultAngleAxis == null)
-                    {
                         DefaultAngleAxis = a;
-                    }
                 }
             }
-
             if (DefaultXAxis == null)
-            {
                 DefaultXAxis = DefaultMagnitudeAxis;
-            }
-
             if (DefaultYAxis == null)
-            {
                 DefaultYAxis = DefaultAngleAxis;
-            }
 
             if (PlotType == PlotType.Polar)
             {
@@ -333,14 +326,9 @@ namespace OxyPlot
             }
 
             if (!Axes.Contains(DefaultXAxis))
-            {
                 Axes.Add(DefaultXAxis);
-            }
-
             if (!Axes.Contains(DefaultYAxis))
-            {
                 Axes.Add(DefaultYAxis);
-            }
 
             // Update the x/y axes of series without axes defined
             foreach (var s in Series)
@@ -349,18 +337,15 @@ namespace OxyPlot
                 {
                     s.XAxis = FindAxis(s.XAxisKey);
                 }
-
                 if (s.YAxisKey != null)
                 {
                     s.YAxis = FindAxis(s.YAxisKey);
                 }
-
                 // If axes are not found, use the default axes
                 if (s.XAxis == null)
                 {
                     s.XAxis = DefaultXAxis;
                 }
-
                 if (s.YAxis == null)
                 {
                     s.YAxis = DefaultYAxis;
@@ -374,8 +359,8 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Update max and min values of the axes from values of all data series.
-        ///   Only axes with automatic set to true are changed.
+        /// Update max and min values of the axes from values of all data series.
+        /// Only axes with automatic set to true are changed.
         /// </summary>
         private void UpdateMaxMin()
         {
@@ -384,7 +369,6 @@ namespace OxyPlot
                 a.ActualMaximum = double.NaN;
                 a.ActualMinimum = double.NaN;
             }
-
             foreach (var s in Series)
             {
                 s.UpdateMaxMin();
@@ -393,7 +377,6 @@ namespace OxyPlot
                 s.YAxis.Include(s.MinY);
                 s.YAxis.Include(s.MaxY);
             }
-
             foreach (var a in Axes)
             {
                 a.UpdateActualMaxMin();
@@ -413,17 +396,10 @@ namespace OxyPlot
         {
             double w = rc.Width - PlotMargins.Left - PlotMargins.Right;
             double h = rc.Height - PlotMargins.Top - PlotMargins.Bottom;
-            if (w < 0)
-            {
-                w = 0;
-            }
+            if (w < 0) w = 0;
+            if (h < 0) h = 0;
 
-            if (h < 0)
-            {
-                h = 0;
-            }
-
-            PlotArea = new OxyRect
+            plotArea = new OxyRect
                            {
                                Left = PlotMargins.Left,
                                Width = w,
@@ -467,19 +443,19 @@ namespace OxyPlot
                 }
             }
               */
-            MidPoint = new ScreenPoint((PlotArea.Left + PlotArea.Right) * 0.5, (PlotArea.Top + PlotArea.Bottom) * 0.5);
+            MidPoint = new ScreenPoint((plotArea.Left + plotArea.Right) * 0.5, (plotArea.Top + plotArea.Bottom) * 0.5);
         }
 
         /// <summary>
-        ///   Renders the axes.
+        /// Renders the axes.
         /// </summary>
-        /// <param name = "rc">The rc.</param>
+        /// <param name="rc">The rc.</param>
         public void RenderAxes(IRenderContext rc)
         {
             // Update the transforms
             foreach (var a in Axes)
             {
-                a.UpdateTransform(PlotArea);
+                a.UpdateTransform(plotArea);
             }
 
             // Set the same scaling to all axes if CartesianAxes is selected
@@ -487,20 +463,15 @@ namespace OxyPlot
             {
                 double minimumScale = double.MaxValue;
                 foreach (var a in Axes)
-                {
                     minimumScale = Math.Min(minimumScale, Math.Abs(a.Scale));
-                }
-
                 foreach (var a in Axes)
-                {
                     a.SetScale(minimumScale);
-                }
             }
 
             // Update the intervals for all axes
             foreach (var a in Axes)
             {
-                a.UpdateIntervals(PlotArea.Width, PlotArea.Height);
+                a.UpdateIntervals(plotArea.Width, plotArea.Height);
             }
 
             foreach (var a in Axes)
@@ -513,27 +484,21 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Renders the box around the plot area.
+        /// Renders the box around the plot area.
         /// </summary>
-        /// <param name = "rc">The rc.</param>
+        /// <param name="rc">The rc.</param>
         public void RenderBox(IRenderContext rc)
         {
             var pp = new PlotRenderingHelper(rc, this);
-            rc.DrawRectangle(PlotArea, Background, BoxColor, BoxThickness);
+            rc.DrawRectangle(plotArea, Background, BoxColor, BoxThickness);
             pp.RenderTitle(Title, Subtitle);
             foreach (var s in Series)
             {
                 var ls = s as LineSeries;
                 if (ls == null)
-                {
                     continue;
-                }
-
                 if (ls.Background == null)
-                {
                     continue;
-                }
-
                 var axisBounds = new OxyRect(
                     ls.XAxis.ScreenMin.X,
                     ls.YAxis.ScreenMin.Y,
@@ -541,14 +506,13 @@ namespace OxyPlot
                     ls.YAxis.ScreenMax.Y - ls.YAxis.ScreenMin.Y);
                 rc.DrawRectangle(axisBounds, ls.Background, null, 0);
             }
-
             pp.RenderLegends();
         }
 
         /// <summary>
-        ///   Renders the series.
+        /// Renders the series.
         /// </summary>
-        /// <param name = "rc">The rc.</param>
+        /// <param name="rc">The rc.</param>
         public void RenderSeries(IRenderContext rc)
         {
             ResetDefaultColor();
@@ -565,11 +529,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Saves the SVG.
+        /// Saves the SVG.
         /// </summary>
-        /// <param name = "fileName">Name of the file.</param>
-        /// <param name = "width">The width.</param>
-        /// <param name = "height">The height.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
         public void SaveSvg(string fileName, double width, double height)
         {
             using (var svgrc = new SvgRenderContext(fileName, width, height))
@@ -579,11 +543,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Create an SVG model and return it as a string.
+        /// Create an SVG model and return it as a string.
         /// </summary>
-        /// <param name = "width">The width.</param>
-        /// <param name = "height">The height.</param>
-        /// <param name = "isDocument">if set to <c>true</c> [is document].</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="isDocument">if set to <c>true</c> [is document].</param>
         /// <returns></returns>
         public string ToSvg(double width, double height, bool isDocument = false)
         {
@@ -600,8 +564,53 @@ namespace OxyPlot
                 svg = sr.ReadToEnd();
                 svgrc.Close();
             }
-
             return svg;
+        }
+
+        public void GetAxesFromPoint(ScreenPoint pt, out AxisBase xaxis, out AxisBase yaxis)
+        {
+            xaxis = yaxis = null;
+            foreach (var axis in Axes)
+            {
+                double x = axis.InverseTransformX(axis.IsHorizontal() ? pt.X : pt.Y);
+                if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
+                {
+                    if (axis.IsHorizontal())
+                    {
+                        // todo: only accept axis if it is within plot area 
+                        // or the axis area
+
+                        xaxis = axis;
+                    }
+                    else
+                        yaxis = axis;
+                }
+            }
+        }
+
+        public DataSeries GetSeriesFromPoint(ScreenPoint pt, double limit = 100)
+        {
+            double mindist = double.MaxValue;
+            DataSeries closest = null;
+            foreach (var s in Series)
+            {
+                var dp = AxisBase.InverseTransform(pt, s.XAxis, s.YAxis);
+                var np = s.GetNearestPointOnLine(dp);
+                if (np == null)
+                    continue;
+
+                // find distance to this point on the screen
+                var sp = AxisBase.Transform(np.Value, s.XAxis, s.YAxis);
+                double dist = pt.DistanceTo(sp);
+                if (dist < mindist)
+                {
+                    closest = s;
+                    mindist = dist;
+                }
+            }
+            if (mindist < limit)
+                return closest;
+            return null;
         }
     }
 }
