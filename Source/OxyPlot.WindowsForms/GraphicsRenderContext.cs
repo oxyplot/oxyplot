@@ -9,11 +9,11 @@ namespace Oxyplot.WindowsForms
     internal class GraphicsRenderContext : IRenderContext
     {
         private readonly Graphics g;
-        private readonly PlotControl pc;
+        private readonly Plot pc;
         private const float FONTSIZE_FACTOR = 0.8f;
 
 
-        public GraphicsRenderContext(PlotControl pc, Graphics graphics, Rectangle clipRectangle)
+        public GraphicsRenderContext(Plot pc, Graphics graphics, Rectangle clipRectangle)
         {
             this.pc = pc;
             g = graphics;

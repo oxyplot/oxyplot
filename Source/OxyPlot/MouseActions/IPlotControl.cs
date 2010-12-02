@@ -1,6 +1,6 @@
 ﻿namespace OxyPlot
 {
-    public interface IPlotControl
+    public interface IPlot
     {
         void GetAxesFromPoint(ScreenPoint pt, out AxisBase xaxis, out AxisBase yaxis);
         DataSeries GetSeriesFromPoint(ScreenPoint pt, double limit = 100);

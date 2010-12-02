@@ -10,7 +10,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Shows a slider with horizontal and vertical lines, and a templated content control.
     /// The ContentTemplate must be set to define how the slider label looks.
-    /// The PlotControls contains a default template in the Themes/Generic.xaml file. 
+    /// The Plots contains a default template in the Themes/Generic.xaml file. 
     /// </summary>
     public class Slider : Canvas
     {
@@ -33,7 +33,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Initializes a new instance of the <see cref="Slider"/> class.
         /// </summary>
-        /// <param name="pc">The parent PlotControl.</param>
+        /// <param name="pc">The parent Plot.</param>
         public Slider()
         {
             SliderLabelFormat = null; // "{0:0.###} {1:0.###}";
