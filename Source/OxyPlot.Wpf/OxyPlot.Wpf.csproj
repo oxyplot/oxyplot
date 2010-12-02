@@ -58,7 +58,7 @@
     <Compile Include="PlotFrame.cs" />
     <Compile Include="Series\AreaSeries.cs" />
     <Compile Include="Series\LineSeries.cs" />
-    <Compile Include="PlotControl.cs" />
+    <Compile Include="Plot.cs" />
     <Compile Include="Series\DataSeries.cs" />
     <Compile Include="Helpers\ConverterExtensions.cs" />
     <Compile Include="Slider.cs" />

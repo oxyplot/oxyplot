@@ -32,7 +32,7 @@ namespace SimpleDemo
 
             // Axes are created automatically
 
-            // Set the Model property, this will make the WPF PlotControl update its content
+            // Set the Model property, this will make the WPF Plot update its content
             Model = tmp;
         }
 

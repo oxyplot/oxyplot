@@ -24,7 +24,7 @@
             </MenuItem>
         </Menu>
         <Grid>
-            <oxy:PlotControl 
+            <oxy:Plot 
             x:Name="plot1" 
             Model="{Binding Model}" 
             Background="White"/>

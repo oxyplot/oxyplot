@@ -3,7 +3,7 @@
     // todo: use screen coordinates instead of original points (problem on log axes)
     public class SliderAction : MouseAction
     {
-        public SliderAction(IPlotControl pc)
+        public SliderAction(IPlot pc)
             : base(pc)
         {
         }

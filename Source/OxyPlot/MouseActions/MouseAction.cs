@@ -2,9 +2,9 @@
 {
     public abstract class MouseAction : IMouseAction
     {
-        protected IPlotControl pc;
+        protected IPlot pc;
 
-        protected MouseAction(IPlotControl pc)
+        protected MouseAction(IPlot pc)
         {
             this.pc = pc;
         }

@@ -11,7 +11,7 @@ namespace OxyPlot
 
         private OxyRect zoomRectangle;
 
-        public ZoomAction(IPlotControl pc)
+        public ZoomAction(IPlot pc)
             : base(pc)
         {
         }

@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GraphicsRenderContext.cs" />
-    <Compile Include="PlotControl.cs">
+    <Compile Include="Plot.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

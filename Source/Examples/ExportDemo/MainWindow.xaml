@@ -43,20 +43,20 @@
             </StatusBarItem>
         </StatusBar>
         <Grid>
-            <oxy:PlotControl 
+            <oxy:Plot 
             x:Name="plot1" 
             Model="{Binding Model}" 
             Background="White"
             RenderToCanvas="{Binding RenderToCanvas}"
             >
-                <oxy:PlotControl.ContextMenu>
+                <oxy:Plot.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Copy svg" Click="CopySvg_Click"/>
                         <MenuItem Header="Copy bitmap" Click="CopyBitmap_Click"/>
                         <MenuItem Header="Copy xaml" Click="CopyXaml_Click"/>
                     </ContextMenu>
-                </oxy:PlotControl.ContextMenu>
-            </oxy:PlotControl>
+                </oxy:Plot.ContextMenu>
+            </oxy:Plot>
             <Border CornerRadius="10" x:Name="info" MouseDown="Window_MouseDown" BorderThickness="2" BorderBrush="Black" Background="#D0FFFFF0"
                      VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
                 <FlowDocumentScrollViewer Width="400" Opacity="0.7">

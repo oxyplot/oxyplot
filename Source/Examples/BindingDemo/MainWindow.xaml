@@ -7,12 +7,12 @@
         <XmlDataProvider x:Key="WorldPopulationData" Source="WorldPopulation.xml"  />
     </Window.Resources>
     <Grid>
-        <oxy:PlotControl x:Name="plot1" Title="Test">
-            <oxy:PlotControl.Series>
+        <oxy:Plot x:Name="plot1" Title="Test">
+            <oxy:Plot.Series>
                 <oxy:LineSeries Title="Simulated Value" DataFieldX="Time" DataFieldY="Value" Thickness="2" Color="Peru" ItemsSource="{Binding Measurements}"/>
                 <oxy:LineSeries Title="Maximum" DataFieldX="Time" DataFieldY="Maximum" LineStyle="Dash" Thickness="2" ItemsSource="{Binding Measurements}"/>
                 <oxy:LineSeries Title="Minimum" DataFieldX="Time" DataFieldY="Minimum" LineStyle="Dot" Thickness="2" ItemsSource="{Binding Measurements}"/>
-            </oxy:PlotControl.Series>
-        </oxy:PlotControl>
+            </oxy:Plot.Series>
+        </oxy:Plot>
     </Grid>
 </Window>

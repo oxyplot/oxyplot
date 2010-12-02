@@ -5,6 +5,6 @@
         Title="OxyPlot SimpleDemo" Height="480" Width="640">
     <Grid>
         <!-- The OxyPlot control is binding to a PlotModel in the MainViewModel -->
-        <oxy:PlotControl Model="{Binding Model}"/>
+        <oxy:Plot Model="{Binding Model}"/>
     </Grid>
 </Window>
