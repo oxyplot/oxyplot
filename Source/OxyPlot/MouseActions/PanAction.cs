@@ -7,8 +7,8 @@
         {
         }
 
-        private AxisBase xaxis;
-        private AxisBase yaxis;
+        private IAxis xaxis;
+        private IAxis yaxis;
         private ScreenPoint ppt;
         private bool isPanning;
 

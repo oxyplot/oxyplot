@@ -38,7 +38,7 @@ namespace OxyPlot
         /// <param name="axes">The axes collection.</param>
         /// <param name="defaultXAxis">The default X axis.</param>
         /// <param name="defaultYAxis">The default Y axis.</param>
-        void EnsureAxes(Collection<AxisBase> axes, AxisBase defaultXAxis, AxisBase defaultYAxis);
+        void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis);
 
         /// <summary>
         /// Updates the maximum and minimum of the axes related to the series.

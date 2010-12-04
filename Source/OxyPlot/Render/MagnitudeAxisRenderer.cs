@@ -13,7 +13,7 @@ namespace OxyPlot
         {
             base.Render(axis);
 
-            var angleAxis = Plot.DefaultAngleAxis;
+            var angleAxis = Plot.DefaultAngleAxis as AxisBase;
             if (axis.RelatedAxis != null)
             {
                 angleAxis = axis.RelatedAxis;
@@ -40,7 +40,7 @@ namespace OxyPlot
                          th <= angleAxis.ActualMaximum;
                          th += angleAxis.MinorStep * 0.1)
                     {
-                        pts.Add(axis.Transform(xValue, th, angleAxis));
+                        pts.Add(axis.Transform(new DataPoint(xValue, th), angleAxis));
                     }
 
                     if (MinorPen != null)
@@ -64,7 +64,7 @@ namespace OxyPlot
                 var pts = new List<ScreenPoint>();
                 for (double th = angleAxis.ActualMinimum; th <= angleAxis.ActualMaximum; th += angleAxis.MinorStep * 0.1)
                 {
-                    pts.Add(axis.Transform(xValue, th, angleAxis));
+                    pts.Add(axis.Transform(new DataPoint(xValue, th), angleAxis));
                 }
 
                 if (MajorPen != null)

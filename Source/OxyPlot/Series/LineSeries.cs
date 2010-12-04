@@ -129,7 +129,7 @@ namespace OxyPlot
         {
             base.Render(rc, model);
 
-            if (points.Count == 0)
+            if (InternalPoints.Count == 0)
             {
                 return;
             }
@@ -142,13 +142,13 @@ namespace OxyPlot
                 XAxis.ScreenMin.X, XAxis.ScreenMax.X,
                 YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);
 
-            int n = points.Count;
+            int n = InternalPoints.Count;
 
             // Transform all points to screen coordinates
             var markerPoints = new ScreenPoint[n];
             for (int i = 0; i < n; i++)
             {
-                markerPoints[i] = XAxis.Transform(points[i].x, points[i].y, YAxis);
+                markerPoints[i] = XAxis.Transform(new DataPoint(InternalPoints[i].x, InternalPoints[i].y), YAxis);
             }
 
             // spline smoothing (should only be used on small datasets)

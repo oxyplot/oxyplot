@@ -561,7 +561,7 @@ namespace OxyPlot.Wpf
             return sb.ToString();
         }
 
-        public void GetAxesFromPoint(ScreenPoint pt, out AxisBase xaxis, out AxisBase yaxis)
+        public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
         {
             internalModel.GetAxesFromPoint(pt, out xaxis, out yaxis);
         }
@@ -616,7 +616,7 @@ namespace OxyPlot.Wpf
             slider.Hide();
         }
 
-        public void Pan(AxisBase axis, double dx)
+        public void Pan(IAxis axis, double dx)
         {
             if (Model == null)
             {
@@ -628,12 +628,12 @@ namespace OxyPlot.Wpf
             axis.Pan(dx);
         }
 
-        private Axis FindModelAxis(AxisBase a)
+        private Axis FindModelAxis(IAxis a)
         {
             return Axes.FirstOrDefault(axis => axis.ModelAxis == a);
         }
 
-        public void Reset(AxisBase axis)
+        public void Reset(IAxis axis)
         {
             if (Model == null)
             {
@@ -644,7 +644,7 @@ namespace OxyPlot.Wpf
             axis.Reset();
         }
 
-        public void Zoom(AxisBase axis, double p1, double p2)
+        public void Zoom(IAxis axis, double p1, double p2)
         {
             var a = FindModelAxis(axis);
             if (a != null)
@@ -653,7 +653,7 @@ namespace OxyPlot.Wpf
                 axis.Zoom(p1, p2);
         }
 
-        public void ZoomAt(AxisBase axis, double factor, double x)
+        public void ZoomAt(IAxis axis, double factor, double x)
         {
             var a = FindModelAxis(axis);
             if (a != null)

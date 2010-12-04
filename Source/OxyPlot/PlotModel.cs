@@ -35,21 +35,21 @@ namespace OxyPlot
     public class PlotModel
     {
         private static string defaultFont = "Segoe UI";
-        internal AxisBase DefaultAngleAxis;
-        internal AxisBase DefaultMagnitudeAxis;
-        internal AxisBase DefaultXAxis;
-        internal AxisBase DefaultYAxis;
+        internal IAxis DefaultAngleAxis;
+        internal IAxis DefaultMagnitudeAxis;
+        internal IAxis DefaultXAxis;
+        internal IAxis DefaultYAxis;
 
         public OxyRect PlotArea { get; private set; }
 
         private int currentColorIndex;
 
-        public ScreenPoint MidPoint { get; private set; } // The midpoint of the plot area, used for the polar coordinate system.
+        public ScreenPoint MidPoint { get; private set; }
+        // The midpoint of the plot area, used for the polar coordinate system.
 
         public PlotModel(string title = null, string subtitle = null)
         {
-            // todo: use IAxis instead of AxisBase?
-            Axes = new Collection<AxisBase>();
+            Axes = new Collection<IAxis>();
             Series = new Collection<ISeries>();
 
             Title = title;
@@ -129,7 +129,7 @@ namespace OxyPlot
         /// Gets or sets the axes.
         /// </summary>
         /// <value>The axes.</value>
-        public Collection<AxisBase> Axes { get; set; }
+        public Collection<IAxis> Axes { get; set; }
 
         /// <summary>
         /// Gets or sets the series.
@@ -337,11 +337,11 @@ namespace OxyPlot
         /// </summary>
         private void UpdateMaxMin()
         {
-            foreach (var a in Axes)
-            {
-                a.ActualMaximum = double.NaN;
-                a.ActualMinimum = double.NaN;
-            }
+            //foreach (var a in Axes)
+            //{
+            //    a.ActualMaximum = double.NaN;
+            //    a.ActualMinimum = double.NaN;
+            //}
             foreach (var s in Series)
             {
                 s.UpdateMaxMin();
@@ -536,12 +536,12 @@ namespace OxyPlot
             return svg;
         }
 
-        public void GetAxesFromPoint(ScreenPoint pt, out AxisBase xaxis, out AxisBase yaxis)
+        public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
         {
             xaxis = yaxis = null;
             foreach (var axis in Axes)
             {
-                double x = axis.InverseTransformX(axis.IsHorizontal() ? pt.X : pt.Y);
+                double x = axis.InverseTransform(axis.IsHorizontal() ? pt.X : pt.Y);
                 if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
                 {
                     if (axis.IsHorizontal())

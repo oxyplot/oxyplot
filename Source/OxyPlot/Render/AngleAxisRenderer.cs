@@ -34,7 +34,7 @@
                         continue;
                     }
 
-                    var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, xValue, axis);
+                    var pt = magnitudeAxis.Transform(new DataPoint(magnitudeAxis.ActualMaximum, xValue), axis);
 
                     if (MinorPen != null)
                     {
@@ -54,7 +54,7 @@
                     continue;
                 }
 
-                var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, xValue, axis);
+                var pt = magnitudeAxis.Transform(new DataPoint(magnitudeAxis.ActualMaximum, xValue), axis);
 
                 if (MajorPen != null)
                 {

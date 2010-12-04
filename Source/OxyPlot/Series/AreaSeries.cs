@@ -141,7 +141,7 @@ namespace OxyPlot
 
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (points.Count == 0)
+            if (InternalPoints.Count == 0)
             {
                 return;
             }
@@ -172,7 +172,7 @@ namespace OxyPlot
             {
                 var pt1 = Points[i];
 
-                var s1 = XAxis.Transform(pt1.x, pt1.y, YAxis);
+                var s1 = XAxis.Transform(pt1, YAxis);
                 if (i == 0)
                 {
                     s0 = s1;
@@ -221,9 +221,9 @@ namespace OxyPlot
                     y2 = Points2[i].y;
                 }
 
-                var pt2 = new ScreenPoint(x2, y2);
+                var pt2 = new DataPoint(x2, y2);
 
-                var s2 = XAxis.Transform(pt2.x, pt2.y, YAxis);
+                var s2 = XAxis.Transform(pt2, YAxis);
 
                 if (i == 0)
                 {
