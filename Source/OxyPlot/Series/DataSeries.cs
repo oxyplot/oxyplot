@@ -14,11 +14,11 @@ namespace OxyPlot
 
     public abstract class DataSeries : ISeries
     {
-        internal Collection<DataPoint> points;
+        internal Collection<DataPoint> InternalPoints;
 
         protected DataSeries()
         {
-            points = new Collection<DataPoint>();
+            InternalPoints = new Collection<DataPoint>();
         }
 
         /// <summary>
@@ -46,21 +46,21 @@ namespace OxyPlot
         [Browsable(false)]
         public Collection<DataPoint> Points
         {
-            get { return points; }
-            set { points = value; }
+            get { return InternalPoints; }
+            set { InternalPoints = value; }
         }
 
         /// <summary>
         ///   Gets or sets the X axis.
         /// </summary>
         /// <value>The X axis.</value>
-        public AxisBase XAxis { get; set; }
+        public IAxis XAxis { get; set; }
 
         /// <summary>
         ///   Gets or sets the Y axis.
         /// </summary>
         /// <value>The Y axis.</value>
-        public AxisBase YAxis { get; set; }
+        public IAxis YAxis { get; set; }
 
         /// <summary>
         ///   Gets or sets the X axis key.
@@ -139,7 +139,7 @@ namespace OxyPlot
                 return;
             }
 
-            points.Clear();
+            InternalPoints.Clear();
 
             // Get DataPoints from the items in ItemsSource 
             // if they implement IDataPointProvider
@@ -154,7 +154,7 @@ namespace OxyPlot
                         continue;
                     }
 
-                    points.Add(idpp.GetDataPoint());
+                    InternalPoints.Add(idpp.GetDataPoint());
                 }
 
                 return;
@@ -193,11 +193,11 @@ namespace OxyPlot
 
 
                 var pp = new DataPoint(x, y);
-                points.Add(pp);
+                InternalPoints.Add(pp);
             }
         }
 
-        public void EnsureAxes(Collection<AxisBase> axes, AxisBase defaultXAxis, AxisBase defaultYAxis)
+        public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
         {
             if (XAxisKey != null)
             {
@@ -226,14 +226,14 @@ namespace OxyPlot
         {
             MinX = MinY = MaxX = MaxY = double.NaN;
 
-            if (points == null || points.Count == 0)
+            if (InternalPoints == null || InternalPoints.Count == 0)
             {
                 return;
             }
 
-            MinX = MaxX = points[0].x;
-            MinY = MaxY = points[0].y;
-            foreach (var pt in points)
+            MinX = MaxX = InternalPoints[0].x;
+            MinY = MaxY = InternalPoints[0].y;
+            foreach (var pt in InternalPoints)
             {
                 MinX = Math.Min(MinX, pt.x);
                 MaxX = Math.Max(MaxX, pt.x);
@@ -252,6 +252,8 @@ namespace OxyPlot
         ///   Gets the point in the dataset that is nearest the specified point.
         /// </summary>
         /// <param name = "point">The point.</param>
+        /// <param name="dpn">The nearest point (data coordinates).</param>
+        /// <param name="spn">The nearest point (screen coordinates).</param>
         /// <returns></returns>
         public bool GetNearestPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
         {
@@ -259,7 +261,7 @@ namespace OxyPlot
 
             double mindist = double.MaxValue;
             DataPoint? nearest = null;
-            foreach (var p in points)
+            foreach (var p in InternalPoints)
             {
                 double dx = dp.x - p.x;
                 double dy = dp.y - p.y;
@@ -274,7 +276,7 @@ namespace OxyPlot
             if (nearest != null)
             {
                 dpn = nearest.Value;
-                spn = XAxis.Transform(dpn.X, dpn.Y, YAxis);
+                spn = XAxis.Transform(dpn, YAxis);
                 return true;
             }
             spn = default(ScreenPoint);
@@ -283,9 +285,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets the nearest point on the curve.
+        ///   Gets the point on the curve that is nearest the specified point.
         /// </summary>
-        /// <param name = "p3">The p3.</param>
+        /// <param name = "point">The point.</param>
+        /// <param name="dpn">The nearest point (data coordinates).</param>
+        /// <param name="spn">The nearest point (screen coordinates).</param>
         /// <returns></returns>
         public bool GetNearestInterpolatedPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
         {
@@ -294,10 +298,10 @@ namespace OxyPlot
             // http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
             double mindist = double.MaxValue;
             DataPoint? pt = null;
-            for (int i = 0; i + 1 < points.Count; i++)
+            for (int i = 0; i + 1 < InternalPoints.Count; i++)
             {
-                var p1 = points[i];
-                var p2 = points[i + 1];
+                var p1 = InternalPoints[i];
+                var p2 = InternalPoints[i + 1];
 
                 double p21X = p2.x - p1.x;
                 double p21Y = p2.y - p1.y;
@@ -345,12 +349,12 @@ namespace OxyPlot
         /// <returns></returns>
         public double? GetValueFromX(double x)
         {
-            for (int i = 0; i + 1 < points.Count; i++)
+            for (int i = 0; i + 1 < InternalPoints.Count; i++)
             {
-                if (IsBetween(x, points[i].x, points[i + 1].x))
+                if (IsBetween(x, InternalPoints[i].x, InternalPoints[i + 1].x))
                 {
-                    return points[i].y +
-                           (points[i + 1].y - points[i].y) / (points[i + 1].x - points[i].x) * (x - points[i].x);
+                    return InternalPoints[i].y +
+                           (InternalPoints[i + 1].y - InternalPoints[i].y) / (InternalPoints[i + 1].x - InternalPoints[i].x) * (x - InternalPoints[i].x);
                 }
             }
 

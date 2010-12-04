@@ -10,9 +10,27 @@ namespace OxyPlot
     /// </summary>
     public abstract class AxisBase : IAxis
     {
-        internal ScreenPoint MidPoint;
-        internal double Offset;
-        internal double Scale;
+        private ScreenPoint midPoint;
+        public ScreenPoint MidPoint
+        {
+            get { return midPoint; }
+            set { midPoint = value; }
+        }
+
+        private double offset;
+        public double Offset
+        {
+            get { return offset; }
+            set { offset = value; }
+        }
+
+        private double scale;
+        public double Scale
+        {
+            get { return scale; }
+            set { scale = value; }
+        }
+
         internal AxisPosition position;
 
         /// <summary>
@@ -78,13 +96,13 @@ namespace OxyPlot
         /// Gets the screen coordinate of the Maximum point on the axis.
         /// </summary>
         /// <value>The screen max.</value>
-        public ScreenPoint ScreenMax { get; internal set; }
+        public ScreenPoint ScreenMax { get; set; }
 
         /// <summary>
         /// Gets the screen coordinate of the Minimum point on the axis.
         /// </summary>
         /// <value>The screen min.</value>
-        public ScreenPoint ScreenMin { get; internal set; }
+        public ScreenPoint ScreenMin { get; set; }
 
         /// <summary>
         /// Gets or sets the key of the axis.
@@ -420,7 +438,7 @@ namespace OxyPlot
         }
 
         private static readonly Func<double, double> Exponent = x => Math.Round(Math.Log(Math.Abs(x), 10));
-        private static readonly Func<double, double> Mantissa = x => x/Math.Pow(10, Exponent(x));
+        private static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
 
         public virtual string FormatValue(double x)
         {
@@ -452,13 +470,13 @@ namespace OxyPlot
             if (step <= 0)
                 throw new InvalidOperationException("Axis: Step cannot be negative.");
 
-            double x = (int) Math.Round(min/step)*step;
+            double x = (int)Math.Round(min / step) * step;
 
             var values = new Collection<double>();
             // Maximum number of iterations (in case of very small step size)
             int it = 0;
             const int maxit = 1000;
-            double epsilon = Math.Abs(max - min)*1e-6;
+            double epsilon = Math.Abs(max - min) * 1e-6;
             while (x <= max + epsilon && it++ < maxit)
             {
                 if (x >= min - epsilon && x <= max + epsilon)
@@ -479,11 +497,11 @@ namespace OxyPlot
 
         public virtual void ZoomAt(double factor, double x)
         {
-            double dx0 = (ActualMinimum - x)*Scale;
-            double dx1 = (ActualMaximum - x)*Scale;
-            Scale *= factor;
-            Minimum = dx0/Scale + x;
-            Maximum = dx1/Scale + x;
+            double dx0 = (ActualMinimum - x) * scale;
+            double dx1 = (ActualMaximum - x) * scale;
+            scale *= factor;
+            Minimum = dx0 / scale + x;
+            Maximum = dx1 / scale + x;
         }
 
         public virtual void Zoom(double x0, double x1)
@@ -512,7 +530,7 @@ namespace OxyPlot
             if (!double.IsNaN(MinorStep))
                 ActualMinorStep = MinorStep;
             else
-                ActualMinorStep = ActualMajorStep/5;
+                ActualMinorStep = ActualMajorStep / 5;
 
 
             if (double.IsNaN(ActualMinorStep))
@@ -556,16 +574,16 @@ namespace OxyPlot
         {
             const int minimumTags = 5;
             const int maximumTags = 20;
-            var numberOfTags = (int) (availableSize/maxIntervalSize);
+            var numberOfTags = (int)(availableSize / maxIntervalSize);
             double range = ActualMaximum - ActualMinimum;
-            double interval = range/numberOfTags;
+            double interval = range / numberOfTags;
             const int k1 = 10;
-            interval = Math.Log10(interval/k1);
+            interval = Math.Log10(interval / k1);
             interval = Math.Ceiling(interval);
-            interval = Math.Pow(10, interval)*k1;
+            interval = Math.Pow(10, interval) * k1;
 
-            if (range/interval > maximumTags) interval *= 5;
-            if (range/interval < minimumTags) interval *= 0.5;
+            if (range / interval > maximumTags) interval *= 5;
+            if (range / interval < minimumTags) interval *= 0.5;
 
             if (interval <= 0) interval = 1;
             return interval;
@@ -592,12 +610,12 @@ namespace OxyPlot
         private double CalculateActualInterval2(double availableSize, double maxIntervalSize)
         {
             Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
-            Func<double, double> mantissa = x => x/Math.Pow(10, exponent(x) - 1);
+            Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
 
             // reduce intervals for horizontal axis.
             // double maxIntervals = Orientation == AxisOrientation.x ? MaximumAxisIntervalsPer200Pixels * 0.8 : MaximumAxisIntervalsPer200Pixels;
             // real maximum interval count
-            double maxIntervalCount = availableSize/maxIntervalSize;
+            double maxIntervalCount = availableSize / maxIntervalSize;
 
             double range = Math.Abs(ActualMinimum - ActualMaximum);
             double interval = Math.Pow(10, exponent(range));
@@ -606,19 +624,19 @@ namespace OxyPlot
             // decrease interval until interval count becomes less than maxIntervalCount
             while (true)
             {
-                var m = (int) mantissa(tempInterval);
+                var m = (int)mantissa(tempInterval);
                 if (m == 5)
                 {
                     // reduce 5 to 2
-                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval/2.5);
+                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.5);
                 }
                 else if (m == 2 || m == 1 || m == 10)
                 {
                     // reduce 2 to 1,10 to 5,1 to 0.5
-                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval/2.0);
+                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.0);
                 }
 
-                if (range/tempInterval > maxIntervalCount)
+                if (range / tempInterval > maxIntervalCount)
                 {
                     break;
                 }
@@ -637,7 +655,7 @@ namespace OxyPlot
         {
             if (value == 0.0 || Math.Abs((Math.Log10(Math.Abs(value)))) < 27)
             {
-                return (double) ((decimal) value);
+                return (double)((decimal)value);
             }
             return Double.Parse(value.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
         }
@@ -664,7 +682,7 @@ namespace OxyPlot
             }
             else
             {
-                ActualMaximum += MaximumPadding*(ActualMaximum - ActualMinimum);
+                ActualMaximum += MaximumPadding * (ActualMaximum - ActualMinimum);
             }
 
             if (!double.IsNaN(Minimum))
@@ -673,7 +691,7 @@ namespace OxyPlot
             }
             else
             {
-                ActualMinimum -= MinimumPadding*(ActualMaximum - ActualMinimum);
+                ActualMinimum -= MinimumPadding * (ActualMaximum - ActualMinimum);
             }
 
             if (double.IsNaN(ActualMaximum))
@@ -704,28 +722,28 @@ namespace OxyPlot
         /// an argument. This is neccessary to calculate screen coordinates from
         /// polar coordinates.
         /// </summary>
-        public virtual ScreenPoint Transform(double x, double y, AxisBase yAxis)
+        public virtual ScreenPoint Transform(DataPoint dp, IAxis yAxis)
         {
             // todo: review architecture here, could this be solved in a better way?
 
             if (IsPolar())
             {
-                double r = (x - Offset)*Scale;
-                double th = yAxis != null ? (y - yAxis.Offset)*yAxis.Scale : double.NaN;
-                return new ScreenPoint(MidPoint.x + r*Math.Cos(th), MidPoint.y + r*Math.Sin(th));
+                double r = (dp.x - Offset) * scale;
+                double th = yAxis != null ? (dp.y - yAxis.Offset) * yAxis.Scale : double.NaN;
+                return new ScreenPoint(MidPoint.x + r * Math.Cos(th), MidPoint.y + r * Math.Sin(th));
             }
 
             if (yAxis == null)
                 return new ScreenPoint();
 
-            return new ScreenPoint(Transform(x), yAxis.Transform(y));
+            return new ScreenPoint(Transform(dp.x), yAxis.Transform(dp.y));
         }
 
         // todo: should find a better way to do this
         // this method seems to be a bottleneck for performance...
         public double Transform(double x)
         {
-            return (PreTransform(x) - Offset)*Scale;
+            return (PreTransform(x) - Offset) * scale;
         }
 
         /// <summary>
@@ -736,52 +754,52 @@ namespace OxyPlot
         /// <param name="y">The screen y.</param>
         /// <param name="yAxis">The y axis.</param>
         /// <returns></returns>
-        public virtual DataPoint InverseTransform(double x, double y, AxisBase yAxis)
+        public virtual DataPoint InverseTransform(double x, double y, IAxis yAxis)
         {
             if (IsPolar())
             {
                 x -= MidPoint.x;
                 y -= MidPoint.y;
                 double th = Math.Atan2(y, x);
-                double r = Math.Sqrt(x*x + y*y);
-                x = r/Scale + Offset;
-                y = yAxis != null ? th/yAxis.Scale + yAxis.Offset : double.NaN;
+                double r = Math.Sqrt(x * x + y * y);
+                x = r / scale + Offset;
+                y = yAxis != null ? th / yAxis.Scale + yAxis.Offset : double.NaN;
                 return new DataPoint(x, y);
             }
 
-            return new DataPoint(InverseTransformX(x), yAxis.InverseTransformX(y));
+            return new DataPoint(InverseTransform(x), yAxis.InverseTransform(y));
         }
 
-        public static ScreenPoint Transform(DataPoint p, AxisBase xAxis, AxisBase yAxis)
+        public static ScreenPoint Transform(DataPoint p, IAxis xAxis, IAxis yAxis)
         {
-            return xAxis.Transform(p.x, p.y, yAxis);
+            return xAxis.Transform(p, yAxis);
         }
 
-        public static DataPoint InverseTransform(ScreenPoint p, AxisBase xAxis, AxisBase yAxis)
+        public static DataPoint InverseTransform(ScreenPoint p, IAxis xAxis, IAxis yAxis)
         {
             return InverseTransform(p.x, p.y, xAxis, yAxis);
         }
 
-        public static DataPoint InverseTransform(double x, double y, AxisBase xAxis, AxisBase yAxis)
+        public static DataPoint InverseTransform(double x, double y, IAxis xAxis, IAxis yAxis)
         {
             if (xAxis != null && xAxis.IsPolar())
             {
                 x -= xAxis.MidPoint.x;
                 y -= xAxis.MidPoint.y;
                 double th = Math.Atan2(y, x);
-                double r = Math.Sqrt(x*x + y*y);
-                x = r/xAxis.Scale + xAxis.Offset;
-                y = yAxis != null ? th/yAxis.Scale + yAxis.Offset : double.NaN;
+                double r = Math.Sqrt(x * x + y * y);
+                x = r / xAxis.Scale + xAxis.Offset;
+                y = yAxis != null ? th / yAxis.Scale + yAxis.Offset : double.NaN;
                 return new DataPoint(x, y);
             }
 
-            return new DataPoint(xAxis != null ? xAxis.InverseTransformX(x) : 0,
-                                 yAxis != null ? yAxis.InverseTransformX(y) : 0);
+            return new DataPoint(xAxis != null ? xAxis.InverseTransform(x) : 0,
+                                 yAxis != null ? yAxis.InverseTransform(y) : 0);
         }
 
-        public double InverseTransformX(double x)
+        public double InverseTransform(double x)
         {
-            return PostInverseTransform(x/Scale + Offset);
+            return PostInverseTransform(x / scale + Offset);
         }
 
         /// <summary>
@@ -798,11 +816,11 @@ namespace OxyPlot
             ScreenMin = new ScreenPoint(x0, y1);
             ScreenMax = new ScreenPoint(x1, y0);
 
-            MidPoint = new ScreenPoint((x0 + x1)/2, (y0 + y1)/2);
+            MidPoint = new ScreenPoint((x0 + x1) / 2, (y0 + y1) / 2);
 
             if (Position == AxisPosition.Angle)
             {
-                Scale = 2*Math.PI/(ActualMaximum - ActualMinimum);
+                scale = 2 * Math.PI / (ActualMaximum - ActualMinimum);
                 Offset = ActualMinimum;
                 return;
             }
@@ -810,7 +828,7 @@ namespace OxyPlot
             {
                 ActualMinimum = 0;
                 double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
-                Scale = 0.5*r/(ActualMaximum - ActualMinimum);
+                scale = 0.5 * r / (ActualMaximum - ActualMinimum);
                 Offset = ActualMinimum;
                 return;
             }
@@ -819,8 +837,8 @@ namespace OxyPlot
             double a1 = IsHorizontal() ? x1 : y1;
 
             double dx = a1 - a0;
-            a1 = a0 + EndPosition*dx;
-            a0 = a0 + StartPosition*dx;
+            a1 = a0 + EndPosition * dx;
+            a0 = a0 + StartPosition * dx;
             ScreenMin = new ScreenPoint(a0, a1);
             ScreenMax = new ScreenPoint(a1, a0);
 
@@ -834,26 +852,26 @@ namespace OxyPlot
             if (max - min < eps) max = min + 1;
 
             if (Math.Abs(a0 - a1) != 0)
-                Offset = (a0*max - min*a1)/(a0 - a1);
+                Offset = (a0 * max - min * a1) / (a0 - a1);
             else
                 Offset = 0;
 
-            Scale = (a1 - a0)/(max - min);
+            scale = (a1 - a0) / (max - min);
         }
 
         public void SetScale(double scale)
         {
-            double sx1 = (ActualMaximum - Offset)*Scale;
-            double sx0 = (ActualMinimum - Offset)*Scale;
+            double sx1 = (ActualMaximum - Offset) * this.scale;
+            double sx0 = (ActualMinimum - Offset) * this.scale;
 
-            double sgn = Math.Sign(Scale);
-            double mid = (ActualMaximum + ActualMinimum)/2;
+            double sgn = Math.Sign(this.scale);
+            double mid = (ActualMaximum + ActualMinimum) / 2;
 
-            double dx = (Offset - mid)*Scale;
-            Scale = sgn*scale;
-            Offset = dx/Scale + mid;
-            ActualMaximum = sx1/Scale + Offset;
-            ActualMinimum = sx0/Scale + Offset;
+            double dx = (Offset - mid) * this.scale;
+            this.scale = sgn * scale;
+            Offset = dx / this.scale + mid;
+            ActualMaximum = sx1 / this.scale + Offset;
+            ActualMinimum = sx0 / this.scale + Offset;
         }
 
         #endregion

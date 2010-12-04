@@ -6,8 +6,8 @@ namespace OxyPlot
     {
         public ScreenPoint DownPoint;
         private bool isZooming;
-        private AxisBase xaxis;
-        private AxisBase yaxis;
+        private IAxis xaxis;
+        private IAxis yaxis;
 
         private OxyRect zoomRectangle;
 
@@ -117,7 +117,7 @@ namespace OxyPlot
 
         public override void OnMouseWheel(ScreenPoint pt, double delta, bool control, bool shift)
         {
-            AxisBase xa, ya;
+            IAxis xa, ya;
             pc.GetAxesFromPoint(pt, out xa, out ya);
             var current = AxisBase.InverseTransform(pt, xa, ya);
             double f = 0.001;

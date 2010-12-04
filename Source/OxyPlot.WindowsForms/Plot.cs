@@ -150,7 +150,7 @@ namespace Oxyplot.WindowsForms
                 a.OnMouseWheel(p, e.Delta, control, shift);
         }
 
-        public void GetAxesFromPoint(ScreenPoint pt, out AxisBase xaxis, out AxisBase yaxis)
+        public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
         {
             Model.GetAxesFromPoint(pt, out xaxis, out yaxis);
         }
@@ -167,22 +167,22 @@ namespace Oxyplot.WindowsForms
             Invalidate();
         }
 
-        public void Pan(AxisBase axis, double dx)
+        public void Pan(IAxis axis, double dx)
         {
             axis.Pan(dx);
         }
 
-        public void Reset(AxisBase axis)
+        public void Reset(IAxis axis)
         {
             axis.Reset();
         }
 
-        public void Zoom(AxisBase axis, double p1, double p2)
+        public void Zoom(IAxis axis, double p1, double p2)
         {
             axis.Zoom(p1, p2);
         }
 
-        public void ZoomAt(AxisBase axis, double factor, double x)
+        public void ZoomAt(IAxis axis, double factor, double x)
         {
             axis.ZoomAt(factor, x);
         }
