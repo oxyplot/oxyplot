@@ -15,7 +15,7 @@ namespace ExportDemo
 
         public MainViewModel()
         {
-            RenderToCanvas = true;
+            RenderAsShapes = true;
             ModelNames = new List<string>
                              {
                                  "Sine wave",
@@ -34,13 +34,13 @@ namespace ExportDemo
 
         public List<String> ModelNames { get; set; }
 
-        public bool RenderToCanvas
+        public bool RenderAsShapes
         {
             get { return renderToCanvas; }
             set
             {
                 renderToCanvas = value;
-                RaisePropertyChanged(() => RenderToCanvas);
+                RaisePropertyChanged(() => RenderAsShapes);
             }
         }
 
@@ -63,7 +63,7 @@ namespace ExportDemo
             get
             {
                 if (Model == null) return 0;
-                return Model.Series.Sum(ls => ls.Points.Count);
+                return Model.Series.Sum(ls => ((DataSeries)ls).Points.Count);
             }
         }
 
@@ -423,7 +423,7 @@ namespace ExportDemo
 
             main.AddHeader(2, "Data");
             int i = 1;
-            foreach (var s in Model.Series)
+            foreach (DataSeries s in Model.Series)
             {
                 main.AddHeader(3, "Data series " + (i++));
                 main.AddPropertyTable("Properties of the " + s.GetType().Name, new[] { s });

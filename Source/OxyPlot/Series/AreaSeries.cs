@@ -7,7 +7,7 @@ using System.Reflection;
 namespace OxyPlot
 {
     /// <summary>
-    ///   AreaSeries
+    ///  The AreaSeries class fills the polygon defined by two sets of points.
     /// </summary>
     public class AreaSeries : LineSeries
     {
@@ -38,16 +38,16 @@ namespace OxyPlot
         public string DataFieldY2 { get; set; }
 
         /// <summary>
-        ///   Gets or sets a constant baseline (e.g. Y=0)
+        ///   Gets or sets a constant value for the area definition.
         ///   This is used if DataFieldBase and BaselineValues are null.
         /// </summary>
         /// <value>The baseline.</value>
         public double ConstantY2 { get; set; }
 
         /// <summary>
-        ///   Gets or sets the points.
+        ///   Gets or sets the second set of points.
         /// </summary>
-        /// <value>The points.</value>
+        /// <value>The second set of points.</value>
         public Collection<DataPoint> Points2
         {
             get { return points2; }
@@ -63,9 +63,9 @@ namespace OxyPlot
         /// </summary>
         public bool Reverse2 { get; set; }
 
-        internal override void UpdatePointsFromItemsSource()
+        public override void UpdateData()
         {
-            base.UpdatePointsFromItemsSource();
+            base.UpdateData();
 
             if (ItemsSource == null)
             {

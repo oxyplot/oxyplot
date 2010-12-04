@@ -21,7 +21,7 @@ namespace OxyPlot
             var size2 = rc.MeasureText(subtitle, plot.TitleFont, plot.TitleFontSize, plot.TitleFontWeight);
             double height = size1.Height + size2.Height;
             double dy = (plot.PlotMargins.Top - height) * 0.5;
-            double dx = (plot.plotArea.Left + plot.plotArea.Right) * 0.5;
+            double dx = (plot.PlotArea.Left + plot.PlotArea.Right) * 0.5;
 
             if (!String.IsNullOrEmpty(title))
             {
@@ -90,13 +90,13 @@ namespace OxyPlot
             {
                 case LegendPosition.TopRight:
                 case LegendPosition.BottomRight:
-                    x0 = plot.plotArea.Right - LEGEND_PADDING * sign;
+                    x0 = plot.PlotArea.Right - LEGEND_PADDING * sign;
                     x1 = x0 - lineLength * sign - LEGEND_PADDING * sign;
                     ha = sign == 1 ? HorizontalTextAlign.Right : HorizontalTextAlign.Left;
                     break;
                 case LegendPosition.TopLeft:
                 case LegendPosition.BottomLeft:
-                    x0 = plot.plotArea.Left + LEGEND_PADDING * sign;
+                    x0 = plot.PlotArea.Left + LEGEND_PADDING * sign;
                     x1 = x0 + lineLength * sign + LEGEND_PADDING * sign;
                     ha = sign == 1 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
                     break;
@@ -108,11 +108,11 @@ namespace OxyPlot
             {
                 case LegendPosition.TopRight:
                 case LegendPosition.TopLeft:
-                    y0 = plot.plotArea.Top + LEGEND_PADDING + maxHeight / 2;
+                    y0 = plot.PlotArea.Top + LEGEND_PADDING + maxHeight / 2;
                     break;
                 case LegendPosition.BottomRight:
                 case LegendPosition.BottomLeft:
-                    y0 = plot.plotArea.Bottom - maxHeight + LEGEND_PADDING;
+                    y0 = plot.PlotArea.Bottom - maxHeight + LEGEND_PADDING;
                     break;
             }
 

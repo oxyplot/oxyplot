@@ -44,9 +44,9 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("Title", typeof(string), typeof(Plot),
                                         new UIPropertyMetadata(null, VisualChanged));
 
-        public static readonly DependencyProperty RenderToCanvasProperty =
-            DependencyProperty.Register("RenderToCanvas", typeof(bool), typeof(Plot),
-                                        new UIPropertyMetadata(true, RenderToCanvasChanged));
+        public static readonly DependencyProperty RenderAsShapesProperty =
+            DependencyProperty.Register("RenderAsShapes", typeof(bool), typeof(Plot),
+                                        new UIPropertyMetadata(true, RenderAsShapesChanged));
 
         public static readonly DependencyProperty SliderTemplateProperty =
             DependencyProperty.Register("SliderTemplate", typeof(DataTemplate), typeof(Plot),
@@ -197,10 +197,10 @@ namespace OxyPlot.Wpf
             set { SetValue(SliderTemplateProperty, value); }
         }
 
-        public bool RenderToCanvas
+        public bool RenderAsShapes
         {
-            get { return (bool)GetValue(RenderToCanvasProperty); }
-            set { SetValue(RenderToCanvasProperty, value); }
+            get { return (bool)GetValue(RenderAsShapesProperty); }
+            set { SetValue(RenderAsShapesProperty, value); }
         }
 
         public Thickness? PlotMargins
@@ -346,7 +346,7 @@ namespace OxyPlot.Wpf
             if (grid == null)
                 return;
 
-            OnRenderToCanvasChanged();
+            OnRenderAsShapesChanged();
 
             // Overlays
             overlays = new Canvas();
@@ -360,16 +360,16 @@ namespace OxyPlot.Wpf
             overlays.Children.Add(zoomControl);
         }
 
-        private static void RenderToCanvasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void RenderAsShapesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((Plot)d).OnRenderToCanvasChanged();
+            ((Plot)d).OnRenderAsShapesChanged();
         }
 
-        private void OnRenderToCanvasChanged()
+        private void OnRenderAsShapesChanged()
         {
             if (grid == null)
                 return;
-            if (RenderToCanvas)
+            if (RenderAsShapes)
             {
                 if (canvas == null)
                 {
@@ -595,15 +595,20 @@ namespace OxyPlot.Wpf
         /// <param name="pt">The point.</param>
         /// <param name="limit">The maximum distance, if this is exceeded the method will return null.</param>
         /// <returns>The closest DataSeries</returns>
-        public OxyPlot.DataSeries GetSeriesFromPoint(ScreenPoint pt, double limit = 100)
+        public OxyPlot.ISeries GetSeriesFromPoint(ScreenPoint pt, double limit = 100)
         {
             return internalModel.GetSeriesFromPoint(pt, limit);
         }
 
-        public void ShowSlider(OxyPlot.DataSeries s, DataPoint dp)
+        public void ShowSlider(OxyPlot.ISeries s, DataPoint dp)
         {
-            slider.ContentTemplate = SliderTemplate;
-            slider.SetPosition(dp, s);
+            var ds = s as OxyPlot.DataSeries;
+            if (ds != null)
+            {
+                slider.ContentTemplate = SliderTemplate;
+                slider.SetPosition(dp, ds);
+            } else 
+                HideSlider();
         }
 
         public void HideSlider()
