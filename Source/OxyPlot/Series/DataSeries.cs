@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 
 namespace OxyPlot
@@ -131,7 +132,7 @@ namespace OxyPlot
 
         #endregion
 
-        internal virtual void UpdatePointsFromItemsSource()
+        public virtual void UpdateData()
         {
             if (ItemsSource == null)
             {
@@ -196,6 +197,28 @@ namespace OxyPlot
             }
         }
 
+        public void EnsureAxes(Collection<AxisBase> axes, AxisBase defaultXAxis, AxisBase defaultYAxis)
+        {
+            if (XAxisKey != null)
+            {
+                XAxis = axes.FirstOrDefault(a => a.Key == XAxisKey);
+            }
+            if (YAxisKey != null)
+            {
+                YAxis = axes.FirstOrDefault(a => a.Key == YAxisKey);
+            }
+
+            // If axes are not found, use the default axes
+            if (XAxis == null)
+            {
+                XAxis = defaultXAxis;
+            }
+            if (YAxis == null)
+            {
+                YAxis = defaultYAxis;
+            }
+        }
+
         /// <summary>
         ///   Updates the max/min from the datapoints.
         /// </summary>
@@ -218,6 +241,11 @@ namespace OxyPlot
                 MinY = Math.Min(MinY, pt.y);
                 MaxY = Math.Max(MaxY, pt.y);
             }
+
+            XAxis.Include(MinX);
+            XAxis.Include(MaxX);
+            YAxis.Include(MinY);
+            YAxis.Include(MaxY);
         }
 
         /// <summary>
@@ -225,24 +253,33 @@ namespace OxyPlot
         /// </summary>
         /// <param name = "point">The point.</param>
         /// <returns></returns>
-        public DataPoint? GetNearestPoint(DataPoint point)
+        public bool GetNearestPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
         {
+            var dp = AxisBase.InverseTransform(point, XAxis, YAxis);
+
             double mindist = double.MaxValue;
-            DataPoint? pt = null;
+            DataPoint? nearest = null;
             foreach (var p in points)
             {
-                double dx = point.x - p.x;
-                double dy = point.y - p.y;
+                double dx = dp.x - p.x;
+                double dy = dp.y - p.y;
                 double d2 = dx * dx + dy * dy;
 
                 if (d2 < mindist)
                 {
-                    pt = p;
+                    nearest = p;
                     mindist = d2;
                 }
             }
-
-            return pt;
+            if (nearest != null)
+            {
+                dpn = nearest.Value;
+                spn = XAxis.Transform(dpn.X, dpn.Y, YAxis);
+                return true;
+            }
+            spn = default(ScreenPoint);
+            dpn = default(DataPoint);
+            return false;
         }
 
         /// <summary>
@@ -250,8 +287,10 @@ namespace OxyPlot
         /// </summary>
         /// <param name = "p3">The p3.</param>
         /// <returns></returns>
-        public DataPoint? GetNearestPointOnLine(DataPoint p3)
+        public bool GetNearestInterpolatedPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
         {
+            var p3 = AxisBase.InverseTransform(point, XAxis, YAxis);
+
             // http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
             double mindist = double.MaxValue;
             DataPoint? pt = null;
@@ -288,8 +327,15 @@ namespace OxyPlot
                     mindist = d2;
                 }
             }
-
-            return pt;
+            if (pt != null)
+            {
+                dpn = pt.Value;
+                spn = AxisBase.Transform(pt.Value, XAxis, YAxis);
+                return true;
+            }
+            spn = default(ScreenPoint);
+            dpn = default(DataPoint);
+            return false;
         }
 
         /// <summary>

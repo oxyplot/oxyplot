@@ -23,7 +23,7 @@
                 <MenuItem Header="Copy xaml" Click="CopyXaml_Click"/>
             </MenuItem>
             <MenuItem Header="View">
-                <MenuItem Header="RenderToCanvas" IsCheckable="True" IsChecked="{Binding RenderToCanvas}"/>
+                <MenuItem Header="RenderAsShapes" IsCheckable="True" IsChecked="{Binding RenderAsShapes}"/>
             </MenuItem>
             <MenuItem x:Name="ModelMenu" Header="Model" ItemsSource="{Binding ModelNames}">
                 <MenuItem.ItemContainerStyle>
@@ -47,7 +47,7 @@
             x:Name="plot1" 
             Model="{Binding Model}" 
             Background="White"
-            RenderToCanvas="{Binding RenderToCanvas}"
+            RenderAsShapes="{Binding RenderAsShapes}"
             >
                 <oxy:Plot.ContextMenu>
                     <ContextMenu>

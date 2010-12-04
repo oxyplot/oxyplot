@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 
 namespace OxyPlot
 {
@@ -31,7 +30,7 @@ namespace OxyPlot
 
 
     /// <summary>
-    /// PlotModel
+    /// The PlotModel represents all the content of the plot (titles, axes, series).
     /// </summary>
     public class PlotModel
     {
@@ -40,23 +39,18 @@ namespace OxyPlot
         internal AxisBase DefaultMagnitudeAxis;
         internal AxisBase DefaultXAxis;
         internal AxisBase DefaultYAxis;
-        internal OxyRect plotArea; // The PlotArea rectangle is defining the rectangular area inside the margins.
 
-        public OxyRect PlotArea
-        {
-            get { return plotArea; }
-        }
+        public OxyRect PlotArea { get; private set; }
 
         private int currentColorIndex;
 
-        internal ScreenPoint MidPoint; // The midpoint of the plot area, used for the polar coordinate system.
+        public ScreenPoint MidPoint { get; private set; } // The midpoint of the plot area, used for the polar coordinate system.
 
         public PlotModel(string title = null, string subtitle = null)
         {
             // todo: use IAxis instead of AxisBase?
             Axes = new Collection<AxisBase>();
-            // todo: use interface instead of DataSeries?
-            Series = new Collection<DataSeries>();
+            Series = new Collection<ISeries>();
 
             Title = title;
             Subtitle = subtitle;
@@ -141,7 +135,7 @@ namespace OxyPlot
         /// Gets or sets the series.
         /// </summary>
         /// <value>The series.</value>
-        public Collection<DataSeries> Series { get; set; }
+        public Collection<ISeries> Series { get; set; }
 
         /// <summary>
         /// Gets or sets the title font.
@@ -250,7 +244,7 @@ namespace OxyPlot
         {
             foreach (var s in Series)
             {
-                s.UpdatePointsFromItemsSource();
+                s.UpdateData();
             }
 
             // Ensure that there are default axes available
@@ -333,29 +327,8 @@ namespace OxyPlot
             // Update the x/y axes of series without axes defined
             foreach (var s in Series)
             {
-                if (s.XAxisKey != null)
-                {
-                    s.XAxis = FindAxis(s.XAxisKey);
-                }
-                if (s.YAxisKey != null)
-                {
-                    s.YAxis = FindAxis(s.YAxisKey);
-                }
-                // If axes are not found, use the default axes
-                if (s.XAxis == null)
-                {
-                    s.XAxis = DefaultXAxis;
-                }
-                if (s.YAxis == null)
-                {
-                    s.YAxis = DefaultYAxis;
-                }
+                s.EnsureAxes(Axes, DefaultXAxis, DefaultYAxis);
             }
-        }
-
-        private AxisBase FindAxis(string key)
-        {
-            return Axes.FirstOrDefault(a => a.Key == key);
         }
 
         /// <summary>
@@ -372,10 +345,6 @@ namespace OxyPlot
             foreach (var s in Series)
             {
                 s.UpdateMaxMin();
-                s.XAxis.Include(s.MinX);
-                s.XAxis.Include(s.MaxX);
-                s.YAxis.Include(s.MinY);
-                s.YAxis.Include(s.MaxY);
             }
             foreach (var a in Axes)
             {
@@ -399,7 +368,7 @@ namespace OxyPlot
             if (w < 0) w = 0;
             if (h < 0) h = 0;
 
-            plotArea = new OxyRect
+            PlotArea = new OxyRect
                            {
                                Left = PlotMargins.Left,
                                Width = w,
@@ -443,7 +412,7 @@ namespace OxyPlot
                 }
             }
               */
-            MidPoint = new ScreenPoint((plotArea.Left + plotArea.Right) * 0.5, (plotArea.Top + plotArea.Bottom) * 0.5);
+            MidPoint = new ScreenPoint((PlotArea.Left + PlotArea.Right) * 0.5, (PlotArea.Top + PlotArea.Bottom) * 0.5);
         }
 
         /// <summary>
@@ -455,7 +424,7 @@ namespace OxyPlot
             // Update the transforms
             foreach (var a in Axes)
             {
-                a.UpdateTransform(plotArea);
+                a.UpdateTransform(PlotArea);
             }
 
             // Set the same scaling to all axes if CartesianAxes is selected
@@ -471,7 +440,7 @@ namespace OxyPlot
             // Update the intervals for all axes
             foreach (var a in Axes)
             {
-                a.UpdateIntervals(plotArea.Width, plotArea.Height);
+                a.UpdateIntervals(PlotArea.Width, PlotArea.Height);
             }
 
             foreach (var a in Axes)
@@ -490,7 +459,7 @@ namespace OxyPlot
         public void RenderBox(IRenderContext rc)
         {
             var pp = new PlotRenderingHelper(rc, this);
-            rc.DrawRectangle(plotArea, Background, BoxColor, BoxThickness);
+            rc.DrawRectangle(PlotArea, Background, BoxColor, BoxThickness);
             pp.RenderTitle(Title, Subtitle);
             foreach (var s in Series)
             {
@@ -577,9 +546,7 @@ namespace OxyPlot
                 {
                     if (axis.IsHorizontal())
                     {
-                        // todo: only accept axis if it is within plot area 
-                        // or the axis area
-
+                        // todo: only accept axis if it is within the plot area or the axis area
                         xaxis = axis;
                     }
                     else
@@ -588,20 +555,19 @@ namespace OxyPlot
             }
         }
 
-        public DataSeries GetSeriesFromPoint(ScreenPoint pt, double limit = 100)
+        public ISeries GetSeriesFromPoint(ScreenPoint point, double limit = 100)
         {
             double mindist = double.MaxValue;
-            DataSeries closest = null;
+            ISeries closest = null;
             foreach (var s in Series)
             {
-                var dp = AxisBase.InverseTransform(pt, s.XAxis, s.YAxis);
-                var np = s.GetNearestPointOnLine(dp);
-                if (np == null)
+                ScreenPoint sp;
+                DataPoint dp;
+                if (!s.GetNearestInterpolatedPoint(point, out dp, out sp))
                     continue;
 
                 // find distance to this point on the screen
-                var sp = AxisBase.Transform(np.Value, s.XAxis, s.YAxis);
-                double dist = pt.DistanceTo(sp);
+                double dist = point.DistanceTo(sp);
                 if (dist < mindist)
                 {
                     closest = s;

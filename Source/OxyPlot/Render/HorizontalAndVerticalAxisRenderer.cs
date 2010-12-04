@@ -26,19 +26,19 @@ namespace OxyPlot
             switch (axis.Position)
             {
                 case AxisPosition.Left:
-                    apos = Plot.plotArea.Left;
+                    apos = Plot.PlotArea.Left;
                     isHorizontal = false;
                     break;
                 case AxisPosition.Right:
-                    apos = Plot.plotArea.Right;
+                    apos = Plot.PlotArea.Right;
                     isHorizontal = false;
                     break;
                 case AxisPosition.Top:
-                    apos = Plot.plotArea.Top;
+                    apos = Plot.PlotArea.Top;
                     perpendicularAxis = Plot.DefaultYAxis;
                     break;
                 case AxisPosition.Bottom:
-                    apos = Plot.plotArea.Bottom;
+                    apos = Plot.PlotArea.Bottom;
                     perpendicularAxis = Plot.DefaultYAxis;
                     break;
             }
@@ -72,11 +72,11 @@ namespace OxyPlot
                     {
                         if (isHorizontal)
                         {
-                            rc.DrawLine(transformedValue, Plot.plotArea.Top, transformedValue, Plot.plotArea.Bottom, MinorPen);
+                            rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom, MinorPen);
                         }
                         else
                         {
-                            rc.DrawLine(Plot.plotArea.Left, transformedValue, Plot.plotArea.Right, transformedValue, MinorPen);
+                            rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue, MinorPen);
                         }
                     }
 
@@ -109,11 +109,11 @@ namespace OxyPlot
                 {
                     if (isHorizontal)
                     {
-                        rc.DrawLine(transformedValue, Plot.plotArea.Top, transformedValue, Plot.plotArea.Bottom, MajorPen);
+                        rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom, MajorPen);
                     }
                     else
                     {
-                        rc.DrawLine(Plot.plotArea.Left, transformedValue, Plot.plotArea.Right, transformedValue, MajorPen);
+                        rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue, MajorPen);
                     }
                 }
 
@@ -172,11 +172,11 @@ namespace OxyPlot
                 double t0 = axis.Transform(0);
                 if (isHorizontal)
                 {
-                    rc.DrawLine(t0, Plot.plotArea.Top, t0, Plot.plotArea.Bottom, ZeroPen);
+                    rc.DrawLine(t0, Plot.PlotArea.Top, t0, Plot.PlotArea.Bottom, ZeroPen);
                 }
                 else
                 {
-                    rc.DrawLine(Plot.plotArea.Left, t0, Plot.plotArea.Right, t0, ZeroPen);
+                    rc.DrawLine(Plot.PlotArea.Left, t0, Plot.PlotArea.Right, t0, ZeroPen);
                 }
             }
 
@@ -192,22 +192,22 @@ namespace OxyPlot
                     double transformedValue = axis.Transform(value);
                     if (isHorizontal)
                     {
-                        rc.DrawLine(transformedValue, Plot.plotArea.Top, transformedValue, Plot.plotArea.Bottom, ExtraPen);
+                        rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom, ExtraPen);
                     }
                     else
                     {
-                        rc.DrawLine(Plot.plotArea.Left, transformedValue, Plot.plotArea.Right, transformedValue, ExtraPen);
+                        rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue, ExtraPen);
                     }
                 }
             }
 
             if (isHorizontal)
             {
-                rc.DrawLine(Plot.plotArea.Left, apos, Plot.plotArea.Right, apos, MajorPen);
+                rc.DrawLine(Plot.PlotArea.Left, apos, Plot.PlotArea.Right, apos, MajorPen);
             }
             else
             {
-                rc.DrawLine(apos, Plot.plotArea.Top, apos, Plot.plotArea.Bottom, MajorPen);
+                rc.DrawLine(apos, Plot.PlotArea.Top, apos, Plot.PlotArea.Bottom, MajorPen);
             }
 
             if (!String.IsNullOrWhiteSpace(axis.Title))

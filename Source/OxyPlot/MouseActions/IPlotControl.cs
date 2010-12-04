@@ -3,7 +3,7 @@
     public interface IPlot
     {
         void GetAxesFromPoint(ScreenPoint pt, out AxisBase xaxis, out AxisBase yaxis);
-        DataSeries GetSeriesFromPoint(ScreenPoint pt, double limit = 100);
+        ISeries GetSeriesFromPoint(ScreenPoint pt, double limit = 100);
         
         void Refresh(bool refreshData = true);
 
@@ -13,7 +13,7 @@
         void ZoomAt(AxisBase axis, double factor, double x);
         OxyRect GetPlotArea();
         
-        void ShowSlider(DataSeries s, DataPoint dp);
+        void ShowSlider(ISeries s, DataPoint dp);
         void HideSlider();
         void ShowZoomRectangle(OxyRect r);
         void HideZoomRectangle();

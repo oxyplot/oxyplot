@@ -1,11 +1,12 @@
 ﻿namespace OxyPlot
 {
     /// <summary>
-    ///   Cohen Sutherland line clipping algorithm
-    ///   http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland
+    ///   Line clipping algorithm
     /// </summary>
     public class CohenSutherlandClipping
     {
+        //   http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland
+        
         private const int INSIDE = 0; // 0000
         private const int LEFT = 1; // 0001
         private const int RIGHT = 2; // 0010

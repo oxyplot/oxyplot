@@ -4,11 +4,13 @@ using System.Collections.Generic;
 namespace OxyPlot
 {
     /// <summary>
-    ///   CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
-    ///   www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html
+    /// Interpolates a list of points using a canonical spline.
     /// </summary>
     internal static class CanonicalSplineHelper
     {
+        //   CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
+        //   www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html
+
         internal static List<ScreenPoint> CreateSpline(IList<ScreenPoint> pts,
                                                        double tension, IList<double> tensions,
                                                        bool isClosed, double tolerance)

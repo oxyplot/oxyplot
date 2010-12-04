@@ -155,7 +155,7 @@ namespace Oxyplot.WindowsForms
             Model.GetAxesFromPoint(pt, out xaxis, out yaxis);
         }
 
-        public DataSeries GetSeriesFromPoint(ScreenPoint pt, double limit)
+        public ISeries GetSeriesFromPoint(ScreenPoint pt, double limit)
         {
             return Model.GetSeriesFromPoint(pt, limit);
         }
@@ -192,7 +192,7 @@ namespace Oxyplot.WindowsForms
             return Model.PlotArea;
         }
 
-        public void ShowSlider(DataSeries s, DataPoint dp)
+        public void ShowSlider(ISeries s, DataPoint dp)
         {
         }
 

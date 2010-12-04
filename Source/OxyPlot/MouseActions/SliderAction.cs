@@ -24,7 +24,7 @@
                 pc.Refresh();
             }
 
-            currentSeries = pc.GetSeriesFromPoint(pt);
+            currentSeries = pc.GetSeriesFromPoint(pt) as DataSeries;
 
             OnMouseMove(pt, control, shift);
 
@@ -42,25 +42,28 @@
                 pc.ShowSlider(currentSeries, current.Value);
         }
 
-        private DataPoint? GetNearestPoint(DataSeries s, ScreenPoint pt, bool snap, bool pointsOnly)
+        private static DataPoint? GetNearestPoint(ISeries s, ScreenPoint point, bool snap, bool pointsOnly)
         {
             if (s == null)
                 return null;
-            var dp = AxisBase.InverseTransform(pt, s.XAxis, s.YAxis);
 
             if (snap || pointsOnly)
             {
-                var dpn = s.GetNearestPoint(dp);
-                if (dpn != null && snap)
+                ScreenPoint spn;
+                DataPoint dpn;
+                if (s.GetNearestPoint(point, out dpn, out spn) && snap)
                 {
-                    var spn = s.XAxis.Transform(dpn.Value.X, dpn.Value.Y, s.YAxis);
-                    if (spn.DistanceTo(pt) < 20)
+                    if (spn.DistanceTo(point) < 20)
                         return dpn;
                 }
             }
 
+            ScreenPoint sp;
+            DataPoint dp;
+
             if (!pointsOnly)
-                return s.GetNearestPointOnLine(dp);
+                if (s.GetNearestInterpolatedPoint(point, out dp, out sp))
+                    return dp;
 
             return null;
         }
