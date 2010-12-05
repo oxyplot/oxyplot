@@ -39,37 +39,42 @@ namespace OxyPlot.Reporting
 
         public void AddHeader(int level, string header)
         {
-            Add(new Header {Level = level, Text = header});
+            Add(new Header { Level = level, Text = header });
         }
 
-        public void AddContent(ReportItem b)
+        public void AddTableOfContents(ReportItem b)
         {
-            Add(new Content(b));
+            Add(new TableOfContents(b));
         }
 
         public void AddParagraph(string content)
         {
-            Add(new Paragraph {Text = content});
+            Add(new Paragraph { Text = content });
+        }
+
+        public void AddEquation(string equation, string caption = null)
+        {
+            Add(new Equation { Content = equation, Caption = caption });
         }
 
         public void AddTable(string title, IEnumerable items, IList<TableColumn> fields)
         {
-            Add(new Table {Caption = title, Items = items, Columns = fields});
+            Add(new Table { Caption = title, Items = items, Columns = fields });
         }
 
         public void AddPropertyTable(string title, IEnumerable items)
         {
-            Add(new PropertyTable {Caption = title, Items = items});
+            Add(new PropertyTable { Caption = title, Items = items });
         }
 
         public void AddImage(string src, string text)
         {
-            Add(new Image {Source = src, FigureText = text});
+            Add(new Image { Source = src, FigureText = text });
         }
 
         public void AddDrawing(string content, string text)
         {
-            Add(new Drawing {Content = content, FigureText = text});
+            Add(new Drawing { Content = content, FigureText = text });
         }
     }
 }

@@ -248,6 +248,11 @@ namespace OxyPlot.Reporting
             WriteEndFigure(plot.FigureText);
         }
 
+        public void WriteEquation(Equation equation)
+        {
+            // todo: convert to MathML?
+        }
+
         private void WriteDiv(string style, string content)
         {
             WriteStartElement("div");

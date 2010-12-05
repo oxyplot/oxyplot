@@ -1,4 +1,6 @@
-﻿namespace OxyPlot.Reporting
+﻿using System;
+
+namespace OxyPlot.Reporting
 {
     /// <summary>
     /// Equations (Tex or MathML)
@@ -6,9 +8,12 @@
     public class Equation : ReportItem
     {
         public string Content { get; set; }
+
+        public string Caption { get; set; }
+
         public override void WriteContent(IReportWriter w)
         {
-            // w.WriteEquation(this);
+             w.WriteEquation(this);
         }
     }
 }

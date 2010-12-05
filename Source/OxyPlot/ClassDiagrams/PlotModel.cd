@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="OxyPlot.PlotModel">
+    <Position X="0.5" Y="1" Width="2.75" />
+    <Members>
+      <Field Name="currentColorIndex" Hidden="true" />
+      <Field Name="DefaultAngleAxis" Hidden="true" />
+      <Field Name="defaultFont" Hidden="true" />
+      <Field Name="DefaultMagnitudeAxis" Hidden="true" />
+      <Field Name="DefaultXAxis" Hidden="true" />
+      <Field Name="DefaultYAxis" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAIQaAgAWAIpB0DJRBCAAAgBIAMEAIIAAxAgBAAAJCE=</HashCode>
+      <FileName>PlotModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.LineSeries" Collapsed="true">
+    <Position X="5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARAAAEIACAAACAAABAgACAgBCQAAFAAABAggAAAAgA=</HashCode>
+      <FileName>Series\LineSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.DataSeries" Collapsed="true">
+    <Position X="5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>tAAQAA01EAAAgEAAAIAAAAAAAAAEAAIAABAAAoACAEA=</HashCode>
+      <FileName>Series\DataSeries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OxyPlot.AreaSeries" Collapsed="true">
+    <Position X="3.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAEAAAAIAAAAAACAAAAAAECAAAABMAAAIAAAA=</HashCode>
+      <FileName>Series\AreaSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.FunctionSeries" Collapsed="true">
+    <Position X="6" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Series\FunctionSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.LinearAxis" Collapsed="true">
+    <Position X="8.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Axes\LinearAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.LogarithmicAxis" Collapsed="true">
+    <Position X="10.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEgAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Axes\LogarithmicAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.TimeAxis" Collapsed="true">
+    <Position X="8.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Axes\TimeAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.AxisBase" Collapsed="true">
+    <Position X="9.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gEeXABGQENQAHmU0NgIAepQKkhAEgIgAGlUAQpAB0AA=</HashCode>
+      <FileName>Axes\AxisBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="OxyPlot.ISeries" Collapsed="true">
+    <Position X="5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAEAEAAAAEAAAIAAAAAAAAAEAAAAABAAAgAAAAA=</HashCode>
+      <FileName>Series\ISeries.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OxyPlot.IDataPointProvider" Collapsed="true">
+    <Position X="6.75" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Series\DataSeries.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OxyPlot.IAxis" Collapsed="true">
+    <Position X="9.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAFkQgEAIAShQAAgAEgIgAAhAAAgABgAA=</HashCode>
+      <FileName>Axes\IAxis.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="OxyPlot.PlotType" Collapsed="true">
+    <Position X="0.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAACAAAAA=</HashCode>
+      <FileName>PlotModel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="OxyPlot.AxisPosition" Collapsed="true">
+    <Position X="9.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAACECAAAEAAAA=</HashCode>
+      <FileName>Axes\IAxis.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="OxyPlot.LegendPosition" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAIAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Axes\IAxis.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="OxyPlot.TickStyle" Collapsed="true">
+    <Position X="11.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEEAAA=</HashCode>
+      <FileName>Axes\IAxis.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

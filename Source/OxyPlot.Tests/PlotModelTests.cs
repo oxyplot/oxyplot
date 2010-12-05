@@ -7,7 +7,7 @@ namespace OxyPlot.Tests
     public class PlotModelTests
     {
         [Test]
-        public void Render_SimplePlot_SvgFile()
+        public void Render_SimplePlot_ValidSvgFile()
         {
             var plot = new PlotModel();
             plot.Title = "Test1";
@@ -26,6 +26,7 @@ namespace OxyPlot.Tests
                 plot.UpdateData();
                 plot.Render(svgrc);
             }
+            // todo: validate SVG
         }
        
     }

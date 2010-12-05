@@ -11,5 +11,6 @@
         void WriteImage(Image i);
         void WriteDrawing(Drawing d);
         void WritePlot(Plot plot);
+        void WriteEquation(Equation equation);
     }
 }

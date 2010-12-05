@@ -98,6 +98,10 @@ namespace OxyPlot.Reporting
         {
         }
 
+        public void WriteEquation(Equation equation)
+        {
+        }
+
         #endregion
 
         private static string GetCellText(int i, int count, string p)

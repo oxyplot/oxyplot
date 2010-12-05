@@ -165,49 +165,51 @@ namespace OxyPlot
 
             // clip the line segments with the clipping rectangle
             var pts = new List<ScreenPoint>();
-            var s0 = spts[0];
-            var last = spts[0];
-
             n = spts.Length;
-            for (int i = 1; i < n; i++)
+            if (n > 0)
             {
-                var s1 = spts[i];
+                var s0 = spts[0];
+                var last = spts[0];
 
-                var s0c = s0;
-                var s1c = s1;
-                bool isInside = clipping.ClipLine(ref s0c, ref s1c);
-                s0 = s1;
-
-                if (!isInside)
+                for (int i = 1; i < n; i++)
                 {
-                    // keep the previous coordinate
-                    continue;
-                }
+                    var s1 = spts[i];
 
-                // render from s0c-s1c
-                double dx = s0c.x - last.x;
-                double dy = s1c.y - last.y;
+                    var s0c = s0;
+                    var s1c = s1;
+                    bool isInside = clipping.ClipLine(ref s0c, ref s1c);
+                    s0 = s1;
 
-                if (dx * dx + dy * dy > minDistSquared || i == 0)
-                {
-                    if (!s0c.Equals(last) || i == 1)
+                    if (!isInside)
                     {
-                        pts.Add(s0c);
+                        // keep the previous coordinate
+                        continue;
                     }
 
-                    pts.Add(s1c);
-                    last = s1c;
-                }
+                    // render from s0c-s1c
+                    double dx = s0c.x - last.x;
+                    double dy = s1c.y - last.y;
 
-                // render the line if we are leaving the clipping region););
-                if (!clipping.IsInside(s1))
-                {
-                    RenderLine(rc, pts);
-                    pts.Clear();
+                    if (dx*dx + dy*dy > minDistSquared || i == 0)
+                    {
+                        if (!s0c.Equals(last) || i == 1)
+                        {
+                            pts.Add(s0c);
+                        }
+
+                        pts.Add(s1c);
+                        last = s1c;
+                    }
+
+                    // render the line if we are leaving the clipping region););
+                    if (!clipping.IsInside(s1))
+                    {
+                        RenderLine(rc, pts);
+                        pts.Clear();
+                    }
                 }
+                RenderLine(rc, pts);
             }
-
-            RenderLine(rc, pts);
 
             RenderMarkers(rc, markerPoints, clipping);
         }

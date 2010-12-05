@@ -609,6 +609,9 @@ namespace OxyPlot
         /// </returns>
         private double CalculateActualInterval2(double availableSize, double maxIntervalSize)
         {
+            if (availableSize <= 0)
+                return maxIntervalSize;
+
             Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
             Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
 
