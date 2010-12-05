@@ -337,11 +337,11 @@ namespace OxyPlot
         /// </summary>
         private void UpdateMaxMin()
         {
-            //foreach (var a in Axes)
-            //{
-            //    a.ActualMaximum = double.NaN;
-            //    a.ActualMinimum = double.NaN;
-            //}
+            foreach (var a in Axes)
+            {
+                a.ActualMaximum = double.NaN;
+                a.ActualMinimum = double.NaN;
+            }
             foreach (var s in Series)
             {
                 s.UpdateMaxMin();
@@ -354,6 +354,8 @@ namespace OxyPlot
 
         public void Render(IRenderContext rc)
         {
+            if (rc.Width <= 0 || rc.Height <= 0)
+                return;
             RenderInit(rc);
 
             RenderAxes(rc);

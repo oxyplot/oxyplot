@@ -54,6 +54,7 @@
     <Compile Include="Axes\TimeAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
+    <Compile Include="PngExporter.cs" />
     <Compile Include="RenderContexts\DrawingRenderContext.cs" />
     <Compile Include="PlotFrame.cs" />
     <Compile Include="Series\AreaSeries.cs" />

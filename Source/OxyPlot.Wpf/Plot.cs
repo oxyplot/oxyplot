@@ -107,6 +107,7 @@ namespace OxyPlot.Wpf
 
         public Plot()
         {
+            BeginInit();
             Background = Brushes.Transparent;
 
             panAction = new PanAction(this);
@@ -125,6 +126,7 @@ namespace OxyPlot.Wpf
             SizeChanged += OnSizeChanged;
 
             CompositionTarget.Rendering += CompositionTargetRendering;
+            EndInit();
 
             // CommandBindings.Add(new KeyBinding())
         }

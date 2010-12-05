@@ -68,7 +68,7 @@
     <Compile Include="Reporting\ReportWriters\IReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\StringExtensions.cs" />
     <Compile Include="Reporting\ReportWriters\TextReportWriter.cs" />
-    <Compile Include="Reporting\Report\Content.cs" />
+    <Compile Include="Reporting\Report\TableOfContents.cs" />
     <Compile Include="Reporting\Report\Drawing.cs" />
     <Compile Include="Reporting\Report\Equation.cs" />
     <Compile Include="Reporting\Report\Figure.cs" />
@@ -103,7 +103,10 @@
     <Compile Include="PlotModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ClassDiagrams\PlotModel.cd" />
+    <None Include="ClassDiagrams\Reporting.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

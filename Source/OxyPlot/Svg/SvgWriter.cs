@@ -71,7 +71,7 @@ namespace OxyPlot
             {
                 style.AppendFormat("fill:{0};", ColorToString(fill));
                 if (fill.A != 0xFF)
-                    style.AppendFormat(CultureInfo.InvariantCulture, ";fill-opacity:{0}", fill.A / 255.0);
+                    style.AppendFormat(CultureInfo.InvariantCulture, "fill-opacity:{0};", fill.A / 255.0);
 
             }
             if (stroke == null)
@@ -141,10 +141,10 @@ namespace OxyPlot
 
         public void WriteEllipse(double x, double y, double width, double height, string style)
         {
-            WriteStartElement("polygon");
-            WriteAttributeString("cx", x - width / 2);
-            WriteAttributeString("cy", y - height / 2);
-            WriteAttributeString("cy", y - height / 2);
+            // http://www.w3.org/TR/SVG/shapes.html#EllipseElement
+            WriteStartElement("ellipse");
+            WriteAttributeString("cx", x + width / 2);
+            WriteAttributeString("cy", y + height / 2);
             WriteAttributeString("rx", width / 2);
             WriteAttributeString("ry", height / 2);
             WriteAttributeString("style", style);

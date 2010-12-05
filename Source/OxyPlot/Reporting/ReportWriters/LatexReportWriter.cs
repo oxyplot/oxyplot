@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace OxyPlot.Reporting
 {
@@ -108,7 +109,7 @@ namespace OxyPlot.Reporting
 
         public void WriteTable(Table t)
         {
-            WriteIndentedLine(@"\begin{table}[th]");
+            WriteIndentedLine(@"\begin{table}[h]");
             Indent();
             var cells = t.ToArray();
             int rows = cells.GetUpperBound(0) + 1;
@@ -123,7 +124,7 @@ namespace OxyPlot.Reporting
 
             WriteIndentedLine(@"\begin{center}");
             Indent();
-            WriteIndentedLine(@"\begin{tabular}[th]{" + cols + "}");
+            WriteIndentedLine(@"\begin{tabular}[h]{" + cols + "}");
             Indent();
             WriteIndentedLine(@"\hline");
             for (int i = 0; i < rows; i++)
@@ -170,7 +171,7 @@ namespace OxyPlot.Reporting
 
         public void WriteImage(Image i)
         {
-            WriteIndentedLine(@"\begin{figure}[th]");
+            WriteIndentedLine(@"\begin{figure}[h]");
             WriteIndentedLine(@"\begin{center}");
             WriteIndentedLine(@"\includegraphics[width=0.8\textwidth]{"+i.Source+"}");
             WriteIndentedLine(@"\end{center}");
@@ -185,6 +186,19 @@ namespace OxyPlot.Reporting
 
         public void WritePlot(Plot plot)
         {
+            //string path = "plot" + plotNumber + ".pdf";
+            //PdfExporter.Export(Model, pdfPlotFileName, 800, 500);                   
+        }
+
+        public void WriteEquation(Equation equation)
+        {
+            WriteIndentedLine(@"\begin{eqnarray*}");
+            WriteIndentedLine(equation.Content);
+            if (equation.Caption!=null)
+                WriteIndentedLine(@"\caption{" + LatexEncodeText(equation.Caption) + "}");
+            WriteIndentedLine(@"\end{eqnarray*}");
+            WriteLine();
+
         }
 
         #endregion

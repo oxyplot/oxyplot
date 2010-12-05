@@ -82,6 +82,10 @@ namespace OxyPlot.Pdf
             // use pdf renderer to draw the plot
         }
 
+        public void WriteEquation(Equation equation)
+        {
+        }
+
         public void Dispose()
         {
             Close();
