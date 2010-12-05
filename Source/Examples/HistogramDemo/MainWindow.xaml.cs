@@ -4,9 +4,8 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using OxyPlot;
 
-// See
+// Original code
 // http://www.scottlogic.co.uk/blog/colin/2010/11/visiblox-charts-vs-silverlight-toolkit-charts-a-test-of-performance-2/
-// not a histogram though...
 
 namespace HistogramDemo
 {
@@ -52,40 +51,13 @@ namespace HistogramDemo
         private void LoadPixelData()
         {
             var bitmapImage = new BitmapImage(new Uri("pack://application:,,,/hare.jpg"));
-            // bitmap = new WriteableBitmap((BitmapImage)image.Source);
-            //image.Source = bitmap;
-            //pixelData = bitmap.Pixels;
 
-            int height = bitmapImage.PixelHeight;
-            int width = bitmapImage.PixelWidth;
             int nStride = (bitmapImage.PixelWidth * bitmapImage.Format.BitsPerPixel + 7) / 8;
             var pixelByteArray = new byte[bitmapImage.PixelHeight * nStride];
             bitmapImage.CopyPixels(pixelByteArray, nStride, 0);
             pixelData = new int[pixelByteArray.Length / 4];
             Buffer.BlockCopy(pixelByteArray, 0, pixelData, 0, pixelByteArray.Length);
         }
-
-        //[StructLayout(LayoutKind.Sequential)]
-        //public struct PixelColor
-        //{
-        //    public byte Blue;
-        //    public byte Green;
-        //    public byte Red;
-        //    public byte Alpha;
-        //}
-
-        //public PixelColor[,] GetPixels(BitmapSource source)
-        //{
-        //    if (source.PixelFormat != PixelFormats.Bgra32)
-        //        source = new FormatConvertedBitmap(source, PixelFormats.Bgra32, null, 0);
-
-        //    int width = source.PixelWidth;
-        //    int height = source.PixelHeight;
-        //    PixelColor[,] result = new PixelColor[width, height];
-
-        //    source.CopyPixels(result, width * 4, 0);
-        //    return pixels;
-        //}
 
         /// <summary>
         /// Handles mouse move to draw the line and intensity histograms
@@ -130,8 +102,8 @@ namespace HistogramDemo
                 var G = (byte)(pixel & 0xFF);
                 pixel >>= 8;
                 var R = (byte)(pixel & 0xFF);
-                pixel >>= 8;
-                var A = (byte)(pixel & 0xFF);
+                //pixel >>= 8;
+                //var A = (byte)(pixel & 0xFF);
 
                 //redLine.Points.Add(new OxyPlot.Point(pt, R));
                 //greenLine.Points.Add(new OxyPlot.Point(pt, G));
