@@ -42,6 +42,7 @@
                 if (xaxis != null) xaxis.Reset();
                 if (yaxis != null) yaxis.Reset();
                 pc.Refresh();
+                return;
             }
 
             ppt = pt;
