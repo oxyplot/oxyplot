@@ -40,6 +40,13 @@ namespace OxyPlot
         public string DataFieldY { get; set; }
 
         /// <summary>
+        /// Gets or sets the mapping deleagte.
+        /// Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
+        /// </summary>
+        /// <value>The mapping.</value>
+        public Func<object,DataPoint> Mapping { get; set; }
+
+        /// <summary>
         ///   Gets or sets the points.
         /// </summary>
         /// <value>The points.</value>
@@ -140,6 +147,13 @@ namespace OxyPlot
             }
 
             InternalPoints.Clear();
+
+            // Use the mapping to generate the points
+            if (Mapping!=null)
+            {
+                foreach (var item in ItemsSource)
+                    InternalPoints.Add(Mapping(item));
+            }
 
             // Get DataPoints from the items in ItemsSource 
             // if they implement IDataPointProvider
