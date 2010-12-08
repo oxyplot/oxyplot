@@ -39,7 +39,7 @@ namespace OxyPlot
         /// <returns></returns>
         public static OxySize DrawMathText(this IRenderContext rc, ScreenPoint pt, string text, OxyColor textColor,
                                            string fontFamily, double fontSize, double fontWeight, double angle,
-                                           HorizontalTextAlign ha, VerticalTextAlign va)
+                                           HorizontalTextAlign ha, VerticalTextAlign va, bool measure)
         {
             // todo: support sub/superscript math notation also with angled text...
 
@@ -72,15 +72,19 @@ namespace OxyPlot
 
                 InternalDrawMathText(rc, x, y, text, textColor, fontFamily, fontSize, fontWeight, false);
 
-                return size;
+                return measure ? size : OxySize.Empty;
             }
             else
             {
                 rc.DrawText(pt, text, textColor,
                             fontFamily, fontSize, fontWeight,
                             angle, ha, va);
-                var size = rc.MeasureText(text, fontFamily, fontSize, fontWeight);
-                return size;
+                if (measure)
+                {
+                    var size = rc.MeasureText(text, fontFamily, fontSize, fontWeight);
+                    return size;
+                }
+                else return OxySize.Empty;
             }
         }
 

@@ -27,62 +27,116 @@ namespace OxyPlot.Wpf
 
         public double Height { get; private set; }
 
+        Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
+
         public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
                              bool aliased)
         {
             var pl = new Polyline();
-            if (stroke != null)
-                pl.Stroke = new SolidColorBrush(stroke.ToColor());
-            //   pl.StrokeLineJoin = PenLineJoin.Miter;
-            pl.StrokeLineJoin = PenLineJoin.Round;
+            if (stroke != null && thickness > 0)
+            {
+                pl.Stroke = GetCachedBrush(stroke);
+                //   Default StrokeLineJoin is Miter
+                //   pl.StrokeLineJoin = PenLineJoin.Round;
+                if (thickness != 1) // default values is 1
+                    pl.StrokeThickness = thickness;
+                if (dashArray != null)
+                    pl.StrokeDashArray = new DoubleCollection(dashArray);
+            }
+            // pl.Fill = null;
+            if (aliased)
+                pl.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+
             var pc = new PointCollection();
             foreach (var p in points)
                 pc.Add(ToPoint(p));
             pl.Points = pc;
-            pl.StrokeThickness = thickness;
-            pl.Fill = null;
-            if (dashArray != null)
-                pl.StrokeDashArray = new DoubleCollection(dashArray);
-
-            if (aliased)
-                pl.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
             canvas.Children.Add(pl);
+        }
+
+        private Brush GetCachedBrush(OxyColor stroke)
+        {
+            Brush brush;
+            if (!brushCache.TryGetValue(stroke, out brush))
+            {
+                brush = new SolidColorBrush(stroke.ToColor());
+                brushCache.Add(stroke, brush);
+            }
+            return brush;
         }
 
         public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
                                 double[] dashArray, bool aliased)
         {
             var po = new Polygon();
-            if (stroke != null)
-                po.Stroke = new SolidColorBrush(stroke.ToColor());
+            if (stroke != null && thickness > 0)
+            {
+                po.Stroke = GetCachedBrush(stroke);
+                if (thickness != 1)
+                    po.StrokeThickness = thickness;
+                if (dashArray != null)
+                    po.StrokeDashArray = new DoubleCollection(dashArray);
+            }
+            if (aliased)
+                po.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+
             if (fill != null)
-                po.Fill = new SolidColorBrush(fill.ToColor());
-            po.StrokeLineJoin = PenLineJoin.Miter;
+                po.Fill = GetCachedBrush(fill);
+            
             var pc = new PointCollection();
             foreach (var p in points)
                 pc.Add(ToPoint(p));
             po.Points = pc;
-            po.StrokeThickness = thickness;
-            if (dashArray != null)
-                po.StrokeDashArray = new DoubleCollection(dashArray);
-
-            if (aliased)
-                po.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
             canvas.Children.Add(po);
         }
 
+        ///<summary>
+        /// Draws a rectangle.
+        ///</summary>
+        ///<param name="x"></param>
+        ///<param name="y"></param>
+        ///<param name="width"></param>
+        ///<param name="height"></param>
+        ///<param name="fill"></param>
+        ///<param name="stroke"></param>
+        ///<param name="thickness"></param>
+        public void DrawRectangle(double x,double y, double width,double height, OxyColor fill, OxyColor stroke,
+                                double thickness)
+        {
+            var el = new Rectangle();
+            if (stroke != null)
+            {
+                el.Stroke = new SolidColorBrush(stroke.ToColor());
+                el.StrokeThickness = thickness;
+            }
+            if (fill != null)
+            {
+                el.Fill = new SolidColorBrush(fill.ToColor());
+            }
+
+            el.Width = width;
+            el.Height = height;
+            Canvas.SetLeft(el, x);
+            Canvas.SetTop(el, y);
+            canvas.Children.Add(el);
+        }
+        
         public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
                                 double thickness)
         {
             var el = new Ellipse();
             if (stroke != null)
+            {
                 el.Stroke = new SolidColorBrush(stroke.ToColor());
+                el.StrokeThickness = thickness;
+            }
             if (fill != null)
+            {
                 el.Fill = new SolidColorBrush(fill.ToColor());
+            }
 
-            el.StrokeThickness = thickness;
             el.Width = width;
             el.Height = height;
             Canvas.SetLeft(el, x);

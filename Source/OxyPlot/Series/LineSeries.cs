@@ -292,14 +292,15 @@ namespace OxyPlot
 
                 case MarkerType.Square:
                     {
-                        var pts = new[]
-                                      {
-                                          new ScreenPoint(p.x - size, p.y - size), 
-                                          new ScreenPoint(p.x + size, p.y - size), 
-                                          new ScreenPoint(p.x + size, p.y + size), 
-                                          new ScreenPoint(p.x - size, p.y + size)
-                                      };
-                        rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, true);
+                        //var pts = new[]
+                        //              {
+                        //                  new ScreenPoint(p.x - size, p.y - size), 
+                        //                  new ScreenPoint(p.x + size, p.y - size), 
+                        //                  new ScreenPoint(p.x + size, p.y + size), 
+                        //                  new ScreenPoint(p.x - size, p.y + size)
+                        //              };
+                        //rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, true);
+                        rc.DrawRectangle(p.x-size,p.y-size,size*2,size*2,fill,stroke,strokeThickness);
                         break;
                     }
 

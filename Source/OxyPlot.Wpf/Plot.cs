@@ -511,8 +511,11 @@ namespace OxyPlot.Wpf
 
             if (canvas != null)
             {
+                int idx=grid.Children.IndexOf(canvas);
+                grid.Children.RemoveAt(idx);
                 var wrc = new ShapesRenderContext(canvas);
                 internalModel.Render(wrc);
+                grid.Children.Insert(idx,canvas);
             }
 
             if (plotFrame != null)

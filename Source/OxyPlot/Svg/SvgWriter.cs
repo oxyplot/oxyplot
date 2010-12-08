@@ -82,7 +82,7 @@ namespace OxyPlot
             else
                 style.AppendFormat("stroke:{0};stroke-width:{1:" + NumberFormat + "}", ColorToString(stroke), thickness);
 
-            if (stroke!=null && stroke.A != 0xFF)
+            if (stroke != null && stroke.A != 0xFF)
                 style.AppendFormat(CultureInfo.InvariantCulture, ";stroke-opacity:{0}", stroke.A / 255.0);
 
             if (dashArray != null && dashArray.Length > 0)
@@ -93,7 +93,7 @@ namespace OxyPlot
             }
             return style.ToString();
         }
-      
+
         protected void WriteAttributeString(string name, double value)
         {
             WriteAttributeString(name, value.ToString(NumberFormat, CultureInfo.InvariantCulture));
@@ -147,6 +147,18 @@ namespace OxyPlot
             WriteAttributeString("cy", y + height / 2);
             WriteAttributeString("rx", width / 2);
             WriteAttributeString("ry", height / 2);
+            WriteAttributeString("style", style);
+            WriteEndElement();
+        }
+
+        public void WriteRectangle(double x, double y, double width, double height, string style)
+        {
+            // http://www.w3.org/TR/SVG/shapes.html#RectangleElement
+            WriteStartElement("rect");
+            WriteAttributeString("x", x);
+            WriteAttributeString("y", y);
+            WriteAttributeString("width", width);
+            WriteAttributeString("height", height);
             WriteAttributeString("style", style);
             WriteEndElement();
         }

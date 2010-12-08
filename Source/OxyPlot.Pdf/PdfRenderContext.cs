@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using PdfSharp.Drawing;
@@ -65,6 +66,7 @@ namespace OxyPlot.Pdf
             }
         }
 
+    
         public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
                              double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
         {
@@ -120,6 +122,18 @@ namespace OxyPlot.Pdf
             var font = new XFont(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
             var size = g.MeasureString(text, font);
             return new OxySize(size.Width, size.Height);
+        }
+
+        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            if (fill != null)
+                g.DrawRectangle(ToBrush(fill), x, y, width, height);
+
+            if (stroke != null && thickness > 0)
+            {
+                var pen = new XPen(ToColor(stroke), (float)thickness);
+                g.DrawRectangle(pen, x, y, width, height);
+            }
         }
 
         public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)

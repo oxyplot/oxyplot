@@ -131,6 +131,16 @@ namespace Oxyplot.WindowsForms
             return new OxySize(size.Width, size.Height);
         }
 
+        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            if (fill != null)
+                g.FillRectangle(ToBrush(fill), (float)x, (float)y, (float)width, (float)height);
+            if (stroke == null || thickness <= 0)
+                return;
+            var pen = new Pen(ToColor(stroke), (float)thickness);
+            g.DrawRectangle(pen, (float)x, (float)y, (float)width, (float)height);
+        }
+
         public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
         {
             if (fill != null)
