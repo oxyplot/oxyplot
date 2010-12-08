@@ -93,8 +93,8 @@ namespace OxyPlot
 
             GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
 
-            double maxWidth = 0;
-            double maxHeight = 0;
+            //double maxWidth = 0;
+            //double maxHeight = 0;
 
             foreach (double value in MajorTickValues)
             {
@@ -159,12 +159,12 @@ namespace OxyPlot
                 }
 
                 string text = axis.FormatValue(value);
-                var size = rc.DrawMathText(pt, text, Plot.TextColor,
+                rc.DrawMathText(pt, text, Plot.TextColor,
                                            axis.FontFamily, axis.FontSize, axis.FontWeight,
-                                           axis.Angle, ha, va);
+                                           axis.Angle, ha, va, false);
 
-                maxWidth = Math.Max(maxWidth, size.Width);
-                maxHeight = Math.Max(maxHeight, size.Height);
+                // maxWidth = Math.Max(maxWidth, size.Width);
+                // maxHeight = Math.Max(maxHeight, size.Height);
             }
 
             if (axis.PositionAtZeroCrossing)

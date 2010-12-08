@@ -38,7 +38,10 @@ namespace OxyPlot
         {
             WriteEllipse(x, y, width, height, CreateStyle(fill, stroke, thickness, null));
         }
-
+        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            WriteRectangle(x, y, width, height, CreateStyle(fill, stroke, thickness, null));
+        }
         public void DrawText(ScreenPoint p, string text, OxyColor c, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
         {
             WriteText(p, text, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);

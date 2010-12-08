@@ -27,8 +27,11 @@ namespace OxyPlot
         void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness = 1.0,
                          double[] dashArray = null, bool aliased = false);
 
+        void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
+                           double thickness = 1.0);
+
         void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
-                         double thickness = 1.0);
+                            double thickness = 1.0);
 
         void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily = null, double fontSize = 10,
                       double fontWeight = 500, double rotate = 0, HorizontalTextAlign halign = HorizontalTextAlign.Left,

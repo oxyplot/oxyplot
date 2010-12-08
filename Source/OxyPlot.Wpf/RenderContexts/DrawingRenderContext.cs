@@ -92,6 +92,15 @@ namespace OxyPlot.Wpf
             dc.DrawGeometry(brush, pen, g);
         }
 
+        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            Brush brush = null;
+            if (fill != null)
+                brush = fill.ToBrush();
+            var pen = CreatePen(stroke, thickness, null);
+            dc.DrawRectangle(brush, pen, new Rect(x, y, width, height));
+        }
+
         public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
         {
             Brush brush = null;

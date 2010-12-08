@@ -29,14 +29,14 @@ namespace OxyPlot
                     new ScreenPoint(dx, dy), title, plot.TextColor,
                     plot.TitleFont, plot.TitleFontSize, plot.TitleFontWeight,
                     0,
-                    HorizontalTextAlign.Center, VerticalTextAlign.Top);
+                    HorizontalTextAlign.Center, VerticalTextAlign.Top, false);
             }
 
             if (!String.IsNullOrEmpty(subtitle))
             {
                 rc.DrawMathText(new ScreenPoint(dx, dy + size1.Height), subtitle, plot.TextColor,
                                 plot.TitleFont, plot.SubtitleFontSize, plot.SubtitleFontWeight, 0,
-                                HorizontalTextAlign.Center, VerticalTextAlign.Top);
+                                HorizontalTextAlign.Center, VerticalTextAlign.Top, false);
             }
         }
 
@@ -126,7 +126,7 @@ namespace OxyPlot
                 rc.DrawMathText(new ScreenPoint(x1, y0),
                                 s.Title, plot.TextColor,
                                 plot.LegendFont, plot.LegendFontSize, 500, 0,
-                                ha, va);
+                                ha, va, false);
                 var rect = new OxyRect(x0 - lineLength, y0 - maxHeight / 2, lineLength, maxHeight);
                 if (ha == HorizontalTextAlign.Left)
                 {
