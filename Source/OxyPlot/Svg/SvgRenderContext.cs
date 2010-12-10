@@ -24,7 +24,7 @@ namespace OxyPlot
 
         public double Height { get; private set; }
 
-        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, bool aliased)
+        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             WritePolyline(points, CreateStyle(null, stroke, thickness, dashArray));
         }

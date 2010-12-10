@@ -15,6 +15,12 @@ namespace OxyPlot
         Middle = 0,
         Bottom = 1
     }
+    public enum OxyPenLineJoin
+    {
+        Miter,
+        Round,
+        Bevel
+    }
 
     public interface IRenderContext
     {
@@ -22,7 +28,7 @@ namespace OxyPlot
         double Height { get; }
 
         void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness = 1.0,
-                      double[] dashArray = null, bool aliased = false);
+                      double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, bool aliased = false);
 
         void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness = 1.0,
                          double[] dashArray = null, bool aliased = false);

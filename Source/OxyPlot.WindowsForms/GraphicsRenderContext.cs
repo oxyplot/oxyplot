@@ -32,7 +32,7 @@ namespace Oxyplot.WindowsForms
         }
 
         public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
-                             bool aliased)
+                             OxyPenLineJoin lineJoin, bool aliased)
         {
             if (stroke == null || thickness <= 0)
                 return;
@@ -42,6 +42,16 @@ namespace Oxyplot.WindowsForms
 
             if (dashArray != null)
                 pen.DashPattern = ToFloatArray(dashArray);
+            switch (lineJoin)
+            {
+                case OxyPenLineJoin.Round:
+                    pen.LineJoin = LineJoin.Round;
+                    break;
+                case OxyPenLineJoin.Bevel:
+                    pen.LineJoin = LineJoin.Bevel;
+                    break;
+                //  The default LineJoin is Miter
+            }
             g.DrawLines(pen, ToPoints(points));
         }
 

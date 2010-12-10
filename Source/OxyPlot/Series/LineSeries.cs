@@ -76,6 +76,12 @@ namespace OxyPlot
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
+        /// Gets or sets the line join.
+        /// </summary>
+        /// <value>The line join.</value>
+        public OxyPenLineJoin LineJoin { get; set; }
+
+        /// <summary>
         ///   Gets or sets the dashes array. 
         ///   If this is not null it overrides the LineStyle property.
         /// </summary>
@@ -175,6 +181,8 @@ namespace OxyPlot
                 {
                     var s1 = spts[i];
 
+                    // Clipped version of this and next point.
+
                     var s0c = s0;
                     var s1c = s1;
                     bool isInside = clipping.ClipLine(ref s0c, ref s1c);
@@ -187,10 +195,10 @@ namespace OxyPlot
                     }
 
                     // render from s0c-s1c
-                    double dx = s0c.x - last.x;
+                    double dx = s1c.x - last.x;
                     double dy = s1c.y - last.y;
 
-                    if (dx*dx + dy*dy > minDistSquared || i == 0)
+                    if (dx * dx + dy * dy > minDistSquared || i == 1)
                     {
                         if (!s0c.Equals(last) || i == 1)
                         {
@@ -255,7 +263,7 @@ namespace OxyPlot
             }
             rc.DrawLine(pts2.ToArray(), Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
 #else
-            rc.DrawLine(pts.ToArray(), Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
+            rc.DrawLine(pts.ToArray(), Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle), LineJoin);
 #endif
         }
 
@@ -300,7 +308,7 @@ namespace OxyPlot
                         //                  new ScreenPoint(p.x - size, p.y + size)
                         //              };
                         //rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, true);
-                        rc.DrawRectangle(p.x-size,p.y-size,size*2,size*2,fill,stroke,strokeThickness);
+                        rc.DrawRectangle(p.x - size, p.y - size, size * 2, size * 2, fill, stroke, strokeThickness);
                         break;
                     }
 

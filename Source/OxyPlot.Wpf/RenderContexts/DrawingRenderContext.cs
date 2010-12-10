@@ -23,9 +23,21 @@ namespace OxyPlot.Wpf
         public double Width { get; private set; }
         public double Height { get; private set; }
 
-        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, bool aliased)
+        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             var pen = CreatePen(stroke, thickness, dashArray);
+
+            switch (lineJoin)
+            {
+                case OxyPenLineJoin.Round:
+                    pen.LineJoin = PenLineJoin.Round;
+                    break;
+                case OxyPenLineJoin.Bevel:
+                    pen.LineJoin = PenLineJoin.Bevel;
+                    break;
+                //  The default LineJoin is Miter
+            }
+
 
             // todo: alias line
             //            if (aliased)

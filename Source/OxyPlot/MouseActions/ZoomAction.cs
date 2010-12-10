@@ -40,14 +40,7 @@ namespace OxyPlot
 
             // RMB+Control is the same as MMB
             if (button == OxyMouseButton.Right && control) 
-                button = OxyMouseButton.Middle;
-
-            // RMB double-click is the same as MMB
-            if (button==OxyMouseButton.Right && clickCount==2)
-            {
-                button = OxyMouseButton.Middle;
-                clickCount = 1;
-            }
+                button = OxyMouseButton.Middle;        
 
             if (button != OxyMouseButton.Middle)
                 return;

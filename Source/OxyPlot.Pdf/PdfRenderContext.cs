@@ -31,7 +31,7 @@ namespace OxyPlot.Pdf
         public double Height { get; private set; }
 
         public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
-                             bool aliased)
+                             OxyPenLineJoin lineJoin, bool aliased)
         {
             if (stroke == null || thickness <= 0)
                 return;
@@ -42,6 +42,17 @@ namespace OxyPlot.Pdf
 
             if (dashArray != null)
                 pen.DashPattern = dashArray;
+            switch (lineJoin)
+            {
+                case OxyPenLineJoin.Round:
+                    pen.LineJoin = XLineJoin.Round;
+                    break;
+                case OxyPenLineJoin.Bevel:
+                    pen.LineJoin = XLineJoin.Bevel;
+                    break;
+                //  The default LineJoin is Miter
+            }
+
             g.DrawLines(pen, ToPoints(points));
         }
 
