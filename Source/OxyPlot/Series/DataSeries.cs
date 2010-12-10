@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -7,14 +8,21 @@ using System.Reflection;
 
 namespace OxyPlot
 {
+    /// <summary>
+    /// DataPointProvider interface.
+    /// </summary>
     public interface IDataPointProvider
     {
+        /// <summary>
+        /// Gets the data point.
+        /// </summary>
+        /// <returns></returns>
         DataPoint GetDataPoint();
     }
 
     public abstract class DataSeries : ISeries
     {
-        internal Collection<DataPoint> InternalPoints;
+        internal IList<DataPoint> InternalPoints;
 
         protected DataSeries()
         {
@@ -44,14 +52,14 @@ namespace OxyPlot
         /// Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
         /// </summary>
         /// <value>The mapping.</value>
-        public Func<object,DataPoint> Mapping { get; set; }
+        public Func<object, DataPoint> Mapping { get; set; }
 
         /// <summary>
         ///   Gets or sets the points.
         /// </summary>
         /// <value>The points.</value>
         [Browsable(false)]
-        public Collection<DataPoint> Points
+        public IList<DataPoint> Points
         {
             get { return InternalPoints; }
             set { InternalPoints = value; }
@@ -149,7 +157,7 @@ namespace OxyPlot
             InternalPoints.Clear();
 
             // Use the mapping to generate the points
-            if (Mapping!=null)
+            if (Mapping != null)
             {
                 foreach (var item in ItemsSource)
                     InternalPoints.Add(Mapping(item));

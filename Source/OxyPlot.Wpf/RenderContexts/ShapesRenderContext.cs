@@ -30,14 +30,24 @@ namespace OxyPlot.Wpf
         Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
 
         public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
-                             bool aliased)
+                             OxyPenLineJoin lineJoin, bool aliased)
         {
             var pl = new Polyline();
             if (stroke != null && thickness > 0)
             {
                 pl.Stroke = GetCachedBrush(stroke);
-                //   Default StrokeLineJoin is Miter
-                //   pl.StrokeLineJoin = PenLineJoin.Round;
+                
+                switch (lineJoin)
+                {
+                    case OxyPenLineJoin.Round:
+                        pl.StrokeLineJoin = PenLineJoin.Round;
+                        break;
+                    case OxyPenLineJoin.Bevel:
+                        pl.StrokeLineJoin = PenLineJoin.Bevel;
+                        break;
+                    //  The default StrokeLineJoin is Miter
+                }
+
                 if (thickness != 1) // default values is 1
                     pl.StrokeThickness = thickness;
                 if (dashArray != null)

@@ -5,7 +5,7 @@
         public static void DrawRectangle(this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor borderColor,
                                          double borderThickness)
         {
-            rc.DrawRectangle(rect.Left,rect.Top,rect.Width,rect.Height,fill,borderColor,borderThickness);
+            rc.DrawRectangle(rect.Left, rect.Top, rect.Width, rect.Height, fill, borderColor, borderThickness);
             //var border = new[]
             //                 {
             //                     new ScreenPoint(rect.Left, rect.Top), new ScreenPoint(rect.Right, rect.Top), 
@@ -17,7 +17,7 @@
         }
 
         public static void DrawLine(this IRenderContext rc, double x0, double y0, double x1, double y1, OxyPen pen,
-                                    bool aliased = true)
+                                    OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, bool aliased = true)
         {
             if (pen == null)
             {
@@ -28,7 +28,7 @@
                             {
                                 new ScreenPoint(x0, y0), 
                                 new ScreenPoint(x1, y1)
-                            }, pen.Color, pen.Thickness, pen.DashArray, aliased);
+                            }, pen.Color, pen.Thickness, pen.DashArray, lineJoin, aliased);
         }
     }
 }

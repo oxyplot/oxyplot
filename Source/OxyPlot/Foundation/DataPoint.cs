@@ -1,6 +1,27 @@
 ﻿namespace OxyPlot
 {
-    public struct DataPoint
+    /// <summary>
+    /// DataPoint interface.
+    /// </summary>
+    public interface IDataPoint
+    {
+        /// <summary>
+        /// Gets the X.
+        /// </summary>
+        /// <value>The X.</value>
+        double X { get; }
+
+        /// <summary>
+        /// Gets the Y.
+        /// </summary>
+        /// <value>The Y.</value>
+        double Y { get; }
+    }
+
+    /// <summary>
+    /// DataPoint value type.
+    /// </summary>
+    public struct DataPoint : IDataPoint
     {
         public static readonly DataPoint Undefined = new DataPoint(double.NaN, double.NaN);
         internal double x;

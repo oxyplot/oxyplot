@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using OxyPlot;
 
 namespace ExportDemo
@@ -13,6 +14,8 @@ namespace ExportDemo
         LogLin,
         LinLog,
         Clover,
+        KochSnowflake,
+        KochCurve,
         MathNotation
     }
 
@@ -63,19 +66,81 @@ namespace ExportDemo
                     // http://people.reed.edu/~jerry/Clover/cloverexcerpt.pdf
                     // http://www-math.bgsu.edu/z/calc3/vectorvalued1.html
                     model = CreateParametricPlot(
-                        t => 2*Math.Cos(2*t)*Math.Cos(t),
-                        t => 2*Math.Cos(2*t)*Math.Sin(t),
+                        t => 2 * Math.Cos(2 * t) * Math.Cos(t),
+                        t => 2 * Math.Cos(2 * t) * Math.Sin(t),
                         // t=>-4*Math.Sin(2*t)*Math.Cos(t)-2*Math.Cos(2*t)*Math.Sin(t),
                         // t=>-4*Math.Sin(2*t)*Math.Sin(t)+2*Math.Cos(2*t)*Math.Cos(t),))))
-                        0, Math.PI*2, 0.01,
+                        0, Math.PI * 2, 0.01,
                         "Parametric function",
                         "Using the CartesianAxes property",
                         "2cos(2t)cos(t) , 2cos(2t)sin(t)");
+                    break;
+                case ModelType.KochSnowflake:
+                    model = CreateKochSnowflake(8);
+                    break;
+                case ModelType.KochCurve:
+                    model = CreateKochCurve(1);
                     break;
                 case ModelType.MathNotation:
                     model = CreateMathNotationPlot();
                     break;
             }
+            return model;
+        }
+
+
+        private static DataPoint[] Fractalise(DataPoint[] data, DataPoint[] detail)
+        {
+            var result = new DataPoint[(data.Length - 1) * detail.Length + 1];
+            int j = 0;
+            for (int i = 0; i + 1 < data.Length; i++)
+            {
+                double dx = data[i + 1].X - data[i].X;
+                double dy = data[i + 1].Y - data[i].Y;
+                foreach (var uv in detail)
+                    result[j++] = new DataPoint(data[i].X + dx * uv.X + dy * uv.Y, data[i].Y + dy * uv.X - dx * uv.Y);
+            }
+            result[j] = data.Last();
+            return result;
+        }
+
+        private static readonly DataPoint[] KochDetail = new[]
+                                                             {
+                                                                 new DataPoint(0, 0), 
+                                                                 new DataPoint(1.0 / 3, 0), 
+                                                                 new DataPoint(0.5, Math.Sqrt(3.0 / 4.0) / 3),
+                                                                 new DataPoint(2.0 / 3, 0) 
+                                                             };
+
+        private static PlotModel CreateKochCurve(int n)
+        {
+            var data = new[]
+                           {
+                               new DataPoint(1, 0), 
+                               new DataPoint(0, 0)};
+            for (int i = 0; i < n; i++)
+                data = Fractalise(data, KochDetail);
+            var model = new PlotModel();
+            model.Axes.Add(new LinearAxis(AxisPosition.Left) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            model.PlotType = PlotType.Cartesian;
+            var ls = new LineSeries { Points = data.ToList() };
+            model.Series.Add(ls);
+            return model;
+        }
+
+        private static PlotModel CreateKochSnowflake(int n)
+        {
+            var data = new[]
+                           {
+                               new DataPoint(-1, 0), 
+                               new DataPoint(1, 0),
+                               new DataPoint(0, Math.Sqrt(3)), new DataPoint(-1, 0) };
+            for (int i = 0; i < n; i++)
+                data = Fractalise(data, KochDetail);
+            var model = new PlotModel { PlotType = PlotType.Cartesian };
+            var ls = new LineSeries { Points = data.ToList(), LineJoin = OxyPenLineJoin.Bevel };
+            model.Series.Add(ls);
             return model;
         }
 
@@ -110,7 +175,7 @@ namespace ExportDemo
         private static LineSeries CreateLineSeries(Func<double, double> f, double x0, double x1, double dx,
                                                    string title)
         {
-            var ls = new LineSeries {Title = title};
+            var ls = new LineSeries { Title = title };
             for (double x = x0; x <= x1; x += dx)
                 ls.Points.Add(new DataPoint(x, f(x)));
             return ls;
@@ -161,8 +226,8 @@ namespace ExportDemo
 
             for (int i = 0; i < n; i++)
             {
-                double x = x0 + (x1 - x0)*i/(n - 1);
-                double f = 1.0/Math.Sqrt(2*Math.PI*variance)*Math.Exp(-(x - mean)*(x - mean)/2/variance);
+                double x = x0 + (x1 - x0) * i / (n - 1);
+                double f = 1.0 / Math.Sqrt(2 * Math.PI * variance) * Math.Exp(-(x - mean) * (x - mean) / 2 / variance);
                 ls.Points.Add(new DataPoint(x, f));
             }
             return ls;
@@ -170,11 +235,11 @@ namespace ExportDemo
 
         private static PlotModel CreateSquareWave(int n = 25)
         {
-            var plot = new PlotModel {Title = "Square wave (Gibbs phenomenon)"};
+            var plot = new PlotModel { Title = "Square wave (Gibbs phenomenon)" };
 
             var ls = new LineSeries
                          {
-                             Title = "sin(x)+sin(3x)/3+sin(5x)/5+...+sin(" + (2*n - 1) + ")/" + (2*n - 1)
+                             Title = "sin(x)+sin(3x)/3+sin(5x)/5+...+sin(" + (2 * n - 1) + ")/" + (2 * n - 1)
                          };
 
             for (double x = -10; x < 10; x += 0.0001)
@@ -182,8 +247,8 @@ namespace ExportDemo
                 double y = 0;
                 for (int i = 0; i < n; i++)
                 {
-                    int j = i*2 + 1;
-                    y += Math.Sin(j*x)/j;
+                    int j = i * 2 + 1;
+                    y += Math.Sin(j * x) / j;
                 }
                 ls.Points.Add(new DataPoint(x, y));
             }
@@ -207,9 +272,9 @@ namespace ExportDemo
                                                       double t1, double dt, string title, string subtitle,
                                                       string seriesTitle)
         {
-            var plot = new PlotModel {Title = title, Subtitle = subtitle, PlotType = PlotType.Cartesian};
+            var plot = new PlotModel { Title = title, Subtitle = subtitle, PlotType = PlotType.Cartesian };
 
-            var ls = new LineSeries {Title = seriesTitle};
+            var ls = new LineSeries { Title = seriesTitle };
 
             for (double t = t0; t <= t1; t += dt)
             {
@@ -223,11 +288,11 @@ namespace ExportDemo
         {
             // http://en.wikipedia.org/wiki/Lin-log_graph
 
-            var plot = new PlotModel {Title = "Log-Lin plot"};
+            var plot = new PlotModel { Title = "Log-Lin plot" };
 
             plot.Series.Add(CreateLineSeries(x => x, 0.1, 100, 0.1, "y=x"));
-            plot.Series.Add(CreateLineSeries(x => x*x, 0.1, 100, 0.1, "y=x²"));
-            plot.Series.Add(CreateLineSeries(x => x*x*x, 0.1, 100, 0.1, "y=x³"));
+            plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "y=x²"));
+            plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "y=x³"));
 
             plot.Axes.Add(new LogarithmicAxis
                               {
@@ -252,11 +317,11 @@ namespace ExportDemo
         private static PlotModel CreateLinLogPlot()
         {
             // http://en.wikipedia.org/wiki/Lin-log_graph
-            var plot = new PlotModel {Title = "Lin-Log plot"};
+            var plot = new PlotModel { Title = "Lin-Log plot" };
 
             plot.Series.Add(CreateLineSeries(x => x, 0.1, 100, 0.1, "y=x"));
-            plot.Series.Add(CreateLineSeries(x => x*x, 0.1, 100, 0.1, "y=x²"));
-            plot.Series.Add(CreateLineSeries(x => x*x*x, 0.1, 100, 0.1, "y=x³"));
+            plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "y=x²"));
+            plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "y=x³"));
 
             plot.Axes.Add(new LogarithmicAxis
                               {
@@ -281,11 +346,11 @@ namespace ExportDemo
         private static PlotModel CreateLogLogPlot()
         {
             // http://en.wikipedia.org/wiki/Log-log_plot
-            var plot = new PlotModel {Title = "Log-log plot"};
+            var plot = new PlotModel { Title = "Log-log plot" };
 
             plot.Series.Add(CreateLineSeries(x => x, 0.1, 100, 0.1, "y=x"));
-            plot.Series.Add(CreateLineSeries(x => x*x, 0.1, 100, 0.1, "y=x²"));
-            plot.Series.Add(CreateLineSeries(x => x*x*x, 0.1, 100, 0.1, "y=x³"));
+            plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "y=x²"));
+            plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "y=x³"));
 
             plot.Axes.Add(new LogarithmicAxis
                               {
@@ -323,8 +388,8 @@ namespace ExportDemo
                            };
 
             plot.Series.Add(CreateLineSeries(x => x, 0.1, 100, 0.1, "H_{2}O"));
-            plot.Series.Add(CreateLineSeries(x => x*x, 0.1, 100, 0.1, "C_{6}H_{12}O_{6}"));
-            plot.Series.Add(CreateLineSeries(x => x*x*x, 0.1, 100, 0.1, "A^{2}_{i,j}"));
+            plot.Series.Add(CreateLineSeries(x => x * x, 0.1, 100, 0.1, "C_{6}H_{12}O_{6}"));
+            plot.Series.Add(CreateLineSeries(x => x * x * x, 0.1, 100, 0.1, "A^{2}_{i,j}"));
 
             plot.Axes.Add(new LogarithmicAxis
                               {
@@ -349,5 +414,8 @@ namespace ExportDemo
 
             return plot;
         }
+
+
+
     }
 }
