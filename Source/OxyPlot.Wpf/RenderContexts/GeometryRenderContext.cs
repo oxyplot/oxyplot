@@ -10,18 +10,21 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Rendering WPF shapes to a Canvas
     /// </summary>
-    public class ShapesRenderContext : IRenderContext
+    public class GeometryRenderContext : IRenderContext
     {
+        private GeometryGroup group;
+
         private readonly Canvas canvas;
 
-        private void Add(FrameworkElement e)
+        private void Add(Geometry g)
         {
-            canvas.Children.Add(e);
+            group.Children.Add(g);
         }
 
-        public ShapesRenderContext(Canvas canvas)
+        public GeometryRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
+
             Width = canvas.ActualWidth;
             Height = canvas.ActualHeight;
         }
@@ -34,28 +37,52 @@ namespace OxyPlot.Wpf
 
         Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
 
-        public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public void DrawLines(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+                             OxyPenLineJoin lineJoin, bool aliased)
         {
-            var path = new Path();
-            SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
-            var pg = new PathGeometry();
-            for (int i = 0; i + 1 < points.Count; i += 2)
+            var startPoint = new ScreenPoint();
+            bool first = true;
+            foreach (var p in points)
             {
-                var figure = new PathFigure();
-                figure.StartPoint = points[i].ToPoint();
-                figure.IsClosed = false;
-                figure.Segments.Add(new LineSegment(points[i + 1].ToPoint(), true));
-                pg.Figures.Add(figure);
+                if (!first)
+                {
+                    Add(new Line { X1 = startPoint.X, Y1 = startPoint.Y, X2 = p.X, Y2 = p.Y });
+                }
+                else
+                {
+                    startPoint = p;
+                }
+                first = !first;
             }
-            path.Data = pg;
-            Add(path);
         }
 
         public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
                              OxyPenLineJoin lineJoin, bool aliased)
         {
             var e = new Polyline();
-            SetStroke(e, stroke, thickness, lineJoin, dashArray, aliased);
+            if (stroke != null && thickness > 0)
+            {
+                e.Stroke = GetCachedBrush(stroke);
+
+                switch (lineJoin)
+                {
+                    case OxyPenLineJoin.Round:
+                        e.StrokeLineJoin = PenLineJoin.Round;
+                        break;
+                    case OxyPenLineJoin.Bevel:
+                        e.StrokeLineJoin = PenLineJoin.Bevel;
+                        break;
+                    //  The default StrokeLineJoin is Miter
+                }
+
+                if (thickness != 1) // default values is 1
+                    e.StrokeThickness = thickness;
+                if (dashArray != null)
+                    e.StrokeDashArray = new DoubleCollection(dashArray);
+            }
+            // pl.Fill = null;
+            if (aliased)
+                e.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
             var pc = new PointCollection();
             foreach (var p in points)
@@ -63,36 +90,6 @@ namespace OxyPlot.Wpf
             e.Points = pc;
 
             Add(e);
-        }
-
-        private void SetStroke(Shape shape, OxyColor stroke, double thickness, OxyPenLineJoin lineJoin, double[] dashArray, bool aliased)
-        {
-            if (stroke != null && thickness > 0)
-            {
-                shape.Stroke = GetCachedBrush(stroke);
-
-                switch (lineJoin)
-                {
-                    case OxyPenLineJoin.Round:
-                        shape.StrokeLineJoin = PenLineJoin.Round;
-                        break;
-                    case OxyPenLineJoin.Bevel:
-                        shape.StrokeLineJoin = PenLineJoin.Bevel;
-                        break;
-                    //  The default StrokeLineJoin is Miter
-                }
-
-                if (thickness != 1) // default values is 1
-                    shape.StrokeThickness = thickness;
-                if (dashArray != null)
-                    shape.StrokeDashArray = new DoubleCollection(dashArray);
-            }
-            if (aliased)
-            {
-                shape.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
-                shape.SnapsToDevicePixels = true;
-            }
-
         }
 
         private Brush GetCachedBrush(OxyColor stroke)
@@ -111,7 +108,26 @@ namespace OxyPlot.Wpf
                                 double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             var e = new Polygon();
-            SetStroke(e, stroke, thickness, lineJoin, dashArray, aliased);
+            if (stroke != null && thickness > 0)
+            {
+                e.Stroke = GetCachedBrush(stroke);
+                if (thickness != 1)
+                    e.StrokeThickness = thickness;
+                if (dashArray != null)
+                    e.StrokeDashArray = new DoubleCollection(dashArray);
+                switch (lineJoin)
+                {
+                    case OxyPenLineJoin.Round:
+                        e.StrokeLineJoin = PenLineJoin.Round;
+                        break;
+                    case OxyPenLineJoin.Bevel:
+                        e.StrokeLineJoin = PenLineJoin.Bevel;
+                        break;
+                    //  The default StrokeLineJoin is Miter
+                }
+            }
+            if (aliased)
+                e.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
             if (fill != null)
                 e.Fill = GetCachedBrush(fill);
@@ -137,36 +153,43 @@ namespace OxyPlot.Wpf
         public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
                                 double thickness)
         {
-            var e = new Rectangle();
-            SetStroke(e, stroke, thickness, OxyPenLineJoin.Miter, null, true);
-
+            var el = new Rectangle();
+            if (stroke != null)
+            {
+                el.Stroke = new SolidColorBrush(stroke.ToColor());
+                el.StrokeThickness = thickness;
+            }
             if (fill != null)
             {
-                e.Fill = new SolidColorBrush(fill.ToColor());
+                el.Fill = new SolidColorBrush(fill.ToColor());
             }
 
-            e.Width = width;
-            e.Height = height;
-            Canvas.SetLeft(e, x);
-            Canvas.SetTop(e, y);
-            Add(e);
+            el.Width = width;
+            el.Height = height;
+            Canvas.SetLeft(el, x);
+            Canvas.SetTop(el, y);
+            Add(el);
         }
 
         public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
                                 double thickness)
         {
-            var e = new Ellipse();
-            SetStroke(e, stroke, thickness, OxyPenLineJoin.Miter, null, false);
+            var el = new Ellipse();
+            if (stroke != null)
+            {
+                el.Stroke = new SolidColorBrush(stroke.ToColor());
+                el.StrokeThickness = thickness;
+            }
             if (fill != null)
             {
-                e.Fill = new SolidColorBrush(fill.ToColor());
+                el.Fill = new SolidColorBrush(fill.ToColor());
             }
 
-            e.Width = width;
-            e.Height = height;
-            Canvas.SetLeft(e, x);
-            Canvas.SetTop(e, y);
-            Add(e);
+            el.Width = width;
+            el.Height = height;
+            Canvas.SetLeft(el, x);
+            Canvas.SetTop(el, y);
+            Add(el);
         }
 
         public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,

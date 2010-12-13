@@ -74,6 +74,9 @@ namespace OxyPlot
             EndPosition = 1;
 
             Angle = 0;
+
+            IsZoomEnabled = true;
+            IsPanEnabled = true;
         }
 
         /// <summary>
@@ -370,6 +373,16 @@ namespace OxyPlot
         public AxisBase RelatedAxis { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether pan is enabled.
+        /// </summary>
+        public bool IsPanEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether zoom is enabled.
+        /// </summary>
+        public bool IsZoomEnabled { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether this axis is reversed.
         /// It is reversed if StartPosition>EndPosition.
         /// </summary>
@@ -491,12 +504,16 @@ namespace OxyPlot
 
         public virtual void Pan(double dx)
         {
+            if (!IsPanEnabled)
+                return;
             Minimum = ActualMinimum + dx;
             Maximum = ActualMaximum + dx;
         }
 
         public virtual void ZoomAt(double factor, double x)
         {
+            if (!IsZoomEnabled)
+                return;
             double dx0 = (ActualMinimum - x) * scale;
             double dx1 = (ActualMaximum - x) * scale;
             scale *= factor;
@@ -506,6 +523,8 @@ namespace OxyPlot
 
         public virtual void Zoom(double x0, double x1)
         {
+            if (!IsZoomEnabled)
+                return;
             Minimum = Math.Min(x0, x1);
             Maximum = Math.Max(x0, x1);
         }

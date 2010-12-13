@@ -6,7 +6,7 @@
     <Style TargetType="{x:Type local:Plot}">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
 
-        <Setter Property="SliderTemplate">
+        <Setter Property="TrackerTemplate">
             <Setter.Value>
                 <DataTemplate>
                     <Canvas>
@@ -46,7 +46,7 @@
                 <ControlTemplate TargetType="{x:Type local:Plot}">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BoxThickness}">
+                            BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid x:Name="PART_Grid"/>
                     </Border>
                 </ControlTemplate>

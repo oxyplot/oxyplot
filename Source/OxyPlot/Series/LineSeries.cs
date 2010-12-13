@@ -321,7 +321,7 @@ namespace OxyPlot
                                           new ScreenPoint(p.x, p.y + M2*size), 
                                           new ScreenPoint(p.x - M2*size, p.y)
                                       };
-                        rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, true);
+                        rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, OxyPenLineJoin.Miter, true);
                         break;
                     }
 
@@ -333,7 +333,7 @@ namespace OxyPlot
                                           new ScreenPoint(p.x + size, p.y + M1*size), 
                                           new ScreenPoint(p.x, p.y - M2*size)
                                       };
-                        rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, true);
+                        rc.DrawPolygon(pts, fill, stroke, strokeThickness, null, OxyPenLineJoin.Miter, true);
                         break;
                     }
 

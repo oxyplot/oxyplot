@@ -16,6 +16,7 @@ namespace ExportDemo
         Clover,
         KochSnowflake,
         KochCurve,
+        ZigZag,
         MathNotation
     }
 
@@ -79,7 +80,10 @@ namespace ExportDemo
                     model = CreateKochSnowflake(8);
                     break;
                 case ModelType.KochCurve:
-                    model = CreateKochCurve(1);
+                    model = CreateKochCurve(4);
+                    break;
+                case ModelType.ZigZag:
+                    model = CreateZigZagCurve(2000);
                     break;
                 case ModelType.MathNotation:
                     model = CreateMathNotationPlot();
@@ -120,7 +124,7 @@ namespace ExportDemo
                                new DataPoint(0, 0)};
             for (int i = 0; i < n; i++)
                 data = Fractalise(data, KochDetail);
-            var model = new PlotModel();
+            var model = new PlotModel("Koch curve");
             model.Axes.Add(new LinearAxis(AxisPosition.Left) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
             model.PlotType = PlotType.Cartesian;
@@ -138,12 +142,27 @@ namespace ExportDemo
                                new DataPoint(0, Math.Sqrt(3)), new DataPoint(-1, 0) };
             for (int i = 0; i < n; i++)
                 data = Fractalise(data, KochDetail);
-            var model = new PlotModel { PlotType = PlotType.Cartesian };
+            var model = new PlotModel("Koch Snowflake") { PlotType = PlotType.Cartesian };
             var ls = new LineSeries { Points = data.ToList(), LineJoin = OxyPenLineJoin.Bevel };
             model.Series.Add(ls);
             return model;
         }
 
+        private static PlotModel CreateZigZagCurve(int n)
+        {
+            var model = new PlotModel("Zigzag curve");
+            model.Axes.Add(new LinearAxis(AxisPosition.Left) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            var ls = new LineSeries();
+            for (int i = 0; i < n; i++)
+            {
+                double x = 1.0*i/(n - 1);
+                double y = i%2 == 0 ? 0 : 1;
+                ls.Points.Add(new DataPoint(x, y));
+            }
+            model.Series.Add(ls);
+            return model;
+        }
 
         private static PlotModel CreateSineModel(double stepSize)
         {

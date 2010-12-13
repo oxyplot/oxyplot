@@ -77,7 +77,7 @@ namespace OxyPlot.Pdf
             //d.Content);
         }
 
-        public void WritePlot(Plot plot)
+        public void WritePlot(PlotFigure plot)
         {
             // use pdf renderer to draw the plot
         }

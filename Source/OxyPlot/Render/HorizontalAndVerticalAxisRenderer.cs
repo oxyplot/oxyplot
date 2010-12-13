@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace OxyPlot
@@ -49,8 +50,12 @@ namespace OxyPlot
             }
 
             double a0, a1;
+            var minorSegments = new List<ScreenPoint>();
+            var minorTickSegments = new List<ScreenPoint>();
+            var majorSegments = new List<ScreenPoint>();
+            var majorTickSegments = new List<ScreenPoint>();
 
-            if (axis.ShowMinorTicks)
+            if (axis.TickStyle!=TickStyle.None || MinorPen!=null)
             {
                 GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
 
@@ -68,105 +73,127 @@ namespace OxyPlot
 
                     double transformedValue = axis.Transform(value);
 
+                    // Draw the minor grid line
                     if (MinorPen != null)
                     {
                         if (isHorizontal)
                         {
-                            rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom, MinorPen);
+                            minorSegments.Add(new ScreenPoint(transformedValue,Plot.PlotArea.Top));
+                            minorSegments.Add(new ScreenPoint(transformedValue, Plot.PlotArea.Bottom));
                         }
                         else
                         {
-                            rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue, MinorPen);
+                            minorSegments.Add(new ScreenPoint(Plot.PlotArea.Left,transformedValue));
+                            minorSegments.Add(new ScreenPoint(Plot.PlotArea.Right,transformedValue));
                         }
                     }
 
-                    if (isHorizontal)
+                    // Draw the minor tick
+                    if (axis.TickStyle != TickStyle.None)
                     {
-                        rc.DrawLine(transformedValue, apos + a0, transformedValue, apos + a1, MinorTickPen);
-                    }
-                    else
-                    {
-                        rc.DrawLine(apos + a0, transformedValue, apos + a1, transformedValue, MinorTickPen);
+                        if (isHorizontal)
+                        {
+                            minorTickSegments.Add(new ScreenPoint(transformedValue, apos + a0));
+                            minorTickSegments.Add(new ScreenPoint(transformedValue, apos + a1));
+                        }
+                        else
+                        {
+                            minorTickSegments.Add(new ScreenPoint(apos + a0, transformedValue));
+                            minorTickSegments.Add(new ScreenPoint(apos + a1, transformedValue));
+                        }
                     }
                 }
             }
 
-            GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
 
-            //double maxWidth = 0;
-            //double maxHeight = 0;
-
-            foreach (double value in MajorTickValues)
+            if (axis.TickStyle != TickStyle.None || MajorPen != null)
             {
-                if (value < axis.ActualMinimum || value > axis.ActualMaximum)
-                {
-                    continue;
-                }
+                GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
 
-                double transformedValue = axis.Transform(value);
+                //double maxWidth = 0;
+                //double maxHeight = 0;
 
-                if (MajorPen != null)
+                foreach (double value in MajorTickValues)
                 {
-                    if (isHorizontal)
+                    if (value < axis.ActualMinimum || value > axis.ActualMaximum)
                     {
-                        rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom, MajorPen);
+                        continue;
                     }
-                    else
+
+                    double transformedValue = axis.Transform(value);
+
+                    if (MajorPen != null)
                     {
-                        rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue, MajorPen);
+                        if (isHorizontal)
+                        {
+                            majorSegments.Add(new ScreenPoint(transformedValue, Plot.PlotArea.Top));
+                            majorSegments.Add(new ScreenPoint(transformedValue, Plot.PlotArea.Bottom));
+                        }
+                        else
+                        {
+                            majorSegments.Add(new ScreenPoint(Plot.PlotArea.Left, transformedValue));
+                            majorSegments.Add(new ScreenPoint(Plot.PlotArea.Right, transformedValue));
+                        }
                     }
-                }
 
-                if (isHorizontal)
-                {
-                    rc.DrawLine(transformedValue, apos + a0, transformedValue, apos + a1, MajorTickPen);
-                }
-                else
-                {
-                    rc.DrawLine(apos + a0, transformedValue, apos + a1, transformedValue, MajorTickPen);
-                }
+                    if (axis.TickStyle != TickStyle.None)
+                    {
+                        if (isHorizontal)
+                        {
+                            majorTickSegments.Add(new ScreenPoint(transformedValue, apos + a0));
+                            majorTickSegments.Add(new ScreenPoint(transformedValue, apos + a1));
+                        }
+                        else
+                        {
+                            majorTickSegments.Add(new ScreenPoint(apos + a0, transformedValue));
+                            majorTickSegments.Add(new ScreenPoint(apos + a1, transformedValue));
+                        }
+                    }
 
-                if (value == 0 && axis.PositionAtZeroCrossing)
-                {
-                    continue;
+                    if (value == 0 && axis.PositionAtZeroCrossing)
+                    {
+                        continue;
+                    }
+
+                    var pt = new ScreenPoint();
+                    var ha = HorizontalTextAlign.Right;
+                    var va = VerticalTextAlign.Middle;
+                    switch (axis.Position)
+                    {
+                        case AxisPosition.Left:
+                            pt = new ScreenPoint(apos + a1 - TICK_DIST, transformedValue);
+                            GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Right, VerticalTextAlign.Middle, out ha,
+                                                 out va);
+                            break;
+                        case AxisPosition.Right:
+                            pt = new ScreenPoint(apos + a1 + TICK_DIST, transformedValue);
+                            GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Left, VerticalTextAlign.Middle, out ha,
+                                                 out va);
+                            break;
+                        case AxisPosition.Top:
+                            pt = new ScreenPoint(transformedValue, apos + a1 - TICK_DIST);
+                            GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Bottom,
+                                                 out ha,
+                                                 out va);
+                            break;
+                        case AxisPosition.Bottom:
+                            pt = new ScreenPoint(transformedValue, apos + a1 + TICK_DIST);
+                            GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Top, out ha,
+                                                 out va);
+                            break;
+                    }
+
+                    string text = axis.FormatValue(value);
+                    rc.DrawMathText(pt, text, Plot.TextColor,
+                                    axis.FontFamily, axis.FontSize, axis.FontWeight,
+                                    axis.Angle, ha, va, false);
+
+                    // maxWidth = Math.Max(maxWidth, size.Width);
+                    // maxHeight = Math.Max(maxHeight, size.Height);
                 }
-
-                var pt = new ScreenPoint();
-                var ha = HorizontalTextAlign.Right;
-                var va = VerticalTextAlign.Middle;
-                switch (axis.Position)
-                {
-                    case AxisPosition.Left:
-                        pt = new ScreenPoint(apos + a1 - TICK_DIST, transformedValue);
-                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Right, VerticalTextAlign.Middle, out ha,
-                                             out va);
-                        break;
-                    case AxisPosition.Right:
-                        pt = new ScreenPoint(apos + a1 + TICK_DIST, transformedValue);
-                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Left, VerticalTextAlign.Middle, out ha,
-                                             out va);
-                        break;
-                    case AxisPosition.Top:
-                        pt = new ScreenPoint(transformedValue, apos + a1 - TICK_DIST);
-                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Bottom, out ha,
-                                             out va);
-                        break;
-                    case AxisPosition.Bottom:
-                        pt = new ScreenPoint(transformedValue, apos + a1 + TICK_DIST);
-                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Top, out ha,
-                                             out va);
-                        break;
-                }
-
-                string text = axis.FormatValue(value);
-                rc.DrawMathText(pt, text, Plot.TextColor,
-                                           axis.FontFamily, axis.FontSize, axis.FontWeight,
-                                           axis.Angle, ha, va, false);
-
-                // maxWidth = Math.Max(maxWidth, size.Width);
-                // maxHeight = Math.Max(maxHeight, size.Height);
             }
 
+            // Draw the zero crossing line
             if (axis.PositionAtZeroCrossing)
             {
                 double t0 = axis.Transform(0);
@@ -180,6 +207,7 @@ namespace OxyPlot
                 }
             }
 
+            // Draw extra grid lines
             if (axis.ExtraGridlines != null)
             {
                 foreach (double value in axis.ExtraGridlines)
@@ -201,18 +229,21 @@ namespace OxyPlot
                 }
             }
 
+            // Draw the axis line (across the tick marks)
             if (isHorizontal)
             {
-                rc.DrawLine(Plot.PlotArea.Left, apos, Plot.PlotArea.Right, apos, MajorPen);
+                majorSegments.Add(new ScreenPoint(Plot.PlotArea.Left, apos));
+                majorSegments.Add(new ScreenPoint(Plot.PlotArea.Right, apos));
             }
             else
             {
-                rc.DrawLine(apos, Plot.PlotArea.Top, apos, Plot.PlotArea.Bottom, MajorPen);
+                majorSegments.Add(new ScreenPoint(apos, Plot.PlotArea.Top));
+                majorSegments.Add(new ScreenPoint(apos, Plot.PlotArea.Bottom));
             }
 
+            // Draw the axis legend
             if (!String.IsNullOrWhiteSpace(axis.Title))
             {
-                // Axis legend 
                 double ymid = axis.Transform((axis.ActualMinimum + axis.ActualMaximum) / 2);
                 double angle = -90;
                 var lpt = new ScreenPoint();
@@ -223,7 +254,6 @@ namespace OxyPlot
                 if (axis.PositionAtZeroCrossing)
                 {
                     ymid = perpendicularAxis.Transform(perpendicularAxis.ActualMaximum);
-
                     // valign = axis.IsReversed ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
                 }
 
@@ -254,6 +284,12 @@ namespace OxyPlot
                             axis.FontFamily, axis.FontSize, axis.FontWeight,
                             angle, halign, valign);
             }
+
+            // Draw all the line segments
+            rc.DrawLineSegments(minorSegments, MinorPen);
+            rc.DrawLineSegments(majorSegments, MajorPen);
+            rc.DrawLineSegments(minorTickSegments, MinorTickPen);
+            rc.DrawLineSegments(majorTickSegments, MajorTickPen);
         }
 
 

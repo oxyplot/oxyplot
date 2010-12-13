@@ -1,32 +1,38 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
-using System.Xml;
 
 namespace OxyPlot.Reporting
 {
-    public class HtmlReportWriter : XmlTextWriter, IReportWriter
+    /// <summary>
+    /// HTML5 report writer.
+    /// </summary>
+    public class HtmlReportWriter : XmlWriterBase, IReportWriter
     {
-        public HtmlReportWriter(string filename, string title, string css, string style)
-            : base(filename, Encoding.UTF8)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="cssPath">The path to a CSS file.</param>
+        /// <param name="style">The inline CSS style.</param>
+        public HtmlReportWriter(string path, string title, string cssPath, string style)
+            : base(path)
         {
-            Formatting = Formatting.Indented;
-            WriteStartElement("html");
-            WriteAttributeString("xmlns", "http://www.w3.org/1999/xhtml");
-            WriteHtmlHeader(title, css, style);
+            WriteStartElement("html", "http://www.w3.org/1999/xhtml");
+            WriteHtmlHeader(title, cssPath, style);
         }
 
-        private void WriteHtmlHeader(string title, string css, string style)
+        private void WriteHtmlHeader(string title, string cssPath, string style)
         {
             WriteStartElement("head");
 
             if (title != null)
                 WriteElementString("title", title);
 
-            if (css != null)
+            if (cssPath != null)
             {
                 WriteStartElement("link");
-                WriteAttributeString("href", css);
+                WriteAttributeString("href", cssPath);
                 WriteAttributeString("rel", "stylesheet");
                 WriteAttributeString("type", "text/css");
                 WriteEndElement(); // link
@@ -43,6 +49,9 @@ namespace OxyPlot.Reporting
             WriteStartElement("body");
         }
 
+        /// <summary>
+        /// Closes this instance.
+        /// </summary>
         public override void Close()
         {
             WriteEndElement();
@@ -50,6 +59,10 @@ namespace OxyPlot.Reporting
             base.Close();
         }
 
+        /// <summary>
+        /// Writes the header.
+        /// </summary>
+        /// <param name="h">The h.</param>
         public void WriteHeader(Header h)
         {
             if (h.Text == null)
@@ -60,6 +73,10 @@ namespace OxyPlot.Reporting
             WriteEndElement();
         }
 
+        /// <summary>
+        /// Writes the paragraph.
+        /// </summary>
+        /// <param name="p">The p.</param>
         public void WriteParagraph(Paragraph p)
         {
             WriteClassID(p);
@@ -68,6 +85,10 @@ namespace OxyPlot.Reporting
 
         private int tableCounter;
 
+        /// <summary>
+        /// Writes the class ID.
+        /// </summary>
+        /// <param name="ri">The ri.</param>
         public void WriteClassID(ReportItem ri)
         {
             if (ri.Class != null)
@@ -76,6 +97,10 @@ namespace OxyPlot.Reporting
                 WriteAttributeString("id", ri.ID);
         }
 
+        /// <summary>
+        /// Writes the table.
+        /// </summary>
+        /// <param name="t">The t.</param>
         public void WriteTable(Table t)
         {
             if (t.Items == null)
@@ -99,6 +124,10 @@ namespace OxyPlot.Reporting
             WriteEndElement(); // table
         }
 
+        /// <summary>
+        /// Writes the items.
+        /// </summary>
+        /// <param name="t">The t.</param>
         public void WriteItems(Table t)
         {
             var items = t.Items;
@@ -146,7 +175,7 @@ namespace OxyPlot.Reporting
             }
         }
 
-        public void WriteFlippedItems(Table t)
+        private void WriteFlippedItems(Table t)
         {
             var items = t.Items;
             var rows = t.Columns;
@@ -211,19 +240,23 @@ namespace OxyPlot.Reporting
 
         private int figureCounter;
 
-        public void WriteStartFigure(Figure f)
+        private void WriteStartFigure(Figure f)
         {
             figureCounter++;
             WriteStartElement("p");
             WriteClassID(f);
         }
 
-        public void WriteEndFigure(string text)
+        private void WriteEndFigure(string text)
         {
             WriteDiv("figuretext", String.Format("Fig {0}. {1}", figureCounter, text));
             WriteEndElement();
         }
 
+        /// <summary>
+        /// Writes the image.
+        /// </summary>
+        /// <param name="i">The i.</param>
         public void WriteImage(Image i)
         {
             WriteStartFigure(i);
@@ -234,6 +267,10 @@ namespace OxyPlot.Reporting
             WriteEndFigure(i.FigureText);
         }
 
+        /// <summary>
+        /// Writes the drawing.
+        /// </summary>
+        /// <param name="d">The d.</param>
         public void WriteDrawing(Drawing d)
         {
             WriteStartFigure(d);
@@ -241,13 +278,21 @@ namespace OxyPlot.Reporting
             WriteEndFigure(d.FigureText);
         }
 
-        public void WritePlot(Plot plot)
+        /// <summary>
+        /// Writes the plot.
+        /// </summary>
+        /// <param name="plot">The plot.</param>
+        public void WritePlot(PlotFigure plot)
         {
             WriteStartFigure(plot);
             WriteRaw(plot.PlotModel.ToSvg(plot.Width, plot.Height));
             WriteEndFigure(plot.FigureText);
         }
 
+        /// <summary>
+        /// Writes the equation.
+        /// </summary>
+        /// <param name="equation">The equation.</param>
         public void WriteEquation(Equation equation)
         {
             // todo: convert to MathML?

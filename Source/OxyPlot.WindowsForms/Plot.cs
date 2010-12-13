@@ -15,7 +15,7 @@ namespace Oxyplot.WindowsForms
         public List<MouseAction> MouseActions { get; private set; }
 
         private readonly PanAction panAction;
-        private readonly SliderAction sliderAction;
+        private readonly TrackerAction trackerAction;
         private readonly ZoomAction zoomAction;
         private Rectangle zoomRectangle;
 
@@ -27,12 +27,12 @@ namespace Oxyplot.WindowsForms
 
             panAction = new PanAction(this);
             zoomAction = new ZoomAction(this);
-            sliderAction = new SliderAction(this);
+            trackerAction = new TrackerAction(this);
 
             MouseActions = new List<MouseAction>();
             MouseActions.Add(panAction);
             MouseActions.Add(zoomAction);
-            MouseActions.Add(sliderAction);
+            MouseActions.Add(trackerAction);
         }
 
         private PlotModel model;
@@ -192,11 +192,11 @@ namespace Oxyplot.WindowsForms
             return Model.PlotArea;
         }
 
-        public void ShowSlider(ISeries s, DataPoint dp)
+        public void ShowTracker(ISeries s, DataPoint dp)
         {
         }
 
-        public void HideSlider()
+        public void HideTracker()
         {
         }
 

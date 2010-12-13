@@ -21,21 +21,22 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Draws text supporting sub- and superscript.
-        ///   Subscript: H_{2}O
-        ///   Superscript: E=mc^{2}
-        ///   Both: A^{2}_{i,j}
+        /// Draws text supporting sub- and superscript.
+        /// Subscript: H_{2}O
+        /// Superscript: E=mc^{2}
+        /// Both: A^{2}_{i,j}
         /// </summary>
-        /// <param name = "rc">The rc.</param>
-        /// <param name = "pt">The pt.</param>
-        /// <param name = "text">The text.</param>
-        /// <param name = "textColor">Color of the text.</param>
-        /// <param name = "fontFamily">The font family.</param>
-        /// <param name = "fontSize">Size of the font.</param>
-        /// <param name = "fontWeight">The font weight.</param>
-        /// <param name = "angle">The angle.</param>
-        /// <param name = "ha">The ha.</param>
-        /// <param name = "va">The va.</param>
+        /// <param name="rc">The rc.</param>
+        /// <param name="pt">The pt.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="textColor">Color of the text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The angle.</param>
+        /// <param name="ha">The ha.</param>
+        /// <param name="va">The va.</param>
+        /// <param name="measure">if set to <c>true</c> measure the size of the text.</param>
         /// <returns></returns>
         public static OxySize DrawMathText(this IRenderContext rc, ScreenPoint pt, string text, OxyColor textColor,
                                            string fontFamily, double fontSize, double fontWeight, double angle,
@@ -74,18 +75,16 @@ namespace OxyPlot
 
                 return measure ? size : OxySize.Empty;
             }
-            else
+            
+            rc.DrawText(pt, text, textColor,
+                        fontFamily, fontSize, fontWeight,
+                        angle, ha, va);
+            if (measure)
             {
-                rc.DrawText(pt, text, textColor,
-                            fontFamily, fontSize, fontWeight,
-                            angle, ha, va);
-                if (measure)
-                {
-                    var size = rc.MeasureText(text, fontFamily, fontSize, fontWeight);
-                    return size;
-                }
-                else return OxySize.Empty;
+                return rc.MeasureText(text, fontFamily, fontSize, fontWeight);
             }
+            
+            return OxySize.Empty;
         }
 
         private static OxySize InternalDrawMathText(IRenderContext rc, double x, double y, string s, OxyColor textColor,

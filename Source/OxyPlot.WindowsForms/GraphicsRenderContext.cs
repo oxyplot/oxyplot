@@ -31,6 +31,12 @@ namespace Oxyplot.WindowsForms
             get { return pc.Height; }
         }
 
+        public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        {
+            for (int i = 0; i + 1 < points.Count; i+=2)
+                DrawLine(new[] { points[i], points[i + 1] }, stroke, thickness, dashArray, lineJoin, aliased);
+        }
+
         public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
                              OxyPenLineJoin lineJoin, bool aliased)
         {
@@ -56,7 +62,7 @@ namespace Oxyplot.WindowsForms
         }
 
         public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
-                                double[] dashArray, bool aliased)
+                                double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
 
@@ -70,6 +76,17 @@ namespace Oxyplot.WindowsForms
 
                 if (dashArray != null)
                     pen.DashPattern = ToFloatArray(dashArray);
+              
+                switch (lineJoin)
+                {
+                    case OxyPenLineJoin.Round:
+                        pen.LineJoin = LineJoin.Round;
+                        break;
+                    case OxyPenLineJoin.Bevel:
+                        pen.LineJoin = LineJoin.Bevel;
+                        break;
+                    //  The default LineJoin is Miter
+                }
 
                 g.DrawPolygon(pen, pts);
             }

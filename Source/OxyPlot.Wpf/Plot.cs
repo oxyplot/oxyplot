@@ -19,6 +19,7 @@ namespace OxyPlot.Wpf
     /// Represents a control that displays a plot.
     /// </summary>
     [ContentProperty("Series")]
+    [TemplatePart(Name = Plot.PART_GRID, Type = typeof(Grid))]
     public class Plot : Control, IPlot
     {
         public static readonly DependencyProperty PlotMarginsProperty =
@@ -48,8 +49,8 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("RenderAsShapes", typeof(bool), typeof(Plot),
                                         new UIPropertyMetadata(true, RenderAsShapesChanged));
 
-        public static readonly DependencyProperty SliderTemplateProperty =
-            DependencyProperty.Register("SliderTemplate", typeof(DataTemplate), typeof(Plot),
+        public static readonly DependencyProperty TrackerTemplateProperty =
+            DependencyProperty.Register("TrackerTemplate", typeof(DataTemplate), typeof(Plot),
                                         new UIPropertyMetadata(null));
 
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
@@ -86,12 +87,12 @@ namespace OxyPlot.Wpf
 
         private PlotFrame plotAliasedFrame;
         private PlotFrame plotFrame;
-        private Slider slider;
+        private Tracker tracker;
 
         public List<MouseAction> MouseActions { get; private set; }
 
         private readonly PanAction panAction;
-        private readonly SliderAction sliderAction;
+        private readonly TrackerAction trackerAction;
         private readonly ZoomAction zoomAction;
 
         private ContentControl zoomControl;
@@ -107,14 +108,13 @@ namespace OxyPlot.Wpf
 
         public Plot()
         {
-            BeginInit();
             Background = Brushes.Transparent;
 
             panAction = new PanAction(this);
             zoomAction = new ZoomAction(this);
-            sliderAction = new SliderAction(this);
+            trackerAction = new TrackerAction(this);
 
-            MouseActions = new List<MouseAction> { panAction, zoomAction, sliderAction };
+            MouseActions = new List<MouseAction> { panAction, zoomAction, trackerAction };
 
             series = new ObservableCollection<DataSeries>();
             axes = new ObservableCollection<Axis>();
@@ -126,7 +126,6 @@ namespace OxyPlot.Wpf
             SizeChanged += OnSizeChanged;
 
             CompositionTarget.Rendering += CompositionTargetRendering;
-            EndInit();
 
             // CommandBindings.Add(new KeyBinding())
         }
@@ -193,10 +192,10 @@ namespace OxyPlot.Wpf
             set { SetValue(BoxColorProperty, value); }
         }
 
-        public DataTemplate SliderTemplate
+        public DataTemplate TrackerTemplate
         {
-            get { return (DataTemplate)GetValue(SliderTemplateProperty); }
-            set { SetValue(SliderTemplateProperty, value); }
+            get { return (DataTemplate)GetValue(TrackerTemplateProperty); }
+            set { SetValue(TrackerTemplateProperty, value); }
         }
 
         public bool RenderAsShapes
@@ -354,9 +353,9 @@ namespace OxyPlot.Wpf
             overlays = new Canvas();
             grid.Children.Add(overlays);
 
-            // Slider
-            slider = new Slider();
-            overlays.Children.Add(slider);
+            // Tracker
+            tracker = new Tracker();
+            overlays.Children.Add(tracker);
 
             zoomControl = new ContentControl();
             overlays.Children.Add(zoomControl);
@@ -382,9 +381,9 @@ namespace OxyPlot.Wpf
                 if (plotFrame != null)
                 {
                     grid.Children.Remove(plotFrame);
-                    grid.Children.Remove(plotAliasedFrame);
+                  //  grid.Children.Remove(plotAliasedFrame);
                     plotFrame = null;
-                    plotAliasedFrame = null;
+                  //  plotAliasedFrame = null;
                 }
             }
             else
@@ -511,11 +510,15 @@ namespace OxyPlot.Wpf
 
             if (canvas != null)
             {
-                int idx=grid.Children.IndexOf(canvas);
+                // todo: trying to disconnect the canvas - not sure if this works...
+                int idx = grid.Children.IndexOf(canvas);
                 grid.Children.RemoveAt(idx);
+
                 var wrc = new ShapesRenderContext(canvas);
                 internalModel.Render(wrc);
-                grid.Children.Insert(idx,canvas);
+                
+                // reinsert the canvas again
+                grid.Children.Insert(idx, canvas);
             }
 
             if (plotFrame != null)
@@ -559,7 +562,7 @@ namespace OxyPlot.Wpf
         {
             var sb = new StringBuilder();
             var tw = new StringWriter(sb);
-            var xw = new XmlTextWriter(tw) { Formatting = Formatting.Indented };
+            var xw = XmlWriter.Create(tw, new XmlWriterSettings() { Indent = true });
             if (canvas != null)
                 XamlWriter.Save(canvas, xw);
             xw.Close();
@@ -605,20 +608,21 @@ namespace OxyPlot.Wpf
             return internalModel.GetSeriesFromPoint(pt, limit);
         }
 
-        public void ShowSlider(OxyPlot.ISeries s, DataPoint dp)
+        public void ShowTracker(OxyPlot.ISeries s, DataPoint dp)
         {
             var ds = s as OxyPlot.DataSeries;
             if (ds != null)
             {
-                slider.ContentTemplate = SliderTemplate;
-                slider.SetPosition(dp, ds);
-            } else 
-                HideSlider();
+                tracker.ContentTemplate = TrackerTemplate;
+                tracker.SetPosition(dp, ds);
+            }
+            else
+                HideTracker();
         }
 
-        public void HideSlider()
+        public void HideTracker()
         {
-            slider.Hide();
+            tracker.Hide();
         }
 
         public void Pan(IAxis axis, double dx)

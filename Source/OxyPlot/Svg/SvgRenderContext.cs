@@ -24,14 +24,20 @@ namespace OxyPlot
 
         public double Height { get; private set; }
 
-        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
-            WritePolyline(points, CreateStyle(null, stroke, thickness, dashArray));
+            for (int i = 0; i + 1 < points.Count; i+=2)
+                DrawLine(new[] { points[i], points[i + 1] }, stroke, thickness, dashArray, lineJoin, aliased);
         }
 
-        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, bool aliased)
+        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
-            WritePolygon(points, CreateStyle(fill, stroke, thickness, dashArray));
+            WritePolyline(points, CreateStyle(null, stroke, thickness, dashArray, lineJoin));
+        }
+
+        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        {
+            WritePolygon(points, CreateStyle(fill, stroke, thickness, dashArray, lineJoin));
         }
 
         public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
@@ -51,7 +57,7 @@ namespace OxyPlot
         {
             if (String.IsNullOrEmpty(text))
                 return OxySize.Empty;
-            
+
             // todo: should improve text measuring, currently using p/invoke on GDI32
             // is it better to use winforms or wpf text measuring?
 

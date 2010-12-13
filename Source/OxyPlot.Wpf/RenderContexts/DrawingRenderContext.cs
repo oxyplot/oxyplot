@@ -16,28 +16,24 @@ namespace OxyPlot.Wpf
         public DrawingRenderContext(DrawingContext dc, double width, double height)
         {
             this.dc = dc;
-            this.Width = width;
-            this.Height = height;
+            Width = width;
+            Height = height;
         }
 
         public double Width { get; private set; }
         public double Height { get; private set; }
 
-        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+                                     OxyPenLineJoin lineJoin, bool aliased)
         {
-            var pen = CreatePen(stroke, thickness, dashArray);
+            for (int i = 0; i + 1 < points.Count; i += 2)
+                DrawLine(new[] {points[i], points[i + 1]}, stroke, thickness, dashArray, lineJoin, aliased);
+        }
 
-            switch (lineJoin)
-            {
-                case OxyPenLineJoin.Round:
-                    pen.LineJoin = PenLineJoin.Round;
-                    break;
-                case OxyPenLineJoin.Bevel:
-                    pen.LineJoin = PenLineJoin.Bevel;
-                    break;
-                //  The default LineJoin is Miter
-            }
-
+        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+                             OxyPenLineJoin lineJoin, bool aliased)
+        {
+            var pen = CreatePen(stroke, thickness, dashArray, lineJoin);
 
             // todo: alias line
             //            if (aliased)
@@ -57,14 +53,25 @@ namespace OxyPlot.Wpf
             }
         }
 
-        private static System.Windows.Media.Pen CreatePen(OxyColor stroke, double thickness, double[] dashArray)
+        private static Pen CreatePen(OxyColor stroke, double thickness, double[] dashArray,
+                                     OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
             if (stroke == null)
                 return null;
-            var pen = new System.Windows.Media.Pen(stroke.ToBrush(), thickness);
+            var pen = new Pen(stroke.ToBrush(), thickness);
             if (dashArray != null)
             {
                 pen.DashStyle = new DashStyle(dashArray, 0);
+            }
+            switch (lineJoin)
+            {
+                case OxyPenLineJoin.Round:
+                    pen.LineJoin = PenLineJoin.Round;
+                    break;
+                case OxyPenLineJoin.Bevel:
+                    pen.LineJoin = PenLineJoin.Bevel;
+                    break;
+                    //  The default LineJoin is Miter
             }
             return pen;
         }
@@ -92,19 +99,21 @@ namespace OxyPlot.Wpf
             return geometry;
         }
 
-        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, bool aliased)
+        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
+                                double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             Brush brush = null;
             if (fill != null)
                 brush = fill.ToBrush();
 
-            var pen = CreatePen(stroke, thickness, dashArray);
+            var pen = CreatePen(stroke, thickness, dashArray, lineJoin);
             var g = CreateGeometry(points, true);
 
             dc.DrawGeometry(brush, pen, g);
         }
 
-        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
+                                  double thickness)
         {
             Brush brush = null;
             if (fill != null)
@@ -113,18 +122,20 @@ namespace OxyPlot.Wpf
             dc.DrawRectangle(brush, pen, new Rect(x, y, width, height));
         }
 
-        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
+                                double thickness)
         {
             Brush brush = null;
             if (fill != null)
                 brush = fill.ToBrush();
 
             var pen = CreatePen(stroke, thickness, null);
-            var center = new Point(x + width / 2, y + height / 2);
-            dc.DrawEllipse(brush, pen, center, width / 2, height / 2);
+            var center = new Point(x + width/2, y + height/2);
+            dc.DrawEllipse(brush, pen, center, width/2, height/2);
         }
 
-        public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
+        public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
+                             double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
         {
             if (text == null)
                 return;
@@ -141,13 +152,13 @@ namespace OxyPlot.Wpf
 
             double dx = 0;
             if (halign == HorizontalTextAlign.Center)
-                dx = -w / 2;
+                dx = -w/2;
             if (halign == HorizontalTextAlign.Right)
                 dx = -w;
 
             double dy = 0;
             if (valign == VerticalTextAlign.Middle)
-                dy = -h / 2;
+                dy = -h/2;
             if (valign == VerticalTextAlign.Bottom)
                 dy = -h;
 
@@ -165,11 +176,12 @@ namespace OxyPlot.Wpf
             dc.Pop();
         }
 
-        private FormattedText CreateFormattedText(string text, string fontFamily, double fontWeight, double fontSize, OxyColor fill)
+        private FormattedText CreateFormattedText(string text, string fontFamily, double fontWeight, double fontSize,
+                                                  OxyColor fill)
         {
             var fw = FontWeights.Normal;
             if (fontWeight >= 1 && fontWeight <= 999)
-                fw = FontWeight.FromOpenTypeWeight((int)fontWeight);
+                fw = FontWeight.FromOpenTypeWeight((int) fontWeight);
 
             var typeface = new Typeface(
                 new FontFamily(fontFamily),
@@ -178,8 +190,8 @@ namespace OxyPlot.Wpf
                 FontStretches.Normal);
 
             return new FormattedText(text, CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                typeface, fontSize, fill.ToBrush());
+                                     FlowDirection.LeftToRight,
+                                     typeface, fontSize, fill.ToBrush());
         }
 
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)

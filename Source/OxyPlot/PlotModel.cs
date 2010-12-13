@@ -461,8 +461,8 @@ namespace OxyPlot
         public void RenderBox(IRenderContext rc)
         {
             var pp = new PlotRenderingHelper(rc, this);
-            rc.DrawRectangle(PlotArea, Background, BoxColor, BoxThickness);
             pp.RenderTitle(Title, Subtitle);
+
             foreach (var s in Series)
             {
                 var ls = s as LineSeries;
@@ -477,6 +477,11 @@ namespace OxyPlot
                     ls.YAxis.ScreenMax.Y - ls.YAxis.ScreenMin.Y);
                 rc.DrawRectangle(axisBounds, ls.Background, null, 0);
             }
+
+            // Render the box around the plot
+            rc.DrawRectangle(PlotArea, Background, BoxColor, BoxThickness);
+
+            // Render the legends
             pp.RenderLegends();
         }
 
