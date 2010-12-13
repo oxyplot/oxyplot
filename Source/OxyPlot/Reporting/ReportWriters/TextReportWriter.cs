@@ -94,7 +94,7 @@ namespace OxyPlot.Reporting
         {
         }
 
-        public void WritePlot(Plot plot)
+        public void WritePlot(PlotFigure plot)
         {
         }
 

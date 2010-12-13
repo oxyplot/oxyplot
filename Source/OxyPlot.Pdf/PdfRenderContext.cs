@@ -30,6 +30,12 @@ namespace OxyPlot.Pdf
         public double Width { get; private set; }
         public double Height { get; private set; }
 
+        public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        {
+            for (int i = 0; i + 1 < points.Count; i += 2)
+                DrawLine(new[] { points[i], points[i + 1] }, stroke, thickness, dashArray, lineJoin, aliased);
+        }
+
         public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
                              OxyPenLineJoin lineJoin, bool aliased)
         {
@@ -57,7 +63,7 @@ namespace OxyPlot.Pdf
         }
 
         public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
-                                double[] dashArray, bool aliased)
+                                double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             g.SmoothingMode = aliased ? XSmoothingMode.None : XSmoothingMode.HighQuality;
 
@@ -73,11 +79,22 @@ namespace OxyPlot.Pdf
                 if (dashArray != null)
                     pen.DashPattern = dashArray;
 
+                switch (lineJoin)
+                {
+                    case OxyPenLineJoin.Round:
+                        pen.LineJoin = XLineJoin.Round;
+                        break;
+                    case OxyPenLineJoin.Bevel:
+                        pen.LineJoin = XLineJoin.Bevel;
+                        break;
+                    //  The default LineJoin is Miter
+                }
+
                 g.DrawPolygon(pen, pts);
             }
         }
 
-    
+
         public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
                              double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
         {

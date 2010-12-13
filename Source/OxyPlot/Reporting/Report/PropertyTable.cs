@@ -19,6 +19,13 @@ namespace OxyPlot.Reporting
                 return;
             Columns.Clear();
 
+#if SILVERLIGHT
+            foreach (var pi in type.GetProperties())
+            {
+                var header = pi.Name;
+                Columns.Add(new TableColumn(header, pi.Name));
+            }
+#else
             foreach (PropertyDescriptor p in TypeDescriptor.GetProperties(type))
             {
                 if (!p.IsBrowsable)
@@ -26,6 +33,8 @@ namespace OxyPlot.Reporting
                 var header = p.DisplayName ?? p.Name;
                 Columns.Add(new TableColumn(header, p.Name));
             }
+#endif
+
             base.Update();
         }
 

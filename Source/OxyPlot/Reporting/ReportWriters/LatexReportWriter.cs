@@ -184,7 +184,7 @@ namespace OxyPlot.Reporting
         {
         }
 
-        public void WritePlot(Plot plot)
+        public void WritePlot(PlotFigure plot)
         {
             //string path = "plot" + plotNumber + ".pdf";
             //PdfExporter.Export(Model, pdfPlotFileName, 800, 500);                   

@@ -55,6 +55,7 @@
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
     <Compile Include="PngExporter.cs" />
+    <None Include="RenderContexts\GeometryRenderContext.cs" />
     <Compile Include="RenderContexts\DrawingRenderContext.cs" />
     <Compile Include="PlotFrame.cs" />
     <Compile Include="Series\AreaSeries.cs" />
@@ -62,7 +63,7 @@
     <Compile Include="Plot.cs" />
     <Compile Include="Series\DataSeries.cs" />
     <Compile Include="Helpers\ConverterExtensions.cs" />
-    <Compile Include="Slider.cs" />
+    <Compile Include="Tracker.cs" />
     <Compile Include="RenderContexts\ShapesRenderContext.cs" />
   </ItemGroup>
   <ItemGroup>

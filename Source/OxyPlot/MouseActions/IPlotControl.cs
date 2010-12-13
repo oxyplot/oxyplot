@@ -13,8 +13,8 @@
         void ZoomAt(IAxis axis, double factor, double x);
         OxyRect GetPlotArea();
         
-        void ShowSlider(ISeries s, DataPoint dp);
-        void HideSlider();
+        void ShowTracker(ISeries s, DataPoint dp);
+        void HideTracker();
         void ShowZoomRectangle(OxyRect r);
         void HideZoomRectangle();
     }

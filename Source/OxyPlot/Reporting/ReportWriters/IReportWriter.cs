@@ -10,7 +10,7 @@
         void WriteTable(Table t);
         void WriteImage(Image i);
         void WriteDrawing(Drawing d);
-        void WritePlot(Plot plot);
+        void WritePlot(PlotFigure plot);
         void WriteEquation(Equation equation);
     }
 }

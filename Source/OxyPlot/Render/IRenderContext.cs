@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OxyPlot
 {
@@ -27,11 +28,20 @@ namespace OxyPlot
         double Width { get; }
         double Height { get; }
 
+        // bool CanSetClipRectangle { get; }
+        // void SetClipRectangle(OxyRect rect);
+
+        void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness = 1.0,
+                      double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, bool aliased = false);
+
         void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness = 1.0,
                       double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, bool aliased = false);
 
         void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness = 1.0,
-                         double[] dashArray = null, bool aliased = false);
+                         double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, bool aliased = false);
+
+        //void DrawPolygons(IEnumerable<ScreenPoint[]> polygons, OxyColor fill, OxyColor stroke, double thickness = 1.0,
+        //                 double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, bool aliased = false);
 
         void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
                            double thickness = 1.0);
@@ -45,4 +55,5 @@ namespace OxyPlot
 
         OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500);
     }
+
 }

@@ -38,7 +38,7 @@
 
                     if (MinorPen != null)
                     {
-                        rc.DrawLine(axis.MidPoint.x, axis.MidPoint.y, pt.x, pt.y, MinorPen, OxyPenLineJoin.Miter, false);
+                        rc.DrawLine(axis.MidPoint.x, axis.MidPoint.y, pt.x, pt.y, MinorPen, false);
                     }
 
                     // RenderGridline(x, y + y0, x, y + y1, minorTickPen);
@@ -58,7 +58,7 @@
 
                 if (MajorPen != null)
                 {
-                    rc.DrawLine(axis.MidPoint.x, axis.MidPoint.y, pt.x, pt.y, MajorPen, OxyPenLineJoin.Miter, false);
+                    rc.DrawLine(axis.MidPoint.x, axis.MidPoint.y, pt.x, pt.y, MajorPen, false);
                 }
 
                 // RenderGridline(x, y + y0, x, y + y1, majorTickPen);

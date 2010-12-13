@@ -1,28 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Xml;
 
 namespace OxyPlot
 {
-    public class SvgWriter : XmlTextWriter
+    /// <summary>
+    /// Scalable Vector Graphics writer.
+    /// </summary>
+    public class SvgWriter : XmlWriterBase
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether this writer should produce a stand-alone document.
+        /// </summary>
         public bool IsDocument { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number format.
+        /// </summary>
+        /// <value>The number format.</value>
         public string NumberFormat { get; set; }
 
-        public SvgWriter(Stream s, double width, double height, bool isDocument = true) :
-            base(s, Encoding.UTF8)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SvgWriter"/> class.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="isDocument">if set to <c>true</c> [is document].</param>
+        public SvgWriter(Stream stream, double width, double height, bool isDocument = true)
+            : base(stream)
         {
             IsDocument = isDocument;
             NumberFormat = "0.####";
             WriteHeader(width, height);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SvgWriter"/> class.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
         public SvgWriter(string path, double width, double height)
-            : base(path, Encoding.UTF8)
+            : base(path)
         {
             IsDocument = true;
             NumberFormat = "0.####";
@@ -31,7 +53,6 @@ namespace OxyPlot
 
         private void WriteHeader(double width, double height)
         {
-            this.Formatting = Formatting.Indented;
 
             // http://www.w3.org/TR/SVG/struct.html#SVGElement
 
@@ -40,11 +61,10 @@ namespace OxyPlot
                 WriteStartDocument(false);
                 WriteDocType("svg", "-//W3C//DTD SVG 1.1//EN", "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd", null);
             }
-            WriteStartElement("svg");
+            WriteStartElement("svg", "http://www.w3.org/2000/svg");
             WriteAttributeString("width", GetAutoValue(width, "100%"));
             WriteAttributeString("height", GetAutoValue(height, "100%"));
             WriteAttributeString("version", "1.1");
-            WriteAttributeString("xmlns", "http://www.w3.org/2000/svg");
         }
 
         private string GetAutoValue(double value, string auto)
@@ -61,7 +81,7 @@ namespace OxyPlot
             return String.Format("rgb({0:" + NumberFormat + "},{1:" + NumberFormat + "},{2:" + NumberFormat + "})", color.R, color.G, color.B);
         }
 
-        public string CreateStyle(OxyColor fill, OxyColor stroke, double thickness, double[] dashArray)
+        public string CreateStyle(OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
             // http://oreilly.com/catalog/svgess/chapter/ch03.html
             var style = new StringBuilder();
@@ -80,16 +100,27 @@ namespace OxyPlot
 
             }
             else
-                style.AppendFormat("stroke:{0};stroke-width:{1:" + NumberFormat + "}", ColorToString(stroke), thickness);
-
-            if (stroke != null && stroke.A != 0xFF)
-                style.AppendFormat(CultureInfo.InvariantCulture, ";stroke-opacity:{0}", stroke.A / 255.0);
-
-            if (dashArray != null && dashArray.Length > 0)
             {
-                style.Append(";stroke-dasharray:");
-                for (int i = 0; i < dashArray.Length; i++)
-                    style.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}", i > 0 ? "," : "", dashArray[i]);
+                style.AppendFormat("stroke:{0};stroke-width:{1:" + NumberFormat + "}", ColorToString(stroke), thickness);
+                switch (lineJoin)
+                {
+                    case OxyPenLineJoin.Round:
+                        style.AppendFormat(";stroke-linejoin:round");
+                        break;
+                    case OxyPenLineJoin.Bevel:
+                        style.AppendFormat(";stroke-linejoin:bevel");
+                        break;
+                }
+
+                if (stroke.A != 0xFF)
+                    style.AppendFormat(CultureInfo.InvariantCulture, ";stroke-opacity:{0}", stroke.A/255.0);
+
+                if (dashArray != null && dashArray.Length > 0)
+                {
+                    style.Append(";stroke-dasharray:");
+                    for (int i = 0; i < dashArray.Length; i++)
+                        style.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}", i > 0 ? "," : "", dashArray[i]);
+                }
             }
             return style.ToString();
         }
