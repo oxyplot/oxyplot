@@ -14,7 +14,8 @@
                 <Separator/>
                 <MenuItem Header="Save html5 report..." Name="SaveHtmlReport"/>
                 <MenuItem Header="Save LaTeX report..." Name="SaveLatexReport"/>
-                <MenuItem Header="Save pdf report..." IsEnabled="False" Name="SavePdfReport"/>
+                <MenuItem Header="Save pdf report..." Name="SavePdfReport"/>
+                <MenuItem Header="Save rtf report..." Name="SaveRtfReport"/>
                 <Separator/>
                 <MenuItem Header="Exit" Name="Exit"/>
             </MenuItem>

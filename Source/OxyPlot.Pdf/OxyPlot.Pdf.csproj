@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RtfReportWriter.cs" />
     <Compile Include="PdfExporter.cs" />
     <Compile Include="PdfRenderContext.cs" />
     <Compile Include="PdfReportWriter.cs" />

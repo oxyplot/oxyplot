@@ -33,6 +33,42 @@ namespace OxyPlot.Reporting
                 child.Write(w);
         }
 
+        private class FigureCounter
+        {
+            public int FigureNumber { get; set; }
+            public int TableNumber { get; set; }
+
+            public FigureCounter()
+            {
+                FigureNumber = 1;
+                TableNumber = 1;
+            }
+        }
+
+        protected void UpdateFigureNumbers()
+        {
+            var fc = new FigureCounter();
+            UpdateFigureNumbers(fc);    
+        }
+
+        private void UpdateFigureNumbers(FigureCounter fc)
+        {
+            var table = this as Table;
+            if (table!=null)
+            {
+                table.TableNumber = fc.TableNumber++;
+            }
+            
+            var figure = this as Figure;
+            if (figure != null)
+            {
+                figure.FigureNumber = fc.FigureNumber++;
+            }
+
+            foreach (var child in Children)
+                child.UpdateFigureNumbers(fc);
+        }
+
         public virtual void Update()
         {
         }

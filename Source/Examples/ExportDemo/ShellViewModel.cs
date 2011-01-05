@@ -130,8 +130,15 @@ thead { border:solid 1px black; }
                     r.Write(hw);
                 }
             }
+
             if (ext == ".pdf")
                 using (var pw = new PdfReportWriter(fileName))
+                {
+                    r.Write(pw);
+                }
+
+            if (ext == ".rtf")
+                using (var pw = new RtfReportWriter(fileName))
                 {
                     r.Write(pw);
                 }
@@ -252,6 +259,16 @@ thead { border:solid 1px black; }
             if (path != null)
             {
                 PdfExporter.Export(Model, path, Plot.ActualWidth, Plot.ActualHeight);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SaveRtfReport()
+        {
+            var path = GetFilename(".rtf files|*.rtf", ".rtf");
+            if (path != null)
+            {
+                SaveReport(path);
                 OpenContainingFolder(path);
             }
         }
