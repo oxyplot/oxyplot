@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,10 +7,19 @@ namespace OxyPlot.Reporting
 {
     public class Table : ReportItem
     {
+        private const string CAPTION_FORMAT_STRING = "Table {0}. {1}";
+
         public IList<TableColumn> Columns { get; set; }
         public string Caption { get; set; }
         public IEnumerable Items { get; set; }
         public bool Transposed { get; set; }
+
+        public int TableNumber { get; set;}
+
+        public string FullCaption
+        {
+            get { return String.Format(CAPTION_FORMAT_STRING, TableNumber, Caption); }
+        }
 
         public Table()
         {
