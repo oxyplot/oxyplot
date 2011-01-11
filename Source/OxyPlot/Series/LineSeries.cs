@@ -145,8 +145,10 @@ namespace OxyPlot
             double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
 
             var clipping = new CohenSutherlandClipping(
-                XAxis.ScreenMin.X, XAxis.ScreenMax.X,
-                YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);
+                Math.Min(XAxis.ScreenMin.X, XAxis.ScreenMax.X),
+                Math.Max(XAxis.ScreenMin.X, XAxis.ScreenMax.X),
+                Math.Min(YAxis.ScreenMin.Y, YAxis.ScreenMax.Y),
+                Math.Max(YAxis.ScreenMin.Y, YAxis.ScreenMax.Y));
 
             int n = InternalPoints.Count;
 
