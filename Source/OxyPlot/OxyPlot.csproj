@@ -39,10 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Axes\DateTimeAxis.cs" />
     <Compile Include="Axes\IAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\AxisBase.cs" />
-    <Compile Include="Axes\TimeAxis.cs" />
+    <Compile Include="Axes\TimeSpanAxis.cs" />
     <Compile Include="Foundation\CanonicalSplineHelper.cs" />
     <Compile Include="Foundation\OxyThickness.cs" />
     <Compile Include="Foundation\ScreenPoint.cs" />

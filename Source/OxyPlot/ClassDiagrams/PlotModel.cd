@@ -61,11 +61,11 @@
       <FileName>Axes\LogarithmicAxis.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OxyPlot.TimeAxis" Collapsed="true">
+  <Class Name="OxyPlot.TimeSpanAxis" Collapsed="true">
     <Position X="8.25" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
-      <FileName>Axes\TimeAxis.cs</FileName>
+      <FileName>Axes\TimeSpanAxis.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.AxisBase" Collapsed="true">

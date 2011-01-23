@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportDemo", "Examples\Expo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScatterDemo", "Examples\ScatterDemo\ScatterDemo.csproj", "{1055E2A1-DED0-46B0-8485-6FB205A7386F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DateTimeDemo", "Examples\DateTimeDemo\DateTimeDemo.csproj", "{552CCB0C-A235-47D4-BE2F-9C023DC5636F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -205,6 +207,16 @@ Global
 		{1055E2A1-DED0-46B0-8485-6FB205A7386F}.Release|Mixed Platforms.Build.0 = Release|x86
 		{1055E2A1-DED0-46B0-8485-6FB205A7386F}.Release|x86.ActiveCfg = Release|x86
 		{1055E2A1-DED0-46B0-8485-6FB205A7386F}.Release|x86.Build.0 = Release|x86
+		{552CCB0C-A235-47D4-BE2F-9C023DC5636F}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{552CCB0C-A235-47D4-BE2F-9C023DC5636F}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{552CCB0C-A235-47D4-BE2F-9C023DC5636F}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{552CCB0C-A235-47D4-BE2F-9C023DC5636F}.Debug|x86.ActiveCfg = Debug|x86
+		{552CCB0C-A235-47D4-BE2F-9C023DC5636F}.Debug|x86.Build.0 = Debug|x86
+		{552CCB0C-A235-47D4-BE2F-9C023DC5636F}.Release|Any CPU.ActiveCfg = Release|x86
+		{552CCB0C-A235-47D4-BE2F-9C023DC5636F}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{552CCB0C-A235-47D4-BE2F-9C023DC5636F}.Release|Mixed Platforms.Build.0 = Release|x86
+		{552CCB0C-A235-47D4-BE2F-9C023DC5636F}.Release|x86.ActiveCfg = Release|x86
+		{552CCB0C-A235-47D4-BE2F-9C023DC5636F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -221,5 +233,6 @@ Global
 		{C8D018D6-F333-4A56-8E76-6EFD7480C633} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{11B45D63-8D63-4527-A537-41F6E8B4F9C0} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{1055E2A1-DED0-46B0-8485-6FB205A7386F} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
+		{552CCB0C-A235-47D4-BE2F-9C023DC5636F} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 	EndGlobalSection
 EndGlobal

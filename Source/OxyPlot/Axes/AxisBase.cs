@@ -538,7 +538,7 @@ namespace OxyPlot
         /// <summary>
         /// Updates the minor/major step intervals if they are undefined.
         /// </summary>
-        public void UpdateIntervals(double dx, double dy)
+        public virtual void UpdateIntervals(double dx, double dy)
         {
             double labelSize = GetLabelSize();
             double length = IsHorizontal() ? dx : dy;
@@ -560,7 +560,7 @@ namespace OxyPlot
             ActualStringFormat = StringFormat;
         }
 
-        private double GetLabelSize()
+        protected virtual double GetLabelSize()
         {
             // todo: this could be dependent on the stringformat 
             // and min/max numbers

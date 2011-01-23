@@ -31,6 +31,8 @@ namespace SimpleDemo
             tmp.Series.Add(series2);
 
             // Axes are created automatically
+            //tmp.Axes.Add(new LinearAxis(AxisPosition.Left) {StartPosition = 1, EndPosition = 0});
+            //tmp.Axes.Add(new LinearAxis(AxisPosition.Bottom) { StartPosition = 1, EndPosition = 0 });
 
             // Set the Model property, this will make the WPF Plot update its content
             Model = tmp;

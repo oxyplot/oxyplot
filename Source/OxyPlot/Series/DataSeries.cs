@@ -210,13 +210,26 @@ namespace OxyPlot
                     }
                 }
 
-                var x = (double)pix.GetValue(o, null);
-                var y = (double)piy.GetValue(o, null);
+                var x = ToDouble(pix.GetValue(o, null));
+                var y = ToDouble(piy.GetValue(o, null));
 
 
                 var pp = new DataPoint(x, y);
                 InternalPoints.Add(pp);
             }
+        }
+        
+        protected virtual double ToDouble(object value)
+        {
+            if (value is DateTime)
+            {
+                return DateTimeAxis.ToDouble((DateTime) value);
+            }
+            if (value is TimeSpan)
+            {
+                return ((TimeSpan) value).TotalSeconds;
+            }
+            return Convert.ToDouble(value);    
         }
 
         public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
