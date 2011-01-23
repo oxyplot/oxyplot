@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axes\Axis.cs" />
+    <Compile Include="Axes\DateTimeAxis.cs" />
     <Compile Include="Axes\TimeSpanAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />

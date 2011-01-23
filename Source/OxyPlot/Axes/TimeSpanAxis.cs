@@ -2,7 +2,7 @@
 using System.Linq;
 
 namespace OxyPlot
-{
+{   
     /// <summary>
     ///   Time Axis
     ///   The values should be in seconds.
@@ -13,7 +13,7 @@ namespace OxyPlot
     public class TimeSpanAxis : LinearAxis
     {
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TimeAxis" /> class.
+        ///   Initializes a new instance of the <see cref = "TimeSpanAxis" /> class.
         /// </summary>
         /// <param name = "pos">The position.</param>
         /// <param name = "title">The axis title.</param>
@@ -25,7 +25,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TimeAxis" /> class.
+        ///   Initializes a new instance of the <see cref = "TimeSpanAxis" /> class.
         /// </summary>
         /// <param name = "pos">The position.</param>
         /// <param name = "min">The min.</param>
