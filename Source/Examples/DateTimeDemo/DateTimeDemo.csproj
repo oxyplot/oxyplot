@@ -2,21 +2,22 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{698CCD8E-ADCC-4565-8517-5EDD36F07155}</ProjectGuid>
-    <OutputType>library</OutputType>
+    <ProjectGuid>{552CCB0C-A235-47D4-BE2F-9C023DC5636F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OxyPlot.Wpf</RootNamespace>
-    <AssemblyName>OxyPlot.Wpf</AssemblyName>
+    <RootNamespace>DateTimeDemo</RootNamespace>
+    <AssemblyName>DateTimeDemo</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,14 +26,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\OxyPlot.Wpf.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,21 +51,22 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Axes\Axis.cs" />
-    <Compile Include="Axes\TimeSpanAxis.cs" />
-    <Compile Include="Axes\LinearAxis.cs" />
-    <Compile Include="Axes\LogarithmicAxis.cs" />
-    <Compile Include="PngExporter.cs" />
-    <None Include="RenderContexts\GeometryRenderContext.cs" />
-    <Compile Include="RenderContexts\DrawingRenderContext.cs" />
-    <Compile Include="PlotFrame.cs" />
-    <Compile Include="Series\AreaSeries.cs" />
-    <Compile Include="Series\LineSeries.cs" />
-    <Compile Include="Plot.cs" />
-    <Compile Include="Series\DataSeries.cs" />
-    <Compile Include="Helpers\ConverterExtensions.cs" />
-    <Compile Include="Tracker.cs" />
-    <Compile Include="RenderContexts\ShapesRenderContext.cs" />
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -91,16 +93,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
+    <ProjectReference Include="..\..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
+      <Project>{698CCD8E-ADCC-4565-8517-5EDD36F07155}</Project>
+      <Name>OxyPlot.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OxyPlot\OxyPlot.csproj">
       <Project>{87F519B8-5A2F-48C6-AD53-C5F13A82EA6B}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

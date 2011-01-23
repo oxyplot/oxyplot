@@ -2,6 +2,10 @@
 
 namespace OxyPlot
 {
+    /// <summary>
+    /// A point defined in the screen coordinate system.
+    /// The rendering methods transforms DataPoints to ScreenPoints.
+    /// </summary>
     public struct ScreenPoint
     {
         public static readonly ScreenPoint Undefined = new ScreenPoint(double.NaN, double.NaN);
@@ -32,10 +36,15 @@ namespace OxyPlot
             return x + " " + y;
         }
 
-        public double DistanceTo(ScreenPoint pt)
+        /// <summary>
+        /// Gets the distances to the specified point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <returns></returns>
+        public double DistanceTo(ScreenPoint point)
         {
-            double dx = pt.x - x;
-            double dy = pt.y - y;
+            double dx = point.x - x;
+            double dy = point.y - y;
             return Math.Sqrt(dx*dx + dy*dy);
         }
     }
