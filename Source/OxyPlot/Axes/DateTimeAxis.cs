@@ -68,6 +68,8 @@ namespace OxyPlot
     /// </summary>
     public class DateTimeAxis : LinearAxis
     {
+        // TODO: this class needs some clean-up
+
         private const string DefaultFormat = "yyyy-MM-dd";
 
         internal static DateTime time0 = new DateTime(1900, 1, 1);
@@ -82,7 +84,7 @@ namespace OxyPlot
         /// <param name = "title">The axis title.</param>
         /// <param name = "format">The string format for the axis values.</param>
         /// <param name = "intervalType">The interval type.</param>
-        public DateTimeAxis(AxisPosition pos, string title = null, string format = DefaultFormat,
+        public DateTimeAxis(AxisPosition pos = AxisPosition.Bottom, string title = null, string format = DefaultFormat,
                             DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
             : base(pos, title)
         {
@@ -164,12 +166,14 @@ namespace OxyPlot
             if (interval > 7)
                 return CreateDateTickValues(min, max, interval, intervalType);
 
-            // For shorter step sizes we use the standard method
+            // For shorter step sizes we use the method from AxisBase
             return CreateTickValues(min, max, interval);
         }
 
         protected override double GetLabelSize()
         {
+            // todo: should measure sample DateTimes (min/max?) using the ActualStringFormat to get the size of the label
+
             switch (position)
             {
                 case AxisPosition.Top:
@@ -178,6 +182,7 @@ namespace OxyPlot
             }
             return base.GetLabelSize();
         }
+
         public override void UpdateIntervals(double dx, double dy)
         {
             base.UpdateIntervals(dx, dy);
@@ -224,12 +229,16 @@ namespace OxyPlot
             }
         }
 
-        private ICollection<double> CreateDateTickValues(double min, double max, double step,
-                                                         DateTimeIntervalType intervalType)
+        private static ICollection<double> CreateDateTickValues(double min, double max, double step, DateTimeIntervalType intervalType)
         {
             DateTime start = ToDateTime(min);
             switch (intervalType)
             {
+                case DateTimeIntervalType.Weeks:
+                    // make sure the first tick is at the 1st day of a week
+                    // todo: day 0 is sunday? globalize?
+                    start = start.AddDays(-(int)start.DayOfWeek);
+                    break;
                 case DateTimeIntervalType.Months:
                     // make sure the first tick is at the 1st of a month
                     start = new DateTime(start.Year, start.Month, 1);
@@ -275,21 +284,21 @@ namespace OxyPlot
             if (ActualIntervalType == DateTimeIntervalType.Auto)
             {
                 ActualIntervalType = DateTimeIntervalType.Seconds;
-                if (range > 1.0/24/30)
+                if (range > 1.0 / 24 / 30)
                     ActualIntervalType = DateTimeIntervalType.Minutes;
-                if (range > 1.0/12)
+                if (range > 1.0 / 12)
                     ActualIntervalType = DateTimeIntervalType.Hours;
                 if (range > 2)
                     ActualIntervalType = DateTimeIntervalType.Days;
                 //if (range > 7 * 2)
                 //    ActualIntervalType = DateTimeIntervalType.Weeks;
-                if (range > 30*2)
+                if (range > 30 * 2)
                     ActualIntervalType = DateTimeIntervalType.Months;
-                if (range > 365*2)
+                if (range > 365 * 2)
                     ActualIntervalType = DateTimeIntervalType.Years;
             }
 
-            double interval = 1.0/24/60;
+            double interval = 1.0 / 24 / 60;
             var goodIntervals = new[]
                                     {
                                         1.0/24/60, 1.0/24/30, 1.0/24/12, 1.0/24/6, 1.0/24/2, 1.0/24, 1.0/6, 1.0/4, 1.0/2
@@ -301,7 +310,7 @@ namespace OxyPlot
 
             while (true)
             {
-                if (range/interval < maxSteps)
+                if (range / interval < maxSteps)
                 {
                     return interval;
                 }
@@ -309,7 +318,7 @@ namespace OxyPlot
                 double nextInterval = goodIntervals.FirstOrDefault(i => i > interval);
                 if (nextInterval == 0)
                 {
-                    nextInterval = interval*2;
+                    nextInterval = interval * 2;
                 }
 
                 interval = nextInterval;

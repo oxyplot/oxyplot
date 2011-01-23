@@ -8,8 +8,8 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class LineSeries : DataSeries
     {
-        public static readonly DependencyProperty ThicknessProperty =
-            DependencyProperty.Register("Thickness", typeof (double), typeof (LineSeries), new UIPropertyMetadata(1.0));
+        public static readonly DependencyProperty StrokeThicknessProperty =
+            DependencyProperty.Register("StrokeThickness", typeof (double), typeof (LineSeries), new UIPropertyMetadata(1.0));
 
         public static readonly DependencyProperty SmoothProperty =
             DependencyProperty.Register("Smooth", typeof (bool), typeof (LineSeries), new UIPropertyMetadata(false));
@@ -18,10 +18,25 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("LineStyle", typeof (LineStyle), typeof (LineSeries),
                                         new UIPropertyMetadata(LineStyle.Solid));
 
-        public double Thickness
+        public static readonly DependencyProperty MarkerStrokeThicknessProperty =
+            DependencyProperty.Register("MarkerStrokeThickness", typeof (double), typeof (LineSeries),
+                                        new UIPropertyMetadata(1.0));
+
+        public static readonly DependencyProperty MarkerTypeProperty =
+            DependencyProperty.Register("MarkerType", typeof (MarkerType), typeof (LineSeries),
+                                        new UIPropertyMetadata(MarkerType.Plus));
+
+        public static readonly DependencyProperty MarkerSizeProperty =
+            DependencyProperty.Register("MarkerSize", typeof (double), typeof (LineSeries), new UIPropertyMetadata(3.0));
+
+        public static readonly DependencyProperty MarkerStrokeProperty =
+            DependencyProperty.Register("MarkerStroke", typeof (OxyColor), typeof (LineSeries),
+                                        new UIPropertyMetadata(OxyColors.Navy));
+
+        public double StrokeThickness
         {
-            get { return (double) GetValue(ThicknessProperty); }
-            set { SetValue(ThicknessProperty, value); }
+            get { return (double) GetValue(StrokeThicknessProperty); }
+            set { SetValue(StrokeThicknessProperty, value); }
         }
 
         public bool Smooth
@@ -36,6 +51,31 @@ namespace OxyPlot.Wpf
             set { SetValue(LineStyleProperty, value); }
         }
 
+        public double MarkerStrokeThickness
+        {
+            get { return (double) GetValue(MarkerStrokeThicknessProperty); }
+            set { SetValue(MarkerStrokeThicknessProperty, value); }
+        }
+
+
+        public MarkerType MarkerType
+        {
+            get { return (MarkerType) GetValue(MarkerTypeProperty); }
+            set { SetValue(MarkerTypeProperty, value); }
+        }
+
+        public double MarkerSize
+        {
+            get { return (double) GetValue(MarkerSizeProperty); }
+            set { SetValue(MarkerSizeProperty, value); }
+        }
+
+        public OxyColor MarkerStroke
+        {
+            get { return (OxyColor) GetValue(MarkerStrokeProperty); }
+            set { SetValue(MarkerStrokeProperty, value); }
+        }
+
         public override OxyPlot.DataSeries CreateModel()
         {
             var s = new OxyPlot.LineSeries();
@@ -48,8 +88,12 @@ namespace OxyPlot.Wpf
             base.ConvertProperties(s);
             var ls = s as OxyPlot.LineSeries;
             ls.Color = Color.ToOxyColor();
-            ls.StrokeThickness = Thickness;
+            ls.StrokeThickness = StrokeThickness;
             ls.LineStyle = LineStyle;
+            ls.MarkerSize = MarkerSize;
+            ls.MarkerStroke = MarkerStroke;
+            ls.MarkerType = MarkerType;
+            ls.MarkerStrokeThickness = MarkerStrokeThickness;
             s.Smooth = Smooth;
         }
     }

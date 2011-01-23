@@ -62,7 +62,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty MajorGridlineStyleProperty =
-            DependencyProperty.Register("MajorGridlineStyle", typeof(LineStyle), typeof(Axis), new FrameworkPropertyMetadata(LineStyle.Solid, FrameworkPropertyMetadataOptions.AffectsRender));
+            DependencyProperty.Register("MajorGridlineStyle", typeof(LineStyle), typeof(Axis), new FrameworkPropertyMetadata(LineStyle.None, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public double MajorGridlineThickness
         {
@@ -81,7 +81,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty MinorGridlineStyleProperty =
-            DependencyProperty.Register("MinorGridlineStyle", typeof(LineStyle), typeof(Axis), new FrameworkPropertyMetadata(LineStyle.Solid, FrameworkPropertyMetadataOptions.AffectsRender));
+            DependencyProperty.Register("MinorGridlineStyle", typeof(LineStyle), typeof(Axis), new FrameworkPropertyMetadata(LineStyle.None, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public double MinorGridlineThickness
         {

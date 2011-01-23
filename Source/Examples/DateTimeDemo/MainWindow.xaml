@@ -1,7 +1,32 @@
 ﻿<Window x:Class="DateTimeDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" Title="DateTimeDemo" Height="480" Width="640">
-    <Grid>
-        <oxy:Plot Model="{Binding ExampleModel}"/>
-    </Grid>
+    <TabControl Margin="4">
+        <TabItem Header="DateTime axis (PlotModel)">
+            <oxy:Plot Model="{Binding ExampleModel}"/>
+        </TabItem>
+        <TabItem Header="DateTime (XAML)">
+            <oxy:Plot Title="DateTime axis (XAML binding)">
+                <oxy:Plot.Axes>
+                    <oxy:DateTimeAxis Position="Bottom" StringFormat="yyyy-MM-dd"/>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:LineSeries ItemsSource="{Binding Data}" DataFieldX="Date" DataFieldY="Value" StrokeThickness="1" MarkerSize="3" MarkerType="Plus"/>
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </TabItem>
+        <TabItem Header="TimeSpan (PlotModel)">
+            <oxy:Plot Model="{Binding ExampleModel2}"/>
+        </TabItem>
+        <TabItem Header="TimeSpan (XAML)">
+            <oxy:Plot Title="TimeSpan axis (XAML binding)">
+                <oxy:Plot.Axes>
+                    <oxy:TimeSpanAxis Position="Bottom" StringFormat="h:mm"/>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:LineSeries ItemsSource="{Binding Data2}" DataFieldX="Time" DataFieldY="Value" StrokeThickness="1" MarkerSize="3" MarkerType="Plus"/>
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </TabItem>
+    </TabControl>
 </Window>
