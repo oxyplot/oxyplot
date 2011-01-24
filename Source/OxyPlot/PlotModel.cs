@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 
 namespace OxyPlot
 {
@@ -51,6 +52,7 @@ namespace OxyPlot
         {
             Axes = new Collection<IAxis>();
             Series = new Collection<ISeries>();
+            Annotations = new Collection<IAnnotation>();
 
             Title = title;
             Subtitle = subtitle;
@@ -136,6 +138,12 @@ namespace OxyPlot
         /// </summary>
         /// <value>The series.</value>
         public Collection<ISeries> Series { get; set; }
+
+        /// <summary>
+        /// Gets or sets the annotations.
+        /// </summary>
+        /// <value>The annotations.</value>
+        public Collection<IAnnotation> Annotations { get; set; }
 
         /// <summary>
         /// Gets or sets the title font.
@@ -319,15 +327,26 @@ namespace OxyPlot
                 }
             }
 
-            if (!Axes.Contains(DefaultXAxis))
-                Axes.Add(DefaultXAxis);
-            if (!Axes.Contains(DefaultYAxis))
-                Axes.Add(DefaultYAxis);
+            bool areAxesRequired = false;
+            foreach (var s in Series)
+            {
+                if (s.AreAxesRequired())
+                    areAxesRequired = true;
+            }
+
+            if (areAxesRequired)
+            {
+                if (!Axes.Contains(DefaultXAxis))
+                    Axes.Add(DefaultXAxis);
+                if (!Axes.Contains(DefaultYAxis))
+                    Axes.Add(DefaultYAxis);
+            }
 
             // Update the x/y axes of series without axes defined
             foreach (var s in Series)
             {
-                s.EnsureAxes(Axes, DefaultXAxis, DefaultYAxis);
+                if (s.AreAxesRequired())
+                    s.EnsureAxes(Axes, DefaultXAxis, DefaultYAxis);
             }
         }
 
@@ -359,8 +378,16 @@ namespace OxyPlot
             RenderInit(rc);
 
             RenderAxes(rc);
+            RenderAnnotations(rc, AnnotationLayer.BelowSeries);
             RenderSeries(rc);
+            RenderAnnotations(rc, AnnotationLayer.OverSeries);
             RenderBox(rc);
+        }
+
+        private void RenderAnnotations(IRenderContext rc, AnnotationLayer layer)
+        {
+            foreach (var a in Annotations.Where(a => a.Layer == layer))
+                a.Render(rc, this);
         }
 
         public void RenderInit(IRenderContext rc)
@@ -478,8 +505,9 @@ namespace OxyPlot
                 rc.DrawRectangle(axisBounds, ls.Background, null, 0);
             }
 
-            // Render the box around the plot
-            rc.DrawRectangle(PlotArea, Background, BoxColor, BoxThickness);
+            // Render the box around the plot (only if there are axes)
+            if (Axes.Count>0)
+                rc.DrawRectangle(PlotArea, Background, BoxColor, BoxThickness);
 
             // Render the legends
             pp.RenderLegends();

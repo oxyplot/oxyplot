@@ -33,6 +33,12 @@ namespace OxyPlot
         void UpdateData();
 
         /// <summary>
+        /// Returns true if the data series requires X/Y axes.
+        /// </summary>
+        /// <returns></returns>
+        bool AreAxesRequired();
+
+        /// <summary>
         /// Ensures that the series has axes.
         /// </summary>
         /// <param name="axes">The axes collection.</param>
