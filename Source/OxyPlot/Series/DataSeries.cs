@@ -218,7 +218,12 @@ namespace OxyPlot
                 InternalPoints.Add(pp);
             }
         }
-        
+
+        public bool AreAxesRequired()
+        {
+            return true;
+        }
+
         protected virtual double ToDouble(object value)
         {
             if (value is DateTime)

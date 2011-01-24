@@ -89,6 +89,8 @@
     <Compile Include="Render\PlotRenderingHelper.cs" />
     <Compile Include="Foundation\LineStyleHelper.cs" />
     <Compile Include="Foundation\DataPoint.cs" />
+    <Compile Include="Annotations\IAnnotation.cs" />
+    <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\FunctionSeries.cs" />
     <Compile Include="Series\ISeries.cs" />
     <Compile Include="Svg\Gdi32.cs" />
