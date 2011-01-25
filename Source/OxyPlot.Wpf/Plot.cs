@@ -118,8 +118,11 @@ namespace OxyPlot.Wpf
 
             series = new ObservableCollection<DataSeries>();
             axes = new ObservableCollection<Axis>();
+            annotations = new ObservableCollection<Annotation>();
+
             series.CollectionChanged += OnSeriesChanged;
             axes.CollectionChanged += OnAxesChanged;
+            annotations.CollectionChanged += OnAnnotationsChanged;
 
             Loaded += OnLoaded;
             DataContextChanged += OnDataContextChanged;
@@ -160,9 +163,14 @@ namespace OxyPlot.Wpf
             SyncLogicalTree(e);
         }
 
+        private void OnAnnotationsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            SyncLogicalTree(e);
+        }
+
         private void SyncLogicalTree(NotifyCollectionChangedEventArgs e)
         {
-            // In order to get DataContext and binding to work with the series and axes
+            // In order to get DataContext and binding to work with the series, axes and annotations
             // we add the items to the logical tree
             if (e.NewItems != null)
             {
@@ -228,6 +236,13 @@ namespace OxyPlot.Wpf
         public ObservableCollection<Axis> Axes
         {
             get { return axes; }
+        }
+
+        private readonly ObservableCollection<Annotation> annotations;
+
+        public ObservableCollection<Annotation> Annotations
+        {
+            get { return annotations; }
         }
 
         public PlotModel Model
@@ -439,7 +454,7 @@ namespace OxyPlot.Wpf
         private void UpdateModel()
         {
             // If no model is set, create an internal model and copy the 
-            // axes/series/properties from the WPF objects to the internal model
+            // axes/series/annotations and properties from the WPF objects to the internal model
             if (Model == null)
             {
                 // Create an internal model
@@ -456,6 +471,7 @@ namespace OxyPlot.Wpf
                         internalModel.Series.Add(s.CreateModel());
                     }
                 }
+
                 if (Axes != null && Axes.Count > 0)
                 {
                     internalModel.Axes.Clear();
@@ -464,6 +480,17 @@ namespace OxyPlot.Wpf
                     {
                         a.UpdateModelProperties();
                         internalModel.Axes.Add(a.ModelAxis);
+                    }
+                }
+
+                if (Annotations != null)
+                {
+                    internalModel.Annotations.Clear();
+
+                    foreach (var a in Annotations)
+                    {
+                        a.UpdateModelProperties();
+                        internalModel.Annotations.Add(a.ModelAnnotation);
                     }
                 }
 
