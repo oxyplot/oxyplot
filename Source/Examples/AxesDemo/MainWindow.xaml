@@ -89,14 +89,14 @@
                     </Grid.ColumnDefinitions>
                     <oxy:Plot PlotMargins="40">
                         <oxy:Plot.Axes>
-                            <oxy:LinearAxis Title="Left" Position="Left" MinorGridlineStyle="Dot" />
-                            <oxy:LinearAxis Title="Bottom" Position="Bottom" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Title="Left" Position="Left" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Title="Bottom" Position="Bottom" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
                         </oxy:Plot.Axes>
                     </oxy:Plot>
                     <oxy:Plot Grid.Column="1" PlotMargins="40">
                         <oxy:Plot.Axes>
-                            <oxy:LinearAxis Title="Right" Position="Right" MinorGridlineStyle="Dot" />
-                            <oxy:LinearAxis Title="Top" Position="Top" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Title="Right" Position="Right" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Title="Top" Position="Top" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
                         </oxy:Plot.Axes>
                     </oxy:Plot>
                 </Grid>
@@ -119,14 +119,14 @@
                     </StackPanel>
                     <oxy:Plot x:Name="AnglePlot1">
                         <oxy:Plot.Axes>
-                            <oxy:LinearAxis Title="Left" Position="Left" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
-                            <oxy:LinearAxis Title="Bottom" Position="Bottom" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Title="Left" Position="Left" Angle="{Binding Value, ElementName=Angle}" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Title="Bottom" Position="Bottom" Angle="{Binding Value, ElementName=Angle}" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
                         </oxy:Plot.Axes>
                     </oxy:Plot>
                     <oxy:Plot x:Name="AnglePlot2" Grid.Column="2">
                         <oxy:Plot.Axes>
-                            <oxy:LinearAxis Title="Right" Position="Right" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
-                            <oxy:LinearAxis Title="Top" Position="Top" Angle="{Binding Value, ElementName=Angle}" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Title="Right" Position="Right" Angle="{Binding Value, ElementName=Angle}" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
+                            <oxy:LinearAxis Title="Top" Position="Top" Angle="{Binding Value, ElementName=Angle}" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
                         </oxy:Plot.Axes>
                     </oxy:Plot>
                     <!--<Label Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="#80000000" FontSize="24" 
