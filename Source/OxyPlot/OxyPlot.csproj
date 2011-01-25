@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Annotations\Annotation.cs" />
+    <Compile Include="Annotations\LineAnnotation.cs" />
     <Compile Include="Axes\DateTimeAxis.cs" />
     <Compile Include="Axes\IAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />

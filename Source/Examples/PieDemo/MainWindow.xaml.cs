@@ -36,12 +36,13 @@ namespace PieDemo
             ps.Slices.Add(new PieSlice("Asia", 4157, OxyColors.Yellow));
             ps.Slices.Add(new PieSlice("Europe", 739, OxyColors.Green) { IsExploded = true });
             ps.Slices.Add(new PieSlice("Oceania", 35, OxyColors.Blue) { IsExploded = true });
-            ps.InnerDiameter = 0.0;
-            ps.ExplodedDistance = 0.0;
+            ps.InnerDiameter = 0.2;
+            ps.ExplodedDistance = 0;
             ps.Stroke = OxyColors.Black;
             ps.StrokeThickness = 1.0;
             ps.AngleSpan = 360;
-            ps.StartAngle = 220;
+            ps.StartAngle = 0;
+            ps.TickRadialLength = 20;
             tmp.Series.Add(ps);
             
             PieModel = tmp;

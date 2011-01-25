@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -43,6 +44,8 @@ namespace DateTimeDemo
         {
             var tmp = new PlotModel("DateTime axis (PlotModel)");
             tmp.Axes.Add(new DateTimeAxis());
+            tmp.Axes.Add(new LogarithmicAxis(AxisPosition.Left));
+            tmp.Axes.Add(new LinearAxis(AxisPosition.Right) { Key="y2"});
 
             // Create a random data collection
             var r = new Random();
@@ -62,6 +65,8 @@ namespace DateTimeDemo
                              ItemsSource = Data,
                              DataFieldX = "Date",
                              DataFieldY = "Value",
+                             //YAxis=tmp.Axes[2],
+                             YAxisKey = "y2",
                              MarkerStroke = OxyColors.ForestGreen,
                              MarkerType = MarkerType.Plus
                          };

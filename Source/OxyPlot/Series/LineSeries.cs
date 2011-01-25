@@ -172,16 +172,24 @@ namespace OxyPlot
             }
 
             // clip the line segments with the clipping rectangle
+            RenderClippedLine(rc, spts, clipping, minDistSquared);
+
+            RenderMarkers(rc, markerPoints, clipping);
+        }
+
+        private void RenderClippedLine(IRenderContext rc, ScreenPoint[] points, CohenSutherlandClipping clipping, double minDistSquared)
+        {
+            int n;
             var pts = new List<ScreenPoint>();
-            n = spts.Length;
+            n = points.Length;
             if (n > 0)
             {
-                var s0 = spts[0];
-                var last = spts[0];
+                var s0 = points[0];
+                var last = points[0];
 
                 for (int i = 1; i < n; i++)
                 {
-                    var s1 = spts[i];
+                    var s1 = points[i];
 
                     // Clipped version of this and next point.
 
@@ -220,8 +228,6 @@ namespace OxyPlot
                 }
                 RenderLine(rc, pts);
             }
-
-            RenderMarkers(rc, markerPoints, clipping);
         }
 
         protected void RenderMarkers(IRenderContext rc, ScreenPoint[] markerPoints, CohenSutherlandClipping clipping)

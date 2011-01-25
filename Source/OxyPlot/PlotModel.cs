@@ -348,6 +348,12 @@ namespace OxyPlot
                 if (s.AreAxesRequired())
                     s.EnsureAxes(Axes, DefaultXAxis, DefaultYAxis);
             }
+
+            // Update the x/y axes of series without axes defined
+            foreach (var s in Annotations)
+            {
+                    s.EnsureAxes(Axes, DefaultXAxis, DefaultYAxis);
+            }
         }
 
         /// <summary>
