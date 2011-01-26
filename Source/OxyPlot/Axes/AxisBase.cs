@@ -870,15 +870,17 @@ namespace OxyPlot
             double max = PreTransform(ActualMaximum);
             double min = PreTransform(ActualMinimum);
 
-            const double eps = 1e-6;
-            if (max - min < eps) max = min + 1;
-
-            if (Math.Abs(a0 - a1) != 0)
-                Offset = (a0 * max - min * a1) / (a0 - a1);
+            double da = a0 - a1;
+            if (Math.Abs(da) != 0)
+                Offset = a0 / da * max - a1 / da * min;
             else
                 Offset = 0;
 
-            scale = (a1 - a0) / (max - min);
+            double range = max - min;
+            if (Math.Abs(range) != 0)
+                scale = (a1 - a0) / range;
+            else
+                scale = 1;
         }
 
         public void SetScale(double scale)
