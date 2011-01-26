@@ -51,6 +51,7 @@
     <Compile Include="Foundation\ScreenPoint.cs" />
     <Compile Include="Foundation\OxyRect.cs" />
     <Compile Include="Foundation\OxySize.cs" />
+    <Compile Include="Foundation\SutherlandHodgmanClipping.cs" />
     <Compile Include="MouseActions\IMouseAction.cs" />
     <Compile Include="MouseActions\IPlotControl.cs" />
     <Compile Include="MouseActions\MouseAction.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\FunctionSeries.cs" />
     <Compile Include="Series\ISeries.cs" />
+    <Compile Include="Series\PieSlice.cs" />
     <Compile Include="Svg\Gdi32.cs" />
     <Compile Include="Svg\SvgRenderContext.cs" />
     <Compile Include="Svg\SvgWriter.cs" />

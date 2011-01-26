@@ -189,8 +189,7 @@
                 <!--<Label VerticalAlignment="Center" Foreground="#80000000" FontSize="24" 
                            HorizontalAlignment="Center" Content="TODO: Where are the 0's coming from?"/>-->
                 </Grid>
-            </TabItem>
-            <!-- TODO: small numbers
+            </TabItem>            
             <TabItem Header="Small numbers">
                 <oxy:Plot>
                     <oxy:Plot.Axes>
@@ -198,7 +197,7 @@
                         <oxy:LinearAxis Position="Bottom" Minimum="-4e-20" Maximum="3e-20" Title="small numbers"/>
                     </oxy:Plot.Axes>
                 </oxy:Plot>
-            </TabItem>-->
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>

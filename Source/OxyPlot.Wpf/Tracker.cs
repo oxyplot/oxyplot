@@ -20,9 +20,26 @@ namespace OxyPlot.Wpf
 
         /// <summary>
         /// Gets or sets the tracker label format.
+        /// The fields are
+        /// {0} X-axis title
+        /// {1} X-value
+        /// {2} Y-axis title
+        /// {3} Y-value
         /// </summary>
         /// <value>The tracker label format.</value>
         public string LabelFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets the X-value format.
+        /// </summary>
+        /// <value>The value format X.</value>
+        public string ValueFormatX { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Y-value format.
+        /// </summary>
+        /// <value>The value format Y.</value>
+        public string ValueFormatY { get; set; }
 
         /// <summary>
         /// Gets or sets the content template.
@@ -36,8 +53,6 @@ namespace OxyPlot.Wpf
         /// <param name="pc">The parent Plot.</param>
         public Tracker()
         {
-            LabelFormat = null; // "{0:0.###} {1:0.###}";
-
             Children.Add(trackerLine1);
             Children.Add(trackerLine2);
             Children.Add(content);
@@ -75,7 +90,7 @@ namespace OxyPlot.Wpf
 
             if (ContentTemplate != null)
             {
-                content.Content = new TrackerViewModel(s, dp, LabelFormat);
+                content.Content = new TrackerViewModel(s, dp, LabelFormat) { FormatX = ValueFormatX, FormatY = ValueFormatY };
                 content.ContentTemplate = ContentTemplate;
                 SetLeft(content, pt0.X);
                 SetTop(content, pt0.Y);
@@ -125,7 +140,10 @@ namespace OxyPlot.Wpf
         /// <value>The format.</value>
         public string Format { get; set; }
 
-        private const string DefaultFormat = "{0}: {1:0.#####}, {2}: {3:0.#####}";
+        public string FormatX { get; set; }
+        public string FormatY { get; set; }
+
+        private const string DefaultFormat = "{0}: {1}\n{2}: {3}";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackerViewModel"/> class.
@@ -155,7 +173,19 @@ namespace OxyPlot.Wpf
             var yTitle = Series.YAxis.Title;
             if (String.IsNullOrEmpty(xTitle)) xTitle = "X";
             if (String.IsNullOrEmpty(yTitle)) yTitle = "Y";
-            return String.Format(CultureInfo.InvariantCulture, Format, xTitle, Point.X, yTitle, Point.Y);
+
+            object xValue = Point.X;
+            if (Series.XAxis is OxyPlot.DateTimeAxis) xValue = OxyPlot.DateTimeAxis.ToDateTime(Point.X);
+            if (Series.XAxis is OxyPlot.TimeSpanAxis) xValue = OxyPlot.TimeSpanAxis.ToTimeSpan(Point.X);
+
+            object yValue = Point.Y;
+            if (Series.YAxis is OxyPlot.DateTimeAxis) yValue = OxyPlot.DateTimeAxis.ToDateTime(Point.Y);
+            if (Series.YAxis is OxyPlot.TimeSpanAxis) yValue = OxyPlot.TimeSpanAxis.ToTimeSpan(Point.Y);
+
+            string sx = FormatX == null ? xValue.ToString() : String.Format(FormatX, xValue);
+            string sy = FormatY == null ? yValue.ToString() : String.Format(FormatY, yValue);
+
+            return String.Format(CultureInfo.InvariantCulture, Format, xTitle, sx, yTitle, sy);
         }
     }
 }

@@ -585,7 +585,7 @@ namespace OxyPlot
 
         protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize)
         {
-            return CalculateActualInterval2(availableSize, maxIntervalSize);
+            return CalculateActualInterval2(availableSize, maxIntervalSize, ActualMaximum-ActualMinimum);
         }
 
         // alternative algorithm not in use
@@ -626,7 +626,7 @@ namespace OxyPlot
         /// <returns>Actual interval to use to determine which values are 
         /// displayed in the axis.
         /// </returns>
-        private double CalculateActualInterval2(double availableSize, double maxIntervalSize)
+        protected double CalculateActualInterval2(double availableSize, double maxIntervalSize, double range)
         {
             if (availableSize <= 0)
                 return maxIntervalSize;
@@ -639,7 +639,8 @@ namespace OxyPlot
             // real maximum interval count
             double maxIntervalCount = availableSize / maxIntervalSize;
 
-            double range = Math.Abs(ActualMinimum - ActualMaximum);
+            range = Math.Abs(range);
+            //double range = Math.Abs(actualMinimum - actualMaximum);
             double interval = Math.Pow(10, exponent(range));
             double tempInterval = interval;
 
@@ -655,6 +656,10 @@ namespace OxyPlot
                 else if (m == 2 || m == 1 || m == 10)
                 {
                     // reduce 2 to 1,10 to 5,1 to 0.5
+                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.0);
+                }
+                else
+                {
                     tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.0);
                 }
 

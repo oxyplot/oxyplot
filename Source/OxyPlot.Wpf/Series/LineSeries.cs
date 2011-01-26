@@ -24,7 +24,7 @@ namespace OxyPlot.Wpf
 
         public static readonly DependencyProperty MarkerTypeProperty =
             DependencyProperty.Register("MarkerType", typeof (MarkerType), typeof (LineSeries),
-                                        new UIPropertyMetadata(MarkerType.Plus));
+                                        new UIPropertyMetadata(MarkerType.None));
 
         public static readonly DependencyProperty MarkerSizeProperty =
             DependencyProperty.Register("MarkerSize", typeof (double), typeof (LineSeries), new UIPropertyMetadata(3.0));

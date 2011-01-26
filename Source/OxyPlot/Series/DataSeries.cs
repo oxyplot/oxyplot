@@ -9,12 +9,12 @@ using System.Reflection;
 namespace OxyPlot
 {
     /// <summary>
-    /// DataPointProvider interface.
+    ///   DataPointProvider interface.
     /// </summary>
     public interface IDataPointProvider
     {
         /// <summary>
-        /// Gets the data point.
+        ///   Gets the data point.
         /// </summary>
         /// <returns></returns>
         DataPoint GetDataPoint();
@@ -48,8 +48,8 @@ namespace OxyPlot
         public string DataFieldY { get; set; }
 
         /// <summary>
-        /// Gets or sets the mapping deleagte.
-        /// Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
+        ///   Gets or sets the mapping deleagte.
+        ///   Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
         /// </summary>
         /// <value>The mapping.</value>
         public Func<object, DataPoint> Mapping { get; set; }
@@ -145,8 +145,6 @@ namespace OxyPlot
         {
         }
 
-        #endregion
-
         public virtual void UpdateData()
         {
             if (ItemsSource == null)
@@ -160,7 +158,9 @@ namespace OxyPlot
             if (Mapping != null)
             {
                 foreach (var item in ItemsSource)
+                {
                     InternalPoints.Add(Mapping(item));
+                }
             }
 
             // Get DataPoints from the items in ItemsSource 
@@ -186,55 +186,12 @@ namespace OxyPlot
             // http://msdn.microsoft.com/en-us/library/bb613546.aspx
 
             // Using reflection on DataFieldX and DataFieldY
-            PropertyInfo pix = null;
-            PropertyInfo piy = null;
-            Type t = null;
-
-            foreach (var o in ItemsSource)
-            {
-                if (pix == null || o.GetType() != t)
-                {
-                    t = o.GetType();
-                    pix = t.GetProperty(DataFieldX);
-                    piy = t.GetProperty(DataFieldY);
-                    if (pix == null)
-                    {
-                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
-                                                                          DataFieldX, t));
-                    }
-
-                    if (piy == null)
-                    {
-                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
-                                                                          DataFieldY, t));
-                    }
-                }
-
-                var x = ToDouble(pix.GetValue(o, null));
-                var y = ToDouble(piy.GetValue(o, null));
-
-
-                var pp = new DataPoint(x, y);
-                InternalPoints.Add(pp);
-            }
+            AddDataPoints(InternalPoints, DataFieldX, DataFieldY);
         }
 
         public bool AreAxesRequired()
         {
             return true;
-        }
-
-        protected virtual double ToDouble(object value)
-        {
-            if (value is DateTime)
-            {
-                return DateTimeAxis.ToDouble((DateTime) value);
-            }
-            if (value is TimeSpan)
-            {
-                return ((TimeSpan) value).TotalSeconds;
-            }
-            return Convert.ToDouble(value);    
         }
 
         public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
@@ -243,6 +200,7 @@ namespace OxyPlot
             {
                 XAxis = axes.FirstOrDefault(a => a.Key == XAxisKey);
             }
+
             if (YAxisKey != null)
             {
                 YAxis = axes.FirstOrDefault(a => a.Key == YAxisKey);
@@ -253,6 +211,7 @@ namespace OxyPlot
             {
                 XAxis = defaultXAxis;
             }
+
             if (YAxis == null)
             {
                 YAxis = defaultYAxis;
@@ -265,35 +224,15 @@ namespace OxyPlot
         public virtual void UpdateMaxMin()
         {
             MinX = MinY = MaxX = MaxY = double.NaN;
-
-            if (InternalPoints == null || InternalPoints.Count == 0)
-            {
-                return;
-            }
-
-            MinX = MaxX = InternalPoints[0].x;
-            MinY = MaxY = InternalPoints[0].y;
-            foreach (var pt in InternalPoints)
-            {
-                MinX = Math.Min(MinX, pt.x);
-                MaxX = Math.Max(MaxX, pt.x);
-
-                MinY = Math.Min(MinY, pt.y);
-                MaxY = Math.Max(MaxY, pt.y);
-            }
-
-            XAxis.Include(MinX);
-            XAxis.Include(MaxX);
-            YAxis.Include(MinY);
-            YAxis.Include(MaxY);
+            InternalUpdateMaxMin(InternalPoints);
         }
 
         /// <summary>
         ///   Gets the point in the dataset that is nearest the specified point.
         /// </summary>
         /// <param name = "point">The point.</param>
-        /// <param name="dpn">The nearest point (data coordinates).</param>
-        /// <param name="spn">The nearest point (screen coordinates).</param>
+        /// <param name = "dpn">The nearest point (data coordinates).</param>
+        /// <param name = "spn">The nearest point (screen coordinates).</param>
         /// <returns></returns>
         public bool GetNearestPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
         {
@@ -305,7 +244,7 @@ namespace OxyPlot
             {
                 double dx = dp.x - p.x;
                 double dy = dp.y - p.y;
-                double d2 = dx * dx + dy * dy;
+                double d2 = dx*dx + dy*dy;
 
                 if (d2 < mindist)
                 {
@@ -313,12 +252,14 @@ namespace OxyPlot
                     mindist = d2;
                 }
             }
+
             if (nearest != null)
             {
                 dpn = nearest.Value;
                 spn = XAxis.Transform(dpn, YAxis);
                 return true;
             }
+
             spn = default(ScreenPoint);
             dpn = default(DataPoint);
             return false;
@@ -328,8 +269,8 @@ namespace OxyPlot
         ///   Gets the point on the curve that is nearest the specified point.
         /// </summary>
         /// <param name = "point">The point.</param>
-        /// <param name="dpn">The nearest point (data coordinates).</param>
-        /// <param name="spn">The nearest point (screen coordinates).</param>
+        /// <param name = "dpn">The nearest point (data coordinates).</param>
+        /// <param name = "spn">The nearest point (screen coordinates).</param>
         /// <returns></returns>
         public bool GetNearestInterpolatedPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
         {
@@ -345,25 +286,25 @@ namespace OxyPlot
 
                 double p21X = p2.x - p1.x;
                 double p21Y = p2.y - p1.y;
-                double u1 = (p3.x - p1.x) * p21X + (p3.y - p1.y) * p21Y;
-                double u2 = p21X * p21X + p21Y * p21Y;
+                double u1 = (p3.x - p1.x)*p21X + (p3.y - p1.y)*p21Y;
+                double u2 = p21X*p21X + p21Y*p21Y;
                 if (u2 == 0)
                 {
                     continue; // P1 && P2 coincident
                 }
 
-                double u = u1 / u2;
+                double u = u1/u2;
                 if (u < 0 || u > 1)
                 {
                     continue; // outside line
                 }
 
-                double x = p1.x + u * p21X;
-                double y = p1.y + u * p21Y;
+                double x = p1.x + u*p21X;
+                double y = p1.y + u*p21Y;
 
                 double dx = p3.x - x;
                 double dy = p3.y - y;
-                double d2 = dx * dx + dy * dy;
+                double d2 = dx*dx + dy*dy;
 
                 if (d2 < mindist)
                 {
@@ -371,15 +312,122 @@ namespace OxyPlot
                     mindist = d2;
                 }
             }
+
             if (pt != null)
             {
                 dpn = pt.Value;
                 spn = AxisBase.Transform(pt.Value, XAxis, YAxis);
                 return true;
             }
+
             spn = default(ScreenPoint);
             dpn = default(DataPoint);
             return false;
+        }
+
+        #endregion
+
+        protected void AddDataPoints(ICollection<DataPoint> points, string dataFieldX, string dataFieldY)
+        {
+            PropertyInfo pix = null;
+            PropertyInfo piy = null;
+            Type t = null;
+
+            foreach (var o in ItemsSource)
+            {
+                if (pix == null || o.GetType() != t)
+                {
+                    t = o.GetType();
+                    pix = t.GetProperty(dataFieldX);
+                    piy = t.GetProperty(dataFieldY);
+                    if (pix == null)
+                    {
+                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}", 
+                                                                          DataFieldX, t));
+                    }
+
+                    if (piy == null)
+                    {
+                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}", 
+                                                                          DataFieldY, t));
+                    }
+                }
+
+                var x = ToDouble(pix.GetValue(o, null));
+                var y = ToDouble(piy.GetValue(o, null));
+
+
+                var pp = new DataPoint(x, y);
+                points.Add(pp);
+            }
+        }
+
+        /// <summary>
+        /// Converts the value of the specified object to a double precision floating point number.
+        /// DateTime objects are converted using DateTimeAxis.ToDouble
+        /// TimeSpan objects are converted using TimeSpanAxis.ToDouble
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        protected virtual double ToDouble(object value)
+        {
+            if (value is DateTime)
+            {
+                return DateTimeAxis.ToDouble((DateTime) value);
+            }
+
+            if (value is TimeSpan)
+            {
+                return ((TimeSpan) value).TotalSeconds;
+            }
+
+            return Convert.ToDouble(value);
+        }
+
+        /// <summary>
+        /// Updates the Max/Min limits from the specified point list.
+        /// </summary>
+        /// <param name="pts">The PTS.</param>
+        protected void InternalUpdateMaxMin(IList<DataPoint> pts)
+        {
+            if (pts == null || pts.Count == 0)
+            {
+                return;
+            }
+
+            if (double.IsNaN(MinX))
+            {
+                MinX = pts[0].x;
+            }
+
+            if (double.IsNaN(MaxX))
+            {
+                MaxX = pts[0].x;
+            }
+
+            if (double.IsNaN(MinY))
+            {
+                MinY = pts[0].y;
+            }
+
+            if (double.IsNaN(MaxY))
+            {
+                MaxY = pts[0].y;
+            }
+
+            foreach (var pt in pts)
+            {
+                MinX = Math.Min(MinX, pt.x);
+                MaxX = Math.Max(MaxX, pt.x);
+
+                MinY = Math.Min(MinY, pt.y);
+                MaxY = Math.Max(MaxY, pt.y);
+            }
+
+            XAxis.Include(MinX);
+            XAxis.Include(MaxX);
+            YAxis.Include(MinY);
+            YAxis.Include(MaxY);
         }
 
         /// <summary>
@@ -394,7 +442,8 @@ namespace OxyPlot
                 if (IsBetween(x, InternalPoints[i].x, InternalPoints[i + 1].x))
                 {
                     return InternalPoints[i].y +
-                           (InternalPoints[i + 1].y - InternalPoints[i].y) / (InternalPoints[i + 1].x - InternalPoints[i].x) * (x - InternalPoints[i].x);
+                           (InternalPoints[i + 1].y - InternalPoints[i].y)/
+                           (InternalPoints[i + 1].x - InternalPoints[i].x)*(x - InternalPoints[i].x);
                 }
             }
 
