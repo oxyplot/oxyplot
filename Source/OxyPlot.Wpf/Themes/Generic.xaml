@@ -10,15 +10,12 @@
             <Setter.Value>
                 <DataTemplate>
                     <Canvas>
-                        <Grid Canvas.Left="-80" Canvas.Top="-25">
+                        <Grid Canvas.Left="-80" Canvas.Top="-40">
                             <!-- 
                             todo: how can we make this box fit the width to the text?
-                            - bind "80" numbers to TextBlock.ActualWidth/2?
-                            - style?
-                            - a custom 'pointerbox' control?
                             -->
                             <Path  
-                              Data="M0,0 L3,-7 L80,-7 L80,-25 L-80,-25 L-80,-7 L-3,-7 z" 
+                              Data="M0,0 L3,-7 L80,-7 L80,-40 L-80,-40 L-80,-7 L-3,-7 z" 
                                 Stroke="Black" Stretch="Fill" 
                                 Fill="#A0FFFFFF" 
                               SnapsToDevicePixels="True"/>

@@ -55,7 +55,7 @@
         void Include(double value);
         void SetScale(double scale);
         void UpdateIntervals(double width, double height);
-
+        string FormatValue(double x);
         void Render(IRenderContext rc, PlotModel model);
         
         void UpdateTransform(OxyRect plotArea);

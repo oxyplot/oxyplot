@@ -35,8 +35,7 @@
                     <oxy:TimeSpanAxis Position="Left" StringFormat="h:mm" Minimum="0" Maximum="86400" MajorGridlineStyle="Solid"/>
                 </oxy:Plot.Axes>
                 <oxy:Plot.Series>
-                    <oxy:LineSeries ItemsSource="{Binding SunData}" DataFieldX="Day" DataFieldY="Sunrise" StrokeThickness="2" MarkerType="None" Color="Gold"/>
-                    <oxy:LineSeries ItemsSource="{Binding SunData}" DataFieldX="Day" DataFieldY="Sunset" StrokeThickness="2" MarkerType="None" Color="Gold"/>
+                    <oxy:AreaSeries ItemsSource="{Binding SunData}" DataFieldX="Day" DataFieldY="Sunrise" DataFieldX2="Day" DataFieldY2="Sunset" StrokeThickness="2" MarkerType="None" Color="Black" Fill="#80FFFF00"/>
                 </oxy:Plot.Series>
             </oxy:Plot>
         </TabItem>

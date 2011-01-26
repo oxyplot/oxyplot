@@ -39,6 +39,16 @@ namespace OxyPlot
             StringFormat = format;
         }
 
+        public static double ToDouble(TimeSpan s)
+        {
+            return s.TotalSeconds;
+        }
+
+        public static TimeSpan ToTimeSpan(double value)
+        {
+            return TimeSpan.FromSeconds(value);
+        }
+
         /// <summary>
         ///   Formats the value.
         /// </summary>

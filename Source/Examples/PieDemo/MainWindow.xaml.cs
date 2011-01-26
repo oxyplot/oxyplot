@@ -42,7 +42,6 @@ namespace PieDemo
             ps.StrokeThickness = 1.0;
             ps.AngleSpan = 360;
             ps.StartAngle = 0;
-            ps.TickRadialLength = 20;
             tmp.Series.Add(ps);
             
             PieModel = tmp;

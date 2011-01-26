@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Reflection;
 
 namespace OxyPlot
 {
     /// <summary>
-    ///  The AreaSeries class fills the polygon defined by two sets of points.
+    ///   The AreaSeries class fills the polygon defined by two sets of points.
     /// </summary>
     public class AreaSeries : LineSeries
     {
-        internal Collection<DataPoint> points2;
+        internal Collection<DataPoint> InternalPoints2;
 
         public AreaSeries()
         {
-            points2 = new Collection<DataPoint>();
+            InternalPoints2 = new Collection<DataPoint>();
             Reverse2 = true;
         }
 
@@ -50,8 +48,8 @@ namespace OxyPlot
         /// <value>The second set of points.</value>
         public Collection<DataPoint> Points2
         {
-            get { return points2; }
-            set { points2 = value; }
+            get { return InternalPoints2; }
+            set { InternalPoints2 = value; }
         }
 
         /// <summary>
@@ -72,71 +70,16 @@ namespace OxyPlot
                 return;
             }
 
-            points2.Clear();
-
-            // Get DataPoints from the items in ItemsSource 
-            // if they implement IDataPointProvider
-            // If DataFields are set, this is not used
-            // if (DataFieldX == null || DataFieldY == null)
-            // {
-            // foreach (object item in ItemsSource)
-            // {
-            // var idpp = item as IDataPointProvider;
-            // if (idpp == null)
-            // continue;
-            // points.Add(idpp.GetDataPoint());
-            // }
-            // return;
-            // }
+            InternalPoints2.Clear();
 
             // Using reflection on DataFieldX2 and DataFieldY2
-            PropertyInfo pix = null;
-            PropertyInfo piy = null;
-            Type t = null;
-
-            foreach (var o in ItemsSource)
-            {
-                if (pix == null || o.GetType() != t)
-                {
-                    t = o.GetType();
-                    pix = t.GetProperty(DataFieldX2);
-                    piy = t.GetProperty(DataFieldY2);
-                    if (pix == null)
-                    {
-                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
-                                                                          DataFieldX2, t));
-                    }
-
-                    if (piy == null)
-                    {
-                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
-                                                                          DataFieldY2, t));
-                    }
-                }
-
-                var x = (double)pix.GetValue(o, null);
-                var y = (double)piy.GetValue(o, null);
-
-
-                var pp = new DataPoint(x, y);
-                points2.Add(pp);
-            }
+            AddDataPoints(InternalPoints2, DataFieldX2, DataFieldY2);
         }
 
         public override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            if (points2 != null)
-            {
-                foreach (var pt in points2)
-                {
-                    MinX = Math.Min(MinX, pt.x);
-                    MaxX = Math.Max(MaxX, pt.x);
-
-                    MinY = Math.Min(MinY, pt.y);
-                    MaxY = Math.Max(MaxY, pt.y);
-                }
-            }
+            InternalUpdateMaxMin(InternalPoints2);
         }
 
         public override void Render(IRenderContext rc, PlotModel model)
@@ -146,149 +89,49 @@ namespace OxyPlot
                 return;
             }
 
-            Debug.Assert(XAxis != null && YAxis != null);
+            Debug.Assert(XAxis != null && YAxis != null, "Axis is not defined.");
 
-            double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
+            double minDistSquared = MinimumSegmentLength*MinimumSegmentLength;
 
-            // todo: polygon clipping...
-            // simple line clipping is not working
+            var clippingRect = new OxyRect(XAxis.ScreenMin.X, YAxis.ScreenMin.Y, 
+                                           XAxis.ScreenMax.X - XAxis.ScreenMin.X, YAxis.ScreenMax.Y - YAxis.ScreenMin.Y);
 
-            var clipping = new CohenSutherlandClipping(
-                XAxis.ScreenMin.X, XAxis.ScreenMax.X,
-                YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);
-
-            var pts0 = new List<ScreenPoint>();
-            var pts1 = new List<ScreenPoint>();
-
-            var p0 = new ScreenPoint();
-            var b0 = new ScreenPoint();
-
-            bool first = true;
-
-            var s0 = ScreenPoint.Undefined;
-            int n = Points.Count;
-
-            for (int i = 0; i < n; i++)
+            // Transform all points to screen coordinates
+            int n0 = InternalPoints.Count;
+            var pts0 = new ScreenPoint[n0];
+            for (int i = 0; i < n0; i++)
             {
-                var pt1 = Points[i];
-
-                var s1 = XAxis.Transform(pt1, YAxis);
-                if (i == 0)
-                {
-                    s0 = s1;
-                }
-
-                double x0 = s0.x;
-                double y0 = s0.y;
-                double x1 = s1.x;
-                double y1 = s1.y;
-
-                bool outside = !clipping.ClipLine(ref x0, ref y0, ref x1, ref y1);
-
-                s1.x = x1;
-                s1.y = y1;
-
-                if (outside)
-                {
-                    continue;
-                }
-
-                if (first || i == n - 1)
-                {
-                    s0 = s1;
-                    pts0.Add(s1);
-                    first = false;
-                }
-                else
-                {
-                    double dx = s1.x - p0.x;
-                    double dy = s1.y - p0.y;
-                    if (dx * dx + dy * dy > minDistSquared)
-                    {
-                        p0 = s1;
-                        pts0.Add(s1);
-                    }
-                }
+                pts0[i] = XAxis.Transform(new DataPoint(InternalPoints[i].x, InternalPoints[i].y), YAxis);
             }
 
-            for (int i = 0; i < n; i++)
+            int n1 = InternalPoints2.Count;
+            var pts1 = new ScreenPoint[n1];
+            for (int i = 0; i < n1; i++)
             {
-                double x2 = Points[i].x;
-                double y2 = ConstantY2;
-                if (i < Points2.Count)
-                {
-                    x2 = Points2[i].x;
-                    y2 = Points2[i].y;
-                }
-
-                var pt2 = new DataPoint(x2, y2);
-
-                var s2 = XAxis.Transform(pt2, YAxis);
-
-                if (i == 0)
-                {
-                    s0 = s2;
-                }
-
-                double x0 = s0.x;
-                double y0 = s0.y;
-                double x1 = s2.x;
-                double y1 = s2.y;
-                bool outside = !clipping.ClipLine(ref x0, ref y0, ref x1, ref y1);
-                pt2.x = x1;
-                pt2.y = y1;
-
-                s0 = s2;
-                if (outside)
-                {
-                    continue;
-                }
-
-                if (first || i == n - 1)
-                {
-                    b0 = s2;
-                    pts1.Add(s2);
-                    first = false;
-                }
-                else
-                {
-                    double dx = s2.x - b0.x;
-                    double dy = s2.y - b0.y;
-                    if (dx * dx + dy * dy > minDistSquared)
-                    {
-                        b0 = s2;
-                        pts1.Add(s2);
-                    }
-                }
-            }
-
-            if (Reverse2)
-            {
-                pts1.Reverse();
+                int j = Reverse2 ? n1 - 1 - i : i;
+                pts1[j] = XAxis.Transform(new DataPoint(InternalPoints2[i].x, InternalPoints2[i].y), YAxis);
             }
 
             if (Smooth)
             {
-                pts0 = CanonicalSplineHelper.CreateSpline(pts0, 0.5, null, false, 0.25);
-                pts1 = CanonicalSplineHelper.CreateSpline(pts1, 0.5, null, false, 0.25);
+                pts0 = CanonicalSplineHelper.CreateSpline(pts0, 0.5, null, false, 0.25).ToArray();
+                pts1 = CanonicalSplineHelper.CreateSpline(pts1, 0.5, null, false, 0.25).ToArray();
             }
 
-            // draw the lines
-            rc.DrawLine(pts0, Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
-            rc.DrawLine(pts1, Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
+            // draw the clipped lines
+            rc.DrawClippedLine(pts0, clippingRect, minDistSquared, Color, StrokeThickness, LineStyle, LineJoin);
+            rc.DrawClippedLine(pts1, clippingRect, minDistSquared, Color, StrokeThickness, LineStyle, LineJoin);
 
-            // combine the two and draw the area
-            pts1.AddRange(pts0);
-            rc.DrawPolygon(pts1, Fill, null);
+            // combine the two lines and draw the clipped area
+            var pts = new List<ScreenPoint>();
+            pts.AddRange(pts1);
+            pts.AddRange(pts0);
+            pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
+            rc.DrawPolygon(pts, Fill, null);
 
-            if (MarkerType != MarkerType.None)
-            {
-                foreach (var p in pts0)
-                {
-                    RenderMarker(rc, MarkerType, p, MarkerSize, MarkerFill, MarkerStroke,
-                                 MarkerStrokeThickness);
-                }
-            }
+            // draw the markers on top
+            rc.DrawMarkers(pts0, clippingRect, MarkerType, MarkerSize, MarkerFill, MarkerStroke, MarkerStrokeThickness);
+            rc.DrawMarkers(pts1, clippingRect, MarkerType, MarkerSize, MarkerFill, MarkerStroke, MarkerStrokeThickness);
         }
     }
 }

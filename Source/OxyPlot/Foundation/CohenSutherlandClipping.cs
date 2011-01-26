@@ -18,6 +18,14 @@
         private readonly double ymax;
         private readonly double ymin;
 
+        public CohenSutherlandClipping(OxyRect rect)
+        {
+            xmin = rect.Left;
+            xmax = rect.Right;
+            ymin = rect.Top;
+            ymax = rect.Bottom;
+        }
+
         public CohenSutherlandClipping(double xmin, double xmax, double ymin, double ymax)
         {
             this.xmin = xmin;

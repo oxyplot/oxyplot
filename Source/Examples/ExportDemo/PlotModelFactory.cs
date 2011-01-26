@@ -17,7 +17,8 @@ namespace ExportDemo
         KochSnowflake,
         KochCurve,
         ZigZag,
-        MathNotation
+        MathNotation, 
+        StraightLine
     }
 
     public class PlotModelFactory
@@ -87,6 +88,13 @@ namespace ExportDemo
                     break;
                 case ModelType.MathNotation:
                     model = CreateMathNotationPlot();
+                    break;
+                case ModelType.StraightLine:
+                    model = CreateParametricPlot(
+                        t => t,
+                        t => 1+t*1e-8,0,10,0.1,
+                        "Straight line",null,null);
+                    model.PlotType = PlotType.XY;
                     break;
             }
             return model;
