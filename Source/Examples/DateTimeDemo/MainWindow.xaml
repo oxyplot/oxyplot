@@ -28,5 +28,17 @@
                 </oxy:Plot.Series>
             </oxy:Plot>
         </TabItem>
+        <TabItem Header="Sun">
+            <oxy:Plot Title="Sunrise and sunset in Oslo">
+                <oxy:Plot.Axes>
+                    <oxy:DateTimeAxis Position="Bottom" IntervalType="Months" StringFormat="MMM" MajorGridlineStyle="Solid"/>
+                    <oxy:TimeSpanAxis Position="Left" StringFormat="h:mm" Minimum="0" Maximum="86400" MajorGridlineStyle="Solid"/>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:LineSeries ItemsSource="{Binding SunData}" DataFieldX="Day" DataFieldY="Sunrise" StrokeThickness="2" MarkerType="None" Color="Gold"/>
+                    <oxy:LineSeries ItemsSource="{Binding SunData}" DataFieldX="Day" DataFieldY="Sunset" StrokeThickness="2" MarkerType="None" Color="Gold"/>
+                </oxy:Plot.Series>
+            </oxy:Plot>
+        </TabItem>
     </TabControl>
 </Window>

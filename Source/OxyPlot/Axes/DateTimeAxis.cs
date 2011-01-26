@@ -198,30 +198,36 @@ namespace OxyPlot
                     ActualMajorStep = 31;
                     ActualMinorStep = 31;
                     ActualMinorIntervalType = DateTimeIntervalType.Months;
-                    ActualStringFormat = "yyyy-MM-dd";
+                    if (ActualStringFormat==null)
+                        ActualStringFormat = "yyyy-MM-dd";
                     break;
                 case DateTimeIntervalType.Weeks:
                     ActualMajorStep = 7;
                     ActualMinorStep = 1;
-                    ActualStringFormat = "yyyy/ww";
+                    if (ActualStringFormat == null)
+                        ActualStringFormat = "yyyy/ww";
                     break;
                 case DateTimeIntervalType.Days:
                     // ActualMajorStep = 1;
                     ActualMinorStep = ActualMajorStep;
-                    ActualStringFormat = "yyyy-MM-dd";
+                    if (ActualStringFormat == null)
+                        ActualStringFormat = "yyyy-MM-dd";
                     break;
                 case DateTimeIntervalType.Hours:
                     // ActualMajorStep = 1.0 / 24;
                     ActualMinorStep = ActualMajorStep;
-                    ActualStringFormat = "HH:mm";
+                    if (ActualStringFormat == null)
+                        ActualStringFormat = "HH:mm";
                     break;
                 case DateTimeIntervalType.Minutes:
                     ActualMinorStep = ActualMajorStep;
-                    ActualStringFormat = "HH:mm";
+                    if (ActualStringFormat == null)
+                        ActualStringFormat = "HH:mm";
                     break;
                 case DateTimeIntervalType.Seconds:
                     ActualMinorStep = ActualMajorStep;
-                    ActualStringFormat = "HH:mm:ss";
+                    if (ActualStringFormat == null)
+                        ActualStringFormat = "HH:mm:ss";
                     break;
                 default:
                     ActualMinorStep = ActualMajorStep;
