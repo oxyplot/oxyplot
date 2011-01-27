@@ -31,6 +31,8 @@ namespace SimpleDemo
             tmp.Series.Add(series2);
 
             // Axes are created automatically
+
+            // Uncomment this code to test reversed axes
             //tmp.Axes.Add(new LinearAxis(AxisPosition.Left) {StartPosition = 1, EndPosition = 0});
             //tmp.Axes.Add(new LinearAxis(AxisPosition.Bottom) { StartPosition = 1, EndPosition = 0 });
 

@@ -91,10 +91,9 @@ namespace OxyPlot
 
             Debug.Assert(XAxis != null && YAxis != null, "Axis is not defined.");
 
-            double minDistSquared = MinimumSegmentLength*MinimumSegmentLength;
+            double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
 
-            var clippingRect = new OxyRect(XAxis.ScreenMin.X, YAxis.ScreenMin.Y, 
-                                           XAxis.ScreenMax.X - XAxis.ScreenMin.X, YAxis.ScreenMax.Y - YAxis.ScreenMin.Y);
+            var clippingRect = GetClippingRect();
 
             // Transform all points to screen coordinates
             int n0 = InternalPoints.Count;
