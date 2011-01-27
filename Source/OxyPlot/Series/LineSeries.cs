@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace OxyPlot
 {
@@ -118,6 +119,16 @@ namespace OxyPlot
         /// <value>The minimum length of the segment.</value>
         public double MinimumSegmentLength { get; set; }
 
+        protected OxyRect GetClippingRect()
+        {
+            var minX = Math.Min(XAxis.ScreenMin.X, XAxis.ScreenMax.X);
+            var minY = Math.Min(YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);
+            var maxX = Math.Max(XAxis.ScreenMin.X, XAxis.ScreenMax.X);
+            var maxY = Math.Max(YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);
+
+            return new OxyRect(minX, minY, maxX - minX, maxY - minY);
+        }
+
         /// <summary>
         ///   Renders the LineSeries on the specified rendering context.
         /// </summary>
@@ -134,11 +145,9 @@ namespace OxyPlot
 
             Debug.Assert(XAxis != null && YAxis != null, "Axis has not been defined.");
 
-            double minDistSquared = MinimumSegmentLength*MinimumSegmentLength;
+            double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
 
-            var clippingRect = new OxyRect(
-                XAxis.ScreenMin.X, YAxis.ScreenMin.Y, XAxis.ScreenMax.X - XAxis.ScreenMin.X, 
-                YAxis.ScreenMax.Y - YAxis.ScreenMin.Y);
+            var clippingRect = GetClippingRect();
 
             int n = InternalPoints.Count;
 
@@ -157,7 +166,7 @@ namespace OxyPlot
 
             // clip the line segments with the clipping rectangle
             rc.DrawClippedLine(screenPoints, clippingRect, minDistSquared, Color, StrokeThickness, LineStyle, LineJoin);
-            rc.DrawMarkers(allPoints, clippingRect, MarkerType, MarkerSize, MarkerFill, MarkerStroke, 
+            rc.DrawMarkers(allPoints, clippingRect, MarkerType, MarkerSize, MarkerFill, MarkerStroke,
                            MarkerStrokeThickness);
         }
 
@@ -169,8 +178,8 @@ namespace OxyPlot
         /// <param name = "legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (legendBox.Left + legendBox.Right)/2;
-            double ymid = (legendBox.Top + legendBox.Bottom)/2;
+            double xmid = (legendBox.Left + legendBox.Right) / 2;
+            double ymid = (legendBox.Top + legendBox.Bottom) / 2;
             var pts = new[]
                           {
                               new ScreenPoint(legendBox.Left, ymid), 
