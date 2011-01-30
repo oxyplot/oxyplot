@@ -31,7 +31,7 @@ namespace OxyPlot.Wpf
 
         public static readonly DependencyProperty MarkerStrokeProperty =
             DependencyProperty.Register("MarkerStroke", typeof (OxyColor), typeof (LineSeries),
-                                        new UIPropertyMetadata(OxyColors.Navy));
+                                        new UIPropertyMetadata(null));
 
         public double StrokeThickness
         {

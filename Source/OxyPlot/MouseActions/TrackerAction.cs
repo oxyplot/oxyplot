@@ -13,9 +13,12 @@
 
         private DataSeries currentSeries;
 
-        public override void OnMouseDown(ScreenPoint pt, OxyMouseButton button, int clickCount, bool control, bool shift)
+        public override void OnMouseDown(ScreenPoint pt, OxyMouseButton button, int clickCount, bool control, bool shift, bool alt)
         {
-            base.OnMouseDown(pt, button, clickCount, control, shift);
+            base.OnMouseDown(pt, button, clickCount, control, shift, alt);
+
+            if (alt)
+                return;
 
             if (button != OxyMouseButton.Left)
                 return;
@@ -30,13 +33,13 @@
 
             currentSeries = pc.GetSeriesFromPoint(pt) as DataSeries;
 
-            OnMouseMove(pt, control, shift);
+            OnMouseMove(pt, control, shift, alt);
 
             //pc.CaptureMouse();
             // pc.Cursor = Cursors.Cross;
         }
 
-        public override void OnMouseMove(ScreenPoint pt, bool control, bool shift)
+        public override void OnMouseMove(ScreenPoint pt, bool control, bool shift, bool alt)
         {
             if (currentSeries == null)
                 return;

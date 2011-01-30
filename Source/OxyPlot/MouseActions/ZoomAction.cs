@@ -16,9 +16,9 @@ namespace OxyPlot
         {
         }
 
-        public override void OnMouseDown(ScreenPoint pt, OxyMouseButton button, int clickCount, bool control, bool shift)
+        public override void OnMouseDown(ScreenPoint pt, OxyMouseButton button, int clickCount, bool control, bool shift, bool alt)
         {
-            base.OnMouseDown(pt, button, clickCount, control, shift);
+            base.OnMouseDown(pt, button, clickCount, control, shift, alt);
 
             pc.GetAxesFromPoint(pt, out xaxis, out yaxis);
 
@@ -36,11 +36,13 @@ namespace OxyPlot
                 pc.Refresh();
                 return;
             }
-
+            
+            if (alt)
+                button = OxyMouseButton.Right;
 
             // RMB+Control is the same as MMB
-            if (button == OxyMouseButton.Right && control) 
-                button = OxyMouseButton.Middle;        
+            if (button == OxyMouseButton.Right && control)
+                button = OxyMouseButton.Middle;
 
             if (button != OxyMouseButton.Middle)
                 return;
@@ -60,7 +62,7 @@ namespace OxyPlot
             isZooming = true;
         }
 
-        public override void OnMouseMove(ScreenPoint pt, bool control, bool shift)
+        public override void OnMouseMove(ScreenPoint pt, bool control, bool shift, bool alt)
         {
             if (!isZooming)
                 return;
@@ -115,14 +117,14 @@ namespace OxyPlot
             base.OnMouseUp();
         }
 
-        public override void OnMouseWheel(ScreenPoint pt, double delta, bool control, bool shift)
+        public override void OnMouseWheel(ScreenPoint pt, double delta, bool control, bool shift, bool alt)
         {
             IAxis xa, ya;
             pc.GetAxesFromPoint(pt, out xa, out ya);
             var current = AxisBase.InverseTransform(pt, xa, ya);
             double f = 0.001;
             if (control) f *= 0.2;
-            double s = 1 + delta*f;
+            double s = 1 + delta * f;
             if (xa != null)
                 pc.ZoomAt(xa, s, current.X);
             if (ya != null)

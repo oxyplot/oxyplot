@@ -120,6 +120,27 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty MaximumProperty =
             DependencyProperty.Register("Maximum", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsRender));
 
+        public double MinimumPadding
+        {
+            get { return (double)GetValue(MinimumPaddingProperty); }
+            set { SetValue(MinimumPaddingProperty, value); }
+        }
+
+        public static readonly DependencyProperty MinimumPaddingProperty =
+            DependencyProperty.Register("MinimumPadding", typeof(double), typeof(Axis), new UIPropertyMetadata(0.01));
+
+
+        public double MaximumPadding
+        {
+            get { return (double)GetValue(MaximumPaddingProperty); }
+            set { SetValue(MaximumPaddingProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaximumPaddingProperty =
+            DependencyProperty.Register("MaximumPadding", typeof(double), typeof(Axis), new UIPropertyMetadata(0.01));
+
+
+
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }
@@ -178,6 +199,9 @@ namespace OxyPlot.Wpf
             //MinorGridlineColor = MinorGridlineColor;
             a.MajorGridlineThickness = MajorGridlineThickness;
             a.MinorGridlineThickness = MinorGridlineThickness;
+
+            a.MinimumPadding = MinimumPadding;
+            a.MaximumPadding = MaximumPadding;
 
             //a.ExtraGridlineStyle = ExtraGridlineStyle;
             //a.ExtraGridlineColor = ExtraGridlineColor;

@@ -193,6 +193,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the 'padding' fraction of the minimum value.
         /// A value of 0.01 gives 1% more space on the minimum end of the axis.
+        /// This property is not used if the Minimum property is set.
         /// </summary>
         /// <value>The minimum padding.</value>
         public double MinimumPadding { get; set; }
@@ -200,6 +201,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the 'padding' fraction of the maximum value.
         /// A value of 0.01 gives 1% more space on the maximum end of the axis.
+        /// This property is not used if the Maximum property is set.
         /// </summary>
         /// <value>The maximum padding.</value>
         public double MaximumPadding { get; set; }
@@ -701,7 +703,7 @@ namespace OxyPlot
         /// <summary>
         /// Updates the actual max and min with the 'padding' values.
         /// </summary>
-        public void UpdateActualMaxMin()
+        public virtual void UpdateActualMaxMin()
         {
             if (!double.IsNaN(Maximum))
             {

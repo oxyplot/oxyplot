@@ -21,7 +21,6 @@ namespace Oxyplot.WindowsForms
 
         public Plot()
         {
-            //    InitializeComponent();
             DoubleBuffered = true;
             Model = new PlotModel();
 
@@ -29,10 +28,7 @@ namespace Oxyplot.WindowsForms
             zoomAction = new ZoomAction(this);
             trackerAction = new TrackerAction(this);
 
-            MouseActions = new List<MouseAction>();
-            MouseActions.Add(panAction);
-            MouseActions.Add(zoomAction);
-            MouseActions.Add(trackerAction);
+            MouseActions = new List<MouseAction> { panAction, zoomAction, trackerAction };
         }
 
         private PlotModel model;
@@ -106,6 +102,7 @@ namespace Oxyplot.WindowsForms
 
             bool control = Control.ModifierKeys == Keys.Control;
             bool shift = Control.ModifierKeys == Keys.Shift;
+            bool alt = Control.ModifierKeys == Keys.Alt;
 
             var button = OxyMouseButton.Left;
             if (e.Button == MouseButtons.Middle)
@@ -119,7 +116,7 @@ namespace Oxyplot.WindowsForms
 
             var p = new ScreenPoint(e.X, e.Y);
             foreach (var a in MouseActions)
-                a.OnMouseDown(p, button, e.Clicks, control, shift);
+                a.OnMouseDown(p, button, e.Clicks, control, shift, alt);
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -127,9 +124,10 @@ namespace Oxyplot.WindowsForms
             base.OnMouseMove(e);
             bool control = Control.ModifierKeys == Keys.Control;
             bool shift = Control.ModifierKeys == Keys.Shift;
+            bool alt = Control.ModifierKeys == Keys.Alt;
             var p = new ScreenPoint(e.X, e.Y);
             foreach (var a in MouseActions)
-                a.OnMouseMove(p, control, shift);
+                a.OnMouseMove(p, control, shift, alt);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
@@ -145,9 +143,10 @@ namespace Oxyplot.WindowsForms
             base.OnMouseWheel(e);
             bool control = Control.ModifierKeys == Keys.Control;
             bool shift = Control.ModifierKeys == Keys.Shift;
+            bool alt = Control.ModifierKeys == Keys.Alt;
             var p = new ScreenPoint(e.X, e.Y);
             foreach (var a in MouseActions)
-                a.OnMouseWheel(p, e.Delta, control, shift);
+                a.OnMouseWheel(p, e.Delta, control, shift, alt);
         }
 
         public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)

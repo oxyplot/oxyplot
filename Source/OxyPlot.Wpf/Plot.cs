@@ -401,10 +401,11 @@ namespace OxyPlot.Wpf
 
             bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
             bool shift = Keyboard.IsKeyDown(Key.LeftShift);
+            bool alt = (Keyboard.IsKeyDown(Key.LeftAlt));
             var p = e.GetPosition(this).ToScreenPoint();
             foreach (var a in MouseActions)
             {
-                a.OnMouseWheel(p, e.Delta, control, shift);
+                a.OnMouseWheel(p, e.Delta, control, shift, alt);
             }
         }
 
@@ -417,6 +418,7 @@ namespace OxyPlot.Wpf
 
             bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
             bool shift = Keyboard.IsKeyDown(Key.LeftShift);
+            bool alt = (Keyboard.IsKeyDown(Key.LeftAlt));
 
             var button = OxyMouseButton.Left;
             if (e.MiddleButton == MouseButtonState.Pressed)
@@ -442,7 +444,7 @@ namespace OxyPlot.Wpf
             var p = e.GetPosition(this).ToScreenPoint();
             foreach (var a in MouseActions)
             {
-                a.OnMouseDown(p, button, e.ClickCount, control, shift);
+                a.OnMouseDown(p, button, e.ClickCount, control, shift, alt);
             }
 
             mouseDownPoint = p;
@@ -454,10 +456,11 @@ namespace OxyPlot.Wpf
 
             bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
             bool shift = Keyboard.IsKeyDown(Key.LeftShift);
+            bool alt = (Keyboard.IsKeyDown(Key.LeftAlt));
             var p = e.GetPosition(this).ToScreenPoint();
             foreach (var a in MouseActions)
             {
-                a.OnMouseMove(p, control, shift);
+                a.OnMouseMove(p, control, shift, alt);
             }
         }
 
@@ -560,12 +563,9 @@ namespace OxyPlot.Wpf
 
                 if (plotFrame != null)
                 {
-                    grid.Children.Remove(plotFrame);
-
+                    grid.Children.Remove(plotAliasedFrame);
                     // grid.Children.Remove(plotAliasedFrame);
-                    plotFrame = null;
-
-                    // plotAliasedFrame = null;
+                    //  plotAliasedFrame = null;
                 }
             }
             else

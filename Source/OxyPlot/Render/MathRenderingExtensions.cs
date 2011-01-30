@@ -42,6 +42,8 @@ namespace OxyPlot
                                            string fontFamily, double fontSize, double fontWeight, double angle,
                                            HorizontalTextAlign ha, VerticalTextAlign va, bool measure)
         {
+            if (String.IsNullOrEmpty(text))
+                return OxySize.Empty;
             // todo: support sub/superscript math notation also with angled text...
 
             if (angle == 0 && (text.Contains("^{") || text.Contains("_{")))
@@ -75,7 +77,7 @@ namespace OxyPlot
 
                 return measure ? size : OxySize.Empty;
             }
-            
+
             rc.DrawText(pt, text, textColor,
                         fontFamily, fontSize, fontWeight,
                         angle, ha, va);
@@ -83,7 +85,7 @@ namespace OxyPlot
             {
                 return rc.MeasureText(text, fontFamily, fontSize, fontWeight);
             }
-            
+
             return OxySize.Empty;
         }
 

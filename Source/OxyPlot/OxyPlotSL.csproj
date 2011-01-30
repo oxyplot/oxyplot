@@ -55,10 +55,13 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Annotations\Annotation.cs" />
+    <Compile Include="Annotations\LineAnnotation.cs" />
+    <Compile Include="Axes\DateTimeAxis.cs" />
     <Compile Include="Axes\IAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\AxisBase.cs" />
-    <Compile Include="Axes\TimeAxis.cs" />
+    <Compile Include="Axes\TimeSpanAxis.cs" />
     <Compile Include="Foundation\CanonicalSplineHelper.cs" />
     <Compile Include="Foundation\OxyThickness.cs" />
     <Compile Include="Foundation\ScreenPoint.cs" />
@@ -92,7 +95,7 @@
     <Compile Include="Reporting\Report\HeaderHelper.cs" />
     <Compile Include="Reporting\Report\Image.cs" />
     <Compile Include="Reporting\Report\Paragraph.cs" />
-    <Compile Include="Reporting\Report\Plot.cs" />
+    <Compile Include="Reporting\Report\PlotFigure.cs" />
     <Compile Include="Reporting\Report\PropertyTable.cs" />
     <Compile Include="Reporting\Report\Report.cs" />
     <Compile Include="Reporting\Report\ReportItem.cs" />
@@ -104,8 +107,12 @@
     <Compile Include="Render\PlotRenderingHelper.cs" />
     <Compile Include="Foundation\LineStyleHelper.cs" />
     <Compile Include="Foundation\DataPoint.cs" />
+    <Compile Include="Annotations\IAnnotation.cs" />
+    <Compile Include="Series\BarSeries.cs" />
+    <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\FunctionSeries.cs" />
     <Compile Include="Series\ISeries.cs" />
+    <Compile Include="Series\PieSlice.cs" />
     <Compile Include="Svg\Gdi32.cs" />
     <Compile Include="Svg\SvgRenderContext.cs" />
     <Compile Include="Svg\SvgWriter.cs" />

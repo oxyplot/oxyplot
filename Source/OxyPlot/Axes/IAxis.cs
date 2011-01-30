@@ -15,6 +15,7 @@
 
     public enum LegendPosition
     {
+        /* todo: Auto,*/
         TopLeft,
         BottomLeft,
         TopRight,

@@ -9,7 +9,7 @@ namespace OxyPlot.Wpf
     /// todo: this should listen to collection changes
     /// </summary>
     public abstract class DataSeries : ItemsControl
-    {        
+    {
         protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
             base.OnItemsSourceChanged(oldValue, newValue);
@@ -43,7 +43,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty DataFieldXProperty =
-            DependencyProperty.Register("DataFieldX", typeof(string), typeof(DataSeries), new UIPropertyMetadata(null, DataChanged));
+            DependencyProperty.Register("DataFieldX", typeof(string), typeof(DataSeries), new UIPropertyMetadata("X", DataChanged));
 
         public string DataFieldY
         {
@@ -52,7 +52,7 @@ namespace OxyPlot.Wpf
         }
 
         public static readonly DependencyProperty DataFieldYProperty =
-            DependencyProperty.Register("DataFieldY", typeof(string), typeof(DataSeries), new UIPropertyMetadata(null, DataChanged));
+            DependencyProperty.Register("DataFieldY", typeof(string), typeof(DataSeries), new UIPropertyMetadata("Y", DataChanged));
 
         public string Title
         {

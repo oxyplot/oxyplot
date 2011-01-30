@@ -63,7 +63,7 @@ namespace OxyPlot
             MajorPen = OxyPen.Create(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
             MinorTickPen = OxyPen.Create(axis.TicklineColor, axis.MinorGridlineThickness, LineStyle.Solid);
             MajorTickPen = OxyPen.Create(axis.TicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
-            ZeroPen = OxyPen.Create(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
+            ZeroPen = OxyPen.Create(axis.TicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
             ExtraPen = OxyPen.Create(axis.ExtraGridlineColor, axis.ExtraGridlineThickness, axis.ExtraGridlineStyle);
         }
 
