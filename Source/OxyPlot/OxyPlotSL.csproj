@@ -67,6 +67,7 @@
     <Compile Include="Foundation\ScreenPoint.cs" />
     <Compile Include="Foundation\OxyRect.cs" />
     <Compile Include="Foundation\OxySize.cs" />
+    <Compile Include="Foundation\SutherlandHodgmanClipping.cs" />
     <Compile Include="MouseActions\IMouseAction.cs" />
     <Compile Include="MouseActions\IPlotControl.cs" />
     <Compile Include="MouseActions\MouseAction.cs" />

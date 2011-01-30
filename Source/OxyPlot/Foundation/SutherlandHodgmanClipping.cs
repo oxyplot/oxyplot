@@ -88,7 +88,7 @@ namespace OxyPlot
                     return !(p.Y >= bounds.Bottom);
 
                 default:
-                    throw new InvalidEnumArgumentException("edge");
+                    throw new ArgumentException("edge");
             }
         }
 
