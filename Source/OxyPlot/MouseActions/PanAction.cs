@@ -12,7 +12,7 @@
         private ScreenPoint ppt;
         private bool isPanning;
 
-        public override void OnMouseDown(ScreenPoint pt, OxyMouseButton button, int clickCount, bool control, bool shift)
+        public override void OnMouseDown(ScreenPoint pt, OxyMouseButton button, int clickCount, bool control, bool shift, bool alt)
         {
             pc.GetAxesFromPoint(pt, out xaxis, out yaxis);
 
@@ -33,6 +33,9 @@
             //    return;
             //}
 
+            if (alt)
+                button = OxyMouseButton.Right;
+
             if (button != OxyMouseButton.Right || control)
                 return;
 
@@ -50,7 +53,7 @@
             isPanning = true;
         }
 
-        public override void OnMouseMove(ScreenPoint pt, bool control, bool shift)
+        public override void OnMouseMove(ScreenPoint pt, bool control, bool shift, bool alt)
         {
             if (!isPanning)
                 return;

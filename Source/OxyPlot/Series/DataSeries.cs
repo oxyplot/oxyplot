@@ -27,6 +27,8 @@ namespace OxyPlot
         protected DataSeries()
         {
             InternalPoints = new Collection<DataPoint>();
+            DataFieldX = "X";
+            DataFieldY = "Y";
         }
 
         /// <summary>
@@ -194,6 +196,28 @@ namespace OxyPlot
             return true;
         }
 
+        /// <summary>
+        /// Converts the value of the specified object to a double precision floating point number.
+        /// DateTime objects are converted using DateTimeAxis.ToDouble
+        /// TimeSpan objects are converted using TimeSpanAxis.ToDouble
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        protected virtual double ToDouble(object value)
+        {
+            if (value is DateTime)
+            {
+                return DateTimeAxis.ToDouble((DateTime)value);
+            }
+
+            if (value is TimeSpan)
+            {
+                return ((TimeSpan)value).TotalSeconds;
+            }
+
+            return Convert.ToDouble(value);
+        }
+
         public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
         {
             if (XAxisKey != null)
@@ -244,7 +268,7 @@ namespace OxyPlot
             {
                 double dx = dp.x - p.x;
                 double dy = dp.y - p.y;
-                double d2 = dx*dx + dy*dy;
+                double d2 = dx * dx + dy * dy;
 
                 if (d2 < mindist)
                 {
@@ -286,25 +310,25 @@ namespace OxyPlot
 
                 double p21X = p2.x - p1.x;
                 double p21Y = p2.y - p1.y;
-                double u1 = (p3.x - p1.x)*p21X + (p3.y - p1.y)*p21Y;
-                double u2 = p21X*p21X + p21Y*p21Y;
+                double u1 = (p3.x - p1.x) * p21X + (p3.y - p1.y) * p21Y;
+                double u2 = p21X * p21X + p21Y * p21Y;
                 if (u2 == 0)
                 {
                     continue; // P1 && P2 coincident
                 }
 
-                double u = u1/u2;
+                double u = u1 / u2;
                 if (u < 0 || u > 1)
                 {
                     continue; // outside line
                 }
 
-                double x = p1.x + u*p21X;
-                double y = p1.y + u*p21Y;
+                double x = p1.x + u * p21X;
+                double y = p1.y + u * p21Y;
 
                 double dx = p3.x - x;
                 double dy = p3.y - y;
-                double d2 = dx*dx + dy*dy;
+                double d2 = dx * dx + dy * dy;
 
                 if (d2 < mindist)
                 {
@@ -342,13 +366,13 @@ namespace OxyPlot
                     piy = t.GetProperty(dataFieldY);
                     if (pix == null)
                     {
-                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}", 
+                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
                                                                           DataFieldX, t));
                     }
 
                     if (piy == null)
                     {
-                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}", 
+                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
                                                                           DataFieldY, t));
                     }
                 }
@@ -362,27 +386,6 @@ namespace OxyPlot
             }
         }
 
-        /// <summary>
-        /// Converts the value of the specified object to a double precision floating point number.
-        /// DateTime objects are converted using DateTimeAxis.ToDouble
-        /// TimeSpan objects are converted using TimeSpanAxis.ToDouble
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns></returns>
-        protected virtual double ToDouble(object value)
-        {
-            if (value is DateTime)
-            {
-                return DateTimeAxis.ToDouble((DateTime) value);
-            }
-
-            if (value is TimeSpan)
-            {
-                return ((TimeSpan) value).TotalSeconds;
-            }
-
-            return Convert.ToDouble(value);
-        }
 
         /// <summary>
         /// Updates the Max/Min limits from the specified point list.
@@ -442,8 +445,8 @@ namespace OxyPlot
                 if (IsBetween(x, InternalPoints[i].x, InternalPoints[i + 1].x))
                 {
                     return InternalPoints[i].y +
-                           (InternalPoints[i + 1].y - InternalPoints[i].y)/
-                           (InternalPoints[i + 1].x - InternalPoints[i].x)*(x - InternalPoints[i].x);
+                           (InternalPoints[i + 1].y - InternalPoints[i].y) /
+                           (InternalPoints[i + 1].x - InternalPoints[i].x) * (x - InternalPoints[i].x);
                 }
             }
 

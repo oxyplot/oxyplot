@@ -78,7 +78,7 @@
                     </oxy:Plot>
                 </Grid>
             </TabItem>
-            <TabItem Header="LinearAxis position">
+            <TabItem Header="AxisPosition">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -101,7 +101,7 @@
                     </oxy:Plot>
                 </Grid>
             </TabItem>
-            <TabItem Header="Angled LinearAxis numbers">
+            <TabItem Header="Axis label Angle">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -159,7 +159,7 @@
                     </oxy:Plot.Axes>
                 </oxy:Plot>
             </TabItem>
-            <TabItem Header="Multi panes">
+            <TabItem Header="Multiple panes">
                 <oxy:Plot>
                     <oxy:Plot.Axes>
                         <oxy:LinearAxis Position="Left" Minimum="-1" Maximum="1" Title="C1" StartPosition="0" EndPosition="0.25"/>
@@ -189,7 +189,7 @@
                 <!--<Label VerticalAlignment="Center" Foreground="#80000000" FontSize="24" 
                            HorizontalAlignment="Center" Content="TODO: Where are the 0's coming from?"/>-->
                 </Grid>
-            </TabItem>            
+            </TabItem>
             <TabItem Header="Small numbers">
                 <oxy:Plot>
                     <oxy:Plot.Axes>
@@ -197,6 +197,64 @@
                         <oxy:LinearAxis Position="Bottom" Minimum="-4e-20" Maximum="3e-20" Title="small numbers"/>
                     </oxy:Plot.Axes>
                 </oxy:Plot>
+            </TabItem>
+            <TabItem Header="Padding">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <oxy:Plot Title="Default padding" Grid.Row="0" Grid.Column="0">
+                        <oxy:Plot.Axes>
+                            <oxy:LinearAxis Position="Left"/>
+                            <oxy:LinearAxis Position="Bottom"/>
+                        </oxy:Plot.Axes>
+                        <oxy:Plot.Series>
+                            <oxy:LineSeries ItemsSource="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
+                        </oxy:Plot.Series>
+                    </oxy:Plot>
+                    <oxy:Plot Title="No padding" Grid.Row="0" Grid.Column="1">
+                        <oxy:Plot.Axes>
+                            <oxy:LinearAxis Position="Left" MinimumPadding="0" MaximumPadding="0"/>
+                            <oxy:LinearAxis Position="Bottom" MinimumPadding="0" MaximumPadding="0"/>
+                        </oxy:Plot.Axes>
+                        <oxy:Plot.Series>
+                            <oxy:LineSeries ItemsSource="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
+                        </oxy:Plot.Series>
+                    </oxy:Plot>
+                    <oxy:Plot Title="Padding 10%" Grid.Row="0" Grid.Column="2">
+                        <oxy:Plot.Axes>
+                            <oxy:LinearAxis Position="Left" MinimumPadding="0.1" MaximumPadding="0.1"/>
+                            <oxy:LinearAxis Position="Bottom" MinimumPadding="0.1" MaximumPadding="0.1"/>
+                        </oxy:Plot.Axes>
+                        <oxy:Plot.Series>
+                            <oxy:LineSeries ItemsSource="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
+                        </oxy:Plot.Series>
+                    </oxy:Plot>
+                    <oxy:Plot Title="X-axis MinimumPadding=0.1" Grid.Row="1" Grid.Column="0">
+                        <oxy:Plot.Axes>
+                            <oxy:LinearAxis Position="Left"/>
+                            <oxy:LinearAxis Position="Bottom" MinimumPadding="0.1"/>
+                        </oxy:Plot.Axes>
+                        <oxy:Plot.Series>
+                            <oxy:LineSeries ItemsSource="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
+                        </oxy:Plot.Series>
+                    </oxy:Plot>
+                    <oxy:Plot Title="X-axis MaximumPadding=0.1" Grid.Row="1" Grid.Column="1">
+                        <oxy:Plot.Axes>
+                            <oxy:LinearAxis Position="Left"/>
+                            <oxy:LinearAxis Position="Bottom" MaximumPadding="0.1"/>
+                        </oxy:Plot.Axes>
+                        <oxy:Plot.Series>
+                            <oxy:LineSeries ItemsSource="{Binding Data1}" DataFieldX="X" DataFieldY="Y"/>
+                        </oxy:Plot.Series>
+                    </oxy:Plot>
+                </Grid>
             </TabItem>
         </TabControl>
     </DockPanel>

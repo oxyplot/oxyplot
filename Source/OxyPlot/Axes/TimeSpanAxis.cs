@@ -2,7 +2,7 @@
 using System.Linq;
 
 namespace OxyPlot
-{   
+{
     /// <summary>
     ///   Time Axis
     ///   The values should be in seconds.
@@ -75,11 +75,11 @@ namespace OxyPlot
             double interval = 1;
             var goodIntervals = new[] { 1.0, 5, 10, 30, 60, 120, 300, 600, 900, 1200, 1800, 3600 };
 
-            const int maxSteps = 20;
+            int maxNumberOfIntervals = Math.Max((int)(availableSize / maxIntervalSize), 2);
 
             while (true)
             {
-                if (range / interval < maxSteps)
+                if (range / interval < maxNumberOfIntervals)
                 {
                     return interval;
                 }

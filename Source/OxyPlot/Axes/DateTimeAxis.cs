@@ -343,18 +343,18 @@ namespace OxyPlot
             double range = Math.Abs(ActualMinimum - ActualMaximum);
 
 
-            double interval = 1.0 / 24 / 60;
             var goodIntervals = new[]
                                     {
                                         1.0/24/60, 1.0/24/30, 1.0/24/12, 1.0/24/6, 1.0/24/2, 1.0/24, 1.0/6, 1.0/4, 1.0/2
                                         , 1, 2, 7, 14, 30.5, 30.5*2, 30.5*3, 30.5*4, 30.5*6, 365.25
                                     };
+            double interval = goodIntervals[0];
 
-            int maxSteps = (int)(availableSize / maxIntervalSize);
+          int maxNumberOfIntervals = Math.Max((int)(availableSize / maxIntervalSize), 2);
 
             while (true)
             {
-                if (range / interval < maxSteps)
+                if (range / interval < maxNumberOfIntervals)
                 {
                     break;
                 }

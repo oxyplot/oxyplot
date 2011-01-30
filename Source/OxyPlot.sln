@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PieDemo", "Examples\PieDemo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnnotationDemo", "Examples\AnnotationDemo\AnnotationDemo.csproj", "{83FC5D1B-748D-4912-BCE8-83B58CEA8148}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarSeriesDemo", "Examples\BarSeriesDemo\BarSeriesDemo.csproj", "{B286C99E-079C-4D99-826F-A18A8B40ECB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -241,6 +243,16 @@ Global
 		{83FC5D1B-748D-4912-BCE8-83B58CEA8148}.Release|Mixed Platforms.Build.0 = Release|x86
 		{83FC5D1B-748D-4912-BCE8-83B58CEA8148}.Release|x86.ActiveCfg = Release|x86
 		{83FC5D1B-748D-4912-BCE8-83B58CEA8148}.Release|x86.Build.0 = Release|x86
+		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Debug|x86.ActiveCfg = Debug|x86
+		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Debug|x86.Build.0 = Debug|x86
+		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Release|Any CPU.ActiveCfg = Release|x86
+		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Release|Mixed Platforms.Build.0 = Release|x86
+		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Release|x86.ActiveCfg = Release|x86
+		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -260,5 +272,6 @@ Global
 		{552CCB0C-A235-47D4-BE2F-9C023DC5636F} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{3AC6B2B1-800E-45E5-8AF5-6B78BF988072} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{83FC5D1B-748D-4912-BCE8-83B58CEA8148} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
+		{B286C99E-079C-4D99-826F-A18A8B40ECB0} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 	EndGlobalSection
 EndGlobal
