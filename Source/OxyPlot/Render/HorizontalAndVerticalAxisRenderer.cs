@@ -55,7 +55,7 @@ namespace OxyPlot
             var majorSegments = new List<ScreenPoint>();
             var majorTickSegments = new List<ScreenPoint>();
 
-            if (axis.TickStyle!=TickStyle.None || MinorPen!=null)
+            if (axis.TickStyle != TickStyle.None || MinorPen != null)
             {
                 GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
 
@@ -78,13 +78,13 @@ namespace OxyPlot
                     {
                         if (isHorizontal)
                         {
-                            minorSegments.Add(new ScreenPoint(transformedValue,Plot.PlotArea.Top));
+                            minorSegments.Add(new ScreenPoint(transformedValue, Plot.PlotArea.Top));
                             minorSegments.Add(new ScreenPoint(transformedValue, Plot.PlotArea.Bottom));
                         }
                         else
                         {
-                            minorSegments.Add(new ScreenPoint(Plot.PlotArea.Left,transformedValue));
-                            minorSegments.Add(new ScreenPoint(Plot.PlotArea.Right,transformedValue));
+                            minorSegments.Add(new ScreenPoint(Plot.PlotArea.Left, transformedValue));
+                            minorSegments.Add(new ScreenPoint(Plot.PlotArea.Right, transformedValue));
                         }
                     }
 
@@ -241,10 +241,11 @@ namespace OxyPlot
                 majorSegments.Add(new ScreenPoint(apos, Plot.PlotArea.Bottom));
             }
 
-            // Draw the axis legend
+            // Draw the axis title
             if (!String.IsNullOrWhiteSpace(axis.Title))
             {
-                double ymid = axis.Transform((axis.ActualMinimum + axis.ActualMaximum) / 2);
+                double ymid = isHorizontal ? (axis.ScreenMin.X + axis.ScreenMax.X) / 2 : (axis.ScreenMin.Y + axis.ScreenMax.Y) / 2;
+
                 double angle = -90;
                 var lpt = new ScreenPoint();
 
