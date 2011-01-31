@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,10 +44,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AxisTests.cs" />
+    <Compile Include="OxyAssert.cs" />
     <Compile Include="PlotModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj">
+      <Project>{8BC521AD-81CF-4E6C-8898-BE67527E7064}</Project>
+      <Name>OxyPlot.WindowsForms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
       <Project>{87F519B8-5A2F-48C6-AD53-C5F13A82EA6B}</Project>
       <Name>OxyPlot</Name>

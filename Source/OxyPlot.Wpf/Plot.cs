@@ -96,7 +96,7 @@ namespace OxyPlot.Wpf
 
         public Plot()
         {
-            Background = Brushes.Transparent;
+            Background = Brushes.White;
 
             panAction = new PanAction(this);
             zoomAction = new ZoomAction(this);
@@ -118,7 +118,12 @@ namespace OxyPlot.Wpf
 
             CompositionTarget.Rendering += CompositionTargetRendering;
 
-            // CommandBindings.Add(new KeyBinding())
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, DoCopy));
+        }
+
+        private void DoCopy(object sender, ExecutedRoutedEventArgs e)
+        {
+            Clipboard.SetImage(ToBitmap());
         }
 
         public LegendPosition LegendPosition

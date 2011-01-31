@@ -66,6 +66,7 @@ namespace OxyPlot
 
             FontFamily = PlotModel.DefaultFont;
             FontSize = 12;
+            FontWeight = 500;
 
             MinorTickSize = 4;
             MajorTickSize = 7;
@@ -467,7 +468,7 @@ namespace OxyPlot
                 String fmt;
                 if (StringFormat == null)
                 {
-                    fmt = mantissa == 1.0 ? "10^{{{1:0}}}" : "{0}·10^{{{1:0}}}";
+                    fmt = Math.Abs(mantissa-1.0)<1e-6 ? "10^{{{1:0}}}" : "{0}·10^{{{1:0}}}";
                 }
                 else
                 {
@@ -485,21 +486,24 @@ namespace OxyPlot
             if (step <= 0)
                 throw new InvalidOperationException("Axis: Step cannot be negative.");
 
-            double x = (int)Math.Round(min / step) * step;
+            double x0 = Math.Round(min / step) * step;
 
             var values = new Collection<double>();
-            // Maximum number of iterations (in case of very small step size)
-            int it = 0;
+
+            // Limit the maximum number of iterations (in case of something wrong with the step size)
+            int i = 0;
             const int maxit = 1000;
-            double epsilon = Math.Abs(max - min) * 1e-6;
-            while (x <= max + epsilon && it++ < maxit)
+            double x = x0;
+
+            while (x <= max + double.Epsilon && i < maxit)
             {
-                if (x >= min - epsilon && x <= max + epsilon)
+                x = x0 + i * step;
+                i++;
+                if (x >= min - double.Epsilon && x <= max + double.Epsilon)
                 {
                     x = RemoveNoiseFromDoubleMath(x);
                     values.Add(x);
                 }
-                x += step;
             }
             return values;
         }
@@ -560,6 +564,12 @@ namespace OxyPlot
                 ActualMajorStep = 10;
 
             ActualStringFormat = StringFormat;
+
+            //if (ActualStringFormat==null)
+            //{
+            //    if (ActualMaximum > 1e6 || ActualMinimum < 1e-6)
+            //        ActualStringFormat = "#.#e-0";
+            //}
         }
 
         protected virtual double GetLabelSize()
@@ -587,7 +597,7 @@ namespace OxyPlot
 
         protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize)
         {
-            return CalculateActualInterval2(availableSize, maxIntervalSize, ActualMaximum-ActualMinimum);
+            return CalculateActualInterval2(availableSize, maxIntervalSize, ActualMaximum - ActualMinimum);
         }
 
         // alternative algorithm not in use
@@ -705,13 +715,22 @@ namespace OxyPlot
         /// </summary>
         public virtual void UpdateActualMaxMin()
         {
+            double range = ActualMaximum - ActualMinimum;
+            double zeroRange = ActualMaximum>0 ? ActualMaximum : 1;
+
             if (!double.IsNaN(Maximum))
             {
                 ActualMaximum = Maximum;
             }
             else
             {
-                ActualMaximum += MaximumPadding * (ActualMaximum - ActualMinimum);
+                if (range<double.Epsilon) 
+                    ActualMaximum += zeroRange*0.5;
+
+                double x1 = PreTransform(ActualMaximum);
+                double x0 = PreTransform(ActualMinimum);
+                double dx = MaximumPadding * (x1 - x0);
+                ActualMaximum = PostInverseTransform(x1 + dx);
             }
 
             if (!double.IsNaN(Minimum))
@@ -720,7 +739,13 @@ namespace OxyPlot
             }
             else
             {
-                ActualMinimum -= MinimumPadding * (ActualMaximum - ActualMinimum);
+                if (range < double.Epsilon)
+                    ActualMinimum -= zeroRange * 0.5;
+
+                double x1 = PreTransform(ActualMaximum);
+                double x0 = PreTransform(ActualMinimum);
+                double dx = MinimumPadding * (x1 - x0);
+                ActualMinimum = PostInverseTransform(x0 - dx);
             }
 
             if (double.IsNaN(ActualMaximum))
@@ -729,7 +754,7 @@ namespace OxyPlot
             }
             if (double.IsNaN(ActualMinimum))
             {
-                ActualMinimum = 0;
+                ActualMinimum = 1;
             }
         }
 
