@@ -38,6 +38,22 @@ namespace OxyPlot
             double d = d0;
             majorValues = new List<double>();
             minorValues = new List<double>();
+
+            //if (ActualMaximum / ActualMinimum < 10)
+            //{
+            //    while (d<=d1+double.Epsilon)
+            //    {
+            //        if (d >= ActualMinimum && d <= ActualMaximum)
+            //        {
+            //            majorValues.Add(d);
+            //        }
+            //        double e2 = (int)Math.Floor(Math.Log10(d));
+            //        double dd = Math.Pow(10, e2);
+            //        d += dd * 0.1;
+            //    }
+            //    return;
+            //}
+
             while (d <= d1 + double.Epsilon)
             {
                 if (d >= ActualMinimum && d <= ActualMaximum)
@@ -58,7 +74,7 @@ namespace OxyPlot
                         break;
                     }
 
-                    if (d2 > ActualMinimum)
+                    if (d2 > ActualMinimum && d2 < ActualMaximum)
                     {
                         minorValues.Add(d2);
                     }

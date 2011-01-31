@@ -61,7 +61,7 @@ namespace Oxyplot.WindowsForms
         {
             base.OnPaint(e);
 
-            var rc = new GraphicsRenderContext(this, e.Graphics, e.ClipRectangle);
+            var rc = new GraphicsRenderContext(e.Graphics, Width, Height); // e.ClipRectangle
             if (model != null)
                 model.Render(rc);
             if (zoomRectangle != Rectangle.Empty)

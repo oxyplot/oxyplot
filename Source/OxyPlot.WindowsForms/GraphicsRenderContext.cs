@@ -11,11 +11,13 @@ namespace Oxyplot.WindowsForms
         private readonly Graphics g;
         private readonly Plot pc;
         private const float FONTSIZE_FACTOR = 0.8f;
+        private readonly double width;
+        private readonly double height;
 
-
-        public GraphicsRenderContext(Plot pc, Graphics graphics, Rectangle clipRectangle)
+        public GraphicsRenderContext(Graphics graphics, double width, double height)
         {
-            this.pc = pc;
+            this.width = width;
+            this.height = height;
             g = graphics;
         }
 
@@ -23,18 +25,19 @@ namespace Oxyplot.WindowsForms
 
         public double Width
         {
-            get { return pc.Width; }
+            get { return width; }
         }
 
         public double Height
         {
-            get { return pc.Height; }
+            get { return height; }
         }
 
-        public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+                                     OxyPenLineJoin lineJoin, bool aliased)
         {
-            for (int i = 0; i + 1 < points.Count; i+=2)
-                DrawLine(new[] { points[i], points[i + 1] }, stroke, thickness, dashArray, lineJoin, aliased);
+            for (int i = 0; i + 1 < points.Count; i += 2)
+                DrawLine(new[] {points[i], points[i + 1]}, stroke, thickness, dashArray, lineJoin, aliased);
         }
 
         public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
@@ -44,7 +47,7 @@ namespace Oxyplot.WindowsForms
                 return;
 
             g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
-            var pen = new Pen(ToColor(stroke), (float)thickness);
+            var pen = new Pen(ToColor(stroke), (float) thickness);
 
             if (dashArray != null)
                 pen.DashPattern = ToFloatArray(dashArray);
@@ -56,7 +59,7 @@ namespace Oxyplot.WindowsForms
                 case OxyPenLineJoin.Bevel:
                     pen.LineJoin = LineJoin.Bevel;
                     break;
-                //  The default LineJoin is Miter
+                    //  The default LineJoin is Miter
             }
             g.DrawLines(pen, ToPoints(points));
         }
@@ -66,17 +69,17 @@ namespace Oxyplot.WindowsForms
         {
             g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
 
-            PointF[] pts = ToPoints(points);
+            var pts = ToPoints(points);
             if (fill != null)
                 g.FillPolygon(ToBrush(fill), pts);
 
             if (stroke != null && thickness > 0)
             {
-                var pen = new Pen(ToColor(stroke), (float)thickness);
+                var pen = new Pen(ToColor(stroke), (float) thickness);
 
                 if (dashArray != null)
                     pen.DashPattern = ToFloatArray(dashArray);
-              
+
                 switch (lineJoin)
                 {
                     case OxyPenLineJoin.Round:
@@ -85,7 +88,7 @@ namespace Oxyplot.WindowsForms
                     case OxyPenLineJoin.Bevel:
                         pen.LineJoin = LineJoin.Bevel;
                         break;
-                    //  The default LineJoin is Miter
+                        //  The default LineJoin is Miter
                 }
 
                 g.DrawPolygon(pen, pts);
@@ -96,20 +99,20 @@ namespace Oxyplot.WindowsForms
                              double fontWeight,
                              double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
         {
-            FontStyle fs = FontStyle.Regular;
+            var fs = FontStyle.Regular;
             if (fontWeight >= 700)
                 fs = FontStyle.Bold;
-            var font = new Font(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
+            var font = new Font(fontFamily, (float) fontSize*FONTSIZE_FACTOR, fs);
 
             var sf = new StringFormat();
             sf.Alignment = StringAlignment.Near;
 
-            SizeF size = g.MeasureString(text, font);
+            var size = g.MeasureString(text, font);
 
             float dx = 0;
             if (halign == HorizontalTextAlign.Center)
             {
-                dx = -size.Width / 2;
+                dx = -size.Width/2;
                 //              sf.Alignment = StringAlignment.Center;
             }
             if (halign == HorizontalTextAlign.Right)
@@ -123,7 +126,7 @@ namespace Oxyplot.WindowsForms
             if (valign == VerticalTextAlign.Middle)
             {
                 // sf.LineAlignment = StringAlignment.Center;
-                dy = -size.Height / 2;
+                dy = -size.Height/2;
             }
             if (valign == VerticalTextAlign.Bottom)
             {
@@ -131,10 +134,10 @@ namespace Oxyplot.WindowsForms
                 dy = -size.Height;
             }
 
-            g.TranslateTransform(dx, dy);
+            g.TranslateTransform((float) p.X, (float) p.Y);
             if (rotate != 0)
-                g.RotateTransform((float)rotate);
-            g.TranslateTransform((float)p.X, (float)p.Y);
+                g.RotateTransform((float) rotate);
+            g.TranslateTransform(dx, dy);
 
             g.DrawString(text, font, ToBrush(fill), 0, 0, sf);
 
@@ -146,37 +149,36 @@ namespace Oxyplot.WindowsForms
             if (text == null)
                 return OxySize.Empty;
 
-            FontStyle fs = FontStyle.Regular;
-            if (fontWeight >= 500)
+            var fs = FontStyle.Regular;
+            if (fontWeight >= 700)
                 fs = FontStyle.Bold;
-            var font = new Font(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
-
-            var sf = new StringFormat();
-            sf.Alignment = StringAlignment.Near;
-
-            SizeF size = g.MeasureString(text, font);
+            var font = new Font(fontFamily, (float) fontSize*FONTSIZE_FACTOR, fs);
+            var size = g.MeasureString(text, font);
             return new OxySize(size.Width, size.Height);
         }
 
-        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
+                                  double thickness)
         {
             if (fill != null)
-                g.FillRectangle(ToBrush(fill), (float)x, (float)y, (float)width, (float)height);
+                g.FillRectangle(ToBrush(fill), (float) x, (float) y, (float) width, (float) height);
             if (stroke == null || thickness <= 0)
                 return;
-            var pen = new Pen(ToColor(stroke), (float)thickness);
-            g.DrawRectangle(pen, (float)x, (float)y, (float)width, (float)height);
+            var pen = new Pen(ToColor(stroke), (float) thickness);
+            g.DrawRectangle(pen, (float) x, (float) y, (float) width, (float) height);
         }
 
-        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
+                                double thickness)
         {
             if (fill != null)
-                g.FillEllipse(ToBrush(fill), (float)x, (float)y, (float)width, (float)height);
+                g.FillEllipse(ToBrush(fill), (float) x, (float) y, (float) width, (float) height);
             if (stroke == null || thickness <= 0)
                 return;
-            var pen = new Pen(ToColor(stroke), (float)thickness);
-            g.DrawEllipse(pen, (float)x, (float)y, (float)width, (float)height);
+            var pen = new Pen(ToColor(stroke), (float) thickness);
+            g.DrawEllipse(pen, (float) x, (float) y, (float) width, (float) height);
         }
+
         #endregion
 
         private Brush ToBrush(OxyColor fill)
@@ -192,8 +194,8 @@ namespace Oxyplot.WindowsForms
                 return null;
             var r = new PointF[points.Count()];
             int i = 0;
-            foreach (ScreenPoint p in points)
-                r[i++] = new PointF((float)p.X, (float)p.Y);
+            foreach (var p in points)
+                r[i++] = new PointF((float) p.X, (float) p.Y);
             return r;
         }
 
@@ -208,7 +210,7 @@ namespace Oxyplot.WindowsForms
                 return null;
             var r = new float[a.Length];
             for (int i = 0; i < a.Length; i++)
-                r[i] = (float)a[i];
+                r[i] = (float) a[i];
             return r;
         }
     }
