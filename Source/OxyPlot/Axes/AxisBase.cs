@@ -73,6 +73,8 @@ namespace OxyPlot
 
             StartPosition = 0;
             EndPosition = 1;
+            
+            TitlePosition = 0.5;
 
             Angle = 0;
 
@@ -394,6 +396,11 @@ namespace OxyPlot
             get { return StartPosition > EndPosition; }
         }
 
+        /// <summary>
+        /// Position of the title (0.5 is in the middle).
+        /// </summary>
+        public double TitlePosition {get;set;}
+
         #region IAxis Members
 
         public virtual void Render(IRenderContext rc, PlotModel model)
@@ -468,7 +475,7 @@ namespace OxyPlot
                 String fmt;
                 if (StringFormat == null)
                 {
-                    fmt = Math.Abs(mantissa-1.0)<1e-6 ? "10^{{{1:0}}}" : "{0}·10^{{{1:0}}}";
+                    fmt = Math.Abs(mantissa - 1.0) < 1e-6 ? "10^{{{1:0}}}" : "{0}·10^{{{1:0}}}";
                 }
                 else
                 {
@@ -716,7 +723,7 @@ namespace OxyPlot
         public virtual void UpdateActualMaxMin()
         {
             double range = ActualMaximum - ActualMinimum;
-            double zeroRange = ActualMaximum>0 ? ActualMaximum : 1;
+            double zeroRange = ActualMaximum > 0 ? ActualMaximum : 1;
 
             if (!double.IsNaN(Maximum))
             {
@@ -724,8 +731,8 @@ namespace OxyPlot
             }
             else
             {
-                if (range<double.Epsilon) 
-                    ActualMaximum += zeroRange*0.5;
+                if (range < double.Epsilon)
+                    ActualMaximum += zeroRange * 0.5;
 
                 double x1 = PreTransform(ActualMaximum);
                 double x0 = PreTransform(ActualMinimum);
@@ -754,7 +761,7 @@ namespace OxyPlot
             }
             if (double.IsNaN(ActualMinimum))
             {
-                ActualMinimum = 1;
+                ActualMinimum = this is LogarithmicAxis ? 1 : 0;
             }
         }
 

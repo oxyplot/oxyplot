@@ -4,38 +4,38 @@ using System.Windows.Media;
 
 namespace OxyPlot.Wpf
 {
-    internal static class ConverterExtensions
+    public static class ConverterExtensions
     {
-        public static OxyColor ToOxyColor(this System.Windows.Media.Color color)
+        public static OxyColor ToOxyColor(this Color color)
         {
-            return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
+            return OxyConvert.ToOxyColor(color);
         }
 
-        public static System.Windows.Media.Color ToColor(this OxyColor c)
+        public static Color ToColor(this OxyColor c)
         {
-            return System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
+            return OxyConvert.ToColor(c);
         }
 
         public static Point ToPoint(this ScreenPoint pt)
         {
-            return new Point(pt.X,pt.Y);
+            return OxyConvert.ToPoint(pt);
         }
 
         public static ScreenPoint ToScreenPoint(this Point pt)
         {
-            return new ScreenPoint(pt.X, pt.Y);
+            return OxyConvert.ToScreenPoint(pt);
         }
 
         public static Brush ToBrush(this OxyColor c)
         {
-            return new SolidColorBrush(c.ToColor());
+            return OxyConvert.ToBrush(c);
         }
 
         public static double DistanceTo(this Point p1, Point p2)
         {
             double dx = p1.X - p2.X;
             double dy = p1.Y - p2.Y;
-            return Math.Sqrt(dx*dx + dy*dy);
+            return Math.Sqrt(dx * dx + dy * dy);
         }
     }
 }
