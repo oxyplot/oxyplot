@@ -246,11 +246,14 @@ namespace OxyPlot
             currentColorIndex = 0;
         }
 
+        private LineStyle GetDefaultLineStyle()
+        {
+            return (LineStyle)((currentColorIndex / DefaultColors.Count) % (int)LineStyle.None);
+        }
+
         private OxyColor GetDefaultColor()
         {
-            if (currentColorIndex >= DefaultColors.Count)
-                currentColorIndex = 0;
-            return DefaultColors[currentColorIndex++];
+            return DefaultColors[currentColorIndex++ % DefaultColors.Count];
         }
 
         /// <summary>
@@ -539,6 +542,7 @@ namespace OxyPlot
                 var ls = s as LineSeries;
                 if (ls != null && ls.Color == null)
                 {
+                    ls.LineStyle = GetDefaultLineStyle();
                     ls.Color = ls.MarkerFill = GetDefaultColor();
                 }
 

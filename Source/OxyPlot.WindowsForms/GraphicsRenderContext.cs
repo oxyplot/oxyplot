@@ -9,7 +9,6 @@ namespace Oxyplot.WindowsForms
     internal class GraphicsRenderContext : IRenderContext
     {
         private readonly Graphics g;
-        private readonly Plot pc;
         private const float FONTSIZE_FACTOR = 0.8f;
         private readonly double width;
         private readonly double height;

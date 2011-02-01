@@ -244,7 +244,7 @@ namespace OxyPlot
             // Draw the axis title
             if (!String.IsNullOrWhiteSpace(axis.Title))
             {
-                double ymid = isHorizontal ? (axis.ScreenMin.X + axis.ScreenMax.X) / 2 : (axis.ScreenMin.Y + axis.ScreenMax.Y) / 2;
+                double ymid = isHorizontal ? Lerp(axis.ScreenMin.X, axis.ScreenMax.X, axis.TitlePosition) : Lerp(axis.ScreenMax.Y, axis.ScreenMin.Y, axis.TitlePosition);
 
                 double angle = -90;
                 var lpt = new ScreenPoint();
@@ -291,6 +291,19 @@ namespace OxyPlot
             rc.DrawLineSegments(majorSegments, MajorPen);
             rc.DrawLineSegments(minorTickSegments, MinorTickPen);
             rc.DrawLineSegments(majorTickSegments, MajorTickPen);
+        }
+
+        /// <summary>
+        /// Linear interpolation
+        /// http://en.wikipedia.org/wiki/Linear_interpolation
+        /// </summary>
+        /// <param name="x0">The x0.</param>
+        /// <param name="x1">The x1.</param>
+        /// <param name="f">The f.</param>
+        /// <returns></returns>
+        private double Lerp(double x0, double x1, double f)
+        {
+            return x0 * (1 - f) + x1 * f;
         }
 
 
