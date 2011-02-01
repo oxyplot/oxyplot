@@ -98,9 +98,12 @@ namespace OxyPlot.Reporting
             Add(new Table { Caption = title, Items = items, Columns = fields });
         }
 
-        public void AddPropertyTable(string title, IEnumerable items)
+        public void AddPropertyTable(string title, object obj)
         {
-            Add(new PropertyTable { Caption = title, Items = items });
+            var items = obj as IEnumerable;
+            if (items==null)
+                items = new[] {obj};
+            Add(new PropertyTable { Caption = title, Items = items});
         }
 
         public void AddImage(string src, string text)

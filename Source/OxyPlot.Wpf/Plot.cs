@@ -502,10 +502,17 @@ namespace OxyPlot.Wpf
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
+
             if (e.Key == Key.A)
             {
                 e.Handled = true;
                 ZoomAll();
+            }
+            if (e.Key == Key.R && control)
+            {
+                if (internalModel!=null)
+                    Clipboard.SetText(internalModel.CreateTextReport());   
             }
 
             base.OnKeyDown(e);
