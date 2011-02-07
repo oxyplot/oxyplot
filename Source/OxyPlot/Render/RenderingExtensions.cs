@@ -199,12 +199,14 @@ namespace OxyPlot
                 var s0 = points[0];
                 var last = points[0];
 
+                if (n == 1)
+                    pts.Add(s0);
+
                 for (int i = 1; i < n; i++)
                 {
                     var s1 = points[i];
 
                     // Clipped version of this and next point.
-
                     var s0c = s0;
                     var s1c = s1;
                     bool isInside = clipping.ClipLine(ref s0c, ref s1c);
@@ -239,8 +241,30 @@ namespace OxyPlot
                         pts.Clear();
                     }
                 }
+
+                // Check if the line contains two points and they are at the same point
+                if (pts.Count == 2)
+                {
+                    if (pts[0].DistanceTo(pts[1]) < 1)
+                    {
+                        // Modify to a small horizontal line to make sure it is being rendered
+                        pts[1] = new ScreenPoint(pts[0].X + 1, pts[0].Y);
+                        pts[0] = new ScreenPoint(pts[0].X - 1, pts[0].Y);
+                    }
+                }
+
+                // Check if the line contains a single point
+                if (pts.Count == 1)
+                {
+                    // Add a second point to make sure the line is being rendered
+                    pts.Add(new ScreenPoint(pts[0].X + 1, pts[0].Y));
+                    pts[0] = new ScreenPoint(pts[0].X - 1, pts[0].Y);
+                }
+
                 if (pts.Count > 0)
+                {
                     rc.DrawLine(pts, stroke, strokeThickness, LineStyleHelper.GetDashArray(lineStyle), lineJoin);
+                }
             }
         }
     }
