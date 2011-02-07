@@ -111,12 +111,14 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <Slider x:Name="Angle" Orientation="Vertical" 
+                    <Grid Grid.Column="1" Background="White">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Slider x:Name="Angle" Orientation="Vertical" 
                            Minimum="-180" Maximum="180" Value="0" Height="200"
-                            ValueChanged="Angle_ValueChanged"/>
-                        <TextBlock Width="40" Text="{Binding Value, ElementName=Angle, StringFormat='{}{0:0}º'}"/>
-                    </StackPanel>
+                            ValueChanged="Angle_ValueChanged" HorizontalAlignment="Center" />
+                            <TextBlock Width="40" TextAlignment="Center" Text="{Binding Value, ElementName=Angle, StringFormat='{}{0:0}º'}" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
                     <oxy:Plot x:Name="AnglePlot1">
                         <oxy:Plot.Axes>
                             <oxy:LinearAxis Title="Left" Position="Left" Angle="{Binding Value, ElementName=Angle}" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
@@ -180,13 +182,13 @@
             </TabItem>
             <TabItem Header="Big numbers">
                 <Grid>
-                <oxy:Plot>
-                    <oxy:Plot.Axes>
-                        <oxy:LinearAxis Position="Left" Minimum="-1e47" Maximum="6e32" Title="big numbers"/>
-                        <oxy:LinearAxis Position="Bottom" Minimum="-1e40" Maximum="3e50" Title="big numbers"/>
-                    </oxy:Plot.Axes>
-                </oxy:Plot>
-                <!--<Label VerticalAlignment="Center" Foreground="#80000000" FontSize="24" 
+                    <oxy:Plot>
+                        <oxy:Plot.Axes>
+                            <oxy:LinearAxis Position="Left" Minimum="-1e47" Maximum="6e32" Title="big numbers"/>
+                            <oxy:LinearAxis Position="Bottom" Minimum="-1e40" Maximum="3e50" Title="big numbers"/>
+                        </oxy:Plot.Axes>
+                    </oxy:Plot>
+                    <!--<Label VerticalAlignment="Center" Foreground="#80000000" FontSize="24" 
                            HorizontalAlignment="Center" Content="TODO: Where are the 0's coming from?"/>-->
                 </Grid>
             </TabItem>
