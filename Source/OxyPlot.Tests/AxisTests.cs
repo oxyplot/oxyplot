@@ -147,6 +147,35 @@ namespace OxyPlot.Tests
         }
 
         [Test]
+        public void A15_SinglePoint()
+        {
+            var plot = new PlotModel("Single point");
+            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
+            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
+
+            var ls = new LineSeries();
+            ls.Points.Add(new DataPoint(1, 2.4));
+            plot.Series.Add(ls);
+
+            OxyAssert.AreEqual(plot);
+        }
+
+        [Test]
+        public void A16_TwoClosePoints()
+        {
+            var plot = new PlotModel("Two close points");
+            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { MinimumRange = 1e-3 });
+            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
+
+            var ls = new LineSeries();
+            ls.Points.Add(new DataPoint(1, 2.4));
+            ls.Points.Add(new DataPoint(1.000000000001, 2.4));
+            plot.Series.Add(ls);
+
+            OxyAssert.AreEqual(plot);
+        }
+
+        [Test]
         public void B01_LogarithmicAxis()
         {
             var plot = new PlotModel("Logarithmic axis");
