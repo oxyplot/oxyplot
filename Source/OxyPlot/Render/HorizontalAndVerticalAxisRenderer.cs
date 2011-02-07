@@ -71,6 +71,11 @@ namespace OxyPlot
                         continue;
                     }
 
+                    if (axis.PositionAtZeroCrossing && Math.Abs(value) < double.Epsilon)
+                    {
+                        continue;
+                    }
+
                     double transformedValue = axis.Transform(value);
 
                     // Draw the minor grid line
@@ -116,6 +121,11 @@ namespace OxyPlot
                 foreach (double value in MajorTickValues)
                 {
                     if (value < axis.ActualMinimum || value > axis.ActualMaximum)
+                    {
+                        continue;
+                    }
+
+                    if (axis.PositionAtZeroCrossing && Math.Abs(value) < double.Epsilon)
                     {
                         continue;
                     }
