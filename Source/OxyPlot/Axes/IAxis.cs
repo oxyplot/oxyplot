@@ -55,7 +55,7 @@
         void UpdateActualMaxMin();
         void Include(double value);
         void SetScale(double scale);
-        void UpdateIntervals(double width, double height);
+        void UpdateIntervals(OxyRect plotArea);
         string FormatValue(double x);
         void Render(IRenderContext rc, PlotModel model);
         

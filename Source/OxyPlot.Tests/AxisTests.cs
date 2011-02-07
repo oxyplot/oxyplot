@@ -73,7 +73,7 @@ namespace OxyPlot.Tests
             plot.Series.Add(ls);
 
             OxyAssert.AreEqual(plot);
-        }        
+        }
 
         [Test]
         public void A12_LargeRangeAxis()
@@ -102,15 +102,33 @@ namespace OxyPlot.Tests
             plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
 
             var ls = new LineSeries();
-            ls.Points.Add(new DataPoint(1.20000000001, 2.400000001));
-            ls.Points.Add(new DataPoint(1.20000000002, 2.400000000));
-            ls.Points.Add(new DataPoint(1.20000000004, 2.400000004));
-            ls.Points.Add(new DataPoint(1.20000000007, 2.400000003));
+            ls.Points.Add(new DataPoint(1.20000000001, 2400000001));
+            ls.Points.Add(new DataPoint(1.20000000002, 2400000000));
+            ls.Points.Add(new DataPoint(1.20000000004, 2400000004));
+            ls.Points.Add(new DataPoint(1.20000000007, 2400000003));
             plot.Series.Add(ls);
 
             OxyAssert.AreEqual(plot);
         }
-       
+
+        [Test]
+        public void A13B_BadConditionedAxis_SettingMinimumRange()
+        {
+            var plot = new PlotModel("Bad conditioned axis with MinimumRange");
+            plot.PlotMargins = new OxyThickness(80, 60, 50, 50);
+            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { MinimumRange = 1e-3 });
+            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { MinimumRange = 1e8, StringFormat = "0.00E00" });
+
+            var ls = new LineSeries();
+            ls.Points.Add(new DataPoint(1.20000000001, 2400000001));
+            ls.Points.Add(new DataPoint(1.20000000002, 2400000000));
+            ls.Points.Add(new DataPoint(1.20000000004, 2400000004));
+            ls.Points.Add(new DataPoint(1.20000000007, 2400000003));
+            plot.Series.Add(ls);
+
+            OxyAssert.AreEqual(plot);
+        }
+
         [Test]
         public void A14_ConstantValue()
         {
@@ -183,7 +201,7 @@ namespace OxyPlot.Tests
         public void B04_LogarithmicAxis_Padding()
         {
             var plot = new PlotModel("Logarithmic axis with padding");
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X-axis") {MinimumPadding = 0.3, MaximumPadding = 0.3 });
+            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X-axis") { MinimumPadding = 0.3, MaximumPadding = 0.3 });
             plot.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y-axis") { MinimumPadding = 0.3, MaximumPadding = 0.3 });
 
             var ls = new LineSeries();
@@ -192,7 +210,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(24, 18));
             ls.Points.Add(new DataPoint(27, 19));
             plot.Series.Add(ls);
-            
+
             OxyAssert.AreEqual(plot);
         }
 
@@ -200,8 +218,8 @@ namespace OxyPlot.Tests
         public void B05_LogarithmicAxis_SuperExponentialFormat()
         {
             var plot = new PlotModel("Logarithmic axis with SuperExponentialFormat");
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X-axis") { Minimum=1.8e2, Maximum=1e5, UseSuperExponentialFormat = true });
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y-axis") { Minimum=1e18, Maximum=1e38, UseSuperExponentialFormat = true });
+            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X-axis") { Minimum = 1.8e2, Maximum = 1e5, UseSuperExponentialFormat = true });
+            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y-axis") { Minimum = 1e18, Maximum = 1e38, UseSuperExponentialFormat = true });
             OxyAssert.AreEqual(plot);
         }
     }

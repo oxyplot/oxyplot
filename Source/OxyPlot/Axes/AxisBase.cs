@@ -48,6 +48,7 @@ namespace OxyPlot
 
             MinimumPadding = 0.01;
             MaximumPadding = 0.01;
+            MinimumRange = 0;
 
             TickStyle = TickStyle.Inside;
             TicklineColor = OxyColors.Black;
@@ -73,7 +74,7 @@ namespace OxyPlot
 
             StartPosition = 0;
             EndPosition = 1;
-            
+
             TitlePosition = 0.5;
 
             Angle = 0;
@@ -101,13 +102,11 @@ namespace OxyPlot
         /// <summary>
         /// Gets the screen coordinate of the Maximum point on the axis.
         /// </summary>
-        /// <value>The screen max.</value>
         public ScreenPoint ScreenMax { get; set; }
 
         /// <summary>
         /// Gets the screen coordinate of the Minimum point on the axis.
         /// </summary>
-        /// <value>The screen min.</value>
         public ScreenPoint ScreenMin { get; set; }
 
         /// <summary>
@@ -115,13 +114,11 @@ namespace OxyPlot
         /// This can be used to find an axis if you have 
         /// defined mutiple axes in a plot.
         /// </summary>
-        /// <value>The key.</value>
         public string Key { get; set; }
 
         /// <summary>
         /// Gets or sets the position of the axis.
         /// </summary>
-        /// <value>The position.</value>
         public AxisPosition Position
         {
             get { return position; }
@@ -137,68 +134,64 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets a value indicating whether this axis is visible.
         /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this axis is visible; otherwise, <c>false</c>.
-        /// </value>
         public bool IsVisible { get; set; }
 
         /// <summary>
         /// Gets or sets the actual minimum value of the axis.
+        /// If Minimum is not NaN, this value will be defined by Minimum.
         /// </summary>
-        /// <value>The actual minimum.</value>
         public double ActualMinimum { get; set; }
 
         /// <summary>
         /// Gets or sets the actual maximum value of the axis.
-        /// If Maximum is not NaN, this value will be overridden.
+        /// If Maximum is not NaN, this value will be defined by Maximum.
         /// </summary>
-        /// <value>The actual maximum.</value>
         public double ActualMaximum { get; set; }
 
         /// <summary>
         /// Gets or sets the actual minor step.
         /// </summary>
-        /// <value>The actual minor step.</value>
         internal double ActualMinorStep { get; set; }
 
         /// <summary>
         /// Gets or sets the actual major step.
         /// </summary>
-        /// <value>The actual major step.</value>
         internal double ActualMajorStep { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum.
+        /// Gets or sets the minimum value of the axis.
         /// </summary>
-        /// <value>The minimum.</value>
         public double Minimum { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum.
+        /// Gets or sets the maximum value of the axis.
         /// </summary>
-        /// <value>The maximum.</value>
         public double Maximum { get; set; }
 
         /// <summary>
         /// Gets or sets the minor step 
         /// (the interval between small ticks without number).
         /// </summary>
-        /// <value>The minor step.</value>
         public double MinorStep { get; set; }
 
         /// <summary>
         /// Gets or sets the major step.
         /// (the interval between large ticks with numbers).
         /// </summary>
-        /// <value>The major step.</value>
         public double MajorStep { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets the minimum range of the axis.
+        /// Setting this property ensures that ActualMaximum-ActualMinimum > MinimumRange.
+        /// </summary>
+        public double MinimumRange { get; set; }
 
         /// <summary>
         /// Gets or sets the 'padding' fraction of the minimum value.
         /// A value of 0.01 gives 1% more space on the minimum end of the axis.
         /// This property is not used if the Minimum property is set.
         /// </summary>
-        /// <value>The minimum padding.</value>
         public double MinimumPadding { get; set; }
 
         /// <summary>
@@ -206,31 +199,26 @@ namespace OxyPlot
         /// A value of 0.01 gives 1% more space on the maximum end of the axis.
         /// This property is not used if the Maximum property is set.
         /// </summary>
-        /// <value>The maximum padding.</value>
         public double MaximumPadding { get; set; }
 
         /// <summary>
         /// Gets or sets the tick style.
         /// </summary>
-        /// <value>The tick style.</value>
         public TickStyle TickStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the minor tick.
         /// </summary>
-        /// <value>The size of the minor tick.</value>
         public double MinorTickSize { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the major tick.
         /// </summary>
-        /// <value>The size of the major tick.</value>
         public double MajorTickSize { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the ticks.
         /// </summary>
-        /// <value>The color of the tickline.</value>
         public OxyColor TicklineColor { get; set; }
 
         /// <summary>
@@ -241,74 +229,62 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the major gridline style.
         /// </summary>
-        /// <value>The major gridline style.</value>
         public LineStyle MajorGridlineStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the minor gridline style.
         /// </summary>
-        /// <value>The minor gridline style.</value>
         public LineStyle MinorGridlineStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the major gridline.
         /// </summary>
-        /// <value>The color of the major gridline.</value>
         public OxyColor MajorGridlineColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the minor gridline.
         /// </summary>
-        /// <value>The color of the minor gridline.</value>
         public OxyColor MinorGridlineColor { get; set; }
 
         /// <summary>
         /// Gets or sets the major gridline thickness.
         /// </summary>
-        /// <value>The major gridline thickness.</value>
         public double MajorGridlineThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the minor gridline thickness.
         /// </summary>
-        /// <value>The minor gridline thickness.</value>
         public double MinorGridlineThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the values for extra gridlines.
         /// </summary>
-        /// <value>The extra gridlines.</value>
         public double[] ExtraGridlines { get; set; }
 
         /// <summary>
         /// Gets or sets the extra gridlines linestyle.
         /// </summary>
-        /// <value>The extra gridline style.</value>
         public LineStyle ExtraGridlineStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the extra gridlines.
         /// </summary>
-        /// <value>The color of the extra gridline.</value>
         public OxyColor ExtraGridlineColor { get; set; }
 
         /// <summary>
         /// Gets or sets the extra gridline thickness.
         /// </summary>
-        /// <value>The extra gridline thickness.</value>
         public double ExtraGridlineThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the angle for the axis values.
         /// </summary>
-        /// <value>The angle.</value>
         public double Angle { get; set; }
 
         /// <summary>
         /// Gets or sets the string format used
         /// for formatting the axis values.
         /// </summary>
-        /// <value>The string format.</value>
         public string StringFormat { get; set; }
 
         /// <summary>
@@ -322,51 +298,43 @@ namespace OxyPlot
         /// Gets or sets the actual string format
         /// being used.
         /// </summary>
-        /// <value>The actual string format.</value>
         internal string ActualStringFormat { get; set; }
 
         /// <summary>
         /// Gets or sets the title of the axis.
         /// </summary>
-        /// <value>The title.</value>
         public string Title { get; set; }
 
         /// <summary>
         /// Gets or sets the unit of the axis.
         /// </summary>
-        /// <value>The unit.</value>
         public string Unit { get; set; }
 
         /// <summary>
         /// Gets or sets the font family.
         /// </summary>
-        /// <value>The font family.</value>
         public string FontFamily { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the font.
         /// </summary>
-        /// <value>The size of the font.</value>
         public double FontSize { get; set; }
 
         /// <summary>
         /// Gets or sets the font weight.
         /// </summary>
-        /// <value>The font weight.</value>
         public double FontWeight { get; set; }
 
         /// <summary>
         /// Gets or sets the start position of the axis on the plot area.
         /// This is a fraction from 0(bottom/left) to 1(top/right).
         /// </summary>
-        /// <value>The start position.</value>
         public double StartPosition { get; set; }
 
         /// <summary>
         /// Gets or sets the end position of the axis on the plot area.
         /// This is a fraction from 0(bottom/left) to 1(top/right).
         /// </summary>
-        /// <value>The end position.</value>
         public double EndPosition { get; set; }
 
         /// <summary>
@@ -374,7 +342,6 @@ namespace OxyPlot
         /// This is used for polar coordinate systems where
         /// the angle and magnitude axes are related.
         /// </summary>
-        /// <value>The related axis.</value>
         public AxisBase RelatedAxis { get; set; }
 
         /// <summary>
@@ -399,7 +366,7 @@ namespace OxyPlot
         /// <summary>
         /// Position of the title (0.5 is in the middle).
         /// </summary>
-        public double TitlePosition {get;set;}
+        public double TitlePosition { get; set; }
 
         #region IAxis Members
 
@@ -465,6 +432,7 @@ namespace OxyPlot
 
         public virtual string FormatValue(double x)
         {
+            // The "SuperExponentialFormat" renders the number with superscript exponents. E.g. 10^2
             if (UseSuperExponentialFormat)
             {
                 // if (x == 1 || x == 10 || x == -1 || x == -10)
@@ -472,7 +440,7 @@ namespace OxyPlot
 
                 double exp = Exponent(x);
                 double mantissa = Mantissa(x);
-                String fmt;
+                string fmt;
                 if (StringFormat == null)
                 {
                     fmt = Math.Abs(mantissa - 1.0) < 1e-6 ? "10^{{{1:0}}}" : "{0}·10^{{{1:0}}}";
@@ -486,12 +454,21 @@ namespace OxyPlot
             return x.ToString(ActualStringFormat, CultureInfo.InvariantCulture);
         }
 
+        private static double Truncate(double value, double precision)
+        {
+            return Math.Truncate(value * precision) / precision;
+        }
+
         internal static ICollection<double> CreateTickValues(double min, double max, double step)
         {
             if (max <= min)
+            {
                 throw new InvalidOperationException("Axis: Maximum should be larger than minimum.");
+            }
             if (step <= 0)
+            {
                 throw new InvalidOperationException("Axis: Step cannot be negative.");
+            }
 
             double x0 = Math.Round(min / step) * step;
 
@@ -499,12 +476,12 @@ namespace OxyPlot
 
             // Limit the maximum number of iterations (in case of something wrong with the step size)
             int i = 0;
-            const int maxit = 1000;
+            const int maxIterations = 1000;
             double x = x0;
 
-            while (x <= max + double.Epsilon && i < maxit)
+            while (x <= max + double.Epsilon && i < maxIterations)
             {
-                x = x0 + i * step;
+                x = x0 + (i * step);
                 i++;
                 if (x >= min - double.Epsilon && x <= max + double.Epsilon)
                 {
@@ -551,10 +528,10 @@ namespace OxyPlot
         /// <summary>
         /// Updates the minor/major step intervals if they are undefined.
         /// </summary>
-        public virtual void UpdateIntervals(double dx, double dy)
+        public virtual void UpdateIntervals(OxyRect plotArea)
         {
             double labelSize = GetLabelSize();
-            double length = IsHorizontal() ? dx : dy;
+            double length = IsHorizontal() ? plotArea.Width : plotArea.Height;
             length *= Math.Abs(EndPosition - StartPosition);
 
             ActualMajorStep = !double.IsNaN(MajorStep) ? MajorStep : CalculateActualInterval(length, labelSize);
@@ -762,6 +739,14 @@ namespace OxyPlot
             if (double.IsNaN(ActualMinimum))
             {
                 ActualMinimum = this is LogarithmicAxis ? 1 : 0;
+            }
+
+            range = ActualMaximum - ActualMinimum;
+            if (range < MinimumRange)
+            {
+                double avg = (ActualMaximum + ActualMinimum) * 0.5;
+                ActualMinimum = avg - MinimumRange * 0.5;
+                ActualMaximum = avg + MinimumRange * 0.5;
             }
         }
 
