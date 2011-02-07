@@ -486,7 +486,7 @@ namespace OxyPlot
             // Update the intervals for all axes
             foreach (var a in Axes)
             {
-                a.UpdateIntervals(PlotArea.Width, PlotArea.Height);
+                a.UpdateIntervals(PlotArea);
             }
 
             foreach (var a in Axes)

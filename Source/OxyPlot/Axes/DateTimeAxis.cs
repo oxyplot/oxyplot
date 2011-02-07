@@ -216,9 +216,9 @@ namespace OxyPlot
             return base.GetLabelSize();
         }
 
-        public override void UpdateIntervals(double dx, double dy)
+        public override void UpdateIntervals(OxyRect plotArea)
         {
-            base.UpdateIntervals(dx, dy);
+            base.UpdateIntervals(plotArea);
             switch (ActualIntervalType)
             {
                 case DateTimeIntervalType.Years:
