@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
@@ -22,7 +23,7 @@ namespace OxyPlot
         /// <value>The data field X.</value>
         public string LabelField { get; set; }
 
-        public StringCollection Labels { get; set; }
+        public Collection<string> Labels { get; set; }
 
         internal int AttachedSeriesCount { get; set; }
 
@@ -42,7 +43,7 @@ namespace OxyPlot
             }
 
             if (Labels == null)
-                Labels = new StringCollection();
+                Labels = new Collection<string>();
 
             Labels.Clear();
 
@@ -68,8 +69,8 @@ namespace OxyPlot
             }
 
             AttachedSeriesCount = 0;
-            if (Labels.Count>0)
-                BaseValue=new double[Labels.Count];
+            if (Labels.Count > 0)
+                BaseValue = new double[Labels.Count];
         }
 
         public override string FormatValue(double x)
