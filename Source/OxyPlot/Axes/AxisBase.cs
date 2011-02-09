@@ -454,10 +454,10 @@ namespace OxyPlot
             return x.ToString(ActualStringFormat, CultureInfo.InvariantCulture);
         }
 
-        private static double Truncate(double value, double precision)
-        {
-            return Math.Truncate(value * precision) / precision;
-        }
+        //private static double Truncate(double value, double precision)
+        //{
+        //    return Math.Truncate(value * precision) / precision;
+        //}
 
         internal static ICollection<double> CreateTickValues(double min, double max, double step)
         {
