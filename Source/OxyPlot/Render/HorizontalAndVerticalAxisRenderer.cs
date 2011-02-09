@@ -252,7 +252,7 @@ namespace OxyPlot
             }
 
             // Draw the axis title
-            if (!String.IsNullOrWhiteSpace(axis.Title))
+            if (!String.IsNullOrEmpty(axis.Title))
             {
                 double ymid = isHorizontal ? Lerp(axis.ScreenMin.X, axis.ScreenMax.X, axis.TitlePosition) : Lerp(axis.ScreenMax.Y, axis.ScreenMin.Y, axis.TitlePosition);
 
