@@ -34,6 +34,12 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\OxyPlot.Wpf.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>OxyPlot.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -59,6 +65,7 @@
     <Compile Include="Axes\LogarithmicAxis.cs" />
     <Compile Include="Helpers\OxyConvert.cs" />
     <Compile Include="PngExporter.cs" />
+    <None Include="OxyPlot.snk" />
     <None Include="RenderContexts\GeometryRenderContext.cs" />
     <Compile Include="RenderContexts\DrawingRenderContext.cs" />
     <Compile Include="PlotFrame.cs" />
