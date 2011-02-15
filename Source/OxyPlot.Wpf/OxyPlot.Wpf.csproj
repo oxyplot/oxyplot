@@ -38,7 +38,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OxyPlot.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>OxyPlot.Wpf.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -65,7 +65,7 @@
     <Compile Include="Axes\LogarithmicAxis.cs" />
     <Compile Include="Helpers\OxyConvert.cs" />
     <Compile Include="PngExporter.cs" />
-    <None Include="OxyPlot.snk" />
+    <None Include="OxyPlot.Wpf.snk" />
     <None Include="RenderContexts\GeometryRenderContext.cs" />
     <Compile Include="RenderContexts\DrawingRenderContext.cs" />
     <Compile Include="PlotFrame.cs" />
