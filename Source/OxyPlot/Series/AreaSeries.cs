@@ -100,7 +100,7 @@ namespace OxyPlot
             var pts0 = new ScreenPoint[n0];
             for (int i = 0; i < n0; i++)
             {
-                pts0[i] = XAxis.Transform(new DataPoint(InternalPoints[i].x, InternalPoints[i].y), YAxis);
+                pts0[i] = XAxis.Transform(InternalPoints[i], YAxis);
             }
 
             int n1 = InternalPoints2.Count;
@@ -108,7 +108,7 @@ namespace OxyPlot
             for (int i = 0; i < n1; i++)
             {
                 int j = Reverse2 ? n1 - 1 - i : i;
-                pts1[j] = XAxis.Transform(new DataPoint(InternalPoints2[i].x, InternalPoints2[i].y), YAxis);
+                pts1[j] = XAxis.Transform(InternalPoints2[i], YAxis);
             }
 
             if (Smooth)

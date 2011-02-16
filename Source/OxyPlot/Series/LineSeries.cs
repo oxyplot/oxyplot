@@ -156,7 +156,7 @@ namespace OxyPlot
             var allPoints = new ScreenPoint[n];
             for (int i = 0; i < n; i++)
             {
-                allPoints[i] = XAxis.Transform(new DataPoint(InternalPoints[i].x, InternalPoints[i].y), YAxis);
+                allPoints[i] = XAxis.Transform(InternalPoints[i], YAxis);
             }
 
             // spline smoothing (should only be used on small datasets)
