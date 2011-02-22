@@ -97,6 +97,8 @@
     <Compile Include="Reporting\ReportWriters\IReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\StringExtensions.cs" />
     <Compile Include="Reporting\ReportWriters\TextReportWriter.cs" />
+    <Compile Include="Reporting\Report\ParagraphStyle.cs" />
+    <Compile Include="Reporting\Report\ReportStyle.cs" />
     <Compile Include="Reporting\Report\TableOfContents.cs" />
     <Compile Include="Reporting\Report\Drawing.cs" />
     <Compile Include="Reporting\Report\Equation.cs" />
@@ -138,6 +140,8 @@
     <Compile Include="Foundation\XmlWriterBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagrams\PlotModel.cd" />
+    <None Include="ClassDiagrams\Reporting.cd" />
     <None Include="OxyPlot.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
