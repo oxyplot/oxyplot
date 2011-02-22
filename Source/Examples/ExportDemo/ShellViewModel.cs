@@ -12,6 +12,7 @@ using OxyPlot;
 using OxyPlot.Pdf;
 using OxyPlot.Reporting;
 using OxyPlot.Wpf;
+using PropertyTools.Wpf;
 using DataSeries = OxyPlot.DataSeries;
 using Plot = OxyPlot.Wpf.Plot;
 
@@ -385,7 +386,7 @@ namespace ExportDemo
         }
         public void HelpAbout()
         {
-            var dlg = new PropertyEditorLibrary.AboutDialog(Owner);
+            var dlg = new AboutDialog(Owner);
             dlg.Title = "About OxyPlot ExportDemo";
             dlg.Image = new BitmapImage(new Uri(@"pack://application:,,,/ExportDemo;component/Images/oxyplot.png"));
             dlg.Show();
