@@ -39,8 +39,8 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\..\..\Components\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="PropertyEditor">
-      <HintPath>..\..\..\Components\PropertyEditor.dll</HintPath>
+    <Reference Include="PropertyTools.Wpf">
+      <HintPath>..\..\..\Components\PropertyTools.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
