@@ -5,11 +5,15 @@ using System.Reflection;
 
 namespace OxyPlot.Reporting
 {
+    /// <summary>
+    /// The PropertyTable autogenerates columns based on reflecting the Items type.
+    /// Only [Browsable] properties are included.
+    /// </summary>
     public class PropertyTable : Table
     {
         public PropertyTable()
         {
-            Transposed = true;
+            ItemsInColumns = true;
         }
 
         public override void Update()

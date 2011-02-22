@@ -11,11 +11,15 @@
                 <MenuItem Header="Save pdf..." Name="SavePdf"/>
                 <MenuItem Header="Save png..." Name="SavePng"/>
                 <MenuItem Header="Save xaml..." Name="SaveXaml"/>
+                <MenuItem Header="Save xps..." Name="SaveXps"/>
+                <Separator/>
+                <MenuItem Header="Print..." Name="Print"/>
                 <Separator/>
                 <MenuItem Header="Save html5 report..." Name="SaveHtmlReport"/>
                 <MenuItem Header="Save LaTeX report..." Name="SaveLatexReport"/>
                 <MenuItem Header="Save pdf report..." Name="SavePdfReport"/>
                 <MenuItem Header="Save rtf report..." Name="SaveRtfReport"/>
+                <MenuItem Header="Save xps report..." Name="SaveXpsReport"/>
                 <Separator/>
                 <MenuItem Header="Exit" Name="Exit"/>
             </MenuItem>

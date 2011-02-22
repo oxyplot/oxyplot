@@ -42,6 +42,7 @@ namespace OxyPlot.Reporting
             foreach (var c in item.Children)
                 Search(c,hh);
         }
+
         public override void WriteContent(IReportWriter w)
         {
         }

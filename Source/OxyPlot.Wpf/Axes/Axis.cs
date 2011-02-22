@@ -223,9 +223,9 @@ namespace OxyPlot.Wpf
             a.Angle = Angle;
         }
 
-        public void Pan(double dx)
+        public void Pan(double x0, double x1)
         {
-            ModelAxis.Pan(dx);
+            ModelAxis.Pan(x0, x1);
             Minimum = ModelAxis.Minimum;
             Maximum = ModelAxis.Maximum;
         }

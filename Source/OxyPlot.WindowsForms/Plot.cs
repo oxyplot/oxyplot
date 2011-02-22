@@ -166,9 +166,9 @@ namespace Oxyplot.WindowsForms
             Invalidate();
         }
 
-        public void Pan(IAxis axis, double dx)
+        public void Pan(IAxis axis, double x0, double x1)
         {
-            axis.Pan(dx);
+            axis.Pan(x0,x1);
         }
 
         public void Reset(IAxis axis)

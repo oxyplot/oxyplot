@@ -13,7 +13,7 @@ namespace OxyPlot.Reporting
         public string StringFormat { get; set; }
         public string Path { get; set; }
         public double Width { get; set; }
-        public Collection<TableColumn> SubColumns { get; set; }
+        // public Collection<TableColumn> SubColumns { get; set; }
 
         public TableColumn(string header, string path, string stringFormat=null, Alignment alignment=Alignment.Center)
         {
@@ -21,7 +21,7 @@ namespace OxyPlot.Reporting
             Path = path;
             StringFormat = stringFormat;
             Alignment = alignment;
-            SubColumns = new Collection<TableColumn>();
+            // SubColumns = new Collection<TableColumn>();
         }
 
         public string GetText(object item)

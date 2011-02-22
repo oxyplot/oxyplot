@@ -1,7 +1,7 @@
 ﻿namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// Drawings currently only supports SVG format.
+    /// Drawing currently only supports SVG format.
     /// </summary>
     public class Drawing : Figure
     {

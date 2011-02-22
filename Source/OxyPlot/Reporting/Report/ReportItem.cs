@@ -4,14 +4,14 @@ using System.Collections.ObjectModel;
 
 namespace OxyPlot.Reporting
 {
-    public class ReportItem
+    public abstract class ReportItem
     {
         public string Class { get; set; }
         public string ID { get; set; }
 
         public Collection<ReportItem> Children { get; private set; }
 
-        public ReportItem()
+        protected ReportItem()
         {
             Children = new Collection<ReportItem>();
         }

@@ -7,24 +7,31 @@ namespace OxyPlot.Reporting
 {
     public class Table : ReportItem
     {
-        private const string CAPTION_FORMAT_STRING = "Table {0}. {1}";
+        private const string CaptionFormatString = "Table {0}. {1}";
 
         public IList<TableColumn> Columns { get; set; }
         public string Caption { get; set; }
         public IEnumerable Items { get; set; }
-        public bool Transposed { get; set; }
+        public bool ItemsInColumns { get; set; }
 
         public int TableNumber { get; set;}
 
         public string FullCaption
         {
-            get { return String.Format(CAPTION_FORMAT_STRING, TableNumber, Caption); }
+            get { return String.Format(CaptionFormatString, TableNumber, Caption); }
         }
 
         public Table()
         {
             Columns = new List<TableColumn>();
             Class = "table";
+        }
+
+        public bool HasHeader()
+        {
+            foreach (var c in Columns)
+                if (c.Header != null) return true;
+            return false;
         }
 
         public override void Update()
@@ -69,7 +76,7 @@ namespace OxyPlot.Reporting
                 }
                 row++;
             }
-            if (Transposed)
+            if (ItemsInColumns)
                 result = Transpose(result);
             return result;
         }

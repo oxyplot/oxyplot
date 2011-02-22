@@ -2,11 +2,6 @@
 {
     public class HeaderHelper
     {
-        public HeaderHelper()
-        {
-            
-        }
-
         int[] headerLevel = new int[10];
 
         public string GetHeader(int level)

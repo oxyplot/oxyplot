@@ -80,6 +80,8 @@
     <Compile Include="Reporting\ReportWriters\IReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\StringExtensions.cs" />
     <Compile Include="Reporting\ReportWriters\TextReportWriter.cs" />
+    <Compile Include="Reporting\Report\ParagraphStyle.cs" />
+    <Compile Include="Reporting\Report\ReportStyle.cs" />
     <Compile Include="Reporting\Report\TableOfContents.cs" />
     <Compile Include="Reporting\Report\Drawing.cs" />
     <Compile Include="Reporting\Report\Equation.cs" />

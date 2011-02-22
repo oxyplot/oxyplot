@@ -492,12 +492,12 @@ namespace OxyPlot
             return values;
         }
 
-        public virtual void Pan(double dx)
+        public virtual void Pan(double x0, double x1)
         {
             if (!IsPanEnabled)
                 return;
-            Minimum = ActualMinimum + dx;
-            Maximum = ActualMaximum + dx;
+            Minimum = ActualMinimum + x0 - x1;
+            Maximum = ActualMaximum + x0 - x1;
         }
 
         public virtual void ZoomAt(double factor, double x)
