@@ -7,7 +7,7 @@
         
         void Refresh(bool refreshData = true);
 
-        void Pan(IAxis axis, double dx);
+        void Pan(IAxis axis, double x0, double x1);
         void Reset(IAxis axis);
         void Zoom(IAxis axis, double p1, double p2);
         void ZoomAt(IAxis axis, double factor, double x);

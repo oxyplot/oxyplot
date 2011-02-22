@@ -99,16 +99,26 @@ namespace OxyPlot
             return Math.Exp(x);
         }
 
-        public override void Pan(double dx)
+        public override void Pan(double x0, double x1)
         {
-            // base.Pan(dx);
-            // TODO...
+            if (!IsPanEnabled)
+                return;
+            if (x1 == 0)
+                return;
+            double dx = x0 / x1;
+            Minimum = ActualMinimum * dx;
+            Maximum = ActualMaximum * dx;
         }
 
         public override void ZoomAt(double factor, double x)
         {
-            // base.ScaleAt(factor, x);
-            // TODO...
+            if (!IsZoomEnabled)
+                return;
+            double px = PreTransform(x);
+            double dx0 = PreTransform(ActualMinimum) - px;
+            double dx1 = PreTransform(ActualMaximum) - px;
+            Minimum = PostInverseTransform(dx0 / factor + px);
+            Maximum = PostInverseTransform(dx1 / factor+ px);
         }
     }
 }

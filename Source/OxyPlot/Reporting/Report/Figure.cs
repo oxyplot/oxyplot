@@ -6,7 +6,7 @@ namespace OxyPlot.Reporting
     {
         public string FigureText { get; set; }
         public int FigureNumber { get; set; }
-        private const string CAPTION_FORMAT_STRING = "Figure {0}. {1}";
+        private const string CaptionFormatString = "Figure {0}. {1}";
 
         protected Figure()
         {
@@ -15,7 +15,7 @@ namespace OxyPlot.Reporting
 
         public string FullCaption
         {
-            get { return String.Format(CAPTION_FORMAT_STRING, FigureNumber, FigureText); }
+            get { return String.Format(CaptionFormatString, FigureNumber, FigureText); }
         }
     }
 }

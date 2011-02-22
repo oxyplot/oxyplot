@@ -66,7 +66,7 @@
 
 
         void Reset();
-        void Pan(double dx);
+        void Pan(double x0, double x1);
         void Zoom(double x1, double x2);
         void ZoomAt(double factor, double x);
     }

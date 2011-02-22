@@ -17,7 +17,7 @@ using Plot = OxyPlot.Wpf.Plot;
 
 namespace ExportDemo
 {
-    [Export(typeof (IShell))]
+    [Export(typeof(IShell))]
     public class ShellViewModel : PropertyChangedBase, IShell
     {
         public enum RenderMethods
@@ -99,7 +99,7 @@ namespace ExportDemo
             get
             {
                 if (Model == null) return 0;
-                return Model.Series.Sum(ls => ((DataSeries) ls).Points.Count);
+                return Model.Series.Sum(ls => ((DataSeries)ls).Points.Count);
             }
         }
 
@@ -111,21 +111,22 @@ namespace ExportDemo
             ext = ext.ToLower();
 
             var r = CreateReport(fileName);
+            var reportStyle = new ReportStyle();
 
             if (ext == ".html")
             {
-                const string style =
-                    @"body { font-family: Verdana,Arial; margin:20pt; }
-table { border: solid 1px black; margin: 8pt; border-collapse:collapse; }
-td { padding: 0 2pt 0 2pt; border-left: solid 1px black; border-right: solid 1px black;}
-thead { border:solid 1px black; }
-.content, .content td { border: none; }
-.figure { margin: 8pt;}
-.table { margin: 8pt;}
-.table caption { margin: 4pt;}
-.table thead td { padding: 2pt;}";
-
-                using (var hw = new HtmlReportWriter(fileName, "OxyPlot example file", null, style))
+//                const string style =
+//                    @"body { font-family: Verdana,Arial; margin:20pt; }
+//table { border: solid 1px black; margin: 8pt; border-collapse:collapse; }
+//td { padding: 0 2pt 0 2pt; border-left: solid 1px black; border-right: solid 1px black;}
+//thead { border:solid 1px black; }
+//.content, .content td { border: none; }
+//.figure { margin: 8pt;}
+//.table { margin: 8pt;}
+//.table caption { margin: 4pt;}
+//.table thead td { padding: 2pt;}";
+                
+                using (var hw = new HtmlReportWriter(fileName, "OxyPlot example file", reportStyle))
                 {
                     r.Write(hw);
                 }
@@ -154,6 +155,14 @@ thead { border:solid 1px black; }
                 {
                     r.Write(tw);
                 }
+            if (ext == ".xps")
+            {
+                using (var w = new FlowDocumentReportWriter(reportStyle))
+                {
+                    r.Write(w);
+                    w.Save(fileName);
+                }
+            }
         }
 
         private Report CreateReport(string fileName)
@@ -205,14 +214,14 @@ thead { border:solid 1px black; }
 
             string pngPlotFileName = fileNameWithoutExtension + "_plot.png";
             PngExporter.Export(Model, pngPlotFileName, 800, 500);
-            main.AddImage(Path.GetFileName(pngPlotFileName), "PNG plot");
+            main.AddImage(pngPlotFileName, "PNG plot");
 
             main.AddHeader(2, "Data");
             int i = 1;
             foreach (DataSeries s in Model.Series)
             {
                 main.AddHeader(3, "Data series " + (i++));
-                main.AddPropertyTable("Properties of the " + s.GetType().Name, new[] {s});
+                main.AddPropertyTable("Properties of the " + s.GetType().Name, new[] { s });
                 var fields = new List<TableColumn>
                                  {
                                      new TableColumn("X", "X"),
@@ -220,9 +229,9 @@ thead { border:solid 1px black; }
                                  };
                 main.AddTable("Data", s.Points, fields);
             }
-            main.AddHeader(3, "Equations");
-            main.AddEquation(@"E = m \cdot c^2");
-            main.AddEquation(@"\oint \vec{B} \cdot d\vec{S} = 0");
+            //main.AddHeader(3, "Equations");
+            //main.AddEquation(@"E = m \cdot c^2");
+            //main.AddEquation(@"\oint \vec{B} \cdot d\vec{S} = 0");
             return r;
         }
 
@@ -303,6 +312,21 @@ thead { border:solid 1px black; }
             }
         }
 
+        public void SaveXps()
+        {
+            var path = GetFilename(".xps files|*.xps", ".xps");
+            if (path != null)
+            {
+                XpsExporter.Export(Plot.Model, path, Plot.ActualWidth, Plot.ActualHeight);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void Print()
+        {
+            XpsExporter.Print(Plot.Model);
+        }
+
         public void CopySvg()
         {
             Clipboard.SetText(Model.ToSvg(Plot.ActualWidth, Plot.ActualHeight, true));
@@ -328,10 +352,20 @@ thead { border:solid 1px black; }
             }
         }
 
+        public void SaveXpsReport()
+        {
+            var path = GetFilename(".xps files|*.xps", ".xps");
+            if (path != null)
+            {
+                SaveReport(path);
+                OpenContainingFolder(path);
+            }
+        }
+
         private string GetFilename(string filter, string defaultExt)
         {
             // todo: this should probably move out of the viewmodel
-            var dlg = new SaveFileDialog {Filter = filter, DefaultExt = defaultExt};
+            var dlg = new SaveFileDialog { Filter = filter, DefaultExt = defaultExt };
             return dlg.ShowDialog(Owner).Value ? dlg.FileName : null;
         }
 

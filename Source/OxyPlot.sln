@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnnotationDemo", "Examples\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarSeriesDemo", "Examples\BarSeriesDemo\BarSeriesDemo.csproj", "{B286C99E-079C-4D99-826F-A18A8B40ECB0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Xps", "OxyPlot.Xps\OxyPlot.Xps.csproj", "{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -253,6 +255,16 @@ Global
 		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Release|Mixed Platforms.Build.0 = Release|x86
 		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Release|x86.ActiveCfg = Release|x86
 		{B286C99E-079C-4D99-826F-A18A8B40ECB0}.Release|x86.Build.0 = Release|x86
+		{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

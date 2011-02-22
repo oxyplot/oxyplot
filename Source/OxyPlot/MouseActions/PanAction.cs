@@ -62,9 +62,9 @@
             double dx = currentPoint.X - previousPoint.X;
             double dy = currentPoint.Y - previousPoint.Y;
             if (xaxis != null)
-                pc.Pan(xaxis, -dx);
+                pc.Pan(xaxis, previousPoint.X,currentPoint.X);
             if (yaxis != null)
-                pc.Pan(yaxis, -dy);
+                pc.Pan(yaxis, previousPoint.Y,currentPoint.Y);
             pc.Refresh();
             ppt = pt;
         }

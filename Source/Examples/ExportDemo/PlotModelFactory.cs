@@ -15,9 +15,10 @@ namespace ExportDemo
         LinLog,
         Clover,
         KochSnowflake,
+        KochSnowflake2,
         KochCurve,
         ZigZag,
-        MathNotation, 
+        MathNotation,
         StraightLine
     }
 
@@ -80,6 +81,9 @@ namespace ExportDemo
                 case ModelType.KochSnowflake:
                     model = CreateKochSnowflake(8);
                     break;
+                case ModelType.KochSnowflake2:
+                    model = CreateKochSnowflake(8, true);
+                    break;
                 case ModelType.KochCurve:
                     model = CreateKochCurve(4);
                     break;
@@ -92,8 +96,8 @@ namespace ExportDemo
                 case ModelType.StraightLine:
                     model = CreateParametricPlot(
                         t => t,
-                        t => 1+t*1e-8,0,10,0.1,
-                        "Straight line",null,null);
+                        t => 1 + t * 1e-8, 0, 10, 0.1,
+                        "Straight line", null, null);
                     model.PlotType = PlotType.XY;
                     break;
             }
@@ -141,7 +145,7 @@ namespace ExportDemo
             return model;
         }
 
-        private static PlotModel CreateKochSnowflake(int n)
+        private static PlotModel CreateKochSnowflake(int n, bool areaSeries = false)
         {
             var data = new[]
                            {
@@ -151,8 +155,16 @@ namespace ExportDemo
             for (int i = 0; i < n; i++)
                 data = Fractalise(data, KochDetail);
             var model = new PlotModel("Koch Snowflake") { PlotType = PlotType.Cartesian };
-            var ls = new LineSeries { Points = data.ToList(), LineJoin = OxyPenLineJoin.Bevel };
-            model.Series.Add(ls);
+            if (areaSeries)
+            {
+                var s = new AreaSeries { Points = data.ToList(), LineJoin = OxyPenLineJoin.Bevel, Fill=OxyColors.LightGray };
+                model.Series.Add(s);
+            }
+            else
+            {
+                var ls = new LineSeries { Points = data.ToList(), LineJoin = OxyPenLineJoin.Bevel };
+                model.Series.Add(ls);
+            }
             return model;
         }
 
@@ -164,8 +176,8 @@ namespace ExportDemo
             var ls = new LineSeries();
             for (int i = 0; i < n; i++)
             {
-                double x = 1.0*i/(n - 1);
-                double y = i%2 == 0 ? 0 : 1;
+                double x = 1.0 * i / (n - 1);
+                double y = i % 2 == 0 ? 0 : 1;
                 ls.Points.Add(new DataPoint(x, y));
             }
             model.Series.Add(ls);

@@ -287,19 +287,19 @@ namespace OxyPlot.Wpf
             tracker.Hide();
         }
 
-        public void Pan(IAxis axis, double dx)
+        public void Pan(IAxis axis, double x0,double x1)
         {
             if (Model == null)
             {
                 var a = FindModelAxis(axis);
                 if (a != null)
                 {
-                    a.Pan(dx);
+                    a.Pan(x0,x1);
                 }
             }
 
             // Modify min/max of the PlotModel's axis
-            axis.Pan(dx);
+            axis.Pan(x0,x1);
         }
 
         public void Reset(IAxis axis)

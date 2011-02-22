@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace OxyPlot.Reporting
 {
@@ -20,6 +22,42 @@ namespace OxyPlot.Reporting
         {
             WriteStartElement("html", "http://www.w3.org/1999/xhtml");
             WriteHtmlHeader(title, cssPath, style);
+        }
+
+        public HtmlReportWriter(string path, string title, ReportStyle style)
+            : this(path, title, null, CreateCss(style))
+        {
+        }
+
+        static string CreateCss(ReportStyle style)
+        {
+            var css = new StringBuilder();
+            css.AppendLine("body { " + ParagraphStyleToCss(style.BodyTextStyle) + " }");
+            for (int i = 0; i < style.HeaderStyles.Length; i++)
+                css.AppendLine("h" + (i + 1) + " {" + ParagraphStyleToCss(style.HeaderStyles[i]) + " }");
+
+            css.Append(
+                @"body { margin:20pt; }
+            table { border: solid 1px black; margin: 8pt; border-collapse:collapse; }
+            td { padding: 0 2pt 0 2pt; border-left: solid 1px black; border-right: solid 1px black;}
+            thead { border:solid 1px black; }
+            .content, .content td { border: none; }
+            .figure { margin: 8pt;}
+            .table { margin: 8pt;}
+            .table caption { margin: 4pt;}
+            .table thead td { padding: 2pt;}");
+            return css.ToString();
+        }
+
+        private static string ParagraphStyleToCss(ParagraphStyle s)
+        {
+            var css = new StringBuilder();
+            if (s.FontFamily != null)
+                css.Append(String.Format("font-family:{0};", s.FontFamily));
+            css.Append(String.Format("font-size:{0};", s.FontSize));
+            if (s.Bold)
+                css.Append(String.Format("font-weight:bold;"));
+            return css.ToString();
         }
 
         private void WriteHtmlHeader(string title, string cssPath, string style)
@@ -83,8 +121,6 @@ namespace OxyPlot.Reporting
             WriteElementString("p", p.Text);
         }
 
-        private int tableCounter;
-
         /// <summary>
         /// Writes the class ID.
         /// </summary>
@@ -105,7 +141,6 @@ namespace OxyPlot.Reporting
         {
             if (t.Items == null)
                 return;
-            tableCounter++;
             WriteStartElement("table");
             // WriteAttributeString("border", "1");
             // WriteAttributeString("width", "60%");
@@ -114,10 +149,10 @@ namespace OxyPlot.Reporting
             if (t.Caption != null)
             {
                 WriteStartElement("caption");
-                WriteString(String.Format("Table {0}. {1}", tableCounter, t.Caption));
+                WriteString(t.FullCaption);
                 WriteEndElement();
             }
-            if (t.Transposed)
+            if (t.ItemsInColumns)
                 WriteFlippedItems(t);
             else
                 WriteItems(t);
@@ -142,11 +177,7 @@ namespace OxyPlot.Reporting
                 WriteEndElement();
             }
 
-            var hasHead = false;
-            foreach (var c in columns)
-                if (c.Header != null) hasHead = true;
-
-            if (hasHead)
+            if (t.HasHeader())
             {
                 WriteStartElement("thead");
                 WriteStartElement("tr");
@@ -259,9 +290,11 @@ namespace OxyPlot.Reporting
         /// <param name="i">The i.</param>
         public void WriteImage(Image i)
         {
+            // this requires the image to be located in the same folder as the html
+            var localFileName = Path.GetFileName(i.Source);
             WriteStartFigure(i);
             WriteStartElement("img");
-            WriteAttributeString("src", i.Source);
+            WriteAttributeString("src", localFileName);
             WriteAttributeString("alt", i.FigureText);
             WriteEndElement();
             WriteEndFigure(i.FigureText);
@@ -295,7 +328,7 @@ namespace OxyPlot.Reporting
         /// <param name="equation">The equation.</param>
         public void WriteEquation(Equation equation)
         {
-            // todo: convert to MathML?
+            // todo: MathML?
         }
 
         private void WriteDiv(string style, string content)
