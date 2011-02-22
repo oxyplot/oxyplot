@@ -9,11 +9,11 @@ namespace OxyPlot
     /// </summary>
     public class AreaSeries : LineSeries
     {
-        internal Collection<DataPoint> InternalPoints2;
+        protected Collection<DataPoint> points2;
 
         public AreaSeries()
         {
-            InternalPoints2 = new Collection<DataPoint>();
+            points2 = new Collection<DataPoint>();
             Reverse2 = true;
         }
 
@@ -48,8 +48,8 @@ namespace OxyPlot
         /// <value>The second set of points.</value>
         public Collection<DataPoint> Points2
         {
-            get { return InternalPoints2; }
-            set { InternalPoints2 = value; }
+            get { return points2; }
+            set { points2 = value; }
         }
 
         /// <summary>
@@ -70,21 +70,21 @@ namespace OxyPlot
                 return;
             }
 
-            InternalPoints2.Clear();
+            points2.Clear();
 
             // Using reflection on DataFieldX2 and DataFieldY2
-            AddDataPoints(InternalPoints2, DataFieldX2, DataFieldY2);
+            AddDataPoints(points2, DataFieldX2, DataFieldY2);
         }
 
         public override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            InternalUpdateMaxMin(InternalPoints2);
+            InternalUpdateMaxMin(points2);
         }
 
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (InternalPoints.Count == 0)
+            if (points.Count == 0)
             {
                 return;
             }
@@ -96,19 +96,19 @@ namespace OxyPlot
             var clippingRect = GetClippingRect();
 
             // Transform all points to screen coordinates
-            int n0 = InternalPoints.Count;
+            int n0 = points.Count;
             var pts0 = new ScreenPoint[n0];
             for (int i = 0; i < n0; i++)
             {
-                pts0[i] = XAxis.Transform(InternalPoints[i], YAxis);
+                pts0[i] = XAxis.Transform(points[i], YAxis);
             }
 
-            int n1 = InternalPoints2.Count;
+            int n1 = points2.Count;
             var pts1 = new ScreenPoint[n1];
             for (int i = 0; i < n1; i++)
             {
                 int j = Reverse2 ? n1 - 1 - i : i;
-                pts1[j] = XAxis.Transform(InternalPoints2[i], YAxis);
+                pts1[j] = XAxis.Transform(points2[i], YAxis);
             }
 
             if (Smooth)
