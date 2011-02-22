@@ -354,9 +354,9 @@ namespace OxyPlot.Silverlight
             tracker.Hide();
         }
 
-        public void Pan(IAxis axis, double dx)
+        public void Pan(IAxis axis, double x1, double x2)
         {
-            axis.Pan(dx);
+            axis.Pan(x1, x2);
         }
 
         public void Reset(IAxis axis)
