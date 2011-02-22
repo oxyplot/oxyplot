@@ -139,7 +139,7 @@ namespace OxyPlot
         {
             base.Render(rc, model);
 
-            if (InternalPoints.Count == 0)
+            if (points.Count == 0)
             {
                 return;
             }
@@ -150,13 +150,13 @@ namespace OxyPlot
 
             var clippingRect = GetClippingRect();
 
-            int n = InternalPoints.Count;
+            int n = points.Count;
 
             // Transform all points to screen coordinates
             var allPoints = new ScreenPoint[n];
             for (int i = 0; i < n; i++)
             {
-                allPoints[i] = XAxis.Transform(InternalPoints[i], YAxis);
+                allPoints[i] = XAxis.Transform(points[i], YAxis);
             }
 
             // spline smoothing (should only be used on small datasets)
@@ -171,58 +171,58 @@ namespace OxyPlot
                            MarkerStrokeThickness);
         }
 
-        private void RenderClippedLine(IRenderContext rc, ScreenPoint[] points, CohenSutherlandClipping clipping, double minDistSquared)
-        {
-            int n;
-            var pts = new List<ScreenPoint>();
-            n = points.Length;
-            if (n > 0)
-            {
-                var s0 = points[0];
-                var last = points[0];
+        //private void RenderClippedLine(IRenderContext rc, ScreenPoint[] points, CohenSutherlandClipping clipping, double minDistSquared)
+        //{
+        //    int n;
+        //    var pts = new List<ScreenPoint>();
+        //    n = points.Length;
+        //    if (n > 0)
+        //    {
+        //        var s0 = points[0];
+        //        var last = points[0];
 
-                for (int i = 1; i < n; i++)
-                {
-                    var s1 = points[i];
+        //        for (int i = 1; i < n; i++)
+        //        {
+        //            var s1 = points[i];
 
-                    // Clipped version of this and next point.
+        //            // Clipped version of this and next point.
 
-                    var s0c = s0;
-                    var s1c = s1;
-                    bool isInside = clipping.ClipLine(ref s0c, ref s1c);
-                    s0 = s1;
+        //            var s0c = s0;
+        //            var s1c = s1;
+        //            bool isInside = clipping.ClipLine(ref s0c, ref s1c);
+        //            s0 = s1;
 
-                    if (!isInside)
-                    {
-                        // keep the previous coordinate
-                        continue;
-                    }
+        //            if (!isInside)
+        //            {
+        //                // keep the previous coordinate
+        //                continue;
+        //            }
 
-                    // render from s0c-s1c
-                    double dx = s1c.x - last.x;
-                    double dy = s1c.y - last.y;
+        //            // render from s0c-s1c
+        //            double dx = s1c.x - last.x;
+        //            double dy = s1c.y - last.y;
 
-                    if (dx * dx + dy * dy > minDistSquared || i == 1)
-                    {
-                        if (!s0c.Equals(last) || i == 1)
-                        {
-                            pts.Add(s0c);
-                        }
+        //            if (dx * dx + dy * dy > minDistSquared || i == 1)
+        //            {
+        //                if (!s0c.Equals(last) || i == 1)
+        //                {
+        //                    pts.Add(s0c);
+        //                }
 
-                        pts.Add(s1c);
-                        last = s1c;
-                    }
+        //                pts.Add(s1c);
+        //                last = s1c;
+        //            }
 
-                    // render the line if we are leaving the clipping region););
-                    if (!clipping.IsInside(s1))
-                    {
-                        RenderLine(rc, pts);
-                        pts.Clear();
-                    }
-                }
-                RenderLine(rc, pts);
-            }
-        }
+        //            // render the line if we are leaving the clipping region););
+        //            if (!clipping.IsInside(s1))
+        //            {
+        //                RenderLine(rc, pts);
+        //                pts.Clear();
+        //            }
+        //        }
+        //        RenderLine(rc, pts);
+        //    }
+        //}
 
         protected void RenderMarkers(IRenderContext rc, ScreenPoint[] markerPoints, CohenSutherlandClipping clipping)
         {
@@ -245,34 +245,34 @@ namespace OxyPlot
             }
         }
 
-        protected void RenderLine(IRenderContext rc, List<ScreenPoint> pts)
-        {
-            if (pts.Count == 0)
-            {
-                return;
-            }
+//        protected void RenderLine(IRenderContext rc, List<ScreenPoint> pts)
+//        {
+//            if (pts.Count == 0)
+//            {
+//                return;
+//            }
 
-#if SIMPLIFY_HERE         
-            double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
+//#if SIMPLIFY_HERE         
+//            double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
 
-            var pts2 = new List<ScreenPoint>();
-            var last = pts[0];
-            for (int i = 0; i < pts.Count; i++)
-            {
-                double dx = pts[i].x - last.x;
-                double dy = pts[i].y - last.y;
+//            var pts2 = new List<ScreenPoint>();
+//            var last = pts[0];
+//            for (int i = 0; i < pts.Count; i++)
+//            {
+//                double dx = pts[i].x - last.x;
+//                double dy = pts[i].y - last.y;
 
-                if (dx * dx + dy * dy > minDistSquared || i == 0)
-                {
-                    pts2.Add(pts[i]);
-                    last = pts[i];
-                }
-            }
-            rc.DrawLine(pts2.ToArray(), Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
-#else
-            rc.DrawLine(pts.ToArray(), Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle), LineJoin);
-#endif
-        }
+//                if (dx * dx + dy * dy > minDistSquared || i == 0)
+//                {
+//                    pts2.Add(pts[i]);
+//                    last = pts[i];
+//                }
+//            }
+//            rc.DrawLine(pts2.ToArray(), Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
+//#else
+//            rc.DrawLine(pts.ToArray(), Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle), LineJoin);
+//#endif
+//        }
 
         /// <summary>
         ///   Renders the legend symbol for the line series on the 

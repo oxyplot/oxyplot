@@ -22,11 +22,11 @@ namespace OxyPlot
 
     public abstract class DataSeries : ISeries
     {
-        internal IList<DataPoint> InternalPoints;
+        protected IList<DataPoint> points;
 
         protected DataSeries()
         {
-            InternalPoints = new Collection<DataPoint>();
+            points = new Collection<DataPoint>();
             DataFieldX = "X";
             DataFieldY = "Y";
         }
@@ -63,8 +63,8 @@ namespace OxyPlot
         [Browsable(false)]
         public IList<DataPoint> Points
         {
-            get { return InternalPoints; }
-            set { InternalPoints = value; }
+            get { return points; }
+            set { points = value; }
         }
 
         /// <summary>
@@ -154,14 +154,14 @@ namespace OxyPlot
                 return;
             }
 
-            InternalPoints.Clear();
+            points.Clear();
 
             // Use the mapping to generate the points
             if (Mapping != null)
             {
                 foreach (var item in ItemsSource)
                 {
-                    InternalPoints.Add(Mapping(item));
+                    points.Add(Mapping(item));
                 }
             }
 
@@ -178,7 +178,7 @@ namespace OxyPlot
                         continue;
                     }
 
-                    InternalPoints.Add(idpp.GetDataPoint());
+                    points.Add(idpp.GetDataPoint());
                 }
 
                 return;
@@ -188,7 +188,7 @@ namespace OxyPlot
             // http://msdn.microsoft.com/en-us/library/bb613546.aspx
 
             // Using reflection on DataFieldX and DataFieldY
-            AddDataPoints(InternalPoints, DataFieldX, DataFieldY);
+            AddDataPoints(points, DataFieldX, DataFieldY);
         }
 
         public bool AreAxesRequired()
@@ -248,7 +248,7 @@ namespace OxyPlot
         public virtual void UpdateMaxMin()
         {
             MinX = MinY = MaxX = MaxY = double.NaN;
-            InternalUpdateMaxMin(InternalPoints);
+            InternalUpdateMaxMin(points);
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace OxyPlot
 
             double mindist = double.MaxValue;
             DataPoint? nearest = null;
-            foreach (var p in InternalPoints)
+            foreach (var p in points)
             {
                 double dx = dp.x - p.x;
                 double dy = dp.y - p.y;
@@ -303,10 +303,10 @@ namespace OxyPlot
             // http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
             double mindist = double.MaxValue;
             DataPoint? pt = null;
-            for (int i = 0; i + 1 < InternalPoints.Count; i++)
+            for (int i = 0; i + 1 < points.Count; i++)
             {
-                var p1 = InternalPoints[i];
-                var p2 = InternalPoints[i + 1];
+                var p1 = points[i];
+                var p2 = points[i + 1];
 
                 double p21X = p2.x - p1.x;
                 double p21Y = p2.y - p1.y;
@@ -440,13 +440,13 @@ namespace OxyPlot
         /// <returns></returns>
         public double? GetValueFromX(double x)
         {
-            for (int i = 0; i + 1 < InternalPoints.Count; i++)
+            for (int i = 0; i + 1 < points.Count; i++)
             {
-                if (IsBetween(x, InternalPoints[i].x, InternalPoints[i + 1].x))
+                if (IsBetween(x, points[i].x, points[i + 1].x))
                 {
-                    return InternalPoints[i].y +
-                           (InternalPoints[i + 1].y - InternalPoints[i].y) /
-                           (InternalPoints[i + 1].x - InternalPoints[i].x) * (x - InternalPoints[i].x);
+                    return points[i].y +
+                           (points[i + 1].y - points[i].y) /
+                           (points[i + 1].x - points[i].x) * (x - points[i].x);
                 }
             }
 
