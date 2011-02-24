@@ -207,6 +207,14 @@ namespace OxyPlot
                 double sp21Y = sp2.y - sp1.y;
                 double u1 = (p3.x - sp1.x) * sp21X + (p3.y - sp1.y) * sp21Y;
                 double u2 = sp21X * sp21X + sp21Y * sp21Y;
+                double ds = sp21X*sp21X + sp21Y*sp21Y;
+                
+                if (ds < 4)
+                {
+                    // if the points are very close, we can get numerical problems, just use the first point...
+                    u1 = 0;  u2 = 1;
+                }
+
                 if (u2 == 0)
                 {
                     continue; // P1 && P2 coincident
