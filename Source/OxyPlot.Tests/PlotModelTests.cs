@@ -28,6 +28,35 @@ namespace OxyPlot.Tests
             }
             // todo: validate SVG
         }
-       
+
+        [Test]
+        public void B11_Backgrounds()
+        {
+            var plot = new PlotModel("Backgrounds");
+            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
+            var yaxis1 = new LinearAxis(AxisPosition.Left, "Y1") { StartPosition = 0, EndPosition = 0.5 };
+            var yaxis2 = new LinearAxis(AxisPosition.Left, "Y2") { StartPosition = 0.5, EndPosition = 1 };
+            plot.Axes.Add(yaxis1);
+            plot.Axes.Add(yaxis2);
+
+            var ls = new LineSeries { Background = OxyColors.LightSeaGreen, YAxis = yaxis1 };
+            AddExamplePoints(ls);
+            plot.Series.Add(ls);
+
+            var ls2 = new LineSeries { Background = OxyColors.LightSkyBlue, YAxis = yaxis2 };
+            AddExamplePoints(ls2);
+            plot.Series.Add(ls2);
+
+            OxyAssert.AreEqual(plot);
+        }
+
+        private void AddExamplePoints(DataSeries ls)
+        {
+            ls.Points.Add(new DataPoint(3, 13));
+            ls.Points.Add(new DataPoint(10, 47));
+            ls.Points.Add(new DataPoint(30, 23));
+            ls.Points.Add(new DataPoint(40, 65));
+            ls.Points.Add(new DataPoint(80, 10));
+        }
     }
 }

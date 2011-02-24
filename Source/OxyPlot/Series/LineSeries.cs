@@ -45,13 +45,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the background of the series.
-        ///   The background area is defined by the x and y axes.
-        /// </summary>
-        /// <value>The background.</value>
-        public OxyColor Background { get; set; }
-
-        /// <summary>
         ///   Gets or sets the color of the curve.
         /// </summary>
         /// <value>The color.</value>
@@ -119,16 +112,6 @@ namespace OxyPlot
         /// </summary>
         /// <value>The minimum length of the segment.</value>
         public double MinimumSegmentLength { get; set; }
-
-        protected OxyRect GetClippingRect()
-        {
-            var minX = Math.Min(XAxis.ScreenMin.X, XAxis.ScreenMax.X);
-            var minY = Math.Min(YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);
-            var maxX = Math.Max(XAxis.ScreenMin.X, XAxis.ScreenMax.X);
-            var maxY = Math.Max(YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);
-
-            return new OxyRect(minX, minY, maxX - minX, maxY - minY);
-        }
 
         /// <summary>
         ///   Renders the LineSeries on the specified rendering context.

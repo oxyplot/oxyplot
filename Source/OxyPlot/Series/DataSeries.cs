@@ -20,7 +20,7 @@ namespace OxyPlot
         DataPoint GetDataPoint();
     }
 
-    public abstract class DataSeries : ISeries
+    public abstract class DataSeries : PlotSeriesBase
     {
         protected IList<DataPoint> points;
 
@@ -68,86 +68,14 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the X axis.
-        /// </summary>
-        /// <value>The X axis.</value>
-        public IAxis XAxis { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the Y axis.
-        /// </summary>
-        /// <value>The Y axis.</value>
-        public IAxis YAxis { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the X axis key.
-        /// </summary>
-        /// <value>The X axis key.</value>
-        public string XAxisKey { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the Y axis key.
-        /// </summary>
-        /// <value>The Y axis key.</value>
-        public string YAxisKey { get; set; }
-
-        /// <summary>
         ///   Gets or sets a value indicating whether this <see cref = "DataSeries" /> is smooth.
         /// </summary>
         /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
         public bool Smooth { get; set; }
 
-        /// <summary>
-        ///   Gets or sets the min X of the dataset.
-        /// </summary>
-        /// <value>The min X.</value>
-        public double MinX { get; protected set; }
-
-        /// <summary>
-        ///   Gets or sets the max X of the dataset.
-        /// </summary>
-        /// <value>The max X.</value>
-        public double MaxX { get; protected set; }
-
-        /// <summary>
-        ///   Gets or sets the min Y of the dataset.
-        /// </summary>
-        /// <value>The min Y.</value>
-        public double MinY { get; protected set; }
-
-        /// <summary>
-        ///   Gets or sets the max Y of the dataset.
-        /// </summary>
-        /// <value>The max Y.</value>
-        public double MaxY { get; protected set; }
-
         #region ISeries Members
 
-        /// <summary>
-        ///   Gets the title of the Series.
-        /// </summary>
-        /// <value>The title.</value>
-        public string Title { get; set; }
-
-        /// <summary>
-        ///   Renders the Series on the specified rendering context.
-        /// </summary>
-        /// <param name = "rc">The rendering context.</param>
-        /// <param name = "model">The model.</param>
-        public virtual void Render(IRenderContext rc, PlotModel model)
-        {
-        }
-
-        /// <summary>
-        ///   Renders the legend symbol on the specified rendering context.
-        /// </summary>
-        /// <param name = "rc">The rendering context.</param>
-        /// <param name = "legendBox">The rect.</param>
-        public virtual void RenderLegend(IRenderContext rc, OxyRect legendBox)
-        {
-        }
-
-        public virtual void UpdateData()
+        public override void UpdateData()
         {
             if (ItemsSource == null)
             {
@@ -188,12 +116,7 @@ namespace OxyPlot
             // http://msdn.microsoft.com/en-us/library/bb613546.aspx
 
             // Using reflection on DataFieldX and DataFieldY
-            AddDataPoints(points, DataFieldX, DataFieldY);
-        }
-
-        public bool AreAxesRequired()
-        {
-            return true;
+            AddDataPoints(points, ItemsSource, DataFieldX, DataFieldY);
         }
 
         /// <summary>
@@ -218,36 +141,12 @@ namespace OxyPlot
             return Convert.ToDouble(value);
         }
 
-        public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
-        {
-            if (XAxisKey != null)
-            {
-                XAxis = axes.FirstOrDefault(a => a.Key == XAxisKey);
-            }
-
-            if (YAxisKey != null)
-            {
-                YAxis = axes.FirstOrDefault(a => a.Key == YAxisKey);
-            }
-
-            // If axes are not found, use the default axes
-            if (XAxis == null)
-            {
-                XAxis = defaultXAxis;
-            }
-
-            if (YAxis == null)
-            {
-                YAxis = defaultYAxis;
-            }
-        }
-
         /// <summary>
         ///   Updates the max/min from the datapoints.
         /// </summary>
-        public virtual void UpdateMaxMin()
+        public override void UpdateMaxMin()
         {
-            MinX = MinY = MaxX = MaxY = double.NaN;
+            base.UpdateMaxMin();
             InternalUpdateMaxMin(points);
         }
 
@@ -258,35 +157,28 @@ namespace OxyPlot
         /// <param name = "dpn">The nearest point (data coordinates).</param>
         /// <param name = "spn">The nearest point (screen coordinates).</param>
         /// <returns></returns>
-        public bool GetNearestPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
+        public override bool GetNearestPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
         {
-            var dp = AxisBase.InverseTransform(point, XAxis, YAxis);
+            spn = default(ScreenPoint);
+            dpn = default(DataPoint);
 
-            double mindist = double.MaxValue;
-            DataPoint? nearest = null;
+            double minimumDistance = double.MaxValue;
             foreach (var p in points)
             {
-                double dx = dp.x - p.x;
-                double dy = dp.y - p.y;
+                var sp = AxisBase.Transform(p, XAxis, YAxis);
+                double dx = sp.x - point.x;
+                double dy = sp.y - point.y;
                 double d2 = dx * dx + dy * dy;
 
-                if (d2 < mindist)
+                if (d2 < minimumDistance)
                 {
-                    nearest = p;
-                    mindist = d2;
+                    dpn = p;
+                    spn = sp;
+                    minimumDistance = d2;
                 }
             }
 
-            if (nearest != null)
-            {
-                dpn = nearest.Value;
-                spn = XAxis.Transform(dpn, YAxis);
-                return true;
-            }
-
-            spn = default(ScreenPoint);
-            dpn = default(DataPoint);
-            return false;
+            return minimumDistance < double.MaxValue;
         }
 
         /// <summary>
@@ -296,22 +188,25 @@ namespace OxyPlot
         /// <param name = "dpn">The nearest point (data coordinates).</param>
         /// <param name = "spn">The nearest point (screen coordinates).</param>
         /// <returns></returns>
-        public bool GetNearestInterpolatedPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
+        public override bool GetNearestInterpolatedPoint(ScreenPoint p3, out DataPoint dpn, out ScreenPoint spn)
         {
-            var p3 = AxisBase.InverseTransform(point, XAxis, YAxis);
+            spn = default(ScreenPoint);
+            dpn = default(DataPoint);
 
             // http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
-            double mindist = double.MaxValue;
-            DataPoint? pt = null;
+            double minimumDistance = double.MaxValue;
+
             for (int i = 0; i + 1 < points.Count; i++)
             {
                 var p1 = points[i];
                 var p2 = points[i + 1];
+                var sp1 = AxisBase.Transform(p1, XAxis, YAxis);
+                var sp2 = AxisBase.Transform(p2, XAxis, YAxis);
 
-                double p21X = p2.x - p1.x;
-                double p21Y = p2.y - p1.y;
-                double u1 = (p3.x - p1.x) * p21X + (p3.y - p1.y) * p21Y;
-                double u2 = p21X * p21X + p21Y * p21Y;
+                double sp21X = sp2.x - sp1.x;
+                double sp21Y = sp2.y - sp1.y;
+                double u1 = (p3.x - sp1.x) * sp21X + (p3.y - sp1.y) * sp21Y;
+                double u2 = sp21X * sp21X + sp21Y * sp21Y;
                 if (u2 == 0)
                 {
                     continue; // P1 && P2 coincident
@@ -323,41 +218,35 @@ namespace OxyPlot
                     continue; // outside line
                 }
 
-                double x = p1.x + u * p21X;
-                double y = p1.y + u * p21Y;
+                double sx = sp1.x + u * sp21X;
+                double sy = sp1.y + u * sp21Y;
 
-                double dx = p3.x - x;
-                double dy = p3.y - y;
-                double d2 = dx * dx + dy * dy;
+                double dx = p3.x - sx;
+                double dy = p3.y - sy;
+                double distance = dx * dx + dy * dy;
 
-                if (d2 < mindist)
+                if (distance < minimumDistance)
                 {
-                    pt = new DataPoint(x, y);
-                    mindist = d2;
+                    double px = p1.x + u * (p2.x-p1.x);
+                    double py = p1.y + u * (p2.y-p1.y);
+                    dpn = new DataPoint(px, py);
+                    spn = new ScreenPoint(sx, sy);
+                    minimumDistance = distance;
                 }
             }
 
-            if (pt != null)
-            {
-                dpn = pt.Value;
-                spn = AxisBase.Transform(pt.Value, XAxis, YAxis);
-                return true;
-            }
-
-            spn = default(ScreenPoint);
-            dpn = default(DataPoint);
-            return false;
+            return minimumDistance < double.MaxValue;
         }
 
         #endregion
 
-        protected void AddDataPoints(ICollection<DataPoint> points, string dataFieldX, string dataFieldY)
+        protected void AddDataPoints(ICollection<DataPoint> points, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
         {
             PropertyInfo pix = null;
             PropertyInfo piy = null;
             Type t = null;
 
-            foreach (var o in ItemsSource)
+            foreach (var o in itemsSource)
             {
                 if (pix == null || o.GetType() != t)
                 {
