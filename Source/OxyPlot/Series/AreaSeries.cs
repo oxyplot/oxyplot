@@ -73,7 +73,7 @@ namespace OxyPlot
             points2.Clear();
 
             // Using reflection on DataFieldX2 and DataFieldY2
-            AddDataPoints(points2, DataFieldX2, DataFieldY2);
+            AddDataPoints(points2, ItemsSource, DataFieldX2, DataFieldY2);
         }
 
         public override void UpdateMaxMin()

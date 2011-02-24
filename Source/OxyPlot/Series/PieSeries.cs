@@ -79,6 +79,8 @@ namespace OxyPlot
 
         #region ISeries Members
 
+        public OxyColor Background { get; set; }
+
         public void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
         }

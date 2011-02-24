@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
 
 namespace OxyPlot
@@ -11,7 +10,7 @@ namespace OxyPlot
     /// <summary>
     /// Bar series.
     /// </summary>
-    public class BarSeries : ISeries
+    public class BarSeries : PlotSeriesBase
     {
         internal IList<double> InternalPoints;
 
@@ -67,44 +66,14 @@ namespace OxyPlot
         /// </summary>
         public bool IsStacked { get; set; }
 
-        /// <summary>
-        ///   Gets or sets the min X of the dataset.
-        /// </summary>
-        /// <value>The min X.</value>
-        public double MinX { get; protected set; }
-
-        /// <summary>
-        ///   Gets or sets the max X of the dataset.
-        /// </summary>
-        /// <value>The max X.</value>
-        public double MaxX { get; protected set; }
-
-        /// <summary>
-        ///   Gets or sets the min Y of the dataset.
-        /// </summary>
-        /// <value>The min Y.</value>
-        public double MinY { get; protected set; }
-
-        /// <summary>
-        ///   Gets or sets the max Y of the dataset.
-        /// </summary>
-        /// <value>The max Y.</value>
-        public double MaxY { get; protected set; }
-
         #region ISeries Members
-
-        /// <summary>
-        ///   Gets the title of the Series.
-        /// </summary>
-        /// <value>The title.</value>
-        public string Title { get; set; }
 
         /// <summary>
         ///   Renders the Series on the specified rendering context.
         /// </summary>
         /// <param name = "rc">The rendering context.</param>
         /// <param name = "model">The model.</param>
-        public virtual void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc, PlotModel model)
         {
         }
 
@@ -113,13 +82,13 @@ namespace OxyPlot
         /// </summary>
         /// <param name = "rc">The rendering context.</param>
         /// <param name = "legendBox">The rect.</param>
-        public virtual void RenderLegend(IRenderContext rc, OxyRect legendBox)
+        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
         }
 
         #endregion
 
-        public virtual void UpdateData()
+        public override void UpdateData()
         {
             if (ItemsSource == null)
             {
@@ -151,39 +120,12 @@ namespace OxyPlot
             }
         }
 
-        public bool AreAxesRequired()
-        {
-            return true;
-        }
-
-        public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
-        {
-            if (CategoryAxisKey != null)
-            {
-                CategoryAxis = axes.FirstOrDefault(a => a.Key == CategoryAxisKey);
-            }
-            if (ValueAxisKey != null)
-            {
-                ValueAxis = axes.FirstOrDefault(a => a.Key == ValueAxisKey);
-            }
-
-            // If axes are not found, use the default axes
-            if (CategoryAxis == null)
-            {
-                CategoryAxis = defaultXAxis;
-            }
-            if (ValueAxis == null)
-            {
-                ValueAxis = defaultYAxis;
-            }
-        }
-
         /// <summary>
         ///   Updates the max/min from the datapoints.
         /// </summary>
-        public virtual void UpdateMaxMin()
+        public override void UpdateMaxMin()
         {
-            MinX = MinY = MaxX = MaxY = double.NaN;
+            base.UpdateMaxMin();
 
             if (InternalPoints == null || InternalPoints.Count == 0)
             {
@@ -208,7 +150,7 @@ namespace OxyPlot
         /// <param name="dpn">The nearest point (data coordinates).</param>
         /// <param name="spn">The nearest point (screen coordinates).</param>
         /// <returns></returns>
-        public bool GetNearestPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
+        public override bool GetNearestPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
         {
             dpn = DataPoint.Undefined;
             spn = ScreenPoint.Undefined;
@@ -222,7 +164,7 @@ namespace OxyPlot
         /// <param name="dpn">The nearest point (data coordinates).</param>
         /// <param name="spn">The nearest point (screen coordinates).</param>
         /// <returns></returns>
-        public bool GetNearestInterpolatedPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
+        public override bool GetNearestInterpolatedPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
         {
             dpn = DataPoint.Undefined;
             spn = ScreenPoint.Undefined;

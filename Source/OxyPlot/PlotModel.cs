@@ -394,6 +394,8 @@ namespace OxyPlot
                 return;
             RenderInit(rc);
 
+            UpdateAxisTransforms();
+            RenderBackgrounds(rc);
             RenderAxes(rc);
             RenderAnnotations(rc, AnnotationLayer.BelowSeries);
             RenderSeries(rc);
@@ -461,11 +463,7 @@ namespace OxyPlot
             MidPoint = new ScreenPoint((PlotArea.Left + PlotArea.Right) * 0.5, (PlotArea.Top + PlotArea.Bottom) * 0.5);
         }
 
-        /// <summary>
-        /// Renders the axes.
-        /// </summary>
-        /// <param name="rc">The rc.</param>
-        public void RenderAxes(IRenderContext rc)
+        public void UpdateAxisTransforms()
         {
             // Update the transforms
             foreach (var a in Axes)
@@ -489,6 +487,15 @@ namespace OxyPlot
                 a.UpdateIntervals(PlotArea);
             }
 
+        }
+
+        /// <summary>
+        /// Renders the axes.
+        /// </summary>
+        /// <param name="rc">The rc.</param>
+        public void RenderAxes(IRenderContext rc)
+        {
+
             foreach (var a in Axes)
             {
                 if (a.IsVisible)
@@ -499,32 +506,39 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Renders the series backgrounds.
+        /// </summary>
+        /// <param name="rc">The rc.</param>
+        public void RenderBackgrounds(IRenderContext rc)
+        {
+            // Render the main background of the plot (only if there are axes)
+            // The border is rendered in RenderBox.
+            if (Axes.Count > 0)
+                rc.DrawRectangle(PlotArea, Background, null, 0);
+
+            foreach (var s in Series)
+            {
+                var s2 = s as PlotSeriesBase;
+                if (s2 == null || s2.Background==null)
+                    continue;
+                rc.DrawRectangle(s2.GetScreenRectangle(), s2.Background, null, 0);
+            }
+        }
+
+        /// <summary>
         /// Renders the box around the plot area.
         /// </summary>
         /// <param name="rc">The rc.</param>
         public void RenderBox(IRenderContext rc)
         {
             var pp = new PlotRenderingHelper(rc, this);
-            pp.RenderTitle(Title, Subtitle);
 
-            foreach (var s in Series)
-            {
-                var ls = s as LineSeries;
-                if (ls == null)
-                    continue;
-                if (ls.Background == null)
-                    continue;
-                var axisBounds = new OxyRect(
-                    ls.XAxis.ScreenMin.X,
-                    ls.YAxis.ScreenMin.Y,
-                    ls.XAxis.ScreenMax.X - ls.XAxis.ScreenMin.X,
-                    ls.YAxis.ScreenMax.Y - ls.YAxis.ScreenMin.Y);
-                rc.DrawRectangle(axisBounds, ls.Background, null, 0);
-            }
+            // Render the title
+            pp.RenderTitle(Title, Subtitle);
 
             // Render the box around the plot (only if there are axes)
             if (Axes.Count > 0)
-                rc.DrawRectangle(PlotArea, Background, BoxColor, BoxThickness);
+                rc.DrawRectangle(PlotArea, null, BoxColor, BoxThickness);
 
             // Render the legends
             pp.RenderLegends();
@@ -551,7 +565,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Saves the SVG.
+        /// Saves the plot to a SVG file.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="width">The width.</param>
@@ -589,6 +603,12 @@ namespace OxyPlot
             return svg;
         }
 
+        /// <summary>
+        /// Gets the first axes that covers the area of the specified point.
+        /// </summary>
+        /// <param name="pt">The pointt.</param>
+        /// <param name="xaxis">The xaxis.</param>
+        /// <param name="yaxis">The yaxis.</param>
         public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
         {
             xaxis = yaxis = null;
@@ -608,6 +628,12 @@ namespace OxyPlot
             }
         }
 
+        /// <summary>
+        /// Gets a series from the specified point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="limit">The limit.</param>
+        /// <returns></returns>
         public ISeries GetSeriesFromPoint(ScreenPoint point, double limit = 100)
         {
             double mindist = double.MaxValue;
