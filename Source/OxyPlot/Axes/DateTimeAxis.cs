@@ -71,7 +71,7 @@ namespace OxyPlot
         // ========================================
         // TODO: this class needs some clean-up
         // ========================================
-        
+
         internal static DateTime timeOrigin = new DateTime(1900, 1, 1); // Same date values as Excel
 
         private DateTimeIntervalType ActualIntervalType;
@@ -122,7 +122,7 @@ namespace OxyPlot
         public DayOfWeek FirstDayOfWeek { get; set; }
 
         public CalendarWeekRule CalendarWeekRule { get; set; }
-        
+
         public CultureInfo Culture { get; set; }
 
         /// <summary>
@@ -143,7 +143,23 @@ namespace OxyPlot
         /// <returns></returns>
         public static DateTime ToDateTime(double value)
         {
+            if (double.IsNaN(value))
+                return new DateTime();
             return timeOrigin.AddDays(value - 1);
+        }
+
+        public static DataPoint CreateDataPoint(DateTime x, double y)
+        {
+            return new DataPoint(DateTimeAxis.ToDouble(x),y);
+        }
+        public static DataPoint CreateDataPoint(DateTime x, DateTime y)
+        {
+            return new DataPoint(DateTimeAxis.ToDouble(x),DateTimeAxis.ToDouble(y));
+        }
+
+        public static DataPoint CreateDataPoint(double x, DateTime y)
+        {
+            return new DataPoint(x,DateTimeAxis.ToDouble(y));
         }
 
         /// <summary>
@@ -350,7 +366,7 @@ namespace OxyPlot
                                     };
             double interval = goodIntervals[0];
 
-          int maxNumberOfIntervals = Math.Max((int)(availableSize / maxIntervalSize), 2);
+            int maxNumberOfIntervals = Math.Max((int)(availableSize / maxIntervalSize), 2);
 
             while (true)
             {
