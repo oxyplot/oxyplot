@@ -2,7 +2,7 @@
 
 namespace OxyPlot.Reporting
 {
-    public class TableOfContents : Table
+    public class TableOfContents : ItemsTable
     {
         public List<ContentItem> Contents { get; set; }
         public ReportItem Base { get; set; }
@@ -10,10 +10,9 @@ namespace OxyPlot.Reporting
         public TableOfContents(ReportItem b)
         {
             this.Base = b;
-            Class = "content";
             Contents = new List<ContentItem>();
-            Columns.Add(new TableColumn(null, "Chapter"));
-            Columns.Add(new TableColumn(null, "Title"));
+            Fields.Add(new ItemsTableField(null, "Chapter"));
+            Fields.Add(new ItemsTableField(null, "Title"));
             Items = Contents;
         }
 
@@ -37,7 +36,7 @@ namespace OxyPlot.Reporting
             if (h != null)
             {
                 h.Chapter = hh.GetHeader(h.Level);
-                Contents.Add(new ContentItem() { Chapter = h.Chapter, Title = h.Text });
+                Contents.Add(new ContentItem { Chapter = h.Chapter, Title = h.Text });
             }
             foreach (var c in item.Children)
                 Search(c,hh);
@@ -45,6 +44,7 @@ namespace OxyPlot.Reporting
 
         public override void WriteContent(IReportWriter w)
         {
+            base.WriteContent(w);
         }
     }
 }

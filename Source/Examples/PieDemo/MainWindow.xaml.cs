@@ -31,11 +31,11 @@ namespace PieDemo
             // http://en.wikipedia.org/wiki/Continent
 
             var ps = new PieSeries();
-            ps.Slices.Add(new PieSlice("Africa", 1030, OxyColors.Brown) { IsExploded = true });
-            ps.Slices.Add(new PieSlice("Americas", 929, OxyColors.Red) { IsExploded = true });
-            ps.Slices.Add(new PieSlice("Asia", 4157, OxyColors.Yellow));
-            ps.Slices.Add(new PieSlice("Europe", 739, OxyColors.Green) { IsExploded = true });
-            ps.Slices.Add(new PieSlice("Oceania", 35, OxyColors.Blue) { IsExploded = true });
+            ps.Slices.Add(new PieSlice("Africa", 1030) { IsExploded = true });
+            ps.Slices.Add(new PieSlice("Americas", 929) { IsExploded = true });
+            ps.Slices.Add(new PieSlice("Asia", 4157));
+            ps.Slices.Add(new PieSlice("Europe", 739) { IsExploded = true });
+            ps.Slices.Add(new PieSlice("Oceania", 35) { IsExploded = true });
             ps.InnerDiameter = 0.2;
             ps.ExplodedDistance = 0;
             ps.Stroke = OxyColors.Black;

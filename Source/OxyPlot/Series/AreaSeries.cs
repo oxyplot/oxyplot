@@ -118,8 +118,8 @@ namespace OxyPlot
             }
 
             // draw the clipped lines
-            rc.DrawClippedLine(pts0, clippingRect, minDistSquared, Color, StrokeThickness, LineStyle, LineJoin);
-            rc.DrawClippedLine(pts1, clippingRect, minDistSquared, Color, StrokeThickness, LineStyle, LineJoin);
+            rc.DrawClippedLine(pts0, clippingRect, minDistSquared, Color, StrokeThickness, LineStyle, LineJoin,false);
+            rc.DrawClippedLine(pts1, clippingRect, minDistSquared, Color, StrokeThickness, LineStyle, LineJoin,false);
 
             // combine the two lines and draw the clipped area
             var pts = new List<ScreenPoint>();
@@ -129,8 +129,8 @@ namespace OxyPlot
             rc.DrawPolygon(pts, Fill, null);
 
             // draw the markers on top
-            rc.DrawMarkers(pts0, clippingRect, MarkerType, MarkerSize, MarkerFill, MarkerStroke, MarkerStrokeThickness);
-            rc.DrawMarkers(pts1, clippingRect, MarkerType, MarkerSize, MarkerFill, MarkerStroke, MarkerStrokeThickness);
+            rc.DrawMarkers(pts0, clippingRect, MarkerType, null, new [] {MarkerSize}, MarkerFill, MarkerStroke, MarkerStrokeThickness, 1);
+            rc.DrawMarkers(pts1, clippingRect, MarkerType, null, new [] {MarkerSize}, MarkerFill, MarkerStroke, MarkerStrokeThickness, 1);
         }
     }
 }

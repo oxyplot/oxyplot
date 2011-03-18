@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace OxyPlot.Tests
 {
@@ -249,6 +250,63 @@ namespace OxyPlot.Tests
             var plot = new PlotModel("Logarithmic axis with SuperExponentialFormat");
             plot.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X-axis") { Minimum = 1.8e2, Maximum = 1e5, UseSuperExponentialFormat = true });
             plot.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y-axis") { Minimum = 1e18, Maximum = 1e38, UseSuperExponentialFormat = true });
+            OxyAssert.AreEqual(plot);
+        }
+
+        [Test]
+        public void C01_DateTimeAxis()
+        {
+            var plot = new PlotModel("DateTime axis") { PlotMargins = new OxyThickness(100,40,20,100)};
+            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days) { Angle=-46, MajorStep=1 };
+            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days) { Angle=-45, MajorStep=1 };
+            plot.Axes.Add(xaxis);
+            plot.Axes.Add(yaxis);
+
+            var ls = new LineSeries();
+            ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 1), new DateTime(2011, 3, 1)));
+            ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 4), new DateTime(2011, 3, 8)));
+            ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 6), new DateTime(2011, 3, 12)));
+            ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 10), new DateTime(2011, 3, 13)));
+            ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 19), new DateTime(2011, 3, 14)));
+            plot.Series.Add(ls);
+
+            OxyAssert.AreEqual(plot);
+        }
+
+        [Test]
+        public void C02_DateTimeAxis_WithSomeUndefinedPoints()
+        {
+            var plot = new PlotModel("DateTime axis") { PlotMargins = new OxyThickness(100, 40, 20, 100) };
+            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days) { Angle = -46, MajorStep = 1 };
+            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days) { Angle = -45, MajorStep = 1 };
+            plot.Axes.Add(xaxis);
+            plot.Axes.Add(yaxis);
+
+            var ls = new LineSeries();
+            ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 1), new DateTime(2011, 3, 1)));
+            ls.Points.Add(DateTimeAxis.CreateDataPoint(double.NaN, new DateTime(2011, 3, 8)));
+            ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 6), new DateTime(2011, 3, 12)));
+            ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 10), double.NaN));
+            ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 19), new DateTime(2011, 3, 14)));
+            plot.Series.Add(ls);
+
+            OxyAssert.AreEqual(plot);
+        }
+
+        [Test]
+        public void C03_DateTimeAxis_WithAllUndefinedPoints()
+        {
+            var plot = new PlotModel("DateTime axis") { PlotMargins = new OxyThickness(100, 40, 20, 100) };
+            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days) { Angle = -46, MajorStep = 1 };
+            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days) { Angle = -45, MajorStep = 1 };
+            plot.Axes.Add(xaxis);
+            plot.Axes.Add(yaxis);
+
+            var ls = new LineSeries();
+            ls.Points.Add(new DataPoint(double.NaN, double.NaN));
+            ls.Points.Add(new DataPoint(double.NaN, double.NaN));
+            plot.Series.Add(ls);
+
             OxyAssert.AreEqual(plot);
         }
     }

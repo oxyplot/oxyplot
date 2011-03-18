@@ -21,25 +21,6 @@ namespace ExportDemo
     [Export(typeof(IShell))]
     public class ShellViewModel : PropertyChangedBase, IShell
     {
-        public enum RenderMethods
-        {
-            Shapes,
-            DrawingContext
-        }
-
-        private RenderMethods renderMethod;
-
-        public RenderMethods RenderMethod
-        {
-            get { return renderMethod; }
-            set
-            {
-                renderMethod = value;
-                RenderAsShapes = renderMethod == RenderMethods.Shapes;
-                NotifyOfPropertyChange(() => RenderMethod);
-            }
-        }
-
         private PlotModel model;
 
         public Plot Plot { get; private set; }
@@ -65,20 +46,7 @@ namespace ExportDemo
 
         public ShellViewModel()
         {
-            RenderAsShapes = true;
             CurrentModel = ModelType.SineWave;
-        }
-
-        private bool renderAsShapes;
-
-        public bool RenderAsShapes
-        {
-            get { return renderAsShapes; }
-            set
-            {
-                renderAsShapes = value;
-                NotifyOfPropertyChange(() => RenderAsShapes);
-            }
         }
 
         public PlotModel Model
@@ -114,54 +82,58 @@ namespace ExportDemo
             var r = CreateReport(fileName);
             var reportStyle = new ReportStyle();
 
-            if (ext == ".html")
+            if (ext == ".txt")
             {
-//                const string style =
-//                    @"body { font-family: Verdana,Arial; margin:20pt; }
-//table { border: solid 1px black; margin: 8pt; border-collapse:collapse; }
-//td { padding: 0 2pt 0 2pt; border-left: solid 1px black; border-right: solid 1px black;}
-//thead { border:solid 1px black; }
-//.content, .content td { border: none; }
-//.figure { margin: 8pt;}
-//.table { margin: 8pt;}
-//.table caption { margin: 4pt;}
-//.table thead td { padding: 2pt;}";
-                
-                using (var hw = new HtmlReportWriter(fileName, "OxyPlot example file", reportStyle))
+                using (var hw = new TextReportWriter(fileName))
                 {
                     r.Write(hw);
+                }
+            }
+
+            if (ext == ".html")
+            {
+                using (var hw = new HtmlReportWriter(fileName))
+                {
+                    hw.WriteReport(r, reportStyle);
                 }
             }
 
             if (ext == ".pdf")
                 using (var pw = new PdfReportWriter(fileName))
                 {
-                    r.Write(pw);
+                    pw.WriteReport(r, reportStyle);
                 }
 
             if (ext == ".rtf")
                 using (var pw = new RtfReportWriter(fileName))
                 {
-                    r.Write(pw);
+                    pw.WriteReport(r, reportStyle);
                 }
 
             if (ext == ".tex")
                 using (var pw = new LatexReportWriter(fileName, "Example report", "oxyplot"))
                 {
-                    r.Write(pw);
+                    pw.WriteReport(r, reportStyle);
                 }
 
             if (ext == ".txt")
                 using (var tw = new TextReportWriter(Path.ChangeExtension(fileName, ".txt")))
                 {
-                    r.Write(tw);
+                    tw.WriteReport(r, reportStyle);
                 }
             if (ext == ".xps")
             {
-                using (var w = new FlowDocumentReportWriter(reportStyle))
+                using (var w = new FlowDocumentReportWriter())
                 {
-                    r.Write(w);
+                    w.WriteReport(r, reportStyle);
                     w.Save(fileName);
+                }
+            }
+            if (ext == ".docx")
+            {
+                using (var w = new WordDocumentReportWriter(fileName))
+                {
+                    w.WriteReport(r, reportStyle);
                 }
             }
         }
@@ -172,11 +144,13 @@ namespace ExportDemo
             ext = ext.ToLower();
 
             var r = new Report();
+            r.Title = "Oxyplot example report";
+
             var main = new ReportSection();
 
             r.AddHeader(1, "Example report from OxyPlot");
-            r.AddHeader(2, "Content");
-            r.AddTableOfContents(main);
+            //r.AddHeader(2, "Content");
+            //r.AddTableOfContents(main);
             r.Add(main);
 
             main.AddHeader(2, "Introduction");
@@ -204,14 +178,14 @@ namespace ExportDemo
                         var pdfPlotFileName = fileNameWithoutExtension + "_plot.pdf";
                         PdfExporter.Export(Model, pdfPlotFileName, 800, 500);
                         main.AddParagraph("This plot was rendered to PDF and embedded in the report.");
-                        main.AddImage(Path.GetFileName(pdfPlotFileName), "PDF plot");
+                        main.AddImage(pdfPlotFileName, "PDF plot");
                         break;
                     }
             }
 
             main.AddHeader(2, "Plot (bitmap)");
             main.AddParagraph(
-                "The plot is rendered to PNG and embedded in the HTML5 file.");
+                "The plot is rendered to PNG and embedded in the report.");
 
             string pngPlotFileName = fileNameWithoutExtension + "_plot.png";
             PngExporter.Export(Model, pngPlotFileName, 800, 500);
@@ -222,13 +196,16 @@ namespace ExportDemo
             foreach (DataSeries s in Model.Series)
             {
                 main.AddHeader(3, "Data series " + (i++));
-                main.AddPropertyTable("Properties of the " + s.GetType().Name, new[] { s });
-                var fields = new List<TableColumn>
+                var pt = main.AddPropertyTable("Properties of the " + s.GetType().Name, new[] { s });
+                pt.Fields[0].Width = 50;
+                pt.Fields[1].Width = 100;
+
+                var fields = new List<ItemsTableField>
                                  {
-                                     new TableColumn("X", "X"),
-                                     new TableColumn("Y", "Y")
+                                     new ItemsTableField("X", "X") {Width=60, StringFormat="0.00"},
+                                     new ItemsTableField("Y", "Y") {Width=60, StringFormat="0.00"}
                                  };
-                main.AddTable("Data", s.Points, fields);
+                main.Add(new ItemsTable { Caption = "Data", Fields = fields, Items = s.Points });
             }
             //main.AddHeader(3, "Equations");
             //main.AddEquation(@"E = m \cdot c^2");
@@ -276,6 +253,16 @@ namespace ExportDemo
         public void SaveRtfReport()
         {
             var path = GetFilename(".rtf files|*.rtf", ".rtf");
+            if (path != null)
+            {
+                SaveReport(path);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SaveTextReport()
+        {
+            var path = GetFilename("Text files (*.txt)|*.txt", ".txt");
             if (path != null)
             {
                 SaveReport(path);
@@ -356,6 +343,16 @@ namespace ExportDemo
         public void SaveXpsReport()
         {
             var path = GetFilename(".xps files|*.xps", ".xps");
+            if (path != null)
+            {
+                SaveReport(path);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SaveDocxReport()
+        {
+            var path = GetFilename("Word document (.docx)|*.docx", ".docx");
             if (path != null)
             {
                 SaveReport(path);

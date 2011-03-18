@@ -10,7 +10,7 @@ namespace OxyPlot.Wpf
     /// Currently we are rendering to two different PlotFrames, with and without the Alias property set.
     /// todo: any good ideas for a better solution?
     /// </summary>
-    internal class PlotFrame : FrameworkElement
+ /*   internal class PlotFrame : FrameworkElement
     {
         private readonly bool aliased;
 
@@ -49,5 +49,5 @@ namespace OxyPlot.Wpf
                 Model.RenderSeries(drc);
             }
         }
-    }
+    }*/
 }

@@ -11,7 +11,7 @@ namespace OxyPlot.Wpf
         public static void Export(PlotModel model, string fileName, int width, int height)
         {
             var g = new Grid();
-            var p = new Plot {Model = model};
+            var p = new Plot { Model = model };
             g.Children.Add(p);
 
             var size = new Size(width, height);

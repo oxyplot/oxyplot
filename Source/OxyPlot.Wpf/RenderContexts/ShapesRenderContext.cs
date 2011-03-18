@@ -32,23 +32,52 @@ namespace OxyPlot.Wpf
 
         public double Height { get; private set; }
 
-        Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
+        /// <summary>
+        /// Should not combine too many geometries into the same group...
+        /// </summary>
+        public int MaxGeometriesPerPath = 256;
+        public int MaxFiguresPerGeometry = 16;
+
+        readonly Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
 
         public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
-        {
-            var path = new Path();
-            SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
-            var pg = new PathGeometry();
+        {           
+            Path path = null;
+            StreamGeometry geometry = null;
+            StreamGeometryContext sgc = null;         
+            int count = 0;
+
             for (int i = 0; i + 1 < points.Count; i += 2)
             {
-                var figure = new PathFigure();
-                figure.StartPoint = points[i].ToPoint();
-                figure.IsClosed = false;
-                figure.Segments.Add(new LineSegment(points[i + 1].ToPoint(), true));
-                pg.Figures.Add(figure);
+                if (path == null)
+                {
+                    path = new Path();
+                    SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
+                    geometry = new StreamGeometry();
+                    sgc = geometry.Open();
+                }
+                sgc.BeginFigure(points[i].ToPoint(), false, false);
+                sgc.LineTo(points[i + 1].ToPoint(), true, false);
+                count++;
+
+                // Must limit the number of figures, otherwise drawing errors...
+                if (count > MaxFiguresPerGeometry)
+                {
+                    sgc.Close();
+                    path.Data = geometry;
+                    Add(path);
+                    path = null;
+                    count = 0;
+
+                }
             }
-            path.Data = pg;
-            Add(path);
+            
+            if (path != null)
+            {
+                sgc.Close();
+                path.Data = geometry;
+                Add(path);
+            }
         }
 
         public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
@@ -65,7 +94,7 @@ namespace OxyPlot.Wpf
             Add(e);
         }
 
-        private void SetStroke(Shape shape, OxyColor stroke, double thickness, OxyPenLineJoin lineJoin, double[] dashArray, bool aliased)
+        private void SetStroke(Shape shape, OxyColor stroke, double thickness, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, double[] dashArray = null, bool aliased = false)
         {
             if (stroke != null && thickness > 0)
             {
@@ -124,18 +153,70 @@ namespace OxyPlot.Wpf
             Add(e);
         }
 
+        public void DrawPolygons(IEnumerable<IEnumerable<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        {
+            Path path = null;
+            StreamGeometry geometry = null;
+            StreamGeometryContext sgc = null;
+            int count = 0;
+
+            foreach (var polygon in polygons)
+            {
+                if (path == null)
+                {
+                    path = new Path();
+                    SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
+                    if (fill != null)
+                        path.Fill = GetCachedBrush(fill);
+                    geometry = new StreamGeometry {FillRule = FillRule.Nonzero};
+                    sgc = geometry.Open();
+                }
+
+
+                bool first = true;
+                foreach (var p in polygon)
+                {
+                    if (first)
+                    {
+                        sgc.BeginFigure(p.ToPoint(),fill!=null,true);
+                        first = false;
+                    }
+                    else
+                    {
+                        sgc.LineTo(p.ToPoint(),stroke!=null,true);
+                    }
+                }
+
+                count++;
+
+                // Must limit the number of figures, otherwise drawing errors...
+                if (count > MaxFiguresPerGeometry)
+                {
+                    sgc.Close();
+                    path.Data = geometry;
+                    Add(path);
+                    path = null;
+                    count = 0;
+
+                }
+            }
+
+            if (path != null)
+            {
+                sgc.Close();
+                path.Data = geometry;
+                Add(path);
+            }
+        }
+
         ///<summary>
         /// Draws a rectangle.
         ///</summary>
-        ///<param name="x"></param>
-        ///<param name="y"></param>
-        ///<param name="width"></param>
-        ///<param name="height"></param>
+        ///<param name="rect"></param>
         ///<param name="fill"></param>
         ///<param name="stroke"></param>
         ///<param name="thickness"></param>
-        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
-                                double thickness)
+        public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var e = new Rectangle();
             SetStroke(e, stroke, thickness, OxyPenLineJoin.Miter, null, true);
@@ -145,15 +226,48 @@ namespace OxyPlot.Wpf
                 e.Fill = new SolidColorBrush(fill.ToColor());
             }
 
-            e.Width = width;
-            e.Height = height;
-            Canvas.SetLeft(e, x);
-            Canvas.SetTop(e, y);
+            e.Width = rect.Width;
+            e.Height = rect.Height;
+            Canvas.SetLeft(e, rect.Left);
+            Canvas.SetTop(e, rect.Top);
             Add(e);
         }
 
-        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
-                                double thickness)
+        public void DrawRectangles(IEnumerable<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            Path path = null;
+            GeometryGroup gg = null;
+            int count = 0;
+            foreach (var rect in rectangles)
+            {
+                if (path == null)
+                {
+                    path = new Path();
+                    SetStroke(path, stroke, thickness, OxyPenLineJoin.Miter, null, true);
+                    if (fill != null)
+                        path.Fill = GetCachedBrush(fill);
+
+                    gg = new GeometryGroup();
+                    gg.FillRule = FillRule.Nonzero;
+                }
+                gg.Children.Add(new RectangleGeometry(rect.ToRect()));
+                count++;
+                if (count == MaxGeometriesPerPath)
+                {
+                    path.Data = gg;
+                    Add(path);
+                    path = null;
+                    count = 0;
+                }
+            }
+            if (path != null)
+            {
+                path.Data = gg;
+                Add(path);
+            }
+        }
+
+        public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var e = new Ellipse();
             SetStroke(e, stroke, thickness, OxyPenLineJoin.Miter, null, false);
@@ -162,11 +276,28 @@ namespace OxyPlot.Wpf
                 e.Fill = new SolidColorBrush(fill.ToColor());
             }
 
-            e.Width = width;
-            e.Height = height;
-            Canvas.SetLeft(e, x);
-            Canvas.SetTop(e, y);
+            e.Width = rect.Width;
+            e.Height = rect.Height;
+            Canvas.SetLeft(e, rect.Left);
+            Canvas.SetTop(e, rect.Top);
             Add(e);
+        }
+
+        public void DrawEllipses(IEnumerable<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            var path = new Path();
+            SetStroke(path, stroke, thickness);
+            if (fill != null)
+                path.Fill = GetCachedBrush(fill);
+
+            var gg = new GeometryGroup();
+            gg.FillRule = FillRule.Nonzero;
+            foreach (var rect in rectangles)
+            {
+                gg.Children.Add(new EllipseGeometry(rect.ToRect()));
+            }
+            path.Data = gg;
+            Add(path);
         }
 
         public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,

@@ -75,6 +75,7 @@ namespace OxyPlot
         /// <param name = "model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
+            throw new NotImplementedException();
         }
 
         /// <summary>

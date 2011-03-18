@@ -31,6 +31,11 @@ namespace OxyPlot.Silverlight
             return new SolidColorBrush(c.ToColor());
         }
 
+        public static Rect ToRect(this OxyRect r)
+        {
+            return new Rect(r.Left, r.Top, r.Width, r.Height);
+        }
+
         public static double DistanceTo(this Point p1, Point p2)
         {
             double dx = p1.X - p2.X;

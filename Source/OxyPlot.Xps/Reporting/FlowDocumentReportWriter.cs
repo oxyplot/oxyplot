@@ -9,14 +9,8 @@ using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
 using OxyPlot.Reporting;
-using Drawing = OxyPlot.Reporting.Drawing;
-using Figure = System.Windows.Documents.Figure;
-using Image = OxyPlot.Reporting.Image;
-using Paragraph = OxyPlot.Reporting.Paragraph;
-using Table = OxyPlot.Reporting.Table;
 
 namespace OxyPlot.Pdf
 {
@@ -25,16 +19,14 @@ namespace OxyPlot.Pdf
     /// </summary>
     public class FlowDocumentReportWriter : IDisposable, IReportWriter
     {
-        protected string filename;
-        private FlowDocument doc;
+        private readonly FlowDocument doc;
         public FlowDocument FlowDocument { get { return doc; } }
         public ReportStyle Style { get; set; }
 
-        public FlowDocumentReportWriter(ReportStyle style)
+
+        public FlowDocumentReportWriter()
         {
-            Style = style;
             doc = new FlowDocument();
-            Margins = new Thickness(30);
         }
 
         #region IDisposable Members
@@ -47,15 +39,21 @@ namespace OxyPlot.Pdf
 
         #region IReportWriter Members
 
+        public void WriteReport(Report report, ReportStyle style)
+        {
+            Style = style;
+            report.Write(this);
+        }
+
         public void WriteHeader(Header h)
         {
-            var run = new Run() { Text = h.Text };
+            var run = new Run { Text = h.Text };
             SetStyle(run, Style.HeaderStyles[h.Level - 1]);
             var p = new System.Windows.Documents.Paragraph(run);
             doc.Blocks.Add(p);
         }
 
-        private void SetStyle(TextElement run, ParagraphStyle s)
+        private static void SetStyle(TextElement run, ParagraphStyle s)
         {
             run.FontFamily = new FontFamily(s.FontFamily);
             run.FontSize = s.FontSize;
@@ -66,77 +64,68 @@ namespace OxyPlot.Pdf
             run.FontStyle = fontStyle;
         }
 
-        public void WriteParagraph(Paragraph pa)
+        public void WriteParagraph(OxyPlot.Reporting.Paragraph pa)
         {
-            doc.Blocks.Add(CreateParagraph(pa.Text,Style.BodyTextStyle));
+            doc.Blocks.Add(CreateParagraph(pa.Text, Style.BodyTextStyle));
         }
 
         private System.Windows.Documents.Paragraph CreateParagraph(string text, ParagraphStyle style)
         {
             var run = new Run() { Text = text };
-            if (style!=null)
+            if (style != null)
                 SetStyle(run, style);
             return new System.Windows.Documents.Paragraph(run);
         }
 
-        public void WriteTable(Table t)
+        public void WriteTable(OxyPlot.Reporting.Table t)
         {
             var p = new System.Windows.Documents.Paragraph();
             var figure = new System.Windows.Documents.Figure();
             var table = new System.Windows.Documents.Table();
-            WriteTableItems(t, table);
-            figure.Blocks.Add(CreateParagraph(t.Caption, Style.FigureTextStyle));
-            figure.Blocks.Add(table);
-            p.Inlines.Add(figure);
-            doc.Blocks.Add(p);
-        }
 
-        /// <summary>
-        /// Writes the items.
-        /// </summary>
-        /// <param name="t">The t.</param>
-        public void WriteTableItems(Table t, System.Windows.Documents.Table table)
-        {
-            var items = t.Items;
-            var columns = t.Columns;
-
-
-            if (t.HasHeader())
-            {
-                var trg1 = new TableRowGroup();
-                SetStyle(trg1, Style.TableHeaderStyle);
-                var r = new TableRow();
-                foreach (var c in columns)
-                {
-                    var cell = new TableCell();
-                    var run = new Run() { Text = c.Header };
-                    cell.Blocks.Add(new System.Windows.Documents.Paragraph(run));
-                    r.Cells.Add(cell);
-                }
-                trg1.Rows.Add(r);
-                table.RowGroups.Add(trg1);
-            }
+            //if (t.HasHeader())
+            //{
+            //    var trg1 = new TableRowGroup();
+            //    SetStyle(trg1, Style.TableHeaderStyle);
+            //    var r = new TableRow();
+            //    foreach (var c in columns)
+            //    {
+            //        var cell = new TableCell();
+            //        var run = new Run() { Text = c.Header };
+            //        cell.Blocks.Add(new System.Windows.Documents.Paragraph(run));
+            //        r.Cells.Add(cell);
+            //    }
+            //    trg1.Rows.Add(r);
+            //    table.RowGroups.Add(trg1);
+            //}
 
             var trg2 = new TableRowGroup();
-            SetStyle(trg2, Style.TableTextStyle);
-            foreach (var item in items)
+            // SetStyle(trg2, Style.TableTextStyle);
+            foreach (var row in t.Rows)
             {
-                var r = new TableRow();
-                foreach (var c in columns)
+                var r = new System.Windows.Documents.TableRow();
+                if (row.IsHeader)
+                    SetStyle(r, row.IsHeader ? Style.TableHeaderStyle : Style.TableTextStyle);
+
+                for (int j = 0; j < t.Columns.Count; j++)
                 {
-                    var text = c.GetText(item);
-                    var cell = new TableCell();
-                    var run = new Run() { Text = text };
+                    var c = row.Cells[j];
+                    var cell = new System.Windows.Documents.TableCell();
+                    var run = new Run { Text = c.Content };
                     cell.Blocks.Add(new System.Windows.Documents.Paragraph(run));
                     r.Cells.Add(cell);
                 }
                 trg2.Rows.Add(r);
             }
             table.RowGroups.Add(trg2);
+
+            figure.Blocks.Add(CreateParagraph(t.Caption, Style.FigureTextStyle));
+            figure.Blocks.Add(table);
+            p.Inlines.Add(figure);
+            doc.Blocks.Add(p);
         }
 
-
-        public void WriteImage(Image i)
+        public void WriteImage(OxyPlot.Reporting.Image i)
         {
             // var figure = new Figure();
             var img = new System.Windows.Controls.Image();
@@ -150,7 +139,7 @@ namespace OxyPlot.Pdf
             doc.Blocks.Add(c);
         }
 
-        public void WriteDrawing(Drawing d)
+        public void WriteDrawing(DrawingFigure d)
         {
         }
 
@@ -163,8 +152,6 @@ namespace OxyPlot.Pdf
         }
 
         #endregion
-
-        public Thickness Margins { get; set; }
 
         public void Print()
         {
@@ -180,10 +167,11 @@ namespace OxyPlot.Pdf
         {
             IDocumentPaginatorSource dps = doc;
             DocumentPaginator sourceFlowDocPaginator = dps.DocumentPaginator;
-            sourceFlowDocPaginator.PageSize = new Size(size.Width - Margins.Left - Margins.Right, size.Height - Margins.Top - Margins.Bottom);
+            sourceFlowDocPaginator.PageSize = new Size(size.Width - Style.Margins.Left - Style.Margins.Right, size.Height - Style.Margins.Top - Style.Margins.Bottom);
             if (!sourceFlowDocPaginator.IsPageCountValid)
                 sourceFlowDocPaginator.ComputePageCount();
-            return BuildFixedDocument(sourceFlowDocPaginator, size, Margins);
+            var margins = new Thickness(Style.Margins.Left,Style.Margins.Top,Style.Margins.Width,Style.Margins.Height);
+            return BuildFixedDocument(sourceFlowDocPaginator, size,margins);
         }
 
         public virtual void Save(string filename, double width = 816, double height = 1056)

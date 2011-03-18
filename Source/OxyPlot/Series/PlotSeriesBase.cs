@@ -154,6 +154,10 @@ namespace OxyPlot
 
         public abstract bool GetNearestPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn);
 
+        public virtual void SetDefaultValues(PlotModel model)
+        {
+        }
+
         public abstract bool GetNearestInterpolatedPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn);
 
         #endregion

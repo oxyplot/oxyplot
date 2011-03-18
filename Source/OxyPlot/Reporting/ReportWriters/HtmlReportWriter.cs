@@ -14,19 +14,10 @@ namespace OxyPlot.Reporting
         /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class.
         /// </summary>
         /// <param name="path">The path.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="cssPath">The path to a CSS file.</param>
-        /// <param name="style">The inline CSS style.</param>
-        public HtmlReportWriter(string path, string title, string cssPath, string style)
+        public HtmlReportWriter(string path)
             : base(path)
         {
             WriteStartElement("html", "http://www.w3.org/1999/xhtml");
-            WriteHtmlHeader(title, cssPath, style);
-        }
-
-        public HtmlReportWriter(string path, string title, ReportStyle style)
-            : this(path, title, null, CreateCss(style))
-        {
         }
 
         static string CreateCss(ReportStyle style)
@@ -35,6 +26,12 @@ namespace OxyPlot.Reporting
             css.AppendLine("body { " + ParagraphStyleToCss(style.BodyTextStyle) + " }");
             for (int i = 0; i < style.HeaderStyles.Length; i++)
                 css.AppendLine("h" + (i + 1) + " {" + ParagraphStyleToCss(style.HeaderStyles[i]) + " }");
+
+            css.AppendLine("table caption { " + ParagraphStyleToCss(style.TableCaptionStyle) + " }");
+            css.AppendLine("thead { " + ParagraphStyleToCss(style.TableHeaderStyle) + " }");
+            css.AppendLine("td { " + ParagraphStyleToCss(style.TableTextStyle) + " }");
+            css.AppendLine("td.header { " + ParagraphStyleToCss(style.TableHeaderStyle) + " }");
+            css.AppendLine("figuretext { " + ParagraphStyleToCss(style.FigureTextStyle) + " }");
 
             css.Append(
                 @"body { margin:20pt; }
@@ -54,7 +51,7 @@ namespace OxyPlot.Reporting
             var css = new StringBuilder();
             if (s.FontFamily != null)
                 css.Append(String.Format("font-family:{0};", s.FontFamily));
-            css.Append(String.Format("font-size:{0};", s.FontSize));
+            css.Append(String.Format("font-size:{0}pt;", s.FontSize));
             if (s.Bold)
                 css.Append(String.Format("font-weight:bold;"));
             return css.ToString();
@@ -106,7 +103,6 @@ namespace OxyPlot.Reporting
             if (h.Text == null)
                 return;
             WriteStartElement("h" + h.Level);
-            WriteClassID(h);
             WriteString(h.ToString());
             WriteEndElement();
         }
@@ -117,7 +113,6 @@ namespace OxyPlot.Reporting
         /// <param name="p">The p.</param>
         public void WriteParagraph(Paragraph p)
         {
-            WriteClassID(p);
             WriteElementString("p", p.Text);
         }
 
@@ -125,12 +120,12 @@ namespace OxyPlot.Reporting
         /// Writes the class ID.
         /// </summary>
         /// <param name="ri">The ri.</param>
-        public void WriteClassID(ReportItem ri)
+        public void WriteClassID(string _class, string id = null)
         {
-            if (ri.Class != null)
-                WriteAttributeString("class", ri.Class);
-            if (ri.ID != null)
-                WriteAttributeString("id", ri.ID);
+            if (_class != null)
+                WriteAttributeString("class", _class);
+            if (id != null)
+                WriteAttributeString("id", id);
         }
 
         /// <summary>
@@ -139,23 +134,20 @@ namespace OxyPlot.Reporting
         /// <param name="t">The t.</param>
         public void WriteTable(Table t)
         {
-            if (t.Items == null)
+            if (t.Rows == null || t.Columns == null)
                 return;
             WriteStartElement("table");
             // WriteAttributeString("border", "1");
             // WriteAttributeString("width", "60%");
-            WriteClassID(t);
 
             if (t.Caption != null)
             {
                 WriteStartElement("caption");
-                WriteString(t.FullCaption);
+                WriteString(t.GetFullCaption(style));
                 WriteEndElement();
             }
-            if (t.ItemsInColumns)
-                WriteFlippedItems(t);
-            else
-                WriteItems(t);
+            WriteRows(t);
+
             WriteEndElement(); // table
         }
 
@@ -163,104 +155,39 @@ namespace OxyPlot.Reporting
         /// Writes the items.
         /// </summary>
         /// <param name="t">The t.</param>
-        public void WriteItems(Table t)
+        public void WriteRows(Table t)
         {
-            var items = t.Items;
             var columns = t.Columns;
 
             foreach (var c in columns)
             {
                 WriteStartElement("col");
                 WriteAttributeString("align", GetAlignmentString(c.Alignment));
-                WriteAttributeString("width", c.Width + "pt");
-                // WriteAttributeString("style", c.Style);
+                if (double.IsNaN(c.Width))
+                    WriteAttributeString("width", c.Width + "pt");
                 WriteEndElement();
             }
 
-            if (t.HasHeader())
+            foreach (var row in t.Rows)
             {
-                WriteStartElement("thead");
+                if (row.IsHeader)
+                    WriteStartElement("thead");
                 WriteStartElement("tr");
-
-                foreach (var c in columns)
+                int j = 0;
+                foreach (var c in row.Cells)
                 {
+                    bool isHeader = row.IsHeader || t.Columns[j++].IsHeader;
+
                     WriteStartElement("td");
-                    WriteString(c.Header);
+                    if (isHeader)
+                        WriteAttributeString("class", "header");
+                    WriteString(c.Content);
                     WriteEndElement();
                 }
+
                 WriteEndElement(); // tr
-                WriteEndElement(); // thead
-            }
-
-            foreach (var item in items)
-            {
-                WriteStartElement("tr");
-                foreach (var c in columns)
-                {
-                    var text = c.GetText(item);
-                    WriteStartElement("td");
-                    WriteString(text);
-                    WriteEndElement();
-                }
-                WriteEndElement(); // tr
-            }
-        }
-
-        private void WriteFlippedItems(Table t)
-        {
-            var items = t.Items;
-            var rows = t.Columns;
-
-            var columns = items.Cast<object>().ToList();
-
-            foreach (var c in columns)
-            {
-                WriteStartElement("col");
-                // WriteAttributeString("align", GetAlignmentString(c.Alignment));
-                //WriteAttributeString("width", c.Width + "pt");
-                // WriteAttributeString("style", c.Style);
-                WriteEndElement();
-            }
-
-            var hasHead = false;
-            foreach (var c in columns)
-                if (!String.IsNullOrEmpty(c.ToString())) hasHead = true;
-
-            if (hasHead)
-            {
-                WriteStartElement("thead");
-                WriteStartElement("tr");
-
-                WriteStartElement("td");
-                WriteString("");
-                WriteEndElement();
-
-                foreach (var c in columns)
-                {
-                    WriteStartElement("td");
-                    WriteString(c.ToString());
-                    WriteEndElement();
-                }
-                WriteEndElement(); // tr
-                WriteEndElement(); // thead
-            }
-
-            foreach (var row in rows)
-            {
-                WriteStartElement("tr");
-
-                WriteStartElement("td");
-                WriteString(row.Header);
-                WriteEndElement();
-
-                foreach (var c in columns)
-                {
-                    var text = row.GetText(c);
-                    WriteStartElement("td");
-                    WriteString(text);
-                    WriteEndElement();
-                }
-                WriteEndElement(); // tr
+                if (row.IsHeader)
+                    WriteEndElement(); // thead
             }
         }
 
@@ -275,7 +202,7 @@ namespace OxyPlot.Reporting
         {
             figureCounter++;
             WriteStartElement("p");
-            WriteClassID(f);
+            WriteClassID("figure");
         }
 
         private void WriteEndFigure(string text)
@@ -304,7 +231,7 @@ namespace OxyPlot.Reporting
         /// Writes the drawing.
         /// </summary>
         /// <param name="d">The d.</param>
-        public void WriteDrawing(Drawing d)
+        public void WriteDrawing(DrawingFigure d)
         {
             WriteStartFigure(d);
             WriteRaw(d.Content);
@@ -337,6 +264,14 @@ namespace OxyPlot.Reporting
             WriteAttributeString("class", style);
             WriteString(content);
             WriteEndElement();
+        }
+
+        private ReportStyle style;
+        public void WriteReport(Report report, ReportStyle style)
+        {
+            this.style = style;
+            WriteHtmlHeader(report.Title, null, CreateCss(style));
+            report.Write(this);
         }
     }
 }

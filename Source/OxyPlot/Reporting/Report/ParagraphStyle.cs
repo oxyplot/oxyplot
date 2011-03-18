@@ -1,11 +1,13 @@
-﻿namespace OxyPlot.Reporting
+﻿using System;
+
+namespace OxyPlot.Reporting
 {
     public class ParagraphStyle
     {
         public ParagraphStyle BasedOn { get; set; }
 
         private const string DefaultFont = "Arial";
-        private const double DefaultFontSize = 12;
+        private const double DefaultFontSize = 11;
 
         private string fontFamily;
         public string FontFamily
@@ -65,6 +67,78 @@
                 return false;
             }
             set { italic = value; }
+        }
+
+        private double? spacingBefore;
+        public double SpacingBefore
+        {
+            get
+            {
+                if (spacingBefore != null) return spacingBefore.Value;
+                if (BasedOn != null) return BasedOn.SpacingBefore;
+                return 0;
+            }
+            set { spacingBefore = value; }
+        }
+
+        private double? spacingAfter;
+        public double SpacingAfter
+        {
+            get
+            {
+                if (spacingAfter != null) return spacingAfter.Value;
+                if (BasedOn != null) return BasedOn.SpacingAfter;
+                return 0;
+            }
+            set { spacingAfter = value; }
+        }
+
+        private double? lineSpacing;
+        public double LineSpacing
+        {
+            get
+            {
+                if (lineSpacing != null) return lineSpacing.Value;
+                if (BasedOn != null) return BasedOn.LineSpacing;
+                return 1;
+            }
+            set { lineSpacing = value; }
+        }
+
+        private double? leftIndentation;
+        public double LeftIndentation
+        {
+            get
+            {
+                if (leftIndentation != null) return leftIndentation.Value;
+                if (BasedOn != null) return BasedOn.LeftIndentation;
+                return 0;
+            }
+            set { leftIndentation = value; }
+        }
+
+        private double? rightIndentation;
+        public double RightIndentation
+        {
+            get
+            {
+                if (rightIndentation != null) return rightIndentation.Value;
+                if (BasedOn != null) return BasedOn.RightIndentation;
+                return 0;
+            }
+            set { rightIndentation = value; }
+        }
+
+        private bool? pageBreakBefore;
+        public bool PageBreakBefore
+        {
+            get
+            {
+                if (pageBreakBefore != null) return pageBreakBefore.Value;
+                if (BasedOn != null) return BasedOn.PageBreakBefore;
+                return false;
+            }
+            set { pageBreakBefore = value; }
         }
 
         // margin

@@ -1,4 +1,6 @@
-﻿namespace OxyPlot
+﻿using System;
+
+namespace OxyPlot
 {
     /// <summary>
     /// DataPoint interface.

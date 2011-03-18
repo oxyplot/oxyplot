@@ -32,7 +32,7 @@ namespace OxyPlot.Silverlight
         public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             var path = new Path();
-            SetStroke(path, stroke, thickness, dashArray, lineJoin, aliased);
+            SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
             var pg = new PathGeometry();
             for (int i = 0; i + 1 < points.Count; i += 2)
             {
@@ -44,10 +44,6 @@ namespace OxyPlot.Silverlight
             }
             path.Data = pg;
             Add(path);
-
-            //for (int i = 0; i + 1 < points.Count; i += 2)
-            //    DrawLine(new[] { points[i], points[i + 1] }, stroke, thickness, dashArray, lineJoin, aliased);
-
         }
 
         private void Add(Shape shape)
@@ -59,7 +55,7 @@ namespace OxyPlot.Silverlight
                              OxyPenLineJoin lineJoin, bool aliased)
         {
             var e = new Polyline();
-            SetStroke(e, stroke, thickness, dashArray, lineJoin, aliased);
+            SetStroke(e, stroke, thickness, lineJoin, dashArray, aliased);
 
             // TODO
             // if (aliased) pl.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
@@ -88,7 +84,7 @@ namespace OxyPlot.Silverlight
                                 double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             var po = new Polygon();
-            SetStroke(po, stroke, thickness, dashArray, lineJoin, aliased);
+            SetStroke(po, stroke, thickness, lineJoin, dashArray, aliased);
 
             if (fill != null)
                 po.Fill = GetCachedBrush(fill);
@@ -101,7 +97,37 @@ namespace OxyPlot.Silverlight
             canvas.Children.Add(po);
         }
 
-        private void SetStroke(Shape shape, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public void DrawPolygons(IEnumerable<IEnumerable<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        {
+            var path = new Path();
+            SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
+            if (fill != null)
+                path.Fill = GetCachedBrush(fill);
+
+            var pg = new PathGeometry { FillRule = FillRule.Nonzero };
+            foreach (var polygon in polygons)
+            {
+                var figure = new PathFigure { IsClosed = true };
+                bool first = true;
+                foreach (var p in polygon)
+                {
+                    if (first)
+                    {
+                        figure.StartPoint = p.ToPoint();
+                        first = false;
+                    }
+                    else
+                    {
+                        figure.Segments.Add(new LineSegment() { Point = p.ToPoint() });
+                    }
+                }
+                pg.Figures.Add(figure);
+            }
+            path.Data = pg;
+            Add(path);
+        }
+
+        private void SetStroke(Shape shape, OxyColor stroke, double thickness, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, double[] dashArray = null, bool aliased = false)
         {
             if (stroke != null && thickness > 0)
             {
@@ -150,7 +176,7 @@ namespace OxyPlot.Silverlight
         ///<param name="fill"></param>
         ///<param name="stroke"></param>
         ///<param name="thickness"></param>
-        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
+        public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke,
                                 double thickness)
         {
             var el = new Rectangle();
@@ -164,14 +190,31 @@ namespace OxyPlot.Silverlight
                 el.Fill = new SolidColorBrush(fill.ToColor());
             }
 
-            el.Width = width;
-            el.Height = height;
-            Canvas.SetLeft(el, x);
-            Canvas.SetTop(el, y);
+            el.Width = rect.Width;
+            el.Height = rect.Height;
+            Canvas.SetLeft(el, rect.Left);
+            Canvas.SetTop(el, rect.Top);
             canvas.Children.Add(el);
         }
 
-        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
+        public void DrawRectangles(IEnumerable<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            var path = new Path();
+            SetStroke(path, stroke, thickness);
+            if (fill != null)
+                path.Fill = GetCachedBrush(fill);
+
+            var gg = new GeometryGroup();
+            gg.FillRule = FillRule.Nonzero;
+            foreach (var rect in rectangles)
+            {
+                gg.Children.Add(new RectangleGeometry() { Rect = rect.ToRect() });
+            }
+            path.Data = gg;
+            Add(path);
+        }
+
+        public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke,
                                 double thickness)
         {
             var el = new Ellipse();
@@ -185,11 +228,33 @@ namespace OxyPlot.Silverlight
                 el.Fill = new SolidColorBrush(fill.ToColor());
             }
 
-            el.Width = width;
-            el.Height = height;
-            Canvas.SetLeft(el, x);
-            Canvas.SetTop(el, y);
+            el.Width = rect.Width;
+            el.Height = rect.Height;
+            Canvas.SetLeft(el, rect.Left);
+            Canvas.SetTop(el, rect.Top);
             canvas.Children.Add(el);
+        }
+
+        public void DrawEllipses(IEnumerable<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            var path = new Path();
+            SetStroke(path, stroke, thickness);
+            if (fill != null)
+                path.Fill = GetCachedBrush(fill);
+
+            var gg = new GeometryGroup();
+            gg.FillRule = FillRule.Nonzero;
+            foreach (var rect in rectangles)
+            {
+                gg.Children.Add(new EllipseGeometry()
+                                    {
+                                        Center = new Point(rect.Left + rect.Width / 2, rect.Top + rect.Height / 2),
+                                        RadiusX = rect.Width / 2,
+                                        RadiusY = rect.Height / 2
+                                    });
+            }
+            path.Data = gg;
+            Add(path);
         }
 
         public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,

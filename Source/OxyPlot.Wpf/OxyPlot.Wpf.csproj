@@ -65,7 +65,7 @@
     <Compile Include="PngExporter.cs" />
     <None Include="OxyPlot.Wpf.snk" />
     <None Include="RenderContexts\GeometryRenderContext.cs" />
-    <Compile Include="RenderContexts\DrawingRenderContext.cs" />
+    <None Include="RenderContexts\DrawingRenderContext.cs" />
     <Compile Include="PlotFrame.cs" />
     <Compile Include="Series\AreaSeries.cs" />
     <Compile Include="Series\LineSeries.cs" />
