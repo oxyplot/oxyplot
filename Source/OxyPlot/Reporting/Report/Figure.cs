@@ -6,16 +6,10 @@ namespace OxyPlot.Reporting
     {
         public string FigureText { get; set; }
         public int FigureNumber { get; set; }
-        private const string CaptionFormatString = "Figure {0}. {1}";
 
-        protected Figure()
+        public string GetFullCaption(ReportStyle style)
         {
-            Class = "figure";
-        }
-
-        public string FullCaption
-        {
-            get { return String.Format(CaptionFormatString, FigureNumber, FigureText); }
+            return String.Format(style.FigureTextFormatString, FigureNumber, FigureText); 
         }
     }
 }

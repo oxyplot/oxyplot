@@ -222,7 +222,7 @@ namespace OxyPlot
             string min = FormatValue(ActualMinimum);
             int length = Math.Max(max.Length, min.Length);
 
-            switch (position)
+            switch (Position)
             {
                 case AxisPosition.Top:
                 case AxisPosition.Bottom:

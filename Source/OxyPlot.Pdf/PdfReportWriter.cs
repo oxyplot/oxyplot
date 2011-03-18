@@ -23,7 +23,6 @@ namespace OxyPlot.Pdf
             this.filename = filename;
             doc = new Document();
 
-            DefineStyles(doc);
         }
 
         private Section CurrentSection
@@ -48,6 +47,14 @@ namespace OxyPlot.Pdf
 
         #region IReportWriter Members
 
+        private ReportStyle style;
+        public void WriteReport(Report report, ReportStyle style)
+        {
+            this.style = style;
+            DefineStyles(doc, style);
+            report.Write(this);
+        }
+
         public void WriteHeader(Header h)
         {
             if (h.Text == null)
@@ -66,55 +73,37 @@ namespace OxyPlot.Pdf
 
         public void WriteTable(Table t)
         {
-            if (t.Items == null)
+            if (t.Rows == null)
                 return;
 
-            var table = new MigraDoc.DocumentObjectModel.Tables.Table();
-            table.Borders.Width = 0.75;
+            var table = new MigraDoc.DocumentObjectModel.Tables.Table { Borders = { Width = 0.75 } };
 
-            var cells=t.ToArray();
-            int rows = cells.GetUpperBound(0) + 1;
-            int columns = cells.GetUpperBound(1) + 1;
+            int columns = t.Columns.Count;
 
-            for (int j = 0; j < columns;j++ )
+            for (int j = 0; j < columns; j++)
             {
                 var column = table.AddColumn();
-                //    column.Format.Alignment = ConvertToParagraphAlignment(c.Alignment);
+                column.Width = Unit.FromMillimeter(t.Columns[j].ActualWidth);
+                column.Format.Alignment = ConvertToParagraphAlignment(t.Columns[j].Alignment);
             }
 
-            for (int i = 0; i <rows; i++)
+            foreach (var tr in t.Rows)
             {
-                var row = table.AddRow();                
+                var row = table.AddRow();
                 for (int j = 0; j < columns; j++)
                 {
+                    bool isHeader = tr.IsHeader || t.Columns[j].IsHeader;
+
+                    var c = tr.Cells[j];
                     Cell cell = row.Cells[j];
-                    cell.AddParagraph(cells[i, j]??"");
-                    // if (i == 0) cell.Style = "TableHeader";
+                    cell.AddParagraph(c.Content ?? "");
+                    cell.Style = isHeader ? "TableHeader" : "TableText";
                 }
             }
 
-/*            Row header = table.AddRow();
-            int i = 0;
-            foreach (TableColumn c in t.Columns)
-            {
-                MigraDoc.DocumentObjectModel.Paragraph hp = header.Cells[i++].AddParagraph();
-                hp.AddFormattedText(c.Header, "TableHeader");
-            }
-            foreach (object item in t.Items)
-            {
-                Row row = table.AddRow();
-                i = 0;
-                foreach (TableColumn c in t.Columns)
-                {
-                    Cell cell = row.Cells[i++];
-                    string content = c.GetText(item);
-                    cell.AddParagraph(content ?? "");
-                }
-            }
- */
             // table.SetEdge(0, 0, t.Columns.Count, t.Items.Count(), Edge.Box, BorderStyle.Single, 1.5, Colors.Black);
             MigraDoc.DocumentObjectModel.Paragraph pa = CurrentSection.AddParagraph();
-            pa.AddFormattedText(t.FullCaption, "TableCaption");
+            pa.AddFormattedText(t.GetFullCaption(style), "TableCaption");
 
             CurrentSection.Add(table);
         }
@@ -145,7 +134,7 @@ namespace OxyPlot.Pdf
             WriteEndFigure(i, p);
         }
 
-        public void WriteDrawing(Drawing d)
+        public void WriteDrawing(DrawingFigure d)
         {
             MigraDoc.DocumentObjectModel.Paragraph p = WriteStartFigure(d);
             CurrentSection.AddParagraph("Drawings are not implemented.");
@@ -169,7 +158,7 @@ namespace OxyPlot.Pdf
 
         public virtual void Close()
         {
-            var r = new PdfDocumentRenderer {Document = doc};
+            var r = new PdfDocumentRenderer { Document = doc };
             r.RenderDocument();
             r.PdfDocument.Save(filename);
         }
@@ -177,67 +166,55 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Defines the styles used in the document.
         /// </summary>
-        public static void DefineStyles(Document document)
+        public static void DefineStyles(Document document, ReportStyle reportStyle)
         {
-            // Get the predefined style Normal.
-            Style style = document.Styles["Normal"];
-            // Because all styles are derived from Normal, the next line changes the 
-            // font of the whole document. Or, more exactly, it changes the font of
-            // all styles and paragraphs that do not redefine the font.
-            style.Font.Name = "Arial";
+            SetStyle(document.Styles["Normal"], reportStyle.BodyTextStyle);
 
             // Heading1 to Heading9 are predefined styles with an outline level. An outline level
             // other than OutlineLevel.BodyText automatically creates the outline (or bookmarks) 
             // in PDF.
 
-            style = document.Styles["Heading1"];
-            style.Font.Name = "Tahoma";
-            style.Font.Size = 14;
-            style.Font.Bold = true;
-            style.Font.Color = Colors.DarkBlue;
-            style.ParagraphFormat.PageBreakBefore = true;
-            style.ParagraphFormat.SpaceAfter = 6;
+            for (int i = 0; i < reportStyle.HeaderStyles.Length; i++)
+                SetStyle(document.Styles["Heading" + (i + 1)], reportStyle.HeaderStyles[i]);
 
-            style = document.Styles["Heading2"];
-            style.Font.Size = 12;
-            style.Font.Bold = true;
-            style.ParagraphFormat.PageBreakBefore = false;
-            style.ParagraphFormat.SpaceBefore = 6;
-            style.ParagraphFormat.SpaceAfter = 6;
+            //style = document.Styles[StyleNames.Header];
+            //style.ParagraphFormat.AddTabStop("16cm", TabAlignment.Right);
 
-            style = document.Styles["Heading3"];
-            style.Font.Size = 10;
-            style.Font.Bold = true;
-            style.Font.Italic = true;
-            style.ParagraphFormat.SpaceBefore = 6;
-            style.ParagraphFormat.SpaceAfter = 3;
+            //style = document.Styles[StyleNames.Footer];
+            //style.ParagraphFormat.AddTabStop("8cm", TabAlignment.Center);
 
-            style = document.Styles[StyleNames.Header];
-            style.ParagraphFormat.AddTabStop("16cm", TabAlignment.Right);
-
-            style = document.Styles[StyleNames.Footer];
-            style.ParagraphFormat.AddTabStop("8cm", TabAlignment.Center);
-
-            // Create a new style called TextBox based on style Normal
-            style = document.Styles.AddStyle("TextBox", "Normal");
-            style.ParagraphFormat.Alignment = ParagraphAlignment.Justify;
-            style.ParagraphFormat.Borders.Width = 2.5;
-            style.ParagraphFormat.Borders.Distance = "3pt";
-            style.ParagraphFormat.Shading.Color = Colors.SkyBlue;
-
-            // Create a new style called TOC based on style Normal
-            style = document.Styles.AddStyle("TOC", "Normal");
-            style.ParagraphFormat.AddTabStop("16cm", TabAlignment.Right, TabLeader.Dots);
-            style.ParagraphFormat.Font.Color = Colors.Blue;
-
-            style = document.Styles.AddStyle("TableHeader", "Normal");
-            style.Font.Bold = true;
+            var style = document.Styles.AddStyle("TableHeader", "Normal");
+            SetStyle(style, reportStyle.TableHeaderStyle);
 
             style = document.Styles.AddStyle("TableCaption", "Normal");
-            style.Font.Italic = true;
+            SetStyle(style, reportStyle.TableCaptionStyle);
 
-            style = document.Styles.AddStyle("FigureCaption", "Normal");
-            style.Font.Italic = true;
+            style = document.Styles.AddStyle("TableText", "Normal");
+            SetStyle(style, reportStyle.TableTextStyle);
+
+            style = document.Styles.AddStyle("FigureText", "Normal");
+            SetStyle(style, reportStyle.FigureTextStyle);
+
+        }
+
+        private static void SetStyle(Style style, ParagraphStyle ps)
+        {
+            style.Font.Name = ps.FontFamily;
+            style.Font.Size = Unit.FromPoint(ps.FontSize);
+            style.Font.Bold = ps.Bold;
+            style.Font.Italic = ps.Italic;
+            style.Font.Color = ToMigraDocColor(ps.TextColor);
+            style.ParagraphFormat.PageBreakBefore = ps.PageBreakBefore;
+            style.ParagraphFormat.LeftIndent = Unit.FromPoint(ps.LeftIndentation);
+            style.ParagraphFormat.RightIndent = Unit.FromPoint(ps.RightIndentation);
+            style.ParagraphFormat.LineSpacing = Unit.FromPoint(ps.LineSpacing);
+            style.ParagraphFormat.SpaceBefore = Unit.FromPoint(ps.SpacingBefore);
+            style.ParagraphFormat.SpaceAfter = Unit.FromPoint(ps.SpacingAfter);
+        }
+
+        private static Color ToMigraDocColor(OxyColor c)
+        {
+            return new Color(c.A, c.R, c.G, c.B);
         }
 
         public MigraDoc.DocumentObjectModel.Paragraph WriteStartFigure(Figure f)
@@ -248,7 +225,7 @@ namespace OxyPlot.Pdf
         public void WriteEndFigure(Figure f, MigraDoc.DocumentObjectModel.Paragraph pa)
         {
             pa.AddLineBreak();
-            pa.AddFormattedText(f.FullCaption, "FigureCaption");
+            pa.AddFormattedText(f.GetFullCaption(style), "FigureText");
         }
     }
 }

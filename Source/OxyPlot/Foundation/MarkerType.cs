@@ -9,6 +9,7 @@
         Triangle, 
         Cross, 
         Plus, 
-        Star
+        Star,
+        Custom
     }
 }

@@ -9,7 +9,7 @@
         {
         }
 
-        public PieSlice(string label, double value, OxyColor fill)
+        public PieSlice(string label, double value, OxyColor fill = null)
         {
             Label = label;
             Value = value;

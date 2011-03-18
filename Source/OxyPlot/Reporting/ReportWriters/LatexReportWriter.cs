@@ -69,6 +69,11 @@ namespace OxyPlot.Reporting
 
         #region IReportWriter Members
 
+        public void WriteReport(Report report, ReportStyle style)
+        {
+            report.Write(this);
+        }
+
         public void WriteHeader(Header h)
         {
             if (h.Text == null)
@@ -111,9 +116,8 @@ namespace OxyPlot.Reporting
         {
             WriteIndentedLine(@"\begin{table}[h]");
             Indent();
-            var cells = t.ToArray();
-            int rows = cells.GetUpperBound(0) + 1;
-            int columns = cells.GetUpperBound(1) + 1;
+            int rows = t.Rows.Count;
+            int columns = t.Columns.Count;
             string cols = "|";
 
             foreach (var t1 in t.Columns)
@@ -127,12 +131,13 @@ namespace OxyPlot.Reporting
             WriteIndentedLine(@"\begin{tabular}[h]{" + cols + "}");
             Indent();
             WriteIndentedLine(@"\hline");
-            for (int i = 0; i < rows; i++)
+            foreach (var row in t.Rows)
             {
                 WriteIndent();
                 for (int j = 0; j < columns; j++)
                 {
-                    string text = LatexEncodeText(cells[i, j]);
+                    var cell = row.Cells[j];
+                    string text = LatexEncodeText(cell.Content);
                     Write(text);
                     if (j < columns - 1)
                         Write(" & ");
@@ -180,7 +185,7 @@ namespace OxyPlot.Reporting
             WriteLine();
         }
 
-        public void WriteDrawing(Drawing d)
+        public void WriteDrawing(DrawingFigure d)
         {
         }
 

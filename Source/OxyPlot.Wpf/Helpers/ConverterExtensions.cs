@@ -31,6 +31,11 @@ namespace OxyPlot.Wpf
             return OxyConvert.ToBrush(c);
         }
 
+        public static Rect ToRect(this OxyRect r)
+        {
+            return OxyConvert.ToRect(r);
+        }
+
         public static double DistanceTo(this Point p1, Point p2)
         {
             double dx = p1.X - p2.X;

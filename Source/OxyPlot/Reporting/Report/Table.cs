@@ -1,95 +1,134 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OxyPlot.Reporting
 {
+    public class TableColumn
+    {
+        /// <summary>
+        /// Gets or sets the width.
+        /// NaN: auto width.
+        /// Negative numbers: weights
+        /// </summary>
+        /// <value>The width.</value>
+        public double Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets the actual width (mm).
+        /// </summary>
+        /// <value>The actual width.</value>
+        public double ActualWidth { get; internal set; }
+
+        public Alignment Alignment { get; set; }
+
+        public bool IsHeader { get; set; }
+
+        public TableColumn()
+        {
+            Width = double.NaN;
+            Alignment = Reporting.Alignment.Center;
+        }
+    }
+
+    public class TableRow
+    {
+        public IList<TableCell> Cells { get; private set; }
+        public bool IsHeader { get; set; }
+
+        public TableRow()
+        {
+            Cells = new List<TableCell>();
+        }
+    }
+
+    public class TableCell
+    {
+        // public Alignment Alignment { get; set; }
+        // public int RowSpan { get; set; }
+        // public int ColumnSpan { get; set; }
+        public string Content { get; set; }
+    }
+
     public class Table : ReportItem
     {
-        private const string CaptionFormatString = "Table {0}. {1}";
+        public IList<TableRow> Rows { get; private set; }
+     
+        public IList<TableColumn> Columns { get; private set; }
 
-        public IList<TableColumn> Columns { get; set; }
+        /// <summary>
+        /// Gets or sets the width of the table (mm).
+        /// NaN: auto width.
+        /// 0..-1: fraction of page width.
+        /// </summary>
+        public double Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets the actual width of the table (mm).
+        /// </summary>
+        /// <value>The actual width.</value>
+        public double ActualWidth { get; private set; }
+
         public string Caption { get; set; }
-        public IEnumerable Items { get; set; }
-        public bool ItemsInColumns { get; set; }
+        public int TableNumber { get; set; }
 
-        public int TableNumber { get; set;}
-
-        public string FullCaption
+        public string GetFullCaption(ReportStyle style)
         {
-            get { return String.Format(CaptionFormatString, TableNumber, Caption); }
+            return String.Format(style.TableCaptionFormatString, TableNumber, Caption);
         }
 
         public Table()
         {
+            Rows = new List<TableRow>();
             Columns = new List<TableColumn>();
-            Class = "table";
-        }
-
-        public bool HasHeader()
-        {
-            foreach (var c in Columns)
-                if (c.Header != null) return true;
-            return false;
+            Width = double.NaN;
         }
 
         public override void Update()
         {
+            base.Update();
+            UpdateWidths();
         }
 
-        public override void WriteContent(IReportWriter w)
+        private void UpdateWidths()
         {
-            w.WriteTable(this);
-        }
 
-        public string[,] ToArray()
-        {
-            var hasHeader = false;
+            if (Width < 0)
+                ActualWidth = 150 * (-Width);
+            else
+                ActualWidth = Width;
+
+            // update actual widths of all columns
+            double totalWeight = 0;
+            double totalWidth = 0;
             foreach (var c in Columns)
-                if (c.Header != null) hasHeader = true;
-
-            var rows = Items.Cast<object>().ToList();
-            int nrows = rows.Count;
-            if (hasHeader) nrows++;
-            var result = new string[nrows,Columns.Count];
-
-
-            int row = 0;
-            if (hasHeader)
             {
-                for (int i = 0; i < Columns.Count; i++)
+                if (double.IsNaN(c.Width))
                 {
-                    var c = Columns[i];
-                    result[row, i] = c.Header;
+                    // todo: find auto width
+                    c.ActualWidth = 40;
+                    totalWidth += c.ActualWidth;
                 }
-                row++;
+                if (c.Width < 0)
+                {
+                    totalWeight += -c.Width;
+                }
+                if (c.Width >= 0)
+                {
+                    totalWidth += c.Width;
+                    c.ActualWidth = c.Width;
+                }
             }
-
-            foreach (var item in rows)
+            if (double.IsNaN(ActualWidth))
+                ActualWidth = Math.Max(150, totalWidth + 100);
+            double w = ActualWidth - totalWidth;
+            foreach (var c in Columns)
             {
-                for (int i = 0; i < Columns.Count; i++)
+                if (c.Width < 0 && totalWeight != 0)
                 {
-                    var c = Columns[i];
-                    var text = c.GetText(item);
-                    result[row, i] = text;
+                    double weight = -c.Width;
+                    c.ActualWidth = w * (weight / totalWeight);
                 }
-                row++;
             }
-            if (ItemsInColumns)
-                result = Transpose(result);
-            return result;
-        }
-
-        private static string[,] Transpose(string[,] input)
-        {
-            int rows = input.GetUpperBound(0) + 1;
-            int cols = input.GetUpperBound(1) + 1;
-            var result = new string[cols,rows];
-            for (int i = 0; i < rows; i++)
-                for (int j = 0; j < cols; j++)
-                    result[j, i] = input[i, j];
-            return result;
         }
     }
 }

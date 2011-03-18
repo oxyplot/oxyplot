@@ -7,7 +7,7 @@ using PdfSharp.Pdf;
 
 namespace OxyPlot.Pdf
 {
-    internal class PdfRenderContext : IRenderContext
+    internal class PdfRenderContext : RenderContextBase
     {
         private readonly PdfDocument doc;
         private readonly XGraphics g;
@@ -27,16 +27,7 @@ namespace OxyPlot.Pdf
 
         #region IRenderContext Members
 
-        public double Width { get; private set; }
-        public double Height { get; private set; }
-
-        public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
-        {
-            for (int i = 0; i + 1 < points.Count; i += 2)
-                DrawLine(new[] { points[i], points[i + 1] }, stroke, thickness, dashArray, lineJoin, aliased);
-        }
-
-        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+        public override void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
                              OxyPenLineJoin lineJoin, bool aliased)
         {
             if (stroke == null || thickness <= 0)
@@ -62,7 +53,7 @@ namespace OxyPlot.Pdf
             g.DrawLines(pen, ToPoints(points));
         }
 
-        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
+        public override void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
                                 double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             g.SmoothingMode = aliased ? XSmoothingMode.None : XSmoothingMode.HighQuality;
@@ -93,9 +84,8 @@ namespace OxyPlot.Pdf
                 g.DrawPolygon(pen, pts);
             }
         }
-
-
-        public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
+      
+        public override void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
                              double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
         {
             if (text == null)
@@ -140,7 +130,7 @@ namespace OxyPlot.Pdf
             g.Restore(state);
         }
 
-        public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (text == null)
                 return OxySize.Empty;
@@ -152,27 +142,27 @@ namespace OxyPlot.Pdf
             return new OxySize(size.Width, size.Height);
         }
 
-        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             if (fill != null)
-                g.DrawRectangle(ToBrush(fill), x, y, width, height);
+                g.DrawRectangle(ToBrush(fill), rect.Left, rect.Top, rect.Width, rect.Height);
 
             if (stroke != null && thickness > 0)
             {
                 var pen = new XPen(ToColor(stroke), (float)thickness);
-                g.DrawRectangle(pen, x, y, width, height);
+                g.DrawRectangle(pen, rect.Left, rect.Top, rect.Width, rect.Height);
             }
         }
 
-        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             if (fill != null)
-                g.DrawEllipse(ToBrush(fill), x, y, width, height);
+                g.DrawEllipse(ToBrush(fill), rect.Left, rect.Top, rect.Width, rect.Height);
 
             if (stroke != null && thickness > 0)
             {
                 var pen = new XPen(ToColor(stroke), (float)thickness);
-                g.DrawEllipse(pen, x, y, width, height);
+                g.DrawEllipse(pen, rect.Left, rect.Top, rect.Width, rect.Height);
             }
         }
 

@@ -108,6 +108,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\OxyPlot.OpenXml\OxyPlot.OpenXml.csproj">
+      <Project>{BB4FA452-A96A-4C47-AA65-7E88F6FAE873}</Project>
+      <Name>OxyPlot.OpenXml</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\OxyPlot.Pdf\OxyPlot.Pdf.csproj">
       <Project>{12737C3F-5770-403F-90A1-BC12EBD1BB31}</Project>
       <Name>OxyPlot.Pdf</Name>

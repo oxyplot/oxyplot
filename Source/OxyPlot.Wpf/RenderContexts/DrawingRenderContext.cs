@@ -9,7 +9,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Implementation of IRenderContext to a DrawingContext
     /// </summary>
-    public class DrawingRenderContext : IRenderContext
+/*    public class DrawingRenderContext : IRenderContext
     {
         private readonly DrawingContext dc;
 
@@ -111,6 +111,12 @@ namespace OxyPlot.Wpf
 
             dc.DrawGeometry(brush, pen, g);
         }
+        
+        public void DrawPolygons(IEnumerable<IEnumerable<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        {
+            foreach (var polygon in polygons)
+                DrawPolygon(polygon, fill, stroke, thickness, dashArray, lineJoin, aliased);
+        }
 
         public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
                                   double thickness)
@@ -203,5 +209,5 @@ namespace OxyPlot.Wpf
 
             return new OxySize(ft.Width, ft.Height);
         }
-    }
+    }*/
 }

@@ -4,56 +4,49 @@ using System.IO;
 
 namespace OxyPlot
 {
-    public class SvgRenderContext : SvgWriter, IRenderContext
+    public class SvgRenderContext : RenderContextBase, IDisposable
     {
+        private SvgWriter w;
+
         public SvgRenderContext(Stream s, double width, double height, bool isDocument)
-            : base(s, width, height, isDocument)
         {
+            w = new SvgWriter(s, width, height, isDocument);
             this.Width = width;
             this.Height = height;
         }
 
         public SvgRenderContext(string path, double width, double height)
-            : base(path, width, height)
         {
+            w = new SvgWriter(path, width, height);
             this.Width = width;
             this.Height = height;
         }
 
-        public double Width { get; private set; }
-
-        public double Height { get; private set; }
-
-        public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public override void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
-            for (int i = 0; i + 1 < points.Count; i+=2)
-                DrawLine(new[] { points[i], points[i + 1] }, stroke, thickness, dashArray, lineJoin, aliased);
+            w.WritePolyline(points, w.CreateStyle(null, stroke, thickness, dashArray, lineJoin));
         }
 
-        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public override void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
-            WritePolyline(points, CreateStyle(null, stroke, thickness, dashArray, lineJoin));
+            w.WritePolygon(points, w.CreateStyle(fill, stroke, thickness, dashArray, lineJoin));
         }
 
-        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            WritePolygon(points, CreateStyle(fill, stroke, thickness, dashArray, lineJoin));
+            w.WriteEllipse(rect.Left, rect.Top, rect.Width, rect.Height, w.CreateStyle(fill, stroke, thickness, null));
         }
 
-        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            WriteEllipse(x, y, width, height, CreateStyle(fill, stroke, thickness, null));
+            w.WriteRectangle(rect.Left, rect.Top, rect.Width, rect.Height, w.CreateStyle(fill, stroke, thickness, null));
         }
-        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke, double thickness)
+        public override void DrawText(ScreenPoint p, string text, OxyColor c, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
         {
-            WriteRectangle(x, y, width, height, CreateStyle(fill, stroke, thickness, null));
-        }
-        public void DrawText(ScreenPoint p, string text, OxyColor c, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
-        {
-            WriteText(p, text, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
+            w.WriteText(p, text, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
         }
 
-        public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (String.IsNullOrEmpty(text))
                 return OxySize.Empty;
@@ -65,5 +58,24 @@ namespace OxyPlot
         }
 
 
+        public void Complete()
+        {
+            w.Complete();
+        }
+
+        public void Flush()
+        {
+            w.Flush();
+        }
+
+        public void Close()
+        {
+            w.Close();
+        }
+
+        public void Dispose()
+        {
+            w.Dispose();
+        }
     }
 }

@@ -38,6 +38,8 @@ namespace OxyPlot
             InsideLabelPosition = 0.5;
         }
 
+        public string Title { get; set; }
+
         /// <summary>
         ///   Gets or sets the items source.
         /// </summary>
@@ -77,9 +79,9 @@ namespace OxyPlot
             set { slices = value; }
         }
 
-        #region ISeries Members
-
         public OxyColor Background { get; set; }
+
+        #region ISeries Members
 
         public void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
@@ -101,7 +103,7 @@ namespace OxyPlot
             PropertyInfo pie = null;
             Type t = null;
 
-            foreach (var o in ItemsSource)
+            foreach (object o in ItemsSource)
             {
                 if (pil == null || o.GetType() != t)
                 {
@@ -165,7 +167,12 @@ namespace OxyPlot
             return false;
         }
 
-        public string Title { get; set; }
+        public void SetDefaultValues(PlotModel model)
+        {
+            foreach (var slice in Slices)
+                if (slice.Fill == null)
+                    slice.Fill = model.GetDefaultColor();
+        }
 
         public void Render(IRenderContext rc, PlotModel model)
         {
@@ -187,7 +194,7 @@ namespace OxyPlot
             double innerRadius = radius*InnerDiameter;
 
             double angle = StartAngle;
-            foreach (var slice in slices)
+            foreach (PieSlice slice in slices)
             {
                 var outerPoints = new List<ScreenPoint>();
                 var innerPoints = new List<ScreenPoint>();
@@ -198,7 +205,7 @@ namespace OxyPlot
 
                 double midAngle = angle + sliceAngle/2;
                 double midAngleRadians = midAngle*Math.PI/180;
-                var mp = new ScreenPoint(model.MidPoint.X + explodedRadius*Math.Cos(midAngleRadians), 
+                var mp = new ScreenPoint(model.MidPoint.X + explodedRadius*Math.Cos(midAngleRadians),
                                          model.MidPoint.Y + explodedRadius*Math.Sin(midAngleRadians));
 
                 // Create the pie sector points for both outside and inside arcs
@@ -212,10 +219,10 @@ namespace OxyPlot
                     }
 
                     double a = angle*Math.PI/180;
-                    var op = new ScreenPoint(mp.X + outerRadius*Math.Cos(a), 
+                    var op = new ScreenPoint(mp.X + outerRadius*Math.Cos(a),
                                              mp.Y + outerRadius*Math.Sin(a));
                     outerPoints.Add(op);
-                    var ip = new ScreenPoint(mp.X + innerRadius*Math.Cos(a), 
+                    var ip = new ScreenPoint(mp.X + innerRadius*Math.Cos(a),
                                              mp.Y + innerRadius*Math.Sin(a));
                     if (innerRadius + explodedRadius > 0)
                     {
@@ -239,7 +246,7 @@ namespace OxyPlot
 
                 innerPoints.Add(outerPoints[0]);
 
-                var points = outerPoints;
+                List<ScreenPoint> points = outerPoints;
                 points.AddRange(innerPoints);
 
                 rc.DrawPolygon(points, slice.Fill, Stroke, StrokeThickness, null, OxyPenLineJoin.Bevel);
@@ -248,20 +255,20 @@ namespace OxyPlot
                 if (OutsideLabelFormat != null)
                 {
                     string label = String.Format(OutsideLabelFormat, slice.Value, slice.Label, slice.Value/total*100);
-                    var sign = Math.Sign(Math.Cos(midAngleRadians));
+                    int sign = Math.Sign(Math.Cos(midAngleRadians));
 
                     // tick points
-                    var tp0 = new ScreenPoint(mp.X + (outerRadius + TickDistance)*Math.Cos(midAngleRadians), 
+                    var tp0 = new ScreenPoint(mp.X + (outerRadius + TickDistance)*Math.Cos(midAngleRadians),
                                               mp.Y + (outerRadius + TickDistance)*Math.Sin(midAngleRadians));
-                    var tp1 = new ScreenPoint(tp0.X + TickRadialLength*Math.Cos(midAngleRadians), 
+                    var tp1 = new ScreenPoint(tp0.X + TickRadialLength*Math.Cos(midAngleRadians),
                                               tp0.Y + TickRadialLength*Math.Sin(midAngleRadians));
                     var tp2 = new ScreenPoint(tp1.X + TickHorizontalLength*sign, tp1.Y);
                     rc.DrawLine(new[] {tp0, tp1, tp2}, Stroke, StrokeThickness, null, OxyPenLineJoin.Bevel);
 
                     // label
                     var labelPosition = new ScreenPoint(tp2.X + TickLabelDistance*sign, tp2.Y);
-                    rc.DrawText(labelPosition, label, model.TextColor, model.LegendFont, model.LegendFontSize, 500, 0, 
-                                sign > 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right, 
+                    rc.DrawText(labelPosition, label, model.TextColor, model.LegendFont, model.LegendFontSize, 500, 0,
+                                sign > 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right,
                                 VerticalTextAlign.Middle);
                 }
 
@@ -270,7 +277,7 @@ namespace OxyPlot
                 {
                     string label = String.Format(InsideLabelFormat, slice.Value, slice.Label, slice.Value/total*100);
                     double r = innerRadius*(1 - InsideLabelPosition) + outerRadius*InsideLabelPosition;
-                    var labelPosition = new ScreenPoint(mp.X + r*Math.Cos(midAngleRadians), 
+                    var labelPosition = new ScreenPoint(mp.X + r*Math.Cos(midAngleRadians),
                                                         mp.Y + r*Math.Sin(midAngleRadians));
                     double textAngle = 0;
                     if (AreInsideLabelsAngled)
@@ -282,7 +289,7 @@ namespace OxyPlot
                         }
                     }
 
-                    rc.DrawText(labelPosition, label, model.TextColor, model.LegendFont, model.LegendFontSize, 500, 
+                    rc.DrawText(labelPosition, label, model.TextColor, model.LegendFont, model.LegendFontSize, 500,
                                 textAngle, HorizontalTextAlign.Center, VerticalTextAlign.Middle);
                 }
             }

@@ -68,5 +68,11 @@ namespace OxyPlot
         /// <param name="sp">The nearest point (in screen coordinates).</param>
         /// <returns>true if a point was found.</returns>
         bool GetNearestPoint(ScreenPoint pt, out DataPoint dp, out ScreenPoint sp);
+
+        /// <summary>
+        /// Sets default values from the plotmodel.
+        /// </summary>
+        void SetDefaultValues(PlotModel model);
     }
+
 }

@@ -6,9 +6,6 @@ namespace OxyPlot.Reporting
 {
     public abstract class ReportItem
     {
-        public string Class { get; set; }
-        public string ID { get; set; }
-
         public Collection<ReportItem> Children { get; private set; }
 
         protected ReportItem()
@@ -48,17 +45,17 @@ namespace OxyPlot.Reporting
         protected void UpdateFigureNumbers()
         {
             var fc = new FigureCounter();
-            UpdateFigureNumbers(fc);    
+            UpdateFigureNumbers(fc);
         }
 
         private void UpdateFigureNumbers(FigureCounter fc)
         {
             var table = this as Table;
-            if (table!=null)
+            if (table != null)
             {
                 table.TableNumber = fc.TableNumber++;
             }
-            
+
             var figure = this as Figure;
             if (figure != null)
             {
@@ -93,17 +90,19 @@ namespace OxyPlot.Reporting
             Add(new Equation { Content = equation, Caption = caption });
         }
 
-        public void AddTable(string title, IEnumerable items, IList<TableColumn> fields)
+        public void AddItemsTable(string title, IEnumerable items, IList<ItemsTableField> fields)
         {
-            Add(new Table { Caption = title, Items = items, Columns = fields });
+            Add(new ItemsTable { Caption = title, Items = items, Fields = fields });
         }
 
-        public void AddPropertyTable(string title, object obj)
+        public PropertyTable AddPropertyTable(string title, object obj)
         {
             var items = obj as IEnumerable;
-            if (items==null)
-                items = new[] {obj};
-            Add(new PropertyTable { Caption = title, Items = items});
+            if (items == null)
+                items = new[] { obj };
+            var pt = new PropertyTable(items, false) { Caption = title };
+            Add(pt);
+            return pt;
         }
 
         public void AddImage(string src, string text)
@@ -113,7 +112,7 @@ namespace OxyPlot.Reporting
 
         public void AddDrawing(string content, string text)
         {
-            Add(new Drawing { Content = content, FigureText = text });
+            Add(new DrawingFigure { Content = content, FigureText = text });
         }
     }
 }

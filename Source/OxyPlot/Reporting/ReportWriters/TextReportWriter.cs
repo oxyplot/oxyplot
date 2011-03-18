@@ -30,6 +30,11 @@ namespace OxyPlot.Reporting
 
         #region IReportWriter Members
 
+        public void WriteReport(Report report, ReportStyle style)
+        {
+            report.Write(this);
+        }
+
         public void WriteHeader(Header h)
         {
             if (h.Text == null)
@@ -56,30 +61,30 @@ namespace OxyPlot.Reporting
             tableCounter++;
             WriteLine(String.Format("Table {0}. {1}", tableCounter, t.Caption));
             WriteLine();
-            var cells = t.ToArray();
-            int rows = cells.GetUpperBound(0) + 1;
-            int cols = cells.GetUpperBound(1) + 1;
+            int rows = t.Rows.Count;
+            int cols = t.Columns.Count;
 
             var columnWidth = new int[cols];
             int totalLength = 0;
             for (int j = 0; j < cols; j++)
             {
                 columnWidth[j] = 0;
-                for (int i = 0; i < rows; i++)
+                foreach (var tr in t.Rows)
                 {
-                    string text = cells[i, j];
+                    var cell = tr.Cells[j];
+                    string text = cell.Content;
                     columnWidth[j] = Math.Max(columnWidth[j], text != null ? text.Length : 0);
                 }
                 totalLength += columnWidth[j];
             }
             // WriteLine("-".Repeat(totalLength));
-            for (int i = 0; i < rows; i++)
+            foreach (var tr in t.Rows)
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    string text = cells[i, j];
-                    Write(GetCellText(j, cols, PadString(text, Alignment.Left,
-                                                      columnWidth[j])));
+                    var cell = tr.Cells[j];
+                    string text = cell.Content;
+                    Write(GetCellText(j, cols, PadString(text, t.Columns[j].Alignment, columnWidth[j])));
                 }
                 WriteLine();
             }
@@ -90,7 +95,7 @@ namespace OxyPlot.Reporting
         {
         }
 
-        public void WriteDrawing(Drawing d)
+        public void WriteDrawing(DrawingFigure d)
         {
         }
 

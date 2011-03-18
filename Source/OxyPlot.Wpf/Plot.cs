@@ -47,9 +47,9 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("Title", typeof(string), typeof(Plot),
                                         new UIPropertyMetadata(null, VisualChanged));
 
-        public static readonly DependencyProperty RenderAsShapesProperty =
-            DependencyProperty.Register("RenderAsShapes", typeof(bool), typeof(Plot),
-                                        new UIPropertyMetadata(true, RenderAsShapesChanged));
+        //public static readonly DependencyProperty RenderAsShapesProperty =
+        //    DependencyProperty.Register("RenderAsShapes", typeof(bool), typeof(Plot),
+        //                                new UIPropertyMetadata(true, RenderAsShapesChanged));
 
         public static readonly DependencyProperty TrackerTemplateProperty =
             DependencyProperty.Register("TrackerTemplate", typeof(DataTemplate), typeof(Plot),
@@ -82,8 +82,8 @@ namespace OxyPlot.Wpf
         private ScreenPoint mouseDownPoint;
         private Canvas overlays;
 
-        private PlotFrame plotAliasedFrame;
-        private PlotFrame plotFrame;
+        // private PlotFrame plotAliasedFrame;
+        // private PlotFrame plotFrame;
         private Tracker tracker;
 
         private ContentControl zoomControl;
@@ -158,11 +158,11 @@ namespace OxyPlot.Wpf
             set { SetValue(TrackerTemplateProperty, value); }
         }
 
-        public bool RenderAsShapes
-        {
-            get { return (bool)GetValue(RenderAsShapesProperty); }
-            set { SetValue(RenderAsShapesProperty, value); }
-        }
+        //public bool RenderAsShapes
+        //{
+        //    get { return (bool)GetValue(RenderAsShapesProperty); }
+        //    set { SetValue(RenderAsShapesProperty, value); }
+        //}
 
         public Thickness? PlotMargins
         {
@@ -287,19 +287,19 @@ namespace OxyPlot.Wpf
             tracker.Hide();
         }
 
-        public void Pan(IAxis axis, double x0,double x1)
+        public void Pan(IAxis axis, double x0, double x1)
         {
             if (Model == null)
             {
                 var a = FindModelAxis(axis);
                 if (a != null)
                 {
-                    a.Pan(x0,x1);
+                    a.Pan(x0, x1);
                 }
             }
 
             // Modify min/max of the PlotModel's axis
-            axis.Pan(x0,x1);
+            axis.Pan(x0, x1);
         }
 
         public void Reset(IAxis axis)
@@ -511,8 +511,8 @@ namespace OxyPlot.Wpf
             }
             if (e.Key == Key.R && control)
             {
-                if (internalModel!=null)
-                    Clipboard.SetText(internalModel.CreateTextReport());   
+                if (internalModel != null)
+                    Clipboard.SetText(internalModel.CreateTextReport());
             }
 
             base.OnKeyDown(e);
@@ -538,7 +538,10 @@ namespace OxyPlot.Wpf
                 return;
             }
 
-            OnRenderAsShapesChanged();
+            //OnRenderAsShapesChanged();
+            canvas = new Canvas();
+            grid.Children.Add(canvas);
+            canvas.UpdateLayout();
 
             // Overlays
             overlays = new Canvas();
@@ -552,55 +555,55 @@ namespace OxyPlot.Wpf
             overlays.Children.Add(zoomControl);
         }
 
-        private static void RenderAsShapesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((Plot)d).OnRenderAsShapesChanged();
-        }
+        //private static void RenderAsShapesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    ((Plot)d).OnRenderAsShapesChanged();
+        //}
 
-        private void OnRenderAsShapesChanged()
-        {
-            if (grid == null)
-            {
-                return;
-            }
+        //private void OnRenderAsShapesChanged()
+        //{
+        //    if (grid == null)
+        //    {
+        //        return;
+        //    }
 
-            if (RenderAsShapes)
-            {
-                if (canvas == null)
-                {
-                    canvas = new Canvas();
-                    grid.Children.Insert(0, canvas);
-                    canvas.UpdateLayout();
-                }
+        //    if (RenderAsShapes)
+        //    {
+        //        if (canvas == null)
+        //        {
+        //            canvas = new Canvas();
+        //            grid.Children.Insert(0, canvas);
+        //            canvas.UpdateLayout();
+        //        }
 
-                if (plotFrame != null)
-                {
-                    grid.Children.Remove(plotAliasedFrame);
-                    // grid.Children.Remove(plotAliasedFrame);
-                    //  plotAliasedFrame = null;
-                }
-            }
-            else
-            {
-                if (plotFrame == null)
-                {
-                    plotAliasedFrame = new PlotFrame(true);
-                    plotFrame = new PlotFrame(false);
-                    grid.Children.Insert(0, plotAliasedFrame);
-                    grid.Children.Insert(1, plotFrame);
-                    plotFrame.UpdateLayout();
-                    plotAliasedFrame.UpdateLayout();
-                }
+        //        if (plotFrame != null)
+        //        {
+        //            grid.Children.Remove(plotAliasedFrame);
+        //            // grid.Children.Remove(plotAliasedFrame);
+        //            //  plotAliasedFrame = null;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (plotFrame == null)
+        //        {
+        //            plotAliasedFrame = new PlotFrame(true);
+        //            plotFrame = new PlotFrame(false);
+        //            grid.Children.Insert(0, plotAliasedFrame);
+        //            grid.Children.Insert(1, plotFrame);
+        //            plotFrame.UpdateLayout();
+        //            plotAliasedFrame.UpdateLayout();
+        //        }
 
-                if (canvas != null)
-                {
-                    grid.Children.Remove(canvas);
-                    canvas = null;
-                }
-            }
+        //        if (canvas != null)
+        //        {
+        //            grid.Children.Remove(canvas);
+        //            canvas = null;
+        //        }
+        //    }
 
-            UpdateVisuals();
-        }
+        //    UpdateVisuals();
+        //}
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -734,13 +737,14 @@ namespace OxyPlot.Wpf
                 grid.Children.Insert(idx, canvas);
             }
 
-            if (plotFrame != null)
-            {
-                plotFrame.Model = internalModel;
-                plotAliasedFrame.Model = internalModel;
-                plotFrame.InvalidateVisual();
-                plotAliasedFrame.InvalidateVisual();
-            }
+            // !RenderasShapes
+            //if (plotFrame != null)
+            //{
+            //    plotFrame.Model = internalModel;
+            //    plotAliasedFrame.Model = internalModel;
+            //    plotFrame.InvalidateVisual();
+            //    plotAliasedFrame.InvalidateVisual();
+            //}
         }
 
         public void SaveBitmap(string fileName)

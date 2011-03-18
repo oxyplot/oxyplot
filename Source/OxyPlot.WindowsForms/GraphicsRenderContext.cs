@@ -6,40 +6,21 @@ using OxyPlot;
 
 namespace Oxyplot.WindowsForms
 {
-    internal class GraphicsRenderContext : IRenderContext
+    internal class GraphicsRenderContext : RenderContextBase
     {
         private readonly Graphics g;
         private const float FONTSIZE_FACTOR = 0.8f;
-        private readonly double width;
-        private readonly double height;
 
         public GraphicsRenderContext(Graphics graphics, double width, double height)
         {
-            this.width = width;
-            this.height = height;
+            this.Width = width;
+            this.Height = height;
             g = graphics;
         }
 
         #region IRenderContext Members
 
-        public double Width
-        {
-            get { return width; }
-        }
-
-        public double Height
-        {
-            get { return height; }
-        }
-
-        public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
-                                     OxyPenLineJoin lineJoin, bool aliased)
-        {
-            for (int i = 0; i + 1 < points.Count; i += 2)
-                DrawLine(new[] {points[i], points[i + 1]}, stroke, thickness, dashArray, lineJoin, aliased);
-        }
-
-        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+        public override void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
                              OxyPenLineJoin lineJoin, bool aliased)
         {
             if (stroke == null || thickness <= 0)
@@ -63,7 +44,7 @@ namespace Oxyplot.WindowsForms
             g.DrawLines(pen, ToPoints(points));
         }
 
-        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
+        public override void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
                                 double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
@@ -93,8 +74,8 @@ namespace Oxyplot.WindowsForms
                 g.DrawPolygon(pen, pts);
             }
         }
-
-        public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
+               
+        public override void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
                              double fontWeight,
                              double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
         {
@@ -143,7 +124,7 @@ namespace Oxyplot.WindowsForms
             g.ResetTransform();
         }
 
-        public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (text == null)
                 return OxySize.Empty;
@@ -156,26 +137,26 @@ namespace Oxyplot.WindowsForms
             return new OxySize(size.Width, size.Height);
         }
 
-        public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
+        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke,
                                   double thickness)
         {
             if (fill != null)
-                g.FillRectangle(ToBrush(fill), (float) x, (float) y, (float) width, (float) height);
+                g.FillRectangle(ToBrush(fill), (float) rect.Left, (float) rect.Top, (float) rect.Width, (float) rect.Height);
             if (stroke == null || thickness <= 0)
                 return;
             var pen = new Pen(ToColor(stroke), (float) thickness);
-            g.DrawRectangle(pen, (float) x, (float) y, (float) width, (float) height);
+            g.DrawRectangle(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
         }
 
-        public void DrawEllipse(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
+        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke,
                                 double thickness)
         {
             if (fill != null)
-                g.FillEllipse(ToBrush(fill), (float) x, (float) y, (float) width, (float) height);
+                g.FillEllipse(ToBrush(fill), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
             if (stroke == null || thickness <= 0)
                 return;
             var pen = new Pen(ToColor(stroke), (float) thickness);
-            g.DrawEllipse(pen, (float) x, (float) y, (float) width, (float) height);
+            g.DrawEllipse(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
         }
 
         #endregion

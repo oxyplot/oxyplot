@@ -204,7 +204,7 @@ namespace OxyPlot
             }
 
             // Draw the zero crossing line
-            if (axis.PositionAtZeroCrossing)
+            if (axis.PositionAtZeroCrossing && ZeroPen!=null)
             {
                 double t0 = axis.Transform(0);
                 if (isHorizontal)
@@ -218,7 +218,7 @@ namespace OxyPlot
             }
 
             // Draw extra grid lines
-            if (axis.ExtraGridlines != null)
+            if (axis.ExtraGridlines != null && ExtraPen!=null)
             {
                 foreach (double value in axis.ExtraGridlines)
                 {
@@ -297,12 +297,16 @@ namespace OxyPlot
             }
 
             // Draw all the line segments
-            rc.DrawLineSegments(minorSegments, MinorPen);
-            rc.DrawLineSegments(majorSegments, MajorPen);
-            rc.DrawLineSegments(minorTickSegments, MinorTickPen);
-            rc.DrawLineSegments(majorTickSegments, MajorTickPen);
+            if (MinorPen!=null)
+                rc.DrawLineSegments(minorSegments, MinorPen);
+            if (MajorPen!=null)
+                rc.DrawLineSegments(majorSegments, MajorPen);
+            if (MinorTickPen!=null)
+                rc.DrawLineSegments(minorTickSegments, MinorTickPen);
+            if (MajorTickPen!=null)
+                rc.DrawLineSegments(majorTickSegments, MajorTickPen);
         }
-
+     
         /// <summary>
         /// Linear interpolation
         /// http://en.wikipedia.org/wiki/Linear_interpolation

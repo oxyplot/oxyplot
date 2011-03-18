@@ -30,6 +30,10 @@ namespace OxyPlot.Wpf
         {
             return new SolidColorBrush(c.ToColor());
         }
-       
+
+        public static Rect ToRect(OxyRect r)
+        {
+            return new Rect(r.Left,r.Top,r.Width,r.Height);
+        }
     }
 }

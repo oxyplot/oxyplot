@@ -14,11 +14,13 @@
                 <Separator/>
                 <MenuItem Header="Print..." Name="Print"/>
                 <Separator/>
+                <MenuItem Header="Save text report..." Name="SaveTextReport"/>
                 <MenuItem Header="Save html5 report..." Name="SaveHtmlReport"/>
                 <MenuItem Header="Save LaTeX report..." Name="SaveLatexReport"/>
                 <MenuItem Header="Save pdf report..." Name="SavePdfReport"/>
                 <MenuItem Header="Save rtf report..." Name="SaveRtfReport"/>
                 <MenuItem Header="Save xps report..." Name="SaveXpsReport"/>
+                <MenuItem Header="Save docx report..." Name="SaveDocxReport"/>
                 <Separator/>
                 <MenuItem Header="Exit" Name="Exit"/>
             </MenuItem>
@@ -26,9 +28,6 @@
                 <MenuItem Header="Copy svg" Name="CopySvg"/>
                 <MenuItem Header="Copy bitmap" Name="CopyBitmap"/>
                 <MenuItem Header="Copy xaml" Name="CopyXaml"/>
-            </MenuItem>
-            <MenuItem Header="View">
-                <p:EnumMenuItem Header="Render method" SelectedValue="{Binding RenderMethod}"/>
             </MenuItem>
             <p:EnumMenuItem x:Name="ModelMenu" Header="Model" SelectedValue="{Binding CurrentModel}"/>
             <MenuItem Header="Help">
@@ -47,8 +46,7 @@
             <oxy:Plot 
             x:Name="plot1" 
             Model="{Binding Model}" 
-            Background="White"
-            RenderAsShapes="{Binding RenderAsShapes}">
+            Background="White">
                 <oxy:Plot.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Copy svg" Name="ContextCopySvg"/>

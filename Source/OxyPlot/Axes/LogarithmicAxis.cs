@@ -13,15 +13,29 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "LogarithmicAxis" /> class.
+        /// Initializes a new instance of the <see cref="LogarithmicAxis"/> class.
         /// </summary>
-        /// <param name = "position">The position.</param>
-        /// <param name = "title">The title.</param>
-        public LogarithmicAxis(AxisPosition position, string title = null)
-            : this()
+        /// <param name="pos">The pos.</param>
+        /// <param name="title">The title.</param>
+        public LogarithmicAxis(AxisPosition pos, string title)
+        {
+            Position = pos;
+            Title = title;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogarithmicAxis"/> class.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="minimum">The minimum.</param>
+        /// <param name="maximum">The maximum.</param>
+        public LogarithmicAxis(AxisPosition position, double minimum = double.NaN, double maximum = double.NaN, string title = null)
         {
             Position = position;
             Title = title;
+            Minimum = minimum;
+            Maximum = maximum;
         }
 
         public override void GetTickValues(out ICollection<double> majorValues, out ICollection<double> minorValues)
@@ -118,7 +132,7 @@ namespace OxyPlot
             double dx0 = PreTransform(ActualMinimum) - px;
             double dx1 = PreTransform(ActualMaximum) - px;
             Minimum = PostInverseTransform(dx0 / factor + px);
-            Maximum = PostInverseTransform(dx1 / factor+ px);
+            Maximum = PostInverseTransform(dx1 / factor + px);
         }
     }
 }

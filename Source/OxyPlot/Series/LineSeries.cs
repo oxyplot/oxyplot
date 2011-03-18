@@ -82,6 +82,13 @@ namespace OxyPlot
         public MarkerType MarkerType { get; set; }
 
         /// <summary>
+        /// Gets or sets the marker outline polygon.
+        /// If this property is set, the MarkerType will not be used.
+        /// </summary>
+        /// <value>The marker outline.</value>
+        public ScreenPoint[] MarkerOutline { get; set; }
+
+        /// <summary>
         ///   Gets or sets the size of the marker.
         /// </summary>
         /// <value>The size of the marker.</value>
@@ -149,113 +156,12 @@ namespace OxyPlot
                                    : allPoints;
 
             // clip the line segments with the clipping rectangle
-            rc.DrawClippedLine(screenPoints, clippingRect, minDistSquared, Color, StrokeThickness, LineStyle, LineJoin);
-            rc.DrawMarkers(allPoints, clippingRect, MarkerType, MarkerSize, MarkerFill, MarkerStroke,
-                           MarkerStrokeThickness);
+            if (StrokeThickness>0 && LineStyle!=LineStyle.None)
+                rc.DrawClippedLine(screenPoints, clippingRect, minDistSquared, Color, StrokeThickness, LineStyle, LineJoin,false);
+            if (MarkerType!=MarkerType.None)
+                rc.DrawMarkers(allPoints, clippingRect, MarkerType, MarkerOutline, new[] { MarkerSize }, MarkerFill, MarkerStroke,
+                               MarkerStrokeThickness);
         }
-
-        //private void RenderClippedLine(IRenderContext rc, ScreenPoint[] points, CohenSutherlandClipping clipping, double minDistSquared)
-        //{
-        //    int n;
-        //    var pts = new List<ScreenPoint>();
-        //    n = points.Length;
-        //    if (n > 0)
-        //    {
-        //        var s0 = points[0];
-        //        var last = points[0];
-
-        //        for (int i = 1; i < n; i++)
-        //        {
-        //            var s1 = points[i];
-
-        //            // Clipped version of this and next point.
-
-        //            var s0c = s0;
-        //            var s1c = s1;
-        //            bool isInside = clipping.ClipLine(ref s0c, ref s1c);
-        //            s0 = s1;
-
-        //            if (!isInside)
-        //            {
-        //                // keep the previous coordinate
-        //                continue;
-        //            }
-
-        //            // render from s0c-s1c
-        //            double dx = s1c.x - last.x;
-        //            double dy = s1c.y - last.y;
-
-        //            if (dx * dx + dy * dy > minDistSquared || i == 1)
-        //            {
-        //                if (!s0c.Equals(last) || i == 1)
-        //                {
-        //                    pts.Add(s0c);
-        //                }
-
-        //                pts.Add(s1c);
-        //                last = s1c;
-        //            }
-
-        //            // render the line if we are leaving the clipping region););
-        //            if (!clipping.IsInside(s1))
-        //            {
-        //                RenderLine(rc, pts);
-        //                pts.Clear();
-        //            }
-        //        }
-        //        RenderLine(rc, pts);
-        //    }
-        //}
-
-        protected void RenderMarkers(IRenderContext rc, ScreenPoint[] markerPoints, CohenSutherlandClipping clipping)
-        {
-            // todo: Markers should be rendered to a DrawingContext for performance.
-            if (MarkerType != MarkerType.None)
-            {
-                var actualMarkerFill = MarkerFill;
-                var actualMarkerStroke = MarkerStroke;
-                if (actualMarkerStroke == null)
-                    actualMarkerStroke = Color;
-
-                foreach (var p in markerPoints)
-                {
-                    if (clipping.IsInside(p.x, p.y))
-                    {
-                        rc.DrawMarker(MarkerType, p, MarkerSize, actualMarkerFill, actualMarkerStroke,
-                                     MarkerStrokeThickness);
-                    }
-                }
-            }
-        }
-
-//        protected void RenderLine(IRenderContext rc, List<ScreenPoint> pts)
-//        {
-//            if (pts.Count == 0)
-//            {
-//                return;
-//            }
-
-//#if SIMPLIFY_HERE         
-//            double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
-
-//            var pts2 = new List<ScreenPoint>();
-//            var last = pts[0];
-//            for (int i = 0; i < pts.Count; i++)
-//            {
-//                double dx = pts[i].x - last.x;
-//                double dy = pts[i].y - last.y;
-
-//                if (dx * dx + dy * dy > minDistSquared || i == 0)
-//                {
-//                    pts2.Add(pts[i]);
-//                    last = pts[i];
-//                }
-//            }
-//            rc.DrawLine(pts2.ToArray(), Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
-//#else
-//            rc.DrawLine(pts.ToArray(), Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle), LineJoin);
-//#endif
-//        }
 
         /// <summary>
         ///   Renders the legend symbol for the line series on the 
@@ -274,7 +180,19 @@ namespace OxyPlot
                           };
             rc.DrawLine(pts, Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
             var midpt = new ScreenPoint(xmid, ymid);
-            rc.DrawMarker(MarkerType, midpt, MarkerSize, MarkerFill, MarkerStroke, MarkerStrokeThickness);
+            rc.DrawMarker(midpt, legendBox, MarkerType, MarkerOutline, MarkerSize, MarkerFill, MarkerStroke, MarkerStrokeThickness);
+        }
+
+        public override void SetDefaultValues(PlotModel model)
+        {
+            // todo: should use ActualLineStyle and ActualColor?
+            if (Color == null)
+            {
+                LineStyle = model.GetDefaultLineStyle();
+                Color = model.GetDefaultColor();
+                if (MarkerFill == null)
+                    MarkerFill = Color;
+            }
         }
     }
 }

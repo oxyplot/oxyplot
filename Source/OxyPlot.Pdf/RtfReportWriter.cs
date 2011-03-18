@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using MigraDoc.RtfRendering;
+using OxyPlot.Reporting;
 
 namespace OxyPlot.Pdf
 {
@@ -8,7 +9,8 @@ namespace OxyPlot.Pdf
     /// </summary>
     public class RtfReportWriter : PdfReportWriter
     {
-        public RtfReportWriter(string filename) : base(filename)
+        public RtfReportWriter(string filename)
+            : base(filename)
         {
         }
 
