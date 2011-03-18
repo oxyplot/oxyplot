@@ -10,7 +10,7 @@ namespace Oxyplot.WindowsForms
     /// <summary>
     /// Represents a control that displays a plot.
     /// </summary>
-    public class Plot : Control, IPlot
+    public sealed class Plot : Control, IPlot
     {
         public List<MouseAction> MouseActions { get; private set; }
 
@@ -18,6 +18,7 @@ namespace Oxyplot.WindowsForms
         private readonly TrackerAction trackerAction;
         private readonly ZoomAction zoomAction;
         private Rectangle zoomRectangle;
+        private bool isModelInvalidated;
 
         public Plot()
         {
@@ -54,12 +55,18 @@ namespace Oxyplot.WindowsForms
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-            Invalidate();
+            InvalidatePlot();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
+
+            if (isModelInvalidated)
+            {
+                Model.UpdateData();
+                isModelInvalidated = false;
+            }
 
             var rc = new GraphicsRenderContext(e.Graphics, Width, Height); // e.ClipRectangle
             if (model != null)
@@ -159,11 +166,20 @@ namespace Oxyplot.WindowsForms
             return Model.GetSeriesFromPoint(pt, limit);
         }
 
-        public void Refresh(bool refreshData)
+        public void RefreshPlot()
         {
-            if (refreshData)
-                Model.UpdateData();
+            Refresh();
+        }
+
+        public void InvalidatePlot()
+        {
+            isModelInvalidated = true;
             Invalidate();
+        }
+
+        public void UpdateAxisTransforms()
+        {
+            Model.UpdateAxisTransforms();
         }
 
         public void Pan(IAxis axis, double x0, double x1)

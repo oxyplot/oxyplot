@@ -207,12 +207,12 @@ namespace OxyPlot
                 double sp21Y = sp2.y - sp1.y;
                 double u1 = (p3.x - sp1.x) * sp21X + (p3.y - sp1.y) * sp21Y;
                 double u2 = sp21X * sp21X + sp21Y * sp21Y;
-                double ds = sp21X*sp21X + sp21Y*sp21Y;
-                
+                double ds = sp21X * sp21X + sp21Y * sp21Y;
+
                 if (ds < 4)
                 {
                     // if the points are very close, we can get numerical problems, just use the first point...
-                    u1 = 0;  u2 = 1;
+                    u1 = 0; u2 = 1;
                 }
 
                 if (u2 == 0)
@@ -235,8 +235,8 @@ namespace OxyPlot
 
                 if (distance < minimumDistance)
                 {
-                    double px = p1.x + u * (p2.x-p1.x);
-                    double py = p1.y + u * (p2.y-p1.y);
+                    double px = p1.x + u * (p2.x - p1.x);
+                    double py = p1.y + u * (p2.y - p1.y);
                     dpn = new DataPoint(px, py);
                     spn = new ScreenPoint(sx, sy);
                     minimumDistance = distance;
@@ -295,34 +295,44 @@ namespace OxyPlot
                 return;
             }
 
-            if (double.IsNaN(MinX))
+            double minx = MinX;
+            double miny = MinY;
+            double maxx = MaxX;
+            double maxy = MaxY;
+
+            if (double.IsNaN(minx))
             {
-                MinX = pts[0].x;
+                minx = pts[0].x;
             }
 
-            if (double.IsNaN(MaxX))
+            if (double.IsNaN(maxx))
             {
-                MaxX = pts[0].x;
+                maxx = pts[0].x;
             }
 
-            if (double.IsNaN(MinY))
+            if (double.IsNaN(miny))
             {
-                MinY = pts[0].y;
+                miny = pts[0].y;
             }
 
-            if (double.IsNaN(MaxY))
+            if (double.IsNaN(maxy))
             {
-                MaxY = pts[0].y;
+                maxy = pts[0].y;
             }
+
 
             foreach (var pt in pts)
             {
-                MinX = Math.Min(MinX, pt.x);
-                MaxX = Math.Max(MaxX, pt.x);
-
-                MinY = Math.Min(MinY, pt.y);
-                MaxY = Math.Max(MaxY, pt.y);
+                if (pt.x < minx) minx = pt.x;
+                if (pt.x > maxx) maxx = pt.x;
+                if (pt.y < miny) miny = pt.y;
+                if (pt.y > maxy) maxy = pt.y;
             }
+
+            MinX = minx;
+            MinY = miny;
+            MaxX = maxx;
+            MaxY = maxy;
 
             XAxis.Include(MinX);
             XAxis.Include(MaxX);

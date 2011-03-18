@@ -16,9 +16,14 @@ namespace OxyPlot.Silverlight
             return System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
         }
 
-        public static Point ToPoint(this ScreenPoint pt)
+        public static Point ToPoint(this ScreenPoint pt, bool aliased)
         {
-            return new Point(pt.X,pt.Y);
+            // adding 0.5 to get pixel boundary alignment, seems to work
+            // http://weblogs.asp.net/mschwarz/archive/2008/01/04/silverlight-rectangles-paths-and-line-comparison.aspx
+            // http://www.wynapse.com/Silverlight/Tutor/Silverlight_Rectangles_Paths_And_Lines_Comparison.aspx
+            if (aliased)
+                return new Point(0.5+(int)pt.X,0.5+(int)pt.Y);
+            return new Point(pt.X, pt.Y);
         }
 
         public static ScreenPoint ToScreenPoint(this Point pt)

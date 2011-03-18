@@ -36,10 +36,20 @@ namespace OxyPlot.Silverlight
             var pg = new PathGeometry();
             for (int i = 0; i + 1 < points.Count; i += 2)
             {
-                var figure = new PathFigure();
-                figure.StartPoint = points[i].ToPoint();
-                figure.IsClosed = false;
-                figure.Segments.Add(new LineSegment() { Point = points[i + 1].ToPoint() });
+                //if (points[i].Y==points[i+1].Y)
+                //{
+                //    var line = new Line();
+                    
+                //    line.X1 = 0.5+(int)points[i].X;
+                //    line.X2 = 0.5+(int)points[i+1].X;
+                //    line.Y1 = 0.5+(int)points[i].Y;
+                //    line.Y2 = 0.5+(int)points[i+1].Y;
+                //    SetStroke(line, OxyColors.DarkRed, thickness, lineJoin, dashArray, aliased);
+                //    Add(line);
+                //    continue;
+                //}
+                var figure = new PathFigure { StartPoint = points[i].ToPoint(aliased), IsClosed = false };
+                figure.Segments.Add(new LineSegment { Point = points[i + 1].ToPoint(aliased) });
                 pg.Figures.Add(figure);
             }
             path.Data = pg;
@@ -57,12 +67,9 @@ namespace OxyPlot.Silverlight
             var e = new Polyline();
             SetStroke(e, stroke, thickness, lineJoin, dashArray, aliased);
 
-            // TODO
-            // if (aliased) pl.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
-
             var pc = new PointCollection();
             foreach (var p in points)
-                pc.Add(ToPoint(p));
+                pc.Add(p.ToPoint(aliased));
             e.Points = pc;
 
             canvas.Children.Add(e);
@@ -91,7 +98,7 @@ namespace OxyPlot.Silverlight
 
             var pc = new PointCollection();
             foreach (var p in points)
-                pc.Add(ToPoint(p));
+                pc.Add(p.ToPoint(aliased));
             po.Points = pc;
 
             canvas.Children.Add(po);
@@ -113,12 +120,12 @@ namespace OxyPlot.Silverlight
                 {
                     if (first)
                     {
-                        figure.StartPoint = p.ToPoint();
+                        figure.StartPoint = p.ToPoint(aliased);
                         first = false;
                     }
                     else
                     {
-                        figure.Segments.Add(new LineSegment() { Point = p.ToPoint() });
+                        figure.Segments.Add(new LineSegment { Point = p.ToPoint(aliased) });
                     }
                 }
                 pg.Figures.Add(figure);
@@ -151,14 +158,11 @@ namespace OxyPlot.Silverlight
                     shape.StrokeDashArray = CreateDashArrayCollection(dashArray);
                 }
             }
-            if (aliased)
-            {
-                // todo: does not work?
-                shape.UseLayoutRounding = true;
-            }
+
+            // shape.UseLayoutRounding = aliased;
         }
 
-        private static DoubleCollection CreateDashArrayCollection(double[] dashArray)
+        private static DoubleCollection CreateDashArrayCollection(IEnumerable<double> dashArray)
         {
             var dac = new DoubleCollection();
             foreach (var v in dashArray)
@@ -166,16 +170,13 @@ namespace OxyPlot.Silverlight
             return dac;
         }
 
-        ///<summary>
+        /// <summary>
         /// Draws a rectangle.
-        ///</summary>
-        ///<param name="x"></param>
-        ///<param name="y"></param>
-        ///<param name="width"></param>
-        ///<param name="height"></param>
-        ///<param name="fill"></param>
-        ///<param name="stroke"></param>
-        ///<param name="thickness"></param>
+        /// </summary>
+        /// <param name="rect">The rect.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke,
                                 double thickness)
         {
@@ -189,7 +190,6 @@ namespace OxyPlot.Silverlight
             {
                 el.Fill = new SolidColorBrush(fill.ToColor());
             }
-
             el.Width = rect.Width;
             el.Height = rect.Height;
             Canvas.SetLeft(el, rect.Left);
@@ -197,6 +197,14 @@ namespace OxyPlot.Silverlight
             canvas.Children.Add(el);
         }
 
+        /// <summary>
+        /// Draws a collection of rectangles, where all have the same stroke and fill.
+        /// This performs better than calling DrawRectangle multiple times.
+        /// </summary>
+        /// <param name="rectangles">The rectangles.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public void DrawRectangles(IEnumerable<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = new Path();
@@ -204,11 +212,10 @@ namespace OxyPlot.Silverlight
             if (fill != null)
                 path.Fill = GetCachedBrush(fill);
 
-            var gg = new GeometryGroup();
-            gg.FillRule = FillRule.Nonzero;
+            var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
             foreach (var rect in rectangles)
             {
-                gg.Children.Add(new RectangleGeometry() { Rect = rect.ToRect() });
+                gg.Children.Add(new RectangleGeometry { Rect = rect.ToRect() });
             }
             path.Data = gg;
             Add(path);
@@ -242,11 +249,10 @@ namespace OxyPlot.Silverlight
             if (fill != null)
                 path.Fill = GetCachedBrush(fill);
 
-            var gg = new GeometryGroup();
-            gg.FillRule = FillRule.Nonzero;
+            var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
             foreach (var rect in rectangles)
             {
-                gg.Children.Add(new EllipseGeometry()
+                gg.Children.Add(new EllipseGeometry
                                     {
                                         Center = new Point(rect.Left + rect.Width / 2, rect.Top + rect.Height / 2),
                                         RadiusX = rect.Width / 2,
@@ -265,12 +271,13 @@ namespace OxyPlot.Silverlight
                              Text = text,
                              Foreground = new SolidColorBrush(fill.ToColor())
                          };
+            // tb.SetValue(TextOptions.TextHintingModeProperty, TextHintingMode.Animated);
+
             if (fontFamily != null)
                 tb.FontFamily = new FontFamily(fontFamily);
             if (fontSize > 0)
                 tb.FontSize = fontSize;
-            if (fontWeight > 500)
-                tb.FontWeight = FontWeights.Bold;
+            tb.FontWeight = GetFontWeight(fontWeight);
 
             tb.Measure(new Size(1000, 1000));
 
@@ -288,13 +295,11 @@ namespace OxyPlot.Silverlight
 
 
             var transform = new TransformGroup();
-            transform.Children.Add(new TranslateTransform { X = dx, Y = dy });
+            transform.Children.Add(new TranslateTransform { X = (int)dx, Y = (int)dy });
             if (rotate != 0)
                 transform.Children.Add(new RotateTransform { Angle = rotate });
-            transform.Children.Add(new TranslateTransform { X = p.X, Y = p.Y });
+            transform.Children.Add(new TranslateTransform { X = (int)p.X, Y = (int)p.Y });
             tb.RenderTransform = transform;
-
-            // tb.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
 
             canvas.Children.Add(tb);
         }
@@ -313,20 +318,19 @@ namespace OxyPlot.Silverlight
                 tb.FontFamily = new FontFamily(fontFamily);
             if (fontSize > 0)
                 tb.FontSize = fontSize;
-            if (fontWeight >= 0)
-                tb.FontWeight = FontWeights.Bold; // FromOpenTypeWeight((int)fontWeight);
+            tb.FontWeight = GetFontWeight(fontWeight);
 
             tb.Measure(new Size(1000, 1000));
 
             return new OxySize(tb.ActualWidth, tb.ActualHeight);
         }
 
+        private static FontWeight GetFontWeight(double fontWeight)
+        {
+            return fontWeight > FontWeights.Normal ? System.Windows.FontWeights.Bold : System.Windows.FontWeights.Normal;
+        }
+
         #endregion
 
-        private static Point ToPoint(ScreenPoint point)
-        {
-            return new Point(point.X, point.Y);
-            // return new Point((int)point.X, (int)point.Y);
-        }
     }
 }

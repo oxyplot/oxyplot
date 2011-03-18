@@ -267,7 +267,7 @@ namespace OxyPlot
 
                     // label
                     var labelPosition = new ScreenPoint(tp2.X + TickLabelDistance*sign, tp2.Y);
-                    rc.DrawText(labelPosition, label, model.TextColor, model.LegendFont, model.LegendFontSize, 500, 0,
+                    rc.DrawText(labelPosition, label, model.TextColor, model.LegendFont, model.LegendFontSize, FontWeights.Normal, 0,
                                 sign > 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right,
                                 VerticalTextAlign.Middle);
                 }
@@ -289,7 +289,7 @@ namespace OxyPlot
                         }
                     }
 
-                    rc.DrawText(labelPosition, label, model.TextColor, model.LegendFont, model.LegendFontSize, 500,
+                    rc.DrawText(labelPosition, label, model.TextColor, model.LegendFont, model.LegendFontSize, FontWeights.Normal,
                                 textAngle, HorizontalTextAlign.Center, VerticalTextAlign.Middle);
                 }
             }

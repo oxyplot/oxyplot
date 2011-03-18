@@ -28,7 +28,7 @@
             {
                 // todo
                 // pc.Annotations.Add
-                pc.Refresh();
+                pc.InvalidatePlot();
             }
 
             currentSeries = pc.GetSeriesFromPoint(pt) as DataSeries;

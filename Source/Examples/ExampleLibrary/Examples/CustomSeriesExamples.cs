@@ -13,13 +13,13 @@ namespace ExampleLibrary
             int n = 20;
             var model = new PlotModel("ErrorSeries");
 
-            var s1 = new ErrorSeries() { Title = "Measurements" };
+            var s1 = new ErrorSeries { Title = "Measurements" };
             var random = new Random();
             double x = 0;
             double y = 0;
             for (int i = 0; i < n; i++)
             {
-                x += 2 + random.NextDouble();
+                x += 2 + random.NextDouble() * 10;
                 y += 1 + random.NextDouble();
                 var p = new DataPoint(x, y);
                 s1.Points.Add(p);

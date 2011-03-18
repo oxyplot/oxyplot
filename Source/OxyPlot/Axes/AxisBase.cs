@@ -49,7 +49,7 @@ namespace OxyPlot
 
             FontFamily = PlotModel.DefaultFont;
             FontSize = 12;
-            FontWeight = 500;
+            FontWeight = FontWeights.Normal;
 
             MinorTickSize = 4;
             MajorTickSize = 7;
@@ -438,8 +438,8 @@ namespace OxyPlot
         {
             if (!IsPanEnabled)
                 return;
-            Minimum = ActualMinimum + x0 - x1;
-            Maximum = ActualMaximum + x0 - x1;
+            ActualMinimum = Minimum = ActualMinimum + x0 - x1;
+            ActualMaximum = Maximum = ActualMaximum + x0 - x1;
         }
 
         public virtual void ZoomAt(double factor, double x)
@@ -449,22 +449,22 @@ namespace OxyPlot
             double dx0 = (ActualMinimum - x)*scale;
             double dx1 = (ActualMaximum - x)*scale;
             scale *= factor;
-            Minimum = dx0/scale + x;
-            Maximum = dx1/scale + x;
+            ActualMinimum = Minimum = dx0 / scale + x;
+            ActualMaximum = Maximum = dx1/scale + x;
         }
 
         public virtual void Zoom(double x0, double x1)
         {
             if (!IsZoomEnabled)
                 return;
-            Minimum = Math.Min(x0, x1);
-            Maximum = Math.Max(x0, x1);
+            ActualMinimum = Minimum = Math.Min(x0, x1);
+            ActualMaximum = Maximum = Math.Max(x0, x1);
         }
 
         public virtual void Reset()
         {
-            Minimum = double.NaN;
-            Maximum = double.NaN;
+            ActualMinimum = Minimum = double.NaN;
+            ActualMaximum = Maximum = double.NaN;
         }
 
         /// <summary>

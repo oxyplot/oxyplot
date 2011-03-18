@@ -44,7 +44,7 @@
             {
                 if (xaxis != null) xaxis.Reset();
                 if (yaxis != null) yaxis.Reset();
-                pc.Refresh();
+                pc.InvalidatePlot();
                 return;
             }
 
@@ -65,7 +65,12 @@
                 pc.Pan(xaxis, previousPoint.X,currentPoint.X);
             if (yaxis != null)
                 pc.Pan(yaxis, previousPoint.Y,currentPoint.Y);
-            pc.Refresh();
+
+            // this makes sure the transforms are updated if more MouseMoves must
+            // be handled before next redraw
+            pc.UpdateAxisTransforms();
+            pc.RefreshPlot();
+            //pc.InvalidatePlot();
             ppt = pt;
         }
 
