@@ -93,7 +93,7 @@ namespace OxyPlot
         void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
         /// <summary>
-        /// Draws a collection of the rectangles, where all have the same stroke and fill.
+        /// Draws a collection of rectangles, where all have the same stroke and fill.
         /// This performs better than calling DrawRectangle multiple times.
         /// </summary>
         /// <param name="rectangles">The rectangles.</param>

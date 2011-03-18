@@ -18,10 +18,11 @@ namespace ExampleLibrary
             ps.Slices.Add(new PieSlice("Asia", 4157));
             ps.Slices.Add(new PieSlice("Europe", 739) { IsExploded = true });
             ps.Slices.Add(new PieSlice("Oceania", 35) { IsExploded = true });
-            ps.InnerDiameter = 0.2;
-            ps.ExplodedDistance = 0;
-            ps.Stroke = OxyColors.Black;
-            ps.StrokeThickness = 1.0;
+            ps.InnerDiameter = 0;
+            ps.ExplodedDistance = 0.0;
+            ps.Stroke = OxyColors.White;
+            ps.StrokeThickness = 2.0;
+            ps.InsideLabelPosition = 0.8;
             ps.AngleSpan = 360;
             ps.StartAngle = 0;
             model.Series.Add(ps);

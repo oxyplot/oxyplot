@@ -125,7 +125,7 @@ namespace OxyPlot
 
                 rc.DrawMathText(new ScreenPoint(x1, y0),
                                 s.Title, plot.TextColor,
-                                plot.LegendFont, plot.LegendFontSize, 500, 0,
+                                plot.LegendFont, plot.LegendFontSize, FontWeights.Normal, 0,
                                 ha, va, false);
                 var rect = new OxyRect(x0 - lineLength, y0 - maxHeight / 2, lineLength, maxHeight);
                 if (ha == HorizontalTextAlign.Left)

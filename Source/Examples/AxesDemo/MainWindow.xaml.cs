@@ -29,14 +29,14 @@ namespace AxesDemo
                 // TODO: binding should handle this
                 AnglePlot1.Axes[0].Angle = Angle.Value;
                 AnglePlot1.Axes[1].Angle = Angle.Value;
-                AnglePlot1.Refresh();
+                AnglePlot1.InvalidatePlot();
             }
             if (AnglePlot2 != null)
             {
                 // TODO: binding should handle this
                 AnglePlot2.Axes[0].Angle = Angle.Value;
                 AnglePlot2.Axes[1].Angle = Angle.Value;
-                AnglePlot2.Refresh();
+                AnglePlot2.InvalidatePlot();
             }
         }
     }

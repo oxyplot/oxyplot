@@ -31,6 +31,15 @@ namespace OxyPlot
                             }, pen.Color, pen.Thickness, pen.DashArray, pen.LineJoin, aliased);
         }
 
+        public static void DrawBox(this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            var sp0 = new ScreenPoint(rect.Left, rect.Top);
+            var sp1 = new ScreenPoint(rect.Right, rect.Top);
+            var sp2 = new ScreenPoint(rect.Right, rect.Bottom);
+            var sp3 = new ScreenPoint(rect.Left, rect.Bottom);
+            rc.DrawPolygon(new[] { sp0, sp1, sp2, sp3 }, fill, stroke, thickness, null, OxyPenLineJoin.Miter, true);
+        }
+
         /// <summary>
         /// Draws the line segments.
         /// </summary>
@@ -211,7 +220,7 @@ namespace OxyPlot
         public static void DrawMarker(this IRenderContext rc, ScreenPoint p, OxyRect clippingRect, MarkerType type, IList<ScreenPoint> outline, double size,
                                     OxyColor fill, OxyColor stroke, double strokeThickness)
         {
-            rc.DrawMarkers(new[] {p}, clippingRect, type, outline, new[] {size}, fill, stroke, strokeThickness);
+            rc.DrawMarkers(new[] { p }, clippingRect, type, outline, new[] { size }, fill, stroke, strokeThickness);
         }
 
         /// <summary>

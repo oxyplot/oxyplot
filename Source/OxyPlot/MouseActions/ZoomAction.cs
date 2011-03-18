@@ -33,7 +33,7 @@ namespace OxyPlot
                     pc.ZoomAt(xaxis, scale, current.X);
                 if (yaxis != null)
                     pc.ZoomAt(yaxis, scale, current.Y);
-                pc.Refresh();
+                pc.InvalidatePlot();
                 return;
             }
             
@@ -52,7 +52,7 @@ namespace OxyPlot
             {
                 if (xaxis != null) pc.Reset(xaxis);
                 if (yaxis != null) pc.Reset(yaxis);
-                pc.Refresh();
+                pc.InvalidatePlot();
             }
 
             DownPoint = pt;
@@ -111,7 +111,7 @@ namespace OxyPlot
                     pc.Zoom(xaxis, p0.X, p1.X);
                 if (yaxis != null)
                     pc.Zoom(yaxis, p0.Y, p1.Y);
-                pc.Refresh();
+                pc.InvalidatePlot();
             }
             isZooming = false;
             base.OnMouseUp();
@@ -129,7 +129,9 @@ namespace OxyPlot
                 pc.ZoomAt(xa, s, current.X);
             if (ya != null)
                 pc.ZoomAt(ya, s, current.Y);
-            pc.Refresh();
+
+            pc.UpdateAxisTransforms();
+            pc.RefreshPlot();
         }
     }
 }

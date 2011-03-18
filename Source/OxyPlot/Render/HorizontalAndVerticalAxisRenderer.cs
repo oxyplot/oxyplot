@@ -21,25 +21,33 @@ namespace OxyPlot
             var perpendicularAxis = Plot.DefaultXAxis;
             bool isHorizontal = true;
 
+            // store properties locally for performance
+            double ppl = Plot.PlotArea.Left;
+            double ppr = Plot.PlotArea.Right;
+            double ppt = Plot.PlotArea.Top;
+            double ppb = Plot.PlotArea.Bottom;
+            double actualMinimum = axis.ActualMinimum;
+            double actualMaximum = axis.ActualMaximum;
+
             // Axis position (x or y screen coordinate)
             double apos = 0;
 
             switch (axis.Position)
             {
                 case AxisPosition.Left:
-                    apos = Plot.PlotArea.Left;
+                    apos = ppl;
                     isHorizontal = false;
                     break;
                 case AxisPosition.Right:
-                    apos = Plot.PlotArea.Right;
+                    apos = ppr;
                     isHorizontal = false;
                     break;
                 case AxisPosition.Top:
-                    apos = Plot.PlotArea.Top;
+                    apos = ppt;
                     perpendicularAxis = Plot.DefaultYAxis;
                     break;
                 case AxisPosition.Bottom:
-                    apos = Plot.PlotArea.Bottom;
+                    apos = ppb;
                     perpendicularAxis = Plot.DefaultYAxis;
                     break;
             }
@@ -61,7 +69,7 @@ namespace OxyPlot
 
                 foreach (double value in MinorTickValues)
                 {
-                    if (value < axis.ActualMinimum || value > axis.ActualMaximum)
+                    if (value < actualMinimum || value > actualMaximum)
                     {
                         continue;
                     }
@@ -78,18 +86,33 @@ namespace OxyPlot
 
                     double transformedValue = axis.Transform(value);
 
+                    if (isHorizontal)
+                    {
+                        SnapTo(ppl, ref transformedValue);
+                        SnapTo(ppr, ref transformedValue);
+                    }
+                    else
+                    {
+                        SnapTo(ppt, ref transformedValue);
+                        SnapTo(ppb, ref transformedValue);
+                    }
+
                     // Draw the minor grid line
                     if (MinorPen != null)
                     {
                         if (isHorizontal)
                         {
-                            minorSegments.Add(new ScreenPoint(transformedValue, Plot.PlotArea.Top));
-                            minorSegments.Add(new ScreenPoint(transformedValue, Plot.PlotArea.Bottom));
+                            minorSegments.Add(new ScreenPoint(transformedValue, ppt));
+                            minorSegments.Add(new ScreenPoint(transformedValue, ppb));
                         }
                         else
                         {
-                            minorSegments.Add(new ScreenPoint(Plot.PlotArea.Left, transformedValue));
-                            minorSegments.Add(new ScreenPoint(Plot.PlotArea.Right, transformedValue));
+                            if (transformedValue < ppt || transformedValue > ppb)
+                            {
+
+                            }
+                            minorSegments.Add(new ScreenPoint(ppl, transformedValue));
+                            minorSegments.Add(new ScreenPoint(ppr, transformedValue));
                         }
                     }
 
@@ -115,12 +138,9 @@ namespace OxyPlot
             {
                 GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
 
-                //double maxWidth = 0;
-                //double maxHeight = 0;
-
                 foreach (double value in MajorTickValues)
                 {
-                    if (value < axis.ActualMinimum || value > axis.ActualMaximum)
+                    if (value < actualMinimum || value > actualMaximum)
                     {
                         continue;
                     }
@@ -131,18 +151,29 @@ namespace OxyPlot
                     }
 
                     double transformedValue = axis.Transform(value);
+                    if (isHorizontal)
+                    {
+                        SnapTo(ppl, ref transformedValue);
+                        SnapTo(ppr, ref transformedValue);
+                    }
+                    else
+                    {
+                        SnapTo(ppt, ref transformedValue);
+                        SnapTo(ppb, ref transformedValue);
+                    }
+
 
                     if (MajorPen != null)
                     {
                         if (isHorizontal)
                         {
-                            majorSegments.Add(new ScreenPoint(transformedValue, Plot.PlotArea.Top));
-                            majorSegments.Add(new ScreenPoint(transformedValue, Plot.PlotArea.Bottom));
+                            majorSegments.Add(new ScreenPoint(transformedValue, ppt));
+                            majorSegments.Add(new ScreenPoint(transformedValue, ppb));
                         }
                         else
                         {
-                            majorSegments.Add(new ScreenPoint(Plot.PlotArea.Left, transformedValue));
-                            majorSegments.Add(new ScreenPoint(Plot.PlotArea.Right, transformedValue));
+                            majorSegments.Add(new ScreenPoint(ppl, transformedValue));
+                            majorSegments.Add(new ScreenPoint(ppr, transformedValue));
                         }
                     }
 
@@ -197,32 +228,29 @@ namespace OxyPlot
                     rc.DrawMathText(pt, text, Plot.TextColor,
                                     axis.FontFamily, axis.FontSize, axis.FontWeight,
                                     axis.Angle, ha, va, false);
-
-                    // maxWidth = Math.Max(maxWidth, size.Width);
-                    // maxHeight = Math.Max(maxHeight, size.Height);
                 }
             }
 
             // Draw the zero crossing line
-            if (axis.PositionAtZeroCrossing && ZeroPen!=null)
+            if (axis.PositionAtZeroCrossing && ZeroPen != null)
             {
                 double t0 = axis.Transform(0);
                 if (isHorizontal)
                 {
-                    rc.DrawLine(t0, Plot.PlotArea.Top, t0, Plot.PlotArea.Bottom, ZeroPen);
+                    rc.DrawLine(t0, ppt, t0, ppb, ZeroPen);
                 }
                 else
                 {
-                    rc.DrawLine(Plot.PlotArea.Left, t0, Plot.PlotArea.Right, t0, ZeroPen);
+                    rc.DrawLine(ppl, t0, ppr, t0, ZeroPen);
                 }
             }
 
             // Draw extra grid lines
-            if (axis.ExtraGridlines != null && ExtraPen!=null)
+            if (axis.ExtraGridlines != null && ExtraPen != null)
             {
                 foreach (double value in axis.ExtraGridlines)
                 {
-                    if (!IsWithin(value, axis.ActualMinimum, axis.ActualMaximum))
+                    if (!IsWithin(value, actualMinimum, actualMaximum))
                     {
                         continue;
                     }
@@ -230,11 +258,11 @@ namespace OxyPlot
                     double transformedValue = axis.Transform(value);
                     if (isHorizontal)
                     {
-                        rc.DrawLine(transformedValue, Plot.PlotArea.Top, transformedValue, Plot.PlotArea.Bottom, ExtraPen);
+                        rc.DrawLine(transformedValue, ppt, transformedValue, ppb, ExtraPen);
                     }
                     else
                     {
-                        rc.DrawLine(Plot.PlotArea.Left, transformedValue, Plot.PlotArea.Right, transformedValue, ExtraPen);
+                        rc.DrawLine(ppl, transformedValue, ppr, transformedValue, ExtraPen);
                     }
                 }
             }
@@ -242,13 +270,13 @@ namespace OxyPlot
             // Draw the axis line (across the tick marks)
             if (isHorizontal)
             {
-                majorSegments.Add(new ScreenPoint(Plot.PlotArea.Left, apos));
-                majorSegments.Add(new ScreenPoint(Plot.PlotArea.Right, apos));
+                majorSegments.Add(new ScreenPoint(ppl, apos));
+                majorSegments.Add(new ScreenPoint(ppr, apos));
             }
             else
             {
-                majorSegments.Add(new ScreenPoint(apos, Plot.PlotArea.Top));
-                majorSegments.Add(new ScreenPoint(apos, Plot.PlotArea.Bottom));
+                majorSegments.Add(new ScreenPoint(apos, ppt));
+                majorSegments.Add(new ScreenPoint(apos, ppb));
             }
 
             // Draw the axis title
@@ -297,16 +325,25 @@ namespace OxyPlot
             }
 
             // Draw all the line segments
-            if (MinorPen!=null)
+            if (MinorPen != null)
                 rc.DrawLineSegments(minorSegments, MinorPen);
-            if (MajorPen!=null)
+            if (MajorPen != null)
                 rc.DrawLineSegments(majorSegments, MajorPen);
-            if (MinorTickPen!=null)
+            if (MinorTickPen != null)
                 rc.DrawLineSegments(minorTickSegments, MinorTickPen);
-            if (MajorTickPen!=null)
+            if (MajorTickPen != null)
                 rc.DrawLineSegments(majorTickSegments, MajorTickPen);
         }
-     
+
+        /// <summary>
+        /// Snaps v to value if is within a distance of eps.
+        /// </summary>
+        private static void SnapTo(double value, ref double v, double eps=0.5)
+        {
+            if (v > value - eps && v < value + eps)
+                v = value;
+        }
+
         /// <summary>
         /// Linear interpolation
         /// http://en.wikipedia.org/wiki/Linear_interpolation
@@ -315,7 +352,7 @@ namespace OxyPlot
         /// <param name="x1">The x1.</param>
         /// <param name="f">The f.</param>
         /// <returns></returns>
-        private double Lerp(double x0, double x1, double f)
+        private static double Lerp(double x0, double x1, double f)
         {
             return x0 * (1 - f) + x1 * f;
         }

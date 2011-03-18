@@ -57,7 +57,7 @@ namespace OxyPlot.Pdf
         {
             run.FontFamily = new FontFamily(s.FontFamily);
             run.FontSize = s.FontSize;
-            run.FontWeight = s.Bold ? FontWeights.Bold : FontWeights.Normal;
+            run.FontWeight = s.Bold ? System.Windows.FontWeights.Bold : System.Windows.FontWeights.Normal;
             var fontStyle = FontStyles.Normal;
             if (s.Italic)
                 fontStyle = FontStyles.Italic;

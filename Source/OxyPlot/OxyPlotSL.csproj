@@ -72,6 +72,7 @@
     <Compile Include="Axes\AxisBase.cs" />
     <Compile Include="Axes\TimeSpanAxis.cs" />
     <Compile Include="Foundation\CanonicalSplineHelper.cs" />
+    <Compile Include="Foundation\FontWeights.cs" />
     <Compile Include="Foundation\OxyThickness.cs" />
     <Compile Include="Foundation\ScreenPoint.cs" />
     <Compile Include="Foundation\OxyRect.cs" />

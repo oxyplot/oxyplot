@@ -72,8 +72,8 @@ namespace OxyPlot
             TitleFont = DefaultFont;
             TitleFontSize = 18;
             SubtitleFontSize = 14;
-            TitleFontWeight = 800;
-            SubtitleFontWeight = 500;
+            TitleFontWeight = FontWeights.Bold;
+            SubtitleFontWeight = FontWeights.Normal;
             TextColor = OxyColors.Black;
             BoxColor = OxyColors.Black;
             BoxThickness = 1;
@@ -382,7 +382,7 @@ namespace OxyPlot
         /// Update max and min values of the axes from values of all data series.
         /// Only axes with automatic set to true are changed.
         /// </summary>
-        private void UpdateMaxMin()
+        public void UpdateMaxMin()
         {
             foreach (var a in Axes)
             {
@@ -549,8 +549,9 @@ namespace OxyPlot
 
             // Render the box around the plot (only if there are axes)
             if (Axes.Count > 0)
-                rc.DrawRectangle(PlotArea, null, BoxColor, BoxThickness);
-
+            {
+                rc.DrawBox(PlotArea, null, BoxColor, BoxThickness);
+            }
             // Render the legends
             pp.RenderLegends();
         }

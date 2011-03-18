@@ -123,7 +123,7 @@ namespace HistogramDemo
                 blueLine.Points.Add(new DataPoint(x, (double)histoB[i] / n));
             }
 
-            chart.Refresh();
+            chart.InvalidatePlot();
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

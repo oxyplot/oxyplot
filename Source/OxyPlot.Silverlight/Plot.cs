@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -89,13 +90,20 @@ namespace OxyPlot.Silverlight
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
             lock (this)
-            {
+            {                    
                 if (isPlotInvalidated)
                 {
                     isPlotInvalidated = false;
-                    Refresh();
+                    UpdateModel();
+                    UpdateVisuals();
                 }
             }
+        }
+
+        public void RefreshPlot()
+        {
+            // don't block ui thread on silverlight
+            InvalidatePlot();
         }
 
         public void InvalidatePlot()
@@ -104,6 +112,11 @@ namespace OxyPlot.Silverlight
             {
                 isPlotInvalidated = true;
             }
+        }
+
+        public void UpdateAxisTransforms()
+        {
+            internalModel.UpdateAxisTransforms();
         }
 
         public static readonly DependencyProperty ModelProperty =
@@ -237,7 +250,7 @@ namespace OxyPlot.Silverlight
         {
             foreach (var a in internalModel.Axes)
                 a.Reset();
-            Refresh();
+            InvalidatePlot();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -267,7 +280,7 @@ namespace OxyPlot.Silverlight
 
         private void OnModelChanged()
         {
-            Refresh();
+            InvalidatePlot();
         }
 
         private void UpdateModel()
@@ -275,13 +288,6 @@ namespace OxyPlot.Silverlight
             internalModel = Model;
             if (Model != null)
                 internalModel.UpdateData();
-        }
-
-        public void Refresh(bool refreshData = true)
-        {
-            if (refreshData)
-                UpdateModel();
-            UpdateVisuals();
         }
 
         private void UpdateVisuals()

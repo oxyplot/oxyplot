@@ -194,7 +194,7 @@ namespace OxyPlot
             WriteEndElement();
         }
 
-        public void WriteText(ScreenPoint pt, string text, OxyColor fill, string fontFamily = null, double fontSize = 10, double fontWeight = 500, double rotate = 0, HorizontalTextAlign halign = HorizontalTextAlign.Left, VerticalTextAlign valign = VerticalTextAlign.Top)
+        public void WriteText(ScreenPoint pt, string text, OxyColor fill, string fontFamily = null, double fontSize = 10, double fontWeight = FontWeights.Normal, double rotate = 0, HorizontalTextAlign halign = HorizontalTextAlign.Left, VerticalTextAlign valign = VerticalTextAlign.Top)
         {
             // http://www.w3.org/TR/SVG/text.html
             WriteStartElement("text");

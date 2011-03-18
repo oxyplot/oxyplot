@@ -189,7 +189,7 @@ namespace OxyPlot
                     isFunctionX = false;
                     break;
                 default:
-                    f = x => Slope*x + Intercept;
+                    f = x => Slope * x + Intercept;
                     break;
             }
 
@@ -215,7 +215,7 @@ namespace OxyPlot
                 {
                     double x = actualMinimumX;
                     // todo: the step size should be adaptive
-                    double dx = (actualMaximumX - actualMinimumX)/100;
+                    double dx = (actualMaximumX - actualMinimumX) / 100;
                     while (true)
                     {
                         points.Add(new DataPoint(x, f(x)));
@@ -228,7 +228,7 @@ namespace OxyPlot
                 {
                     double y = actualMinimumY;
                     // todo: the step size should be adaptive
-                    double dy = (actualMaximumY - actualMinimumY)/100;
+                    double dy = (actualMaximumY - actualMinimumY) / 100;
                     while (true)
                     {
                         points.Add(new DataPoint(f(y), y));
@@ -248,7 +248,7 @@ namespace OxyPlot
 
             // clip to the plot area
             double minimumSegmentLength = 4;
-            double minDistSquared = minimumSegmentLength*minimumSegmentLength;
+            double minDistSquared = minimumSegmentLength * minimumSegmentLength;
 
             var clipping = new CohenSutherlandClipping(
                 Math.Min(XAxis.ScreenMin.X, XAxis.ScreenMax.X),
@@ -268,7 +268,7 @@ namespace OxyPlot
 
             if (GetPosition(clippedPoints, TextPosition, margin, out position, out angle))
             {
-                rc.DrawText(position, Text, model.TextColor, model.LegendFont, model.LegendFontSize, 500, angle,
+                rc.DrawText(position, Text, model.TextColor, model.LegendFont, model.LegendFontSize, FontWeights.Normal, angle,
                             TextHorizontalAlignment, TextVerticalAlignment);
             }
         }
@@ -288,22 +288,22 @@ namespace OxyPlot
             {
                 double dx = pts[i].X - pts[i - 1].X;
                 double dy = pts[i].Y - pts[i - 1].Y;
-                length += Math.Sqrt(dx*dx + dy*dy);
+                length += Math.Sqrt(dx * dx + dy * dy);
             }
-            double l = length*p + margin;
+            double l = length * p + margin;
             length = 0;
             for (int i = 1; i < pts.Count; i++)
             {
                 double dx = pts[i].X - pts[i - 1].X;
                 double dy = pts[i].Y - pts[i - 1].Y;
-                double dl = Math.Sqrt(dx*dx + dy*dy);
+                double dl = Math.Sqrt(dx * dx + dy * dy);
                 if (l >= length && l <= length + dl)
                 {
-                    double f = (l - length)/dl;
-                    double x = pts[i].X*f + pts[i - 1].X*(1 - f);
-                    double y = pts[i].Y*f + pts[i - 1].Y*(1 - f);
+                    double f = (l - length) / dl;
+                    double x = pts[i].X * f + pts[i - 1].X * (1 - f);
+                    double y = pts[i].Y * f + pts[i - 1].Y * (1 - f);
                     position = new ScreenPoint(x, y);
-                    angle = Math.Atan2(dy, dx)/Math.PI*180;
+                    angle = Math.Atan2(dy, dx) / Math.PI * 180;
                     return true;
                 }
                 length += dl;
@@ -348,7 +348,7 @@ namespace OxyPlot
                     double dx = s1c.x - last.x;
                     double dy = s1c.y - last.y;
 
-                    if (dx*dx + dy*dy > minDistSquared || i == 1)
+                    if (dx * dx + dy * dy > minDistSquared || i == 1)
                     {
                         if (!s0c.Equals(last) || i == 1)
                         {

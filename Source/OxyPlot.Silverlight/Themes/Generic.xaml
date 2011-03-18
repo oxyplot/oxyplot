@@ -35,6 +35,7 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
+                        <!-- Don't set CacheMode="BitmapCache" as this makes the text look ugly -->
                         <Grid x:Name="PART_Grid"/>
                     </Border>
                 </ControlTemplate>

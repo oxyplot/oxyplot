@@ -41,10 +41,10 @@ namespace OxyPlot.Wpf
         readonly Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
 
         public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
-        {           
+        {
             Path path = null;
             StreamGeometry geometry = null;
-            StreamGeometryContext sgc = null;         
+            StreamGeometryContext sgc = null;
             int count = 0;
 
             for (int i = 0; i + 1 < points.Count; i += 2)
@@ -71,7 +71,7 @@ namespace OxyPlot.Wpf
 
                 }
             }
-            
+
             if (path != null)
             {
                 sgc.Close();
@@ -168,7 +168,7 @@ namespace OxyPlot.Wpf
                     SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
                     if (fill != null)
                         path.Fill = GetCachedBrush(fill);
-                    geometry = new StreamGeometry {FillRule = FillRule.Nonzero};
+                    geometry = new StreamGeometry { FillRule = FillRule.Nonzero };
                     sgc = geometry.Open();
                 }
 
@@ -178,12 +178,12 @@ namespace OxyPlot.Wpf
                 {
                     if (first)
                     {
-                        sgc.BeginFigure(p.ToPoint(),fill!=null,true);
+                        sgc.BeginFigure(p.ToPoint(), fill != null, true);
                         first = false;
                     }
                     else
                     {
-                        sgc.LineTo(p.ToPoint(),stroke!=null,true);
+                        sgc.LineTo(p.ToPoint(), stroke != null, true);
                     }
                 }
 
@@ -235,6 +235,19 @@ namespace OxyPlot.Wpf
 
         public void DrawRectangles(IEnumerable<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
+            var path = new Path();
+            SetStroke(path, stroke, thickness);
+            if (fill != null)
+                path.Fill = GetCachedBrush(fill);
+
+            var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
+            foreach (var rect in rectangles)
+            {
+                gg.Children.Add(new RectangleGeometry { Rect = rect.ToRect() });
+            }
+            path.Data = gg;
+            Add(path);
+            /*
             Path path = null;
             GeometryGroup gg = null;
             int count = 0;
@@ -264,7 +277,7 @@ namespace OxyPlot.Wpf
             {
                 path.Data = gg;
                 Add(path);
-            }
+            }*/
         }
 
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
@@ -290,8 +303,7 @@ namespace OxyPlot.Wpf
             if (fill != null)
                 path.Fill = GetCachedBrush(fill);
 
-            var gg = new GeometryGroup();
-            gg.FillRule = FillRule.Nonzero;
+            var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
             foreach (var rect in rectangles)
             {
                 gg.Children.Add(new EllipseGeometry(rect.ToRect()));
@@ -313,7 +325,7 @@ namespace OxyPlot.Wpf
             if (fontSize > 0)
                 tb.FontSize = fontSize;
             if (fontWeight > 0)
-                tb.FontWeight = FontWeight.FromOpenTypeWeight((int)fontWeight);
+                tb.FontWeight = GetFontWeight(fontWeight);
 
             tb.Measure(new Size(1000, 1000));
 
@@ -341,7 +353,10 @@ namespace OxyPlot.Wpf
 
             Add(tb);
         }
-
+        private static FontWeight GetFontWeight(double fontWeight)
+        {
+            return fontWeight > FontWeights.Normal ? System.Windows.FontWeights.Bold : System.Windows.FontWeights.Normal;
+        }
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (String.IsNullOrEmpty(text))
@@ -357,7 +372,7 @@ namespace OxyPlot.Wpf
             if (fontSize > 0)
                 tb.FontSize = fontSize;
             if (fontWeight > 0)
-                tb.FontWeight = FontWeight.FromOpenTypeWeight((int)fontWeight);
+                tb.FontWeight = GetFontWeight(fontWeight);
 
             tb.Measure(new Size(1000, 1000));
 

@@ -47,10 +47,6 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("Title", typeof(string), typeof(Plot),
                                         new UIPropertyMetadata(null, VisualChanged));
 
-        //public static readonly DependencyProperty RenderAsShapesProperty =
-        //    DependencyProperty.Register("RenderAsShapes", typeof(bool), typeof(Plot),
-        //                                new UIPropertyMetadata(true, RenderAsShapesChanged));
-
         public static readonly DependencyProperty TrackerTemplateProperty =
             DependencyProperty.Register("TrackerTemplate", typeof(DataTemplate), typeof(Plot),
                                         new UIPropertyMetadata(null));
@@ -158,12 +154,6 @@ namespace OxyPlot.Wpf
             set { SetValue(TrackerTemplateProperty, value); }
         }
 
-        //public bool RenderAsShapes
-        //{
-        //    get { return (bool)GetValue(RenderAsShapesProperty); }
-        //    set { SetValue(RenderAsShapesProperty, value); }
-        //}
-
         public Thickness? PlotMargins
         {
             get { return (Thickness?)GetValue(PlotMarginsProperty); }
@@ -216,16 +206,6 @@ namespace OxyPlot.Wpf
 
         #region IPlot Members
 
-        public void Refresh(bool refreshData = true)
-        {
-            if (refreshData)
-            {
-                UpdateModel();
-            }
-
-            UpdateVisuals();
-        }
-
         public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
         {
             internalModel.GetAxesFromPoint(pt, out xaxis, out yaxis);
@@ -253,7 +233,6 @@ namespace OxyPlot.Wpf
                 return internalModel.PlotArea;
             }
 
-            // todo
             return new OxyRect(0, 0, ActualWidth, ActualHeight);
         }
 
@@ -300,6 +279,11 @@ namespace OxyPlot.Wpf
 
             // Modify min/max of the PlotModel's axis
             axis.Pan(x0, x1);
+        }
+
+        public void UpdateAxisTransforms()
+        {
+            internalModel.UpdateAxisTransforms();
         }
 
         public void Reset(IAxis axis)
@@ -351,9 +335,16 @@ namespace OxyPlot.Wpf
                 if (isPlotInvalidated)
                 {
                     isPlotInvalidated = false;
-                    Refresh();
+                    UpdateModel();
+                    UpdateVisuals();
                 }
             }
+        }
+
+        public void RefreshPlot()
+        {
+            UpdateModel();
+            UpdateVisuals();            
         }
 
         public void InvalidatePlot()
@@ -525,7 +516,7 @@ namespace OxyPlot.Wpf
                 a.Reset();
             }
 
-            Refresh();
+            InvalidatePlot();
         }
 
         public override void OnApplyTemplate()
@@ -538,7 +529,6 @@ namespace OxyPlot.Wpf
                 return;
             }
 
-            //OnRenderAsShapesChanged();
             canvas = new Canvas();
             grid.Children.Add(canvas);
             canvas.UpdateLayout();
@@ -555,56 +545,6 @@ namespace OxyPlot.Wpf
             overlays.Children.Add(zoomControl);
         }
 
-        //private static void RenderAsShapesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    ((Plot)d).OnRenderAsShapesChanged();
-        //}
-
-        //private void OnRenderAsShapesChanged()
-        //{
-        //    if (grid == null)
-        //    {
-        //        return;
-        //    }
-
-        //    if (RenderAsShapes)
-        //    {
-        //        if (canvas == null)
-        //        {
-        //            canvas = new Canvas();
-        //            grid.Children.Insert(0, canvas);
-        //            canvas.UpdateLayout();
-        //        }
-
-        //        if (plotFrame != null)
-        //        {
-        //            grid.Children.Remove(plotAliasedFrame);
-        //            // grid.Children.Remove(plotAliasedFrame);
-        //            //  plotAliasedFrame = null;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (plotFrame == null)
-        //        {
-        //            plotAliasedFrame = new PlotFrame(true);
-        //            plotFrame = new PlotFrame(false);
-        //            grid.Children.Insert(0, plotAliasedFrame);
-        //            grid.Children.Insert(1, plotFrame);
-        //            plotFrame.UpdateLayout();
-        //            plotAliasedFrame.UpdateLayout();
-        //        }
-
-        //        if (canvas != null)
-        //        {
-        //            grid.Children.Remove(canvas);
-        //            canvas = null;
-        //        }
-        //    }
-
-        //    UpdateVisuals();
-        //}
-
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             OnModelChanged();
@@ -617,7 +557,7 @@ namespace OxyPlot.Wpf
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            UpdateVisuals();
+            InvalidatePlot();
         }
 
         private static void VisualChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -632,7 +572,7 @@ namespace OxyPlot.Wpf
 
         private void OnModelChanged()
         {
-            Refresh();
+            InvalidatePlot();
         }
 
         private void UpdateModel()
@@ -704,6 +644,7 @@ namespace OxyPlot.Wpf
 
         private void UpdateVisuals()
         {
+            // Clear the canvas
             if (canvas != null)
             {
                 canvas.Children.Clear();
@@ -714,6 +655,30 @@ namespace OxyPlot.Wpf
                 return;
             }
 
+            TransferProperties();
+
+            if (canvas != null)
+            {
+                // disconnecting the canvas whil updating
+#if !NO_DISCONNECT
+                int idx = grid.Children.IndexOf(canvas);
+                grid.Children.RemoveAt(idx);
+#endif
+                var wrc = new ShapesRenderContext(canvas);
+                internalModel.Render(wrc);
+
+#if !NO_DISCONNECT
+                // reinsert the canvas again
+                grid.Children.Insert(idx, canvas);
+#endif
+            }
+        }
+
+        /// <summary>
+        /// Transfers properties from the WPF control to the PlotModel.
+        /// </summary>
+        private void TransferProperties()
+        {
             if (Title != null)
             {
                 internalModel.Title = Title;
@@ -723,28 +688,6 @@ namespace OxyPlot.Wpf
             {
                 internalModel.Subtitle = Subtitle;
             }
-
-            if (canvas != null)
-            {
-                // todo: trying to disconnect the canvas - not sure if this works...
-                int idx = grid.Children.IndexOf(canvas);
-                grid.Children.RemoveAt(idx);
-
-                var wrc = new ShapesRenderContext(canvas);
-                internalModel.Render(wrc);
-
-                // reinsert the canvas again
-                grid.Children.Insert(idx, canvas);
-            }
-
-            // !RenderasShapes
-            //if (plotFrame != null)
-            //{
-            //    plotFrame.Model = internalModel;
-            //    plotAliasedFrame.Model = internalModel;
-            //    plotFrame.InvalidateVisual();
-            //    plotAliasedFrame.InvalidateVisual();
-            //}
         }
 
         public void SaveBitmap(string fileName)

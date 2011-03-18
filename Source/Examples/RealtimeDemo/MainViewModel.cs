@@ -23,7 +23,7 @@ namespace RealtimeDemo
             SimulationType = SimulationType.Waves;
             // SimulationType = SimulationType.TimeSimulation;
 
-            Function = (t, x, a) => Math.Cos(t*a)*(x == 0 ? 1 : Math.Sin(x*a)/x);
+            Function = (t, x, a) => Math.Cos(t * a) * (x == 0 ? 1 : Math.Sin(x * a) / x);
 
             PlotModel = new PlotModel();
             PlotModel.Axes.Add(new LinearAxis(AxisPosition.Left, -2, 2));
@@ -46,13 +46,13 @@ namespace RealtimeDemo
 
         public void Update()
         {
-            double t = watch.ElapsedMilliseconds*0.001;
+            double t = watch.ElapsedMilliseconds * 0.001;
             int n = 0;
 
             for (int i = 0; i < PlotModel.Series.Count; i++)
             {
-                var s = PlotModel.Series[i] as DataSeries;
-
+                var s = PlotModel.Series[i] as LineSeries;
+                s.LineStyle = LineStyle.Solid;
                 switch (SimulationType)
                 {
                     case SimulationType.TimeSimulation:
@@ -63,14 +63,14 @@ namespace RealtimeDemo
                             double y = 0;
                             int m = 80;
                             for (int j = 0; j < m; j++)
-                                y += Math.Cos(0.001*x*j*j);
+                                y += Math.Cos(0.001 * x * j * j);
                             y /= m;
                             s.Points.Add(new DataPoint(x, y));
                             break;
                         }
                     case SimulationType.Waves:
                         s.Points.Clear();
-                        double a = 0.5 + i*0.05;
+                        double a = 0.5 + i * 0.05;
                         for (double x = -5; x <= 5; x += 0.01)
                         {
                             s.Points.Add(new DataPoint(x, Function(t, x, a)));

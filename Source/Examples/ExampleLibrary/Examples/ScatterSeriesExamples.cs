@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OxyPlot;
 
 namespace ExampleLibrary
@@ -20,8 +21,6 @@ namespace ExampleLibrary
             var s1 = new ScatterSeries("Series 1")
             {
                 MarkerType = MarkerType.Diamond,
-                MarkerFill = OxyColors.Red,
-                MarkerStroke = OxyColors.Black,
                 MarkerStrokeThickness = 0,
                 BinSize = binsize
             };
@@ -34,7 +33,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Random size")]
+        [Example("Random points with random size")]
         public static PlotModel RandomSize()
         {
             return RandomSize(1000, 8);
@@ -46,8 +45,6 @@ namespace ExampleLibrary
 
             var s1 = new ScatterSeries("Series 1")
             {
-                MarkerFill = OxyColors.Red,
-                MarkerStroke = OxyColors.Black,
                 MarkerStrokeThickness = 0,
                 BinSize = binsize
             };
@@ -62,5 +59,59 @@ namespace ExampleLibrary
             model.Series.Add(s1);
             return model;
         }
+
+        [Example("Random points with least squares fit")]
+        public static PlotModel RandomWithFit()
+        {
+            int n = 20;
+            var model = new PlotModel("Random data") { LegendPosition = LegendPosition.TopLeft };
+
+            var s1 = new ScatterSeries { Title = "Measurements" };
+            var random = new Random();
+            double x = 0;
+            double y = 0;
+            for (int i = 0; i < n; i++)
+            {
+                x += 2 + random.NextDouble() * 10;
+                y += 1 + random.NextDouble();
+                var p = new DataPoint(x, y);
+                s1.Points.Add(p);
+            }
+            model.Series.Add(s1);
+            double a, b;
+            LeastSquaresFit(s1.Points, out a, out b);
+            model.Annotations.Add(new LineAnnotation { Slope = a, Intercept = b, Text = "Least squares fit" });
+            return model;
+        }
+
+        /// <summary>
+        /// Calculates the Least squares fit of a list of DataPoints.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <param name="a">The slope.</param>
+        /// <param name="b">The intercept.</param>
+        public static void LeastSquaresFit(IEnumerable<DataPoint> points, out double a, out double b)
+        {
+            // http://en.wikipedia.org/wiki/Least_squares
+            // http://mathworld.wolfram.com/LeastSquaresFitting.html
+            // http://web.cecs.pdx.edu/~gerry/nmm/course/slides/ch09Slides4up.pdf
+            double Sx = 0;
+            double Sy = 0;
+            double Sxy = 0;
+            double Sxx = 0;
+            int m = 0;
+            foreach (var p in points)
+            {
+                Sx += p.X;
+                Sy += p.Y;
+                Sxy += p.X * p.Y;
+                Sxx += p.X * p.X;
+                m++;
+            }
+            double d = Sx * Sx - m * Sxx;
+            a = 1 / d * (Sx * Sy - m * Sxy);
+            b = 1 / d * (Sx * Sxy - Sxx * Sy);
+        }
+
     }
 }

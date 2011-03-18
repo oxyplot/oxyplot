@@ -91,7 +91,7 @@ namespace OxyPlot.Pdf
             if (text == null)
                 return;
             var fs = XFontStyle.Regular;
-            if (fontWeight >= 700)
+            if (fontWeight > FontWeights.Normal)
                 fs = XFontStyle.Bold;
             var font = new XFont(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
 
@@ -135,7 +135,7 @@ namespace OxyPlot.Pdf
             if (text == null)
                 return OxySize.Empty;
             var fs = XFontStyle.Regular;
-            if (fontWeight >= 500)
+            if (fontWeight > FontWeights.Normal)
                 fs = XFontStyle.Bold;
             var font = new XFont(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
             var size = g.MeasureString(text, font);
