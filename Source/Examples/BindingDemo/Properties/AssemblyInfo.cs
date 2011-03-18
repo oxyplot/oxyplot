@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("BindingDemo")]
-[assembly: AssemblyCopyright("Copyright © OBJO 2010")]
+[assembly: AssemblyCopyright("Copyright © OBJO 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
