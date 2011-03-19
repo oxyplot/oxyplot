@@ -8,21 +8,38 @@ using System.Windows.Shapes;
 namespace OxyPlot.Silverlight
 {
     /// <summary>
-    /// Shows a slider with horizontal and vertical lines, and a templated content control.
-    /// The ContentTemplate must be set to define how the slider label looks.
+    /// Shows a tracker with horizontal and vertical lines, and a templated content control.
+    /// The ContentTemplate must be set to define how the tracker label looks.
     /// The Plots contains a default template in the Themes/Generic.xaml file. 
     /// </summary>
     public class Tracker : Canvas
     {
-        private readonly Line sliderLine1 = new Line();
-        private readonly Line sliderLine2 = new Line();
+        private readonly Line trackerLine1 = new Line();
+        private readonly Line trackerLine2 = new Line();
         private readonly ContentControl content = new ContentControl();
 
         /// <summary>
-        /// Gets or sets the slider label format.
+        /// Gets or sets the tracker label format.
+        /// The fields are
+        /// {0} X-axis title
+        /// {1} X-value
+        /// {2} Y-axis title
+        /// {3} Y-value
         /// </summary>
-        /// <value>The slider label format.</value>
+        /// <value>The tracker label format.</value>
         public string LabelFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets the X-value format.
+        /// </summary>
+        /// <value>The value format X.</value>
+        public string ValueFormatX { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Y-value format.
+        /// </summary>
+        /// <value>The value format Y.</value>
+        public string ValueFormatY { get; set; }
 
         /// <summary>
         /// Gets or sets the content template.
@@ -36,27 +53,25 @@ namespace OxyPlot.Silverlight
         /// <param name="pc">The parent Plot.</param>
         public Tracker()
         {
-            LabelFormat = null; // "{0:0.###} {1:0.###}";
-
-            Children.Add(sliderLine1);
-            Children.Add(sliderLine2);
+            Children.Add(trackerLine1);
+            Children.Add(trackerLine2);
             Children.Add(content);
 
-            sliderLine1.StrokeThickness = 1;
-            sliderLine2.StrokeThickness = 1;
-            sliderLine1.Stroke = new SolidColorBrush(Color.FromArgb(80, 0, 0, 0));
-            sliderLine2.Stroke = sliderLine1.Stroke;
+            trackerLine1.StrokeThickness = 1;
+            trackerLine2.StrokeThickness = 1;
+            trackerLine1.Stroke = new SolidColorBrush(Color.FromArgb(80, 0, 0, 0));
+            trackerLine2.Stroke = trackerLine1.Stroke;
 
-            //sliderLine1.SnapsToDevicePixels = true;
-            //sliderLine2.SnapsToDevicePixels = true;
-            //sliderLine1.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
-            //sliderLine2.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
-
+/*            trackerLine1.SnapsToDevicePixels = true;
+            trackerLine2.SnapsToDevicePixels = true;
+            trackerLine1.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+            trackerLine2.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+*/
             Hide();
         }
 
         /// <summary>
-        /// Sets the position of the slider.
+        /// Sets the position of the tracker.
         /// </summary>
         /// <param name="dp">The data point.</param>
         /// <param name="s">The series.</param>
@@ -75,27 +90,27 @@ namespace OxyPlot.Silverlight
 
             if (ContentTemplate != null)
             {
-                content.Content = new TrackerViewModel(s, dp, LabelFormat);
+                content.Content = new TrackerViewModel(s, dp, LabelFormat) { FormatX = ValueFormatX, FormatY = ValueFormatY };
                 content.ContentTemplate = ContentTemplate;
                 SetLeft(content, pt0.X);
                 SetTop(content, pt0.Y);
             }
 
-            sliderLine1.X1 = pt1.X;
-            sliderLine1.Y1 = pt1.Y;
-            sliderLine1.X2 = pt2.X;
-            sliderLine1.Y2 = pt2.Y;
+            trackerLine1.X1 = pt1.X;
+            trackerLine1.Y1 = pt1.Y;
+            trackerLine1.X2 = pt2.X;
+            trackerLine1.Y2 = pt2.Y;
 
-            sliderLine2.X1 = pt3.X;
-            sliderLine2.Y1 = pt3.Y;
-            sliderLine2.X2 = pt4.X;
-            sliderLine2.Y2 = pt4.Y;
+            trackerLine2.X1 = pt3.X;
+            trackerLine2.Y1 = pt3.Y;
+            trackerLine2.X2 = pt4.X;
+            trackerLine2.Y2 = pt4.Y;
 
             Visibility = Visibility.Visible;
         }
 
         /// <summary>
-        /// Hides the slider.
+        /// Hides the tracker.
         /// </summary>
         public void Hide()
         {
@@ -106,7 +121,7 @@ namespace OxyPlot.Silverlight
     public class TrackerViewModel
     {
         /// <summary>
-        /// Gets or sets the position of the slider (data coordinates).
+        /// Gets or sets the position of the tracker (data coordinates).
         /// </summary>
         /// <value>The point.</value>
         public DataPoint Point { get; set; }
@@ -125,7 +140,10 @@ namespace OxyPlot.Silverlight
         /// <value>The format.</value>
         public string Format { get; set; }
 
-        private const string DefaultFormat = "{0}: {1:0.#####}, {2}: {3:0.#####}";
+        public string FormatX { get; set; }
+        public string FormatY { get; set; }
+
+        private const string DefaultFormat = "{0}: {1}\n{2}: {3}";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackerViewModel"/> class.
@@ -155,7 +173,19 @@ namespace OxyPlot.Silverlight
             var yTitle = Series.YAxis.Title;
             if (String.IsNullOrEmpty(xTitle)) xTitle = "X";
             if (String.IsNullOrEmpty(yTitle)) yTitle = "Y";
-            return String.Format(CultureInfo.InvariantCulture, Format, xTitle, Point.X, yTitle, Point.Y);
+
+            object xValue = Point.X;
+            if (Series.XAxis is OxyPlot.DateTimeAxis) xValue = OxyPlot.DateTimeAxis.ToDateTime(Point.X);
+            if (Series.XAxis is OxyPlot.TimeSpanAxis) xValue = OxyPlot.TimeSpanAxis.ToTimeSpan(Point.X);
+
+            object yValue = Point.Y;
+            if (Series.YAxis is OxyPlot.DateTimeAxis) yValue = OxyPlot.DateTimeAxis.ToDateTime(Point.Y);
+            if (Series.YAxis is OxyPlot.TimeSpanAxis) yValue = OxyPlot.TimeSpanAxis.ToTimeSpan(Point.Y);
+
+            string sx = FormatX == null ? xValue.ToString() : String.Format(FormatX, xValue);
+            string sy = FormatY == null ? yValue.ToString() : String.Format(FormatY, yValue);
+
+            return String.Format(CultureInfo.InvariantCulture, Format, xTitle, sx, yTitle, sy);
         }
     }
 }

@@ -10,14 +10,12 @@
             <Setter.Value>
                 <DataTemplate>
                     <Canvas>
-                        <Grid Canvas.Left="-80" Canvas.Top="-25">                          
-                           <Path  
-                              Data="M0,0 L3,-7 L80,-7 L80,-25 L-80,-25 L-80,-7 L-3,-7 z" 
-                                Stroke="Black" Stretch="Fill" Fill="#A0FFFFFF" />
+                        <Grid Canvas.Left="-80" Canvas.Top="-40">
+                            <Path Data="M0,0 L3,-7 L80,-7 L80,-40 L-80,-40 L-80,-7 L-3,-7 z" 
+                                Stroke="Black" Stretch="Fill" 
+                                Fill="#A0FFFFFF"/>
                             <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 7"/>
                         </Grid>
-
-                       
                     </Canvas>
                 </DataTemplate>
             </Setter.Value>
