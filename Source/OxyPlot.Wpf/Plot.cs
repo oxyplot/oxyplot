@@ -20,7 +20,7 @@ namespace OxyPlot.Wpf
     /// </summary>
     [ContentProperty("Series")]
     [TemplatePart(Name = PART_GRID, Type = typeof(Grid))]
-    public class Plot : Control, IPlot
+    public class Plot : Control, IPlotControl
     {
         private const string PART_GRID = "PART_Grid";
 
@@ -204,7 +204,7 @@ namespace OxyPlot.Wpf
             get { return tracker; }
         }
 
-        #region IPlot Members
+        #region IPlotControl Members
 
         public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
         {

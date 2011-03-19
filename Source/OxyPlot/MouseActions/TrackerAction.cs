@@ -6,7 +6,7 @@
     /// </summary>
     public class TrackerAction : MouseAction
     {
-        public TrackerAction(IPlot pc)
+        public TrackerAction(IPlotControl pc)
             : base(pc)
         {
         }

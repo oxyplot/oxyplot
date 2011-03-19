@@ -10,8 +10,8 @@ namespace Oxyplot.WindowsForms
     /// <summary>
     /// Represents a control that displays a plot.
     /// </summary>
-    public sealed class Plot : Control, IPlot
-    {
+	public class Plot : Control, IPlotControl
+	{
         public List<MouseAction> MouseActions { get; private set; }
 
         private readonly PanAction panAction;

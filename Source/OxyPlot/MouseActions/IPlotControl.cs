@@ -1,7 +1,9 @@
 ﻿namespace OxyPlot
 {
-    public interface IPlot
+    public interface IPlotControl
     {
+        PlotModel Model { get; set; }
+
         void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis);
         
         ISeries GetSeriesFromPoint(ScreenPoint pt, double limit = 100);
