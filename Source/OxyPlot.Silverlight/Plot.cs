@@ -10,7 +10,7 @@ using System.Windows.Media;
 namespace OxyPlot.Silverlight
 {
     [TemplatePart(Name = PART_GRID, Type = typeof(Grid))]
-    public class Plot : Control, IPlot
+    public class Plot : Control, IPlotControl
     {
         public override void OnApplyTemplate()
         {
@@ -33,6 +33,12 @@ namespace OxyPlot.Silverlight
 
             base.OnApplyTemplate();
         }
+		  public static readonly DependencyProperty SubtitleProperty =
+			  DependencyProperty.Register("Subtitle", typeof(string), typeof(Plot), new PropertyMetadata(null));
+
+		  public static readonly DependencyProperty TitleProperty =
+				DependencyProperty.Register("Title", typeof(string), typeof(Plot),
+													 new PropertyMetadata(null, VisualChanged));
 
         public static readonly DependencyProperty TrackerTemplateProperty =
             DependencyProperty.Register("TrackerTemplate", typeof(DataTemplate), typeof(Plot),
@@ -53,6 +59,18 @@ namespace OxyPlot.Silverlight
             get { return (DataTemplate)GetValue(TrackerTemplateProperty); }
             set { SetValue(TrackerTemplateProperty, value); }
         }
+
+		  public string Subtitle
+		  {
+			  get { return (string)GetValue(SubtitleProperty); }
+			  set { SetValue(SubtitleProperty, value); }
+		  }
+
+		  public string Title
+		  {
+			  get { return (string)GetValue(TitleProperty); }
+			  set { SetValue(TitleProperty, value); }
+		  }
 
         public Plot()
         {

@@ -2,7 +2,7 @@
 {
     public class PanAction : MouseAction
     {
-        public PanAction(IPlot pc)
+        public PanAction(IPlotControl pc)
             : base(pc)
         {
         }
