@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser.Web", "Examp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrarySL", "Examples\ExampleLibrary\ExampleLibrarySL.csproj", "{A2E856EB-3F45-4ACE-90FB-5440D4577DE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SparklineDemo", "Examples\Silverlight\SparklineDemo\SparklineDemo.csproj", "{BD75B688-D4A3-405F-BC08-E371993A6273}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{A2E856EB-3F45-4ACE-90FB-5440D4577DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2E856EB-3F45-4ACE-90FB-5440D4577DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2E856EB-3F45-4ACE-90FB-5440D4577DE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD75B688-D4A3-405F-BC08-E371993A6273}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD75B688-D4A3-405F-BC08-E371993A6273}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD75B688-D4A3-405F-BC08-E371993A6273}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD75B688-D4A3-405F-BC08-E371993A6273}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +60,6 @@ Global
 		{15B1DC32-92C8-4301-A16D-9C47EE8356A2} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 		{BB639CDB-36F9-4DCB-A075-B713CC5A9A3F} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 		{A2E856EB-3F45-4ACE-90FB-5440D4577DE1} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
+		{BD75B688-D4A3-405F-BC08-E371993A6273} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 	EndGlobalSection
 EndGlobal
