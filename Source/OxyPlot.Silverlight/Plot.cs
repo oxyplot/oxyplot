@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,72 +8,54 @@ using System.Windows.Media;
 
 namespace OxyPlot.Silverlight
 {
-    [TemplatePart(Name = PART_GRID, Type = typeof(Grid))]
-    public class Plot : Control, IPlotControl
+    [TemplatePart(Name = PART_GRID, Type = typeof (Grid))]
+    public class Plot : Control, IPlot
     {
-        public override void OnApplyTemplate()
-        {
-            grid = GetTemplateChild(PART_GRID) as Grid;
-            if (grid != null)
-            {
-                canvas = new Canvas();
-                grid.Children.Insert(0, canvas);
-                canvas.UpdateLayout();
+        private const string PART_GRID = "PART_Grid";
 
-                overlays = new Canvas();
-                grid.Children.Add(overlays);
+        public static readonly DependencyProperty SubtitleProperty =
+            DependencyProperty.Register("Subtitle", typeof (string), typeof (Plot), new PropertyMetadata(null));
 
-                tracker = new Tracker();
-                overlays.Children.Add(tracker);
-
-                zoomControl = new ContentControl();
-                overlays.Children.Add(zoomControl);
-            }
-
-            base.OnApplyTemplate();
-        }
-		  public static readonly DependencyProperty SubtitleProperty =
-			  DependencyProperty.Register("Subtitle", typeof(string), typeof(Plot), new PropertyMetadata(null));
-
-		  public static readonly DependencyProperty TitleProperty =
-				DependencyProperty.Register("Title", typeof(string), typeof(Plot),
-													 new PropertyMetadata(null, VisualChanged));
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("Title", typeof (string), typeof (Plot),
+                                        new PropertyMetadata(null, VisualChanged));
 
         public static readonly DependencyProperty TrackerTemplateProperty =
-            DependencyProperty.Register("TrackerTemplate", typeof(DataTemplate), typeof(Plot),
+            DependencyProperty.Register("TrackerTemplate", typeof (DataTemplate), typeof (Plot),
                                         new PropertyMetadata(null));
 
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
-            DependencyProperty.Register("ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot),
+            DependencyProperty.Register("ZoomRectangleTemplate", typeof (ControlTemplate), typeof (Plot),
                                         new PropertyMetadata(null));
 
-        public ControlTemplate ZoomRectangleTemplate
-        {
-            get { return (ControlTemplate)GetValue(ZoomRectangleTemplateProperty); }
-            set { SetValue(ZoomRectangleTemplateProperty, value); }
-        }
+        public static readonly DependencyProperty HandleRightClicksProperty =
+            DependencyProperty.Register("HandleRightClicks", typeof (bool), typeof (Plot), new PropertyMetadata(true));
 
-        public DataTemplate TrackerTemplate
-        {
-            get { return (DataTemplate)GetValue(TrackerTemplateProperty); }
-            set { SetValue(TrackerTemplateProperty, value); }
-        }
+        public static readonly DependencyProperty DataContextWatcherProperty =
+            DependencyProperty.Register("DataContextWatcher",
+                                        typeof (Object), typeof (Plot),
+                                        new PropertyMetadata(DataContextChanged));
 
-		  public string Subtitle
-		  {
-			  get { return (string)GetValue(SubtitleProperty); }
-			  set { SetValue(SubtitleProperty, value); }
-		  }
+        public static readonly DependencyProperty ModelProperty =
+            DependencyProperty.Register("Model", typeof (PlotModel), typeof (Plot),
+                                        new PropertyMetadata(null, ModelChanged));
 
-		  public string Title
-		  {
-			  get { return (string)GetValue(TitleProperty); }
-			  set { SetValue(TitleProperty, value); }
-		  }
+        private readonly PanAction panAction;
+        private readonly TrackerAction trackerAction;
+        private readonly ZoomAction zoomAction;
+
+        private Canvas canvas;
+        private Grid grid;
+        private PlotModel internalModel;
+        private bool isPlotInvalidated;
+        private Canvas overlays;
+        private Tracker tracker;
+
+        private ContentControl zoomControl;
 
         public Plot()
         {
-            DefaultStyleKey = typeof(Plot);
+            DefaultStyleKey = typeof (Plot);
 
             Background = new SolidColorBrush(Colors.Transparent);
 
@@ -82,7 +63,7 @@ namespace OxyPlot.Silverlight
             zoomAction = new ZoomAction(this);
             trackerAction = new TrackerAction(this);
 
-            MouseActions = new List<MouseAction> { panAction, zoomAction, trackerAction };
+            MouseActions = new List<MouseAction> {panAction, zoomAction, trackerAction};
 
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
@@ -94,29 +75,45 @@ namespace OxyPlot.Silverlight
             CompositionTarget.Rendering += CompositionTargetRendering;
         }
 
-        public static readonly DependencyProperty DataContextWatcherProperty =
-            DependencyProperty.Register("DataContextWatcher",
-                                        typeof(Object), typeof(Plot),
-                                        new PropertyMetadata(DataContextChanged));
-
-        private static void DataContextChanged(object sender,
-                                               DependencyPropertyChangedEventArgs e)
+        public ControlTemplate ZoomRectangleTemplate
         {
-            ((Plot)sender).OnDataContextChanged(sender, e);
+            get { return (ControlTemplate) GetValue(ZoomRectangleTemplateProperty); }
+            set { SetValue(ZoomRectangleTemplateProperty, value); }
         }
 
-        private void CompositionTargetRendering(object sender, EventArgs e)
+        public DataTemplate TrackerTemplate
         {
-            lock (this)
-            {                    
-                if (isPlotInvalidated)
-                {
-                    isPlotInvalidated = false;
-                    UpdateModel();
-                    UpdateVisuals();
-                }
-            }
+            get { return (DataTemplate) GetValue(TrackerTemplateProperty); }
+            set { SetValue(TrackerTemplateProperty, value); }
         }
+
+        public string Subtitle
+        {
+            get { return (string) GetValue(SubtitleProperty); }
+            set { SetValue(SubtitleProperty, value); }
+        }
+
+        public string Title
+        {
+            get { return (string) GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        public bool HandleRightClicks
+        {
+            get { return (bool) GetValue(HandleRightClicksProperty); }
+            set { SetValue(HandleRightClicksProperty, value); }
+        }
+
+        public PlotModel Model
+        {
+            get { return (PlotModel) GetValue(ModelProperty); }
+            set { SetValue(ModelProperty, value); }
+        }
+
+        public List<MouseAction> MouseActions { get; private set; }
+
+        #region IPlot Members
 
         public void RefreshPlot()
         {
@@ -135,192 +132,6 @@ namespace OxyPlot.Silverlight
         public void UpdateAxisTransforms()
         {
             internalModel.UpdateAxisTransforms();
-        }
-
-        public static readonly DependencyProperty ModelProperty =
-            DependencyProperty.Register("Model", typeof(PlotModel), typeof(Plot),
-                                        new PropertyMetadata(null, ModelChanged));
-
-        public PlotModel Model
-        {
-            get { return (PlotModel)GetValue(ModelProperty); }
-            set { SetValue(ModelProperty, value); }
-        }
-
-        private const string PART_GRID = "PART_Grid";
-
-        private Canvas canvas;
-        private Grid grid;
-        private Canvas overlays;
-        private Tracker tracker;
-
-        private PlotModel internalModel;
-
-        public List<MouseAction> MouseActions { get; private set; }
-
-        private readonly PanAction panAction;
-        private readonly TrackerAction trackerAction;
-        private readonly ZoomAction zoomAction;
-
-        private ContentControl zoomControl;
-
-        private bool isPlotInvalidated;
-
-        protected override void OnMouseWheel(MouseWheelEventArgs e)
-        {
-            base.OnMouseWheel(e);
-
-            var p = e.GetPosition(this).ToScreenPoint();
-            bool isControlDown = IsControlDown();
-            bool isShiftDown = IsShiftDown();
-            bool isAltDown = IsAltDown();
-            foreach (var a in MouseActions)
-                a.OnMouseWheel(p, e.Delta, isControlDown, isShiftDown, isAltDown);
-        }
-
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonDown(e);
-            OnMouseButtonDown(OxyMouseButton.Left, e);
-        }
-
-        private void OnMouseButtonDown(OxyMouseButton button, MouseButtonEventArgs e)
-        {
-            Focus();
-            CaptureMouse();
-            var p = e.GetPosition(this).ToScreenPoint();
-            bool isControlDown = IsControlDown();
-            bool isShiftDown = IsShiftDown();
-            bool isAltDown = IsAltDown();
-            foreach (var a in MouseActions)
-                a.OnMouseDown(p, button, 1, isControlDown, isShiftDown, isAltDown);
-        }
-
-        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
-        {
-            // TODO: Right click is showing silverlight context menu - find other solution??
-
-            base.OnMouseRightButtonDown(e);
-            OnMouseButtonDown(OxyMouseButton.Right, e);
-            e.Handled = true;
-        }
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-            var p = e.GetPosition(this).ToScreenPoint();
-            bool isControlDown = IsControlDown();
-            bool isShiftDown = IsShiftDown();
-            bool isAltDown = IsAltDown();
-            foreach (var a in MouseActions)
-                a.OnMouseMove(p, isControlDown, isShiftDown, isAltDown);
-        }
-
-        private bool IsControlDown()
-        {
-            var keys = Keyboard.Modifiers;
-            return (keys & ModifierKeys.Control) != 0;
-        }
-
-        private bool IsShiftDown()
-        {
-            var keys = Keyboard.Modifiers;
-            return (keys & ModifierKeys.Shift) != 0;
-        }
-
-        private bool IsAltDown()
-        {
-            var keys = Keyboard.Modifiers;
-            return (keys & ModifierKeys.Alt) != 0;
-        }
-
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonUp(e);
-            OnMouseButtonUp(e);
-        }
-
-        protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
-        {
-            base.OnMouseRightButtonUp(e);
-            OnMouseButtonUp(e);
-            e.Handled = true;
-        }
-
-        protected void OnMouseButtonUp(MouseButtonEventArgs e)
-        {
-            foreach (var a in MouseActions)
-                a.OnMouseUp();
-            ReleaseMouseCapture();
-        }
-
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            if (e.Key == Key.A)
-            {
-                e.Handled = true;
-                ZoomAll();
-            }
-            base.OnKeyDown(e);
-        }
-
-        public void ZoomAll()
-        {
-            foreach (var a in internalModel.Axes)
-                a.Reset();
-            InvalidatePlot();
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            OnModelChanged();
-        }
-
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            OnModelChanged();
-        }
-
-        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            UpdateVisuals();
-        }
-
-        private static void VisualChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((Plot)d).UpdateVisuals();
-        }
-
-        private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((Plot)d).OnModelChanged();
-        }
-
-        private void OnModelChanged()
-        {
-            InvalidatePlot();
-        }
-
-        private void UpdateModel()
-        {
-            internalModel = Model;
-            if (Model != null)
-                internalModel.UpdateData();
-        }
-
-        private void UpdateVisuals()
-        {
-            if (canvas == null)
-                return;
-
-            canvas.Children.Clear();
-
-            if (internalModel == null)
-                return;
-
-
-            var wrc = new SilverlightRenderContext(canvas);
-            internalModel.Render(wrc);
         }
 
         public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
@@ -396,6 +207,208 @@ namespace OxyPlot.Silverlight
         public void ZoomAt(IAxis axis, double factor, double x)
         {
             axis.ZoomAt(factor, x);
+        }
+
+        #endregion
+
+        public override void OnApplyTemplate()
+        {
+            grid = GetTemplateChild(PART_GRID) as Grid;
+            if (grid != null)
+            {
+                canvas = new Canvas();
+                grid.Children.Insert(0, canvas);
+                canvas.UpdateLayout();
+
+                overlays = new Canvas();
+                grid.Children.Add(overlays);
+
+                tracker = new Tracker();
+                overlays.Children.Add(tracker);
+
+                zoomControl = new ContentControl();
+                overlays.Children.Add(zoomControl);
+            }
+
+            base.OnApplyTemplate();
+        }
+
+        private static void DataContextChanged(object sender,
+                                               DependencyPropertyChangedEventArgs e)
+        {
+            ((Plot) sender).OnDataContextChanged(sender, e);
+        }
+
+        private void CompositionTargetRendering(object sender, EventArgs e)
+        {
+            lock (this)
+            {
+                if (isPlotInvalidated)
+                {
+                    isPlotInvalidated = false;
+                    UpdateModel();
+                    UpdateVisuals();
+                }
+            }
+        }
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            ScreenPoint p = e.GetPosition(this).ToScreenPoint();
+            bool isControlDown = IsControlDown();
+            bool isShiftDown = IsShiftDown();
+            bool isAltDown = IsAltDown();
+            foreach (MouseAction a in MouseActions)
+                a.OnMouseWheel(p, e.Delta, isControlDown, isShiftDown, isAltDown);
+        }
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            OnMouseButtonDown(OxyMouseButton.Left, e);
+        }
+
+        private void OnMouseButtonDown(OxyMouseButton button, MouseButtonEventArgs e)
+        {
+            Focus();
+            CaptureMouse();
+            ScreenPoint p = e.GetPosition(this).ToScreenPoint();
+            bool isControlDown = IsControlDown();
+            bool isShiftDown = IsShiftDown();
+            bool isAltDown = IsAltDown();
+            foreach (MouseAction a in MouseActions)
+                a.OnMouseDown(p, button, 1, isControlDown, isShiftDown, isAltDown);
+        }
+
+        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+        {
+            // TODO: Right click is showing silverlight context menu - find other solution??
+
+            base.OnMouseRightButtonDown(e);
+            OnMouseButtonDown(OxyMouseButton.Right, e);
+            if (HandleRightClicks)
+                e.Handled = true;
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            ScreenPoint p = e.GetPosition(this).ToScreenPoint();
+            bool isControlDown = IsControlDown();
+            bool isShiftDown = IsShiftDown();
+            bool isAltDown = IsAltDown();
+            foreach (MouseAction a in MouseActions)
+                a.OnMouseMove(p, isControlDown, isShiftDown, isAltDown);
+        }
+
+        private bool IsControlDown()
+        {
+            ModifierKeys keys = Keyboard.Modifiers;
+            return (keys & ModifierKeys.Control) != 0;
+        }
+
+        private bool IsShiftDown()
+        {
+            ModifierKeys keys = Keyboard.Modifiers;
+            return (keys & ModifierKeys.Shift) != 0;
+        }
+
+        private bool IsAltDown()
+        {
+            ModifierKeys keys = Keyboard.Modifiers;
+            return (keys & ModifierKeys.Alt) != 0;
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonUp(e);
+            OnMouseButtonUp(e);
+        }
+
+        protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseRightButtonUp(e);
+            OnMouseButtonUp(e);
+            if (HandleRightClicks)
+                e.Handled = true;
+        }
+
+        protected void OnMouseButtonUp(MouseButtonEventArgs e)
+        {
+            foreach (MouseAction a in MouseActions)
+                a.OnMouseUp();
+            ReleaseMouseCapture();
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.Key == Key.A)
+            {
+                e.Handled = true;
+                ZoomAll();
+            }
+            base.OnKeyDown(e);
+        }
+
+        public void ZoomAll()
+        {
+            foreach (IAxis a in internalModel.Axes)
+                a.Reset();
+            InvalidatePlot();
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            OnModelChanged();
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            OnModelChanged();
+        }
+
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdateVisuals();
+        }
+
+        private static void VisualChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((Plot) d).UpdateVisuals();
+        }
+
+        private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((Plot) d).OnModelChanged();
+        }
+
+        private void OnModelChanged()
+        {
+            InvalidatePlot();
+        }
+
+        private void UpdateModel()
+        {
+            internalModel = Model;
+            if (Model != null)
+                internalModel.UpdateData();
+        }
+
+        private void UpdateVisuals()
+        {
+            if (canvas == null)
+                return;
+
+            canvas.Children.Clear();
+
+            if (internalModel == null)
+                return;
+
+
+            var wrc = new SilverlightRenderContext(canvas);
+            internalModel.Render(wrc);
         }
     }
 }
