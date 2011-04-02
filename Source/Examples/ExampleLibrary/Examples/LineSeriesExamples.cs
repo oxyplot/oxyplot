@@ -70,24 +70,24 @@ namespace ExampleLibrary
         public static PlotModel CustomMarkers()
         {
             var model = new PlotModel("LineSeries with custom markers");
-            int n = 60;
+            int n = 6;
             var marker = new ScreenPoint[n];
             for (int i = 0; i < n; i++)
             {
-                double th = Math.PI * 2 * i / (n - 1);
-                double r = (0.8 + Math.Cos(th * 8) * 0.2);
+                double th = Math.PI * (4.0 * i / (n - 1)-0.5);
+                double r = 1;
                 marker[i] = new ScreenPoint(Math.Cos(th) * r, Math.Sin(th) * r);
             }
 
             var s1 = new LineSeries("Series 1")
                          {
-                             Color = OxyColor.FromUInt32(0xFF748c41),
+                             Color = OxyColors.Red,
                              StrokeThickness = 2,
                              MarkerType = MarkerType.Custom,
                              MarkerOutline = marker,
-                             MarkerFill = OxyColor.FromUInt32(0xFFaa4643),
+                             MarkerFill = OxyColors.DarkRed,
                              MarkerStroke = OxyColors.Black,
-                             MarkerStrokeThickness = 1,
+                             MarkerStrokeThickness = 0,
                              MarkerSize = 10
                          };
             s1.Points.Add(new DataPoint(0, 20));
