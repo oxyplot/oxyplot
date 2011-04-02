@@ -9,7 +9,7 @@ using System.Windows.Media;
 namespace OxyPlot.Silverlight
 {
     [TemplatePart(Name = PART_GRID, Type = typeof (Grid))]
-    public class Plot : Control, IPlot
+    public class Plot : Control, IPlotControl
     {
         private const string PART_GRID = "PART_Grid";
 
