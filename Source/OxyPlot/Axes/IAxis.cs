@@ -19,8 +19,16 @@
         TopLeft,
         BottomLeft,
         TopRight,
-        BottomRight
+        BottomRight,
+		  Top,
+		  Bottom
     }
+
+	 public enum LegendLayout
+	 {
+		 Horizontal = 0,
+		 Vertical
+	 }
 
     public enum TickStyle
     {

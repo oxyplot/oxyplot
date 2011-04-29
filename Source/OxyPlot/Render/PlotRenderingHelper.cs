@@ -45,7 +45,7 @@ namespace OxyPlot
         {
             double maxWidth = 0;
             double maxHeight = 0;
-            double totalHeight = 0;
+				double totalHeight = 0;
 
             // Measure
             foreach (var s in plot.Series)
@@ -100,6 +100,12 @@ namespace OxyPlot
                     x1 = x0 + lineLength * sign + LEGEND_PADDING * sign;
                     ha = sign == 1 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
                     break;
+					case LegendPosition.Top:
+					case LegendPosition.Bottom:
+						x0 = plot.PlotArea.Left + LEGEND_PADDING;
+            		x1 = x0 + lineLength + LEGEND_PADDING;
+            		ha = HorizontalTextAlign.Left;
+            		break;
             }
 
             // Vertical alignment
@@ -114,8 +120,14 @@ namespace OxyPlot
                 case LegendPosition.BottomLeft:
                     y0 = plot.PlotArea.Bottom - maxHeight + LEGEND_PADDING;
                     break;
+					 case LegendPosition.Top:
+            		y0 = plot.Bounds.Top - maxHeight - LEGEND_PADDING;
+            		break;
+					 case LegendPosition.Bottom:
+            		y0 = plot.Bounds.Bottom + maxHeight + LEGEND_PADDING;
+            		break;
             }
-
+				
             foreach (var s in plot.Series)
             {
                 if (String.IsNullOrEmpty(s.Title))
@@ -123,10 +135,11 @@ namespace OxyPlot
                     continue;
                 }
 
-                rc.DrawMathText(new ScreenPoint(x1, y0),
-                                s.Title, plot.TextColor,
-                                plot.LegendFont, plot.LegendFontSize, FontWeights.Normal, 0,
-                                ha, va, false);
+                var textSize = rc.DrawMathText(new ScreenPoint(x1, y0),
+															  s.Title, plot.TextColor,
+															  plot.LegendFont, plot.LegendFontSize, FontWeights.Normal, 0,
+															  ha, va, true);
+
                 var rect = new OxyRect(x0 - lineLength, y0 - maxHeight / 2, lineLength, maxHeight);
                 if (ha == HorizontalTextAlign.Left)
                 {
@@ -134,14 +147,24 @@ namespace OxyPlot
                 }
 
                 s.RenderLegend(rc, rect);
-                if (plot.LegendPosition == LegendPosition.TopLeft || plot.LegendPosition == LegendPosition.TopRight)
-                {
-                    y0 += maxHeight;
-                }
-                else
-                {
-                    y0 -= maxHeight;
-                }
+
+					 if (plot.LegendLayout == LegendLayout.Horizontal)
+					 {
+						 x0 += (textSize.Width + lineLength + 3*LEGEND_PADDING);
+						 x1 += (textSize.Width + lineLength + 3*LEGEND_PADDING);
+					 }
+					 else
+					 {
+					 	if (plot.LegendPosition == LegendPosition.TopLeft || plot.LegendPosition == LegendPosition.TopRight ||
+					 	    plot.LegendPosition == LegendPosition.Bottom)
+					 	{
+					 		y0 += maxHeight;
+					 	}
+					 	else
+					 	{
+					 		y0 -= maxHeight;
+					 	}
+					 }
             }
         }
     }

@@ -46,6 +46,7 @@ namespace OxyPlot
         internal IAxis DefaultYAxis;
 
         public OxyRect PlotArea { get; private set; }
+		  public OxyRect Bounds { get; private set; }
 
         private int currentColorIndex;
 
@@ -65,6 +66,7 @@ namespace OxyPlot
             PlotType = PlotType.XY;
 
             LegendPosition = LegendPosition.TopRight;
+        		LegendLayout = LegendLayout.Vertical;
             IsLegendOutsidePlotArea = false;
 
             PlotMargins = new OxyThickness(60, 60, 50, 50);
@@ -123,7 +125,13 @@ namespace OxyPlot
         /// <value>The legend position.</value>
         public LegendPosition LegendPosition { get; set; }
 
-        /// <summary>
+		  /// <summary>
+		  /// Gets or sets the legend layout. The default value is vertical.
+		  /// </summary>
+		  /// <value>The legend layout.</value>
+		  public LegendLayout LegendLayout { get; set; }
+
+		  /// <summary>
         /// Gets or sets a value indicating whether the legend 
         /// should be shown outside the plot area. The default
         /// value is false - legend should be shown inside the plot area.
@@ -424,17 +432,69 @@ namespace OxyPlot
         {
             double w = rc.Width - PlotMargins.Left - PlotMargins.Right;
             double h = rc.Height - PlotMargins.Top - PlotMargins.Bottom;
-            if (w < 0) w = 0;
+        		double plotAreaTop = PlotMargins.Top;
+
+				//Calculate size of legend box, and modify width and height of PlotArea accordingly:
+        		OxyRect legendBox = GetLegendBoxRect(rc);
+
+				if (legendBox.Height > 0.0)
+				{
+					if (IsLegendOutsidePlotArea)
+					{
+						if (LegendPosition == LegendPosition.Top)
+						{
+							h -= legendBox.Height;
+							plotAreaTop += legendBox.Height;
+						}
+						else if (LegendPosition == LegendPosition.Bottom)
+						{
+							h -= legendBox.Height;
+						}
+					}
+				}
+        		if (legendBox.Width > 0.0 && IsLegendOutsidePlotArea && 
+					(LegendPosition == LegendPosition.BottomLeft || LegendPosition == LegendPosition.BottomRight ||
+					 LegendPosition == LegendPosition.TopLeft || LegendPosition == LegendPosition.TopRight))
+				{
+					w -= legendBox.Width;
+				}
+
+	        	if (w < 0) w = 0;
             if (h < 0) h = 0;
 
             PlotArea = new OxyRect
                            {
                                Left = PlotMargins.Left,
                                Width = w,
-                               Top = PlotMargins.Top,
+                               Top = plotAreaTop,
                                Height = h
                            };
 
+			   //Calculate height and top of the area bounding the plot area and top/bottom axes:
+        		double boundsTop = PlotArea.Top;
+        		double boundsHeight = PlotArea.Height;
+        		foreach (AxisBase axis in Axes)
+        		{
+					if(!axis.IsHorizontal())
+						continue;
+
+        			double axisTextHeight = 0.0;
+					if (axis.TickStyle != TickStyle.None)
+					{
+						axisTextHeight = rc.MeasureText(axis.Minimum.ToString(), axis.FontFamily, axis.FontSize, axis.FontWeight).Height + 
+													rc.MeasureText(axis.Title, axis.FontFamily, axis.FontSize, axis.FontWeight).Height;
+					}
+
+					if(axis.Position == AxisPosition.Top)
+					{
+						boundsTop -= axisTextHeight;
+					}
+					boundsHeight += axisTextHeight;
+        		}
+
+			  Bounds = new OxyRect(PlotArea.Left, boundsTop, PlotArea.Width, boundsHeight);
+
+			  //TODO: Do the above for left/right axes as well?
 
             // todo...
             /*
@@ -728,5 +788,41 @@ namespace OxyPlot
             }
 
         }
+
+		  private OxyRect GetLegendBoxRect(IRenderContext rc)
+		  {
+		  		double height = 0.0;
+				double width = 0.0;
+			 
+			 foreach (var s in Series)
+			 {
+				 if (String.IsNullOrEmpty(s.Title))
+				 {
+					 continue;
+				 }
+
+				 var oxySize = rc.MeasureMathText(s.Title, LegendFont, LegendFontSize, 500);
+
+				 if (LegendLayout == LegendLayout.Vertical)
+				 {
+				 	height += oxySize.Height;
+					if(oxySize.Width > width)
+					{
+						width = oxySize.Width;
+					}
+				 }
+				 else
+				 {
+					 width += oxySize.Width;
+				 	 if(oxySize.Height > height)
+				 	 {
+				 	 	height = oxySize.Height;
+				 	 }
+				 }
+			 }
+
+		  	return new OxyRect(0, 0, width, height);
+
+		  }
     }
 }

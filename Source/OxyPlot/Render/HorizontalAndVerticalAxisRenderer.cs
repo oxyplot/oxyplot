@@ -57,7 +57,7 @@ namespace OxyPlot
                 apos = perpendicularAxis.Transform(0);
             }
 
-            double a0, a1;
+            double a0 = 0, a1 = 0;
             var minorSegments = new List<ScreenPoint>();
             var minorTickSegments = new List<ScreenPoint>();
             var majorSegments = new List<ScreenPoint>();
@@ -296,6 +296,8 @@ namespace OxyPlot
                     // valign = axis.IsReversed ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
                 }
 
+					 double titleYPos;
+
                 switch (axis.Position)
                 {
                     case AxisPosition.Left:
@@ -306,13 +308,29 @@ namespace OxyPlot
                         valign = VerticalTextAlign.Bottom;
                         break;
                     case AxisPosition.Top:
-                        lpt = new ScreenPoint(ymid, AXIS_LEGEND_DIST);
+								if (axis.TickStyle != TickStyle.None || MajorPen != null)
+								{
+									titleYPos = apos - 2 * rc.MeasureText(axis.Title, axis.FontFamily, axis.FontSize, axis.FontWeight).Height - AXIS_LEGEND_DIST;
+								}
+								else
+								{
+									titleYPos = apos - AXIS_LEGEND_DIST;
+								}
+                        lpt = new ScreenPoint(ymid, titleYPos);
                         halign = HorizontalTextAlign.Center;
                         valign = VerticalTextAlign.Top;
                         angle = 0;
                         break;
                     case AxisPosition.Bottom:
-                        lpt = new ScreenPoint(ymid, rc.Height - AXIS_LEGEND_DIST);
+								if (axis.TickStyle != TickStyle.None || MajorPen != null)
+								{
+									titleYPos = apos + 2 * rc.MeasureText(axis.Title, axis.FontFamily, axis.FontSize, axis.FontWeight).Height + AXIS_LEGEND_DIST;
+								}
+								else
+								{
+									titleYPos = apos + AXIS_LEGEND_DIST;
+								}
+								lpt = new ScreenPoint(ymid, titleYPos);
                         halign = HorizontalTextAlign.Center;
                         valign = VerticalTextAlign.Bottom;
                         angle = 0;
