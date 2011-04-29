@@ -46,6 +46,7 @@
     <Compile Include="Attributes\ExamplesAttribute.cs" />
     <Compile Include="Examples\AnnotationExamples.cs" />
     <Compile Include="Examples\CategoryAxisExamples.cs" />
+    <Compile Include="Examples\LegendExamples.cs" />
     <Compile Include="Examples\CustomSeriesExamples.cs" />
     <Compile Include="Examples\DateTimeAxisExamples.cs" />
     <Compile Include="CustomSeries\ErrorSeries.cs" />
