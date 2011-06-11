@@ -33,7 +33,8 @@ namespace OxyPlot
         void UpdateData();
 
         /// <summary>
-        /// Returns true if the data series requires X/Y axes.
+        ///   Check if this data series requires X/Y axes. 
+        ///   (e.g. Pie series do not require axes)
         /// </summary>
         /// <returns></returns>
         bool AreAxesRequired();
@@ -41,9 +42,9 @@ namespace OxyPlot
         /// <summary>
         /// Ensures that the series has axes.
         /// </summary>
-        /// <param name="axes">The axes collection.</param>
-        /// <param name="defaultXAxis">The default X axis.</param>
-        /// <param name="defaultYAxis">The default Y axis.</param>
+        /// <param name="axes">The axes collection of the parent PlotModel.</param>
+        /// <param name="defaultXAxis">The default X axis of the parent PlotModel.</param>
+        /// <param name="defaultYAxis">The default Y axis of the parent PlotModel.</param>
         void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis);
 
         /// <summary>
@@ -52,27 +53,8 @@ namespace OxyPlot
         void UpdateMaxMin();
 
         /// <summary>
-        /// Gets the nearest interpolated point.
-        /// </summary>
-        /// <param name="pt">The point (in screen coordinates).</param>
-        /// <param name="dp">The nearest interpolated point (in data coordinates).</param>
-        /// <param name="sp">The nearest interpolated point (in screen coordinates).</param>
-        /// <returns>true if a point was found.</returns>
-        bool GetNearestInterpolatedPoint(ScreenPoint pt, out DataPoint dp, out ScreenPoint sp);
-        
-        /// <summary>
-        /// Gets the nearest point.
-        /// </summary>
-        /// <param name="pt">The point (in screen coordinates).</param>
-        /// <param name="dp">The nearest point (in data coordinates).</param>
-        /// <param name="sp">The nearest point (in screen coordinates).</param>
-        /// <returns>true if a point was found.</returns>
-        bool GetNearestPoint(ScreenPoint pt, out DataPoint dp, out ScreenPoint sp);
-
-        /// <summary>
         /// Sets default values from the plotmodel.
         /// </summary>
         void SetDefaultValues(PlotModel model);
     }
-
 }

@@ -29,6 +29,7 @@ namespace OxyPlot
             points = new Collection<DataPoint>();
             DataFieldX = "X";
             DataFieldY = "Y";
+            CanTrackerInterpolatePoints = false;
         }
 
         /// <summary>
@@ -188,7 +189,7 @@ namespace OxyPlot
         /// <param name = "dpn">The nearest point (data coordinates).</param>
         /// <param name = "spn">The nearest point (screen coordinates).</param>
         /// <returns></returns>
-        public override bool GetNearestInterpolatedPoint(ScreenPoint p3, out DataPoint dpn, out ScreenPoint spn)
+        public override bool GetNearestInterpolatedPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn)
         {
             spn = default(ScreenPoint);
             dpn = default(DataPoint);
@@ -205,7 +206,7 @@ namespace OxyPlot
 
                 double sp21X = sp2.x - sp1.x;
                 double sp21Y = sp2.y - sp1.y;
-                double u1 = (p3.x - sp1.x) * sp21X + (p3.y - sp1.y) * sp21Y;
+                double u1 = (point.x - sp1.x) * sp21X + (point.y - sp1.y) * sp21Y;
                 double u2 = sp21X * sp21X + sp21Y * sp21Y;
                 double ds = sp21X * sp21X + sp21Y * sp21Y;
 
@@ -229,8 +230,8 @@ namespace OxyPlot
                 double sx = sp1.x + u * sp21X;
                 double sy = sp1.y + u * sp21Y;
 
-                double dx = p3.x - sx;
-                double dy = p3.y - sy;
+                double dx = point.x - sx;
+                double dy = point.y - sy;
                 double distance = dx * dx + dy * dy;
 
                 if (distance < minimumDistance)

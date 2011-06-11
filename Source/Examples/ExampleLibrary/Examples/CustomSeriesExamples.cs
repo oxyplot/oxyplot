@@ -3,7 +3,7 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
-    [Examples("CustomSeries")]
+    [Examples("Custom Series")]
     public static class CustomSeriesExamples
     {
 

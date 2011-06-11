@@ -711,9 +711,12 @@ namespace OxyPlot
             ISeries closest = null;
             foreach (var s in Series)
             {
+                var ts = s as ITrackableSeries;
+                if (ts == null)
+                    continue;
                 ScreenPoint sp;
                 DataPoint dp;
-                if (!s.GetNearestInterpolatedPoint(point, out dp, out sp))
+                if (!ts.GetNearestInterpolatedPoint(point, out dp, out sp))
                     continue;
 
                 // find distance to this point on the screen
