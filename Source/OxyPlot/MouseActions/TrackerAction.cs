@@ -1,17 +1,16 @@
 ﻿namespace OxyPlot
 {
-    // todo: use screen coordinates instead of original points (problem on log axes)
     /// <summary>
     /// Tracker mouseaction
     /// </summary>
     public class TrackerAction : MouseAction
     {
-        public TrackerAction(IPlotControl pc)
+        public TrackerAction(IPlot pc)
             : base(pc)
         {
         }
 
-        private DataSeries currentSeries;
+        private ISeries currentSeries;
 
         public override void OnMouseDown(ScreenPoint pt, OxyMouseButton button, int clickCount, bool control, bool shift, bool alt)
         {
@@ -44,12 +43,13 @@
             if (currentSeries == null)
                 return;
 
-            var current = GetNearestPoint(currentSeries, pt, !control, shift);
+            bool usePointsOnly = shift; 
+            var current = GetNearestPoint(currentSeries as ITrackableSeries, pt, !control, usePointsOnly);
             if (current != null)
                 pc.ShowTracker(currentSeries, current.Value);
         }
 
-        private static DataPoint? GetNearestPoint(ISeries s, ScreenPoint point, bool snap, bool pointsOnly)
+        private static DataPoint? GetNearestPoint(ITrackableSeries s, ScreenPoint point, bool snap, bool pointsOnly)
         {
             if (s == null)
                 return null;
@@ -68,7 +68,7 @@
             ScreenPoint sp;
             DataPoint dp;
 
-            if (!pointsOnly)
+            if (!pointsOnly && s.CanTrackerInterpolatePoints)
                 if (s.GetNearestInterpolatedPoint(point, out dp, out sp))
                     return dp;
 
