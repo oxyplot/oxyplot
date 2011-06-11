@@ -481,7 +481,7 @@ namespace OxyPlot
             if (!double.IsNaN(MinorStep))
                 ActualMinorStep = MinorStep;
             else
-                ActualMinorStep = ActualMajorStep/5;
+                ActualMinorStep = CalculateMinorInterval(ActualMajorStep);
 
 
             if (double.IsNaN(ActualMinorStep))
@@ -879,7 +879,7 @@ namespace OxyPlot
                 }
                 else if (m == 2 || m == 1 || m == 10)
                 {
-                    // reduce 2 to 1,10 to 5,1 to 0.5
+                    // reduce 2 to 1, 10 to 5, 1 to 0.5
                     tempInterval = RemoveNoiseFromDoubleMath(tempInterval/2.0);
                 }
                 else
@@ -895,6 +895,20 @@ namespace OxyPlot
                 interval = tempInterval;
             }
             return interval;
+        }
+
+        protected double CalculateMinorInterval(double majorInterval)
+        {
+            Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
+            Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
+            var m = (int)mantissa(majorInterval);
+            switch (m)
+            {
+                case 5:
+                    return majorInterval/5;
+                default:
+                    return majorInterval/4;
+            }    
         }
 
         /// <summary>
