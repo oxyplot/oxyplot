@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace OxyPlot
 {
-    public abstract class PlotSeriesBase : ISeries
+    public abstract class PlotSeriesBase : ISeries, ITrackableSeries
     {
         /// <summary>
         ///   Gets or sets the X axis.
@@ -151,6 +151,11 @@ namespace OxyPlot
         {
             MinX = MinY = MaxX = MaxY = double.NaN;
         }
+
+        /// <summary>
+        /// Gets or sets whether or not the tracker should interpolate between the points.
+        /// </summary>
+        public bool CanTrackerInterpolatePoints { get; set; }
 
         public abstract bool GetNearestPoint(ScreenPoint point, out DataPoint dpn, out ScreenPoint spn);
 

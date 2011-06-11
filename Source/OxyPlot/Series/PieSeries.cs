@@ -153,20 +153,6 @@ namespace OxyPlot
         {
         }
 
-        public bool GetNearestInterpolatedPoint(ScreenPoint pt, out DataPoint dp, out ScreenPoint sp)
-        {
-            dp = DataPoint.Undefined;
-            sp = ScreenPoint.Undefined;
-            return false;
-        }
-
-        public bool GetNearestPoint(ScreenPoint pt, out DataPoint dp, out ScreenPoint sp)
-        {
-            dp = DataPoint.Undefined;
-            sp = ScreenPoint.Undefined;
-            return false;
-        }
-
         public void SetDefaultValues(PlotModel model)
         {
             foreach (var slice in Slices)

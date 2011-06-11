@@ -108,6 +108,7 @@
     <Compile Include="Foundation\DataPoint.cs" />
     <Compile Include="Annotations\IAnnotation.cs" />
     <Compile Include="Series\BarSeries.cs" />
+    <Compile Include="Series\ITrackableSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
     <Compile Include="Series\PlotSeriesBase.cs" />
     <Compile Include="Series\PieSeries.cs" />

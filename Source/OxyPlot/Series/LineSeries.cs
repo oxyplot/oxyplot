@@ -18,6 +18,7 @@ namespace OxyPlot
             StrokeThickness = 2;
             MarkerSize = 3;
             MarkerStrokeThickness = 1;
+            CanTrackerInterpolatePoints = true;
         }
 
         /// <summary>
