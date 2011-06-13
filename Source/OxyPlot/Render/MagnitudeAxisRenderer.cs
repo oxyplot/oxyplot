@@ -77,10 +77,10 @@ namespace OxyPlot
 
                 // var pt = new ScreenPoint(x, istop ? y + y1 - TICK_DIST : y + y1 + TICK_DIST);
                 // string text = axis.FormatValue(xValue);
-                // double h = rc.MeasureText(text, axis.FontFamily, axis.FontSize, axis.FontWeight).Height;
+                // double h = rc.MeasureText(text, axis.Font, axis.FontSize, axis.FontWeight).Height;
 
                 // rc.DrawText(pt, text, plot.TextColor,
-                // axis.FontFamily, axis.FontSize, axis.FontWeight,
+                // axis.Font, axis.FontSize, axis.FontWeight,
                 // axis.Angle,
                 // HorizontalTextAlign.Center, istop ? VerticalTextAlign.Bottom : VerticalTextAlign.Top);
                 // maxh = Math.Max(maxh, h);

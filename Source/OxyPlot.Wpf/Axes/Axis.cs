@@ -209,7 +209,7 @@ namespace OxyPlot.Wpf
 
             //a.ShowMinorTicks = ShowMinorTicks;
 
-            //a.FontFamily = FontFamily;
+            //a.Font = Font;
             //a.FontSize = FontSize;
 
             //a.MinorTickSize = MinorTickSize;

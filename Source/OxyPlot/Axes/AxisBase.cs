@@ -47,7 +47,7 @@ namespace OxyPlot
 
             ShowMinorTicks = true;
 
-            FontFamily = PlotModel.DefaultFont;
+            Font = PlotModel.DefaultFont;
             FontSize = 12;
             FontWeight = FontWeights.Normal;
 
@@ -245,9 +245,9 @@ namespace OxyPlot
         public string Unit { get; set; }
 
         /// <summary>
-        /// Gets or sets the font family.
+        /// Gets or sets the font name.
         /// </summary>
-        public string FontFamily { get; set; }
+        public string Font { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the font.
