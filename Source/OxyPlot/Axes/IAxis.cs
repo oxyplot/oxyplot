@@ -13,23 +13,6 @@
         Magnitude
     }
 
-    public enum LegendPosition
-    {
-        /* todo: Auto,*/
-        TopLeft,
-        BottomLeft,
-        TopRight,
-        BottomRight,
-		  Top,
-		  Bottom
-    }
-
-	 public enum LegendLayout
-	 {
-		 Horizontal = 0,
-		 Vertical
-	 }
-
     public enum TickStyle
     {
         Crossing,
@@ -71,7 +54,6 @@
         double Transform(double x);
         ScreenPoint Transform(DataPoint dp, IAxis yAxis);
         double InverseTransform(double sx);
-
 
         void Reset();
         void Pan(double x0, double x1);

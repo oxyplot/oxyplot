@@ -36,6 +36,7 @@ namespace SparklineDemo
             var model = new PlotModel
                             {
                                 PlotMargins = new OxyThickness(0),
+                                Padding = new OxyThickness(0),
                                 BoxThickness = 0
                             };
             var ls = new LineSeries
@@ -60,7 +61,7 @@ namespace SparklineDemo
             double y = RandomGenerator.Next(250);
             for (int i = -48; i <= 0; i++)
             {
-                y += RandomGenerator.NextDouble() - 0.4;
+                y += RandomGenerator.NextDouble() - 0.2;
                 Data.Add(new TrendData { Time = DateTime.Now.AddHours(i), Value = y });
             }
 

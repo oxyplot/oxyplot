@@ -478,10 +478,7 @@ namespace OxyPlot
 
             ActualMajorStep = !double.IsNaN(MajorStep) ? MajorStep : CalculateActualInterval(length, labelSize);
 
-            if (!double.IsNaN(MinorStep))
-                ActualMinorStep = MinorStep;
-            else
-                ActualMinorStep = CalculateMinorInterval(ActualMajorStep);
+            ActualMinorStep = !double.IsNaN(MinorStep) ? MinorStep : CalculateMinorInterval(ActualMajorStep);
 
 
             if (double.IsNaN(ActualMinorStep))
@@ -661,19 +658,19 @@ namespace OxyPlot
                 scale = 1;
         }
 
-        public void SetScale(double scale)
+        public void SetScale(double newScale)
         {
-            double sx1 = (ActualMaximum - Offset)*this.scale;
-            double sx0 = (ActualMinimum - Offset)*this.scale;
+            double sx1 = (ActualMaximum - Offset)*scale;
+            double sx0 = (ActualMinimum - Offset)*scale;
 
-            double sgn = Math.Sign(this.scale);
+            double sgn = Math.Sign(scale);
             double mid = (ActualMaximum + ActualMinimum)/2;
 
-            double dx = (Offset - mid)*this.scale;
-            this.scale = sgn*scale;
-            Offset = dx/this.scale + mid;
-            ActualMaximum = sx1/this.scale + Offset;
-            ActualMinimum = sx0/this.scale + Offset;
+            double dx = (Offset - mid)*scale;
+            scale = sgn*newScale;
+            Offset = dx/scale + mid;
+            ActualMaximum = sx1/scale + Offset;
+            ActualMinimum = sx0/scale + Offset;
         }
 
         protected virtual double PreTransform(double x)
@@ -759,7 +756,7 @@ namespace OxyPlot
             }
             if (step <= 0)
             {
-                throw new InvalidOperationException("Axis: Step cannot be negative.");
+                throw new InvalidOperationException("Axis: Step cannot be zero or negative.");
             }
 
             double x0 = Math.Round(min/step)*step;
@@ -847,6 +844,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="availableSize">The available size.</param>
         /// <param name="maxIntervalSize">The maximum interval size.</param>
+        /// <param name="range"></param>
         /// <returns>Actual interval to use to determine which values are 
         /// displayed in the axis.
         /// </returns>
@@ -925,6 +923,5 @@ namespace OxyPlot
             return Double.Parse(value.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
         }
 
-        // ===
     }
 }

@@ -10,6 +10,7 @@ namespace ExampleLibrary
         public static PlotModel OneSeries()
         {
             var model = new PlotModel("LineSeries");
+            model.LegendSymbolLength = 24;
             var s1 = new LineSeries("Series 1")
             {
                 Color = OxyColors.SkyBlue,
@@ -32,6 +33,7 @@ namespace ExampleLibrary
         public static PlotModel TwoLineSeries()
         {
             var model = new PlotModel("Two LineSeries");
+            model.LegendSymbolLength = 24;
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 71, "Y-Axis") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 61, "X-Axis") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             var s1 = new LineSeries("Series 1")
@@ -70,11 +72,12 @@ namespace ExampleLibrary
         public static PlotModel CustomMarkers()
         {
             var model = new PlotModel("LineSeries with custom markers");
+            model.LegendSymbolLength = 30;
             int n = 6;
             var marker = new ScreenPoint[n];
             for (int i = 0; i < n; i++)
             {
-                double th = Math.PI * (4.0 * i / (n - 1)-0.5);
+                double th = Math.PI * (4.0 * i / (n - 1) - 0.5);
                 double r = 1;
                 marker[i] = new ScreenPoint(Math.Cos(th) * r, Math.Sin(th) * r);
             }
@@ -228,6 +231,21 @@ namespace ExampleLibrary
     "2cos(2t)cos(t) , 2cos(2t)sin(t)");
 
         }
+
+        [Example("FunctionSeries")]
+        public static PlotModel FunctionSeries()
+        {
+            var pm = new PlotModel("Trigonometric functions", "Example using the FunctionSeries")
+                         {
+                             PlotType = PlotType.Cartesian,
+                             Background = OxyColors.White
+                         };
+            pm.Series.Add(new FunctionSeries(Math.Sin, -10, 10, 0.1, "sin(x)"));
+            pm.Series.Add(new FunctionSeries(Math.Cos, -10, 10, 0.1, "cos(x)"));
+            pm.Series.Add(new FunctionSeries(t => 5 * Math.Cos(t), t => 5 * Math.Sin(t), 0, 2 * Math.PI, 0.1, "cos(t),sin(t)"));
+            return pm;
+        }
+
         private static PlotModel CreateParametricPlot(Func<double, double> fx, Func<double, double> fy, double t0,
                                                       double t1, double dt, string title, string subtitle,
                                                       string seriesTitle)

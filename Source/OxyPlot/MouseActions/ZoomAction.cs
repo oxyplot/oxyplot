@@ -66,7 +66,7 @@ namespace OxyPlot
         {
             if (!isZooming)
                 return;
-            var plotArea = pc.GetPlotArea();
+            var plotArea = pc.Model.PlotArea;
 
             if (yaxis == null)
             {
@@ -130,7 +130,6 @@ namespace OxyPlot
             if (ya != null)
                 pc.ZoomAt(ya, s, current.Y);
 
-            pc.UpdateAxisTransforms();
             pc.RefreshPlot();
         }
     }

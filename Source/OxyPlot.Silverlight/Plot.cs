@@ -8,36 +8,36 @@ using System.Windows.Media;
 
 namespace OxyPlot.Silverlight
 {
-    [TemplatePart(Name = PART_GRID, Type = typeof (Grid))]
+    [TemplatePart(Name = PART_GRID, Type = typeof(Grid))]
     public class Plot : Control, IPlotControl
     {
         private const string PART_GRID = "PART_Grid";
 
         public static readonly DependencyProperty SubtitleProperty =
-            DependencyProperty.Register("Subtitle", typeof (string), typeof (Plot), new PropertyMetadata(null));
+            DependencyProperty.Register("Subtitle", typeof(string), typeof(Plot), new PropertyMetadata(null));
 
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof (string), typeof (Plot),
+            DependencyProperty.Register("Title", typeof(string), typeof(Plot),
                                         new PropertyMetadata(null, VisualChanged));
 
         public static readonly DependencyProperty TrackerTemplateProperty =
-            DependencyProperty.Register("TrackerTemplate", typeof (DataTemplate), typeof (Plot),
+            DependencyProperty.Register("TrackerTemplate", typeof(DataTemplate), typeof(Plot),
                                         new PropertyMetadata(null));
 
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
-            DependencyProperty.Register("ZoomRectangleTemplate", typeof (ControlTemplate), typeof (Plot),
+            DependencyProperty.Register("ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot),
                                         new PropertyMetadata(null));
 
         public static readonly DependencyProperty HandleRightClicksProperty =
-            DependencyProperty.Register("HandleRightClicks", typeof (bool), typeof (Plot), new PropertyMetadata(true));
+            DependencyProperty.Register("HandleRightClicks", typeof(bool), typeof(Plot), new PropertyMetadata(true));
 
         public static readonly DependencyProperty DataContextWatcherProperty =
             DependencyProperty.Register("DataContextWatcher",
-                                        typeof (Object), typeof (Plot),
+                                        typeof(Object), typeof(Plot),
                                         new PropertyMetadata(DataContextChanged));
 
         public static readonly DependencyProperty ModelProperty =
-            DependencyProperty.Register("Model", typeof (PlotModel), typeof (Plot),
+            DependencyProperty.Register("Model", typeof(PlotModel), typeof(Plot),
                                         new PropertyMetadata(null, ModelChanged));
 
         private readonly PanAction panAction;
@@ -55,7 +55,7 @@ namespace OxyPlot.Silverlight
 
         public Plot()
         {
-            DefaultStyleKey = typeof (Plot);
+            DefaultStyleKey = typeof(Plot);
 
             Background = new SolidColorBrush(Colors.Transparent);
 
@@ -63,7 +63,7 @@ namespace OxyPlot.Silverlight
             zoomAction = new ZoomAction(this);
             trackerAction = new TrackerAction(this);
 
-            MouseActions = new List<MouseAction> {panAction, zoomAction, trackerAction};
+            MouseActions = new List<MouseAction> { panAction, zoomAction, trackerAction };
 
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
@@ -77,37 +77,37 @@ namespace OxyPlot.Silverlight
 
         public ControlTemplate ZoomRectangleTemplate
         {
-            get { return (ControlTemplate) GetValue(ZoomRectangleTemplateProperty); }
+            get { return (ControlTemplate)GetValue(ZoomRectangleTemplateProperty); }
             set { SetValue(ZoomRectangleTemplateProperty, value); }
         }
 
         public DataTemplate TrackerTemplate
         {
-            get { return (DataTemplate) GetValue(TrackerTemplateProperty); }
+            get { return (DataTemplate)GetValue(TrackerTemplateProperty); }
             set { SetValue(TrackerTemplateProperty, value); }
         }
 
         public string Subtitle
         {
-            get { return (string) GetValue(SubtitleProperty); }
+            get { return (string)GetValue(SubtitleProperty); }
             set { SetValue(SubtitleProperty, value); }
         }
 
         public string Title
         {
-            get { return (string) GetValue(TitleProperty); }
+            get { return (string)GetValue(TitleProperty); }
             set { SetValue(TitleProperty, value); }
         }
 
         public bool HandleRightClicks
         {
-            get { return (bool) GetValue(HandleRightClicksProperty); }
+            get { return (bool)GetValue(HandleRightClicksProperty); }
             set { SetValue(HandleRightClicksProperty, value); }
         }
 
         public PlotModel Model
         {
-            get { return (PlotModel) GetValue(ModelProperty); }
+            get { return (PlotModel)GetValue(ModelProperty); }
             set { SetValue(ModelProperty, value); }
         }
 
@@ -129,14 +129,15 @@ namespace OxyPlot.Silverlight
             }
         }
 
-        public void UpdateAxisTransforms()
-        {
-            internalModel.UpdateAxisTransforms();
-        }
-
         public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
         {
-            internalModel.GetAxesFromPoint(pt, out xaxis, out yaxis);
+            if (internalModel != null)
+                internalModel.GetAxesFromPoint(pt, out xaxis, out yaxis);
+            else
+            {
+                xaxis = null;
+                yaxis = null;
+            }
         }
 
         public void ShowZoomRectangle(OxyRect r)
@@ -154,13 +155,6 @@ namespace OxyPlot.Silverlight
             zoomControl.Visibility = Visibility.Collapsed;
         }
 
-        public OxyRect GetPlotArea()
-        {
-            if (internalModel != null)
-                return internalModel.PlotArea;
-            return new OxyRect(0, 0, ActualWidth, ActualHeight);
-        }
-
         /// <summary>
         /// Gets the series that is nearest the specified point (in screen coordinates).
         /// </summary>
@@ -169,7 +163,7 @@ namespace OxyPlot.Silverlight
         /// <returns>The closest DataSeries</returns>
         public ISeries GetSeriesFromPoint(ScreenPoint pt, double limit = 100)
         {
-            return internalModel.GetSeriesFromPoint(pt, limit);
+            return internalModel != null ? internalModel.GetSeriesFromPoint(pt, limit) : null;
         }
 
         public void ShowTracker(ISeries s, DataPoint dp)
@@ -236,7 +230,7 @@ namespace OxyPlot.Silverlight
         private static void DataContextChanged(object sender,
                                                DependencyPropertyChangedEventArgs e)
         {
-            ((Plot) sender).OnDataContextChanged(sender, e);
+            ((Plot)sender).OnDataContextChanged(sender, e);
         }
 
         private void CompositionTargetRendering(object sender, EventArgs e)
@@ -284,8 +278,6 @@ namespace OxyPlot.Silverlight
 
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
         {
-            // TODO: Right click is showing silverlight context menu - find other solution??
-
             base.OnMouseRightButtonDown(e);
             OnMouseButtonDown(OxyMouseButton.Right, e);
             if (HandleRightClicks)
@@ -303,19 +295,19 @@ namespace OxyPlot.Silverlight
                 a.OnMouseMove(p, isControlDown, isShiftDown, isAltDown);
         }
 
-        private bool IsControlDown()
+        private static bool IsControlDown()
         {
             ModifierKeys keys = Keyboard.Modifiers;
             return (keys & ModifierKeys.Control) != 0;
         }
 
-        private bool IsShiftDown()
+        private static bool IsShiftDown()
         {
             ModifierKeys keys = Keyboard.Modifiers;
             return (keys & ModifierKeys.Shift) != 0;
         }
 
-        private bool IsAltDown()
+        private static bool IsAltDown()
         {
             ModifierKeys keys = Keyboard.Modifiers;
             return (keys & ModifierKeys.Alt) != 0;
@@ -376,12 +368,12 @@ namespace OxyPlot.Silverlight
 
         private static void VisualChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((Plot) d).UpdateVisuals();
+            ((Plot)d).UpdateVisuals();
         }
 
         private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((Plot) d).OnModelChanged();
+            ((Plot)d).OnModelChanged();
         }
 
         private void OnModelChanged()

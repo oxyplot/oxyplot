@@ -57,11 +57,7 @@ namespace OxyPlot.Wpf
 
         public static readonly DependencyProperty LegendPositionProperty =
             DependencyProperty.Register("LegendPosition", typeof(LegendPosition), typeof(Plot),
-                                        new UIPropertyMetadata(LegendPosition.TopRight));
-
-        public static readonly DependencyProperty IsLegendOutsidePlotAreaProperty =
-            DependencyProperty.Register("IsLegendOutsidePlotArea", typeof(bool), typeof(Plot),
-                                        new UIPropertyMetadata(false));
+                                        new UIPropertyMetadata(LegendPosition.RightTop));
 
         private readonly ObservableCollection<Annotation> annotations;
         private readonly ObservableCollection<Axis> axes;
@@ -126,12 +122,6 @@ namespace OxyPlot.Wpf
         {
             get { return (LegendPosition)GetValue(LegendPositionProperty); }
             set { SetValue(LegendPositionProperty, value); }
-        }
-
-        public bool IsLegendOutsidePlotArea
-        {
-            get { return (bool)GetValue(IsLegendOutsidePlotAreaProperty); }
-            set { SetValue(IsLegendOutsidePlotAreaProperty, value); }
         }
 
         public List<MouseAction> MouseActions { get; private set; }
@@ -226,16 +216,6 @@ namespace OxyPlot.Wpf
             zoomControl.Visibility = Visibility.Hidden;
         }
 
-        public OxyRect GetPlotArea()
-        {
-            if (internalModel != null)
-            {
-                return internalModel.PlotArea;
-            }
-
-            return new OxyRect(0, 0, ActualWidth, ActualHeight);
-        }
-
         /// <summary>
         ///   Gets the series that is nearest the specified point (in screen coordinates).
         /// </summary>
@@ -280,12 +260,7 @@ namespace OxyPlot.Wpf
             // Modify min/max of the PlotModel's axis
             axis.Pan(x0, x1);
         }
-
-        public void UpdateAxisTransforms()
-        {
-            internalModel.UpdateAxisTransforms();
-        }
-
+       
         public void Reset(IAxis axis)
         {
             if (Model == null)
@@ -296,8 +271,11 @@ namespace OxyPlot.Wpf
                     a.Reset();
                 }
             }
-
-            axis.Reset();
+            else
+            {
+                axis.Reset();
+                Model.UpdateAxisTransforms();
+            }
         }
 
         public void Zoom(IAxis axis, double p1, double p2)
@@ -311,6 +289,8 @@ namespace OxyPlot.Wpf
             {
                 axis.Zoom(p1, p2);
             }
+            if (Model!=null)
+                Model.UpdateAxisTransforms();
         }
 
         public void ZoomAt(IAxis axis, double factor, double x)
@@ -324,6 +304,8 @@ namespace OxyPlot.Wpf
             {
                 axis.ZoomAt(factor, x);
             }
+            if (Model!=null)
+                Model.UpdateAxisTransforms();
         }
 
         #endregion
@@ -344,7 +326,7 @@ namespace OxyPlot.Wpf
         public void RefreshPlot()
         {
             UpdateModel();
-            UpdateVisuals();            
+            UpdateVisuals();
         }
 
         public void InvalidatePlot()
@@ -632,7 +614,6 @@ namespace OxyPlot.Wpf
                 internalModel.BoxThickness = BoxThickness;
 
                 internalModel.LegendPosition = LegendPosition;
-                internalModel.IsLegendOutsidePlotArea = IsLegendOutsidePlotArea;
             }
             else
             {

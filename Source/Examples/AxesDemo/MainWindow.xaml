@@ -119,13 +119,13 @@
                             <TextBlock Width="40" TextAlignment="Center" Text="{Binding Value, ElementName=Angle, StringFormat='{}{0:0}º'}" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Grid>
-                    <oxy:Plot x:Name="AnglePlot1">
+                    <oxy:Plot x:Name="AnglePlot1" PlotMargins="60,40,60,30">
                         <oxy:Plot.Axes>
                             <oxy:LinearAxis Title="Left" Position="Left" Angle="{Binding Value, ElementName=Angle}" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
                             <oxy:LinearAxis Title="Bottom" Position="Bottom" Angle="{Binding Value, ElementName=Angle}" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
                         </oxy:Plot.Axes>
                     </oxy:Plot>
-                    <oxy:Plot x:Name="AnglePlot2" Grid.Column="2">
+                    <oxy:Plot x:Name="AnglePlot2" PlotMargins="60,40,60,30" Grid.Column="2">
                         <oxy:Plot.Axes>
                             <oxy:LinearAxis Title="Right" Position="Right" Angle="{Binding Value, ElementName=Angle}" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
                             <oxy:LinearAxis Title="Top" Position="Top" Angle="{Binding Value, ElementName=Angle}" MajorGridlineStyle="Solid" MinorGridlineStyle="Dot" />
@@ -151,8 +151,8 @@
                     </oxy:Plot.Axes>
                 </oxy:Plot>
             </TabItem>
-            <TabItem Header="Multiple">
-                <oxy:Plot>
+            <TabItem Header="4 axes">
+                <oxy:Plot PlotMargins="70,40,40,40">
                     <oxy:Plot.Axes>
                         <oxy:LinearAxis Position="Left" Minimum="0" Maximum="36" Title="km/h"/>
                         <oxy:LinearAxis Position="Right" Minimum="0" Maximum="10" Title="m/s" MajorGridlineStyle="None" MinorGridlineStyle="None"/>
@@ -162,7 +162,7 @@
                 </oxy:Plot>
             </TabItem>
             <TabItem Header="Multiple panes">
-                <oxy:Plot>
+                <oxy:Plot PlotMargins="40,20,40,30">
                     <oxy:Plot.Axes>
                         <oxy:LinearAxis Position="Left" Minimum="-1" Maximum="1" Title="C1" StartPosition="0" EndPosition="0.25"/>
                         <oxy:LinearAxis Position="Right" Minimum="-1" Maximum="1" Title="C2" StartPosition="0.25" EndPosition="0.50"/>

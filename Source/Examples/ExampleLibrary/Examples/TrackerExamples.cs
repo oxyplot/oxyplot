@@ -9,8 +9,7 @@ namespace ExampleLibrary
         [Example("No interpolation")]
         public static PlotModel NoInterpolation()
         {
-            var model = new PlotModel("No tracker interpolation","Used for discrete values or scatter plots.");
-
+            var model = new PlotModel("No tracker interpolation", "Used for discrete values or scatter plots.") { LegendSymbolLength = 30 };
             var s1 = new LineSeries("Series 1")
                          {
                              CanTrackerInterpolatePoints = false,
@@ -21,8 +20,8 @@ namespace ExampleLibrary
                              MarkerFill = OxyColors.SkyBlue,
                              MarkerStrokeThickness = 1.5
                          };
-            for (int i = 0; i < 63;i++ )
-                s1.Points.Add(new DataPoint((int)(Math.Sqrt(i)*Math.Cos(i*0.1)), (int)(Math.Sqrt(i)*Math.Sin(i*0.1))));
+            for (int i = 0; i < 63; i++)
+                s1.Points.Add(new DataPoint((int)(Math.Sqrt(i) * Math.Cos(i * 0.1)), (int)(Math.Sqrt(i) * Math.Sin(i * 0.1))));
             model.Series.Add(s1);
 
             return model;

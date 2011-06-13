@@ -53,6 +53,7 @@
     <Compile Include="Examples\LineSeriesExamples.cs" />
     <Compile Include="Examples\LogarithmicAxisExamples.cs" />
     <Compile Include="Examples\PieSeriesExamples.cs" />
+    <Compile Include="Examples\PolarPlotExamples.cs" />
     <Compile Include="Examples\TimeSpanAxisExamples.cs" />
     <Compile Include="Examples\TrackerExamples.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

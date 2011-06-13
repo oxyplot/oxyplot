@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using OxyPlot.Reporting;
 
@@ -27,31 +25,29 @@ namespace OxyPlot
         Cartesian,
 
         /// <summary>
-        /// Polar coordinate system - distance and angle axes
+        /// Polar coordinate system - with radial and angular axes
         /// http://en.wikipedia.org/wiki/Polar_coordinate_system
         /// </summary>
         Polar
     }
 
+    public enum LegendPlacement { Inside, Outside }
+    public enum LegendPosition { TopLeft, TopCenter, TopRight, BottomLeft, BottomCenter, BottomRight, LeftTop, LeftMiddle, LeftBottom, RightTop, RightMiddle, RightBottom }
+    public enum LegendOrientation { Horizontal, Vertical }
+    public enum LegendItemOrder { Normal, Reverse }
+    public enum LegendSymbolPlacement { Left, Right }
 
     /// <summary>
     /// The PlotModel represents all the content of the plot (titles, axes, series).
     /// </summary>
-    public class PlotModel
+    public partial class PlotModel
     {
         private static string defaultFont = "Segoe UI";
         internal IAxis DefaultAngleAxis;
         internal IAxis DefaultMagnitudeAxis;
         internal IAxis DefaultXAxis;
         internal IAxis DefaultYAxis;
-
-        public OxyRect PlotArea { get; private set; }
-		  public OxyRect Bounds { get; private set; }
-
         private int currentColorIndex;
-
-        public ScreenPoint MidPoint { get; private set; }
-        // The midpoint of the plot area, used for the polar coordinate system.
 
         public PlotModel(string title = null, string subtitle = null)
         {
@@ -62,27 +58,48 @@ namespace OxyPlot
             Title = title;
             Subtitle = subtitle;
 
-            // Default values
             PlotType = PlotType.XY;
 
-            LegendPosition = LegendPosition.TopRight;
-        		LegendLayout = LegendLayout.Vertical;
-            IsLegendOutsidePlotArea = false;
+            AxisTitleDistance = 4;
+            AxisTickToLabelDistance = 4;
 
-            PlotMargins = new OxyThickness(60, 60, 50, 50);
+            PlotMargins = new OxyThickness(60, 10, 20, 40);
+            PlotMargins = new OxyThickness(60, 4, 4, 40);
+            Padding = new OxyThickness(8, 8, 16, 8);
 
             TitleFont = DefaultFont;
             TitleFontSize = 18;
             SubtitleFontSize = 14;
             TitleFontWeight = FontWeights.Bold;
             SubtitleFontWeight = FontWeights.Normal;
+            TitlePadding = 6;
+
             TextColor = OxyColors.Black;
             BoxColor = OxyColors.Black;
             BoxThickness = 1;
 
-            LegendFont = DefaultFont;
+            LegendTitleFont = null;
+            LegendTitleFontSize = 12;
+            LegendTitleFontWeight = FontWeights.Bold;
+            LegendFont = null;
             LegendFontSize = 12;
+            LegendFontWeight = FontWeights.Normal;
             LegendSymbolLength = 16;
+            LegendSymbolMargin = 4;
+            LegendPadding = 8;
+            LegendItemSpacing = 24;
+            LegendMargin = 8;
+
+            LegendBackground = OxyColor.FromAColor(220, OxyColors.White);
+            LegendBorder = OxyColors.Black;
+            LegendBorderThickness = 1;
+
+            LegendPlacement = LegendPlacement.Inside;
+            LegendPosition = LegendPosition.RightTop;
+            LegendOrientation = LegendOrientation.Vertical;
+            LegendItemOrder = LegendItemOrder.Normal;
+            LegendItemAlignment = HorizontalTextAlign.Left;
+            LegendSymbolPlacement = LegendSymbolPlacement.Left;
 
             DefaultColors = new List<OxyColor>
                                 {
@@ -120,26 +137,103 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Gets or sets the legend title.
+        /// </summary>
+        /// <value>The legend title.</value>
+        public string LegendTitle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the legend placement.
+        /// </summary>
+        /// <value>The legend placement.</value>
+        public LegendPlacement LegendPlacement { get; set; }
+
+        /// <summary>
         /// Gets or sets the legend position.
         /// </summary>
         /// <value>The legend position.</value>
         public LegendPosition LegendPosition { get; set; }
 
-		  /// <summary>
-		  /// Gets or sets the legend layout. The default value is vertical.
-		  /// </summary>
-		  /// <value>The legend layout.</value>
-		  public LegendLayout LegendLayout { get; set; }
-
-		  /// <summary>
-        /// Gets or sets a value indicating whether the legend 
-        /// should be shown outside the plot area. The default
-        /// value is false - legend should be shown inside the plot area.
+        /// <summary>
+        /// Gets or sets the legend orientation.
         /// </summary>
-        public bool IsLegendOutsidePlotArea { get; set; }
+        /// <value>The legend orientation.</value>
+        public LegendOrientation LegendOrientation { get; set; }
 
         /// <summary>
-        /// Gets or sets the type of the plot.
+        /// Gets or sets the legend item order.
+        /// </summary>
+        /// <value>The legend item order.</value>
+        public LegendItemOrder LegendItemOrder { get; set; }
+
+        /// <summary>
+        /// Gets or sets the legend item alignment.
+        /// </summary>
+        /// <value>The legend item alignment.</value>
+        public HorizontalTextAlign LegendItemAlignment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the legend symbol placement.
+        /// </summary>
+        /// <value>The legend symbol placement.</value>
+        public LegendSymbolPlacement LegendSymbolPlacement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the legend padding.
+        /// </summary>
+        /// <value>The legend padding.</value>
+        public double LegendPadding { get; set; }
+
+        /// <summary>
+        /// Gets or sets the legend spacing.
+        /// </summary>
+        /// <value>The legend spacing.</value>
+        public double LegendItemSpacing { get; set; }
+
+        /// <summary>
+        /// Gets or sets the legend column spacing.
+        /// </summary>
+        /// <value>The legend column spacing.</value>
+        public double LegendColumnSpacing { get; set; }
+
+        /// <summary>
+        /// The area used to draw the plot, excluding axis labels and legends.
+        /// </summary>
+        public OxyRect PlotArea { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the area including both the plot and the axes.
+        /// Outside legends are rendered outside this rectangle.       
+        /// </summary>
+        /// <value>The plot and axis area.</value>
+        public OxyRect PlotAndAxisArea { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the title area.
+        /// </summary>
+        /// <value>The title area.</value>
+        public OxyRect TitleArea { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the legend area.
+        /// </summary>
+        /// <value>The legend area.</value>
+        public OxyRect LegendArea { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the distance from axis number to axis title.
+        /// </summary>
+        /// <value>The axis title distance.</value>
+        public double AxisTitleDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance from axis tick to number label.
+        /// </summary>
+        /// <value>The axis tick to label distance.</value>
+        public double AxisTickToLabelDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the coordinate system.
         /// </summary>
         /// <value>The type of the plot.</value>
         public PlotType PlotType { get; set; }
@@ -179,6 +273,13 @@ namespace OxyPlot
         public string TitleFont { get; set; }
 
         /// <summary>
+        /// Gets or sets the subtitle font.
+        /// If this property is null, the Title font will be used.
+        /// </summary>
+        /// <value>The subtitle font.</value>
+        public string SubtitleFont { get; set; }
+
+        /// <summary>
         /// Gets or sets the size of the title font.
         /// </summary>
         /// <value>The size of the title font.</value>
@@ -215,15 +316,74 @@ namespace OxyPlot
         public double LegendFontSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the length of the legend symbol.
+        /// Gets or sets the legend font weight.
+        /// </summary>
+        /// <value>The legend font weight.</value>
+        public double LegendFontWeight { get; set; }
+
+        /// <summary>
+        /// Gets or sets the legend title font.
+        /// </summary>
+        /// <value>The legend title font.</value>
+        public string LegendTitleFont { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the legend title font.
+        /// </summary>
+        /// <value>The size of the legend title font.</value>
+        public double LegendTitleFontSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the legend title font weight.
+        /// </summary>
+        /// <value>The legend title font weight.</value>
+        public double LegendTitleFontWeight { get; set; }
+
+        /// <summary>
+        /// Gets or sets the length of the legend symbols.
         /// </summary>
         public double LegendSymbolLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the axis margins.
+        /// Gets or sets the legend margin.
         /// </summary>
-        /// <value>The axis margins.</value>
+        /// <value>The legend margin.</value>
+        public double LegendMargin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the legend symbol margins (distance between the symbol and the text).
+        /// </summary>
+        /// <value>The legend symbol margin.</value>
+        public double LegendSymbolMargin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the background color of the legend. Use null for no background.
+        /// </summary>
+        /// <value>The legend background.</value>
+        public OxyColor LegendBackground { get; set; }
+
+        /// <summary>
+        /// Gets or sets the border color of the legend.
+        /// </summary>
+        /// <value>The legend border.</value>
+        public OxyColor LegendBorder { get; set; }
+
+        /// <summary>
+        /// Gets or sets the thickness of the legend border. Use 0 for no border.
+        /// </summary>
+        /// <value>The legend border thickness.</value>
+        public double LegendBorderThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the margins around the plot (this should be large enough to fit the axes).
+        /// </summary>
         public OxyThickness PlotMargins { get; set; }
+
+        /// <summary>
+        /// Gets or sets the padding around the plot.
+        /// </summary>
+        /// <value>The padding.</value>
+        public OxyThickness Padding { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the text.
@@ -232,21 +392,27 @@ namespace OxyPlot
         public OxyColor TextColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the box.
-        /// </summary>
-        /// <value>The color of the box.</value>
-        public OxyColor BoxColor { get; set; }
-
-        /// <summary>
         /// Gets or sets the color of the background of the plot area.
         /// </summary>
         public OxyColor Background { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the border around the plot area.
+        /// </summary>
+        /// <value>The color of the box.</value>
+        public OxyColor BoxColor { get; set; }
 
         /// <summary>
         /// Gets or sets the box thickness.
         /// </summary>
         /// <value>The box thickness.</value>
         public double BoxThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the padding around the title.
+        /// </summary>
+        /// <value>The title padding.</value>
+        public double TitlePadding { get; set; }
 
         /// <summary>
         /// Gets or sets the title.
@@ -277,6 +443,9 @@ namespace OxyPlot
 
         /// <summary>
         /// Force an update of the data.
+        /// 1. Updates the data of each Series.
+        /// 2. Ensure that all series have axes assigned.
+        /// 3. Updates the max and min of the axes.
         /// </summary>
         public void UpdateData()
         {
@@ -390,7 +559,7 @@ namespace OxyPlot
         /// Update max and min values of the axes from values of all data series.
         /// Only axes with automatic set to true are changed.
         /// </summary>
-        public void UpdateMaxMin()
+        private void UpdateMaxMin()
         {
             foreach (var a in Axes)
             {
@@ -407,133 +576,10 @@ namespace OxyPlot
             }
         }
 
-        public void Render(IRenderContext rc)
-        {
-            if (rc.Width <= 0 || rc.Height <= 0)
-                return;
-            RenderInit(rc);
-
-            UpdateAxisTransforms();
-            RenderBackgrounds(rc);
-            RenderAxes(rc);
-            RenderAnnotations(rc, AnnotationLayer.BelowSeries);
-            RenderSeries(rc);
-            RenderAnnotations(rc, AnnotationLayer.OverSeries);
-            RenderBox(rc);
-        }
-
-        private void RenderAnnotations(IRenderContext rc, AnnotationLayer layer)
-        {
-            foreach (var a in Annotations.Where(a => a.Layer == layer))
-                a.Render(rc, this);
-        }
-
-        public void RenderInit(IRenderContext rc)
-        {
-            double w = rc.Width - PlotMargins.Left - PlotMargins.Right;
-            double h = rc.Height - PlotMargins.Top - PlotMargins.Bottom;
-        		double plotAreaTop = PlotMargins.Top;
-
-				//Calculate size of legend box, and modify width and height of PlotArea accordingly:
-        		OxyRect legendBox = GetLegendBoxRect(rc);
-
-				if (legendBox.Height > 0.0)
-				{
-					if (IsLegendOutsidePlotArea)
-					{
-						if (LegendPosition == LegendPosition.Top)
-						{
-							h -= legendBox.Height;
-							plotAreaTop += legendBox.Height;
-						}
-						else if (LegendPosition == LegendPosition.Bottom)
-						{
-							h -= legendBox.Height;
-						}
-					}
-				}
-        		if (legendBox.Width > 0.0 && IsLegendOutsidePlotArea && 
-					(LegendPosition == LegendPosition.BottomLeft || LegendPosition == LegendPosition.BottomRight ||
-					 LegendPosition == LegendPosition.TopLeft || LegendPosition == LegendPosition.TopRight))
-				{
-					w -= legendBox.Width;
-				}
-
-	        	if (w < 0) w = 0;
-            if (h < 0) h = 0;
-
-            PlotArea = new OxyRect
-                           {
-                               Left = PlotMargins.Left,
-                               Width = w,
-                               Top = plotAreaTop,
-                               Height = h
-                           };
-
-			   //Calculate height and top of the area bounding the plot area and top/bottom axes:
-        		double boundsTop = PlotArea.Top;
-        		double boundsHeight = PlotArea.Height;
-        		foreach (AxisBase axis in Axes)
-        		{
-					if(!axis.IsHorizontal())
-						continue;
-
-        			double axisTextHeight = 0.0;
-					if (axis.TickStyle != TickStyle.None)
-					{
-						axisTextHeight = rc.MeasureText(axis.Minimum.ToString(), axis.FontFamily, axis.FontSize, axis.FontWeight).Height + 
-													rc.MeasureText(axis.Title, axis.FontFamily, axis.FontSize, axis.FontWeight).Height;
-					}
-
-					if(axis.Position == AxisPosition.Top)
-					{
-						boundsTop -= axisTextHeight;
-					}
-					boundsHeight += axisTextHeight;
-        		}
-
-			  Bounds = new OxyRect(PlotArea.Left, boundsTop, PlotArea.Width, boundsHeight);
-
-			  //TODO: Do the above for left/right axes as well?
-
-            // todo...
-            /*
-            // check the length of the maximum/minimum labels and 
-            // extended margins if neccessary
-            foreach (var axis in Axes)
-            {
-                if (!axis.IsVertical())
-                    continue;
-
-                double x = axis.ActualMaximum;
-                x = (int)(x / axis.ActualMajorStep)*axis.ActualMajorStep;
-                x = Axis.RemoveNoiseFromDoubleMath(x);
-                 
-                var smax = axis.FormatValue(x);
-                var smin = axis.FormatValue(x);
-                var sizeMax = rc.MeasureText(smax, axis.FontFamily, axis.FontSize, axis.FontWeight);
-                var sizeMin = rc.MeasureText(smin, axis.FontFamily, axis.FontSize, axis.FontWeight);
-                var maxWidth = Math.Max(sizeMax.Width, sizeMin.Width)+axis.MajorTickSize*2;
-
-                if (axis.Position == AxisPosition.Left)
-                {
-                    if (maxWidth > bounds.Left)
-                    {
-                        double r = bounds.Right;
-                        bounds.Left = maxWidth;
-                        bounds.Right = r;
-                    }
-                }
-                if (axis.Position == AxisPosition.Right)
-                {
-                    if (maxWidth > rc.Width - bounds.Right)
-                        bounds.Right = rc.Width - maxWidth;
-                }
-            }
-              */
-            MidPoint = new ScreenPoint((PlotArea.Left + PlotArea.Right) * 0.5, (PlotArea.Top + PlotArea.Bottom) * 0.5);
-        }
-
+        /// <summary>
+        /// Updates the axis transforms and intervals.
+        /// This is used after pan/zoom.
+        /// </summary>
         public void UpdateAxisTransforms()
         {
             // Update the transforms
@@ -558,81 +604,6 @@ namespace OxyPlot
                 a.UpdateIntervals(PlotArea);
             }
 
-        }
-
-        /// <summary>
-        /// Renders the axes.
-        /// </summary>
-        /// <param name="rc">The rc.</param>
-        public void RenderAxes(IRenderContext rc)
-        {
-
-            foreach (var a in Axes)
-            {
-                if (a.IsVisible)
-                {
-                    a.Render(rc, this);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Renders the series backgrounds.
-        /// </summary>
-        /// <param name="rc">The rc.</param>
-        public void RenderBackgrounds(IRenderContext rc)
-        {
-            // Render the main background of the plot (only if there are axes)
-            // The border is rendered in RenderBox.
-            if (Axes.Count > 0)
-                rc.DrawRectangle(PlotArea, Background, null, 0);
-
-            foreach (var s in Series)
-            {
-                var s2 = s as PlotSeriesBase;
-                if (s2 == null || s2.Background == null)
-                    continue;
-                rc.DrawRectangle(s2.GetScreenRectangle(), s2.Background, null, 0);
-            }
-        }
-
-        /// <summary>
-        /// Renders the box around the plot area.
-        /// </summary>
-        /// <param name="rc">The rc.</param>
-        public void RenderBox(IRenderContext rc)
-        {
-            var pp = new PlotRenderingHelper(rc, this);
-
-            // Render the title
-            pp.RenderTitle(Title, Subtitle);
-
-            // Render the box around the plot (only if there are axes)
-            if (Axes.Count > 0)
-            {
-                rc.DrawBox(PlotArea, null, BoxColor, BoxThickness);
-            }
-            // Render the legends
-            pp.RenderLegends();
-        }
-
-        /// <summary>
-        /// Renders the series.
-        /// </summary>
-        /// <param name="rc">The rc.</param>
-        public void RenderSeries(IRenderContext rc)
-        {
-            // Update undefined colors
-            ResetDefaultColor();
-            foreach (var s in Series)
-            {
-                s.SetDefaultValues(this);
-            }
-
-            foreach (var s in Series)
-            {
-                s.Render(rc, this);
-            }
         }
 
         /// <summary>
@@ -690,11 +661,12 @@ namespace OxyPlot
                 {
                     if (axis.IsHorizontal())
                     {
-                        // todo: only accept axis if it is within the plot area or the axis area
                         xaxis = axis;
                     }
                     else
+                    {
                         yaxis = axis;
+                    }
                 }
             }
         }
@@ -718,7 +690,6 @@ namespace OxyPlot
                 DataPoint dp;
                 if (!ts.GetNearestInterpolatedPoint(point, out dp, out sp))
                     continue;
-
                 // find distance to this point on the screen
                 double dist = point.DistanceTo(sp);
                 if (dist < mindist)
@@ -789,43 +760,6 @@ namespace OxyPlot
                     return r.ReadToEnd();
                 }
             }
-
         }
-
-		  private OxyRect GetLegendBoxRect(IRenderContext rc)
-		  {
-		  		double height = 0.0;
-				double width = 0.0;
-			 
-			 foreach (var s in Series)
-			 {
-				 if (String.IsNullOrEmpty(s.Title))
-				 {
-					 continue;
-				 }
-
-				 var oxySize = rc.MeasureMathText(s.Title, LegendFont, LegendFontSize, 500);
-
-				 if (LegendLayout == LegendLayout.Vertical)
-				 {
-				 	height += oxySize.Height;
-					if(oxySize.Width > width)
-					{
-						width = oxySize.Width;
-					}
-				 }
-				 else
-				 {
-					 width += oxySize.Width;
-				 	 if(oxySize.Height > height)
-				 	 {
-				 	 	height = oxySize.Height;
-				 	 }
-				 }
-			 }
-
-		  	return new OxyRect(0, 0, width, height);
-
-		  }
     }
 }

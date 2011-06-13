@@ -7,7 +7,7 @@ namespace ExampleLibrary
     [Examples("DateTimeAxis")]
     public static class DateTimeAxisExamples
     {
-        [Example("DateTime Minimum bug")]
+        // [Example("DateTime Minimum bug")]
         public static PlotModel Example1()
         {
             var tmp = new PlotModel("Test");
@@ -18,7 +18,7 @@ namespace ExampleLibrary
                 MajorGridlineStyle = LineStyle.Solid,
                 Angle = 90,
                 StringFormat = "HH:mm",
-                MajorStep = 1.0/24/2, // 1/24 = 1 hour, 1/24/2 = 30 minutes
+                MajorStep = 1.0 / 24 / 2, // 1/24 = 1 hour, 1/24/2 = 30 minutes
                 IsZoomEnabled = true,
                 MaximumPadding = 0,
                 MinimumPadding = 0,
@@ -29,10 +29,9 @@ namespace ExampleLibrary
             List<Item> ii = new List<Item>();
 
             for (int i = 0; i < 24; i++)
-                ii.Add(new Item() { X = dt.AddHours(i), Y = i * i });
+                ii.Add(new Item { X = dt.AddHours(i), Y = i * i });
             ls.ItemsSource = ii;
             tmp.Series.Add(ls);
-            //tmp.PlotMargins = new OxyThickness(40, 0, 0, 40);
             return tmp;
         }
 

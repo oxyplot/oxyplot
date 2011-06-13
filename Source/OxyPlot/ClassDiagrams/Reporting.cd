@@ -7,11 +7,11 @@
       <FileName>Reporting\Report\TableOfContents.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OxyPlot.Reporting.Drawing" Collapsed="true">
+  <Class Name="OxyPlot.Reporting.DrawingFigure" Collapsed="true">
     <Position X="5.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAgAAAAAAAAAAAEAAAAgAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Reporting\Report\Drawing.cs</FileName>
+      <FileName>Reporting\Report\DrawingFigure.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Reporting.Equation" Collapsed="true">
@@ -24,7 +24,7 @@
   <Class Name="OxyPlot.Reporting.Figure" Collapsed="true">
     <Position X="4.75" Y="7" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAEgAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Reporting\Report\Figure.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -49,31 +49,31 @@
       <FileName>Reporting\Report\Paragraph.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OxyPlot.Reporting.Plot" Collapsed="true">
+  <Class Name="OxyPlot.Reporting.PlotFigure" Collapsed="true">
     <Position X="7.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAABAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAQAA=</HashCode>
-      <FileName>Reporting\Report\Plot.cs</FileName>
+      <FileName>Reporting\Report\PlotFigure.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Reporting.PropertyTable" Collapsed="true">
     <Position X="5.75" Y="11.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Reporting\Report\PropertyTable.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Reporting.Report" Collapsed="true">
     <Position X="4.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAEAAgAAAAEAAAAAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Reporting\Report\Report.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Reporting.ReportItem" Collapsed="true">
     <Position X="2.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAYEAAAAAACCgAAAAAIEAEAAAAAAACAAAAAAAAELCAA=</HashCode>
+      <HashCode>AAcGAAAAAACCAAAAAAAEAEAAAAAAAAAAAAAAAAELCAA=</HashCode>
       <FileName>Reporting\Report\ReportItem.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -87,14 +87,14 @@
   <Class Name="OxyPlot.Reporting.Table" Collapsed="true">
     <Position X="4.75" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAACAAAAAAAAEAAAAAAAAAACAAAAAhAAAI=</HashCode>
+      <HashCode>AAQAAAAgAAAAAEAgAAAAAEBAAAAAAAEACAAAAAgAAAA=</HashCode>
       <FileName>Reporting\Report\Table.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Reporting.HtmlReportWriter" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="7.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACAAAAAAAAAgEIQIAAAAAAAAAAoQAABAAEIkAAigAAA=</HashCode>
+      <HashCode>ACAAgAAAAAAgAIQAAAAQAAAAAAoUAABAIEIkAAigAAA=</HashCode>
       <FileName>Reporting\ReportWriters\HtmlReportWriter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -102,7 +102,7 @@
   <Class Name="OxyPlot.Reporting.LatexReportWriter" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="11.25" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACABAAAAACAsAAQABAAAAAQAAAAAIAAAAEAkAAAiAAA=</HashCode>
+      <HashCode>ACABgAAAACAsAAQABAAAAAQAAAAAIAAAAEAkAAAiAAA=</HashCode>
       <FileName>Reporting\ReportWriters\LatexReportWriter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -110,7 +110,7 @@
   <Class Name="OxyPlot.Reporting.TextReportWriter" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="9.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ICAAAABAAAAgAAQIAAAACIAEAAAAAAAAAEAkAAAgAAA=</HashCode>
+      <HashCode>ICAAgABAAAAgAAQIAAAACIAEAAAAAAAAAEAkAAAgAAA=</HashCode>
       <FileName>Reporting\ReportWriters\TextReportWriter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -118,7 +118,7 @@
   <Interface Name="OxyPlot.Reporting.IReportWriter" Collapsed="true">
     <Position X="9.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAEAkAAAgAAA=</HashCode>
+      <HashCode>ACAAgAAAAAAgAAQAAAAAAAAAAAAAAAAAAEAkAAAgAAA=</HashCode>
       <FileName>Reporting\ReportWriters\IReportWriter.cs</FileName>
     </TypeIdentifier>
   </Interface>

@@ -71,6 +71,7 @@
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\AxisBase.cs" />
     <Compile Include="Axes\TimeSpanAxis.cs" />
+    <Compile Include="PlotModel.Legends.cs" />
     <Compile Include="Foundation\CanonicalSplineHelper.cs" />
     <Compile Include="Foundation\FontWeights.cs" />
     <Compile Include="Foundation\OxyThickness.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="MouseActions\PanAction.cs" />
     <Compile Include="MouseActions\TrackerAction.cs" />
     <Compile Include="MouseActions\ZoomAction.cs" />
+    <Compile Include="PlotModel.Rendering.cs" />
     <Compile Include="Render\AxisRendererBase.cs" />
     <Compile Include="Foundation\CohenSutherlandClipping.cs" />
     <Compile Include="Render\AngleAxisRenderer.cs" />
@@ -120,7 +122,6 @@
     <Compile Include="Reporting\Report\ItemsTableField.cs" />
     <Compile Include="Series\AreaSeries.cs" />
     <Compile Include="Foundation\OxyPen.cs" />
-    <Compile Include="Render\PlotRenderingHelper.cs" />
     <Compile Include="Foundation\LineStyleHelper.cs" />
     <Compile Include="Foundation\DataPoint.cs" />
     <Compile Include="Annotations\IAnnotation.cs" />
