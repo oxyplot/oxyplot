@@ -421,9 +421,9 @@ namespace ExportDemo
                                Title = "E_{r}^{2} - (pc)^{2} = (m_{0}c^{2})^{2}",
                                TitleFontSize = 24,
                                LegendFontSize = 14,
-                               LegendPosition = LegendPosition.TopRight,
-                               IsLegendOutsidePlotArea = true,
-                               PlotMargins = new OxyThickness(50, 50, 100, 50)
+                               LegendPosition = LegendPosition.RightTop,
+                               LegendPlacement = LegendPlacement.Outside,
+                               PlotMargins = new OxyThickness(30, 4, 0, 30)
                            };
 
             plot.Series.Add(CreateLineSeries(x => x, 0.1, 100, 0.1, "H_{2}O"));

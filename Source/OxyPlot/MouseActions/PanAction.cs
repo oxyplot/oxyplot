@@ -15,24 +15,7 @@
         public override void OnMouseDown(ScreenPoint pt, OxyMouseButton button, int clickCount, bool control, bool shift, bool alt)
         {
             pc.GetAxesFromPoint(pt, out xaxis, out yaxis);
-
-            //if (button == OxyMouseButton.XButton1 || button == OxyMouseButton.XButton2)
-            //{
-            //    double dx = xaxis != null ? (xaxis.ActualMaximum - xaxis.ActualMinimum) * 0.05 : 0;
-            //    double dy = yaxis != null ? (yaxis.ActualMaximum - yaxis.ActualMinimum) * 0.05 : 0;
-            //    if (button == OxyMouseButton.XButton1)
-            //    {
-            //        dx *= -1;
-            //        dy *= -1;
-            //    }
-            //    if (xaxis != null)
-            //        pc.Pan(xaxis, -dx);
-            //    if (yaxis != null)
-            //        pc.Pan(yaxis, -dy);
-            //    pc.Refresh();
-            //    return;
-            //}
-
+           
             if (alt)
                 button = OxyMouseButton.Right;
 
@@ -66,9 +49,6 @@
             if (yaxis != null)
                 pc.Pan(yaxis, previousPoint.Y,currentPoint.Y);
 
-            // this makes sure the transforms are updated if more MouseMoves must
-            // be handled before next redraw
-            pc.UpdateAxisTransforms();
             pc.RefreshPlot();
             //pc.InvalidatePlot();
             ppt = pt;

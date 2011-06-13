@@ -4,8 +4,6 @@ namespace OxyPlot
 {
     public abstract class AxisRendererBase
     {
-        protected const double AXIS_LEGEND_DIST = 4; // distance from axis number to axis legend
-        protected const double TICK_DIST = 4; // distance from axis tick to number
         protected readonly PlotModel Plot;
         protected readonly IRenderContext rc;
 

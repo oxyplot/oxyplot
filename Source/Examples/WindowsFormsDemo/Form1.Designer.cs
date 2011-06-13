@@ -35,12 +35,11 @@ namespace WindowsFormsDemo
             // 
             // plot1
             // 
-            this.plot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.plot1.Location = new System.Drawing.Point(12, 12);
+            this.plot1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.plot1.Location = new System.Drawing.Point(0, 0);
+            this.plot1.Margin = new System.Windows.Forms.Padding(0);
             this.plot1.Name = "plot1";
-            this.plot1.Size = new System.Drawing.Size(608, 422);
+            this.plot1.Size = new System.Drawing.Size(632, 446);
             this.plot1.TabIndex = 0;
             // 
             // Form1

@@ -177,38 +177,33 @@ namespace Oxyplot.WindowsForms
             Invalidate();
         }
 
-        public void UpdateAxisTransforms()
-        {
-            Model.UpdateAxisTransforms();
-        }
-
         public void Pan(IAxis axis, double x0, double x1)
         {
             axis.Pan(x0,x1);
+            Model.UpdateAxisTransforms();
         }
 
         public void Reset(IAxis axis)
         {
             axis.Reset();
+            Model.UpdateAxisTransforms();
         }
 
         public void Zoom(IAxis axis, double p1, double p2)
         {
             axis.Zoom(p1, p2);
+            Model.UpdateAxisTransforms();
         }
 
         public void ZoomAt(IAxis axis, double factor, double x)
         {
             axis.ZoomAt(factor, x);
-        }
-
-        public OxyRect GetPlotArea()
-        {
-            return Model.PlotArea;
+            Model.UpdateAxisTransforms();
         }
 
         public void ShowTracker(ISeries s, DataPoint dp)
         {
+            // not implemented for WindowsForms
         }
 
         public void HideTracker()

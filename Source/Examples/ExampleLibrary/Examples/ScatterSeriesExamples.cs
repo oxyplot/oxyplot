@@ -64,7 +64,7 @@ namespace ExampleLibrary
         public static PlotModel RandomWithFit()
         {
             int n = 20;
-            var model = new PlotModel("Random data") { LegendPosition = LegendPosition.TopLeft };
+            var model = new PlotModel("Random data") { LegendPosition = LegendPosition.LeftTop };
 
             var s1 = new ScatterSeries { Title = "Measurements" };
             var random = new Random();

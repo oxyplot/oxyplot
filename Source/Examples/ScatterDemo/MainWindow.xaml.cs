@@ -14,7 +14,7 @@ namespace ScatterDemo
         {
             InitializeComponent();
             DataContext = this;
-            var tmp = new PlotModel("Scatter plot");
+            var tmp = new PlotModel("Scatter plot","Barnsley fern (IFS)");
             var s1 = new LineSeries
                          {
                              StrokeThickness = 0,

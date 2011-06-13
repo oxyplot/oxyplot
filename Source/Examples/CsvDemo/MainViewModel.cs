@@ -31,9 +31,9 @@ namespace CsvDemo
             var doc = new CsvDocument();
             doc.Load(file);
             var tmp = new PlotModel(Path.GetFileNameWithoutExtension(file));
-            tmp.LegendPosition = LegendPosition.TopRight;
-            tmp.IsLegendOutsidePlotArea = true;
-            tmp.PlotMargins= new OxyThickness(70,40,160,50);
+            tmp.LegendPosition = LegendPosition.RightTop;
+            tmp.LegendPlacement = LegendPlacement.Outside;
+            tmp.PlotMargins= new OxyThickness(50,0,0,40);
             for (int i = 1; i < doc.Headers.Length; i++)
             {
                 var ls = new LineSeries(doc.Headers[i]);
