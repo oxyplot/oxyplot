@@ -232,7 +232,7 @@ namespace OxyPlot
 
 					string text = axis.FormatValue(value);
 					rc.DrawMathText(pt, text, Plot.TextColor,
-										 axis.FontFamily, axis.FontSize, axis.FontWeight,
+										 axis.Font, axis.FontSize, axis.FontWeight,
 										 axis.Angle, ha, va, false);
 				}
 			}
@@ -325,7 +325,7 @@ namespace OxyPlot
 				}
 
 				rc.DrawText(lpt, axis.Title, Plot.TextColor,
-								axis.FontFamily, axis.FontSize, axis.FontWeight,
+								axis.Font, axis.FontSize, axis.FontWeight,
 								angle, halign, valign);
 			}
 

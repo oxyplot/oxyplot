@@ -121,12 +121,12 @@ namespace OxyPlot
             foreach (var v in majorTickValues)
             {
                 var s = axis.FormatValue(v);
-                var size = rc.MeasureText(s, axis.FontFamily, axis.FontSize, axis.FontWeight);
+                var size = rc.MeasureText(s, axis.Font, axis.FontSize, axis.FontWeight);
                 if (size.Width > maximumTextSize.Width) maximumTextSize.Width = size.Width;
                 if (size.Height > maximumTextSize.Height) maximumTextSize.Height = size.Height;
             }
 
-            var labelTextSize = rc.MeasureText(axis.Title, axis.FontFamily, axis.FontSize, axis.FontWeight);
+            var labelTextSize = rc.MeasureText(axis.Title, axis.Font, axis.FontSize, axis.FontWeight);
 
             double width = 0;
             double height = 0;
