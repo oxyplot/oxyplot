@@ -301,33 +301,14 @@ namespace OxyPlot
             double maxx = MaxX;
             double maxy = MaxY;
 
-            if (double.IsNaN(minx))
-            {
-                minx = pts[0].x;
-            }
-
-            if (double.IsNaN(maxx))
-            {
-                maxx = pts[0].x;
-            }
-
-            if (double.IsNaN(miny))
-            {
-                miny = pts[0].y;
-            }
-
-            if (double.IsNaN(maxy))
-            {
-                maxy = pts[0].y;
-            }
-
-
             foreach (var pt in pts)
             {
-                if (pt.x < minx) minx = pt.x;
-                if (pt.x > maxx) maxx = pt.x;
-                if (pt.y < miny) miny = pt.y;
-                if (pt.y > maxy) maxy = pt.y;
+                if (!IsValidPoint(pt,XAxis,YAxis))
+                    continue;
+                if (pt.x < minx || double.IsNaN(minx)) minx = pt.x;
+                if (pt.x > maxx || double.IsNaN(maxx)) maxx = pt.x;
+                if (pt.y < miny || double.IsNaN(miny)) miny = pt.y;
+                if (pt.y > maxy || double.IsNaN(maxy)) maxy = pt.y;
             }
 
             MinX = minx;
@@ -374,6 +355,14 @@ namespace OxyPlot
             }
 
             return false;
+        }
+
+        public virtual bool IsValidPoint(DataPoint pt, IAxis xAxis, IAxis yAxis)
+        {
+            return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X)
+                   && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
+                   && (xAxis!=null && xAxis.IsValidValue(pt.X)) 
+                   && (yAxis!=null && yAxis.IsValidValue(pt.Y));
         }
     }
 }

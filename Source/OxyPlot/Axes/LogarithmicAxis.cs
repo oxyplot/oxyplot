@@ -10,6 +10,7 @@ namespace OxyPlot
         /// </summary>
         public LogarithmicAxis()
         {
+            FilterMinValue = 0;
         }
 
         /// <summary>
@@ -18,6 +19,7 @@ namespace OxyPlot
         /// <param name="pos">The pos.</param>
         /// <param name="title">The title.</param>
         public LogarithmicAxis(AxisPosition pos, string title)
+            : this()
         {
             Position = pos;
             Title = title;
@@ -31,6 +33,7 @@ namespace OxyPlot
         /// <param name="minimum">The minimum.</param>
         /// <param name="maximum">The maximum.</param>
         public LogarithmicAxis(AxisPosition position, double minimum = double.NaN, double maximum = double.NaN, string title = null)
+            : this()
         {
             Position = position;
             Title = title;
