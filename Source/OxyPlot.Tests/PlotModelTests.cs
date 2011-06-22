@@ -1,4 +1,5 @@
 ﻿using System;
+using ExampleLibrary;
 using NUnit.Framework;
 
 namespace OxyPlot.Tests
@@ -39,9 +40,18 @@ namespace OxyPlot.Tests
             plot.Axes.Add(yaxis1);
             plot.Axes.Add(yaxis2);
 
-            var ls = new LineSeries { Background = OxyColors.LightSeaGreen, YAxis = yaxis1 };
-            AddExamplePoints(ls);
-            plot.Series.Add(ls);
+            Action<LineSeries> AddExamplePoints = ls =>
+                                                      {
+                                                          ls.Points.Add(new DataPoint(3, 13));
+                                                          ls.Points.Add(new DataPoint(10, 47));
+                                                          ls.Points.Add(new DataPoint(30, 23));
+                                                          ls.Points.Add(new DataPoint(40, 65));
+                                                          ls.Points.Add(new DataPoint(80, 10));
+                                                      };
+
+            var ls1 = new LineSeries { Background = OxyColors.LightSeaGreen, YAxis = yaxis1 };
+            AddExamplePoints(ls1);
+            plot.Series.Add(ls1);
 
             var ls2 = new LineSeries { Background = OxyColors.LightSkyBlue, YAxis = yaxis2 };
             AddExamplePoints(ls2);
@@ -50,13 +60,25 @@ namespace OxyPlot.Tests
             OxyAssert.AreEqual(plot);
         }
 
-        private void AddExamplePoints(DataSeries ls)
+        [Test]
+        public void C11_FilteringInvalidPoints()
         {
-            ls.Points.Add(new DataPoint(3, 13));
-            ls.Points.Add(new DataPoint(10, 47));
-            ls.Points.Add(new DataPoint(30, 23));
-            ls.Points.Add(new DataPoint(40, 65));
-            ls.Points.Add(new DataPoint(80, 10));
+            var plot = LineSeriesExamples.FilteringInvalidPoints();
+            OxyAssert.AreEqual(plot);
         }
+
+        [Test]
+        public void C12_FilteringNonPositiveValuesOnLogAxes()
+        {
+            var plot = LineSeriesExamples.FilteringInvalidPointsLog();
+            OxyAssert.AreEqual(plot);
+        }
+        [Test]
+        public void C13_FilteringPointsOutsideRange()
+        {
+            var plot = LineSeriesExamples.FilteringPointsOutsideRange();
+            OxyAssert.AreEqual(plot);
+        }
+
     }
 }

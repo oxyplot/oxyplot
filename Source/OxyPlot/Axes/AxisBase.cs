@@ -63,6 +63,10 @@ namespace OxyPlot
 
             IsZoomEnabled = true;
             IsPanEnabled = true;
+
+            FilterMinValue = double.MinValue;
+            FilterMaxValue = double.MaxValue;
+            FilterFunction = null;
         }
 
         /// <summary>
@@ -302,6 +306,26 @@ namespace OxyPlot
         /// </summary>
         public double TitlePosition { get; set; }
 
+        /// <summary>
+        /// Gets or sets the maximum value that can be shown using this axis.
+        /// Values greater or equal to this value will not be shown.
+        /// </summary>
+        /// <value>The filter max value.</value>
+        public double FilterMaxValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum value that can be shown using this axis.
+        /// Values smaller or equal to this value will not be shown.
+        /// </summary>
+        /// <value>The filter min value.</value>
+        public double FilterMinValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the filter function. 
+        /// </summary>
+        /// <value>The filter function.</value>
+        public Func<double, bool> FilterFunction { get; set; }
+
         #region IAxis Members
 
         public ScreenPoint MidPoint { get; set; }
@@ -495,13 +519,20 @@ namespace OxyPlot
             //}
         }
 
-        public void Include(double p)
+        public void Include(double value)
         {
-            if (double.IsNaN(p) || double.IsInfinity(p))
+            if (!IsValidValue(value))
                 return;
 
-            ActualMinimum = double.IsNaN(ActualMinimum) ? p : Math.Min(ActualMinimum, p);
-            ActualMaximum = double.IsNaN(ActualMaximum) ? p : Math.Max(ActualMaximum, p);
+            ActualMinimum = double.IsNaN(ActualMinimum) ? value : Math.Min(ActualMinimum, value);
+            ActualMaximum = double.IsNaN(ActualMaximum) ? value : Math.Max(ActualMaximum, value);
+        }
+
+        public virtual bool IsValidValue(double value)
+        {
+            return !double.IsNaN(value) && !double.IsInfinity(value)
+                   && value < FilterMaxValue && value > FilterMinValue &&
+                   (FilterFunction == null || FilterFunction(value));
         }
 
         /// <summary>

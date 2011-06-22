@@ -38,7 +38,9 @@
         ScreenPoint MidPoint { get; set; }
         ScreenPoint ScreenMin { get; set; }
         ScreenPoint ScreenMax { get; set; }
-        
+
+        bool IsValidValue(double value);
+
         bool IsHorizontal();
         bool IsVertical();
         bool IsPolar();

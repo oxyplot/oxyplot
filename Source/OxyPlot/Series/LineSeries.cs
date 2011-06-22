@@ -143,25 +143,42 @@ namespace OxyPlot
 
             int n = points.Count;
 
+            var transformedPoints = new List<ScreenPoint>();
+            
+            Action<ScreenPoint[]> RenderPoints = allPoints =>
+                                      {
+                                          // spline smoothing (should only be used on small datasets)
+                                          // todo: could do spline smoothing only on the visible part of the curve...
+                                          var screenPoints = Smooth
+                                                                 ? CanonicalSplineHelper.CreateSpline(allPoints, 0.5,
+                                                                                                      null, false, 0.25)
+                                                                       .ToArray()
+                                                                 : allPoints;
+
+                                          // clip the line segments with the clipping rectangle
+                                          if (StrokeThickness > 0 && LineStyle != LineStyle.None)
+                                              rc.DrawClippedLine(screenPoints, clippingRect, minDistSquared, Color,
+                                                                 StrokeThickness, LineStyle, LineJoin, false);
+                                          if (MarkerType != MarkerType.None)
+                                              rc.DrawMarkers(allPoints, clippingRect, MarkerType, MarkerOutline,
+                                                             new[] {MarkerSize}, MarkerFill, MarkerStroke,
+                                                             MarkerStrokeThickness);
+
+                                      };
+
             // Transform all points to screen coordinates
-            var allPoints = new ScreenPoint[n];
-            for (int i = 0; i < n; i++)
+            // Render the line when invalid points occur
+            foreach( var point in points)
             {
-                allPoints[i] = XAxis.Transform(points[i], YAxis);
+                if (!IsValidPoint(point,XAxis,YAxis))
+                {
+                    RenderPoints(transformedPoints.ToArray());
+                    transformedPoints.Clear();
+                    continue;
+                }
+                transformedPoints.Add(XAxis.Transform(point, YAxis));
             }
-
-            // spline smoothing (should only be used on small datasets)
-            // todo: could do spline smoothing only on the visible part of the curve...
-            var screenPoints = Smooth
-                                   ? CanonicalSplineHelper.CreateSpline(allPoints, 0.5, null, false, 0.25).ToArray()
-                                   : allPoints;
-
-            // clip the line segments with the clipping rectangle
-            if (StrokeThickness>0 && LineStyle!=LineStyle.None)
-                rc.DrawClippedLine(screenPoints, clippingRect, minDistSquared, Color, StrokeThickness, LineStyle, LineJoin,false);
-            if (MarkerType!=MarkerType.None)
-                rc.DrawMarkers(allPoints, clippingRect, MarkerType, MarkerOutline, new[] { MarkerSize }, MarkerFill, MarkerStroke,
-                               MarkerStrokeThickness);
+            RenderPoints(transformedPoints.ToArray());
         }
 
         /// <summary>
