@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OxyPlot
 {
+    /// <summary>
+    /// Logarithmic axis.
+    /// http://en.wikipedia.org/wiki/Logarithmic_scale
+    /// </summary>
     public class LogarithmicAxis : AxisBase
     {
         /// <summary>
         ///   Initializes a new instance of the <see cref = "LogarithmicAxis" /> class.
         /// </summary>
         public LogarithmicAxis()
-        {
+        {            
+            PowerPadding = true;
+            Base = 10;
             FilterMinValue = 0;
         }
 
@@ -32,7 +39,8 @@ namespace OxyPlot
         /// <param name="title">The title.</param>
         /// <param name="minimum">The minimum.</param>
         /// <param name="maximum">The maximum.</param>
-        public LogarithmicAxis(AxisPosition position, double minimum = double.NaN, double maximum = double.NaN, string title = null)
+        public LogarithmicAxis(AxisPosition position, double minimum = double.NaN, double maximum = double.NaN,
+                               string title = null)
             : this()
         {
             Position = position;
@@ -41,6 +49,37 @@ namespace OxyPlot
             Maximum = maximum;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the ActualMaximum and ActualMinimum values should be padded to the nearest power of the Base.
+        /// </summary>
+        public bool PowerPadding { get; set; }
+
+        /// <summary>
+        /// Gets or sets the logarithmic base (normally 10).
+        /// http://en.wikipedia.org/wiki/Logarithm
+        /// </summary>
+        /// <value>The logarithmic base.</value>
+        public double Base { get; set; }
+
+        public override void UpdateActualMaxMin()
+        {
+            if (PowerPadding)
+            {
+                double logBase = Math.Log(Base);
+                var e0 = (int) Math.Floor(Math.Log(ActualMinimum)/logBase);
+                var e1 = (int) Math.Ceiling(Math.Log(ActualMaximum)/logBase);
+                ActualMinimum = RemoveNoiseFromDoubleMath(Math.Exp(e0*logBase));
+                ActualMaximum = RemoveNoiseFromDoubleMath(Math.Exp(e1*logBase));
+            }
+
+            base.UpdateActualMaxMin();
+        }
+
+        /// <summary>
+        /// Gets the tick values.
+        /// </summary>
+        /// <param name="majorValues">The major tick values.</param>
+        /// <param name="minorValues">The minor tick values.</param>
         public override void GetTickValues(out ICollection<double> majorValues, out ICollection<double> minorValues)
         {
             if (ActualMinimum <= 0)
@@ -48,37 +87,24 @@ namespace OxyPlot
                 ActualMinimum = 0.1;
             }
 
-            var e0 = (int)Math.Floor(Math.Log10(ActualMinimum));
-            var e1 = (int)Math.Ceiling(Math.Log10(ActualMaximum));
-            double d0 = Math.Pow(10, e0);
-            double d1 = Math.Pow(10, e1);
+            double logBase = Math.Log(Base);
+            var e0 = (int)Math.Floor(Math.Log(ActualMinimum) / logBase);
+            var e1 = (int)Math.Ceiling(Math.Log(ActualMaximum) / logBase);
+            double d0 = RemoveNoiseFromDoubleMath(Math.Exp(e0 * logBase));
+            double d1 = RemoveNoiseFromDoubleMath(Math.Exp(e1 * logBase));
             double d = d0;
             majorValues = new List<double>();
             minorValues = new List<double>();
 
-            //if (ActualMaximum / ActualMinimum < 10)
-            //{
-            //    while (d<=d1+double.Epsilon)
-            //    {
-            //        if (d >= ActualMinimum && d <= ActualMaximum)
-            //        {
-            //            majorValues.Add(d);
-            //        }
-            //        double e2 = (int)Math.Floor(Math.Log10(d));
-            //        double dd = Math.Pow(10, e2);
-            //        d += dd * 0.1;
-            //    }
-            //    return;
-            //}
-
             while (d <= d1 + double.Epsilon)
             {
+                d = RemoveNoiseFromDoubleMath(d);
                 if (d >= ActualMinimum && d <= ActualMaximum)
                 {
                     majorValues.Add(d);
                 }
 
-                for (int i = 1; i <= 9; i++)
+                for (int i = 1; i < Base; i++)
                 {
                     double d2 = d * (i + 1);
                     if (d2 > d1 + double.Epsilon)
@@ -91,13 +117,32 @@ namespace OxyPlot
                         break;
                     }
 
-                    if (d2 > ActualMinimum && d2 < ActualMaximum)
+                    if (d2 >= ActualMinimum && d2 <= ActualMaximum)
                     {
                         minorValues.Add(d2);
                     }
                 }
 
-                d *= 10;
+                d *= Base;
+            }
+
+            //if (majorValues.Count == 1)
+            //{
+            //    double split = majorValues.First();
+            //    minorValues = CreateTickValues(ActualMinimum, split, ActualMinorStep);
+            //    majorValues = CreateTickValues(ActualMinimum, split, ActualMajorStep);
+            //    ICollection<double> minorValues2 = CreateTickValues(split, ActualMaximum, ActualMinorStep);
+            //    ICollection<double> majorValues2 = CreateTickValues(split, ActualMaximum, ActualMajorStep);
+            //    foreach (double v in minorValues2)
+            //        if (v > split) minorValues.Add(v);
+            //    foreach (double v in majorValues2)
+            //        if (v > split) majorValues.Add(v);
+            //    return;
+            //}
+
+            if (majorValues.Count<2)
+            {
+                base.GetTickValues(out majorValues, out minorValues);
             }
         }
 

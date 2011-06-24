@@ -419,13 +419,13 @@ namespace OxyPlot
             if (ActualIntervalType == DateTimeIntervalType.Months)
             {
                 double monthsRange = range / 30.5;
-                interval = CalculateActualInterval2(availableSize, maxIntervalSize, monthsRange);
+                interval = CalculateActualInterval(availableSize, maxIntervalSize, monthsRange);
             }
 
             if (ActualIntervalType == DateTimeIntervalType.Years)
             {
                 double yearsRange = range / 365.25;
-                interval = CalculateActualInterval2(availableSize, maxIntervalSize, yearsRange);
+                interval = CalculateActualInterval(availableSize, maxIntervalSize, yearsRange);
             }
 
             if (ActualMinorIntervalType == DateTimeIntervalType.Auto)
