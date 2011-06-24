@@ -63,20 +63,20 @@ namespace OxyPlot.Tests
         [Test]
         public void C11_FilteringInvalidPoints()
         {
-            var plot = LineSeriesExamples.FilteringInvalidPoints();
+            var plot = FilteringExamples.FilteringInvalidPoints();
             OxyAssert.AreEqual(plot);
         }
 
         [Test]
         public void C12_FilteringNonPositiveValuesOnLogAxes()
         {
-            var plot = LineSeriesExamples.FilteringInvalidPointsLog();
+            var plot = FilteringExamples.FilteringInvalidPointsLog();
             OxyAssert.AreEqual(plot);
         }
         [Test]
         public void C13_FilteringPointsOutsideRange()
         {
-            var plot = LineSeriesExamples.FilteringPointsOutsideRange();
+            var plot = FilteringExamples.FilteringPointsOutsideRange();
             OxyAssert.AreEqual(plot);
         }
 

@@ -6,12 +6,12 @@ using System.Globalization;
 namespace OxyPlot
 {
     /// <summary>
-    /// The Axis is the base class for the OxyPlot axes.
+    /// The AxisBase is the base class for the OxyPlot axes.
     /// </summary>
     public abstract class AxisBase : IAxis
     {
         private static readonly Func<double, double> Exponent = x => Math.Round(Math.Log(Math.Abs(x), 10));
-        private static readonly Func<double, double> Mantissa = x => x/Math.Pow(10, Exponent(x));
+        private static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
         private AxisPosition position;
         private double scale;
 
@@ -470,11 +470,11 @@ namespace OxyPlot
         {
             if (!IsZoomEnabled)
                 return;
-            double dx0 = (ActualMinimum - x)*scale;
-            double dx1 = (ActualMaximum - x)*scale;
+            double dx0 = (ActualMinimum - x) * scale;
+            double dx1 = (ActualMaximum - x) * scale;
             scale *= factor;
             ActualMinimum = Minimum = dx0 / scale + x;
-            ActualMaximum = Maximum = dx1/scale + x;
+            ActualMaximum = Maximum = dx1 / scale + x;
         }
 
         public virtual void Zoom(double x0, double x1)
@@ -535,6 +535,17 @@ namespace OxyPlot
                    (FilterFunction == null || FilterFunction(value));
         }
 
+        protected virtual void EnsureRange()
+        {
+            var range = ActualMaximum - ActualMinimum;
+            if (range < MinimumRange)
+            {
+                double avg = (ActualMaximum + ActualMinimum) * 0.5;
+                ActualMinimum = avg - MinimumRange * 0.5;
+                ActualMaximum = avg + MinimumRange * 0.5;
+            }
+        }
+
         /// <summary>
         /// Updates the actual max and min with the 'padding' values.
         /// </summary>
@@ -550,11 +561,11 @@ namespace OxyPlot
             else
             {
                 if (range < double.Epsilon)
-                    ActualMaximum += zeroRange*0.5;
+                    ActualMaximum += zeroRange * 0.5;
 
                 double x1 = PreTransform(ActualMaximum);
                 double x0 = PreTransform(ActualMinimum);
-                double dx = MaximumPadding*(x1 - x0);
+                double dx = MaximumPadding * (x1 - x0);
                 ActualMaximum = PostInverseTransform(x1 + dx);
             }
 
@@ -565,11 +576,11 @@ namespace OxyPlot
             else
             {
                 if (range < double.Epsilon)
-                    ActualMinimum -= zeroRange*0.5;
+                    ActualMinimum -= zeroRange * 0.5;
 
                 double x1 = PreTransform(ActualMaximum);
                 double x0 = PreTransform(ActualMinimum);
-                double dx = MinimumPadding*(x1 - x0);
+                double dx = MinimumPadding * (x1 - x0);
                 ActualMinimum = PostInverseTransform(x0 - dx);
             }
 
@@ -582,13 +593,7 @@ namespace OxyPlot
                 ActualMinimum = this is LogarithmicAxis ? 1 : 0;
             }
 
-            range = ActualMaximum - ActualMinimum;
-            if (range < MinimumRange)
-            {
-                double avg = (ActualMaximum + ActualMinimum)*0.5;
-                ActualMinimum = avg - MinimumRange*0.5;
-                ActualMaximum = avg + MinimumRange*0.5;
-            }
+            EnsureRange();
         }
 
         #endregion
@@ -607,9 +612,9 @@ namespace OxyPlot
 
             if (IsPolar())
             {
-                double r = (dp.x - Offset)*scale;
-                double th = yAxis != null ? (dp.y - yAxis.Offset)*yAxis.Scale : double.NaN;
-                return new ScreenPoint(MidPoint.x + r*Math.Cos(th), MidPoint.y + r*Math.Sin(th));
+                double r = (dp.x - Offset) * scale;
+                double th = yAxis != null ? (dp.y - yAxis.Offset) * yAxis.Scale : double.NaN;
+                return new ScreenPoint(MidPoint.x + r * Math.Cos(th), MidPoint.y + r * Math.Sin(th));
             }
 
             if (yAxis == null)
@@ -622,12 +627,12 @@ namespace OxyPlot
         // this method seems to be a bottleneck for performance...
         public double Transform(double x)
         {
-            return (PreTransform(x) - Offset)*scale;
+            return (PreTransform(x) - Offset) * scale;
         }
 
         public double InverseTransform(double x)
         {
-            return PostInverseTransform(x/scale + Offset);
+            return PostInverseTransform(x / scale + Offset);
         }
 
         /// <summary>
@@ -644,11 +649,11 @@ namespace OxyPlot
             ScreenMin = new ScreenPoint(x0, y1);
             ScreenMax = new ScreenPoint(x1, y0);
 
-            MidPoint = new ScreenPoint((x0 + x1)/2, (y0 + y1)/2);
+            MidPoint = new ScreenPoint((x0 + x1) / 2, (y0 + y1) / 2);
 
             if (Position == AxisPosition.Angle)
             {
-                scale = 2*Math.PI/(ActualMaximum - ActualMinimum);
+                scale = 2 * Math.PI / (ActualMaximum - ActualMinimum);
                 Offset = ActualMinimum;
                 return;
             }
@@ -656,7 +661,7 @@ namespace OxyPlot
             {
                 ActualMinimum = 0;
                 double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
-                scale = 0.5*r/(ActualMaximum - ActualMinimum);
+                scale = 0.5 * r / (ActualMaximum - ActualMinimum);
                 Offset = ActualMinimum;
                 return;
             }
@@ -665,8 +670,8 @@ namespace OxyPlot
             double a1 = IsHorizontal() ? x1 : y1;
 
             double dx = a1 - a0;
-            a1 = a0 + EndPosition*dx;
-            a0 = a0 + StartPosition*dx;
+            a1 = a0 + EndPosition * dx;
+            a0 = a0 + StartPosition * dx;
             ScreenMin = new ScreenPoint(a0, a1);
             ScreenMax = new ScreenPoint(a1, a0);
 
@@ -678,30 +683,30 @@ namespace OxyPlot
 
             double da = a0 - a1;
             if (Math.Abs(da) != 0)
-                Offset = a0/da*max - a1/da*min;
+                Offset = a0 / da * max - a1 / da * min;
             else
                 Offset = 0;
 
             double range = max - min;
             if (Math.Abs(range) != 0)
-                scale = (a1 - a0)/range;
+                scale = (a1 - a0) / range;
             else
                 scale = 1;
         }
 
         public void SetScale(double newScale)
         {
-            double sx1 = (ActualMaximum - Offset)*scale;
-            double sx0 = (ActualMinimum - Offset)*scale;
+            double sx1 = (ActualMaximum - Offset) * scale;
+            double sx0 = (ActualMinimum - Offset) * scale;
 
             double sgn = Math.Sign(scale);
-            double mid = (ActualMaximum + ActualMinimum)/2;
+            double mid = (ActualMaximum + ActualMinimum) / 2;
 
-            double dx = (Offset - mid)*scale;
-            scale = sgn*newScale;
-            Offset = dx/scale + mid;
-            ActualMaximum = sx1/scale + Offset;
-            ActualMinimum = sx0/scale + Offset;
+            double dx = (Offset - mid) * scale;
+            scale = sgn * newScale;
+            Offset = dx / scale + mid;
+            ActualMaximum = sx1 / scale + Offset;
+            ActualMinimum = sx0 / scale + Offset;
         }
 
         protected virtual double PreTransform(double x)
@@ -729,9 +734,9 @@ namespace OxyPlot
                 x -= MidPoint.x;
                 y -= MidPoint.y;
                 double th = Math.Atan2(y, x);
-                double r = Math.Sqrt(x*x + y*y);
-                x = r/scale + Offset;
-                y = yAxis != null ? th/yAxis.Scale + yAxis.Offset : double.NaN;
+                double r = Math.Sqrt(x * x + y * y);
+                x = r / scale + Offset;
+                y = yAxis != null ? th / yAxis.Scale + yAxis.Offset : double.NaN;
                 return new DataPoint(x, y);
             }
 
@@ -755,9 +760,9 @@ namespace OxyPlot
                 x -= xAxis.MidPoint.x;
                 y -= xAxis.MidPoint.y;
                 double th = Math.Atan2(y, x);
-                double r = Math.Sqrt(x*x + y*y);
-                x = r/xAxis.Scale + xAxis.Offset;
-                y = yAxis != null ? th/yAxis.Scale + yAxis.Offset : double.NaN;
+                double r = Math.Sqrt(x * x + y * y);
+                x = r / xAxis.Scale + xAxis.Offset;
+                y = yAxis != null ? th / yAxis.Scale + yAxis.Offset : double.NaN;
                 return new DataPoint(x, y);
             }
 
@@ -783,25 +788,25 @@ namespace OxyPlot
         {
             if (max <= min)
             {
-                throw new InvalidOperationException("Axis: Maximum should be larger than minimum.");
+                throw new ArgumentException("Axis: Maximum should be larger than minimum.","max");
             }
             if (step <= 0)
             {
-                throw new InvalidOperationException("Axis: Step cannot be zero or negative.");
+                throw new ArgumentException("Axis: Step cannot be zero or negative.","step");
             }
 
-            double x0 = Math.Round(min/step)*step;
+            double x0 = Math.Round(min / step) * step;
 
             var values = new Collection<double>();
 
-            // Limit the maximum number of iterations (in case of something wrong with the step size)
+            // Limit the maximum number of iterations (in case something is wrong with the step size)
             int i = 0;
             const int maxIterations = 1000;
             double x = x0;
 
             while (x <= max + double.Epsilon && i < maxIterations)
             {
-                x = x0 + (i*step);
+                x = x0 + (i * step);
                 i++;
                 if (x >= min - double.Epsilon && x <= max + double.Epsilon)
                 {
@@ -837,28 +842,28 @@ namespace OxyPlot
 
         protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize)
         {
-            return CalculateActualInterval2(availableSize, maxIntervalSize, ActualMaximum - ActualMinimum);
+            return CalculateActualInterval(availableSize, maxIntervalSize, ActualMaximum - ActualMinimum);
         }
 
         // alternative algorithm not in use
-        private double CalculateActualInterval1(double availableSize, double maxIntervalSize)
-        {
-            const int minimumTags = 5;
-            const int maximumTags = 20;
-            var numberOfTags = (int) (availableSize/maxIntervalSize);
-            double range = ActualMaximum - ActualMinimum;
-            double interval = range/numberOfTags;
-            const int k1 = 10;
-            interval = Math.Log10(interval/k1);
-            interval = Math.Ceiling(interval);
-            interval = Math.Pow(10, interval)*k1;
+        /*        private double CalculateActualIntervalOldAlgorithm(double availableSize, double maxIntervalSize)
+                {
+                    const int minimumTags = 5;
+                    const int maximumTags = 20;
+                    var numberOfTags = (int) (availableSize/maxIntervalSize);
+                    double range = ActualMaximum - ActualMinimum;
+                    double interval = range/numberOfTags;
+                    const int k1 = 10;
+                    interval = Math.Log10(interval/k1);
+                    interval = Math.Ceiling(interval);
+                    interval = Math.Pow(10, interval)*k1;
 
-            if (range/interval > maximumTags) interval *= 5;
-            if (range/interval < minimumTags) interval *= 0.5;
+                    if (range/interval > maximumTags) interval *= 5;
+                    if (range/interval < minimumTags) interval *= 0.5;
 
-            if (interval <= 0) interval = 1;
-            return interval;
-        }
+                    if (interval <= 0) interval = 1;
+                    return interval;
+                }*/
 
         // ===
         // the following algorithm is from 
@@ -879,48 +884,48 @@ namespace OxyPlot
         /// <returns>Actual interval to use to determine which values are 
         /// displayed in the axis.
         /// </returns>
-        protected double CalculateActualInterval2(double availableSize, double maxIntervalSize, double range)
+        protected double CalculateActualInterval(double availableSize, double maxIntervalSize, double range)
         {
             if (availableSize <= 0)
                 return maxIntervalSize;
 
             Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
-            Func<double, double> mantissa = x => x/Math.Pow(10, exponent(x) - 1);
+            Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
 
             // reduce intervals for horizontal axis.
             // double maxIntervals = Orientation == AxisOrientation.x ? MaximumAxisIntervalsPer200Pixels * 0.8 : MaximumAxisIntervalsPer200Pixels;
             // real maximum interval count
-            double maxIntervalCount = availableSize/maxIntervalSize;
+            double maxIntervalCount = availableSize / maxIntervalSize;
 
             range = Math.Abs(range);
-            //double range = Math.Abs(actualMinimum - actualMaximum);
             double interval = Math.Pow(10, exponent(range));
             double tempInterval = interval;
 
             // decrease interval until interval count becomes less than maxIntervalCount
             while (true)
             {
-                var m = (int) mantissa(tempInterval);
+                var m = (int)mantissa(tempInterval);
                 if (m == 5)
                 {
                     // reduce 5 to 2
-                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval/2.5);
+                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.5);
                 }
                 else if (m == 2 || m == 1 || m == 10)
                 {
                     // reduce 2 to 1, 10 to 5, 1 to 0.5
-                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval/2.0);
+                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.0);
                 }
                 else
                 {
-                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval/2.0);
+                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.0);
                 }
 
-                if (range/tempInterval > maxIntervalCount)
+                if (range / tempInterval > maxIntervalCount)
                 {
                     break;
                 }
-
+                if (double.IsNaN(tempInterval) || double.IsInfinity(tempInterval))
+                    break;
                 interval = tempInterval;
             }
             return interval;
@@ -934,10 +939,10 @@ namespace OxyPlot
             switch (m)
             {
                 case 5:
-                    return majorInterval/5;
+                    return majorInterval / 5;
                 default:
-                    return majorInterval/4;
-            }    
+                    return majorInterval / 4;
+            }
         }
 
         /// <summary>
@@ -949,7 +954,7 @@ namespace OxyPlot
         {
             if (value == 0.0 || Math.Abs((Math.Log10(Math.Abs(value)))) < 27)
             {
-                return (double) ((decimal) value);
+                return (double)((decimal)value);
             }
             return Double.Parse(value.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
         }

@@ -648,24 +648,38 @@ namespace OxyPlot
         /// <summary>
         /// Gets the first axes that covers the area of the specified point.
         /// </summary>
-        /// <param name="pt">The pointt.</param>
+        /// <param name="pt">The point.</param>
         /// <param name="xaxis">The xaxis.</param>
         /// <param name="yaxis">The yaxis.</param>
         public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
         {
             xaxis = yaxis = null;
+
+            // Get the axis position of the given point. Using null if the point is inside the plot area.
+            AxisPosition? position = null;
+            if (pt.X < PlotArea.Left)
+                position = AxisPosition.Left;
+            if (pt.X > PlotArea.Right)
+                position = AxisPosition.Right;
+            if (pt.Y < PlotArea.Top)
+                position = AxisPosition.Top;
+            if (pt.Y > PlotArea.Bottom)
+                position = AxisPosition.Bottom;
+
             foreach (var axis in Axes)
             {
                 double x = axis.InverseTransform(axis.IsHorizontal() ? pt.X : pt.Y);
-                if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
+                if (x >= axis.ActualMinimum && x <= axis.ActualMaximum && (position==null || position == axis.Position))
                 {
                     if (axis.IsHorizontal())
                     {
-                        xaxis = axis;
+                        if (xaxis==null)
+                            xaxis = axis;
                     }
                     else
                     {
-                        yaxis = axis;
+                        if (yaxis==null)
+                            yaxis = axis;
                     }
                 }
             }

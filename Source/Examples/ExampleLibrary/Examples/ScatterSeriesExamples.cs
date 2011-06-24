@@ -63,8 +63,8 @@ namespace ExampleLibrary
         [Example("Random points with least squares fit")]
         public static PlotModel RandomWithFit()
         {
-            int n = 20;
-            var model = new PlotModel("Random data") { LegendPosition = LegendPosition.LeftTop };
+            const int n = 20;
+            var model = new PlotModel(string.Format("Random data (n={0})", n)) { LegendPosition = LegendPosition.LeftTop };
 
             var s1 = new ScatterSeries { Title = "Measurements" };
             var random = new Random();
@@ -95,6 +95,7 @@ namespace ExampleLibrary
             // http://en.wikipedia.org/wiki/Least_squares
             // http://mathworld.wolfram.com/LeastSquaresFitting.html
             // http://web.cecs.pdx.edu/~gerry/nmm/course/slides/ch09Slides4up.pdf
+            
             double Sx = 0;
             double Sy = 0;
             double Sxy = 0;
@@ -113,5 +114,24 @@ namespace ExampleLibrary
             b = 1 / d * (Sx * Sxy - Sxx * Sy);
         }
 
+        [Example("Scatter plot using a LineSeries with markers only")]
+        public static PlotModel MarkersOnly()
+        {
+            return MarkersOnly(31000);
+        }
+
+        public static PlotModel MarkersOnly(int n)
+        {
+            var model = new PlotModel(string.Format("LineSeries with markers only (n={0})", n));
+
+            var s1 = new LineSeries("Series 1") { StrokeThickness = 0, MarkerType = MarkerType.Square, MarkerFill = OxyColors.Blue, MarkerStrokeThickness = 0 };
+            var random = new Random();
+            for (int i = 0; i < n; i++)
+            {
+                s1.Points.Add(new DataPoint(random.NextDouble(), random.NextDouble()));
+            }
+            model.Series.Add(s1);
+            return model;
+        }
     }
 }
