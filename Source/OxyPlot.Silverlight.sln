@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrarySL", "Example
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SparklineDemo", "Examples\Silverlight\SparklineDemo\SparklineDemo.csproj", "{BD75B688-D4A3-405F-BC08-E371993A6273}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlotSL.Pdf", "OxyPlot.Pdf\OxyPlotSL.Pdf.csproj", "{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{BD75B688-D4A3-405F-BC08-E371993A6273}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD75B688-D4A3-405F-BC08-E371993A6273}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD75B688-D4A3-405F-BC08-E371993A6273}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
