@@ -340,7 +340,7 @@ namespace OxyPlot
         public double LegendTitleFontWeight { get; set; }
 
         /// <summary>
-        /// Gets or sets the length of the legend symbols.
+        /// Gets or sets the length of the legend symbols (the default value is 16).
         /// </summary>
         public double LegendSymbolLength { get; set; }
 

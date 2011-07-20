@@ -1,4 +1,6 @@
-﻿namespace OxyPlot
+﻿using System;
+
+namespace OxyPlot
 {
     public enum AxisPosition
     {
@@ -23,16 +25,23 @@
 
     public interface IAxis
     {
-        string Title { get; set; }
-        string Key { get; set; }
+        string Title { get; }
+        string ActualTitle { get; }
+
+        string Key { get;  }
         bool IsVisible { get; set; }
-        
+
+		string TitleFormatString { get; set; }
+
         AxisPosition Position { get; set; }
         
         double ActualMinimum { get; set; }
         double ActualMaximum { get; set; }
 
-        double Scale { get; set; }
+		double AbsoluteMinimum { get; set; }
+		double AbsoluteMaximum { get; set; }
+		
+		double Scale { get; set; }
         double Offset { get; set; }
         
         ScreenPoint MidPoint { get; set; }
@@ -61,5 +70,19 @@
         void Pan(double x0, double x1);
         void Zoom(double x1, double x2);
         void ZoomAt(double factor, double x);
+
+        event EventHandler<AxisChangedEventArgs> AxisChanged;
+    }
+
+    public enum AxisChangeTypes { Zoom, Pan, Reset }
+
+    public class AxisChangedEventArgs : EventArgs
+    {
+        public AxisChangeTypes ChangeType { get; set; }
+
+        public AxisChangedEventArgs(AxisChangeTypes changeType)
+        {
+            this.ChangeType = changeType;
+        }
     }
 }

@@ -23,6 +23,12 @@ namespace OxyPlot
             Position = AxisPosition.Left;
             IsVisible = true;
 
+            AbsoluteMaximum = double.MaxValue;
+            AbsoluteMinimum = double.MinValue;
+
+            ViewMaximum = double.NaN;
+            ViewMinimum = double.NaN;
+
             Minimum = double.NaN;
             Maximum = double.NaN;
             MinorStep = double.NaN;
@@ -58,6 +64,7 @@ namespace OxyPlot
             EndPosition = 1;
 
             TitlePosition = 0.5;
+            TitleFormatString = "{0} [{1}]";
 
             Angle = 0;
 
@@ -82,8 +89,17 @@ namespace OxyPlot
             Position = pos;
             Minimum = minimum;
             Maximum = maximum;
+
+            AbsoluteMaximum = double.NaN;
+            AbsoluteMinimum = double.NaN;
+
             Title = title;
         }
+
+        /// <summary>
+        /// This event occurs after the axis has been changed (by zooming, panning or resetting).
+        /// </summary>
+        public event EventHandler<AxisChangedEventArgs> AxisChanged;
 
         /// <summary>
         /// Gets or sets a value indicating whether the axis should
@@ -372,19 +388,70 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the actual minimum value of the axis.
         /// If Minimum is not NaN, this value will be defined by Minimum.
+        /// If ViewMinimum is not NaN, this value will be defined by ViewMinimum.
+        /// Otherwise this value will be defined by the minimum (+padding) of the data.
         /// </summary>
         public double ActualMinimum { get; set; }
 
         /// <summary>
         /// Gets or sets the actual maximum value of the axis.
         /// If Maximum is not NaN, this value will be defined by Maximum.
+        /// If ViewMaximum is not NaN, this value will be defined by ViewMaximum.
+        /// Otherwise this value will be defined by the maximum (+padding) of the data.
         /// </summary>
         public double ActualMaximum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the absolute minimum. This is only used for the UI control.
+        /// It will not be possible to zoom/pan beyond this limit.
+        /// </summary>
+        /// <value>The absolute minimum.</value>
+        public double AbsoluteMinimum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the absolute maximum. This is only used for the UI control.
+        /// It will not be possible to zoom/pan beyond this limit.
+        /// </summary>
+        /// <value>The absolute maximum.</value>
+        public double AbsoluteMaximum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current view's minimum. This value is used when the user zooms or pans.
+        /// </summary>
+        /// <value>The view minimum.</value>
+        protected double ViewMinimum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current view's maximum. This value is used when the user zooms or pans.
+        /// </summary>
+        /// <value>The view maximum.</value>
+        protected double ViewMaximum { get; set; }
 
         /// <summary>
         /// Gets or sets the title of the axis.
         /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the format string used for formatting the title and unit when unit is defined.
+        /// If unit is null, only Title is used.
+        /// The default value is "{0} [{1}]", where {0} uses the Title and {1} uses the Unit.
+        /// </summary>
+        public string TitleFormatString { get; set; }
+
+        /// <summary>
+        /// Gets the actual title (including Unit if Unit is set).
+        /// </summary>
+        /// <value>The actual title.</value>
+        public string ActualTitle
+        {
+            get
+            {
+                if (Unit!=null)
+                    return String.Format(TitleFormatString, Title, Unit);
+                return Title;
+            }
+        }
 
         public virtual void Render(IRenderContext rc, PlotModel model)
         {
@@ -450,7 +517,8 @@ namespace OxyPlot
                 }
                 return String.Format(CultureInfo.InvariantCulture, fmt, mantissa, exp);
             }
-            return x.ToString(ActualStringFormat, CultureInfo.InvariantCulture);
+            string format = ActualStringFormat ?? StringFormat ?? String.Empty;
+            return x.ToString(format, CultureInfo.InvariantCulture);
         }
 
         //private static double Truncate(double value, double precision)
@@ -462,8 +530,24 @@ namespace OxyPlot
         {
             if (!IsPanEnabled)
                 return;
-            ActualMinimum = Minimum = ActualMinimum + x0 - x1;
-            ActualMaximum = Maximum = ActualMaximum + x0 - x1;
+
+            double newMinimum = ActualMinimum + x0 - x1;
+            double newMaximum = ActualMaximum + x0 - x1;
+            if (newMinimum < AbsoluteMinimum)
+            {
+                newMinimum = AbsoluteMinimum;
+                newMaximum = newMinimum + ActualMaximum - ActualMinimum;
+            }
+            if (newMaximum > AbsoluteMaximum)
+            {
+                newMaximum = AbsoluteMaximum;
+                newMinimum = newMaximum - (ActualMaximum - ActualMinimum);
+            }
+
+            ViewMinimum = newMinimum;
+            ViewMaximum = newMaximum;
+
+            OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan));
         }
 
         public virtual void ZoomAt(double factor, double x)
@@ -473,22 +557,35 @@ namespace OxyPlot
             double dx0 = (ActualMinimum - x) * scale;
             double dx1 = (ActualMaximum - x) * scale;
             scale *= factor;
-            ActualMinimum = Minimum = dx0 / scale + x;
-            ActualMaximum = Maximum = dx1 / scale + x;
+
+            ViewMinimum = Math.Max(dx0 / scale + x, AbsoluteMinimum);
+            ViewMaximum = Math.Min(dx1 / scale + x, AbsoluteMaximum);
+
+            OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom));
         }
 
         public virtual void Zoom(double x0, double x1)
         {
             if (!IsZoomEnabled)
                 return;
-            ActualMinimum = Minimum = Math.Min(x0, x1);
-            ActualMaximum = Maximum = Math.Max(x0, x1);
+
+            ViewMinimum = Math.Max(Math.Min(x0, x1), AbsoluteMinimum);
+            ViewMaximum = Math.Min(Math.Max(x0, x1), AbsoluteMaximum);
+            OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom));
         }
 
         public virtual void Reset()
         {
-            ActualMinimum = Minimum = double.NaN;
-            ActualMaximum = Maximum = double.NaN;
+            ViewMinimum = double.NaN;
+            ViewMaximum = double.NaN;
+            OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Reset));
+        }
+
+        private void OnAxisChanged(AxisChangedEventArgs args)
+        {
+            var handler = AxisChanged;
+            if (handler != null)
+                handler(this, args);
         }
 
         /// <summary>
@@ -554,7 +651,11 @@ namespace OxyPlot
             double range = ActualMaximum - ActualMinimum;
             double zeroRange = ActualMaximum > 0 ? ActualMaximum : 1;
 
-            if (!double.IsNaN(Maximum))
+            if (!double.IsNaN(ViewMaximum))
+            {
+                ActualMaximum = ViewMaximum;
+            }
+            else if (!double.IsNaN(Maximum))
             {
                 ActualMaximum = Maximum;
             }
@@ -569,7 +670,11 @@ namespace OxyPlot
                 ActualMaximum = PostInverseTransform(x1 + dx);
             }
 
-            if (!double.IsNaN(Minimum))
+            if (!double.IsNaN(ViewMinimum))
+            {
+                ActualMinimum = ViewMinimum;
+            }
+            else if (!double.IsNaN(Minimum))
             {
                 ActualMinimum = Minimum;
             }
@@ -788,11 +893,11 @@ namespace OxyPlot
         {
             if (max <= min)
             {
-                throw new ArgumentException("Axis: Maximum should be larger than minimum.","max");
+                throw new ArgumentException("Axis: Maximum should be larger than minimum.", "max");
             }
             if (step <= 0)
             {
-                throw new ArgumentException("Axis: Step cannot be zero or negative.","step");
+                throw new ArgumentException("Axis: Step cannot be zero or negative.", "step");
             }
 
             double x0 = Math.Round(min / step) * step;
@@ -933,16 +1038,22 @@ namespace OxyPlot
 
         protected double CalculateMinorInterval(double majorInterval)
         {
-            Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
-            Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
-            var m = (int)mantissa(majorInterval);
-            switch (m)
-            {
-                case 5:
-                    return majorInterval / 5;
-                default:
-                    return majorInterval / 4;
-            }
+            // if major interval is 100, the minor interval will be 20.
+            return majorInterval / 5;
+
+            // The following obsolete code divided major intervals into 4 minor intervals, unless the major interval's mantissa was 5.
+            // e.g. Major interval 100 => minor interval 25.
+
+            //Func<double, double> exponent = x => Math.Ceiling(Math.Log(x, 10));
+            //Func<double, double> mantissa = x => x / Math.Pow(10, exponent(x) - 1);
+            //var m = (int)mantissa(majorInterval);
+            //switch (m)
+            //{
+            //    case 5:
+            //        return majorInterval / 5;
+            //    default:
+            //        return majorInterval / 4;
+            //}
         }
 
         /// <summary>
