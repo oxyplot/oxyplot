@@ -58,6 +58,19 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Default position")]
+        public static PlotModel LegendDefault()
+        {
+            var model = CreateModel();
+            return model;
+        }
 
+        [Example("Hidden Legend")]
+        public static PlotModel LegendHidden()
+        {
+            var model = CreateModel();
+            model.IsLegendVisible = false;
+            return model;
+        }
     }
 }

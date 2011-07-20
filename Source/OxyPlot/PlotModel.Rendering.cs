@@ -21,7 +21,8 @@ namespace OxyPlot
             RenderAnnotations(rc, AnnotationLayer.OverSeries);
             RenderTitle(rc);
             RenderBox(rc);
-            RenderLegends(rc, LegendArea);
+            if (IsLegendVisible)
+                RenderLegends(rc, LegendArea);
         }
 
         /// <summary>
@@ -202,9 +203,9 @@ namespace OxyPlot
 
             var rightAxisSize = MeasureAxes(rc, AxisPosition.Right);
             tmp.Width -= rightAxisSize.Width;
-           
+
             var legendSize = RenderLegends(rc, tmp, true);
-            if (LegendPlacement == LegendPlacement.Outside)
+            if (IsLegendVisible && LegendPlacement == LegendPlacement.Outside)
             {
                 switch (LegendPosition)
                 {

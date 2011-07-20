@@ -78,6 +78,7 @@ namespace OxyPlot
             BoxColor = OxyColors.Black;
             BoxThickness = 1;
 
+            IsLegendVisible = true;
             LegendTitleFont = null;
             LegendTitleFontSize = 12;
             LegendTitleFontWeight = FontWeights.Bold;
@@ -135,6 +136,12 @@ namespace OxyPlot
         {
             get { return defaultFont; }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the legend is visible.
+        /// The titles of the series must be set to use the legend.
+        /// </summary>
+        public bool IsLegendVisible { get; set; }
 
         /// <summary>
         /// Gets or sets the legend title.
@@ -242,28 +249,24 @@ namespace OxyPlot
         /// Gets or sets the default colors.
         /// </summary>
         /// <value>The default colors.</value>
-        [Browsable(false)]
         public List<OxyColor> DefaultColors { get; set; }
 
         /// <summary>
         /// Gets or sets the axes.
         /// </summary>
         /// <value>The axes.</value>
-        [Browsable(false)]
         public Collection<IAxis> Axes { get; set; }
 
         /// <summary>
         /// Gets or sets the series.
         /// </summary>
         /// <value>The series.</value>
-        [Browsable(false)]
         public Collection<ISeries> Series { get; set; }
 
         /// <summary>
         /// Gets or sets the annotations.
         /// </summary>
         /// <value>The annotations.</value>
-        [Browsable(false)]
         public Collection<IAnnotation> Annotations { get; set; }
 
         /// <summary>
