@@ -280,7 +280,7 @@ namespace OxyPlot
             }
 
             // Draw the axis title
-            if (!String.IsNullOrEmpty(axis.Title))
+            if (!String.IsNullOrEmpty(axis.ActualTitle))
             {
                 double ymid = isHorizontal ? Lerp(axis.ScreenMin.X, axis.ScreenMax.X, axis.TitlePosition) : Lerp(axis.ScreenMax.Y, axis.ScreenMin.Y, axis.TitlePosition);
 
@@ -318,7 +318,7 @@ namespace OxyPlot
                         break;
                 }
 
-                rc.DrawText(lpt, axis.Title, Plot.TextColor,
+                rc.DrawText(lpt, axis.ActualTitle, Plot.TextColor,
                                 axis.Font, axis.FontSize, axis.FontWeight,
                                 angle, halign, valign);
             }

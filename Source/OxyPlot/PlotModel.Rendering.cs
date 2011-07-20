@@ -126,7 +126,7 @@ namespace OxyPlot
                 if (size.Height > maximumTextSize.Height) maximumTextSize.Height = size.Height;
             }
 
-            var labelTextSize = rc.MeasureText(axis.Title, axis.Font, axis.FontSize, axis.FontWeight);
+            var labelTextSize = rc.MeasureText(axis.ActualTitle, axis.Font, axis.FontSize, axis.FontWeight);
 
             double width = 0;
             double height = 0;

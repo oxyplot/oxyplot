@@ -34,16 +34,21 @@ namespace ExampleLibrary
         {
             // http://en.wikipedia.org/wiki/Richter_magnitude_scale
 
-            var model = new PlotModel("The Richter magnitude scale") { PlotMargins = new OxyThickness(80, 0, 80, 40) };
-            model.LegendPlacement = LegendPlacement.Inside;
-            model.LegendPosition = LegendPosition.TopCenter;
-            model.LegendOrientation = LegendOrientation.Horizontal;
+            var model = new PlotModel("The Richter magnitude scale")
+                            {
+                                PlotMargins = new OxyThickness(80, 0, 80, 40),
+                                LegendPlacement = LegendPlacement.Inside,
+                                LegendPosition = LegendPosition.TopCenter,
+                                LegendOrientation = LegendOrientation.Horizontal,
+                                LegendSymbolLength = 24
+                            };
+
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, "Richter magnitude scale") { MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.None });
 
             var frequencyCurve = new LineSeries("Frequency")
                          {
                              Color = OxyColor.FromUInt32(0xff3c6c9e),
-                             StrokeThickness =3,
+                             StrokeThickness = 3,
                              MarkerStroke = OxyColor.FromUInt32(0xff3c6c9e),
                              MarkerFill = OxyColors.White,
                              MarkerType = MarkerType.Circle,
@@ -71,7 +76,7 @@ namespace ExampleLibrary
                 MarkerFill = OxyColors.White,
                 MarkerType = MarkerType.Circle,
                 MarkerSize = 4,
-                MarkerStrokeThickness =3
+                MarkerStrokeThickness = 3
             };
 
             energyCurve.Points.Add(new DataPoint(1.5, 11e6));
