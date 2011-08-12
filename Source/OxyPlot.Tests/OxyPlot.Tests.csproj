@@ -55,9 +55,9 @@
       <Project>{A941B658-1237-482C-B0C7-378242D27647}</Project>
       <Name>ExampleLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj">
-      <Project>{8BC521AD-81CF-4E6C-8898-BE67527E7064}</Project>
-      <Name>OxyPlot.WindowsForms</Name>
+    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
+      <Project>{698CCD8E-ADCC-4565-8517-5EDD36F07155}</Project>
+      <Name>OxyPlot.Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
       <Project>{87F519B8-5A2F-48C6-AD53-C5F13A82EA6B}</Project>
