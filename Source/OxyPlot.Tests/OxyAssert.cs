@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.IO;
 using NUnit.Framework;
-using OxyPlot.WindowsForms;
+using OxyPlot.Wpf;
 
 namespace OxyPlot.Tests
 {
@@ -20,7 +20,7 @@ namespace OxyPlot.Tests
             string name = new System.Diagnostics.StackFrame(1).GetMethod().Name;
             string path = name + ".png";
             string baseline = @"baseline\" + path;
-            PngExporter.Export(plot, path, 800, 500, Brushes.White);
+            PngExporter.Export(plot, path, 800, 500, OxyColors.White);
 
             if (!Directory.Exists("baseline"))
                 Directory.CreateDirectory("baseline");

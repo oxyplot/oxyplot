@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{FF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Silverlight", "OxyPlot.Silverlight\OxyPlot.Silverlight.csproj", "{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightDemo", "Examples\SilverlightDemo\SilverlightDemo.csproj", "{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\Silverlight\ExampleBrowser\ExampleBrowser.csproj", "{15B1DC32-92C8-4301-A16D-9C47EE8356A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser.Web", "Examples\Silverlight\ExampleBrowser.Web\ExampleBrowser.Web.csproj", "{BB639CDB-36F9-4DCB-A075-B713CC5A9A3F}"
@@ -18,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SparklineDemo", "Examples\Silverlight\SparklineDemo\SparklineDemo.csproj", "{BD75B688-D4A3-405F-BC08-E371993A6273}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlotSL.Pdf", "OxyPlot.Pdf\OxyPlotSL.Pdf.csproj", "{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightDemo", "Examples\Silverlight\SilverlightDemo\SilverlightDemo.csproj", "{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +33,6 @@ Global
 		{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{15B1DC32-92C8-4301-A16D-9C47EE8356A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{15B1DC32-92C8-4301-A16D-9C47EE8356A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15B1DC32-92C8-4301-A16D-9C47EE8356A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,15 +53,19 @@ Global
 		{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 		{15B1DC32-92C8-4301-A16D-9C47EE8356A2} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 		{BB639CDB-36F9-4DCB-A075-B713CC5A9A3F} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 		{A2E856EB-3F45-4ACE-90FB-5440D4577DE1} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 		{BD75B688-D4A3-405F-BC08-E371993A6273} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
+		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 	EndGlobalSection
 EndGlobal

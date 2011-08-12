@@ -71,7 +71,7 @@
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\AxisBase.cs" />
     <Compile Include="Axes\TimeSpanAxis.cs" />
-    <Compile Include="PlotModel.Legends.cs" />
+    <Compile Include="PlotModel\PlotModel.Legends.cs" />
     <Compile Include="Foundation\CanonicalSplineHelper.cs" />
     <Compile Include="Foundation\FontWeights.cs" />
     <Compile Include="Foundation\OxyThickness.cs" />
@@ -86,7 +86,7 @@
     <Compile Include="MouseActions\PanAction.cs" />
     <Compile Include="MouseActions\TrackerAction.cs" />
     <Compile Include="MouseActions\ZoomAction.cs" />
-    <Compile Include="PlotModel.Rendering.cs" />
+    <Compile Include="PlotModel\PlotModel.Rendering.cs" />
     <Compile Include="Render\AxisRendererBase.cs" />
     <Compile Include="Foundation\CohenSutherlandClipping.cs" />
     <Compile Include="Render\AngleAxisRenderer.cs" />
@@ -143,7 +143,7 @@
     <Compile Include="Foundation\LineStyle.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
     <Compile Include="Foundation\MarkerType.cs" />
-    <Compile Include="PlotModel.cs" />
+    <Compile Include="PlotModel\PlotModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Foundation\XmlWriterBase.cs" />
   </ItemGroup>
