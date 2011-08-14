@@ -1,172 +1,196 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 
 namespace OxyPlot.Wpf
 {
     public abstract class Axis : FrameworkElement
     {
-        public OxyPlot.AxisBase ModelAxis { get; protected set; }
+        public static readonly DependencyProperty StartPositionProperty =
+            DependencyProperty.Register("StartPosition", typeof (double), typeof (Axis),
+                                        new FrameworkPropertyMetadata(0.0,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty EndPositionProperty =
+            DependencyProperty.Register("EndPosition", typeof (double), typeof (Axis),
+                                        new FrameworkPropertyMetadata(1.0,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty PositionAtZeroCrossingProperty =
+            DependencyProperty.Register("PositionAtZeroCrossing", typeof (bool), typeof (Axis),
+                                        new FrameworkPropertyMetadata(false,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty AngleProperty =
+            DependencyProperty.Register("Angle", typeof (double), typeof (Axis),
+                                        new FrameworkPropertyMetadata(0.0,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty TickStyleProperty =
+            DependencyProperty.Register("TickStyle", typeof (TickStyle), typeof (Axis),
+                                        new FrameworkPropertyMetadata(TickStyle.Inside,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty MajorGridlineStyleProperty =
+            DependencyProperty.Register("MajorGridlineStyle", typeof (LineStyle), typeof (Axis),
+                                        new FrameworkPropertyMetadata(LineStyle.None,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty MajorGridlineThicknessProperty =
+            DependencyProperty.Register("MajorGridlineThickness", typeof (double), typeof (Axis),
+                                        new FrameworkPropertyMetadata(1.0,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty MinorGridlineStyleProperty =
+            DependencyProperty.Register("MinorGridlineStyle", typeof (LineStyle), typeof (Axis),
+                                        new FrameworkPropertyMetadata(LineStyle.None,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty MinorGridlineThicknessProperty =
+            DependencyProperty.Register("MinorGridlineThickness", typeof (double), typeof (Axis),
+                                        new FrameworkPropertyMetadata(1.0,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty PositionProperty =
+            DependencyProperty.Register("Position", typeof (AxisPosition), typeof (Axis),
+                                        new FrameworkPropertyMetadata(AxisPosition.Left,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty MinimumProperty =
+            DependencyProperty.Register("Minimum", typeof (double), typeof (Axis),
+                                        new FrameworkPropertyMetadata(double.NaN,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty MaximumProperty =
+            DependencyProperty.Register("Maximum", typeof (double), typeof (Axis),
+                                        new FrameworkPropertyMetadata(double.NaN,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty MinimumPaddingProperty =
+            DependencyProperty.Register("MinimumPadding", typeof (double), typeof (Axis), new UIPropertyMetadata(0.01));
+
+        public static readonly DependencyProperty MaximumPaddingProperty =
+            DependencyProperty.Register("MaximumPadding", typeof (double), typeof (Axis), new UIPropertyMetadata(0.01));
+
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("Title", typeof (string), typeof (Axis),
+                                        new FrameworkPropertyMetadata(null,
+                                                                      FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty UseSuperExponentialFormatProperty =
+            DependencyProperty.Register("UseSuperExponentialFormat", typeof (bool), typeof (Axis),
+                                        new UIPropertyMetadata(false));
+
+        public static readonly DependencyProperty StringFormatProperty =
+            DependencyProperty.Register("StringFormat", typeof (string), typeof (Axis), new UIPropertyMetadata(null));
+
+        public AxisBase ModelAxis { get; protected set; }
 
         public double StartPosition
         {
-            get { return (double)GetValue(StartPositionProperty); }
+            get { return (double) GetValue(StartPositionProperty); }
             set { SetValue(StartPositionProperty, value); }
         }
 
-        public static readonly DependencyProperty StartPositionProperty =
-            DependencyProperty.Register("StartPosition", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
-
         public double EndPosition
         {
-            get { return (double)GetValue(EndPositionProperty); }
+            get { return (double) GetValue(EndPositionProperty); }
             set { SetValue(EndPositionProperty, value); }
         }
 
-        public static readonly DependencyProperty EndPositionProperty =
-            DependencyProperty.Register("EndPosition", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
-
         public bool PositionAtZeroCrossing
         {
-            get { return (bool)GetValue(PositionAtZeroCrossingProperty); }
+            get { return (bool) GetValue(PositionAtZeroCrossingProperty); }
             set { SetValue(PositionAtZeroCrossingProperty, value); }
         }
-
-        public static readonly DependencyProperty PositionAtZeroCrossingProperty =
-            DependencyProperty.Register("PositionAtZeroCrossing", typeof(bool), typeof(Axis), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
-
 
 
         public double Angle
         {
-            get { return (double)GetValue(AngleProperty); }
+            get { return (double) GetValue(AngleProperty); }
             set { SetValue(AngleProperty, value); }
         }
-
-        public static readonly DependencyProperty AngleProperty =
-            DependencyProperty.Register("Angle", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
 
         public TickStyle TickStyle
         {
-            get { return (TickStyle)GetValue(TickStyleProperty); }
+            get { return (TickStyle) GetValue(TickStyleProperty); }
             set { SetValue(TickStyleProperty, value); }
         }
 
-        public static readonly DependencyProperty TickStyleProperty =
-            DependencyProperty.Register("TickStyle", typeof(TickStyle), typeof(Axis), new FrameworkPropertyMetadata(TickStyle.Inside, FrameworkPropertyMetadataOptions.AffectsRender));
-
         public LineStyle MajorGridlineStyle
         {
-            get { return (LineStyle)GetValue(MajorGridlineStyleProperty); }
+            get { return (LineStyle) GetValue(MajorGridlineStyleProperty); }
             set { SetValue(MajorGridlineStyleProperty, value); }
         }
 
-        public static readonly DependencyProperty MajorGridlineStyleProperty =
-            DependencyProperty.Register("MajorGridlineStyle", typeof(LineStyle), typeof(Axis), new FrameworkPropertyMetadata(LineStyle.None, FrameworkPropertyMetadataOptions.AffectsRender));
-
         public double MajorGridlineThickness
         {
-            get { return (double)GetValue(MajorGridlineThicknessProperty); }
+            get { return (double) GetValue(MajorGridlineThicknessProperty); }
             set { SetValue(MajorGridlineThicknessProperty, value); }
         }
-
-        public static readonly DependencyProperty MajorGridlineThicknessProperty =
-            DependencyProperty.Register("MajorGridlineThickness", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
 
         public LineStyle MinorGridlineStyle
         {
-            get { return (LineStyle)GetValue(MinorGridlineStyleProperty); }
+            get { return (LineStyle) GetValue(MinorGridlineStyleProperty); }
             set { SetValue(MinorGridlineStyleProperty, value); }
         }
 
-        public static readonly DependencyProperty MinorGridlineStyleProperty =
-            DependencyProperty.Register("MinorGridlineStyle", typeof(LineStyle), typeof(Axis), new FrameworkPropertyMetadata(LineStyle.None, FrameworkPropertyMetadataOptions.AffectsRender));
-
         public double MinorGridlineThickness
         {
-            get { return (double)GetValue(MinorGridlineThicknessProperty); }
+            get { return (double) GetValue(MinorGridlineThicknessProperty); }
             set { SetValue(MinorGridlineThicknessProperty, value); }
         }
 
-        public static readonly DependencyProperty MinorGridlineThicknessProperty =
-            DependencyProperty.Register("MinorGridlineThickness", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
-
         public AxisPosition Position
         {
-            get { return (AxisPosition)GetValue(PositionProperty); }
+            get { return (AxisPosition) GetValue(PositionProperty); }
             set { SetValue(PositionProperty, value); }
         }
-
-        public static readonly DependencyProperty PositionProperty =
-            DependencyProperty.Register("Position", typeof(AxisPosition), typeof(Axis), new FrameworkPropertyMetadata(AxisPosition.Left, FrameworkPropertyMetadataOptions.AffectsRender));
 
 
         public double Minimum
         {
-            get { return (double)GetValue(MinimumProperty); }
+            get { return (double) GetValue(MinimumProperty); }
             set { SetValue(MinimumProperty, value); }
         }
 
-        public static readonly DependencyProperty MinimumProperty =
-            DependencyProperty.Register("Minimum", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsRender));
-
         public double Maximum
         {
-            get { return (double)GetValue(MaximumProperty); }
+            get { return (double) GetValue(MaximumProperty); }
             set { SetValue(MaximumProperty, value); }
         }
 
-        public static readonly DependencyProperty MaximumProperty =
-            DependencyProperty.Register("Maximum", typeof(double), typeof(Axis), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsRender));
-
         public double MinimumPadding
         {
-            get { return (double)GetValue(MinimumPaddingProperty); }
+            get { return (double) GetValue(MinimumPaddingProperty); }
             set { SetValue(MinimumPaddingProperty, value); }
         }
-
-        public static readonly DependencyProperty MinimumPaddingProperty =
-            DependencyProperty.Register("MinimumPadding", typeof(double), typeof(Axis), new UIPropertyMetadata(0.01));
 
 
         public double MaximumPadding
         {
-            get { return (double)GetValue(MaximumPaddingProperty); }
+            get { return (double) GetValue(MaximumPaddingProperty); }
             set { SetValue(MaximumPaddingProperty, value); }
         }
-
-        public static readonly DependencyProperty MaximumPaddingProperty =
-            DependencyProperty.Register("MaximumPadding", typeof(double), typeof(Axis), new UIPropertyMetadata(0.01));
-
 
 
         public string Title
         {
-            get { return (string)GetValue(TitleProperty); }
+            get { return (string) GetValue(TitleProperty); }
             set { SetValue(TitleProperty, value); }
         }
 
-        public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(string), typeof(Axis), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
-
         public bool UseSuperExponentialFormat
         {
-            get { return (bool)GetValue(UseSuperExponentialFormatProperty); }
+            get { return (bool) GetValue(UseSuperExponentialFormatProperty); }
             set { SetValue(UseSuperExponentialFormatProperty, value); }
         }
 
-        public static readonly DependencyProperty UseSuperExponentialFormatProperty =
-            DependencyProperty.Register("UseSuperExponentialFormat", typeof(bool), typeof(Axis), new UIPropertyMetadata(false));
-
         public string StringFormat
         {
-            get { return (string)GetValue(StringFormatProperty); }
+            get { return (string) GetValue(StringFormatProperty); }
             set { SetValue(StringFormatProperty, value); }
         }
-
-        public static readonly DependencyProperty StringFormatProperty =
-            DependencyProperty.Register("StringFormat", typeof(string), typeof(Axis), new UIPropertyMetadata(null));
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -182,9 +206,9 @@ namespace OxyPlot.Wpf
             }
         }
 
-        public virtual void UpdateModelProperties()
+        public virtual void SynchronizeProperties()
         {
-            var a = ModelAxis as OxyPlot.AxisBase;
+            AxisBase a = ModelAxis;
             a.Minimum = Minimum;
             a.Maximum = Maximum;
             a.Title = Title;
@@ -221,34 +245,6 @@ namespace OxyPlot.Wpf
             a.UseSuperExponentialFormat = UseSuperExponentialFormat;
 
             a.Angle = Angle;
-        }
-
-        public void Pan(double x0, double x1)
-        {
-            ModelAxis.Pan(x0, x1);
-            Minimum = ModelAxis.Minimum;
-            Maximum = ModelAxis.Maximum;
-        }
-
-        public void Reset()
-        {
-            ModelAxis.Reset();
-            Minimum = ModelAxis.Minimum;
-            Maximum = ModelAxis.Maximum;
-        }
-
-        public void Zoom(double p1, double p2)
-        {
-            ModelAxis.Zoom(p1, p2);
-            Minimum = ModelAxis.Minimum;
-            Maximum = ModelAxis.Maximum;
-        }
-
-        public void ZoomAt(double factor, double d)
-        {
-            ModelAxis.ZoomAt(factor, d);
-            Minimum = ModelAxis.Minimum;
-            Maximum = ModelAxis.Maximum;
-        }
+        }     
     }
 }

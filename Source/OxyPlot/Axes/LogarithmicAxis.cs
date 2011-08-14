@@ -14,7 +14,7 @@ namespace OxyPlot
         ///   Initializes a new instance of the <see cref = "LogarithmicAxis" /> class.
         /// </summary>
         public LogarithmicAxis()
-        {            
+        {
             PowerPadding = true;
             Base = 10;
             FilterMinValue = 0;
@@ -66,21 +66,22 @@ namespace OxyPlot
             if (PowerPadding)
             {
                 double logBase = Math.Log(Base);
-                var e0 = (int) Math.Floor(Math.Log(ActualMinimum)/logBase);
-                var e1 = (int) Math.Ceiling(Math.Log(ActualMaximum)/logBase);
-                ActualMinimum = RemoveNoiseFromDoubleMath(Math.Exp(e0*logBase));
-                ActualMaximum = RemoveNoiseFromDoubleMath(Math.Exp(e1*logBase));
+                var e0 = (int)Math.Floor(Math.Log(ActualMinimum) / logBase);
+                var e1 = (int)Math.Ceiling(Math.Log(ActualMaximum) / logBase);
+                ActualMinimum = RemoveNoiseFromDoubleMath(Math.Exp(e0 * logBase));
+                ActualMaximum = RemoveNoiseFromDoubleMath(Math.Exp(e1 * logBase));
             }
 
             base.UpdateActualMaxMin();
         }
 
         /// <summary>
-        /// Gets the tick values.
+        /// Gets the coordinates used to draw ticks and tick labels (numbers or category names).
         /// </summary>
-        /// <param name="majorValues">The major tick values.</param>
-        /// <param name="minorValues">The minor tick values.</param>
-        public override void GetTickValues(out ICollection<double> majorValues, out ICollection<double> minorValues)
+        /// <param name="majorLabelValues">The major label values.</param>
+        /// <param name="majorTickValues">The major tick values.</param>
+        /// <param name="minorTickValues">The minor tick values.</param>
+        public override void GetTickValues(out ICollection<double> majorLabelValues, out ICollection<double> majorTickValues, out ICollection<double> minorTickValues)
         {
             if (ActualMinimum <= 0)
             {
@@ -93,15 +94,15 @@ namespace OxyPlot
             double d0 = RemoveNoiseFromDoubleMath(Math.Exp(e0 * logBase));
             double d1 = RemoveNoiseFromDoubleMath(Math.Exp(e1 * logBase));
             double d = d0;
-            majorValues = new List<double>();
-            minorValues = new List<double>();
+            majorTickValues = new List<double>();
+            minorTickValues = new List<double>();
 
             while (d <= d1 + double.Epsilon)
             {
                 d = RemoveNoiseFromDoubleMath(d);
                 if (d >= ActualMinimum && d <= ActualMaximum)
                 {
-                    majorValues.Add(d);
+                    majorTickValues.Add(d);
                 }
 
                 for (int i = 1; i < Base; i++)
@@ -119,7 +120,7 @@ namespace OxyPlot
 
                     if (d2 >= ActualMinimum && d2 <= ActualMaximum)
                     {
-                        minorValues.Add(d2);
+                        minorTickValues.Add(d2);
                     }
                 }
 
@@ -140,9 +141,13 @@ namespace OxyPlot
             //    return;
             //}
 
-            if (majorValues.Count<2)
+            if (majorTickValues.Count < 2)
             {
-                base.GetTickValues(out majorValues, out minorValues);
+                base.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
+            }
+            else
+            {
+                majorLabelValues = majorTickValues;
             }
         }
 
@@ -168,19 +173,39 @@ namespace OxyPlot
             if (x1 == 0)
                 return;
             double dx = x0 / x1;
-            Minimum = ActualMinimum * dx;
-            Maximum = ActualMaximum * dx;
+
+            double newMinimum = ActualMinimum * dx;
+            double newMaximum = ActualMaximum * dx;
+            if (newMinimum < AbsoluteMinimum)
+            {
+                newMinimum = AbsoluteMinimum;
+                newMaximum = newMinimum * ActualMaximum / ActualMinimum;
+            }
+            if (newMaximum > AbsoluteMaximum)
+            {
+                newMaximum = AbsoluteMaximum;
+                newMinimum = newMaximum * ActualMaximum / ActualMinimum;
+            }
+
+            ViewMinimum = newMinimum;
+            ViewMaximum = newMaximum;
+
+            OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan));
         }
 
         public override void ZoomAt(double factor, double x)
         {
             if (!IsZoomEnabled)
                 return;
+            
             double px = PreTransform(x);
             double dx0 = PreTransform(ActualMinimum) - px;
             double dx1 = PreTransform(ActualMaximum) - px;
-            Minimum = PostInverseTransform(dx0 / factor + px);
-            Maximum = PostInverseTransform(dx1 / factor + px);
+            double newViewMinimum = PostInverseTransform(dx0 / factor + px);
+            double newViewMaximum = PostInverseTransform(dx1 / factor + px);
+            
+            ViewMinimum = Math.Max(newViewMinimum, AbsoluteMinimum);
+            ViewMaximum = Math.Min(newViewMaximum, AbsoluteMaximum);
         }
     }
 }

@@ -8,8 +8,14 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class LineSeries : DataSeries
     {
+        public static readonly DependencyProperty TrackerFormatStringProperty =
+            DependencyProperty.Register("TrackerFormatString", typeof (string), typeof (LineSeries),
+                                        new UIPropertyMetadata(null));
+
+
         public static readonly DependencyProperty StrokeThicknessProperty =
-            DependencyProperty.Register("StrokeThickness", typeof (double), typeof (LineSeries), new UIPropertyMetadata(1.0));
+            DependencyProperty.Register("StrokeThickness", typeof (double), typeof (LineSeries),
+                                        new UIPropertyMetadata(1.0));
 
         public static readonly DependencyProperty SmoothProperty =
             DependencyProperty.Register("Smooth", typeof (bool), typeof (LineSeries), new UIPropertyMetadata(false));
@@ -32,6 +38,12 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty MarkerStrokeProperty =
             DependencyProperty.Register("MarkerStroke", typeof (OxyColor), typeof (LineSeries),
                                         new UIPropertyMetadata(null));
+
+        public string TrackerFormatString
+        {
+            get { return (string) GetValue(TrackerFormatStringProperty); }
+            set { SetValue(TrackerFormatStringProperty, value); }
+        }
 
         public double StrokeThickness
         {
@@ -76,16 +88,16 @@ namespace OxyPlot.Wpf
             set { SetValue(MarkerStrokeProperty, value); }
         }
 
-        public override OxyPlot.DataSeries CreateModel()
+        public override OxyPlot.DataPointSeries CreateModel()
         {
             var s = new OxyPlot.LineSeries();
-            ConvertProperties(s);
+            SynchronizeProperties(s);
             return s;
         }
 
-        public override void ConvertProperties(OxyPlot.DataSeries s)
+        public override void SynchronizeProperties(OxyPlot.DataPointSeries s)
         {
-            base.ConvertProperties(s);
+            base.SynchronizeProperties(s);
             var ls = s as OxyPlot.LineSeries;
             ls.Color = Color.ToOxyColor();
             ls.StrokeThickness = StrokeThickness;
@@ -94,7 +106,8 @@ namespace OxyPlot.Wpf
             ls.MarkerStroke = MarkerStroke;
             ls.MarkerType = MarkerType;
             ls.MarkerStrokeThickness = MarkerStrokeThickness;
-            s.Smooth = Smooth;
+            ls.Smooth = Smooth;
+            ls.TrackerFormatString = TrackerFormatString;
         }
     }
 }

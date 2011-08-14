@@ -32,7 +32,7 @@ namespace OxyPlot
         {
             // Render background and border around legend
             if (!measureOnly && rect.Width > 0 && rect.Height > 0)
-                rc.DrawBox(rect, LegendBackground, LegendBorder, LegendBorderThickness);
+                rc.DrawRectangleAsPolygon(rect, LegendBackground, LegendBorder, LegendBorderThickness);
 
             double availableWidth = rect.Width;
             double availableHeight = rect.Height;

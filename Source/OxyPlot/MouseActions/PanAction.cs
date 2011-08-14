@@ -1,6 +1,6 @@
 ﻿namespace OxyPlot
 {
-    public class PanAction : MouseAction
+    public class PanAction : OxyMouseAction
     {
         public PanAction(IPlotControl pc)
             : base(pc)
@@ -42,8 +42,6 @@
                 return;
             var previousPoint = AxisBase.InverseTransform(ppt, xaxis, yaxis);
             var currentPoint = AxisBase.InverseTransform(pt, xaxis, yaxis);
-            double dx = currentPoint.X - previousPoint.X;
-            double dy = currentPoint.Y - previousPoint.Y;
             if (xaxis != null)
                 pc.Pan(xaxis, previousPoint.X,currentPoint.X);
             if (yaxis != null)

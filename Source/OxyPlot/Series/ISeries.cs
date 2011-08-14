@@ -40,6 +40,11 @@ namespace OxyPlot
         bool AreAxesRequired();
 
         /// <summary>
+        /// Check if the data series is using the specified axis.
+        /// </summary>
+        bool IsUsing(IAxis axis);
+
+        /// <summary>
         /// Ensures that the series has axes.
         /// </summary>
         /// <param name="axes">The axes collection of the parent PlotModel.</param>

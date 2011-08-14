@@ -46,6 +46,7 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>Bin\Release\OxyPlotSL.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -71,6 +72,9 @@
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\AxisBase.cs" />
     <Compile Include="Axes\TimeSpanAxis.cs" />
+    <Compile Include="Foundation\ReflectionHelper.cs" />
+    <Compile Include="Foundation\StringFormatHelper.cs" />
+    <Compile Include="MouseActions\TrackerHitResult.cs" />
     <Compile Include="PlotModel\PlotModel.Legends.cs" />
     <Compile Include="Foundation\CanonicalSplineHelper.cs" />
     <Compile Include="Foundation\FontWeights.cs" />
@@ -81,7 +85,7 @@
     <Compile Include="Foundation\SutherlandHodgmanClipping.cs" />
     <Compile Include="MouseActions\IMouseAction.cs" />
     <Compile Include="MouseActions\IPlotControl.cs" />
-    <Compile Include="MouseActions\MouseAction.cs" />
+    <Compile Include="MouseActions\OxyMouseAction.cs" />
     <Compile Include="MouseActions\OxyMouseButton.cs" />
     <Compile Include="MouseActions\PanAction.cs" />
     <Compile Include="MouseActions\TrackerAction.cs" />
@@ -126,6 +130,7 @@
     <Compile Include="Foundation\DataPoint.cs" />
     <Compile Include="Annotations\IAnnotation.cs" />
     <Compile Include="Series\BarSeries.cs" />
+    <Compile Include="Series\DataPointSeries.cs" />
     <Compile Include="Series\ITrackableSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
     <Compile Include="Series\PlotSeriesBase.cs" />
@@ -138,7 +143,6 @@
     <Compile Include="Svg\SvgWriter.cs" />
     <Compile Include="Foundation\OxyColor.cs" />
     <Compile Include="Foundation\OxyColors.cs" />
-    <Compile Include="Series\DataSeries.cs" />
     <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Foundation\LineStyle.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />

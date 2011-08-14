@@ -197,6 +197,32 @@ namespace OxyPlot
                     continue;
                 }
 
+            }
+
+            // Render the axis labels (numbers or category names)
+            foreach (double value in MajorLabelValues)
+            {
+                if (value < actualMinimum || value > actualMaximum)
+                {
+                    continue;
+                }
+
+                if (axis.PositionAtZeroCrossing && Math.Abs(value) < double.Epsilon)
+                {
+                    continue;
+                }
+
+                double transformedValue = axis.Transform(value);
+                if (isHorizontal)
+                {
+                    SnapTo(ppl, ref transformedValue);
+                    SnapTo(ppr, ref transformedValue);
+                }
+                else
+                {
+                    SnapTo(ppt, ref transformedValue);
+                    SnapTo(ppb, ref transformedValue);
+                }
                 var pt = new ScreenPoint();
                 var ha = HorizontalTextAlign.Right;
                 var va = VerticalTextAlign.Middle;

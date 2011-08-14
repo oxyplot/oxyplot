@@ -69,6 +69,11 @@ namespace OxyPlot
             return s;
         }
 
+        public override object GetValue(double x)
+        {
+            return TimeSpan.FromSeconds(x);
+        }
+
         protected override double CalculateActualInterval(double availableSize, double maxIntervalSize)
         {
             double range = Math.Abs(ActualMinimum - ActualMaximum);

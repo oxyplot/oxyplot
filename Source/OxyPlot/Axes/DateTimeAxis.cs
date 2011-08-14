@@ -184,6 +184,11 @@ namespace OxyPlot
             return time.ToString(fmt, CultureInfo.InvariantCulture);
         }
 
+        public override object GetValue(double x)
+        {
+            return ToDateTime(x);
+        }
+
         /// <summary>
         ///   Gets the week number for the specified date.
         /// </summary>
@@ -195,11 +200,12 @@ namespace OxyPlot
         }
 
 
-        public override void GetTickValues(out ICollection<double> majorValues, out ICollection<double> minorValues)
+        public override void GetTickValues(out ICollection<double> majorLabelValues, out ICollection<double> majorTickValues, out ICollection<double> minorTickValues)
         {
-            minorValues = CreateDateTimeTickValues(ActualMinimum, ActualMaximum, ActualMinorStep,
+            minorTickValues = CreateDateTimeTickValues(ActualMinimum, ActualMaximum, ActualMinorStep,
                                                    ActualMinorIntervalType);
-            majorValues = CreateDateTimeTickValues(ActualMinimum, ActualMaximum, ActualMajorStep, ActualIntervalType);
+            majorTickValues = CreateDateTimeTickValues(ActualMinimum, ActualMaximum, ActualMajorStep, ActualIntervalType);
+            majorLabelValues = majorTickValues;
         }
 
         private ICollection<double> CreateDateTimeTickValues(double min, double max, double interval,

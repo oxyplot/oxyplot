@@ -5,7 +5,7 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
-    public class ErrorSeries : DataSeries
+    public class ErrorSeries : DataPointSeries
     {
         public List<double> XErrors { get; set; }
         public List<double> YErrors { get; set; }

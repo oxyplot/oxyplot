@@ -115,11 +115,12 @@ namespace OxyPlot
         {
             ICollection<double> majorTickValues;
             ICollection<double> minorTickValues;
+            ICollection<double> majorLabelValues;
             // todo: must get the step size first...
             // this will not work
-            axis.GetTickValues(out majorTickValues, out minorTickValues);
+            axis.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
             OxySize maximumTextSize = new OxySize();
-            foreach (var v in majorTickValues)
+            foreach (var v in majorLabelValues)
             {
                 var s = axis.FormatValue(v);
                 var size = rc.MeasureText(s, axis.Font, axis.FontSize, axis.FontWeight);
@@ -270,7 +271,7 @@ namespace OxyPlot
             // Render the main background of the plot (only if there are axes)
             // The border is rendered by DrawBox to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
             if (Axes.Count > 0)
-                rc.DrawBox(PlotArea, Background, null, 0);
+                rc.DrawRectangleAsPolygon(PlotArea, Background, null, 0);
 
             foreach (var s in Series)
             {
@@ -318,7 +319,7 @@ namespace OxyPlot
             // The border is rendered by DrawBox to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
             if (Axes.Count > 0)
             {
-                rc.DrawBox(PlotArea, null, BoxColor, BoxThickness);
+                rc.DrawRectangleAsPolygon(PlotArea, null, BoxColor, BoxThickness);
             }
         }
 

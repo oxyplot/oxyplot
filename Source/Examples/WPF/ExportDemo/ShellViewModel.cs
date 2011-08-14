@@ -13,7 +13,6 @@ using OxyPlot.Pdf;
 using OxyPlot.Reporting;
 using OxyPlot.Wpf;
 using PropertyTools.Wpf;
-using DataSeries = OxyPlot.DataSeries;
 using Plot = OxyPlot.Wpf.Plot;
 
 namespace ExportDemo
@@ -68,7 +67,7 @@ namespace ExportDemo
             get
             {
                 if (Model == null) return 0;
-                return Model.Series.Sum(ls => ((DataSeries)ls).Points.Count);
+                return Model.Series.Sum(ls => ((DataPointSeries)ls).Points.Count);
             }
         }
 
@@ -193,7 +192,7 @@ namespace ExportDemo
 
             main.AddHeader(2, "Data");
             int i = 1;
-            foreach (DataSeries s in Model.Series)
+            foreach (DataPointSeries s in Model.Series)
             {
                 main.AddHeader(3, "Data series " + (i++));
                 var pt = main.AddPropertyTable("Properties of the " + s.GetType().Name, new[] { s });

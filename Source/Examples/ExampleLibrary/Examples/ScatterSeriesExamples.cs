@@ -27,7 +27,7 @@ namespace ExampleLibrary
             var random = new Random();
             for (int i = 0; i < n; i++)
             {
-                s1.Points.Add(new DataPoint(random.NextDouble(), random.NextDouble()));
+                s1.Points.Add(new ScatterPoint(random.NextDouble(), random.NextDouble()));
             }
             model.Series.Add(s1);
             return model;
@@ -52,7 +52,7 @@ namespace ExampleLibrary
             double[] sizes = new double[n];
             for (int i = 0; i < n; i++)
             {
-                s1.Points.Add(new DataPoint(random.NextDouble(), random.NextDouble()));
+                s1.Points.Add(new ScatterPoint(random.NextDouble(), random.NextDouble()));
                 sizes[i] = 4 + 10 * random.NextDouble();
             }
             s1.MarkerSizes = sizes;
@@ -74,7 +74,7 @@ namespace ExampleLibrary
             {
                 x += 2 + random.NextDouble() * 10;
                 y += 1 + random.NextDouble();
-                var p = new DataPoint(x, y);
+                var p = new ScatterPoint(x, y);
                 s1.Points.Add(p);
             }
             model.Series.Add(s1);
@@ -90,7 +90,7 @@ namespace ExampleLibrary
         /// <param name="points">The points.</param>
         /// <param name="a">The slope.</param>
         /// <param name="b">The intercept.</param>
-        public static void LeastSquaresFit(IEnumerable<DataPoint> points, out double a, out double b)
+        public static void LeastSquaresFit(IEnumerable<ScatterPoint> points, out double a, out double b)
         {
             // http://en.wikipedia.org/wiki/Least_squares
             // http://mathworld.wolfram.com/LeastSquaresFitting.html

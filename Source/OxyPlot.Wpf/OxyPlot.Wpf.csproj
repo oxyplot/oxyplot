@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WPF</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -29,7 +29,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;WPF</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\OxyPlot.Wpf.xml</DocumentationFile>
@@ -61,8 +61,13 @@
     <Compile Include="Axes\TimeSpanAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
+    <Compile Include="Converters\ThicknessConverter.cs" />
+    <Compile Include="Converters\OxyColorConverter.cs" />
+    <Compile Include="Plot.Properties.cs" />
     <Compile Include="Helpers\OxyConvert.cs" />
     <Compile Include="PngExporter.cs" />
+    <Compile Include="Tracker\TrackerControl.cs" />
+    <Compile Include="Tracker\TrackerDefinition.cs" />
     <None Include="OxyPlot.Wpf.snk" />
     <None Include="RenderContexts\GeometryRenderContext.cs" />
     <None Include="RenderContexts\DrawingRenderContext.cs" />
@@ -72,7 +77,6 @@
     <Compile Include="Plot.cs" />
     <Compile Include="Series\DataSeries.cs" />
     <Compile Include="Helpers\ConverterExtensions.cs" />
-    <Compile Include="Tracker.cs" />
     <Compile Include="RenderContexts\ShapesRenderContext.cs" />
   </ItemGroup>
   <ItemGroup>

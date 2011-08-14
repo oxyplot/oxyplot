@@ -72,9 +72,9 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(System.Windows.Media.Color), typeof(DataSeries), new UIPropertyMetadata(System.Windows.Media.Colors.Red, VisualChanged));
 
-        public abstract OxyPlot.DataSeries CreateModel();
+        public abstract OxyPlot.DataPointSeries CreateModel();
 
-        public virtual void ConvertProperties(OxyPlot.DataSeries s)
+        public virtual void SynchronizeProperties(OxyPlot.DataPointSeries s)
         {
             s.ItemsSource = ItemsSource;
             s.DataFieldX = DataFieldX;

@@ -141,7 +141,7 @@ namespace ExampleLibrary
             return plot;
         }
 
-        private static DataSeries CreateNormalDistributionSeries(double x0, double x1, double mean, double variance,
+        private static DataPointSeries CreateNormalDistributionSeries(double x0, double x1, double mean, double variance,
                                                                  int n = 1001)
         {
             var ls = new LineSeries

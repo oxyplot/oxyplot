@@ -11,9 +11,10 @@ namespace OxyPlot
         protected OxyPen MajorPen;
         protected OxyPen MajorTickPen;
         protected ICollection<double> MajorTickValues;
+        protected ICollection<double> MinorTickValues;
+        protected ICollection<double> MajorLabelValues;
         protected OxyPen MinorPen;
         protected OxyPen MinorTickPen;
-        protected ICollection<double> MinorTickValues;
         protected OxyPen ZeroPen;
 
         public AxisRendererBase(IRenderContext rc, PlotModel plot)
@@ -29,7 +30,7 @@ namespace OxyPlot
                 return;
             }
 
-            axis.GetTickValues(out MajorTickValues, out MinorTickValues);
+            axis.GetTickValues(out MajorLabelValues, out MajorTickValues, out MinorTickValues);
             CreatePens(axis);
         }
 

@@ -24,15 +24,13 @@ namespace OxyPlot
         public OxyColor Fill { get; set; }
 
         /// <summary>
-        ///   Gets or sets the second Y data field.
+        ///   Gets or sets the second X data field.
         /// </summary>
-        /// <value>The data field x2.</value>
         public string DataFieldX2 { get; set; }
 
         /// <summary>
-        ///   Gets or sets the second X data field.
+        ///   Gets or sets the second Y data field.
         /// </summary>
-        /// <value>The data field y2.</value>
         public string DataFieldY2 { get; set; }
 
         /// <summary>
@@ -131,6 +129,88 @@ namespace OxyPlot
             // draw the markers on top
             rc.DrawMarkers(pts0, clippingRect, MarkerType, null, new [] {MarkerSize}, MarkerFill, MarkerStroke, MarkerStrokeThickness, 1);
             rc.DrawMarkers(pts1, clippingRect, MarkerType, null, new [] {MarkerSize}, MarkerFill, MarkerStroke, MarkerStrokeThickness, 1);
+        }
+
+        /// <summary>
+        ///   Renders the legend symbol for the line series on the 
+        ///   specified rendering context.
+        /// </summary>
+        /// <param name = "rc">The rendering context.</param>
+        /// <param name = "legendBox">The bounding rectangle of the legend box.</param>
+        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
+        {
+            double xmid = (legendBox.Left + legendBox.Right) / 2;
+            double y0= legendBox.Top*0.2 + legendBox.Bottom*0.8;
+            double y1 = legendBox.Top * 0.4 + legendBox.Bottom * 0.6;
+            double y2 = legendBox.Top * 0.8 + legendBox.Bottom * 0.2;
+            
+            var pts0 = new[]
+                          {
+                              new ScreenPoint(legendBox.Left, y0), 
+                              new ScreenPoint(legendBox.Right, y0)
+                          };
+            var pts1 = new[]
+                          {
+                              new ScreenPoint(legendBox.Right, y2), 
+                              new ScreenPoint(legendBox.Left, y1)
+                          };
+            var pts = new List<ScreenPoint>();
+            pts.AddRange(pts0);
+            pts.AddRange(pts1);
+            rc.DrawLine(pts0, Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
+            rc.DrawLine(pts1, Color, StrokeThickness, LineStyleHelper.GetDashArray(LineStyle));
+            rc.DrawPolygon(pts, Fill, null);
+        }
+
+        /// <summary>
+        ///   Gets the point in the dataset that is nearest the specified point.
+        /// </summary>
+        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
+        {
+            int index;
+            TrackerHitResult result1 = null;
+            TrackerHitResult result2 = null;
+            DataPoint dpn;
+            ScreenPoint spn1;
+            ScreenPoint spn2;
+
+            if (interpolate)
+            {
+                if (GetNearestInterpolatedPointInternal(points, point, out dpn, out spn1, out index))
+                {
+                    var item = GetItem(index);
+                    result1=new TrackerHitResult(this, dpn, spn1, item);
+                }
+                if (GetNearestInterpolatedPointInternal(points2, point, out dpn, out spn2, out index))
+                {
+                    var item = GetItem(index);
+                    result2=new TrackerHitResult(this, dpn, spn2, item);
+                }
+                
+            }
+            else
+            {
+                if (GetNearestPointInternal(points, point, out dpn, out spn1, out index))
+                {
+                    var item = GetItem(index);
+                    result1=new TrackerHitResult(this, dpn, spn1, item);
+                }
+                if (GetNearestPointInternal(points2, point, out dpn, out spn2, out index))
+                {
+                    var item = GetItem(index);
+                   result2=new TrackerHitResult(this, dpn, spn2, item);
+                }
+            }
+
+            if (result1 != null && result2 != null)
+            {
+                double dist1 = spn1.DistanceTo(point);
+                double dist2 = spn2.DistanceTo(point);
+                return dist1 < dist2 ? result1 : result2;
+            }
+            if (result1 != null) return result1;
+            if (result2 != null) return result2;
+            return null;
         }
     }
 }

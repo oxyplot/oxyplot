@@ -2,7 +2,7 @@
 
 namespace OxyPlot
 {
-    public class ZoomAction : MouseAction
+    public class ZoomAction : OxyMouseAction
     {
         public ScreenPoint DownPoint;
         private bool isZooming;
@@ -24,7 +24,7 @@ namespace OxyPlot
 
             if (button == OxyMouseButton.XButton1 || button == OxyMouseButton.XButton2)
             {
-                var current = AxisBase.InverseTransform(pt.X, pt.Y, xaxis, yaxis); //pc.InverseTransform(pt, xaxis, yaxis));
+                var current = AxisBase.InverseTransform(pt.X, pt.Y, xaxis, yaxis); 
 
                 double scale = button == OxyMouseButton.XButton1 ? 0.05 : -0.05;
                 if (control) scale *= 3;
@@ -66,7 +66,7 @@ namespace OxyPlot
         {
             if (!isZooming)
                 return;
-            var plotArea = pc.Model.PlotArea;
+            var plotArea = pc.ActualModel.PlotArea;
 
             if (yaxis == null)
             {

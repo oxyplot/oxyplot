@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 
 namespace OxyPlot
 {
@@ -25,42 +26,87 @@ namespace OxyPlot
 
     public interface IAxis
     {
+        /// <summary>
+        /// Gets the title.
+        /// </summary>
         string Title { get; }
+
+        /// <summary>
+        /// Gets the unit.
+        /// </summary>
+        string Unit { get; }
+
+        /// <summary>
+        /// Gets or sets the title format string.
+        /// The formatting is used if a Unit is defined.
+        /// </summary>
+        string TitleFormatString { get; }
+
+        /// <summary>
+        /// Gets the actual title.
+        /// </summary>
         string ActualTitle { get; }
 
-        string Key { get;  }
-        bool IsVisible { get; set; }
+        /// <summary>
+        /// Gets the key of the axis.
+        /// This can be used by series to select which axis to use.
+        /// </summary>
+        string Key { get; }
 
-		string TitleFormatString { get; set; }
+        /// <summary>
+        /// Gets a value indicating whether this axis is visible.
+        /// </summary>
+        bool IsVisible { get; }
 
-        AxisPosition Position { get; set; }
-        
-        double ActualMinimum { get; set; }
-        double ActualMaximum { get; set; }
+        /// <summary>
+        /// Gets the position of the axis.
+        /// </summary>
+        AxisPosition Position { get; }
 
-		double AbsoluteMinimum { get; set; }
-		double AbsoluteMaximum { get; set; }
-		
-		double Scale { get; set; }
-        double Offset { get; set; }
-        
-        ScreenPoint MidPoint { get; set; }
-        ScreenPoint ScreenMin { get; set; }
-        ScreenPoint ScreenMax { get; set; }
+        double ActualMinimum { get; }
+        double ActualMaximum { get; }
+
+        double Scale { get; }
+        double Offset { get; }
+
+        ScreenPoint MidPoint { get; }
+        ScreenPoint ScreenMin { get; }
+        ScreenPoint ScreenMax { get; }
 
         bool IsValidValue(double value);
 
         bool IsHorizontal();
         bool IsVertical();
         bool IsPolar();
-        
+
+        void UpdateData(IEnumerable<ISeries> series);
+        void ResetActualMaxMin();
         void UpdateActualMaxMin();
         void Include(double value);
         void SetScale(double scale);
         void UpdateIntervals(OxyRect plotArea);
+
+        /// <summary>
+        /// Formats the value to be used on the axis.
+        /// </summary>
         string FormatValue(double x);
+
+        /// <summary>
+        /// Formats the value to be used by the tracker.
+        /// </summary>
+        string FormatValueForTracker(double x);
+
+        /// <summary>
+        /// Gets the value, converts from double to the correct data type if neccessary
+        /// e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
+        /// </summary>
+        object GetValue(double x);
+
+        /// <summary>
+        /// Renders the axis on the specified render context.
+        /// </summary>
         void Render(IRenderContext rc, PlotModel model);
-        
+
         void UpdateTransform(OxyRect plotArea);
         double Transform(double x);
         ScreenPoint Transform(DataPoint dp, IAxis yAxis);

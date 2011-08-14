@@ -40,9 +40,9 @@ namespace OxyPlot.Wpf
             ModelAxis = new OxyPlot.DateTimeAxis();
         }
 
-        public override void UpdateModelProperties()
+        public override void SynchronizeProperties()
         {
-            base.UpdateModelProperties();
+            base.SynchronizeProperties();
             var a = ModelAxis as OxyPlot.DateTimeAxis;
 
             a.IntervalType = IntervalType;
