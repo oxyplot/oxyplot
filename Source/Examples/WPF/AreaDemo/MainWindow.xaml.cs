@@ -13,9 +13,6 @@ namespace AreaDemo
             InitializeComponent();
             var vm = new MainViewModel();
             DataContext = vm;
-
-            //foreach (DataPointSeries s in plot1.Series)
-            //    s.ItemsSource = vm.Measurements;
         }
     }
 }
