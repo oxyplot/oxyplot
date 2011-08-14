@@ -12,7 +12,7 @@ namespace Oxyplot.WindowsForms
     /// </summary>
 	public class Plot : Control, IPlotControl
 	{
-        public List<MouseAction> MouseActions { get; private set; }
+        public List<OxyMouseAction> MouseActions { get; private set; }
 
         private readonly PanAction panAction;
         private readonly TrackerAction trackerAction;
@@ -29,7 +29,7 @@ namespace Oxyplot.WindowsForms
             zoomAction = new ZoomAction(this);
             trackerAction = new TrackerAction(this);
 
-            MouseActions = new List<MouseAction> { panAction, zoomAction, trackerAction };
+            MouseActions = new List<OxyMouseAction> { panAction, zoomAction, trackerAction };
         }
 
         private PlotModel model;
@@ -42,6 +42,18 @@ namespace Oxyplot.WindowsForms
             {
                 model = value;
                 Refresh();
+            }
+        }
+
+        /// <summary>
+        ///   Gets the actual model.
+        /// </summary>
+        /// <value>The actual model.</value>
+        public PlotModel ActualModel
+        {
+            get
+            {
+                return this.Model;
             }
         }
 
@@ -107,9 +119,9 @@ namespace Oxyplot.WindowsForms
             Focus();
             Capture = true;
 
-            bool control = Control.ModifierKeys == Keys.Control;
-            bool shift = Control.ModifierKeys == Keys.Shift;
-            bool alt = Control.ModifierKeys == Keys.Alt;
+            bool control = ModifierKeys == Keys.Control;
+            bool shift = ModifierKeys == Keys.Shift;
+            bool alt = ModifierKeys == Keys.Alt;
 
             var button = OxyMouseButton.Left;
             if (e.Button == MouseButtons.Middle)
@@ -129,9 +141,9 @@ namespace Oxyplot.WindowsForms
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            bool control = Control.ModifierKeys == Keys.Control;
-            bool shift = Control.ModifierKeys == Keys.Shift;
-            bool alt = Control.ModifierKeys == Keys.Alt;
+            bool control = ModifierKeys == Keys.Control;
+            bool shift = ModifierKeys == Keys.Shift;
+            bool alt = ModifierKeys == Keys.Alt;
             var p = new ScreenPoint(e.X, e.Y);
             foreach (var a in MouseActions)
                 a.OnMouseMove(p, control, shift, alt);
@@ -148,9 +160,9 @@ namespace Oxyplot.WindowsForms
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
-            bool control = Control.ModifierKeys == Keys.Control;
-            bool shift = Control.ModifierKeys == Keys.Shift;
-            bool alt = Control.ModifierKeys == Keys.Alt;
+            bool control = ModifierKeys == Keys.Control;
+            bool shift = ModifierKeys == Keys.Shift;
+            bool alt = ModifierKeys == Keys.Alt;
             var p = new ScreenPoint(e.X, e.Y);
             foreach (var a in MouseActions)
                 a.OnMouseWheel(p, e.Delta, control, shift, alt);
@@ -158,11 +170,19 @@ namespace Oxyplot.WindowsForms
 
         public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
         {
+            if (Model==null)
+            {
+                xaxis = null;
+                yaxis = null;
+                return;
+            }
             Model.GetAxesFromPoint(pt, out xaxis, out yaxis);
         }
 
         public ISeries GetSeriesFromPoint(ScreenPoint pt, double limit)
         {
+            if (Model == null)
+                return null;
             return Model.GetSeriesFromPoint(pt, limit);
         }
 
@@ -180,28 +200,32 @@ namespace Oxyplot.WindowsForms
         public void Pan(IAxis axis, double x0, double x1)
         {
             axis.Pan(x0,x1);
-            Model.UpdateAxisTransforms();
+            if (Model!=null)
+                Model.UpdateAxisTransforms();
         }
 
         public void Reset(IAxis axis)
         {
             axis.Reset();
-            Model.UpdateAxisTransforms();
+            if (Model != null)
+                Model.UpdateAxisTransforms();
         }
 
         public void Zoom(IAxis axis, double p1, double p2)
         {
             axis.Zoom(p1, p2);
-            Model.UpdateAxisTransforms();
+            if (Model != null)
+                Model.UpdateAxisTransforms();
         }
 
         public void ZoomAt(IAxis axis, double factor, double x)
         {
             axis.ZoomAt(factor, x);
-            Model.UpdateAxisTransforms();
+            if (Model != null)
+                Model.UpdateAxisTransforms();
         }
 
-        public void ShowTracker(ISeries s, DataPoint dp)
+        public void ShowTracker(TrackerHitResult data)
         {
             // not implemented for WindowsForms
         }

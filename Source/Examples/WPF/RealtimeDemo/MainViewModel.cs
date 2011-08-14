@@ -14,8 +14,23 @@ namespace RealtimeDemo
     public class MainViewModel : INotifyPropertyChanged
     {
         private readonly Stopwatch watch = new Stopwatch();
-        private readonly int N = 20;
-        public SimulationType SimulationType { get; set; }
+        private int N;
+
+        private SimulationType _simulationType;
+
+        public SimulationType SimulationType
+        {
+            get
+            {
+                return this._simulationType;
+            }
+            set
+            {
+                this._simulationType = value;
+                this.RaisePropertyChanged("SimulationType");
+                this.SetupModel();
+            }
+        }
 
         public MainViewModel()
         {
@@ -25,11 +40,15 @@ namespace RealtimeDemo
 
             Function = (t, x, a) => Math.Cos(t * a) * (x == 0 ? 1 : Math.Sin(x * a) / x);
 
+            SetupModel();
+        }
+
+        void SetupModel()
+        {
             PlotModel = new PlotModel();
             PlotModel.Axes.Add(new LinearAxis(AxisPosition.Left, -2, 2));
 
-            if (SimulationType == SimulationType.TimeSimulation)
-                N = 1;
+            this.N = this.SimulationType == SimulationType.TimeSimulation ? 1 : 20;
 
             for (int i = 0; i < N; i++)
             {

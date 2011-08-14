@@ -144,6 +144,11 @@ namespace OxyPlot
             return false;
         }
 
+        public bool IsUsing(IAxis axis)
+        {
+            return false;
+        }
+
         public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
         {
         }

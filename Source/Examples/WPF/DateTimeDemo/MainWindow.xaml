@@ -11,7 +11,7 @@
                     <oxy:DateTimeAxis Position="Bottom" StringFormat="yyyy-MM-dd"/>
                 </oxy:Plot.Axes>
                 <oxy:Plot.Series>
-                    <oxy:LineSeries ItemsSource="{Binding Data}" DataFieldX="Date" DataFieldY="Value" StrokeThickness="1" MarkerSize="3" MarkerType="Plus"/>
+                    <oxy:LineSeries ItemsSource="{Binding Data}" DataFieldX="Date" DataFieldY="Value" StrokeThickness="1" MarkerSize="3" MarkerType="Plus" TrackerFormatString="Time: {2:yyyy-MM-dd HH:mm:ss}&#x0a;Value: {4}"/>
                 </oxy:Plot.Series>
             </oxy:Plot>
         </TabItem>

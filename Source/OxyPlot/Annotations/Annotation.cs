@@ -48,7 +48,7 @@ namespace OxyPlot
 
         public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
         {
-            // todo: refactor - this code is shared with DataSeries
+            // todo: refactor - this code is shared with DataPointSeries
             if (XAxisKey != null)
             {
                 XAxis = axes.FirstOrDefault(a => a.Key == XAxisKey);

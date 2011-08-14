@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace OxyPlot
 {
@@ -16,6 +17,11 @@ namespace OxyPlot
             this.width = width;
             this.height = height;
             Debug.Assert(width >= 0 && height >= 0);
+        }
+
+        public static OxyRect Create(double x0, double y0, double x1, double y1)
+        {
+            return new OxyRect(Math.Min(x0,x1), Math.Min(y0,y1),Math.Abs(x1-x0),Math.Abs(y1-y0)); 
         }
 
         public double Top

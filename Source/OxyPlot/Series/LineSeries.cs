@@ -7,7 +7,7 @@ namespace OxyPlot
     /// <summary>
     ///   LineSeries are rendered to polylines.
     /// </summary>
-    public class LineSeries : DataSeries
+    public class LineSeries : DataPointSeries
     {
         /// <summary>
         ///   Initializes a new instance of the <see cref = "LineSeries" /> class.
@@ -144,7 +144,7 @@ namespace OxyPlot
             int n = points.Count;
 
             var transformedPoints = new List<ScreenPoint>();
-            
+
             Action<ScreenPoint[]> RenderPoints = allPoints =>
                                       {
                                           // spline smoothing (should only be used on small datasets)
@@ -161,16 +161,16 @@ namespace OxyPlot
                                                                  StrokeThickness, LineStyle, LineJoin, false);
                                           if (MarkerType != MarkerType.None)
                                               rc.DrawMarkers(allPoints, clippingRect, MarkerType, MarkerOutline,
-                                                             new[] {MarkerSize}, MarkerFill, MarkerStroke,
+                                                             new[] { MarkerSize }, MarkerFill, MarkerStroke,
                                                              MarkerStrokeThickness);
 
                                       };
 
             // Transform all points to screen coordinates
             // Render the line when invalid points occur
-            foreach( var point in points)
+            foreach (var point in points)
             {
-                if (!IsValidPoint(point,XAxis,YAxis))
+                if (!IsValidPoint(point, XAxis, YAxis))
                 {
                     RenderPoints(transformedPoints.ToArray());
                     transformedPoints.Clear();
@@ -211,6 +211,19 @@ namespace OxyPlot
                 if (MarkerFill == null)
                     MarkerFill = Color;
             }
+        }
+        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
+        {
+            if (interpolate)
+            {
+                // Cannot interpolate if there is no line
+                if (Color == null || StrokeThickness == 0)
+                    return null;
+                if (!CanTrackerInterpolatePoints)
+                    return null;
+            }
+
+            return base.GetNearestPoint(point, interpolate);
         }
     }
 }

@@ -63,7 +63,6 @@ namespace OxyPlot
             AxisTitleDistance = 4;
             AxisTickToLabelDistance = 4;
 
-            PlotMargins = new OxyThickness(60, 10, 20, 40);
             PlotMargins = new OxyThickness(60, 4, 4, 40);
             Padding = new OxyThickness(8, 8, 16, 8);
 
@@ -459,6 +458,12 @@ namespace OxyPlot
 
             // Ensure that there are default axes available
             EnsureDefaultAxes();
+
+            foreach (var a in Axes)
+            {
+                a.UpdateData(Series);
+            }
+
             UpdateMaxMin();
         }
 
@@ -566,8 +571,7 @@ namespace OxyPlot
         {
             foreach (var a in Axes)
             {
-                a.ActualMaximum = double.NaN;
-                a.ActualMinimum = double.NaN;
+                a.ResetActualMaxMin();
             }
             foreach (var s in Series)
             {
@@ -672,16 +676,16 @@ namespace OxyPlot
             foreach (var axis in Axes)
             {
                 double x = axis.InverseTransform(axis.IsHorizontal() ? pt.X : pt.Y);
-                if (x >= axis.ActualMinimum && x <= axis.ActualMaximum && (position==null || position == axis.Position))
+                if (x >= axis.ActualMinimum && x <= axis.ActualMaximum && (position == null || position == axis.Position))
                 {
                     if (axis.IsHorizontal())
                     {
-                        if (xaxis==null)
+                        if (xaxis == null)
                             xaxis = axis;
                     }
                     else
                     {
-                        if (yaxis==null)
+                        if (yaxis == null)
                             yaxis = axis;
                     }
                 }
@@ -694,7 +698,7 @@ namespace OxyPlot
         /// <param name="point">The point.</param>
         /// <param name="limit">The limit.</param>
         /// <returns></returns>
-        public ISeries GetSeriesFromPoint(ScreenPoint point, double limit = 100)
+        public ISeries GetSeriesFromPoint(ScreenPoint point, double limit)
         {
             double mindist = double.MaxValue;
             ISeries closest = null;
@@ -703,12 +707,15 @@ namespace OxyPlot
                 var ts = s as ITrackableSeries;
                 if (ts == null)
                     continue;
-                ScreenPoint sp;
-                DataPoint dp;
-                if (!ts.GetNearestInterpolatedPoint(point, out dp, out sp))
+
+                var thr = ts.GetNearestPoint(point, true);
+                if (thr == null)
+                    thr = ts.GetNearestPoint(point, false);
+                if (thr==null)
                     continue;
+
                 // find distance to this point on the screen
-                double dist = point.DistanceTo(sp);
+                double dist = point.DistanceTo(thr.Position);
                 if (dist < mindist)
                 {
                     closest = s;
@@ -744,7 +751,7 @@ namespace OxyPlot
             foreach (var s in Series)
             {
                 r.AddPropertyTable(s.GetType().Name, s);
-                var ds = s as DataSeries;
+                var ds = s as DataPointSeries;
                 if (ds != null)
                 {
                     var fields = new List<ItemsTableField>

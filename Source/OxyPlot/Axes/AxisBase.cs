@@ -496,6 +496,10 @@ namespace OxyPlot
             return position == AxisPosition.Magnitude || position == AxisPosition.Angle;
         }
 
+        public virtual void UpdateData(IEnumerable<ISeries> series)
+        {
+        }
+
         public virtual string FormatValue(double x)
         {
             // The "SuperExponentialFormat" renders the number with superscript exponents. E.g. 10^2
@@ -520,12 +524,27 @@ namespace OxyPlot
             string format = ActualStringFormat ?? StringFormat ?? String.Empty;
             return x.ToString(format, CultureInfo.InvariantCulture);
         }
+        
+        public virtual string FormatValueForTracker(double x)
+        {
+            return x.ToNiceString();
+        }
+
+        public virtual object GetValue(double x)
+        {
+            return x;
+        }
 
         //private static double Truncate(double value, double precision)
         //{
         //    return Math.Truncate(value * precision) / precision;
         //}
 
+        /// <summary>
+        /// Pans the axis.
+        /// </summary>
+        /// <param name="x0">The previous screen coordinate.</param>
+        /// <param name="x1">The current screen coordinate.</param>
         public virtual void Pan(double x0, double x1)
         {
             if (!IsPanEnabled)
@@ -581,7 +600,7 @@ namespace OxyPlot
             OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Reset));
         }
 
-        private void OnAxisChanged(AxisChangedEventArgs args)
+        protected virtual void OnAxisChanged(AxisChangedEventArgs args)
         {
             var handler = AxisChanged;
             if (handler != null)
@@ -641,6 +660,14 @@ namespace OxyPlot
                 ActualMinimum = avg - MinimumRange * 0.5;
                 ActualMaximum = avg + MinimumRange * 0.5;
             }
+        }
+
+        /// <summary>
+        /// Resets the actual max and min.
+        /// </summary>
+        public virtual void ResetActualMaxMin()
+        {
+            ActualMaximum = ActualMinimum = double.NaN;
         }
 
         /// <summary>
@@ -877,18 +904,38 @@ namespace OxyPlot
 
         #endregion
 
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return String.Format(CultureInfo.InvariantCulture, "{0}({1}, {2}, {3}, {4})", GetType().Name, Position,
                                  ActualMinimum, ActualMaximum, ActualMajorStep);
         }
 
-        public virtual void GetTickValues(out ICollection<double> majorValues, out ICollection<double> minorValues)
+        /// <summary>
+        /// Gets the coordinates used to draw ticks and tick labels (numbers or category names).
+        /// </summary>
+        /// <param name="majorLabelValues">The major label values.</param>
+        /// <param name="majorTickValues">The major tick values.</param>
+        /// <param name="minorTickValues">The minor tick values.</param>
+        public virtual void GetTickValues(out ICollection<double> majorLabelValues, out ICollection<double> majorTickValues, out ICollection<double> minorTickValues)
         {
-            minorValues = CreateTickValues(ActualMinimum, ActualMaximum, ActualMinorStep);
-            majorValues = CreateTickValues(ActualMinimum, ActualMaximum, ActualMajorStep);
+            minorTickValues = CreateTickValues(ActualMinimum, ActualMaximum, ActualMinorStep);
+            majorTickValues = CreateTickValues(ActualMinimum, ActualMaximum, ActualMajorStep);
+            majorLabelValues = majorTickValues;
         }
 
+        /// <summary>
+        /// Creates tick values at the specified interval.
+        /// </summary>
+        /// <param name="min">The minimum coordinate.</param>
+        /// <param name="max">The maximum coordinate.</param>
+        /// <param name="step">The interval.</param>
+        /// <returns></returns>
         internal static ICollection<double> CreateTickValues(double min, double max, double step)
         {
             if (max <= min)
@@ -922,6 +969,10 @@ namespace OxyPlot
             return values;
         }
 
+        /// <summary>
+        /// Gets the size of the label.
+        /// </summary>
+        /// <returns></returns>
         protected virtual double GetLabelSize()
         {
             // todo: this could be dependent on the stringformat 
@@ -945,6 +996,12 @@ namespace OxyPlot
             }
         }
 
+        /// <summary>
+        /// Calculates the actual interval.
+        /// </summary>
+        /// <param name="availableSize">Size of the available area.</param>
+        /// <param name="maxIntervalSize">Maximum length of the intervals.</param>
+        /// <returns></returns>
         protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize)
         {
             return CalculateActualInterval(availableSize, maxIntervalSize, ActualMaximum - ActualMinimum);

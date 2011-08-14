@@ -48,10 +48,10 @@ namespace OxyPlot.Wpf
             set { SetValue(FillProperty, value); }
         }
 
-        public override OxyPlot.DataSeries CreateModel()
+        public override OxyPlot.DataPointSeries CreateModel()
         {
             var s = new OxyPlot.AreaSeries();
-            ConvertProperties(s);
+            SynchronizeProperties(s);
             s.DataFieldX2 = DataFieldX2;
             s.DataFieldY2 = DataFieldY2;
             s.ConstantY2 = ConstantY2;

@@ -2,10 +2,19 @@
 {
     /// <summary>
     /// Interface for Series that can be 'tracked'
-    /// The plot control will show a tracker with the current value when moving the mouse over the data
+    /// The plot control will show a tracker with the current value when moving the mouse over the data.
     /// </summary>
-    public interface ITrackableSeries
+    public interface ITrackableSeries : ISeries
     {
+        /// <summary>
+        /// Gets a format string used for the tracker.
+        /// </summary>
+        string TrackerFormatString { get; }
+
+        string TrackerKey { get; }
+
+        TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
+
         /// <summary>
         /// Gets the nearest interpolated point.
         /// </summary>
@@ -13,7 +22,7 @@
         /// <param name="dp">The nearest interpolated point (in data coordinates).</param>
         /// <param name="sp">The nearest interpolated point (in screen coordinates).</param>
         /// <returns>true if a point was found. Return false if the series cannot be interpolated.</returns>
-        bool GetNearestInterpolatedPoint(ScreenPoint pt, out DataPoint dp, out ScreenPoint sp);
+       // bool GetNearestInterpolatedPoint(ScreenPoint pt, out DataPoint dp, out ScreenPoint sp);
 
         /// <summary>
         /// Gets the nearest point.
@@ -22,11 +31,11 @@
         /// <param name="dp">The nearest point (in data coordinates).</param>
         /// <param name="sp">The nearest point (in screen coordinates).</param>
         /// <returns>true if a point was found.</returns>
-        bool GetNearestPoint(ScreenPoint pt, out DataPoint dp, out ScreenPoint sp);
+        //bool GetNearestPoint(ScreenPoint pt, out DataPoint dp, out ScreenPoint sp);
 
         /// <summary>
         /// Gets a value indicating whether the tracker can interpolate between the points.
         /// </summary>
-        bool CanTrackerInterpolatePoints { get; }
+      //  bool CanTrackerInterpolatePoints { get; }
     }
 }

@@ -20,7 +20,6 @@ namespace BarSeriesDemo
 
             var tmp = new PlotModel("Bar series");
             var xaxis = new CategoryAxis { ItemsSource = items, LabelField = "Label" };
-            xaxis.UpdateLabels();
             tmp.Axes.Add(xaxis);
 
             var bars = new BarSeries() { ItemsSource = items, ValueField = "Value1"};

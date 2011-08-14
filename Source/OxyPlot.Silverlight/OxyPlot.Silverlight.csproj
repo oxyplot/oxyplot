@@ -61,11 +61,15 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\OxyColorConverter.cs" />
+    <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Helpers\ConverterExtensions.cs" />
+    <Compile Include="Helpers\MouseButtonHelper.cs" />
     <Compile Include="Plot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderContexts\SilverlightRenderContext.cs" />
-    <Compile Include="Tracker.cs" />
+    <Compile Include="Tracker\TrackerControl.cs" />
+    <Compile Include="Tracker\TrackerDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\Generic.xaml">

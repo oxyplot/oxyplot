@@ -1,47 +1,121 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace OxyPlot
 {
+    public struct ScatterPoint : IDataPoint
+    {
+        internal double x;
+        internal double y;
+        internal double size;
+        internal double value;
+        internal object tag;
+
+        public ScatterPoint(double x, double y, double size=double.NaN, double value = double.NaN, object tag=null)
+        {
+            this.x = x;
+            this.y = y;
+            this.size = size;
+            this.value = value;
+            this.tag = tag;
+        }
+
+        public double X
+        {
+            get { return x; }
+            set { x = value; }
+        }
+
+        public double Y
+        {
+            get { return y; }
+            set { y = value; }
+        }
+
+        public double Size
+        {
+            get { return size; }
+            set { size = value; }
+        }
+        
+        public double Value
+        {
+            get { return value; }
+            set { this.value = value; }
+        }
+
+        public object Tag
+        {
+            get { return tag; }
+            set { tag = value; }
+        }
+
+        public override string ToString()
+        {
+            return x + " " + y;
+        }
+        
+    }
     /// <summary>
     ///   LineSeries are rendered to polylines.
     /// </summary>
-    public class ScatterSeries : DataSeries
+    public class ScatterSeries : PlotSeriesBase
     {
+        protected IList<ScatterPoint> points;
+
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "LineSeries" /> class.
+        /// Initializes a new instance of the <see cref="LineSeries"/> class.
         /// </summary>
-        /// <param name = "color">The color of the line stroke.</param>
-        /// <param name="radius"></param>
-        /// <param name = "title">The title (optional).</param>
+        /// <param name="title">The title (optional).</param>
+        /// <param name="color">The color of the line stroke.</param>
+        /// <param name="markerSize">Size of the markers.</param>
         public ScatterSeries(string title = null, OxyColor color = null, double markerSize = 5)
         {
+            points=new List<ScatterPoint>();
+            DataFieldX = "X";
+            DataFieldY = "Y";
+            DataFieldSize = null;
+            DataFieldValue = null;
+
             MarkerType = MarkerType.Square;
             MarkerSize = markerSize;
             Title = title;
         }
 
-        //public string DataFieldSize { get; set; }
-        //public string DataFieldSizeValue { get; set; }
-        //public string DataFieldColor { get; set; }
-        //public string DataFieldColorValue { get; set; }
-        //public string DataFieldMarkerType { get; set; }
-
-        //public IList<double> SizeValues { get; set; }
-
-        // public IList<OxyColor> Colors { get; set; }
-        //public IList<DataPoint> ColorValues { get; set; }
+        /// <summary>
+        ///   Gets or sets the items source.
+        /// </summary>
+        /// <value>The items source.</value>
+        public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the marker.
+        ///   Gets or sets the data field X.
         /// </summary>
-        /// <value>The size of the marker.</value>
+        /// <value>The data field X.</value>
+        public string DataFieldX { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the data field Y.
+        /// </summary>
+        /// <value>The data field Y.</value>
+        public string DataFieldY { get; set; }
+
+        public string DataFieldSize { get; set; }
+        public string DataFieldValue { get; set; }
+
+        //public string DataFieldMarkerType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the marker (same size for all items).
+        /// </summary>
+        /// <value>The size of the markers.</value>
         public double MarkerSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker sizes.
-        /// This overrides MarkerSize.
+        /// Gets or sets the marker sizes (independent size for each item).
+        /// If this property is set, it overrides MarkerSize.
         /// </summary>
         /// <value>The marker sizes.</value>
         public IList<double> MarkerSizes { get; set; }
@@ -60,21 +134,21 @@ namespace OxyPlot
         public ScreenPoint[] MarkerOutline { get; set; }
 
         /// <summary>
-        ///   Gets or sets the marker stroke.
+        /// Gets or sets the marker stroke.
         /// </summary>
         /// <value>The marker stroke.</value>
         public OxyColor MarkerStroke { get; set; }
 
         /// <summary>
-        ///   Gets or sets the marker stroke thickness.
+        /// Gets or sets the marker stroke thickness.
         /// </summary>
         /// <value>The marker stroke thickness.</value>
         public double MarkerStrokeThickness { get; set; }
 
         /// <summary>
-        ///   Gets or sets the marker fill color.
+        /// Gets or sets the marker fill color.
         /// </summary>
-        /// <value>The marker fill.</value>
+        /// <value>The marker fill color.</value>
         public OxyColor MarkerFill { get; set; }
 
         /// <summary>
@@ -83,8 +157,14 @@ namespace OxyPlot
         /// </summary>
         public int BinSize { get; set; }
 
+        public IList<ScatterPoint> Points
+        {
+            get { return points; }
+            set { points = value; }
+        }
+
         /// <summary>
-        ///   Renders the LineSeries on the specified rendering context.
+        /// Renders the LineSeries on the specified rendering context.
         /// </summary>
         /// <param name = "rc">The rendering context.</param>
         /// <param name = "model">The owner plot model.</param>
@@ -109,8 +189,9 @@ namespace OxyPlot
             var markerSizes = new double[n];
             for (int i = 0; i < n; i++)
             {
-                allPoints[i] = XAxis.Transform(points[i], YAxis);
-                markerSizes[i] = MarkerSizes!=null ? MarkerSizes[i] : MarkerSize;
+                var dp = new DataPoint(points[i].x, points[i].y);
+                allPoints[i] = XAxis.Transform(dp, YAxis);
+                markerSizes[i] = double.IsNaN(points[i].Size) ? MarkerSize : points[i].Size * MarkerSize;
             }
             rc.DrawMarkers(allPoints, clippingRect, MarkerType, MarkerOutline, markerSizes, MarkerFill, MarkerStroke,
                            MarkerStrokeThickness, BinSize);
@@ -130,6 +211,11 @@ namespace OxyPlot
 
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(midpt, legendBox, MarkerType, MarkerOutline, MarkerSize, MarkerFill, MarkerStroke, MarkerStrokeThickness);
+        }
+
+        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
+        {
+            return null;
         }
 
         public override void SetDefaultValues(PlotModel model)

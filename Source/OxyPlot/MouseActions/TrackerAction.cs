@@ -3,14 +3,14 @@
     /// <summary>
     /// Tracker mouseaction
     /// </summary>
-    public class TrackerAction : MouseAction
+    public class TrackerAction : OxyMouseAction
     {
         public TrackerAction(IPlotControl pc)
             : base(pc)
         {
         }
 
-        private ISeries currentSeries;
+        private ITrackableSeries currentSeries;
 
         public override void OnMouseDown(ScreenPoint pt, OxyMouseButton button, int clickCount, bool control, bool shift, bool alt)
         {
@@ -30,7 +30,7 @@
                 pc.InvalidatePlot();
             }
 
-            currentSeries = pc.GetSeriesFromPoint(pt) as DataSeries;
+            currentSeries = pc.GetSeriesFromPoint(pt) as ITrackableSeries;
 
             OnMouseMove(pt, control, shift, alt);
 
@@ -43,34 +43,44 @@
             if (currentSeries == null)
                 return;
 
-            bool usePointsOnly = shift; 
-            var current = GetNearestPoint(currentSeries as ITrackableSeries, pt, !control, usePointsOnly);
-            if (current != null)
-                pc.ShowTracker(currentSeries, current.Value);
+            var result = GetNearestPoint(currentSeries, pt, !control, shift);
+            if (result != null)
+            {
+                result.PlotModel = pc.ActualModel;
+
+               /* if (currentSeries is PlotSeriesBase)
+                {
+                    var s = currentSeries as PlotSeriesBase;
+                    result.XAxis = s.XAxis;
+                    result.YAxis = s.YAxis;
+                    // todo: should do this in the Series...
+                    result.Position=result.XAxis.Transform(result.DataPoint, result.YAxis);
+                }*/
+                pc.ShowTracker(result);
+            }
         }
 
-        private static DataPoint? GetNearestPoint(ITrackableSeries s, ScreenPoint point, bool snap, bool pointsOnly)
+        private static TrackerHitResult GetNearestPoint(ITrackableSeries s, ScreenPoint point, bool snap, bool pointsOnly)
         {
             if (s == null)
                 return null;
 
+            // Check data points only
             if (snap || pointsOnly)
             {
-                ScreenPoint spn;
-                DataPoint dpn;
-                if (s.GetNearestPoint(point, out dpn, out spn) && snap)
-                {
-                    if (spn.DistanceTo(point) < 20)
-                        return dpn;
+                var result=s.GetNearestPoint(point, false);
+                if (result!=null) {
+                    if (result.Position.DistanceTo(point) < 20)
+                        return result;
                 }
             }
 
-            ScreenPoint sp;
-            DataPoint dp;
-
-            if (!pointsOnly && s.CanTrackerInterpolatePoints)
-                if (s.GetNearestInterpolatedPoint(point, out dp, out sp))
-                    return dp;
+            // Check between data points (if possible)
+            if (!pointsOnly)
+            {
+                var result = s.GetNearestPoint(point, true);
+                return result;
+            }
 
             return null;
         }
