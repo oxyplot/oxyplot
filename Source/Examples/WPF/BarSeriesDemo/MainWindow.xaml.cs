@@ -13,19 +13,28 @@ namespace BarSeriesDemo
         {
             InitializeComponent();
 
-            var items = new Collection<Item>();
-            items.Add(new Item { Label = "Apples", Value1 = 37, Value2 = 12, Value3 = 19 });
-            items.Add(new Item { Label = "Pears", Value1 = 7, Value2 = 21, Value3 = 9 });
-            items.Add(new Item { Label = "Bananas", Value1 = 23, Value2 = 2, Value3 = 29 });
+            // Create some data
+            var items = new Collection<Item>
+                            {
+                                new Item {Label = "Apples", Value1 = 37, Value2 = 12, Value3 = 19},
+                                new Item {Label = "Pears", Value1 = 7, Value2 = 21, Value3 = 9},
+                                new Item {Label = "Bananas", Value1 = 23, Value2 = 2, Value3 = 29}
+                            };
 
-            var tmp = new PlotModel("Bar series");
-            var xaxis = new CategoryAxis { ItemsSource = items, LabelField = "Label" };
-            tmp.Axes.Add(xaxis);
+            // Create the plot model
+            var tmp = new PlotModel("Bar series") { LegendPlacement = LegendPlacement.Outside, LegendPosition = LegendPosition.RightTop, LegendOrientation = LegendOrientation.Vertical};
 
-            var bars = new BarSeries() { ItemsSource = items, ValueField = "Value1"};
-            tmp.Series.Add(bars);
+            // Add the axes, note that MinimumPadding and AbsoluteMinimum should be set on the vertical axis.
+            tmp.Axes.Add(new CategoryAxis { ItemsSource = items, LabelField = "Label" });
+            tmp.Axes.Add(new LinearAxis(AxisPosition.Left) { MinimumPadding = 0, AbsoluteMinimum = 0 });
+
+            // Add the series, note that the the BarSeries are using the same ItemsSource as the CategoryAxis.
+            tmp.Series.Add(new BarSeries { Title = "2009", ItemsSource = items, ValueField = "Value1" });
+            tmp.Series.Add(new BarSeries { Title = "2010", ItemsSource = items, ValueField = "Value2" });
+            tmp.Series.Add(new BarSeries { Title = "2011", ItemsSource = items, ValueField = "Value3" });
 
             Model1 = tmp;
+
             DataContext = this;
         }
 
