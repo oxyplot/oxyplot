@@ -5,59 +5,6 @@ using System.Diagnostics;
 
 namespace OxyPlot
 {
-    public struct ScatterPoint : IDataPoint
-    {
-        internal double x;
-        internal double y;
-        internal double size;
-        internal double value;
-        internal object tag;
-
-        public ScatterPoint(double x, double y, double size=double.NaN, double value = double.NaN, object tag=null)
-        {
-            this.x = x;
-            this.y = y;
-            this.size = size;
-            this.value = value;
-            this.tag = tag;
-        }
-
-        public double X
-        {
-            get { return x; }
-            set { x = value; }
-        }
-
-        public double Y
-        {
-            get { return y; }
-            set { y = value; }
-        }
-
-        public double Size
-        {
-            get { return size; }
-            set { size = value; }
-        }
-        
-        public double Value
-        {
-            get { return value; }
-            set { this.value = value; }
-        }
-
-        public object Tag
-        {
-            get { return tag; }
-            set { tag = value; }
-        }
-
-        public override string ToString()
-        {
-            return x + " " + y;
-        }
-        
-    }
     /// <summary>
     ///   LineSeries are rendered to polylines.
     /// </summary>
@@ -66,12 +13,12 @@ namespace OxyPlot
         protected IList<ScatterPoint> points;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries"/> class.
+        /// Initializes a new instance of the <see cref="ScatterSeries"/> class.
         /// </summary>
-        /// <param name="title">The title (optional).</param>
-        /// <param name="color">The color of the line stroke.</param>
-        /// <param name="markerSize">Size of the markers.</param>
-        public ScatterSeries(string title = null, OxyColor color = null, double markerSize = 5)
+        /// <param name="title">The title.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="markerSize">Size of the marker.</param>
+          public ScatterSeries(string title = null, OxyColor color = null, double markerSize = 5)
         {
             points=new List<ScatterPoint>();
             DataFieldX = "X";
@@ -102,23 +49,23 @@ namespace OxyPlot
         /// <value>The data field Y.</value>
         public string DataFieldY { get; set; }
 
+        /// <summary>
+        /// Gets or sets the data field for the size.
+        /// </summary>
+        /// <value>The size data field.</value>
         public string DataFieldSize { get; set; }
-        public string DataFieldValue { get; set; }
 
-        //public string DataFieldMarkerType { get; set; }
+        /// <summary>
+        /// Gets or sets the value data field.
+        /// </summary>
+        /// <value>The value data field.</value>
+        public string DataFieldValue { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the marker (same size for all items).
         /// </summary>
         /// <value>The size of the markers.</value>
         public double MarkerSize { get; set; }
-
-        /// <summary>
-        /// Gets or sets the marker sizes (independent size for each item).
-        /// If this property is set, it overrides MarkerSize.
-        /// </summary>
-        /// <value>The marker sizes.</value>
-        public IList<double> MarkerSizes { get; set; }
 
         /// <summary>
         ///   Gets or sets the type of the marker.
@@ -179,7 +126,6 @@ namespace OxyPlot
 
             Debug.Assert(XAxis != null && YAxis != null, "Axis has not been defined.");
 
-            Debug.Assert(MarkerSizes==null || MarkerSizes.Count == Points.Count,"Number of Points and MarkerSizes should be equal.");
             var clippingRect = GetClippingRect();
 
             int n = points.Count;
@@ -215,7 +161,28 @@ namespace OxyPlot
 
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            return null;
+            if (interpolate) return null;
+
+            TrackerHitResult result = null;
+            double minimumDistance = double.MaxValue;
+            int i = 0;
+            foreach (var p in points)
+            {
+                var dp = new DataPoint(p.X, p.Y);
+                var sp = AxisBase.Transform(dp, XAxis, YAxis);
+                double dx = sp.x - point.x;
+                double dy = sp.y - point.y;
+                double d2 = dx * dx + dy * dy;
+
+                if (d2 < minimumDistance)
+                {
+                    result = new TrackerHitResult(this, dp, sp, GetItem(ItemsSource, i), null);
+                    minimumDistance = d2;
+                }
+                i++;
+            }
+
+            return result;
         }
 
         public override void SetDefaultValues(PlotModel model)

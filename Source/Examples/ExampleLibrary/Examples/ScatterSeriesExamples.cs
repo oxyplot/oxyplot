@@ -49,13 +49,10 @@ namespace ExampleLibrary
                 BinSize = binsize
             };
             var random = new Random();
-            double[] sizes = new double[n];
             for (int i = 0; i < n; i++)
             {
-                s1.Points.Add(new ScatterPoint(random.NextDouble(), random.NextDouble()));
-                sizes[i] = 4 + 10 * random.NextDouble();
+                s1.Points.Add(new ScatterPoint(random.NextDouble(), random.NextDouble(), 4 + 10 * random.NextDouble()));
             }
-            s1.MarkerSizes = sizes;
             model.Series.Add(s1);
             return model;
         }

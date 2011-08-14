@@ -178,12 +178,12 @@ namespace OxyPlot
             {
                 if (GetNearestInterpolatedPointInternal(points, point, out dpn, out spn1, out index))
                 {
-                    var item = GetItem(index);
+                    var item = GetItem(ItemsSource, index);
                     result1=new TrackerHitResult(this, dpn, spn1, item);
                 }
                 if (GetNearestInterpolatedPointInternal(points2, point, out dpn, out spn2, out index))
                 {
-                    var item = GetItem(index);
+                    var item = GetItem(ItemsSource, index);
                     result2=new TrackerHitResult(this, dpn, spn2, item);
                 }
                 
@@ -192,12 +192,12 @@ namespace OxyPlot
             {
                 if (GetNearestPointInternal(points, point, out dpn, out spn1, out index))
                 {
-                    var item = GetItem(index);
+                    var item = GetItem(ItemsSource, index);
                     result1=new TrackerHitResult(this, dpn, spn1, item);
                 }
                 if (GetNearestPointInternal(points2, point, out dpn, out spn2, out index))
                 {
-                    var item = GetItem(index);
+                    var item = GetItem(ItemsSource, index);
                    result2=new TrackerHitResult(this, dpn, spn2, item);
                 }
             }

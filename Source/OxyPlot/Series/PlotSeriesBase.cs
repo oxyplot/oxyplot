@@ -295,5 +295,30 @@ namespace OxyPlot
 
             return minimumDistance < double.MaxValue;
         }
+
+        /// <summary>
+        /// Gets the item of the specified index.
+        /// Returns null if ItemsSource is not set, or the index is outside the boundaries.
+        /// </summary>
+        protected object GetItem(IEnumerable itemsSource, int index)
+        {
+            if (itemsSource == null || index < 0)
+                return null;
+
+            var list = itemsSource as IList;
+            if (list != null)
+            {
+                if (index < list.Count && index >= 0) return list[index];
+                return null;
+            }
+
+            // todo: can this be improved?
+            int i = 0;
+            foreach (var item in itemsSource)
+                if (i++ == index)
+                    return item;
+
+            return null;
+        }
     }
 }
