@@ -120,7 +120,7 @@ namespace OxyPlot
                     double px = p1.x + u * (p2.x - p1.x);
                     double py = p1.y + u * (p2.y - p1.y);
                     result = new TrackerHitResult(
-                        this, new DataPoint(px, py), new ScreenPoint(sx, sy), this.GetItem(i), null);
+                        this, new DataPoint(px, py), new ScreenPoint(sx, sy), this.GetItem(ItemsSource, i), null);
                     minimumDistance = distance;
                 }
             }

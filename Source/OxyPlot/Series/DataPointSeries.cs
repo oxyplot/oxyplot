@@ -146,40 +146,24 @@ namespace OxyPlot
             {
                 if (GetNearestInterpolatedPointInternal(points, point, out dpn, out spn, out index))
                 {
-                    var item = GetItem(index);
-                    return new TrackerHitResult(this,dpn,spn,item);
+                    var item = GetItem(ItemsSource, index);
+                    return new TrackerHitResult(this, dpn, spn, item);
                 }
             }
             else
             {
                 if (GetNearestPointInternal(points, point, out dpn, out spn, out index))
                 {
-                    var item = GetItem(index);
+                    var item = GetItem(ItemsSource, index);
                     return new TrackerHitResult(this, dpn, spn, item);
                 }
             }
             return result;
         }
 
-        /// <summary>
-        /// Gets the item of the specified index.
-        /// Returns null if ItemsSource is not set, or the index is outside the boundaries.
-        /// </summary>
-        protected object GetItem(int index)
-        {
-            if (ItemsSource == null || index < 0)
-                return null;
+       
 
-            int i = 0;
-            // todo: this is slow, how could it be improved?
-            foreach (var item in ItemsSource)
-                if (i++ == index)
-                    return item;
 
-            return null;
-        }
-
-        
 
         #endregion
 

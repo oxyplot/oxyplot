@@ -113,9 +113,10 @@
     <Compile Include="Annotations\IAnnotation.cs" />
     <Compile Include="Series\BarSeries.cs" />
     <Compile Include="Series\DataPointSeries.cs" />
- 	<Compile Include="Series\CandleStickSeries.cs" />
+    <Compile Include="Series\CandleStickSeries.cs" />
     <Compile Include="Series\HighLowItem.cs" />
     <Compile Include="Series\HighLowSeries.cs" />
+    <Compile Include="Series\ScatterPoint.cs" />
     <Compile Include="Series\StemSeries.cs" />
     <Compile Include="Series\StairStepSeries.cs" />
     <Compile Include="Series\ITrackableSeries.cs" />

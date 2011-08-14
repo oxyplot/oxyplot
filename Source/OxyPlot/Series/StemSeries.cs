@@ -132,7 +132,7 @@ namespace OxyPlot
                 if (distance < minimumDistance)
                 {
                     result = new TrackerHitResult(
-                        this, new DataPoint(p1.x, p1.y), new ScreenPoint(sp1.x, sp1.y), this.GetItem(i), null);
+                        this, new DataPoint(p1.x, p1.y), new ScreenPoint(sp1.x, sp1.y), this.GetItem(ItemsSource, i), null);
                     minimumDistance = distance;
                 }
             }
