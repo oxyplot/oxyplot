@@ -6,36 +6,30 @@
     /// </summary>
     public interface ITrackableSeries : ISeries
     {
+        #region Public Properties
+
         /// <summary>
         /// Gets a format string used for the tracker.
         /// </summary>
         string TrackerFormatString { get; }
 
+        /// <summary>
+        /// Gets the tracker key.
+        /// </summary>
         string TrackerKey { get; }
 
-        TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
+        #endregion
 
-        /// <summary>
-        /// Gets the nearest interpolated point.
-        /// </summary>
-        /// <param name="pt">The point (in screen coordinates).</param>
-        /// <param name="dp">The nearest interpolated point (in data coordinates).</param>
-        /// <param name="sp">The nearest interpolated point (in screen coordinates).</param>
-        /// <returns>true if a point was found. Return false if the series cannot be interpolated.</returns>
-       // bool GetNearestInterpolatedPoint(ScreenPoint pt, out DataPoint dp, out ScreenPoint sp);
+        #region Public Methods
 
         /// <summary>
         /// Gets the nearest point.
         /// </summary>
-        /// <param name="pt">The point (in screen coordinates).</param>
-        /// <param name="dp">The nearest point (in data coordinates).</param>
-        /// <param name="sp">The nearest point (in screen coordinates).</param>
-        /// <returns>true if a point was found.</returns>
-        //bool GetNearestPoint(ScreenPoint pt, out DataPoint dp, out ScreenPoint sp);
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
+        TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
 
-        /// <summary>
-        /// Gets a value indicating whether the tracker can interpolate between the points.
-        /// </summary>
-      //  bool CanTrackerInterpolatePoints { get; }
+        #endregion
     }
 }

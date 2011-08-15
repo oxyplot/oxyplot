@@ -115,7 +115,7 @@
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Slider x:Name="Angle" Orientation="Vertical" 
                            Minimum="-180" Maximum="180" Value="0" Height="200"
-                            ValueChanged="Angle_ValueChanged" HorizontalAlignment="Center" />
+                            HorizontalAlignment="Center" />
                             <TextBlock Width="40" TextAlignment="Center" Text="{Binding Value, ElementName=Angle, StringFormat='{}{0:0}º'}" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Grid>

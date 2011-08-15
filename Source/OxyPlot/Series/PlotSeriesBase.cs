@@ -1,41 +1,59 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-
-namespace OxyPlot
+﻿namespace OxyPlot
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+
     /// <summary>
     /// Abstract base class for Series that contains an X-axis and Y-axis
     /// </summary>
     public abstract class PlotSeriesBase : ITrackableSeries
     {
-        /// <summary>
-        ///   Gets or sets the X axis.
-        /// </summary>
-        /// <value>The X axis.</value>
-        public IAxis XAxis { get; set; }
+        #region Public Properties
 
         /// <summary>
-        ///   Gets or sets the Y axis.
+        ///   Gets or sets the background of the series.
+        ///   The background area is defined by the x and y axes.
         /// </summary>
-        /// <value>The Y axis.</value>
-        public IAxis YAxis { get; set; }
+        /// <value>The background color.</value>
+        public OxyColor Background { get; set; }
 
         /// <summary>
-        ///   Gets or sets the X axis key.
+        ///   Gets or sets the maximum x-coordinate of the dataset.
         /// </summary>
-        /// <value>The X axis key.</value>
-        public string XAxisKey { get; set; }
+        /// <value>The maximum x-coordinate.</value>
+        public double MaxX { get; protected set; }
 
         /// <summary>
-        ///   Gets or sets the Y axis key.
+        ///   Gets or sets the maximum y-coordinate of the dataset.
         /// </summary>
-        /// <value>The Y axis key.</value>
-        public string YAxisKey { get; set; }
+        /// <value>The maximum y-coordinate.</value>
+        public double MaxY { get; protected set; }
+
+        /// <summary>
+        ///   Gets or sets the minimum x-coordinate of the dataset.
+        /// </summary>
+        /// <value>The minimum x-coordinate.</value>
+        public double MinX { get; protected set; }
+
+        /// <summary>
+        ///   Gets or sets the minimum y-coordinate of the dataset.
+        /// </summary>
+        /// <value>The minimum y-coordinate.</value>
+        public double MinY { get; protected set; }
+
+        /// <summary>
+        ///   Gets the title of the Series.
+        /// </summary>
+        /// <value>The title.</value>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets a format string used for the tracker.
+        /// </summary>
+        public string TrackerFormatString { get; set; }
 
         /// <summary>
         /// Gets or sets the key for the tracker to use on this series.
@@ -43,44 +61,77 @@ namespace OxyPlot
         public string TrackerKey { get; set; }
 
         /// <summary>
-        ///   Gets or sets the min X of the dataset.
+        ///   Gets or sets the x-axis.
         /// </summary>
-        /// <value>The min X.</value>
-        public double MinX { get; protected set; }
+        /// <value>The x-axis.</value>
+        public IAxis XAxis { get; set; }
 
         /// <summary>
-        ///   Gets or sets the max X of the dataset.
+        ///   Gets or sets the x-axis key.
         /// </summary>
-        /// <value>The max X.</value>
-        public double MaxX { get; protected set; }
+        /// <value>The x-axis key.</value>
+        public string XAxisKey { get; set; }
 
         /// <summary>
-        ///   Gets or sets the min Y of the dataset.
+        ///   Gets or sets the y-axis.
         /// </summary>
-        /// <value>The min Y.</value>
-        public double MinY { get; protected set; }
+        /// <value>The y-axis.</value>
+        public IAxis YAxis { get; set; }
 
         /// <summary>
-        ///   Gets or sets the max Y of the dataset.
+        ///   Gets or sets the y-axis key.
         /// </summary>
-        /// <value>The max Y.</value>
-        public double MaxY { get; protected set; }
+        /// <value>The y-axis key.</value>
+        public string YAxisKey { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        public virtual bool AreAxesRequired()
+        {
+            return true;
+        }
+
+        public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
+        {
+            if (this.XAxisKey != null)
+            {
+                this.XAxis = axes.FirstOrDefault(a => a.Key == this.XAxisKey);
+            }
+
+            if (this.YAxisKey != null)
+            {
+                this.YAxis = axes.FirstOrDefault(a => a.Key == this.YAxisKey);
+            }
+
+            // If axes are not found, use the default axes
+            if (this.XAxis == null)
+            {
+                this.XAxis = defaultXAxis;
+            }
+
+            if (this.YAxis == null)
+            {
+                this.YAxis = defaultYAxis;
+            }
+        }
+
+        public abstract TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
 
         /// <summary>
-        ///   Gets or sets the background of the series.
-        ///   The background area is defined by the x and y axes.
+        /// Gets the rectangle the series uses on the screen (screen coordinates).
         /// </summary>
-        /// <value>The background.</value>
-        public OxyColor Background { get; set; }
+        /// <returns></returns>
+        public OxyRect GetScreenRectangle()
+        {
+            return this.GetClippingRect();
+        }
 
-
-        #region ISeries Members
-
-        /// <summary>
-        ///   Gets the title of the Series.
-        /// </summary>
-        /// <value>The title.</value>
-        public string Title { get; set; }
+        public virtual bool IsUsing(IAxis axis)
+        {
+            return this.XAxis == axis || this.YAxis == axis;
+        }
 
         /// <summary>
         ///   Renders the Series on the specified rendering context.
@@ -100,133 +151,68 @@ namespace OxyPlot
         {
         }
 
+        public virtual void SetDefaultValues(PlotModel model)
+        {
+        }
+
         public virtual void UpdateData()
         {
         }
 
-        public virtual bool AreAxesRequired()
-        {
-            return true;
-        }
-
-        public virtual bool IsUsing(IAxis axis)
-        {
-            return XAxis == axis || YAxis == axis;
-        }
-
-        public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
-        {
-            if (XAxisKey != null)
-            {
-                XAxis = axes.FirstOrDefault(a => a.Key == XAxisKey);
-            }
-
-            if (YAxisKey != null)
-            {
-                YAxis = axes.FirstOrDefault(a => a.Key == YAxisKey);
-            }
-
-            // If axes are not found, use the default axes
-            if (XAxis == null)
-            {
-                XAxis = defaultXAxis;
-            }
-
-            if (YAxis == null)
-            {
-                YAxis = defaultYAxis;
-            }
-        }
-
         /// <summary>
-        /// Gets the rectangle the series uses on the screen (screen coordinates).
+        ///   Updates the max/minimum values.
         /// </summary>
-        /// <returns></returns>
-        public OxyRect GetScreenRectangle()
+        public virtual void UpdateMaxMin()
         {
-            return GetClippingRect();
+            this.MinX = this.MinY = this.MaxX = this.MaxY = double.NaN;
         }
+
+        #endregion
+
+        #region Methods
 
         protected OxyRect GetClippingRect()
         {
-            var minX = Math.Min(XAxis.ScreenMin.X, XAxis.ScreenMax.X);
-            var minY = Math.Min(YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);
-            var maxX = Math.Max(XAxis.ScreenMin.X, XAxis.ScreenMax.X);
-            var maxY = Math.Max(YAxis.ScreenMin.Y, YAxis.ScreenMax.Y);
+            double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
+            double minY = Math.Min(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
+            double maxX = Math.Max(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
+            double maxY = Math.Max(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
 
             return new OxyRect(minX, minY, maxX - minX, maxY - minY);
         }
 
         /// <summary>
-        ///   Updates the max/min values.
+        /// Gets the item of the specified index.
+        /// Returns null if ItemsSource is not set, or the index is outside the boundaries.
         /// </summary>
-        public virtual void UpdateMaxMin()
+        protected object GetItem(IEnumerable itemsSource, int index)
         {
-            MinX = MinY = MaxX = MaxY = double.NaN;
-        }
-
-
-        public abstract TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
-
-        public virtual void SetDefaultValues(PlotModel model)
-        {
-        }
-
-        /// <summary>
-        /// Gets or sets a format string used for the tracker.
-        /// </summary>
-        public string TrackerFormatString { get; set; }
-
-        #endregion
-
-        /// <summary>
-        /// Converts the value of the specified object to a double precision floating point number.
-        /// DateTime objects are converted using DateTimeAxis.ToDouble
-        /// TimeSpan objects are converted using TimeSpanAxis.ToDouble
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns></returns>
-        protected virtual double ToDouble(object value)
-        {
-            if (value is DateTime)
+            if (itemsSource == null || index < 0)
             {
-                return DateTimeAxis.ToDouble((DateTime)value);
+                return null;
             }
 
-            if (value is TimeSpan)
+            var list = itemsSource as IList;
+            if (list != null)
             {
-                return ((TimeSpan)value).TotalSeconds;
-            }
-
-            return Convert.ToDouble(value);
-        }
-
-        protected bool GetNearestPointInternal(IEnumerable<DataPoint> points, ScreenPoint point, out DataPoint dpn, out ScreenPoint spn, out int index)
-        {
-            spn = default(ScreenPoint);
-            dpn = default(DataPoint);
-            index = -1;
-
-            double minimumDistance = double.MaxValue;
-            int i = 0;
-            foreach (var p in points)
-            {
-                var sp = AxisBase.Transform(p, XAxis, YAxis);
-                double dx = sp.x - point.x;
-                double dy = sp.y - point.y;
-                double d2 = dx * dx + dy * dy;
-
-                if (d2 < minimumDistance)
+                if (index < list.Count && index >= 0)
                 {
-                    dpn = p;
-                    spn = sp;
-                    minimumDistance = d2;
-                    index = i;
+                    return list[index];
                 }
-                i++;
+                return null;
             }
 
-            return minimumDistance < double.MaxValue;
+            // todo: can this be improved?
+            int i = 0;
+            foreach (object item in itemsSource)
+            {
+                if (i++ == index)
+                {
+                    return item;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -236,7 +222,8 @@ namespace OxyPlot
         /// <param name = "dpn">The nearest point (data coordinates).</param>
         /// <param name = "spn">The nearest point (screen coordinates).</param>
         /// <returns></returns>
-        protected bool GetNearestInterpolatedPointInternal(IList<DataPoint> points, ScreenPoint point, out DataPoint dpn, out ScreenPoint spn, out int index)
+        protected bool GetNearestInterpolatedPointInternal(
+            IList<DataPoint> points, ScreenPoint point, out DataPoint dpn, out ScreenPoint spn, out int index)
         {
             spn = default(ScreenPoint);
             dpn = default(DataPoint);
@@ -247,10 +234,10 @@ namespace OxyPlot
 
             for (int i = 0; i + 1 < points.Count; i++)
             {
-                var p1 = points[i];
-                var p2 = points[i + 1];
-                var sp1 = AxisBase.Transform(p1, XAxis, YAxis);
-                var sp2 = AxisBase.Transform(p2, XAxis, YAxis);
+                DataPoint p1 = points[i];
+                DataPoint p2 = points[i + 1];
+                ScreenPoint sp1 = AxisBase.Transform(p1, this.XAxis, this.YAxis);
+                ScreenPoint sp2 = AxisBase.Transform(p2, this.XAxis, this.YAxis);
 
                 double sp21X = sp2.x - sp1.x;
                 double sp21Y = sp2.y - sp1.y;
@@ -261,7 +248,8 @@ namespace OxyPlot
                 if (ds < 4)
                 {
                     // if the points are very close, we can get numerical problems, just use the first point...
-                    u1 = 0; u2 = 1;
+                    u1 = 0;
+                    u2 = 1;
                 }
 
                 if (u2 < double.Epsilon && u2 > -double.Epsilon)
@@ -296,29 +284,57 @@ namespace OxyPlot
             return minimumDistance < double.MaxValue;
         }
 
-        /// <summary>
-        /// Gets the item of the specified index.
-        /// Returns null if ItemsSource is not set, or the index is outside the boundaries.
-        /// </summary>
-        protected object GetItem(IEnumerable itemsSource, int index)
+        protected bool GetNearestPointInternal(
+            IEnumerable<DataPoint> points, ScreenPoint point, out DataPoint dpn, out ScreenPoint spn, out int index)
         {
-            if (itemsSource == null || index < 0)
-                return null;
+            spn = default(ScreenPoint);
+            dpn = default(DataPoint);
+            index = -1;
 
-            var list = itemsSource as IList;
-            if (list != null)
+            double minimumDistance = double.MaxValue;
+            int i = 0;
+            foreach (DataPoint p in points)
             {
-                if (index < list.Count && index >= 0) return list[index];
-                return null;
+                ScreenPoint sp = AxisBase.Transform(p, this.XAxis, this.YAxis);
+                double dx = sp.x - point.x;
+                double dy = sp.y - point.y;
+                double d2 = dx * dx + dy * dy;
+
+                if (d2 < minimumDistance)
+                {
+                    dpn = p;
+                    spn = sp;
+                    minimumDistance = d2;
+                    index = i;
+                }
+                i++;
             }
 
-            // todo: can this be improved?
-            int i = 0;
-            foreach (var item in itemsSource)
-                if (i++ == index)
-                    return item;
-
-            return null;
+            return minimumDistance < double.MaxValue;
         }
+
+        /// <summary>
+        /// Converts the value of the specified object to a double precision floating point number.
+        /// DateTime objects are converted using DateTimeAxis.ToDouble
+        /// TimeSpan objects are converted using TimeSpanAxis.ToDouble
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        protected virtual double ToDouble(object value)
+        {
+            if (value is DateTime)
+            {
+                return DateTimeAxis.ToDouble((DateTime)value);
+            }
+
+            if (value is TimeSpan)
+            {
+                return ((TimeSpan)value).TotalSeconds;
+            }
+
+            return Convert.ToDouble(value);
+        }
+
+        #endregion
     }
 }

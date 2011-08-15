@@ -47,8 +47,8 @@ namespace SparklineDemo
                              DataFieldY = "Value"
                          };
             model.Series.Add(ls);
-            model.Axes.Add(new DateTimeAxis { IsVisible = false });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { IsVisible = false });
+            model.Axes.Add(new DateTimeAxis { IsAxisVisible = false });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left) { IsAxisVisible = false });
             return model;
         }
 

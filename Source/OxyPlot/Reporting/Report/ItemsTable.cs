@@ -24,10 +24,13 @@ namespace OxyPlot.Reporting
 
         public bool ItemsInRows { get; private set; }
 
+        public Alignment Alignment { get; set; }
+
         public ItemsTable(bool itemsInRows = true)
         {
             Fields = new List<ItemsTableField>();
             this.ItemsInRows = itemsInRows;
+            this.Alignment = Alignment.Center;
         }
 
         public bool HasHeader()
@@ -77,6 +80,7 @@ namespace OxyPlot.Reporting
                 else
                 {
                     tc.IsHeader = j == 0;
+                    tc.Alignment = Alignment;
                 }
                 Columns.Add(tc);
             }

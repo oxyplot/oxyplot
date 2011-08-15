@@ -4,8 +4,15 @@ using System.Linq;
 
 namespace OxyPlot
 {
+    /// <summary>
+    /// Partial PlotModel class - this file contains rendering methods.
+    /// </summary>
     partial class PlotModel
     {
+        /// <summary>
+        /// Renders the plot with the specified rendering context.
+        /// </summary>
+        /// <param name="rc">The rendering context.</param>
         public void Render(IRenderContext rc)
         {
             if (rc.Width <= 0 || rc.Height <= 0)
@@ -255,7 +262,7 @@ namespace OxyPlot
         {
             foreach (var a in Axes)
             {
-                if (a.IsVisible)
+                if (a.IsAxisVisible)
                 {
                     a.Render(rc, this);
                 }
@@ -282,6 +289,10 @@ namespace OxyPlot
             }
         }
 
+        /// <summary>
+        /// Renders the title.
+        /// </summary>
+        /// <param name="rc">The rc.</param>
         private void RenderTitle(IRenderContext rc)
         {
             var size1 = rc.MeasureText(Title, TitleFont, TitleFontSize, TitleFontWeight);

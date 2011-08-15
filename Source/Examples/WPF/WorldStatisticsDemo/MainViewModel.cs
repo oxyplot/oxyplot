@@ -96,9 +96,9 @@ namespace WorldStatisticsDemo
                 for (int i = 1; i < doc.Headers.Length; i++)
                 {
                     int year = int.Parse(doc.Headers[i]);
-                    if (!country.YearlyStatistics.ContainsKey(year))
-                        country.YearlyStatistics[year] = new Statistics();
-                    var statistics = country.YearlyStatistics[year];
+                    if (!country.StatisticsByYear.ContainsKey(year))
+                        country.StatisticsByYear[year] = new Statistics();
+                    var statistics = country.StatisticsByYear[year];
                     double value;
                     if (double.TryParse(item[i], out value))
                     {
