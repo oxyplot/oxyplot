@@ -13,11 +13,7 @@ namespace AxesDemo
 
         public MainViewModel()
         {
-            Data1 = new Collection<DataPoint>();
-            Data1.Add(new DataPoint(10, 4));
-            Data1.Add(new DataPoint(12, 7));
-            Data1.Add(new DataPoint(16, 3));
-            Data1.Add(new DataPoint(20, 9));
+            Data1 = new Collection<DataPoint> { new DataPoint(10, 4), new DataPoint(12, 7), new DataPoint(16, 3), new DataPoint(20, 9) };
         }
     }
 }

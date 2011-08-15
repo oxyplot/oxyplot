@@ -129,6 +129,8 @@ namespace OxyPlot.Wpf
         static Plot()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Plot), new FrameworkPropertyMetadata(typeof(Plot)));
+            PaddingProperty.OverrideMetadata(
+                typeof(Plot), new FrameworkPropertyMetadata(new Thickness(8, 8, 16, 8), VisualChanged));
         }
 
 #endif
@@ -144,9 +146,9 @@ namespace OxyPlot.Wpf
 
             this.MouseActions = new List<OxyMouseAction> { this.panAction, this.zoomAction, this.trackerAction };
 
-            this.series = new ObservableCollection<DataSeries>();
-            this.axes = new ObservableCollection<Axis>();
-            this.annotations = new ObservableCollection<Annotation>();
+            this.series = new ObservableCollection<ISeries>();
+            this.axes = new ObservableCollection<IAxis>();
+            this.annotations = new ObservableCollection<IAnnotation>();
             this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
 
             this.series.CollectionChanged += this.OnSeriesChanged;
@@ -263,7 +265,7 @@ namespace OxyPlot.Wpf
         /// <param name="yaxis">
         /// The y-axis.
         /// </param>
-        public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
+        public void GetAxesFromPoint(ScreenPoint pt, out OxyPlot.IAxis xaxis, out OxyPlot.IAxis yaxis)
         {
             if (this.ActualModel != null)
             {
@@ -288,7 +290,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// The closest DataSeries
         /// </returns>
-        public ISeries GetSeriesFromPoint(ScreenPoint pt, double limit)
+        public OxyPlot.ISeries GetSeriesFromPoint(ScreenPoint pt, double limit)
         {
             return this.ActualModel != null ? this.ActualModel.GetSeriesFromPoint(pt, limit) : null;
         }
@@ -360,7 +362,7 @@ namespace OxyPlot.Wpf
         /// <param name="x2">
         /// The x 2.
         /// </param>
-        public void Pan(IAxis axis, double x1, double x2)
+        public void Pan(OxyPlot.IAxis axis, double x1, double x2)
         {
             axis.Pan(x1, x2);
         }
@@ -380,7 +382,7 @@ namespace OxyPlot.Wpf
         /// <param name="axis">
         /// The axis.
         /// </param>
-        public void Reset(IAxis axis)
+        public void Reset(OxyPlot.IAxis axis)
         {
             axis.Reset();
         }
@@ -523,7 +525,7 @@ namespace OxyPlot.Wpf
         /// <param name="p2">
         /// The new maximum value.
         /// </param>
-        public void Zoom(IAxis axis, double p1, double p2)
+        public void Zoom(OxyPlot.IAxis axis, double p1, double p2)
         {
             axis.Zoom(p1, p2);
         }
@@ -533,7 +535,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public void ZoomAll()
         {
-            foreach (IAxis a in this.ActualModel.Axes)
+            foreach (OxyPlot.IAxis a in this.ActualModel.Axes)
             {
                 a.Reset();
             }
@@ -553,7 +555,7 @@ namespace OxyPlot.Wpf
         /// <param name="x">
         /// The position to zoom at.
         /// </param>
-        public void ZoomAt(IAxis axis, double factor, double x)
+        public void ZoomAt(OxyPlot.IAxis axis, double factor, double x)
         {
             axis.ZoomAt(factor, x);
         }
@@ -742,7 +744,12 @@ namespace OxyPlot.Wpf
         /// </param>
         private static void VisualChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((Plot)d).UpdateVisuals();
+            ((Plot)d).OnVisualChanged();
+        }
+
+        private void OnVisualChanged()
+        {
+            this.InvalidatePlot();
         }
 
         /// <summary>
@@ -955,7 +962,7 @@ namespace OxyPlot.Wpf
                 if (this.Series != null)
                 {
                     this.internalModel.Series.Clear();
-                    foreach (DataSeries s in this.Series)
+                    foreach (ISeries s in this.Series)
                     {
                         this.internalModel.Series.Add(s.CreateModel());
                     }
@@ -965,10 +972,9 @@ namespace OxyPlot.Wpf
                 {
                     this.internalModel.Axes.Clear();
 
-                    foreach (Axis a in this.Axes)
+                    foreach (IAxis a in this.Axes)
                     {
-                        a.SynchronizeProperties();
-                        this.internalModel.Axes.Add(a.ModelAxis);
+                        this.internalModel.Axes.Add(a.CreateModel());
                     }
                 }
 
@@ -978,8 +984,7 @@ namespace OxyPlot.Wpf
 
                     foreach (Annotation a in this.Annotations)
                     {
-                        a.UpdateModelProperties();
-                        this.internalModel.Annotations.Add(a.ModelAnnotation);
+                        this.internalModel.Annotations.Add(a.CreateModel());
                     }
                 }
             }

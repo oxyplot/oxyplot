@@ -18,24 +18,32 @@ namespace WorldStatisticsDemo
 
     public class Country
     {
-        public Dictionary<int, Statistics> YearlyStatistics { get; set; }
+        public Dictionary<int, Statistics> StatisticsByYear { get; set; }
+
+        public List<Statistics> Statistics { get; set; }
 
         public Country()
         {
-            YearlyStatistics = new Dictionary<int, Statistics>();
+            this.StatisticsByYear = new Dictionary<int, Statistics>();
+        }
+
+        public void SortStatistics()
+        {
+            
         }
 
         public double FindValue(int year, PropertyInfo property)
         {
-            if (!YearlyStatistics.ContainsKey(year))
+            if (!this.StatisticsByYear.ContainsKey(year))
                 return double.NaN;
-            var stats = YearlyStatistics[year];
+            var stats = this.StatisticsByYear[year];
             return (double)property.GetValue(stats, null);
         }
     }
 
     public class Statistics
     {
+        public int Year { get; set; }
         public double GdpPerCapitaPpp { get; set; }
         public double LifeExpectancyAtBirth { get; set; }
         public double Population { get; set; }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel;
-using System.Reflection;
 
 namespace OxyPlot.Reporting
 {
+
     /// <summary>
     /// The PropertyTable autogenerates columns based on reflecting the Items type.
     /// Only [Browsable] properties are included.
@@ -12,8 +12,9 @@ namespace OxyPlot.Reporting
     public class PropertyTable : ItemsTable
     {
         public PropertyTable(IEnumerable items, bool itemsInRows)
-            :base(itemsInRows)
+            : base(itemsInRows)
         {
+            Alignment = Alignment.Left;
             UpdateFields(items);
             Items = items;
         }
@@ -29,7 +30,7 @@ namespace OxyPlot.Reporting
             foreach (var pi in type.GetProperties())
             {
                 var header = pi.Name;
-                Fields.Add(new ItemsTableField(header, pi.Name));
+                Fields.Add(new ItemsTableField(header, pi.Name, null, Alignment.Left));
             }
 #else
             foreach (PropertyDescriptor p in TypeDescriptor.GetProperties(type))

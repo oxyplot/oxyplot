@@ -26,6 +26,9 @@ namespace OxyPlot
     //                 |BottomLeft BottomCenter BottomRight|
     // +               +-----------------------------------+                 +
 
+    /// <summary>
+    /// Partial PlotModel class - this file contains methods related to the series legends.
+    /// </summary>
     partial class PlotModel
     {
         private OxySize RenderLegends(IRenderContext rc, OxyRect rect, bool measureOnly = false)

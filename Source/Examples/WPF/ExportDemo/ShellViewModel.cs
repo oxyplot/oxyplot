@@ -17,6 +17,8 @@ using Plot = OxyPlot.Wpf.Plot;
 
 namespace ExportDemo
 {
+    using DataPointSeries = OxyPlot.DataPointSeries;
+
     [Export(typeof(IShell))]
     public class ShellViewModel : PropertyChangedBase, IShell
     {

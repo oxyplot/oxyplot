@@ -1,35 +1,60 @@
-﻿using System.Windows;
-
-namespace OxyPlot.Wpf
+﻿namespace OxyPlot.Wpf
 {
-    public abstract class Annotation : FrameworkElement
+    using System.Windows;
+
+    public abstract class Annotation : FrameworkElement, IAnnotation
     {
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof (string), typeof (Annotation), new UIPropertyMetadata(null));
+        #region Constants and Fields
 
-        public static readonly DependencyProperty LayerProperty =
-            DependencyProperty.Register("Layer", typeof (AnnotationLayer), typeof (Annotation),
-                                        new UIPropertyMetadata(AnnotationLayer.OverSeries));
+        public static readonly DependencyProperty LayerProperty = DependencyProperty.Register(
+            "Layer", typeof(AnnotationLayer), typeof(Annotation), new UIPropertyMetadata(AnnotationLayer.OverSeries));
 
-        public OxyPlot.Annotation ModelAnnotation { get; protected set; }
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+            "Text", typeof(string), typeof(Annotation), new UIPropertyMetadata(null));
 
-        public string Text
-        {
-            get { return (string) GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); }
-        }
+        #endregion
+
+        #region Public Properties
 
         public AnnotationLayer Layer
         {
-            get { return (AnnotationLayer) GetValue(LayerProperty); }
-            set { SetValue(LayerProperty, value); }
+            get
+            {
+                return (AnnotationLayer)this.GetValue(LayerProperty);
+            }
+            set
+            {
+                this.SetValue(LayerProperty, value);
+            }
         }
 
-        public virtual void UpdateModelProperties()
+        public string Text
         {
-            OxyPlot.Annotation a = ModelAnnotation;
-            a.Text = Text;
-            a.Layer = Layer;
+            get
+            {
+                return (string)this.GetValue(TextProperty);
+            }
+            set
+            {
+                this.SetValue(TextProperty, value);
+            }
         }
+
+        public OxyPlot.IAnnotation internalAnnotation { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        public abstract OxyPlot.IAnnotation CreateModel();
+
+        public virtual void SynchronizeProperties()
+        {
+            var a = this.internalAnnotation as OxyPlot.Annotation;
+            a.Text = this.Text;
+            a.Layer = this.Layer;
+        }
+
+        #endregion
     }
 }

@@ -56,7 +56,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets a value indicating whether this axis is visible.
         /// </summary>
-        bool IsVisible { get; }
+        bool IsAxisVisible { get; }
 
         /// <summary>
         /// Gets the position of the axis.
