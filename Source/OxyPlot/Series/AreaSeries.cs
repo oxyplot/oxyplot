@@ -111,8 +111,11 @@ namespace OxyPlot
 
             if (Smooth)
             {
-                pts0 = CanonicalSplineHelper.CreateSpline(pts0, 0.5, null, false, 0.25).ToArray();
-                pts1 = CanonicalSplineHelper.CreateSpline(pts1, 0.5, null, false, 0.25).ToArray();
+                var rpts0 = ScreenPointHelper.ResamplePoints(pts0, MinimumSegmentLength);
+                var rpts1 = ScreenPointHelper.ResamplePoints(pts1, MinimumSegmentLength);
+
+                pts0 = CanonicalSplineHelper.CreateSpline(rpts0, 0.5, null, false, 0.25).ToArray();
+                pts1 = CanonicalSplineHelper.CreateSpline(rpts1, 0.5, null, false, 0.25).ToArray();
             }
 
             // draw the clipped lines
