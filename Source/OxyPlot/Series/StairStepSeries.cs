@@ -152,18 +152,11 @@ namespace OxyPlot
 
             Action<ScreenPoint[], ScreenPoint[]> renderPoints = (lpts, mpts) =>
                 {
-                    // spline smoothing (should only be used on small datasets)
-                    // todo: could do spline smoothing only on the visible part of the curve?
-                    ScreenPoint[] screenPoints = this.Smooth
-                                                     ? CanonicalSplineHelper.CreateSpline(lpts, 0.5, null, false, 0.25).
-                                                           ToArray()
-                                                     : lpts;
-
                     // clip the line segments with the clipping rectangle
                     if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                     {
                         rc.DrawClippedLine(
-                            screenPoints, 
+                            lpts, 
                             clippingRect, 
                             minDistSquared, 
                             this.Color, 

@@ -138,32 +138,33 @@ namespace OxyPlot
             Debug.Assert(XAxis != null && YAxis != null, "Axis has not been defined.");
 
             double minDistSquared = MinimumSegmentLength * MinimumSegmentLength;
-
             var clippingRect = GetClippingRect();
 
             int n = points.Count;
 
             var transformedPoints = new List<ScreenPoint>();
 
-            Action<ScreenPoint[]> RenderPoints = allPoints =>
+            Action<ScreenPoint[]> renderPoints = allPoints =>
                                       {
-                                          // spline smoothing (should only be used on small datasets)
-                                          // todo: could do spline smoothing only on the visible part of the curve...
-                                          var screenPoints = Smooth
-                                                                 ? CanonicalSplineHelper.CreateSpline(allPoints, 0.5,
-                                                                                                      null, false, 0.25)
-                                                                       .ToArray()
-                                                                 : allPoints;
+                                          var screenPoints = allPoints;
+                                          if (Smooth)
+                                          {
+                                              // spline smoothing (should only be used on small datasets)
+                                              var resampledPoints = ScreenPointHelper.ResamplePoints(allPoints, MinimumSegmentLength);
+                                              screenPoints = CanonicalSplineHelper.CreateSpline(resampledPoints, 0.5, null, false, 0.25).ToArray();
+                                          }
+
 
                                           // clip the line segments with the clipping rectangle
                                           if (StrokeThickness > 0 && LineStyle != LineStyle.None)
+                                          {
                                               rc.DrawClippedLine(screenPoints, clippingRect, minDistSquared, Color,
                                                                  StrokeThickness, LineStyle, LineJoin, false);
+                                          }
                                           if (MarkerType != MarkerType.None)
                                               rc.DrawMarkers(allPoints, clippingRect, MarkerType, MarkerOutline,
                                                              new[] { MarkerSize }, MarkerFill, MarkerStroke,
                                                              MarkerStrokeThickness);
-
                                       };
 
             // Transform all points to screen coordinates
@@ -172,13 +173,13 @@ namespace OxyPlot
             {
                 if (!IsValidPoint(point, XAxis, YAxis))
                 {
-                    RenderPoints(transformedPoints.ToArray());
+                    renderPoints(transformedPoints.ToArray());
                     transformedPoints.Clear();
                     continue;
                 }
                 transformedPoints.Add(XAxis.Transform(point, YAxis));
             }
-            RenderPoints(transformedPoints.ToArray());
+            renderPoints(transformedPoints.ToArray());
         }
 
         /// <summary>
