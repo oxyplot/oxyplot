@@ -71,16 +71,11 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="PlotModel"/> class.
         /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="subtitle">The subtitle.</param>
-        public PlotModel(string title = null, string subtitle = null)
+        public PlotModel()
         {
             Axes = new Collection<IAxis>();
             Series = new Collection<ISeries>();
             Annotations = new Collection<IAnnotation>();
-
-            Title = title;
-            Subtitle = subtitle;
 
             PlotType = PlotType.XY;
 
@@ -90,7 +85,7 @@ namespace OxyPlot
             PlotMargins = new OxyThickness(60, 4, 4, 40);
             Padding = new OxyThickness(8, 8, 16, 8);
 
-            TitleFont = DefaultFont;
+            TitleFont = null;
             TitleFontSize = 18;
             SubtitleFontSize = 14;
             TitleFontWeight = FontWeights.Bold;
@@ -139,6 +134,18 @@ namespace OxyPlot
                                     OxyColors.Indigo,
                                     OxyColors.Violet
                                 };
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlotModel"/> class.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <param name="subtitle">The subtitle.</param>
+        public PlotModel(string title, string subtitle = null)
+            : this()
+        {
+            this.Title = title;
+            this.Subtitle = subtitle;
         }
 
         /// <summary>
@@ -297,6 +304,17 @@ namespace OxyPlot
         /// </summary>
         /// <value>The title font.</value>
         public string TitleFont { get; set; }
+
+        /// <summary>
+        /// Gets the actual title font.
+        /// </summary>
+        public string ActualTitleFont
+        {
+            get
+            {
+                return TitleFont ?? DefaultFont;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the subtitle font.
@@ -688,6 +706,16 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Generates C# code of the model.
+        /// </summary>
+        /// <returns>Code.</returns>
+        public string ToCode()
+        {
+            var cg = new CodeGenerator(this);
+            return cg.ToCode();
+        }
+
+        /// <summary>
         /// Gets the first axes that covers the area of the specified point.
         /// </summary>
         /// <param name="pt">The point.</param>
@@ -746,7 +774,7 @@ namespace OxyPlot
                 var thr = ts.GetNearestPoint(point, true);
                 if (thr == null)
                     thr = ts.GetNearestPoint(point, false);
-                if (thr==null)
+                if (thr == null)
                     continue;
 
                 // find distance to this point on the screen

@@ -275,6 +275,15 @@ namespace OxyPlot
             return false;
         }
 
+        /// <summary>
+        /// Determines whether the specified point is valid.
+        /// </summary>
+        /// <param name="pt">The pointt.</param>
+        /// <param name="xAxis">The x axis.</param>
+        /// <param name="yAxis">The y axis.</param>
+        /// <returns>
+        ///   <c>true</c> if the point is valid; otherwise, <c>false</c>.
+        /// </returns>
         public virtual bool IsValidPoint(DataPoint pt, IAxis xAxis, IAxis yAxis)
         {
             return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X)

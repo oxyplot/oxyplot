@@ -573,6 +573,7 @@ namespace OxyPlot.Wpf
         protected override void OnKeyDown(KeyEventArgs e)
         {
             bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
+            bool alt = Keyboard.IsKeyDown(Key.LeftAlt);
 
             if (e.Key == Key.A)
             {
@@ -580,11 +581,19 @@ namespace OxyPlot.Wpf
                 this.ZoomAll();
             }
 
-            if (e.Key == Key.R && control)
+            if (e.Key == Key.R && control && alt)
             {
                 if (this.ActualModel != null)
                 {
                     Clipboard.SetText(this.ActualModel.CreateTextReport());
+                }
+            }
+
+            if (e.Key == Key.C && control && alt)
+            {
+                if (this.ActualModel != null)
+                {
+                    Clipboard.SetText(this.ActualModel.ToCode());
                 }
             }
 

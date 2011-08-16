@@ -72,6 +72,7 @@
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\AxisBase.cs" />
     <Compile Include="Axes\TimeSpanAxis.cs" />
+    <Compile Include="Foundation\CodeGenerator.cs" />
     <Compile Include="Foundation\ReflectionHelper.cs" />
     <Compile Include="Foundation\ScreenPointHelper.cs" />
     <Compile Include="Foundation\StringFormatHelper.cs" />
