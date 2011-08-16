@@ -6,7 +6,7 @@
     /// <summary>
     /// Thickness class.
     /// </summary>
-    public struct OxyThickness
+    public struct OxyThickness : ICodeGenerating
     {
         private double bottom;
         private double left;
@@ -49,10 +49,19 @@
         }
 
         /// <summary>
-        /// Gets or sets the top.
+        /// Returns C# code that generates this instance.
+        /// </summary>
+        /// <returns></returns>
+        public string ToCode()
+        {
+            return String.Format(CultureInfo.InvariantCulture, "new OxyThickness({0},{1},{2},{3}", Left, Top, Right, Bottom);
+        }
+
+        /// <summary>
+        /// Gets or sets the top thickness.
         /// </summary>
         /// <value>
-        /// The top.
+        /// The top thickness.
         /// </value>
         public double Top
         {
@@ -61,10 +70,10 @@
         }
 
         /// <summary>
-        /// Gets or sets the bottom.
+        /// Gets or sets the bottom thickness.
         /// </summary>
         /// <value>
-        /// The bottom.
+        /// The bottom thickness.
         /// </value>
         public double Bottom
         {
@@ -73,10 +82,10 @@
         }
 
         /// <summary>
-        /// Gets or sets the left.
+        /// Gets or sets the left thickness.
         /// </summary>
         /// <value>
-        /// The left.
+        /// The left thickness.
         /// </value>
         public double Left
         {
@@ -85,10 +94,10 @@
         }
 
         /// <summary>
-        /// Gets or sets the right.
+        /// Gets or sets the right thickness.
         /// </summary>
         /// <value>
-        /// The right.
+        /// The right thickness.
         /// </value>
         public double Right
         {

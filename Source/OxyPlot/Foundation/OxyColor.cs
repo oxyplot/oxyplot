@@ -1,16 +1,19 @@
 ﻿namespace OxyPlot
 {
+    using System;
+    using System.Reflection;
+
     /// <summary>
     /// 
     /// </summary>
-    public class OxyColor
+    public class OxyColor : ICodeGenerating
     {
         /// <summary>
         /// Gets or sets the Alpha value.
         /// </summary>
         /// <value>The A.</value>
         public byte A { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the Red value.
         /// </summary>
@@ -22,7 +25,7 @@
         /// </summary>
         /// <value>The G.</value>
         public byte G { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the Blue value.
         /// </summary>
@@ -155,6 +158,32 @@
             var g = (byte)((argb & 0xff00) >> 8);
             var b = (byte)(argb & 0xff);
             return FromArgb(a, r, g, b);
+        }
+
+        /// <summary>
+        /// Returns C# code that generates this instance.
+        /// </summary>
+        /// <returns></returns>
+        public string ToCode()
+        {
+            var name = this.GetColorName();
+            if (name != null) 
+                return String.Format("OxyColors.{0}",name);
+            return string.Format("OxyColor.FromArgb({0},{1},{2},{3})", A, R, G, B);
+        }
+
+        public string GetColorName()
+        {
+
+            var t = typeof(OxyColors);
+            var colors = t.GetFields(BindingFlags.Public | BindingFlags.Static);
+            foreach (var color in colors)
+            {
+                var c = color.GetValue(null);
+                if (this.Equals(c)) 
+                    return color.Name;
+            }
+            return null;
         }
     }
 }

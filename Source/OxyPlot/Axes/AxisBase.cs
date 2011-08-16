@@ -69,7 +69,7 @@
 
             this.ShowMinorTicks = true;
 
-            this.Font = PlotModel.DefaultFont;
+            this.Font = null;
             this.FontSize = 12;
             this.FontWeight = FontWeights.Normal;
 
@@ -150,7 +150,7 @@
         /// If ViewMaximum is not NaN, this value will be defined by ViewMaximum.
         /// Otherwise this value will be defined by the maximum (+padding) of the data.
         /// </summary>
-        public double ActualMaximum { get; set; }
+        public double ActualMaximum { get; protected set; }
 
         /// <summary>
         /// Gets or sets the actual minimum value of the axis.
@@ -158,7 +158,7 @@
         /// If ViewMinimum is not NaN, this value will be defined by ViewMinimum.
         /// Otherwise this value will be defined by the minimum (+padding) of the data.
         /// </summary>
-        public double ActualMinimum { get; set; }
+        public double ActualMinimum { get; protected set; }
 
         /// <summary>
         /// Gets or sets the actual minor step.
@@ -241,6 +241,17 @@
         /// Gets or sets the font name.
         /// </summary>
         public string Font { get; set; }
+
+        /// <summary>
+        /// Gets the actual font.
+        /// </summary>
+        public string ActualFont
+        {
+            get
+            {
+                return Font ?? PlotModel.DefaultFont;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the size of the font.
@@ -421,12 +432,12 @@
         /// <summary>
         /// Gets the screen coordinate of the Maximum point on the axis.
         /// </summary>
-        public ScreenPoint ScreenMax { get; set; }
+        public ScreenPoint ScreenMax { get; protected set; }
 
         /// <summary>
         /// Gets the screen coordinate of the Minimum point on the axis.
         /// </summary>
-        public ScreenPoint ScreenMin { get; set; }
+        public ScreenPoint ScreenMin { get; protected set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether minor ticks should be shown.

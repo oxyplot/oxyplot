@@ -117,6 +117,14 @@
             }
         }
 
+        /// <summary>
+        /// Gets the nearest point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
+        /// <returns>
+        /// A TrackerHitResult for the current hit.
+        /// </returns>
         public abstract TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
 
         /// <summary>

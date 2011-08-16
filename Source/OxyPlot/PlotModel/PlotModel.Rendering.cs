@@ -59,8 +59,8 @@ namespace OxyPlot
         /// <returns>Size of the titles.</returns>
         private OxySize MeasureTitles(IRenderContext rc)
         {
-            var size1 = rc.MeasureText(Title, TitleFont, TitleFontSize, TitleFontWeight);
-            var size2 = rc.MeasureText(Subtitle, SubtitleFont ?? TitleFont, TitleFontSize, TitleFontWeight);
+            var size1 = rc.MeasureText(Title, ActualTitleFont, TitleFontSize, TitleFontWeight);
+            var size2 = rc.MeasureText(Subtitle, SubtitleFont ?? ActualTitleFont, TitleFontSize, TitleFontWeight);
             double height = size1.Height + size2.Height;
             double width = Math.Max(size1.Width, size2.Width);
             return new OxySize(width, height);
@@ -130,12 +130,12 @@ namespace OxyPlot
             foreach (var v in majorLabelValues)
             {
                 var s = axis.FormatValue(v);
-                var size = rc.MeasureText(s, axis.Font, axis.FontSize, axis.FontWeight);
+                var size = rc.MeasureText(s, axis.ActualFont, axis.FontSize, axis.FontWeight);
                 if (size.Width > maximumTextSize.Width) maximumTextSize.Width = size.Width;
                 if (size.Height > maximumTextSize.Height) maximumTextSize.Height = size.Height;
             }
 
-            var labelTextSize = rc.MeasureText(axis.ActualTitle, axis.Font, axis.FontSize, axis.FontWeight);
+            var labelTextSize = rc.MeasureText(axis.ActualTitle, axis.ActualFont, axis.FontSize, axis.FontWeight);
 
             double width = 0;
             double height = 0;
@@ -295,8 +295,8 @@ namespace OxyPlot
         /// <param name="rc">The rc.</param>
         private void RenderTitle(IRenderContext rc)
         {
-            var size1 = rc.MeasureText(Title, TitleFont, TitleFontSize, TitleFontWeight);
-            var size2 = rc.MeasureText(Subtitle, SubtitleFont ?? TitleFont, SubtitleFontSize, SubtitleFontWeight);
+            var size1 = rc.MeasureText(Title, ActualTitleFont, TitleFontSize, TitleFontWeight);
+            var size2 = rc.MeasureText(Subtitle, SubtitleFont ?? ActualTitleFont, SubtitleFontSize, SubtitleFontWeight);
             double height = size1.Height + size2.Height;
             // double dy = (TitleArea.Top+TitleArea.Bottom-height)*0.5;
             double dy = TitleArea.Top;
@@ -306,7 +306,7 @@ namespace OxyPlot
             {
                 rc.DrawMathText(
                     new ScreenPoint(dx, dy), Title, TextColor,
-                    TitleFont, TitleFontSize, TitleFontWeight,
+                    ActualTitleFont, TitleFontSize, TitleFontWeight,
                     0,
                     HorizontalTextAlign.Center, VerticalTextAlign.Top, false);
                 dy += size1.Height;
@@ -315,7 +315,7 @@ namespace OxyPlot
             if (!String.IsNullOrEmpty(Subtitle))
             {
                 rc.DrawMathText(new ScreenPoint(dx, dy), Subtitle, TextColor,
-                                SubtitleFont ?? TitleFont, SubtitleFontSize, SubtitleFontWeight, 0,
+                                SubtitleFont ?? ActualTitleFont, SubtitleFontSize, SubtitleFontWeight, 0,
                                 HorizontalTextAlign.Center, VerticalTextAlign.Top, false);
             }
         }

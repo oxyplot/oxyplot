@@ -9,7 +9,7 @@ namespace OxyPlot
     /// <summary>
     /// ScatterPoint - used in ScatterSeries.
     /// </summary>
-    public struct ScatterPoint : IDataPoint
+    public struct ScatterPoint : IDataPoint, ICodeGenerating
     {
         #region Constants and Fields
 
@@ -161,6 +161,17 @@ namespace OxyPlot
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Returns C# code that generates this instance.
+        /// </summary>
+        /// <returns>
+        /// C# code.
+        /// </returns>
+        public string ToCode()
+        {
+            return string.Format("new {0}({1},{2},{3},{4})", this.GetType().Name, this.x, this.y, this.size, this.value);
+        }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

@@ -10,6 +10,13 @@ namespace OxyPlot
     public class FunctionSeries : LineSeries
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="FunctionSeries"/> class.
+        /// </summary>
+        public FunctionSeries()
+        {            
+        }
+
+        /// <summary>
         ///   Initializes a new instance of the <see cref = "FunctionSeries" /> class.
         /// </summary>
         /// <param name = "f">The function f(x).</param>
