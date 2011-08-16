@@ -63,6 +63,7 @@
     <Compile Include="Examples\BarSeriesExamples.cs" />
     <Compile Include="Examples\CategoryAxisExamples.cs" />
     <Compile Include="Examples\AxisExamples.cs" />
+    <Compile Include="Examples\AreaSeriesExamples.cs" />
     <Compile Include="Examples\DiscreteDataSeriesExamples.cs" />
     <Compile Include="Examples\FilteringExamples.cs" />
     <Compile Include="Examples\FinancialSeriesExamples.cs" />

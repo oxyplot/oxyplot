@@ -92,7 +92,7 @@ namespace ExampleLibrary
             // http://en.wikipedia.org/wiki/Least_squares
             // http://mathworld.wolfram.com/LeastSquaresFitting.html
             // http://web.cecs.pdx.edu/~gerry/nmm/course/slides/ch09Slides4up.pdf
-            
+
             double Sx = 0;
             double Sy = 0;
             double Sxy = 0;
@@ -129,6 +129,36 @@ namespace ExampleLibrary
             }
             model.Series.Add(s1);
             return model;
+        }
+
+        [Example("Marker types")]
+        public static PlotModel MarkerTypes()
+        {
+            const int n = 20;
+            var model = new PlotModel("Marker types");
+            model.Series.Add(CreateRandomScatterSeries(10, "Circle", MarkerType.Circle));
+            model.Series.Add(CreateRandomScatterSeries(10, "Cross", MarkerType.Cross));
+            model.Series.Add(CreateRandomScatterSeries(10, "Diamond", MarkerType.Diamond));
+            model.Series.Add(CreateRandomScatterSeries(10, "Plus", MarkerType.Plus));
+            model.Series.Add(CreateRandomScatterSeries(10, "Square", MarkerType.Square));
+            model.Series.Add(CreateRandomScatterSeries(10, "Star", MarkerType.Star));
+            model.Series.Add(CreateRandomScatterSeries(10, "Triangle", MarkerType.Triangle));
+            return model;
+        }
+
+        static readonly Random Randomizer = new Random();
+
+        private static ISeries CreateRandomScatterSeries(int n, string title, MarkerType markerType)
+        {
+            var s1 = new ScatterSeries { Title = title, MarkerType = markerType, MarkerStroke = OxyColors.Black, MarkerStrokeThickness = 1.0 };
+            for (int i = 0; i < n; i++)
+            {
+                double x = Randomizer.NextDouble() * 10;
+                double y = Randomizer.NextDouble() * 10;
+                var p = new ScatterPoint(x, y);
+                s1.Points.Add(p);
+            }
+            return s1;
         }
     }
 }
