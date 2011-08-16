@@ -68,11 +68,42 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Marker types")]
+        public static PlotModel MarkerTypes()
+        {
+            const int n = 20;
+            var model = new PlotModel("Marker types");
+            model.Series.Add(CreateRandomLineSeries(10, "Circle", MarkerType.Circle));
+            model.Series.Add(CreateRandomLineSeries(10, "Cross", MarkerType.Cross));
+            model.Series.Add(CreateRandomLineSeries(10, "Diamond", MarkerType.Diamond));
+            model.Series.Add(CreateRandomLineSeries(10, "Plus", MarkerType.Plus));
+            model.Series.Add(CreateRandomLineSeries(10, "Square", MarkerType.Square));
+            model.Series.Add(CreateRandomLineSeries(10, "Star", MarkerType.Star));
+            model.Series.Add(CreateRandomLineSeries(10, "Triangle", MarkerType.Triangle));
+            return model;
+        }
+
+        static readonly Random Randomizer = new Random();
+
+        private static ISeries CreateRandomLineSeries(int n, string title, MarkerType markerType)
+        {
+            var s1 = new LineSeries { Title = title, MarkerType = markerType, MarkerStroke = OxyColors.Black, MarkerStrokeThickness = 1.0 };
+            double x = 0;
+            double y = 0;
+            for (int i = 0; i < n; i++)
+            {
+                x += 2 + Randomizer.NextDouble() * 10;
+                y += 1 + Randomizer.NextDouble();
+                var p = new DataPoint(x, y);
+                s1.Points.Add(p);
+            }
+            return s1;
+        }
+
         [Example("Custom markers")]
         public static PlotModel CustomMarkers()
         {
-            var model = new PlotModel("LineSeries with custom markers");
-            model.LegendSymbolLength = 30;
+            var model = new PlotModel("LineSeries with custom markers") { LegendSymbolLength = 30 };
             int n = 6;
             var marker = new ScreenPoint[n];
             for (int i = 0; i < n; i++)
@@ -103,7 +134,7 @@ namespace ExampleLibrary
             return model;
         }
 
-       
+
 
         [Example("Normal distribution")]
         public static PlotModel CreateNormalDistributionModel()
