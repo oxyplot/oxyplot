@@ -12,13 +12,17 @@ namespace OxyPlot.Silverlight
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.IO;
     using System.Linq;
+    using System.Text;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Markup;
     using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using System.Xml;
 
     /// <summary>
     /// The Silverlight Plot control.
@@ -512,13 +516,98 @@ namespace OxyPlot.Silverlight
         /// </param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            bool control = IsControlDown();
+            bool alt = IsAltDown();
+
             if (e.Key == Key.A)
             {
                 e.Handled = true;
                 this.ZoomAll();
             }
 
+            if (e.Key == Key.C && control)
+            {
+                e.Handled = true;
+                // todo: Clipboard does not currently support copying image data
+            }
+
+            if (control && alt && ActualModel != null)
+            {
+                switch (e.Key)
+                {
+                    case Key.R:
+                        Clipboard.SetText(this.ActualModel.CreateTextReport());
+                        break;
+                    case Key.C:
+                        Clipboard.SetText(this.ActualModel.ToCode());
+                        break;
+                    case Key.X:
+                        Clipboard.SetText(this.ToXaml());
+                        break;
+                }
+            }
+
+
             base.OnKeyDown(e);
+        }
+
+        /// <summary>
+        /// Renders the plot to a bitmap.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public WriteableBitmap ToBitmap()
+        {
+            throw new NotImplementedException();
+            //var bmp = new RenderTargetBitmap(
+            //    (int)this.ActualWidth, (int)this.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            //bmp.Render(this);
+            //return bmp;
+        }
+
+        /// <summary>
+        /// Saves the plot as a bitmap.
+        /// </summary>
+        /// <param name="fileName">
+        /// Name of the file.
+        /// </param>
+        public void SaveBitmap(string fileName)
+        {
+            throw new NotImplementedException();
+            
+            // todo: Use imagetools.codeplex.com
+            
+            //var bmp = this.ToBitmap();
+
+            //var encoder = new PngBitmapEncoder();
+            //encoder.Frames.Add(BitmapFrame.Create(bmp));
+
+            //using (FileStream s = File.Create(fileName))
+            //{
+            //    encoder.Save(s);
+            //}
+        }
+
+
+        /// <summary>
+        /// Renders the plot to xaml.
+        /// </summary>
+        /// <returns>
+        /// The to xaml.
+        /// </returns>
+        public string ToXaml()
+        {
+            throw new NotImplementedException();
+            //var sb = new StringBuilder();
+            //var tw = new StringWriter(sb);
+            //XmlWriter xw = XmlWriter.Create(tw, new XmlWriterSettings { Indent = true });
+            //if (this.canvas != null)
+            //{
+            //    XamlWriter.Save(this.canvas, xw);
+            //}
+
+            //xw.Close();
+            //return sb.ToString();
         }
 
         /// <summary>

@@ -64,7 +64,7 @@
 
         private readonly HashSet<string> variables;
 
-        private string IndentString;
+        private string indentString;
 
         private int indents;
 
@@ -78,7 +78,7 @@
             this.sb = new StringBuilder();
             this.Indents = 8;
             this.AppendLine("[Example(\"{0}\")]", model.Title);
-            string methodName = this.MakeValidVariableName(model.Title);
+            string methodName = this.MakeValidVariableName(model.Title) ?? "Untitled";
             this.AppendLine("public static PlotModel {0}()", methodName);
             this.AppendLine("{");
             this.Indents += 4;
@@ -104,7 +104,7 @@
             set
             {
                 this.indents = value;
-                this.IndentString = new string(' ', value);
+                this.indentString = new string(' ', value);
             }
         }
 
@@ -150,7 +150,10 @@
             foreach (object item in list)
             {
                 var cgi = item as ICodeGenerating;
-                this.AppendLine("{0}.Add({1});", name, cgi.ToCode());
+                if (cgi != null)
+                {
+                    this.AppendLine("{0}.Add({1});", name, cgi.ToCode());
+                }
             }
         }
 
@@ -158,11 +161,11 @@
         {
             if (args.Length > 0)
             {
-                this.sb.AppendLine(this.IndentString + String.Format(CultureInfo.InvariantCulture, format, args));
+                this.sb.AppendLine(this.indentString + String.Format(CultureInfo.InvariantCulture, format, args));
             }
             else
             {
-                this.sb.AppendLine(this.IndentString + format);
+                this.sb.AppendLine(this.indentString + format);
             }
         }
 
@@ -215,6 +218,10 @@
         /// <returns></returns>
         private string MakeValidVariableName(string title)
         {
+            if (title == null)
+            {
+                return null;
+            }
             var regex = new Regex("[a-zA-Z_][a-zA-Z0-9_]*");
             var result = new StringBuilder();
             foreach (char c in title)
@@ -312,11 +319,11 @@
             }
             if (value is Boolean)
             {
-                SetProperty(name, (bool)value);
+                this.SetProperty(name, (bool)value);
             }
             if (value is double)
             {
-                SetProperty(name, (double)value);
+                this.SetProperty(name, (double)value);
             }
             if (value is int)
             {
@@ -348,11 +355,21 @@
         private void SetProperty(string name, double value)
         {
             string v = value.ToString(CultureInfo.InvariantCulture);
-            if (double.IsNaN(value)) v = "double.NaN";
-            if (double.IsPositiveInfinity(value)) v = "double.PositiveInfinity";
-            if (double.IsNegativeInfinity(value)) v = "double.NegativeInfinity";
+            if (double.IsNaN(value))
+            {
+                v = "double.NaN";
+            }
+            if (double.IsPositiveInfinity(value))
+            {
+                v = "double.PositiveInfinity";
+            }
+            if (double.IsNegativeInfinity(value))
+            {
+                v = "double.NegativeInfinity";
+            }
             this.AppendLine("{0} = {1};", name, v);
         }
+
         #endregion
     }
 }
