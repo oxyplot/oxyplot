@@ -162,6 +162,8 @@ namespace OxyPlot.Wpf
             CompositionTarget.Rendering += this.CompositionTargetRendering;
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.DoCopy));
+            // this.CommandBindings.Add(new CommandBinding(CopyCode, this.DoCopyCode));
+            // this.InputBindings.Add(new KeyBinding(CopyCode, Key.C, ModifierKeys.Control | ModifierKeys.Alt));
         }
 
         #endregion
@@ -581,19 +583,19 @@ namespace OxyPlot.Wpf
                 this.ZoomAll();
             }
 
-            if (e.Key == Key.R && control && alt)
+            if (control && alt && ActualModel != null)
             {
-                if (this.ActualModel != null)
+                switch (e.Key)
                 {
-                    Clipboard.SetText(this.ActualModel.CreateTextReport());
-                }
-            }
-
-            if (e.Key == Key.C && control && alt)
-            {
-                if (this.ActualModel != null)
-                {
-                    Clipboard.SetText(this.ActualModel.ToCode());
+                    case Key.R:
+                        Clipboard.SetText(this.ActualModel.CreateTextReport());
+                        break;
+                    case Key.C: 
+                        Clipboard.SetText(this.ActualModel.ToCode());
+                        break;
+                    case Key.X: 
+                        Clipboard.SetText(this.ToXaml());
+                        break;
                 }
             }
 
