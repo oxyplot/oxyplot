@@ -2,7 +2,6 @@
 {
     using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Category axes are using label collection indices as the coordinate.
@@ -14,11 +13,10 @@
 
         public CategoryAxis()
         {
-            this.Labels = new Collection<string>();
+            this.Labels = new List<string>();
             this.TickStyle = TickStyle.Outside;
             this.Position = AxisPosition.Bottom;
             this.MinimumPadding = 0;
-            this.Labels = new Collection<string>();
         }
 
         #endregion
@@ -46,7 +44,7 @@
         /// <summary>
         /// Gets or sets the labels collection.
         /// </summary>
-        public Collection<string> Labels { get; set; }
+        public IList<string> Labels { get; set; }
 
         #endregion
 
@@ -105,6 +103,11 @@
                 return this.Labels[index];
             }
             return null;
+        }
+
+        public override string FormatValueForTracker(double x)
+        {
+            return this.FormatValue(x);
         }
 
         public override void GetTickValues(
