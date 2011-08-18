@@ -13,18 +13,17 @@
     /// </summary>
     public partial class Plot
     {
+        public bool AutoAdjustPlotMargins
+        {
+            get { return (bool)GetValue(AutoAdjustPlotMarginsProperty); }
+            set { SetValue(AutoAdjustPlotMarginsProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutoAdjustPlotMarginsProperty =
+            DependencyProperty.Register("AutoAdjustPlotMargins", typeof(bool), typeof(Plot), new UIPropertyMetadata(true));
+
+
         #region Constants and Fields
-
-        public static readonly DependencyProperty AxisTickToLabelDistanceProperty =
-            DependencyProperty.Register(
-                "AxisTickToLabelDistance",
-                typeof(double),
-                typeof(Plot),
-                new FrameworkPropertyMetadata(4.0, VisualChanged));
-
-        public static readonly DependencyProperty AxisTitleDistanceProperty =
-            DependencyProperty.Register(
-                "AxisTitleDistance", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(4.0, VisualChanged));
 
         /// <summary>
         /// The box color property.
@@ -240,30 +239,6 @@
             get
             {
                 return this.axes;
-            }
-        }
-
-        public double AxisTickToLabelDistance
-        {
-            get
-            {
-                return (double)this.GetValue(AxisTickToLabelDistanceProperty);
-            }
-            set
-            {
-                this.SetValue(AxisTickToLabelDistanceProperty, value);
-            }
-        }
-
-        public double AxisTitleDistance
-        {
-            get
-            {
-                return (double)this.GetValue(AxisTitleDistanceProperty);
-            }
-            set
-            {
-                this.SetValue(AxisTitleDistanceProperty, value);
             }
         }
 
@@ -736,9 +711,9 @@
                 m.Title = this.Title;
                 m.Subtitle = this.Subtitle;
                 m.PlotType = this.PlotType;
-                m.AxisTitleDistance = this.AxisTitleDistance;
-                m.AxisTickToLabelDistance = this.AxisTickToLabelDistance;
                 m.PlotMargins = this.PlotMargins.ToOxyThickness();
+                m.AutoAdjustPlotMargins = this.AutoAdjustPlotMargins;
+
                 m.Padding = this.Padding.ToOxyThickness();
                 m.TitleFont = this.TitleFont;
                 m.TitleFontSize = this.TitleFontSize;

@@ -15,7 +15,7 @@
             "Base", typeof(double), typeof(LogarithmicAxis), new FrameworkPropertyMetadata(10.0, DataChanged));
 
         public static readonly DependencyProperty PowerPaddingProperty = DependencyProperty.Register(
-            "PowerPadding", typeof(bool), typeof(LogarithmicAxis), new UIPropertyMetadata(false, DataChanged));
+            "PowerPadding", typeof(bool), typeof(LogarithmicAxis), new UIPropertyMetadata(true, DataChanged));
 
         #endregion
 
@@ -67,7 +67,7 @@
             return this.Axis;
         }
 
-        public override void SynchronizeProperties()
+        protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
             var a = this.Axis as OxyPlot.LogarithmicAxis;

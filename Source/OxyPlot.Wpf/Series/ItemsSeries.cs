@@ -8,47 +8,26 @@
     /// <summary>
     /// Abstract base class for series that use X and Y axes.
     /// </summary>
-    public abstract class PlotSeriesBase : ItemsControl, ISeries
+    public abstract class ItemsSeries : ItemsControl, ISeries
     {
         #region Constants and Fields
 
-        public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-            "Color", typeof(Color?), typeof(PlotSeriesBase), new UIPropertyMetadata(null, VisualChanged));
-
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            "Title", typeof(string), typeof(PlotSeriesBase), new UIPropertyMetadata(null, VisualChanged));
+            "Title", typeof(string), typeof(ItemsSeries), new UIPropertyMetadata(null, VisualChanged));
 
         public static readonly DependencyProperty TrackerFormatStringProperty =
             DependencyProperty.Register(
                 "TrackerFormatString",
                 typeof(string),
-                typeof(PlotSeriesBase),
+                typeof(ItemsSeries),
                 new UIPropertyMetadata(null, VisualChanged));
 
         public static readonly DependencyProperty TrackerKeyProperty = DependencyProperty.Register(
-            "TrackerKey", typeof(string), typeof(PlotSeriesBase), new UIPropertyMetadata(null, VisualChanged));
-
-        public static readonly DependencyProperty XAxisKeyProperty = DependencyProperty.Register(
-            "XAxisKey", typeof(string), typeof(PlotSeriesBase), new UIPropertyMetadata(null, VisualChanged));
-
-        public static readonly DependencyProperty YAxisKeyProperty = DependencyProperty.Register(
-            "YAxisKey", typeof(string), typeof(PlotSeriesBase), new UIPropertyMetadata(null, VisualChanged));
+            "TrackerKey", typeof(string), typeof(ItemsSeries), new UIPropertyMetadata(null, VisualChanged));
 
         #endregion
 
         #region Public Properties
-
-        public Color? Color
-        {
-            get
-            {
-                return (Color?)this.GetValue(ColorProperty);
-            }
-            set
-            {
-                this.SetValue(ColorProperty, value);
-            }
-        }
 
         public string Title
         {
@@ -86,47 +65,21 @@
             }
         }
 
-        public string XAxisKey
-        {
-            get
-            {
-                return (string)this.GetValue(XAxisKeyProperty);
-            }
-            set
-            {
-                this.SetValue(XAxisKeyProperty, value);
-            }
-        }
-
-        public string YAxisKey
-        {
-            get
-            {
-                return (string)this.GetValue(YAxisKeyProperty);
-            }
-            set
-            {
-                this.SetValue(YAxisKeyProperty, value);
-            }
-        }
-
         #endregion
 
         #region Public Methods
 
         public abstract OxyPlot.ISeries CreateModel();
 
-        protected virtual void SynchronizeProperties(OxyPlot.ISeries series)
+        public virtual void SynchronizeProperties(OxyPlot.ISeries series)
         {
-            var s = series as OxyPlot.PlotSeriesBase;
+            var s = series as OxyPlot.ItemsSeries;
             s.ItemsSource = this.ItemsSource;
             s.Background = this.Background.ToOxyColor();
             s.Title = this.Title;
             s.TrackerFormatString = this.TrackerFormatString;
             s.TrackerKey = this.TrackerKey;
             s.TrackerFormatString = this.TrackerFormatString;
-            s.XAxisKey = this.XAxisKey;
-            s.YAxisKey = this.YAxisKey;
         }
 
         #endregion
@@ -135,12 +88,12 @@
 
         protected static void DataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((PlotSeriesBase)d).OnDataChanged();
+            ((ItemsSeries)d).OnDataChanged();
         }
 
         protected static void VisualChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((PlotSeriesBase)d).OnVisualChanged();
+            ((ItemsSeries)d).OnVisualChanged();
         }
 
         protected void OnDataChanged()

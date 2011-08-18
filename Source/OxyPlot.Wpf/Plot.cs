@@ -491,7 +491,14 @@ namespace OxyPlot.Wpf
         {
             var bmp = new RenderTargetBitmap(
                 (int)this.ActualWidth, (int)this.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            
+            var clientRect = new Rect(VisualOffset.X, VisualOffset.Y, ActualWidth, ActualHeight);
+
+            // move the client area, otherwise the rendering may be at the wrong offset
+            this.Arrange(new Rect(0,0,bmp.Width,bmp.Height));            
             bmp.Render(this);
+
+            this.Arrange(clientRect);
             return bmp;
         }
 

@@ -19,7 +19,7 @@
             return this.Axis;
         }
 
-        public override void SynchronizeProperties()
+        protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
             var a = this.Axis as OxyPlot.TimeSpanAxis;
