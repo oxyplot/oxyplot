@@ -1,6 +1,7 @@
 ﻿namespace OxyPlot.Wpf
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.Windows;
 
     public class CategoryAxis : LinearAxis
@@ -17,7 +18,7 @@
             "LabelField", typeof(string), typeof(CategoryAxis), new FrameworkPropertyMetadata(null, DataChanged));
 
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
-            "Labels", typeof(string[]), typeof(CategoryAxis), new FrameworkPropertyMetadata(null, DataChanged));
+            "Labels", typeof(IList<string>), typeof(CategoryAxis), new FrameworkPropertyMetadata(new List<string>(), DataChanged));
 
         #endregion
 
@@ -78,11 +79,11 @@
             }
         }
 
-        public string[] Labels
+        public IList<string> Labels
         {
             get
             {
-                return (string[])this.GetValue(LabelsProperty);
+                return (IList<string>)this.GetValue(LabelsProperty);
             }
             set
             {
@@ -100,7 +101,7 @@
             return this.Axis;
         }
 
-        public override void SynchronizeProperties()
+        protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
             var a = this.Axis as OxyPlot.CategoryAxis;

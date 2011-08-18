@@ -5,7 +5,6 @@
 
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.LineSeries
-    /// Only a few properties are yet included.
     /// </summary>
     public class LineSeries : DataPointSeries
     {
@@ -21,7 +20,7 @@
             "LineStyle", typeof(LineStyle), typeof(LineSeries), new UIPropertyMetadata(LineStyle.Solid));
 
         public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(
-            "MarkerFill", typeof(Color), typeof(LineSeries), new UIPropertyMetadata(Colors.Transparent));
+            "MarkerFill", typeof(Color?), typeof(LineSeries), new UIPropertyMetadata(null));
 
         public static readonly DependencyProperty MarkerOutlineProperty = DependencyProperty.Register(
             "MarkerOutline", typeof(Point[]), typeof(LineSeries), new UIPropertyMetadata(null));
@@ -90,11 +89,11 @@
             }
         }
 
-        public Color MarkerFill
+        public Color? MarkerFill
         {
             get
             {
-                return (Color)this.GetValue(MarkerFillProperty);
+                return (Color?)this.GetValue(MarkerFillProperty);
             }
             set
             {
@@ -209,7 +208,7 @@
             return s;
         }
 
-        public override void SynchronizeProperties(OxyPlot.ISeries series)
+        protected override void SynchronizeProperties(OxyPlot.ISeries series)
         {
             base.SynchronizeProperties(series);
             var s = series as OxyPlot.LineSeries;

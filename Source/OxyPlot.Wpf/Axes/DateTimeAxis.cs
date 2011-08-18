@@ -6,6 +6,16 @@
 
     public class DateTimeAxis : AxisBase
     {
+        public CultureInfo Culture
+        {
+            get { return (CultureInfo)GetValue(CultureProperty); }
+            set { SetValue(CultureProperty, value); }
+        }
+
+        public static readonly DependencyProperty CultureProperty =
+            DependencyProperty.Register("Culture", typeof(CultureInfo), typeof(DateTimeAxis), new UIPropertyMetadata(CultureInfo.CurrentCulture));
+
+
         #region Constants and Fields
 
         public static readonly DependencyProperty CalendarWeekRuleProperty =
@@ -135,7 +145,7 @@
             return this.Axis;
         }
 
-        public override void SynchronizeProperties()
+        protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
             var a = this.Axis as OxyPlot.DateTimeAxis;
@@ -144,6 +154,7 @@
             a.MinorIntervalType = this.MinorIntervalType;
             a.FirstDayOfWeek = this.FirstDayOfWeek;
             a.CalendarWeekRule = this.CalendarWeekRule;
+            a.Culture = this.Culture;
 
             if (this.FirstDateTime > DateTime.MinValue)
             {

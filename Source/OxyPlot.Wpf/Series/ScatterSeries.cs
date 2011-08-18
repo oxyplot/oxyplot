@@ -1,0 +1,313 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ScatterSeries.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   This is a WPF wrapper of OxyPlot.ScatterSeries
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot.Wpf
+{
+    using System;
+    using System.Windows;
+    using System.Windows.Media;
+
+    /// <summary>
+    /// This is a WPF wrapper of OxyPlot.ScatterSeries
+    /// </summary>
+    public class ScatterSeries : PlotSeriesBase
+    {
+        public Func<object, IDataPoint> Mapping
+        {
+            get { return (Func<object, IDataPoint>)GetValue(MappingProperty); }
+            set { SetValue(MappingProperty, value); }
+        }
+
+        public static readonly DependencyProperty MappingProperty =
+            DependencyProperty.Register("Mapping", typeof(Func<object, IDataPoint>), typeof(ScatterSeries), new UIPropertyMetadata(null));
+
+
+
+        public string DataFieldTag
+        {
+            get { return (string)GetValue(DataFieldTagProperty); }
+            set { SetValue(DataFieldTagProperty, value); }
+        }
+
+        public static readonly DependencyProperty DataFieldTagProperty =
+            DependencyProperty.Register("DataFieldTag", typeof(string), typeof(ScatterSeries), new UIPropertyMetadata(null));
+
+
+        #region Constants and Fields
+
+        /// <summary>
+        /// The data field size property.
+        /// </summary>
+        public static readonly DependencyProperty DataFieldSizeProperty = DependencyProperty.Register(
+            "DataFieldSize", typeof(string), typeof(ScatterSeries), new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// The data field value property.
+        /// </summary>
+        public static readonly DependencyProperty DataFieldValueProperty = DependencyProperty.Register(
+            "DataFieldValue", typeof(string), typeof(ScatterSeries), new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// The data field x property.
+        /// </summary>
+        public static readonly DependencyProperty DataFieldXProperty = DependencyProperty.Register(
+            "DataFieldX", typeof(string), typeof(ScatterSeries), new UIPropertyMetadata("X"));
+
+        /// <summary>
+        /// The data field y property.
+        /// </summary>
+        public static readonly DependencyProperty DataFieldYProperty = DependencyProperty.Register(
+            "DataFieldY", typeof(string), typeof(ScatterSeries), new UIPropertyMetadata("Y"));
+
+        /// <summary>
+        /// The marker fill property.
+        /// </summary>
+        public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(
+            "MarkerFill", typeof(Color?), typeof(ScatterSeries), new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// The marker size property.
+        /// </summary>
+        public static readonly DependencyProperty MarkerSizeProperty = DependencyProperty.Register(
+            "MarkerSize", typeof(double), typeof(ScatterSeries), new UIPropertyMetadata(5.0));
+
+        /// <summary>
+        /// The marker stroke property.
+        /// </summary>
+        public static readonly DependencyProperty MarkerStrokeProperty = DependencyProperty.Register(
+            "MarkerStroke", typeof(Color?), typeof(ScatterSeries), new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// The marker stroke thickness property.
+        /// </summary>
+        public static readonly DependencyProperty MarkerStrokeThicknessProperty =
+            DependencyProperty.Register(
+                "MarkerStrokeThickness", typeof(double), typeof(ScatterSeries), new UIPropertyMetadata(1.0));
+
+        /// <summary>
+        /// The marker type property.
+        /// </summary>
+        public static readonly DependencyProperty MarkerTypeProperty = DependencyProperty.Register(
+            "MarkerType", typeof(MarkerType), typeof(ScatterSeries), new UIPropertyMetadata(MarkerType.Square));
+
+        public int BinSize
+        {
+            get { return (int)GetValue(BinSizeProperty); }
+            set { SetValue(BinSizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty BinSizeProperty =
+            DependencyProperty.Register("BinSize", typeof(int), typeof(ScatterSeries), new UIPropertyMetadata(0));
+
+        public ScreenPoint[] MarkerOutline
+        {
+            get { return (ScreenPoint[])GetValue(MarkerOutlineProperty); }
+            set { SetValue(MarkerOutlineProperty, value); }
+        }
+
+        public static readonly DependencyProperty MarkerOutlineProperty =
+            DependencyProperty.Register("MarkerOutline", typeof(ScreenPoint[]), typeof(ScatterSeries), new UIPropertyMetadata(null));
+
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets DataFieldSize.
+        /// </summary>
+        public string DataFieldSize
+        {
+            get
+            {
+                return (string)this.GetValue(DataFieldSizeProperty);
+            }
+
+            set
+            {
+                this.SetValue(DataFieldSizeProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets DataFieldValue.
+        /// </summary>
+        public string DataFieldValue
+        {
+            get
+            {
+                return (string)this.GetValue(DataFieldValueProperty);
+            }
+
+            set
+            {
+                this.SetValue(DataFieldValueProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets DataFieldX.
+        /// </summary>
+        public string DataFieldX
+        {
+            get
+            {
+                return (string)this.GetValue(DataFieldXProperty);
+            }
+
+            set
+            {
+                this.SetValue(DataFieldXProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets DataFieldY.
+        /// </summary>
+        public string DataFieldY
+        {
+            get
+            {
+                return (string)this.GetValue(DataFieldYProperty);
+            }
+
+            set
+            {
+                this.SetValue(DataFieldYProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets MarkerFill.
+        /// </summary>
+        public Color? MarkerFill
+        {
+            get
+            {
+                return (Color?)this.GetValue(MarkerFillProperty);
+            }
+
+            set
+            {
+                this.SetValue(MarkerFillProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets MarkerSize.
+        /// </summary>
+        public double MarkerSize
+        {
+            get
+            {
+                return (double)this.GetValue(MarkerSizeProperty);
+            }
+
+            set
+            {
+                this.SetValue(MarkerSizeProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets MarkerStroke.
+        /// </summary>
+        public Color? MarkerStroke
+        {
+            get
+            {
+                return (Color?)this.GetValue(MarkerStrokeProperty);
+            }
+
+            set
+            {
+                this.SetValue(MarkerStrokeProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets MarkerStrokeThickness.
+        /// </summary>
+        public double MarkerStrokeThickness
+        {
+            get
+            {
+                return (double)this.GetValue(MarkerStrokeThicknessProperty);
+            }
+
+            set
+            {
+                this.SetValue(MarkerStrokeThicknessProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets MarkerType.
+        /// </summary>
+        public MarkerType MarkerType
+        {
+            get
+            {
+                return (MarkerType)this.GetValue(MarkerTypeProperty);
+            }
+
+            set
+            {
+                this.SetValue(MarkerTypeProperty, value);
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The create model.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public override OxyPlot.ISeries CreateModel()
+        {
+            var s = new OxyPlot.ScatterSeries();
+            this.SynchronizeProperties(s);
+            return s;
+        }
+
+        /// <summary>
+        /// The synchronize properties.
+        /// </summary>
+        /// <param name="series">
+        /// The series.
+        /// </param>
+        protected override void SynchronizeProperties(OxyPlot.ISeries series)
+        {
+            base.SynchronizeProperties(series);
+            var s = series as OxyPlot.ScatterSeries;
+            if (s != null)
+            {
+                s.MarkerFill = this.MarkerFill.ToOxyColor();
+                s.MarkerStroke = this.MarkerStroke.ToOxyColor();
+                s.MarkerStrokeThickness = this.MarkerStrokeThickness;
+                s.MarkerType = this.MarkerType;
+                s.MarkerSize = this.MarkerSize;
+                s.DataFieldX = this.DataFieldX;
+                s.DataFieldY = this.DataFieldY;
+                s.DataFieldSize = this.DataFieldSize;
+                s.DataFieldValue = this.DataFieldValue;
+                s.DataFieldTag = this.DataFieldTag;
+                s.ItemsSource = this.ItemsSource;
+                s.BinSize = this.BinSize;
+                s.Mapping = this.Mapping;
+                s.MarkerOutline = this.MarkerOutline;
+            }
+        }
+
+        #endregion
+    }
+}
