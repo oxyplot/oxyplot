@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
 using System.Windows;
 
 namespace WorldStatisticsDemo
@@ -13,46 +12,6 @@ namespace WorldStatisticsDemo
         {
             InitializeComponent();
             DataContext = new MainViewModel();
-        }
-    }
-
-    public class Country
-    {
-        public Dictionary<int, Statistics> StatisticsByYear { get; set; }
-
-        public List<Statistics> Statistics { get; set; }
-
-        public Country()
-        {
-            this.StatisticsByYear = new Dictionary<int, Statistics>();
-        }
-
-        public void SortStatistics()
-        {
-            
-        }
-
-        public double FindValue(int year, PropertyInfo property)
-        {
-            if (!this.StatisticsByYear.ContainsKey(year))
-                return double.NaN;
-            var stats = this.StatisticsByYear[year];
-            return (double)property.GetValue(stats, null);
-        }
-    }
-
-    public class Statistics
-    {
-        public int Year { get; set; }
-        public double GdpPerCapitaPpp { get; set; }
-        public double LifeExpectancyAtBirth { get; set; }
-        public double Population { get; set; }
-
-        public Statistics()
-        {
-            GdpPerCapitaPpp = double.NaN;
-            LifeExpectancyAtBirth = double.NaN;
-            Population = double.NaN;
         }
     }
 }

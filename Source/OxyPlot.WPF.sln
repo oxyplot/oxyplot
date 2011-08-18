@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomTrackerDemo", "Exampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldStatisticsDemo", "Examples\WPF\WorldStatisticsDemo\WorldStatisticsDemo.csproj", "{6B677A5B-BF20-48C2-8435-5594BB3BC65F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Wpf.Tests", "OxyPlot.Wpf.Tests\OxyPlot.Wpf.Tests.csproj", "{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -313,6 +315,16 @@ Global
 		{6B677A5B-BF20-48C2-8435-5594BB3BC65F}.Release|Mixed Platforms.Build.0 = Release|x86
 		{6B677A5B-BF20-48C2-8435-5594BB3BC65F}.Release|x86.ActiveCfg = Release|x86
 		{6B677A5B-BF20-48C2-8435-5594BB3BC65F}.Release|x86.Build.0 = Release|x86
+		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

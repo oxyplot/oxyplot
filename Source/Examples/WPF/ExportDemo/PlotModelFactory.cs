@@ -140,7 +140,7 @@ namespace ExportDemo
             model.Axes.Add(new LinearAxis(AxisPosition.Left) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
             model.PlotType = PlotType.Cartesian;
-            var ls = new LineSeries { Points = data.ToList() };
+            var ls = new LineSeries { ItemsSource = data };
             model.Series.Add(ls);
             return model;
         }
@@ -157,12 +157,12 @@ namespace ExportDemo
             var model = new PlotModel("Koch Snowflake") { PlotType = PlotType.Cartesian };
             if (areaSeries)
             {
-                var s = new AreaSeries { Points = data.ToList(), LineJoin = OxyPenLineJoin.Bevel, Fill=OxyColors.LightGray };
+                var s = new AreaSeries { ItemsSource = data, LineJoin = OxyPenLineJoin.Bevel, Fill=OxyColors.LightGray };
                 model.Series.Add(s);
             }
             else
             {
-                var ls = new LineSeries { Points = data.ToList(), LineJoin = OxyPenLineJoin.Bevel };
+                var ls = new LineSeries { ItemsSource = data, LineJoin = OxyPenLineJoin.Bevel };
                 model.Series.Add(ls);
             }
             return model;

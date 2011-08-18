@@ -4,8 +4,11 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using System.Diagnostics;
+    using System.Linq;
+
     [Examples("ScatterSeries")]
-    public static class ScatterSeriesExamples
+    public class ScatterSeriesExamples : ExamplesBase
     {
 
         [Example("Random points")]
@@ -87,7 +90,7 @@ namespace ExampleLibrary
         /// <param name="points">The points.</param>
         /// <param name="a">The slope.</param>
         /// <param name="b">The intercept.</param>
-        public static void LeastSquaresFit(IEnumerable<ScatterPoint> points, out double a, out double b)
+        public static void LeastSquaresFit(IEnumerable<IDataPoint> points, out double a, out double b)
         {
             // http://en.wikipedia.org/wiki/Least_squares
             // http://mathworld.wolfram.com/LeastSquaresFitting.html
@@ -134,8 +137,7 @@ namespace ExampleLibrary
         [Example("Marker types")]
         public static PlotModel MarkerTypes()
         {
-            const int n = 20;
-            var model = new PlotModel("Marker types");
+            var model = CreatePlotModel();
             model.Series.Add(CreateRandomScatterSeries(10, "Circle", MarkerType.Circle));
             model.Series.Add(CreateRandomScatterSeries(10, "Cross", MarkerType.Cross));
             model.Series.Add(CreateRandomScatterSeries(10, "Diamond", MarkerType.Diamond));
@@ -143,6 +145,14 @@ namespace ExampleLibrary
             model.Series.Add(CreateRandomScatterSeries(10, "Square", MarkerType.Square));
             model.Series.Add(CreateRandomScatterSeries(10, "Star", MarkerType.Star));
             model.Series.Add(CreateRandomScatterSeries(10, "Triangle", MarkerType.Triangle));
+            return model;
+        }
+
+        [Example("Scatter plot of DataPoints")]
+        public static PlotModel DataPoints()
+        {
+            var model = CreatePlotModel();
+            model.Series.Add(CreateRandomScatterSeries2(100, null, MarkerType.Square));
             return model;
         }
 
@@ -159,6 +169,35 @@ namespace ExampleLibrary
                 s1.Points.Add(p);
             }
             return s1;
+        }
+
+        private static ISeries CreateRandomScatterSeries2(int n, string title, MarkerType markerType)
+        {
+            var s1 = new ScatterSeries { Title = title, MarkerType = markerType, MarkerStroke = OxyColors.Black, MarkerStrokeThickness = 1.0 };
+            for (int i = 0; i < n; i++)
+            {
+                double x = Randomizer.NextDouble() * 10;
+                double y = Randomizer.NextDouble() * 10;
+                var p = new DataPoint(x, y);
+                s1.Points.Add(p);
+            }
+            return s1;
+        }
+    }
+
+    public class ExamplesBase
+    {
+        /// <summary>
+        /// Creates the plot model using the ExampleAttribute as title.
+        /// </summary>
+        /// <returns></returns>
+        protected static PlotModel CreatePlotModel()
+        {
+            StackTrace st = new StackTrace();
+            StackFrame sf = st.GetFrame(1);
+            var m = sf.GetMethod();
+            var ea = m.GetCustomAttributes(typeof(ExampleAttribute), false).First() as ExampleAttribute;
+            return new PlotModel(ea.Title);
         }
     }
 }
