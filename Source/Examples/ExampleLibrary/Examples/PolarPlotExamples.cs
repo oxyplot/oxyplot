@@ -12,21 +12,24 @@ namespace ExampleLibrary
             var model = new PlotModel("Polar plot", "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π")
                             {
                                 PlotType = PlotType.Polar,
-                                BoxThickness = 0
+                                BoxThickness = 0,
+                                PlotMargins = new OxyThickness(60, 20, 4, 40)
                             };
             model.Axes.Add(
                 new LinearAxis(AxisPosition.Angle, 0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
                     {
                         MajorGridlineStyle = LineStyle.Solid,
-                        MinorGridlineStyle = LineStyle.Solid
+                        MinorGridlineStyle = LineStyle.Solid,
+                        FormatAsFractions = true,
+                        FractionUnit = Math.PI,
+                        FractionUnitSymbol = "π"
                     });
             model.Axes.Add(new LinearAxis(AxisPosition.Magnitude)
                                {
                                    MajorGridlineStyle = LineStyle.Solid,
                                    MinorGridlineStyle = LineStyle.Solid
                                });
-            model.Series.Add(new FunctionSeries(t => t, t => t,
-                                                0, Math.PI * 6, 0.01));
+            model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
             return model;
         }
     }

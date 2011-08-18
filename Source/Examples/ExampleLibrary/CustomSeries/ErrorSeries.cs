@@ -38,7 +38,7 @@ namespace ExampleLibrary
             var segments = new List<ScreenPoint>(n * 6);
             for (int i = 0; i < n; i++)
             {
-                var sp = XAxis.Transform(points[i], YAxis);
+                var sp = XAxis.Transform(points[i].X, points[i].Y, YAxis);
                 double errx = XErrors[i] * XAxis.Scale;
                 double erry = YErrors[i] * Math.Abs(YAxis.Scale);
                 double d = 4;

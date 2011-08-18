@@ -4,6 +4,8 @@ using System.Linq;
 
 namespace WorldStatisticsDemo
 {
+    using System.Text;
+
     /// <summary>
     /// A class for comma-separated value files
     /// http://en.wikipedia.org/wiki/Comma-separated_values
@@ -22,7 +24,7 @@ namespace WorldStatisticsDemo
         /// <param name="separator">The separator (auto-detect if not specified).</param>
         public void Load(string fileName, char separator = '\0')
         {
-            using (var r = new StreamReader(fileName))
+            using (var r = new StreamReader(fileName,Encoding.UTF8))
             {
                 var header = r.ReadLine();
 
