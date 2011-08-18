@@ -48,11 +48,11 @@ namespace OxyPlot
             {
                 OxySize titleSize;
                 if (measureOnly)
-                    titleSize = rc.MeasureMathText(LegendTitle, LegendTitleFont, LegendTitleFontSize, LegendTitleFontWeight);
+                    titleSize = rc.MeasureMathText(LegendTitle, LegendTitleFont ?? DefaultFont, LegendTitleFontSize, LegendTitleFontWeight);
                 else
                     titleSize = rc.DrawMathText(new ScreenPoint(rect.Left + x, rect.Top + top),
                                 LegendTitle, TextColor,
-                                LegendTitleFont, LegendTitleFontSize, LegendTitleFontWeight, 0, HorizontalTextAlign.Left,
+                                LegendTitleFont ?? DefaultFont, LegendTitleFontSize, LegendTitleFontWeight, 0, HorizontalTextAlign.Left,
                                 VerticalTextAlign.Top, true);
                 top += titleSize.Height;
                 size.Width = x + titleSize.Width + LegendPadding;
@@ -70,7 +70,7 @@ namespace OxyPlot
             {
                 if (String.IsNullOrEmpty(s.Title))
                     continue;
-                var textSize = rc.MeasureMathText(s.Title, LegendFont, LegendFontSize, LegendFontWeight);
+                var textSize = rc.MeasureMathText(s.Title, LegendFont ?? DefaultFont, LegendFontSize, LegendFontWeight);
                 double itemWidth = LegendSymbolLength + LegendSymbolMargin + textSize.Width;
                 double itemHeight = textSize.Height;
 
@@ -162,7 +162,7 @@ namespace OxyPlot
                 x += LegendSymbolLength + LegendSymbolMargin;
 
             var textSize = rc.DrawMathText(new ScreenPoint(x, rect.Top), s.Title, TextColor,
-                                               LegendFont, LegendFontSize, LegendFontWeight, 0,
+                                               LegendFont ?? DefaultFont, LegendFontSize, LegendFontWeight, 0,
                                                LegendItemAlignment, VerticalTextAlign.Top, true);
             double x0 = x;
             switch (LegendItemAlignment)
