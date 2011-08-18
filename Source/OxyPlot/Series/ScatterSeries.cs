@@ -4,14 +4,15 @@ using System.Diagnostics;
 
 namespace OxyPlot
 {
+    using System;
+    using System.Reflection;
+
     /// <summary>
     ///   ScatterSeries are used to create scatter plots.
     ///     http://en.wikipedia.org/wiki/Scatter_plot
     /// </summary>
-    public class ScatterSeries : PlotSeriesBase
+    public class ScatterSeries : DataPointSeries
     {
-        protected IList<ScatterPoint> points;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ScatterSeries"/> class.
         /// </summary>
@@ -31,9 +32,6 @@ namespace OxyPlot
         /// </summary>
         public ScatterSeries()
         {
-            points = new List<ScatterPoint>();
-            DataFieldX = "X";
-            DataFieldY = "Y";
             DataFieldSize = null;
             DataFieldValue = null;
 
@@ -43,24 +41,6 @@ namespace OxyPlot
             MarkerStroke = null;
             MarkerStrokeThickness = 1.0;
         }
-
-        /// <summary>
-        ///   Gets or sets the items source.
-        /// </summary>
-        /// <value>The items source.</value>
-        public IEnumerable ItemsSource { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the data field X.
-        /// </summary>
-        /// <value>The data field X.</value>
-        public string DataFieldX { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the data field Y.
-        /// </summary>
-        /// <value>The data field Y.</value>
-        public string DataFieldY { get; set; }
 
         /// <summary>
         /// Gets or sets the data field for the size.
@@ -73,6 +53,12 @@ namespace OxyPlot
         /// </summary>
         /// <value>The value data field.</value>
         public string DataFieldValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tag data field.
+        /// </summary>
+        /// <value>The tag data field.</value>
+        public string DataFieldTag { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the marker (same size for all items).
@@ -117,17 +103,91 @@ namespace OxyPlot
         /// If this number is greater than 1, bins of that size is created for both x and y directions. Only one point will be drawn in each bin.
         /// </summary>
         public int BinSize { get; set; }
-
-        /// <summary>
-        /// Gets or sets the scatter data points.
-        /// </summary>
-        /// <value>
-        /// The scatter data points.
-        /// </value>
-        public IList<ScatterPoint> Points
+        
+        public override void UpdateData()
         {
-            get { return points; }
-            set { points = value; }
+            if (ItemsSource == null)
+            {
+                return;
+            }
+
+            points.Clear();
+
+            // Use the mapping to generate the points
+            if (Mapping != null)
+            {
+                foreach (var item in ItemsSource)
+                {
+                    points.Add(Mapping(item));
+                }
+                return;
+            }
+
+            // Get DataPoints from the items in ItemsSource 
+            // if they implement IDataPointProvider
+            // If DataFields are set, this is not used
+            /*if (DataFieldX == null || DataFieldY == null)
+            {
+                foreach (var item in ItemsSource)
+                {
+                    var idpp = item as IScatterPointProvider;
+                    if (idpp == null)
+                    {
+                        continue;
+                    }
+
+                    points.Add(idpp.GetScatterPoint());
+                }
+
+                return;
+            }*/
+
+            // Using reflection to add points
+            AddScatterPoints(Points, ItemsSource, DataFieldX, DataFieldY, DataFieldSize, DataFieldValue, DataFieldTag);
+        }
+
+        protected void AddScatterPoints(ICollection<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY, string dataFieldSize, string dataFieldValue, string dataFieldTag)
+        {
+            PropertyInfo pix = null;
+            PropertyInfo piy = null;
+            PropertyInfo pis = null;
+            PropertyInfo piv = null;
+            PropertyInfo pit = null;
+            Type t = null;
+
+            foreach (var o in itemsSource)
+            {
+                if (pix == null || o.GetType() != t)
+                {
+                    t = o.GetType();
+                    pix = t.GetProperty(dataFieldX);
+                    piy = t.GetProperty(dataFieldY);
+                    pis = dataFieldSize != null ? t.GetProperty(dataFieldSize) : null;
+                    piv = dataFieldValue != null ? t.GetProperty(dataFieldValue) : null;
+                    pit = dataFieldTag != null ? t.GetProperty(dataFieldTag) : null;
+                    if (pix == null)
+                    {
+                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
+                                                                          DataFieldX, t));
+                    }
+
+                    if (piy == null)
+                    {
+                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
+                                                                          DataFieldY, t));
+                    }
+                }
+
+                var x = ToDouble(pix.GetValue(o, null));
+                var y = ToDouble(piy.GetValue(o, null));
+                var s = pis != null ? ToDouble(pis.GetValue(o, null)) : double.NaN;
+                var v = piv != null ? ToDouble(piv.GetValue(o, null)) : double.NaN;
+                var tag = pit != null ? pit.GetValue(o, null) : null;
+
+
+                var p = new ScatterPoint(x, y, s, v, tag);
+                dest.Add(p);
+            }
         }
 
         /// <summary>
@@ -155,9 +215,18 @@ namespace OxyPlot
             var markerSizes = new double[n];
             for (int i = 0; i < n; i++)
             {
-                var dp = new DataPoint(points[i].x, points[i].y);
-                allPoints[i] = XAxis.Transform(dp, YAxis);
-                markerSizes[i] = double.IsNaN(points[i].Size) ? MarkerSize : points[i].Size;
+                var dp = new DataPoint(points[i].X, points[i].Y);
+                double size = double.NaN;
+                double value = double.NaN;
+                if (points[i] is ScatterPoint)
+                {
+                    size = ((ScatterPoint)points[i]).Size;
+                    value = ((ScatterPoint)points[i]).Value;
+                }
+                if (double.IsNaN(size)) size = MarkerSize;
+
+                allPoints[i] = XAxis.Transform(dp.X, dp.Y, YAxis);
+                markerSizes[i] = size;
             }
 
             // Draw the markers

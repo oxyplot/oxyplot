@@ -134,12 +134,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the items source.
-        /// </summary>
-        /// <value>The items source.</value>
-        public IEnumerable ItemsSource { get; set; }
-
-        /// <summary>
         ///   Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
@@ -291,8 +285,8 @@ namespace OxyPlot
 
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
-                    ScreenPoint high = this.XAxis.Transform(new DataPoint(v.X, v.High), this.YAxis);
-                    ScreenPoint low = this.XAxis.Transform(new DataPoint(v.X, v.Low), this.YAxis);
+                    ScreenPoint high = this.XAxis.Transform(v.X, v.High, this.YAxis);
+                    ScreenPoint low = this.XAxis.Transform(v.X, v.Low, this.YAxis);
 
                     rc.DrawClippedLine(
                         new[] { low, high }, 
@@ -305,7 +299,7 @@ namespace OxyPlot
                         true);
                     if (!double.IsNaN(v.Open))
                     {
-                        ScreenPoint open = this.XAxis.Transform(new DataPoint(v.X, v.Open), this.YAxis);
+                        ScreenPoint open = this.XAxis.Transform(v.X, v.Open, this.YAxis);
                         ScreenPoint openTick = open;
                         openTick.X -= this.TickLength;
                         rc.DrawClippedLine(
@@ -321,7 +315,7 @@ namespace OxyPlot
 
                     if (!double.IsNaN(v.Close))
                     {
-                        ScreenPoint close = this.XAxis.Transform(new DataPoint(v.X, v.Close), this.YAxis);
+                        ScreenPoint close = this.XAxis.Transform(v.X, v.Close, this.YAxis);
                         ScreenPoint closeTick = close;
                         closeTick.X += this.TickLength;
                         rc.DrawClippedLine(

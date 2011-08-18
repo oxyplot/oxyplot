@@ -93,7 +93,7 @@ namespace OxyPlot
 
             for (int i = 0; i < this.points.Count; i++)
             {
-                DataPoint p1 = this.points[i];
+                IDataPoint p1 = this.points[i];
                 var basePoint = new DataPoint(p1.X, this.Base);
                 ScreenPoint sp1 = AxisBase.Transform(p1, this.XAxis, this.YAxis);
                 ScreenPoint sp2 = AxisBase.Transform(basePoint, this.XAxis, this.YAxis);
@@ -132,7 +132,7 @@ namespace OxyPlot
                 if (distance < minimumDistance)
                 {
                     result = new TrackerHitResult(
-                        this, new DataPoint(p1.x, p1.y), new ScreenPoint(sp1.x, sp1.y), this.GetItem(ItemsSource, i), null);
+                        this, new DataPoint(p1.X, p1.Y), new ScreenPoint(sp1.x, sp1.y), this.GetItem(ItemsSource, i), null);
                     minimumDistance = distance;
                 }
             }
@@ -172,20 +172,19 @@ namespace OxyPlot
                     continue;
                 }
 
-                var basePoint = new DataPoint(point.X, this.Base);
-                ScreenPoint p0 = this.XAxis.Transform(basePoint, this.YAxis);
-                ScreenPoint p1 = this.XAxis.Transform(point, this.YAxis);
+                ScreenPoint p0 = this.XAxis.Transform(point.X, this.Base, this.YAxis);
+                ScreenPoint p1 = this.XAxis.Transform(point.X, point.Y, this.YAxis);
 
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
                     rc.DrawClippedLine(
-                        new[] { p0, p1 }, 
-                        clippingRect, 
-                        minDistSquared, 
-                        this.Color, 
-                        this.StrokeThickness, 
-                        this.LineStyle, 
-                        this.LineJoin, 
+                        new[] { p0, p1 },
+                        clippingRect,
+                        minDistSquared,
+                        this.Color,
+                        this.StrokeThickness,
+                        this.LineStyle,
+                        this.LineJoin,
                         false);
                 }
 
@@ -195,13 +194,13 @@ namespace OxyPlot
             if (this.MarkerType != MarkerType.None)
             {
                 rc.DrawMarkers(
-                    markerPoints.ToArray(), 
-                    clippingRect, 
-                    this.MarkerType, 
-                    this.MarkerOutline, 
-                    new[] { this.MarkerSize }, 
-                    this.MarkerFill, 
-                    this.MarkerStroke, 
+                    markerPoints.ToArray(),
+                    clippingRect,
+                    this.MarkerType,
+                    this.MarkerOutline,
+                    new[] { this.MarkerSize },
+                    this.MarkerFill,
+                    this.MarkerStroke,
                     this.MarkerStrokeThickness);
             }
         }

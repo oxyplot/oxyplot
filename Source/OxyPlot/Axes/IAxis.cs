@@ -24,6 +24,8 @@ namespace OxyPlot
         None
     }
 
+    public enum AxisLayer { BelowSeries, AboveSeries }
+
     public interface IAxis
     {
         /// <summary>
@@ -105,12 +107,15 @@ namespace OxyPlot
         /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
-        void Render(IRenderContext rc, PlotModel model);
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="axisLayer">The rendering order.</param>
+        void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer);
 
         void UpdateTransform(OxyRect plotArea);
         double Transform(double x);
-        ScreenPoint Transform(DataPoint dp, IAxis yAxis);
         double InverseTransform(double sx);
+        ScreenPoint Transform(double x, double y, IAxis yAxis);
 
         void Reset();
         void Pan(double x0, double x1);
@@ -118,6 +123,12 @@ namespace OxyPlot
         void ZoomAt(double factor, double x);
 
         event EventHandler<AxisChangedEventArgs> AxisChanged;
+
+        /// <summary>
+        /// Measures the size of the axis (maximum axis label width/height).
+        /// </summary>
+        /// <returns></returns>
+        OxySize Measure(IRenderContext rc);
     }
 
     public enum AxisChangeTypes { Zoom, Pan, Reset }

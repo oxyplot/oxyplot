@@ -9,11 +9,10 @@ namespace OxyPlot
     /// </summary>
     public class AreaSeries : LineSeries
     {
-        protected Collection<DataPoint> points2;
+        protected List<IDataPoint> points2 = new List<IDataPoint>();
 
         public AreaSeries()
         {
-            points2 = new Collection<DataPoint>();
             Reverse2 = true;
         }
 
@@ -44,10 +43,9 @@ namespace OxyPlot
         ///   Gets or sets the second set of points.
         /// </summary>
         /// <value>The second set of points.</value>
-        public Collection<DataPoint> Points2
+        public List<IDataPoint> Points2
         {
             get { return points2; }
-            set { points2 = value; }
         }
 
         /// <summary>
@@ -98,7 +96,7 @@ namespace OxyPlot
             var pts0 = new ScreenPoint[n0];
             for (int i = 0; i < n0; i++)
             {
-                pts0[i] = XAxis.Transform(points[i], YAxis);
+                pts0[i] = XAxis.Transform(points[i].X,points[i].Y, YAxis);
             }
 
             int n1 = points2.Count;
@@ -106,7 +104,7 @@ namespace OxyPlot
             for (int i = 0; i < n1; i++)
             {
                 int j = Reverse2 ? n1 - 1 - i : i;
-                pts1[j] = XAxis.Transform(points2[i], YAxis);
+                pts1[j] = XAxis.Transform(points2[i].X,points2[i].Y, YAxis);
             }
 
             if (Smooth)

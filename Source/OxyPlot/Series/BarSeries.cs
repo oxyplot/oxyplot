@@ -44,7 +44,7 @@
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
             this.BarWidth = 0.5;
-            this.TrackerFormatString = "{0} {1}: {2}";
+            this.TrackerFormatString = "{0}, {1}: {2}";
         }
 
         #endregion
@@ -65,15 +65,15 @@
         public OxyColor FillColor { get; set; }
 
         /// <summary>
+        ///   Gets or sets the color of the interior of the bars when the value is negative.
+        /// </summary>
+        /// <value>The color.</value>
+        public OxyColor NegativeFillColor { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this bar series is stacked.
         /// </summary>
         public bool IsStacked { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the items source.
-        /// </summary>
-        /// <value>The items source.</value>
-        public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the border around the bars.
@@ -218,9 +218,8 @@
                 OxyRect rect;
                 if (isVertical)
                 {
-                    ScreenPoint p0 = this.XAxis.Transform(new DataPoint(i + dx, baseValue), this.YAxis);
-                    ScreenPoint p1 = this.XAxis.Transform(
-                        new DataPoint(i + dx + this.BarWidth / nSeries, topValue), this.YAxis);
+                    ScreenPoint p0 = this.XAxis.Transform(i + dx, baseValue, this.YAxis);
+                    ScreenPoint p1 = this.XAxis.Transform(i + dx + this.BarWidth / nSeries, topValue, this.YAxis);
 
                     p0.X = (int)p0.X;
                     p0.Y = (int)p0.Y;
@@ -252,9 +251,8 @@
                 }
                 else
                 {
-                    ScreenPoint p0 = this.XAxis.Transform(new DataPoint(baseValue, i + dx), this.YAxis);
-                    ScreenPoint p1 = this.XAxis.Transform(
-                        new DataPoint(topValue, i + dx + this.BarWidth / nSeries), this.YAxis);
+                    ScreenPoint p0 = this.XAxis.Transform(baseValue, i + dx, this.YAxis);
+                    ScreenPoint p1 = this.XAxis.Transform(topValue, i + dx + this.BarWidth / nSeries, this.YAxis);
 
                     p0.X = (int)p0.X;
                     p0.Y = (int)p0.Y;
@@ -286,9 +284,12 @@
                 }
                 this.ActualBarRectangles.Add(rect);
 
-                // rc.DrawClippedRectangle(rect, clippingRect, FillColor, StrokeColor, StrokeThickness);
+                var actualFillColor = FillColor;
+                if (v<0 && NegativeFillColor!=null) actualFillColor = NegativeFillColor;
+
+                // rc.DrawClippedRectangle(rect, clippingRect, actualFillColor, StrokeColor, StrokeThickness);
                 rc.DrawClippedRectangleAsPolygon(
-                    rect, clippingRect, this.FillColor, this.StrokeColor, this.StrokeThickness);
+                    rect, clippingRect, actualFillColor, this.StrokeColor, this.StrokeThickness);
 
                 i++;
             }

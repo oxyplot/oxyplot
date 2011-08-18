@@ -221,22 +221,22 @@ namespace OxyPlot
             return CreateTickValues(min, max, interval);
         }
 
-        protected override double GetLabelSize()
-        {
-            // todo: should measure sample DateTimes (min/max?) using the ActualStringFormat to get the size of the label
-            string max = FormatValue(ActualMaximum);
-            string min = FormatValue(ActualMinimum);
-            int length = Math.Max(max.Length, min.Length);
+        //protected override double GetIntervalLength()
+        //{
+        //    // todo: should measure sample DateTimes (min/max?) using the ActualStringFormat to get the size of the label
+        //    string max = FormatValue(ActualMaximum);
+        //    string min = FormatValue(ActualMinimum);
+        //    int length = Math.Max(max.Length, min.Length);
 
-            switch (Position)
-            {
-                case AxisPosition.Top:
-                case AxisPosition.Bottom:
-                    return length * 10;
-            }
+        //    switch (Position)
+        //    {
+        //        case AxisPosition.Top:
+        //        case AxisPosition.Bottom:
+        //            return length * 10;
+        //    }
 
-            return base.GetLabelSize();
-        }
+        //    return base.GetIntervalLength();
+        //}
 
         public override void UpdateIntervals(OxyRect plotArea)
         {
