@@ -73,6 +73,7 @@
     <Compile Include="Axes\AxisBase.cs" />
     <Compile Include="Axes\TimeSpanAxis.cs" />
     <Compile Include="Foundation\CodeGenerator.cs" />
+    <Compile Include="Foundation\FractionHelper.cs" />
     <Compile Include="Foundation\ReflectionHelper.cs" />
     <Compile Include="Foundation\ScreenPointHelper.cs" />
     <Compile Include="Foundation\StringFormatHelper.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Annotations\IAnnotation.cs" />
     <Compile Include="Series\BarSeries.cs" />
     <Compile Include="Series\CandleStickSeries.cs" />
+    <Compile Include="Series\ItemsSeries.cs" />
     <Compile Include="Series\DataPointSeries.cs" />
     <Compile Include="Series\HighLowItem.cs" />
     <Compile Include="Series\HighLowSeries.cs" />

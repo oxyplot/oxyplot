@@ -101,8 +101,8 @@ namespace OxyPlot
 
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
-                    ScreenPoint high = this.XAxis.Transform(new DataPoint(v.X, v.High), this.YAxis);
-                    ScreenPoint low = this.XAxis.Transform(new DataPoint(v.X, v.Low), this.YAxis);
+                    ScreenPoint high = this.XAxis.Transform(v.X, v.High, this.YAxis);
+                    ScreenPoint low = this.XAxis.Transform(v.X, v.Low, this.YAxis);
 
                     if (double.IsNaN(v.Open) || double.IsNaN(v.Close))
                     {
@@ -118,8 +118,8 @@ namespace OxyPlot
                     }
                     else
                     {
-                        ScreenPoint open = this.XAxis.Transform(new DataPoint(v.X, v.Open), this.YAxis);
-                        ScreenPoint close = this.XAxis.Transform(new DataPoint(v.X, v.Close), this.YAxis);
+                        ScreenPoint open = this.XAxis.Transform(v.X, v.Open, this.YAxis);
+                        ScreenPoint close = this.XAxis.Transform(v.X, v.Close, this.YAxis);
                         var max = new ScreenPoint(open.X, Math.Max(open.Y, close.Y));
                         var min = new ScreenPoint(open.X, Math.Min(open.Y, close.Y));
 

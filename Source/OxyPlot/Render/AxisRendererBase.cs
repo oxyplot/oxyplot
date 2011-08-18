@@ -9,6 +9,7 @@ namespace OxyPlot
 
         protected OxyPen ExtraPen;
         protected OxyPen MajorPen;
+        protected OxyPen AxislinePen;
         protected OxyPen MajorTickPen;
         protected ICollection<double> MajorTickValues;
         protected ICollection<double> MinorTickValues;
@@ -64,6 +65,7 @@ namespace OxyPlot
             MajorTickPen = OxyPen.Create(axis.TicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
             ZeroPen = OxyPen.Create(axis.TicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
             ExtraPen = OxyPen.Create(axis.ExtraGridlineColor, axis.ExtraGridlineThickness, axis.ExtraGridlineStyle);
+            AxislinePen = OxyPen.Create(axis.AxislineColor, axis.AxislineThickness, axis.AxislineStyle);
         }
 
         protected bool IsWithin(double d, double min, double max)

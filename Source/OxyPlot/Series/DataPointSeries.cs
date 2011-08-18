@@ -19,24 +19,15 @@ namespace OxyPlot
     }
 
     /// <summary>
-    /// Base class for series that contain a collection of DataPoints.
+    /// Base class for series that contain a collection of IDataPoints.
     /// </summary>
     public abstract class DataPointSeries : PlotSeriesBase
     {
-        protected IList<DataPoint> points;
-
         protected DataPointSeries()
         {
-            points = new Collection<DataPoint>();
             DataFieldX = "X";
             DataFieldY = "Y";
         }
-
-        /// <summary>
-        ///   Gets or sets the items source.
-        /// </summary>
-        /// <value>The items source.</value>
-        public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
         ///   Gets or sets the data field X.
@@ -55,16 +46,20 @@ namespace OxyPlot
         ///   Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
         /// </summary>
         /// <value>The mapping.</value>
-        public Func<object, DataPoint> Mapping { get; set; }
+        public Func<object, IDataPoint> Mapping { get; set; }
+
+        protected IList<IDataPoint> points = new List<IDataPoint>();
 
         /// <summary>
-        ///   Gets or sets the points.
+        /// Gets the points.
         /// </summary>
         /// <value>The points.</value>
-        public IList<DataPoint> Points
+        public IList<IDataPoint> Points
         {
-            get { return points; }
-            set { points = value; }
+            get
+            {
+                return this.points;
+            }
         }
 
         public bool CanTrackerInterpolatePoints { get; set; }
@@ -83,7 +78,11 @@ namespace OxyPlot
             {
                 return;
             }
+            this.AddDataPoints(points);
+        }
 
+        protected void AddDataPoints( IList<IDataPoint> points)
+        {
             points.Clear();
 
             // Use the mapping to generate the points
@@ -93,7 +92,7 @@ namespace OxyPlot
                 {
                     points.Add(Mapping(item));
                 }
-                return;
+                return ;
             }
 
             // Get DataPoints from the items in ItemsSource 
@@ -103,6 +102,13 @@ namespace OxyPlot
             {
                 foreach (var item in ItemsSource)
                 {
+                    var dp = item as IDataPoint;
+                    if (dp != null)
+                    {
+                        points.Add(dp);
+                        continue;
+                    }
+
                     var idpp = item as IDataPointProvider;
                     if (idpp == null)
                     {
@@ -111,8 +117,6 @@ namespace OxyPlot
 
                     points.Add(idpp.GetDataPoint());
                 }
-
-                return;
             }
 
             // TODO: is there a better way to do this?
@@ -128,7 +132,7 @@ namespace OxyPlot
         public override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            InternalUpdateMaxMin(points);
+            InternalUpdateMaxMin(Points);
         }
 
         /// <summary>
@@ -144,7 +148,7 @@ namespace OxyPlot
             ScreenPoint spn;
             if (interpolate)
             {
-                if (GetNearestInterpolatedPointInternal(points, point, out dpn, out spn, out index))
+                if (GetNearestInterpolatedPointInternal(Points, point, out dpn, out spn, out index))
                 {
                     var item = GetItem(ItemsSource, index);
                     return new TrackerHitResult(this, dpn, spn, item);
@@ -152,7 +156,7 @@ namespace OxyPlot
             }
             else
             {
-                if (GetNearestPointInternal(points, point, out dpn, out spn, out index))
+                if (GetNearestPointInternal(Points, point, out dpn, out spn, out index))
                 {
                     var item = GetItem(ItemsSource, index);
                     return new TrackerHitResult(this, dpn, spn, item);
@@ -167,7 +171,7 @@ namespace OxyPlot
 
         #endregion
 
-        protected void AddDataPoints(ICollection<DataPoint> points, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
+        protected void AddDataPoints(IList<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
         {
             PropertyInfo pix = null;
             PropertyInfo piy = null;
@@ -198,7 +202,7 @@ namespace OxyPlot
 
 
                 var pp = new DataPoint(x, y);
-                points.Add(pp);
+                dest.Add(pp);
             }
         }
 
@@ -207,7 +211,7 @@ namespace OxyPlot
         /// Updates the Max/Min limits from the specified point list.
         /// </summary>
         /// <param name="pts">The points.</param>
-        protected void InternalUpdateMaxMin(IList<DataPoint> pts)
+        protected void InternalUpdateMaxMin(IList<IDataPoint> pts)
         {
             if (pts == null || pts.Count == 0)
             {
@@ -223,10 +227,12 @@ namespace OxyPlot
             {
                 if (!IsValidPoint(pt, XAxis, YAxis))
                     continue;
-                if (pt.x < minx || double.IsNaN(minx)) minx = pt.x;
-                if (pt.x > maxx || double.IsNaN(maxx)) maxx = pt.x;
-                if (pt.y < miny || double.IsNaN(miny)) miny = pt.y;
-                if (pt.y > maxy || double.IsNaN(maxy)) maxy = pt.y;
+                double x = pt.X;
+                double y = pt.Y;
+                if (x < minx || double.IsNaN(minx)) minx = x;
+                if (x > maxx || double.IsNaN(maxx)) maxx = x;
+                if (y < miny || double.IsNaN(miny)) miny = y;
+                if (y > maxy || double.IsNaN(maxy)) maxy = y;
             }
 
             MinX = minx;
@@ -247,13 +253,15 @@ namespace OxyPlot
         /// <returns></returns>
         public double? GetValueFromX(double x)
         {
-            for (int i = 0; i + 1 < points.Count; i++)
+            int n = Points.Count;
+
+            for (int i = 0; i + 1 < n; i++)
             {
-                if (IsBetween(x, points[i].x, points[i + 1].x))
+                if (IsBetween(x, Points[i].X, Points[i + 1].Y))
                 {
-                    return points[i].y +
-                           (points[i + 1].y - points[i].y) /
-                           (points[i + 1].x - points[i].x) * (x - points[i].x);
+                    return Points[i].Y +
+                           (Points[i + 1].Y - Points[i].Y) /
+                           (Points[i + 1].X - Points[i].X) * (x - Points[i].X);
                 }
             }
 
@@ -284,7 +292,7 @@ namespace OxyPlot
         /// <returns>
         ///   <c>true</c> if the point is valid; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool IsValidPoint(DataPoint pt, IAxis xAxis, IAxis yAxis)
+        public virtual bool IsValidPoint(IDataPoint pt, IAxis xAxis, IAxis yAxis)
         {
             return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X)
                    && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)

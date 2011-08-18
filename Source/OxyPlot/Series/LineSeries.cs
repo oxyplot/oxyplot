@@ -177,7 +177,7 @@ namespace OxyPlot
                     transformedPoints.Clear();
                     continue;
                 }
-                transformedPoints.Add(XAxis.Transform(point, YAxis));
+                transformedPoints.Add(XAxis.Transform(point.X, point.Y, YAxis));
             }
             renderPoints(transformedPoints.ToArray());
         }
@@ -213,6 +213,8 @@ namespace OxyPlot
                     MarkerFill = Color;
             }
         }
+
+
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (interpolate)

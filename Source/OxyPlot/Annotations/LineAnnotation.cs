@@ -243,7 +243,7 @@ namespace OxyPlot
             var screenPoints = new List<ScreenPoint>();
             foreach (var p in points)
             {
-                screenPoints.Add(XAxis.Transform(p, YAxis));
+                screenPoints.Add(XAxis.Transform(p.X, p.Y, YAxis));
             }
 
             // clip to the plot area

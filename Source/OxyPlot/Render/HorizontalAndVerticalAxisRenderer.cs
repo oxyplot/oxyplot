@@ -68,12 +68,14 @@ namespace OxyPlot
             var minorTickSegments = new List<ScreenPoint>();
             var majorSegments = new List<ScreenPoint>();
             var majorTickSegments = new List<ScreenPoint>();
+            
+            double eps = axis.MinorStep * 1e-3;
 
             GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
 
             foreach (double value in MinorTickValues)
             {
-                if (value < actualMinimum || value > actualMaximum)
+                if (value < actualMinimum-eps || value > actualMaximum+eps)
                 {
                     continue;
                 }
@@ -83,7 +85,7 @@ namespace OxyPlot
                     continue;
                 }
 
-                if (axis.PositionAtZeroCrossing && Math.Abs(value) < double.Epsilon)
+                if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
                 {
                     continue;
                 }
@@ -141,12 +143,12 @@ namespace OxyPlot
 
             foreach (double value in MajorTickValues)
             {
-                if (value < actualMinimum || value > actualMaximum)
+                if (value < actualMinimum-eps || value > actualMaximum+eps)
                 {
                     continue;
                 }
 
-                if (axis.PositionAtZeroCrossing && Math.Abs(value) < double.Epsilon)
+                if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
                 {
                     continue;
                 }
@@ -198,16 +200,16 @@ namespace OxyPlot
                 }
 
             }
-
+          
             // Render the axis labels (numbers or category names)
             foreach (double value in MajorLabelValues)
             {
-                if (value < actualMinimum || value > actualMaximum)
+                if (value < actualMinimum-eps || value > actualMaximum+eps)
                 {
                     continue;
                 }
 
-                if (axis.PositionAtZeroCrossing && Math.Abs(value) < double.Epsilon)
+                if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
                 {
                     continue;
                 }
@@ -229,23 +231,23 @@ namespace OxyPlot
                 switch (axis.Position)
                 {
                     case AxisPosition.Left:
-                        pt = new ScreenPoint(apos + a1 - Plot.AxisTickToLabelDistance, transformedValue);
+                        pt = new ScreenPoint(apos + a1 - axis.AxisTickToLabelDistance, transformedValue);
                         GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Right, VerticalTextAlign.Middle, out ha,
                                                     out va);
                         break;
                     case AxisPosition.Right:
-                        pt = new ScreenPoint(apos + a1 + Plot.AxisTickToLabelDistance, transformedValue);
+                        pt = new ScreenPoint(apos + a1 + axis.AxisTickToLabelDistance, transformedValue);
                         GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Left, VerticalTextAlign.Middle, out ha,
                                                     out va);
                         break;
                     case AxisPosition.Top:
-                        pt = new ScreenPoint(transformedValue, apos + a1 - Plot.AxisTickToLabelDistance);
+                        pt = new ScreenPoint(transformedValue, apos + a1 - axis.AxisTickToLabelDistance);
                         GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Bottom,
                                                     out ha,
                                                     out va);
                         break;
                     case AxisPosition.Bottom:
-                        pt = new ScreenPoint(transformedValue, apos + a1 + Plot.AxisTickToLabelDistance);
+                        pt = new ScreenPoint(transformedValue, apos + a1 + axis.AxisTickToLabelDistance);
                         GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Top, out ha,
                                                     out va);
                         break;
@@ -296,13 +298,11 @@ namespace OxyPlot
             // Draw the axis line (across the tick marks)
             if (isHorizontal)
             {
-                majorSegments.Add(new ScreenPoint(ppl, apos));
-                majorSegments.Add(new ScreenPoint(ppr, apos));
+                rc.DrawLine(axis.Transform(actualMinimum), apos, axis.Transform(actualMaximum), apos, AxislinePen);
             }
             else
             {
-                majorSegments.Add(new ScreenPoint(apos, ppt));
-                majorSegments.Add(new ScreenPoint(apos, ppb));
+                rc.DrawLine(apos,axis.Transform(actualMinimum), apos, axis.Transform(actualMaximum), AxislinePen);
             }
 
             // Draw the axis title
@@ -349,7 +349,7 @@ namespace OxyPlot
                                 angle, halign, valign);
             }
 
-            // Draw all the line segments
+            // Draw all the line segments);
             if (MinorPen != null)
                 rc.DrawLineSegments(minorSegments, MinorPen);
             if (MajorPen != null)

@@ -9,16 +9,9 @@
     /// <summary>
     /// Abstract base class for Series that contains an X-axis and Y-axis
     /// </summary>
-    public abstract class PlotSeriesBase : ITrackableSeries
+    public abstract class PlotSeriesBase : ItemsSeries
     {
         #region Public Properties
-
-        /// <summary>
-        ///   Gets or sets the background of the series.
-        ///   The background area is defined by the x and y axes.
-        /// </summary>
-        /// <value>The background color.</value>
-        public OxyColor Background { get; set; }
 
         /// <summary>
         ///   Gets or sets the maximum x-coordinate of the dataset.
@@ -43,22 +36,6 @@
         /// </summary>
         /// <value>The minimum y-coordinate.</value>
         public double MinY { get; protected set; }
-
-        /// <summary>
-        ///   Gets the title of the Series.
-        /// </summary>
-        /// <value>The title.</value>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Gets or sets a format string used for the tracker.
-        /// </summary>
-        public string TrackerFormatString { get; set; }
-
-        /// <summary>
-        /// Gets or sets the key for the tracker to use on this series.
-        /// </summary>
-        public string TrackerKey { get; set; }
 
         /// <summary>
         ///   Gets or sets the x-axis.
@@ -88,12 +65,17 @@
 
         #region Public Methods
 
-        public virtual bool AreAxesRequired()
+        /// <summary>
+        /// Check if this data series requires X/Y axes.
+        /// (e.g. Pie series do not require axes)
+        /// </summary>
+        /// <returns></returns>
+        public override bool AreAxesRequired()
         {
             return true;
         }
 
-        public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
+        public override void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
         {
             if (this.XAxisKey != null)
             {
@@ -118,16 +100,6 @@
         }
 
         /// <summary>
-        /// Gets the nearest point.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
-        public abstract TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
-
-        /// <summary>
         /// Gets the rectangle the series uses on the screen (screen coordinates).
         /// </summary>
         /// <returns></returns>
@@ -136,7 +108,7 @@
             return this.GetClippingRect();
         }
 
-        public virtual bool IsUsing(IAxis axis)
+        public override bool IsUsing(IAxis axis)
         {
             return this.XAxis == axis || this.YAxis == axis;
         }
@@ -146,7 +118,7 @@
         /// </summary>
         /// <param name = "rc">The rendering context.</param>
         /// <param name = "model">The model.</param>
-        public virtual void Render(IRenderContext rc, PlotModel model)
+        public override void Render(IRenderContext rc, PlotModel model)
         {
         }
 
@@ -155,22 +127,22 @@
         /// </summary>
         /// <param name = "rc">The rendering context.</param>
         /// <param name = "legendBox">The rect.</param>
-        public virtual void RenderLegend(IRenderContext rc, OxyRect legendBox)
+        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
         }
 
-        public virtual void SetDefaultValues(PlotModel model)
+        public override void SetDefaultValues(PlotModel model)
         {
         }
 
-        public virtual void UpdateData()
+        public override void UpdateData()
         {
         }
 
         /// <summary>
         ///   Updates the max/minimum values.
         /// </summary>
-        public virtual void UpdateMaxMin()
+        public override void UpdateMaxMin()
         {
             this.MinX = this.MinY = this.MaxX = this.MaxY = double.NaN;
         }
@@ -190,40 +162,6 @@
         }
 
         /// <summary>
-        /// Gets the item of the specified index.
-        /// Returns null if ItemsSource is not set, or the index is outside the boundaries.
-        /// </summary>
-        protected object GetItem(IEnumerable itemsSource, int index)
-        {
-            if (itemsSource == null || index < 0)
-            {
-                return null;
-            }
-
-            var list = itemsSource as IList;
-            if (list != null)
-            {
-                if (index < list.Count && index >= 0)
-                {
-                    return list[index];
-                }
-                return null;
-            }
-
-            // todo: can this be improved?
-            int i = 0;
-            foreach (object item in itemsSource)
-            {
-                if (i++ == index)
-                {
-                    return item;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
         ///   Gets the point on the curve that is nearest the specified point.
         /// </summary>
         /// <param name = "point">The point.</param>
@@ -231,7 +169,7 @@
         /// <param name = "spn">The nearest point (screen coordinates).</param>
         /// <returns></returns>
         protected bool GetNearestInterpolatedPointInternal(
-            IList<DataPoint> points, ScreenPoint point, out DataPoint dpn, out ScreenPoint spn, out int index)
+            IList<IDataPoint> points, ScreenPoint point, out DataPoint dpn, out ScreenPoint spn, out int index)
         {
             spn = default(ScreenPoint);
             dpn = default(DataPoint);
@@ -242,8 +180,8 @@
 
             for (int i = 0; i + 1 < points.Count; i++)
             {
-                DataPoint p1 = points[i];
-                DataPoint p2 = points[i + 1];
+                IDataPoint p1 = points[i];
+                IDataPoint p2 = points[i + 1];
                 ScreenPoint sp1 = AxisBase.Transform(p1, this.XAxis, this.YAxis);
                 ScreenPoint sp2 = AxisBase.Transform(p2, this.XAxis, this.YAxis);
 
@@ -266,10 +204,8 @@
                 }
 
                 double u = u1 / u2;
-                if (u < 0 || u > 1)
-                {
-                    continue; // outside line
-                }
+                if (u < 0) u = 0;
+                if (u > 1) u = 1;
 
                 double sx = sp1.x + u * sp21X;
                 double sy = sp1.y + u * sp21Y;
@@ -280,8 +216,8 @@
 
                 if (distance < minimumDistance)
                 {
-                    double px = p1.x + u * (p2.x - p1.x);
-                    double py = p1.y + u * (p2.y - p1.y);
+                    double px = p1.X + u * (p2.X - p1.X);
+                    double py = p1.Y + u * (p2.Y - p1.Y);
                     dpn = new DataPoint(px, py);
                     spn = new ScreenPoint(sx, sy);
                     minimumDistance = distance;
@@ -293,7 +229,7 @@
         }
 
         protected bool GetNearestPointInternal(
-            IEnumerable<DataPoint> points, ScreenPoint point, out DataPoint dpn, out ScreenPoint spn, out int index)
+            IEnumerable<IDataPoint> points, ScreenPoint point, out DataPoint dpn, out ScreenPoint spn, out int index)
         {
             spn = default(ScreenPoint);
             dpn = default(DataPoint);

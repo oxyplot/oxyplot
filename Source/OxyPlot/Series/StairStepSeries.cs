@@ -76,13 +76,12 @@ namespace OxyPlot
             // http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
             double minimumDistance = double.MaxValue;
 
-            for (int i = 0; i + 1 < this.points.Count; i++)
+            for (int i = 0; i + 1 < this.Points.Count; i++)
             {
-                DataPoint p1 = this.points[i];
-                DataPoint p2 = this.points[i + 1];
-                p2.Y = p1.Y;
-                ScreenPoint sp1 = AxisBase.Transform(p1, this.XAxis, this.YAxis);
-                ScreenPoint sp2 = AxisBase.Transform(p2, this.XAxis, this.YAxis);
+                IDataPoint p1 = this.Points[i];
+                IDataPoint p2 = this.Points[i + 1];
+                ScreenPoint sp1 = AxisBase.Transform(p1.X,p1.Y, this.XAxis, this.YAxis);
+                ScreenPoint sp2 = AxisBase.Transform(p2.X,p1.Y, this.XAxis, this.YAxis);
 
                 double sp21X = sp2.x - sp1.x;
                 double sp21Y = sp2.y - sp1.y;
@@ -117,8 +116,8 @@ namespace OxyPlot
 
                 if (distance < minimumDistance)
                 {
-                    double px = p1.x + u * (p2.x - p1.x);
-                    double py = p1.y + u * (p2.y - p1.y);
+                    double px = p1.X + u * (p2.X - p1.X);
+                    double py = p1.Y;
                     result = new TrackerHitResult(
                         this, new DataPoint(px, py), new ScreenPoint(sx, sy), this.GetItem(ItemsSource, i), null);
                     minimumDistance = distance;
@@ -139,7 +138,7 @@ namespace OxyPlot
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.points.Count == 0)
+            if (this.Points.Count == 0)
             {
                 return;
             }
@@ -185,7 +184,7 @@ namespace OxyPlot
             var linePoints = new List<ScreenPoint>();
             var markerPoints = new List<ScreenPoint>();
             double previousY = double.NaN;
-            foreach (DataPoint point in this.points)
+            foreach (IDataPoint point in this.Points)
             {
                 if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
                 {
@@ -196,7 +195,7 @@ namespace OxyPlot
                     continue;
                 }
 
-                ScreenPoint transformedPoint = this.XAxis.Transform(point, this.YAxis);
+                ScreenPoint transformedPoint = AxisBase.Transform(point, this.XAxis, this.YAxis);
                 if (!double.IsNaN(previousY))
                 {
                     linePoints.Add(new ScreenPoint(transformedPoint.X, previousY));

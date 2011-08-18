@@ -10,6 +10,33 @@
     /// </summary>
     public abstract class AxisBase : IAxis
     {
+       
+        /// <summary>
+        /// Gets or sets the layer.
+        /// </summary>
+        /// <value>The layer.</value>
+        public AxisLayer Layer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance from axis number to axis title.
+        /// </summary>
+        /// <value>The axis title distance.</value>
+        public double AxisTitleDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance from axis tick to number label.
+        /// </summary>
+        /// <value>The axis tick to label distance.</value>
+        public double AxisTickToLabelDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the length of the interval (screen length).
+        /// The available length of the axis will be divided by this length to get the approximate number of major intervals on the axis.
+        /// The default value is 60.
+        /// </summary>
+        public double IntervalLength { get; set; }
+
+
         #region Constants and Fields
 
         /// <summary>
@@ -38,6 +65,7 @@
         {
             this.Position = AxisPosition.Left;
             this.IsAxisVisible = true;
+            this.Layer = AxisLayer.BelowSeries;
 
             this.AbsoluteMaximum = double.MaxValue;
             this.AbsoluteMinimum = double.MinValue;
@@ -56,11 +84,17 @@
 
             this.TickStyle = TickStyle.Inside;
             this.TicklineColor = OxyColors.Black;
+
+            this.AxislineStyle = LineStyle.None;
+            this.AxislineColor = OxyColors.Black;
+            this.AxislineThickness = 1.0;
+
             this.MajorGridlineStyle = LineStyle.None;
-            this.MinorGridlineStyle = LineStyle.None;
             this.MajorGridlineColor = OxyColor.FromArgb(0x40, 0, 0, 0);
-            this.MinorGridlineColor = OxyColor.FromArgb(0x20, 0, 0, 0x00);
             this.MajorGridlineThickness = 1;
+
+            this.MinorGridlineStyle = LineStyle.None;
+            this.MinorGridlineColor = OxyColor.FromArgb(0x20, 0, 0, 0x00);
             this.MinorGridlineThickness = 1;
 
             this.ExtraGridlineStyle = LineStyle.Solid;
@@ -90,6 +124,12 @@
             this.FilterMinValue = double.MinValue;
             this.FilterMaxValue = double.MaxValue;
             this.FilterFunction = null;
+
+            this.IntervalLength = 60;
+
+            this.AxisTitleDistance = 4;
+            this.AxisTickToLabelDistance = 4;
+
         }
 
         /// <summary>
@@ -120,6 +160,69 @@
         /// This event occurs after the axis has been changed (by zooming, panning or resetting).
         /// </summary>
         public event EventHandler<AxisChangedEventArgs> AxisChanged;
+
+        public OxySize Measure(IRenderContext rc)
+        {
+            ICollection<double> majorTickValues;
+            ICollection<double> minorTickValues;
+            ICollection<double> majorLabelValues;
+
+            GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
+
+            OxySize maximumTextSize = new OxySize();
+            foreach (var v in majorLabelValues)
+            {
+                var s = FormatValue(v);
+                var size = rc.MeasureText(s, ActualFont, FontSize, FontWeight);
+                if (size.Width > maximumTextSize.Width) maximumTextSize.Width = size.Width;
+                if (size.Height > maximumTextSize.Height) maximumTextSize.Height = size.Height;
+            }
+
+            var labelTextSize = rc.MeasureText(ActualTitle, ActualFont, FontSize, FontWeight);
+
+            double width = 0;
+            double height = 0;
+
+            if (IsHorizontal())
+            {
+                switch (TickStyle)
+                {
+                    case TickStyle.Outside:
+                        height += MajorTickSize;
+                        break;
+                    case TickStyle.Crossing:
+                        height += MajorTickSize * 0.75;
+                        break;
+                }
+                height += AxisTickToLabelDistance;
+                height += maximumTextSize.Height;
+                if (labelTextSize.Height > 0)
+                {
+                    height += AxisTitleDistance;
+                    height += labelTextSize.Height;
+                }
+            }
+            else
+            {
+                switch (TickStyle)
+                {
+                    case TickStyle.Outside:
+                        width += MajorTickSize;
+                        break;
+                    case TickStyle.Crossing:
+                        width += MajorTickSize * 0.75;
+                        break;
+                }
+                width += AxisTickToLabelDistance;
+                width += maximumTextSize.Width;
+                if (labelTextSize.Height > 0)
+                {
+                    width += AxisTitleDistance;
+                    width += labelTextSize.Height;
+                }
+            }
+            return new OxySize(width, height);
+        }
 
         #endregion
 
@@ -313,6 +416,21 @@
         public double MajorGridlineThickness { get; set; }
 
         /// <summary>
+        /// Gets or sets the color of the axis line.
+        /// </summary>
+        public OxyColor AxislineColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the axis line.
+        /// </summary>
+        public LineStyle AxislineStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the axis line.
+        /// </summary>
+        public double AxislineThickness { get; set; }
+
+        /// <summary>
         /// Gets or sets the major step.
         /// (the interval between large ticks with numbers).
         /// </summary>
@@ -457,12 +575,12 @@
         public string StringFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets the tick style.
+        /// Gets or sets the tick style (both for major and minor ticks).
         /// </summary>
         public TickStyle TickStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the ticks.
+        /// Gets or sets the color of the ticks (both major and minor ticks).
         /// </summary>
         public OxyColor TicklineColor { get; set; }
 
@@ -537,9 +655,19 @@
                 xAxis != null ? xAxis.InverseTransform(x) : 0, yAxis != null ? yAxis.InverseTransform(y) : 0);
         }
 
+        public static ScreenPoint Transform(double x, double y, IAxis xAxis, IAxis yAxis)
+        {
+            return xAxis.Transform(x, y, yAxis);
+        }
+
         public static ScreenPoint Transform(DataPoint p, IAxis xAxis, IAxis yAxis)
         {
-            return xAxis.Transform(p, yAxis);
+            return xAxis.Transform(p.x, p.y, yAxis);
+        }
+
+        public static ScreenPoint Transform(IDataPoint p, IAxis xAxis, IAxis yAxis)
+        {
+            return xAxis.Transform(p.X, p.Y, yAxis);
         }
 
         public virtual string FormatValue(double x)
@@ -690,8 +818,10 @@
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan));
         }
 
-        public virtual void Render(IRenderContext rc, PlotModel model)
+        public virtual void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer)
         {
+            if (this.Layer != axisLayer) return;
+
             switch (this.Position)
             {
                 case AxisPosition.Left:
@@ -772,14 +902,14 @@
         /// an argument. This is neccessary to calculate screen coordinates from
         /// polar coordinates.
         /// </summary>
-        public virtual ScreenPoint Transform(DataPoint dp, IAxis yAxis)
+        public virtual ScreenPoint Transform(double x, double y, IAxis yAxis)
         {
             // todo: review architecture here, could this be solved in a better way?
 
             if (this.IsPolar())
             {
-                double r = (dp.x - this.Offset) * this.scale;
-                double th = yAxis != null ? (dp.y - yAxis.Offset) * yAxis.Scale : double.NaN;
+                double r = (x - this.Offset) * this.scale;
+                double th = yAxis != null ? (y - yAxis.Offset) * yAxis.Scale : double.NaN;
                 return new ScreenPoint(this.MidPoint.x + r * Math.Cos(th), this.MidPoint.y + r * Math.Sin(th));
             }
 
@@ -788,7 +918,7 @@
                 return new ScreenPoint();
             }
 
-            return new ScreenPoint(this.Transform(dp.x), yAxis.Transform(dp.y));
+            return new ScreenPoint(this.Transform(x), yAxis.Transform(y));
         }
 
         // todo: should find a better way to do this
@@ -869,7 +999,7 @@
         /// </summary>
         public virtual void UpdateIntervals(OxyRect plotArea)
         {
-            double labelSize = this.GetLabelSize();
+            double labelSize = this.IntervalLength;
             double length = this.IsHorizontal() ? plotArea.Width : plotArea.Height;
             length *= Math.Abs(this.EndPosition - this.StartPosition);
 
@@ -1026,12 +1156,13 @@
             int i = 0;
             const int maxIterations = 1000;
             double x = x0;
+            double eps = step * 1e-3;
 
-            while (x <= max + double.Epsilon && i < maxIterations)
+            while (x <= max + eps && i < maxIterations)
             {
                 x = x0 + (i * step);
                 i++;
-                if (x >= min - double.Epsilon && x <= max + double.Epsilon)
+                if (x >= min - eps && x <= max + eps)
                 {
                     x = RemoveNoiseFromDoubleMath(x);
                     values.Add(x);
@@ -1190,28 +1321,29 @@
         /// Gets the size of the label.
         /// </summary>
         /// <returns></returns>
-        protected virtual double GetLabelSize()
-        {
-            // todo: this could be dependent on the stringformat 
-            // and min/max numbers
-            // could format the string for min and max...
+        //protected virtual double GetIntervalLength()
+        //{
+        //    if (!double.IsNaN(IntervalLength)) return IntervalLength;
 
-            switch (this.position)
-            {
-                case AxisPosition.Top:
-                case AxisPosition.Bottom:
-                    return 60;
-                case AxisPosition.Left:
-                case AxisPosition.Right:
-                    return 60;
-                case AxisPosition.Angle:
-                    return 50;
-                case AxisPosition.Magnitude:
-                    return 100;
-                default:
-                    return 50;
-            }
-        }
+        //    // default value
+        //    return 60;
+
+        //    //switch (this.position)
+        //    //{
+        //    //    case AxisPosition.Top:
+        //    //    case AxisPosition.Bottom:
+        //    //        return 60;
+        //    //    case AxisPosition.Left:
+        //    //    case AxisPosition.Right:
+        //    //        return 60;
+        //    //    case AxisPosition.Angle:
+        //    //        return 50;
+        //    //    case AxisPosition.Magnitude:
+        //    //        return 100;
+        //    //    default:
+        //    //        return 50;
+        //    //}
+        //}
 
         protected virtual void OnAxisChanged(AxisChangedEventArgs args)
         {

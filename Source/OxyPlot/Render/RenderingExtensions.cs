@@ -85,6 +85,35 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Draws the rectangle as an aliased polygon.
+        /// (makes sure pixel alignment is the same as for lines)
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="rect">The rect.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        public static void DrawRectangleAsPolygon(this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke,
+                                                  OxyThickness thickness)
+        {
+            if (thickness.Left == thickness.Right && thickness.Left == thickness.Top && thickness.Left == thickness.Bottom)
+            {
+                DrawRectangleAsPolygon(rc, rect, fill, stroke, thickness.Left);
+                return;
+            }
+
+            var sp0 = new ScreenPoint(rect.Left, rect.Top);
+            var sp1 = new ScreenPoint(rect.Right, rect.Top);
+            var sp2 = new ScreenPoint(rect.Right, rect.Bottom);
+            var sp3 = new ScreenPoint(rect.Left, rect.Bottom);
+            rc.DrawPolygon(new[] { sp0, sp1, sp2, sp3 }, fill, null, 0, null, OxyPenLineJoin.Miter, true);
+            rc.DrawPolygon(new[] { sp0, sp1 }, null, stroke, thickness.Top, null, OxyPenLineJoin.Miter, true);
+            rc.DrawPolygon(new[] { sp1, sp2 }, null, stroke, thickness.Right, null, OxyPenLineJoin.Miter, true);
+            rc.DrawPolygon(new[] { sp2, sp3 }, null, stroke, thickness.Bottom, null, OxyPenLineJoin.Miter, true);
+            rc.DrawPolygon(new[] { sp3, sp0 }, null, stroke, thickness.Left, null, OxyPenLineJoin.Miter, true);
+        }
+
+        /// <summary>
         /// Draws the line segments.
         /// </summary>
         /// <param name="rc">The rc.</param>
