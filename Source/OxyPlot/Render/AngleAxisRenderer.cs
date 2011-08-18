@@ -1,5 +1,7 @@
 ﻿namespace OxyPlot
 {
+    using System;
+
     public class AngleAxisRendererBase : AxisRendererBase
     {
         public AngleAxisRendererBase(IRenderContext rc, PlotModel plot)
@@ -17,6 +19,7 @@
             {
                 magnitudeAxis = axis.RelatedAxis;
             }
+            double eps = axis.MinorStep * 1e-3;
 
             if (axis.ShowMinorTicks)
             {
@@ -24,7 +27,7 @@
 
                 foreach (double xValue in MinorTickValues)
                 {
-                    if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
+                    if (xValue < axis.ActualMinimum - eps || xValue > axis.ActualMaximum + eps)
                     {
                         continue;
                     }
@@ -34,7 +37,7 @@
                         continue;
                     }
 
-                    var pt = magnitudeAxis.Transform(new DataPoint(magnitudeAxis.ActualMaximum, xValue), axis);
+                    var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, xValue, axis);
 
                     if (MinorPen != null)
                     {
@@ -49,30 +52,54 @@
 
             foreach (double xValue in MajorTickValues)
             {
-                if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
+                if (xValue < axis.ActualMinimum - eps || xValue > axis.ActualMaximum + eps)
                 {
                     continue;
                 }
 
-                var pt = magnitudeAxis.Transform(new DataPoint(magnitudeAxis.ActualMaximum, xValue), axis);
+                var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, xValue, axis);
 
                 if (MajorPen != null)
                 {
                     rc.DrawLine(axis.MidPoint.x, axis.MidPoint.y, pt.x, pt.y, MajorPen, false);
                 }
 
-                // RenderGridline(x, y + y0, x, y + y1, majorTickPen);
+            }
 
+            foreach (var value in MajorLabelValues)
+            {
+                // skip the last value (overlapping with the first)
+                if (value > axis.ActualMaximum - eps) continue;
 
-                // var pt = new ScreenPoint(x, istop ? y + y1 - TICK_DIST : y + y1 + TICK_DIST);
-                // string text = axis.FormatValue(xValue);
-                // double h = rc.MeasureText(text, axis.Font, axis.FontSize, axis.FontWeight).Height;
+                var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, value, axis);
+                double angle = Math.Atan2(pt.y - axis.MidPoint.y, pt.x - axis.MidPoint.x) ;
+                
+                // add some margin
+                pt.x += Math.Cos(angle) * axis.AxisTickToLabelDistance;
+                pt.y += Math.Sin(angle) * axis.AxisTickToLabelDistance;
+                
+                // Convert to degrees
+                angle *= 180 / Math.PI;
+                
+                string text = axis.FormatValue(value);
 
-                // rc.DrawText(pt, text, plot.TextColor,
-                // axis.Font, axis.FontSize, axis.FontWeight,
-                // axis.Angle,
-                // HorizontalTextAlign.Center, istop ? VerticalTextAlign.Bottom : VerticalTextAlign.Top);
-                // maxh = Math.Max(maxh, h);
+                var ha = HorizontalTextAlign.Left;
+                var va = VerticalTextAlign.Middle;
+
+                if (Math.Abs(Math.Abs(angle) - 90) < 10)
+                {
+                    ha = HorizontalTextAlign.Center;
+                    va = angle > 90 ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
+                    angle = 0;
+                }
+                else if (angle > 90 || angle < -90)
+                {
+                    angle -= 180;
+                    ha = HorizontalTextAlign.Right;
+                }
+                rc.DrawMathText(pt, text, Plot.TextColor,
+                                     axis.ActualFont, axis.FontSize, axis.FontWeight,
+                                     angle, ha, va, false);
             }
         }
     }
