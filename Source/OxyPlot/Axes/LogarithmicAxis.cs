@@ -68,8 +68,10 @@ namespace OxyPlot
                 double logBase = Math.Log(Base);
                 var e0 = (int)Math.Floor(Math.Log(ActualMinimum) / logBase);
                 var e1 = (int)Math.Ceiling(Math.Log(ActualMaximum) / logBase);
-                ActualMinimum = RemoveNoiseFromDoubleMath(Math.Exp(e0 * logBase));
-                ActualMaximum = RemoveNoiseFromDoubleMath(Math.Exp(e1 * logBase));
+                if (!double.IsNaN(ActualMinimum)) 
+                    ActualMinimum = RemoveNoiseFromDoubleMath(Math.Exp(e0 * logBase));
+                if (!double.IsNaN(ActualMaximum))
+                    ActualMaximum = RemoveNoiseFromDoubleMath(Math.Exp(e1 * logBase));
             }
 
             base.UpdateActualMaxMin();
