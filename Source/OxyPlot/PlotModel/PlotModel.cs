@@ -79,11 +79,9 @@ namespace OxyPlot
 
             PlotType = PlotType.XY;
 
-            AxisTitleDistance = 4;
-            AxisTickToLabelDistance = 4;
-
             PlotMargins = new OxyThickness(60, 4, 4, 40);
             Padding = new OxyThickness(8, 8, 16, 8);
+            AutoAdjustPlotMargins = true;
 
             TitleFont = null;
             TitleFontSize = 18;
@@ -258,18 +256,6 @@ namespace OxyPlot
         public OxyRect LegendArea { get; private set; }
 
         /// <summary>
-        /// Gets or sets the distance from axis number to axis title.
-        /// </summary>
-        /// <value>The axis title distance.</value>
-        public double AxisTitleDistance { get; set; }
-
-        /// <summary>
-        /// Gets or sets the distance from axis tick to number label.
-        /// </summary>
-        /// <value>The axis tick to label distance.</value>
-        public double AxisTickToLabelDistance { get; set; }
-
-        /// <summary>
         /// Gets or sets the type of the coordinate system.
         /// </summary>
         /// <value>The type of the plot.</value>
@@ -419,9 +405,22 @@ namespace OxyPlot
         public double LegendBorderThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the margins around the plot (this should be large enough to fit the axes).
+        /// Gets or sets the minimum margins around the plot (this should be large enough to fit the axes).
+        /// The default value is (60, 4, 4, 40).
+        /// Set AutoAdjustPlotMargins if you want the margins to be adjusted when the axes require more space.
         /// </summary>
         public OxyThickness PlotMargins { get; set; }
+
+        /// <summary>
+        /// Gets or sets the actual plot margins.
+        /// </summary>
+        /// <value>The actual plot margins.</value>
+        public OxyThickness ActualPlotMargins { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to auto adjust plot margins.
+        /// </summary>
+        public bool AutoAdjustPlotMargins { get; set; }
 
         /// <summary>
         /// Gets or sets the padding around the plot.
