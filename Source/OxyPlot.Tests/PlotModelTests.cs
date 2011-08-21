@@ -4,6 +4,8 @@ using NUnit.Framework;
 
 namespace OxyPlot.Tests
 {
+    using System.Xml.Serialization;
+
     [TestFixture]
     public class PlotModelTests
     {
@@ -28,6 +30,19 @@ namespace OxyPlot.Tests
                 plot.Render(svgrc);
             }
             // todo: validate SVG
+        }
+
+        [Test]
+        public void XmlSerialize_PlotModel()
+        {
+            var plot = new PlotModel();
+            plot.Title = "Test1";
+            plot.Subtitle = "subtitle";
+            var ls = new LineSeries();
+            for (double i = 0; i < 30; i += 0.1)
+                ls.Points.Add(new DataPoint(i, Math.Sin(i) * 20));
+            plot.UpdateData();
+            // plot.XmlSerialize("test.xml");
         }
 
         [Test]

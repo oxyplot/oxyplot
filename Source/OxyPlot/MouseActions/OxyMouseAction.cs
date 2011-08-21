@@ -24,5 +24,11 @@
         public virtual void OnMouseWheel(ScreenPoint pt, double delta, bool control, bool shift, bool alt)
         {
         }
+
+        protected DataPoint InverseTransform(double x, double y, IAxis xaxis, IAxis yaxis)
+        {
+            if (xaxis != null) return xaxis.InverseTransform(x, y, yaxis);
+            return new DataPoint(0, yaxis.InverseTransform(y));
+        }
     }
 }

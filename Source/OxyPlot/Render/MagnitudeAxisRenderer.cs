@@ -2,6 +2,8 @@
 
 namespace OxyPlot
 {
+    using System;
+
     public class MagnitudeAxisRendererBase : AxisRendererBase
     {
         public MagnitudeAxisRendererBase(IRenderContext rc, PlotModel plot)
@@ -17,6 +19,10 @@ namespace OxyPlot
             if (axis.RelatedAxis != null)
             {
                 angleAxis = axis.RelatedAxis;
+            }
+            if (angleAxis==null)
+            {
+                throw new NullReferenceException("Angle axis should not be null.");
             }
 
             if (axis.ShowMinorTicks)

@@ -1,64 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DateTimeAxis.cs" company="OxyPlot">
+//   See http://oxyplot.codeplex.com
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Globalization;
+    using System.Linq;
+
     /// <summary>
-    ///   A date time interval.
+    /// A date time interval.
     /// </summary>
     public enum DateTimeIntervalType
     {
         /// <summary>
         ///   Automatically determine interval.
         /// </summary>
-        Auto = 0,
+        Auto = 0, 
 
         /// <summary>
         ///   Interval type is milliseconds.
         /// </summary>
-        Milliseconds = 1,
+        Milliseconds = 1, 
 
         /// <summary>
         ///   Interval type is seconds.
         /// </summary>
-        Seconds = 2,
+        Seconds = 2, 
 
         /// <summary>
         ///   Interval type is minutes.
         /// </summary>
-        Minutes = 3,
+        Minutes = 3, 
 
         /// <summary>
         ///   Interval type is hours.
         /// </summary>
-        Hours = 4,
+        Hours = 4, 
 
         /// <summary>
         ///   Interval type is days.
         /// </summary>
-        Days = 5,
+        Days = 5, 
 
         /// <summary>
         ///   Interval type is weeks.
         /// </summary>
-        Weeks = 6,
+        Weeks = 6, 
 
         /// <summary>
         ///   Interval type is months.
         /// </summary>
-        Months = 7,
+        Months = 7, 
 
         /// <summary>
         ///   Interval type is years.
         /// </summary>
-        Years = 8,
+        Years = 8, 
     }
 
     /// <summary>
-    ///   DateTime Axis
+    /// DateTime Axis
     ///   The actual numeric values on the axis are days since 1900/01/01.
     ///   Use the static ToDouble and ToDateTime to convert numeric values to DateTimes.
     ///   The StringFormat value can be used to force formatting of the axis values
@@ -68,256 +74,493 @@ namespace OxyPlot
     /// </summary>
     public class DateTimeAxis : LinearAxis
     {
-        // ========================================
-        // TODO: this class needs some clean-up
-        // ========================================
-
-        internal static DateTime timeOrigin = new DateTime(1900, 1, 1); // Same date values as Excel
-
-        private DateTimeIntervalType ActualIntervalType;
-
-        private DateTimeIntervalType ActualMinorIntervalType;
+        #region Constants and Fields
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DateTimeAxis" /> class.
+        /// The time origin.
         /// </summary>
-        /// <param name = "pos">The position.</param>
-        /// <param name = "title">The axis title.</param>
-        /// <param name = "format">The string format for the axis values.</param>
-        /// <param name = "intervalType">The interval type.</param>
-        public DateTimeAxis(AxisPosition pos = AxisPosition.Bottom, string title = null, string format = null,
-                            DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
+        private static DateTime timeOrigin = new DateTime(1900, 1, 1); // Same date values as Excel
+
+        /// <summary>
+        /// The actual interval type.
+        /// </summary>
+        private DateTimeIntervalType actualIntervalType;
+
+        /// <summary>
+        /// The actual minor interval type.
+        /// </summary>
+        private DateTimeIntervalType actualMinorIntervalType;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimeAxis"/> class.
+        /// </summary>
+        /// <param name="pos">
+        /// The position.
+        /// </param>
+        /// <param name="title">
+        /// The axis title.
+        /// </param>
+        /// <param name="format">
+        /// The string format for the axis values.
+        /// </param>
+        /// <param name="intervalType">
+        /// The interval type.
+        /// </param>
+        public DateTimeAxis(
+            AxisPosition pos = AxisPosition.Bottom, 
+            string title = null, 
+            string format = null, 
+            DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
             : base(pos, title)
         {
-            Culture = CultureInfo.CurrentCulture;
-            FirstDayOfWeek = DayOfWeek.Monday;
-            CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek;
+            this.Culture = CultureInfo.CurrentCulture;
+            this.FirstDayOfWeek = DayOfWeek.Monday;
+            this.CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek;
 
-            StringFormat = format;
-            IntervalType = intervalType;
+            this.StringFormat = format;
+            this.IntervalType = intervalType;
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DateTimeAxis" /> class.
+        /// Initializes a new instance of the <see cref="DateTimeAxis"/> class.
         /// </summary>
-        /// <param name = "firstDateTime">The first date/time on the axis.</param>
-        /// <param name = "lastDateTime">The last date/time on the axis.</param>
-        /// <param name = "pos">The position of the axis.</param>
-        /// <param name = "title">The axis title.</param>
-        /// <param name = "format">The string format for the axis values.</param>
-        /// <param name = "intervalType">The interval type.</param>
-        public DateTimeAxis(DateTime firstDateTime, DateTime lastDateTime,
-                            AxisPosition pos = AxisPosition.Bottom, string title = null, string format = null,
-                            DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
+        /// <param name="firstDateTime">
+        /// The first date/time on the axis.
+        /// </param>
+        /// <param name="lastDateTime">
+        /// The last date/time on the axis.
+        /// </param>
+        /// <param name="pos">
+        /// The position of the axis.
+        /// </param>
+        /// <param name="title">
+        /// The axis title.
+        /// </param>
+        /// <param name="format">
+        /// The string format for the axis values.
+        /// </param>
+        /// <param name="intervalType">
+        /// The interval type.
+        /// </param>
+        public DateTimeAxis(
+            DateTime firstDateTime, 
+            DateTime lastDateTime, 
+            AxisPosition pos = AxisPosition.Bottom, 
+            string title = null, 
+            string format = null, 
+            DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
             : this(pos, title, format, intervalType)
         {
-            Minimum = ToDouble(firstDateTime);
-            Maximum = ToDouble(lastDateTime);
+            this.Minimum = ToDouble(firstDateTime);
+            this.Maximum = ToDouble(lastDateTime);
         }
 
-        public DateTimeIntervalType IntervalType { get; set; }
+        #endregion
 
-        public DateTimeIntervalType MinorIntervalType { get; set; }
+        #region Public Properties
 
-        public DayOfWeek FirstDayOfWeek { get; set; }
-
+        /// <summary>
+        /// Gets or sets CalendarWeekRule.
+        /// </summary>
         public CalendarWeekRule CalendarWeekRule { get; set; }
 
+        /// <summary>
+        /// Gets or sets Culture.
+        /// </summary>
         public CultureInfo Culture { get; set; }
 
         /// <summary>
-        /// Converts a DateTime to a double.
+        /// Gets or sets FirstDayOfWeek.
         /// </summary>
-        /// <param name="value">The date/time.</param>
-        /// <returns></returns>
-        public static double ToDouble(DateTime value)
+        public DayOfWeek FirstDayOfWeek { get; set; }
+
+        /// <summary>
+        /// Gets or sets IntervalType.
+        /// </summary>
+        public DateTimeIntervalType IntervalType { get; set; }
+
+        /// <summary>
+        /// Gets or sets MinorIntervalType.
+        /// </summary>
+        public DateTimeIntervalType MinorIntervalType { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The create data point.
+        /// </summary>
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <param name="y">
+        /// The y.
+        /// </param>
+        /// <returns>
+        /// A data point.
+        /// </returns>
+        public static DataPoint CreateDataPoint(DateTime x, double y)
         {
-            var span = value - timeOrigin;
-            return span.TotalDays + 1;
+            return new DataPoint(ToDouble(x), y);
+        }
+
+        /// <summary>
+        /// The create data point.
+        /// </summary>
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <param name="y">
+        /// The y.
+        /// </param>
+        /// <returns>
+        /// A data point.
+        /// </returns>
+        public static DataPoint CreateDataPoint(DateTime x, DateTime y)
+        {
+            return new DataPoint(ToDouble(x), ToDouble(y));
+        }
+
+        /// <summary>
+        /// The create data point.
+        /// </summary>
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <param name="y">
+        /// The y.
+        /// </param>
+        /// <returns>
+        /// A data point.
+        /// </returns>
+        public static DataPoint CreateDataPoint(double x, DateTime y)
+        {
+            return new DataPoint(x, ToDouble(y));
         }
 
         /// <summary>
         /// Converts a double precision value to a DateTime.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns></returns>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// A date/time structure.
+        /// </returns>
         public static DateTime ToDateTime(double value)
         {
             if (double.IsNaN(value))
+            {
                 return new DateTime();
+            }
+
             return timeOrigin.AddDays(value - 1);
         }
 
-        public static DataPoint CreateDataPoint(DateTime x, double y)
+        /// <summary>
+        /// Converts a DateTime to a double.
+        /// </summary>
+        /// <param name="value">
+        /// The date/time.
+        /// </param>
+        /// <returns>
+        /// The to double.
+        /// </returns>
+        public static double ToDouble(DateTime value)
         {
-            return new DataPoint(DateTimeAxis.ToDouble(x),y);
-        }
-        public static DataPoint CreateDataPoint(DateTime x, DateTime y)
-        {
-            return new DataPoint(DateTimeAxis.ToDouble(x),DateTimeAxis.ToDouble(y));
-        }
-
-        public static DataPoint CreateDataPoint(double x, DateTime y)
-        {
-            return new DataPoint(x,DateTimeAxis.ToDouble(y));
+            TimeSpan span = value - timeOrigin;
+            return span.TotalDays + 1;
         }
 
         /// <summary>
-        ///   Formats the specified value by the axis' ActualStringFormat.
+        /// Formats the specified value by the axis' ActualStringFormat.
         /// </summary>
-        /// <param name = "x">The x.</param>
-        /// <returns>The formatted DateTime value</returns>
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <returns>
+        /// The formatted DateTime value
+        /// </returns>
         public override string FormatValue(double x)
         {
             // convert the double value to a DateTime
-            var time = ToDateTime(x);
+            DateTime time = ToDateTime(x);
 
-            string fmt = ActualStringFormat;
+            string fmt = this.ActualStringFormat;
             if (fmt == null)
             {
                 return time.ToShortDateString();
             }
 
-            int week = GetWeek(time);
+            int week = this.GetWeek(time);
             fmt = fmt.Replace("ww", week.ToString("00"));
             fmt = fmt.Replace("w", week.ToString());
             return time.ToString(fmt, CultureInfo.InvariantCulture);
         }
 
+        /// <summary>
+        /// The get tick values.
+        /// </summary>
+        /// <param name="majorLabelValues">
+        /// The major label values.
+        /// </param>
+        /// <param name="majorTickValues">
+        /// The major tick values.
+        /// </param>
+        /// <param name="minorTickValues">
+        /// The minor tick values.
+        /// </param>
+        public override void GetTickValues(
+            out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
+        {
+            minorTickValues = this.CreateDateTimeTickValues(
+                this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep, this.actualMinorIntervalType);
+            majorTickValues = this.CreateDateTimeTickValues(
+                this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep, this.actualIntervalType);
+            majorLabelValues = majorTickValues;
+        }
+
+        /// <summary>
+        /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary.
+        /// e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
+        /// </summary>
+        /// <param name="x">
+        /// The coordinate.
+        /// </param>
+        /// <returns>
+        /// The value.
+        /// </returns>
         public override object GetValue(double x)
         {
             return ToDateTime(x);
         }
 
         /// <summary>
-        ///   Gets the week number for the specified date.
+        /// The update intervals.
         /// </summary>
-        /// <param name = "date">The date.</param>
-        /// <returns>The week number fr the current culture.</returns>
-        private int GetWeek(DateTime date)
-        {
-            return Culture.Calendar.GetWeekOfYear(date, CalendarWeekRule, FirstDayOfWeek);
-        }
-
-
-        public override void GetTickValues(out ICollection<double> majorLabelValues, out ICollection<double> majorTickValues, out ICollection<double> minorTickValues)
-        {
-            minorTickValues = CreateDateTimeTickValues(ActualMinimum, ActualMaximum, ActualMinorStep,
-                                                   ActualMinorIntervalType);
-            majorTickValues = CreateDateTimeTickValues(ActualMinimum, ActualMaximum, ActualMajorStep, ActualIntervalType);
-            majorLabelValues = majorTickValues;
-        }
-
-        private ICollection<double> CreateDateTimeTickValues(double min, double max, double interval,
-                                                             DateTimeIntervalType intervalType)
-        {
-            // If the step size is more than 7 days (e.g. months or years) we use a specialized tick generation method that adds tick values with uneven spacing...
-            if (intervalType > DateTimeIntervalType.Days)
-            {
-                return CreateDateTickValues(min, max, interval, intervalType);
-            }
-
-            // For shorter step sizes we use the method from AxisBase
-            return CreateTickValues(min, max, interval);
-        }
-
-        //protected override double GetIntervalLength()
-        //{
-        //    // todo: should measure sample DateTimes (min/max?) using the ActualStringFormat to get the size of the label
-        //    string max = FormatValue(ActualMaximum);
-        //    string min = FormatValue(ActualMinimum);
-        //    int length = Math.Max(max.Length, min.Length);
-
-        //    switch (Position)
-        //    {
-        //        case AxisPosition.Top:
-        //        case AxisPosition.Bottom:
-        //            return length * 10;
-        //    }
-
-        //    return base.GetIntervalLength();
-        //}
-
+        /// <param name="plotArea">
+        /// The plot area.
+        /// </param>
         public override void UpdateIntervals(OxyRect plotArea)
         {
             base.UpdateIntervals(plotArea);
-            switch (ActualIntervalType)
+            switch (this.actualIntervalType)
             {
                 case DateTimeIntervalType.Years:
-                    ActualMinorStep = 31;
-                    ActualMinorIntervalType = DateTimeIntervalType.Years;
-                    if (ActualStringFormat == null)
+                    this.ActualMinorStep = 31;
+                    this.actualMinorIntervalType = DateTimeIntervalType.Years;
+                    if (this.ActualStringFormat == null)
                     {
-                        ActualStringFormat = "yyyy";
+                        this.ActualStringFormat = "yyyy";
                     }
 
                     break;
                 case DateTimeIntervalType.Months:
-                    ActualMinorIntervalType = DateTimeIntervalType.Months;
-                    if (ActualStringFormat == null)
+                    this.actualMinorIntervalType = DateTimeIntervalType.Months;
+                    if (this.ActualStringFormat == null)
                     {
-                        ActualStringFormat = "yyyy-MM-dd";
+                        this.ActualStringFormat = "yyyy-MM-dd";
                     }
 
                     break;
                 case DateTimeIntervalType.Weeks:
-                    ActualMinorIntervalType = DateTimeIntervalType.Days;
-                    ActualMajorStep = 7;
-                    ActualMinorStep = 1;
-                    if (ActualStringFormat == null)
+                    this.actualMinorIntervalType = DateTimeIntervalType.Days;
+                    this.ActualMajorStep = 7;
+                    this.ActualMinorStep = 1;
+                    if (this.ActualStringFormat == null)
                     {
-                        ActualStringFormat = "yyyy/ww";
+                        this.ActualStringFormat = "yyyy/ww";
                     }
 
                     break;
                 case DateTimeIntervalType.Days:
-                    ActualMinorStep = ActualMajorStep;
-                    if (ActualStringFormat == null)
+                    this.ActualMinorStep = this.ActualMajorStep;
+                    if (this.ActualStringFormat == null)
                     {
-                        ActualStringFormat = "yyyy-MM-dd";
+                        this.ActualStringFormat = "yyyy-MM-dd";
                     }
 
                     break;
                 case DateTimeIntervalType.Hours:
-                    ActualMinorStep = ActualMajorStep;
-                    if (ActualStringFormat == null)
+                    this.ActualMinorStep = this.ActualMajorStep;
+                    if (this.ActualStringFormat == null)
                     {
-                        ActualStringFormat = "HH:mm";
+                        this.ActualStringFormat = "HH:mm";
                     }
 
                     break;
                 case DateTimeIntervalType.Minutes:
-                    ActualMinorStep = ActualMajorStep;
-                    if (ActualStringFormat == null)
+                    this.ActualMinorStep = this.ActualMajorStep;
+                    if (this.ActualStringFormat == null)
                     {
-                        ActualStringFormat = "HH:mm";
+                        this.ActualStringFormat = "HH:mm";
                     }
 
                     break;
                 case DateTimeIntervalType.Seconds:
-                    ActualMinorStep = ActualMajorStep;
-                    if (ActualStringFormat == null)
+                    this.ActualMinorStep = this.ActualMajorStep;
+                    if (this.ActualStringFormat == null)
                     {
-                        ActualStringFormat = "HH:mm:ss";
+                        this.ActualStringFormat = "HH:mm:ss";
                     }
 
                     break;
                 default:
-                    ActualMinorStep = ActualMajorStep;
+                    this.ActualMinorStep = this.ActualMajorStep;
                     break;
             }
         }
 
-        private ICollection<double> CreateDateTickValues(double min, double max, double step,
-                                                         DateTimeIntervalType intervalType)
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Calculates the actual interval.
+        /// </summary>
+        /// <param name="availableSize">
+        /// Size of the available area.
+        /// </param>
+        /// <param name="maxIntervalSize">
+        /// Maximum length of the intervals.
+        /// </param>
+        /// <returns>
+        /// The calculate actual interval.
+        /// </returns>
+        protected override double CalculateActualInterval(double availableSize, double maxIntervalSize)
         {
-            var start = ToDateTime(min);
+            double range = Math.Abs(this.ActualMinimum - this.ActualMaximum);
+
+            var goodIntervals = new[]
+                {
+                    1.0 / 24 / 60, 1.0 / 24 / 30, 1.0 / 24 / 12, 1.0 / 24 / 6, 1.0 / 24 / 2, 1.0 / 24, 1.0 / 6, 1.0 / 4, 
+                    1.0 / 2, 1, 2, 7, 14, 30.5, 30.5 * 2, 30.5 * 3, 30.5 * 4, 30.5 * 6, 365.25
+                };
+            double interval = goodIntervals[0];
+
+            int maxNumberOfIntervals = Math.Max((int)(availableSize / maxIntervalSize), 2);
+
+            while (true)
+            {
+                if (range / interval < maxNumberOfIntervals)
+                {
+                    break;
+                }
+
+                double nextInterval = goodIntervals.FirstOrDefault(i => i > interval);
+                if (nextInterval == 0)
+                {
+                    nextInterval = interval * 2;
+                }
+
+                interval = nextInterval;
+            }
+
+            this.actualIntervalType = this.IntervalType;
+            this.actualMinorIntervalType = this.MinorIntervalType;
+
+            if (this.actualIntervalType == DateTimeIntervalType.Auto)
+            {
+                this.actualIntervalType = DateTimeIntervalType.Seconds;
+                if (interval >= 1.0 / 24 / 60)
+                {
+                    this.actualIntervalType = DateTimeIntervalType.Minutes;
+                }
+
+                if (interval >= 1.0 / 24)
+                {
+                    this.actualIntervalType = DateTimeIntervalType.Hours;
+                }
+
+                if (interval >= 1)
+                {
+                    this.actualIntervalType = DateTimeIntervalType.Days;
+                }
+
+                if (interval >= 30)
+                {
+                    this.actualIntervalType = DateTimeIntervalType.Months;
+                }
+
+                if (range >= 365.25)
+                {
+                    this.actualIntervalType = DateTimeIntervalType.Years;
+                }
+            }
+
+            if (this.actualIntervalType == DateTimeIntervalType.Months)
+            {
+                double monthsRange = range / 30.5;
+                interval = this.CalculateActualInterval(availableSize, maxIntervalSize, monthsRange);
+            }
+
+            if (this.actualIntervalType == DateTimeIntervalType.Years)
+            {
+                double yearsRange = range / 365.25;
+                interval = this.CalculateActualInterval(availableSize, maxIntervalSize, yearsRange);
+            }
+
+            if (this.actualMinorIntervalType == DateTimeIntervalType.Auto)
+            {
+                switch (this.actualIntervalType)
+                {
+                    case DateTimeIntervalType.Years:
+                        this.actualMinorIntervalType = DateTimeIntervalType.Months;
+                        break;
+                    case DateTimeIntervalType.Months:
+                        this.actualMinorIntervalType = DateTimeIntervalType.Days;
+                        break;
+                    case DateTimeIntervalType.Weeks:
+                        this.actualMinorIntervalType = DateTimeIntervalType.Days;
+                        break;
+                    case DateTimeIntervalType.Days:
+                        this.actualMinorIntervalType = DateTimeIntervalType.Hours;
+                        break;
+                    case DateTimeIntervalType.Hours:
+                        this.actualMinorIntervalType = DateTimeIntervalType.Minutes;
+                        break;
+                    default:
+                        this.actualMinorIntervalType = DateTimeIntervalType.Days;
+                        break;
+                }
+            }
+
+            return interval;
+        }
+
+        /// <summary>
+        /// Creates the date tick values.
+        /// </summary>
+        /// <param name="min">
+        /// The min.
+        /// </param>
+        /// <param name="max">
+        /// The max.
+        /// </param>
+        /// <param name="step">
+        /// The step.
+        /// </param>
+        /// <param name="intervalType">
+        /// Type of the interval.
+        /// </param>
+        /// <returns>
+        /// Date tick values.
+        /// </returns>
+        private IList<double> CreateDateTickValues(
+            double min, double max, double step, DateTimeIntervalType intervalType)
+        {
+            DateTime start = ToDateTime(min);
             switch (intervalType)
             {
                 case DateTimeIntervalType.Weeks:
 
                     // make sure the first tick is at the 1st day of a week
-                    start = start.AddDays(-(int)start.DayOfWeek + (int)FirstDayOfWeek);
+                    start = start.AddDays(-(int)start.DayOfWeek + (int)this.FirstDayOfWeek);
                     break;
                 case DateTimeIntervalType.Months:
 
@@ -332,9 +575,9 @@ namespace OxyPlot
             }
 
             // Adds a tick to the end time to make sure the end DateTime is included.
-            var end = ToDateTime(max).AddTicks(1);
+            DateTime end = ToDateTime(max).AddTicks(1);
 
-            var current = start;
+            DateTime current = start;
             var values = new Collection<double>();
             while (current < end)
             {
@@ -360,106 +603,52 @@ namespace OxyPlot
             return values;
         }
 
-        protected override double CalculateActualInterval(double availableSize, double maxIntervalSize)
+        /// <summary>
+        /// The create date time tick values.
+        /// </summary>
+        /// <param name="min">
+        /// The min.
+        /// </param>
+        /// <param name="max">
+        /// The max.
+        /// </param>
+        /// <param name="interval">
+        /// The interval.
+        /// </param>
+        /// <param name="intervalType">
+        /// The interval type.
+        /// </param>
+        /// DateTime tick values.
+        /// <returns>
+        /// DateTime tick values.
+        /// </returns>
+        private IList<double> CreateDateTimeTickValues(
+            double min, double max, double interval, DateTimeIntervalType intervalType)
         {
-            double range = Math.Abs(ActualMinimum - ActualMaximum);
-
-
-            var goodIntervals = new[]
-                                    {
-                                        1.0/24/60, 1.0/24/30, 1.0/24/12, 1.0/24/6, 1.0/24/2, 1.0/24, 1.0/6, 1.0/4, 1.0/2
-                                        , 1, 2, 7, 14, 30.5, 30.5*2, 30.5*3, 30.5*4, 30.5*6, 365.25
-                                    };
-            double interval = goodIntervals[0];
-
-            int maxNumberOfIntervals = Math.Max((int)(availableSize / maxIntervalSize), 2);
-
-            while (true)
+            // If the step size is more than 7 days (e.g. months or years) we use a specialized tick generation method that adds tick values with uneven spacing...
+            if (intervalType > DateTimeIntervalType.Days)
             {
-                if (range / interval < maxNumberOfIntervals)
-                {
-                    break;
-                }
-
-                double nextInterval = goodIntervals.FirstOrDefault(i => i > interval);
-                if (nextInterval == 0)
-                {
-                    nextInterval = interval * 2;
-                }
-
-                interval = nextInterval;
+                return this.CreateDateTickValues(min, max, interval, intervalType);
             }
 
-            ActualIntervalType = IntervalType;
-            ActualMinorIntervalType = MinorIntervalType;
-
-            if (ActualIntervalType == DateTimeIntervalType.Auto)
-            {
-                ActualIntervalType = DateTimeIntervalType.Seconds;
-                if (interval >= 1.0 / 24 / 60)
-                {
-                    ActualIntervalType = DateTimeIntervalType.Minutes;
-                }
-
-                if (interval >= 1.0 / 24)
-                {
-                    ActualIntervalType = DateTimeIntervalType.Hours;
-                }
-
-                if (interval >= 1)
-                {
-                    ActualIntervalType = DateTimeIntervalType.Days;
-                }
-
-                if (interval >= 30)
-                {
-                    ActualIntervalType = DateTimeIntervalType.Months;
-                }
-
-                if (range >= 365.25)
-                {
-                    ActualIntervalType = DateTimeIntervalType.Years;
-                }
-            }
-
-            if (ActualIntervalType == DateTimeIntervalType.Months)
-            {
-                double monthsRange = range / 30.5;
-                interval = CalculateActualInterval(availableSize, maxIntervalSize, monthsRange);
-            }
-
-            if (ActualIntervalType == DateTimeIntervalType.Years)
-            {
-                double yearsRange = range / 365.25;
-                interval = CalculateActualInterval(availableSize, maxIntervalSize, yearsRange);
-            }
-
-            if (ActualMinorIntervalType == DateTimeIntervalType.Auto)
-            {
-                switch (ActualIntervalType)
-                {
-                    case DateTimeIntervalType.Years:
-                        ActualMinorIntervalType = DateTimeIntervalType.Months;
-                        break;
-                    case DateTimeIntervalType.Months:
-                        ActualMinorIntervalType = DateTimeIntervalType.Days;
-                        break;
-                    case DateTimeIntervalType.Weeks:
-                        ActualMinorIntervalType = DateTimeIntervalType.Days;
-                        break;
-                    case DateTimeIntervalType.Days:
-                        ActualMinorIntervalType = DateTimeIntervalType.Hours;
-                        break;
-                    case DateTimeIntervalType.Hours:
-                        ActualMinorIntervalType = DateTimeIntervalType.Minutes;
-                        break;
-                    default:
-                        ActualMinorIntervalType = DateTimeIntervalType.Days;
-                        break;
-                }
-            }
-
-            return interval;
+            // For shorter step sizes we use the method from AxisBase
+            return CreateTickValues(min, max, interval);
         }
+
+        /// <summary>
+        /// Gets the week number for the specified date.
+        /// </summary>
+        /// <param name="date">
+        /// The date.
+        /// </param>
+        /// <returns>
+        /// The week number fr the current culture.
+        /// </returns>
+        private int GetWeek(DateTime date)
+        {
+            return this.Culture.Calendar.GetWeekOfYear(date, this.CalendarWeekRule, this.FirstDayOfWeek);
+        }
+
+        #endregion
     }
 }

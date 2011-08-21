@@ -170,7 +170,7 @@ namespace OxyPlot
         /// </returns>
         public string ToCode()
         {
-            return string.Format("new {0}({1},{2},{3},{4})", this.GetType().Name, this.x, this.y, this.size, this.value);
+            return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1},{2},{3}", this.x, this.y, this.size, this.value);
         }
 
         /// <summary>

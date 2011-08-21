@@ -10,7 +10,7 @@
         {
             var s1 = new OxyPlot.LineSeries();
             var s2 = new OxyPlot.Wpf.LineSeries();
-            Assert.PropertiesAreEqual(s1, s2);
+            OxyAssert.PropertiesAreEqual(s1, s2);
         }
 
         [Test]
@@ -18,21 +18,21 @@
         {
             var s1 = new OxyPlot.AreaSeries();
             var s2 = new OxyPlot.Wpf.AreaSeries();
-            Assert.PropertiesAreEqual(s1, s2);
+            OxyAssert.PropertiesAreEqual(s1, s2);
         }
         [Test]
         public void BarSeries()
         {
             var s1 = new OxyPlot.BarSeries();
             var s2 = new OxyPlot.Wpf.BarSeries();
-            Assert.PropertiesAreEqual(s1, s2);
+            OxyAssert.PropertiesAreEqual(s1, s2);
         }
         [Test]
         public void ScatterSeries()
         {
             var s1 = new OxyPlot.ScatterSeries();
             var s2 = new OxyPlot.Wpf.ScatterSeries();
-            Assert.PropertiesAreEqual(s1, s2);
+            OxyAssert.PropertiesAreEqual(s1, s2);
         }
         /*
         [Test]

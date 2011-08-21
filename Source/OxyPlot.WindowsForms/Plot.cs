@@ -10,6 +10,7 @@ namespace Oxyplot.WindowsForms
     /// <summary>
     /// Represents a control that displays a plot.
     /// </summary>
+    [Serializable]
 	public class Plot : Control, IPlotControl
 	{
         public List<OxyMouseAction> MouseActions { get; private set; }
@@ -76,6 +77,7 @@ namespace Oxyplot.WindowsForms
 
             if (isModelInvalidated)
             {
+                if (Model!=null)
                 Model.UpdateData();
                 isModelInvalidated = false;
             }

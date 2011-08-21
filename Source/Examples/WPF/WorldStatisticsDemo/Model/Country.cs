@@ -99,7 +99,7 @@
                 if (!double.IsNaN(value)) return value;
             }
             return double.NaN;
-
+            /*
             int previousYear = -10000;
             int followingYear = 10000;
             foreach (var y in StatisticsByYear.Keys)
@@ -121,7 +121,7 @@
             double v1 = (double)property.GetValue(stats1, null);
             double f = (double)(year - previousYear) / (followingYear - previousYear);
             double v = v0 + f * (v1 - v0);
-            return v;
+            return v;*/
         }
     }
 }

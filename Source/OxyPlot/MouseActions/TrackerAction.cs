@@ -43,6 +43,8 @@
             if (currentSeries == null)
                 return;
 
+            if (!pc.ActualModel.PlotArea.Contains(pt.X,pt.Y)) return;
+
             var result = GetNearestPoint(currentSeries, pt, !control, shift);
             if (result != null)
             {

@@ -24,7 +24,7 @@ namespace OxyPlot
 
             if (button == OxyMouseButton.XButton1 || button == OxyMouseButton.XButton2)
             {
-                var current = AxisBase.InverseTransform(pt.X, pt.Y, xaxis, yaxis); 
+                var current = InverseTransform(pt.X, pt.Y, xaxis, yaxis);
 
                 double scale = button == OxyMouseButton.XButton1 ? 0.05 : -0.05;
                 if (control) scale *= 3;
@@ -36,7 +36,7 @@ namespace OxyPlot
                 pc.InvalidatePlot();
                 return;
             }
-            
+
             if (alt)
                 button = OxyMouseButton.Right;
 
@@ -102,10 +102,8 @@ namespace OxyPlot
 
             if (zoomRectangle.Width > 10 && zoomRectangle.Height > 10)
             {
-                var topLeft = new ScreenPoint(zoomRectangle.Left, zoomRectangle.Top);
-                var bottomRight = new ScreenPoint(zoomRectangle.Right, zoomRectangle.Bottom);
-                var p0 = AxisBase.InverseTransform(topLeft, xaxis, yaxis);
-                var p1 = AxisBase.InverseTransform(bottomRight, xaxis, yaxis);
+                var p0 = InverseTransform(zoomRectangle.Left, zoomRectangle.Top, xaxis, yaxis);
+                var p1 = InverseTransform(zoomRectangle.Right, zoomRectangle.Bottom, xaxis, yaxis);
 
                 if (xaxis != null)
                     pc.Zoom(xaxis, p0.X, p1.X);
@@ -117,11 +115,13 @@ namespace OxyPlot
             base.OnMouseUp();
         }
 
+       
         public override void OnMouseWheel(ScreenPoint pt, double delta, bool control, bool shift, bool alt)
         {
             IAxis xa, ya;
             pc.GetAxesFromPoint(pt, out xa, out ya);
-            var current = AxisBase.InverseTransform(pt, xa, ya);
+            var current = InverseTransform(pt.X, pt.Y, xa, ya);
+
             double f = 0.001;
             if (control) f *= 0.2;
             double s = 1 + delta * f;

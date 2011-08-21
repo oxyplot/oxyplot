@@ -40,6 +40,6 @@
         <ListBox ItemsSource="{Binding Examples, Converter={StaticResource GroupingItemsControlConverter},
                     ConverterParameter={StaticResource SimpleGroupingItemsControlConverterParameter}}"
                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Grid.Row="1" BorderThickness="0,0,1,0"/>
-        <oxy:Plot Model="{Binding SelectedExample.PlotModel}" Grid.Column="1" Grid.Row="1"/>
+        <oxy:Plot Model="{Binding SelectedExample.PlotModel}" Background="{Binding PlotBackground}" Grid.Column="1" Grid.Row="1"/>
     </Grid>
 </UserControl>

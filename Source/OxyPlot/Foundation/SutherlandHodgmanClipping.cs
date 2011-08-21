@@ -33,7 +33,7 @@ namespace OxyPlot
                 return new List<ScreenPoint>();
             }
 
-            List<ScreenPoint> polygon = new List<ScreenPoint>();
+            List<ScreenPoint> polygon = new List<ScreenPoint>(v.Count);
 
             ScreenPoint s = v[v.Count - 1];
 

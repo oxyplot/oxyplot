@@ -57,7 +57,7 @@ namespace ExampleLibrary
         public static PlotModel GraphPaper()
         {
             var model = CreatePlotModel();
-            var c = OxyColors.Blue;
+            var c = OxyColors.DarkBlue;
             model.PlotType = PlotType.Cartesian;
             model.Axes.Add(
                 new LinearAxis(AxisPosition.Bottom, "X") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
@@ -69,10 +69,24 @@ namespace ExampleLibrary
         public static PlotModel LogLogPaper()
         {
             var model = CreatePlotModel();
-            var c = OxyColors.Green;
-            // model.PlotType = PlotType.Cartesian;
+            var c = OxyColors.DarkBlue;
             model.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X") { Minimum = 0.1, Maximum = 1000, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
             model.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y") { Minimum = 0.1, Maximum = 1000, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            return model;
+        }
+
+        [Example("Black background")]
+        public static PlotModel OnBlack()
+        {
+            var model = CreatePlotModel();
+            model.Background = OxyColors.Black;
+            model.TextColor = OxyColors.White;
+            model.BoxColor = OxyColors.White;
+            var c = OxyColors.White;
+            model.PlotType = PlotType.Cartesian;
+            model.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 2, 1000, "f(x)=sin(x)"));
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, "x") { MajorStep = Math.PI / 2, FormatAsFractions = true, FractionUnit = Math.PI, FractionUnitSymbol = "π", MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c), TicklineColor = OxyColors.White });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, "f(x)") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c), TicklineColor = OxyColors.White });
             return model;
         }
 

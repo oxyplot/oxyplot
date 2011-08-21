@@ -20,7 +20,7 @@ namespace Oxyplot.WindowsForms
 
         #region IRenderContext Members
 
-        public override void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
                              OxyPenLineJoin lineJoin, bool aliased)
         {
             if (stroke == null || thickness <= 0)
@@ -44,7 +44,7 @@ namespace Oxyplot.WindowsForms
             g.DrawLines(pen, ToPoints(points));
         }
 
-        public override void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
+        public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
                                 double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
@@ -168,7 +168,7 @@ namespace Oxyplot.WindowsForms
             return null;
         }
 
-        private PointF[] ToPoints(IEnumerable<ScreenPoint> points)
+        private PointF[] ToPoints(IList<ScreenPoint> points)
         {
             if (points == null)
                 return null;

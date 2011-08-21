@@ -13,11 +13,11 @@ namespace OxyPlot
                 DrawLine(new[] { points[i], points[i + 1] }, stroke, thickness, dashArray, lineJoin, aliased);
         }
 
-        public abstract void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased);
+        public abstract void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased);
 
-        public abstract void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased);
+        public abstract void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased);
 
-        public virtual void DrawPolygons(IEnumerable<IEnumerable<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public virtual void DrawPolygons(IList<IList<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             foreach (var polygon in polygons)
                 DrawPolygon(polygon, fill, stroke, thickness, dashArray, lineJoin, aliased);
@@ -25,7 +25,7 @@ namespace OxyPlot
 
         public abstract void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness);
 
-        public virtual void DrawRectangles(IEnumerable<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        public virtual void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             foreach (var r in rectangles)
                 DrawRectangle(r, fill, stroke, thickness);
@@ -33,7 +33,7 @@ namespace OxyPlot
 
         public abstract void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness);
 
-        public virtual void DrawEllipses(IEnumerable<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        public virtual void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             foreach (var r in rectangles)
                 DrawEllipse(r, fill, stroke, thickness);

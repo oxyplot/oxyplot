@@ -9,7 +9,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Implementation of IRenderContext to a DrawingContext
     /// </summary>
-/*    public class DrawingRenderContext : IRenderContext
+    public class DrawingRenderContext : IRenderContext
     {
         private readonly DrawingContext dc;
 
@@ -30,7 +30,7 @@ namespace OxyPlot.Wpf
                 DrawLine(new[] {points[i], points[i + 1]}, stroke, thickness, dashArray, lineJoin, aliased);
         }
 
-        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+        public void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
                              OxyPenLineJoin lineJoin, bool aliased)
         {
             var pen = CreatePen(stroke, thickness, dashArray, lineJoin);
@@ -76,7 +76,7 @@ namespace OxyPlot.Wpf
             return pen;
         }
 
-        public Geometry CreateGeometry(IEnumerable<ScreenPoint> points, bool isClosed, bool isFilled = true)
+        public Geometry CreateGeometry(IList<ScreenPoint> points, bool isClosed, bool isFilled = true)
         {
             var geometry = new PathGeometry();
             var figure = new PathFigure();
@@ -99,7 +99,7 @@ namespace OxyPlot.Wpf
             return geometry;
         }
 
-        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
+        public void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
                                 double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             Brush brush = null;
@@ -112,7 +112,7 @@ namespace OxyPlot.Wpf
             dc.DrawGeometry(brush, pen, g);
         }
         
-        public void DrawPolygons(IEnumerable<IEnumerable<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public void DrawPolygons(IList<IList<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             foreach (var polygon in polygons)
                 DrawPolygon(polygon, fill, stroke, thickness, dashArray, lineJoin, aliased);
@@ -209,5 +209,5 @@ namespace OxyPlot.Wpf
 
             return new OxySize(ft.Width, ft.Height);
         }
-    }*/
+    }
 }

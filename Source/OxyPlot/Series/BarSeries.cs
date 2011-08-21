@@ -40,7 +40,7 @@
         /// </summary>
         public BarSeries()
         {
-            this.InternalValues = new Collection<double>();
+            this.InternalValues = new List<double>();
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
             this.BarWidth = 0.5;
@@ -303,7 +303,7 @@
         ///   Renders the legend symbol on the specified rendering context.
         /// </summary>
         /// <param name = "rc">The rendering context.</param>
-        /// <param name = "legendBox">The rect.</param>
+        /// <param name = "legendBox">The legend rectangle.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;

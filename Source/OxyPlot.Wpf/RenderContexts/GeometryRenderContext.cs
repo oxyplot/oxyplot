@@ -56,7 +56,7 @@ namespace OxyPlot.Wpf
             }
         }
 
-        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+        public void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
                              OxyPenLineJoin lineJoin, bool aliased)
         {
             var e = new Polyline();
@@ -84,7 +84,7 @@ namespace OxyPlot.Wpf
             if (aliased)
                 e.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
-            var pc = new PointCollection();
+            var pc = new PointCollection(points.Count);
             foreach (var p in points)
                 pc.Add(ToPoint(p));
             e.Points = pc;
@@ -132,7 +132,7 @@ namespace OxyPlot.Wpf
             if (fill != null)
                 e.Fill = GetCachedBrush(fill);
 
-            var pc = new PointCollection();
+            var pc = new PointCollection(points.Count);
             foreach (var p in points)
                 pc.Add(ToPoint(p));
             e.Points = pc;

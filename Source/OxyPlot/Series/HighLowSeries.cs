@@ -36,7 +36,7 @@ namespace OxyPlot
         /// </summary>
         public HighLowSeries()
         {
-            this.items = new Collection<HighLowItem>();
+            this.items = new List<HighLowItem>();
             this.TickLength = 4;
             this.StrokeThickness = 1;
             this.TrackerFormatString = "X: {1:0.00}\nHigh: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}";

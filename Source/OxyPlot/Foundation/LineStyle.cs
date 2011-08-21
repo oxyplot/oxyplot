@@ -8,6 +8,10 @@
         DashDot,
         DashDashDot,
         DashDotDot,
+        DashDashDotDot,
+        LongDash,
+        LongDashDot,
+        LongDashDotDot,
         None
     }
 }

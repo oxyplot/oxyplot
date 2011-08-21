@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.OpenXml", "OxyPlot.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{A941B658-1237-482C-B0C7-378242D27647}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\WindowsForms\ExampleBrowser\ExampleBrowser.csproj", "{138BFD13-0ED1-49F5-B902-78770CB3D66B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,16 @@ Global
 		{A941B658-1237-482C-B0C7-378242D27647}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A941B658-1237-482C-B0C7-378242D27647}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A941B658-1237-482C-B0C7-378242D27647}.Release|x86.ActiveCfg = Release|Any CPU
+		{138BFD13-0ED1-49F5-B902-78770CB3D66B}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{138BFD13-0ED1-49F5-B902-78770CB3D66B}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{138BFD13-0ED1-49F5-B902-78770CB3D66B}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{138BFD13-0ED1-49F5-B902-78770CB3D66B}.Debug|x86.ActiveCfg = Debug|x86
+		{138BFD13-0ED1-49F5-B902-78770CB3D66B}.Debug|x86.Build.0 = Debug|x86
+		{138BFD13-0ED1-49F5-B902-78770CB3D66B}.Release|Any CPU.ActiveCfg = Release|x86
+		{138BFD13-0ED1-49F5-B902-78770CB3D66B}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{138BFD13-0ED1-49F5-B902-78770CB3D66B}.Release|Mixed Platforms.Build.0 = Release|x86
+		{138BFD13-0ED1-49F5-B902-78770CB3D66B}.Release|x86.ActiveCfg = Release|x86
+		{138BFD13-0ED1-49F5-B902-78770CB3D66B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,5 +104,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BBAECBB8-149A-42EE-A4F4-6207D7954F8B} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{A941B658-1237-482C-B0C7-378242D27647} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
+		{138BFD13-0ED1-49F5-B902-78770CB3D66B} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 	EndGlobalSection
 EndGlobal

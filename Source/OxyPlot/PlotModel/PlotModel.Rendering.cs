@@ -178,9 +178,9 @@ namespace OxyPlot
         /// <returns></returns>
         //private OxySize MeasureAxis(AxisBase axis, IRenderContext rc)
         //{
-        //    ICollection<double> majorTickValues;
-        //    ICollection<double> minorTickValues;
-        //    ICollection<double> majorLabelValues;
+        //    IList<double> majorTickValues;
+        //    IList<double> minorTickValues;
+        //    IList<double> majorLabelValues;
         //    // todo: must get the step size first...
         //    // this will not work
         //    axis.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);

@@ -72,7 +72,10 @@
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\AxisBase.cs" />
     <Compile Include="Axes\TimeSpanAxis.cs" />
-    <Compile Include="Foundation\CodeGenerator.cs" />
+    <Compile Include="Foundation\CodeGenerator\CodeGenerationAttribute.cs" />
+    <Compile Include="Foundation\CodeGenerator\CodeGenerator.cs" />
+    <Compile Include="Foundation\CodeGenerator\CodeGeneratorStringExtensions.cs" />
+    <Compile Include="Foundation\CodeGenerator\ICodeGenerating.cs" />
     <Compile Include="Foundation\FractionHelper.cs" />
     <Compile Include="Foundation\ReflectionHelper.cs" />
     <Compile Include="Foundation\ScreenPointHelper.cs" />

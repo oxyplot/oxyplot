@@ -67,7 +67,6 @@
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="Plot.Properties.cs" />
-    <Compile Include="Helpers\OxyConvert.cs" />
     <Compile Include="PngExporter.cs" />
     <Compile Include="Series\BarSeries.cs" />
     <Compile Include="Series\ItemsSeries.cs" />

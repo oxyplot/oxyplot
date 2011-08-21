@@ -82,7 +82,7 @@ namespace OxyPlot
             return result;
         }
 
-        private static void Segment(ICollection<ScreenPoint> points,
+        private static void Segment(IList<ScreenPoint> points,
                                     ScreenPoint pt0, ScreenPoint pt1, ScreenPoint pt2, ScreenPoint pt3,
                                     double t1, double t2, double tolerance)
         {

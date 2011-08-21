@@ -16,7 +16,7 @@ namespace OxyPlot
         public static IList<ScreenPoint> ResamplePoints(ScreenPoint[] allPoints, double minimumDistance)
         {
             double minimumSquaredDistance = minimumDistance*minimumDistance;
-            var result = new List<ScreenPoint>();
+            var result = new List<ScreenPoint>(allPoints.Length);
             if (allPoints.Length > 0)
             {
                 result.Add(allPoints[0]);

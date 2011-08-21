@@ -12,6 +12,7 @@
 
         /// <summary>
         /// Gets or sets the fraction unit.
+        /// Remember to set FormatAsFractions to true.
         /// </summary>
         /// <value>The fraction unit.</value>
         public double FractionUnit { get; set; }
@@ -20,6 +21,7 @@
         /// Gets or sets the fraction unit symbol.
         /// Use FractionUnit = Math.PI and FractionUnitSymbol = "π" if you want the axis to show "π/2,π,3π/2,2π" etc.
         /// Use FractionUnit = 1 and FractionUnitSymbol = "L" if you want the axis to show "0,L/2,L" etc.
+        /// Remember to set FormatAsFractions to true.
         /// </summary>
         /// <value>The fraction unit symbol.</value>
         public string FractionUnitSymbol { get; set; }
@@ -63,6 +65,11 @@
             MinorStep = minorStep;
         }
 
+        /// <summary>
+        /// Formats the value to be used on the axis.
+        /// </summary>
+        /// <param name="x">The value.</param>
+        /// <returns>The formatted value.</returns>
         public override string FormatValue(double x)
         {
             if (FormatAsFractions) return FractionHelper.ConvertToFractionString(x, FractionUnit, FractionUnitSymbol, 1e-6);

@@ -36,27 +36,34 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ListBoxStyle" TargetType="{x:Type ListBox}">
-            <Setter Property="ItemContainerStyle" Value="{DynamicResource ListboxItemStyle}" />
-            <Setter Property="Margin" Value="3,3,2,1" />
-        </Style>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <ListBox ItemsSource="{Binding ExamplesView}" SelectedItem="{Binding SelectedExample}" BorderThickness="0,0,1,0" Style="{StaticResource ListBoxStyle}">
-            <ListBox.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <TextBlock FontWeight="Bold" Text="{Binding Name}" Padding="2"/>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </ListBox.GroupStyle>
-        </ListBox>
-        <oxy:Plot Model="{Binding SelectedExample.PlotModel}" Grid.Column="1"/>
+        <Grid Background="#20000000">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ListBox ItemsSource="{Binding ExamplesView}" ItemContainerStyle="{DynamicResource ListboxItemStyle}" 
+                     SelectedItem="{Binding SelectedExample}" BorderThickness="0,0,0,1">
+                <ListBox.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock FontWeight="Bold" Text="{Binding Name}" Padding="2"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListBox.GroupStyle>
+            </ListBox>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="8">
+                <CheckBox IsChecked="{Binding MeasureFrameRate}" Content="Measure frame rate"/>
+                <TextBlock Margin="20 0 0 0" Text="{Binding FrameRate, StringFormat='{}{0:0.0} fps'}"/>
+            </StackPanel>
+        </Grid>
+        <oxy:Plot x:Name="Plot1" Model="{Binding SelectedExample.PlotModel}" Background="{Binding PlotBackground}" Grid.Column="1"/>
     </Grid>
 </Window>

@@ -56,8 +56,8 @@ namespace OxyPlot.Wpf
                     geometry = new StreamGeometry();
                     sgc = geometry.Open();
                 }
-                sgc.BeginFigure(points[i].ToPoint(), false, false);
-                sgc.LineTo(points[i + 1].ToPoint(), true, false);
+                sgc.BeginFigure(points[i].ToPoint(aliased), false, false);
+                sgc.LineTo(points[i + 1].ToPoint(aliased), true, false);
                 count++;
 
                 // Must limit the number of figures, otherwise drawing errors...
@@ -80,15 +80,17 @@ namespace OxyPlot.Wpf
             }
         }
 
-        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+        public void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
                              OxyPenLineJoin lineJoin, bool aliased)
         {
             var e = new Polyline();
             SetStroke(e, stroke, thickness, lineJoin, dashArray, aliased);
 
-            var pc = new PointCollection();
+            var pc = new PointCollection(points.Count);
             foreach (var p in points)
-                pc.Add(ToPoint(p));
+            {
+                pc.Add(p.ToPoint(aliased));
+            }
             e.Points = pc;
 
             Add(e);
@@ -124,19 +126,29 @@ namespace OxyPlot.Wpf
 
         }
 
-        private Brush GetCachedBrush(OxyColor stroke)
+        /// <summary>
+        /// Gets the cached brush.
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <returns>The brush.</returns>
+        private Brush GetCachedBrush(OxyColor color)
         {
-            Brush brush;
-            if (!brushCache.TryGetValue(stroke, out brush))
+            if (color.A == 0)
             {
-                brush = new SolidColorBrush(stroke.ToColor());
+                return null;
+            }
+
+            Brush brush;
+            if (!this.brushCache.TryGetValue(color, out brush))
+            {
+                brush = new SolidColorBrush(color.ToColor());
                 brush.Freeze();
-                brushCache.Add(stroke, brush);
+                this.brushCache.Add(color, brush);
             }
             return brush;
         }
 
-        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
+        public void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
                                 double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             var e = new Polygon();
@@ -145,15 +157,15 @@ namespace OxyPlot.Wpf
             if (fill != null)
                 e.Fill = GetCachedBrush(fill);
 
-            var pc = new PointCollection();
+            var pc = new PointCollection(points.Count);
             foreach (var p in points)
-                pc.Add(ToPoint(p));
+                pc.Add(p.ToPoint(aliased));
             e.Points = pc;
 
             Add(e);
         }
 
-        public void DrawPolygons(IEnumerable<IEnumerable<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public void DrawPolygons(IList<IList<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             Path path = null;
             StreamGeometry geometry = null;
@@ -167,7 +179,9 @@ namespace OxyPlot.Wpf
                     path = new Path();
                     SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
                     if (fill != null)
-                        path.Fill = GetCachedBrush(fill);
+                    {
+                        path.Fill = this.GetCachedBrush(fill);
+                    }
                     geometry = new StreamGeometry { FillRule = FillRule.Nonzero };
                     sgc = geometry.Open();
                 }
@@ -178,12 +192,12 @@ namespace OxyPlot.Wpf
                 {
                     if (first)
                     {
-                        sgc.BeginFigure(p.ToPoint(), fill != null, true);
+                        sgc.BeginFigure(p.ToPoint(aliased), fill != null, true);
                         first = false;
                     }
                     else
                     {
-                        sgc.LineTo(p.ToPoint(), stroke != null, true);
+                        sgc.LineTo(p.ToPoint(aliased), stroke != null, true);
                     }
                 }
 
@@ -209,13 +223,13 @@ namespace OxyPlot.Wpf
             }
         }
 
-        ///<summary>
-        /// Draws a rectangle.
-        ///</summary>
-        ///<param name="rect"></param>
-        ///<param name="fill"></param>
-        ///<param name="stroke"></param>
-        ///<param name="thickness"></param>
+        /// <summary>
+        /// Draws the rectangle.
+        /// </summary>
+        /// <param name="rect">The rect.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var e = new Rectangle();
@@ -223,7 +237,7 @@ namespace OxyPlot.Wpf
 
             if (fill != null)
             {
-                e.Fill = new SolidColorBrush(fill.ToColor());
+                e.Fill = this.GetCachedBrush(fill);
             }
 
             e.Width = rect.Width;
@@ -233,17 +247,19 @@ namespace OxyPlot.Wpf
             Add(e);
         }
 
-        public void DrawRectangles(IEnumerable<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = new Path();
             SetStroke(path, stroke, thickness);
             if (fill != null)
-                path.Fill = GetCachedBrush(fill);
+            {
+                path.Fill = this.GetCachedBrush(fill);
+            }
 
             var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
             foreach (var rect in rectangles)
             {
-                gg.Children.Add(new RectangleGeometry { Rect = rect.ToRect() });
+                gg.Children.Add(new RectangleGeometry { Rect = rect.ToRect(true) });
             }
             path.Data = gg;
             Add(path);
@@ -286,7 +302,7 @@ namespace OxyPlot.Wpf
             SetStroke(e, stroke, thickness, OxyPenLineJoin.Miter, null, false);
             if (fill != null)
             {
-                e.Fill = new SolidColorBrush(fill.ToColor());
+                e.Fill = GetCachedBrush(fill);
             }
 
             e.Width = rect.Width;
@@ -296,20 +312,23 @@ namespace OxyPlot.Wpf
             Add(e);
         }
 
-        public void DrawEllipses(IEnumerable<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = new Path();
             SetStroke(path, stroke, thickness);
             if (fill != null)
+            {
                 path.Fill = GetCachedBrush(fill);
+            }
 
             var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
             foreach (var rect in rectangles)
             {
-                gg.Children.Add(new EllipseGeometry(rect.ToRect()));
+                gg.Children.Add(new EllipseGeometry(rect.ToRect(true)));
             }
+
             path.Data = gg;
-            Add(path);
+            this.Add(path);
         }
 
         public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
@@ -318,7 +337,7 @@ namespace OxyPlot.Wpf
             var tb = new TextBlock
                          {
                              Text = text,
-                             Foreground = new SolidColorBrush(fill.ToColor())
+                             Foreground = GetCachedBrush(fill)
                          };
             if (fontFamily != null)
                 tb.FontFamily = new FontFamily(fontFamily);
@@ -380,10 +399,5 @@ namespace OxyPlot.Wpf
         }
 
         #endregion
-
-        private static Point ToPoint(ScreenPoint point)
-        {
-            return new Point(point.X, point.Y);
-        }
     }
 }

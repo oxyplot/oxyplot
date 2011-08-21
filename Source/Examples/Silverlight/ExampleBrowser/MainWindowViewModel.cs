@@ -8,8 +8,28 @@ using OxyPlot;
 
 namespace ExampleBrowser
 {
+    using System.Windows.Media;
+
+    using OxyPlot.Silverlight;
+
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        public bool MeasureFrameRate { get; set; }
+
+        private double frameRate;
+
+        public double FrameRate
+        {
+            get
+            {
+                return this.frameRate;
+            }
+            set
+            {
+                this.frameRate = value; RaisePropertyChanged("FrameRate");
+            }
+        }
+
         private IEnumerable<ExampleInfo> examples;
         public IEnumerable<ExampleInfo> Examples
         {
@@ -21,7 +41,9 @@ namespace ExampleBrowser
         public object SelectedItem
         {
             get { return selectedItem; }
-            set { selectedItem = value;
+            set
+            {
+                selectedItem = value;
                 var cc = value as ContentControl;
                 SelectedExample = cc.Content as ExampleInfo;
             }
@@ -31,7 +53,19 @@ namespace ExampleBrowser
         public ExampleInfo SelectedExample
         {
             get { return selectedExample; }
-            set { selectedExample = value; RaisePropertyChanged("SelectedExample"); }
+            set
+            {
+                selectedExample = value; RaisePropertyChanged("SelectedExample");
+                this.RaisePropertyChanged("PlotBackground");
+            }
+        }
+
+        public Brush PlotBackground
+        {
+            get
+            {
+                return selectedExample != null && selectedExample.PlotModel.Background != null ? selectedExample.PlotModel.Background.ToBrush() : new SolidColorBrush(Colors.Transparent);
+            }
         }
 
         public MainWindowViewModel()

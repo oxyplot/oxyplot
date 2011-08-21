@@ -22,12 +22,12 @@ namespace OxyPlot
             this.Height = height;
         }
 
-        public override void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             w.WritePolyline(points, w.CreateStyle(null, stroke, thickness, dashArray, lineJoin));
         }
 
-        public override void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             w.WritePolygon(points, w.CreateStyle(fill, stroke, thickness, dashArray, lineJoin));
         }

@@ -758,7 +758,7 @@ namespace OxyPlot.Silverlight
                 return null;
             }
 
-            var pc = new PointCollection();
+            var pc = new PointCollection(points.Length);
             foreach (Point p in points)
             {
                 pc.Add(p);

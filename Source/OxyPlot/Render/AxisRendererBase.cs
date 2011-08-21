@@ -11,9 +11,9 @@ namespace OxyPlot
         protected OxyPen MajorPen;
         protected OxyPen AxislinePen;
         protected OxyPen MajorTickPen;
-        protected ICollection<double> MajorTickValues;
-        protected ICollection<double> MinorTickValues;
-        protected ICollection<double> MajorLabelValues;
+        protected IList<double> MajorTickValues;
+        protected IList<double> MinorTickValues;
+        protected IList<double> MajorLabelValues;
         protected OxyPen MinorPen;
         protected OxyPen MinorTickPen;
         protected OxyPen ZeroPen;
