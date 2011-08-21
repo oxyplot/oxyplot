@@ -18,7 +18,7 @@ namespace OxyPlot.Wpf
 
             var size = new Size(width, height);
             g.Measure(size);
-            g.Arrange(new Rect(g.DesiredSize));
+            g.Arrange(new Rect(0,0,width,height));
             g.UpdateLayout();
 
             p.SaveBitmap(fileName);

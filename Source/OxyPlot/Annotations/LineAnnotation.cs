@@ -240,7 +240,7 @@ namespace OxyPlot
             }
 
             // transform to screen coordinates
-            var screenPoints = new List<ScreenPoint>();
+            var screenPoints = new List<ScreenPoint>(points.Count);
             foreach (var p in points)
             {
                 screenPoints.Add(XAxis.Transform(p.X, p.Y, YAxis));
@@ -268,7 +268,7 @@ namespace OxyPlot
 
             if (GetPosition(clippedPoints, TextPosition, margin, out position, out angle))
             {
-                rc.DrawText(position, Text, model.TextColor, model.LegendFont, model.LegendFontSize, FontWeights.Normal, angle,
+                rc.DrawText(position, Text, model.TextColor, model.ActualAnnotationFont, model.AnnotationFontSize, FontWeights.Normal, angle,
                             TextHorizontalAlignment, TextVerticalAlignment);
             }
         }
@@ -320,8 +320,8 @@ namespace OxyPlot
         {
             List<ScreenPoint> result = null;
 
-            var pts = new List<ScreenPoint>();
             int n = points.Count;
+            var pts = new List<ScreenPoint>(n);
             if (n > 0)
             {
                 ScreenPoint s0 = points[0];

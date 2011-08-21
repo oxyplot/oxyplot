@@ -40,8 +40,8 @@
         {
             if (!isPanning)
                 return;
-            var previousPoint = AxisBase.InverseTransform(ppt, xaxis, yaxis);
-            var currentPoint = AxisBase.InverseTransform(pt, xaxis, yaxis);
+            var previousPoint = InverseTransform(ppt.X,ppt.Y, xaxis, yaxis);
+            var currentPoint = InverseTransform(pt.X, pt.Y, xaxis, yaxis);
             if (xaxis != null)
                 pc.Pan(xaxis, previousPoint.X,currentPoint.X);
             if (yaxis != null)

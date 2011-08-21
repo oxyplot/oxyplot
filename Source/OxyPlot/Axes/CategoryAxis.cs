@@ -1,4 +1,10 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CategoryAxis.cs" company="OxyPlot">
+//   See http://oxyplot.codeplex.com
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -11,12 +17,16 @@
     {
         #region Constructors and Destructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
+        /// </summary>
         public CategoryAxis()
         {
             this.Labels = new List<string>();
             this.TickStyle = TickStyle.Outside;
             this.Position = AxisPosition.Bottom;
             this.MinimumPadding = 0;
+            this.MaximumPadding = 0;
         }
 
         #endregion
@@ -87,6 +97,15 @@
 
         #region Public Methods
 
+        /// <summary>
+        /// Fills the specified array.
+        /// </summary>
+        /// <param name="array">
+        /// The array.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
         public static void Fill(double[] array, double value)
         {
             for (int i = 0; i < array.Length; i++)
@@ -95,6 +114,15 @@
             }
         }
 
+        /// <summary>
+        /// Formats the value to be used on the axis.
+        /// </summary>
+        /// <param name="x">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The formatted value.
+        /// </returns>
         public override string FormatValue(double x)
         {
             var index = (int)x;
@@ -102,18 +130,38 @@
             {
                 return this.Labels[index];
             }
+
             return null;
         }
 
+        /// <summary>
+        /// Formats the value to be used by the tracker.
+        /// </summary>
+        /// <param name="x">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The formatted value.
+        /// </returns>
         public override string FormatValueForTracker(double x)
         {
             return this.FormatValue(x);
         }
 
+        /// <summary>
+        /// Gets the coordinates used to draw ticks and tick labels (numbers or category names).
+        /// </summary>
+        /// <param name="majorLabelValues">
+        /// The major label values.
+        /// </param>
+        /// <param name="majorTickValues">
+        /// The major tick values.
+        /// </param>
+        /// <param name="minorTickValues">
+        /// The minor tick values.
+        /// </param>
         public override void GetTickValues(
-            out ICollection<double> majorLabelValues,
-            out ICollection<double> majorTickValues,
-            out ICollection<double> minorTickValues)
+            out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
             base.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
             minorTickValues.Clear();
@@ -122,22 +170,38 @@
             {
                 // Subtract 0.5 from the label values to get the tick values.
                 // Add one extra tick at the end.
-
-                var mv = new List<double>();
+                var mv = new List<double>(majorLabelValues.Count);
                 foreach (double v in majorLabelValues)
                 {
                     mv.Add(v - 0.5);
                 }
+
                 mv.Add(mv[mv.Count - 1] + 1);
                 majorTickValues = mv;
             }
         }
 
+        /// <summary>
+        /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary.
+        /// e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
+        /// </summary>
+        /// <param name="x">
+        /// The coordinate.
+        /// </param>
+        /// <returns>
+        /// The value.
+        /// </returns>
         public override object GetValue(double x)
         {
             return this.FormatValue(x);
         }
 
+        /// <summary>
+        /// Updates the actual maximum and minimum values.
+        /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
+        /// If Maximum or Minimum have been set, these values will be used.
+        /// Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
+        /// </summary>
         public override void UpdateActualMaxMin()
         {
             base.UpdateActualMaxMin();
@@ -162,6 +226,13 @@
             this.MinorStep = 1;
         }
 
+        /// <summary>
+        /// Updates the axis with information from the plot series.
+        /// This is used by the category axis that need to know the number of series using the axis.
+        /// </summary>
+        /// <param name="series">
+        /// The series collection.
+        /// </param>
         public override void UpdateData(IEnumerable<ISeries> series)
         {
             // count series that are using this axis
@@ -173,6 +244,7 @@
                     this.AttachedSeriesCount++;
                 }
             }
+
             this.BarOffset = 0;
 
             if (this.ItemsSource == null)

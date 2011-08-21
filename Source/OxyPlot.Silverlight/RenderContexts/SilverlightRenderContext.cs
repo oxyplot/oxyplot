@@ -61,7 +61,7 @@ namespace OxyPlot.Silverlight
             canvas.Children.Add(shape);
         }
 
-        public void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+        public void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
                              OxyPenLineJoin lineJoin, bool aliased)
         {
             var e = new Polyline();
@@ -87,7 +87,7 @@ namespace OxyPlot.Silverlight
             return brush;
         }
 
-        public void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
+        public void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
                                 double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             var po = new Polygon();
@@ -104,7 +104,7 @@ namespace OxyPlot.Silverlight
             canvas.Children.Add(po);
         }
 
-        public void DrawPolygons(IEnumerable<IEnumerable<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        public void DrawPolygons(IList<IList<ScreenPoint>> polygons, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             var path = new Path();
             SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
@@ -162,7 +162,7 @@ namespace OxyPlot.Silverlight
             // shape.UseLayoutRounding = aliased;
         }
 
-        private static DoubleCollection CreateDashArrayCollection(IEnumerable<double> dashArray)
+        private static DoubleCollection CreateDashArrayCollection(IList<double> dashArray)
         {
             var dac = new DoubleCollection();
             foreach (var v in dashArray)
@@ -205,7 +205,7 @@ namespace OxyPlot.Silverlight
         /// <param name="fill">The fill.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="thickness">The thickness.</param>
-        public void DrawRectangles(IEnumerable<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = new Path();
             SetStroke(path, stroke, thickness);
@@ -215,7 +215,7 @@ namespace OxyPlot.Silverlight
             var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
             foreach (var rect in rectangles)
             {
-                gg.Children.Add(new RectangleGeometry { Rect = rect.ToRect() });
+                gg.Children.Add(new RectangleGeometry { Rect = rect.ToRect(true) });
             }
             path.Data = gg;
             Add(path);
@@ -242,7 +242,7 @@ namespace OxyPlot.Silverlight
             canvas.Children.Add(el);
         }
 
-        public void DrawEllipses(IEnumerable<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
+        public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = new Path();
             SetStroke(path, stroke, thickness);

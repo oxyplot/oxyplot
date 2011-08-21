@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlotSL.Pdf", "OxyPlot.Pd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightDemo", "Examples\Silverlight\SilverlightDemo\SilverlightDemo.csproj", "{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportDemo", "Examples\Silverlight\ExportDemo\ExportDemo.csproj", "{5C307156-E173-425B-8FC7-4B5CB63C7980}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C307156-E173-425B-8FC7-4B5CB63C7980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C307156-E173-425B-8FC7-4B5CB63C7980}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C307156-E173-425B-8FC7-4B5CB63C7980}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C307156-E173-425B-8FC7-4B5CB63C7980}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,5 +73,6 @@ Global
 		{A2E856EB-3F45-4ACE-90FB-5440D4577DE1} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 		{BD75B688-D4A3-405F-BC08-E371993A6273} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
+		{5C307156-E173-425B-8FC7-4B5CB63C7980} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 	EndGlobalSection
 EndGlobal

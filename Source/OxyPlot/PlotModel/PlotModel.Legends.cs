@@ -70,7 +70,7 @@ namespace OxyPlot
             {
                 if (String.IsNullOrEmpty(s.Title))
                     continue;
-                var textSize = rc.MeasureMathText(s.Title, LegendFont ?? DefaultFont, LegendFontSize, LegendFontWeight);
+                var textSize = rc.MeasureMathText(s.Title, ActualLegendFont, LegendFontSize, LegendFontWeight);
                 double itemWidth = LegendSymbolLength + LegendSymbolMargin + textSize.Width;
                 double itemHeight = textSize.Height;
 
@@ -162,7 +162,7 @@ namespace OxyPlot
                 x += LegendSymbolLength + LegendSymbolMargin;
 
             var textSize = rc.DrawMathText(new ScreenPoint(x, rect.Top), s.Title, TextColor,
-                                               LegendFont ?? DefaultFont, LegendFontSize, LegendFontWeight, 0,
+                                               ActualLegendFont, LegendFontSize, LegendFontWeight, 0,
                                                LegendItemAlignment, VerticalTextAlign.Top, true);
             double x0 = x;
             switch (LegendItemAlignment)

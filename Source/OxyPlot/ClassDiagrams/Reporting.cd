@@ -1,7 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="OxyPlot.Reporting.TableOfContents" Collapsed="true">
-    <Position X="4" Y="11.5" Width="1.5" />
+    <Position X="7.25" Y="12" Width="1.5" />
+    <InheritanceLine Type="OxyPlot.Reporting.ItemsTable" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="11.691" />
+        <Point X="6.75" Y="12.312" />
+        <Point X="7.25" Y="12.312" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAQAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAABgQAA=</HashCode>
       <FileName>Reporting\Report\TableOfContents.cs</FileName>
@@ -16,6 +23,13 @@
   </Class>
   <Class Name="OxyPlot.Reporting.Equation" Collapsed="true">
     <Position X="4.75" Y="5.75" Width="1.5" />
+    <InheritanceLine Type="OxyPlot.Reporting.ReportItem" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="2.312" />
+        <Point X="3.25" Y="6.062" />
+        <Point X="4.75" Y="6.062" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAgAAAAAAAAAAAEAAAAAAAAAACAAAAAAAAAA=</HashCode>
       <FileName>Reporting\Report\Equation.cs</FileName>
@@ -23,6 +37,13 @@
   </Class>
   <Class Name="OxyPlot.Reporting.Figure" Collapsed="true">
     <Position X="4.75" Y="7" Width="1.5" />
+    <InheritanceLine Type="OxyPlot.Reporting.ReportItem" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="2.312" />
+        <Point X="3.25" Y="7.312" />
+        <Point X="4.75" Y="7.312" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAEgAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Reporting\Report\Figure.cs</FileName>
@@ -30,6 +51,13 @@
   </Class>
   <Class Name="OxyPlot.Reporting.Header" Collapsed="true">
     <Position X="4.75" Y="3.75" Width="1.5" />
+    <InheritanceLine Type="OxyPlot.Reporting.ReportItem" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="2.312" />
+        <Point X="3.25" Y="4.062" />
+        <Point X="4.75" Y="4.062" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEAAAAAEAAAAAAAAABAgAACAAAAAA=</HashCode>
       <FileName>Reporting\Report\Header.cs</FileName>
@@ -44,6 +72,13 @@
   </Class>
   <Class Name="OxyPlot.Reporting.Paragraph" Collapsed="true">
     <Position X="4.75" Y="4.75" Width="1.5" />
+    <InheritanceLine Type="OxyPlot.Reporting.ReportItem" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="2.312" />
+        <Point X="3.25" Y="5.062" />
+        <Point X="4.75" Y="5.062" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>Reporting\Report\Paragraph.cs</FileName>
@@ -57,7 +92,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Reporting.PropertyTable" Collapsed="true">
-    <Position X="5.75" Y="11.5" Width="1.5" />
+    <Position X="7.25" Y="13" Width="1.5" />
+    <InheritanceLine Type="OxyPlot.Reporting.ItemsTable" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="11.691" />
+        <Point X="6.75" Y="13.312" />
+        <Point X="7.25" Y="13.312" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Reporting\Report\PropertyTable.cs</FileName>
@@ -79,6 +121,13 @@
   </Class>
   <Class Name="OxyPlot.Reporting.ReportSection" Collapsed="true">
     <Position X="4.75" Y="2.75" Width="1.5" />
+    <InheritanceLine Type="OxyPlot.Reporting.ReportItem" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="2.312" />
+        <Point X="3.25" Y="3.062" />
+        <Point X="4.75" Y="3.062" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Reporting\Report\ReportSection.cs</FileName>
@@ -86,6 +135,13 @@
   </Class>
   <Class Name="OxyPlot.Reporting.Table" Collapsed="true">
     <Position X="4.75" Y="10" Width="1.5" />
+    <InheritanceLine Type="OxyPlot.Reporting.ReportItem" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="2.312" />
+        <Point X="3.25" Y="10.312" />
+        <Point X="4.75" Y="10.312" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAQAAAAgAAAAAEAgAAAAAEBAAAAAAAEACAAAAAgAAAA=</HashCode>
       <FileName>Reporting\Report\Table.cs</FileName>
@@ -112,6 +168,28 @@
     <TypeIdentifier>
       <HashCode>ICAAgABAAAAgAAQIAAAACIAEAAAAAAAAAEAkAAAgAAA=</HashCode>
       <FileName>Reporting\ReportWriters\TextReportWriter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OxyPlot.Reporting.ItemsTable" Collapsed="true">
+    <Position X="6" Y="11" Width="1.5" />
+    <InheritanceLine Type="OxyPlot.Reporting.Table" FixedToPoint="true">
+      <Path>
+        <Point X="5.5" Y="10.691" />
+        <Point X="5.5" Y="11.312" />
+        <Point X="6" Y="11.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAIAAACAAAACgIAEAAAAAAAAAAAAAAAAhAgAA=</HashCode>
+      <FileName>Reporting\Report\ItemsTable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Reporting.WikiReportWriter" Collapsed="true">
+    <Position X="13" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ICAAkABAAAAgAAQIAAAACIAEAAAAAACEAEAkAAAgAAA=</HashCode>
+      <FileName>Reporting\ReportWriters\WikiReportWriter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

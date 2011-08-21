@@ -146,7 +146,7 @@ namespace OxyPlot
             AddScatterPoints(Points, ItemsSource, DataFieldX, DataFieldY, DataFieldSize, DataFieldValue, DataFieldTag);
         }
 
-        protected void AddScatterPoints(ICollection<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY, string dataFieldSize, string dataFieldValue, string dataFieldTag)
+        protected void AddScatterPoints(IList<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY, string dataFieldSize, string dataFieldValue, string dataFieldTag)
         {
             PropertyInfo pix = null;
             PropertyInfo piy = null;
@@ -267,6 +267,7 @@ namespace OxyPlot
             int i = 0;
             foreach (var p in points)
             {
+                if (p.X<XAxis.ActualMinimum || p.X>XAxis.ActualMaximum || p.Y<YAxis.ActualMinimum || p.Y>YAxis.ActualMaximum) continue;
                 var dp = new DataPoint(p.X, p.Y);
                 var sp = AxisBase.Transform(dp, XAxis, YAxis);
                 double dx = sp.x - point.x;

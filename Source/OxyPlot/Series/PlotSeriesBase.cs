@@ -126,7 +126,7 @@
         ///   Renders the legend symbol on the specified rendering context.
         /// </summary>
         /// <param name = "rc">The rendering context.</param>
-        /// <param name = "legendBox">The rect.</param>
+        /// <param name = "legendBox">The legend rectangle.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
         }

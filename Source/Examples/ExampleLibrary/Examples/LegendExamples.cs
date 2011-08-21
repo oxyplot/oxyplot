@@ -3,12 +3,16 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using System.Collections.Generic;
+
     [Examples("Legends")]
     public static class LegendExamples
     {
         private static PlotModel CreateModel(int n = 20)
         {
             var model = new PlotModel("LineSeries");
+            model.LegendBackground = OxyColor.FromAColor(200, OxyColors.White);
+            model.LegendBorder = OxyColors.Black;
             for (int i = 1; i <= n; i++)
             {
                 var s = new LineSeries("Series " + i);
@@ -70,6 +74,15 @@ namespace ExampleLibrary
         {
             var model = CreateModel();
             model.IsLegendVisible = false;
+            return model;
+        }
+
+        [Example("Grayscale colors")]
+        public static PlotModel LegendGrayscale()
+        {
+            var model = CreateModel();
+            model.DefaultColors = new List<OxyColor> { OxyColors.Black, OxyColors.Gray };
+            model.LegendSymbolLength = 32;
             return model;
         }
     }

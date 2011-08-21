@@ -70,7 +70,7 @@ namespace OxyPlot
         /// (makes sure pixel alignment is the same as for lines)
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="rect">The rect.</param>
+        /// <param name="rect">The rectangle.</param>
         /// <param name="fill">The fill.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="thickness">The thickness.</param>
@@ -89,7 +89,7 @@ namespace OxyPlot
         /// (makes sure pixel alignment is the same as for lines)
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="rect">The rect.</param>
+        /// <param name="rect">The rectangle.</param>
         /// <param name="fill">The fill.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="thickness">The thickness.</param>
@@ -154,7 +154,7 @@ namespace OxyPlot
 
             var ellipses = new List<OxyRect>(markerPoints.Length);
             var rects = new List<OxyRect>(markerPoints.Length);
-            var polygons = new List<IEnumerable<ScreenPoint>>(markerPoints.Length);
+            var polygons = new List<IList<ScreenPoint>>(markerPoints.Length);
             var lines = new List<ScreenPoint>(markerPoints.Length);
 
             var hashset = new HashSet<uint>();
@@ -201,11 +201,11 @@ namespace OxyPlot
                 rc.DrawLineSegments(lines, markerStroke, markerStrokeThickness);
         }
 
-        private static void AddMarkerGeometry(ScreenPoint p, MarkerType type, IEnumerable<ScreenPoint> outline,
+        private static void AddMarkerGeometry(ScreenPoint p, MarkerType type, IList<ScreenPoint> outline,
                                               double size,
-                                              ICollection<OxyRect> ellipses, ICollection<OxyRect> rects,
-                                              ICollection<IEnumerable<ScreenPoint>> polygons,
-                                              ICollection<ScreenPoint> lines)
+                                              IList<OxyRect> ellipses, IList<OxyRect> rects,
+                                              IList<IList<ScreenPoint>> polygons,
+                                              IList<ScreenPoint> lines)
         {
             if (type == MarkerType.Custom)
             {

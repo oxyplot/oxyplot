@@ -4,8 +4,9 @@
     using System.Reflection;
 
     /// <summary>
-    /// 
+    /// Color
     /// </summary>
+    [Serializable]
     public class OxyColor : ICodeGenerating
     {
         /// <summary>

@@ -14,11 +14,11 @@ namespace OxyPlot
     /// </summary>
     public class PieSeries : ISeries
     {
-        private Collection<PieSlice> slices;
+        private IList<PieSlice> slices;
 
         public PieSeries()
         {
-            slices = new Collection<PieSlice>();
+            slices = new List<PieSlice>();
 
             Stroke = OxyColors.White;
             StrokeThickness = 1.0;
@@ -36,6 +36,7 @@ namespace OxyPlot
             TickHorizontalLength = 8;
             TickLabelDistance = 4;
             InsideLabelPosition = 0.5;
+            FontSize = 12;
         }
 
         public string Title { get; set; }
@@ -73,7 +74,10 @@ namespace OxyPlot
         public double InsideLabelPosition { get; set; }
         public bool AreInsideLabelsAngled { get; set; }
 
-        public Collection<PieSlice> Slices
+        public string Font { get; set; }
+        public double FontSize { get; set; }
+
+        public IList<PieSlice> Slices
         {
             get { return slices; }
             set { slices = value; }
@@ -259,7 +263,7 @@ namespace OxyPlot
 
                     // label
                     var labelPosition = new ScreenPoint(tp2.X + TickLabelDistance * sign, tp2.Y);
-                    rc.DrawText(labelPosition, label, model.TextColor, model.LegendFont, model.LegendFontSize, FontWeights.Normal, 0,
+                    rc.DrawText(labelPosition, label, model.TextColor, Font ?? PlotModel.DefaultFont, model.LegendFontSize, FontWeights.Normal, 0,
                                 sign > 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right,
                                 VerticalTextAlign.Middle);
                 }
@@ -281,7 +285,7 @@ namespace OxyPlot
                         }
                     }
 
-                    rc.DrawText(labelPosition, label, model.TextColor, model.LegendFont, model.LegendFontSize, FontWeights.Normal,
+                    rc.DrawText(labelPosition, label, model.TextColor, Font ?? PlotModel.DefaultFont, FontSize, FontWeights.Normal,
                                 textAngle, HorizontalTextAlign.Center, VerticalTextAlign.Middle);
                 }
             }

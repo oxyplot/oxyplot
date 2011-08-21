@@ -6,7 +6,7 @@
     /// <summary>
     /// DataPoint interface.
     /// </summary>
-    public interface IDataPoint
+    public interface IDataPoint : ICodeGenerating
     {
         #region Public Properties
 
@@ -28,7 +28,7 @@
     /// <summary>
     /// DataPoint value type.
     /// </summary>
-    public struct DataPoint : IDataPoint, ICodeGenerating
+    public struct DataPoint : IDataPoint
     {
         #region Constants and Fields
 
@@ -103,7 +103,7 @@
         /// <returns></returns>
         public string ToCode()
         {
-            return String.Format(CultureInfo.InvariantCulture, "new DataPoint({0},{1})", this.x, this.y);
+            return CodeGenerator.FormatConstructor(this.GetType(),"{0},{1}", this.x, this.y);
         }
 
         /// <summary>

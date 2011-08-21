@@ -7,8 +7,28 @@ using OxyPlot;
 
 namespace ExampleBrowser
 {
+    using System.Windows.Media;
+
+    using OxyPlot.Wpf;
+
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        public bool MeasureFrameRate { get; set; }
+
+        private double frameRate;
+
+        public double FrameRate
+        {
+            get
+            {
+                return this.frameRate;
+            }
+            set
+            {
+                this.frameRate = value; RaisePropertyChanged("FrameRate");
+            }
+        }
+
         private IEnumerable<ExampleInfo> examples;
         public IEnumerable<ExampleInfo> Examples
         {
@@ -22,7 +42,20 @@ namespace ExampleBrowser
         public ExampleInfo SelectedExample
         {
             get { return selectedExample; }
-            set { selectedExample = value; RaisePropertyChanged("SelectedExample"); }
+            set
+            {
+                selectedExample = value;
+                RaisePropertyChanged("SelectedExample");
+                RaisePropertyChanged("PlotBackground");
+            }
+        }
+
+        public Brush PlotBackground
+        {
+            get
+            {
+                return selectedExample != null && selectedExample.PlotModel.Background != null ? selectedExample.PlotModel.Background.ToBrush() : Brushes.Transparent;
+            }
         }
 
         public MainWindowViewModel()

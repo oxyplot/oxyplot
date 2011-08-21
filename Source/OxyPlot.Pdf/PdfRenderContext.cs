@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using PdfSharp.Drawing;
@@ -7,6 +6,11 @@ using PdfSharp.Pdf;
 
 namespace OxyPlot.Pdf
 {
+    /// <summary>
+    /// PDF Render context using PdfSharp (and SilverPDF for Silverlight)
+    /// see http://pdfsharp.codeplex.com
+    /// and http://silverpdf.codeplex.com
+    /// </summary>
     internal class PdfRenderContext : RenderContextBase
     {
         private readonly PdfDocument doc;
@@ -27,7 +31,7 @@ namespace OxyPlot.Pdf
 
         #region IRenderContext Members
 
-        public override void DrawLine(IEnumerable<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
+        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
                              OxyPenLineJoin lineJoin, bool aliased)
         {
             if (stroke == null || thickness <= 0)
@@ -53,7 +57,7 @@ namespace OxyPlot.Pdf
             g.DrawLines(pen, ToPoints(points));
         }
 
-        public override void DrawPolygon(IEnumerable<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
+        public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
                                 double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             g.SmoothingMode = aliased ? XSmoothingMode.None : XSmoothingMode.HighQuality;
@@ -169,7 +173,7 @@ namespace OxyPlot.Pdf
 
         #endregion
 
-        private static XPoint[] ToPoints(IEnumerable<ScreenPoint> points)
+        private static XPoint[] ToPoints(IList<ScreenPoint> points)
         {
             if (points == null)
                 return null;

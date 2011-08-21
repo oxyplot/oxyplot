@@ -61,7 +61,7 @@
         /// <returns></returns>
         public static OxyPen Create(OxyColor color, double thickness, LineStyle lineStyle = LineStyle.Solid, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
-            if (lineStyle == LineStyle.None || thickness == 0)
+            if (color == null || lineStyle==LineStyle.None || thickness == 0)
             {
                 return null;
             }

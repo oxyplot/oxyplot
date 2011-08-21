@@ -38,7 +38,7 @@
         /// Renders the legend symbol on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
-        /// <param name="legendBox">The rect.</param>
+        /// <param name="legendBox">The legend rectangle.</param>
         public abstract void RenderLegend(IRenderContext rc, OxyRect legendBox);
 
         /// <summary>

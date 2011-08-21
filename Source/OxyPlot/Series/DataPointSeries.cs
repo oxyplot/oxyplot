@@ -165,10 +165,6 @@ namespace OxyPlot
             return result;
         }
 
-       
-
-
-
         #endregion
 
         protected void AddDataPoints(IList<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
