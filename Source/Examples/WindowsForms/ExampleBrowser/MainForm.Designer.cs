@@ -1,6 +1,6 @@
 ﻿namespace ExampleBrowser
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,34 +29,57 @@
         private void InitializeComponent()
         {
             OxyPlot.PlotModel plotModel1 = new OxyPlot.PlotModel();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.plot1 = new Oxyplot.WindowsForms.Plot();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.treeView1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.plot1);
+            this.splitContainer1.Size = new System.Drawing.Size(943, 554);
+            this.splitContainer1.SplitterDistance = 314;
+            this.splitContainer1.TabIndex = 0;
             // 
             // treeView1
             // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(240, 682);
-            this.treeView1.TabIndex = 0;
+            this.treeView1.Size = new System.Drawing.Size(314, 554);
+            this.treeView1.TabIndex = 1;
             // 
             // plot1
             // 
-            this.plot1.BackColor = System.Drawing.Color.White;
             this.plot1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plot1.Location = new System.Drawing.Point(240, 0);
-            plotModel1.Annotations = ((System.Collections.ObjectModel.Collection<OxyPlot.IAnnotation>)(resources.GetObject("plotModel1.Annotations")));
+            this.plot1.Location = new System.Drawing.Point(0, 0);
+            plotModel1.AnnotationFont = null;
+            plotModel1.AnnotationFontSize = 12D;
+            plotModel1.Annotations = ((System.Collections.ObjectModel.Collection<OxyPlot.Annotation>)(resources.GetObject("plotModel1.Annotations")));
             plotModel1.AutoAdjustPlotMargins = true;
-            plotModel1.Axes = ((System.Collections.ObjectModel.Collection<OxyPlot.IAxis>)(resources.GetObject("plotModel1.Axes")));
+            plotModel1.Axes = ((System.Collections.ObjectModel.Collection<OxyPlot.Axis>)(resources.GetObject("plotModel1.Axes")));
             plotModel1.Background = null;
             plotModel1.BoxColor = ((OxyPlot.OxyColor)(resources.GetObject("plotModel1.BoxColor")));
             plotModel1.BoxThickness = 1D;
             plotModel1.DefaultColors = ((System.Collections.Generic.List<OxyPlot.OxyColor>)(resources.GetObject("plotModel1.DefaultColors")));
             plotModel1.IsLegendVisible = true;
-            plotModel1.LegendBackground = ((OxyPlot.OxyColor)(resources.GetObject("plotModel1.LegendBackground")));
-            plotModel1.LegendBorder = ((OxyPlot.OxyColor)(resources.GetObject("plotModel1.LegendBorder")));
+            plotModel1.LegendBackground = null;
+            plotModel1.LegendBorder = null;
             plotModel1.LegendBorderThickness = 1D;
             plotModel1.LegendColumnSpacing = 0D;
             plotModel1.LegendFont = null;
@@ -78,7 +101,7 @@
             plotModel1.LegendTitleFontSize = 12D;
             plotModel1.LegendTitleFontWeight = 700D;
             plotModel1.PlotType = OxyPlot.PlotType.XY;
-            plotModel1.Series = ((System.Collections.ObjectModel.Collection<OxyPlot.ISeries>)(resources.GetObject("plotModel1.Series")));
+            plotModel1.Series = ((System.Collections.ObjectModel.Collection<OxyPlot.Series>)(resources.GetObject("plotModel1.Series")));
             plotModel1.Subtitle = null;
             plotModel1.SubtitleFont = null;
             plotModel1.SubtitleFontSize = 14D;
@@ -91,28 +114,30 @@
             plotModel1.TitlePadding = 6D;
             this.plot1.Model = plotModel1;
             this.plot1.Name = "plot1";
-            this.plot1.Size = new System.Drawing.Size(1024, 682);
-            this.plot1.TabIndex = 1;
+            this.plot1.Size = new System.Drawing.Size(625, 554);
+            this.plot1.TabIndex = 0;
             this.plot1.Text = "plot1";
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1264, 682);
-            this.Controls.Add(this.plot1);
-            this.Controls.Add(this.treeView1);
-            this.Name = "Form1";
+            this.ClientSize = new System.Drawing.Size(943, 554);
+            this.Controls.Add(this.splitContainer1);
+            this.Name = "MainForm";
             this.Text = "Example Browser";
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
+        private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView treeView1;
         private Oxyplot.WindowsForms.Plot plot1;
     }
 }
-

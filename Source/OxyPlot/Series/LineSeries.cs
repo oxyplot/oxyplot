@@ -202,7 +202,7 @@ namespace OxyPlot
             rc.DrawMarker(midpt, legendBox, MarkerType, MarkerOutline, MarkerSize, MarkerFill, MarkerStroke, MarkerStrokeThickness);
         }
 
-        public override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues(PlotModel model)
         {
             // todo: should use ActualLineStyle and ActualColor?
             if (Color == null)

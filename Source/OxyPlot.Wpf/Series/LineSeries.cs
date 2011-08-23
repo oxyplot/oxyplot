@@ -1,4 +1,13 @@
-﻿namespace OxyPlot.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LineSeries.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
+// </copyright>
+// <summary>
+//   This is a WPF wrapper of OxyPlot.LineSeries
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot.Wpf
 {
     using System.Windows;
     using System.Windows.Media;
@@ -10,187 +19,271 @@
     {
         #region Constants and Fields
 
+        /// <summary>
+        /// The dashes property.
+        /// </summary>
         public static readonly DependencyProperty DashesProperty = DependencyProperty.Register(
-            "Dashes", typeof(double[]), typeof(LineSeries), new UIPropertyMetadata(null, VisualChanged));
+            "Dashes", typeof(double[]), typeof(LineSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
+        /// <summary>
+        /// The line join property.
+        /// </summary>
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
-            "LineJoin", typeof(OxyPenLineJoin), typeof(LineSeries), new UIPropertyMetadata(OxyPenLineJoin.Miter));
+            "LineJoin", typeof(OxyPenLineJoin), typeof(LineSeries), new FrameworkPropertyMetadata(OxyPenLineJoin.Miter));
 
+        /// <summary>
+        /// The line style property.
+        /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
-            "LineStyle", typeof(LineStyle), typeof(LineSeries), new UIPropertyMetadata(LineStyle.Solid));
+            "LineStyle", typeof(LineStyle), typeof(LineSeries), new FrameworkPropertyMetadata(LineStyle.Solid));
 
+        /// <summary>
+        /// The marker fill property.
+        /// </summary>
         public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(
-            "MarkerFill", typeof(Color?), typeof(LineSeries), new UIPropertyMetadata(null));
+            "MarkerFill", typeof(Color?), typeof(LineSeries), new FrameworkPropertyMetadata(null));
 
+        /// <summary>
+        /// The marker outline property.
+        /// </summary>
         public static readonly DependencyProperty MarkerOutlineProperty = DependencyProperty.Register(
-            "MarkerOutline", typeof(Point[]), typeof(LineSeries), new UIPropertyMetadata(null));
+            "MarkerOutline", typeof(Point[]), typeof(LineSeries), new FrameworkPropertyMetadata(null));
 
+        /// <summary>
+        /// The marker size property.
+        /// </summary>
         public static readonly DependencyProperty MarkerSizeProperty = DependencyProperty.Register(
-            "MarkerSize", typeof(double), typeof(LineSeries), new UIPropertyMetadata(3.0));
+            "MarkerSize", typeof(double), typeof(LineSeries), new FrameworkPropertyMetadata(3.0));
 
+        /// <summary>
+        /// The marker stroke property.
+        /// </summary>
         public static readonly DependencyProperty MarkerStrokeProperty = DependencyProperty.Register(
-            "MarkerStroke", typeof(OxyColor), typeof(LineSeries), new UIPropertyMetadata(null));
+            "MarkerStroke", typeof(OxyColor), typeof(LineSeries), new FrameworkPropertyMetadata(null));
 
+        /// <summary>
+        /// The marker stroke thickness property.
+        /// </summary>
         public static readonly DependencyProperty MarkerStrokeThicknessProperty =
             DependencyProperty.Register(
-                "MarkerStrokeThickness", typeof(double), typeof(LineSeries), new UIPropertyMetadata(1.0));
+                "MarkerStrokeThickness", typeof(double), typeof(LineSeries), new FrameworkPropertyMetadata(1.0));
 
+        /// <summary>
+        /// The marker type property.
+        /// </summary>
         public static readonly DependencyProperty MarkerTypeProperty = DependencyProperty.Register(
-            "MarkerType", typeof(MarkerType), typeof(LineSeries), new UIPropertyMetadata(MarkerType.None));
+            "MarkerType", typeof(MarkerType), typeof(LineSeries), new FrameworkPropertyMetadata(MarkerType.None));
 
+        /// <summary>
+        /// The minimum segment length property.
+        /// </summary>
         public static readonly DependencyProperty MinimumSegmentLengthProperty =
             DependencyProperty.Register(
-                "MinimumSegmentLength", typeof(double), typeof(LineSeries), new UIPropertyMetadata(2.0));
+                "MinimumSegmentLength", typeof(double), typeof(LineSeries), new FrameworkPropertyMetadata(2.0));
 
+        /// <summary>
+        /// The smooth property.
+        /// </summary>
         public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
-            "Smooth", typeof(bool), typeof(LineSeries), new UIPropertyMetadata(false));
+            "Smooth", typeof(bool), typeof(LineSeries), new FrameworkPropertyMetadata(false));
 
+        /// <summary>
+        /// The stroke thickness property.
+        /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
-                "StrokeThickness", typeof(double), typeof(LineSeries), new UIPropertyMetadata(2.0));
+                "StrokeThickness", typeof(double), typeof(LineSeries), new FrameworkPropertyMetadata(2.0));
 
         #endregion
 
         #region Public Properties
 
+        /// <summary>
+        /// Gets or sets Dashes.
+        /// </summary>
         public double[] Dashes
         {
             get
             {
                 return (double[])this.GetValue(DashesProperty);
             }
+
             set
             {
                 this.SetValue(DashesProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LineJoin.
+        /// </summary>
         public OxyPenLineJoin LineJoin
         {
             get
             {
                 return (OxyPenLineJoin)this.GetValue(LineJoinProperty);
             }
+
             set
             {
                 this.SetValue(LineJoinProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LineStyle.
+        /// </summary>
         public LineStyle LineStyle
         {
             get
             {
                 return (LineStyle)this.GetValue(LineStyleProperty);
             }
+
             set
             {
                 this.SetValue(LineStyleProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets MarkerFill.
+        /// </summary>
         public Color? MarkerFill
         {
             get
             {
                 return (Color?)this.GetValue(MarkerFillProperty);
             }
+
             set
             {
                 this.SetValue(MarkerFillProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets MarkerOutline.
+        /// </summary>
         public Point[] MarkerOutline
         {
             get
             {
                 return (Point[])this.GetValue(MarkerOutlineProperty);
             }
+
             set
             {
                 this.SetValue(MarkerOutlineProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets MarkerSize.
+        /// </summary>
         public double MarkerSize
         {
             get
             {
                 return (double)this.GetValue(MarkerSizeProperty);
             }
+
             set
             {
                 this.SetValue(MarkerSizeProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets MarkerStroke.
+        /// </summary>
         public OxyColor MarkerStroke
         {
             get
             {
                 return (OxyColor)this.GetValue(MarkerStrokeProperty);
             }
+
             set
             {
                 this.SetValue(MarkerStrokeProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets MarkerStrokeThickness.
+        /// </summary>
         public double MarkerStrokeThickness
         {
             get
             {
                 return (double)this.GetValue(MarkerStrokeThicknessProperty);
             }
+
             set
             {
                 this.SetValue(MarkerStrokeThicknessProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets MarkerType.
+        /// </summary>
         public MarkerType MarkerType
         {
             get
             {
                 return (MarkerType)this.GetValue(MarkerTypeProperty);
             }
+
             set
             {
                 this.SetValue(MarkerTypeProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets MinimumSegmentLength.
+        /// </summary>
         public double MinimumSegmentLength
         {
             get
             {
                 return (double)this.GetValue(MinimumSegmentLengthProperty);
             }
+
             set
             {
                 this.SetValue(MinimumSegmentLengthProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether Smooth.
+        /// </summary>
         public bool Smooth
         {
             get
             {
                 return (bool)this.GetValue(SmoothProperty);
             }
+
             set
             {
                 this.SetValue(SmoothProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets StrokeThickness.
+        /// </summary>
         public double StrokeThickness
         {
             get
             {
                 return (double)this.GetValue(StrokeThicknessProperty);
             }
+
             set
             {
                 this.SetValue(StrokeThicknessProperty, value);
@@ -201,13 +294,28 @@
 
         #region Public Methods
 
-        public override OxyPlot.ISeries CreateModel()
+        /// <summary>
+        /// The create model.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public override OxyPlot.Series CreateModel()
         {
             var s = new OxyPlot.LineSeries();
             this.SynchronizeProperties(s);
             return s;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The synchronize properties.
+        /// </summary>
+        /// <param name="series">
+        /// The series.
+        /// </param>
         protected override void SynchronizeProperties(OxyPlot.ISeries series)
         {
             base.SynchronizeProperties(series);

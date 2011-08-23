@@ -1,10 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LinearAxis.cs" company="">
-//   
+// <copyright file="LinearAxis.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
 // </copyright>
-// <summary>
-//   The linear axis.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -12,9 +9,9 @@ namespace OxyPlot.Wpf
     using System.Windows;
 
     /// <summary>
-    /// The linear axis.
+    /// This is a WPF wrapper of OxyPlot.LinearAxis.
     /// </summary>
-    public class LinearAxis : AxisBase
+    public class LinearAxis : Axis
     {
         #region Constants and Fields
 
@@ -23,20 +20,20 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty FormatAsFractionsProperty =
             DependencyProperty.Register(
-                "FormatAsFractions", typeof(bool), typeof(LinearAxis), new UIPropertyMetadata(false));
+                "FormatAsFractions", typeof(bool), typeof(LinearAxis), new FrameworkPropertyMetadata(false));
 
         /// <summary>
         /// The fraction unit property.
         /// </summary>
         public static readonly DependencyProperty FractionUnitProperty = DependencyProperty.Register(
-            "FractionUnit", typeof(double), typeof(LinearAxis), new UIPropertyMetadata(1.0));
+            "FractionUnit", typeof(double), typeof(LinearAxis), new FrameworkPropertyMetadata(1.0));
 
         /// <summary>
         /// The fraction unit symbol property.
         /// </summary>
         public static readonly DependencyProperty FractionUnitSymbolProperty =
             DependencyProperty.Register(
-                "FractionUnitSymbol", typeof(string), typeof(LinearAxis), new UIPropertyMetadata(null));
+                "FractionUnitSymbol", typeof(string), typeof(LinearAxis), new FrameworkPropertyMetadata(null));
 
         #endregion
 
@@ -47,7 +44,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public LinearAxis()
         {
-            this.Axis = new OxyPlot.LinearAxis();
+            this.internalAxis = new OxyPlot.LinearAxis();
         }
 
         #endregion
@@ -109,11 +106,12 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The create model.
         /// </summary>
-        /// <returns></returns>
-        public override OxyPlot.IAxis CreateModel()
+        /// <returns>
+        /// </returns>
+        public override OxyPlot.Axis CreateModel()
         {
             this.SynchronizeProperties();
-            return this.Axis;
+            return this.internalAxis;
         }
 
         #endregion
@@ -126,7 +124,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.Axis as OxyPlot.LinearAxis;
+            var a = this.internalAxis as OxyPlot.LinearAxis;
             a.FormatAsFractions = this.FormatAsFractions;
             a.FractionUnit = this.FractionUnit;
             a.FractionUnitSymbol = this.FractionUnitSymbol;

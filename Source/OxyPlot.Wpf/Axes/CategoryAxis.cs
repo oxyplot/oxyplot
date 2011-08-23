@@ -1,90 +1,138 @@
-﻿namespace OxyPlot.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CategoryAxis.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot.Wpf
 {
     using System.Collections;
     using System.Collections.Generic;
     using System.Windows;
 
+    /// <summary>
+    /// This is a WPF wrapper of OxyPlot.CategoryAxis.
+    /// </summary>
     public class CategoryAxis : LinearAxis
     {
         #region Constants and Fields
 
+        /// <summary>
+        /// The is tick centered property.
+        /// </summary>
         public static readonly DependencyProperty IsTickCenteredProperty = DependencyProperty.Register(
             "IsTickCentered", typeof(bool), typeof(CategoryAxis), new FrameworkPropertyMetadata(false, DataChanged));
 
+        /// <summary>
+        /// The items source property.
+        /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
             "ItemsSource", typeof(IEnumerable), typeof(CategoryAxis), new FrameworkPropertyMetadata(null, DataChanged));
 
+        /// <summary>
+        /// The label field property.
+        /// </summary>
         public static readonly DependencyProperty LabelFieldProperty = DependencyProperty.Register(
             "LabelField", typeof(string), typeof(CategoryAxis), new FrameworkPropertyMetadata(null, DataChanged));
 
+        /// <summary>
+        /// The labels property.
+        /// </summary>
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
-            "Labels", typeof(IList<string>), typeof(CategoryAxis), new FrameworkPropertyMetadata(new List<string>(), DataChanged));
+            "Labels", 
+            typeof(IList<string>), 
+            typeof(CategoryAxis), 
+            new FrameworkPropertyMetadata(new List<string>(), DataChanged));
 
         #endregion
 
         #region Constructors and Destructors
 
+        /// <summary>
+        /// Initializes static members of the <see cref="CategoryAxis"/> class.
+        /// </summary>
         static CategoryAxis()
         {
             PositionProperty.OverrideMetadata(
                 typeof(CategoryAxis), new FrameworkPropertyMetadata(AxisPosition.Bottom, DataChanged));
             MinimumPaddingProperty.OverrideMetadata(
                 typeof(CategoryAxis), new FrameworkPropertyMetadata(0.0, DataChanged));
+            MaximumPaddingProperty.OverrideMetadata(
+                typeof(CategoryAxis), new FrameworkPropertyMetadata(0.0, DataChanged));
             TickStyleProperty.OverrideMetadata(
                 typeof(CategoryAxis), new FrameworkPropertyMetadata(TickStyle.Outside, DataChanged));
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
+        /// </summary>
         public CategoryAxis()
         {
-            this.Axis = new OxyPlot.CategoryAxis();
+            this.internalAxis = new OxyPlot.CategoryAxis();
         }
 
         #endregion
 
         #region Public Properties
 
+        /// <summary>
+        /// Gets or sets a value indicating whether IsTickCentered.
+        /// </summary>
         public bool IsTickCentered
         {
             get
             {
                 return (bool)this.GetValue(IsTickCenteredProperty);
             }
+
             set
             {
                 this.SetValue(IsTickCenteredProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets ItemsSource.
+        /// </summary>
         public IEnumerable ItemsSource
         {
             get
             {
                 return (IEnumerable)this.GetValue(ItemsSourceProperty);
             }
+
             set
             {
                 this.SetValue(ItemsSourceProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LabelField.
+        /// </summary>
         public string LabelField
         {
             get
             {
                 return (string)this.GetValue(LabelFieldProperty);
             }
+
             set
             {
                 this.SetValue(LabelFieldProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets Labels.
+        /// </summary>
         public IList<string> Labels
         {
             get
             {
                 return (IList<string>)this.GetValue(LabelsProperty);
             }
+
             set
             {
                 this.SetValue(LabelsProperty, value);
@@ -95,16 +143,28 @@
 
         #region Public Methods
 
-        public override OxyPlot.IAxis CreateModel()
+        /// <summary>
+        /// The create model.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public override OxyPlot.Axis CreateModel()
         {
             this.SynchronizeProperties();
-            return this.Axis;
+            return this.internalAxis;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The synchronize properties.
+        /// </summary>
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.Axis as OxyPlot.CategoryAxis;
+            var a = this.internalAxis as OxyPlot.CategoryAxis;
             a.IsTickCentered = this.IsTickCentered;
             a.ItemsSource = this.ItemsSource;
             a.LabelField = this.LabelField;

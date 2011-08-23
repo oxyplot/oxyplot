@@ -28,7 +28,8 @@
         protected DataPoint InverseTransform(double x, double y, IAxis xaxis, IAxis yaxis)
         {
             if (xaxis != null) return xaxis.InverseTransform(x, y, yaxis);
-            return new DataPoint(0, yaxis.InverseTransform(y));
+            if (yaxis != null) return new DataPoint(0, yaxis.InverseTransform(y));
+            return new DataPoint();
         }
     }
 }

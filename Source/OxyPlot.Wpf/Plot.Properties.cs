@@ -1,4 +1,10 @@
-﻿namespace OxyPlot.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Plot.Properties.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot.Wpf
 {
     using System.Collections.ObjectModel;
     using System.Windows;
@@ -13,206 +19,296 @@
     /// </summary>
     public partial class Plot
     {
-        public bool AutoAdjustPlotMargins
-        {
-            get { return (bool)GetValue(AutoAdjustPlotMarginsProperty); }
-            set { SetValue(AutoAdjustPlotMarginsProperty, value); }
-        }
-
-        public static readonly DependencyProperty AutoAdjustPlotMarginsProperty =
-            DependencyProperty.Register("AutoAdjustPlotMargins", typeof(bool), typeof(Plot), new UIPropertyMetadata(true));
-
-
         #region Constants and Fields
+
+        /// <summary>
+        /// The auto adjust plot margins property.
+        /// </summary>
+        public static readonly DependencyProperty AutoAdjustPlotMarginsProperty =
+            DependencyProperty.Register(
+                "AutoAdjustPlotMargins", typeof(bool), typeof(Plot), new FrameworkPropertyMetadata(true));
 
         /// <summary>
         /// The box color property.
         /// </summary>
         public static readonly DependencyProperty BoxColorProperty = DependencyProperty.Register(
-            "BoxColor", typeof(Color), typeof(Plot), new FrameworkPropertyMetadata(Colors.Black, VisualChanged));
+            "BoxColor", typeof(Color), typeof(Plot), new FrameworkPropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
         /// The box thickness property.
         /// </summary>
         public static readonly DependencyProperty BoxThicknessProperty = DependencyProperty.Register(
-            "BoxThickness", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(1.0, VisualChanged));
+            "BoxThickness", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(1.0, AppearanceChanged));
 
+        /// <summary>
+        /// The is legend visible property.
+        /// </summary>
         public static readonly DependencyProperty IsLegendVisibleProperty =
             DependencyProperty.Register(
-                "IsLegendVisible", typeof(bool), typeof(Plot), new FrameworkPropertyMetadata(true, VisualChanged));
+                "IsLegendVisible", typeof(bool), typeof(Plot), new FrameworkPropertyMetadata(true, AppearanceChanged));
 
+        /// <summary>
+        /// The legend background property.
+        /// </summary>
         public static readonly DependencyProperty LegendBackgroundProperty =
             DependencyProperty.Register(
-                "LegendBackground",
-                typeof(Color?),
-                typeof(Plot),
-                new FrameworkPropertyMetadata(null, VisualChanged));
+                "LegendBackground", typeof(Color?), typeof(Plot), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
+        /// <summary>
+        /// The legend border property.
+        /// </summary>
         public static readonly DependencyProperty LegendBorderProperty = DependencyProperty.Register(
-            "LegendBorder", typeof(Color?), typeof(Plot), new FrameworkPropertyMetadata(null, VisualChanged));
+            "LegendBorder", typeof(Color?), typeof(Plot), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
+        /// <summary>
+        /// The legend border thickness property.
+        /// </summary>
         public static readonly DependencyProperty LegendBorderThicknessProperty =
             DependencyProperty.Register(
-                "LegendBorderThickness", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(1.0, VisualChanged));
+                "LegendBorderThickness", 
+                typeof(double), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(1.0, AppearanceChanged));
 
+        /// <summary>
+        /// The legend font property.
+        /// </summary>
         public static readonly DependencyProperty LegendFontProperty = DependencyProperty.Register(
-            "LegendFont", typeof(string), typeof(Plot), new FrameworkPropertyMetadata(null, VisualChanged));
+            "LegendFont", typeof(string), typeof(Plot), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
+        /// <summary>
+        /// The legend font size property.
+        /// </summary>
         public static readonly DependencyProperty LegendFontSizeProperty = DependencyProperty.Register(
-            "LegendFontSize", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(12.0, VisualChanged));
+            "LegendFontSize", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(12.0, AppearanceChanged));
 
+        /// <summary>
+        /// The legend font weight property.
+        /// </summary>
         public static readonly DependencyProperty LegendFontWeightProperty =
             DependencyProperty.Register(
-                "LegendFontWeight",
-                typeof(FontWeight),
-                typeof(Plot),
-                new FrameworkPropertyMetadata(FontWeights.Normal, VisualChanged));
+                "LegendFontWeight", 
+                typeof(FontWeight), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(FontWeights.Normal, AppearanceChanged));
 
+        /// <summary>
+        /// The legend item alignment property.
+        /// </summary>
         public static readonly DependencyProperty LegendItemAlignmentProperty =
             DependencyProperty.Register(
-                "LegendItemAlignment",
-                typeof(HorizontalAlignment),
-                typeof(Plot),
-                new FrameworkPropertyMetadata(HorizontalAlignment.Left, VisualChanged));
+                "LegendItemAlignment", 
+                typeof(HorizontalAlignment), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(HorizontalAlignment.Left, AppearanceChanged));
 
+        /// <summary>
+        /// The legend item order property.
+        /// </summary>
         public static readonly DependencyProperty LegendItemOrderProperty =
             DependencyProperty.Register(
-                "LegendItemOrder",
-                typeof(LegendItemOrder),
-                typeof(Plot),
-                new FrameworkPropertyMetadata(LegendItemOrder.Normal, VisualChanged));
+                "LegendItemOrder", 
+                typeof(LegendItemOrder), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(LegendItemOrder.Normal, AppearanceChanged));
 
+        /// <summary>
+        /// The legend item spacing property.
+        /// </summary>
         public static readonly DependencyProperty LegendItemSpacingProperty =
             DependencyProperty.Register(
-                "LegendItemSpacing", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(24.0, VisualChanged));
+                "LegendItemSpacing", 
+                typeof(double), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(24.0, AppearanceChanged));
 
+        /// <summary>
+        /// The legend margin property.
+        /// </summary>
         public static readonly DependencyProperty LegendMarginProperty = DependencyProperty.Register(
-            "LegendMargin", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(8.0, VisualChanged));
+            "LegendMargin", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(8.0, AppearanceChanged));
 
+        /// <summary>
+        /// The legend orientation property.
+        /// </summary>
         public static readonly DependencyProperty LegendOrientationProperty =
             DependencyProperty.Register(
-                "LegendOrientation",
-                typeof(LegendOrientation),
-                typeof(Plot),
-                new FrameworkPropertyMetadata(LegendOrientation.Vertical, VisualChanged));
+                "LegendOrientation", 
+                typeof(LegendOrientation), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(LegendOrientation.Vertical, AppearanceChanged));
 
+        /// <summary>
+        /// The legend padding property.
+        /// </summary>
         public static readonly DependencyProperty LegendPaddingProperty = DependencyProperty.Register(
-            "LegendPadding", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(8.0, VisualChanged));
+            "LegendPadding", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(8.0, AppearanceChanged));
 
         /// <summary>
         /// The legend placement property.
         /// </summary>
         public static readonly DependencyProperty LegendPlacementProperty =
             DependencyProperty.Register(
-                "LegendPlacement",
-                typeof(LegendPlacement),
-                typeof(Plot),
-                new FrameworkPropertyMetadata(LegendPlacement.Inside, VisualChanged));
+                "LegendPlacement", 
+                typeof(LegendPlacement), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(LegendPlacement.Inside, AppearanceChanged));
 
         /// <summary>
         /// The legend position property.
         /// </summary>
         public static readonly DependencyProperty LegendPositionProperty = DependencyProperty.Register(
-            "LegendPosition",
-            typeof(LegendPosition),
-            typeof(Plot),
-            new FrameworkPropertyMetadata(LegendPosition.RightTop, VisualChanged));
+            "LegendPosition", 
+            typeof(LegendPosition), 
+            typeof(Plot), 
+            new FrameworkPropertyMetadata(LegendPosition.RightTop, AppearanceChanged));
 
+        /// <summary>
+        /// The legend symbol length property.
+        /// </summary>
         public static readonly DependencyProperty LegendSymbolLengthProperty =
             DependencyProperty.Register(
-                "LegendSymbolLength", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(16.0, VisualChanged));
+                "LegendSymbolLength", 
+                typeof(double), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(16.0, AppearanceChanged));
 
+        /// <summary>
+        /// The legend symbol margin property.
+        /// </summary>
         public static readonly DependencyProperty LegendSymbolMarginProperty =
             DependencyProperty.Register(
-                "LegendSymbolMargin", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(4.0, VisualChanged));
+                "LegendSymbolMargin", 
+                typeof(double), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(4.0, AppearanceChanged));
 
+        /// <summary>
+        /// The legend symbol placement property.
+        /// </summary>
         public static readonly DependencyProperty LegendSymbolPlacementProperty =
             DependencyProperty.Register(
-                "LegendSymbolPlacement",
-                typeof(LegendSymbolPlacement),
-                typeof(Plot),
-                new FrameworkPropertyMetadata(LegendSymbolPlacement.Left, VisualChanged));
+                "LegendSymbolPlacement", 
+                typeof(LegendSymbolPlacement), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(LegendSymbolPlacement.Left, AppearanceChanged));
 
+        /// <summary>
+        /// The legend title font property.
+        /// </summary>
         public static readonly DependencyProperty LegendTitleFontProperty =
             DependencyProperty.Register(
-                "LegendTitleFont", typeof(string), typeof(Plot), new FrameworkPropertyMetadata(null, VisualChanged));
+                "LegendTitleFont", typeof(string), typeof(Plot), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
+        /// <summary>
+        /// The legend title font size property.
+        /// </summary>
         public static readonly DependencyProperty LegendTitleFontSizeProperty =
             DependencyProperty.Register(
-                "LegendTitleFontSize", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(12.0, VisualChanged));
+                "LegendTitleFontSize", 
+                typeof(double), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(12.0, AppearanceChanged));
 
+        /// <summary>
+        /// The legend title font weight property.
+        /// </summary>
         public static readonly DependencyProperty LegendTitleFontWeightProperty =
             DependencyProperty.Register(
-                "LegendTitleFontWeight",
-                typeof(FontWeight),
-                typeof(Plot),
-                new FrameworkPropertyMetadata(FontWeights.Bold, VisualChanged));
+                "LegendTitleFontWeight", 
+                typeof(FontWeight), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(FontWeights.Bold, AppearanceChanged));
 
         /// <summary>
         /// The plot margins property.
         /// </summary>
         public static readonly DependencyProperty PlotMarginsProperty = DependencyProperty.Register(
-            "PlotMargins",
-            typeof(Thickness),
-            typeof(Plot),
-            new FrameworkPropertyMetadata(new Thickness(60, 4, 4, 40), VisualChanged));
+            "PlotMargins", 
+            typeof(Thickness), 
+            typeof(Plot), 
+            new FrameworkPropertyMetadata(new Thickness(60, 4, 4, 40), AppearanceChanged));
 
+        /// <summary>
+        /// The plot type property.
+        /// </summary>
         public static readonly DependencyProperty PlotTypeProperty = DependencyProperty.Register(
-            "PlotType", typeof(PlotType), typeof(Plot), new FrameworkPropertyMetadata(PlotType.XY, VisualChanged));
+            "PlotType", typeof(PlotType), typeof(Plot), new FrameworkPropertyMetadata(PlotType.XY, AppearanceChanged));
 
+        /// <summary>
+        /// The subtitle font size property.
+        /// </summary>
         public static readonly DependencyProperty SubtitleFontSizeProperty =
             DependencyProperty.Register(
-                "SubtitleFontSize", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(14.0, VisualChanged));
+                "SubtitleFontSize", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(14.0, AppearanceChanged));
 
+        /// <summary>
+        /// The subtitle font weight property.
+        /// </summary>
         public static readonly DependencyProperty SubtitleFontWeightProperty =
             DependencyProperty.Register(
-                "SubtitleFontWeight",
-                typeof(FontWeight),
-                typeof(Plot),
-                new FrameworkPropertyMetadata(FontWeights.Normal, VisualChanged));
+                "SubtitleFontWeight", 
+                typeof(FontWeight), 
+                typeof(Plot), 
+                new FrameworkPropertyMetadata(FontWeights.Normal, AppearanceChanged));
 
         /// <summary>
         /// The subtitle property.
         /// </summary>
         public static readonly DependencyProperty SubtitleProperty = DependencyProperty.Register(
-            "Subtitle", typeof(string), typeof(Plot), new FrameworkPropertyMetadata(null, VisualChanged));
+            "Subtitle", typeof(string), typeof(Plot), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
+        /// <summary>
+        /// The text color property.
+        /// </summary>
         public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
-            "TextColor", typeof(Color), typeof(Plot), new FrameworkPropertyMetadata(Colors.Black, VisualChanged));
+            "TextColor", typeof(Color), typeof(Plot), new FrameworkPropertyMetadata(Colors.Black, AppearanceChanged));
 
+        /// <summary>
+        /// The title font property.
+        /// </summary>
         public static readonly DependencyProperty TitleFontProperty = DependencyProperty.Register(
-            "TitleFont", typeof(string), typeof(Plot), new FrameworkPropertyMetadata(null, VisualChanged));
+            "TitleFont", typeof(string), typeof(Plot), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
+        /// <summary>
+        /// The title font size property.
+        /// </summary>
         public static readonly DependencyProperty TitleFontSizeProperty = DependencyProperty.Register(
-            "TitleFontSize", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(18.0, VisualChanged));
+            "TitleFontSize", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(18.0, AppearanceChanged));
 
+        /// <summary>
+        /// The title font weight property.
+        /// </summary>
         public static readonly DependencyProperty TitleFontWeightProperty =
             DependencyProperty.Register(
-                "TitleFontWeight", typeof(FontWeight), typeof(Plot), new FrameworkPropertyMetadata(FontWeights.Bold));
+                "TitleFontWeight", typeof(FontWeight), typeof(Plot), new FrameworkPropertyMetadata(FontWeights.Bold, AppearanceChanged));
 
+        /// <summary>
+        /// The title padding property.
+        /// </summary>
         public static readonly DependencyProperty TitlePaddingProperty = DependencyProperty.Register(
-            "TitlePadding", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(6.0, VisualChanged));
+            "TitlePadding", typeof(double), typeof(Plot), new FrameworkPropertyMetadata(6.0, AppearanceChanged));
 
         /// <summary>
         /// The title property.
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            "Title", typeof(string), typeof(Plot), new FrameworkPropertyMetadata(null, VisualChanged));
+            "Title", typeof(string), typeof(Plot), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The annotations.
         /// </summary>
-        private readonly ObservableCollection<IAnnotation> annotations;
+        private readonly ObservableCollection<Annotation> annotations;
 
         /// <summary>
         /// The axes.
         /// </summary>
-        private readonly ObservableCollection<IAxis> axes;
+        private readonly ObservableCollection<Axis> axes;
 
         /// <summary>
         /// The series.
         /// </summary>
-        private readonly ObservableCollection<ISeries> series;
+        private readonly ObservableCollection<Series> series;
 
         #endregion
 
@@ -222,7 +318,7 @@
         /// Gets the annotations.
         /// </summary>
         /// <value>The annotations.</value>
-        public ObservableCollection<IAnnotation> Annotations
+        public ObservableCollection<Annotation> Annotations
         {
             get
             {
@@ -231,10 +327,26 @@
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether AutoAdjustPlotMargins.
+        /// </summary>
+        public bool AutoAdjustPlotMargins
+        {
+            get
+            {
+                return (bool)this.GetValue(AutoAdjustPlotMarginsProperty);
+            }
+
+            set
+            {
+                this.SetValue(AutoAdjustPlotMarginsProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets the axes.
         /// </summary>
         /// <value>The axes.</value>
-        public ObservableCollection<IAxis> Axes
+        public ObservableCollection<Axis> Axes
         {
             get
             {
@@ -276,156 +388,208 @@
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether IsLegendVisible.
+        /// </summary>
         public bool IsLegendVisible
         {
             get
             {
                 return (bool)this.GetValue(IsLegendVisibleProperty);
             }
+
             set
             {
                 this.SetValue(IsLegendVisibleProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendBackground.
+        /// </summary>
         public Color? LegendBackground
         {
             get
             {
                 return (Color?)this.GetValue(LegendBackgroundProperty);
             }
+
             set
             {
                 this.SetValue(LegendBackgroundProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendBorder.
+        /// </summary>
         public Color? LegendBorder
         {
             get
             {
                 return (Color?)this.GetValue(LegendBorderProperty);
             }
+
             set
             {
                 this.SetValue(LegendBorderProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendBorderThickness.
+        /// </summary>
         public double LegendBorderThickness
         {
             get
             {
                 return (double)this.GetValue(LegendBorderThicknessProperty);
             }
+
             set
             {
                 this.SetValue(LegendBorderThicknessProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendFont.
+        /// </summary>
         public string LegendFont
         {
             get
             {
                 return (string)this.GetValue(LegendFontProperty);
             }
+
             set
             {
                 this.SetValue(LegendFontProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendFontSize.
+        /// </summary>
         public double LegendFontSize
         {
             get
             {
                 return (double)this.GetValue(LegendFontSizeProperty);
             }
+
             set
             {
                 this.SetValue(LegendFontSizeProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendFontWeight.
+        /// </summary>
         public FontWeight LegendFontWeight
         {
             get
             {
                 return (FontWeight)this.GetValue(LegendFontWeightProperty);
             }
+
             set
             {
                 this.SetValue(LegendFontWeightProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendItemAlignment.
+        /// </summary>
         public HorizontalAlignment LegendItemAlignment
         {
             get
             {
                 return (HorizontalAlignment)this.GetValue(LegendItemAlignmentProperty);
             }
+
             set
             {
                 this.SetValue(LegendItemAlignmentProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendItemOrder.
+        /// </summary>
         public LegendItemOrder LegendItemOrder
         {
             get
             {
                 return (LegendItemOrder)this.GetValue(LegendItemOrderProperty);
             }
+
             set
             {
                 this.SetValue(LegendItemOrderProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendItemSpacing.
+        /// </summary>
         public double LegendItemSpacing
         {
             get
             {
                 return (double)this.GetValue(LegendItemSpacingProperty);
             }
+
             set
             {
                 this.SetValue(LegendItemSpacingProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendMargin.
+        /// </summary>
         public double LegendMargin
         {
             get
             {
                 return (double)this.GetValue(LegendMarginProperty);
             }
+
             set
             {
                 this.SetValue(LegendMarginProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendOrientation.
+        /// </summary>
         public LegendOrientation LegendOrientation
         {
             get
             {
                 return (LegendOrientation)this.GetValue(LegendOrientationProperty);
             }
+
             set
             {
                 this.SetValue(LegendOrientationProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendPadding.
+        /// </summary>
         public double LegendPadding
         {
             get
             {
                 return (double)this.GetValue(LegendPaddingProperty);
             }
+
             set
             {
                 this.SetValue(LegendPaddingProperty, value);
@@ -465,72 +629,96 @@
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendSymbolLength.
+        /// </summary>
         public double LegendSymbolLength
         {
             get
             {
                 return (double)this.GetValue(LegendSymbolLengthProperty);
             }
+
             set
             {
                 this.SetValue(LegendSymbolLengthProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendSymbolMargin.
+        /// </summary>
         public double LegendSymbolMargin
         {
             get
             {
                 return (double)this.GetValue(LegendSymbolMarginProperty);
             }
+
             set
             {
                 this.SetValue(LegendSymbolMarginProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendSymbolPlacement.
+        /// </summary>
         public LegendSymbolPlacement LegendSymbolPlacement
         {
             get
             {
                 return (LegendSymbolPlacement)this.GetValue(LegendSymbolPlacementProperty);
             }
+
             set
             {
                 this.SetValue(LegendSymbolPlacementProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendTitleFont.
+        /// </summary>
         public string LegendTitleFont
         {
             get
             {
                 return (string)this.GetValue(LegendTitleFontProperty);
             }
+
             set
             {
                 this.SetValue(LegendTitleFontProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendTitleFontSize.
+        /// </summary>
         public double LegendTitleFontSize
         {
             get
             {
                 return (double)this.GetValue(LegendTitleFontSizeProperty);
             }
+
             set
             {
                 this.SetValue(LegendTitleFontSizeProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LegendTitleFontWeight.
+        /// </summary>
         public FontWeight LegendTitleFontWeight
         {
             get
             {
                 return (FontWeight)this.GetValue(LegendTitleFontWeightProperty);
             }
+
             set
             {
                 this.SetValue(LegendTitleFontWeightProperty, value);
@@ -554,12 +742,16 @@
             }
         }
 
+        /// <summary>
+        /// Gets or sets PlotType.
+        /// </summary>
         public PlotType PlotType
         {
             get
             {
                 return (PlotType)this.GetValue(PlotTypeProperty);
             }
+
             set
             {
                 this.SetValue(PlotTypeProperty, value);
@@ -570,7 +762,7 @@
         /// Gets the series.
         /// </summary>
         /// <value>The series.</value>
-        public ObservableCollection<ISeries> Series
+        public ObservableCollection<Series> Series
         {
             get
             {
@@ -595,36 +787,48 @@
             }
         }
 
+        /// <summary>
+        /// Gets or sets SubtitleFontSize.
+        /// </summary>
         public double SubtitleFontSize
         {
             get
             {
                 return (double)this.GetValue(SubtitleFontSizeProperty);
             }
+
             set
             {
                 this.SetValue(SubtitleFontSizeProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets SubtitleFontWeight.
+        /// </summary>
         public FontWeight SubtitleFontWeight
         {
             get
             {
                 return (FontWeight)this.GetValue(SubtitleFontWeightProperty);
             }
+
             set
             {
                 this.SetValue(SubtitleFontWeightProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets TextColor.
+        /// </summary>
         public Color TextColor
         {
             get
             {
                 return (Color)this.GetValue(TextColorProperty);
             }
+
             set
             {
                 this.SetValue(TextColorProperty, value);
@@ -648,48 +852,64 @@
             }
         }
 
+        /// <summary>
+        /// Gets or sets TitleFont.
+        /// </summary>
         public string TitleFont
         {
             get
             {
                 return (string)this.GetValue(TitleFontProperty);
             }
+
             set
             {
                 this.SetValue(TitleFontProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets TitleFontSize.
+        /// </summary>
         public double TitleFontSize
         {
             get
             {
                 return (double)this.GetValue(TitleFontSizeProperty);
             }
+
             set
             {
                 this.SetValue(TitleFontSizeProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets TitleFontWeight.
+        /// </summary>
         public FontWeight TitleFontWeight
         {
             get
             {
                 return (FontWeight)this.GetValue(TitleFontWeightProperty);
             }
+
             set
             {
                 this.SetValue(TitleFontWeightProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets TitlePadding.
+        /// </summary>
         public double TitlePadding
         {
             get
             {
                 return (double)this.GetValue(TitlePaddingProperty);
             }
+
             set
             {
                 this.SetValue(TitlePaddingProperty, value);

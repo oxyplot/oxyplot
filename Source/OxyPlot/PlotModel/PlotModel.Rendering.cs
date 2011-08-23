@@ -123,131 +123,15 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Measures the size of the axes for the specified position.
-        /// Currently this uses the PlotMargins property only, it is not auto-sizing
-        /// </summary>
-        /// <param name="rc">The rc.</param>
-        /// <param name="position">The position.</param>
-        /// <returns></returns>
-        private OxySize MeasureAxes(IRenderContext rc, AxisPosition position)
-        {
-            // todo: should not need this method
-
-            OxySize size = new OxySize();
-            switch (position)
-            {
-                case AxisPosition.Left:
-                    size.Width = ActualPlotMargins.Left;
-                    break;
-                case AxisPosition.Right:
-                    size.Width = ActualPlotMargins.Right;
-                    break;
-                case AxisPosition.Top:
-                    size.Height = ActualPlotMargins.Top;
-                    break;
-                case AxisPosition.Bottom:
-                    size.Height = ActualPlotMargins.Bottom;
-                    break;
-            }
-            return size;
-            
-            //foreach (var axis in Axes)
-            //{
-            //    if (axis.Position != position) continue;
-            //    return size;
-            //}
-            //return OxySize.Empty;
-
-            // todo: measure the axes
-            //foreach (var axis in Axes)
-            //{
-            //var size = MeasureAxis(axis, rc);
-            //if (size.Height > maxSize.Height) maxSize.Height = size.Height;
-            //if (size.Width > maxSize.Width) maxSize.Width = size.Width;
-            //}
-            // return size;
-        }
-
-        /// <summary>
-        /// Measures the width/height of the axis.
-        /// 1. Find the maximum size of the axis tick labels.
-        /// 2. Add the size of the axis title and the tick lines.
-        /// </summary>
-        /// <param name="axis">The axis.</param>
-        /// <param name="rc">The rendering context.</param>
-        /// <returns></returns>
-        //private OxySize MeasureAxis(AxisBase axis, IRenderContext rc)
-        //{
-        //    IList<double> majorTickValues;
-        //    IList<double> minorTickValues;
-        //    IList<double> majorLabelValues;
-        //    // todo: must get the step size first...
-        //    // this will not work
-        //    axis.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
-        //    OxySize maximumTextSize = new OxySize();
-        //    foreach (var v in majorLabelValues)
-        //    {
-        //        var s = axis.FormatValue(v);
-        //        var size = rc.MeasureText(s, axis.ActualFont, axis.FontSize, axis.FontWeight);
-        //        if (size.Width > maximumTextSize.Width) maximumTextSize.Width = size.Width;
-        //        if (size.Height > maximumTextSize.Height) maximumTextSize.Height = size.Height;
-        //    }
-
-        //    var labelTextSize = rc.MeasureText(axis.ActualTitle, axis.ActualFont, axis.FontSize, axis.FontWeight);
-
-        //    double width = 0;
-        //    double height = 0;
-
-        //    if (axis.IsHorizontal())
-        //    {
-        //        switch (axis.TickStyle)
-        //        {
-        //            case TickStyle.Outside:
-        //                height += axis.MajorTickSize;
-        //                break;
-        //            case TickStyle.Crossing:
-        //                height += axis.MajorTickSize * 0.75;
-        //                break;
-        //        }
-        //        height += axis.AxisTickToLabelDistance;
-        //        height += maximumTextSize.Height;
-        //        if (labelTextSize.Height > 0)
-        //        {
-        //            height += axis.AxisTitleDistance;
-        //            height += labelTextSize.Height;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        switch (axis.TickStyle)
-        //        {
-        //            case TickStyle.Outside:
-        //                width += axis.MajorTickSize;
-        //                break;
-        //            case TickStyle.Crossing:
-        //                width += axis.MajorTickSize * 0.75;
-        //                break;
-        //        }
-        //        width += axis.AxisTickToLabelDistance;
-        //        width += maximumTextSize.Width;
-        //        if (labelTextSize.Height > 0)
-        //        {
-        //            width += axis.AxisTitleDistance;
-        //            width += labelTextSize.Height;
-        //        }
-        //    }
-        //    return new OxySize(width, height);
-        //}
-
-        /// <summary>
-        /// Calculates the plot area (subtract Padding, title size and outside legends)
+        /// Calculates the plot area (subtract padding, title size and outside legends)
         /// </summary>
         /// <param name="rc">The rendering context.</param>
         private void UpdatePlotArea(IRenderContext rc)
         {
             var tmp = new OxyRect(Padding.Left, Padding.Top, rc.Width - Padding.Left - Padding.Right, rc.Height - Padding.Top - Padding.Bottom);
 
-            var titleSize = MeasureTitles(rc);
+            var titleSize = this.MeasureTitles(rc);
+
             if (titleSize.Height > 0)
             {
                 double titleHeight = titleSize.Height + TitlePadding;
@@ -255,20 +139,15 @@ namespace OxyPlot
                 tmp.Top += titleHeight;
             }
 
-            var topAxisSize = MeasureAxes(rc, AxisPosition.Top);
-            tmp.Top += topAxisSize.Height;
-            tmp.Height -= topAxisSize.Height;
+            tmp.Top += ActualPlotMargins.Top;
+            tmp.Height -= ActualPlotMargins.Top;
 
-            var bottomAxisSize = MeasureAxes(rc, AxisPosition.Bottom);
-            tmp.Height -= bottomAxisSize.Height;
+            tmp.Height -= ActualPlotMargins.Bottom;
 
-            var leftAxisSize = MeasureAxes(rc, AxisPosition.Left);
-            // leftAxisSize.Width = 40;
-            tmp.Left += leftAxisSize.Width;
-            tmp.Width -= leftAxisSize.Width;
+            tmp.Left += ActualPlotMargins.Left;
+            tmp.Width -= ActualPlotMargins.Left;
 
-            var rightAxisSize = MeasureAxes(rc, AxisPosition.Right);
-            tmp.Width -= rightAxisSize.Width;
+            tmp.Width -= ActualPlotMargins.Right;
 
             var legendSize = RenderLegends(rc, tmp, true);
             if (IsLegendVisible && LegendPlacement == LegendPlacement.Outside)
@@ -299,9 +178,13 @@ namespace OxyPlot
                         break;
                 }
             }
+            if (tmp.Height < 0)
+                tmp.Bottom = tmp.Top + 1;
+            if (tmp.Width < 0)
+                tmp.Right = tmp.Left + 1;
 
             PlotArea = tmp;
-            PlotAndAxisArea = new OxyRect(tmp.Left - leftAxisSize.Width, tmp.Top - topAxisSize.Height, tmp.Width + leftAxisSize.Width + rightAxisSize.Width, tmp.Height + topAxisSize.Height + bottomAxisSize.Height);
+            PlotAndAxisArea = new OxyRect(tmp.Left - ActualPlotMargins.Left, tmp.Top - ActualPlotMargins.Top, tmp.Width + ActualPlotMargins.Left + ActualPlotMargins.Right, tmp.Height + ActualPlotMargins.Top + ActualPlotMargins.Bottom);
             TitleArea = new OxyRect(PlotArea.Left, Padding.Top, PlotArea.Width, titleSize.Height + TitlePadding * 2);
             LegendArea = GetLegendRectangle(legendSize);
         }
@@ -340,7 +223,7 @@ namespace OxyPlot
 
             foreach (var s in Series)
             {
-                var s2 = s as PlotSeriesBase;
+                var s2 = s as XYAxisSeries;
                 if (s2 == null || s2.Background == null)
                     continue;
                 rc.DrawRectangle(s2.GetScreenRectangle(), s2.Background, null, 0);
@@ -355,12 +238,13 @@ namespace OxyPlot
         {
             var size1 = rc.MeasureText(Title, ActualTitleFont, TitleFontSize, TitleFontWeight);
             var size2 = rc.MeasureText(Subtitle, SubtitleFont ?? ActualTitleFont, SubtitleFontSize, SubtitleFontWeight);
-            double height = size1.Height + size2.Height;
+            
+            // double height = size1.Height + size2.Height;
             // double dy = (TitleArea.Top+TitleArea.Bottom-height)*0.5;
             double dy = TitleArea.Top;
             double dx = (TitleArea.Left + TitleArea.Right) * 0.5;
 
-            if (!String.IsNullOrEmpty(Title))
+            if (!string.IsNullOrEmpty(Title))
             {
                 rc.DrawMathText(
                     new ScreenPoint(dx, dy), Title, TextColor,
@@ -370,7 +254,7 @@ namespace OxyPlot
                 dy += size1.Height;
             }
 
-            if (!String.IsNullOrEmpty(Subtitle))
+            if (!string.IsNullOrEmpty(Subtitle))
             {
                 rc.DrawMathText(new ScreenPoint(dx, dy), Subtitle, TextColor,
                                 SubtitleFont ?? ActualTitleFont, SubtitleFontSize, SubtitleFontWeight, 0,

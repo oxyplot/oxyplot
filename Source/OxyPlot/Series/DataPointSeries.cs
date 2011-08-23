@@ -21,7 +21,7 @@ namespace OxyPlot
     /// <summary>
     /// Base class for series that contain a collection of IDataPoints.
     /// </summary>
-    public abstract class DataPointSeries : PlotSeriesBase
+    public abstract class DataPointSeries : ItemsSeries
     {
         protected DataPointSeries()
         {
@@ -72,7 +72,7 @@ namespace OxyPlot
 
         #region ISeries Members
 
-        public override void UpdateData()
+        protected internal override void UpdateData()
         {
             if (ItemsSource == null)
             {
@@ -129,7 +129,7 @@ namespace OxyPlot
         /// <summary>
         ///   Updates the max/min from the datapoints.
         /// </summary>
-        public override void UpdateMaxMin()
+        protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
             InternalUpdateMaxMin(Points);

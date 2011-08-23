@@ -3,9 +3,12 @@ using System.Linq;
 
 namespace OxyPlot
 {
+    using System;
+
     /// <summary>
     /// Annotation base class.
     /// </summary>
+    [Serializable]
     public abstract class Annotation : IAnnotation
     {
         /// <summary>
@@ -46,7 +49,7 @@ namespace OxyPlot
         }
 
 
-        public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
+        public void EnsureAxes(Collection<Axis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
         {
             // todo: refactor - this code is shared with DataPointSeries
             if (XAxisKey != null)

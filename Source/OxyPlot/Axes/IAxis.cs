@@ -7,7 +7,6 @@
 namespace OxyPlot
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Axis positions
@@ -32,17 +31,7 @@ namespace OxyPlot
         /// <summary>
         /// Bottom of the plot area.
         /// </summary>
-        Bottom, 
-
-        /// <summary>
-        /// Angular axis (polar coordinate system).
-        /// </summary>
-        Angle, 
-
-        /// <summary>
-        /// Magnitude axis (polar coordinate system).
-        /// </summary>
-        Magnitude
+        Bottom
     }
 
     /// <summary>
@@ -157,27 +146,9 @@ namespace OxyPlot
         string Key { get; }
 
         /// <summary>
-        /// Gets the midpoint (screen coordinates) of the plot area.
-        /// This is used by polar coordinate systems.
-        /// </summary>
-        ScreenPoint MidPoint { get; }
-
-        /// <summary>
-        /// Gets the transform offset of the axis.
-        /// This is used to transform between data and screen coordinates.
-        /// </summary>
-        double Offset { get; }
-
-        /// <summary>
         /// Gets the position of the axis.
         /// </summary>
         AxisPosition Position { get; }
-
-        /// <summary>
-        /// Gets the transform scaling factor of the axis.
-        /// This is used to transform between data and screen coordinates.
-        /// </summary>
-        double Scale { get; }
 
         /// <summary>
         /// Gets the screen coordinate of the maximum point on the axis.
@@ -244,14 +215,6 @@ namespace OxyPlot
         object GetValue(double x);
 
         /// <summary>
-        /// Modifies the range of the axis [ActualMinimum,ActualMaximum] to includes the specified value.
-        /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        void Include(double value);
-
-        /// <summary>
         /// Inverse transform the specified screen coordinate.
         /// This method can only be used with non-polar coordinate systems.
         /// </summary>
@@ -281,22 +244,6 @@ namespace OxyPlot
         DataPoint InverseTransform(double sx, double sy, IAxis yaxis);
 
         /// <summary>
-        /// Determines whether this axis is horizontal.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if this axis is horizontal; otherwise, <c>false</c>.
-        /// </returns>
-        bool IsHorizontal();
-
-        /// <summary>
-        /// Determines whether this axis is a polar coordinate system axis.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if this axis is a magnitude or angle axis; otherwise, <c>false</c>.
-        /// </returns>
-        bool IsPolar();
-
-        /// <summary>
         /// Determines whether the specified value is valid.
         /// </summary>
         /// <param name="value">
@@ -306,14 +253,6 @@ namespace OxyPlot
         /// <c>true</c> if the specified value is valid; otherwise, <c>false</c>.
         /// </returns>
         bool IsValidValue(double value);
-
-        /// <summary>
-        /// Determines whether this axis is vertical.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if this axis is vertical; otherwise, <c>false</c>.
-        /// </returns>
-        bool IsVertical();
 
         /// <summary>
         /// Measures the size of the axis (maximum axis label width/height).
@@ -358,18 +297,12 @@ namespace OxyPlot
         void Reset();
 
         /// <summary>
-        /// Resets the actual maximum and minimum.
-        /// This method will not refresh the plot.
-        /// </summary>
-        void ResetActualMaxMin();
-
-        /// <summary>
         /// Sets the scaling factor.
         /// </summary>
         /// <param name="scale">
         /// The new scale.
         /// </param>
-        void SetScale(double scale);
+        void Zoom(double scale);
 
         /// <summary>
         /// Transforms the specified coordinate to screen coordinates.
@@ -406,7 +339,7 @@ namespace OxyPlot
         /// If Maximum or Minimum have been set, these values will be used.
         /// Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
         /// </summary>
-        void UpdateActualMaxMin();
+        // void UpdateActualMaxMin();
 
         /// <summary>
         /// Updates the axis with information from the plot series.
@@ -415,7 +348,7 @@ namespace OxyPlot
         /// <param name="series">
         /// The series collection.
         /// </param>
-        void UpdateData(IEnumerable<ISeries> series);
+        //void UpdateFromSeries(IEnumerable<ISeries> series);
 
         /// <summary>
         /// Updates the actual minor and major step intervals.
@@ -423,7 +356,7 @@ namespace OxyPlot
         /// <param name="plotArea">
         /// The plot area rectangle.
         /// </param>
-        void UpdateIntervals(OxyRect plotArea);
+        //void UpdateIntervals(OxyRect plotArea);
 
         /// <summary>
         /// Updates the scale and offset properties of the transform
@@ -432,7 +365,7 @@ namespace OxyPlot
         /// <param name="plotArea">
         /// The plot area rectangle.
         /// </param>
-        void UpdateTransform(OxyRect plotArea);
+       // void UpdateTransform(OxyRect plotArea);
 
         /// <summary>
         /// Zooms the axis to the range [x0,x1].

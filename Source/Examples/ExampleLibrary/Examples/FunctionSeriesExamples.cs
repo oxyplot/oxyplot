@@ -124,14 +124,14 @@
             m.PlotType = PlotType.Polar;
             m.BoxThickness = 0;
 
-            m.Axes.Add(new LinearAxis(AxisPosition.Angle, 0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
+            m.Axes.Add(new AngleAxis(0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
                 {
                     MajorGridlineStyle = LineStyle.Solid,
                     FormatAsFractions = true,
                     FractionUnit = Math.PI,
                     FractionUnitSymbol = "π"
                 });
-            m.Axes.Add(new LinearAxis(AxisPosition.Magnitude) { MajorGridlineStyle = LineStyle.Solid });
+            m.Axes.Add(new MagnitudeAxis() { MajorGridlineStyle = LineStyle.Solid });
 
             int d = 4;
             int n = 3;

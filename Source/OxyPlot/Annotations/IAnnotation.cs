@@ -12,6 +12,6 @@ namespace OxyPlot
     {
         AnnotationLayer Layer { get; set; }
         void Render(IRenderContext rc, PlotModel model);
-        void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis);
+        void EnsureAxes(Collection<Axis> axes, IAxis defaultXAxis, IAxis defaultYAxis);
     }
 }

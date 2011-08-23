@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataPointSeries.cs" company="OxyPlot">
+// <copyright file="XYAxisSeries.cs" company="OxyPlot">
 //   see http://oxyplot.codeplex.com
 // </copyright>
 // <summary>
-//   Base class for data series
+//   Abstract base class for series that use X and Y axes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,57 +13,57 @@ namespace OxyPlot.Wpf
     using System.Windows;
 
     /// <summary>
-    /// Base class for data series
+    /// Abstract base class for series that use X and Y axes.
     /// </summary>
-    public abstract class DataPointSeries : ItemsSeries
+    public abstract class XYAxisSeries : Series
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The data field x property.
+        /// The x axis key property.
         /// </summary>
-        public static readonly DependencyProperty DataFieldXProperty = DependencyProperty.Register(
-            "DataFieldX", typeof(string), typeof(DataPointSeries), new FrameworkPropertyMetadata("X", DataChanged));
+        public static readonly DependencyProperty XAxisKeyProperty = DependencyProperty.Register(
+            "XAxisKey", typeof(string), typeof(XYAxisSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The data field y property.
+        /// The y axis key property.
         /// </summary>
-        public static readonly DependencyProperty DataFieldYProperty = DependencyProperty.Register(
-            "DataFieldY", typeof(string), typeof(DataPointSeries), new FrameworkPropertyMetadata("Y", DataChanged));
+        public static readonly DependencyProperty YAxisKeyProperty = DependencyProperty.Register(
+            "YAxisKey", typeof(string), typeof(XYAxisSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
         #endregion
 
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets DataFieldX.
+        /// Gets or sets XAxisKey.
         /// </summary>
-        public string DataFieldX
+        public string XAxisKey
         {
             get
             {
-                return (string)this.GetValue(DataFieldXProperty);
+                return (string)this.GetValue(XAxisKeyProperty);
             }
 
             set
             {
-                this.SetValue(DataFieldXProperty, value);
+                this.SetValue(XAxisKeyProperty, value);
             }
         }
 
         /// <summary>
-        /// Gets or sets DataFieldY.
+        /// Gets or sets YAxisKey.
         /// </summary>
-        public string DataFieldY
+        public string YAxisKey
         {
             get
             {
-                return (string)this.GetValue(DataFieldYProperty);
+                return (string)this.GetValue(YAxisKeyProperty);
             }
 
             set
             {
-                this.SetValue(DataFieldYProperty, value);
+                this.SetValue(YAxisKeyProperty, value);
             }
         }
 
@@ -85,7 +85,7 @@ namespace OxyPlot.Wpf
             base.OnItemsSourceChanged(oldValue, newValue);
             this.OnDataChanged();
         }
-
+        
         /// <summary>
         /// The synchronize properties.
         /// </summary>
@@ -95,10 +95,9 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties(OxyPlot.ISeries series)
         {
             base.SynchronizeProperties(series);
-            var s = series as OxyPlot.DataPointSeries;
-            s.ItemsSource = this.ItemsSource;
-            s.DataFieldX = this.DataFieldX;
-            s.DataFieldY = this.DataFieldY;
+            var s = series as OxyPlot.XYAxisSeries;
+            s.XAxisKey = this.XAxisKey;
+            s.YAxisKey = this.YAxisKey;
         }
 
         #endregion

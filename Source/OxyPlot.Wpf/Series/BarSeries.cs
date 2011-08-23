@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BarSeries.cs" company="">
-//   
+// <copyright file="BarSeries.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
 // </copyright>
 // <summary>
 //   This is a WPF wrapper of OxyPlot.BarSeries
@@ -15,7 +15,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.BarSeries
     /// </summary>
-    public class BarSeries : PlotSeriesBase
+    public class BarSeries : ItemsSeries
     {
         #region Constants and Fields
 
@@ -23,45 +23,54 @@ namespace OxyPlot.Wpf
         /// The bar width property.
         /// </summary>
         public static readonly DependencyProperty BarWidthProperty = DependencyProperty.Register(
-            "BarWidth", typeof(double), typeof(BarSeries), new UIPropertyMetadata(0.5));
+            "BarWidth", typeof(double), typeof(BarSeries), new FrameworkPropertyMetadata(0.5, AppearanceChanged));
 
         /// <summary>
         /// The fill color property.
         /// </summary>
         public static readonly DependencyProperty FillColorProperty = DependencyProperty.Register(
-            "FillColor", typeof(Color?), typeof(BarSeries), new UIPropertyMetadata(null));
+            "FillColor", typeof(Color?), typeof(BarSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The is stacked property.
         /// </summary>
         public static readonly DependencyProperty IsStackedProperty = DependencyProperty.Register(
-            "IsStacked", typeof(bool), typeof(BarSeries), new UIPropertyMetadata(false));
+            "IsStacked", typeof(bool), typeof(BarSeries), new FrameworkPropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
         /// The negative fill color property.
         /// </summary>
         public static readonly DependencyProperty NegativeFillColorProperty =
             DependencyProperty.Register(
-                "NegativeFillColor", typeof(Color?), typeof(BarSeries), new UIPropertyMetadata(null));
+                "NegativeFillColor", 
+                typeof(Color?), 
+                typeof(BarSeries), 
+                new FrameworkPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The stroke color property.
         /// </summary>
         public static readonly DependencyProperty StrokeColorProperty = DependencyProperty.Register(
-            "StrokeColor", typeof(Color), typeof(BarSeries), new UIPropertyMetadata(Colors.Black));
+            "StrokeColor", 
+            typeof(Color), 
+            typeof(BarSeries), 
+            new FrameworkPropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
         /// The stroke thickness property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
-                "StrokeThickness", typeof(double), typeof(BarSeries), new UIPropertyMetadata(0.0));
+                "StrokeThickness", 
+                typeof(double), 
+                typeof(BarSeries), 
+                new FrameworkPropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
         /// The value field property.
         /// </summary>
         public static readonly DependencyProperty ValueFieldProperty = DependencyProperty.Register(
-            "ValueField", typeof(string), typeof(BarSeries), new UIPropertyMetadata(null));
+            "ValueField", typeof(string), typeof(BarSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
         #endregion
 
@@ -201,12 +210,16 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <returns>
         /// </returns>
-        public override OxyPlot.ISeries CreateModel()
+        public override OxyPlot.Series CreateModel()
         {
             var s = new OxyPlot.BarSeries();
             this.SynchronizeProperties(s);
             return s;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// The synchronize properties.

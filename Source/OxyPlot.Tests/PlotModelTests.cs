@@ -50,8 +50,8 @@ namespace OxyPlot.Tests
         {
             var plot = new PlotModel("Backgrounds");
             plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
-            var yaxis1 = new LinearAxis(AxisPosition.Left, "Y1") { StartPosition = 0, EndPosition = 0.5 };
-            var yaxis2 = new LinearAxis(AxisPosition.Left, "Y2") { StartPosition = 0.5, EndPosition = 1 };
+            var yaxis1 = new LinearAxis(AxisPosition.Left, "Y1") { Key="Y1", StartPosition = 0, EndPosition = 0.5 };
+            var yaxis2 = new LinearAxis(AxisPosition.Left, "Y2") { Key="Y2", StartPosition = 0.5, EndPosition = 1 };
             plot.Axes.Add(yaxis1);
             plot.Axes.Add(yaxis2);
 
@@ -64,11 +64,11 @@ namespace OxyPlot.Tests
                                                           ls.Points.Add(new DataPoint(80, 10));
                                                       };
 
-            var ls1 = new LineSeries { Background = OxyColors.LightSeaGreen, YAxis = yaxis1 };
+            var ls1 = new LineSeries { Background = OxyColors.LightSeaGreen, YAxisKey = "Y1" };
             AddExamplePoints(ls1);
             plot.Series.Add(ls1);
 
-            var ls2 = new LineSeries { Background = OxyColors.LightSkyBlue, YAxis = yaxis2 };
+            var ls2 = new LineSeries { Background = OxyColors.LightSkyBlue, YAxisKey = "Y2" };
             AddExamplePoints(ls2);
             plot.Series.Add(ls2);
 

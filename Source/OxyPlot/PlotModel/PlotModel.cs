@@ -23,13 +23,13 @@ namespace OxyPlot
         /// <summary>
         /// XY coordinate system - two perpendicular axes
         /// </summary>
-        XY, 
+        XY,
 
         /// <summary>
         /// Cartesian coordinate system - perpendicular axes with the same scaling
         /// http://en.wikipedia.org/wiki/Cartesian_coordinate_system
         /// </summary>
-        Cartesian, 
+        Cartesian,
 
         /// <summary>
         /// Polar coordinate system - with radial and angular axes
@@ -46,7 +46,7 @@ namespace OxyPlot
         /// <summary>
         /// The inside.
         /// </summary>
-        Inside, 
+        Inside,
 
         /// <summary>
         /// The outside.
@@ -62,57 +62,57 @@ namespace OxyPlot
         /// <summary>
         /// The top left.
         /// </summary>
-        TopLeft, 
+        TopLeft,
 
         /// <summary>
         /// The top center.
         /// </summary>
-        TopCenter, 
+        TopCenter,
 
         /// <summary>
         /// The top right.
         /// </summary>
-        TopRight, 
+        TopRight,
 
         /// <summary>
         /// The bottom left.
         /// </summary>
-        BottomLeft, 
+        BottomLeft,
 
         /// <summary>
         /// The bottom center.
         /// </summary>
-        BottomCenter, 
+        BottomCenter,
 
         /// <summary>
         /// The bottom right.
         /// </summary>
-        BottomRight, 
+        BottomRight,
 
         /// <summary>
         /// The left top.
         /// </summary>
-        LeftTop, 
+        LeftTop,
 
         /// <summary>
         /// The left middle.
         /// </summary>
-        LeftMiddle, 
+        LeftMiddle,
 
         /// <summary>
         /// The left bottom.
         /// </summary>
-        LeftBottom, 
+        LeftBottom,
 
         /// <summary>
         /// The right top.
         /// </summary>
-        RightTop, 
+        RightTop,
 
         /// <summary>
         /// The right middle.
         /// </summary>
-        RightMiddle, 
+        RightMiddle,
 
         /// <summary>
         /// The right bottom.
@@ -128,7 +128,7 @@ namespace OxyPlot
         /// <summary>
         /// The horizontal.
         /// </summary>
-        Horizontal, 
+        Horizontal,
 
         /// <summary>
         /// The vertical.
@@ -144,7 +144,7 @@ namespace OxyPlot
         /// <summary>
         /// The normal.
         /// </summary>
-        Normal, 
+        Normal,
 
         /// <summary>
         /// The reverse.
@@ -160,7 +160,7 @@ namespace OxyPlot
         /// <summary>
         /// The left.
         /// </summary>
-        Left, 
+        Left,
 
         /// <summary>
         /// The right.
@@ -194,9 +194,9 @@ namespace OxyPlot
         /// </summary>
         public PlotModel()
         {
-            this.Axes = new Collection<IAxis>();
-            this.Series = new Collection<ISeries>();
-            this.Annotations = new Collection<IAnnotation>();
+            this.Axes = new Collection<Axis>();
+            this.Series = new Collection<Series>();
+            this.Annotations = new Collection<Annotation>();
 
             this.PlotType = PlotType.XY;
 
@@ -358,7 +358,7 @@ namespace OxyPlot
         /// Gets or sets the annotations.
         /// </summary>
         /// <value>The annotations.</value>
-        public Collection<IAnnotation> Annotations { get; set; }
+        public Collection<Annotation> Annotations { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to auto adjust plot margins.
@@ -369,7 +369,7 @@ namespace OxyPlot
         /// Gets or sets the axes.
         /// </summary>
         /// <value>The axes.</value>
-        public Collection<IAxis> Axes { get; set; }
+        public Collection<Axis> Axes { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the background of the plot area.
@@ -574,7 +574,7 @@ namespace OxyPlot
         /// Gets or sets the series.
         /// </summary>
         /// <value>The series.</value>
-        public Collection<ISeries> Series { get; set; }
+        public Collection<Series> Series { get; set; }
 
         /// <summary>
         /// Gets or sets the subtitle.
@@ -651,25 +651,25 @@ namespace OxyPlot
         /// Gets or sets the default angle axis.
         /// </summary>
         /// <value>The default angle axis.</value>
-        internal IAxis DefaultAngleAxis { get; set; }
+        internal AngleAxis DefaultAngleAxis { get; set; }
 
         /// <summary>
         /// Gets or sets the default magnitude axis.
         /// </summary>
         /// <value>The default magnitude axis.</value>
-        internal IAxis DefaultMagnitudeAxis { get; set; }
+        internal MagnitudeAxis DefaultMagnitudeAxis { get; set; }
 
         /// <summary>
         /// Gets or sets the default X axis.
         /// </summary>
         /// <value>The default X axis.</value>
-        internal IAxis DefaultXAxis { get; set; }
+        internal Axis DefaultXAxis { get; set; }
 
         /// <summary>
         /// Gets or sets the default Y axis.
         /// </summary>
         /// <value>The default Y axis.</value>
-        internal IAxis DefaultYAxis { get; set; }
+        internal Axis DefaultYAxis { get; set; }
 
         #endregion
 
@@ -702,7 +702,7 @@ namespace OxyPlot
             }
 
             r.AddHeader(2, "=== Series ===");
-            foreach (ISeries s in this.Series)
+            foreach (Series s in this.Series)
             {
                 r.AddPropertyTable(s.GetType().Name, s);
                 var ds = s as DataPointSeries;
@@ -715,8 +715,8 @@ namespace OxyPlot
 
             r.AddParagraph(
                 string.Format(
-                    "Report generated by OxyPlot {0}, {1:u}", 
-                    Assembly.GetExecutingAssembly().GetName().Version.ToString(3), 
+                    "Report generated by OxyPlot {0}, {1:u}",
+                    Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                     DateTime.Now));
             return r;
         }
@@ -781,8 +781,20 @@ namespace OxyPlot
                 position = AxisPosition.Bottom;
             }
 
-            foreach (IAxis axis in this.Axes)
+            foreach (Axis axis in this.Axes)
             {
+                if (axis is MagnitudeAxis)
+                {
+                    xaxis = axis;
+                    continue;
+                }
+
+                if (axis is AngleAxis)
+                {
+                    yaxis = axis;
+                    continue;
+                }
+
                 double x = axis.InverseTransform(axis.IsHorizontal() ? pt.X : pt.Y);
                 if (x >= axis.ActualMinimum && x <= axis.ActualMaximum
                     && (position == null || position == axis.Position))
@@ -839,11 +851,11 @@ namespace OxyPlot
         /// <returns>
         /// The nearest series.
         /// </returns>
-        public ISeries GetSeriesFromPoint(ScreenPoint point, double limit)
+        public Series GetSeriesFromPoint(ScreenPoint point, double limit)
         {
             double mindist = double.MaxValue;
-            ISeries closest = null;
-            foreach (ISeries s in this.Series)
+            Series closest = null;
+            foreach (Series s in this.Series)
             {
                 var ts = s as ITrackableSeries;
                 if (ts == null)
@@ -959,7 +971,7 @@ namespace OxyPlot
         public void UpdateAxisTransforms()
         {
             // Update the transforms
-            foreach (IAxis a in this.Axes)
+            foreach (Axis a in this.Axes)
             {
                 a.UpdateTransform(this.PlotArea);
             }
@@ -968,19 +980,19 @@ namespace OxyPlot
             if (this.PlotType == PlotType.Cartesian)
             {
                 double minimumScale = double.MaxValue;
-                foreach (IAxis a in this.Axes)
+                foreach (Axis a in this.Axes)
                 {
                     minimumScale = Math.Min(minimumScale, Math.Abs(a.Scale));
                 }
 
-                foreach (IAxis a in this.Axes)
+                foreach (Axis a in this.Axes)
                 {
-                    a.SetScale(minimumScale);
+                    a.Zoom(minimumScale);
                 }
             }
 
             // Update the intervals for all axes
-            foreach (IAxis a in this.Axes)
+            foreach (Axis a in this.Axes)
             {
                 a.UpdateIntervals(this.PlotArea);
             }
@@ -994,7 +1006,7 @@ namespace OxyPlot
         /// </summary>
         public void UpdateData()
         {
-            foreach (ISeries s in this.Series)
+            foreach (Series s in this.Series)
             {
                 s.UpdateData();
             }
@@ -1002,9 +1014,9 @@ namespace OxyPlot
             // Ensure that there are default axes available
             this.EnsureDefaultAxes();
 
-            foreach (IAxis a in this.Axes)
+            foreach (Axis a in this.Axes)
             {
-                a.UpdateData(this.Series);
+                a.UpdateFromSeries(this.Series);
             }
 
             // Update the max and min of the axes
@@ -1023,8 +1035,26 @@ namespace OxyPlot
             this.DefaultXAxis = null;
             this.DefaultYAxis = null;
 
-            foreach (IAxis a in this.Axes)
+            foreach (Axis a in this.Axes)
             {
+                if (a is MagnitudeAxis)
+                {
+                    if (this.DefaultMagnitudeAxis == null)
+                    {
+                        this.DefaultMagnitudeAxis = a as MagnitudeAxis;
+                    }
+                    continue;
+                }
+
+                if (a is AngleAxis)
+                {
+                    if (this.DefaultAngleAxis == null)
+                    {
+                        this.DefaultAngleAxis = a as AngleAxis;
+                    }
+                    continue;
+                }
+
                 if (a.IsHorizontal())
                 {
                     if (this.DefaultXAxis == null)
@@ -1041,21 +1071,7 @@ namespace OxyPlot
                     }
                 }
 
-                if (a.Position == AxisPosition.Magnitude)
-                {
-                    if (this.DefaultMagnitudeAxis == null)
-                    {
-                        this.DefaultMagnitudeAxis = a;
-                    }
-                }
 
-                if (a.Position == AxisPosition.Angle)
-                {
-                    if (this.DefaultAngleAxis == null)
-                    {
-                        this.DefaultAngleAxis = a;
-                    }
-                }
             }
 
             if (this.DefaultXAxis == null)
@@ -1072,12 +1088,12 @@ namespace OxyPlot
             {
                 if (this.DefaultXAxis == null)
                 {
-                    this.DefaultXAxis = this.DefaultMagnitudeAxis = new LinearAxis { Position = AxisPosition.Magnitude };
+                    this.DefaultXAxis = this.DefaultMagnitudeAxis = new MagnitudeAxis();
                 }
 
                 if (this.DefaultYAxis == null)
                 {
-                    this.DefaultYAxis = this.DefaultAngleAxis = new LinearAxis { Position = AxisPosition.Angle };
+                    this.DefaultYAxis = this.DefaultAngleAxis = new AngleAxis();
                 }
             }
             else
@@ -1094,7 +1110,7 @@ namespace OxyPlot
             }
 
             bool areAxesRequired = false;
-            foreach (ISeries s in this.Series)
+            foreach (Series s in this.Series)
             {
                 if (s.AreAxesRequired())
                 {
@@ -1116,7 +1132,7 @@ namespace OxyPlot
             }
 
             // Update the x/y axes of series without axes defined
-            foreach (ISeries s in this.Series)
+            foreach (Series s in this.Series)
             {
                 if (s.AreAxesRequired())
                 {
@@ -1145,17 +1161,17 @@ namespace OxyPlot
         /// </summary>
         private void UpdateMaxMin()
         {
-            foreach (IAxis a in this.Axes)
+            foreach (Axis a in this.Axes)
             {
                 a.ResetActualMaxMin();
             }
 
-            foreach (ISeries s in this.Series)
+            foreach (Series s in this.Series)
             {
                 s.UpdateMaxMin();
             }
 
-            foreach (IAxis a in this.Axes)
+            foreach (Axis a in this.Axes)
             {
                 a.UpdateActualMaxMin();
             }

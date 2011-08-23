@@ -17,7 +17,7 @@
     /// 
     /// Use stacked bar charts with caution... http://lilt.ilstu.edu/gmklass/pos138/datadisplay/badchart.htm
     /// </summary>
-    public class BarSeries : PlotSeriesBase
+    public class BarSeries : ItemsSeries
     {
         #region Constants and Fields
 
@@ -315,7 +315,7 @@
                 this.StrokeThickness);
         }
 
-        public override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues(PlotModel model)
         {
             if (this.FillColor == null)
             {
@@ -323,7 +323,7 @@
             }
         }
 
-        public override void UpdateData()
+        protected internal override void UpdateData()
         {
             if (this.ItemsSource == null)
             {
@@ -336,7 +336,7 @@
         /// <summary>
         ///   Updates the maximum/minimum value on the value axis from the bar values.
         /// </summary>
-        public override void UpdateMaxMin()
+        protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
 
@@ -353,7 +353,7 @@
 
             bool isVertical = ca == this.XAxis;
 
-            IAxis valueAxis = isVertical ? this.YAxis : this.XAxis;
+            Axis valueAxis = isVertical ? this.YAxis : this.XAxis;
             if (valueAxis == null)
             {
                 throw new InvalidOperationException("No value axis defined.");

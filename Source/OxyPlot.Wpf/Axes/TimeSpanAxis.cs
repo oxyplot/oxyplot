@@ -1,28 +1,52 @@
-﻿namespace OxyPlot.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TimeSpanAxis.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot.Wpf
 {
-    public class TimeSpanAxis : AxisBase
+    /// <summary>
+    /// This is a WPF wrapper of OxyPlot.TimeSpanAxis.
+    /// </summary>
+    public class TimeSpanAxis : Axis
     {
         #region Constructors and Destructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimeSpanAxis"/> class.
+        /// </summary>
         public TimeSpanAxis()
         {
-            this.Axis = new OxyPlot.TimeSpanAxis();
+            this.internalAxis = new OxyPlot.TimeSpanAxis();
         }
 
         #endregion
 
         #region Public Methods
 
-        public override OxyPlot.IAxis CreateModel()
+        /// <summary>
+        /// The create model.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public override OxyPlot.Axis CreateModel()
         {
             this.SynchronizeProperties();
-            return this.Axis;
+            return this.internalAxis;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The synchronize properties.
+        /// </summary>
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.Axis as OxyPlot.TimeSpanAxis;
+            var a = this.internalAxis as OxyPlot.TimeSpanAxis;
         }
 
         #endregion

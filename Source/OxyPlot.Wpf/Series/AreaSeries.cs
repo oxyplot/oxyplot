@@ -1,10 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AreaSeries.cs" company="">
-//   
+// <copyright file="AreaSeries.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
 // </copyright>
 // <summary>
 //   This is a WPF wrapper of OxyPlot.AreaSeries
-//   Note that property changes are not currently making the plot refresh itself.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +14,6 @@ namespace OxyPlot.Wpf
 
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.AreaSeries
-    /// Note that property changes are not currently making the plot refresh itself.
     /// </summary>
     public class AreaSeries : LineSeries
     {
@@ -25,31 +23,31 @@ namespace OxyPlot.Wpf
         /// The constant y 2 property.
         /// </summary>
         public static readonly DependencyProperty ConstantY2Property = DependencyProperty.Register(
-            "ConstantY2", typeof(double), typeof(AreaSeries), new UIPropertyMetadata(0.0));
+            "ConstantY2", typeof(double), typeof(AreaSeries), new FrameworkPropertyMetadata(0.0, DataChanged));
 
         /// <summary>
         /// The data field x 2 property.
         /// </summary>
         public static readonly DependencyProperty DataFieldX2Property = DependencyProperty.Register(
-            "DataFieldX2", typeof(string), typeof(AreaSeries), new UIPropertyMetadata(null, DataChanged));
+            "DataFieldX2", typeof(string), typeof(AreaSeries), new FrameworkPropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The data field y 2 property.
         /// </summary>
         public static readonly DependencyProperty DataFieldY2Property = DependencyProperty.Register(
-            "DataFieldY2", typeof(string), typeof(AreaSeries), new UIPropertyMetadata(null, DataChanged));
+            "DataFieldY2", typeof(string), typeof(AreaSeries), new FrameworkPropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The fill property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-            "Fill", typeof(Color?), typeof(AreaSeries), new UIPropertyMetadata(null));
+            "Fill", typeof(Color?), typeof(AreaSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The reverse 2 property.
         /// </summary>
         public static readonly DependencyProperty Reverse2Property = DependencyProperty.Register(
-            "Reverse2", typeof(bool), typeof(AreaSeries), new UIPropertyMetadata(true));
+            "Reverse2", typeof(bool), typeof(AreaSeries), new FrameworkPropertyMetadata(true, AppearanceChanged));
 
         #endregion
 
@@ -144,12 +142,16 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <returns>
         /// </returns>
-        public override OxyPlot.ISeries CreateModel()
+        public override OxyPlot.Series CreateModel()
         {
             var s = new OxyPlot.AreaSeries();
             this.SynchronizeProperties(s);
             return s;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// The synchronize properties.

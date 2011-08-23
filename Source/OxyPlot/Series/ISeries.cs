@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace OxyPlot
+﻿namespace OxyPlot
 {
     /// <summary>
     ///   The Series interface.
@@ -25,41 +23,6 @@ namespace OxyPlot
         /// </summary>
         /// <param name = "rc">The rendering context.</param>
         /// <param name = "legendBox">The legend rectangle.</param>
-        void RenderLegend(IRenderContext rc, OxyRect legendBox);
-
-        /// <summary>
-        /// Updates the data.
-        /// </summary>
-        void UpdateData();
-
-        /// <summary>
-        ///   Check if this data series requires X/Y axes. 
-        ///   (e.g. Pie series do not require axes)
-        /// </summary>
-        /// <returns></returns>
-        bool AreAxesRequired();
-
-        /// <summary>
-        /// Check if the data series is using the specified axis.
-        /// </summary>
-        bool IsUsing(IAxis axis);
-
-        /// <summary>
-        /// Ensures that the series has axes.
-        /// </summary>
-        /// <param name="axes">The axes collection of the parent PlotModel.</param>
-        /// <param name="defaultXAxis">The default X axis of the parent PlotModel.</param>
-        /// <param name="defaultYAxis">The default Y axis of the parent PlotModel.</param>
-        void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis);
-
-        /// <summary>
-        /// Updates the maximum and minimum of the axes related to the series.
-        /// </summary>
-        void UpdateMaxMin();
-
-        /// <summary>
-        /// Sets default values from the plotmodel.
-        /// </summary>
-        void SetDefaultValues(PlotModel model);
+        void RenderLegend(IRenderContext rc, OxyRect legendBox);       
     }
 }

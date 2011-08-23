@@ -158,7 +158,7 @@ namespace ExampleLibrary
 
         static readonly Random Randomizer = new Random();
 
-        private static ISeries CreateRandomScatterSeries(int n, string title, MarkerType markerType)
+        private static Series CreateRandomScatterSeries(int n, string title, MarkerType markerType)
         {
             var s1 = new ScatterSeries { Title = title, MarkerType = markerType, MarkerStroke = OxyColors.Black, MarkerStrokeThickness = 1.0 };
             for (int i = 0; i < n; i++)
@@ -171,7 +171,7 @@ namespace ExampleLibrary
             return s1;
         }
 
-        private static ISeries CreateRandomScatterSeries2(int n, string title, MarkerType markerType)
+        private static Series CreateRandomScatterSeries2(int n, string title, MarkerType markerType)
         {
             var s1 = new ScatterSeries { Title = title, MarkerType = markerType, MarkerStroke = OxyColors.Black, MarkerStrokeThickness = 1.0 };
             for (int i = 0; i < n; i++)

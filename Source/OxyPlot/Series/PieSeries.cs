@@ -12,7 +12,7 @@ namespace OxyPlot
     ///   The arc length/central angle/area of each slice is proportional to the quantity it represents.
     ///   http://en.wikipedia.org/wiki/Pie_chart
     /// </summary>
-    public class PieSeries : ISeries
+    public class PieSeries : Series
     {
         private IList<PieSlice> slices;
 
@@ -38,8 +38,6 @@ namespace OxyPlot
             InsideLabelPosition = 0.5;
             FontSize = 12;
         }
-
-        public string Title { get; set; }
 
         /// <summary>
         ///   Gets or sets the items source.
@@ -83,15 +81,13 @@ namespace OxyPlot
             set { slices = value; }
         }
 
-        public OxyColor Background { get; set; }
-
         #region ISeries Members
 
-        public void RenderLegend(IRenderContext rc, OxyRect legendBox)
+        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
         }
 
-        public void UpdateData()
+        protected internal override void UpdateData()
         {
             if (ItemsSource == null)
             {
@@ -143,32 +139,37 @@ namespace OxyPlot
             }
         }
 
-        public bool AreAxesRequired()
+        protected internal override bool AreAxesRequired()
         {
             return false;
         }
 
-        public bool IsUsing(IAxis axis)
+        protected internal override bool IsUsing(IAxis axis)
         {
             return false;
         }
 
-        public void EnsureAxes(Collection<IAxis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
+        protected internal override void EnsureAxes(Collection<Axis> axes, Axis defaultXAxis, Axis defaultYAxis)
         {
         }
 
-        public void UpdateMaxMin()
+        protected internal override void UpdateMaxMin()
         {
         }
 
-        public void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues(PlotModel model)
         {
             foreach (var slice in Slices)
                 if (slice.Fill == null)
                     slice.Fill = model.GetDefaultColor();
         }
 
-        public void Render(IRenderContext rc, PlotModel model)
+        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
+        {
+            return null;
+        }
+
+        public override void Render(IRenderContext rc, PlotModel model)
         {
             if (Slices.Count == 0)
             {

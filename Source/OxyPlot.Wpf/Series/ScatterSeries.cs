@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ScatterSeries.cs" company="">
-//   
+// <copyright file="ScatterSeries.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
 // </copyright>
 // <summary>
 //   This is a WPF wrapper of OxyPlot.ScatterSeries
@@ -16,108 +16,123 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.ScatterSeries
     /// </summary>
-    public class ScatterSeries : PlotSeriesBase
+    public class ScatterSeries : XYAxisSeries
     {
-        public Func<object, IDataPoint> Mapping
-        {
-            get { return (Func<object, IDataPoint>)GetValue(MappingProperty); }
-            set { SetValue(MappingProperty, value); }
-        }
-
-        public static readonly DependencyProperty MappingProperty =
-            DependencyProperty.Register("Mapping", typeof(Func<object, IDataPoint>), typeof(ScatterSeries), new UIPropertyMetadata(null));
-
-
-
-        public string DataFieldTag
-        {
-            get { return (string)GetValue(DataFieldTagProperty); }
-            set { SetValue(DataFieldTagProperty, value); }
-        }
-
-        public static readonly DependencyProperty DataFieldTagProperty =
-            DependencyProperty.Register("DataFieldTag", typeof(string), typeof(ScatterSeries), new UIPropertyMetadata(null));
-
-
         #region Constants and Fields
+
+        /// <summary>
+        /// The bin size property.
+        /// </summary>
+        public static readonly DependencyProperty BinSizeProperty = DependencyProperty.Register(
+            "BinSize", typeof(int), typeof(ScatterSeries), new FrameworkPropertyMetadata(0, AppearanceChanged));
 
         /// <summary>
         /// The data field size property.
         /// </summary>
         public static readonly DependencyProperty DataFieldSizeProperty = DependencyProperty.Register(
-            "DataFieldSize", typeof(string), typeof(ScatterSeries), new UIPropertyMetadata(null));
+            "DataFieldSize", typeof(string), typeof(ScatterSeries), new FrameworkPropertyMetadata(null, DataChanged));
+
+        /// <summary>
+        /// The data field tag property.
+        /// </summary>
+        public static readonly DependencyProperty DataFieldTagProperty = DependencyProperty.Register(
+            "DataFieldTag", typeof(string), typeof(ScatterSeries), new FrameworkPropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The data field value property.
         /// </summary>
         public static readonly DependencyProperty DataFieldValueProperty = DependencyProperty.Register(
-            "DataFieldValue", typeof(string), typeof(ScatterSeries), new UIPropertyMetadata(null));
+            "DataFieldValue", typeof(string), typeof(ScatterSeries), new FrameworkPropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The data field x property.
         /// </summary>
         public static readonly DependencyProperty DataFieldXProperty = DependencyProperty.Register(
-            "DataFieldX", typeof(string), typeof(ScatterSeries), new UIPropertyMetadata("X"));
+            "DataFieldX", typeof(string), typeof(ScatterSeries), new FrameworkPropertyMetadata("X", DataChanged));
 
         /// <summary>
         /// The data field y property.
         /// </summary>
         public static readonly DependencyProperty DataFieldYProperty = DependencyProperty.Register(
-            "DataFieldY", typeof(string), typeof(ScatterSeries), new UIPropertyMetadata("Y"));
+            "DataFieldY", typeof(string), typeof(ScatterSeries), new FrameworkPropertyMetadata("Y", DataChanged));
+
+        /// <summary>
+        /// The mapping property.
+        /// </summary>
+        public static readonly DependencyProperty MappingProperty = DependencyProperty.Register(
+            "Mapping", 
+            typeof(Func<object, IDataPoint>), 
+            typeof(ScatterSeries), 
+            new FrameworkPropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The marker fill property.
         /// </summary>
         public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(
-            "MarkerFill", typeof(Color?), typeof(ScatterSeries), new UIPropertyMetadata(null));
+            "MarkerFill", typeof(Color?), typeof(ScatterSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
+        /// The marker outline property.
+        /// </summary>
+        public static readonly DependencyProperty MarkerOutlineProperty = DependencyProperty.Register(
+            "MarkerOutline", 
+            typeof(ScreenPoint[]), 
+            typeof(ScatterSeries), 
+            new FrameworkPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The marker size property.
         /// </summary>
         public static readonly DependencyProperty MarkerSizeProperty = DependencyProperty.Register(
-            "MarkerSize", typeof(double), typeof(ScatterSeries), new UIPropertyMetadata(5.0));
+            "MarkerSize", typeof(double), typeof(ScatterSeries), new FrameworkPropertyMetadata(5.0, AppearanceChanged));
 
         /// <summary>
         /// The marker stroke property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeProperty = DependencyProperty.Register(
-            "MarkerStroke", typeof(Color?), typeof(ScatterSeries), new UIPropertyMetadata(null));
+            "MarkerStroke", 
+            typeof(Color?), 
+            typeof(ScatterSeries), 
+            new FrameworkPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The marker stroke thickness property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeThicknessProperty =
             DependencyProperty.Register(
-                "MarkerStrokeThickness", typeof(double), typeof(ScatterSeries), new UIPropertyMetadata(1.0));
+                "MarkerStrokeThickness", 
+                typeof(double), 
+                typeof(ScatterSeries), 
+                new FrameworkPropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         /// The marker type property.
         /// </summary>
         public static readonly DependencyProperty MarkerTypeProperty = DependencyProperty.Register(
-            "MarkerType", typeof(MarkerType), typeof(ScatterSeries), new UIPropertyMetadata(MarkerType.Square));
-
-        public int BinSize
-        {
-            get { return (int)GetValue(BinSizeProperty); }
-            set { SetValue(BinSizeProperty, value); }
-        }
-
-        public static readonly DependencyProperty BinSizeProperty =
-            DependencyProperty.Register("BinSize", typeof(int), typeof(ScatterSeries), new UIPropertyMetadata(0));
-
-        public ScreenPoint[] MarkerOutline
-        {
-            get { return (ScreenPoint[])GetValue(MarkerOutlineProperty); }
-            set { SetValue(MarkerOutlineProperty, value); }
-        }
-
-        public static readonly DependencyProperty MarkerOutlineProperty =
-            DependencyProperty.Register("MarkerOutline", typeof(ScreenPoint[]), typeof(ScatterSeries), new UIPropertyMetadata(null));
-
+            "MarkerType", 
+            typeof(MarkerType), 
+            typeof(ScatterSeries), 
+            new FrameworkPropertyMetadata(MarkerType.Square, AppearanceChanged));
 
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// Gets or sets BinSize.
+        /// </summary>
+        public int BinSize
+        {
+            get
+            {
+                return (int)this.GetValue(BinSizeProperty);
+            }
+
+            set
+            {
+                this.SetValue(BinSizeProperty, value);
+            }
+        }
 
         /// <summary>
         /// Gets or sets DataFieldSize.
@@ -132,6 +147,22 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(DataFieldSizeProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets DataFieldTag.
+        /// </summary>
+        public string DataFieldTag
+        {
+            get
+            {
+                return (string)this.GetValue(DataFieldTagProperty);
+            }
+
+            set
+            {
+                this.SetValue(DataFieldTagProperty, value);
             }
         }
 
@@ -184,6 +215,22 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets Mapping.
+        /// </summary>
+        public Func<object, IDataPoint> Mapping
+        {
+            get
+            {
+                return (Func<object, IDataPoint>)this.GetValue(MappingProperty);
+            }
+
+            set
+            {
+                this.SetValue(MappingProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets MarkerFill.
         /// </summary>
         public Color? MarkerFill
@@ -196,6 +243,22 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(MarkerFillProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets MarkerOutline.
+        /// </summary>
+        public ScreenPoint[] MarkerOutline
+        {
+            get
+            {
+                return (ScreenPoint[])this.GetValue(MarkerOutlineProperty);
+            }
+
+            set
+            {
+                this.SetValue(MarkerOutlineProperty, value);
             }
         }
 
@@ -272,12 +335,16 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <returns>
         /// </returns>
-        public override OxyPlot.ISeries CreateModel()
+        public override OxyPlot.Series CreateModel()
         {
             var s = new OxyPlot.ScatterSeries();
             this.SynchronizeProperties(s);
             return s;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// The synchronize properties.

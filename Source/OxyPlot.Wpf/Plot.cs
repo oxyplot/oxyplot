@@ -1,10 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Plot.cs" company="">
-//   
+// <copyright file="Plot.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
 // </copyright>
-// <summary>
-//   Represents a WPF control that displays an OxyPlot plot.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -50,7 +47,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
             DependencyProperty.Register(
-                "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new UIPropertyMetadata(null));
+                "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new FrameworkPropertyMetadata(null));
 
         /// <summary>
         ///   The Grid PART constant.
@@ -130,7 +127,7 @@ namespace OxyPlot.Wpf
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Plot), new FrameworkPropertyMetadata(typeof(Plot)));
             PaddingProperty.OverrideMetadata(
-                typeof(Plot), new FrameworkPropertyMetadata(new Thickness(8, 8, 16, 8), VisualChanged));
+                typeof(Plot), new FrameworkPropertyMetadata(new Thickness(8, 8, 16, 8), AppearanceChanged));
         }
 
 #endif
@@ -146,9 +143,9 @@ namespace OxyPlot.Wpf
 
             this.MouseActions = new List<OxyMouseAction> { this.panAction, this.zoomAction, this.trackerAction };
 
-            this.series = new ObservableCollection<ISeries>();
-            this.axes = new ObservableCollection<IAxis>();
-            this.annotations = new ObservableCollection<IAnnotation>();
+            this.series = new ObservableCollection<Series>();
+            this.axes = new ObservableCollection<Axis>();
+            this.annotations = new ObservableCollection<Annotation>();
             this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
 
             this.series.CollectionChanged += this.OnSeriesChanged;
@@ -162,6 +159,7 @@ namespace OxyPlot.Wpf
             CompositionTarget.Rendering += this.CompositionTargetRendering;
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.DoCopy));
+
             // this.CommandBindings.Add(new CommandBinding(CopyCode, this.DoCopyCode));
             // this.InputBindings.Add(new KeyBinding(CopyCode, Key.C, ModifierKeys.Control | ModifierKeys.Alt));
         }
@@ -491,11 +489,11 @@ namespace OxyPlot.Wpf
         {
             var bmp = new RenderTargetBitmap(
                 (int)this.ActualWidth, (int)this.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-            
-            var clientRect = new Rect(VisualOffset.X, VisualOffset.Y, ActualWidth, ActualHeight);
+
+            var clientRect = new Rect(this.VisualOffset.X, this.VisualOffset.Y, this.ActualWidth, this.ActualHeight);
 
             // move the client area, otherwise the rendering may be at the wrong offset
-            this.Arrange(new Rect(0,0,bmp.Width,bmp.Height));            
+            this.Arrange(new Rect(0, 0, bmp.Width, bmp.Height));
             bmp.Render(this);
 
             this.Arrange(clientRect);
@@ -590,17 +588,17 @@ namespace OxyPlot.Wpf
                 this.ZoomAll();
             }
 
-            if (control && alt && ActualModel != null)
+            if (control && alt && this.ActualModel != null)
             {
                 switch (e.Key)
                 {
                     case Key.R:
                         Clipboard.SetText(this.ActualModel.CreateTextReport());
                         break;
-                    case Key.C: 
+                    case Key.C:
                         Clipboard.SetText(this.ActualModel.ToCode());
                         break;
-                    case Key.X: 
+                    case Key.X:
                         Clipboard.SetText(this.ToXaml());
                         break;
                 }
@@ -760,11 +758,14 @@ namespace OxyPlot.Wpf
         /// <param name="e">
         /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
-        private static void VisualChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((Plot)d).OnVisualChanged();
         }
 
+        /// <summary>
+        /// The on visual changed.
+        /// </summary>
         private void OnVisualChanged()
         {
             this.InvalidatePlot();

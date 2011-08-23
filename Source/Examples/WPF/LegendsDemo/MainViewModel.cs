@@ -123,6 +123,8 @@ namespace LegendsDemo
         {
             var newModel = new PlotModel("LineSeries")
                             {
+                                LegendBorder = OxyColors.Black,
+                                LegendBackground = OxyColor.FromAColor(200, OxyColors.White),
                                 LegendPosition = LegendPosition,
                                 LegendPlacement = LegendPlacement,
                                 LegendOrientation = LegendOrientation,
@@ -135,8 +137,8 @@ namespace LegendsDemo
             {
                 var s = new LineSeries("Series " + i);
                 newModel.Series.Add(s);
-                for (double x = 0; x < 2*Math.PI; x += 0.1)
-                    s.Points.Add(new DataPoint(x, Math.Sin(x*i)/i + i));
+                for (double x = 0; x < 2 * Math.PI; x += 0.1)
+                    s.Points.Add(new DataPoint(x, Math.Sin(x * i) / i + i));
             }
             return newModel;
         }

@@ -1,8 +1,17 @@
-﻿namespace OxyPlot.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LogarithmicAxis.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot.Wpf
 {
     using System.Windows;
 
-    public class LogarithmicAxis : AxisBase
+    /// <summary>
+    /// This is a WPF wrapper of OxyPlot.LogarithmicAxis.
+    /// </summary>
+    public class LogarithmicAxis : Axis
     {
         #region Constants and Fields
 
@@ -14,28 +23,38 @@
         public static readonly DependencyProperty BaseProperty = DependencyProperty.Register(
             "Base", typeof(double), typeof(LogarithmicAxis), new FrameworkPropertyMetadata(10.0, DataChanged));
 
+        /// <summary>
+        /// The power padding property.
+        /// </summary>
         public static readonly DependencyProperty PowerPaddingProperty = DependencyProperty.Register(
-            "PowerPadding", typeof(bool), typeof(LogarithmicAxis), new UIPropertyMetadata(true, DataChanged));
+            "PowerPadding", typeof(bool), typeof(LogarithmicAxis), new FrameworkPropertyMetadata(true, DataChanged));
 
         #endregion
 
         #region Constructors and Destructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogarithmicAxis"/> class.
+        /// </summary>
         public LogarithmicAxis()
         {
-            this.Axis = new OxyPlot.LogarithmicAxis();
+            this.internalAxis = new OxyPlot.LogarithmicAxis();
         }
 
         #endregion
 
         #region Public Properties
 
+        /// <summary>
+        /// Gets or sets Base.
+        /// </summary>
         public double Base
         {
             get
             {
                 return (double)this.GetValue(BaseProperty);
             }
+
             set
             {
                 this.SetValue(BaseProperty, value);
@@ -51,6 +70,7 @@
             {
                 return (bool)this.GetValue(PowerPaddingProperty);
             }
+
             set
             {
                 this.SetValue(PowerPaddingProperty, value);
@@ -61,16 +81,28 @@
 
         #region Public Methods
 
-        public override OxyPlot.IAxis CreateModel()
+        /// <summary>
+        /// The create model.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public override OxyPlot.Axis CreateModel()
         {
             this.SynchronizeProperties();
-            return this.Axis;
+            return this.internalAxis;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The synchronize properties.
+        /// </summary>
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.Axis as OxyPlot.LogarithmicAxis;
+            var a = this.internalAxis as OxyPlot.LogarithmicAxis;
             a.Base = this.Base;
             a.PowerPadding = this.PowerPadding;
         }

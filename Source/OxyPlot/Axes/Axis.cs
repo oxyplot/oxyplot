@@ -1,107 +1,469 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Axis.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
-    /// The Axis is the base class for the OxyPlot axes.
+    /// Abstract base class for axes.
+    /// This class contains all properties from the IAxis interface.
+    /// This class contains methods that should only be accessible by the PlotModel.
     /// </summary>
+    [Serializable]
     public abstract class Axis : IAxis
     {
-        internal ScreenPoint MidPoint;
-        internal double Offset;
-        internal double Scale;
-        internal AxisPosition position;
+        #region Constants and Fields
+
+        /// <summary>
+        /// Exponent function.
+        /// </summary>
+        protected static readonly Func<double, double> Exponent = x => Math.Round(Math.Log(Math.Abs(x), 10));
+
+        /// <summary>
+        /// Mantissa function.
+        /// http://en.wikipedia.org/wiki/Mantissa
+        /// </summary>
+        protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
+
+        /// <summary>
+        /// The offset.
+        /// </summary>
+        internal double offset;
+
+        /// <summary>
+        /// The scale.
+        /// </summary>
+        internal double scale;
+
+        /// <summary>
+        /// The position.
+        /// </summary>
+        private AxisPosition position;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis"/> class.
         /// </summary>
-        protected Axis()
+        public Axis()
         {
-            Position = AxisPosition.Left;
-            IsVisible = true;
+            this.Position = AxisPosition.Left;
+            this.IsAxisVisible = true;
+            this.Layer = AxisLayer.BelowSeries;
 
-            Minimum = double.NaN;
-            Maximum = double.NaN;
-            MinorStep = double.NaN;
-            MajorStep = double.NaN;
+            this.AbsoluteMaximum = double.MaxValue;
+            this.AbsoluteMinimum = double.MinValue;
 
-            MinimumPadding = 0.01;
-            MaximumPadding = 0.01;
+            this.Minimum = double.NaN;
+            this.Maximum = double.NaN;
+            this.MinorStep = double.NaN;
+            this.MajorStep = double.NaN;
 
-            TickStyle = TickStyle.Inside;
-            TicklineColor = OxyColors.Black;
-            MajorGridlineStyle = LineStyle.None;
-            MinorGridlineStyle = LineStyle.None;
-            MajorGridlineColor = OxyColor.FromArgb(0x40, 0, 0, 0);
-            MinorGridlineColor = OxyColor.FromArgb(0x20, 0, 0, 0x00);
-            MajorGridlineThickness = 1;
-            MinorGridlineThickness = 1;
+            this.MinimumPadding = 0.01;
+            this.MaximumPadding = 0.01;
+            this.MinimumRange = 0;
 
-            ExtraGridlineStyle = LineStyle.Solid;
-            ExtraGridlineColor = OxyColors.Black;
-            ExtraGridlineThickness = 1;
+            this.TickStyle = TickStyle.Inside;
+            this.TicklineColor = OxyColors.Black;
 
-            ShowMinorTicks = true;
+            this.AxislineStyle = LineStyle.None;
+            this.AxislineColor = OxyColors.Black;
+            this.AxislineThickness = 1.0;
 
-            FontFamily = PlotModel.DefaultFont;
-            FontSize = 12;
+            this.MajorGridlineStyle = LineStyle.None;
+            this.MajorGridlineColor = OxyColor.FromArgb(0x40, 0, 0, 0);
+            this.MajorGridlineThickness = 1;
 
-            MinorTickSize = 4;
-            MajorTickSize = 7;
+            this.MinorGridlineStyle = LineStyle.None;
+            this.MinorGridlineColor = OxyColor.FromArgb(0x20, 0, 0, 0x00);
+            this.MinorGridlineThickness = 1;
 
-            StartPosition = 0;
-            EndPosition = 1;
+            this.ExtraGridlineStyle = LineStyle.Solid;
+            this.ExtraGridlineColor = OxyColors.Black;
+            this.ExtraGridlineThickness = 1;
 
-            Angle = 0;
+            this.ShowMinorTicks = true;
+
+            this.Font = null;
+            this.FontSize = 12;
+            this.FontWeight = FontWeights.Normal;
+
+            this.MinorTickSize = 4;
+            this.MajorTickSize = 7;
+
+            this.StartPosition = 0;
+            this.EndPosition = 1;
+
+            this.TitlePosition = 0.5;
+            this.TitleFormatString = "{0} [{1}]";
+
+            this.Angle = 0;
+
+            this.IsZoomEnabled = true;
+            this.IsPanEnabled = true;
+
+            this.FilterMinValue = double.MinValue;
+            this.FilterMaxValue = double.MaxValue;
+            this.FilterFunction = null;
+
+            this.IntervalLength = 60;
+
+            this.AxisTitleDistance = 4;
+            this.AxisTickToLabelDistance = 4;
+        }
+
+        #endregion
+
+        #region Public Events
+
+        /// <summary>
+        /// Occurs when the axis has been changed (by zooming, panning or resetting).
+        /// </summary>
+        public event EventHandler<AxisChangedEventArgs> AxisChanged;
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets the absolute maximum. This is only used for the UI control.
+        /// It will not be possible to zoom/pan beyond this limit.
+        /// </summary>
+        /// <value>The absolute maximum.</value>
+        public double AbsoluteMaximum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the absolute minimum. This is only used for the UI control.
+        /// It will not be possible to zoom/pan beyond this limit.
+        /// </summary>
+        /// <value>The absolute minimum.</value>
+        public double AbsoluteMinimum { get; set; }
+
+        /// <summary>
+        /// Gets the actual font.
+        /// </summary>
+        public string ActualFont
+        {
+            get
+            {
+                return this.Font ?? PlotModel.DefaultFont;
+            }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Axis"/> class.
+        /// Gets or sets the actual major step.
         /// </summary>
-        /// <param name="pos">The position.</param>
-        /// <param name="minimum">The minimum value.</param>
-        /// <param name="maximum">The maximum value.</param>
-        /// <param name="title">The title shown next to the axis.</param>
-        public Axis(AxisPosition pos, double minimum, double maximum, string title = null)
-            : this()
+        public double ActualMajorStep { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the actual maximum value of the axis.
+        /// If Maximum is not NaN, this value will be defined by Maximum.
+        /// If ViewMaximum is not NaN, this value will be defined by ViewMaximum.
+        /// Otherwise this value will be defined by the maximum (+padding) of the data.
+        /// </summary>
+        public double ActualMaximum { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the actual minimum value of the axis.
+        /// If Minimum is not NaN, this value will be defined by Minimum.
+        /// If ViewMinimum is not NaN, this value will be defined by ViewMinimum.
+        /// Otherwise this value will be defined by the minimum (+padding) of the data.
+        /// </summary>
+        public double ActualMinimum { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the actual minor step.
+        /// </summary>
+        public double ActualMinorStep { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the actual string format being used.
+        /// </summary>
+        public string ActualStringFormat { get; protected set; }
+
+        /// <summary>
+        /// Gets the actual title (including Unit if Unit is set).
+        /// </summary>
+        /// <value>The actual title.</value>
+        public string ActualTitle
         {
-            Position = pos;
-            Minimum = minimum;
-            Maximum = maximum;
-            Title = title;
+            get
+            {
+                if (this.Unit != null)
+                {
+                    return string.Format(this.TitleFormatString, this.Title, this.Unit);
+                }
+
+                return this.Title;
+            }
         }
 
         /// <summary>
-        /// Gets the screen coordinate of the Maximum point on the axis.
+        /// Gets or sets the angle for the axis values.
         /// </summary>
-        /// <value>The screen max.</value>
-        public ScreenPoint ScreenMax { get; internal set; }
+        public double Angle { get; set; }
 
         /// <summary>
-        /// Gets the screen coordinate of the Minimum point on the axis.
+        /// Gets or sets the distance from axis tick to number label.
         /// </summary>
-        /// <value>The screen min.</value>
-        public ScreenPoint ScreenMin { get; internal set; }
+        /// <value>The axis tick to label distance.</value>
+        public double AxisTickToLabelDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance from axis number to axis title.
+        /// </summary>
+        /// <value>The axis title distance.</value>
+        public double AxisTitleDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the axis line.
+        /// </summary>
+        public OxyColor AxislineColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the axis line.
+        /// </summary>
+        public LineStyle AxislineStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the axis line.
+        /// </summary>
+        public double AxislineThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the end position of the axis on the plot area.
+        /// This is a fraction from 0(bottom/left) to 1(top/right).
+        /// </summary>
+        public double EndPosition { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the extra gridlines.
+        /// </summary>
+        public OxyColor ExtraGridlineColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the extra gridlines linestyle.
+        /// </summary>
+        public LineStyle ExtraGridlineStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the extra gridline thickness.
+        /// </summary>
+        public double ExtraGridlineThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the values for extra gridlines.
+        /// </summary>
+        public double[] ExtraGridlines { get; set; }
+
+        /// <summary>
+        /// Gets or sets the filter function. 
+        /// </summary>
+        /// <value>The filter function.</value>
+        public Func<double, bool> FilterFunction { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum value that can be shown using this axis.
+        /// Values greater or equal to this value will not be shown.
+        /// </summary>
+        /// <value>The filter max value.</value>
+        public double FilterMaxValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum value that can be shown using this axis.
+        /// Values smaller or equal to this value will not be shown.
+        /// </summary>
+        /// <value>The filter min value.</value>
+        public double FilterMinValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the font name.
+        /// </summary>
+        public string Font { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the font.
+        /// </summary>
+        public double FontSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the font weight.
+        /// </summary>
+        public double FontWeight { get; set; }
+
+        /// <summary>
+        /// Gets or sets the length of the interval (screen length).
+        /// The available length of the axis will be divided by this length to get the approximate number of major intervals on the axis.
+        /// The default value is 60.
+        /// </summary>
+        public double IntervalLength { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this axis is visible.
+        /// </summary>
+        public bool IsAxisVisible { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether pan is enabled.
+        /// </summary>
+        public bool IsPanEnabled { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this axis is reversed.
+        /// It is reversed if StartPosition>EndPosition.
+        /// </summary>
+        public bool IsReversed
+        {
+            get
+            {
+                return this.StartPosition > this.EndPosition;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether zoom is enabled.
+        /// </summary>
+        public bool IsZoomEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the key of the axis.
         /// This can be used to find an axis if you have 
         /// defined mutiple axes in a plot.
         /// </summary>
-        /// <value>The key.</value>
         public string Key { get; set; }
+
+        /// <summary>
+        /// Gets or sets the layer.
+        /// </summary>
+        /// <value>The layer.</value>
+        public AxisLayer Layer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the major gridline.
+        /// </summary>
+        public OxyColor MajorGridlineColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the major gridline style.
+        /// </summary>
+        public LineStyle MajorGridlineStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the major gridline thickness.
+        /// </summary>
+        public double MajorGridlineThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the major step.
+        /// (the interval between large ticks with numbers).
+        /// </summary>
+        public double MajorStep { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the major tick.
+        /// </summary>
+        public double MajorTickSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum value of the axis.
+        /// </summary>
+        public double Maximum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the 'padding' fraction of the maximum value.
+        /// A value of 0.01 gives 1% more space on the maximum end of the axis.
+        /// This property is not used if the Maximum property is set.
+        /// </summary>
+        public double MaximumPadding { get; set; }
+
+        /// <summary>
+        /// Gets or sets the midpoint (screen coordinates) of the plot area.
+        /// This is used by polar coordinate systems.
+        /// </summary>
+        //public ScreenPoint MidPoint { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the minimum value of the axis.
+        /// </summary>
+        public double Minimum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the 'padding' fraction of the minimum value.
+        /// A value of 0.01 gives 1% more space on the minimum end of the axis.
+        /// This property is not used if the Minimum property is set.
+        /// </summary>
+        public double MinimumPadding { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum range of the axis.
+        /// Setting this property ensures that ActualMaximum-ActualMinimum > MinimumRange.
+        /// </summary>
+        public double MinimumRange { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the minor gridline.
+        /// </summary>
+        public OxyColor MinorGridlineColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minor gridline style.
+        /// </summary>
+        public LineStyle MinorGridlineStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minor gridline thickness.
+        /// </summary>
+        public double MinorGridlineThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minor step 
+        /// (the interval between small ticks without number).
+        /// </summary>
+        public double MinorStep { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the minor tick.
+        /// </summary>
+        public double MinorTickSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the offset.
+        /// This is used to transform between data and screen coordinates.
+        /// </summary>
+        public double Offset
+        {
+            get
+            {
+                return this.offset;
+            }
+
+            protected set
+            {
+                this.offset = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the position of the axis.
         /// </summary>
-        /// <value>The position.</value>
         public AxisPosition Position
         {
-            get { return position; }
-            set { position = value; }
+            get
+            {
+                return this.position;
+            }
+
+            set
+            {
+                this.position = value;
+            }
         }
 
         /// <summary>
@@ -111,101 +473,38 @@ namespace OxyPlot
         public bool PositionAtZeroCrossing { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this axis is visible.
+        /// Gets or sets the related axis.
+        /// This is used for polar coordinate systems where
+        /// the angle and magnitude axes are related.
         /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this axis is visible; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsVisible { get; set; }
+        public AxisBase RelatedAxis { get; set; }
 
         /// <summary>
-        /// Gets or sets the actual minimum value of the axis.
+        /// Gets or sets the scaling factor of the axis.
+        /// This is used to transform between data and screen coordinates.
         /// </summary>
-        /// <value>The actual minimum.</value>
-        public double ActualMinimum { get; set; }
+        public double Scale
+        {
+            get
+            {
+                return this.scale;
+            }
+
+            protected set
+            {
+                this.scale = value;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets the actual maximum value of the axis.
-        /// If Maximum is not NaN, this value will be overridden.
+        /// Gets or sets the screen coordinate of the Maximum point on the axis.
         /// </summary>
-        /// <value>The actual maximum.</value>
-        public double ActualMaximum { get; set; }
+        public ScreenPoint ScreenMax { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the actual minor step.
+        /// Gets or sets the screen coordinate of the Minimum point on the axis.
         /// </summary>
-        /// <value>The actual minor step.</value>
-        internal double ActualMinorStep { get; set; }
-
-        /// <summary>
-        /// Gets or sets the actual major step.
-        /// </summary>
-        /// <value>The actual major step.</value>
-        internal double ActualMajorStep { get; set; }
-
-        /// <summary>
-        /// Gets or sets the minimum.
-        /// </summary>
-        /// <value>The minimum.</value>
-        public double Minimum { get; set; }
-
-        /// <summary>
-        /// Gets or sets the maximum.
-        /// </summary>
-        /// <value>The maximum.</value>
-        public double Maximum { get; set; }
-
-        /// <summary>
-        /// Gets or sets the minor step 
-        /// (the interval between small ticks without number).
-        /// </summary>
-        /// <value>The minor step.</value>
-        public double MinorStep { get; set; }
-
-        /// <summary>
-        /// Gets or sets the major step.
-        /// (the interval between large ticks with numbers).
-        /// </summary>
-        /// <value>The major step.</value>
-        public double MajorStep { get; set; }
-
-        /// <summary>
-        /// Gets or sets the 'padding' fraction of the minimum value.
-        /// A value of 0.01 gives 1% more space on the minimum end of the axis.
-        /// </summary>
-        /// <value>The minimum padding.</value>
-        public double MinimumPadding { get; set; }
-
-        /// <summary>
-        /// Gets or sets the 'padding' fraction of the maximum value.
-        /// A value of 0.01 gives 1% more space on the maximum end of the axis.
-        /// </summary>
-        /// <value>The maximum padding.</value>
-        public double MaximumPadding { get; set; }
-
-        /// <summary>
-        /// Gets or sets the tick style.
-        /// </summary>
-        /// <value>The tick style.</value>
-        public TickStyle TickStyle { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size of the minor tick.
-        /// </summary>
-        /// <value>The size of the minor tick.</value>
-        public double MinorTickSize { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size of the major tick.
-        /// </summary>
-        /// <value>The size of the major tick.</value>
-        public double MajorTickSize { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color of the ticks.
-        /// </summary>
-        /// <value>The color of the tickline.</value>
-        public OxyColor TicklineColor { get; set; }
+        public ScreenPoint ScreenMin { get; protected set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether minor ticks should be shown.
@@ -213,77 +512,48 @@ namespace OxyPlot
         public bool ShowMinorTicks { get; set; }
 
         /// <summary>
-        /// Gets or sets the major gridline style.
+        /// Gets or sets the start position of the axis on the plot area.
+        /// This is a fraction from 0(bottom/left) to 1(top/right).
         /// </summary>
-        /// <value>The major gridline style.</value>
-        public LineStyle MajorGridlineStyle { get; set; }
-
-        /// <summary>
-        /// Gets or sets the minor gridline style.
-        /// </summary>
-        /// <value>The minor gridline style.</value>
-        public LineStyle MinorGridlineStyle { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color of the major gridline.
-        /// </summary>
-        /// <value>The color of the major gridline.</value>
-        public OxyColor MajorGridlineColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color of the minor gridline.
-        /// </summary>
-        /// <value>The color of the minor gridline.</value>
-        public OxyColor MinorGridlineColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the major gridline thickness.
-        /// </summary>
-        /// <value>The major gridline thickness.</value>
-        public double MajorGridlineThickness { get; set; }
-
-        /// <summary>
-        /// Gets or sets the minor gridline thickness.
-        /// </summary>
-        /// <value>The minor gridline thickness.</value>
-        public double MinorGridlineThickness { get; set; }
-
-        /// <summary>
-        /// Gets or sets the values for extra gridlines.
-        /// </summary>
-        /// <value>The extra gridlines.</value>
-        public double[] ExtraGridlines { get; set; }
-
-        /// <summary>
-        /// Gets or sets the extra gridlines linestyle.
-        /// </summary>
-        /// <value>The extra gridline style.</value>
-        public LineStyle ExtraGridlineStyle { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color of the extra gridlines.
-        /// </summary>
-        /// <value>The color of the extra gridline.</value>
-        public OxyColor ExtraGridlineColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the extra gridline thickness.
-        /// </summary>
-        /// <value>The extra gridline thickness.</value>
-        public double ExtraGridlineThickness { get; set; }
-
-        /// <summary>
-        /// Gets or sets the angle for the axis values.
-        /// </summary>
-        /// <value>The angle.</value>
-        public double Angle { get; set; }
+        public double StartPosition { get; set; }
 
         /// <summary>
         /// Gets or sets the string format used
         /// for formatting the axis values.
         /// </summary>
-        /// <value>The string format.</value>
         public string StringFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tick style (both for major and minor ticks).
+        /// </summary>
+        public TickStyle TickStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the ticks (both major and minor ticks).
+        /// </summary>
+        public OxyColor TicklineColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the title of the axis.
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the format string used for formatting the title and unit when unit is defined.
+        /// If unit is null, only Title is used.
+        /// The default value is "{0} [{1}]", where {0} uses the Title and {1} uses the Unit.
+        /// </summary>
+        public string TitleFormatString { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position of the title (0.5 is in the middle).
+        /// </summary>
+        public double TitlePosition { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unit of the axis.
+        /// </summary>
+        public string Unit { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to use superscript exponential format.
@@ -292,557 +562,321 @@ namespace OxyPlot
         /// </summary>
         public bool UseSuperExponentialFormat { get; set; }
 
-        /// <summary>
-        /// Gets or sets the actual string format
-        /// being used.
-        /// </summary>
-        /// <value>The actual string format.</value>
-        internal string ActualStringFormat { get; set; }
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
-        /// Gets or sets the title of the axis.
+        /// Formats the value to be used on the axis.
         /// </summary>
-        /// <value>The title.</value>
-        public string Title { get; set; }
+        /// <param name="x">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The formatted value.
+        /// </returns>
+        public abstract string FormatValue(double x);
 
         /// <summary>
-        /// Gets or sets the unit of the axis.
+        /// Formats the value to be used by the tracker.
         /// </summary>
-        /// <value>The unit.</value>
-        public string Unit { get; set; }
+        /// <param name="x">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The formatted value.
+        /// </returns>
+        public abstract string FormatValueForTracker(double x);
 
         /// <summary>
-        /// Gets or sets the font family.
+        /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary.
+        /// e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
-        /// <value>The font family.</value>
-        public string FontFamily { get; set; }
+        /// <param name="x">
+        /// The coordinate.
+        /// </param>
+        /// <returns>
+        /// The value.
+        /// </returns>
+        public abstract object GetValue(double x);
 
         /// <summary>
-        /// Gets or sets the size of the font.
+        /// Inverse transform the specified screen coordinate.
+        /// This method can only be used with non-polar coordinate systems.
         /// </summary>
-        /// <value>The size of the font.</value>
-        public double FontSize { get; set; }
+        /// <param name="sx">
+        /// The screen coordinate.
+        /// </param>
+        /// <returns>
+        /// The value.
+        /// </returns>
+        public abstract double InverseTransform(double sx);
 
         /// <summary>
-        /// Gets or sets the font weight.
+        /// Inverse transform the specified screen point.
         /// </summary>
-        /// <value>The font weight.</value>
-        public double FontWeight { get; set; }
+        /// <param name="sx">
+        /// The x coordinate.
+        /// </param>
+        /// <param name="sy">
+        /// The y coordinate.
+        /// </param>
+        /// <param name="yaxis">
+        /// The y-axis.
+        /// </param>
+        /// <returns>
+        /// The data point.
+        /// </returns>
+        public abstract DataPoint InverseTransform(double sx, double sy, IAxis yaxis);
 
         /// <summary>
-        /// Gets or sets the start position of the axis on the plot area.
-        /// This is a fraction from 0(bottom/left) to 1(top/right).
+        /// Determines whether this axis is horizontal.
         /// </summary>
-        /// <value>The start position.</value>
-        public double StartPosition { get; set; }
-
-        /// <summary>
-        /// Gets or sets the end position of the axis on the plot area.
-        /// This is a fraction from 0(bottom/left) to 1(top/right).
-        /// </summary>
-        /// <value>The end position.</value>
-        public double EndPosition { get; set; }
-
-        /// <summary>
-        /// Gets or sets the related axis.
-        /// This is used for polar coordinate systems where
-        /// the angle and magnitude axes are related.
-        /// </summary>
-        /// <value>The related axis.</value>
-        public Axis RelatedAxis { get; set; }
-
-        /// <summary>
-        /// Gets a value indicating whether this axis is reversed.
-        /// It is reversed if StartPosition>EndPosition.
-        /// </summary>
-        public bool IsReversed
+        /// <returns>
+        /// <c>true</c> if this axis is horizontal; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsHorizontal()
         {
-            get { return StartPosition > EndPosition; }
+            return this.position == AxisPosition.Top || this.position == AxisPosition.Bottom;
         }
 
-        #region IAxis Members
+        /// <summary>
+        /// Determines whether the specified value is valid.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified value is valid; otherwise, <c>false</c>.
+        /// </returns>
+        public abstract bool IsValidValue(double value);
 
-        public virtual void Render(IRenderContext rc, PlotModel model)
+        /// <summary>
+        /// Determines whether this axis is vertical.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if this axis is vertical; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsVertical()
         {
-            switch (Position)
-            {
-                case AxisPosition.Left:
-                case AxisPosition.Right:
-                case AxisPosition.Top:
-                case AxisPosition.Bottom:
-                    {
-                        var r = new VerticalAxisRendererBase(rc, model);
-                        r.Render(this);
-                        break;
-                    }
-                case AxisPosition.Angle:
-                    {
-                        var r = new AngleAxisRendererBase(rc, model);
-                        r.Render(this);
-                        break;
-                    }
-                case AxisPosition.Magnitude:
-                    {
-                        var r = new MagnitudeAxisRendererBase(rc, model);
-                        r.Render(this);
-                        break;
-                    }
-            }
+            return this.position == AxisPosition.Left || this.position == AxisPosition.Right;
         }
+
+        /// <summary>
+        /// Measures the size of the axis (maximum axis label width/height).
+        /// </summary>
+        /// <param name="rc">
+        /// The render context.
+        /// </param>
+        /// <returns>
+        /// The size of the axis.
+        /// </returns>
+        public abstract OxySize Measure(IRenderContext rc);
+
+        /// <summary>
+        /// Pans the axis.
+        /// </summary>
+        /// <param name="x0">
+        /// The previous screen coordinate.
+        /// </param>
+        /// <param name="x1">
+        /// The current screen coordinate.
+        /// </param>
+        public abstract void Pan(double x0, double x1);
+
+        /// <summary>
+        /// Renders the axis on the specified render context.
+        /// </summary>
+        /// <param name="rc">
+        /// The render context.
+        /// </param>
+        /// <param name="model">
+        /// The model.
+        /// </param>
+        /// <param name="axisLayer">
+        /// The rendering order.
+        /// </param>
+        public abstract void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer);
+
+        /// <summary>
+        /// Resets the user's modification (zooming/panning) to minmum and maximum of this axis.
+        /// This method will not refresh the plot.
+        /// </summary>
+        public abstract void Reset();
+
+        /// <summary>
+        /// Sets the scaling factor.
+        /// </summary>
+        /// <param name="scale">
+        /// The new scale.
+        /// </param>
+        public abstract void Zoom(double scale);
+
+        /// <summary>
+        /// Transforms the specified coordinate to screen coordinates.
+        /// This method can only be used with non-polar coordinate systems.
+        /// </summary>
+        /// <param name="x">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The transformed value (screen coordinate).
+        /// </returns>
+        public abstract double Transform(double x);
+
+        /// <summary>
+        /// Transforms the specified point to screen coordinates.
+        /// </summary>
+        /// <param name="x">
+        /// The x value (for the current axis).
+        /// </param>
+        /// <param name="y">
+        /// The y value.
+        /// </param>
+        /// <param name="yaxis">
+        /// The y axis.
+        /// </param>
+        /// <returns>
+        /// The transformed point.
+        /// </returns>
+        public abstract ScreenPoint Transform(double x, double y, IAxis yaxis);
+
+        /// <summary>
+        /// Zooms the axis to the range [x0,x1].
+        /// </summary>
+        /// <param name="x0">
+        /// The new minimum.
+        /// </param>
+        /// <param name="x1">
+        /// The new maximum.
+        /// </param>
+        public abstract void Zoom(double x0, double x1);
+
+        /// <summary>
+        /// Zooms the axis at the specified coordinate.
+        /// </summary>
+        /// <param name="factor">
+        /// The zoom factor.
+        /// </param>
+        /// <param name="x">
+        /// The coordinate to zoom at.
+        /// </param>
+        public abstract void ZoomAt(double factor, double x);
 
         #endregion
 
-        public bool IsHorizontal()
-        {
-            return position == AxisPosition.Top || position == AxisPosition.Bottom;
-        }
-
-        public bool IsVertical()
-        {
-            return position == AxisPosition.Left || position == AxisPosition.Right;
-        }
-
-        public bool IsPolar()
-        {
-            return position == AxisPosition.Magnitude || position == AxisPosition.Angle;
-        }
-
-        public override string ToString()
-        {
-            return String.Format(CultureInfo.InvariantCulture, "{0}({1}, {2}, {3}, {4})", GetType().Name, Position,
-                                 ActualMinimum, ActualMaximum, ActualMajorStep);
-        }
-
-        public virtual void GetTickValues(out ICollection<double> majorValues, out ICollection<double> minorValues)
-        {
-            minorValues = CreateTickValues(ActualMinimum, ActualMaximum, ActualMinorStep);
-            majorValues = CreateTickValues(ActualMinimum, ActualMaximum, ActualMajorStep);
-        }
-
-        static Func<double, double> Exponent = x => Math.Round(Math.Log(Math.Abs(x), 10));
-        static Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
-
-        public virtual string FormatValue(double x)
-        {
-            if (UseSuperExponentialFormat)
-            {
-                // if (x == 1 || x == 10 || x == -1 || x == -10)
-                //    return x.ToString();
-
-                double exp = Exponent(x);
-                double mantissa = Mantissa(x);
-                String fmt;
-                if (StringFormat == null)
-                {
-                    if (mantissa == 1.0)
-                    {
-                        fmt = "10^{{{1:0}}}";
-                    }
-                    else
-                    {
-                        fmt = "{0}·10^{{{1:0}}}";
-                    }
-                }
-                else
-                {
-                    fmt = "{0:" + StringFormat + "}·10^{{{1:0}}}";
-                }
-                return String.Format(CultureInfo.InvariantCulture, fmt, mantissa, exp);
-            }
-            return x.ToString(ActualStringFormat, CultureInfo.InvariantCulture);
-        }
-
-        internal static ICollection<double> CreateTickValues(double min, double max, double step)
-        {
-            if (max <= min)
-                throw new InvalidOperationException("Axis: Maximum should be larger than minimum.");
-            if (step <= 0)
-                throw new InvalidOperationException("Axis: Step cannot be negative.");
-
-            double x = (int)Math.Round(min / step) * step;
-
-            var values = new Collection<double>();
-            // Maximum number of iterations (in case of very small step size)
-            int it = 0;
-            const int maxit = 1000;
-            double epsilon = Math.Abs(max - min) * 1e-6;
-            while (x <= max + epsilon && it++ < maxit)
-            {
-                if (x >= min - epsilon && x <= max + epsilon)
-                {
-                    x = RemoveNoiseFromDoubleMath(x);
-                    values.Add(x);
-                }
-                x += step;
-            }
-            return values;
-        }
-
-        public virtual void Pan(double dx)
-        {
-            Minimum = ActualMinimum + dx;
-            Maximum = ActualMaximum + dx;
-        }
-
-        public virtual void ZoomAt(double factor, double x)
-        {
-            double dx0 = (ActualMinimum - x) * Scale;
-            double dx1 = (ActualMaximum - x) * Scale;
-            Scale *= factor;
-            Minimum = dx0 / Scale + x;
-            Maximum = dx1 / Scale + x;
-        }
-
-        public virtual void Zoom(double x0, double x1)
-        {
-            Minimum = Math.Min(x0, x1);
-            Maximum = Math.Max(x0, x1);
-        }
-
-        public virtual void Reset()
-        {
-            Minimum = double.NaN;
-            Maximum = double.NaN;
-        }
+        #region Methods
 
         /// <summary>
-        /// Updates the minor/major step intervals if they are undefined.
+        /// Modifies the range of the axis [ActualMinimum,ActualMaximum] to includes the specified value.
         /// </summary>
-        public void UpdateIntervals(double dx, double dy)
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        internal virtual void Include(double value)
         {
-            double labelSize = GetLabelSize();
-            double length = IsHorizontal() ? dx : dy;
-            length *= Math.Abs(EndPosition - StartPosition);
-
-            if (!double.IsNaN(MajorStep))
-                ActualMajorStep = MajorStep;
-            else
-                ActualMajorStep = CalculateActualInterval(length, labelSize);
-
-            if (!double.IsNaN(MinorStep))
-                ActualMinorStep = MinorStep;
-            else
-                ActualMinorStep = ActualMajorStep / 5;
-
-
-            if (double.IsNaN(ActualMinorStep))
-                ActualMinorStep = 2;
-            if (double.IsNaN(ActualMajorStep))
-                ActualMajorStep = 10;
-
-            ActualStringFormat = StringFormat;
-        }
-
-        private double GetLabelSize()
-        {
-            // todo: this could be dependent on the stringformat 
-            // and min/max numbers
-            // could format the string for min and max...
-
-            switch (position)
+            if (!this.IsValidValue(value))
             {
-                case AxisPosition.Top:
-                case AxisPosition.Bottom:
-                    return 60;
-                case AxisPosition.Left:
-                case AxisPosition.Right:
-                    return 60;
-                case AxisPosition.Angle:
-                    return 50;
-                case AxisPosition.Magnitude:
-                    return 100;
-                default:
-                    return 50;
-            }
-        }
-
-        protected virtual double CalculateActualInterval(double availableSize, double maxIntervalSize)
-        {
-            return CalculateActualInterval2(availableSize, maxIntervalSize);
-        }
-
-        // alternative algorithm not in use
-        private double CalculateActualInterval1(double availableSize, double maxIntervalSize)
-        {
-            int minimumTags = 5;
-            int maximumTags = 20;
-            var numberOfTags = (int)(availableSize / maxIntervalSize);
-            double range = ActualMaximum - ActualMinimum;
-            double interval = range / numberOfTags;
-            const int k1 = 10;
-            interval = Math.Log10(interval / k1);
-            interval = Math.Ceiling(interval);
-            interval = Math.Pow(10, interval) * k1;
-
-            if (range / interval > maximumTags) interval *= 5;
-            if (range / interval < minimumTags) interval *= 0.5;
-
-            if (interval <= 0) interval = 1;
-            return interval;
-        }
-
-        // ===
-        // the following algorithm is from 
-        // System.Windows.Controls.DataVisualization.Charting.LinearAxis.cs
-
-        // (c) Copyright Microsoft Corporation.
-        // This source is subject to the Microsoft Public License (Ms-PL).
-        // Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
-        // All other rights reserved.
-
-        /// <summary>
-        /// Returns the actual interval to use to determine which values are 
-        /// displayed in the axis.
-        /// </summary>
-        /// <param name="availableSize">The available size.</param>
-        /// <returns>Actual interval to use to determine which values are 
-        /// displayed in the axis.
-        /// </returns>
-        private double CalculateActualInterval2(double availableSize, double maxIntervalSize)
-        {
-            Func<double, double> Exponent = x => Math.Ceiling(Math.Log(x, 10));
-            Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x) - 1);
-
-            // reduce intervals for horizontal axis.
-            // double maxIntervals = Orientation == AxisOrientation.x ? MaximumAxisIntervalsPer200Pixels * 0.8 : MaximumAxisIntervalsPer200Pixels;
-            // real maximum interval count
-            double maxIntervalCount = availableSize / maxIntervalSize;
-
-            double range = Math.Abs(ActualMinimum - ActualMaximum);
-            double interval = Math.Pow(10, Exponent(range));
-            double tempInterval = interval;
-
-            // decrease interval until interval count becomes less than maxIntervalCount
-            while (true)
-            {
-                var mantissa = (int)Mantissa(tempInterval);
-                if (mantissa == 5)
-                {
-                    // reduce 5 to 2
-                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.5);
-                }
-                else if (mantissa == 2 || mantissa == 1 || mantissa == 10)
-                {
-                    // reduce 2 to 1,10 to 5,1 to 0.5
-                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.0);
-                }
-
-                if (range / tempInterval > maxIntervalCount)
-                {
-                    break;
-                }
-
-                interval = tempInterval;
-            }
-            return interval;
-        }
-
-        /// <summary>
-        /// Removes the noise from double math.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>A double without a noise.</returns>
-        internal static double RemoveNoiseFromDoubleMath(double value)
-        {
-            if (value == 0.0 || Math.Abs((Math.Log10(Math.Abs(value)))) < 27)
-            {
-                return (double)((decimal)value);
-            }
-            return Double.Parse(value.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
-        }
-
-        // ===
-
-        public void Include(double p)
-        {
-            if (double.IsNaN(p) || double.IsInfinity(p))
                 return;
+            }
 
-            if (double.IsNaN(ActualMinimum))
-                ActualMinimum = p;
-            else
-                ActualMinimum = Math.Min(ActualMinimum, p);
-
-            if (double.IsNaN(ActualMaximum))
-                ActualMaximum = p;
-            else
-                ActualMaximum = Math.Max(ActualMaximum, p);
+            this.ActualMinimum = double.IsNaN(this.ActualMinimum) ? value : Math.Min(this.ActualMinimum, value);
+            this.ActualMaximum = double.IsNaN(this.ActualMaximum) ? value : Math.Max(this.ActualMaximum, value);
         }
 
         /// <summary>
-        /// Updates the actual max and min with the 'padding' values.
+        /// The post inverse transform.
         /// </summary>
-        public void UpdateActualMaxMin()
-        {
-            if (!double.IsNaN(Maximum))
-            {
-                ActualMaximum = Maximum;
-            }
-            else
-            {
-                ActualMaximum += MaximumPadding * (ActualMaximum - ActualMinimum);
-            }
-
-            if (!double.IsNaN(Minimum))
-            {
-                ActualMinimum = Minimum;
-            }
-            else
-            {
-                ActualMinimum -= MinimumPadding * (ActualMaximum - ActualMinimum);
-            }
-
-            if (double.IsNaN(ActualMaximum))
-            {
-                ActualMaximum = 100;
-            }
-            if (double.IsNaN(ActualMinimum))
-            {
-                ActualMinimum = 0;
-            }
-        }
-
-        #region Transformations
-
-        protected virtual double PreTransform(double x)
-        {
-            return x;
-        }
-
-        protected virtual double PostInverseTransform(double x)
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <returns>
+        /// The post inverse transform.
+        /// </returns>
+        internal virtual double PostInverseTransform(double x)
         {
             return x;
         }
 
         /// <summary>
-        /// Transforms the specified x and y coordinates to screen coordinates.
-        /// The this object is always the x-axis, and the y-axis is given as
-        /// an argument. This is neccessary to calculate screen coordinates from
-        /// polar coordinates.
+        /// "Pretransform" the value.
+        /// This is used in logarithmic axis.
         /// </summary>
-        public virtual ScreenPoint Transform(double x, double y, Axis yAxis)
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <returns>
+        /// The pretransformed value.
+        /// </returns>
+        internal virtual double PreTransform(double x)
         {
-            // todo: review architecture here, could this be solved in a better way?
-
-            if (IsPolar())
-            {
-                double r = (x - Offset) * Scale;
-                double th = yAxis != null ? (y - yAxis.Offset) * yAxis.Scale : double.NaN;
-                return new ScreenPoint(MidPoint.x + r * Math.Cos(th), MidPoint.y + r * Math.Sin(th));
-            }
-
-            if (yAxis == null)
-                return new ScreenPoint();
-
-            return new ScreenPoint(Transform(x), yAxis.Transform(y));
-        }
-
-        // todo: should find a better way to do this
-        // this method seems to be a bottleneck for performance...
-        public double Transform(double x)
-        {
-            return (PreTransform(x) - Offset) * Scale;
+            return x;
         }
 
         /// <summary>
-        /// Transforms a point from screen coordinates to a data point.
-        /// The this. object must be an x-axis.
+        /// Resets the actual maximum and minimum.
+        /// This method will not refresh the plot.
         /// </summary>
-        /// <param name="x">The screen x.</param>
-        /// <param name="y">The screen y.</param>
-        /// <param name="yAxis">The y axis.</param>
-        /// <returns></returns>
-        public virtual DataPoint InverseTransform(double x, double y, Axis yAxis)
+        internal virtual void ResetActualMaxMin()
         {
-            if (IsPolar())
-            {
-                x -= MidPoint.x;
-                y -= MidPoint.y;
-                double th = Math.Atan2(y, x);
-                double r = Math.Sqrt(x * x + y * y);
-                x = r / Scale + Offset;
-                y = yAxis != null ? th / yAxis.Scale + yAxis.Offset : double.NaN;
-                return new DataPoint(x, y);
-            }
-
-            return new DataPoint(InverseTransformX(x), yAxis.InverseTransformX(y));
+            this.ActualMaximum = this.ActualMinimum = double.NaN;
         }
 
-        public double InverseTransformX(double x)
+        /// <summary>
+        /// Updates the actual maximum and minimum values.
+        /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
+        /// If Maximum or Minimum have been set, these values will be used.
+        /// Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
+        /// </summary>
+        internal virtual void UpdateActualMaxMin()
         {
-            return PostInverseTransform(x / Scale + Offset);
+        }
+
+        /// <summary>
+        /// Updates the axis with information from the plot series.
+        /// This is used by the category axis that need to know the number of series using the axis.
+        /// </summary>
+        /// <param name="series">
+        /// The series collection.
+        /// </param>
+        internal virtual void UpdateFromSeries(IEnumerable<Series> series)
+        {
+        }
+
+        /// <summary>
+        /// Updates the actual minor and major step intervals.
+        /// </summary>
+        /// <param name="plotArea">
+        /// The plot area rectangle.
+        /// </param>
+        internal virtual void UpdateIntervals(OxyRect plotArea)
+        {
         }
 
         /// <summary>
         /// Updates the scale and offset properties of the transform
         /// from the specified boundary rectangle.
         /// </summary>
-        public void UpdateTransform(OxyRect bounds)
+        /// <param name="plotArea">
+        /// The plot area rectangle.
+        /// </param>
+        internal virtual void UpdateTransform(OxyRect plotArea)
         {
-            double x0 = bounds.Left;
-            double x1 = bounds.Right;
-            double y0 = bounds.Bottom;
-            double y1 = bounds.Top;
-
-            ScreenMin = new ScreenPoint(x0, y1);
-            ScreenMax = new ScreenPoint(x1, y0);
-
-            MidPoint = new ScreenPoint((x0 + x1) / 2, (y0 + y1) / 2);
-
-            if (Position == AxisPosition.Angle)
-            {
-                Scale = 2 * Math.PI / (ActualMaximum - ActualMinimum);
-                Offset = ActualMinimum;
-                return;
-            }
-            if (Position == AxisPosition.Magnitude)
-            {
-                ActualMinimum = 0;
-                double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
-                Scale = 0.5 * r / (ActualMaximum - ActualMinimum);
-                Offset = ActualMinimum;
-                return;
-            }
-
-            double a0 = IsHorizontal() ? x0 : y0;
-            double a1 = IsHorizontal() ? x1 : y1;
-
-            double dx = a1 - a0;
-            a1 = a0 + EndPosition * dx;
-            a0 = a0 + StartPosition * dx;
-            ScreenMin = new ScreenPoint(a0, a1);
-            ScreenMax = new ScreenPoint(a1, a0);
-
-            if (ActualMaximum - ActualMinimum < double.Epsilon)
-                ActualMaximum = ActualMinimum + 1;
-
-            double max = PreTransform(ActualMaximum);
-            double min = PreTransform(ActualMinimum);
-
-            const double eps = 1e-6;
-            if (max - min < eps) max = min + 1;
-
-            if (Math.Abs(a0 - a1) != 0)
-                Offset = (a0 * max - min * a1) / (a0 - a1);
-            else
-                Offset = 0;
-
-            Scale = (a1 - a0) / (max - min);
         }
 
-        public void SetScale(double scale)
+        /// <summary>
+        /// Gets the size of the label.
+        /// </summary>
+        /// <param name="args">
+        /// The args.
+        /// </param>
+        protected virtual void OnAxisChanged(AxisChangedEventArgs args)
         {
-            double sx1 = (ActualMaximum - Offset) * Scale;
-            double sx0 = (ActualMinimum - Offset) * Scale;
-
-            double sgn = Math.Sign(Scale);
-            double mid = (ActualMaximum + ActualMinimum) / 2;
-
-            double dx = (Offset - mid) * Scale;
-            Scale = sgn * scale;
-            Offset = dx / Scale + mid;
-            ActualMaximum = sx1 / Scale + Offset;
-            ActualMinimum = sx0 / Scale + Offset;
+            EventHandler<AxisChangedEventArgs> handler = this.AxisChanged;
+            if (handler != null)
+            {
+                handler(this, args);
+            }
         }
 
         #endregion

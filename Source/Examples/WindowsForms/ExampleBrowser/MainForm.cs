@@ -11,11 +11,11 @@ namespace ExampleBrowser
 {
     using ExampleLibrary;
 
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         MainWindowViewModel vm = new MainWindowViewModel();
 
-        public Form1()
+		public MainForm()
         {
             InitializeComponent();
             InitTree();
@@ -24,7 +24,6 @@ namespace ExampleBrowser
         private void InitTree()
         {
             TreeNode node = null;
-            string cat = null;
             foreach (var ex in vm.Examples)
             {
                 if (node == null || node.Text != ex.Category)
