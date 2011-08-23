@@ -17,7 +17,7 @@ namespace PolarDemo
             model.PlotMargins=new OxyThickness(20,20,4,40);
             model.BoxColor = null;
             model.Axes.Add(
-                new LinearAxis(AxisPosition.Angle, 0, Math.PI*2, Math.PI/4, Math.PI/16)
+                new AngleAxis(0, Math.PI*2, Math.PI/4, Math.PI/16)
                     {
                         MajorGridlineStyle = LineStyle.Solid,
                         MinorGridlineStyle = LineStyle.Solid,
@@ -25,7 +25,7 @@ namespace PolarDemo
                         FractionUnit = Math.PI,
                         FractionUnitSymbol = "π"
                     });
-            model.Axes.Add(new LinearAxis(AxisPosition.Magnitude)
+            model.Axes.Add(new MagnitudeAxis
                                {
                                    MajorGridlineStyle = LineStyle.Solid,
                                    MinorGridlineStyle = LineStyle.Solid

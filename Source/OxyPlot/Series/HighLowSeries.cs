@@ -18,7 +18,7 @@ namespace OxyPlot
     /// Use the HighLowSeries to create time series High-Low plots.
     /// http://www.mathworks.com/help/toolbox/finance/highlowfts.html
     /// </summary>
-    public class HighLowSeries : PlotSeriesBase
+    public class HighLowSeries : ItemsSeries
     {
         #region Constants and Fields
 
@@ -376,7 +376,7 @@ namespace OxyPlot
         /// <param name="model">
         /// The model.
         /// </param>
-        public override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues(PlotModel model)
         {
             if (this.Color == null)
             {
@@ -388,7 +388,7 @@ namespace OxyPlot
         /// <summary>
         /// Updates the data.
         /// </summary>
-        public override void UpdateData()
+        protected internal override void UpdateData()
         {
             if (this.ItemsSource == null)
             {
@@ -459,7 +459,7 @@ namespace OxyPlot
         /// <summary>
         /// Updates the max/min values.
         /// </summary>
-        public override void UpdateMaxMin()
+        protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
             this.InternalUpdateMaxMin(this.items);

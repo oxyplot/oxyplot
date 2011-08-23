@@ -57,7 +57,7 @@ namespace OxyPlot
         /// </summary>
         public bool Reverse2 { get; set; }
 
-        public override void UpdateData()
+        protected internal override void UpdateData()
         {
             base.UpdateData();
 
@@ -72,7 +72,7 @@ namespace OxyPlot
             AddDataPoints(points2, ItemsSource, DataFieldX2, DataFieldY2);
         }
 
-        public override void UpdateMaxMin()
+        protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
             InternalUpdateMaxMin(points2);

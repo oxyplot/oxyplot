@@ -103,8 +103,8 @@ namespace OxyPlot
         /// If this number is greater than 1, bins of that size is created for both x and y directions. Only one point will be drawn in each bin.
         /// </summary>
         public int BinSize { get; set; }
-        
-        public override void UpdateData()
+
+        protected internal override void UpdateData()
         {
             if (ItemsSource == null)
             {
@@ -289,7 +289,7 @@ namespace OxyPlot
         /// Sets the default values.
         /// </summary>
         /// <param name="model">The model.</param>
-        public override void SetDefaultValues(PlotModel model)
+        protected internal override void SetDefaultValues(PlotModel model)
         {
             if (MarkerFill == null)
                 MarkerFill = model.GetDefaultColor();
@@ -298,7 +298,7 @@ namespace OxyPlot
         /// <summary>
         ///   Updates the max/min from the datapoints.
         /// </summary>
-        public override void UpdateMaxMin()
+        protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
             InternalUpdateMaxMin(points);

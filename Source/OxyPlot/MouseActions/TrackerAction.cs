@@ -49,15 +49,6 @@
             if (result != null)
             {
                 result.PlotModel = pc.ActualModel;
-
-               /* if (currentSeries is PlotSeriesBase)
-                {
-                    var s = currentSeries as PlotSeriesBase;
-                    result.XAxis = s.XAxis;
-                    result.YAxis = s.YAxis;
-                    // todo: should do this in the Series...
-                    result.Position=result.XAxis.Transform(result.DataPoint, result.YAxis);
-                }*/
                 pc.ShowTracker(result);
             }
         }

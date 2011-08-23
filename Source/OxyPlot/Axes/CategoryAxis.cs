@@ -202,7 +202,7 @@ namespace OxyPlot
         /// If Maximum or Minimum have been set, these values will be used.
         /// Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
         /// </summary>
-        public override void UpdateActualMaxMin()
+        internal override void UpdateActualMaxMin()
         {
             base.UpdateActualMaxMin();
             this.ActualMinimum = -0.5;
@@ -233,11 +233,11 @@ namespace OxyPlot
         /// <param name="series">
         /// The series collection.
         /// </param>
-        public override void UpdateData(IEnumerable<ISeries> series)
+        internal override void UpdateFromSeries(IEnumerable<Series> series)
         {
             // count series that are using this axis
             this.AttachedSeriesCount = 0;
-            foreach (ISeries s in series)
+            foreach (Series s in series)
             {
                 if (s.IsUsing(this))
                 {

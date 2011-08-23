@@ -82,7 +82,7 @@ namespace ExampleLibrary
 
         static readonly Random Randomizer = new Random();
 
-        private static ISeries CreateRandomLineSeries(int n, string title, MarkerType markerType)
+        private static Series CreateRandomLineSeries(int n, string title, MarkerType markerType)
         {
             var s1 = new LineSeries { Title = title, MarkerType = markerType, MarkerStroke = OxyColors.Black, MarkerStrokeThickness = 1.0 };
             double x = 0;

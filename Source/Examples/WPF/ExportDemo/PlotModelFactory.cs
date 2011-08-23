@@ -30,7 +30,7 @@ namespace ExportDemo
             switch (type)
             {
                 case ModelType.SineWave:
-                    model = CreateSineModel(0.0001);
+                    model = CreateSineModel(0.002);
                     break;
                 case ModelType.SmoothInterpolation:
                     model = CreateSineModel(1);

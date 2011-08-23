@@ -2,9 +2,9 @@
 {
     using System;
 
-    public class AngleAxisRendererBase : AxisRendererBase
+    public class AngleAxisRenderer : AxisRendererBase
     {
-        public AngleAxisRendererBase(IRenderContext rc, PlotModel plot)
+        public AngleAxisRenderer(IRenderContext rc, PlotModel plot)
             : base(rc, plot)
         {
         }
@@ -17,8 +17,14 @@
 
             if (axis.RelatedAxis != null)
             {
-                magnitudeAxis = axis.RelatedAxis;
+                magnitudeAxis = axis.RelatedAxis as MagnitudeAxis;
             }
+            
+            if (magnitudeAxis==null)
+            {
+                throw new InvalidOperationException("Magnitude axis not defined.");
+            }
+
             double eps = axis.MinorStep * 1e-3;
 
             if (axis.ShowMinorTicks)
@@ -41,7 +47,7 @@
 
                     if (MinorPen != null)
                     {
-                        rc.DrawLine(axis.MidPoint.x, axis.MidPoint.y, pt.x, pt.y, MinorPen, false);
+                        rc.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, pt.x, pt.y, MinorPen, false);
                     }
 
                     // RenderGridline(x, y + y0, x, y + y1, minorTickPen);
@@ -52,6 +58,12 @@
 
             foreach (double xValue in MajorTickValues)
             {
+                // skip the last value (overlapping with the first)
+                if (xValue > axis.ActualMaximum - eps)
+                {
+                    continue;
+                }
+
                 if (xValue < axis.ActualMinimum - eps || xValue > axis.ActualMaximum + eps)
                 {
                     continue;
@@ -61,7 +73,7 @@
 
                 if (MajorPen != null)
                 {
-                    rc.DrawLine(axis.MidPoint.x, axis.MidPoint.y, pt.x, pt.y, MajorPen, false);
+                    rc.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, pt.x, pt.y, MajorPen, false);
                 }
 
             }
@@ -69,10 +81,13 @@
             foreach (var value in MajorLabelValues)
             {
                 // skip the last value (overlapping with the first)
-                if (value > axis.ActualMaximum - eps) continue;
+                if (value > axis.ActualMaximum - eps)
+                {
+                    continue;
+                }
 
                 var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, value, axis);
-                double angle = Math.Atan2(pt.y - axis.MidPoint.y, pt.x - axis.MidPoint.x) ;
+                double angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
                 
                 // add some margin
                 pt.x += Math.Cos(angle) * axis.AxisTickToLabelDistance;

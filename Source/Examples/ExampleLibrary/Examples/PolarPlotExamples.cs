@@ -16,7 +16,7 @@ namespace ExampleLibrary
                                 PlotMargins = new OxyThickness(60, 20, 4, 40)
                             };
             model.Axes.Add(
-                new LinearAxis(AxisPosition.Angle, 0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
+                new AngleAxis(0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
                     {
                         MajorGridlineStyle = LineStyle.Solid,
                         MinorGridlineStyle = LineStyle.Solid,
@@ -24,7 +24,7 @@ namespace ExampleLibrary
                         FractionUnit = Math.PI,
                         FractionUnitSymbol = "π"
                     });
-            model.Axes.Add(new LinearAxis(AxisPosition.Magnitude)
+            model.Axes.Add(new MagnitudeAxis()
                                {
                                    MajorGridlineStyle = LineStyle.Solid,
                                    MinorGridlineStyle = LineStyle.Solid

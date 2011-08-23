@@ -1,134 +1,203 @@
-﻿namespace OxyPlot.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DateTimeAxis.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot.Wpf
 {
     using System;
     using System.Globalization;
     using System.Windows;
 
-    public class DateTimeAxis : AxisBase
+    /// <summary>
+    /// This is a WPF wrapper of OxyPlot.DateTimeAxis.
+    /// </summary>
+    public class DateTimeAxis : Axis
     {
-        public CultureInfo Culture
-        {
-            get { return (CultureInfo)GetValue(CultureProperty); }
-            set { SetValue(CultureProperty, value); }
-        }
-
-        public static readonly DependencyProperty CultureProperty =
-            DependencyProperty.Register("Culture", typeof(CultureInfo), typeof(DateTimeAxis), new UIPropertyMetadata(CultureInfo.CurrentCulture));
-
-
         #region Constants and Fields
 
+        /// <summary>
+        /// The calendar week rule property.
+        /// </summary>
         public static readonly DependencyProperty CalendarWeekRuleProperty =
             DependencyProperty.Register(
-                "CalendarWeekRule",
-                typeof(CalendarWeekRule),
-                typeof(DateTimeAxis),
-                new UIPropertyMetadata(CalendarWeekRule.FirstFourDayWeek, DataChanged));
+                "CalendarWeekRule", 
+                typeof(CalendarWeekRule), 
+                typeof(DateTimeAxis), 
+                new FrameworkPropertyMetadata(CalendarWeekRule.FirstFourDayWeek, DataChanged));
 
+        /// <summary>
+        /// The culture property.
+        /// </summary>
+        public static readonly DependencyProperty CultureProperty = DependencyProperty.Register(
+            "Culture", 
+            typeof(CultureInfo), 
+            typeof(DateTimeAxis), 
+            new FrameworkPropertyMetadata(CultureInfo.CurrentCulture));
+
+        /// <summary>
+        /// The first date time property.
+        /// </summary>
         public static readonly DependencyProperty FirstDateTimeProperty = DependencyProperty.Register(
-            "FirstDateTime", typeof(DateTime), typeof(DateTimeAxis), new UIPropertyMetadata(DateTime.MinValue));
+            "FirstDateTime", typeof(DateTime), typeof(DateTimeAxis), new FrameworkPropertyMetadata(DateTime.MinValue));
 
+        /// <summary>
+        /// The first day of week property.
+        /// </summary>
         public static readonly DependencyProperty FirstDayOfWeekProperty = DependencyProperty.Register(
-            "FirstDayOfWeek",
-            typeof(DayOfWeek),
-            typeof(DateTimeAxis),
-            new UIPropertyMetadata(DayOfWeek.Monday, DataChanged));
+            "FirstDayOfWeek", 
+            typeof(DayOfWeek), 
+            typeof(DateTimeAxis), 
+            new FrameworkPropertyMetadata(DayOfWeek.Monday, DataChanged));
 
+        /// <summary>
+        /// The interval type property.
+        /// </summary>
         public static readonly DependencyProperty IntervalTypeProperty = DependencyProperty.Register(
-            "IntervalType",
-            typeof(DateTimeIntervalType),
-            typeof(DateTimeAxis),
-            new UIPropertyMetadata(DateTimeIntervalType.Auto));
+            "IntervalType", 
+            typeof(DateTimeIntervalType), 
+            typeof(DateTimeAxis), 
+            new FrameworkPropertyMetadata(DateTimeIntervalType.Auto));
 
+        /// <summary>
+        /// The last date time property.
+        /// </summary>
         public static readonly DependencyProperty LastDateTimeProperty = DependencyProperty.Register(
-            "LastDateTime", typeof(DateTime), typeof(DateTimeAxis), new UIPropertyMetadata(DateTime.MaxValue));
+            "LastDateTime", typeof(DateTime), typeof(DateTimeAxis), new FrameworkPropertyMetadata(DateTime.MaxValue));
 
+        /// <summary>
+        /// The minor interval type property.
+        /// </summary>
         public static readonly DependencyProperty MinorIntervalTypeProperty =
             DependencyProperty.Register(
-                "MinorIntervalType",
-                typeof(DateTimeIntervalType),
-                typeof(DateTimeAxis),
-                new UIPropertyMetadata(DateTimeIntervalType.Auto, DataChanged));
+                "MinorIntervalType", 
+                typeof(DateTimeIntervalType), 
+                typeof(DateTimeAxis), 
+                new FrameworkPropertyMetadata(DateTimeIntervalType.Auto, DataChanged));
 
         #endregion
 
         #region Constructors and Destructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimeAxis"/> class.
+        /// </summary>
         public DateTimeAxis()
         {
-            this.Axis = new OxyPlot.DateTimeAxis();
+            this.internalAxis = new OxyPlot.DateTimeAxis();
         }
 
         #endregion
 
         #region Public Properties
 
+        /// <summary>
+        /// Gets or sets CalendarWeekRule.
+        /// </summary>
         public CalendarWeekRule CalendarWeekRule
         {
             get
             {
                 return (CalendarWeekRule)this.GetValue(CalendarWeekRuleProperty);
             }
+
             set
             {
                 this.SetValue(CalendarWeekRuleProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets Culture.
+        /// </summary>
+        public CultureInfo Culture
+        {
+            get
+            {
+                return (CultureInfo)this.GetValue(CultureProperty);
+            }
+
+            set
+            {
+                this.SetValue(CultureProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets FirstDateTime.
+        /// </summary>
         public DateTime FirstDateTime
         {
             get
             {
                 return (DateTime)this.GetValue(FirstDateTimeProperty);
             }
+
             set
             {
                 this.SetValue(FirstDateTimeProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets FirstDayOfWeek.
+        /// </summary>
         public DayOfWeek FirstDayOfWeek
         {
             get
             {
                 return (DayOfWeek)this.GetValue(FirstDayOfWeekProperty);
             }
+
             set
             {
                 this.SetValue(FirstDayOfWeekProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets IntervalType.
+        /// </summary>
         public DateTimeIntervalType IntervalType
         {
             get
             {
                 return (DateTimeIntervalType)this.GetValue(IntervalTypeProperty);
             }
+
             set
             {
                 this.SetValue(IntervalTypeProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets LastDateTime.
+        /// </summary>
         public DateTime LastDateTime
         {
             get
             {
                 return (DateTime)this.GetValue(LastDateTimeProperty);
             }
+
             set
             {
                 this.SetValue(LastDateTimeProperty, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets MinorIntervalType.
+        /// </summary>
         public DateTimeIntervalType MinorIntervalType
         {
             get
             {
                 return (DateTimeIntervalType)this.GetValue(MinorIntervalTypeProperty);
             }
+
             set
             {
                 this.SetValue(MinorIntervalTypeProperty, value);
@@ -139,16 +208,28 @@
 
         #region Public Methods
 
-        public override OxyPlot.IAxis CreateModel()
+        /// <summary>
+        /// The create model.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public override OxyPlot.Axis CreateModel()
         {
             this.SynchronizeProperties();
-            return this.Axis;
+            return this.internalAxis;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The synchronize properties.
+        /// </summary>
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.Axis as OxyPlot.DateTimeAxis;
+            var a = this.internalAxis as OxyPlot.DateTimeAxis;
 
             a.IntervalType = this.IntervalType;
             a.MinorIntervalType = this.MinorIntervalType;
@@ -160,6 +241,7 @@
             {
                 a.Minimum = OxyPlot.DateTimeAxis.ToDouble(this.FirstDateTime);
             }
+
             if (this.LastDateTime < DateTime.MaxValue)
             {
                 a.Maximum = OxyPlot.DateTimeAxis.ToDouble(this.LastDateTime);

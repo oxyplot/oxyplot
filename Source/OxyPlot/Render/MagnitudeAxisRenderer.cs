@@ -4,9 +4,9 @@ namespace OxyPlot
 {
     using System;
 
-    public class MagnitudeAxisRendererBase : AxisRendererBase
+    public class MagnitudeAxisRenderer : AxisRendererBase
     {
-        public MagnitudeAxisRendererBase(IRenderContext rc, PlotModel plot)
+        public MagnitudeAxisRenderer(IRenderContext rc, PlotModel plot)
             : base(rc, plot)
         {
         }
@@ -43,7 +43,7 @@ namespace OxyPlot
 
                     var pts = new List<ScreenPoint>();
                     for (double th = angleAxis.ActualMinimum;
-                         th <= angleAxis.ActualMaximum;
+                         th <= angleAxis.ActualMaximum+angleAxis.MinorStep*0.01;
                          th += angleAxis.MinorStep * 0.1)
                     {
                         pts.Add(axis.Transform(xValue, th, angleAxis));
@@ -68,7 +68,7 @@ namespace OxyPlot
                 }
 
                 var pts = new List<ScreenPoint>();
-                for (double th = angleAxis.ActualMinimum; th <= angleAxis.ActualMaximum; th += angleAxis.MinorStep * 0.1)
+                for (double th = angleAxis.ActualMinimum; th <= angleAxis.ActualMaximum+angleAxis.MinorStep*0.01; th += angleAxis.MinorStep * 0.1)
                 {
                     pts.Add(axis.Transform(xValue, th, angleAxis));
                 }

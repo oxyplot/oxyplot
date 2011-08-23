@@ -42,5 +42,21 @@
             var s2 = new OxyPlot.Wpf.CategoryAxis();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
+
+        [Test]
+        public void AngleAxis()
+        {
+            var s1 = new OxyPlot.AngleAxis();
+            var s2 = new OxyPlot.Wpf.AngleAxis();
+            OxyAssert.PropertiesAreEqual(s1, s2);
+        }
+
+        [Test]
+        public void MagnitudeAxis()
+        {
+            var s1 = new OxyPlot.MagnitudeAxis();
+            var s2 = new OxyPlot.Wpf.MagnitudeAxis();
+            OxyAssert.PropertiesAreEqual(s1, s2);
+        }
     }
 }

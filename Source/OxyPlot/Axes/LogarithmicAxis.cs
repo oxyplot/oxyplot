@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LogarithmicAxis.cs" company="OxyPlot">
-//   See http://oxyplot.codeplex.com
+//   see http://oxyplot.codeplex.com
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -183,6 +183,20 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Determines whether the specified value is valid.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified value is valid; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool IsValidValue(double value)
+        {
+            return value > 0 && base.IsValidValue(value);
+        }
+
+        /// <summary>
         /// Pans the axis.
         /// </summary>
         /// <param name="x0">
@@ -247,33 +261,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Updates the actual maximum and minimum values.
-        /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
-        /// If Maximum or Minimum have been set, these values will be used.
-        /// Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
-        /// </summary>
-        public override void UpdateActualMaxMin()
-        {
-            if (this.PowerPadding)
-            {
-                double logBase = Math.Log(this.Base);
-                var e0 = (int)Math.Floor(Math.Log(this.ActualMinimum) / logBase);
-                var e1 = (int)Math.Ceiling(Math.Log(this.ActualMaximum) / logBase);
-                if (!double.IsNaN(this.ActualMinimum))
-                {
-                    this.ActualMinimum = RemoveNoiseFromDoubleMath(Math.Exp(e0 * logBase));
-                }
-
-                if (!double.IsNaN(this.ActualMaximum))
-                {
-                    this.ActualMaximum = RemoveNoiseFromDoubleMath(Math.Exp(e1 * logBase));
-                }
-            }
-
-            base.UpdateActualMaxMin();
-        }
-
-        /// <summary>
         /// Zooms the axis at the specified coordinate.
         /// </summary>
         /// <param name="factor">
@@ -312,7 +299,7 @@ namespace OxyPlot
         /// <returns>
         /// The transform value.
         /// </returns>
-        protected override double PostInverseTransform(double x)
+        internal override double PostInverseTransform(double x)
         {
             return Math.Exp(x);
         }
@@ -327,7 +314,7 @@ namespace OxyPlot
         /// <returns>
         /// The pretransformed value.
         /// </returns>
-        protected override double PreTransform(double x)
+        internal override double PreTransform(double x)
         {
             Debug.Assert(x > 0, "X should be positive.");
 
@@ -337,6 +324,33 @@ namespace OxyPlot
             }
 
             return Math.Log(x);
+        }
+
+        /// <summary>
+        /// Updates the actual maximum and minimum values.
+        /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
+        /// If Maximum or Minimum have been set, these values will be used.
+        /// Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
+        /// </summary>
+        internal override void UpdateActualMaxMin()
+        {
+            if (this.PowerPadding)
+            {
+                double logBase = Math.Log(this.Base);
+                var e0 = (int)Math.Floor(Math.Log(this.ActualMinimum) / logBase);
+                var e1 = (int)Math.Ceiling(Math.Log(this.ActualMaximum) / logBase);
+                if (!double.IsNaN(this.ActualMinimum))
+                {
+                    this.ActualMinimum = RemoveNoiseFromDoubleMath(Math.Exp(e0 * logBase));
+                }
+
+                if (!double.IsNaN(this.ActualMaximum))
+                {
+                    this.ActualMaximum = RemoveNoiseFromDoubleMath(Math.Exp(e1 * logBase));
+                }
+            }
+
+            base.UpdateActualMaxMin();
         }
 
         #endregion

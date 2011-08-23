@@ -65,6 +65,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Svg\svg.xsd">
       <SubType>Designer</SubType>
     </None>

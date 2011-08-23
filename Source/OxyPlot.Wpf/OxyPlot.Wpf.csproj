@@ -57,10 +57,12 @@
     <Compile Include="Annotations\Annotation.cs" />
     <Compile Include="Annotations\IAnnotation.cs" />
     <Compile Include="Annotations\LineAnnotation.cs" />
-    <Compile Include="Axes\AxisBase.cs" />
+    <Compile Include="Axes\AngleAxis.cs" />
+    <Compile Include="Axes\Axis.cs" />
     <Compile Include="Axes\CategoryAxis.cs" />
     <Compile Include="Axes\DateTimeAxis.cs" />
     <Compile Include="Axes\IAxis.cs" />
+    <Compile Include="Axes\MagnitudeAxis.cs" />
     <Compile Include="Axes\TimeSpanAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
@@ -69,10 +71,11 @@
     <Compile Include="Plot.Properties.cs" />
     <Compile Include="PngExporter.cs" />
     <Compile Include="Series\BarSeries.cs" />
+    <Compile Include="Series\XYAxisSeries.cs" />
     <Compile Include="Series\ItemsSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
     <Compile Include="Series\ISeries.cs" />
-    <Compile Include="Series\PlotSeriesBase.cs" />
+    <Compile Include="Series\Series.cs" />
     <Compile Include="Tracker\TrackerControl.cs" />
     <Compile Include="Tracker\TrackerDefinition.cs" />
     <None Include="OxyPlot.Wpf.snk" />
