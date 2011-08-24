@@ -299,20 +299,14 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The pan.
+        /// Pans the specified axis.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="x1">
-        /// The x 1.
-        /// </param>
-        /// <param name="x2">
-        /// The x 2.
-        /// </param>
-        public void Pan(OxyPlot.IAxis axis, double x1, double x2)
+        /// <param name="axis">The axis.</param>
+        /// <param name="ppt">The previous point (screen coordinates).</param>
+        /// <param name="cpt">The current point (screen coordinates).</param>
+        public void Pan(OxyPlot.IAxis axis, ScreenPoint ppt, ScreenPoint cpt)
         {
-            axis.Pan(x1, x2);
+            axis.Pan(ppt,cpt);
         }
 
         /// <summary>

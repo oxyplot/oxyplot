@@ -674,15 +674,18 @@ namespace OxyPlot
         public abstract OxySize Measure(IRenderContext rc);
 
         /// <summary>
-        /// Pans the axis.
+        /// Pans the specified axis.
         /// </summary>
-        /// <param name="x0">
-        /// The previous screen coordinate.
+        /// <param name="axis">
+        /// The axis.
         /// </param>
-        /// <param name="x1">
-        /// The current screen coordinate.
+        /// <param name="ppt">
+        /// The previous point (screen coordinates).
         /// </param>
-        public abstract void Pan(double x0, double x1);
+        /// <param name="cpt">
+        /// The current point (screen coordinates).
+        /// </param>
+        public abstract void Pan(ScreenPoint ppt, ScreenPoint cpt);
 
         /// <summary>
         /// Renders the axis on the specified render context.
@@ -872,6 +875,8 @@ namespace OxyPlot
         /// </param>
         protected virtual void OnAxisChanged(AxisChangedEventArgs args)
         {
+            this.UpdateActualMaxMin();
+
             EventHandler<AxisChangedEventArgs> handler = this.AxisChanged;
             if (handler != null)
             {

@@ -219,7 +219,9 @@ namespace OxyPlot
             // Render the main background of the plot (only if there are axes)
             // The border is rendered by DrawBox to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
             if (Axes.Count > 0)
+            {
                 rc.DrawRectangleAsPolygon(PlotArea, Background, null, 0);
+            }
 
             foreach (var s in Series)
             {

@@ -75,13 +75,13 @@ namespace OxyPlot
         /// <param name="axis">
         /// The axis.
         /// </param>
-        /// <param name="x0">
-        /// The previous point coordinate.
+        /// <param name="ppt">
+        /// The previous point (screen coordinates).
         /// </param>
-        /// <param name="x1">
-        /// The last point coordinate.
+        /// <param name="cpt">
+        /// The current point (screen coordinates).
         /// </param>
-        void Pan(IAxis axis, double x0, double x1);
+        void Pan(IAxis axis, ScreenPoint ppt, ScreenPoint cpt);
 
         /// <summary>
         /// Refresh the plot immediately (blocking UI thread)
