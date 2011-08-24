@@ -170,7 +170,7 @@ namespace OxyPlot.Silverlight
         static TrackerControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(TrackerControl), new PropertyMetadata(typeof(TrackerControl)));
+                typeof(TrackerControl), new FrameworkPropertyMetadata(typeof(TrackerControl)));
         }
 
 #endif

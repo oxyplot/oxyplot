@@ -106,9 +106,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         static Plot()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Plot), new PropertyMetadata(typeof(Plot)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(Plot), new FrameworkPropertyMetadata(typeof(Plot)));
             PaddingProperty.OverrideMetadata(
-                typeof(Plot), new PropertyMetadata(new Thickness(8, 8, 16, 8), AppearanceChanged));
+                typeof(Plot), new FrameworkPropertyMetadata(new Thickness(8, 8, 16, 8), AppearanceChanged));
         }
 
 #endif
