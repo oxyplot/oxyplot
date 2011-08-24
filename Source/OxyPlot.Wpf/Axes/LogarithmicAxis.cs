@@ -21,13 +21,13 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <value>The logarithmic base.</value>
         public static readonly DependencyProperty BaseProperty = DependencyProperty.Register(
-            "Base", typeof(double), typeof(LogarithmicAxis), new FrameworkPropertyMetadata(10.0, DataChanged));
+            "Base", typeof(double), typeof(LogarithmicAxis), new PropertyMetadata(10.0, DataChanged));
 
         /// <summary>
         /// The power padding property.
         /// </summary>
         public static readonly DependencyProperty PowerPaddingProperty = DependencyProperty.Register(
-            "PowerPadding", typeof(bool), typeof(LogarithmicAxis), new FrameworkPropertyMetadata(true, DataChanged));
+            "PowerPadding", typeof(bool), typeof(LogarithmicAxis), new PropertyMetadata(true, DataChanged));
 
         #endregion
 

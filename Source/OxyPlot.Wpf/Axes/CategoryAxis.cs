@@ -21,19 +21,19 @@ namespace OxyPlot.Wpf
         /// The is tick centered property.
         /// </summary>
         public static readonly DependencyProperty IsTickCenteredProperty = DependencyProperty.Register(
-            "IsTickCentered", typeof(bool), typeof(CategoryAxis), new FrameworkPropertyMetadata(false, DataChanged));
+            "IsTickCentered", typeof(bool), typeof(CategoryAxis), new PropertyMetadata(false, DataChanged));
 
         /// <summary>
         /// The items source property.
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
-            "ItemsSource", typeof(IEnumerable), typeof(CategoryAxis), new FrameworkPropertyMetadata(null, DataChanged));
+            "ItemsSource", typeof(IEnumerable), typeof(CategoryAxis), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The label field property.
         /// </summary>
         public static readonly DependencyProperty LabelFieldProperty = DependencyProperty.Register(
-            "LabelField", typeof(string), typeof(CategoryAxis), new FrameworkPropertyMetadata(null, DataChanged));
+            "LabelField", typeof(string), typeof(CategoryAxis), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The labels property.
@@ -42,7 +42,7 @@ namespace OxyPlot.Wpf
             "Labels", 
             typeof(IList<string>), 
             typeof(CategoryAxis), 
-            new FrameworkPropertyMetadata(new List<string>(), DataChanged));
+            new PropertyMetadata(new List<string>(), DataChanged));
 
         #endregion
 
@@ -54,13 +54,13 @@ namespace OxyPlot.Wpf
         static CategoryAxis()
         {
             PositionProperty.OverrideMetadata(
-                typeof(CategoryAxis), new FrameworkPropertyMetadata(AxisPosition.Bottom, DataChanged));
+                typeof(CategoryAxis), new PropertyMetadata(AxisPosition.Bottom, DataChanged));
             MinimumPaddingProperty.OverrideMetadata(
-                typeof(CategoryAxis), new FrameworkPropertyMetadata(0.0, DataChanged));
+                typeof(CategoryAxis), new PropertyMetadata(0.0, DataChanged));
             MaximumPaddingProperty.OverrideMetadata(
-                typeof(CategoryAxis), new FrameworkPropertyMetadata(0.0, DataChanged));
+                typeof(CategoryAxis), new PropertyMetadata(0.0, DataChanged));
             TickStyleProperty.OverrideMetadata(
-                typeof(CategoryAxis), new FrameworkPropertyMetadata(TickStyle.Outside, DataChanged));
+                typeof(CategoryAxis), new PropertyMetadata(TickStyle.Outside, DataChanged));
         }
 
         /// <summary>

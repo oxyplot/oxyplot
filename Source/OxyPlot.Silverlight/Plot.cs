@@ -1,20 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="" file="Plot.cs">
-//   
-// </copyright>
-// <summary>
-//   The Silverlight Plot control.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace OxyPlot.Silverlight
+﻿namespace OxyPlot.Silverlight
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.IO;
     using System.Linq;
-    using System.Text;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -22,54 +11,20 @@ namespace OxyPlot.Silverlight
     using System.Windows.Markup;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
-    using System.Xml;
 
     /// <summary>
     /// The Silverlight Plot control.
     /// </summary>
     [ContentProperty("Series")]
-    [TemplatePart(Name = PART_GRID, Type = typeof(Grid))]
-    public class Plot : Control, IPlotControl
+    [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
+    public partial class Plot : Control, IPlotControl
     {
         #region Constants and Fields
 
         /// <summary>
-        ///   The data context watcher property.
-        /// </summary>
-        public static readonly DependencyProperty DataContextWatcherProperty =
-            DependencyProperty.Register(
-                "DataContextWatcher", typeof(Object), typeof(Plot), new PropertyMetadata(DataContextChanged));
-
-        /// <summary>
-        ///   The default tracker property.
-        /// </summary>
-        public static readonly DependencyProperty DefaultTrackerTemplateProperty =
-            DependencyProperty.Register(
-                "DefaultTrackerTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
-
-        /// <summary>
-        ///   The handle right clicks property.
-        /// </summary>
-        public static readonly DependencyProperty HandleRightClicksProperty =
-            DependencyProperty.Register("HandleRightClicks", typeof(bool), typeof(Plot), new PropertyMetadata(true));
-
-        /// <summary>
-        ///   The model property.
-        /// </summary>
-        public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
-            "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
-
-        /// <summary>
-        ///   The zoom rectangle template property.
-        /// </summary>
-        public static readonly DependencyProperty ZoomRectangleTemplateProperty =
-            DependencyProperty.Register(
-                "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
-
-        /// <summary>
         ///   The Grid PART constant.
         /// </summary>
-        private const string PART_GRID = "PART_Grid";
+        private const string PartGrid = "PART_Grid";
 
         /// <summary>
         ///   The pan action.
@@ -179,55 +134,6 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets or sets the default tracker template.
-        /// </summary>
-        public ControlTemplate DefaultTrackerTemplate
-        {
-            get
-            {
-                return (ControlTemplate)this.GetValue(DefaultTrackerTemplateProperty);
-            }
-
-            set
-            {
-                this.SetValue(DefaultTrackerTemplateProperty, value);
-            }
-        }
-
-        /// <summary>
-        ///   Gets or sets a value indicating whether to handle right clicks.
-        /// </summary>
-        public bool HandleRightClicks
-        {
-            get
-            {
-                return (bool)this.GetValue(HandleRightClicksProperty);
-            }
-
-            set
-            {
-                this.SetValue(HandleRightClicksProperty, value);
-            }
-        }
-
-        /// <summary>
-        ///   Gets or sets the model.
-        /// </summary>
-        /// <value>The model.</value>
-        public PlotModel Model
-        {
-            get
-            {
-                return (PlotModel)this.GetValue(ModelProperty);
-            }
-
-            set
-            {
-                this.SetValue(ModelProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the mouse actions.
         /// </summary>
         /// <value>The mouse actions.</value>
@@ -242,23 +148,6 @@ namespace OxyPlot.Silverlight
             get
             {
                 return this.trackerDefinitions;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the zoom rectangle template.
-        /// </summary>
-        /// <value>The zoom rectangle template.</value>
-        public ControlTemplate ZoomRectangleTemplate
-        {
-            get
-            {
-                return (ControlTemplate)this.GetValue(ZoomRectangleTemplateProperty);
-            }
-
-            set
-            {
-                this.SetValue(ZoomRectangleTemplateProperty, value);
             }
         }
 
@@ -345,7 +234,7 @@ namespace OxyPlot.Silverlight
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            this.grid = this.GetTemplateChild(PART_GRID) as Grid;
+            this.grid = this.GetTemplateChild(PartGrid) as Grid;
             if (this.grid != null)
             {
                 this.canvas = new Canvas();
@@ -395,6 +284,29 @@ namespace OxyPlot.Silverlight
         public void Reset(IAxis axis)
         {
             axis.Reset();
+        }
+
+        /// <summary>
+        /// Saves the plot as a bitmap.
+        /// </summary>
+        /// <param name="fileName">
+        /// Name of the file.
+        /// </param>
+        public void SaveBitmap(string fileName)
+        {
+            throw new NotImplementedException();
+
+            // todo: Use imagetools.codeplex.com
+
+            // var bmp = this.ToBitmap();
+
+            // var encoder = new PngBitmapEncoder();
+            // encoder.Frames.Add(BitmapFrame.Create(bmp));
+
+            // using (FileStream s = File.Create(fileName))
+            // {
+            // encoder.Save(s);
+            // }
         }
 
         /// <summary>
@@ -455,6 +367,43 @@ namespace OxyPlot.Silverlight
             Canvas.SetTop(this.zoomControl, r.Top);
             this.zoomControl.Template = this.ZoomRectangleTemplate;
             this.zoomControl.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// Renders the plot to a bitmap.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        public WriteableBitmap ToBitmap()
+        {
+            throw new NotImplementedException();
+
+            // var bmp = new RenderTargetBitmap(
+            // (int)this.ActualWidth, (int)this.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            // bmp.Render(this);
+            // return bmp;
+        }
+
+        /// <summary>
+        /// Renders the plot to xaml.
+        /// </summary>
+        /// <returns>
+        /// The to xaml.
+        /// </returns>
+        public string ToXaml()
+        {
+            throw new NotImplementedException();
+
+            // var sb = new StringBuilder();
+            // var tw = new StringWriter(sb);
+            // XmlWriter xw = XmlWriter.Create(tw, new XmlWriterSettings { Indent = true });
+            // if (this.canvas != null)
+            // {
+            // XamlWriter.Save(this.canvas, xw);
+            // }
+
+            // xw.Close();
+            // return sb.ToString();
         }
 
         /// <summary>
@@ -528,10 +477,11 @@ namespace OxyPlot.Silverlight
             if (e.Key == Key.C && control)
             {
                 e.Handled = true;
+
                 // todo: Clipboard does not currently support copying image data
             }
 
-            if (control && alt && ActualModel != null)
+            if (control && alt && this.ActualModel != null)
             {
                 switch (e.Key)
                 {
@@ -547,67 +497,7 @@ namespace OxyPlot.Silverlight
                 }
             }
 
-
             base.OnKeyDown(e);
-        }
-
-        /// <summary>
-        /// Renders the plot to a bitmap.
-        /// </summary>
-        /// <returns>
-        /// </returns>
-        public WriteableBitmap ToBitmap()
-        {
-            throw new NotImplementedException();
-            //var bmp = new RenderTargetBitmap(
-            //    (int)this.ActualWidth, (int)this.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-            //bmp.Render(this);
-            //return bmp;
-        }
-
-        /// <summary>
-        /// Saves the plot as a bitmap.
-        /// </summary>
-        /// <param name="fileName">
-        /// Name of the file.
-        /// </param>
-        public void SaveBitmap(string fileName)
-        {
-            throw new NotImplementedException();
-            
-            // todo: Use imagetools.codeplex.com
-            
-            //var bmp = this.ToBitmap();
-
-            //var encoder = new PngBitmapEncoder();
-            //encoder.Frames.Add(BitmapFrame.Create(bmp));
-
-            //using (FileStream s = File.Create(fileName))
-            //{
-            //    encoder.Save(s);
-            //}
-        }
-
-
-        /// <summary>
-        /// Renders the plot to xaml.
-        /// </summary>
-        /// <returns>
-        /// The to xaml.
-        /// </returns>
-        public string ToXaml()
-        {
-            throw new NotImplementedException();
-            //var sb = new StringBuilder();
-            //var tw = new StringWriter(sb);
-            //XmlWriter xw = XmlWriter.Create(tw, new XmlWriterSettings { Indent = true });
-            //if (this.canvas != null)
-            //{
-            //    XamlWriter.Save(this.canvas, xw);
-            //}
-
-            //xw.Close();
-            //return sb.ToString();
         }
 
         /// <summary>
@@ -713,6 +603,11 @@ namespace OxyPlot.Silverlight
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
+
+            if (!this.IsMouseWheelEnabled)
+            {
+                return;
+            }
 
             bool isControlDown = IsControlDown();
             bool isShiftDown = IsShiftDown();

@@ -24,37 +24,37 @@ namespace OxyPlot.Wpf
         /// The bin size property.
         /// </summary>
         public static readonly DependencyProperty BinSizeProperty = DependencyProperty.Register(
-            "BinSize", typeof(int), typeof(ScatterSeries), new FrameworkPropertyMetadata(0, AppearanceChanged));
+            "BinSize", typeof(int), typeof(ScatterSeries), new PropertyMetadata(0, AppearanceChanged));
 
         /// <summary>
         /// The data field size property.
         /// </summary>
         public static readonly DependencyProperty DataFieldSizeProperty = DependencyProperty.Register(
-            "DataFieldSize", typeof(string), typeof(ScatterSeries), new FrameworkPropertyMetadata(null, DataChanged));
+            "DataFieldSize", typeof(string), typeof(ScatterSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The data field tag property.
         /// </summary>
         public static readonly DependencyProperty DataFieldTagProperty = DependencyProperty.Register(
-            "DataFieldTag", typeof(string), typeof(ScatterSeries), new FrameworkPropertyMetadata(null, DataChanged));
+            "DataFieldTag", typeof(string), typeof(ScatterSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The data field value property.
         /// </summary>
         public static readonly DependencyProperty DataFieldValueProperty = DependencyProperty.Register(
-            "DataFieldValue", typeof(string), typeof(ScatterSeries), new FrameworkPropertyMetadata(null, DataChanged));
+            "DataFieldValue", typeof(string), typeof(ScatterSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The data field x property.
         /// </summary>
         public static readonly DependencyProperty DataFieldXProperty = DependencyProperty.Register(
-            "DataFieldX", typeof(string), typeof(ScatterSeries), new FrameworkPropertyMetadata("X", DataChanged));
+            "DataFieldX", typeof(string), typeof(ScatterSeries), new PropertyMetadata("X", DataChanged));
 
         /// <summary>
         /// The data field y property.
         /// </summary>
         public static readonly DependencyProperty DataFieldYProperty = DependencyProperty.Register(
-            "DataFieldY", typeof(string), typeof(ScatterSeries), new FrameworkPropertyMetadata("Y", DataChanged));
+            "DataFieldY", typeof(string), typeof(ScatterSeries), new PropertyMetadata("Y", DataChanged));
 
         /// <summary>
         /// The mapping property.
@@ -63,13 +63,13 @@ namespace OxyPlot.Wpf
             "Mapping", 
             typeof(Func<object, IDataPoint>), 
             typeof(ScatterSeries), 
-            new FrameworkPropertyMetadata(null, DataChanged));
+            new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The marker fill property.
         /// </summary>
         public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(
-            "MarkerFill", typeof(Color?), typeof(ScatterSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
+            "MarkerFill", typeof(Color?), typeof(ScatterSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The marker outline property.
@@ -78,13 +78,13 @@ namespace OxyPlot.Wpf
             "MarkerOutline", 
             typeof(ScreenPoint[]), 
             typeof(ScatterSeries), 
-            new FrameworkPropertyMetadata(null, AppearanceChanged));
+            new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The marker size property.
         /// </summary>
         public static readonly DependencyProperty MarkerSizeProperty = DependencyProperty.Register(
-            "MarkerSize", typeof(double), typeof(ScatterSeries), new FrameworkPropertyMetadata(5.0, AppearanceChanged));
+            "MarkerSize", typeof(double), typeof(ScatterSeries), new PropertyMetadata(5.0, AppearanceChanged));
 
         /// <summary>
         /// The marker stroke property.
@@ -93,7 +93,7 @@ namespace OxyPlot.Wpf
             "MarkerStroke", 
             typeof(Color?), 
             typeof(ScatterSeries), 
-            new FrameworkPropertyMetadata(null, AppearanceChanged));
+            new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The marker stroke thickness property.
@@ -103,7 +103,7 @@ namespace OxyPlot.Wpf
                 "MarkerStrokeThickness", 
                 typeof(double), 
                 typeof(ScatterSeries), 
-                new FrameworkPropertyMetadata(1.0, AppearanceChanged));
+                new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         /// The marker type property.
@@ -112,7 +112,7 @@ namespace OxyPlot.Wpf
             "MarkerType", 
             typeof(MarkerType), 
             typeof(ScatterSeries), 
-            new FrameworkPropertyMetadata(MarkerType.Square, AppearanceChanged));
+            new PropertyMetadata(MarkerType.Square, AppearanceChanged));
 
         #endregion
 

@@ -23,13 +23,13 @@ namespace OxyPlot.Wpf
         /// The x axis key property.
         /// </summary>
         public static readonly DependencyProperty XAxisKeyProperty = DependencyProperty.Register(
-            "XAxisKey", typeof(string), typeof(XYAxisSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
+            "XAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The y axis key property.
         /// </summary>
         public static readonly DependencyProperty YAxisKeyProperty = DependencyProperty.Register(
-            "YAxisKey", typeof(string), typeof(XYAxisSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
+            "YAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
 
         #endregion
 

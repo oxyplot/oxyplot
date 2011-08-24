@@ -25,92 +25,73 @@ namespace OxyPlot.Wpf
     /// Represents a WPF control that displays an OxyPlot plot.
     /// </summary>
     [ContentProperty("Series")]
-    [TemplatePart(Name = PART_GRID, Type = typeof(Grid))]
+    [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
     public partial class Plot : Control, IPlotControl
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The default tracker property.
-        /// </summary>
-        public static readonly DependencyProperty DefaultTrackerTemplateProperty =
-            DependencyProperty.Register("DefaultTrackerTemplate", typeof(ControlTemplate), typeof(Plot));
-
-        /// <summary>
-        /// The model property.
-        /// </summary>
-        public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
-            "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
-
-        /// <summary>
-        /// The zoom rectangle template property.
-        /// </summary>
-        public static readonly DependencyProperty ZoomRectangleTemplateProperty =
-            DependencyProperty.Register(
-                "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new FrameworkPropertyMetadata(null));
-
-        /// <summary>
         ///   The Grid PART constant.
         /// </summary>
-        private const string PART_GRID = "PART_Grid";
+        private const string PartGrid = "PART_Grid";
 
         /// <summary>
-        /// The pan action.
+        ///   The pan action.
         /// </summary>
         private readonly PanAction panAction;
 
         /// <summary>
-        /// The tracker action.
+        ///   The tracker action.
         /// </summary>
         private readonly TrackerAction trackerAction;
 
         /// <summary>
-        /// The tracker definitions.
+        ///   The tracker definitions.
         /// </summary>
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
 
         /// <summary>
-        /// The zoom action.
+        ///   The zoom action.
         /// </summary>
         private readonly ZoomAction zoomAction;
 
         /// <summary>
-        /// The canvas.
+        ///   The canvas.
         /// </summary>
         private Canvas canvas;
 
         /// <summary>
-        /// The current tracker.
+        ///   The current tracker.
         /// </summary>
         private FrameworkElement currentTracker;
 
         /// <summary>
-        /// The grid.
+        ///   The grid.
         /// </summary>
         private Grid grid;
 
         /// <summary>
-        /// The internal model.
+        ///   The internal model.
         /// </summary>
         private PlotModel internalModel;
 
         /// <summary>
-        /// The is plot invalidated.
+        ///   The is plot invalidated.
         /// </summary>
         private bool isPlotInvalidated;
 
         /// <summary>
-        /// The mouse down point.
+        ///   The mouse down point.
         /// </summary>
         private ScreenPoint mouseDownPoint;
 
         /// <summary>
-        /// The overlays.
+        ///   The overlays.
         /// </summary>
         private Canvas overlays;
 
         /// <summary>
-        /// The zoom control.
+        ///   The zoom control.
         /// </summary>
         private ContentControl zoomControl;
 
@@ -121,19 +102,19 @@ namespace OxyPlot.Wpf
 #if WPF
 
         /// <summary>
-        /// Initializes static members of the <see cref="Plot"/> class. 
+        ///   Initializes static members of the <see cref = "Plot" /> class.
         /// </summary>
         static Plot()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Plot), new FrameworkPropertyMetadata(typeof(Plot)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(Plot), new PropertyMetadata(typeof(Plot)));
             PaddingProperty.OverrideMetadata(
-                typeof(Plot), new FrameworkPropertyMetadata(new Thickness(8, 8, 16, 8), AppearanceChanged));
+                typeof(Plot), new PropertyMetadata(new Thickness(8, 8, 16, 8), AppearanceChanged));
         }
 
 #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Plot"/> class.
+        ///   Initializes a new instance of the <see cref = "Plot" /> class.
         /// </summary>
         public Plot()
         {
@@ -169,7 +150,7 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets the actual model.
+        ///   Gets the actual model.
         /// </summary>
         /// <value>The actual model.</value>
         public PlotModel ActualModel
@@ -181,47 +162,25 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the tracker template.
+        /// Gets the annotations.
         /// </summary>
-        /// <value>The tracker template.</value>
-        public ControlTemplate DefaultTrackerTemplate
+        /// <value>The annotations.</value>
+        public ObservableCollection<Annotation> Annotations
         {
             get
             {
-                return (ControlTemplate)this.GetValue(DefaultTrackerTemplateProperty);
-            }
-
-            set
-            {
-                this.SetValue(DefaultTrackerTemplateProperty, value);
+                return this.annotations;
             }
         }
 
         /// <summary>
-        /// Gets or sets the model.
-        /// </summary>
-        /// <value>The model.</value>
-        public PlotModel Model
-        {
-            get
-            {
-                return (PlotModel)this.GetValue(ModelProperty);
-            }
-
-            set
-            {
-                this.SetValue(ModelProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the mouse actions.
+        ///   Gets the mouse actions.
         /// </summary>
         /// <value>The mouse actions.</value>
         public List<OxyMouseAction> MouseActions { get; private set; }
 
         /// <summary>
-        /// Gets the tracker definitions.
+        ///   Gets the tracker definitions.
         /// </summary>
         /// <value>The tracker definitions.</value>
         public ObservableCollection<TrackerDefinition> TrackerDefinitions
@@ -229,23 +188,6 @@ namespace OxyPlot.Wpf
             get
             {
                 return this.trackerDefinitions;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the zoom rectangle template.
-        /// </summary>
-        /// <value>The zoom rectangle template.</value>
-        public ControlTemplate ZoomRectangleTemplate
-        {
-            get
-            {
-                return (ControlTemplate)this.GetValue(ZoomRectangleTemplateProperty);
-            }
-
-            set
-            {
-                this.SetValue(ZoomRectangleTemplateProperty, value);
             }
         }
 
@@ -332,7 +274,7 @@ namespace OxyPlot.Wpf
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            this.grid = this.GetTemplateChild(PART_GRID) as Grid;
+            this.grid = this.GetTemplateChild(PartGrid) as Grid;
 
             if (this.grid == null)
             {
@@ -484,6 +426,7 @@ namespace OxyPlot.Wpf
         /// Renders the plot to a bitmap.
         /// </summary>
         /// <returns>
+        /// A bitmap.
         /// </returns>
         public RenderTargetBitmap ToBitmap()
         {
@@ -723,6 +666,11 @@ namespace OxyPlot.Wpf
         {
             base.OnMouseWheel(e);
 
+            if (!this.IsMouseWheelEnabled)
+            {
+                return;
+            }
+
             bool isControlDown = Keyboard.IsKeyDown(Key.LeftCtrl);
             bool isShiftDown = Keyboard.IsKeyDown(Key.LeftShift);
             bool isAltDown = Keyboard.IsKeyDown(Key.LeftAlt);
@@ -961,8 +909,8 @@ namespace OxyPlot.Wpf
 
         /// <summary>
         /// Updates the model.
-        /// If Model==null, an internal model will be created.
-        /// The ActualModel.UpdateModel will be called (updates all series data).
+        ///   If Model==null, an internal model will be created.
+        ///   The ActualModel.UpdateModel will be called (updates all series data).
         /// </summary>
         private void UpdateModel()
         {

@@ -20,20 +20,20 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty FormatAsFractionsProperty =
             DependencyProperty.Register(
-                "FormatAsFractions", typeof(bool), typeof(LinearAxis), new FrameworkPropertyMetadata(false));
+                "FormatAsFractions", typeof(bool), typeof(LinearAxis), new PropertyMetadata(false));
 
         /// <summary>
         /// The fraction unit property.
         /// </summary>
         public static readonly DependencyProperty FractionUnitProperty = DependencyProperty.Register(
-            "FractionUnit", typeof(double), typeof(LinearAxis), new FrameworkPropertyMetadata(1.0));
+            "FractionUnit", typeof(double), typeof(LinearAxis), new PropertyMetadata(1.0));
 
         /// <summary>
         /// The fraction unit symbol property.
         /// </summary>
         public static readonly DependencyProperty FractionUnitSymbolProperty =
             DependencyProperty.Register(
-                "FractionUnitSymbol", typeof(string), typeof(LinearAxis), new FrameworkPropertyMetadata(null));
+                "FractionUnitSymbol", typeof(string), typeof(LinearAxis), new PropertyMetadata(null));
 
         #endregion
 

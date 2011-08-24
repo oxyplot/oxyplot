@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
+    <Compile Include="Plot.Properties.cs" />
     <Compile Include="Helpers\ConverterExtensions.cs" />
     <Compile Include="Helpers\MouseButtonHelper.cs" />
     <Compile Include="Plot.cs" />

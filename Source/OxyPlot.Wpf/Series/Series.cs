@@ -25,13 +25,13 @@ namespace OxyPlot.Wpf
         /// The color property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-            "Color", typeof(Color?), typeof(Series), new FrameworkPropertyMetadata(null, AppearanceChanged));
+            "Color", typeof(Color?), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The title property.
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            "Title", typeof(string), typeof(Series), new FrameworkPropertyMetadata(null, AppearanceChanged));
+            "Title", typeof(string), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The tracker format string property.
@@ -41,13 +41,13 @@ namespace OxyPlot.Wpf
                 "TrackerFormatString", 
                 typeof(string), 
                 typeof(XYAxisSeries), 
-                new FrameworkPropertyMetadata(null, AppearanceChanged));
+                new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The tracker key property.
         /// </summary>
         public static readonly DependencyProperty TrackerKeyProperty = DependencyProperty.Register(
-            "TrackerKey", typeof(string), typeof(Series), new FrameworkPropertyMetadata(null, AppearanceChanged));
+            "TrackerKey", typeof(string), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
         #endregion
 
