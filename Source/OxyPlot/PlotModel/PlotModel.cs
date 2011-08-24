@@ -999,16 +999,20 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Force an update of the data.
-        /// 1. Updates the data of each Series.
+        /// Updates all axes and series.
+        /// 1. Updates the data of each Series (only if updateData==true).
         /// 2. Ensure that all series have axes assigned.
         /// 3. Updates the max and min of the axes.
         /// </summary>
-        public void UpdateData()
+        /// <param name="updateData">if set to <c>true</c>, all data collections will be updated.</param>
+        public void Update(bool updateData = true)
         {
-            foreach (Series s in this.Series)
+            if (updateData)
             {
-                s.UpdateData();
+                foreach (Series s in this.Series)
+                {
+                    s.UpdateData();
+                }
             }
 
             // Ensure that there are default axes available
@@ -1020,7 +1024,7 @@ namespace OxyPlot
             }
 
             // Update the max and min of the axes
-            this.UpdateMaxMin();
+            this.UpdateMaxMin(updateData);
         }
 
         #endregion
@@ -1157,18 +1161,26 @@ namespace OxyPlot
 
         /// <summary>
         /// Update max and min values of the axes from values of all data series.
-        /// Only axes with automatic set to true are changed.
         /// </summary>
-        private void UpdateMaxMin()
+        /// <param name="isDataUpdated">if set to <c>true</c>, the data has been updated.</param>
+        private void UpdateMaxMin(bool isDataUpdated)
         {
             foreach (Axis a in this.Axes)
             {
                 a.ResetActualMaxMin();
             }
 
+            if (isDataUpdated)
+            {
+                foreach (Series s in this.Series)
+                {
+                    s.UpdateMaxMin();
+                }
+            }
+
             foreach (Series s in this.Series)
             {
-                s.UpdateMaxMin();
+                s.UpdateAxisMaxMin();
             }
 
             foreach (Axis a in this.Axes)

@@ -11,8 +11,8 @@ namespace Oxyplot.WindowsForms
     /// Represents a control that displays a plot.
     /// </summary>
     [Serializable]
-	public class Plot : Control, IPlotControl
-	{
+    public class Plot : Control, IPlotControl
+    {
         public List<OxyMouseAction> MouseActions { get; private set; }
 
         private readonly PanAction panAction;
@@ -20,6 +20,7 @@ namespace Oxyplot.WindowsForms
         private readonly ZoomAction zoomAction;
         private Rectangle zoomRectangle;
         private bool isModelInvalidated;
+        private bool updateData = true;
 
         public Plot()
         {
@@ -42,7 +43,7 @@ namespace Oxyplot.WindowsForms
             set
             {
                 model = value;
-                Refresh();
+                RefreshPlot(true);
             }
         }
 
@@ -58,28 +59,27 @@ namespace Oxyplot.WindowsForms
             }
         }
 
-        public override void Refresh()
-        {
-            if (model != null)
-                model.UpdateData();
-            base.Refresh();
-        }
-
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-            InvalidatePlot();
+            InvalidatePlot(false);
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
 
-            if (isModelInvalidated)
+            lock (this)
             {
-                if (Model!=null)
-                Model.UpdateData();
-                isModelInvalidated = false;
+                if (isModelInvalidated)
+                {
+                    if (model != null)
+                    {
+                        model.Update(this.updateData);
+                        updateData = false;
+                    }
+                    isModelInvalidated = false;
+                }
             }
 
             var rc = new GraphicsRenderContext(e.Graphics, Width, Height); // e.ClipRectangle
@@ -104,13 +104,31 @@ namespace Oxyplot.WindowsForms
             {
                 ZoomAll();
             }
+            bool control = (e.Modifiers & Keys.Control) == Keys.Control;
+            bool alt = (e.Modifiers & Keys.Alt) == Keys.Alt;
+ 
+            if (control && alt && this.ActualModel != null)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.R:
+                        Clipboard.SetText(this.ActualModel.CreateTextReport());
+                        break;
+                    case Keys.C:
+                        Clipboard.SetText(this.ActualModel.ToCode());
+                        break;
+                    case Keys.X:
+                        // Clipboard.SetText(this.ToXml());
+                        break;
+                }
+            }
         }
 
         public void ZoomAll()
         {
             foreach (var a in Model.Axes)
                 a.Reset();
-            Refresh();
+            RefreshPlot(false);
         }
 
 
@@ -172,7 +190,7 @@ namespace Oxyplot.WindowsForms
 
         public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
         {
-            if (Model==null)
+            if (Model == null)
             {
                 xaxis = null;
                 yaxis = null;
@@ -188,21 +206,30 @@ namespace Oxyplot.WindowsForms
             return Model.GetSeriesFromPoint(pt, limit);
         }
 
-        public void RefreshPlot()
+        public void RefreshPlot(bool updateData)
         {
+            lock (this)
+            {
+                this.isModelInvalidated = true;
+                this.updateData = this.updateData || updateData;
+            }
             Refresh();
         }
 
-        public void InvalidatePlot()
+        public void InvalidatePlot(bool updateData)
         {
-            isModelInvalidated = true;
+            lock (this)
+            {
+                isModelInvalidated = true;
+                this.updateData = this.updateData || updateData;
+            }
             Invalidate();
         }
 
         public void Pan(IAxis axis, double x0, double x1)
         {
-            axis.Pan(x0,x1);
-            if (Model!=null)
+            axis.Pan(x0, x1);
+            if (Model != null)
                 Model.UpdateAxisTransforms();
         }
 

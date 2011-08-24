@@ -221,8 +221,7 @@ namespace OxyPlot
 
             foreach (var pt in pts)
             {
-                if (!IsValidPoint(pt, XAxis, YAxis))
-                    continue;
+                if (!IsValidPoint(pt, XAxis, YAxis)) continue;
                 double x = pt.X;
                 double y = pt.Y;
                 if (x < minx || double.IsNaN(minx)) minx = x;
@@ -235,7 +234,12 @@ namespace OxyPlot
             MinY = miny;
             MaxX = maxx;
             MaxY = maxy;
+        }
 
+        /// <summary>
+        /// Updates the axes to include the max and min of this series.
+        /// </summary>
+        protected internal override void UpdateAxisMaxMin() {
             XAxis.Include(MinX);
             XAxis.Include(MaxX);
             YAxis.Include(MinY);

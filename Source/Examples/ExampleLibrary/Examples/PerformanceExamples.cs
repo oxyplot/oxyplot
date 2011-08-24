@@ -3,6 +3,8 @@ namespace ExampleLibrary
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+
     using OxyPlot;
 
     [Examples("Performance")]
@@ -14,6 +16,35 @@ namespace ExampleLibrary
             var model = CreatePlotModel();
             var s1 = new LineSeries();
             AddPoints(s1.Points, 100000);
+            model.Series.Add(s1);
+
+            return model;
+        }
+
+        [Example("LineSeries, 100k points, ItemsSource, List<IDataPoint>")]
+        public static PlotModel LineSeries10()
+        {
+            var model = CreatePlotModel();
+            var s1 = new LineSeries();
+            var points = new List<IDataPoint>();
+            AddPoints(points, 100000);
+            s1.ItemsSource = points;
+            model.Series.Add(s1);
+
+            return model;
+        }
+
+        [Example("LineSeries, 100k points, ItemsSource, List<OxyRect>")]
+        public static PlotModel LineSeries10b()
+        {
+            var model = CreatePlotModel();
+            var s1 = new LineSeries();
+            var points = new List<IDataPoint>();
+            AddPoints(points, 100000);
+            var rects = points.Select(pt => new OxyRect(pt.X, pt.Y, 0, 0)).ToList();
+            s1.ItemsSource = rects;
+            s1.DataFieldX = "Left";
+            s1.DataFieldY = "Top";
             model.Series.Add(s1);
 
             return model;
@@ -151,11 +182,11 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 100, 1, 1) { MajorGridlineStyle = LineStyle.Dot });
             return model;
         }
-        
+
         private static IList<IDataPoint> GetPoints(int n)
         {
             var points = new List<IDataPoint>();
-            AddPoints(points,n);
+            AddPoints(points, n);
             return points;
         }
 

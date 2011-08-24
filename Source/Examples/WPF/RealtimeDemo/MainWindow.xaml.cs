@@ -24,7 +24,7 @@ namespace RealtimeDemo
         {
             vm.Update();
             // todo: should not be neccessary to refresh
-            plot1.RefreshPlot();
+            plot1.RefreshPlot(true);
         }
     }
 }

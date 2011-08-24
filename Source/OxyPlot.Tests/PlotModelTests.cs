@@ -26,7 +26,7 @@ namespace OxyPlot.Tests
 
             using (var svgrc = new SvgRenderContext("test.svg", 1200, 800))
             {
-                plot.UpdateData();
+                plot.Update();
                 plot.Render(svgrc);
             }
             // todo: validate SVG
@@ -41,7 +41,7 @@ namespace OxyPlot.Tests
             var ls = new LineSeries();
             for (double i = 0; i < 30; i += 0.1)
                 ls.Points.Add(new DataPoint(i, Math.Sin(i) * 20));
-            plot.UpdateData();
+            plot.Update();
             // plot.XmlSerialize("test.xml");
         }
 

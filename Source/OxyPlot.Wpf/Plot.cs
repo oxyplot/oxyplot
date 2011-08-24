@@ -81,6 +81,11 @@ namespace OxyPlot.Wpf
         private bool isPlotInvalidated;
 
         /// <summary>
+        /// Flag to update data when the plot has been invalidated.
+        /// </summary>
+        private bool invalidateUpdatesData;
+
+        /// <summary>
         ///   The mouse down point.
         /// </summary>
         private ScreenPoint mouseDownPoint;
@@ -260,11 +265,12 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Invalidate the plot (not blocking the UI thread)
         /// </summary>
-        public void InvalidatePlot()
+        public void InvalidatePlot(bool updateData = true)
         {
             lock (this)
             {
                 this.isPlotInvalidated = true;
+                this.invalidateUpdatesData = this.invalidateUpdatesData || updateData;
             }
         }
 
@@ -312,9 +318,10 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Refresh the plot immediately (blocking UI thread)
         /// </summary>
-        public void RefreshPlot()
+        /// <param name="updateData">if set to <c>true</c>, the data collections will be updated.</param>
+        public void RefreshPlot(bool updateData)
         {
-            this.UpdateModel();
+            this.UpdateModel(updateData);
             this.UpdateVisuals();
         }
 
@@ -490,7 +497,7 @@ namespace OxyPlot.Wpf
                 a.Reset();
             }
 
-            this.InvalidatePlot();
+            this.RefreshPlot(false);
         }
 
         /// <summary>
@@ -708,13 +715,13 @@ namespace OxyPlot.Wpf
         /// </param>
         private static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((Plot)d).OnVisualChanged();
+            ((Plot)d).OnAppearanceChanged();
         }
 
         /// <summary>
-        /// The on visual changed.
+        /// Called when the visual appearance is changed.
         /// </summary>
-        private void OnVisualChanged()
+        protected virtual void OnAppearanceChanged()
         {
             this.InvalidatePlot();
         }
@@ -735,8 +742,12 @@ namespace OxyPlot.Wpf
                 if (this.isPlotInvalidated)
                 {
                     this.isPlotInvalidated = false;
-                    this.UpdateModel();
-                    this.UpdateVisuals();
+                    if (ActualWidth > 0 && ActualHeight > 0)
+                    {
+                        this.UpdateModel(this.invalidateUpdatesData);
+                        this.invalidateUpdatesData = false;
+                        this.UpdateVisuals();
+                    }
                 }
             }
         }
@@ -909,10 +920,11 @@ namespace OxyPlot.Wpf
 
         /// <summary>
         /// Updates the model.
-        ///   If Model==null, an internal model will be created.
-        ///   The ActualModel.UpdateModel will be called (updates all series data).
+        /// If Model==null, an internal model will be created.
+        /// The ActualModel.UpdateModel will be called (updates all series data).
         /// </summary>
-        private void UpdateModel()
+        /// <param name="updateData">if set to <c>true</c>, all data collections will be updated.</param>
+        private void UpdateModel(bool updateData = true)
         {
             // If no model is set, create an internal model and copy the 
             // axes/series/annotations and properties from the WPF objects to the internal model
@@ -956,7 +968,7 @@ namespace OxyPlot.Wpf
                 }
             }
 
-            this.ActualModel.UpdateData();
+            this.ActualModel.Update(updateData);
         }
 
         #endregion

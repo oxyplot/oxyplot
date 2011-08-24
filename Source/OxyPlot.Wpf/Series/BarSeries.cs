@@ -76,6 +76,10 @@ namespace OxyPlot.Wpf
 
         #region Constructors and Destructors
 
+        public BarSeries()
+        {
+            internalSeries = new OxyPlot.BarSeries();
+        }
         /// <summary>
         /// Initializes static members of the <see cref="BarSeries"/> class.
         /// </summary>
@@ -212,9 +216,8 @@ namespace OxyPlot.Wpf
         /// </returns>
         public override OxyPlot.Series CreateModel()
         {
-            var s = new OxyPlot.BarSeries();
-            this.SynchronizeProperties(s);
-            return s;
+            this.SynchronizeProperties(internalSeries);
+            return internalSeries;
         }
 
         #endregion

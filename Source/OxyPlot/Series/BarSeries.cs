@@ -389,20 +389,35 @@
 
             if (isVertical)
             {
-                valueAxis.Include(minValue);
-                valueAxis.Include(maxValue);
                 this.MinY = minValue;
                 this.MaxY = maxValue;
             }
             else
             {
-                valueAxis.Include(minValue);
-                valueAxis.Include(maxValue);
                 this.MinX = minValue;
                 this.MaxX = maxValue;
             }
         }
-
+        protected internal override void UpdateAxisMaxMin()
+        {
+            CategoryAxis ca = this.XAxis as CategoryAxis ?? this.YAxis as CategoryAxis;
+            if (ca == null)
+            {
+                throw new Exception("CategoryAxis not defined.");
+            }
+            bool isVertical = ca == this.XAxis;
+            Axis valueAxis = isVertical ? this.YAxis : this.XAxis;
+            if (isVertical)
+            {
+                valueAxis.Include(MinY);
+                valueAxis.Include(MaxY);
+            }
+            else
+            {
+                valueAxis.Include(MinX);
+                valueAxis.Include(MaxX);
+            }
+        }
         #endregion
 
         #region Methods

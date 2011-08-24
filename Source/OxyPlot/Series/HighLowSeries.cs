@@ -465,6 +465,13 @@ namespace OxyPlot
             this.InternalUpdateMaxMin(this.items);
         }
 
+        protected internal override void UpdateAxisMaxMin()
+        {
+            this.XAxis.Include(this.MinX);
+            this.XAxis.Include(this.MaxX);
+            this.YAxis.Include(this.MinY);
+            this.YAxis.Include(this.MaxY);
+        }
         #endregion
 
         #region Methods
@@ -519,11 +526,6 @@ namespace OxyPlot
             this.MinY = miny;
             this.MaxX = maxx;
             this.MaxY = maxy;
-
-            this.XAxis.Include(this.MinX);
-            this.XAxis.Include(this.MaxX);
-            this.YAxis.Include(this.MinY);
-            this.YAxis.Include(this.MaxY);
         }
 
         #endregion

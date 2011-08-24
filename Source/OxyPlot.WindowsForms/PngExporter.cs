@@ -19,7 +19,7 @@ namespace OxyPlot.WindowsForms
 
                     var rc = new GraphicsRenderContext(g, width, height);
 
-                    model.UpdateData();
+                    model.Update();
                     model.Render(rc);
                     bm.Save(fileName, ImageFormat.Png);
                 }

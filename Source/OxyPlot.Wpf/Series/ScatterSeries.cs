@@ -18,6 +18,10 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class ScatterSeries : XYAxisSeries
     {
+        public ScatterSeries()
+        {
+            internalSeries = new OxyPlot.ScatterSeries();
+        }
         #region Constants and Fields
 
         /// <summary>
@@ -337,9 +341,8 @@ namespace OxyPlot.Wpf
         /// </returns>
         public override OxyPlot.Series CreateModel()
         {
-            var s = new OxyPlot.ScatterSeries();
-            this.SynchronizeProperties(s);
-            return s;
+            this.SynchronizeProperties(internalSeries);
+            return internalSeries;
         }
 
         #endregion

@@ -32,7 +32,7 @@ namespace OxyPlot.Pdf
         public static void Export(PlotModel model, Stream s, double width, double height)
         {
             var svgrc = new PdfRenderContext(width, height);
-            model.UpdateData();
+            model.Update();
             model.Render(svgrc);
             svgrc.Save(s);
         }
