@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -261,15 +262,16 @@
         /// <param name="axis">
         /// The axis.
         /// </param>
-        /// <param name="x1">
-        /// The x1.
+        /// <param name="ppt">
+        /// The previous point (screen coordinates).
         /// </param>
-        /// <param name="x2">
-        /// The x2.
+        /// <param name="cpt">
+        /// The current point (screen coordinates).
         /// </param>
-        public void Pan(IAxis axis, double x1, double x2)
+        public void Pan(IAxis axis, ScreenPoint ppt, ScreenPoint cpt)
         {
-            axis.Pan(x1, x2);
+            axis.Pan(ppt, cpt);
+            this.InvalidatePlot(false);
         }
 
         /// <summary>
@@ -561,7 +563,6 @@
             bool isAltDown = IsAltDown();
 
             ScreenPoint p = e.GetPosition(this).ToScreenPoint();
-
             foreach (OxyMouseAction a in this.MouseActions)
             {
                 a.OnMouseMove(p, isControlDown, isShiftDown, isAltDown);

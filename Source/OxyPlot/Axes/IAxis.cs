@@ -264,18 +264,7 @@ namespace OxyPlot
         /// The size of the axis.
         /// </returns>
         OxySize Measure(IRenderContext rc);
-
-        /// <summary>
-        /// Pans the axis.
-        /// </summary>
-        /// <param name="x0">
-        /// The previous screen coordinate.
-        /// </param>
-        /// <param name="x1">
-        /// The current screen coordinate.
-        /// </param>
-        void Pan(double x0, double x1);
-
+        
         /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
@@ -296,6 +285,17 @@ namespace OxyPlot
         /// </summary>
         void Reset();
 
+        /// <summary>
+        /// Pans the specified axis.
+        /// </summary>
+        /// <param name="ppt">
+        /// The previous point (screen coordinates).
+        /// </param>
+        /// <param name="cpt">
+        /// The current point (screen coordinates).
+        /// </param>
+        void Pan(ScreenPoint ppt, ScreenPoint cpt);
+       
         /// <summary>
         /// Sets the scaling factor.
         /// </summary>

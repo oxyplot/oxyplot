@@ -10,6 +10,7 @@
         private IAxis xaxis;
         private IAxis yaxis;
         private ScreenPoint ppt;
+       // private DataPoint previousPoint;
         private bool isPanning;
 
         public override void OnMouseDown(ScreenPoint pt, OxyMouseButton button, int clickCount, bool control, bool shift, bool alt)
@@ -32,6 +33,8 @@
             }
 
             ppt = pt;
+           // previousPoint = InverseTransform(pt.X, pt.Y, xaxis, yaxis);
+
             //   pc.Cursor = Cursors.SizeAll;
             isPanning = true;
         }
@@ -40,16 +43,16 @@
         {
             if (!isPanning)
                 return;
-            var previousPoint = InverseTransform(ppt.X,ppt.Y, xaxis, yaxis);
-            var currentPoint = InverseTransform(pt.X, pt.Y, xaxis, yaxis);
+            // previousPoint = InverseTransform(ppt.X,ppt.Y, xaxis, yaxis);
+            // var currentPoint = InverseTransform(pt.X, pt.Y, xaxis, yaxis);
             if (xaxis != null)
-                pc.Pan(xaxis, previousPoint.X,currentPoint.X);
+                pc.Pan(xaxis, ppt, pt);
             if (yaxis != null)
-                pc.Pan(yaxis, previousPoint.Y,currentPoint.Y);
+                pc.Pan(yaxis, ppt, pt);
 
             pc.RefreshPlot(false);
-            //pc.InvalidatePlot();
             ppt = pt;
+            // previousPoint = currentPoint;
         }
 
         public override void OnMouseUp()

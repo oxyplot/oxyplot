@@ -226,7 +226,7 @@ namespace Oxyplot.WindowsForms
             Invalidate();
         }
 
-        public void Pan(IAxis axis, double x0, double x1)
+        public void Pan(IAxis axis, ScreenPoint x0, ScreenPoint x1)
         {
             axis.Pan(x0, x1);
             if (Model != null)

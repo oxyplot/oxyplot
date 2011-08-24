@@ -8,6 +8,7 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
 
     /// <summary>
@@ -363,23 +364,28 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Pans the axis.
+        /// Pans the specified axis.
         /// </summary>
-        /// <param name="x0">
-        /// The previous screen coordinate.
+        /// <param name="ppt">
+        /// The previous point (screen coordinates).
         /// </param>
-        /// <param name="x1">
-        /// The current screen coordinate.
+        /// <param name="cpt">
+        /// The current point (screen coordinates).
         /// </param>
-        public override void Pan(double x0, double x1)
+        public override void Pan(ScreenPoint ppt, ScreenPoint cpt)
         {
             if (!this.IsPanEnabled)
             {
                 return;
             }
 
-            double newMinimum = this.ActualMinimum + x0 - x1;
-            double newMaximum = this.ActualMaximum + x0 - x1;
+            bool isHorizontal = this.IsHorizontal();
+
+            double dsx = isHorizontal ? cpt.X - ppt.X : cpt.Y - ppt.Y;
+            double dx = dsx / Scale;
+
+            double newMinimum = this.ActualMinimum - dx;
+            double newMaximum = this.ActualMaximum - dx;
             if (newMinimum < this.AbsoluteMinimum)
             {
                 newMinimum = this.AbsoluteMinimum;

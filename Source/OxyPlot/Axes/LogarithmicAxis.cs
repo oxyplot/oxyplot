@@ -197,21 +197,29 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Pans the axis.
+        /// Pans the specified axis.
         /// </summary>
-        /// <param name="x0">
-        /// The previous screen coordinate.
+        /// <param name="axis">
+        /// The axis.
         /// </param>
-        /// <param name="x1">
-        /// The current screen coordinate.
+        /// <param name="ppt">
+        /// The previous point (screen coordinates).
         /// </param>
-        public override void Pan(double x0, double x1)
+        /// <param name="cpt">
+        /// The current point (screen coordinates).
+        /// </param>
+        public override void Pan(ScreenPoint ppt, ScreenPoint cpt)
         {
             if (!this.IsPanEnabled)
             {
                 return;
             }
 
+            bool isHorizontal = this.IsHorizontal();
+
+            double x0 = InverseTransform(isHorizontal ? ppt.X : ppt.Y);
+            double x1 = InverseTransform(isHorizontal ? cpt.X : cpt.Y);
+            
             if (x1 == 0)
             {
                 return;
