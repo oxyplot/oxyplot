@@ -6,11 +6,19 @@
 
 namespace OxyPlot.Wpf
 {
+    using System.Windows;
+
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.AngleAxis.
     /// </summary>
     public class AngleAxis : LinearAxis
     {
+        static AngleAxis()
+        {
+            MajorGridlineStyleProperty.OverrideMetadata(typeof(AngleAxis), new PropertyMetadata(LineStyle.Solid));
+            MinorGridlineStyleProperty.OverrideMetadata(typeof(AngleAxis), new PropertyMetadata(LineStyle.Solid));
+        }
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -19,6 +27,8 @@ namespace OxyPlot.Wpf
         public AngleAxis()
         {
             this.internalAxis = new OxyPlot.AngleAxis();
+            MajorGridlineStyle = LineStyle.Solid;
+            MinorGridlineStyle = LineStyle.Solid;
         }
 
         #endregion

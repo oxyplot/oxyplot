@@ -6,11 +6,19 @@
 
 namespace OxyPlot.Wpf
 {
+    using System.Windows;
+
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.MagnitudeAxis.
     /// </summary>
     public class MagnitudeAxis : LinearAxis
     {
+        static MagnitudeAxis()
+        {
+            MajorGridlineStyleProperty.OverrideMetadata(typeof(MagnitudeAxis), new PropertyMetadata(LineStyle.Solid));
+            MinorGridlineStyleProperty.OverrideMetadata(typeof(MagnitudeAxis), new PropertyMetadata(LineStyle.Solid));
+        }
+
         #region Constructors and Destructors
 
         /// <summary>

@@ -2,6 +2,8 @@
 
 namespace OxyPlot
 {
+    using System.Collections.Generic;
+
     /// <summary>
     ///   The FunctionSeries generates its dataset from a Func.
     ///   Define f(x) and make a plot on the range [x0,x1]
@@ -59,9 +61,17 @@ namespace OxyPlot
                               string title = null)
         {
             Title = title;
+            foreach (var pt in GetPoints(fx, fy, t0, t1, dt))
+            {
+                Points.Add(pt);
+            }
+        }
+
+        public static IEnumerable<IDataPoint> GetPoints(Func<double, double> fx, Func<double, double> fy, double t0, double t1, double dt)
+        {
             for (double t = t0; t <= t1 + dt / 2; t += dt)
             {
-                Points.Add(new DataPoint(fx(t), fy(t)));
+                yield return new DataPoint(fx(t), fy(t));
             }
         }
 

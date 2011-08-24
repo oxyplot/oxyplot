@@ -23,6 +23,9 @@ namespace OxyPlot
             this.Position = AxisPosition.Bottom;
             this.IsPanEnabled = false;
             this.IsZoomEnabled = false;
+
+            this.MajorGridlineStyle = LineStyle.Solid;
+            this.MinorGridlineStyle = LineStyle.Solid;
         }
 
         /// <summary>
