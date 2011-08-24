@@ -47,7 +47,7 @@
             if (yaxis != null)
                 pc.Pan(yaxis, previousPoint.Y,currentPoint.Y);
 
-            pc.RefreshPlot();
+            pc.RefreshPlot(false);
             //pc.InvalidatePlot();
             ppt = pt;
         }

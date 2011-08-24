@@ -130,7 +130,7 @@ namespace OxyPlot
             if (ya != null)
                 pc.ZoomAt(ya, s, current.Y);
 
-            pc.RefreshPlot();
+            pc.RefreshPlot(false);
         }
     }
 }

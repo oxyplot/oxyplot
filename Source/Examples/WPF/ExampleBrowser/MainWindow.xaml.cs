@@ -44,7 +44,7 @@ namespace ExampleBrowser
 
             if (vm.MeasureFrameRate)
             {
-                Plot1.RefreshPlot();
+                Plot1.RefreshPlot(true);
             }
         }
     }

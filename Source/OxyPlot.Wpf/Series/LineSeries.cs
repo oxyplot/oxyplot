@@ -17,6 +17,12 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class LineSeries : DataPointSeries
     {
+
+        public LineSeries()
+        {
+            internalSeries = new OxyPlot.LineSeries();
+        }
+
         #region Constants and Fields
 
         /// <summary>
@@ -301,9 +307,8 @@ namespace OxyPlot.Wpf
         /// </returns>
         public override OxyPlot.Series CreateModel()
         {
-            var s = new OxyPlot.LineSeries();
-            this.SynchronizeProperties(s);
-            return s;
+            this.SynchronizeProperties(this.internalSeries);
+            return this.internalSeries;
         }
 
         #endregion

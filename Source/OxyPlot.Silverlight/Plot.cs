@@ -72,6 +72,11 @@
         private bool isPlotInvalidated;
 
         /// <summary>
+        ///   Data has been updated.
+        /// </summary>
+        private bool updateData;
+
+        /// <summary>
         ///   The overlays.
         /// </summary>
         private Canvas overlays;
@@ -220,11 +225,12 @@
         /// <summary>
         /// Invalidate the plot (not blocking the UI thread)
         /// </summary>
-        public void InvalidatePlot()
+        public void InvalidatePlot(bool updateData = true)
         {
             lock (this)
             {
                 this.isPlotInvalidated = true;
+                this.updateData = this.updateData || updateData;
             }
         }
 
@@ -269,10 +275,10 @@
         /// <summary>
         /// Refresh the plot immediately (blocking UI thread)
         /// </summary>
-        public void RefreshPlot()
+        public void RefreshPlot(bool updateData)
         {
             // don't block ui thread on silverlight
-            this.InvalidatePlot();
+            this.InvalidatePlot(updateData);
         }
 
         /// <summary>
@@ -433,7 +439,7 @@
                 a.Reset();
             }
 
-            this.InvalidatePlot();
+            this.InvalidatePlot(false);
         }
 
         /// <summary>
@@ -715,7 +721,11 @@
                 if (this.isPlotInvalidated)
                 {
                     this.isPlotInvalidated = false;
-                    this.UpdateModel();
+                    if (ActualWidth > 0 && ActualHeight > 0)
+                    {
+                        this.UpdateModel(this.updateData);
+                        this.updateData = false;
+                    }
                     this.UpdateVisuals();
                 }
             }
@@ -811,13 +821,13 @@
         /// <summary>
         /// Updates the model.
         /// </summary>
-        private void UpdateModel()
+        private void UpdateModel(bool updateData)
         {
             this.internalModel = this.Model;
 
             if (this.ActualModel != null)
             {
-                this.ActualModel.UpdateData();
+                this.ActualModel.Update(updateData);
             }
         }
 

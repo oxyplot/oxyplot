@@ -17,6 +17,8 @@ namespace OxyPlot.Wpf
     /// </summary>
     public abstract class XYAxisSeries : Series
     {
+        protected OxyPlot.Series internalSeries;
+
         #region Constants and Fields
 
         /// <summary>

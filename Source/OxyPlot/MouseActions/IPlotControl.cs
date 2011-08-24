@@ -1,11 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IPlotControl.cs" company="OxyPlot">
-//   OxyPlot:   http://oxyplot.codeplex.com
-//   License:   Ms-PL
+//   see http://oxyplot.codeplex.com
 // </copyright>
-// <summary>
-//   Interface for Plot controls.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -68,7 +64,10 @@ namespace OxyPlot
         /// <summary>
         /// Invalidate the plot (not blocking the UI thread)
         /// </summary>
-        void InvalidatePlot();
+        /// <param name="updateData">
+        /// if set to <c>true</c>, all data collections will be updated.
+        /// </param>
+        void InvalidatePlot(bool updateData = true);
 
         /// <summary>
         /// Pans the specified axis.
@@ -87,7 +86,10 @@ namespace OxyPlot
         /// <summary>
         /// Refresh the plot immediately (blocking UI thread)
         /// </summary>
-        void RefreshPlot();
+        /// <param name="updateData">
+        /// if set to <c>true</c>, all data collections will be updated.
+        /// </param>
+        void RefreshPlot(bool updateData = true);
 
         /// <summary>
         /// Resets the specified axis.

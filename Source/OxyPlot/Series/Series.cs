@@ -133,9 +133,14 @@ namespace OxyPlot
         protected internal abstract void UpdateData();
 
         /// <summary>
-        /// Updates the maximum and minimum of the axes related to the series.
+        /// Updates the maximum and minimum of the series.
         /// </summary>
         protected internal abstract void UpdateMaxMin();
+
+        /// <summary>
+        /// Updates the axis maximum and minimum values.
+        /// </summary>
+        protected internal abstract void UpdateAxisMaxMin();
 
         #endregion
     }

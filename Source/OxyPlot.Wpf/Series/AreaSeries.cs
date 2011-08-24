@@ -17,6 +17,11 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class AreaSeries : LineSeries
     {
+        public AreaSeries()
+        {
+            internalSeries = new OxyPlot.AreaSeries();
+
+        }
         #region Constants and Fields
 
         /// <summary>
@@ -144,9 +149,8 @@ namespace OxyPlot.Wpf
         /// </returns>
         public override OxyPlot.Series CreateModel()
         {
-            var s = new OxyPlot.AreaSeries();
-            this.SynchronizeProperties(s);
-            return s;
+            this.SynchronizeProperties(internalSeries);
+            return internalSeries;
         }
 
         #endregion

@@ -157,6 +157,10 @@ namespace OxyPlot
         {
         }
 
+        protected internal override void UpdateAxisMaxMin()
+        {
+        }
+
         protected internal override void SetDefaultValues(PlotModel model)
         {
             foreach (var slice in Slices)
