@@ -25,7 +25,7 @@ namespace OxyPlot.Wpf
                 "CalendarWeekRule", 
                 typeof(CalendarWeekRule), 
                 typeof(DateTimeAxis), 
-                new FrameworkPropertyMetadata(CalendarWeekRule.FirstFourDayWeek, DataChanged));
+                new PropertyMetadata(CalendarWeekRule.FirstFourDayWeek, DataChanged));
 
         /// <summary>
         /// The culture property.
@@ -34,13 +34,13 @@ namespace OxyPlot.Wpf
             "Culture", 
             typeof(CultureInfo), 
             typeof(DateTimeAxis), 
-            new FrameworkPropertyMetadata(CultureInfo.CurrentCulture));
+            new PropertyMetadata(CultureInfo.CurrentCulture));
 
         /// <summary>
         /// The first date time property.
         /// </summary>
         public static readonly DependencyProperty FirstDateTimeProperty = DependencyProperty.Register(
-            "FirstDateTime", typeof(DateTime), typeof(DateTimeAxis), new FrameworkPropertyMetadata(DateTime.MinValue));
+            "FirstDateTime", typeof(DateTime), typeof(DateTimeAxis), new PropertyMetadata(DateTime.MinValue));
 
         /// <summary>
         /// The first day of week property.
@@ -49,7 +49,7 @@ namespace OxyPlot.Wpf
             "FirstDayOfWeek", 
             typeof(DayOfWeek), 
             typeof(DateTimeAxis), 
-            new FrameworkPropertyMetadata(DayOfWeek.Monday, DataChanged));
+            new PropertyMetadata(DayOfWeek.Monday, DataChanged));
 
         /// <summary>
         /// The interval type property.
@@ -58,13 +58,13 @@ namespace OxyPlot.Wpf
             "IntervalType", 
             typeof(DateTimeIntervalType), 
             typeof(DateTimeAxis), 
-            new FrameworkPropertyMetadata(DateTimeIntervalType.Auto));
+            new PropertyMetadata(DateTimeIntervalType.Auto));
 
         /// <summary>
         /// The last date time property.
         /// </summary>
         public static readonly DependencyProperty LastDateTimeProperty = DependencyProperty.Register(
-            "LastDateTime", typeof(DateTime), typeof(DateTimeAxis), new FrameworkPropertyMetadata(DateTime.MaxValue));
+            "LastDateTime", typeof(DateTime), typeof(DateTimeAxis), new PropertyMetadata(DateTime.MaxValue));
 
         /// <summary>
         /// The minor interval type property.
@@ -74,7 +74,7 @@ namespace OxyPlot.Wpf
                 "MinorIntervalType", 
                 typeof(DateTimeIntervalType), 
                 typeof(DateTimeAxis), 
-                new FrameworkPropertyMetadata(DateTimeIntervalType.Auto, DataChanged));
+                new PropertyMetadata(DateTimeIntervalType.Auto, DataChanged));
 
         #endregion
 

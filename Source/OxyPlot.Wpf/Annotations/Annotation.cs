@@ -25,13 +25,13 @@ namespace OxyPlot.Wpf
             "Layer", 
             typeof(AnnotationLayer), 
             typeof(Annotation), 
-            new FrameworkPropertyMetadata(AnnotationLayer.OverSeries));
+            new PropertyMetadata(AnnotationLayer.OverSeries));
 
         /// <summary>
         /// The text property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-            "Text", typeof(string), typeof(Annotation), new FrameworkPropertyMetadata(null));
+            "Text", typeof(string), typeof(Annotation), new PropertyMetadata(null));
 
         #endregion
 

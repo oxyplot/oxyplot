@@ -23,7 +23,7 @@ namespace OxyPlot.Wpf
         /// The color property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-            "Color", typeof(Color), typeof(LineAnnotation), new FrameworkPropertyMetadata(Colors.Blue));
+            "Color", typeof(Color), typeof(LineAnnotation), new PropertyMetadata(Colors.Blue));
 
         /// <summary>
         /// The equation type property.
@@ -32,68 +32,68 @@ namespace OxyPlot.Wpf
             "Type", 
             typeof(LineAnnotationType), 
             typeof(LineAnnotation), 
-            new FrameworkPropertyMetadata(LineAnnotationType.LinearEquation));
+            new PropertyMetadata(LineAnnotationType.LinearEquation));
 
         /// <summary>
         /// The intercept property.
         /// </summary>
         public static readonly DependencyProperty InterceptProperty = DependencyProperty.Register(
-            "Intercept", typeof(double), typeof(LineAnnotation), new FrameworkPropertyMetadata(0.0));
+            "Intercept", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0));
 
         /// <summary>
         /// The line style property.
         /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
-            "LineStyle", typeof(LineStyle), typeof(LineAnnotation), new FrameworkPropertyMetadata(LineStyle.Dash));
+            "LineStyle", typeof(LineStyle), typeof(LineAnnotation), new PropertyMetadata(LineStyle.Dash));
 
         /// <summary>
         /// The maximum x property.
         /// </summary>
         public static readonly DependencyProperty MaximumXProperty = DependencyProperty.Register(
-            "MaximumX", typeof(double), typeof(LineAnnotation), new FrameworkPropertyMetadata(double.MaxValue));
+            "MaximumX", typeof(double), typeof(LineAnnotation), new PropertyMetadata(double.MaxValue));
 
         /// <summary>
         /// The maximum y property.
         /// </summary>
         public static readonly DependencyProperty MaximumYProperty = DependencyProperty.Register(
-            "MaximumY", typeof(double), typeof(LineAnnotation), new FrameworkPropertyMetadata(double.MaxValue));
+            "MaximumY", typeof(double), typeof(LineAnnotation), new PropertyMetadata(double.MaxValue));
 
         /// <summary>
         /// The minimum x property.
         /// </summary>
         public static readonly DependencyProperty MinimumXProperty = DependencyProperty.Register(
-            "MinimumX", typeof(double), typeof(LineAnnotation), new FrameworkPropertyMetadata(double.MinValue));
+            "MinimumX", typeof(double), typeof(LineAnnotation), new PropertyMetadata(double.MinValue));
 
         /// <summary>
         /// The minimum y property.
         /// </summary>
         public static readonly DependencyProperty MinimumYProperty = DependencyProperty.Register(
-            "MinimumY", typeof(double), typeof(LineAnnotation), new FrameworkPropertyMetadata(double.MinValue));
+            "MinimumY", typeof(double), typeof(LineAnnotation), new PropertyMetadata(double.MinValue));
 
         /// <summary>
         /// The slope property.
         /// </summary>
         public static readonly DependencyProperty SlopeProperty = DependencyProperty.Register(
-            "Slope", typeof(double), typeof(LineAnnotation), new FrameworkPropertyMetadata(0.0));
+            "Slope", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0));
 
         /// <summary>
         /// The stroke thickness property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
-                "StrokeThickness", typeof(double), typeof(LineAnnotation), new FrameworkPropertyMetadata(1.0));
+                "StrokeThickness", typeof(double), typeof(LineAnnotation), new PropertyMetadata(1.0));
 
         /// <summary>
         /// The x property.
         /// </summary>
         public static readonly DependencyProperty XProperty = DependencyProperty.Register(
-            "X", typeof(double), typeof(LineAnnotation), new FrameworkPropertyMetadata(0.0));
+            "X", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0));
 
         /// <summary>
         /// The y property.
         /// </summary>
         public static readonly DependencyProperty YProperty = DependencyProperty.Register(
-            "Y", typeof(double), typeof(LineAnnotation), new FrameworkPropertyMetadata(0.0));
+            "Y", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0));
 
         #endregion
 

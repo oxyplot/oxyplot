@@ -23,76 +23,76 @@ namespace OxyPlot.Wpf
         /// The dashes property.
         /// </summary>
         public static readonly DependencyProperty DashesProperty = DependencyProperty.Register(
-            "Dashes", typeof(double[]), typeof(LineSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
+            "Dashes", typeof(double[]), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The line join property.
         /// </summary>
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
-            "LineJoin", typeof(OxyPenLineJoin), typeof(LineSeries), new FrameworkPropertyMetadata(OxyPenLineJoin.Miter));
+            "LineJoin", typeof(OxyPenLineJoin), typeof(LineSeries), new PropertyMetadata(OxyPenLineJoin.Miter));
 
         /// <summary>
         /// The line style property.
         /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
-            "LineStyle", typeof(LineStyle), typeof(LineSeries), new FrameworkPropertyMetadata(LineStyle.Solid));
+            "LineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(LineStyle.Solid));
 
         /// <summary>
         /// The marker fill property.
         /// </summary>
         public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(
-            "MarkerFill", typeof(Color?), typeof(LineSeries), new FrameworkPropertyMetadata(null));
+            "MarkerFill", typeof(Color?), typeof(LineSeries), new PropertyMetadata(null));
 
         /// <summary>
         /// The marker outline property.
         /// </summary>
         public static readonly DependencyProperty MarkerOutlineProperty = DependencyProperty.Register(
-            "MarkerOutline", typeof(Point[]), typeof(LineSeries), new FrameworkPropertyMetadata(null));
+            "MarkerOutline", typeof(Point[]), typeof(LineSeries), new PropertyMetadata(null));
 
         /// <summary>
         /// The marker size property.
         /// </summary>
         public static readonly DependencyProperty MarkerSizeProperty = DependencyProperty.Register(
-            "MarkerSize", typeof(double), typeof(LineSeries), new FrameworkPropertyMetadata(3.0));
+            "MarkerSize", typeof(double), typeof(LineSeries), new PropertyMetadata(3.0));
 
         /// <summary>
         /// The marker stroke property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeProperty = DependencyProperty.Register(
-            "MarkerStroke", typeof(OxyColor), typeof(LineSeries), new FrameworkPropertyMetadata(null));
+            "MarkerStroke", typeof(OxyColor), typeof(LineSeries), new PropertyMetadata(null));
 
         /// <summary>
         /// The marker stroke thickness property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeThicknessProperty =
             DependencyProperty.Register(
-                "MarkerStrokeThickness", typeof(double), typeof(LineSeries), new FrameworkPropertyMetadata(1.0));
+                "MarkerStrokeThickness", typeof(double), typeof(LineSeries), new PropertyMetadata(1.0));
 
         /// <summary>
         /// The marker type property.
         /// </summary>
         public static readonly DependencyProperty MarkerTypeProperty = DependencyProperty.Register(
-            "MarkerType", typeof(MarkerType), typeof(LineSeries), new FrameworkPropertyMetadata(MarkerType.None));
+            "MarkerType", typeof(MarkerType), typeof(LineSeries), new PropertyMetadata(MarkerType.None));
 
         /// <summary>
         /// The minimum segment length property.
         /// </summary>
         public static readonly DependencyProperty MinimumSegmentLengthProperty =
             DependencyProperty.Register(
-                "MinimumSegmentLength", typeof(double), typeof(LineSeries), new FrameworkPropertyMetadata(2.0));
+                "MinimumSegmentLength", typeof(double), typeof(LineSeries), new PropertyMetadata(2.0));
 
         /// <summary>
         /// The smooth property.
         /// </summary>
         public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
-            "Smooth", typeof(bool), typeof(LineSeries), new FrameworkPropertyMetadata(false));
+            "Smooth", typeof(bool), typeof(LineSeries), new PropertyMetadata(false));
 
         /// <summary>
         /// The stroke thickness property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
-                "StrokeThickness", typeof(double), typeof(LineSeries), new FrameworkPropertyMetadata(2.0));
+                "StrokeThickness", typeof(double), typeof(LineSeries), new PropertyMetadata(2.0));
 
         #endregion
 

@@ -23,31 +23,31 @@ namespace OxyPlot.Wpf
         /// The constant y 2 property.
         /// </summary>
         public static readonly DependencyProperty ConstantY2Property = DependencyProperty.Register(
-            "ConstantY2", typeof(double), typeof(AreaSeries), new FrameworkPropertyMetadata(0.0, DataChanged));
+            "ConstantY2", typeof(double), typeof(AreaSeries), new PropertyMetadata(0.0, DataChanged));
 
         /// <summary>
         /// The data field x 2 property.
         /// </summary>
         public static readonly DependencyProperty DataFieldX2Property = DependencyProperty.Register(
-            "DataFieldX2", typeof(string), typeof(AreaSeries), new FrameworkPropertyMetadata(null, DataChanged));
+            "DataFieldX2", typeof(string), typeof(AreaSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The data field y 2 property.
         /// </summary>
         public static readonly DependencyProperty DataFieldY2Property = DependencyProperty.Register(
-            "DataFieldY2", typeof(string), typeof(AreaSeries), new FrameworkPropertyMetadata(null, DataChanged));
+            "DataFieldY2", typeof(string), typeof(AreaSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The fill property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-            "Fill", typeof(Color?), typeof(AreaSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
+            "Fill", typeof(Color?), typeof(AreaSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The reverse 2 property.
         /// </summary>
         public static readonly DependencyProperty Reverse2Property = DependencyProperty.Register(
-            "Reverse2", typeof(bool), typeof(AreaSeries), new FrameworkPropertyMetadata(true, AppearanceChanged));
+            "Reverse2", typeof(bool), typeof(AreaSeries), new PropertyMetadata(true, AppearanceChanged));
 
         #endregion
 

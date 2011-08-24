@@ -23,19 +23,19 @@ namespace OxyPlot.Wpf
         /// The bar width property.
         /// </summary>
         public static readonly DependencyProperty BarWidthProperty = DependencyProperty.Register(
-            "BarWidth", typeof(double), typeof(BarSeries), new FrameworkPropertyMetadata(0.5, AppearanceChanged));
+            "BarWidth", typeof(double), typeof(BarSeries), new PropertyMetadata(0.5, AppearanceChanged));
 
         /// <summary>
         /// The fill color property.
         /// </summary>
         public static readonly DependencyProperty FillColorProperty = DependencyProperty.Register(
-            "FillColor", typeof(Color?), typeof(BarSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
+            "FillColor", typeof(Color?), typeof(BarSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The is stacked property.
         /// </summary>
         public static readonly DependencyProperty IsStackedProperty = DependencyProperty.Register(
-            "IsStacked", typeof(bool), typeof(BarSeries), new FrameworkPropertyMetadata(false, AppearanceChanged));
+            "IsStacked", typeof(bool), typeof(BarSeries), new PropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
         /// The negative fill color property.
@@ -45,7 +45,7 @@ namespace OxyPlot.Wpf
                 "NegativeFillColor", 
                 typeof(Color?), 
                 typeof(BarSeries), 
-                new FrameworkPropertyMetadata(null, AppearanceChanged));
+                new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The stroke color property.
@@ -54,7 +54,7 @@ namespace OxyPlot.Wpf
             "StrokeColor", 
             typeof(Color), 
             typeof(BarSeries), 
-            new FrameworkPropertyMetadata(Colors.Black, AppearanceChanged));
+            new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
         /// The stroke thickness property.
@@ -64,13 +64,13 @@ namespace OxyPlot.Wpf
                 "StrokeThickness", 
                 typeof(double), 
                 typeof(BarSeries), 
-                new FrameworkPropertyMetadata(0.0, AppearanceChanged));
+                new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
         /// The value field property.
         /// </summary>
         public static readonly DependencyProperty ValueFieldProperty = DependencyProperty.Register(
-            "ValueField", typeof(string), typeof(BarSeries), new FrameworkPropertyMetadata(null, AppearanceChanged));
+            "ValueField", typeof(string), typeof(BarSeries), new PropertyMetadata(null, AppearanceChanged));
 
         #endregion
 
@@ -82,7 +82,7 @@ namespace OxyPlot.Wpf
         static BarSeries()
         {
             TrackerFormatStringProperty.OverrideMetadata(
-                typeof(CategoryAxis), new FrameworkPropertyMetadata("{0} {1}: {2}", DataChanged));
+                typeof(CategoryAxis), new PropertyMetadata("{0} {1}: {2}", DataChanged));
         }
 
         #endregion
