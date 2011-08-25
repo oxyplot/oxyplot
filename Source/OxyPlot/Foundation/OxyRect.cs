@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyRect.cs" company="OxyPlot">
-//   See http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Rectangle class.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot

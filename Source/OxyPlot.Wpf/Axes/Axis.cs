@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Axis.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   The axis base.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -53,8 +56,7 @@ namespace OxyPlot.Wpf
         /// The axis title distance property.
         /// </summary>
         public static readonly DependencyProperty AxisTitleDistanceProperty =
-            DependencyProperty.Register(
-                "AxisTitleDistance", typeof(double), typeof(Axis), new PropertyMetadata(4.0));
+            DependencyProperty.Register("AxisTitleDistance", typeof(double), typeof(Axis), new PropertyMetadata(4.0));
 
         /// <summary>
         /// The end position property.
@@ -67,10 +69,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty ExtraGridlineColorProperty =
             DependencyProperty.Register(
-                "ExtraGridlineColor", 
-                typeof(Color), 
-                typeof(Axis), 
-                new PropertyMetadata(Colors.Black, AppearanceChanged));
+                "ExtraGridlineColor", typeof(Color), typeof(Axis), new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
         /// The extra gridline style property.
@@ -87,10 +86,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty ExtraGridlineThicknessProperty =
             DependencyProperty.Register(
-                "ExtraGridlineThickness", 
-                typeof(double), 
-                typeof(Axis), 
-                new PropertyMetadata(1.0, AppearanceChanged));
+                "ExtraGridlineThickness", typeof(double), typeof(Axis), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         /// The extra gridlines property.
@@ -102,19 +98,13 @@ namespace OxyPlot.Wpf
         /// The filter max value property.
         /// </summary>
         public static readonly DependencyProperty FilterMaxValueProperty = DependencyProperty.Register(
-            "FilterMaxValue", 
-            typeof(double), 
-            typeof(Axis), 
-            new PropertyMetadata(double.MaxValue, DataChanged));
+            "FilterMaxValue", typeof(double), typeof(Axis), new PropertyMetadata(double.MaxValue, DataChanged));
 
         /// <summary>
         /// The filter min value property.
         /// </summary>
         public static readonly DependencyProperty FilterMinValueProperty = DependencyProperty.Register(
-            "FilterMinValue", 
-            typeof(double), 
-            typeof(Axis), 
-            new PropertyMetadata(double.MinValue, DataChanged));
+            "FilterMinValue", typeof(double), typeof(Axis), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
         /// The font property.
@@ -132,10 +122,7 @@ namespace OxyPlot.Wpf
         /// The font weight property.
         /// </summary>
         public static readonly DependencyProperty FontWeightProperty = DependencyProperty.Register(
-            "FontWeight", 
-            typeof(FontWeight), 
-            typeof(Axis), 
-            new PropertyMetadata(FontWeights.Normal, AppearanceChanged));
+            "FontWeight", typeof(FontWeight), typeof(Axis), new PropertyMetadata(FontWeights.Normal, AppearanceChanged));
 
         /// <summary>
         /// The interval length property.
@@ -198,10 +185,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MajorGridlineThicknessProperty =
             DependencyProperty.Register(
-                "MajorGridlineThickness", 
-                typeof(double), 
-                typeof(Axis), 
-                new PropertyMetadata(1.0, AppearanceChanged));
+                "MajorGridlineThickness", typeof(double), typeof(Axis), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         /// The major step property.
@@ -270,10 +254,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MinorGridlineThicknessProperty =
             DependencyProperty.Register(
-                "MinorGridlineThickness", 
-                typeof(double), 
-                typeof(Axis), 
-                new PropertyMetadata(1.0, AppearanceChanged));
+                "MinorGridlineThickness", typeof(double), typeof(Axis), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         /// The minor step property.
@@ -292,19 +273,13 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty PositionAtZeroCrossingProperty =
             DependencyProperty.Register(
-                "PositionAtZeroCrossing", 
-                typeof(bool), 
-                typeof(Axis), 
-                new PropertyMetadata(false, AppearanceChanged));
+                "PositionAtZeroCrossing", typeof(bool), typeof(Axis), new PropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
         /// The position property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            "Position", 
-            typeof(AxisPosition), 
-            typeof(Axis), 
-            new PropertyMetadata(AxisPosition.Left, AppearanceChanged));
+            "Position", typeof(AxisPosition), typeof(Axis), new PropertyMetadata(AxisPosition.Left, AppearanceChanged));
 
         /// <summary>
         /// The show minor ticks property.
@@ -328,29 +303,20 @@ namespace OxyPlot.Wpf
         /// The tick style property.
         /// </summary>
         public static readonly DependencyProperty TickStyleProperty = DependencyProperty.Register(
-            "TickStyle", 
-            typeof(TickStyle), 
-            typeof(Axis), 
-            new PropertyMetadata(TickStyle.Inside, AppearanceChanged));
+            "TickStyle", typeof(TickStyle), typeof(Axis), new PropertyMetadata(TickStyle.Inside, AppearanceChanged));
 
         /// <summary>
         /// The tickline color property.
         /// </summary>
         public static readonly DependencyProperty TicklineColorProperty = DependencyProperty.Register(
-            "TicklineColor", 
-            typeof(Color), 
-            typeof(Axis), 
-            new PropertyMetadata(Colors.Black, AppearanceChanged));
+            "TicklineColor", typeof(Color), typeof(Axis), new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
         /// The title format string property.
         /// </summary>
         public static readonly DependencyProperty TitleFormatStringProperty =
             DependencyProperty.Register(
-                "TitleFormatString", 
-                typeof(string), 
-                typeof(Axis), 
-                new PropertyMetadata("{0} [{1}]", AppearanceChanged));
+                "TitleFormatString", typeof(string), typeof(Axis), new PropertyMetadata("{0} [{1}]", AppearanceChanged));
 
         /// <summary>
         /// The title position property.
@@ -375,10 +341,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty UseSuperExponentialFormatProperty =
             DependencyProperty.Register(
-                "UseSuperExponentialFormat", 
-                typeof(bool), 
-                typeof(Axis), 
-                new PropertyMetadata(false, AppearanceChanged));
+                "UseSuperExponentialFormat", typeof(bool), typeof(Axis), new PropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
         /// Internal axis
@@ -1249,7 +1212,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected virtual void SynchronizeProperties()
         {
-            var a = this.internalAxis as OxyPlot.AxisBase;
+            var a = this.internalAxis as AxisBase;
             a.AbsoluteMaximum = this.AbsoluteMaximum;
             a.AbsoluteMinimum = this.AbsoluteMinimum;
             a.Angle = this.Angle;

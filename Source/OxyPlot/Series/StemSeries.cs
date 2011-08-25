@@ -1,7 +1,12 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StemSeries.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   StemSeries is used to plot discrete data in a stemplot.
+//   http://en.wikipedia.org/wiki/Stemplot
+//   http://www.mathworks.com/help/techdoc/ref/stem.html
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -132,7 +137,11 @@ namespace OxyPlot
                 if (distance < minimumDistance)
                 {
                     result = new TrackerHitResult(
-                        this, new DataPoint(p1.X, p1.Y), new ScreenPoint(sp1.x, sp1.y), this.GetItem(ItemsSource, i), null);
+                        this, 
+                        new DataPoint(p1.X, p1.Y), 
+                        new ScreenPoint(sp1.x, sp1.y), 
+                        this.GetItem(this.ItemsSource, i), 
+                        null);
                     minimumDistance = distance;
                 }
             }
@@ -178,13 +187,13 @@ namespace OxyPlot
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
                     rc.DrawClippedLine(
-                        new[] { p0, p1 },
-                        clippingRect,
-                        minDistSquared,
-                        this.Color,
-                        this.StrokeThickness,
-                        this.LineStyle,
-                        this.LineJoin,
+                        new[] { p0, p1 }, 
+                        clippingRect, 
+                        minDistSquared, 
+                        this.Color, 
+                        this.StrokeThickness, 
+                        this.LineStyle, 
+                        this.LineJoin, 
                         false);
                 }
 
@@ -194,13 +203,13 @@ namespace OxyPlot
             if (this.MarkerType != MarkerType.None)
             {
                 rc.DrawMarkers(
-                    markerPoints.ToArray(),
-                    clippingRect,
-                    this.MarkerType,
-                    this.MarkerOutline,
-                    new[] { this.MarkerSize },
-                    this.MarkerFill,
-                    this.MarkerStroke,
+                    markerPoints.ToArray(), 
+                    clippingRect, 
+                    this.MarkerType, 
+                    this.MarkerOutline, 
+                    new[] { this.MarkerSize }, 
+                    this.MarkerFill, 
+                    this.MarkerStroke, 
                     this.MarkerStrokeThickness);
             }
         }

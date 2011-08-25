@@ -1,7 +1,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IAxis.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   The axis interface.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="XYAxisSeries.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
 //   Abstract base class for series that use X and Y axes.
@@ -17,8 +17,6 @@ namespace OxyPlot.Wpf
     /// </summary>
     public abstract class XYAxisSeries : Series
     {
-        protected OxyPlot.Series internalSeries;
-
         #region Constants and Fields
 
         /// <summary>
@@ -32,6 +30,11 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty YAxisKeyProperty = DependencyProperty.Register(
             "YAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
+        /// The internal series.
+        /// </summary>
+        protected OxyPlot.Series internalSeries;
 
         #endregion
 
@@ -87,7 +90,7 @@ namespace OxyPlot.Wpf
             base.OnItemsSourceChanged(oldValue, newValue);
             this.OnDataChanged();
         }
-        
+
         /// <summary>
         /// The synchronize properties.
         /// </summary>

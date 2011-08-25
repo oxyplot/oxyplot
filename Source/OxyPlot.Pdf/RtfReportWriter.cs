@@ -1,23 +1,49 @@
-﻿using System.IO;
-using MigraDoc.RtfRendering;
-using OxyPlot.Reporting;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RtfReportWriter.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   RTF report writer using MigraDoc.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Pdf
 {
+    using System.IO;
+
+    using MigraDoc.RtfRendering;
+
     /// <summary>
     /// RTF report writer using MigraDoc.
     /// </summary>
     public class RtfReportWriter : PdfReportWriter
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RtfReportWriter"/> class.
+        /// </summary>
+        /// <param name="filename">
+        /// The filename.
+        /// </param>
         public RtfReportWriter(string filename)
             : base(filename)
         {
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The close.
+        /// </summary>
         public override void Close()
         {
             var r = new RtfDocumentRenderer();
-            r.Render(doc, filename, Path.GetTempPath());
+            r.Render(this.doc, this.filename, Path.GetTempPath());
         }
+
+        #endregion
     }
 }

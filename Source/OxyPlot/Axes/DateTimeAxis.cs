@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeAxis.cs" company="OxyPlot">
-//   See http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   A date time interval.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -20,47 +23,47 @@ namespace OxyPlot
         /// <summary>
         ///   Automatically determine interval.
         /// </summary>
-        Auto = 0,
+        Auto = 0, 
 
         /// <summary>
         ///   Interval type is milliseconds.
         /// </summary>
-        Milliseconds = 1,
+        Milliseconds = 1, 
 
         /// <summary>
         ///   Interval type is seconds.
         /// </summary>
-        Seconds = 2,
+        Seconds = 2, 
 
         /// <summary>
         ///   Interval type is minutes.
         /// </summary>
-        Minutes = 3,
+        Minutes = 3, 
 
         /// <summary>
         ///   Interval type is hours.
         /// </summary>
-        Hours = 4,
+        Hours = 4, 
 
         /// <summary>
         ///   Interval type is days.
         /// </summary>
-        Days = 5,
+        Days = 5, 
 
         /// <summary>
         ///   Interval type is weeks.
         /// </summary>
-        Weeks = 6,
+        Weeks = 6, 
 
         /// <summary>
         ///   Interval type is months.
         /// </summary>
-        Months = 7,
+        Months = 7, 
 
         /// <summary>
         ///   Interval type is years.
         /// </summary>
-        Years = 8,
+        Years = 8, 
     }
 
     /// <summary>
@@ -111,9 +114,9 @@ namespace OxyPlot
         /// The interval type.
         /// </param>
         public DateTimeAxis(
-            AxisPosition pos = AxisPosition.Bottom,
-            string title = null,
-            string format = null,
+            AxisPosition pos = AxisPosition.Bottom, 
+            string title = null, 
+            string format = null, 
             DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
             : base(pos, title)
         {
@@ -147,11 +150,11 @@ namespace OxyPlot
         /// The interval type.
         /// </param>
         public DateTimeAxis(
-            DateTime firstDateTime,
-            DateTime lastDateTime,
-            AxisPosition pos = AxisPosition.Bottom,
-            string title = null,
-            string format = null,
+            DateTime firstDateTime, 
+            DateTime lastDateTime, 
+            AxisPosition pos = AxisPosition.Bottom, 
+            string title = null, 
+            string format = null, 
             DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
             : this(pos, title, format, intervalType)
         {
@@ -340,6 +343,10 @@ namespace OxyPlot
             return ToDateTime(x);
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// The update intervals.
         /// </summary>
@@ -415,10 +422,6 @@ namespace OxyPlot
                     break;
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Calculates the actual interval.
@@ -580,8 +583,8 @@ namespace OxyPlot
             DateTime current = start;
             var values = new Collection<double>();
             double eps = step * 1e-3;
-            DateTime minDateTime = ToDateTime(min-eps);
-            DateTime maxDateTime = ToDateTime(max+eps);
+            DateTime minDateTime = ToDateTime(min - eps);
+            DateTime maxDateTime = ToDateTime(max + eps);
             while (current < end)
             {
                 if (current > minDateTime && current < maxDateTime)

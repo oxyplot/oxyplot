@@ -1,4 +1,13 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ICodeGenerating.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Provides functionality to generate c# code of an object.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     /// <summary>
     /// Provides functionality to generate c# code of an object.
@@ -10,7 +19,9 @@
         /// <summary>
         /// Returns c# code that generates this instance.
         /// </summary>
-        /// <returns>C# code.</returns>
+        /// <returns>
+        /// C# code.
+        /// </returns>
         string ToCode();
 
         #endregion

@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Represents a WPF control that displays an OxyPlot plot.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -265,6 +268,9 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Invalidate the plot (not blocking the UI thread)
         /// </summary>
+        /// <param name="updateData">
+        /// The update Data.
+        /// </param>
         public void InvalidatePlot(bool updateData = true)
         {
             lock (this)
@@ -301,18 +307,26 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Pans the specified axis.
         /// </summary>
-        /// <param name="axis">The axis.</param>
-        /// <param name="ppt">The previous point (screen coordinates).</param>
-        /// <param name="cpt">The current point (screen coordinates).</param>
+        /// <param name="axis">
+        /// The axis.
+        /// </param>
+        /// <param name="ppt">
+        /// The previous point (screen coordinates).
+        /// </param>
+        /// <param name="cpt">
+        /// The current point (screen coordinates).
+        /// </param>
         public void Pan(OxyPlot.IAxis axis, ScreenPoint ppt, ScreenPoint cpt)
         {
-            axis.Pan(ppt,cpt);
+            axis.Pan(ppt, cpt);
         }
 
         /// <summary>
         /// Refresh the plot immediately (blocking UI thread)
         /// </summary>
-        /// <param name="updateData">if set to <c>true</c>, the data collections will be updated.</param>
+        /// <param name="updateData">
+        /// if set to <c>true</c>, the data collections will be updated.
+        /// </param>
         public void RefreshPlot(bool updateData)
         {
             this.UpdateModel(updateData);
@@ -736,7 +750,7 @@ namespace OxyPlot.Wpf
                 if (this.isPlotInvalidated)
                 {
                     this.isPlotInvalidated = false;
-                    if (ActualWidth > 0 && ActualHeight > 0)
+                    if (this.ActualWidth > 0 && this.ActualHeight > 0)
                     {
                         this.UpdateModel(this.invalidateUpdatesData);
                         this.invalidateUpdatesData = false;
@@ -917,7 +931,9 @@ namespace OxyPlot.Wpf
         /// If Model==null, an internal model will be created.
         /// The ActualModel.UpdateModel will be called (updates all series data).
         /// </summary>
-        /// <param name="updateData">if set to <c>true</c>, all data collections will be updated.</param>
+        /// <param name="updateData">
+        /// if set to <c>true</c>, all data collections will be updated.
+        /// </param>
         private void UpdateModel(bool updateData = true)
         {
             // If no model is set, create an internal model and copy the 

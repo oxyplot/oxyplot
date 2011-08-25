@@ -1,7 +1,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IAnnotation.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   The annotation interface.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf

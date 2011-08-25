@@ -1,43 +1,130 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PieSeries.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   The PieSeries class renders a Pie/Circle/Doughnut chart.
+//   The arc length/central angle/area of each slice is proportional to the quantity it represents.
+//   http://en.wikipedia.org/wiki/Pie_chart
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Reflection;
+
     /// <summary>
-    ///   The PieSeries class renders a Pie/Circle/Doughnut chart.
+    /// The PieSeries class renders a Pie/Circle/Doughnut chart.
     ///   The arc length/central angle/area of each slice is proportional to the quantity it represents.
     ///   http://en.wikipedia.org/wiki/Pie_chart
     /// </summary>
     public class PieSeries : Series
     {
+        #region Constants and Fields
+
+        /// <summary>
+        /// The slices.
+        /// </summary>
         private IList<PieSlice> slices;
 
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PieSeries"/> class.
+        /// </summary>
         public PieSeries()
         {
-            slices = new List<PieSlice>();
+            this.slices = new List<PieSlice>();
 
-            Stroke = OxyColors.White;
-            StrokeThickness = 1.0;
-            Diameter = 1.0;
-            InnerDiameter = 0.0;
-            StartAngle = 0.0;
-            AngleSpan = 360.0;
-            AngleIncrement = 1.0;
+            this.Stroke = OxyColors.White;
+            this.StrokeThickness = 1.0;
+            this.Diameter = 1.0;
+            this.InnerDiameter = 0.0;
+            this.StartAngle = 0.0;
+            this.AngleSpan = 360.0;
+            this.AngleIncrement = 1.0;
 
-            LegendFormat = null;
-            OutsideLabelFormat = "{2:0} %";
-            InsideLabelFormat = "{1}";
-            TickDistance = 0;
-            TickRadialLength = 6;
-            TickHorizontalLength = 8;
-            TickLabelDistance = 4;
-            InsideLabelPosition = 0.5;
-            FontSize = 12;
+            this.LegendFormat = null;
+            this.OutsideLabelFormat = "{2:0} %";
+            this.InsideLabelFormat = "{1}";
+            this.TickDistance = 0;
+            this.TickRadialLength = 6;
+            this.TickHorizontalLength = 8;
+            this.TickLabelDistance = 4;
+            this.InsideLabelPosition = 0.5;
+            this.FontSize = 12;
         }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets AngleIncrement.
+        /// </summary>
+        public double AngleIncrement { get; set; }
+
+        /// <summary>
+        /// Gets or sets AngleSpan.
+        /// </summary>
+        public double AngleSpan { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether AreInsideLabelsAngled.
+        /// </summary>
+        public bool AreInsideLabelsAngled { get; set; }
+
+        /// <summary>
+        /// Gets or sets ColorField.
+        /// </summary>
+        public string ColorField { get; set; }
+
+        /// <summary>
+        /// Gets or sets Diameter.
+        /// </summary>
+        public double Diameter { get; set; }
+
+        /// <summary>
+        /// Gets or sets ExplodedDistance.
+        /// </summary>
+        public double ExplodedDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets Font.
+        /// </summary>
+        public string Font { get; set; }
+
+        /// <summary>
+        /// Gets or sets FontSize.
+        /// </summary>
+        public double FontSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets InnerDiameter.
+        /// </summary>
+        public double InnerDiameter { get; set; }
+
+        /// <summary>
+        /// Gets or sets InsideLabelFormat.
+        /// </summary>
+        public string InsideLabelFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets InsideLabelPosition.
+        /// </summary>
+        public double InsideLabelPosition { get; set; }
+
+        /// <summary>
+        /// Gets or sets IsExplodedField.
+        /// </summary>
+        public string IsExplodedField { get; set; }
 
         /// <summary>
         ///   Gets or sets the items source.
@@ -45,56 +132,342 @@ namespace OxyPlot
         /// <value>The items source.</value>
         public IEnumerable ItemsSource { get; set; }
 
+        /// <summary>
+        /// Gets or sets LabelField.
+        /// </summary>
         public string LabelField { get; set; }
-        public string ValueField { get; set; }
-        public string ColorField { get; set; }
-        public string IsExplodedField { get; set; }
 
-        public OxyColor Stroke { get; set; }
-        public double StrokeThickness { get; set; }
-
-        public double Diameter { get; set; }
-        public double InnerDiameter { get; set; }
-        public double ExplodedDistance { get; set; }
-
-        public double StartAngle { get; set; }
-        public double AngleSpan { get; set; }
-        public double AngleIncrement { get; set; }
-
+        /// <summary>
+        /// Gets or sets LegendFormat.
+        /// </summary>
         public string LegendFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets OutsideLabelFormat.
+        /// </summary>
         public string OutsideLabelFormat { get; set; }
-        public string InsideLabelFormat { get; set; }
 
-        public double TickDistance { get; set; }
-        public double TickRadialLength { get; set; }
-        public double TickHorizontalLength { get; set; }
-        public double TickLabelDistance { get; set; }
-        public double InsideLabelPosition { get; set; }
-        public bool AreInsideLabelsAngled { get; set; }
-
-        public string Font { get; set; }
-        public double FontSize { get; set; }
-
+        /// <summary>
+        /// Gets or sets Slices.
+        /// </summary>
         public IList<PieSlice> Slices
         {
-            get { return slices; }
-            set { slices = value; }
+            get
+            {
+                return this.slices;
+            }
+
+            set
+            {
+                this.slices = value;
+            }
         }
 
-        #region ISeries Members
+        /// <summary>
+        /// Gets or sets StartAngle.
+        /// </summary>
+        public double StartAngle { get; set; }
 
-        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
+        /// <summary>
+        /// Gets or sets Stroke.
+        /// </summary>
+        public OxyColor Stroke { get; set; }
+
+        /// <summary>
+        /// Gets or sets StrokeThickness.
+        /// </summary>
+        public double StrokeThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets TickDistance.
+        /// </summary>
+        public double TickDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets TickHorizontalLength.
+        /// </summary>
+        public double TickHorizontalLength { get; set; }
+
+        /// <summary>
+        /// Gets or sets TickLabelDistance.
+        /// </summary>
+        public double TickLabelDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets TickRadialLength.
+        /// </summary>
+        public double TickRadialLength { get; set; }
+
+        /// <summary>
+        /// Gets or sets ValueField.
+        /// </summary>
+        public string ValueField { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The get nearest point.
+        /// </summary>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <param name="interpolate">
+        /// The interpolate.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
+            return null;
         }
 
-        protected internal override void UpdateData()
+        /// <summary>
+        /// The render.
+        /// </summary>
+        /// <param name="rc">
+        /// The rc.
+        /// </param>
+        /// <param name="model">
+        /// The model.
+        /// </param>
+        public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (ItemsSource == null)
+            if (this.Slices.Count == 0)
             {
                 return;
             }
 
-            slices.Clear();
+            double total = this.slices.Sum(slice => slice.Value);
+            if (total == 0.0)
+            {
+                return;
+            }
+
+            // todo: reduce available size due to the labels
+            double radius = Math.Min(model.PlotArea.Width, model.PlotArea.Height) / 2;
+
+            double outerRadius = radius * (this.Diameter - this.ExplodedDistance);
+            double innerRadius = radius * this.InnerDiameter;
+
+            double angle = this.StartAngle;
+            var midPoint = new ScreenPoint(
+                (model.PlotArea.Left + model.PlotArea.Right) * 0.5, (model.PlotArea.Top + model.PlotArea.Bottom) * 0.5);
+
+            foreach (PieSlice slice in this.slices)
+            {
+                var outerPoints = new List<ScreenPoint>();
+                var innerPoints = new List<ScreenPoint>();
+
+                double sliceAngle = slice.Value / total * this.AngleSpan;
+                double endAngle = angle + sliceAngle;
+                double explodedRadius = slice.IsExploded ? this.ExplodedDistance * radius : 0.0;
+
+                double midAngle = angle + sliceAngle / 2;
+                double midAngleRadians = midAngle * Math.PI / 180;
+                var mp = new ScreenPoint(
+                    midPoint.X + explodedRadius * Math.Cos(midAngleRadians), 
+                    midPoint.Y + explodedRadius * Math.Sin(midAngleRadians));
+
+                // Create the pie sector points for both outside and inside arcs
+                while (true)
+                {
+                    bool stop = false;
+                    if (angle >= endAngle)
+                    {
+                        angle = endAngle;
+                        stop = true;
+                    }
+
+                    double a = angle * Math.PI / 180;
+                    var op = new ScreenPoint(mp.X + outerRadius * Math.Cos(a), mp.Y + outerRadius * Math.Sin(a));
+                    outerPoints.Add(op);
+                    var ip = new ScreenPoint(mp.X + innerRadius * Math.Cos(a), mp.Y + innerRadius * Math.Sin(a));
+                    if (innerRadius + explodedRadius > 0)
+                    {
+                        innerPoints.Add(ip);
+                    }
+
+                    if (stop)
+                    {
+                        break;
+                    }
+
+                    angle += this.AngleIncrement;
+                }
+
+                innerPoints.Reverse();
+                if (innerPoints.Count == 0)
+                {
+                    innerPoints.Add(mp);
+                }
+
+                innerPoints.Add(outerPoints[0]);
+
+                List<ScreenPoint> points = outerPoints;
+                points.AddRange(innerPoints);
+
+                rc.DrawPolygon(points, slice.Fill, this.Stroke, this.StrokeThickness, null, OxyPenLineJoin.Bevel);
+
+                // Render label outside the slice
+                if (this.OutsideLabelFormat != null)
+                {
+                    string label = string.Format(
+                        this.OutsideLabelFormat, slice.Value, slice.Label, slice.Value / total * 100);
+                    int sign = Math.Sign(Math.Cos(midAngleRadians));
+
+                    // tick points
+                    var tp0 = new ScreenPoint(
+                        mp.X + (outerRadius + this.TickDistance) * Math.Cos(midAngleRadians), 
+                        mp.Y + (outerRadius + this.TickDistance) * Math.Sin(midAngleRadians));
+                    var tp1 = new ScreenPoint(
+                        tp0.X + this.TickRadialLength * Math.Cos(midAngleRadians), 
+                        tp0.Y + this.TickRadialLength * Math.Sin(midAngleRadians));
+                    var tp2 = new ScreenPoint(tp1.X + this.TickHorizontalLength * sign, tp1.Y);
+                    rc.DrawLine(new[] { tp0, tp1, tp2 }, this.Stroke, this.StrokeThickness, null, OxyPenLineJoin.Bevel);
+
+                    // label
+                    var labelPosition = new ScreenPoint(tp2.X + this.TickLabelDistance * sign, tp2.Y);
+                    rc.DrawText(
+                        labelPosition, 
+                        label, 
+                        model.TextColor, 
+                        this.Font ?? PlotModel.DefaultFont, 
+                        model.LegendFontSize, 
+                        FontWeights.Normal, 
+                        0, 
+                        sign > 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right, 
+                        VerticalTextAlign.Middle);
+                }
+
+                // Render label inside the slice
+                if (this.InsideLabelFormat != null)
+                {
+                    string label = string.Format(
+                        this.InsideLabelFormat, slice.Value, slice.Label, slice.Value / total * 100);
+                    double r = innerRadius * (1 - this.InsideLabelPosition) + outerRadius * this.InsideLabelPosition;
+                    var labelPosition = new ScreenPoint(
+                        mp.X + r * Math.Cos(midAngleRadians), mp.Y + r * Math.Sin(midAngleRadians));
+                    double textAngle = 0;
+                    if (this.AreInsideLabelsAngled)
+                    {
+                        textAngle = midAngle;
+                        if (Math.Cos(midAngleRadians) < 0)
+                        {
+                            textAngle += 180;
+                        }
+                    }
+
+                    rc.DrawText(
+                        labelPosition, 
+                        label, 
+                        model.TextColor, 
+                        this.Font ?? PlotModel.DefaultFont, 
+                        this.FontSize, 
+                        FontWeights.Normal, 
+                        textAngle, 
+                        HorizontalTextAlign.Center, 
+                        VerticalTextAlign.Middle);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The render legend.
+        /// </summary>
+        /// <param name="rc">
+        /// The rc.
+        /// </param>
+        /// <param name="legendBox">
+        /// The legend box.
+        /// </param>
+        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
+        {
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The are axes required.
+        /// </summary>
+        /// <returns>
+        /// The are axes required.
+        /// </returns>
+        protected internal override bool AreAxesRequired()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// The ensure axes.
+        /// </summary>
+        /// <param name="axes">
+        /// The axes.
+        /// </param>
+        /// <param name="defaultXAxis">
+        /// The default x axis.
+        /// </param>
+        /// <param name="defaultYAxis">
+        /// The default y axis.
+        /// </param>
+        protected internal override void EnsureAxes(Collection<Axis> axes, Axis defaultXAxis, Axis defaultYAxis)
+        {
+        }
+
+        /// <summary>
+        /// The is using.
+        /// </summary>
+        /// <param name="axis">
+        /// The axis.
+        /// </param>
+        /// <returns>
+        /// The is using.
+        /// </returns>
+        protected internal override bool IsUsing(IAxis axis)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// The set default values.
+        /// </summary>
+        /// <param name="model">
+        /// The model.
+        /// </param>
+        protected internal override void SetDefaultValues(PlotModel model)
+        {
+            foreach (PieSlice slice in this.Slices)
+            {
+                if (slice.Fill == null)
+                {
+                    slice.Fill = model.GetDefaultColor();
+                }
+            }
+        }
+
+        /// <summary>
+        /// The update axis max min.
+        /// </summary>
+        protected internal override void UpdateAxisMaxMin()
+        {
+        }
+
+        /// <summary>
+        /// The update data.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// </exception>
+        protected internal override void UpdateData()
+        {
+            if (this.ItemsSource == null)
+            {
+                return;
+            }
+
+            this.slices.Clear();
 
             // Use reflection to find the data items
             PropertyInfo pil = null;
@@ -103,19 +476,19 @@ namespace OxyPlot
             PropertyInfo pie = null;
             Type t = null;
 
-            foreach (object o in ItemsSource)
+            foreach (object o in this.ItemsSource)
             {
                 if (pil == null || o.GetType() != t)
                 {
                     t = o.GetType();
-                    pil = t.GetProperty(LabelField);
-                    piv = t.GetProperty(ValueField);
-                    pic = t.GetProperty(ColorField);
-                    pie = t.GetProperty(IsExplodedField);
+                    pil = t.GetProperty(this.LabelField);
+                    piv = t.GetProperty(this.ValueField);
+                    pic = t.GetProperty(this.ColorField);
+                    pie = t.GetProperty(this.IsExplodedField);
                     if (piv == null)
                     {
                         throw new InvalidOperationException(
-                            string.Format("Could not find value data field {0} on type {1}", ValueField, t));
+                            string.Format("Could not find value data field {0} on type {1}", this.ValueField, t));
                     }
                 }
 
@@ -135,165 +508,15 @@ namespace OxyPlot
                     slice.IsExploded = (bool)pie.GetValue(o, null);
                 }
 
-                slices.Add(slice);
+                this.slices.Add(slice);
             }
         }
 
-        protected internal override bool AreAxesRequired()
-        {
-            return false;
-        }
-
-        protected internal override bool IsUsing(IAxis axis)
-        {
-            return false;
-        }
-
-        protected internal override void EnsureAxes(Collection<Axis> axes, Axis defaultXAxis, Axis defaultYAxis)
-        {
-        }
-
+        /// <summary>
+        /// The update max min.
+        /// </summary>
         protected internal override void UpdateMaxMin()
         {
-        }
-
-        protected internal override void UpdateAxisMaxMin()
-        {
-        }
-
-        protected internal override void SetDefaultValues(PlotModel model)
-        {
-            foreach (var slice in Slices)
-                if (slice.Fill == null)
-                    slice.Fill = model.GetDefaultColor();
-        }
-
-        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
-        {
-            return null;
-        }
-
-        public override void Render(IRenderContext rc, PlotModel model)
-        {
-            if (Slices.Count == 0)
-            {
-                return;
-            }
-
-            double total = slices.Sum(slice => slice.Value);
-            if (total == 0.0)
-            {
-                return;
-            }
-
-            // todo: reduce available size due to the labels
-            double radius = Math.Min(model.PlotArea.Width, model.PlotArea.Height) / 2;
-
-            double outerRadius = radius * (Diameter - ExplodedDistance);
-            double innerRadius = radius * InnerDiameter;
-
-            double angle = StartAngle;
-            var midPoint = new ScreenPoint((model.PlotArea.Left + model.PlotArea.Right) * 0.5, (model.PlotArea.Top + model.PlotArea.Bottom) * 0.5);
-
-            foreach (PieSlice slice in slices)
-            {
-                var outerPoints = new List<ScreenPoint>();
-                var innerPoints = new List<ScreenPoint>();
-
-                double sliceAngle = slice.Value / total * AngleSpan;
-                double endAngle = angle + sliceAngle;
-                double explodedRadius = slice.IsExploded ? ExplodedDistance * radius : 0.0;
-
-                double midAngle = angle + sliceAngle / 2;
-                double midAngleRadians = midAngle * Math.PI / 180;
-                var mp = new ScreenPoint(midPoint.X + explodedRadius * Math.Cos(midAngleRadians),
-                                         midPoint.Y + explodedRadius * Math.Sin(midAngleRadians));
-
-                // Create the pie sector points for both outside and inside arcs
-                while (true)
-                {
-                    bool stop = false;
-                    if (angle >= endAngle)
-                    {
-                        angle = endAngle;
-                        stop = true;
-                    }
-
-                    double a = angle * Math.PI / 180;
-                    var op = new ScreenPoint(mp.X + outerRadius * Math.Cos(a),
-                                             mp.Y + outerRadius * Math.Sin(a));
-                    outerPoints.Add(op);
-                    var ip = new ScreenPoint(mp.X + innerRadius * Math.Cos(a),
-                                             mp.Y + innerRadius * Math.Sin(a));
-                    if (innerRadius + explodedRadius > 0)
-                    {
-                        innerPoints.Add(ip);
-                    }
-
-                    if (stop)
-                    {
-                        break;
-                    }
-
-                    angle += AngleIncrement;
-                }
-
-
-                innerPoints.Reverse();
-                if (innerPoints.Count == 0)
-                {
-                    innerPoints.Add(mp);
-                }
-
-                innerPoints.Add(outerPoints[0]);
-
-                List<ScreenPoint> points = outerPoints;
-                points.AddRange(innerPoints);
-
-                rc.DrawPolygon(points, slice.Fill, Stroke, StrokeThickness, null, OxyPenLineJoin.Bevel);
-
-                // Render label outside the slice
-                if (OutsideLabelFormat != null)
-                {
-                    string label = String.Format(OutsideLabelFormat, slice.Value, slice.Label, slice.Value / total * 100);
-                    int sign = Math.Sign(Math.Cos(midAngleRadians));
-
-                    // tick points
-                    var tp0 = new ScreenPoint(mp.X + (outerRadius + TickDistance) * Math.Cos(midAngleRadians),
-                                              mp.Y + (outerRadius + TickDistance) * Math.Sin(midAngleRadians));
-                    var tp1 = new ScreenPoint(tp0.X + TickRadialLength * Math.Cos(midAngleRadians),
-                                              tp0.Y + TickRadialLength * Math.Sin(midAngleRadians));
-                    var tp2 = new ScreenPoint(tp1.X + TickHorizontalLength * sign, tp1.Y);
-                    rc.DrawLine(new[] { tp0, tp1, tp2 }, Stroke, StrokeThickness, null, OxyPenLineJoin.Bevel);
-
-                    // label
-                    var labelPosition = new ScreenPoint(tp2.X + TickLabelDistance * sign, tp2.Y);
-                    rc.DrawText(labelPosition, label, model.TextColor, Font ?? PlotModel.DefaultFont, model.LegendFontSize, FontWeights.Normal, 0,
-                                sign > 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right,
-                                VerticalTextAlign.Middle);
-                }
-
-                // Render label inside the slice
-                if (InsideLabelFormat != null)
-                {
-                    string label = String.Format(InsideLabelFormat, slice.Value, slice.Label, slice.Value / total * 100);
-                    double r = innerRadius * (1 - InsideLabelPosition) + outerRadius * InsideLabelPosition;
-                    var labelPosition = new ScreenPoint(mp.X + r * Math.Cos(midAngleRadians),
-                                                        mp.Y + r * Math.Sin(midAngleRadians));
-                    double textAngle = 0;
-                    if (AreInsideLabelsAngled)
-                    {
-                        textAngle = midAngle;
-                        if (Math.Cos(midAngleRadians) < 0)
-                        {
-                            textAngle += 180;
-                        }
-                    }
-
-                    rc.DrawText(labelPosition, label, model.TextColor, Font ?? PlotModel.DefaultFont, FontSize, FontWeights.Normal,
-                                textAngle, HorizontalTextAlign.Center, VerticalTextAlign.Middle);
-                }
-            }
         }
 
         #endregion

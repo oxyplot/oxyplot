@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Annotation.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
 //   The annotation.
@@ -22,10 +22,7 @@ namespace OxyPlot.Wpf
         /// The layer property.
         /// </summary>
         public static readonly DependencyProperty LayerProperty = DependencyProperty.Register(
-            "Layer", 
-            typeof(AnnotationLayer), 
-            typeof(Annotation), 
-            new PropertyMetadata(AnnotationLayer.OverSeries));
+            "Layer", typeof(AnnotationLayer), typeof(Annotation), new PropertyMetadata(AnnotationLayer.OverSeries));
 
         /// <summary>
         /// The text property.

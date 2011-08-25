@@ -1,34 +1,125 @@
-﻿using System;
-using System.Globalization;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ItemsTableField.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   The alignment.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Reporting
 {
-    public enum Alignment { Left, Right, Center };
+    using System;
+    using System.Globalization;
+    using System.Reflection;
 
+    /// <summary>
+    /// The alignment.
+    /// </summary>
+    public enum Alignment
+    {
+        /// <summary>
+        /// The left.
+        /// </summary>
+        Left, 
+
+        /// <summary>
+        /// The right.
+        /// </summary>
+        Right, 
+
+        /// <summary>
+        /// The center.
+        /// </summary>
+        Center
+    } ;
+
+    /// <summary>
+    /// The items table field.
+    /// </summary>
     public class ItemsTableField
     {
-        public Alignment Alignment { get; set; }
-        public string Header { get; set; }
-        public string StringFormat { get; set; }
-        public string Path { get; set; }
-        public double Width { get; set; }
+        #region Constructors and Destructors
 
-        public ItemsTableField(string header, string path, string stringFormat = null, Alignment alignment = Alignment.Center)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemsTableField"/> class.
+        /// </summary>
+        /// <param name="header">
+        /// The header.
+        /// </param>
+        /// <param name="path">
+        /// The path.
+        /// </param>
+        /// <param name="stringFormat">
+        /// The string format.
+        /// </param>
+        /// <param name="alignment">
+        /// The alignment.
+        /// </param>
+        public ItemsTableField(
+            string header, string path, string stringFormat = null, Alignment alignment = Alignment.Center)
         {
-            Header = header;
-            Path = path;
-            StringFormat = stringFormat;
-            Alignment = alignment;
+            this.Header = header;
+            this.Path = path;
+            this.StringFormat = stringFormat;
+            this.Alignment = alignment;
         }
 
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets Alignment.
+        /// </summary>
+        public Alignment Alignment { get; set; }
+
+        /// <summary>
+        /// Gets or sets Header.
+        /// </summary>
+        public string Header { get; set; }
+
+        /// <summary>
+        /// Gets or sets Path.
+        /// </summary>
+        public string Path { get; set; }
+
+        /// <summary>
+        /// Gets or sets StringFormat.
+        /// </summary>
+        public string StringFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets Width.
+        /// </summary>
+        public double Width { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The get text.
+        /// </summary>
+        /// <param name="item">
+        /// The item.
+        /// </param>
+        /// <returns>
+        /// The get text.
+        /// </returns>
         public string GetText(object item)
         {
-            var pi = item.GetType().GetProperty(Path);
+            PropertyInfo pi = item.GetType().GetProperty(this.Path);
             object o = pi.GetValue(item, null);
             var of = o as IFormattable;
             if (of != null)
-                return of.ToString(StringFormat, CultureInfo.InvariantCulture);
+            {
+                return of.ToString(this.StringFormat, CultureInfo.InvariantCulture);
+            }
+
             return o != null ? o.ToString() : null;
         }
+
+        #endregion
     }
 }

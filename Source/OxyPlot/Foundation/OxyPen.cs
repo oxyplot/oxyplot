@@ -1,43 +1,58 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OxyPen.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   OxyPen class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     /// <summary>
     /// OxyPen class.
     /// </summary>
     public class OxyPen
     {
+        #region Constructors and Destructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyPen"/> class.
         /// </summary>
-        /// <param name="color">The color.</param>
-        /// <param name="thickness">The thickness.</param>
-        /// <param name="lineStyle">The line style.</param>
-        /// <param name="lineJoin">The line join.</param>
-        public OxyPen(OxyColor color, double thickness = 1.0, LineStyle lineStyle = LineStyle.Solid, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
+        /// <param name="color">
+        /// The color.
+        /// </param>
+        /// <param name="thickness">
+        /// The thickness.
+        /// </param>
+        /// <param name="lineStyle">
+        /// The line style.
+        /// </param>
+        /// <param name="lineJoin">
+        /// The line join.
+        /// </param>
+        public OxyPen(
+            OxyColor color, 
+            double thickness = 1.0, 
+            LineStyle lineStyle = LineStyle.Solid, 
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
-            Color = color;
-            Thickness = thickness;
-            DashArray = LineStyleHelper.GetDashArray(lineStyle);
-            LineStyle = lineStyle;
-            LineJoin = lineJoin;
+            this.Color = color;
+            this.Thickness = thickness;
+            this.DashArray = LineStyleHelper.GetDashArray(lineStyle);
+            this.LineStyle = lineStyle;
+            this.LineJoin = lineJoin;
         }
+
+        #endregion
+
+        #region Public Properties
 
         /// <summary>
         /// Gets or sets the color.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
-
-        /// <summary>
-        /// Gets or sets the line style.
-        /// </summary>
-        /// <value>The line style.</value>
-        public LineStyle LineStyle { get; set; }
-
-        /// <summary>
-        /// Gets or sets the thickness.
-        /// </summary>
-        /// <value>The thickness.</value>
-        public double Thickness { get; set; }
 
         /// <summary>
         /// Gets or sets the dash array.
@@ -52,16 +67,45 @@
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
+        /// Gets or sets the line style.
+        /// </summary>
+        /// <value>The line style.</value>
+        public LineStyle LineStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the thickness.
+        /// </summary>
+        /// <value>The thickness.</value>
+        public double Thickness { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
         /// Creates the specified pen.
         /// </summary>
-        /// <param name="color">The color.</param>
-        /// <param name="thickness">The thickness.</param>
-        /// <param name="lineStyle">The line style.</param>
-        /// <param name="lineJoin">The line join.</param>
-        /// <returns></returns>
-        public static OxyPen Create(OxyColor color, double thickness, LineStyle lineStyle = LineStyle.Solid, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
+        /// <param name="color">
+        /// The color.
+        /// </param>
+        /// <param name="thickness">
+        /// The thickness.
+        /// </param>
+        /// <param name="lineStyle">
+        /// The line style.
+        /// </param>
+        /// <param name="lineJoin">
+        /// The line join.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static OxyPen Create(
+            OxyColor color, 
+            double thickness, 
+            LineStyle lineStyle = LineStyle.Solid, 
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
-            if (color == null || lineStyle==LineStyle.None || thickness == 0)
+            if (color == null || lineStyle == LineStyle.None || thickness == 0)
             {
                 return null;
             }
@@ -79,12 +123,14 @@
         {
             unchecked
             {
-                int result = Color.GetHashCode();
-                result = (result * 397) ^ Thickness.GetHashCode();
-                result = (result * 397) ^ LineStyle.GetHashCode();
-                result = (result * 397) ^ LineJoin.GetHashCode();
+                int result = this.Color.GetHashCode();
+                result = (result * 397) ^ this.Thickness.GetHashCode();
+                result = (result * 397) ^ this.LineStyle.GetHashCode();
+                result = (result * 397) ^ this.LineJoin.GetHashCode();
                 return result;
             }
         }
+
+        #endregion
     }
 }

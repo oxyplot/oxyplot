@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ScatterPoint.cs" company="OxyPlot">
-//   See http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   ScatterPoint - used in ScatterSeries.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -170,7 +173,8 @@ namespace OxyPlot
         /// </returns>
         public string ToCode()
         {
-            return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1},{2},{3}", this.x, this.y, this.size, this.value);
+            return CodeGenerator.FormatConstructor(
+                this.GetType(), "{0},{1},{2},{3}", this.x, this.y, this.size, this.value);
         }
 
         /// <summary>

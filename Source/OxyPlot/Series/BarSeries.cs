@@ -1,9 +1,23 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BarSeries.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   The BarSeries is used to create clustered or stacked bar charts.
+//   A bar chart or bar graph is a chart with rectangular bars with lengths proportional to the values that they represent.
+//   The bars can be plotted vertically or horizontally.
+//   http://en.wikipedia.org/wiki/Bar_chart
+//   The BarSeries requires a CategoryAxis.
+//   The Values collection must contain the same number of elements as the number of categories in the CategoryAxis.
+//   You can define a ItemsSource and ValueField, or add the Values manually.
+//   Use stacked bar charts with caution... http://lilt.ilstu.edu/gmklass/pos138/datadisplay/badchart.htm
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
 
     /// <summary>
     /// The BarSeries is used to create clustered or stacked bar charts.
@@ -65,15 +79,15 @@
         public OxyColor FillColor { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this bar series is stacked.
+        /// </summary>
+        public bool IsStacked { get; set; }
+
+        /// <summary>
         ///   Gets or sets the color of the interior of the bars when the value is negative.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor NegativeFillColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this bar series is stacked.
-        /// </summary>
-        public bool IsStacked { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the border around the bars.
@@ -102,6 +116,7 @@
             {
                 return this.InternalValues;
             }
+
             set
             {
                 this.InternalValues = value;
@@ -112,15 +127,25 @@
 
         #region Public Methods
 
+        /// <summary>
+        /// The get category axis.
+        /// </summary>
+        /// <returns>
+        /// </returns>
         public CategoryAxis GetCategoryAxis()
         {
             return this.XAxis as CategoryAxis ?? this.YAxis as CategoryAxis;
         }
 
         /// <summary>
-        ///   Gets the point in the dataset that is nearest the specified point.
+        /// Gets the point in the dataset that is nearest the specified point.
         /// </summary>
-        /// <param name = "point">The point.</param>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <param name="interpolate">
+        /// The interpolate.
+        /// </param>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             int i = 0;
@@ -131,48 +156,80 @@
                     ScreenPoint sp = point; // new ScreenPoint((r.Left + r.Right) / 2, r.Top);
                     var dp = new DataPoint(i, this.InternalValues[i]);
                     CategoryAxis categoryAxis = this.GetCategoryAxis();
-                    string text = String.Format(
-                        this.TrackerFormatString,
-                        this.Title,
-                        categoryAxis.FormatValueForTracker(i),
+                    string text = string.Format(
+                        this.TrackerFormatString, 
+                        this.Title, 
+                        categoryAxis.FormatValueForTracker(i), 
                         this.InternalValues[i]);
                     return new TrackerHitResult(this, dp, sp, this.GetItem(i), text);
                 }
+
                 i++;
             }
+
             return null;
         }
 
+        /// <summary>
+        /// The get value axis.
+        /// </summary>
+        /// <returns>
+        /// </returns>
         public IAxis GetValueAxis()
         {
             return this.XAxis is CategoryAxis ? this.YAxis : this.XAxis;
         }
 
         /// <summary>
-        ///   Gets the value from the specified X.
+        /// Gets the value from the specified X.
         /// </summary>
-        /// <param name = "x">The x.</param>
-        /// <returns></returns>
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <returns>
+        /// </returns>
         public double? GetValueFromX(double x)
         {
             return null;
         }
 
+        /// <summary>
+        /// The is valid point.
+        /// </summary>
+        /// <param name="v">
+        /// The v.
+        /// </param>
+        /// <param name="yAxis">
+        /// The y axis.
+        /// </param>
+        /// <returns>
+        /// The is valid point.
+        /// </returns>
         public virtual bool IsValidPoint(double v, IAxis yAxis)
         {
             return !double.IsNaN(v) && !double.IsInfinity(v);
         }
 
+        /// <summary>
+        /// The is vertical.
+        /// </summary>
+        /// <returns>
+        /// The is vertical.
+        /// </returns>
         public bool IsVertical()
         {
             return this.GetCategoryAxis() == this.XAxis;
         }
 
         /// <summary>
-        ///   Renders the Series on the specified rendering context.
+        /// Renders the Series on the specified rendering context.
         /// </summary>
-        /// <param name = "rc">The rendering context.</param>
-        /// <param name = "model">The model.</param>
+        /// <param name="rc">
+        /// The rendering context.
+        /// </param>
+        /// <param name="model">
+        /// The model.
+        /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.Values.Count == 0)
@@ -282,10 +339,14 @@
                         categoryAxis.BaseValueScreen[i] = p1.Y;
                     }
                 }
+
                 this.ActualBarRectangles.Add(rect);
 
-                var actualFillColor = FillColor;
-                if (v<0 && NegativeFillColor!=null) actualFillColor = NegativeFillColor;
+                OxyColor actualFillColor = this.FillColor;
+                if (v < 0 && this.NegativeFillColor != null)
+                {
+                    actualFillColor = this.NegativeFillColor;
+                }
 
                 // rc.DrawClippedRectangle(rect, clippingRect, actualFillColor, StrokeColor, StrokeThickness);
                 rc.DrawClippedRectangleAsPolygon(
@@ -293,6 +354,7 @@
 
                 i++;
             }
+
             if (!this.IsStacked)
             {
                 categoryAxis.BarOffset += this.BarWidth / categoryAxis.AttachedSeriesCount;
@@ -300,21 +362,35 @@
         }
 
         /// <summary>
-        ///   Renders the legend symbol on the specified rendering context.
+        /// Renders the legend symbol on the specified rendering context.
         /// </summary>
-        /// <param name = "rc">The rendering context.</param>
-        /// <param name = "legendBox">The legend rectangle.</param>
+        /// <param name="rc">
+        /// The rendering context.
+        /// </param>
+        /// <param name="legendBox">
+        /// The legend rectangle.
+        /// </param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;
             double height = legendBox.Bottom - legendBox.Top;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - 0.25 * height, legendBox.Top + height * 0.1, 0.5 * height, height * 0.8),
-                this.FillColor,
-                this.StrokeColor,
+                new OxyRect(xmid - 0.25 * height, legendBox.Top + height * 0.1, 0.5 * height, height * 0.8), 
+                this.FillColor, 
+                this.StrokeColor, 
                 this.StrokeThickness);
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The set default values.
+        /// </summary>
+        /// <param name="model">
+        /// The model.
+        /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
             if (this.FillColor == null)
@@ -323,18 +399,49 @@
             }
         }
 
+        /// <summary>
+        /// The update axis max min.
+        /// </summary>
+        /// <exception cref="Exception">
+        /// </exception>
+        protected internal override void UpdateAxisMaxMin()
+        {
+            CategoryAxis ca = this.XAxis as CategoryAxis ?? this.YAxis as CategoryAxis;
+            if (ca == null)
+            {
+                throw new Exception("CategoryAxis not defined.");
+            }
+
+            bool isVertical = ca == this.XAxis;
+            Axis valueAxis = isVertical ? this.YAxis : this.XAxis;
+            if (isVertical)
+            {
+                valueAxis.Include(this.MinY);
+                valueAxis.Include(this.MaxY);
+            }
+            else
+            {
+                valueAxis.Include(this.MinX);
+                valueAxis.Include(this.MaxX);
+            }
+        }
+
+        /// <summary>
+        /// The update data.
+        /// </summary>
         protected internal override void UpdateData()
         {
             if (this.ItemsSource == null)
             {
                 return;
             }
+
             this.InternalValues.Clear();
             ReflectionHelper.FillValues(this.ItemsSource, this.ValueField, this.InternalValues);
         }
 
         /// <summary>
-        ///   Updates the maximum/minimum value on the value axis from the bar values.
+        /// Updates the maximum/minimum value on the value axis from the bar values.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
@@ -370,6 +477,7 @@
                 {
                     baseValue = ca.BaseValue[i];
                 }
+
                 if (this.IsStacked)
                 {
                     // Add to the max/min value on the category axis for stacked bars
@@ -398,30 +506,16 @@
                 this.MaxX = maxValue;
             }
         }
-        protected internal override void UpdateAxisMaxMin()
-        {
-            CategoryAxis ca = this.XAxis as CategoryAxis ?? this.YAxis as CategoryAxis;
-            if (ca == null)
-            {
-                throw new Exception("CategoryAxis not defined.");
-            }
-            bool isVertical = ca == this.XAxis;
-            Axis valueAxis = isVertical ? this.YAxis : this.XAxis;
-            if (isVertical)
-            {
-                valueAxis.Include(MinY);
-                valueAxis.Include(MaxY);
-            }
-            else
-            {
-                valueAxis.Include(MinX);
-                valueAxis.Include(MaxX);
-            }
-        }
-        #endregion
 
-        #region Methods
-
+        /// <summary>
+        /// The get item.
+        /// </summary>
+        /// <param name="i">
+        /// The i.
+        /// </param>
+        /// <returns>
+        /// The get item.
+        /// </returns>
         private object GetItem(int i)
         {
             return null;

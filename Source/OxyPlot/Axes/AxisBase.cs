@@ -1,14 +1,16 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AxisBase.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   This class is an abstract base class that is used by the linear and logarithmic axes.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Globalization;
 
     /// <summary>
@@ -382,7 +384,7 @@ namespace OxyPlot
             bool isHorizontal = this.IsHorizontal();
 
             double dsx = isHorizontal ? cpt.X - ppt.X : cpt.Y - ppt.Y;
-            double dx = dsx / Scale;
+            double dx = dsx / this.Scale;
 
             double newMinimum = this.ActualMinimum - dx;
             double newMaximum = this.ActualMaximum - dx;
@@ -425,7 +427,6 @@ namespace OxyPlot
 
             var r = new HorizontalAndVerticalAxisRenderer(rc, model);
             r.Render(this);
-
         }
 
         /// <summary>
@@ -439,27 +440,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Zoom to the specified scale.
-        /// </summary>
-        /// <param name="newScale">
-        /// The new scale.
-        /// </param>
-        public override void Zoom(double newScale)
-        {
-            double sx1 = (this.ActualMaximum - this.Offset) * this.scale;
-            double sx0 = (this.ActualMinimum - this.Offset) * this.scale;
-
-            double sgn = Math.Sign(this.scale);
-            double mid = (this.ActualMaximum + this.ActualMinimum) / 2;
-
-            double dx = (this.Offset - mid) * this.scale;
-            this.scale = sgn * newScale;
-            this.Offset = dx / this.scale + mid;
-            this.ActualMaximum = sx1 / this.scale + this.Offset;
-            this.ActualMinimum = sx0 / this.scale + this.Offset;
-        }
-
-        /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
@@ -468,12 +448,12 @@ namespace OxyPlot
         public override string ToString()
         {
             return string.Format(
-                CultureInfo.InvariantCulture,
-                "{0}({1}, {2}, {3}, {4})",
-                this.GetType().Name,
-                this.Position,
-                this.ActualMinimum,
-                this.ActualMaximum,
+                CultureInfo.InvariantCulture, 
+                "{0}({1}, {2}, {3}, {4})", 
+                this.GetType().Name, 
+                this.Position, 
+                this.ActualMinimum, 
+                this.ActualMaximum, 
                 this.ActualMajorStep);
         }
 
@@ -517,6 +497,27 @@ namespace OxyPlot
             return (x - this.offset) * this.scale;
 
             // return (this.PreTransform(x) - this.Offset) * this.Scale;
+        }
+
+        /// <summary>
+        /// Zoom to the specified scale.
+        /// </summary>
+        /// <param name="newScale">
+        /// The new scale.
+        /// </param>
+        public override void Zoom(double newScale)
+        {
+            double sx1 = (this.ActualMaximum - this.Offset) * this.scale;
+            double sx0 = (this.ActualMinimum - this.Offset) * this.scale;
+
+            double sgn = Math.Sign(this.scale);
+            double mid = (this.ActualMaximum + this.ActualMinimum) / 2;
+
+            double dx = (this.Offset - mid) * this.scale;
+            this.scale = sgn * newScale;
+            this.Offset = dx / this.scale + mid;
+            this.ActualMaximum = sx1 / this.scale + this.Offset;
+            this.ActualMinimum = sx0 / this.scale + this.Offset;
         }
 
         /// <summary>
@@ -701,22 +702,21 @@ namespace OxyPlot
 
             // this.MidPoint = new ScreenPoint((x0 + x1) / 2, (y0 + y1) / 2);
 
-            //if (this.Position == AxisPosition.Angle)
-            //{
-            //    this.scale = 2 * Math.PI / (this.ActualMaximum - this.ActualMinimum);
-            //    this.Offset = this.ActualMinimum;
-            //    return;
-            //}
+            // if (this.Position == AxisPosition.Angle)
+            // {
+            // this.scale = 2 * Math.PI / (this.ActualMaximum - this.ActualMinimum);
+            // this.Offset = this.ActualMinimum;
+            // return;
+            // }
 
-            //if (this.Position == AxisPosition.Magnitude)
-            //{
-            //    this.ActualMinimum = 0;
-            //    double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
-            //    this.scale = 0.5 * r / (this.ActualMaximum - this.ActualMinimum);
-            //    this.Offset = this.ActualMinimum;
-            //    return;
-            //}
-
+            // if (this.Position == AxisPosition.Magnitude)
+            // {
+            // this.ActualMinimum = 0;
+            // double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
+            // this.scale = 0.5 * r / (this.ActualMaximum - this.ActualMinimum);
+            // this.Offset = this.ActualMinimum;
+            // return;
+            // }
             double a0 = this.IsHorizontal() ? x0 : y0;
             double a1 = this.IsHorizontal() ? x1 : y1;
 

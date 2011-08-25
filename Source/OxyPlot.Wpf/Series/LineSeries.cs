@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineSeries.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
 //   This is a WPF wrapper of OxyPlot.LineSeries
@@ -17,12 +17,6 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class LineSeries : DataPointSeries
     {
-
-        public LineSeries()
-        {
-            internalSeries = new OxyPlot.LineSeries();
-        }
-
         #region Constants and Fields
 
         /// <summary>
@@ -99,6 +93,18 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
                 "StrokeThickness", typeof(double), typeof(LineSeries), new PropertyMetadata(2.0));
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineSeries"/> class.
+        /// </summary>
+        public LineSeries()
+        {
+            this.internalSeries = new OxyPlot.LineSeries();
+        }
 
         #endregion
 

@@ -1,19 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CanonicalSplineHelper.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Interpolates a list of points using a canonical spline.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Interpolates a list of points using a canonical spline.
     /// </summary>
     internal static class CanonicalSplineHelper
     {
-        //   CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
-        //   www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html
+        // CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
+        // www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html
+        #region Methods
 
-        internal static List<ScreenPoint> CreateSpline(IList<ScreenPoint> pts,
-                                                       double tension, IList<double> tensions,
-                                                       bool isClosed, double tolerance)
+        /// <summary>
+        /// The create spline.
+        /// </summary>
+        /// <param name="pts">
+        /// The pts.
+        /// </param>
+        /// <param name="tension">
+        /// The tension.
+        /// </param>
+        /// <param name="tensions">
+        /// The tensions.
+        /// </param>
+        /// <param name="isClosed">
+        /// The is closed.
+        /// </param>
+        /// <param name="tolerance">
+        /// The tolerance.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        internal static List<ScreenPoint> CreateSpline(
+            IList<ScreenPoint> pts, double tension, IList<double> tensions, bool isClosed, double tolerance)
         {
             var result = new List<ScreenPoint>();
             if (pts == null)
@@ -26,7 +55,6 @@ namespace OxyPlot
             {
                 return result;
             }
-
 
             if (n < 2)
             {
@@ -57,13 +85,12 @@ namespace OxyPlot
 
                     if (i == 0)
                     {
-                        Segment(result, isClosed ? pts[n - 1] : pts[0],
-                                pts[0], pts[1], pts[2], t1, t2, tolerance);
+                        Segment(result, isClosed ? pts[n - 1] : pts[0], pts[0], pts[1], pts[2], t1, t2, tolerance);
                     }
                     else if (i == n - 2)
                     {
-                        Segment(result, pts[i - 1], pts[i], pts[i + 1],
-                                isClosed ? pts[0] : pts[i + 1], t1, t2, tolerance);
+                        Segment(
+                            result, pts[i - 1], pts[i], pts[i + 1], isClosed ? pts[0] : pts[i + 1], t1, t2, tolerance);
                     }
                     else if (i == n - 1)
                     {
@@ -82,9 +109,42 @@ namespace OxyPlot
             return result;
         }
 
-        private static void Segment(IList<ScreenPoint> points,
-                                    ScreenPoint pt0, ScreenPoint pt1, ScreenPoint pt2, ScreenPoint pt3,
-                                    double t1, double t2, double tolerance)
+        /// <summary>
+        /// The segment.
+        /// </summary>
+        /// <param name="points">
+        /// The points.
+        /// </param>
+        /// <param name="pt0">
+        /// The pt 0.
+        /// </param>
+        /// <param name="pt1">
+        /// The pt 1.
+        /// </param>
+        /// <param name="pt2">
+        /// The pt 2.
+        /// </param>
+        /// <param name="pt3">
+        /// The pt 3.
+        /// </param>
+        /// <param name="t1">
+        /// The t 1.
+        /// </param>
+        /// <param name="t2">
+        /// The t 2.
+        /// </param>
+        /// <param name="tolerance">
+        /// The tolerance.
+        /// </param>
+        private static void Segment(
+            IList<ScreenPoint> points, 
+            ScreenPoint pt0, 
+            ScreenPoint pt1, 
+            ScreenPoint pt2, 
+            ScreenPoint pt3, 
+            double t1, 
+            double t2, 
+            double tolerance)
         {
             // See Petzold, "Programming Microsoft Windows with C#", pages 645-646 or 
             // Petzold, "Programming Microsoft Windows with Microsoft Visual Basic .NET", pages 638-639
@@ -110,10 +170,12 @@ namespace OxyPlot
             for (int i = 1; i < num; i++)
             {
                 double t = (double)i / (num - 1);
-                var pt = new ScreenPoint(ax * t * t * t + bx * t * t + cx * t + dx,
-                                         ay * t * t * t + by * t * t + cy * t + dy);
+                var pt = new ScreenPoint(
+                    ax * t * t * t + bx * t * t + cx * t + dx, ay * t * t * t + by * t * t + cy * t + dy);
                 points.Add(pt);
             }
         }
+
+        #endregion
     }
 }

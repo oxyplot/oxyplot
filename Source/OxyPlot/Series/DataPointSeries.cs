@@ -1,21 +1,34 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Reflection;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DataPointSeries.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   DataPointProvider interface.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Reflection;
+
     /// <summary>
-    ///   DataPointProvider interface.
+    /// DataPointProvider interface.
     /// </summary>
     public interface IDataPointProvider
     {
+        #region Public Methods
+
         /// <summary>
-        ///   Gets the data point.
+        /// Gets the data point.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// </returns>
         DataPoint GetDataPoint();
+
+        #endregion
     }
 
     /// <summary>
@@ -23,11 +36,34 @@ namespace OxyPlot
     /// </summary>
     public abstract class DataPointSeries : ItemsSeries
     {
+        #region Constants and Fields
+
+        /// <summary>
+        /// The points.
+        /// </summary>
+        protected IList<IDataPoint> points = new List<IDataPoint>();
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataPointSeries"/> class.
+        /// </summary>
         protected DataPointSeries()
         {
-            DataFieldX = "X";
-            DataFieldY = "Y";
+            this.DataFieldX = "X";
+            this.DataFieldY = "Y";
         }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating whether CanTrackerInterpolatePoints.
+        /// </summary>
+        public bool CanTrackerInterpolatePoints { get; set; }
 
         /// <summary>
         ///   Gets or sets the data field X.
@@ -48,21 +84,21 @@ namespace OxyPlot
         /// <value>The mapping.</value>
         public Func<object, IDataPoint> Mapping { get; set; }
 
-        protected IList<IDataPoint> points = new List<IDataPoint>();
-
         /// <summary>
-        /// Gets the points.
+        /// Gets or sets the points list.
         /// </summary>
-        /// <value>The points.</value>
+        /// <value>The points list.</value>
         public IList<IDataPoint> Points
         {
             get
             {
                 return this.points;
             }
+            set
+            {
+                this.points = value;
+            }
         }
-
-        public bool CanTrackerInterpolatePoints { get; set; }
 
         /// <summary>
         ///   Gets or sets a value indicating whether this <see cref = "DataPointSeries" /> is smooth.
@@ -70,37 +106,161 @@ namespace OxyPlot
         /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
         public bool Smooth { get; set; }
 
-        #region ISeries Members
+        #endregion
 
+        #region Public Methods
+
+        /// <summary>
+        /// Gets the point in the dataset that is nearest the specified point.
+        /// </summary>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <param name="interpolate">
+        /// The interpolate.
+        /// </param>
+        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
+        {
+            if (interpolate && !this.CanTrackerInterpolatePoints)
+            {
+                return null;
+            }
+
+            int index;
+            TrackerHitResult result = null;
+            DataPoint dpn;
+            ScreenPoint spn;
+            if (interpolate)
+            {
+                if (this.GetNearestInterpolatedPointInternal(this.Points, point, out dpn, out spn, out index))
+                {
+                    object item = this.GetItem(this.ItemsSource, index);
+                    return new TrackerHitResult(this, dpn, spn, item);
+                }
+            }
+            else
+            {
+                if (this.GetNearestPointInternal(this.Points, point, out dpn, out spn, out index))
+                {
+                    object item = this.GetItem(this.ItemsSource, index);
+                    return new TrackerHitResult(this, dpn, spn, item);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the value from the specified X.
+        /// </summary>
+        /// <param name="x">
+        /// The x coordinate.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public double? GetValueFromX(double x)
+        {
+            int n = this.Points.Count;
+
+            for (int i = 0; i + 1 < n; i++)
+            {
+                if (IsBetween(x, this.Points[i].X, this.Points[i + 1].Y))
+                {
+                    return this.Points[i].Y
+                           +
+                           (this.Points[i + 1].Y - this.Points[i].Y) / (this.Points[i + 1].X - this.Points[i].X)
+                           * (x - this.Points[i].X);
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Determines whether the specified point is valid.
+        /// </summary>
+        /// <param name="pt">
+        /// The pointt.
+        /// </param>
+        /// <param name="xAxis">
+        /// The x axis.
+        /// </param>
+        /// <param name="yAxis">
+        /// The y axis.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the point is valid; otherwise, <c>false</c>.
+        /// </returns>
+        public virtual bool IsValidPoint(IDataPoint pt, IAxis xAxis, IAxis yAxis)
+        {
+            return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
+                   && (xAxis != null && xAxis.IsValidValue(pt.X)) && (yAxis != null && yAxis.IsValidValue(pt.Y));
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Updates the axes to include the max and min of this series.
+        /// </summary>
+        protected internal override void UpdateAxisMaxMin()
+        {
+            this.XAxis.Include(this.MinX);
+            this.XAxis.Include(this.MaxX);
+            this.YAxis.Include(this.MinY);
+            this.YAxis.Include(this.MaxY);
+        }
+
+        /// <summary>
+        /// The update data.
+        /// </summary>
         protected internal override void UpdateData()
         {
-            if (ItemsSource == null)
+            if (this.ItemsSource == null)
             {
                 return;
             }
-            this.AddDataPoints(points);
+
+            this.AddDataPoints(this.points);
         }
 
-        protected void AddDataPoints( IList<IDataPoint> points)
+        /// <summary>
+        /// Updates the max/min from the datapoints.
+        /// </summary>
+        protected internal override void UpdateMaxMin()
+        {
+            base.UpdateMaxMin();
+            this.InternalUpdateMaxMin(this.Points);
+        }
+
+        /// <summary>
+        /// The add data points.
+        /// </summary>
+        /// <param name="points">
+        /// The points.
+        /// </param>
+        protected void AddDataPoints(IList<IDataPoint> points)
         {
             points.Clear();
 
             // Use the mapping to generate the points
-            if (Mapping != null)
+            if (this.Mapping != null)
             {
-                foreach (var item in ItemsSource)
+                foreach (object item in this.ItemsSource)
                 {
-                    points.Add(Mapping(item));
+                    points.Add(this.Mapping(item));
                 }
-                return ;
+
+                return;
             }
 
             // Get DataPoints from the items in ItemsSource 
             // if they implement IDataPointProvider
             // If DataFields are set, this is not used
-            if (DataFieldX == null || DataFieldY == null)
+            if (this.DataFieldX == null || this.DataFieldY == null)
             {
-                foreach (var item in ItemsSource)
+                foreach (object item in this.ItemsSource)
                 {
                     var dp = item as IDataPoint;
                     if (dp != null)
@@ -123,57 +283,36 @@ namespace OxyPlot
             // http://msdn.microsoft.com/en-us/library/bb613546.aspx
 
             // Using reflection on DataFieldX and DataFieldY
-            AddDataPoints(points, ItemsSource, DataFieldX, DataFieldY);
+            this.AddDataPoints(points, this.ItemsSource, this.DataFieldX, this.DataFieldY);
         }
 
         /// <summary>
-        ///   Updates the max/min from the datapoints.
+        /// The add data points.
         /// </summary>
-        protected internal override void UpdateMaxMin()
-        {
-            base.UpdateMaxMin();
-            InternalUpdateMaxMin(Points);
-        }
-
-        /// <summary>
-        ///   Gets the point in the dataset that is nearest the specified point.
-        /// </summary>
-        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
-        {
-            if (interpolate && !CanTrackerInterpolatePoints)
-                return null;
-            int index;
-            TrackerHitResult result = null;
-            DataPoint dpn;
-            ScreenPoint spn;
-            if (interpolate)
-            {
-                if (GetNearestInterpolatedPointInternal(Points, point, out dpn, out spn, out index))
-                {
-                    var item = GetItem(ItemsSource, index);
-                    return new TrackerHitResult(this, dpn, spn, item);
-                }
-            }
-            else
-            {
-                if (GetNearestPointInternal(Points, point, out dpn, out spn, out index))
-                {
-                    var item = GetItem(ItemsSource, index);
-                    return new TrackerHitResult(this, dpn, spn, item);
-                }
-            }
-            return result;
-        }
-
-        #endregion
-
-        protected void AddDataPoints(IList<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
+        /// <param name="dest">
+        /// The dest.
+        /// </param>
+        /// <param name="itemsSource">
+        /// The items source.
+        /// </param>
+        /// <param name="dataFieldX">
+        /// The data field x.
+        /// </param>
+        /// <param name="dataFieldY">
+        /// The data field y.
+        /// </param>
+        /// <exception cref="InvalidOperationException">
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// </exception>
+        protected void AddDataPoints(
+            IList<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
         {
             PropertyInfo pix = null;
             PropertyInfo piy = null;
             Type t = null;
 
-            foreach (var o in itemsSource)
+            foreach (object o in itemsSource)
             {
                 if (pix == null || o.GetType() != t)
                 {
@@ -182,31 +321,31 @@ namespace OxyPlot
                     piy = t.GetProperty(dataFieldY);
                     if (pix == null)
                     {
-                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
-                                                                          DataFieldX, t));
+                        throw new InvalidOperationException(
+                            string.Format("Could not find data field {0} on type {1}", this.DataFieldX, t));
                     }
 
                     if (piy == null)
                     {
-                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
-                                                                          DataFieldY, t));
+                        throw new InvalidOperationException(
+                            string.Format("Could not find data field {0} on type {1}", this.DataFieldY, t));
                     }
                 }
 
-                var x = ToDouble(pix.GetValue(o, null));
-                var y = ToDouble(piy.GetValue(o, null));
-
+                double x = this.ToDouble(pix.GetValue(o, null));
+                double y = this.ToDouble(piy.GetValue(o, null));
 
                 var pp = new DataPoint(x, y);
                 dest.Add(pp);
             }
         }
 
-
         /// <summary>
         /// Updates the Max/Min limits from the specified point list.
         /// </summary>
-        /// <param name="pts">The points.</param>
+        /// <param name="pts">
+        /// The points.
+        /// </param>
         protected void InternalUpdateMaxMin(IList<IDataPoint> pts)
         {
             if (pts == null || pts.Count == 0)
@@ -214,60 +353,62 @@ namespace OxyPlot
                 return;
             }
 
-            double minx = MinX;
-            double miny = MinY;
-            double maxx = MaxX;
-            double maxy = MaxY;
+            double minx = this.MinX;
+            double miny = this.MinY;
+            double maxx = this.MaxX;
+            double maxy = this.MaxY;
 
-            foreach (var pt in pts)
+            foreach (IDataPoint pt in pts)
             {
-                if (!IsValidPoint(pt, XAxis, YAxis)) continue;
+                if (!this.IsValidPoint(pt, this.XAxis, this.YAxis))
+                {
+                    continue;
+                }
+
                 double x = pt.X;
                 double y = pt.Y;
-                if (x < minx || double.IsNaN(minx)) minx = x;
-                if (x > maxx || double.IsNaN(maxx)) maxx = x;
-                if (y < miny || double.IsNaN(miny)) miny = y;
-                if (y > maxy || double.IsNaN(maxy)) maxy = y;
-            }
-
-            MinX = minx;
-            MinY = miny;
-            MaxX = maxx;
-            MaxY = maxy;
-        }
-
-        /// <summary>
-        /// Updates the axes to include the max and min of this series.
-        /// </summary>
-        protected internal override void UpdateAxisMaxMin() {
-            XAxis.Include(MinX);
-            XAxis.Include(MaxX);
-            YAxis.Include(MinY);
-            YAxis.Include(MaxY);
-        }
-
-        /// <summary>
-        ///   Gets the value from the specified X.
-        /// </summary>
-        /// <param name = "x">The x coordinate.</param>
-        /// <returns></returns>
-        public double? GetValueFromX(double x)
-        {
-            int n = Points.Count;
-
-            for (int i = 0; i + 1 < n; i++)
-            {
-                if (IsBetween(x, Points[i].X, Points[i + 1].Y))
+                if (x < minx || double.IsNaN(minx))
                 {
-                    return Points[i].Y +
-                           (Points[i + 1].Y - Points[i].Y) /
-                           (Points[i + 1].X - Points[i].X) * (x - Points[i].X);
+                    minx = x;
+                }
+
+                if (x > maxx || double.IsNaN(maxx))
+                {
+                    maxx = x;
+                }
+
+                if (y < miny || double.IsNaN(miny))
+                {
+                    miny = y;
+                }
+
+                if (y > maxy || double.IsNaN(maxy))
+                {
+                    maxy = y;
                 }
             }
 
-            return null;
+            this.MinX = minx;
+            this.MinY = miny;
+            this.MaxX = maxx;
+            this.MaxY = maxy;
         }
 
+        /// <summary>
+        /// The is between.
+        /// </summary>
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <param name="x0">
+        /// The x 0.
+        /// </param>
+        /// <param name="x1">
+        /// The x 1.
+        /// </param>
+        /// <returns>
+        /// The is between.
+        /// </returns>
         private static bool IsBetween(double x, double x0, double x1)
         {
             if (x >= x0 && x <= x1)
@@ -283,21 +424,6 @@ namespace OxyPlot
             return false;
         }
 
-        /// <summary>
-        /// Determines whether the specified point is valid.
-        /// </summary>
-        /// <param name="pt">The pointt.</param>
-        /// <param name="xAxis">The x axis.</param>
-        /// <param name="yAxis">The y axis.</param>
-        /// <returns>
-        ///   <c>true</c> if the point is valid; otherwise, <c>false</c>.
-        /// </returns>
-        public virtual bool IsValidPoint(IDataPoint pt, IAxis xAxis, IAxis yAxis)
-        {
-            return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X)
-                   && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
-                   && (xAxis != null && xAxis.IsValidValue(pt.X))
-                   && (yAxis != null && yAxis.IsValidValue(pt.Y));
-        }
+        #endregion
     }
 }

@@ -1,10 +1,23 @@
-﻿using System;
-using System.Linq;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TimeSpanAxis.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Time Axis
+//   The values should be in seconds.
+//   The StringFormat value can be used to force formatting of the axis values
+//   "h:mm" shows hours and minutes
+//   "m:ss" shows minutes and seconds
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
+    using System;
+    using System.Linq;
+
     /// <summary>
-    ///   Time Axis
+    /// Time Axis
     ///   The values should be in seconds.
     ///   The StringFormat value can be used to force formatting of the axis values
     ///   "h:mm" shows hours and minutes
@@ -12,52 +25,99 @@ namespace OxyPlot
     /// </summary>
     public class TimeSpanAxis : LinearAxis
     {
+        #region Constructors and Destructors
+
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TimeSpanAxis" /> class.
+        /// Initializes a new instance of the <see cref="TimeSpanAxis"/> class.
         /// </summary>
-        /// <param name = "pos">The position.</param>
-        /// <param name = "title">The axis title.</param>
-        /// <param name = "format">The string format for the axis values.</param>
+        /// <param name="pos">
+        /// The position.
+        /// </param>
+        /// <param name="title">
+        /// The axis title.
+        /// </param>
+        /// <param name="format">
+        /// The string format for the axis values.
+        /// </param>
         public TimeSpanAxis(AxisPosition pos, string title = null, string format = "m:ss")
             : base(pos, title)
         {
-            StringFormat = format;
+            this.StringFormat = format;
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TimeSpanAxis" /> class.
+        /// Initializes a new instance of the <see cref="TimeSpanAxis"/> class.
         /// </summary>
-        /// <param name = "pos">The position.</param>
-        /// <param name = "min">The min.</param>
-        /// <param name = "max">The max.</param>
-        /// <param name = "title">The axis title.</param>
-        /// <param name = "format">The string format for the axis values.</param>
-        public TimeSpanAxis(AxisPosition pos = AxisPosition.Bottom, double min = double.NaN, double max = double.NaN,
-                        string title = null, string format = "m:ss")
+        /// <param name="pos">
+        /// The position.
+        /// </param>
+        /// <param name="min">
+        /// The min.
+        /// </param>
+        /// <param name="max">
+        /// The max.
+        /// </param>
+        /// <param name="title">
+        /// The axis title.
+        /// </param>
+        /// <param name="format">
+        /// The string format for the axis values.
+        /// </param>
+        public TimeSpanAxis(
+            AxisPosition pos = AxisPosition.Bottom, 
+            double min = double.NaN, 
+            double max = double.NaN, 
+            string title = null, 
+            string format = "m:ss")
             : base(pos, min, max, title)
         {
-            StringFormat = format;
+            this.StringFormat = format;
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The to double.
+        /// </summary>
+        /// <param name="s">
+        /// The s.
+        /// </param>
+        /// <returns>
+        /// The to double.
+        /// </returns>
         public static double ToDouble(TimeSpan s)
         {
             return s.TotalSeconds;
         }
 
+        /// <summary>
+        /// The to time span.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// </returns>
         public static TimeSpan ToTimeSpan(double value)
         {
             return TimeSpan.FromSeconds(value);
         }
 
         /// <summary>
-        ///   Formats the value.
+        /// Formats the value.
         /// </summary>
-        /// <param name = "x">The x.</param>
-        /// <returns></returns>
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <returns>
+        /// The format value.
+        /// </returns>
         public override string FormatValue(double x)
         {
-            var span = TimeSpan.FromSeconds(x);
-            string s = ActualStringFormat ?? "h:mm:ss";
+            TimeSpan span = TimeSpan.FromSeconds(x);
+            string s = this.ActualStringFormat ?? "h:mm:ss";
 
             s = s.Replace("mm", span.Minutes.ToString("00"));
             s = s.Replace("ss", span.Seconds.ToString("00"));
@@ -69,14 +129,39 @@ namespace OxyPlot
             return s;
         }
 
+        /// <summary>
+        /// The get value.
+        /// </summary>
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <returns>
+        /// The get value.
+        /// </returns>
         public override object GetValue(double x)
         {
             return TimeSpan.FromSeconds(x);
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The calculate actual interval.
+        /// </summary>
+        /// <param name="availableSize">
+        /// The available size.
+        /// </param>
+        /// <param name="maxIntervalSize">
+        /// The max interval size.
+        /// </param>
+        /// <returns>
+        /// The calculate actual interval.
+        /// </returns>
         protected override double CalculateActualInterval(double availableSize, double maxIntervalSize)
         {
-            double range = Math.Abs(ActualMinimum - ActualMaximum);
+            double range = Math.Abs(this.ActualMinimum - this.ActualMaximum);
             double interval = 1;
             var goodIntervals = new[] { 1.0, 5, 10, 30, 60, 120, 300, 600, 900, 1200, 1800, 3600 };
 
@@ -98,5 +183,7 @@ namespace OxyPlot
                 interval = nextInterval;
             }
         }
+
+        #endregion
     }
 }

@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AngleAxis.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   This is a WPF wrapper of OxyPlot.AngleAxis.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -13,13 +16,16 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class AngleAxis : LinearAxis
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes static members of the <see cref="AngleAxis"/> class.
+        /// </summary>
         static AngleAxis()
         {
             MajorGridlineStyleProperty.OverrideMetadata(typeof(AngleAxis), new PropertyMetadata(LineStyle.Solid));
             MinorGridlineStyleProperty.OverrideMetadata(typeof(AngleAxis), new PropertyMetadata(LineStyle.Solid));
         }
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AngleAxis"/> class.
@@ -27,8 +33,8 @@ namespace OxyPlot.Wpf
         public AngleAxis()
         {
             this.internalAxis = new OxyPlot.AngleAxis();
-            MajorGridlineStyle = LineStyle.Solid;
-            MinorGridlineStyle = LineStyle.Solid;
+            this.MajorGridlineStyle = LineStyle.Solid;
+            this.MinorGridlineStyle = LineStyle.Solid;
         }
 
         #endregion

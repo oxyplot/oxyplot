@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeAxis.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   This is a WPF wrapper of OxyPlot.DateTimeAxis.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -31,10 +34,7 @@ namespace OxyPlot.Wpf
         /// The culture property.
         /// </summary>
         public static readonly DependencyProperty CultureProperty = DependencyProperty.Register(
-            "Culture", 
-            typeof(CultureInfo), 
-            typeof(DateTimeAxis), 
-            new PropertyMetadata(CultureInfo.CurrentCulture));
+            "Culture", typeof(CultureInfo), typeof(DateTimeAxis), new PropertyMetadata(CultureInfo.CurrentCulture));
 
         /// <summary>
         /// The first date time property.

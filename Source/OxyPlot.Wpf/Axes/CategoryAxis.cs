@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CategoryAxis.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   This is a WPF wrapper of OxyPlot.CategoryAxis.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -39,10 +42,7 @@ namespace OxyPlot.Wpf
         /// The labels property.
         /// </summary>
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
-            "Labels", 
-            typeof(IList<string>), 
-            typeof(CategoryAxis), 
-            new PropertyMetadata(new List<string>(), DataChanged));
+            "Labels", typeof(IList<string>), typeof(CategoryAxis), new PropertyMetadata(new List<string>(), DataChanged));
 
         #endregion
 
@@ -55,10 +55,8 @@ namespace OxyPlot.Wpf
         {
             PositionProperty.OverrideMetadata(
                 typeof(CategoryAxis), new PropertyMetadata(AxisPosition.Bottom, DataChanged));
-            MinimumPaddingProperty.OverrideMetadata(
-                typeof(CategoryAxis), new PropertyMetadata(0.0, DataChanged));
-            MaximumPaddingProperty.OverrideMetadata(
-                typeof(CategoryAxis), new PropertyMetadata(0.0, DataChanged));
+            MinimumPaddingProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(0.0, DataChanged));
+            MaximumPaddingProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(0.0, DataChanged));
             TickStyleProperty.OverrideMetadata(
                 typeof(CategoryAxis), new PropertyMetadata(TickStyle.Outside, DataChanged));
         }

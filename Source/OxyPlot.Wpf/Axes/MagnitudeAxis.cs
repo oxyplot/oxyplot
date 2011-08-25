@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MagnitudeAxis.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   This is a WPF wrapper of OxyPlot.MagnitudeAxis.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -13,13 +16,16 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class MagnitudeAxis : LinearAxis
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes static members of the <see cref="MagnitudeAxis"/> class.
+        /// </summary>
         static MagnitudeAxis()
         {
             MajorGridlineStyleProperty.OverrideMetadata(typeof(MagnitudeAxis), new PropertyMetadata(LineStyle.Solid));
             MinorGridlineStyleProperty.OverrideMetadata(typeof(MagnitudeAxis), new PropertyMetadata(LineStyle.Solid));
         }
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MagnitudeAxis"/> class.

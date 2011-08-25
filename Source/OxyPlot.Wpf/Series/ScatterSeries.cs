@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ScatterSeries.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
 //   This is a WPF wrapper of OxyPlot.ScatterSeries
@@ -18,10 +18,6 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class ScatterSeries : XYAxisSeries
     {
-        public ScatterSeries()
-        {
-            internalSeries = new OxyPlot.ScatterSeries();
-        }
         #region Constants and Fields
 
         /// <summary>
@@ -64,10 +60,7 @@ namespace OxyPlot.Wpf
         /// The mapping property.
         /// </summary>
         public static readonly DependencyProperty MappingProperty = DependencyProperty.Register(
-            "Mapping", 
-            typeof(Func<object, IDataPoint>), 
-            typeof(ScatterSeries), 
-            new PropertyMetadata(null, DataChanged));
+            "Mapping", typeof(Func<object, IDataPoint>), typeof(ScatterSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The marker fill property.
@@ -79,10 +72,7 @@ namespace OxyPlot.Wpf
         /// The marker outline property.
         /// </summary>
         public static readonly DependencyProperty MarkerOutlineProperty = DependencyProperty.Register(
-            "MarkerOutline", 
-            typeof(ScreenPoint[]), 
-            typeof(ScatterSeries), 
-            new PropertyMetadata(null, AppearanceChanged));
+            "MarkerOutline", typeof(ScreenPoint[]), typeof(ScatterSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The marker size property.
@@ -94,10 +84,7 @@ namespace OxyPlot.Wpf
         /// The marker stroke property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeProperty = DependencyProperty.Register(
-            "MarkerStroke", 
-            typeof(Color?), 
-            typeof(ScatterSeries), 
-            new PropertyMetadata(null, AppearanceChanged));
+            "MarkerStroke", typeof(Color?), typeof(ScatterSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The marker stroke thickness property.
@@ -117,6 +104,18 @@ namespace OxyPlot.Wpf
             typeof(MarkerType), 
             typeof(ScatterSeries), 
             new PropertyMetadata(MarkerType.Square, AppearanceChanged));
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScatterSeries"/> class.
+        /// </summary>
+        public ScatterSeries()
+        {
+            this.internalSeries = new OxyPlot.ScatterSeries();
+        }
 
         #endregion
 
@@ -341,8 +340,8 @@ namespace OxyPlot.Wpf
         /// </returns>
         public override OxyPlot.Series CreateModel()
         {
-            this.SynchronizeProperties(internalSeries);
-            return internalSeries;
+            this.SynchronizeProperties(this.internalSeries);
+            return this.internalSeries;
         }
 
         #endregion

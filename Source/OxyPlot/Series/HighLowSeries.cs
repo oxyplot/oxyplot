@@ -1,15 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HighLowSeries.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Use the HighLowSeries to create time series High-Low plots.
+//   http://www.mathworks.com/help/toolbox/finance/highlowfts.html
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.Globalization;
     using System.Reflection;
@@ -370,6 +372,10 @@ namespace OxyPlot
                 true);
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Sets the default values.
         /// </summary>
@@ -383,6 +389,17 @@ namespace OxyPlot
                 this.LineStyle = model.GetDefaultLineStyle();
                 this.Color = model.GetDefaultColor();
             }
+        }
+
+        /// <summary>
+        /// The update axis max min.
+        /// </summary>
+        protected internal override void UpdateAxisMaxMin()
+        {
+            this.XAxis.Include(this.MinX);
+            this.XAxis.Include(this.MaxX);
+            this.YAxis.Include(this.MinY);
+            this.YAxis.Include(this.MaxY);
         }
 
         /// <summary>
@@ -464,17 +481,6 @@ namespace OxyPlot
             base.UpdateMaxMin();
             this.InternalUpdateMaxMin(this.items);
         }
-
-        protected internal override void UpdateAxisMaxMin()
-        {
-            this.XAxis.Include(this.MinX);
-            this.XAxis.Include(this.MaxX);
-            this.YAxis.Include(this.MinY);
-            this.YAxis.Include(this.MaxY);
-        }
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Updates the Max/Min limits from the specified point list.

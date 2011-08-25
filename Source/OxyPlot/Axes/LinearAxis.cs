@@ -1,10 +1,103 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LinearAxis.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Linear axis class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     /// <summary>
-    ///   Linear axis class.
+    /// Linear axis class.
     /// </summary>
     public class LinearAxis : AxisBase
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "LinearAxis" /> class.
+        /// </summary>
+        public LinearAxis()
+        {
+            this.FractionUnit = 1.0;
+            this.FractionUnitSymbol = null;
+            this.FormatAsFractions = false;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
+        /// </summary>
+        /// <param name="pos">
+        /// The pos.
+        /// </param>
+        /// <param name="title">
+        /// The title.
+        /// </param>
+        public LinearAxis(AxisPosition pos, string title)
+            : this()
+        {
+            this.Position = pos;
+            this.Title = title;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
+        /// </summary>
+        /// <param name="pos">
+        /// The pos.
+        /// </param>
+        /// <param name="minimum">
+        /// The minimum.
+        /// </param>
+        /// <param name="maximum">
+        /// The maximum.
+        /// </param>
+        /// <param name="title">
+        /// The title.
+        /// </param>
+        public LinearAxis(
+            AxisPosition pos, double minimum = double.NaN, double maximum = double.NaN, string title = null)
+            : this(pos, minimum, maximum, double.NaN, double.NaN, title)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
+        /// </summary>
+        /// <param name="pos">
+        /// The pos.
+        /// </param>
+        /// <param name="minimum">
+        /// The minimum.
+        /// </param>
+        /// <param name="maximum">
+        /// The maximum.
+        /// </param>
+        /// <param name="majorStep">
+        /// The major step.
+        /// </param>
+        /// <param name="minorStep">
+        /// The minor step.
+        /// </param>
+        /// <param name="title">
+        /// The title.
+        /// </param>
+        public LinearAxis(
+            AxisPosition pos, double minimum, double maximum, double majorStep, double minorStep, string title = null)
+            : this(pos, title)
+        {
+            this.Minimum = minimum;
+            this.Maximum = maximum;
+            this.MajorStep = majorStep;
+            this.MinorStep = minorStep;
+        }
+
+        #endregion
+
+        #region Public Properties
+
         /// <summary>
         /// Gets or sets a value indicating whether to format numbers as fractions.
         /// </summary>
@@ -26,54 +119,29 @@
         /// <value>The fraction unit symbol.</value>
         public string FractionUnitSymbol { get; set; }
 
+        #endregion
 
-        /// <summary>
-        ///   Initializes a new instance of the <see cref = "LinearAxis" /> class.
-        /// </summary>
-        public LinearAxis()
-        {
-            FractionUnit = 1.0;
-            FractionUnitSymbol = null;
-            FormatAsFractions = false;
-        }
-
-        /// <summary>
-        ///   Initializes a new instance of the <see cref = "LinearAxis" /> class.
-        /// </summary>
-        /// <param name = "pos">The pos.</param>
-        /// <param name = "title">The title.</param>
-        public LinearAxis(AxisPosition pos, string title)
-            : this()
-        {
-            Position = pos;
-            Title = title;
-        }
-
-        public LinearAxis(AxisPosition pos, double minimum = double.NaN, double maximum = double.NaN,
-                          string title = null)
-            : this(pos, minimum, maximum, double.NaN, double.NaN, title)
-        {
-        }
-
-        public LinearAxis(AxisPosition pos, double minimum, double maximum, double majorStep, double minorStep,
-                          string title = null)
-            : this(pos, title)
-        {
-            Minimum = minimum;
-            Maximum = maximum;
-            MajorStep = majorStep;
-            MinorStep = minorStep;
-        }
+        #region Public Methods
 
         /// <summary>
         /// Formats the value to be used on the axis.
         /// </summary>
-        /// <param name="x">The value.</param>
-        /// <returns>The formatted value.</returns>
+        /// <param name="x">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The formatted value.
+        /// </returns>
         public override string FormatValue(double x)
         {
-            if (FormatAsFractions) return FractionHelper.ConvertToFractionString(x, FractionUnit, FractionUnitSymbol, 1e-6);
+            if (this.FormatAsFractions)
+            {
+                return FractionHelper.ConvertToFractionString(x, this.FractionUnit, this.FractionUnitSymbol, 1e-6);
+            }
+
             return base.FormatValue(x);
         }
+
+        #endregion
     }
 }

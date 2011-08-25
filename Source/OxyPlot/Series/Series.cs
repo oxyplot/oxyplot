@@ -1,7 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Series.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Abstract base class for all series.
+//   This class contains internal methods that should be called only from the PlotModel.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -128,6 +132,11 @@ namespace OxyPlot
         protected internal abstract void SetDefaultValues(PlotModel model);
 
         /// <summary>
+        /// Updates the axis maximum and minimum values.
+        /// </summary>
+        protected internal abstract void UpdateAxisMaxMin();
+
+        /// <summary>
         /// Updates the data.
         /// </summary>
         protected internal abstract void UpdateData();
@@ -136,11 +145,6 @@ namespace OxyPlot
         /// Updates the maximum and minimum of the series.
         /// </summary>
         protected internal abstract void UpdateMaxMin();
-
-        /// <summary>
-        /// Updates the axis maximum and minimum values.
-        /// </summary>
-        protected internal abstract void UpdateAxisMaxMin();
 
         #endregion
     }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AreaSeries.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
 //   This is a WPF wrapper of OxyPlot.AreaSeries
@@ -17,11 +17,6 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class AreaSeries : LineSeries
     {
-        public AreaSeries()
-        {
-            internalSeries = new OxyPlot.AreaSeries();
-
-        }
         #region Constants and Fields
 
         /// <summary>
@@ -53,6 +48,18 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty Reverse2Property = DependencyProperty.Register(
             "Reverse2", typeof(bool), typeof(AreaSeries), new PropertyMetadata(true, AppearanceChanged));
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AreaSeries"/> class.
+        /// </summary>
+        public AreaSeries()
+        {
+            this.internalSeries = new OxyPlot.AreaSeries();
+        }
 
         #endregion
 
@@ -149,8 +156,8 @@ namespace OxyPlot.Wpf
         /// </returns>
         public override OxyPlot.Series CreateModel()
         {
-            this.SynchronizeProperties(internalSeries);
-            return internalSeries;
+            this.SynchronizeProperties(this.internalSeries);
+            return this.internalSeries;
         }
 
         #endregion

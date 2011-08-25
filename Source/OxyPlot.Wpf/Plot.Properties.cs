@@ -1,7 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.Properties.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Partial class for the WPF Plot control.
+//   This file contains dependency properties used for defining the plot in XAML.
+//   These properties are only used when Model is null.
+//   In this case an internal PlotModel is created and the dependency properties are copied from the control to the
+//   internal PlotModel.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -26,20 +33,7 @@ namespace OxyPlot.Wpf
         /// The auto adjust plot margins property.
         /// </summary>
         public static readonly DependencyProperty AutoAdjustPlotMarginsProperty =
-            DependencyProperty.Register(
-                "AutoAdjustPlotMargins", typeof(bool), typeof(Plot), new PropertyMetadata(true));
-
-        /// <summary>
-        /// The plot area border color property.
-        /// </summary>
-        public static readonly DependencyProperty PlotAreaBorderColorProperty = DependencyProperty.Register(
-            "PlotAreaBorderColor", typeof(Color), typeof(Plot), new PropertyMetadata(Colors.Black, AppearanceChanged));
-
-        /// <summary>
-        /// The plot area border thickness property.
-        /// </summary>
-        public static readonly DependencyProperty PlotAreaBorderThicknessProperty = DependencyProperty.Register(
-            "PlotAreaBorderThickness", typeof(double), typeof(Plot), new PropertyMetadata(1.0, AppearanceChanged));
+            DependencyProperty.Register("AutoAdjustPlotMargins", typeof(bool), typeof(Plot), new PropertyMetadata(true));
 
         /// <summary>
         ///   The default tracker property.
@@ -78,10 +72,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendBorderThicknessProperty =
             DependencyProperty.Register(
-                "LegendBorderThickness", 
-                typeof(double), 
-                typeof(Plot), 
-                new PropertyMetadata(1.0, AppearanceChanged));
+                "LegendBorderThickness", typeof(double), typeof(Plot), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         /// The legend font property.
@@ -130,10 +121,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendItemSpacingProperty =
             DependencyProperty.Register(
-                "LegendItemSpacing", 
-                typeof(double), 
-                typeof(Plot), 
-                new PropertyMetadata(24.0, AppearanceChanged));
+                "LegendItemSpacing", typeof(double), typeof(Plot), new PropertyMetadata(24.0, AppearanceChanged));
 
         /// <summary>
         /// The legend margin property.
@@ -181,20 +169,14 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendSymbolLengthProperty =
             DependencyProperty.Register(
-                "LegendSymbolLength", 
-                typeof(double), 
-                typeof(Plot), 
-                new PropertyMetadata(16.0, AppearanceChanged));
+                "LegendSymbolLength", typeof(double), typeof(Plot), new PropertyMetadata(16.0, AppearanceChanged));
 
         /// <summary>
         /// The legend symbol margin property.
         /// </summary>
         public static readonly DependencyProperty LegendSymbolMarginProperty =
             DependencyProperty.Register(
-                "LegendSymbolMargin", 
-                typeof(double), 
-                typeof(Plot), 
-                new PropertyMetadata(4.0, AppearanceChanged));
+                "LegendSymbolMargin", typeof(double), typeof(Plot), new PropertyMetadata(4.0, AppearanceChanged));
 
         /// <summary>
         /// The legend symbol placement property.
@@ -218,10 +200,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendTitleFontSizeProperty =
             DependencyProperty.Register(
-                "LegendTitleFontSize", 
-                typeof(double), 
-                typeof(Plot), 
-                new PropertyMetadata(12.0, AppearanceChanged));
+                "LegendTitleFontSize", typeof(double), typeof(Plot), new PropertyMetadata(12.0, AppearanceChanged));
 
         /// <summary>
         /// The legend title font weight property.
@@ -238,6 +217,23 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
             "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
+
+        /// <summary>
+        /// The plot area border color property.
+        /// </summary>
+        public static readonly DependencyProperty PlotAreaBorderColorProperty =
+            DependencyProperty.Register(
+                "PlotAreaBorderColor", 
+                typeof(Color), 
+                typeof(Plot), 
+                new PropertyMetadata(Colors.Black, AppearanceChanged));
+
+        /// <summary>
+        /// The plot area border thickness property.
+        /// </summary>
+        public static readonly DependencyProperty PlotAreaBorderThicknessProperty =
+            DependencyProperty.Register(
+                "PlotAreaBorderThickness", typeof(double), typeof(Plot), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         /// The plot margins property.
@@ -368,40 +364,6 @@ namespace OxyPlot.Wpf
             get
             {
                 return this.axes;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the color of the plot area border.
-        /// </summary>
-        /// <value>The color of the plot area border.</value>
-        public Color PlotAreaBorderColor
-        {
-            get
-            {
-                return (Color)this.GetValue(PlotAreaBorderColorProperty);
-            }
-
-            set
-            {
-                this.SetValue(PlotAreaBorderColorProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the thickness of the plot area border.
-        /// </summary>
-        /// <value>The thickness of the plot area border.</value>
-        public double PlotAreaBorderThickness
-        {
-            get
-            {
-                return (double)this.GetValue(PlotAreaBorderThicknessProperty);
-            }
-
-            set
-            {
-                this.SetValue(PlotAreaBorderThicknessProperty, value);
             }
         }
 
@@ -789,6 +751,40 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(ModelProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the color of the plot area border.
+        /// </summary>
+        /// <value>The color of the plot area border.</value>
+        public Color PlotAreaBorderColor
+        {
+            get
+            {
+                return (Color)this.GetValue(PlotAreaBorderColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(PlotAreaBorderColorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the thickness of the plot area border.
+        /// </summary>
+        /// <value>The thickness of the plot area border.</value>
+        public double PlotAreaBorderThickness
+        {
+            get
+            {
+                return (double)this.GetValue(PlotAreaBorderThicknessProperty);
+            }
+
+            set
+            {
+                this.SetValue(PlotAreaBorderThicknessProperty, value);
             }
         }
 
