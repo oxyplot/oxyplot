@@ -39,7 +39,7 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The points.
+        /// The points list.
         /// </summary>
         protected IList<IDataPoint> points = new List<IDataPoint>();
 
