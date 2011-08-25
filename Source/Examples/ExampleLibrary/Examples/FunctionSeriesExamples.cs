@@ -122,7 +122,7 @@
             var m = CreatePlotModel();
             m.PlotMargins = new OxyThickness(60, 20, 4, 40);
             m.PlotType = PlotType.Polar;
-            m.BoxThickness = 0;
+            m.PlotAreaBorderThickness = 0;
 
             m.Axes.Add(new AngleAxis(0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
                 {
@@ -183,7 +183,7 @@
             var pm = new PlotModel("Trigonometric functions", "Example using the FunctionSeries")
                 {
                     PlotType = PlotType.Cartesian,
-                    Background = OxyColors.White
+                    PlotAreaBackground = OxyColors.White
                 };
             pm.Series.Add(new FunctionSeries(Math.Sin, -10, 10, 0.1, "sin(x)"));
             pm.Series.Add(new FunctionSeries(Math.Cos, -10, 10, 0.1, "cos(x)"));

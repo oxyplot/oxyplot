@@ -12,7 +12,7 @@ namespace ExampleLibrary
             var model = new PlotModel("Polar plot", "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π")
                             {
                                 PlotType = PlotType.Polar,
-                                BoxThickness = 0,
+                                PlotAreaBorderThickness = 0,
                                 PlotMargins = new OxyThickness(60, 20, 4, 40)
                             };
             model.Axes.Add(

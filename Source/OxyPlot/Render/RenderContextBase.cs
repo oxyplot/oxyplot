@@ -2,9 +2,14 @@
 
 namespace OxyPlot
 {
+    using System;
+
     public abstract class RenderContextBase : IRenderContext
     {
         public double Width { get; protected set; }
+
+        public bool PaintBackground { get; protected set; }
+
         public double Height { get; protected set; }
 
         public virtual void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)

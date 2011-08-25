@@ -28,7 +28,7 @@ namespace OxyPlot
             }
 
             RenderBackgrounds(rc);
-            RenderAxes(rc,AxisLayer.BelowSeries);
+            RenderAxes(rc, AxisLayer.BelowSeries);
             RenderAnnotations(rc, AnnotationLayer.BelowSeries);
             RenderSeries(rc);
             RenderAnnotations(rc, AnnotationLayer.OverSeries);
@@ -83,10 +83,10 @@ namespace OxyPlot
                 }
             }
             if (isAdjusted)
-                ActualPlotMargins=new OxyThickness(newLeft,newTop,newRight,newBottom);
+                ActualPlotMargins = new OxyThickness(newLeft, newTop, newRight, newBottom);
             return isAdjusted;
         }
-        
+
 
         /// <summary>
         /// Makes the legend properties safe.
@@ -216,18 +216,26 @@ namespace OxyPlot
         /// <param name="rc">The rc.</param>
         private void RenderBackgrounds(IRenderContext rc)
         {
-            // Render the main background of the plot (only if there are axes)
-            // The border is rendered by DrawBox to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
-            if (Axes.Count > 0)
+            // Render the background of the plot
+            if (Background != null && rc.PaintBackground)
             {
-                rc.DrawRectangleAsPolygon(PlotArea, Background, null, 0);
+                rc.DrawRectangle(new OxyRect(0, 0, rc.Width, rc.Height), Background, null, 0);
+            }
+
+            // Render the main background of the plot area (only if there are axes)
+            // The border is rendered by DrawBox to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
+            if (Axes.Count > 0 && PlotAreaBackground != null)
+            {
+                rc.DrawRectangleAsPolygon(PlotArea, this.PlotAreaBackground, null, 0);
             }
 
             foreach (var s in Series)
             {
                 var s2 = s as XYAxisSeries;
                 if (s2 == null || s2.Background == null)
+                {
                     continue;
+                }
                 rc.DrawRectangle(s2.GetScreenRectangle(), s2.Background, null, 0);
             }
         }
@@ -240,7 +248,7 @@ namespace OxyPlot
         {
             var size1 = rc.MeasureText(Title, ActualTitleFont, TitleFontSize, TitleFontWeight);
             var size2 = rc.MeasureText(Subtitle, SubtitleFont ?? ActualTitleFont, SubtitleFontSize, SubtitleFontWeight);
-            
+
             // double height = size1.Height + size2.Height;
             // double dy = (TitleArea.Top+TitleArea.Bottom-height)*0.5;
             double dy = TitleArea.Top;
@@ -274,7 +282,7 @@ namespace OxyPlot
             // The border is rendered by DrawBox to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
             if (Axes.Count > 0)
             {
-                rc.DrawRectangleAsPolygon(PlotArea, null, BoxColor, BoxThickness);
+                rc.DrawRectangleAsPolygon(PlotArea, null, this.PlotAreaBorderColor, this.PlotAreaBorderThickness);
             }
         }
 

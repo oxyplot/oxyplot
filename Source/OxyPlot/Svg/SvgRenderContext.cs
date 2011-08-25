@@ -13,6 +13,7 @@ namespace OxyPlot
             w = new SvgWriter(s, width, height, isDocument);
             this.Width = width;
             this.Height = height;
+            this.PaintBackground = true;
         }
 
         public SvgRenderContext(string path, double width, double height)

@@ -212,8 +212,8 @@ namespace OxyPlot
             this.TitlePadding = 6;
 
             this.TextColor = OxyColors.Black;
-            this.BoxColor = OxyColors.Black;
-            this.BoxThickness = 1;
+            this.PlotAreaBorderColor = OxyColors.Black;
+            this.PlotAreaBorderThickness = 1;
 
             this.IsLegendVisible = true;
             this.LegendTitleFont = null;
@@ -372,21 +372,26 @@ namespace OxyPlot
         public Collection<Axis> Axes { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the background of the plot area.
+        /// Gets or sets the color of the background of the plot.
         /// </summary>
         public OxyColor Background { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the background of the plot area.
+        /// </summary>
+        public OxyColor PlotAreaBackground { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the border around the plot area.
         /// </summary>
         /// <value>The color of the box.</value>
-        public OxyColor BoxColor { get; set; }
+        public OxyColor PlotAreaBorderColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the box thickness.
+        /// Gets or sets the thickness of the border around the plot area.
         /// </summary>
         /// <value>The box thickness.</value>
-        public double BoxThickness { get; set; }
+        public double PlotAreaBorderThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the default colors.

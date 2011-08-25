@@ -136,7 +136,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Zero crossing axes">
-                <oxy:Plot BoxThickness="0" PlotMargins="10">
+                <oxy:Plot PlotAreaBorderThickness="0" PlotMargins="10">
                     <oxy:Plot.Axes>
                         <oxy:LinearAxis Minimum="-30" Maximum="50" Position="Left" TickStyle="Crossing" PositionAtZeroCrossing="True"/>
                         <oxy:LinearAxis Minimum="-50" Maximum="70" Position="Bottom" TickStyle="Crossing" PositionAtZeroCrossing="True"/>

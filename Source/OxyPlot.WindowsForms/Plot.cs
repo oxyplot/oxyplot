@@ -43,7 +43,7 @@ namespace Oxyplot.WindowsForms
             set
             {
                 model = value;
-                RefreshPlot(true);
+                InvalidatePlot(true);
             }
         }
 
@@ -106,7 +106,7 @@ namespace Oxyplot.WindowsForms
             }
             bool control = (e.Modifiers & Keys.Control) == Keys.Control;
             bool alt = (e.Modifiers & Keys.Alt) == Keys.Alt;
- 
+
             if (control && alt && this.ActualModel != null)
             {
                 switch (e.KeyCode)
@@ -128,7 +128,7 @@ namespace Oxyplot.WindowsForms
         {
             foreach (var a in Model.Axes)
                 a.Reset();
-            RefreshPlot(false);
+            InvalidatePlot(false);
         }
 
 
@@ -229,29 +229,25 @@ namespace Oxyplot.WindowsForms
         public void Pan(IAxis axis, ScreenPoint x0, ScreenPoint x1)
         {
             axis.Pan(x0, x1);
-            if (Model != null)
-                Model.UpdateAxisTransforms();
+            this.InvalidatePlot(false);
         }
 
         public void Reset(IAxis axis)
         {
             axis.Reset();
-            if (Model != null)
-                Model.UpdateAxisTransforms();
+            this.InvalidatePlot(false);
         }
 
         public void Zoom(IAxis axis, double p1, double p2)
         {
             axis.Zoom(p1, p2);
-            if (Model != null)
-                Model.UpdateAxisTransforms();
+            this.InvalidatePlot(false);
         }
 
         public void ZoomAt(IAxis axis, double factor, double x)
         {
             axis.ZoomAt(factor, x);
-            if (Model != null)
-                Model.UpdateAxisTransforms();
+            this.InvalidatePlot(false);
         }
 
         public void ShowTracker(TrackerHitResult data)
