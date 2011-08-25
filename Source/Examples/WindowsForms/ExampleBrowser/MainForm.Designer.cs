@@ -74,8 +74,6 @@
             plotModel1.AutoAdjustPlotMargins = true;
             plotModel1.Axes = ((System.Collections.ObjectModel.Collection<OxyPlot.Axis>)(resources.GetObject("plotModel1.Axes")));
             plotModel1.Background = null;
-            plotModel1.BoxColor = ((OxyPlot.OxyColor)(resources.GetObject("plotModel1.BoxColor")));
-            plotModel1.BoxThickness = 1D;
             plotModel1.DefaultColors = ((System.Collections.Generic.List<OxyPlot.OxyColor>)(resources.GetObject("plotModel1.DefaultColors")));
             plotModel1.IsLegendVisible = true;
             plotModel1.LegendBackground = null;

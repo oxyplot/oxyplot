@@ -23,8 +23,30 @@ namespace OxyPlot.Silverlight
 
         #region IRenderContext Members
 
+        /// <summary>
+        /// Gets the width.
+        /// </summary>
+        /// <value>The width.</value>
         public double Width { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether to paint the background.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the background should be painted; otherwise, <c>false</c>.
+        /// </value>
+        public bool PaintBackground
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the height.
+        /// </summary>
+        /// <value>The height.</value>
         public double Height { get; private set; }
 
         readonly Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();

@@ -30,16 +30,16 @@ namespace OxyPlot.Wpf
                 "AutoAdjustPlotMargins", typeof(bool), typeof(Plot), new PropertyMetadata(true));
 
         /// <summary>
-        /// The box color property.
+        /// The plot area border color property.
         /// </summary>
-        public static readonly DependencyProperty BoxColorProperty = DependencyProperty.Register(
-            "BoxColor", typeof(Color), typeof(Plot), new PropertyMetadata(Colors.Black, AppearanceChanged));
+        public static readonly DependencyProperty PlotAreaBorderColorProperty = DependencyProperty.Register(
+            "PlotAreaBorderColor", typeof(Color), typeof(Plot), new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
-        /// The box thickness property.
+        /// The plot area border thickness property.
         /// </summary>
-        public static readonly DependencyProperty BoxThicknessProperty = DependencyProperty.Register(
-            "BoxThickness", typeof(double), typeof(Plot), new PropertyMetadata(1.0, AppearanceChanged));
+        public static readonly DependencyProperty PlotAreaBorderThicknessProperty = DependencyProperty.Register(
+            "PlotAreaBorderThickness", typeof(double), typeof(Plot), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         ///   The default tracker property.
@@ -372,36 +372,36 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the color of the box.
+        /// Gets or sets the color of the plot area border.
         /// </summary>
-        /// <value>The color of the box.</value>
-        public Color BoxColor
+        /// <value>The color of the plot area border.</value>
+        public Color PlotAreaBorderColor
         {
             get
             {
-                return (Color)this.GetValue(BoxColorProperty);
+                return (Color)this.GetValue(PlotAreaBorderColorProperty);
             }
 
             set
             {
-                this.SetValue(BoxColorProperty, value);
+                this.SetValue(PlotAreaBorderColorProperty, value);
             }
         }
 
         /// <summary>
-        /// Gets or sets the box thickness.
+        /// Gets or sets the thickness of the plot area border.
         /// </summary>
-        /// <value>The box thickness.</value>
-        public double BoxThickness
+        /// <value>The thickness of the plot area border.</value>
+        public double PlotAreaBorderThickness
         {
             get
             {
-                return (double)this.GetValue(BoxThicknessProperty);
+                return (double)this.GetValue(PlotAreaBorderThicknessProperty);
             }
 
             set
             {
-                this.SetValue(BoxThicknessProperty, value);
+                this.SetValue(PlotAreaBorderThicknessProperty, value);
             }
         }
 
@@ -1051,8 +1051,8 @@ namespace OxyPlot.Wpf
                 m.LegendItemAlignment = this.LegendItemAlignment.ToHorizontalTextAlign();
                 m.LegendSymbolPlacement = this.LegendSymbolPlacement;
 
-                m.BoxColor = this.BoxColor.ToOxyColor();
-                m.BoxThickness = this.BoxThickness;
+                m.PlotAreaBorderColor = this.PlotAreaBorderColor.ToOxyColor();
+                m.PlotAreaBorderThickness = this.PlotAreaBorderThickness;
             }
         }
 

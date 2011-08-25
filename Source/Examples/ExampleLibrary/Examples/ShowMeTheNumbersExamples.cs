@@ -31,7 +31,7 @@ namespace ExampleLibrary
         public static PlotModel Graph1()
         {
             var pm = CreatePlotModel();
-            pm.BoxThickness = 0;
+            pm.PlotAreaBorderThickness = 0;
             pm.Axes.Add(
                 new CategoryAxis
                     {
@@ -60,7 +60,7 @@ namespace ExampleLibrary
         public static PlotModel Graph2()
         {
             var pm = CreatePlotModel();
-            pm.BoxThickness = 0;
+            pm.PlotAreaBorderThickness = 0;
             pm.IsLegendVisible = false;
             var months = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
             var sales1 = new[] { 1000, 1010, 1020, 1010, 1020, 1030, 1000, 500, 1000, 900, 900, 1000 };
@@ -104,7 +104,7 @@ namespace ExampleLibrary
         public static PlotModel Graph3()
         {
             var pm = CreatePlotModel();
-            pm.BoxThickness = 0;
+            pm.PlotAreaBorderThickness = 0;
             pm.PlotMargins = new OxyThickness(100, 40, 20, 40);
             var values = new Dictionary<string, double> {
                     { "Manufacturing", 240 }, 
@@ -141,7 +141,7 @@ namespace ExampleLibrary
         public static PlotModel Graph4()
         {
             var pm = CreatePlotModel();
-            pm.BoxThickness = 0;
+            pm.PlotAreaBorderThickness = 0;
             pm.Axes.Add(
                 new CategoryAxis
                     {
@@ -176,7 +176,7 @@ namespace ExampleLibrary
         public static PlotModel Graph5()
         {
             var pm = CreatePlotModel();
-            pm.BoxThickness = 0;
+            pm.PlotAreaBorderThickness = 0;
             var values = new Dictionary<string, double>();
             values.Add("Sales", 7);
             values.Add("Marketing", -7);
@@ -215,7 +215,7 @@ namespace ExampleLibrary
         public static PlotModel Graph6()
         {
             var pm = CreatePlotModel();
-            pm.BoxThickness = 0;
+            pm.PlotAreaBorderThickness = 0;
             pm.PlotMargins = new OxyThickness(60, 4, 4, 60);
             var values = new Dictionary<string, double>
                 {
@@ -253,7 +253,7 @@ namespace ExampleLibrary
         {
             var pm = new PlotModel("Correlation of Employee Heights and Salaries")
                 {
-                    BoxThickness = 0
+                    PlotAreaBorderThickness = 0
                 };
             var values = new[] 
             {

@@ -15,6 +15,7 @@ namespace Oxyplot.WindowsForms
         {
             this.Width = width;
             this.Height = height;
+            this.PaintBackground = true;
             g = graphics;
         }
 

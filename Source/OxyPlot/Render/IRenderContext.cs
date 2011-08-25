@@ -90,6 +90,12 @@ namespace OxyPlot
         /// <value>The width.</value>
         double Width { get; }
 
+        /// <summary>
+        /// Gets a value indicating whether to paint the background.
+        /// </summary>
+        /// <value><c>true</c> if the background should be painted; otherwise, <c>false</c>.</value>
+        bool PaintBackground { get; }
+
         #endregion
 
         #region Public Methods

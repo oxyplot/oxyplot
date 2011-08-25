@@ -23,6 +23,7 @@ namespace OxyPlot.Pdf
         {
             Width = width;
             Height = height;
+            PaintBackground = true;
             doc = new PdfDocument();
             page = new PdfPage { Width = new XUnit(width), Height = new XUnit(height) };
             doc.AddPage(page);

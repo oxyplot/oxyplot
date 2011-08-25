@@ -81,12 +81,25 @@ namespace ExampleLibrary
             var model = CreatePlotModel();
             model.Background = OxyColors.Black;
             model.TextColor = OxyColors.White;
-            model.BoxColor = OxyColors.White;
+            model.PlotAreaBorderColor = OxyColors.White;
             var c = OxyColors.White;
             model.PlotType = PlotType.Cartesian;
             model.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 2, 1000, "f(x)=sin(x)"));
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, "x") { MajorStep = Math.PI / 2, FormatAsFractions = true, FractionUnit = Math.PI, FractionUnitSymbol = "π", MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c), TicklineColor = OxyColors.White });
             model.Axes.Add(new LinearAxis(AxisPosition.Left, "f(x)") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c), TicklineColor = OxyColors.White });
+            return model;
+        }
+
+        [Example("Background and PlotAreaBackground")]
+        public static PlotModel Backgrounds()
+        {
+            var model = CreatePlotModel();
+            model.Background = OxyColors.Silver;
+            model.PlotAreaBackground = OxyColors.Gray;
+            model.PlotAreaBorderColor = OxyColors.Black;
+            model.PlotAreaBorderThickness = 3;
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left));
             return model;
         }
 

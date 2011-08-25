@@ -84,7 +84,7 @@
                 {
                    PlotType = PlotType.Polar, 
                    PlotMargins = new OxyThickness(20, 20, 4, 40), 
-                   BoxThickness = 0 
+                   PlotAreaBorderThickness = 0 
                 };
             model.Axes.Add(
                 new AngleAxis(0, this.MaxAngle, this.MajorStep, this.MinorStep)
