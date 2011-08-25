@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotModel.cs" company="OxyPlot">
-//   See http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Plot coordinate system type
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -11,7 +14,6 @@ namespace OxyPlot
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Reflection;
-    using System.Xml.Serialization;
 
     using OxyPlot.Reporting;
 
@@ -23,13 +25,13 @@ namespace OxyPlot
         /// <summary>
         /// XY coordinate system - two perpendicular axes
         /// </summary>
-        XY,
+        XY, 
 
         /// <summary>
         /// Cartesian coordinate system - perpendicular axes with the same scaling
         /// http://en.wikipedia.org/wiki/Cartesian_coordinate_system
         /// </summary>
-        Cartesian,
+        Cartesian, 
 
         /// <summary>
         /// Polar coordinate system - with radial and angular axes
@@ -46,7 +48,7 @@ namespace OxyPlot
         /// <summary>
         /// The inside.
         /// </summary>
-        Inside,
+        Inside, 
 
         /// <summary>
         /// The outside.
@@ -62,57 +64,57 @@ namespace OxyPlot
         /// <summary>
         /// The top left.
         /// </summary>
-        TopLeft,
+        TopLeft, 
 
         /// <summary>
         /// The top center.
         /// </summary>
-        TopCenter,
+        TopCenter, 
 
         /// <summary>
         /// The top right.
         /// </summary>
-        TopRight,
+        TopRight, 
 
         /// <summary>
         /// The bottom left.
         /// </summary>
-        BottomLeft,
+        BottomLeft, 
 
         /// <summary>
         /// The bottom center.
         /// </summary>
-        BottomCenter,
+        BottomCenter, 
 
         /// <summary>
         /// The bottom right.
         /// </summary>
-        BottomRight,
+        BottomRight, 
 
         /// <summary>
         /// The left top.
         /// </summary>
-        LeftTop,
+        LeftTop, 
 
         /// <summary>
         /// The left middle.
         /// </summary>
-        LeftMiddle,
+        LeftMiddle, 
 
         /// <summary>
         /// The left bottom.
         /// </summary>
-        LeftBottom,
+        LeftBottom, 
 
         /// <summary>
         /// The right top.
         /// </summary>
-        RightTop,
+        RightTop, 
 
         /// <summary>
         /// The right middle.
         /// </summary>
-        RightMiddle,
+        RightMiddle, 
 
         /// <summary>
         /// The right bottom.
@@ -128,7 +130,7 @@ namespace OxyPlot
         /// <summary>
         /// The horizontal.
         /// </summary>
-        Horizontal,
+        Horizontal, 
 
         /// <summary>
         /// The vertical.
@@ -144,7 +146,7 @@ namespace OxyPlot
         /// <summary>
         /// The normal.
         /// </summary>
-        Normal,
+        Normal, 
 
         /// <summary>
         /// The reverse.
@@ -160,7 +162,7 @@ namespace OxyPlot
         /// <summary>
         /// The left.
         /// </summary>
-        Left,
+        Left, 
 
         /// <summary>
         /// The right.
@@ -377,23 +379,6 @@ namespace OxyPlot
         public OxyColor Background { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the background of the plot area.
-        /// </summary>
-        public OxyColor PlotAreaBackground { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color of the border around the plot area.
-        /// </summary>
-        /// <value>The color of the box.</value>
-        public OxyColor PlotAreaBorderColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the thickness of the border around the plot area.
-        /// </summary>
-        /// <value>The box thickness.</value>
-        public double PlotAreaBorderThickness { get; set; }
-
-        /// <summary>
         /// Gets or sets the default colors.
         /// </summary>
         /// <value>The default colors.</value>
@@ -563,6 +548,23 @@ namespace OxyPlot
         public OxyRect PlotArea { get; private set; }
 
         /// <summary>
+        /// Gets or sets the color of the background of the plot area.
+        /// </summary>
+        public OxyColor PlotAreaBackground { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the border around the plot area.
+        /// </summary>
+        /// <value>The color of the box.</value>
+        public OxyColor PlotAreaBorderColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the thickness of the border around the plot area.
+        /// </summary>
+        /// <value>The box thickness.</value>
+        public double PlotAreaBorderThickness { get; set; }
+
+        /// <summary>
         /// Gets or sets the minimum margins around the plot (this should be large enough to fit the axes).
         /// The default value is (60, 4, 4, 40).
         /// Set AutoAdjustPlotMargins if you want the margins to be adjusted when the axes require more space.
@@ -720,8 +722,8 @@ namespace OxyPlot
 
             r.AddParagraph(
                 string.Format(
-                    "Report generated by OxyPlot {0}, {1:u}",
-                    Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
+                    "Report generated by OxyPlot {0}, {1:u}", 
+                    Assembly.GetExecutingAssembly().GetName().Version.ToString(3), 
                     DateTime.Now));
             return r;
         }
@@ -970,6 +972,37 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Updates all axes and series.
+        /// 1. Updates the data of each Series (only if updateData==true).
+        /// 2. Ensure that all series have axes assigned.
+        /// 3. Updates the max and min of the axes.
+        /// </summary>
+        /// <param name="updateData">
+        /// if set to <c>true</c>, all data collections will be updated.
+        /// </param>
+        public void Update(bool updateData = true)
+        {
+            if (updateData)
+            {
+                foreach (Series s in this.Series)
+                {
+                    s.UpdateData();
+                }
+            }
+
+            // Ensure that there are default axes available
+            this.EnsureDefaultAxes();
+
+            foreach (Axis a in this.Axes)
+            {
+                a.UpdateFromSeries(this.Series);
+            }
+
+            // Update the max and min of the axes
+            this.UpdateMaxMin(updateData);
+        }
+
+        /// <summary>
         /// Updates the axis transforms and intervals.
         /// This is used after pan/zoom.
         /// </summary>
@@ -1003,35 +1036,6 @@ namespace OxyPlot
             }
         }
 
-        /// <summary>
-        /// Updates all axes and series.
-        /// 1. Updates the data of each Series (only if updateData==true).
-        /// 2. Ensure that all series have axes assigned.
-        /// 3. Updates the max and min of the axes.
-        /// </summary>
-        /// <param name="updateData">if set to <c>true</c>, all data collections will be updated.</param>
-        public void Update(bool updateData = true)
-        {
-            if (updateData)
-            {
-                foreach (Series s in this.Series)
-                {
-                    s.UpdateData();
-                }
-            }
-
-            // Ensure that there are default axes available
-            this.EnsureDefaultAxes();
-
-            foreach (Axis a in this.Axes)
-            {
-                a.UpdateFromSeries(this.Series);
-            }
-
-            // Update the max and min of the axes
-            this.UpdateMaxMin(updateData);
-        }
-
         #endregion
 
         #region Methods
@@ -1052,6 +1056,7 @@ namespace OxyPlot
                     {
                         this.DefaultMagnitudeAxis = a as MagnitudeAxis;
                     }
+
                     continue;
                 }
 
@@ -1061,6 +1066,7 @@ namespace OxyPlot
                     {
                         this.DefaultAngleAxis = a as AngleAxis;
                     }
+
                     continue;
                 }
 
@@ -1079,8 +1085,6 @@ namespace OxyPlot
                         this.DefaultYAxis = a;
                     }
                 }
-
-
             }
 
             if (this.DefaultXAxis == null)
@@ -1167,7 +1171,9 @@ namespace OxyPlot
         /// <summary>
         /// Update max and min values of the axes from values of all data series.
         /// </summary>
-        /// <param name="isDataUpdated">if set to <c>true</c>, the data has been updated.</param>
+        /// <param name="isDataUpdated">
+        /// if set to <c>true</c>, the data has been updated.
+        /// </param>
         private void UpdateMaxMin(bool isDataUpdated)
         {
             foreach (Axis a in this.Axes)
@@ -1200,22 +1206,22 @@ namespace OxyPlot
         ///// Xml serialize the plotmodel to a stream.
         ///// </summary>
         ///// <param name="s">The stream.</param>
-        //public void XmlSerialize(Stream s)
-        //{
-        //    var serializer = new XmlSerializer(typeof(PlotModel));
-        //    serializer.Serialize(s, this);
-        //}
+        // public void XmlSerialize(Stream s)
+        // {
+        // var serializer = new XmlSerializer(typeof(PlotModel));
+        // serializer.Serialize(s, this);
+        // }
 
         ///// <summary>
         ///// Xml serialize the plotmodel to a file.
         ///// </summary>
         ///// <param name="filename">The filename.</param>
-        //public void XmlSerialize(string filename)
-        //{
-        //    using (var s = File.OpenWrite(filename))
-        //    {
-        //        this.XmlSerialize(s);
-        //    }
-        //}
+        // public void XmlSerialize(string filename)
+        // {
+        // using (var s = File.OpenWrite(filename))
+        // {
+        // this.XmlSerialize(s);
+        // }
+        // }
     }
 }

@@ -1,21 +1,38 @@
-﻿using System.Collections.Generic;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ScreenPointHelper.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   ScreenPoint helper class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// ScreenPoint helper class.
     /// </summary>
     public class ScreenPointHelper
     {
+        #region Public Methods
+
         /// <summary>
         /// Resamples the points with the specified point distance limit.
         /// </summary>
-        /// <param name="allPoints">All points.</param>
-        /// <param name="minimumDistance">The minimum squared distance.</param>
-        /// <returns>List of resampled points.</returns>
+        /// <param name="allPoints">
+        /// All points.
+        /// </param>
+        /// <param name="minimumDistance">
+        /// The minimum squared distance.
+        /// </param>
+        /// <returns>
+        /// List of resampled points.
+        /// </returns>
         public static IList<ScreenPoint> ResamplePoints(ScreenPoint[] allPoints, double minimumDistance)
         {
-            double minimumSquaredDistance = minimumDistance*minimumDistance;
+            double minimumSquaredDistance = minimumDistance * minimumDistance;
             var result = new List<ScreenPoint>(allPoints.Length);
             if (allPoints.Length > 0)
             {
@@ -25,12 +42,18 @@ namespace OxyPlot
                 {
                     double distSquared = allPoints[i0].DistanceToSquared(allPoints[i]);
                     if (distSquared < minimumSquaredDistance && i != allPoints.Length - 1)
+                    {
                         continue;
+                    }
+
                     i0 = i;
                     result.Add(allPoints[i]);
                 }
             }
+
             return result;
         }
+
+        #endregion
     }
 }

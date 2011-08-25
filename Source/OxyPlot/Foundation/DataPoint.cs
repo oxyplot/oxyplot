@@ -1,8 +1,14 @@
-﻿namespace OxyPlot
-{
-    using System;
-    using System.Globalization;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DataPoint.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   DataPoint interface.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
+namespace OxyPlot
+{
     /// <summary>
     /// DataPoint interface.
     /// </summary>
@@ -32,10 +38,19 @@
     {
         #region Constants and Fields
 
+        /// <summary>
+        /// The undefined.
+        /// </summary>
         public static readonly DataPoint Undefined = new DataPoint(double.NaN, double.NaN);
 
+        /// <summary>
+        /// The x.
+        /// </summary>
         internal double x;
 
+        /// <summary>
+        /// The y.
+        /// </summary>
         internal double y;
 
         #endregion
@@ -45,8 +60,12 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="DataPoint"/> struct.
         /// </summary>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <param name="y">
+        /// The y.
+        /// </param>
         public DataPoint(double x, double y)
         {
             this.x = x;
@@ -69,6 +88,7 @@
             {
                 return this.x;
             }
+
             set
             {
                 this.x = value;
@@ -87,6 +107,7 @@
             {
                 return this.y;
             }
+
             set
             {
                 this.y = value;
@@ -100,10 +121,12 @@
         /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// The to code.
+        /// </returns>
         public string ToCode()
         {
-            return CodeGenerator.FormatConstructor(this.GetType(),"{0},{1}", this.x, this.y);
+            return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1}", this.x, this.y);
         }
 
         /// <summary>

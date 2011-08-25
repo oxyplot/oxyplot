@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BarSeries.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
 //   This is a WPF wrapper of OxyPlot.BarSeries
@@ -42,29 +42,20 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty NegativeFillColorProperty =
             DependencyProperty.Register(
-                "NegativeFillColor", 
-                typeof(Color?), 
-                typeof(BarSeries), 
-                new PropertyMetadata(null, AppearanceChanged));
+                "NegativeFillColor", typeof(Color?), typeof(BarSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The stroke color property.
         /// </summary>
         public static readonly DependencyProperty StrokeColorProperty = DependencyProperty.Register(
-            "StrokeColor", 
-            typeof(Color), 
-            typeof(BarSeries), 
-            new PropertyMetadata(Colors.Black, AppearanceChanged));
+            "StrokeColor", typeof(Color), typeof(BarSeries), new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
         /// The stroke thickness property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
-                "StrokeThickness", 
-                typeof(double), 
-                typeof(BarSeries), 
-                new PropertyMetadata(0.0, AppearanceChanged));
+                "StrokeThickness", typeof(double), typeof(BarSeries), new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
         /// The value field property.
@@ -76,10 +67,6 @@ namespace OxyPlot.Wpf
 
         #region Constructors and Destructors
 
-        public BarSeries()
-        {
-            internalSeries = new OxyPlot.BarSeries();
-        }
         /// <summary>
         /// Initializes static members of the <see cref="BarSeries"/> class.
         /// </summary>
@@ -87,6 +74,14 @@ namespace OxyPlot.Wpf
         {
             TrackerFormatStringProperty.OverrideMetadata(
                 typeof(CategoryAxis), new PropertyMetadata("{0} {1}: {2}", DataChanged));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BarSeries"/> class.
+        /// </summary>
+        public BarSeries()
+        {
+            this.internalSeries = new OxyPlot.BarSeries();
         }
 
         #endregion
@@ -216,8 +211,8 @@ namespace OxyPlot.Wpf
         /// </returns>
         public override OxyPlot.Series CreateModel()
         {
-            this.SynchronizeProperties(internalSeries);
-            return internalSeries;
+            this.SynchronizeProperties(this.internalSeries);
+            return this.internalSeries;
         }
 
         #endregion

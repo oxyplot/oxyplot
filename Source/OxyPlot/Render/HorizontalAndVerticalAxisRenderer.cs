@@ -1,31 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="HorizontalAndVerticalAxisRenderer.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Rendering helper class for horizontal and vertical axes (both linear and logarithmic)
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+
     /// <summary>
-    ///   Rendering helper class for horizontal and vertical axes (both linear and logarithmic)
+    /// Rendering helper class for horizontal and vertical axes (both linear and logarithmic)
     /// </summary>
     public class HorizontalAndVerticalAxisRenderer : AxisRendererBase
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HorizontalAndVerticalAxisRenderer"/> class.
+        /// </summary>
+        /// <param name="rc">
+        /// The rc.
+        /// </param>
+        /// <param name="plot">
+        /// The plot.
+        /// </param>
         public HorizontalAndVerticalAxisRenderer(IRenderContext rc, PlotModel plot)
             : base(rc, plot)
         {
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The render.
+        /// </summary>
+        /// <param name="axis">
+        /// The axis.
+        /// </param>
         public override void Render(AxisBase axis)
         {
             base.Render(axis);
 
-            var perpendicularAxis = Plot.DefaultXAxis;
+            Axis perpendicularAxis = this.Plot.DefaultXAxis;
             bool isHorizontal = true;
 
             // store properties locally for performance
-            double ppl = Plot.PlotArea.Left;
-            double ppr = Plot.PlotArea.Right;
-            double ppt = Plot.PlotArea.Top;
-            double ppb = Plot.PlotArea.Bottom;
+            double ppl = this.Plot.PlotArea.Left;
+            double ppr = this.Plot.PlotArea.Right;
+            double ppt = this.Plot.PlotArea.Top;
+            double ppb = this.Plot.PlotArea.Bottom;
             double actualMinimum = axis.ActualMinimum;
             double actualMaximum = axis.ActualMaximum;
 
@@ -33,28 +63,27 @@ namespace OxyPlot
             double apos = 0;
             double titlePosition = 0;
 
-
             switch (axis.Position)
             {
                 case AxisPosition.Left:
                     apos = ppl;
-                    titlePosition = Plot.PlotAndAxisArea.Left;
+                    titlePosition = this.Plot.PlotAndAxisArea.Left;
                     isHorizontal = false;
                     break;
                 case AxisPosition.Right:
                     apos = ppr;
-                    titlePosition = Plot.PlotAndAxisArea.Right;
+                    titlePosition = this.Plot.PlotAndAxisArea.Right;
                     isHorizontal = false;
                     break;
                 case AxisPosition.Top:
                     apos = ppt;
-                    titlePosition = Plot.PlotAndAxisArea.Top;
-                    perpendicularAxis = Plot.DefaultYAxis;
+                    titlePosition = this.Plot.PlotAndAxisArea.Top;
+                    perpendicularAxis = this.Plot.DefaultYAxis;
                     break;
                 case AxisPosition.Bottom:
                     apos = ppb;
-                    titlePosition = Plot.PlotAndAxisArea.Bottom;
-                    perpendicularAxis = Plot.DefaultYAxis;
+                    titlePosition = this.Plot.PlotAndAxisArea.Bottom;
+                    perpendicularAxis = this.Plot.DefaultYAxis;
                     break;
             }
 
@@ -68,19 +97,19 @@ namespace OxyPlot
             var minorTickSegments = new List<ScreenPoint>();
             var majorSegments = new List<ScreenPoint>();
             var majorTickSegments = new List<ScreenPoint>();
-            
+
             double eps = axis.MinorStep * 1e-3;
 
-            GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
+            this.GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
 
-            foreach (double value in MinorTickValues)
+            foreach (double value in this.MinorTickValues)
             {
-                if (value < actualMinimum-eps || value > actualMaximum+eps)
+                if (value < actualMinimum - eps || value > actualMaximum + eps)
                 {
                     continue;
                 }
 
-                if (MajorTickValues.Contains(value))
+                if (this.MajorTickValues.Contains(value))
                 {
                     continue;
                 }
@@ -104,7 +133,7 @@ namespace OxyPlot
                 }
 
                 // Draw the minor grid line
-                if (MinorPen != null)
+                if (this.MinorPen != null)
                 {
                     if (isHorizontal)
                     {
@@ -115,8 +144,8 @@ namespace OxyPlot
                     {
                         if (transformedValue < ppt || transformedValue > ppb)
                         {
-
                         }
+
                         minorSegments.Add(new ScreenPoint(ppl, transformedValue));
                         minorSegments.Add(new ScreenPoint(ppr, transformedValue));
                     }
@@ -138,12 +167,11 @@ namespace OxyPlot
                 }
             }
 
+            this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
 
-            GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
-
-            foreach (double value in MajorTickValues)
+            foreach (double value in this.MajorTickValues)
             {
-                if (value < actualMinimum-eps || value > actualMaximum+eps)
+                if (value < actualMinimum - eps || value > actualMaximum + eps)
                 {
                     continue;
                 }
@@ -165,8 +193,7 @@ namespace OxyPlot
                     SnapTo(ppb, ref transformedValue);
                 }
 
-
-                if (MajorPen != null)
+                if (this.MajorPen != null)
                 {
                     if (isHorizontal)
                     {
@@ -198,13 +225,12 @@ namespace OxyPlot
                 {
                     continue;
                 }
-
             }
-          
+
             // Render the axis labels (numbers or category names)
-            foreach (double value in MajorLabelValues)
+            foreach (double value in this.MajorLabelValues)
             {
-                if (value < actualMinimum-eps || value > actualMaximum+eps)
+                if (value < actualMinimum - eps || value > actualMaximum + eps)
                 {
                     continue;
                 }
@@ -225,60 +251,68 @@ namespace OxyPlot
                     SnapTo(ppt, ref transformedValue);
                     SnapTo(ppb, ref transformedValue);
                 }
+
                 var pt = new ScreenPoint();
-                var ha = HorizontalTextAlign.Right;
-                var va = VerticalTextAlign.Middle;
+                HorizontalTextAlign ha = HorizontalTextAlign.Right;
+                VerticalTextAlign va = VerticalTextAlign.Middle;
                 switch (axis.Position)
                 {
                     case AxisPosition.Left:
                         pt = new ScreenPoint(apos + a1 - axis.AxisTickToLabelDistance, transformedValue);
-                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Right, VerticalTextAlign.Middle, out ha,
-                                                    out va);
+                        GetRotatedAlignments(
+                            axis.Angle, HorizontalTextAlign.Right, VerticalTextAlign.Middle, out ha, out va);
                         break;
                     case AxisPosition.Right:
                         pt = new ScreenPoint(apos + a1 + axis.AxisTickToLabelDistance, transformedValue);
-                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Left, VerticalTextAlign.Middle, out ha,
-                                                    out va);
+                        GetRotatedAlignments(
+                            axis.Angle, HorizontalTextAlign.Left, VerticalTextAlign.Middle, out ha, out va);
                         break;
                     case AxisPosition.Top:
                         pt = new ScreenPoint(transformedValue, apos + a1 - axis.AxisTickToLabelDistance);
-                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Bottom,
-                                                    out ha,
-                                                    out va);
+                        GetRotatedAlignments(
+                            axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Bottom, out ha, out va);
                         break;
                     case AxisPosition.Bottom:
                         pt = new ScreenPoint(transformedValue, apos + a1 + axis.AxisTickToLabelDistance);
-                        GetRotatedAlignments(axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Top, out ha,
-                                                    out va);
+                        GetRotatedAlignments(
+                            axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Top, out ha, out va);
                         break;
                 }
 
                 string text = axis.FormatValue(value);
-                rc.DrawMathText(pt, text, Plot.TextColor,
-                                     axis.ActualFont, axis.FontSize, axis.FontWeight,
-                                     axis.Angle, ha, va, false);
+                this.rc.DrawMathText(
+                    pt, 
+                    text, 
+                    this.Plot.TextColor, 
+                    axis.ActualFont, 
+                    axis.FontSize, 
+                    axis.FontWeight, 
+                    axis.Angle, 
+                    ha, 
+                    va, 
+                    false);
             }
 
             // Draw the zero crossing line
-            if (axis.PositionAtZeroCrossing && ZeroPen != null)
+            if (axis.PositionAtZeroCrossing && this.ZeroPen != null)
             {
                 double t0 = axis.Transform(0);
                 if (isHorizontal)
                 {
-                    rc.DrawLine(t0, ppt, t0, ppb, ZeroPen);
+                    this.rc.DrawLine(t0, ppt, t0, ppb, this.ZeroPen);
                 }
                 else
                 {
-                    rc.DrawLine(ppl, t0, ppr, t0, ZeroPen);
+                    this.rc.DrawLine(ppl, t0, ppr, t0, this.ZeroPen);
                 }
             }
 
             // Draw extra grid lines
-            if (axis.ExtraGridlines != null && ExtraPen != null)
+            if (axis.ExtraGridlines != null && this.ExtraPen != null)
             {
                 foreach (double value in axis.ExtraGridlines)
                 {
-                    if (!IsWithin(value, actualMinimum, actualMaximum))
+                    if (!this.IsWithin(value, actualMinimum, actualMaximum))
                     {
                         continue;
                     }
@@ -286,11 +320,11 @@ namespace OxyPlot
                     double transformedValue = axis.Transform(value);
                     if (isHorizontal)
                     {
-                        rc.DrawLine(transformedValue, ppt, transformedValue, ppb, ExtraPen);
+                        this.rc.DrawLine(transformedValue, ppt, transformedValue, ppb, this.ExtraPen);
                     }
                     else
                     {
-                        rc.DrawLine(ppl, transformedValue, ppr, transformedValue, ExtraPen);
+                        this.rc.DrawLine(ppl, transformedValue, ppr, transformedValue, this.ExtraPen);
                     }
                 }
             }
@@ -298,23 +332,27 @@ namespace OxyPlot
             // Draw the axis line (across the tick marks)
             if (isHorizontal)
             {
-                rc.DrawLine(axis.Transform(actualMinimum), apos, axis.Transform(actualMaximum), apos, AxislinePen);
+                this.rc.DrawLine(
+                    axis.Transform(actualMinimum), apos, axis.Transform(actualMaximum), apos, this.AxislinePen);
             }
             else
             {
-                rc.DrawLine(apos,axis.Transform(actualMinimum), apos, axis.Transform(actualMaximum), AxislinePen);
+                this.rc.DrawLine(
+                    apos, axis.Transform(actualMinimum), apos, axis.Transform(actualMaximum), this.AxislinePen);
             }
 
             // Draw the axis title
-            if (!String.IsNullOrEmpty(axis.ActualTitle))
+            if (!string.IsNullOrEmpty(axis.ActualTitle))
             {
-                double ymid = isHorizontal ? Lerp(axis.ScreenMin.X, axis.ScreenMax.X, axis.TitlePosition) : Lerp(axis.ScreenMax.Y, axis.ScreenMin.Y, axis.TitlePosition);
+                double ymid = isHorizontal
+                                  ? Lerp(axis.ScreenMin.X, axis.ScreenMax.X, axis.TitlePosition)
+                                  : Lerp(axis.ScreenMax.Y, axis.ScreenMin.Y, axis.TitlePosition);
 
                 double angle = -90;
                 var lpt = new ScreenPoint();
 
-                var halign = HorizontalTextAlign.Center;
-                var valign = VerticalTextAlign.Top;
+                HorizontalTextAlign halign = HorizontalTextAlign.Center;
+                VerticalTextAlign valign = VerticalTextAlign.Top;
 
                 if (axis.PositionAtZeroCrossing)
                 {
@@ -344,56 +382,68 @@ namespace OxyPlot
                         break;
                 }
 
-                rc.DrawText(lpt, axis.ActualTitle, Plot.TextColor,
-                                axis.ActualFont, axis.FontSize, axis.FontWeight,
-                                angle, halign, valign);
+                this.rc.DrawText(
+                    lpt, 
+                    axis.ActualTitle, 
+                    this.Plot.TextColor, 
+                    axis.ActualFont, 
+                    axis.FontSize, 
+                    axis.FontWeight, 
+                    angle, 
+                    halign, 
+                    valign);
             }
 
             // Draw all the line segments);
-            if (MinorPen != null)
-                rc.DrawLineSegments(minorSegments, MinorPen);
-            if (MajorPen != null)
-                rc.DrawLineSegments(majorSegments, MajorPen);
-            if (MinorTickPen != null)
-                rc.DrawLineSegments(minorTickSegments, MinorTickPen);
-            if (MajorTickPen != null)
-                rc.DrawLineSegments(majorTickSegments, MajorTickPen);
+            if (this.MinorPen != null)
+            {
+                this.rc.DrawLineSegments(minorSegments, this.MinorPen);
+            }
+
+            if (this.MajorPen != null)
+            {
+                this.rc.DrawLineSegments(majorSegments, this.MajorPen);
+            }
+
+            if (this.MinorTickPen != null)
+            {
+                this.rc.DrawLineSegments(minorTickSegments, this.MinorTickPen);
+            }
+
+            if (this.MajorTickPen != null)
+            {
+                this.rc.DrawLineSegments(majorTickSegments, this.MajorTickPen);
+            }
         }
 
-        /// <summary>
-        /// Snaps v to value if is within a distance of eps.
-        /// </summary>
-        private static void SnapTo(double value, ref double v, double eps = 0.5)
-        {
-            if (v > value - eps && v < value + eps)
-                v = value;
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
-        /// Linear interpolation
-        /// http://en.wikipedia.org/wiki/Linear_interpolation
+        /// Gets the rotated alignments given the specified angle.
         /// </summary>
-        /// <param name="x0">The x0.</param>
-        /// <param name="x1">The x1.</param>
-        /// <param name="f">The f.</param>
-        /// <returns></returns>
-        private static double Lerp(double x0, double x1, double f)
-        {
-            return x0 * (1 - f) + x1 * f;
-        }
-
-
-        /// <summary>
-        ///   Gets the rotated alignments given the specified angle.
-        /// </summary>
-        /// <param name = "angle">The angle.</param>
-        /// <param name = "defaultHorizontalAlignment">The default horizontal alignment.</param>
-        /// <param name = "defaultVerticalAlignment">The default vertical alignment.</param>
-        /// <param name = "ha">The rotated horizontal alignment.</param>
-        /// <param name = "va">The rotated vertical alignment.</param>
-        private static void GetRotatedAlignments(double angle, HorizontalTextAlign defaultHorizontalAlignment,
-                                                              VerticalTextAlign defaultVerticalAlignment,
-                                                              out HorizontalTextAlign ha, out VerticalTextAlign va)
+        /// <param name="angle">
+        /// The angle.
+        /// </param>
+        /// <param name="defaultHorizontalAlignment">
+        /// The default horizontal alignment.
+        /// </param>
+        /// <param name="defaultVerticalAlignment">
+        /// The default vertical alignment.
+        /// </param>
+        /// <param name="ha">
+        /// The rotated horizontal alignment.
+        /// </param>
+        /// <param name="va">
+        /// The rotated vertical alignment.
+        /// </param>
+        private static void GetRotatedAlignments(
+            double angle, 
+            HorizontalTextAlign defaultHorizontalAlignment, 
+            VerticalTextAlign defaultVerticalAlignment, 
+            out HorizontalTextAlign ha, 
+            out VerticalTextAlign va)
         {
             ha = defaultHorizontalAlignment;
             va = defaultVerticalAlignment;
@@ -426,5 +476,48 @@ namespace OxyPlot
                 return;
             }
         }
+
+        /// <summary>
+        /// Linear interpolation
+        /// http://en.wikipedia.org/wiki/Linear_interpolation
+        /// </summary>
+        /// <param name="x0">
+        /// The x0.
+        /// </param>
+        /// <param name="x1">
+        /// The x1.
+        /// </param>
+        /// <param name="f">
+        /// The f.
+        /// </param>
+        /// <returns>
+        /// The lerp.
+        /// </returns>
+        private static double Lerp(double x0, double x1, double f)
+        {
+            return x0 * (1 - f) + x1 * f;
+        }
+
+        /// <summary>
+        /// Snaps v to value if is within a distance of eps.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="v">
+        /// The v.
+        /// </param>
+        /// <param name="eps">
+        /// The eps.
+        /// </param>
+        private static void SnapTo(double value, ref double v, double eps = 0.5)
+        {
+            if (v > value - eps && v < value + eps)
+            {
+                v = value;
+            }
+        }
+
+        #endregion
     }
 }

@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IRenderContext.cs" company="OxyPlot">
-//   See http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Horizontal text alignment.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -85,16 +88,16 @@ namespace OxyPlot
         double Height { get; }
 
         /// <summary>
-        /// Gets the width.
-        /// </summary>
-        /// <value>The width.</value>
-        double Width { get; }
-
-        /// <summary>
         /// Gets a value indicating whether to paint the background.
         /// </summary>
         /// <value><c>true</c> if the background should be painted; otherwise, <c>false</c>.</value>
         bool PaintBackground { get; }
+
+        /// <summary>
+        /// Gets the width.
+        /// </summary>
+        /// <value>The width.</value>
+        double Width { get; }
 
         #endregion
 

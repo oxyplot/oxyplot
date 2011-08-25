@@ -1,15 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TrackerControl.cs" company="">
-//   
+// <copyright file="TrackerControl.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
 // </copyright>
 // <summary>
 //   The tracker control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 #if WPF
 namespace OxyPlot.Wpf
 #endif
 #if SILVERLIGHT
+
 namespace OxyPlot.Silverlight
 #endif
 {
@@ -64,9 +66,9 @@ namespace OxyPlot.Silverlight
 
 #if WPF
 
-        /// <summary>
-        /// The border edge mode property.
-        /// </summary>
+    // <summary>
+    /// The border edge mode property.
+    /// </summary>
         public static readonly DependencyProperty BorderEdgeModeProperty = DependencyProperty.Register(
             "BorderEdgeMode", typeof(EdgeMode), typeof(TrackerControl));
 #endif
@@ -161,12 +163,12 @@ namespace OxyPlot.Silverlight
         /// The vertical line.
         /// </summary>
         private Line verticalLine;
-        
+
 #if WPF
 
-        /// <summary>
-        /// Initializes static members of the <see cref="TrackerControl"/> class.
-        /// </summary>
+    // <summary>
+    /// Initializes static members of the <see cref="TrackerControl"/> class.
+    /// </summary>
         static TrackerControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
@@ -176,17 +178,22 @@ namespace OxyPlot.Silverlight
 #endif
 
 #if SILVERLIGHT
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TrackerControl"/> class.
+        /// </summary>
         public TrackerControl()
         {
-            DefaultStyleKey = typeof(TrackerControl);
+            this.DefaultStyleKey = typeof(TrackerControl);
         }
+
 #endif
 
 #if WPF
 
-        /// <summary>
-        /// Gets or sets BorderEdgeMode.
-        /// </summary>
+    // <summary>
+    /// Gets or sets BorderEdgeMode.
+    /// </summary>
         public EdgeMode BorderEdgeMode
         {
             get
@@ -546,7 +553,7 @@ namespace OxyPlot.Silverlight
 			ScreenPoint pos = this.Position;
 #endif
 #if SILVERLIGHT
- 			var pos = Position.ToPoint(true);
+            Point pos = this.Position.ToPoint(true);
 #endif
 
             if (this.horizontalLine != null)
@@ -587,12 +594,24 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Create the border geometry.
         /// </summary>
-        /// <param name="ha">The horizontal alignment.</param>
-        /// <param name="va">The vertical alignment.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="margin">The margin.</param>
-        /// <returns>The border geometry.</returns>
+        /// <param name="ha">
+        /// The horizontal alignment.
+        /// </param>
+        /// <param name="va">
+        /// The vertical alignment.
+        /// </param>
+        /// <param name="width">
+        /// The width.
+        /// </param>
+        /// <param name="height">
+        /// The height.
+        /// </param>
+        /// <param name="margin">
+        /// The margin.
+        /// </param>
+        /// <returns>
+        /// The border geometry.
+        /// </returns>
         private Geometry CreateBorderGeometry(
             HorizontalAlignment ha, VerticalAlignment va, double width, double height, out Thickness margin)
         {
@@ -625,7 +644,9 @@ namespace OxyPlot.Silverlight
         /// <param name="margin">
         /// The margin.
         /// </param>
-        /// <returns>The border geometry.</returns>
+        /// <returns>
+        /// The border geometry.
+        /// </returns>
         private Geometry CreatePointerBorderGeometry(
             HorizontalAlignment ha, VerticalAlignment va, double width, double height, out Thickness margin)
         {

@@ -1,7 +1,12 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CandleStickSeries.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Use CandleStickSeries to create a candlestick chart
+//   http://en.wikipedia.org/wiki/Candlestick_chart
+//   http://www.mathworks.com/help/toolbox/finance/candle.html
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot

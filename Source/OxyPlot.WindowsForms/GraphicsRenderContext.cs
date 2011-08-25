@@ -1,37 +1,140 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using OxyPlot;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="GraphicsRenderContext.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   The graphics render context.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Oxyplot.WindowsForms
 {
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Drawing.Drawing2D;
+    using System.Linq;
+
+    using OxyPlot;
+
+    /// <summary>
+    /// The graphics render context.
+    /// </summary>
     internal class GraphicsRenderContext : RenderContextBase
     {
-        private readonly Graphics g;
+        #region Constants and Fields
+
+        /// <summary>
+        /// The fontsiz e_ factor.
+        /// </summary>
         private const float FONTSIZE_FACTOR = 0.8f;
 
+        /// <summary>
+        /// The g.
+        /// </summary>
+        private readonly Graphics g;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphicsRenderContext"/> class.
+        /// </summary>
+        /// <param name="graphics">
+        /// The graphics.
+        /// </param>
+        /// <param name="width">
+        /// The width.
+        /// </param>
+        /// <param name="height">
+        /// The height.
+        /// </param>
         public GraphicsRenderContext(Graphics graphics, double width, double height)
         {
             this.Width = width;
             this.Height = height;
             this.PaintBackground = true;
-            g = graphics;
+            this.g = graphics;
         }
 
-        #region IRenderContext Members
+        #endregion
 
-        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray,
-                             OxyPenLineJoin lineJoin, bool aliased)
+        #region Public Methods
+
+        /// <summary>
+        /// The draw ellipse.
+        /// </summary>
+        /// <param name="rect">
+        /// The rect.
+        /// </param>
+        /// <param name="fill">
+        /// The fill.
+        /// </param>
+        /// <param name="stroke">
+        /// The stroke.
+        /// </param>
+        /// <param name="thickness">
+        /// The thickness.
+        /// </param>
+        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            if (fill != null)
+            {
+                this.g.FillEllipse(
+                    this.ToBrush(fill), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
+            }
+
+            if (stroke == null || thickness <= 0)
+            {
+                return;
+            }
+
+            var pen = new Pen(this.ToColor(stroke), (float)thickness);
+            this.g.DrawEllipse(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
+        }
+
+        /// <summary>
+        /// The draw line.
+        /// </summary>
+        /// <param name="points">
+        /// The points.
+        /// </param>
+        /// <param name="stroke">
+        /// The stroke.
+        /// </param>
+        /// <param name="thickness">
+        /// The thickness.
+        /// </param>
+        /// <param name="dashArray">
+        /// The dash array.
+        /// </param>
+        /// <param name="lineJoin">
+        /// The line join.
+        /// </param>
+        /// <param name="aliased">
+        /// The aliased.
+        /// </param>
+        public override void DrawLine(
+            IList<ScreenPoint> points, 
+            OxyColor stroke, 
+            double thickness, 
+            double[] dashArray, 
+            OxyPenLineJoin lineJoin, 
+            bool aliased)
         {
             if (stroke == null || thickness <= 0)
+            {
                 return;
+            }
 
-            g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
-            var pen = new Pen(ToColor(stroke), (float) thickness);
+            this.g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
+            var pen = new Pen(this.ToColor(stroke), (float)thickness);
 
             if (dashArray != null)
-                pen.DashPattern = ToFloatArray(dashArray);
+            {
+                pen.DashPattern = this.ToFloatArray(dashArray);
+            }
+
             switch (lineJoin)
             {
                 case OxyPenLineJoin.Round:
@@ -40,26 +143,62 @@ namespace Oxyplot.WindowsForms
                 case OxyPenLineJoin.Bevel:
                     pen.LineJoin = LineJoin.Bevel;
                     break;
-                    //  The default LineJoin is Miter
+
+                    // The default LineJoin is Miter
             }
-            g.DrawLines(pen, ToPoints(points));
+
+            this.g.DrawLines(pen, this.ToPoints(points));
         }
 
-        public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness,
-                                double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        /// <summary>
+        /// The draw polygon.
+        /// </summary>
+        /// <param name="points">
+        /// The points.
+        /// </param>
+        /// <param name="fill">
+        /// The fill.
+        /// </param>
+        /// <param name="stroke">
+        /// The stroke.
+        /// </param>
+        /// <param name="thickness">
+        /// The thickness.
+        /// </param>
+        /// <param name="dashArray">
+        /// The dash array.
+        /// </param>
+        /// <param name="lineJoin">
+        /// The line join.
+        /// </param>
+        /// <param name="aliased">
+        /// The aliased.
+        /// </param>
+        public override void DrawPolygon(
+            IList<ScreenPoint> points, 
+            OxyColor fill, 
+            OxyColor stroke, 
+            double thickness, 
+            double[] dashArray, 
+            OxyPenLineJoin lineJoin, 
+            bool aliased)
         {
-            g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
+            this.g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
 
-            var pts = ToPoints(points);
+            PointF[] pts = this.ToPoints(points);
             if (fill != null)
-                g.FillPolygon(ToBrush(fill), pts);
+            {
+                this.g.FillPolygon(this.ToBrush(fill), pts);
+            }
 
             if (stroke != null && thickness > 0)
             {
-                var pen = new Pen(ToColor(stroke), (float) thickness);
+                var pen = new Pen(this.ToColor(stroke), (float)thickness);
 
                 if (dashArray != null)
-                    pen.DashPattern = ToFloatArray(dashArray);
+                {
+                    pen.DashPattern = this.ToFloatArray(dashArray);
+                }
 
                 switch (lineJoin)
                 {
@@ -69,37 +208,113 @@ namespace Oxyplot.WindowsForms
                     case OxyPenLineJoin.Bevel:
                         pen.LineJoin = LineJoin.Bevel;
                         break;
-                        //  The default LineJoin is Miter
+
+                        // The default LineJoin is Miter
                 }
 
-                g.DrawPolygon(pen, pts);
+                this.g.DrawPolygon(pen, pts);
             }
         }
-               
-        public override void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
-                             double fontWeight,
-                             double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
+
+        /// <summary>
+        /// The draw rectangle.
+        /// </summary>
+        /// <param name="rect">
+        /// The rect.
+        /// </param>
+        /// <param name="fill">
+        /// The fill.
+        /// </param>
+        /// <param name="stroke">
+        /// The stroke.
+        /// </param>
+        /// <param name="thickness">
+        /// The thickness.
+        /// </param>
+        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            var fs = FontStyle.Regular;
+            if (fill != null)
+            {
+                this.g.FillRectangle(
+                    this.ToBrush(fill), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
+            }
+
+            if (stroke == null || thickness <= 0)
+            {
+                return;
+            }
+
+            var pen = new Pen(this.ToColor(stroke), (float)thickness);
+            this.g.DrawRectangle(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
+        }
+
+        /// <summary>
+        /// The draw text.
+        /// </summary>
+        /// <param name="p">
+        /// The p.
+        /// </param>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <param name="fill">
+        /// The fill.
+        /// </param>
+        /// <param name="fontFamily">
+        /// The font family.
+        /// </param>
+        /// <param name="fontSize">
+        /// The font size.
+        /// </param>
+        /// <param name="fontWeight">
+        /// The font weight.
+        /// </param>
+        /// <param name="rotate">
+        /// The rotate.
+        /// </param>
+        /// <param name="halign">
+        /// The halign.
+        /// </param>
+        /// <param name="valign">
+        /// The valign.
+        /// </param>
+        public override void DrawText(
+            ScreenPoint p, 
+            string text, 
+            OxyColor fill, 
+            string fontFamily, 
+            double fontSize, 
+            double fontWeight, 
+            double rotate, 
+            HorizontalTextAlign halign, 
+            VerticalTextAlign valign)
+        {
+            FontStyle fs = FontStyle.Regular;
             if (fontWeight >= 700)
+            {
                 fs = FontStyle.Bold;
-            var font = new Font(fontFamily, (float) fontSize*FONTSIZE_FACTOR, fs);
+            }
+
+            var font = new Font(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
 
             var sf = new StringFormat();
             sf.Alignment = StringAlignment.Near;
 
-            var size = g.MeasureString(text, font);
+            SizeF size = this.g.MeasureString(text, font);
 
             float dx = 0;
             if (halign == HorizontalTextAlign.Center)
             {
-                dx = -size.Width/2;
-                //              sf.Alignment = StringAlignment.Center;
+                dx = -size.Width / 2;
+
+                // sf.Alignment = StringAlignment.Center;
             }
+
             if (halign == HorizontalTextAlign.Right)
             {
                 dx = -size.Width;
-                //                sf.Alignment = StringAlignment.Far;
+
+                // sf.Alignment = StringAlignment.Far;
             }
 
             float dy = 0;
@@ -107,92 +322,147 @@ namespace Oxyplot.WindowsForms
             if (valign == VerticalTextAlign.Middle)
             {
                 // sf.LineAlignment = StringAlignment.Center;
-                dy = -size.Height/2;
+                dy = -size.Height / 2;
             }
+
             if (valign == VerticalTextAlign.Bottom)
             {
-                //  sf.LineAlignment = StringAlignment.Far;
+                // sf.LineAlignment = StringAlignment.Far;
                 dy = -size.Height;
             }
 
-            g.TranslateTransform((float) p.X, (float) p.Y);
+            this.g.TranslateTransform((float)p.X, (float)p.Y);
             if (rotate != 0)
-                g.RotateTransform((float) rotate);
-            g.TranslateTransform(dx, dy);
+            {
+                this.g.RotateTransform((float)rotate);
+            }
 
-            g.DrawString(text, font, ToBrush(fill), 0, 0, sf);
+            this.g.TranslateTransform(dx, dy);
 
-            g.ResetTransform();
+            this.g.DrawString(text, font, this.ToBrush(fill), 0, 0, sf);
+
+            this.g.ResetTransform();
         }
 
+        /// <summary>
+        /// The measure text.
+        /// </summary>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <param name="fontFamily">
+        /// The font family.
+        /// </param>
+        /// <param name="fontSize">
+        /// The font size.
+        /// </param>
+        /// <param name="fontWeight">
+        /// The font weight.
+        /// </param>
+        /// <returns>
+        /// </returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (text == null)
+            {
                 return OxySize.Empty;
+            }
 
-            var fs = FontStyle.Regular;
+            FontStyle fs = FontStyle.Regular;
             if (fontWeight >= 700)
+            {
                 fs = FontStyle.Bold;
-            var font = new Font(fontFamily, (float) fontSize*FONTSIZE_FACTOR, fs);
-            var size = g.MeasureString(text, font);
+            }
+
+            var font = new Font(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
+            SizeF size = this.g.MeasureString(text, font);
             return new OxySize(size.Width, size.Height);
-        }
-
-        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke,
-                                  double thickness)
-        {
-            if (fill != null)
-                g.FillRectangle(ToBrush(fill), (float) rect.Left, (float) rect.Top, (float) rect.Width, (float) rect.Height);
-            if (stroke == null || thickness <= 0)
-                return;
-            var pen = new Pen(ToColor(stroke), (float) thickness);
-            g.DrawRectangle(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
-        }
-
-        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke,
-                                double thickness)
-        {
-            if (fill != null)
-                g.FillEllipse(ToBrush(fill), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
-            if (stroke == null || thickness <= 0)
-                return;
-            var pen = new Pen(ToColor(stroke), (float) thickness);
-            g.DrawEllipse(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
         }
 
         #endregion
 
+        #region Methods
+
+        /// <summary>
+        /// The to brush.
+        /// </summary>
+        /// <param name="fill">
+        /// The fill.
+        /// </param>
+        /// <returns>
+        /// </returns>
         private Brush ToBrush(OxyColor fill)
         {
             if (fill != null)
-                return new SolidBrush(ToColor(fill));
+            {
+                return new SolidBrush(this.ToColor(fill));
+            }
+
             return null;
         }
 
-        private PointF[] ToPoints(IList<ScreenPoint> points)
-        {
-            if (points == null)
-                return null;
-            var r = new PointF[points.Count()];
-            int i = 0;
-            foreach (var p in points)
-                r[i++] = new PointF((float) p.X, (float) p.Y);
-            return r;
-        }
-
+        /// <summary>
+        /// The to color.
+        /// </summary>
+        /// <param name="c">
+        /// The c.
+        /// </param>
+        /// <returns>
+        /// </returns>
         private Color ToColor(OxyColor c)
         {
             return Color.FromArgb(c.A, c.R, c.G, c.B);
         }
 
+        /// <summary>
+        /// The to float array.
+        /// </summary>
+        /// <param name="a">
+        /// The a.
+        /// </param>
+        /// <returns>
+        /// </returns>
         private float[] ToFloatArray(double[] a)
         {
             if (a == null)
+            {
                 return null;
+            }
+
             var r = new float[a.Length];
             for (int i = 0; i < a.Length; i++)
-                r[i] = (float) a[i];
+            {
+                r[i] = (float)a[i];
+            }
+
             return r;
         }
+
+        /// <summary>
+        /// The to points.
+        /// </summary>
+        /// <param name="points">
+        /// The points.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        private PointF[] ToPoints(IList<ScreenPoint> points)
+        {
+            if (points == null)
+            {
+                return null;
+            }
+
+            var r = new PointF[points.Count()];
+            int i = 0;
+            foreach (ScreenPoint p in points)
+            {
+                r[i++] = new PointF((float)p.X, (float)p.Y);
+            }
+
+            return r;
+        }
+
+        #endregion
     }
 }

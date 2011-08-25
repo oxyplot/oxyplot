@@ -1,17 +1,26 @@
-﻿using System;
-using System.Linq;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PlotModel.Legends.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Partial PlotModel class - this file contains methods related to the series legends.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     // LegendPosition (LegendPlacement=Outside)
-    //
     // +               +-----------------------------------+                 +
-    //                 |              Title                |
-    //                 |            Subtitle               |
-    //                 +-----------------------------------+
-    //                 |TopLeft       TopCenter    TopRight|
-    //                 +-----------------------------------+
-    //                 |              Top axis             |
+    // |              Title                |
+    // |            Subtitle               |
+    // +-----------------------------------+
+    // |TopLeft       TopCenter    TopRight|
+    // +-----------------------------------+
+    // |              Top axis             |
     // +----------+----+-----------------------------------+-----+-----------+
     // |LeftTop   |    |                                   |     |RightTop   |
     // |          |    |                                   |     |           |
@@ -21,9 +30,9 @@ namespace OxyPlot
     // |          |    |                                   |     |           |
     // |LeftBottom|    |                                   |     |RightBottom|
     // +----------+----+-----------------------------------+-----+-----------+
-    //                 |             Bottom axis           |
-    //                 +-----------------------------------+
-    //                 |BottomLeft BottomCenter BottomRight|
+    // |             Bottom axis           |
+    // +-----------------------------------+
+    // |BottomLeft BottomCenter BottomRight|
     // +               +-----------------------------------+                 +
 
     /// <summary>
@@ -31,141 +40,188 @@ namespace OxyPlot
     /// </summary>
     partial class PlotModel
     {
-        private OxySize RenderLegends(IRenderContext rc, OxyRect rect, bool measureOnly = false)
+        #region Methods
+
+        /// <summary>
+        /// Gets the rectangle of the legend box.
+        /// </summary>
+        /// <param name="legendSize">
+        /// Size of the legend box.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        private OxyRect GetLegendRectangle(OxySize legendSize)
         {
-            // Render background and border around legend
-            if (!measureOnly && rect.Width > 0 && rect.Height > 0)
-                rc.DrawRectangleAsPolygon(rect, LegendBackground, LegendBorder, LegendBorderThickness);
-
-            double availableWidth = rect.Width;
-            double availableHeight = rect.Height;
-
-            double x = LegendPadding;
-            double top = LegendPadding;
-
-            var size = new OxySize();
-            if (!String.IsNullOrEmpty(LegendTitle))
+            double top = 0;
+            double left = 0;
+            if (this.LegendPlacement == LegendPlacement.Outside)
             {
-                OxySize titleSize;
-                if (measureOnly)
-                    titleSize = rc.MeasureMathText(LegendTitle, LegendTitleFont ?? DefaultFont, LegendTitleFontSize, LegendTitleFontWeight);
-                else
-                    titleSize = rc.DrawMathText(new ScreenPoint(rect.Left + x, rect.Top + top),
-                                LegendTitle, TextColor,
-                                LegendTitleFont ?? DefaultFont, LegendTitleFontSize, LegendTitleFontWeight, 0, HorizontalTextAlign.Left,
-                                VerticalTextAlign.Top, true);
-                top += titleSize.Height;
-                size.Width = x + titleSize.Width + LegendPadding;
-                size.Height = top + titleSize.Height;
-            }
-
-            double y = top;
-
-            double lineHeight = 0;
-            double rowWidth = 0;
-
-            var items = LegendItemOrder == LegendItemOrder.Reverse ? Series.Reverse() : Series;
-
-            foreach (var s in items)
-            {
-                if (String.IsNullOrEmpty(s.Title))
-                    continue;
-                var textSize = rc.MeasureMathText(s.Title, ActualLegendFont, LegendFontSize, LegendFontWeight);
-                double itemWidth = LegendSymbolLength + LegendSymbolMargin + textSize.Width;
-                double itemHeight = textSize.Height;
-
-                if (LegendOrientation == LegendOrientation.Horizontal)
+                switch (this.LegendPosition)
                 {
-                    // Add spacing between items
-                    if (x > LegendPadding) x += LegendItemSpacing;
-
-                    if (x + itemWidth > availableWidth - LegendPadding)
-                    {
-                        // new line
-                        x = LegendPadding;
-                        y += lineHeight;
-                        lineHeight = 0;
-                    }
-
-                    if (textSize.Height > lineHeight)
-                        lineHeight = textSize.Height;
-
-                    if (!measureOnly)
-                    {
-                        var r = new OxyRect(rect.Left + x, rect.Top + y, textSize.Width, textSize.Height);
-                        RenderLegend(rc, s, r);
-                    }
-                    x += itemWidth;
-                    if (x > size.Width)
-                        size.Width = x;
-                    if (y + textSize.Height > size.Height)
-                        size.Height = y + textSize.Height;
-                }
-                else
-                {
-                    if (y + itemHeight > availableHeight - LegendPadding)
-                    {
-                        y = top;
-                        x += rowWidth + LegendColumnSpacing;
-                        rowWidth = 0;
-                    }
-
-                    if (!measureOnly)
-                    {
-                        var r = new OxyRect(rect.Left + x, rect.Top + y, rect.Width - x - LegendPadding, textSize.Height);
-                        RenderLegend(rc, s, r);
-                    }
-
-                    y += itemHeight;
-                    if (itemWidth > rowWidth)
-                        rowWidth = itemWidth;
-
-                    if (x + itemWidth > size.Width)
-                        size.Width = x + itemWidth;
-
-                    if (y > size.Height)
-                        size.Height = y;
-
-
-
+                    case LegendPosition.LeftTop:
+                    case LegendPosition.LeftMiddle:
+                    case LegendPosition.LeftBottom:
+                        left = this.PlotAndAxisArea.Left - legendSize.Width - this.LegendMargin;
+                        break;
+                    case LegendPosition.RightTop:
+                    case LegendPosition.RightMiddle:
+                    case LegendPosition.RightBottom:
+                        left = this.PlotAndAxisArea.Right + this.LegendMargin;
+                        break;
+                    case LegendPosition.TopLeft:
+                    case LegendPosition.TopCenter:
+                    case LegendPosition.TopRight:
+                        top = this.PlotAndAxisArea.Top - legendSize.Height - this.LegendMargin;
+                        break;
+                    case LegendPosition.BottomLeft:
+                    case LegendPosition.BottomCenter:
+                    case LegendPosition.BottomRight:
+                        top = this.PlotAndAxisArea.Bottom + this.LegendMargin;
+                        break;
                 }
 
-
+                switch (this.LegendPosition)
+                {
+                    case LegendPosition.TopLeft:
+                    case LegendPosition.BottomLeft:
+                        left = this.PlotArea.Left;
+                        break;
+                    case LegendPosition.TopRight:
+                    case LegendPosition.BottomRight:
+                        left = this.PlotArea.Right - legendSize.Width;
+                        break;
+                    case LegendPosition.LeftTop:
+                    case LegendPosition.RightTop:
+                        top = this.PlotArea.Top;
+                        break;
+                    case LegendPosition.LeftBottom:
+                    case LegendPosition.RightBottom:
+                        top = this.PlotArea.Bottom - legendSize.Height;
+                        break;
+                    case LegendPosition.LeftMiddle:
+                    case LegendPosition.RightMiddle:
+                        top = (this.PlotArea.Top + this.PlotArea.Bottom - legendSize.Height) * 0.5;
+                        break;
+                    case LegendPosition.TopCenter:
+                    case LegendPosition.BottomCenter:
+                        left = (this.PlotArea.Left + this.PlotArea.Right - legendSize.Width) * 0.5;
+                        break;
+                }
             }
-            if (size.Width > 0)
-                size.Width += LegendPadding;
-            if (size.Height > 0)
-                size.Height += LegendPadding;
+            else
+            {
+                switch (this.LegendPosition)
+                {
+                    case LegendPosition.LeftTop:
+                    case LegendPosition.LeftMiddle:
+                    case LegendPosition.LeftBottom:
+                        left = this.PlotArea.Left + this.LegendMargin;
+                        break;
+                    case LegendPosition.RightTop:
+                    case LegendPosition.RightMiddle:
+                    case LegendPosition.RightBottom:
+                        left = this.PlotArea.Right - legendSize.Width - this.LegendMargin;
+                        break;
+                    case LegendPosition.TopLeft:
+                    case LegendPosition.TopCenter:
+                    case LegendPosition.TopRight:
+                        top = this.PlotArea.Top + this.LegendMargin;
+                        break;
+                    case LegendPosition.BottomLeft:
+                    case LegendPosition.BottomCenter:
+                    case LegendPosition.BottomRight:
+                        top = this.PlotArea.Bottom - legendSize.Height - this.LegendMargin;
+                        break;
+                }
 
-            return size;
+                switch (this.LegendPosition)
+                {
+                    case LegendPosition.TopLeft:
+                    case LegendPosition.BottomLeft:
+                        left = this.PlotArea.Left + this.LegendMargin;
+                        break;
+                    case LegendPosition.TopRight:
+                    case LegendPosition.BottomRight:
+                        left = this.PlotArea.Right - legendSize.Width - this.LegendMargin;
+                        break;
+                    case LegendPosition.LeftTop:
+                    case LegendPosition.RightTop:
+                        top = this.PlotArea.Top + this.LegendMargin;
+                        break;
+                    case LegendPosition.LeftBottom:
+                    case LegendPosition.RightBottom:
+                        top = this.PlotArea.Bottom - legendSize.Height - this.LegendMargin;
+                        break;
+
+                    case LegendPosition.LeftMiddle:
+                    case LegendPosition.RightMiddle:
+                        top = (this.PlotArea.Top + this.PlotArea.Bottom - legendSize.Height) * 0.5;
+                        break;
+                    case LegendPosition.TopCenter:
+                    case LegendPosition.BottomCenter:
+                        left = (this.PlotArea.Left + this.PlotArea.Right - legendSize.Width) * 0.5;
+                        break;
+                }
+            }
+
+            return new OxyRect(left, top, legendSize.Width, legendSize.Height);
         }
 
+        /// <summary>
+        /// The render legend.
+        /// </summary>
+        /// <param name="rc">
+        /// The rc.
+        /// </param>
+        /// <param name="s">
+        /// The s.
+        /// </param>
+        /// <param name="rect">
+        /// The rect.
+        /// </param>
         private void RenderLegend(IRenderContext rc, ISeries s, OxyRect rect)
         {
             double x = rect.Left;
-            switch (LegendItemAlignment)
+            switch (this.LegendItemAlignment)
             {
                 case HorizontalTextAlign.Center:
                     x = (rect.Left + rect.Right) / 2;
-                    if (LegendSymbolPlacement == LegendSymbolPlacement.Left)
-                        x -= (LegendSymbolLength + LegendSymbolMargin) / 2;
+                    if (this.LegendSymbolPlacement == LegendSymbolPlacement.Left)
+                    {
+                        x -= (this.LegendSymbolLength + this.LegendSymbolMargin) / 2;
+                    }
                     else
-                        x -= (LegendSymbolLength + LegendSymbolMargin) / 2;
+                    {
+                        x -= (this.LegendSymbolLength + this.LegendSymbolMargin) / 2;
+                    }
+
                     break;
                 case HorizontalTextAlign.Right:
                     x = rect.Right;
-                    //   if (LegendSymbolPlacement == LegendSymbolPlacement.Right)
-                    x -= LegendSymbolLength + LegendSymbolMargin;
+
+                    // if (LegendSymbolPlacement == LegendSymbolPlacement.Right)
+                    x -= this.LegendSymbolLength + this.LegendSymbolMargin;
                     break;
             }
-            if (LegendSymbolPlacement == LegendSymbolPlacement.Left)
-                x += LegendSymbolLength + LegendSymbolMargin;
 
-            var textSize = rc.DrawMathText(new ScreenPoint(x, rect.Top), s.Title, TextColor,
-                                               ActualLegendFont, LegendFontSize, LegendFontWeight, 0,
-                                               LegendItemAlignment, VerticalTextAlign.Top, true);
+            if (this.LegendSymbolPlacement == LegendSymbolPlacement.Left)
+            {
+                x += this.LegendSymbolLength + this.LegendSymbolMargin;
+            }
+
+            OxySize textSize = rc.DrawMathText(
+                new ScreenPoint(x, rect.Top), 
+                s.Title, 
+                this.TextColor, 
+                this.ActualLegendFont, 
+                this.LegendFontSize, 
+                this.LegendFontWeight, 
+                0, 
+                this.LegendItemAlignment, 
+                VerticalTextAlign.Top, 
+                true);
             double x0 = x;
-            switch (LegendItemAlignment)
+            switch (this.LegendItemAlignment)
             {
                 case HorizontalTextAlign.Center:
                     x0 = x - textSize.Width / 2;
@@ -175,131 +231,184 @@ namespace OxyPlot
                     break;
             }
 
-            var symbolRect = new OxyRect(LegendSymbolPlacement == LegendSymbolPlacement.Right ? x0 + textSize.Width + LegendSymbolMargin : x0 - LegendSymbolMargin - LegendSymbolLength, rect.Top,
-                LegendSymbolLength, textSize.Height);
+            var symbolRect =
+                new OxyRect(
+                    this.LegendSymbolPlacement == LegendSymbolPlacement.Right
+                        ? x0 + textSize.Width + this.LegendSymbolMargin
+                        : x0 - this.LegendSymbolMargin - this.LegendSymbolLength, 
+                    rect.Top, 
+                    this.LegendSymbolLength, 
+                    textSize.Height);
 
             s.RenderLegend(rc, symbolRect);
         }
 
         /// <summary>
-        /// Gets the rectangle of the legend box.
+        /// The render legends.
         /// </summary>
-        /// <param name="legendSize">Size of the legend box.</param>
-        /// <returns></returns>
-        private OxyRect GetLegendRectangle(OxySize legendSize)
+        /// <param name="rc">
+        /// The rc.
+        /// </param>
+        /// <param name="rect">
+        /// The rect.
+        /// </param>
+        /// <param name="measureOnly">
+        /// The measure only.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        private OxySize RenderLegends(IRenderContext rc, OxyRect rect, bool measureOnly = false)
         {
-            double top = 0;
-            double left = 0;
-            if (LegendPlacement == LegendPlacement.Outside)
+            // Render background and border around legend
+            if (!measureOnly && rect.Width > 0 && rect.Height > 0)
             {
-                switch (LegendPosition)
+                rc.DrawRectangleAsPolygon(rect, this.LegendBackground, this.LegendBorder, this.LegendBorderThickness);
+            }
+
+            double availableWidth = rect.Width;
+            double availableHeight = rect.Height;
+
+            double x = this.LegendPadding;
+            double top = this.LegendPadding;
+
+            var size = new OxySize();
+            if (!string.IsNullOrEmpty(this.LegendTitle))
+            {
+                OxySize titleSize;
+                if (measureOnly)
                 {
-                    case LegendPosition.LeftTop:
-                    case LegendPosition.LeftMiddle:
-                    case LegendPosition.LeftBottom:
-                        left = PlotAndAxisArea.Left - legendSize.Width - LegendMargin;
-                        break;
-                    case LegendPosition.RightTop:
-                    case LegendPosition.RightMiddle:
-                    case LegendPosition.RightBottom:
-                        left = PlotAndAxisArea.Right + LegendMargin;
-                        break;
-                    case LegendPosition.TopLeft:
-                    case LegendPosition.TopCenter:
-                    case LegendPosition.TopRight:
-                        top = PlotAndAxisArea.Top - legendSize.Height - LegendMargin;
-                        break;
-                    case LegendPosition.BottomLeft:
-                    case LegendPosition.BottomCenter:
-                    case LegendPosition.BottomRight:
-                        top = PlotAndAxisArea.Bottom + LegendMargin;
-                        break;
+                    titleSize = rc.MeasureMathText(
+                        this.LegendTitle, 
+                        this.LegendTitleFont ?? DefaultFont, 
+                        this.LegendTitleFontSize, 
+                        this.LegendTitleFontWeight);
                 }
-                switch (LegendPosition)
+                else
                 {
-                    case LegendPosition.TopLeft:
-                    case LegendPosition.BottomLeft:
-                        left = PlotArea.Left;
-                        break;
-                    case LegendPosition.TopRight:
-                    case LegendPosition.BottomRight:
-                        left = PlotArea.Right - legendSize.Width;
-                        break;
-                    case LegendPosition.LeftTop:
-                    case LegendPosition.RightTop:
-                        top = PlotArea.Top;
-                        break;
-                    case LegendPosition.LeftBottom:
-                    case LegendPosition.RightBottom:
-                        top = PlotArea.Bottom - legendSize.Height;
-                        break;
-                    case LegendPosition.LeftMiddle:
-                    case LegendPosition.RightMiddle:
-                        top = (PlotArea.Top + PlotArea.Bottom - legendSize.Height) * 0.5;
-                        break;
-                    case LegendPosition.TopCenter:
-                    case LegendPosition.BottomCenter:
-                        left = (PlotArea.Left + PlotArea.Right - legendSize.Width) * 0.5;
-                        break;
+                    titleSize = rc.DrawMathText(
+                        new ScreenPoint(rect.Left + x, rect.Top + top), 
+                        this.LegendTitle, 
+                        this.TextColor, 
+                        this.LegendTitleFont ?? DefaultFont, 
+                        this.LegendTitleFontSize, 
+                        this.LegendTitleFontWeight, 
+                        0, 
+                        HorizontalTextAlign.Left, 
+                        VerticalTextAlign.Top, 
+                        true);
+                }
+
+                top += titleSize.Height;
+                size.Width = x + titleSize.Width + this.LegendPadding;
+                size.Height = top + titleSize.Height;
+            }
+
+            double y = top;
+
+            double lineHeight = 0;
+            double rowWidth = 0;
+
+            IEnumerable<Series> items = this.LegendItemOrder == LegendItemOrder.Reverse
+                                            ? this.Series.Reverse()
+                                            : this.Series;
+
+            foreach (Series s in items)
+            {
+                if (string.IsNullOrEmpty(s.Title))
+                {
+                    continue;
+                }
+
+                OxySize textSize = rc.MeasureMathText(
+                    s.Title, this.ActualLegendFont, this.LegendFontSize, this.LegendFontWeight);
+                double itemWidth = this.LegendSymbolLength + this.LegendSymbolMargin + textSize.Width;
+                double itemHeight = textSize.Height;
+
+                if (this.LegendOrientation == LegendOrientation.Horizontal)
+                {
+                    // Add spacing between items
+                    if (x > this.LegendPadding)
+                    {
+                        x += this.LegendItemSpacing;
+                    }
+
+                    if (x + itemWidth > availableWidth - this.LegendPadding)
+                    {
+                        // new line
+                        x = this.LegendPadding;
+                        y += lineHeight;
+                        lineHeight = 0;
+                    }
+
+                    if (textSize.Height > lineHeight)
+                    {
+                        lineHeight = textSize.Height;
+                    }
+
+                    if (!measureOnly)
+                    {
+                        var r = new OxyRect(rect.Left + x, rect.Top + y, textSize.Width, textSize.Height);
+                        this.RenderLegend(rc, s, r);
+                    }
+
+                    x += itemWidth;
+                    if (x > size.Width)
+                    {
+                        size.Width = x;
+                    }
+
+                    if (y + textSize.Height > size.Height)
+                    {
+                        size.Height = y + textSize.Height;
+                    }
+                }
+                else
+                {
+                    if (y + itemHeight > availableHeight - this.LegendPadding)
+                    {
+                        y = top;
+                        x += rowWidth + this.LegendColumnSpacing;
+                        rowWidth = 0;
+                    }
+
+                    if (!measureOnly)
+                    {
+                        var r = new OxyRect(
+                            rect.Left + x, rect.Top + y, rect.Width - x - this.LegendPadding, textSize.Height);
+                        this.RenderLegend(rc, s, r);
+                    }
+
+                    y += itemHeight;
+                    if (itemWidth > rowWidth)
+                    {
+                        rowWidth = itemWidth;
+                    }
+
+                    if (x + itemWidth > size.Width)
+                    {
+                        size.Width = x + itemWidth;
+                    }
+
+                    if (y > size.Height)
+                    {
+                        size.Height = y;
+                    }
                 }
             }
-            else
+
+            if (size.Width > 0)
             {
-                switch (LegendPosition)
-                {
-                    case LegendPosition.LeftTop:
-                    case LegendPosition.LeftMiddle:
-                    case LegendPosition.LeftBottom:
-                        left = PlotArea.Left + LegendMargin;
-                        break;
-                    case LegendPosition.RightTop:
-                    case LegendPosition.RightMiddle:
-                    case LegendPosition.RightBottom:
-                        left = PlotArea.Right - legendSize.Width - LegendMargin;
-                        break;
-                    case LegendPosition.TopLeft:
-                    case LegendPosition.TopCenter:
-                    case LegendPosition.TopRight:
-                        top = PlotArea.Top + LegendMargin;
-                        break;
-                    case LegendPosition.BottomLeft:
-                    case LegendPosition.BottomCenter:
-                    case LegendPosition.BottomRight:
-                        top = PlotArea.Bottom - legendSize.Height - LegendMargin;
-                        break;
-                }
-                switch (LegendPosition)
-                {
-                    case LegendPosition.TopLeft:
-                    case LegendPosition.BottomLeft:
-                        left = PlotArea.Left + LegendMargin;
-                        break;
-                    case LegendPosition.TopRight:
-                    case LegendPosition.BottomRight:
-                        left = PlotArea.Right - legendSize.Width - LegendMargin;
-                        break;
-                    case LegendPosition.LeftTop:
-                    case LegendPosition.RightTop:
-                        top = PlotArea.Top + LegendMargin;
-                        break;
-                    case LegendPosition.LeftBottom:
-                    case LegendPosition.RightBottom:
-                        top = PlotArea.Bottom - legendSize.Height - LegendMargin;
-                        break;
-
-                    case LegendPosition.LeftMiddle:
-                    case LegendPosition.RightMiddle:
-                        top = (PlotArea.Top + PlotArea.Bottom - legendSize.Height) * 0.5;
-                        break;
-                    case LegendPosition.TopCenter:
-                    case LegendPosition.BottomCenter:
-                        left = (PlotArea.Left + PlotArea.Right - legendSize.Width) * 0.5;
-                        break;
-
-                }
-
+                size.Width += this.LegendPadding;
             }
-            return new OxyRect(left, top, legendSize.Width, legendSize.Height);
+
+            if (size.Height > 0)
+            {
+                size.Height += this.LegendPadding;
+            }
+
+            return size;
         }
+
+        #endregion
     }
 }

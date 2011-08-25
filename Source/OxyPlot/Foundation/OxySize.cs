@@ -1,4 +1,13 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OxySize.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Size class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     using System;
     using System.Globalization;
@@ -8,30 +17,36 @@
     /// </summary>
     public struct OxySize
     {
+        #region Constants and Fields
+
         /// <summary>
         /// Empty Size.
         /// </summary>
         public static OxySize Empty = new OxySize(0, 0);
 
+        #endregion
+
+        #region Constructors and Destructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OxySize"/> struct.
         /// </summary>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
+        /// <param name="width">
+        /// The width.
+        /// </param>
+        /// <param name="height">
+        /// The height.
+        /// </param>
         public OxySize(double width, double height)
             : this()
         {
-            Width = width;
-            Height = height;
+            this.Width = width;
+            this.Height = height;
         }
 
-        /// <summary>
-        /// Gets or sets the width.
-        /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
-        public double Width { get; set; }
+        #endregion
+
+        #region Public Properties
 
         /// <summary>
         /// Gets or sets the height.
@@ -42,6 +57,18 @@
         public double Height { get; set; }
 
         /// <summary>
+        /// Gets or sets the width.
+        /// </summary>
+        /// <value>
+        /// The width.
+        /// </value>
+        public double Width { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
@@ -49,8 +76,9 @@
         /// </returns>
         public override string ToString()
         {
-            return String.Format(CultureInfo.InvariantCulture, "({0}, {1})", Width, Height);
+            return string.Format(CultureInfo.InvariantCulture, "({0}, {1})", this.Width, this.Height);
         }
 
+        #endregion
     }
 }

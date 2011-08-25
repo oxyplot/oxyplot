@@ -1,12 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TrackerDefinition.cs" company="">
-//   
+// <copyright file="TrackerDefinition.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
 //   The tracker definition.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 #if WPF
+
 namespace OxyPlot.Wpf
 #endif
 #if SILVERLIGHT

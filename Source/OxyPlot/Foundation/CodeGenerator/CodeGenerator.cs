@@ -1,4 +1,18 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CodeGenerator.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   This class generates c# code for the specified PlotModel.
+//   This is useful for creating examples or unit tests.
+//   Press Ctrl+Alt+C in a plot to copy code to the clipboard.
+//   Usage:
+//   var cg = new CodeGenerator(myPlotModel);
+//   Clipboard.SetText(cg.ToCode());
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     using System;
     using System.Collections;
@@ -19,48 +33,38 @@
     /// </summary>
     public class CodeGenerator
     {
-        /// <summary>
-        /// Formats a constructor.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="format">The format of the constructor arguments.</param>
-        /// <param name="values">The argument values.</param>
-        /// <returns></returns>
-        public static string FormatConstructor(Type type, string format, params object[] values)
-        {
-            return "new " + type.Name + "(" + FormatCode(format, values) + ")";
-        }
-
-        /// <summary>
-        /// Formats the code.
-        /// </summary>
-        /// <param name="format">The format.</param>
-        /// <param name="values">The values.</param>
-        /// <returns></returns>
-        public static string FormatCode(string format, params object[] values)
-        {
-            string[] encodedValues = new string[values.Length];
-            for (int i = 0; i < values.Length; i++)
-            {
-                encodedValues[i] = values[i].ToCode();
-            }
-            return String.Format(format, encodedValues);
-        }
-
         #region Constants and Fields
 
+        /// <summary>
+        /// The sb.
+        /// </summary>
         private readonly StringBuilder sb;
 
+        /// <summary>
+        /// The variables.
+        /// </summary>
         private readonly HashSet<string> variables;
 
+        /// <summary>
+        /// The indent string.
+        /// </summary>
         private string indentString;
 
+        /// <summary>
+        /// The indents.
+        /// </summary>
         private int indents;
 
         #endregion
 
         #region Constructors and Destructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CodeGenerator"/> class.
+        /// </summary>
+        /// <param name="model">
+        /// The model.
+        /// </param>
         public CodeGenerator(PlotModel model)
         {
             this.variables = new HashSet<string>();
@@ -84,12 +88,16 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets or sets Indents.
+        /// </summary>
         private int Indents
         {
             get
             {
                 return this.indents;
             }
+
             set
             {
                 this.indents = value;
@@ -102,9 +110,54 @@
         #region Public Methods
 
         /// <summary>
+        /// Formats the code.
+        /// </summary>
+        /// <param name="format">
+        /// The format.
+        /// </param>
+        /// <param name="values">
+        /// The values.
+        /// </param>
+        /// <returns>
+        /// The format code.
+        /// </returns>
+        public static string FormatCode(string format, params object[] values)
+        {
+            var encodedValues = new string[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                encodedValues[i] = values[i].ToCode();
+            }
+
+            return string.Format(format, encodedValues);
+        }
+
+        /// <summary>
+        /// Formats a constructor.
+        /// </summary>
+        /// <param name="type">
+        /// The type.
+        /// </param>
+        /// <param name="format">
+        /// The format of the constructor arguments.
+        /// </param>
+        /// <param name="values">
+        /// The argument values.
+        /// </param>
+        /// <returns>
+        /// The format constructor.
+        /// </returns>
+        public static string FormatConstructor(Type type, string format, params object[] values)
+        {
+            return "new " + type.Name + "(" + FormatCode(format, values) + ")";
+        }
+
+        /// <summary>
         /// Returns the c# code for this model.
         /// </summary>
-        /// <returns>C# code.</returns>
+        /// <returns>
+        /// C# code.
+        /// </returns>
         public string ToCode()
         {
             return this.sb.ToString();
@@ -114,6 +167,15 @@
 
         #region Methods
 
+        /// <summary>
+        /// The add.
+        /// </summary>
+        /// <param name="obj">
+        /// The obj.
+        /// </param>
+        /// <returns>
+        /// The add.
+        /// </returns>
         private string Add(object obj)
         {
             Type type = obj.GetType();
@@ -125,6 +187,18 @@
             return varName;
         }
 
+        /// <summary>
+        /// The add children.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="collectionName">
+        /// The collection name.
+        /// </param>
+        /// <param name="children">
+        /// The children.
+        /// </param>
         private void AddChildren(string name, string collectionName, IEnumerable children)
         {
             foreach (object child in children)
@@ -134,6 +208,15 @@
             }
         }
 
+        /// <summary>
+        /// The add items.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="list">
+        /// The list.
+        /// </param>
         private void AddItems(string name, IList list)
         {
             foreach (object item in list)
@@ -146,11 +229,20 @@
             }
         }
 
+        /// <summary>
+        /// The append line.
+        /// </summary>
+        /// <param name="format">
+        /// The format.
+        /// </param>
+        /// <param name="args">
+        /// The args.
+        /// </param>
         private void AppendLine(string format, params object[] args)
         {
             if (args.Length > 0)
             {
-                this.sb.AppendLine(this.indentString + String.Format(CultureInfo.InvariantCulture, format, args));
+                this.sb.AppendLine(this.indentString + string.Format(CultureInfo.InvariantCulture, format, args));
             }
             else
             {
@@ -158,16 +250,30 @@
             }
         }
 
+        /// <summary>
+        /// The are lists equal.
+        /// </summary>
+        /// <param name="list1">
+        /// The list 1.
+        /// </param>
+        /// <param name="list2">
+        /// The list 2.
+        /// </param>
+        /// <returns>
+        /// The are lists equal.
+        /// </returns>
         private bool AreListsEqual(IList list1, IList list2)
         {
             if (list1 == null || list2 == null)
             {
                 return false;
             }
+
             if (list1.Count != list2.Count)
             {
                 return false;
             }
+
             for (int i = 0; i < list1.Count; i++)
             {
                 if (!list1[i].Equals(list2[i]))
@@ -175,27 +281,49 @@
                     return false;
                 }
             }
+
             return true;
         }
 
+        /// <summary>
+        /// The get first attribute.
+        /// </summary>
+        /// <param name="pi">
+        /// The pi.
+        /// </param>
+        /// <typeparam name="T">
+        /// </typeparam>
+        /// <returns>
+        /// </returns>
         private T GetFirstAttribute<T>(PropertyInfo pi) where T : class
         {
             foreach (T a in pi.GetCustomAttributes(typeof(CodeGenerationAttribute), true))
             {
                 return a;
             }
+
             return null;
         }
 
+        /// <summary>
+        /// The get new variable name.
+        /// </summary>
+        /// <param name="type">
+        /// The type.
+        /// </param>
+        /// <returns>
+        /// The get new variable name.
+        /// </returns>
         private string GetNewVariableName(Type type)
         {
             string prefix = type.Name;
-            prefix = Char.ToLower(prefix[0]) + prefix.Substring(1);
+            prefix = char.ToLower(prefix[0]) + prefix.Substring(1);
             int i = 1;
             while (this.variables.Contains(prefix + i))
             {
                 i++;
             }
+
             return prefix + i;
         }
 
@@ -203,14 +331,19 @@
         /// Makes a valid variable of a string.
         /// Invalid characters will simply be removed.
         /// </summary>
-        /// <param name="title">The title.</param>
-        /// <returns></returns>
+        /// <param name="title">
+        /// The title.
+        /// </param>
+        /// <returns>
+        /// The make valid variable name.
+        /// </returns>
         private string MakeValidVariableName(string title)
         {
             if (title == null)
             {
                 return null;
             }
+
             var regex = new Regex("[a-zA-Z_][a-zA-Z0-9_]*");
             var result = new StringBuilder();
             foreach (char c in title)
@@ -221,10 +354,22 @@
                     result.Append(s);
                 }
             }
+
             return result.ToString();
         }
 
-
+        /// <summary>
+        /// The set properties.
+        /// </summary>
+        /// <param name="o">
+        /// The o.
+        /// </param>
+        /// <param name="varName">
+        /// The var name.
+        /// </param>
+        /// <param name="defaultValues">
+        /// The default values.
+        /// </param>
         private void SetProperties(object o, string varName, object defaultValues)
         {
             Type type = o.GetType();
@@ -261,6 +406,7 @@
                             continue;
                         }
                     }
+
                     this.AddItems(name, list);
                     continue;
                 }
@@ -278,16 +424,29 @@
                     continue;
                 }
 
-
                 this.SetProperty(pi.PropertyType, name, value);
             }
         }
 
+        /// <summary>
+        /// The set property.
+        /// </summary>
+        /// <param name="propertyType">
+        /// The property type.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
         private void SetProperty(Type propertyType, string name, object value)
         {
-            var code = value.ToCode();
+            string code = value.ToCode();
             if (code != null)
+            {
                 this.AppendLine("{0} = {1};", name, code);
+            }
         }
 
         #endregion

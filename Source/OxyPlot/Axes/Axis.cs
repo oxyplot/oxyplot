@@ -1,7 +1,12 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Axis.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Abstract base class for axes.
+//   This class contains all properties from the IAxis interface.
+//   This class contains methods that should only be accessible by the PlotModel.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -20,6 +25,16 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
+        /// The offset.
+        /// </summary>
+        internal double offset;
+
+        /// <summary>
+        /// The scale.
+        /// </summary>
+        internal double scale;
+
+        /// <summary>
         /// Exponent function.
         /// </summary>
         protected static readonly Func<double, double> Exponent = x => Math.Round(Math.Log(Math.Abs(x), 10));
@@ -29,16 +44,6 @@ namespace OxyPlot
         /// http://en.wikipedia.org/wiki/Mantissa
         /// </summary>
         protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
-
-        /// <summary>
-        /// The offset.
-        /// </summary>
-        internal double offset;
-
-        /// <summary>
-        /// The scale.
-        /// </summary>
-        internal double scale;
 
         /// <summary>
         /// The position.
@@ -384,12 +389,6 @@ namespace OxyPlot
         public double MaximumPadding { get; set; }
 
         /// <summary>
-        /// Gets or sets the midpoint (screen coordinates) of the plot area.
-        /// This is used by polar coordinate systems.
-        /// </summary>
-        //public ScreenPoint MidPoint { get; protected set; }
-
-        /// <summary>
         /// Gets or sets the minimum value of the axis.
         /// </summary>
         public double Minimum { get; set; }
@@ -676,9 +675,6 @@ namespace OxyPlot
         /// <summary>
         /// Pans the specified axis.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
         /// <param name="ppt">
         /// The previous point (screen coordinates).
         /// </param>
@@ -708,14 +704,6 @@ namespace OxyPlot
         public abstract void Reset();
 
         /// <summary>
-        /// Sets the scaling factor.
-        /// </summary>
-        /// <param name="scale">
-        /// The new scale.
-        /// </param>
-        public abstract void Zoom(double scale);
-
-        /// <summary>
         /// Transforms the specified coordinate to screen coordinates.
         /// This method can only be used with non-polar coordinate systems.
         /// </summary>
@@ -743,6 +731,14 @@ namespace OxyPlot
         /// The transformed point.
         /// </returns>
         public abstract ScreenPoint Transform(double x, double y, IAxis yaxis);
+
+        /// <summary>
+        /// Sets the scaling factor.
+        /// </summary>
+        /// <param name="scale">
+        /// The new scale.
+        /// </param>
+        public abstract void Zoom(double scale);
 
         /// <summary>
         /// Zooms the axis to the range [x0,x1].

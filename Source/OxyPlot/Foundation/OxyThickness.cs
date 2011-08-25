@@ -1,4 +1,13 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OxyThickness.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Thickness class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     using System;
     using System.Globalization;
@@ -8,15 +17,38 @@
     /// </summary>
     public struct OxyThickness : ICodeGenerating
     {
+        #region Constants and Fields
+
+        /// <summary>
+        /// The bottom.
+        /// </summary>
         private double bottom;
+
+        /// <summary>
+        /// The left.
+        /// </summary>
         private double left;
+
+        /// <summary>
+        /// The right.
+        /// </summary>
         private double right;
+
+        /// <summary>
+        /// The top.
+        /// </summary>
         private double top;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyThickness"/> struct.
         /// </summary>
-        /// <param name="thickness">The thickness.</param>
+        /// <param name="thickness">
+        /// The thickness.
+        /// </param>
         public OxyThickness(double thickness)
             : this(thickness, thickness, thickness, thickness)
         {
@@ -25,10 +57,18 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyThickness"/> struct.
         /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="top">The top.</param>
-        /// <param name="right">The right.</param>
-        /// <param name="bottom">The bottom.</param>
+        /// <param name="left">
+        /// The left.
+        /// </param>
+        /// <param name="top">
+        /// The top.
+        /// </param>
+        /// <param name="right">
+        /// The right.
+        /// </param>
+        /// <param name="bottom">
+        /// The bottom.
+        /// </param>
         public OxyThickness(double left, double top, double right, double bottom)
         {
             this.left = left;
@@ -37,37 +77,9 @@
             this.bottom = bottom;
         }
 
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return String.Format(CultureInfo.InvariantCulture, "({0}, {1}, {2}, {3})", left, top, right, bottom);
-        }
+        #endregion
 
-        /// <summary>
-        /// Returns C# code that generates this instance.
-        /// </summary>
-        /// <returns></returns>
-        public string ToCode()
-        {
-            return String.Format(CultureInfo.InvariantCulture, "new OxyThickness({0},{1},{2},{3}", Left, Top, Right, Bottom);
-        }
-
-        /// <summary>
-        /// Gets or sets the top thickness.
-        /// </summary>
-        /// <value>
-        /// The top thickness.
-        /// </value>
-        public double Top
-        {
-            get { return top; }
-            set { top = value; }
-        }
+        #region Public Properties
 
         /// <summary>
         /// Gets or sets the bottom thickness.
@@ -77,8 +89,26 @@
         /// </value>
         public double Bottom
         {
-            get { return bottom; }
-            set { bottom = value; }
+            get
+            {
+                return this.bottom;
+            }
+
+            set
+            {
+                this.bottom = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the height.
+        /// </summary>
+        public double Height
+        {
+            get
+            {
+                return this.Bottom - this.Top;
+            }
         }
 
         /// <summary>
@@ -89,8 +119,15 @@
         /// </value>
         public double Left
         {
-            get { return left; }
-            set { left = value; }
+            get
+            {
+                return this.left;
+            }
+
+            set
+            {
+                this.left = value;
+            }
         }
 
         /// <summary>
@@ -101,8 +138,34 @@
         /// </value>
         public double Right
         {
-            get { return right; }
-            set { right = value; }
+            get
+            {
+                return this.right;
+            }
+
+            set
+            {
+                this.right = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the top thickness.
+        /// </summary>
+        /// <value>
+        /// The top thickness.
+        /// </value>
+        public double Top
+        {
+            get
+            {
+                return this.top;
+            }
+
+            set
+            {
+                this.top = value;
+            }
         }
 
         /// <summary>
@@ -110,15 +173,45 @@
         /// </summary>
         public double Width
         {
-            get { return Right - Left; }
+            get
+            {
+                return this.Right - this.Left;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Returns C# code that generates this instance.
+        /// </summary>
+        /// <returns>
+        /// The to code.
+        /// </returns>
+        public string ToCode()
+        {
+            return string.Format(
+                CultureInfo.InvariantCulture, 
+                "new OxyThickness({0},{1},{2},{3}", 
+                this.Left, 
+                this.Top, 
+                this.Right, 
+                this.Bottom);
         }
 
         /// <summary>
-        /// Gets the height.
+        /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
-        public double Height
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
         {
-            get { return Bottom - Top; }
+            return string.Format(
+                CultureInfo.InvariantCulture, "({0}, {1}, {2}, {3})", this.left, this.top, this.right, this.bottom);
         }
+
+        #endregion
     }
 }

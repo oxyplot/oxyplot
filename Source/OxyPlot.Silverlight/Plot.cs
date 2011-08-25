@@ -1,9 +1,17 @@
-﻿namespace OxyPlot.Silverlight
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Plot.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
+// </copyright>
+// <summary>
+//   The Silverlight Plot control.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot.Silverlight
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -73,14 +81,14 @@
         private bool isPlotInvalidated;
 
         /// <summary>
-        ///   Data has been updated.
-        /// </summary>
-        private bool updateData;
-
-        /// <summary>
         ///   The overlays.
         /// </summary>
         private Canvas overlays;
+
+        /// <summary>
+        ///   Data has been updated.
+        /// </summary>
+        private bool updateData;
 
         /// <summary>
         ///   The zoom control.
@@ -226,6 +234,9 @@
         /// <summary>
         /// Invalidate the plot (not blocking the UI thread)
         /// </summary>
+        /// <param name="updateData">
+        /// The update Data.
+        /// </param>
         public void InvalidatePlot(bool updateData = true)
         {
             lock (this)
@@ -277,6 +288,9 @@
         /// <summary>
         /// Refresh the plot immediately (blocking UI thread)
         /// </summary>
+        /// <param name="updateData">
+        /// The update Data.
+        /// </param>
         public void RefreshPlot(bool updateData)
         {
             // don't block ui thread on silverlight
@@ -722,11 +736,12 @@
                 if (this.isPlotInvalidated)
                 {
                     this.isPlotInvalidated = false;
-                    if (ActualWidth > 0 && ActualHeight > 0)
+                    if (this.ActualWidth > 0 && this.ActualHeight > 0)
                     {
                         this.UpdateModel(this.updateData);
                         this.updateData = false;
                     }
+
                     this.UpdateVisuals();
                 }
             }
@@ -822,6 +837,9 @@
         /// <summary>
         /// Updates the model.
         /// </summary>
+        /// <param name="updateData">
+        /// The update Data.
+        /// </param>
         private void UpdateModel(bool updateData)
         {
             this.internalModel = this.Model;

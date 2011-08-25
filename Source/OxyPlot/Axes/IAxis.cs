@@ -1,7 +1,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IAxis.cs" company="OxyPlot">
-//   See http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Axis positions
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -84,12 +87,12 @@ namespace OxyPlot
         /// <summary>
         /// The zoom.
         /// </summary>
-        Zoom,
+        Zoom, 
 
         /// <summary>
         /// The pan.
         /// </summary>
-        Pan,
+        Pan, 
 
         /// <summary>
         /// The reset.
@@ -264,7 +267,18 @@ namespace OxyPlot
         /// The size of the axis.
         /// </returns>
         OxySize Measure(IRenderContext rc);
-        
+
+        /// <summary>
+        /// Pans the specified axis.
+        /// </summary>
+        /// <param name="ppt">
+        /// The previous point (screen coordinates).
+        /// </param>
+        /// <param name="cpt">
+        /// The current point (screen coordinates).
+        /// </param>
+        void Pan(ScreenPoint ppt, ScreenPoint cpt);
+
         /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
@@ -284,25 +298,6 @@ namespace OxyPlot
         /// This method will not refresh the plot.
         /// </summary>
         void Reset();
-
-        /// <summary>
-        /// Pans the specified axis.
-        /// </summary>
-        /// <param name="ppt">
-        /// The previous point (screen coordinates).
-        /// </param>
-        /// <param name="cpt">
-        /// The current point (screen coordinates).
-        /// </param>
-        void Pan(ScreenPoint ppt, ScreenPoint cpt);
-       
-        /// <summary>
-        /// Sets the scaling factor.
-        /// </summary>
-        /// <param name="scale">
-        /// The new scale.
-        /// </param>
-        void Zoom(double scale);
 
         /// <summary>
         /// Transforms the specified coordinate to screen coordinates.
@@ -334,39 +329,30 @@ namespace OxyPlot
         ScreenPoint Transform(double x, double y, IAxis yaxis);
 
         /// <summary>
+        /// Sets the scaling factor.
+        /// </summary>
+        /// <param name="scale">
+        /// The new scale.
+        /// </param>
+        void Zoom(double scale);
+
+        /// <summary>
         /// Updates the actual maximum and minimum values.
         /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
         /// If Maximum or Minimum have been set, these values will be used.
         /// Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
         /// </summary>
-        // void UpdateActualMaxMin();
-
         /// <summary>
         /// Updates the axis with information from the plot series.
         /// This is used by the category axis that need to know the number of series using the axis.
         /// </summary>
-        /// <param name="series">
-        /// The series collection.
-        /// </param>
-        //void UpdateFromSeries(IEnumerable<ISeries> series);
-
         /// <summary>
         /// Updates the actual minor and major step intervals.
         /// </summary>
-        /// <param name="plotArea">
-        /// The plot area rectangle.
-        /// </param>
-        //void UpdateIntervals(OxyRect plotArea);
-
         /// <summary>
         /// Updates the scale and offset properties of the transform
         /// from the specified boundary rectangle.
         /// </summary>
-        /// <param name="plotArea">
-        /// The plot area rectangle.
-        /// </param>
-       // void UpdateTransform(OxyRect plotArea);
-
         /// <summary>
         /// Zooms the axis to the range [x0,x1].
         /// </summary>

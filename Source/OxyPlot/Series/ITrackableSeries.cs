@@ -1,4 +1,14 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ITrackableSeries.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Interface for Series that can be 'tracked'
+//   The plot control will show a tracker with the current value when moving the mouse over the data.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     /// <summary>
     /// Interface for Series that can be 'tracked'
@@ -25,9 +35,15 @@
         /// <summary>
         /// Gets the nearest point.
         /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
-        /// <returns>A TrackerHitResult for the current hit.</returns>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <param name="interpolate">
+        /// interpolate if set to <c>true</c>.
+        /// </param>
+        /// <returns>
+        /// A TrackerHitResult for the current hit.
+        /// </returns>
         TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
 
         #endregion

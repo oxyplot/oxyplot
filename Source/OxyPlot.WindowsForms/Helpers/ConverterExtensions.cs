@@ -1,7 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ConverterExtensions.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Extension method used to convert to/from Windows/Windows.Media classes.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.WindowsForms
@@ -132,17 +135,9 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Converts a Thickness to an OxyThickness.
         /// </summary>
-        /// <param name="t">
-        /// The thickness.
-        /// </param>
         /// <returns>
         /// An OxyPlot thickness.
         /// </returns>
-        //public static OxyThickness ToOxyThickness(this Thickness t)
-        //{
-        //    return new OxyThickness(t.Left, t.Top, t.Right, t.Bottom);
-        //}
-
         /// <summary>
         /// Converts a ScreenPoint to a Point.
         /// </summary>
@@ -184,10 +179,10 @@ namespace OxyPlot.WindowsForms
         {
             if (aliased)
             {
-                int x = (int)r.Left;
-                int y = (int)r.Top;
-                int ri = (int)r.Right;
-                int bo = (int)r.Bottom;
+                var x = (int)r.Left;
+                var y = (int)r.Top;
+                var ri = (int)r.Right;
+                var bo = (int)r.Bottom;
                 return new Rectangle(x, y, ri - x, bo - y);
             }
 

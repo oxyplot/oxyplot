@@ -1,24 +1,71 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PieSlice.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   A slice of the PieSeries
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     /// <summary>
-    ///   A slice of the PieSeries
+    /// A slice of the PieSeries
     /// </summary>
     public class PieSlice
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PieSlice"/> class.
+        /// </summary>
         public PieSlice()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PieSlice"/> class.
+        /// </summary>
+        /// <param name="label">
+        /// The label.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="fill">
+        /// The fill.
+        /// </param>
         public PieSlice(string label, double value, OxyColor fill = null)
         {
-            Label = label;
-            Value = value;
-            Fill = fill;
+            this.Label = label;
+            this.Value = value;
+            this.Fill = fill;
         }
 
-        public string Label { get; set; }
-        public double Value { get; set; }
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets Fill.
+        /// </summary>
         public OxyColor Fill { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether IsExploded.
+        /// </summary>
         public bool IsExploded { get; set; }
+
+        /// <summary>
+        /// Gets or sets Label.
+        /// </summary>
+        public string Label { get; set; }
+
+        /// <summary>
+        /// Gets or sets Value.
+        /// </summary>
+        public double Value { get; set; }
+
+        #endregion
     }
 }

@@ -1,8 +1,19 @@
-using System;
-using System.Globalization;
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TrackerHitResult.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Tracker data class.
+//   This is used as DataContext for the TrackerControl.
+//   The TrackerControl is visible when the user use the left mouse button to "track" points on the series.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
+    using System;
+    using System.Globalization;
+
     /// <summary>
     /// Tracker data class.
     /// This is used as DataContext for the TrackerControl.
@@ -10,10 +21,53 @@ namespace OxyPlot
     /// </summary>
     public class TrackerHitResult
     {
+        #region Constants and Fields
+
         /// <summary>
-        /// Gets or sets the position in screen coordinates.
+        /// The default format string.
         /// </summary>
-        public ScreenPoint Position { get; set; }
+        private const string DefaultFormatString = "{1}: {2}\n{3}: {4}";
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TrackerHitResult"/> class.
+        /// </summary>
+        /// <param name="series">
+        /// The series.
+        /// </param>
+        /// <param name="dp">
+        /// The dp.
+        /// </param>
+        /// <param name="sp">
+        /// The sp.
+        /// </param>
+        /// <param name="item">
+        /// The item.
+        /// </param>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        public TrackerHitResult(ISeries series, DataPoint dp, ScreenPoint sp, object item, string text = null)
+        {
+            this.DataPoint = dp;
+            this.Position = sp;
+            this.Item = item;
+            this.Series = series;
+            this.Text = text;
+            var ds = series as DataPointSeries;
+            if (ds != null)
+            {
+                this.XAxis = ds.XAxis;
+                this.YAxis = ds.YAxis;
+            }
+        }
+
+        #endregion
+
+        #region Public Properties
 
         /// <summary>
         /// Gets or sets the nearest or interpolated data point.
@@ -21,9 +75,15 @@ namespace OxyPlot
         public DataPoint DataPoint { get; set; }
 
         /// <summary>
-        /// Gets or sets the series.
+        /// Gets or sets the source item of the point.
+        /// If the current point is from an ItemsSource and is not interpolated, this property will contain the item.
         /// </summary>
-        public ISeries Series { get; set; }
+        public object Item { get; set; }
+
+        /// <summary>
+        /// Gets or sets the horizontal/vertical line extents.
+        /// </summary>
+        public OxyRect LineExtents { get; set; }
 
         /// <summary>
         /// Gets or sets the plot model.
@@ -31,9 +91,19 @@ namespace OxyPlot
         public PlotModel PlotModel { get; set; }
 
         /// <summary>
-        /// Gets or sets the horizontal/vertical line extents.
+        /// Gets or sets the position in screen coordinates.
         /// </summary>
-        public OxyRect LineExtents { get; set; }
+        public ScreenPoint Position { get; set; }
+
+        /// <summary>
+        /// Gets or sets the series.
+        /// </summary>
+        public ISeries Series { get; set; }
+
+        /// <summary>
+        /// Gets or sets the text shown in the tracker.
+        /// </summary>
+        public string Text { get; set; }
 
         /// <summary>
         /// Gets or sets the X axis.
@@ -45,49 +115,45 @@ namespace OxyPlot
         /// </summary>
         public IAxis YAxis { get; set; }
 
-        /// <summary>
-        /// Gets or sets the source item of the point.
-        /// If the current point is from an ItemsSource and is not interpolated, this property will contain the item.
-        /// </summary>
-        public object Item { get; set; }
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
-        /// Gets or sets the text shown in the tracker.
+        /// The to string.
         /// </summary>
-        public string Text { get; set; }
-
-        private const string DefaultFormatString = "{1}: {2}\n{3}: {4}";
-
-        public TrackerHitResult(ISeries series, DataPoint dp, ScreenPoint sp, object item, string text=null)
-        {
-            this.DataPoint = dp;
-            this.Position = sp;
-            this.Item = item;
-            this.Series = series;
-            this.Text = text;
-            var ds = series as DataPointSeries;
-            if (ds!=null)
-            {
-                XAxis = ds.XAxis;
-                YAxis = ds.YAxis;
-            }
-        }
-
+        /// <returns>
+        /// The to string.
+        /// </returns>
         public override string ToString()
         {
-            if (Text!=null)
-                return Text;
+            if (this.Text != null)
+            {
+                return this.Text;
+            }
 
-            var ts = Series as ITrackableSeries;
+            var ts = this.Series as ITrackableSeries;
             string formatString = DefaultFormatString;
-            if (ts != null && !String.IsNullOrEmpty(ts.TrackerFormatString))
+            if (ts != null && !string.IsNullOrEmpty(ts.TrackerFormatString))
+            {
                 formatString = ts.TrackerFormatString;
+            }
 
-            string xAxisTitle = (XAxis != null ? XAxis.Title : null) ?? "X";
-            string yAxisTitle = (YAxis != null ? YAxis.Title : null) ?? "Y";
-            object xValue = XAxis != null ? XAxis.GetValue(DataPoint.X) : DataPoint.X;
-            object yValue = YAxis != null ? YAxis.GetValue(DataPoint.Y) : DataPoint.Y;
-            return String.Format(CultureInfo.InvariantCulture, formatString, Series.Title, xAxisTitle, xValue, yAxisTitle, yValue, Item);     
+            string xAxisTitle = (this.XAxis != null ? this.XAxis.Title : null) ?? "X";
+            string yAxisTitle = (this.YAxis != null ? this.YAxis.Title : null) ?? "Y";
+            object xValue = this.XAxis != null ? this.XAxis.GetValue(this.DataPoint.X) : this.DataPoint.X;
+            object yValue = this.YAxis != null ? this.YAxis.GetValue(this.DataPoint.Y) : this.DataPoint.Y;
+            return string.Format(
+                CultureInfo.InvariantCulture, 
+                formatString, 
+                this.Series.Title, 
+                xAxisTitle, 
+                xValue, 
+                yAxisTitle, 
+                yValue, 
+                this.Item);
         }
+
+        #endregion
     }
 }

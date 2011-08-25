@@ -1,31 +1,90 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SutherlandHodgmanClipping.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   The sutherland hodgman clipping.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
+    using System;
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// The sutherland hodgman clipping.
+    /// </summary>
     public static class SutherlandHodgmanClipping
     {
+        #region Enums
+
+        /// <summary>
+        /// The rectangle edge.
+        /// </summary>
+        private enum RectangleEdge
+        {
+            /// <summary>
+            /// The left.
+            /// </summary>
+            Left, 
+
+            /// <summary>
+            /// The right.
+            /// </summary>
+            Right, 
+
+            /// <summary>
+            /// The top.
+            /// </summary>
+            Top, 
+
+            /// <summary>
+            /// The bottom.
+            /// </summary>
+            Bottom
+        }
+
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
         /// The Sutherland-Hodgman polygon clipping alrogithm.
         /// http://ezekiel.vancouver.wsu.edu/~cs442/lectures/clip/clip/index.html
         /// </summary>
+        /// <param name="bounds">
+        /// The bounds.
+        /// </param>
+        /// <param name="v">
+        /// The v.
+        /// </param>
         public static List<ScreenPoint> ClipPolygon(OxyRect bounds, List<ScreenPoint> v)
         {
-            var p1 = ClipOneAxis(bounds, RectangleEdge.Left, v);
-            var p2 = ClipOneAxis(bounds, RectangleEdge.Right, p1);
-            var p3 = ClipOneAxis(bounds, RectangleEdge.Top, p2);
+            List<ScreenPoint> p1 = ClipOneAxis(bounds, RectangleEdge.Left, v);
+            List<ScreenPoint> p2 = ClipOneAxis(bounds, RectangleEdge.Right, p1);
+            List<ScreenPoint> p3 = ClipOneAxis(bounds, RectangleEdge.Top, p2);
             return ClipOneAxis(bounds, RectangleEdge.Bottom, p3);
         }
 
-        private enum RectangleEdge
-        {
-            Left,
-            Right,
-            Top,
-            Bottom
-        }
+        #endregion
 
+        #region Methods
+
+        /// <summary>
+        /// The clip one axis.
+        /// </summary>
+        /// <param name="bounds">
+        /// The bounds.
+        /// </param>
+        /// <param name="edge">
+        /// The edge.
+        /// </param>
+        /// <param name="v">
+        /// The v.
+        /// </param>
+        /// <returns>
+        /// </returns>
         private static List<ScreenPoint> ClipOneAxis(OxyRect bounds, RectangleEdge edge, List<ScreenPoint> v)
         {
             if (v.Count == 0)
@@ -33,7 +92,7 @@ namespace OxyPlot
                 return new List<ScreenPoint>();
             }
 
-            List<ScreenPoint> polygon = new List<ScreenPoint>(v.Count);
+            var polygon = new List<ScreenPoint>(v.Count);
 
             ScreenPoint s = v[v.Count - 1];
 
@@ -71,6 +130,23 @@ namespace OxyPlot
             return polygon;
         }
 
+        /// <summary>
+        /// The is inside.
+        /// </summary>
+        /// <param name="bounds">
+        /// The bounds.
+        /// </param>
+        /// <param name="edge">
+        /// The edge.
+        /// </param>
+        /// <param name="p">
+        /// The p.
+        /// </param>
+        /// <returns>
+        /// The is inside.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// </exception>
         private static bool IsInside(OxyRect bounds, RectangleEdge edge, ScreenPoint p)
         {
             switch (edge)
@@ -92,6 +168,33 @@ namespace OxyPlot
             }
         }
 
+        /// <summary>
+        /// The line intercept.
+        /// </summary>
+        /// <param name="bounds">
+        /// The bounds.
+        /// </param>
+        /// <param name="edge">
+        /// The edge.
+        /// </param>
+        /// <param name="a">
+        /// The a.
+        /// </param>
+        /// <param name="b">
+        /// The b.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// </exception>
         private static ScreenPoint LineIntercept(OxyRect bounds, RectangleEdge edge, ScreenPoint a, ScreenPoint b)
         {
             if (a.x == b.x && a.y == b.y)
@@ -136,5 +239,7 @@ namespace OxyPlot
 
             throw new ArgumentException("no intercept found");
         }
+
+        #endregion
     }
 }

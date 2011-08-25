@@ -1,4 +1,13 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="XYAxisSeries.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Abstract base class for Series that contains an X-axis and Y-axis
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
@@ -65,10 +74,53 @@
         #region Public Methods
 
         /// <summary>
+        /// Gets the rectangle the series uses on the screen (screen coordinates).
+        /// </summary>
+        /// <returns>
+        /// The rectangle.
+        /// </returns>
+        public OxyRect GetScreenRectangle()
+        {
+            return this.GetClippingRect();
+        }
+
+        /// <summary>
+        /// Renders the Series on the specified rendering context.
+        /// </summary>
+        /// <param name="rc">
+        /// The rendering context.
+        /// </param>
+        /// <param name="model">
+        /// The model.
+        /// </param>
+        public override void Render(IRenderContext rc, PlotModel model)
+        {
+        }
+
+        /// <summary>
+        /// Renders the legend symbol on the specified rendering context.
+        /// </summary>
+        /// <param name="rc">
+        /// The rendering context.
+        /// </param>
+        /// <param name="legendBox">
+        /// The legend rectangle.
+        /// </param>
+        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
+        {
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
         /// Check if this data series requires X/Y axes.
         /// (e.g. Pie series do not require axes)
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// The are axes required.
+        /// </returns>
         protected internal override bool AreAxesRequired()
         {
             return true;
@@ -77,9 +129,15 @@
         /// <summary>
         /// Ensures that the series has axes.
         /// </summary>
-        /// <param name="axes">The axes collection of the parent PlotModel.</param>
-        /// <param name="defaultXAxis">The default X axis of the parent PlotModel.</param>
-        /// <param name="defaultYAxis">The default Y axis of the parent PlotModel.</param>
+        /// <param name="axes">
+        /// The axes collection of the parent PlotModel.
+        /// </param>
+        /// <param name="defaultXAxis">
+        /// The default X axis of the parent PlotModel.
+        /// </param>
+        /// <param name="defaultYAxis">
+        /// The default Y axis of the parent PlotModel.
+        /// </param>
         protected internal override void EnsureAxes(Collection<Axis> axes, Axis defaultXAxis, Axis defaultYAxis)
         {
             // reset
@@ -109,46 +167,23 @@
         }
 
         /// <summary>
-        /// Gets the rectangle the series uses on the screen (screen coordinates).
-        /// </summary>
-        /// <returns>The rectangle.</returns>
-        public OxyRect GetScreenRectangle()
-        {
-            return this.GetClippingRect();
-        }
-
-        /// <summary>
         /// Check if the data series is using the specified axis.
         /// </summary>
-        /// <param name="axis"></param>
-        /// <returns></returns>
+        /// <param name="axis">
+        /// </param>
+        /// <returns>
+        /// The is using.
+        /// </returns>
         protected internal override bool IsUsing(IAxis axis)
         {
             return this.XAxis == axis || this.YAxis == axis;
         }
 
         /// <summary>
-        ///   Renders the Series on the specified rendering context.
-        /// </summary>
-        /// <param name = "rc">The rendering context.</param>
-        /// <param name = "model">The model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
-        {
-        }
-
-        /// <summary>
-        ///   Renders the legend symbol on the specified rendering context.
-        /// </summary>
-        /// <param name = "rc">The rendering context.</param>
-        /// <param name = "legendBox">The legend rectangle.</param>
-        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
-        {
-        }
-
-        /// <summary>
         /// Sets default values from the plotmodel.
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">
+        /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
         }
@@ -161,21 +196,18 @@
         }
 
         /// <summary>
-        ///   Updates the max/minimum values.
+        /// Updates the max/minimum values.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
             this.MinX = this.MinY = this.MaxX = this.MaxY = double.NaN;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Gets the clipping rect.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// </returns>
         protected OxyRect GetClippingRect()
         {
             double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
@@ -189,12 +221,24 @@
         /// <summary>
         /// Gets the point on the curve that is nearest the specified point.
         /// </summary>
-        /// <param name="points">The point list.</param>
-        /// <param name="point">The point.</param>
-        /// <param name="dpn">The nearest point (data coordinates).</param>
-        /// <param name="spn">The nearest point (screen coordinates).</param>
-        /// <param name="index">The index.</param>
-        /// <returns>True if a point was found.</returns>
+        /// <param name="points">
+        /// The point list.
+        /// </param>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <param name="dpn">
+        /// The nearest point (data coordinates).
+        /// </param>
+        /// <param name="spn">
+        /// The nearest point (screen coordinates).
+        /// </param>
+        /// <param name="index">
+        /// The index.
+        /// </param>
+        /// <returns>
+        /// True if a point was found.
+        /// </returns>
         protected bool GetNearestInterpolatedPointInternal(
             IList<IDataPoint> points, ScreenPoint point, out DataPoint dpn, out ScreenPoint spn, out int index)
         {
@@ -231,8 +275,15 @@
                 }
 
                 double u = u1 / u2;
-                if (u < 0) u = 0;
-                if (u > 1) u = 1;
+                if (u < 0)
+                {
+                    u = 0;
+                }
+
+                if (u > 1)
+                {
+                    u = 1;
+                }
 
                 double sx = sp1.x + u * sp21X;
                 double sy = sp1.y + u * sp21Y;
@@ -255,6 +306,27 @@
             return minimumDistance < double.MaxValue;
         }
 
+        /// <summary>
+        /// The get nearest point internal.
+        /// </summary>
+        /// <param name="points">
+        /// The points.
+        /// </param>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <param name="dpn">
+        /// The dpn.
+        /// </param>
+        /// <param name="spn">
+        /// The spn.
+        /// </param>
+        /// <param name="index">
+        /// The index.
+        /// </param>
+        /// <returns>
+        /// The get nearest point internal.
+        /// </returns>
         protected bool GetNearestPointInternal(
             IEnumerable<IDataPoint> points, ScreenPoint point, out DataPoint dpn, out ScreenPoint spn, out int index)
         {
@@ -278,6 +350,7 @@
                     minimumDistance = d2;
                     index = i;
                 }
+
                 i++;
             }
 
@@ -289,8 +362,12 @@
         /// DateTime objects are converted using DateTimeAxis.ToDouble
         /// TimeSpan objects are converted using TimeSpanAxis.ToDouble
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns></returns>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The to double.
+        /// </returns>
         protected virtual double ToDouble(object value)
         {
             if (value is DateTime)

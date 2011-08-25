@@ -1,7 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StairStepSeries.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   StairStepSeries is used to create stairstep graphs.
+//   http://www.mathworks.com/help/techdoc/ref/stairs.html
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -80,8 +84,8 @@ namespace OxyPlot
             {
                 IDataPoint p1 = this.Points[i];
                 IDataPoint p2 = this.Points[i + 1];
-                ScreenPoint sp1 = XAxis.Transform(p1.X,p1.Y, this.YAxis);
-                ScreenPoint sp2 = XAxis.Transform(p2.X,p1.Y, this.YAxis);
+                ScreenPoint sp1 = this.XAxis.Transform(p1.X, p1.Y, this.YAxis);
+                ScreenPoint sp2 = this.XAxis.Transform(p2.X, p1.Y, this.YAxis);
 
                 double sp21X = sp2.x - sp1.x;
                 double sp21Y = sp2.y - sp1.y;
@@ -119,7 +123,7 @@ namespace OxyPlot
                     double px = p1.X + u * (p2.X - p1.X);
                     double py = p1.Y;
                     result = new TrackerHitResult(
-                        this, new DataPoint(px, py), new ScreenPoint(sx, sy), this.GetItem(ItemsSource, i), null);
+                        this, new DataPoint(px, py), new ScreenPoint(sx, sy), this.GetItem(this.ItemsSource, i), null);
                     minimumDistance = distance;
                 }
             }

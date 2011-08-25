@@ -1,30 +1,47 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ScatterSeries.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   ScatterSeries are used to create scatter plots.
+//   http://en.wikipedia.org/wiki/Scatter_plot
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Reflection;
 
     /// <summary>
-    ///   ScatterSeries are used to create scatter plots.
+    /// ScatterSeries are used to create scatter plots.
     ///     http://en.wikipedia.org/wiki/Scatter_plot
     /// </summary>
     public class ScatterSeries : DataPointSeries
     {
+        #region Constructors and Destructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ScatterSeries"/> class.
         /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="markerFill">The marker fill color.</param>
-        /// <param name="markerSize">Size of the markers (If ScatterPoint.Size is set, this value will be overriden).</param>
+        /// <param name="title">
+        /// The title.
+        /// </param>
+        /// <param name="markerFill">
+        /// The marker fill color.
+        /// </param>
+        /// <param name="markerSize">
+        /// Size of the markers (If ScatterPoint.Size is set, this value will be overriden).
+        /// </param>
         public ScatterSeries(string title, OxyColor markerFill = null, double markerSize = 5)
             : this()
         {
-            MarkerFill = markerFill;
-            MarkerSize = markerSize;
-            Title = title;
+            this.MarkerFill = markerFill;
+            this.MarkerSize = markerSize;
+            this.Title = title;
         }
 
         /// <summary>
@@ -32,15 +49,25 @@ namespace OxyPlot
         /// </summary>
         public ScatterSeries()
         {
-            DataFieldSize = null;
-            DataFieldValue = null;
+            this.DataFieldSize = null;
+            this.DataFieldValue = null;
 
-            MarkerFill = null;
-            MarkerSize = 5;
-            MarkerType = MarkerType.Square;
-            MarkerStroke = null;
-            MarkerStrokeThickness = 1.0;
+            this.MarkerFill = null;
+            this.MarkerSize = 5;
+            this.MarkerType = MarkerType.Square;
+            this.MarkerStroke = null;
+            this.MarkerStrokeThickness = 1.0;
         }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets the screen resolution.
+        /// If this number is greater than 1, bins of that size is created for both x and y directions. Only one point will be drawn in each bin.
+        /// </summary>
+        public int BinSize { get; set; }
 
         /// <summary>
         /// Gets or sets the data field for the size.
@@ -49,28 +76,23 @@ namespace OxyPlot
         public string DataFieldSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the value data field.
-        /// </summary>
-        /// <value>The value data field.</value>
-        public string DataFieldValue { get; set; }
-
-        /// <summary>
         /// Gets or sets the tag data field.
         /// </summary>
         /// <value>The tag data field.</value>
         public string DataFieldTag { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the marker (same size for all items).
+        /// Gets or sets the value data field.
         /// </summary>
-        /// <value>The size of the markers.</value>
-        public double MarkerSize { get; set; }
+        /// <value>The value data field.</value>
+        public string DataFieldValue { get; set; }
 
         /// <summary>
-        ///   Gets or sets the type of the marker.
+        /// Gets or sets the marker fill color.
+        /// If null, this color will be automatically set.
         /// </summary>
-        /// <value>The type of the marker.</value>
-        public MarkerType MarkerType { get; set; }
+        /// <value>The marker fill color.</value>
+        public OxyColor MarkerFill { get; set; }
 
         /// <summary>
         /// Gets or sets the marker outline polygon.
@@ -78,6 +100,12 @@ namespace OxyPlot
         /// </summary>
         /// <value>The marker outline.</value>
         public ScreenPoint[] MarkerOutline { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the marker (same size for all items).
+        /// </summary>
+        /// <value>The size of the markers.</value>
+        public double MarkerSize { get; set; }
 
         /// <summary>
         /// Gets or sets the marker stroke.
@@ -92,34 +120,209 @@ namespace OxyPlot
         public double MarkerStrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker fill color.
-        /// If null, this color will be automatically set.
+        ///   Gets or sets the type of the marker.
         /// </summary>
-        /// <value>The marker fill color.</value>
-        public OxyColor MarkerFill { get; set; }
+        /// <value>The type of the marker.</value>
+        public MarkerType MarkerType { get; set; }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
-        /// Gets or sets the screen resolution.
-        /// If this number is greater than 1, bins of that size is created for both x and y directions. Only one point will be drawn in each bin.
+        /// Gets the nearest point.
         /// </summary>
-        public int BinSize { get; set; }
-
-        protected internal override void UpdateData()
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <param name="interpolate">
+        /// interpolate if set to <c>true</c>.
+        /// </param>
+        /// <returns>
+        /// A TrackerHitResult for the current hit.
+        /// </returns>
+        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            if (ItemsSource == null)
+            if (interpolate)
+            {
+                return null;
+            }
+
+            TrackerHitResult result = null;
+            double minimumDistance = double.MaxValue;
+            int i = 0;
+            foreach (IDataPoint p in this.points)
+            {
+                if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum
+                    || p.Y > this.YAxis.ActualMaximum)
+                {
+                    continue;
+                }
+
+                var dp = new DataPoint(p.X, p.Y);
+                ScreenPoint sp = AxisBase.Transform(dp, this.XAxis, this.YAxis);
+                double dx = sp.x - point.x;
+                double dy = sp.y - point.y;
+                double d2 = dx * dx + dy * dy;
+
+                if (d2 < minimumDistance)
+                {
+                    result = new TrackerHitResult(this, dp, sp, this.GetItem(this.ItemsSource, i));
+                    minimumDistance = d2;
+                }
+
+                i++;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Determines whether the specified point is valid.
+        /// </summary>
+        /// <param name="pt">
+        /// The pointt.
+        /// </param>
+        /// <param name="xAxis">
+        /// The x axis.
+        /// </param>
+        /// <param name="yAxis">
+        /// The y axis.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the point is valid; otherwise, <c>false</c>.
+        /// </returns>
+        public virtual bool IsValidPoint(ScatterPoint pt, IAxis xAxis, IAxis yAxis)
+        {
+            return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
+                   && (xAxis != null && xAxis.IsValidValue(pt.X)) && (yAxis != null && yAxis.IsValidValue(pt.Y));
+        }
+
+        /// <summary>
+        /// Renders the LineSeries on the specified rendering context.
+        /// </summary>
+        /// <param name="rc">
+        /// The rendering context.
+        /// </param>
+        /// <param name="model">
+        /// The owner plot model.
+        /// </param>
+        public override void Render(IRenderContext rc, PlotModel model)
+        {
+            base.Render(rc, model);
+
+            if (this.points.Count == 0)
             {
                 return;
             }
 
-            points.Clear();
+            Debug.Assert(this.XAxis != null && this.YAxis != null, "Axis has not been defined.");
+
+            OxyRect clippingRect = this.GetClippingRect();
+
+            int n = this.points.Count;
+
+            // Transform all points to screen coordinates
+            var allPoints = new ScreenPoint[n];
+            var markerSizes = new double[n];
+            for (int i = 0; i < n; i++)
+            {
+                var dp = new DataPoint(this.points[i].X, this.points[i].Y);
+                double size = double.NaN;
+                double value = double.NaN;
+                if (this.points[i] is ScatterPoint)
+                {
+                    size = ((ScatterPoint)this.points[i]).Size;
+                    value = ((ScatterPoint)this.points[i]).Value;
+                }
+
+                if (double.IsNaN(size))
+                {
+                    size = this.MarkerSize;
+                }
+
+                allPoints[i] = this.XAxis.Transform(dp.X, dp.Y, this.YAxis);
+                markerSizes[i] = size;
+            }
+
+            // Draw the markers
+            rc.DrawMarkers(
+                allPoints, 
+                clippingRect, 
+                this.MarkerType, 
+                this.MarkerOutline, 
+                markerSizes, 
+                this.MarkerFill, 
+                this.MarkerStroke, 
+                this.MarkerStrokeThickness, 
+                this.BinSize);
+        }
+
+        /// <summary>
+        /// Renders the legend symbol for the line series on the 
+        ///   specified rendering context.
+        /// </summary>
+        /// <param name="rc">
+        /// The rendering context.
+        /// </param>
+        /// <param name="legendBox">
+        /// The bounding rectangle of the legend box.
+        /// </param>
+        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
+        {
+            double xmid = (legendBox.Left + legendBox.Right) / 2;
+            double ymid = (legendBox.Top + legendBox.Bottom) / 2;
+
+            var midpt = new ScreenPoint(xmid, ymid);
+            rc.DrawMarker(
+                midpt, 
+                legendBox, 
+                this.MarkerType, 
+                this.MarkerOutline, 
+                this.MarkerSize, 
+                this.MarkerFill, 
+                this.MarkerStroke, 
+                this.MarkerStrokeThickness);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Sets the default values.
+        /// </summary>
+        /// <param name="model">
+        /// The model.
+        /// </param>
+        protected internal override void SetDefaultValues(PlotModel model)
+        {
+            if (this.MarkerFill == null)
+            {
+                this.MarkerFill = model.GetDefaultColor();
+            }
+        }
+
+        /// <summary>
+        /// The update data.
+        /// </summary>
+        protected internal override void UpdateData()
+        {
+            if (this.ItemsSource == null)
+            {
+                return;
+            }
+
+            this.points.Clear();
 
             // Use the mapping to generate the points
-            if (Mapping != null)
+            if (this.Mapping != null)
             {
-                foreach (var item in ItemsSource)
+                foreach (object item in this.ItemsSource)
                 {
-                    points.Add(Mapping(item));
+                    this.points.Add(this.Mapping(item));
                 }
+
                 return;
             }
 
@@ -143,10 +346,61 @@ namespace OxyPlot
             }*/
 
             // Using reflection to add points
-            AddScatterPoints(Points, ItemsSource, DataFieldX, DataFieldY, DataFieldSize, DataFieldValue, DataFieldTag);
+            this.AddScatterPoints(
+                this.Points, 
+                this.ItemsSource, 
+                this.DataFieldX, 
+                this.DataFieldY, 
+                this.DataFieldSize, 
+                this.DataFieldValue, 
+                this.DataFieldTag);
         }
 
-        protected void AddScatterPoints(IList<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY, string dataFieldSize, string dataFieldValue, string dataFieldTag)
+        /// <summary>
+        /// Updates the max/min from the datapoints.
+        /// </summary>
+        protected internal override void UpdateMaxMin()
+        {
+            base.UpdateMaxMin();
+            this.InternalUpdateMaxMin(this.points);
+        }
+
+        /// <summary>
+        /// The add scatter points.
+        /// </summary>
+        /// <param name="dest">
+        /// The dest.
+        /// </param>
+        /// <param name="itemsSource">
+        /// The items source.
+        /// </param>
+        /// <param name="dataFieldX">
+        /// The data field x.
+        /// </param>
+        /// <param name="dataFieldY">
+        /// The data field y.
+        /// </param>
+        /// <param name="dataFieldSize">
+        /// The data field size.
+        /// </param>
+        /// <param name="dataFieldValue">
+        /// The data field value.
+        /// </param>
+        /// <param name="dataFieldTag">
+        /// The data field tag.
+        /// </param>
+        /// <exception cref="InvalidOperationException">
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// </exception>
+        protected void AddScatterPoints(
+            IList<IDataPoint> dest, 
+            IEnumerable itemsSource, 
+            string dataFieldX, 
+            string dataFieldY, 
+            string dataFieldSize, 
+            string dataFieldValue, 
+            string dataFieldTag)
         {
             PropertyInfo pix = null;
             PropertyInfo piy = null;
@@ -155,7 +409,7 @@ namespace OxyPlot
             PropertyInfo pit = null;
             Type t = null;
 
-            foreach (var o in itemsSource)
+            foreach (object o in itemsSource)
             {
                 if (pix == null || o.GetType() != t)
                 {
@@ -167,23 +421,22 @@ namespace OxyPlot
                     pit = dataFieldTag != null ? t.GetProperty(dataFieldTag) : null;
                     if (pix == null)
                     {
-                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
-                                                                          DataFieldX, t));
+                        throw new InvalidOperationException(
+                            string.Format("Could not find data field {0} on type {1}", this.DataFieldX, t));
                     }
 
                     if (piy == null)
                     {
-                        throw new InvalidOperationException(string.Format("Could not find data field {0} on type {1}",
-                                                                          DataFieldY, t));
+                        throw new InvalidOperationException(
+                            string.Format("Could not find data field {0} on type {1}", this.DataFieldY, t));
                     }
                 }
 
-                var x = ToDouble(pix.GetValue(o, null));
-                var y = ToDouble(piy.GetValue(o, null));
-                var s = pis != null ? ToDouble(pis.GetValue(o, null)) : double.NaN;
-                var v = piv != null ? ToDouble(piv.GetValue(o, null)) : double.NaN;
-                var tag = pit != null ? pit.GetValue(o, null) : null;
-
+                double x = this.ToDouble(pix.GetValue(o, null));
+                double y = this.ToDouble(piy.GetValue(o, null));
+                double s = pis != null ? this.ToDouble(pis.GetValue(o, null)) : double.NaN;
+                double v = piv != null ? this.ToDouble(piv.GetValue(o, null)) : double.NaN;
+                object tag = pit != null ? pit.GetValue(o, null) : null;
 
                 var p = new ScatterPoint(x, y, s, v, tag);
                 dest.Add(p);
@@ -191,123 +444,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Renders the LineSeries on the specified rendering context.
-        /// </summary>
-        /// <param name = "rc">The rendering context.</param>
-        /// <param name = "model">The owner plot model.</param>
-        public override void Render(IRenderContext rc, PlotModel model)
-        {
-            base.Render(rc, model);
-
-            if (points.Count == 0)
-            {
-                return;
-            }
-
-            Debug.Assert(XAxis != null && YAxis != null, "Axis has not been defined.");
-
-            var clippingRect = GetClippingRect();
-
-            int n = points.Count;
-
-            // Transform all points to screen coordinates
-            var allPoints = new ScreenPoint[n];
-            var markerSizes = new double[n];
-            for (int i = 0; i < n; i++)
-            {
-                var dp = new DataPoint(points[i].X, points[i].Y);
-                double size = double.NaN;
-                double value = double.NaN;
-                if (points[i] is ScatterPoint)
-                {
-                    size = ((ScatterPoint)points[i]).Size;
-                    value = ((ScatterPoint)points[i]).Value;
-                }
-                if (double.IsNaN(size)) size = MarkerSize;
-
-                allPoints[i] = XAxis.Transform(dp.X, dp.Y, YAxis);
-                markerSizes[i] = size;
-            }
-
-            // Draw the markers
-            rc.DrawMarkers(allPoints, clippingRect, MarkerType, MarkerOutline, markerSizes, MarkerFill, MarkerStroke,
-                           MarkerStrokeThickness, BinSize);
-        }
-
-
-        /// <summary>
-        ///   Renders the legend symbol for the line series on the 
-        ///   specified rendering context.
-        /// </summary>
-        /// <param name = "rc">The rendering context.</param>
-        /// <param name = "legendBox">The bounding rectangle of the legend box.</param>
-        public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
-        {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double ymid = (legendBox.Top + legendBox.Bottom) / 2;
-
-            var midpt = new ScreenPoint(xmid, ymid);
-            rc.DrawMarker(midpt, legendBox, MarkerType, MarkerOutline, MarkerSize, MarkerFill, MarkerStroke, MarkerStrokeThickness);
-        }
-
-        /// <summary>
-        /// Gets the nearest point.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
-        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
-        {
-            if (interpolate) return null;
-
-            TrackerHitResult result = null;
-            double minimumDistance = double.MaxValue;
-            int i = 0;
-            foreach (var p in points)
-            {
-                if (p.X<XAxis.ActualMinimum || p.X>XAxis.ActualMaximum || p.Y<YAxis.ActualMinimum || p.Y>YAxis.ActualMaximum) continue;
-                var dp = new DataPoint(p.X, p.Y);
-                var sp = AxisBase.Transform(dp, XAxis, YAxis);
-                double dx = sp.x - point.x;
-                double dy = sp.y - point.y;
-                double d2 = dx * dx + dy * dy;
-
-                if (d2 < minimumDistance)
-                {
-                    result = new TrackerHitResult(this, dp, sp, GetItem(ItemsSource, i));
-                    minimumDistance = d2;
-                }
-                i++;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Sets the default values.
-        /// </summary>
-        /// <param name="model">The model.</param>
-        protected internal override void SetDefaultValues(PlotModel model)
-        {
-            if (MarkerFill == null)
-                MarkerFill = model.GetDefaultColor();
-        }
-
-        /// <summary>
-        ///   Updates the max/min from the datapoints.
-        /// </summary>
-        protected internal override void UpdateMaxMin()
-        {
-            base.UpdateMaxMin();
-            InternalUpdateMaxMin(points);
-        }
-
-        /// <summary>
         /// Updates the Max/Min limits from the specified point list.
         /// </summary>
-        /// <param name="pts">The points.</param>
+        /// <param name="pts">
+        /// The points.
+        /// </param>
         protected void InternalUpdateMaxMin(IList<ScatterPoint> pts)
         {
             if (pts == null || pts.Count == 0)
@@ -315,48 +456,50 @@ namespace OxyPlot
                 return;
             }
 
-            double minx = MinX;
-            double miny = MinY;
-            double maxx = MaxX;
-            double maxy = MaxY;
+            double minx = this.MinX;
+            double miny = this.MinY;
+            double maxx = this.MaxX;
+            double maxy = this.MaxY;
 
-            foreach (var pt in pts)
+            foreach (ScatterPoint pt in pts)
             {
-                if (!IsValidPoint(pt, XAxis, YAxis))
+                if (!this.IsValidPoint(pt, this.XAxis, this.YAxis))
+                {
                     continue;
-                if (pt.x < minx || double.IsNaN(minx)) minx = pt.x;
-                if (pt.x > maxx || double.IsNaN(maxx)) maxx = pt.x;
-                if (pt.y < miny || double.IsNaN(miny)) miny = pt.y;
-                if (pt.y > maxy || double.IsNaN(maxy)) maxy = pt.y;
+                }
+
+                if (pt.x < minx || double.IsNaN(minx))
+                {
+                    minx = pt.x;
+                }
+
+                if (pt.x > maxx || double.IsNaN(maxx))
+                {
+                    maxx = pt.x;
+                }
+
+                if (pt.y < miny || double.IsNaN(miny))
+                {
+                    miny = pt.y;
+                }
+
+                if (pt.y > maxy || double.IsNaN(maxy))
+                {
+                    maxy = pt.y;
+                }
             }
 
-            MinX = minx;
-            MinY = miny;
-            MaxX = maxx;
-            MaxY = maxy;
+            this.MinX = minx;
+            this.MinY = miny;
+            this.MaxX = maxx;
+            this.MaxY = maxy;
 
-            XAxis.Include(MinX);
-            XAxis.Include(MaxX);
-            YAxis.Include(MinY);
-            YAxis.Include(MaxY);
+            this.XAxis.Include(this.MinX);
+            this.XAxis.Include(this.MaxX);
+            this.YAxis.Include(this.MinY);
+            this.YAxis.Include(this.MaxY);
         }
 
-        /// <summary>
-        /// Determines whether the specified point is valid.
-        /// </summary>
-        /// <param name="pt">The pointt.</param>
-        /// <param name="xAxis">The x axis.</param>
-        /// <param name="yAxis">The y axis.</param>
-        /// <returns>
-        ///   <c>true</c> if the point is valid; otherwise, <c>false</c>.
-        /// </returns>
-        public virtual bool IsValidPoint(ScatterPoint pt, IAxis xAxis, IAxis yAxis)
-        {
-            return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X)
-                   && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
-                   && (xAxis != null && xAxis.IsValidValue(pt.X))
-                   && (yAxis != null && yAxis.IsValidValue(pt.Y));
-        }
-
+        #endregion
     }
 }

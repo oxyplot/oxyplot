@@ -1,4 +1,13 @@
-﻿namespace OxyPlot.Silverlight
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Plot.Properties.cs" company="OxyPlot">
+//   see http://oxyplot.codeplex.com
+// </copyright>
+// <summary>
+//   The Silverlight Plot control.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot.Silverlight
 {
     using System;
     using System.Windows;

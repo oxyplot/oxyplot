@@ -1,7 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CategoryAxis.cs" company="OxyPlot">
-//   See http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Category axes are using label collection indices as the coordinate.
+//   If you have 5 categories in the Labels collection, the categories will be placed at coordinates 0 to 4. The range of the axis will be from -0.5 to 4.5 (excl. padding).
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -195,6 +199,10 @@ namespace OxyPlot
         {
             return this.FormatValue(x);
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Updates the actual maximum and minimum values.

@@ -1,4 +1,13 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CodeGenerationAttribute.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Attribute that controls if code should be generated for the property.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     using System;
 
@@ -10,6 +19,12 @@
     {
         #region Constructors and Destructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CodeGenerationAttribute"/> class.
+        /// </summary>
+        /// <param name="generateCode">
+        /// The generate code.
+        /// </param>
         public CodeGenerationAttribute(bool generateCode)
         {
             this.GenerateCode = generateCode;
@@ -19,6 +34,9 @@
 
         #region Public Properties
 
+        /// <summary>
+        /// Gets or sets a value indicating whether GenerateCode.
+        /// </summary>
         public bool GenerateCode { get; set; }
 
         #endregion

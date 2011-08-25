@@ -1,12 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TrackerControl.cs" company="">
-//   
+// <copyright file="TrackerControl.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
 //   The tracker control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 #if WPF
+
 namespace OxyPlot.Wpf
 #endif
 #if SILVERLIGHT
@@ -161,7 +163,7 @@ namespace OxyPlot.Silverlight
         /// The vertical line.
         /// </summary>
         private Line verticalLine;
-        
+
 #if WPF
 
         /// <summary>
@@ -543,7 +545,7 @@ namespace OxyPlot.Silverlight
                 };
 
 #if WPF
-			ScreenPoint pos = this.Position;
+            ScreenPoint pos = this.Position;
 #endif
 #if SILVERLIGHT
  			var pos = Position.ToPoint(true);
@@ -587,12 +589,24 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Create the border geometry.
         /// </summary>
-        /// <param name="ha">The horizontal alignment.</param>
-        /// <param name="va">The vertical alignment.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="margin">The margin.</param>
-        /// <returns>The border geometry.</returns>
+        /// <param name="ha">
+        /// The horizontal alignment.
+        /// </param>
+        /// <param name="va">
+        /// The vertical alignment.
+        /// </param>
+        /// <param name="width">
+        /// The width.
+        /// </param>
+        /// <param name="height">
+        /// The height.
+        /// </param>
+        /// <param name="margin">
+        /// The margin.
+        /// </param>
+        /// <returns>
+        /// The border geometry.
+        /// </returns>
         private Geometry CreateBorderGeometry(
             HorizontalAlignment ha, VerticalAlignment va, double width, double height, out Thickness margin)
         {
@@ -625,7 +639,9 @@ namespace OxyPlot.Silverlight
         /// <param name="margin">
         /// The margin.
         /// </param>
-        /// <returns>The border geometry.</returns>
+        /// <returns>
+        /// The border geometry.
+        /// </returns>
         private Geometry CreatePointerBorderGeometry(
             HorizontalAlignment ha, VerticalAlignment va, double width, double height, out Thickness margin)
         {

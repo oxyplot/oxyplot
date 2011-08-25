@@ -1,26 +1,61 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AngleAxisRenderer.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   The angle axis renderer.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     using System;
 
+    /// <summary>
+    /// The angle axis renderer.
+    /// </summary>
     public class AngleAxisRenderer : AxisRendererBase
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AngleAxisRenderer"/> class.
+        /// </summary>
+        /// <param name="rc">
+        /// The rc.
+        /// </param>
+        /// <param name="plot">
+        /// The plot.
+        /// </param>
         public AngleAxisRenderer(IRenderContext rc, PlotModel plot)
             : base(rc, plot)
         {
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The render.
+        /// </summary>
+        /// <param name="axis">
+        /// The axis.
+        /// </param>
+        /// <exception cref="InvalidOperationException">
+        /// </exception>
         public override void Render(AxisBase axis)
         {
             base.Render(axis);
 
-            var magnitudeAxis = Plot.DefaultMagnitudeAxis;
+            MagnitudeAxis magnitudeAxis = this.Plot.DefaultMagnitudeAxis;
 
             if (axis.RelatedAxis != null)
             {
                 magnitudeAxis = axis.RelatedAxis as MagnitudeAxis;
             }
-            
-            if (magnitudeAxis==null)
+
+            if (magnitudeAxis == null)
             {
                 throw new InvalidOperationException("Magnitude axis not defined.");
             }
@@ -31,23 +66,24 @@
             {
                 // GetVerticalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out y0, out y1);
 
-                foreach (double xValue in MinorTickValues)
+                foreach (double xValue in this.MinorTickValues)
                 {
                     if (xValue < axis.ActualMinimum - eps || xValue > axis.ActualMaximum + eps)
                     {
                         continue;
                     }
 
-                    if (MajorTickValues.Contains(xValue))
+                    if (this.MajorTickValues.Contains(xValue))
                     {
                         continue;
                     }
 
-                    var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, xValue, axis);
+                    ScreenPoint pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, xValue, axis);
 
-                    if (MinorPen != null)
+                    if (this.MinorPen != null)
                     {
-                        rc.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, pt.x, pt.y, MinorPen, false);
+                        this.rc.DrawLine(
+                            magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, pt.x, pt.y, this.MinorPen, false);
                     }
 
                     // RenderGridline(x, y + y0, x, y + y1, minorTickPen);
@@ -56,7 +92,7 @@
 
             // GetVerticalTickPositions(axis, axis.TickStyle, axis.MajorTickSize, out y0, out y1);
 
-            foreach (double xValue in MajorTickValues)
+            foreach (double xValue in this.MajorTickValues)
             {
                 // skip the last value (overlapping with the first)
                 if (xValue > axis.ActualMaximum - eps)
@@ -69,16 +105,15 @@
                     continue;
                 }
 
-                var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, xValue, axis);
-
-                if (MajorPen != null)
+                ScreenPoint pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, xValue, axis);
+                if (this.MajorPen != null)
                 {
-                    rc.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, pt.x, pt.y, MajorPen, false);
+                    this.rc.DrawLine(
+                        magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, pt.x, pt.y, this.MajorPen, false);
                 }
-
             }
 
-            foreach (var value in MajorLabelValues)
+            foreach (double value in this.MajorLabelValues)
             {
                 // skip the last value (overlapping with the first)
                 if (value > axis.ActualMaximum - eps)
@@ -86,20 +121,20 @@
                     continue;
                 }
 
-                var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, value, axis);
+                ScreenPoint pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, value, axis);
                 double angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
-                
+
                 // add some margin
                 pt.x += Math.Cos(angle) * axis.AxisTickToLabelDistance;
                 pt.y += Math.Sin(angle) * axis.AxisTickToLabelDistance;
-                
+
                 // Convert to degrees
                 angle *= 180 / Math.PI;
-                
+
                 string text = axis.FormatValue(value);
 
-                var ha = HorizontalTextAlign.Left;
-                var va = VerticalTextAlign.Middle;
+                HorizontalTextAlign ha = HorizontalTextAlign.Left;
+                VerticalTextAlign va = VerticalTextAlign.Middle;
 
                 if (Math.Abs(Math.Abs(angle) - 90) < 10)
                 {
@@ -112,10 +147,12 @@
                     angle -= 180;
                     ha = HorizontalTextAlign.Right;
                 }
-                rc.DrawMathText(pt, text, Plot.TextColor,
-                                     axis.ActualFont, axis.FontSize, axis.FontWeight,
-                                     angle, ha, va, false);
+
+                this.rc.DrawMathText(
+                    pt, text, this.Plot.TextColor, axis.ActualFont, axis.FontSize, axis.FontWeight, angle, ha, va, false);
             }
         }
+
+        #endregion
     }
 }

@@ -1,7 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LogarithmicAxis.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Logarithmic axis.
+//   http://en.wikipedia.org/wiki/Logarithmic_scale
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -199,9 +203,6 @@ namespace OxyPlot
         /// <summary>
         /// Pans the specified axis.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
         /// <param name="ppt">
         /// The previous point (screen coordinates).
         /// </param>
@@ -217,9 +218,9 @@ namespace OxyPlot
 
             bool isHorizontal = this.IsHorizontal();
 
-            double x0 = InverseTransform(isHorizontal ? ppt.X : ppt.Y);
-            double x1 = InverseTransform(isHorizontal ? cpt.X : cpt.Y);
-            
+            double x0 = this.InverseTransform(isHorizontal ? ppt.X : ppt.Y);
+            double x1 = this.InverseTransform(isHorizontal ? cpt.X : cpt.Y);
+
             if (x1 == 0)
             {
                 return;
