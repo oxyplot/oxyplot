@@ -13,6 +13,7 @@ namespace Oxyplot.WindowsForms
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Drawing;
+    using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
     using OxyPlot;
@@ -346,16 +347,32 @@ namespace Oxyplot.WindowsForms
                 switch (e.KeyCode)
                 {
                     case Keys.R:
-                        Clipboard.SetText(this.ActualModel.CreateTextReport());
+                        SetClipboardText(this.ActualModel.CreateTextReport());
                         break;
                     case Keys.C:
-                        Clipboard.SetText(this.ActualModel.ToCode());
+                        SetClipboardText(this.ActualModel.ToCode());
                         break;
                     case Keys.X:
 
                         // Clipboard.SetText(this.ToXml());
                         break;
                 }
+            }
+        }
+
+        private void SetClipboardText(string text)
+        {
+            try
+            {
+                // todo: can't get the following solution to work
+                // http://stackoverflow.com/questions/5707990/requested-clipboard-operation-did-not-succeed
+
+                Clipboard.SetText(text);
+            }
+            catch (ExternalException ee)
+            {
+                // Requested Clipboard operation did not succeed.
+                MessageBox.Show(this, ee.Message, "OxyPlot");
             }
         }
 
