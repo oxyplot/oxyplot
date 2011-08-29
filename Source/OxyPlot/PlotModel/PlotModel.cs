@@ -14,8 +14,8 @@ namespace OxyPlot
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Reflection;
-
     using OxyPlot.Reporting;
+    using System.Linq;
 
     /// <summary>
     /// Plot coordinate system type
@@ -860,7 +860,7 @@ namespace OxyPlot
         {
             double mindist = double.MaxValue;
             Series closest = null;
-            foreach (Series s in this.Series)
+            foreach (Series s in this.Series.Reverse())
             {
                 var ts = s as ITrackableSeries;
                 if (ts == null)
