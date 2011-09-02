@@ -3,8 +3,7 @@
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
-//   Logarithmic axis.
-//   http://en.wikipedia.org/wiki/Logarithmic_scale
+//   Represents a logarithmic axis.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,9 +14,11 @@ namespace OxyPlot
     using System.Diagnostics;
 
     /// <summary>
-    /// Logarithmic axis.
-    /// http://en.wikipedia.org/wiki/Logarithmic_scale
+    /// Represents a logarithmic axis.
     /// </summary>
+    /// <remarks>
+    /// See <see cref="http://en.wikipedia.org/wiki/Logarithmic_scale"/>.
+    /// </remarks>
     public class LogarithmicAxis : AxisBase
     {
         #region Constructors and Destructors
@@ -36,7 +37,7 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="LogarithmicAxis"/> class.
         /// </summary>
         /// <param name="pos">
-        /// The pos.
+        /// The position.
         /// </param>
         /// <param name="title">
         /// The title.
@@ -78,14 +79,16 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the logarithmic base (normally 10).
-        /// http://en.wikipedia.org/wiki/Logarithm
+        ///   Gets or sets the logarithmic base (normally 10).
         /// </summary>
+        /// <remarks>
+        ///   See <see cref = "http://en.wikipedia.org/wiki/Logarithm" />.
+        /// </remarks>
         /// <value>The logarithmic base.</value>
         public double Base { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the ActualMaximum and ActualMinimum values should be padded to the nearest power of the Base.
+        ///   Gets or sets a value indicating whether the ActualMaximum and ActualMinimum values should be padded to the nearest power of the Base.
         /// </summary>
         public bool PowerPadding { get; set; }
 
@@ -132,10 +135,13 @@ namespace OxyPlot
             majorTickValues = new List<double>();
             minorTickValues = new List<double>();
 
-            while (d <= d1 + double.Epsilon)
+            double epsMin = this.ActualMinimum * 1e-6;
+            double epsMax = this.ActualMaximum * 1e-6;
+
+            while (d <= d1 + epsMax)
             {
                 // d = RemoveNoiseFromDoubleMath(d);
-                if (d >= this.ActualMinimum && d <= this.ActualMaximum)
+                if (d >= this.ActualMinimum - epsMin && d <= this.ActualMaximum + epsMax)
                 {
                     majorTickValues.Add(d);
                 }
@@ -250,7 +256,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Transforms the specified coordinate to screen coordinates.
-        /// This method can only be used with non-polar coordinate systems.
         /// </summary>
         /// <param name="x">
         /// The value.
@@ -315,7 +320,7 @@ namespace OxyPlot
 
         /// <summary>
         /// "Pretransform" the value.
-        /// This is used in logarithmic axis.
+        ///   This is used in logarithmic axis.
         /// </summary>
         /// <param name="x">
         /// The x.
@@ -337,9 +342,9 @@ namespace OxyPlot
 
         /// <summary>
         /// Updates the actual maximum and minimum values.
-        /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
-        /// If Maximum or Minimum have been set, these values will be used.
-        /// Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
+        ///   If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
+        ///   If Maximum or Minimum have been set, these values will be used.
+        ///   Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
         /// </summary>
         internal override void UpdateActualMaxMin()
         {
