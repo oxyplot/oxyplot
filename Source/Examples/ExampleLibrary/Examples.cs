@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+//-----------------------------------------------------------------------
+// <copyright file="Examples.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace ExampleLibrary

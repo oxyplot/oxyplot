@@ -1,11 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ShowMeTheNumbersExamples.cs" company="">
-//   
+//-----------------------------------------------------------------------
+// <copyright file="ShowMeTheNumbersExamples.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Examples from the book "Show Me the Numbers" by Stephen Few
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace ExampleLibrary
 {

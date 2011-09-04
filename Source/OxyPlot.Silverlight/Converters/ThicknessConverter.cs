@@ -1,13 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="ThicknessConverter.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Converts Thickness to double.
-//   This is used to convert BorderThickness properties to Path.StrokeThickness (double).
-//   The maximum thickness value is used.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot.Silverlight
 {

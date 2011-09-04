@@ -1,4 +1,10 @@
-﻿namespace ExampleLibrary
+//-----------------------------------------------------------------------
+// <copyright file="FunctionSeriesExamples.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace ExampleLibrary
 {
     using System;
 

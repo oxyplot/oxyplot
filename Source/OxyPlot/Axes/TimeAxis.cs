@@ -1,4 +1,10 @@
-﻿using System;
+//-----------------------------------------------------------------------
+// <copyright file="TimeAxis.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System;
 using System.Linq;
 
 namespace OxyPlot

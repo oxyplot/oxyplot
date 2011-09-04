@@ -1,13 +1,8 @@
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="TrackerHitResult.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Tracker data class.
-//   This is used as DataContext for the TrackerControl.
-//   The TrackerControl is visible when the user use the left mouse button to "track" points on the series.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot
 {

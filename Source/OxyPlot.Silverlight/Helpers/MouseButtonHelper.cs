@@ -1,12 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="MouseButtonHelper.cs" company="OxyPlot">
-//   see http://oxyplot.codeplex.com
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Mouse button helper
-//   from http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot.Silverlight
 {

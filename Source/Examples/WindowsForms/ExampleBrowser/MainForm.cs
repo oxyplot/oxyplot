@@ -1,4 +1,10 @@
-﻿using System;
+//-----------------------------------------------------------------------
+// <copyright file="MainForm.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;

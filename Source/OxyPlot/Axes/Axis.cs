@@ -1,13 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="Axis.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Abstract base class for axes.
-//   This class contains all properties from the IAxis interface.
-//   This class contains methods that should only be accessible by the PlotModel.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot
 {

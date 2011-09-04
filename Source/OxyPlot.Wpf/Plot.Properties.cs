@@ -1,15 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="Plot.Properties.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Partial class for the WPF Plot control.
-//   This file contains dependency properties used for defining the plot in XAML.
-//   These properties are only used when Model is null.
-//   In this case an internal PlotModel is created and the dependency properties are copied from the control to the
-//   internal PlotModel.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {

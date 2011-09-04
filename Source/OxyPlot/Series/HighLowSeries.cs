@@ -1,12 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="HighLowSeries.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Use the HighLowSeries to create time series High-Low plots.
-//   http://www.mathworks.com/help/toolbox/finance/highlowfts.html
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot
 {

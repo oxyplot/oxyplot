@@ -1,13 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="StemSeries.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   StemSeries is used to plot discrete data in a stemplot.
-//   http://en.wikipedia.org/wiki/Stemplot
-//   http://www.mathworks.com/help/techdoc/ref/stem.html
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot
 {

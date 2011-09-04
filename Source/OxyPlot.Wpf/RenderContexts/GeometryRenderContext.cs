@@ -1,4 +1,10 @@
-﻿using System;
+//-----------------------------------------------------------------------
+// <copyright file="GeometryRenderContext.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;

@@ -1,4 +1,10 @@
-﻿using OxyPlot;
+//-----------------------------------------------------------------------
+// <copyright file="BarSeriesExamples.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using OxyPlot;
 
 namespace ExampleLibrary
 {

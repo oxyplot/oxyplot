@@ -1,4 +1,10 @@
-﻿using Oxyplot.WindowsForms;
+//-----------------------------------------------------------------------
+// <copyright file="Form1.Designer.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using Oxyplot.WindowsForms;
 
 namespace WindowsFormsDemo
 {

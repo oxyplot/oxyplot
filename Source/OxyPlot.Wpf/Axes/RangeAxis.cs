@@ -1,4 +1,10 @@
-﻿using System.Windows;
+//-----------------------------------------------------------------------
+// <copyright file="RangeAxis.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System.Windows;
 
 namespace OxyPlot.Wpf
 {

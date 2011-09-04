@@ -1,4 +1,10 @@
-﻿namespace ExampleBrowser
+//-----------------------------------------------------------------------
+// <copyright file="MainForm.Designer.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace ExampleBrowser
 {
     partial class MainForm
     {

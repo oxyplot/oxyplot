@@ -1,4 +1,10 @@
-﻿using System.Collections.ObjectModel;
+//-----------------------------------------------------------------------
+// <copyright file="MainWindow.xaml.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System.Collections.ObjectModel;
 using System.Windows;
 using OxyPlot;
 

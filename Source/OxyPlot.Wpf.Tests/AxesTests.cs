@@ -1,4 +1,10 @@
-﻿namespace OxyPlot.Wpf.Tests
+//-----------------------------------------------------------------------
+// <copyright file="AxesTests.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace OxyPlot.Wpf.Tests
 {
     using NUnit.Framework;
 

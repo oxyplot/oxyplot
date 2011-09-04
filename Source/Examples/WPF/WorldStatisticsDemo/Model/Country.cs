@@ -1,4 +1,10 @@
-﻿namespace WorldStatisticsDemo
+//-----------------------------------------------------------------------
+// <copyright file="Country.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace WorldStatisticsDemo
 {
     using System.Collections.Generic;
     using System.Linq;

@@ -1,4 +1,10 @@
-﻿using System.Drawing;
+//-----------------------------------------------------------------------
+// <copyright file="OxyAssert.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System.Drawing;
 using System.IO;
 using NUnit.Framework;
 using OxyPlot.Wpf;

@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+//-----------------------------------------------------------------------
+// <copyright file="MainWindowViewModel.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;

@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+//-----------------------------------------------------------------------
+// <copyright file="MainViewModel.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System.Collections.Generic;
 using OxyPlot;
 
 namespace AxesDemo

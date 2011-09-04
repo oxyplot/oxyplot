@@ -1,4 +1,10 @@
-﻿using Caliburn.Micro;
+//-----------------------------------------------------------------------
+// <copyright file="AppBootstrapper.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using Caliburn.Micro;
 
 namespace ExportDemo
 {

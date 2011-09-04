@@ -1,4 +1,10 @@
-﻿namespace OxyPlot
+//-----------------------------------------------------------------------
+// <copyright file="Color.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace OxyPlot
 {
     public class Color
     {

@@ -1,4 +1,10 @@
-﻿using System.Windows;
+//-----------------------------------------------------------------------
+// <copyright file="MainWindow.xaml.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ContourDemo

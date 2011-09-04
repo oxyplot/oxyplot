@@ -1,4 +1,10 @@
-﻿using System.Reflection;
+//-----------------------------------------------------------------------
+// <copyright file="ExampleInfo.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System.Reflection;
 using OxyPlot;
 
 namespace ExampleLibrary
