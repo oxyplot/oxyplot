@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldStatisticsDemo", "Exam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Wpf.Tests", "OxyPlot.Wpf.Tests\OxyPlot.Wpf.Tests.csproj", "{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContourDemo", "Examples\WPF\ContourDemo\ContourDemo.csproj", "{BF3F3951-21F4-4854-9FFB-17727A2D69A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -325,6 +327,16 @@ Global
 		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4ED9A511-669D-47B1-97F5-4FCAFE8EB178}.Release|x86.ActiveCfg = Release|Any CPU
+		{BF3F3951-21F4-4854-9FFB-17727A2D69A7}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{BF3F3951-21F4-4854-9FFB-17727A2D69A7}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{BF3F3951-21F4-4854-9FFB-17727A2D69A7}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{BF3F3951-21F4-4854-9FFB-17727A2D69A7}.Debug|x86.ActiveCfg = Debug|x86
+		{BF3F3951-21F4-4854-9FFB-17727A2D69A7}.Debug|x86.Build.0 = Debug|x86
+		{BF3F3951-21F4-4854-9FFB-17727A2D69A7}.Release|Any CPU.ActiveCfg = Release|x86
+		{BF3F3951-21F4-4854-9FFB-17727A2D69A7}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{BF3F3951-21F4-4854-9FFB-17727A2D69A7}.Release|Mixed Platforms.Build.0 = Release|x86
+		{BF3F3951-21F4-4854-9FFB-17727A2D69A7}.Release|x86.ActiveCfg = Release|x86
+		{BF3F3951-21F4-4854-9FFB-17727A2D69A7}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -349,5 +361,6 @@ Global
 		{2D5424D5-6AD0-4FFF-8370-A2187443021C} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{732F9B2F-9662-4206-B99E-4152C4A18204} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{6B677A5B-BF20-48C2-8435-5594BB3BC65F} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
+		{BF3F3951-21F4-4854-9FFB-17727A2D69A7} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 	EndGlobalSection
 EndGlobal

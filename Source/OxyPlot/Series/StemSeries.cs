@@ -203,7 +203,7 @@ namespace OxyPlot
             if (this.MarkerType != MarkerType.None)
             {
                 rc.DrawMarkers(
-                    markerPoints.ToArray(), 
+                    markerPoints, 
                     clippingRect, 
                     this.MarkerType, 
                     this.MarkerOutline, 

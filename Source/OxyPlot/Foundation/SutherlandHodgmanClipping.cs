@@ -59,7 +59,7 @@ namespace OxyPlot
         /// <param name="v">
         /// The v.
         /// </param>
-        public static List<ScreenPoint> ClipPolygon(OxyRect bounds, List<ScreenPoint> v)
+        public static List<ScreenPoint> ClipPolygon(OxyRect bounds, IList<ScreenPoint> v)
         {
             List<ScreenPoint> p1 = ClipOneAxis(bounds, RectangleEdge.Left, v);
             List<ScreenPoint> p2 = ClipOneAxis(bounds, RectangleEdge.Right, p1);
@@ -85,7 +85,7 @@ namespace OxyPlot
         /// </param>
         /// <returns>
         /// </returns>
-        private static List<ScreenPoint> ClipOneAxis(OxyRect bounds, RectangleEdge edge, List<ScreenPoint> v)
+        private static List<ScreenPoint> ClipOneAxis(OxyRect bounds, RectangleEdge edge, IList<ScreenPoint> v)
         {
             if (v.Count == 0)
             {

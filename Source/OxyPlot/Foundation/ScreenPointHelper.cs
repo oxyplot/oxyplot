@@ -30,18 +30,19 @@ namespace OxyPlot
         /// <returns>
         /// List of resampled points.
         /// </returns>
-        public static IList<ScreenPoint> ResamplePoints(ScreenPoint[] allPoints, double minimumDistance)
+        public static IList<ScreenPoint> ResamplePoints(IList<ScreenPoint> allPoints, double minimumDistance)
         {
             double minimumSquaredDistance = minimumDistance * minimumDistance;
-            var result = new List<ScreenPoint>(allPoints.Length);
-            if (allPoints.Length > 0)
+            int n = allPoints.Count;
+            var result = new List<ScreenPoint>(n);
+            if (n > 0)
             {
                 result.Add(allPoints[0]);
                 int i0 = 0;
-                for (int i = 1; i < allPoints.Length; i++)
+                for (int i = 1; i < n; i++)
                 {
                     double distSquared = allPoints[i0].DistanceToSquared(allPoints[i]);
-                    if (distSquared < minimumSquaredDistance && i != allPoints.Length - 1)
+                    if (distSquared < minimumSquaredDistance && i != n - 1)
                     {
                         continue;
                     }

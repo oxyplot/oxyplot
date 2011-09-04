@@ -205,42 +205,42 @@ namespace OxyPlot
 
             var transformedPoints = new List<ScreenPoint>();
 
-            Action<ScreenPoint[]> renderPoints = allPoints =>
+            Action<IList<ScreenPoint>> renderPoints = allPoints =>
                 {
-                    ScreenPoint[] screenPoints = allPoints;
+                    IList<ScreenPoint> screenPoints = allPoints;
                     if (this.Smooth)
                     {
                         // spline smoothing (should only be used on small datasets)
                         IList<ScreenPoint> resampledPoints = ScreenPointHelper.ResamplePoints(
                             allPoints, this.MinimumSegmentLength);
                         screenPoints =
-                            CanonicalSplineHelper.CreateSpline(resampledPoints, 0.5, null, false, 0.25).ToArray();
+                            CanonicalSplineHelper.CreateSpline(resampledPoints, 0.5, null, false, 0.25);
                     }
 
                     // clip the line segments with the clipping rectangle
                     if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                     {
                         rc.DrawClippedLine(
-                            screenPoints, 
-                            clippingRect, 
-                            minDistSquared, 
-                            this.Color, 
-                            this.StrokeThickness, 
-                            this.LineStyle, 
-                            this.LineJoin, 
+                            screenPoints,
+                            clippingRect,
+                            minDistSquared,
+                            this.Color,
+                            this.StrokeThickness,
+                            this.LineStyle,
+                            this.LineJoin,
                             false);
                     }
 
                     if (this.MarkerType != MarkerType.None)
                     {
                         rc.DrawMarkers(
-                            allPoints, 
-                            clippingRect, 
-                            this.MarkerType, 
-                            this.MarkerOutline, 
-                            new[] { this.MarkerSize }, 
-                            this.MarkerFill, 
-                            this.MarkerStroke, 
+                            allPoints,
+                            clippingRect,
+                            this.MarkerType,
+                            this.MarkerOutline,
+                            new[] { this.MarkerSize },
+                            this.MarkerFill,
+                            this.MarkerStroke,
                             this.MarkerStrokeThickness);
                     }
                 };
@@ -251,7 +251,7 @@ namespace OxyPlot
             {
                 if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
                 {
-                    renderPoints(transformedPoints.ToArray());
+                    renderPoints(transformedPoints);
                     transformedPoints.Clear();
                     continue;
                 }
@@ -259,7 +259,7 @@ namespace OxyPlot
                 transformedPoints.Add(this.XAxis.Transform(point.X, point.Y, this.YAxis));
             }
 
-            renderPoints(transformedPoints.ToArray());
+            renderPoints(transformedPoints);
         }
 
         /// <summary>
@@ -280,13 +280,13 @@ namespace OxyPlot
             rc.DrawLine(pts, this.Color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
-                midpt, 
-                legendBox, 
-                this.MarkerType, 
-                this.MarkerOutline, 
-                this.MarkerSize, 
-                this.MarkerFill, 
-                this.MarkerStroke, 
+                midpt,
+                legendBox,
+                this.MarkerType,
+                this.MarkerOutline,
+                this.MarkerSize,
+                this.MarkerFill,
+                this.MarkerStroke,
                 this.MarkerStrokeThickness);
         }
 
