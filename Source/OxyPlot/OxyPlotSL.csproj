@@ -79,7 +79,9 @@
     <Compile Include="Foundation\CodeGenerator\CodeGenerator.cs" />
     <Compile Include="Foundation\CodeGenerator\CodeGeneratorStringExtensions.cs" />
     <Compile Include="Foundation\CodeGenerator\ICodeGenerating.cs" />
+    <Compile Include="Foundation\DoubleExtensions.cs" />
     <Compile Include="Foundation\FractionHelper.cs" />
+    <Compile Include="Foundation\ArrayHelper.cs" />
     <Compile Include="Foundation\ReflectionHelper.cs" />
     <Compile Include="Foundation\ScreenPointHelper.cs" />
     <Compile Include="Foundation\SerializableAttribute.cs" />
@@ -141,6 +143,8 @@
     <Compile Include="Annotations\IAnnotation.cs" />
     <Compile Include="Series\BarSeries.cs" />
     <Compile Include="Series\CandleStickSeries.cs" />
+    <Compile Include="Foundation\Conrec.cs" />
+    <Compile Include="Series\ContourSeries.cs" />
     <Compile Include="Series\ItemsSeries.cs" />
     <Compile Include="Series\DataPointSeries.cs" />
     <Compile Include="Series\HighLowItem.cs" />

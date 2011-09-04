@@ -347,7 +347,7 @@ namespace OxyPlot
             }
 
             rc.DrawLine(
-                pts.ToArray(), 
+                pts, 
                 this.Color, 
                 this.StrokeThickness, 
                 LineStyleHelper.GetDashArray(this.LineStyle), 

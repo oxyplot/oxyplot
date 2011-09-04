@@ -179,14 +179,14 @@ namespace OxyPlot
 
             // Transform all points to screen coordinates
             int n0 = this.points.Count;
-            var pts0 = new ScreenPoint[n0];
+            IList<ScreenPoint> pts0 = new ScreenPoint[n0];
             for (int i = 0; i < n0; i++)
             {
                 pts0[i] = this.XAxis.Transform(this.points[i].X, this.points[i].Y, this.YAxis);
             }
 
             int n1 = this.points2.Count;
-            var pts1 = new ScreenPoint[n1];
+            IList<ScreenPoint> pts1 = new ScreenPoint[n1];
             for (int i = 0; i < n1; i++)
             {
                 int j = this.Reverse2 ? n1 - 1 - i : i;
@@ -198,8 +198,8 @@ namespace OxyPlot
                 IList<ScreenPoint> rpts0 = ScreenPointHelper.ResamplePoints(pts0, this.MinimumSegmentLength);
                 IList<ScreenPoint> rpts1 = ScreenPointHelper.ResamplePoints(pts1, this.MinimumSegmentLength);
 
-                pts0 = CanonicalSplineHelper.CreateSpline(rpts0, 0.5, null, false, 0.25).ToArray();
-                pts1 = CanonicalSplineHelper.CreateSpline(rpts1, 0.5, null, false, 0.25).ToArray();
+                pts0 = CanonicalSplineHelper.CreateSpline(rpts0, 0.5, null, false, 0.25);
+                pts1 = CanonicalSplineHelper.CreateSpline(rpts1, 0.5, null, false, 0.25);
             }
 
             // draw the clipped lines
@@ -226,8 +226,8 @@ namespace OxyPlot
             var pts = new List<ScreenPoint>();
             pts.AddRange(pts1);
             pts.AddRange(pts0);
-            pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
-            rc.DrawPolygon(pts, this.Fill, null);
+            //pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
+            rc.DrawClippedPolygon(pts, clippingRect, minDistSquared, this.Fill, null);
 
             // draw the markers on top
             rc.DrawMarkers(

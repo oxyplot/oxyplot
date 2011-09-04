@@ -153,32 +153,32 @@ namespace OxyPlot
 
             OxyRect clippingRect = this.GetClippingRect();
 
-            Action<ScreenPoint[], ScreenPoint[]> renderPoints = (lpts, mpts) =>
+            Action<IList<ScreenPoint>, IList<ScreenPoint>> renderPoints = (lpts, mpts) =>
                 {
                     // clip the line segments with the clipping rectangle
                     if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                     {
                         rc.DrawClippedLine(
-                            lpts, 
-                            clippingRect, 
-                            minDistSquared, 
-                            this.Color, 
-                            this.StrokeThickness, 
-                            this.LineStyle, 
-                            this.LineJoin, 
+                            lpts,
+                            clippingRect,
+                            minDistSquared,
+                            this.Color,
+                            this.StrokeThickness,
+                            this.LineStyle,
+                            this.LineJoin,
                             false);
                     }
 
                     if (this.MarkerType != MarkerType.None)
                     {
                         rc.DrawMarkers(
-                            mpts, 
-                            clippingRect, 
-                            this.MarkerType, 
-                            this.MarkerOutline, 
-                            new[] { this.MarkerSize }, 
-                            this.MarkerFill, 
-                            this.MarkerStroke, 
+                            mpts,
+                            clippingRect,
+                            this.MarkerType,
+                            this.MarkerOutline,
+                            new[] { this.MarkerSize },
+                            this.MarkerFill,
+                            this.MarkerStroke,
                             this.MarkerStrokeThickness);
                     }
                 };
@@ -192,7 +192,7 @@ namespace OxyPlot
             {
                 if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
                 {
-                    renderPoints(linePoints.ToArray(), markerPoints.ToArray());
+                    renderPoints(linePoints, markerPoints);
                     linePoints.Clear();
                     markerPoints.Clear();
                     previousY = double.NaN;
@@ -210,7 +210,7 @@ namespace OxyPlot
                 previousY = transformedPoint.Y;
             }
 
-            renderPoints(linePoints.ToArray(), markerPoints.ToArray());
+            renderPoints(linePoints, markerPoints);
         }
 
         #endregion
