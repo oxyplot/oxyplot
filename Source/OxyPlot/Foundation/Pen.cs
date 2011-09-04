@@ -1,4 +1,10 @@
-﻿namespace OxyPlot
+//-----------------------------------------------------------------------
+// <copyright file="Pen.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace OxyPlot
 {
     public class Pen
     {

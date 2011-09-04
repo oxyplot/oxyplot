@@ -1,11 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Represents a WPF control that displays an OxyPlot plot.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -902,6 +899,13 @@ namespace OxyPlot.Wpf
             {
                 return;
             }
+
+            //if (Model != null && internalModel.Background != null)
+            //{
+            //    this.Background = internalModel.Background.ToBrush();
+            //}
+            //else
+            //    this.Background = null;
 
             // Clear the canvas
             this.canvas.Children.Clear();

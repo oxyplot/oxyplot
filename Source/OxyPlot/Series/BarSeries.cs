@@ -1,18 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="BarSeries.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   The BarSeries is used to create clustered or stacked bar charts.
-//   A bar chart or bar graph is a chart with rectangular bars with lengths proportional to the values that they represent.
-//   The bars can be plotted vertically or horizontally.
-//   http://en.wikipedia.org/wiki/Bar_chart
-//   The BarSeries requires a CategoryAxis.
-//   The Values collection must contain the same number of elements as the number of categories in the CategoryAxis.
-//   You can define a ItemsSource and ValueField, or add the Values manually.
-//   Use stacked bar charts with caution... http://lilt.ilstu.edu/gmklass/pos138/datadisplay/badchart.htm
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot
 {

@@ -1,4 +1,10 @@
-﻿namespace OxyPlot.Wpf.Tests
+//-----------------------------------------------------------------------
+// <copyright file="Assert.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace OxyPlot.Wpf.Tests
 {
     using System;
     using System.ComponentModel;

@@ -1,15 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="TimeSpanAxis.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Time Axis
-//   The values should be in seconds.
-//   The StringFormat value can be used to force formatting of the axis values
-//   "h:mm" shows hours and minutes
-//   "m:ss" shows minutes and seconds
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot
 {

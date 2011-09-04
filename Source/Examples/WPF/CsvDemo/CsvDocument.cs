@@ -1,4 +1,10 @@
-﻿using System.Collections.ObjectModel;
+//-----------------------------------------------------------------------
+// <copyright file="CsvDocument.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 

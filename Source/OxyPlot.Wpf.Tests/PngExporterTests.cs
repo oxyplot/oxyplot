@@ -1,8 +1,8 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="PngExporterTests.cs" company="Microsoft">
-// TODO: Update copyright text.
+//-----------------------------------------------------------------------
+// <copyright file="PngExporterTests.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// -----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot.Wpf.Tests
 {

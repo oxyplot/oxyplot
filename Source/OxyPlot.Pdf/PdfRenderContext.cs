@@ -1,13 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="PdfRenderContext.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   PDF Render context using PdfSharp (and SilverPDF for Silverlight)
-//   see http://pdfsharp.codeplex.com
-//   and http://silverpdf.codeplex.com
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot.Pdf
 {

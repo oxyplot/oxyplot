@@ -1,4 +1,10 @@
-﻿namespace PolarDemo
+//-----------------------------------------------------------------------
+// <copyright file="MainWindow.xaml.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace PolarDemo
 {
     using System;
     using System.Collections.Generic;

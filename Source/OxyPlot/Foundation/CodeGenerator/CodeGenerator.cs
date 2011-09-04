@@ -1,16 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="CodeGenerator.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   This class generates c# code for the specified PlotModel.
-//   This is useful for creating examples or unit tests.
-//   Press Ctrl+Alt+C in a plot to copy code to the clipboard.
-//   Usage:
-//   var cg = new CodeGenerator(myPlotModel);
-//   Clipboard.SetText(cg.ToCode());
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot
 {

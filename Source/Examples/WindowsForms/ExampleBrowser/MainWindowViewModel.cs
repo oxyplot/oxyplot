@@ -1,8 +1,8 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="MainViewModel.cs" company="Microsoft">
-// TODO: Update copyright text.
+//-----------------------------------------------------------------------
+// <copyright file="MainWindowViewModel.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// -----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace ExampleBrowser
 {

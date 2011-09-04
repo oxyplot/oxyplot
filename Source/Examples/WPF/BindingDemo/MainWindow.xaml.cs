@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+//-----------------------------------------------------------------------
+// <copyright file="MainWindow.xaml.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;

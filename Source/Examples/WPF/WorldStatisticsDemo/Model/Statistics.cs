@@ -1,4 +1,10 @@
-﻿namespace WorldStatisticsDemo
+//-----------------------------------------------------------------------
+// <copyright file="Statistics.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace WorldStatisticsDemo
 {
     public class Statistics
     {
