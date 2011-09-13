@@ -381,7 +381,21 @@ namespace OxyPlot
             bool isHorizontal = this.IsHorizontal();
 
             double dsx = isHorizontal ? cpt.X - ppt.X : cpt.Y - ppt.Y;
-            double dx = dsx / this.Scale;
+            Pan(dsx);
+        }
+
+        /// <summary>
+        /// Pans the specified axis.
+        /// </summary>
+        /// <param name="delta">The delta.</param>
+        public override void Pan(double delta)
+        {
+            if (!this.IsPanEnabled)
+            {
+                return;
+            }
+
+            double dx = delta / this.Scale;
 
             double newMinimum = this.ActualMinimum - dx;
             double newMaximum = this.ActualMaximum - dx;
@@ -445,12 +459,12 @@ namespace OxyPlot
         public override string ToString()
         {
             return string.Format(
-                CultureInfo.InvariantCulture, 
-                "{0}({1}, {2}, {3}, {4})", 
-                this.GetType().Name, 
-                this.Position, 
-                this.ActualMinimum, 
-                this.ActualMaximum, 
+                CultureInfo.InvariantCulture,
+                "{0}({1}, {2}, {3}, {4})",
+                this.GetType().Name,
+                this.Position,
+                this.ActualMinimum,
+                this.ActualMaximum,
                 this.ActualMajorStep);
         }
 

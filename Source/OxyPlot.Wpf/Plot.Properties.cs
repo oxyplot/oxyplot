@@ -1,8 +1,15 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.Properties.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// <summary>
+//   Partial class for the WPF Plot control.
+//   This file contains dependency properties used for defining the plot in XAML.
+//   These properties are only used when Model is null.
+//   In this case an internal PlotModel is created and the dependency properties are copied from the control to the
+//   internal PlotModel.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -13,17 +20,17 @@ namespace OxyPlot.Wpf
 
     /// <summary>
     /// Partial class for the WPF Plot control. 
-    /// This file contains dependency properties used for defining the plot in XAML.
-    /// These properties are only used when Model is null.
-    /// In this case an internal PlotModel is created and the dependency properties are copied from the control to the 
-    /// internal PlotModel.
+    ///   This file contains dependency properties used for defining the plot in XAML.
+    ///   These properties are only used when Model is null.
+    ///   In this case an internal PlotModel is created and the dependency properties are copied from the control to the 
+    ///   internal PlotModel.
     /// </summary>
     public partial class Plot
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The auto adjust plot margins property.
+        ///   The auto adjust plot margins property.
         /// </summary>
         public static readonly DependencyProperty AutoAdjustPlotMarginsProperty =
             DependencyProperty.Register("AutoAdjustPlotMargins", typeof(bool), typeof(Plot), new PropertyMetadata(true));
@@ -35,7 +42,7 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("DefaultTrackerTemplate", typeof(ControlTemplate), typeof(Plot));
 
         /// <summary>
-        /// The is legend visible property.
+        ///   The is legend visible property.
         /// </summary>
         public static readonly DependencyProperty IsLegendVisibleProperty =
             DependencyProperty.Register(
@@ -48,39 +55,53 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("IsMouseWheelEnabled", typeof(bool), typeof(Plot), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// The legend background property.
+        ///   The keyboard pan horizontal step property.
+        /// </summary>
+        public static readonly DependencyProperty KeyboardPanHorizontalStepProperty =
+            DependencyProperty.Register(
+                "KeyboardPanHorizontalStep", typeof(double), typeof(Plot), new UIPropertyMetadata(0.1));
+
+        /// <summary>
+        ///   The keyboard pan vertical step property.
+        /// </summary>
+        public static readonly DependencyProperty KeyboardPanVerticalStepProperty =
+            DependencyProperty.Register(
+                "KeyboardPanVerticalStep", typeof(double), typeof(Plot), new UIPropertyMetadata(0.1));
+
+        /// <summary>
+        ///   The legend background property.
         /// </summary>
         public static readonly DependencyProperty LegendBackgroundProperty =
             DependencyProperty.Register(
                 "LegendBackground", typeof(Color?), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The legend border property.
+        ///   The legend border property.
         /// </summary>
         public static readonly DependencyProperty LegendBorderProperty = DependencyProperty.Register(
             "LegendBorder", typeof(Color?), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The legend border thickness property.
+        ///   The legend border thickness property.
         /// </summary>
         public static readonly DependencyProperty LegendBorderThicknessProperty =
             DependencyProperty.Register(
                 "LegendBorderThickness", typeof(double), typeof(Plot), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend font property.
+        ///   The legend font property.
         /// </summary>
         public static readonly DependencyProperty LegendFontProperty = DependencyProperty.Register(
             "LegendFont", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The legend font size property.
+        ///   The legend font size property.
         /// </summary>
         public static readonly DependencyProperty LegendFontSizeProperty = DependencyProperty.Register(
             "LegendFontSize", typeof(double), typeof(Plot), new PropertyMetadata(12.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend font weight property.
+        ///   The legend font weight property.
         /// </summary>
         public static readonly DependencyProperty LegendFontWeightProperty =
             DependencyProperty.Register(
@@ -90,7 +111,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(FontWeights.Normal, AppearanceChanged));
 
         /// <summary>
-        /// The legend item alignment property.
+        ///   The legend item alignment property.
         /// </summary>
         public static readonly DependencyProperty LegendItemAlignmentProperty =
             DependencyProperty.Register(
@@ -100,7 +121,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(HorizontalAlignment.Left, AppearanceChanged));
 
         /// <summary>
-        /// The legend item order property.
+        ///   The legend item order property.
         /// </summary>
         public static readonly DependencyProperty LegendItemOrderProperty =
             DependencyProperty.Register(
@@ -110,20 +131,20 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(LegendItemOrder.Normal, AppearanceChanged));
 
         /// <summary>
-        /// The legend item spacing property.
+        ///   The legend item spacing property.
         /// </summary>
         public static readonly DependencyProperty LegendItemSpacingProperty =
             DependencyProperty.Register(
                 "LegendItemSpacing", typeof(double), typeof(Plot), new PropertyMetadata(24.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend margin property.
+        ///   The legend margin property.
         /// </summary>
         public static readonly DependencyProperty LegendMarginProperty = DependencyProperty.Register(
             "LegendMargin", typeof(double), typeof(Plot), new PropertyMetadata(8.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend orientation property.
+        ///   The legend orientation property.
         /// </summary>
         public static readonly DependencyProperty LegendOrientationProperty =
             DependencyProperty.Register(
@@ -133,13 +154,13 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(LegendOrientation.Vertical, AppearanceChanged));
 
         /// <summary>
-        /// The legend padding property.
+        ///   The legend padding property.
         /// </summary>
         public static readonly DependencyProperty LegendPaddingProperty = DependencyProperty.Register(
             "LegendPadding", typeof(double), typeof(Plot), new PropertyMetadata(8.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend placement property.
+        ///   The legend placement property.
         /// </summary>
         public static readonly DependencyProperty LegendPlacementProperty =
             DependencyProperty.Register(
@@ -149,7 +170,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(LegendPlacement.Inside, AppearanceChanged));
 
         /// <summary>
-        /// The legend position property.
+        ///   The legend position property.
         /// </summary>
         public static readonly DependencyProperty LegendPositionProperty = DependencyProperty.Register(
             "LegendPosition", 
@@ -158,21 +179,21 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(LegendPosition.RightTop, AppearanceChanged));
 
         /// <summary>
-        /// The legend symbol length property.
+        ///   The legend symbol length property.
         /// </summary>
         public static readonly DependencyProperty LegendSymbolLengthProperty =
             DependencyProperty.Register(
                 "LegendSymbolLength", typeof(double), typeof(Plot), new PropertyMetadata(16.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend symbol margin property.
+        ///   The legend symbol margin property.
         /// </summary>
         public static readonly DependencyProperty LegendSymbolMarginProperty =
             DependencyProperty.Register(
                 "LegendSymbolMargin", typeof(double), typeof(Plot), new PropertyMetadata(4.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend symbol placement property.
+        ///   The legend symbol placement property.
         /// </summary>
         public static readonly DependencyProperty LegendSymbolPlacementProperty =
             DependencyProperty.Register(
@@ -182,21 +203,21 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(LegendSymbolPlacement.Left, AppearanceChanged));
 
         /// <summary>
-        /// The legend title font property.
+        ///   The legend title font property.
         /// </summary>
         public static readonly DependencyProperty LegendTitleFontProperty =
             DependencyProperty.Register(
                 "LegendTitleFont", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The legend title font size property.
+        ///   The legend title font size property.
         /// </summary>
         public static readonly DependencyProperty LegendTitleFontSizeProperty =
             DependencyProperty.Register(
                 "LegendTitleFontSize", typeof(double), typeof(Plot), new PropertyMetadata(12.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend title font weight property.
+        ///   The legend title font weight property.
         /// </summary>
         public static readonly DependencyProperty LegendTitleFontWeightProperty =
             DependencyProperty.Register(
@@ -212,7 +233,7 @@ namespace OxyPlot.Wpf
             "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
 
         /// <summary>
-        /// The plot area border color property.
+        ///   The plot area border color property.
         /// </summary>
         public static readonly DependencyProperty PlotAreaBorderColorProperty =
             DependencyProperty.Register(
@@ -222,14 +243,14 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
-        /// The plot area border thickness property.
+        ///   The plot area border thickness property.
         /// </summary>
         public static readonly DependencyProperty PlotAreaBorderThicknessProperty =
             DependencyProperty.Register(
                 "PlotAreaBorderThickness", typeof(double), typeof(Plot), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The plot margins property.
+        ///   The plot margins property.
         /// </summary>
         public static readonly DependencyProperty PlotMarginsProperty = DependencyProperty.Register(
             "PlotMargins", 
@@ -238,20 +259,20 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(new Thickness(60, 4, 4, 40), AppearanceChanged));
 
         /// <summary>
-        /// The plot type property.
+        ///   The plot type property.
         /// </summary>
         public static readonly DependencyProperty PlotTypeProperty = DependencyProperty.Register(
             "PlotType", typeof(PlotType), typeof(Plot), new PropertyMetadata(PlotType.XY, AppearanceChanged));
 
         /// <summary>
-        /// The subtitle font size property.
+        ///   The subtitle font size property.
         /// </summary>
         public static readonly DependencyProperty SubtitleFontSizeProperty =
             DependencyProperty.Register(
                 "SubtitleFontSize", typeof(double), typeof(Plot), new PropertyMetadata(14.0, AppearanceChanged));
 
         /// <summary>
-        /// The subtitle font weight property.
+        ///   The subtitle font weight property.
         /// </summary>
         public static readonly DependencyProperty SubtitleFontWeightProperty =
             DependencyProperty.Register(
@@ -261,31 +282,31 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(FontWeights.Normal, AppearanceChanged));
 
         /// <summary>
-        /// The subtitle property.
+        ///   The subtitle property.
         /// </summary>
         public static readonly DependencyProperty SubtitleProperty = DependencyProperty.Register(
             "Subtitle", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The text color property.
+        ///   The text color property.
         /// </summary>
         public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
             "TextColor", typeof(Color), typeof(Plot), new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
-        /// The title font property.
+        ///   The title font property.
         /// </summary>
         public static readonly DependencyProperty TitleFontProperty = DependencyProperty.Register(
             "TitleFont", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The title font size property.
+        ///   The title font size property.
         /// </summary>
         public static readonly DependencyProperty TitleFontSizeProperty = DependencyProperty.Register(
             "TitleFontSize", typeof(double), typeof(Plot), new PropertyMetadata(18.0, AppearanceChanged));
 
         /// <summary>
-        /// The title font weight property.
+        ///   The title font weight property.
         /// </summary>
         public static readonly DependencyProperty TitleFontWeightProperty =
             DependencyProperty.Register(
@@ -295,13 +316,13 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(FontWeights.Bold, AppearanceChanged));
 
         /// <summary>
-        /// The title padding property.
+        ///   The title padding property.
         /// </summary>
         public static readonly DependencyProperty TitlePaddingProperty = DependencyProperty.Register(
             "TitlePadding", typeof(double), typeof(Plot), new PropertyMetadata(6.0, AppearanceChanged));
 
         /// <summary>
-        /// The title property.
+        ///   The title property.
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
@@ -314,17 +335,17 @@ namespace OxyPlot.Wpf
                 "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
 
         /// <summary>
-        /// The annotations.
+        ///   The annotations.
         /// </summary>
         private readonly ObservableCollection<Annotation> annotations;
 
         /// <summary>
-        /// The axes.
+        ///   The axes.
         /// </summary>
         private readonly ObservableCollection<Axis> axes;
 
         /// <summary>
-        /// The series.
+        ///   The series.
         /// </summary>
         private readonly ObservableCollection<Series> series;
 
@@ -333,7 +354,7 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether AutoAdjustPlotMargins.
+        ///   Gets or sets a value indicating whether AutoAdjustPlotMargins.
         /// </summary>
         public bool AutoAdjustPlotMargins
         {
@@ -349,7 +370,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets the axes.
+        ///   Gets the axes.
         /// </summary>
         /// <value>The axes.</value>
         public ObservableCollection<Axis> Axes
@@ -378,7 +399,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsLegendVisible.
+        ///   Gets or sets a value indicating whether IsLegendVisible.
         /// </summary>
         public bool IsLegendVisible
         {
@@ -410,7 +431,41 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendBackground.
+        ///   Gets or sets the keyboard pan horizontal step (fraction of plot area width).
+        /// </summary>
+        /// <value>The keyboard pan horizontal step.</value>
+        public double KeyboardPanHorizontalStep
+        {
+            get
+            {
+                return (double)this.GetValue(KeyboardPanHorizontalStepProperty);
+            }
+
+            set
+            {
+                this.SetValue(KeyboardPanHorizontalStepProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the keyboard pan vertical step size (fraction of plot area height).
+        /// </summary>
+        /// <value>The keyboard pan vertical step.</value>
+        public double KeyboardPanVerticalStep
+        {
+            get
+            {
+                return (double)this.GetValue(KeyboardPanVerticalStepProperty);
+            }
+
+            set
+            {
+                this.SetValue(KeyboardPanVerticalStepProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets LegendBackground.
         /// </summary>
         public Color? LegendBackground
         {
@@ -426,7 +481,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendBorder.
+        ///   Gets or sets LegendBorder.
         /// </summary>
         public Color? LegendBorder
         {
@@ -442,7 +497,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendBorderThickness.
+        ///   Gets or sets LegendBorderThickness.
         /// </summary>
         public double LegendBorderThickness
         {
@@ -458,7 +513,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendFont.
+        ///   Gets or sets LegendFont.
         /// </summary>
         public string LegendFont
         {
@@ -474,7 +529,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendFontSize.
+        ///   Gets or sets LegendFontSize.
         /// </summary>
         public double LegendFontSize
         {
@@ -490,7 +545,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendFontWeight.
+        ///   Gets or sets LegendFontWeight.
         /// </summary>
         public FontWeight LegendFontWeight
         {
@@ -506,7 +561,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendItemAlignment.
+        ///   Gets or sets LegendItemAlignment.
         /// </summary>
         public HorizontalAlignment LegendItemAlignment
         {
@@ -522,7 +577,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendItemOrder.
+        ///   Gets or sets LegendItemOrder.
         /// </summary>
         public LegendItemOrder LegendItemOrder
         {
@@ -538,7 +593,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendItemSpacing.
+        ///   Gets or sets LegendItemSpacing.
         /// </summary>
         public double LegendItemSpacing
         {
@@ -554,7 +609,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendMargin.
+        ///   Gets or sets LegendMargin.
         /// </summary>
         public double LegendMargin
         {
@@ -570,7 +625,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendOrientation.
+        ///   Gets or sets LegendOrientation.
         /// </summary>
         public LegendOrientation LegendOrientation
         {
@@ -586,7 +641,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendPadding.
+        ///   Gets or sets LegendPadding.
         /// </summary>
         public double LegendPadding
         {
@@ -602,7 +657,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendPlacement.
+        ///   Gets or sets LegendPlacement.
         /// </summary>
         public LegendPlacement LegendPlacement
         {
@@ -618,7 +673,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the legend position.
+        ///   Gets or sets the legend position.
         /// </summary>
         /// <value>The legend position.</value>
         public LegendPosition LegendPosition
@@ -635,7 +690,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendSymbolLength.
+        ///   Gets or sets LegendSymbolLength.
         /// </summary>
         public double LegendSymbolLength
         {
@@ -651,7 +706,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendSymbolMargin.
+        ///   Gets or sets LegendSymbolMargin.
         /// </summary>
         public double LegendSymbolMargin
         {
@@ -667,7 +722,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendSymbolPlacement.
+        ///   Gets or sets LegendSymbolPlacement.
         /// </summary>
         public LegendSymbolPlacement LegendSymbolPlacement
         {
@@ -683,7 +738,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendTitleFont.
+        ///   Gets or sets LegendTitleFont.
         /// </summary>
         public string LegendTitleFont
         {
@@ -699,7 +754,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendTitleFontSize.
+        ///   Gets or sets LegendTitleFontSize.
         /// </summary>
         public double LegendTitleFontSize
         {
@@ -715,7 +770,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LegendTitleFontWeight.
+        ///   Gets or sets LegendTitleFontWeight.
         /// </summary>
         public FontWeight LegendTitleFontWeight
         {
@@ -748,7 +803,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the color of the plot area border.
+        ///   Gets or sets the color of the plot area border.
         /// </summary>
         /// <value>The color of the plot area border.</value>
         public Color PlotAreaBorderColor
@@ -765,7 +820,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the thickness of the plot area border.
+        ///   Gets or sets the thickness of the plot area border.
         /// </summary>
         /// <value>The thickness of the plot area border.</value>
         public double PlotAreaBorderThickness
@@ -782,7 +837,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the plot margins.
+        ///   Gets or sets the plot margins.
         /// </summary>
         /// <value>The plot margins.</value>
         public Thickness PlotMargins
@@ -799,7 +854,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets PlotType.
+        ///   Gets or sets PlotType.
         /// </summary>
         public PlotType PlotType
         {
@@ -815,7 +870,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets the series.
+        ///   Gets the series.
         /// </summary>
         /// <value>The series.</value>
         public ObservableCollection<Series> Series
@@ -827,7 +882,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the subtitle.
+        ///   Gets or sets the subtitle.
         /// </summary>
         /// <value>The subtitle.</value>
         public string Subtitle
@@ -844,7 +899,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets SubtitleFontSize.
+        ///   Gets or sets SubtitleFontSize.
         /// </summary>
         public double SubtitleFontSize
         {
@@ -860,7 +915,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets SubtitleFontWeight.
+        ///   Gets or sets SubtitleFontWeight.
         /// </summary>
         public FontWeight SubtitleFontWeight
         {
@@ -876,7 +931,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TextColor.
+        ///   Gets or sets TextColor.
         /// </summary>
         public Color TextColor
         {
@@ -892,7 +947,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the title.
+        ///   Gets or sets the title.
         /// </summary>
         /// <value>The title.</value>
         public string Title
@@ -909,7 +964,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TitleFont.
+        ///   Gets or sets TitleFont.
         /// </summary>
         public string TitleFont
         {
@@ -925,7 +980,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TitleFontSize.
+        ///   Gets or sets TitleFontSize.
         /// </summary>
         public double TitleFontSize
         {
@@ -941,7 +996,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TitleFontWeight.
+        ///   Gets or sets TitleFontWeight.
         /// </summary>
         public FontWeight TitleFontWeight
         {
@@ -957,7 +1012,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TitlePadding.
+        ///   Gets or sets TitlePadding.
         /// </summary>
         public double TitlePadding
         {

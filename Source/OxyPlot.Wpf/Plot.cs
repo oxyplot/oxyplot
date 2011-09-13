@@ -1,8 +1,11 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// <summary>
+//   Represents a WPF control that displays an OxyPlot plot.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -15,6 +18,7 @@ namespace OxyPlot.Wpf
     using System.Text;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Markup;
     using System.Windows.Media;
@@ -81,7 +85,7 @@ namespace OxyPlot.Wpf
         private bool isPlotInvalidated;
 
         /// <summary>
-        /// Flag to update data when the plot has been invalidated.
+        ///   Flag to update data when the plot has been invalidated.
         /// </summary>
         private bool invalidateUpdatesData;
 
@@ -150,6 +154,20 @@ namespace OxyPlot.Wpf
             // this.InputBindings.Add(new KeyBinding(CopyCode, Key.C, ModifierKeys.Control | ModifierKeys.Alt));
         }
 
+        /// <summary>
+        /// The reset axes handler.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void ResetAxesHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.ResetAllAxes();
+        }
+
         #endregion
 
         #region Public Properties
@@ -167,7 +185,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets the annotations.
+        ///   Gets the annotations.
         /// </summary>
         /// <value>The annotations.</value>
         public ObservableCollection<Annotation> Annotations
@@ -299,6 +317,14 @@ namespace OxyPlot.Wpf
 
             this.zoomControl = new ContentControl();
             this.overlays.Children.Add(this.zoomControl);
+
+            this.CommandBindings.Add(new CommandBinding(ResetAxesCommand, this.ResetAxesHandler));
+
+            var resetAxesInputBinding = new InputBindingX();
+            resetAxesInputBinding.Command = ResetAxesCommand;
+            BindingOperations.SetBinding(
+                resetAxesInputBinding, InputBindingX.GeztureProperty, new Binding("ResetAxesGesture") { Source = this });
+            this.InputBindings.Add(resetAxesInputBinding);
         }
 
         /// <summary>
@@ -316,6 +342,30 @@ namespace OxyPlot.Wpf
         public void Pan(OxyPlot.IAxis axis, ScreenPoint ppt, ScreenPoint cpt)
         {
             axis.Pan(ppt, cpt);
+            this.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Pans all axes.
+        /// </summary>
+        /// <param name="delta">
+        /// The delta.
+        /// </param>
+        private void PanAll(Vector delta)
+        {
+            foreach (OxyPlot.IAxis a in this.ActualModel.Axes)
+            {
+                if (a.IsHorizontal())
+                {
+                    a.Pan(delta.X);
+                }
+                else
+                {
+                    a.Pan(delta.Y);
+                }
+            }
+
+            this.RefreshPlot(false);
         }
 
         /// <summary>
@@ -490,19 +540,36 @@ namespace OxyPlot.Wpf
         public void Zoom(OxyPlot.IAxis axis, double p1, double p2)
         {
             axis.Zoom(p1, p2);
+            this.RefreshPlot(false);
         }
 
         /// <summary>
-        /// Zooms to fit all content of the plot.
+        /// Zooms all axes.
         /// </summary>
-        public void ZoomAll()
+        /// <param name="delta">
+        /// The delta.
+        /// </param>
+        public void ZoomAllAxes(double delta)
+        {
+            foreach (OxyPlot.IAxis a in this.ActualModel.Axes)
+            {
+                this.ZoomAt(a, delta);
+            }
+
+            this.RefreshPlot(false);
+        }
+
+        /// <summary>
+        /// Reset all axes.
+        /// </summary>
+        public void ResetAllAxes()
         {
             foreach (OxyPlot.IAxis a in this.ActualModel.Axes)
             {
                 a.Reset();
             }
 
-            this.RefreshPlot(false);
+            this.InvalidatePlot(false);
         }
 
         /// <summary>
@@ -517,8 +584,14 @@ namespace OxyPlot.Wpf
         /// <param name="x">
         /// The position to zoom at.
         /// </param>
-        public void ZoomAt(OxyPlot.IAxis axis, double factor, double x)
+        public void ZoomAt(OxyPlot.IAxis axis, double factor, double x = double.NaN)
         {
+            if (double.IsNaN(x))
+            {
+                double sx = (axis.Transform(axis.ActualMaximum) + axis.Transform(axis.ActualMinimum)) * 0.5;
+                x = axis.InverseTransform(sx);
+            }
+
             axis.ZoomAt(factor, x);
         }
 
@@ -540,7 +613,61 @@ namespace OxyPlot.Wpf
             if (e.Key == Key.A)
             {
                 e.Handled = true;
-                this.ZoomAll();
+                this.ResetAllAxes();
+            }
+
+            var delta = new Vector();
+            double zoom = 0;
+            switch (e.Key)
+            {
+                case Key.Up:
+                    delta = new Vector(0, -1);
+                    break;
+                case Key.Down:
+                    delta = new Vector(0, 1);
+                    break;
+                case Key.Left:
+                    delta = new Vector(-1, 0);
+                    break;
+                case Key.Right:
+                    delta = new Vector(1, 0);
+                    break;
+                case Key.Add:
+                case Key.OemPlus:
+                case Key.PageUp:
+                    zoom = 1;
+                    break;
+                case Key.Subtract:
+                case Key.OemMinus:
+                case Key.PageDown:
+                    zoom = -1;
+                    break;
+            }
+
+            if (delta.Length > 0)
+            {
+                delta.X = delta.X * this.ActualModel.PlotArea.Width * this.KeyboardPanHorizontalStep;
+                delta.Y = delta.Y * this.ActualModel.PlotArea.Height * this.KeyboardPanVerticalStep;
+
+                // small steps if the user is pressing control
+                if (control)
+                {
+                    delta *= 0.2;
+                }
+
+                this.PanAll(delta);
+                e.Handled = true;
+            }
+
+            if (zoom != 0)
+            {
+                if (control)
+                {
+                    zoom *= 0.2;
+                }
+
+                this.ZoomAllAxes(1 + zoom * 0.12);
+                e.Handled = true;
             }
 
             if (control && alt && this.ActualModel != null)
@@ -601,7 +728,7 @@ namespace OxyPlot.Wpf
             }
 
             ScreenPoint p = e.GetPosition(this).ToScreenPoint();
-            foreach (OxyMouseAction a in this.MouseActions)
+            foreach (var a in this.MouseActions)
             {
                 a.OnMouseDown(p, button, e.ClickCount, control, shift, alt);
             }
@@ -625,7 +752,7 @@ namespace OxyPlot.Wpf
 
             ScreenPoint p = e.GetPosition(this).ToScreenPoint();
 
-            foreach (OxyMouseAction a in this.MouseActions)
+            foreach (var a in this.MouseActions)
             {
                 a.OnMouseMove(p, control, shift, alt);
             }
@@ -641,7 +768,7 @@ namespace OxyPlot.Wpf
         {
             base.OnMouseUp(e);
 
-            foreach (OxyMouseAction a in this.MouseActions)
+            foreach (var a in this.MouseActions)
             {
                 a.OnMouseUp();
             }
@@ -689,7 +816,7 @@ namespace OxyPlot.Wpf
 
             ScreenPoint p = e.GetPosition(this).ToScreenPoint();
 
-            foreach (OxyMouseAction a in this.MouseActions)
+            foreach (var a in this.MouseActions)
             {
                 a.OnMouseWheel(p, e.Delta, isControlDown, isShiftDown, isAltDown);
             }
@@ -875,7 +1002,7 @@ namespace OxyPlot.Wpf
             // we add the items to the logical tree
             if (e.NewItems != null)
             {
-                foreach (object item in e.NewItems)
+                foreach (var item in e.NewItems)
                 {
                     this.AddLogicalChild(item);
                 }
@@ -883,7 +1010,7 @@ namespace OxyPlot.Wpf
 
             if (e.OldItems != null)
             {
-                foreach (object item in e.OldItems)
+                foreach (var item in e.OldItems)
                 {
                     this.RemoveLogicalChild(item);
                 }
@@ -900,12 +1027,12 @@ namespace OxyPlot.Wpf
                 return;
             }
 
-            //if (Model != null && internalModel.Background != null)
-            //{
-            //    this.Background = internalModel.Background.ToBrush();
-            //}
-            //else
-            //    this.Background = null;
+            // if (Model != null && internalModel.Background != null)
+            // {
+            // this.Background = internalModel.Background.ToBrush();
+            // }
+            // else
+            // this.Background = null;
 
             // Clear the canvas
             this.canvas.Children.Clear();
@@ -932,8 +1059,8 @@ namespace OxyPlot.Wpf
 
         /// <summary>
         /// Updates the model.
-        /// If Model==null, an internal model will be created.
-        /// The ActualModel.UpdateModel will be called (updates all series data).
+        ///   If Model==null, an internal model will be created.
+        ///   The ActualModel.UpdateModel will be called (updates all series data).
         /// </summary>
         /// <param name="updateData">
         /// if set to <c>true</c>, all data collections will be updated.
@@ -975,7 +1102,7 @@ namespace OxyPlot.Wpf
                 {
                     this.internalModel.Annotations.Clear();
 
-                    foreach (Annotation a in this.Annotations)
+                    foreach (var a in this.Annotations)
                     {
                         this.internalModel.Annotations.Add(a.CreateModel());
                     }
@@ -986,5 +1113,36 @@ namespace OxyPlot.Wpf
         }
 
         #endregion
+
+        /// <summary>
+        ///   Gets or sets the reset axes gesture.
+        /// </summary>
+        /// <value>The reset axes gesture.</value>
+        public InputGesture ResetAxesGesture
+        {
+            get
+            {
+                return (InputGesture)this.GetValue(OrthographicToggleGestureProperty);
+            }
+
+            set
+            {
+                this.SetValue(OrthographicToggleGestureProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   The orthographic toggle gesture property.
+        /// </summary>
+        public static readonly DependencyProperty OrthographicToggleGestureProperty =
+            DependencyProperty.Register(
+                "ResetAxesGesture", typeof(InputGesture), typeof(Plot), new UIPropertyMetadata(new KeyGesture(Key.Home)));
+
+        /// <summary>
+        ///   The reset axes command.
+        /// </summary>
+        public static RoutedCommand ResetAxesCommand = new RoutedCommand();
+
+        
     }
 }

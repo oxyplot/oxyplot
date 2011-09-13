@@ -679,6 +679,12 @@ namespace OxyPlot
         public abstract void Pan(ScreenPoint ppt, ScreenPoint cpt);
 
         /// <summary>
+        /// Pans the axis.
+        /// </summary>
+        /// <param name="delta">The delta (screen coordinates).</param>
+        public abstract void Pan(double delta);
+
+        /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
         /// <param name="rc">

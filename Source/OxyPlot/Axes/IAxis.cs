@@ -266,7 +266,7 @@ namespace OxyPlot
         OxySize Measure(IRenderContext rc);
 
         /// <summary>
-        /// Pans the specified axis.
+        /// Pans the axis.
         /// </summary>
         /// <param name="ppt">
         /// The previous point (screen coordinates).
@@ -275,6 +275,12 @@ namespace OxyPlot
         /// The current point (screen coordinates).
         /// </param>
         void Pan(ScreenPoint ppt, ScreenPoint cpt);
+
+        /// <summary>
+        /// Pans the axis.
+        /// </summary>
+        /// <param name="delta">The delta (screen coordinates).</param>
+        void Pan(double delta);
 
         /// <summary>
         /// Renders the axis on the specified render context.
@@ -332,6 +338,14 @@ namespace OxyPlot
         /// The new scale.
         /// </param>
         void Zoom(double scale);
+
+        /// <summary>
+        /// Determines whether this axis is horizontal.
+        /// </summary>
+        /// <returns>
+        /// 	<c>true</c> if this axis is horizontal; otherwise, <c>false</c>.
+        /// </returns>
+        bool IsHorizontal();
 
         /// <summary>
         /// Updates the actual maximum and minimum values.

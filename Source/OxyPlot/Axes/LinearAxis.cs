@@ -6,6 +6,8 @@
 
 namespace OxyPlot
 {
+    using System;
+
     /// <summary>
     /// Linear axis class.
     /// </summary>
