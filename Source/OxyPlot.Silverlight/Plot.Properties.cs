@@ -1,8 +1,11 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.Properties.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// <summary>
+//   The Silverlight Plot control.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Silverlight
 {
@@ -38,10 +41,24 @@ namespace OxyPlot.Silverlight
             DependencyProperty.Register("HandleRightClicks", typeof(bool), typeof(Plot), new PropertyMetadata(true));
 
         /// <summary>
-        /// The is mouse wheel enabled property.
+        ///   The is mouse wheel enabled property.
         /// </summary>
         public static readonly DependencyProperty IsMouseWheelEnabledProperty =
             DependencyProperty.Register("IsMouseWheelEnabled", typeof(bool), typeof(Plot), new PropertyMetadata(true));
+
+        /// <summary>
+        ///   The keyboard pan horizontal step property.
+        /// </summary>
+        public static readonly DependencyProperty KeyboardPanHorizontalStepProperty =
+            DependencyProperty.Register(
+                "KeyboardPanHorizontalStep", typeof(double), typeof(Plot), new PropertyMetadata(0.1));
+
+        /// <summary>
+        ///   The keyboard pan vertical step property.
+        /// </summary>
+        public static readonly DependencyProperty KeyboardPanVerticalStepProperty =
+            DependencyProperty.Register(
+                "KeyboardPanVerticalStep", typeof(double), typeof(Plot), new PropertyMetadata(0.1));
 
         /// <summary>
         ///   The model property.
@@ -93,7 +110,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsMouseWheelEnabled.
+        ///   Gets or sets a value indicating whether IsMouseWheelEnabled.
         /// </summary>
         public bool IsMouseWheelEnabled
         {
@@ -105,6 +122,40 @@ namespace OxyPlot.Silverlight
             set
             {
                 this.SetValue(IsMouseWheelEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the keyboard pan horizontal step (fraction of plot area width).
+        /// </summary>
+        /// <value>The keyboard pan horizontal step.</value>
+        public double KeyboardPanHorizontalStep
+        {
+            get
+            {
+                return (double)this.GetValue(KeyboardPanHorizontalStepProperty);
+            }
+
+            set
+            {
+                this.SetValue(KeyboardPanHorizontalStepProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the keyboard pan vertical step size (fraction of plot area height).
+        /// </summary>
+        /// <value>The keyboard pan vertical step.</value>
+        public double KeyboardPanVerticalStep
+        {
+            get
+            {
+                return (double)this.GetValue(KeyboardPanVerticalStepProperty);
+            }
+
+            set
+            {
+                this.SetValue(KeyboardPanVerticalStepProperty, value);
             }
         }
 
@@ -126,7 +177,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets the zoom rectangle template.
+        ///   Gets or sets the zoom rectangle template.
         /// </summary>
         /// <value>The zoom rectangle template.</value>
         public ControlTemplate ZoomRectangleTemplate

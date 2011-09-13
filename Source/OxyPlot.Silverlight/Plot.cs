@@ -1,8 +1,11 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// <summary>
+//   The Silverlight Plot control.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Silverlight
 {
@@ -145,13 +148,13 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets the mouse actions.
+        ///   Gets or sets the mouse actions.
         /// </summary>
         /// <value>The mouse actions.</value>
         public List<OxyMouseAction> MouseActions { get; private set; }
 
         /// <summary>
-        /// Gets the tracker definitions.
+        ///   Gets the tracker definitions.
         /// </summary>
         /// <value>The tracker definitions.</value>
         public ObservableCollection<TrackerDefinition> TrackerDefinitions
@@ -250,18 +253,20 @@ namespace OxyPlot.Silverlight
         {
             base.OnApplyTemplate();
             this.grid = this.GetTemplateChild(PartGrid) as Grid;
-            if (this.grid != null)
+            if (this.grid == null)
             {
-                this.canvas = new Canvas();
-                this.grid.Children.Add(this.canvas);
-                this.canvas.UpdateLayout();
-
-                this.overlays = new Canvas();
-                this.grid.Children.Add(this.overlays);
-
-                this.zoomControl = new ContentControl();
-                this.overlays.Children.Add(this.zoomControl);
+                return;
             }
+
+            this.canvas = new Canvas();
+            this.grid.Children.Add(this.canvas);
+            this.canvas.UpdateLayout();
+
+            this.overlays = new Canvas();
+            this.grid.Children.Add(this.overlays);
+
+            this.zoomControl = new ContentControl();
+            this.overlays.Children.Add(this.zoomControl);
         }
 
         /// <summary>
@@ -283,10 +288,10 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Refresh the plot immediately (blocking UI thread)
+        /// Refresh the plot immediately (not blocking UI thread)
         /// </summary>
         /// <param name="updateData">
-        /// The update Data.
+        /// if set to <c>true</c>, the data collections will be updated.
         /// </param>
         public void RefreshPlot(bool updateData)
         {
@@ -306,6 +311,19 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
+        /// Reset all axes.
+        /// </summary>
+        public void ResetAllAxes()
+        {
+            foreach (IAxis a in this.ActualModel.Axes)
+            {
+                a.Reset();
+            }
+
+            this.InvalidatePlot(false);
+        }
+
+        /// <summary>
         /// Saves the plot as a bitmap.
         /// </summary>
         /// <param name="fileName">
@@ -316,6 +334,7 @@ namespace OxyPlot.Silverlight
             throw new NotImplementedException();
 
             // todo: Use imagetools.codeplex.com
+            // or http://windowspresentationfoundation.com/Blend4Book/SaveTheImage.txt
 
             // var bmp = this.ToBitmap();
 
@@ -440,19 +459,23 @@ namespace OxyPlot.Silverlight
         public void Zoom(IAxis axis, double p1, double p2)
         {
             axis.Zoom(p1, p2);
+            this.RefreshPlot(false);
         }
 
         /// <summary>
-        /// Zooms to fit all content of the plot.
+        /// Zooms all axes.
         /// </summary>
-        public void ZoomAll()
+        /// <param name="delta">
+        /// The delta.
+        /// </param>
+        public void ZoomAllAxes(double delta)
         {
             foreach (IAxis a in this.ActualModel.Axes)
             {
-                a.Reset();
+                this.ZoomAt(a, delta);
             }
 
-            this.InvalidatePlot(false);
+            this.RefreshPlot(false);
         }
 
         /// <summary>
@@ -467,8 +490,14 @@ namespace OxyPlot.Silverlight
         /// <param name="x">
         /// The position to zoom at.
         /// </param>
-        public void ZoomAt(IAxis axis, double factor, double x)
+        public void ZoomAt(IAxis axis, double factor, double x = double.NaN)
         {
+            if (double.IsNaN(x))
+            {
+                double sx = (axis.Transform(axis.ActualMaximum) + axis.Transform(axis.ActualMinimum)) * 0.5;
+                x = axis.InverseTransform(sx);
+            }
+
             axis.ZoomAt(factor, x);
         }
 
@@ -487,10 +516,67 @@ namespace OxyPlot.Silverlight
             bool control = IsControlDown();
             bool alt = IsAltDown();
 
-            if (e.Key == Key.A)
+            switch (e.Key)
             {
+                case Key.Home:
+                case Key.A:
+                    this.ResetAllAxes();
+                    e.Handled = true;
+                    break;
+            }
+
+            double dx = 0;
+            double dy = 0;
+            double zoom = 0;
+            switch (e.Key)
+            {
+                case Key.Up:
+                    dy = -1;
+                    break;
+                case Key.Down:
+                    dy = 1;
+                    break;
+                case Key.Left:
+                    dx = -1;
+                    break;
+                case Key.Right:
+                    dx = 1;
+                    break;
+                case Key.Add:
+                case Key.PageUp:
+                    zoom = 1;
+                    break;
+                case Key.Subtract:
+                case Key.PageDown:
+                    zoom = -1;
+                    break;
+            }
+
+            if (dx != 0 || dy != 0)
+            {
+                dx = dx * this.ActualModel.PlotArea.Width * this.KeyboardPanHorizontalStep;
+                dy = dy * this.ActualModel.PlotArea.Height * this.KeyboardPanVerticalStep;
+
+                // small steps if the user is pressing control
+                if (control)
+                {
+                    dx *= 0.2;
+                    dy *= 0.2;
+                }
+
+                this.PanAll(dx, dy);
                 e.Handled = true;
-                this.ZoomAll();
+            }
+
+            if (zoom != 0)
+            {
+                if (control)
+                {
+                    zoom *= 0.2;
+                }
+
+                this.ZoomAllAxes(1 + zoom * 0.12);
+                e.Handled = true;
             }
 
             if (e.Key == Key.C && control)
@@ -527,7 +613,7 @@ namespace OxyPlot.Silverlight
         /// </param>
         protected void OnMouseButtonUp(MouseButtonEventArgs e)
         {
-            foreach (OxyMouseAction a in this.MouseActions)
+            foreach (var a in this.MouseActions)
             {
                 a.OnMouseUp();
             }
@@ -574,7 +660,7 @@ namespace OxyPlot.Silverlight
             bool isAltDown = IsAltDown();
 
             ScreenPoint p = e.GetPosition(this).ToScreenPoint();
-            foreach (OxyMouseAction a in this.MouseActions)
+            foreach (var a in this.MouseActions)
             {
                 a.OnMouseMove(p, isControlDown, isShiftDown, isAltDown);
             }
@@ -633,7 +719,7 @@ namespace OxyPlot.Silverlight
 
             ScreenPoint p = e.GetPosition(this).ToScreenPoint();
 
-            foreach (OxyMouseAction a in this.MouseActions)
+            foreach (var a in this.MouseActions)
             {
                 a.OnMouseWheel(p, e.Delta, isControlDown, isShiftDown, isAltDown);
             }
@@ -804,7 +890,7 @@ namespace OxyPlot.Silverlight
                 clickCount = 2;
             }
 
-            foreach (OxyMouseAction a in this.MouseActions)
+            foreach (var a in this.MouseActions)
             {
                 a.OnMouseDown(p, button, clickCount, isControlDown, isShiftDown, isAltDown);
             }
@@ -822,6 +908,32 @@ namespace OxyPlot.Silverlight
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.InvalidatePlot();
+        }
+
+        /// <summary>
+        /// Pans all axes.
+        /// </summary>
+        /// <param name="dx">
+        /// The dx.
+        /// </param>
+        /// <param name="dy">
+        /// The dy.
+        /// </param>
+        private void PanAll(double dx, double dy)
+        {
+            foreach (IAxis a in this.ActualModel.Axes)
+            {
+                if (a.IsHorizontal())
+                {
+                    a.Pan(dx);
+                }
+                else
+                {
+                    a.Pan(dy);
+                }
+            }
+
+            this.RefreshPlot(false);
         }
 
         /// <summary>
