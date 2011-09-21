@@ -995,6 +995,7 @@ namespace OxyPlot
 
             // Update the max and min of the axes
             this.UpdateMaxMin(updateData);
+            this.OnUpdated();
         }
 
         /// <summary>
@@ -1196,6 +1197,21 @@ namespace OxyPlot
         }
 
         #endregion
+
+        public event EventHandler Updated;
+
+        /// <summary>
+        /// Raises the <see cref="E:Updated"/> event.
+        /// </summary>
+        protected virtual void OnUpdated()
+        {
+            var handler = this.Updated;
+            if (handler != null)
+            {
+                var args = new EventArgs();
+                handler(this,args);
+            }
+        }
 
         ///// <summary>
         ///// Xml serialize the plotmodel to a stream.

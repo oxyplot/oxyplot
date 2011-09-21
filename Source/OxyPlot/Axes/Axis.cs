@@ -865,11 +865,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the size of the label.
+        /// Raises the <see cref="E:AxisChanged"/> event.
         /// </summary>
-        /// <param name="args">
-        /// The args.
-        /// </param>
+        /// <param name="args">The <see cref="OxyPlot.AxisChangedEventArgs"/> instance containing the event data.</param>
         protected virtual void OnAxisChanged(AxisChangedEventArgs args)
         {
             this.UpdateActualMaxMin();
