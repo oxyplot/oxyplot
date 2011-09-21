@@ -435,7 +435,8 @@ namespace OxyPlot
             OxyColor markerFill,
             OxyColor markerStroke,
             double markerStrokeThickness,
-            int resolution = 0)
+            int resolution = 0,
+            ScreenPoint binOffset = new ScreenPoint())
         {
             if (markerType == MarkerType.None)
             {
@@ -460,8 +461,8 @@ namespace OxyPlot
             {
                 if (resolution > 1)
                 {
-                    var x = (int)(p.X / resolution);
-                    var y = (int)(p.Y / resolution);
+                    var x = (int)((p.X-binOffset.X) / resolution);
+                    var y = (int)((p.Y-binOffset.Y) / resolution);
                     uint hash = (uint)(x << 16) + (uint)y;
                     if (hashset.Contains(hash))
                     {

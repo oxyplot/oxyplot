@@ -240,6 +240,8 @@ namespace OxyPlot
                 allPoints[i] = this.XAxis.Transform(dp.X, dp.Y, this.YAxis);
                 markerSizes[i] = size;
             }
+            
+            var binOffset = this.XAxis.Transform(this.MinX, this.MaxY, this.YAxis);
 
             // Draw the markers
             rc.DrawMarkers(
@@ -251,7 +253,8 @@ namespace OxyPlot
                 this.MarkerFill, 
                 this.MarkerStroke, 
                 this.MarkerStrokeThickness, 
-                this.BinSize);
+                this.BinSize,
+                binOffset);
         }
 
         /// <summary>
