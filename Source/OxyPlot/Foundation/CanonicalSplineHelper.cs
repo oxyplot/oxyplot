@@ -8,6 +8,7 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Interpolates a list of points using a canonical spline.
@@ -19,35 +20,47 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
-        /// The create spline.
+        /// Creates a spline of data points.
         /// </summary>
-        /// <param name="pts">
-        /// The pts.
-        /// </param>
-        /// <param name="tension">
-        /// The tension.
-        /// </param>
-        /// <param name="tensions">
-        /// The tensions.
-        /// </param>
-        /// <param name="isClosed">
-        /// The is closed.
-        /// </param>
-        /// <param name="tolerance">
-        /// The tolerance.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="points">The points.</param>
+        /// <param name="tension">The tension.</param>
+        /// <param name="tensions">The tensions.</param>
+        /// <param name="isClosed">True if the spline is closed.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A list of data points.</returns>
+        internal static List<IDataPoint> CreateSpline(
+            IList<IDataPoint> points, double tension, IList<double> tensions, bool isClosed, double tolerance)
+        {
+            var screenPoints = points.Select(p => new ScreenPoint(p.X, p.Y)).ToList();
+            var interpolatedScreenPoints = CreateSpline(screenPoints, tension, tensions, isClosed, tolerance);
+            var interpolatedDataPoints = new List<IDataPoint>(interpolatedScreenPoints.Count);
+            foreach (var s in interpolatedScreenPoints)
+            {
+                interpolatedDataPoints.Add(new DataPoint(s.X, s.Y));
+            }
+            return interpolatedDataPoints;
+        }
+
+
+        /// <summary>
+        /// Creates a spline of screen points.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <param name="tension">The tension.</param>
+        /// <param name="tensions">The tensions.</param>
+        /// <param name="isClosed">True if the spline is closed.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A list of screen points.</returns>
         internal static List<ScreenPoint> CreateSpline(
-            IList<ScreenPoint> pts, double tension, IList<double> tensions, bool isClosed, double tolerance)
+            IList<ScreenPoint> points, double tension, IList<double> tensions, bool isClosed, double tolerance)
         {
             var result = new List<ScreenPoint>();
-            if (pts == null)
+            if (points == null)
             {
                 return result;
             }
 
-            int n = pts.Count;
+            int n = points.Count;
             if (n < 1)
             {
                 return result;
@@ -55,7 +68,7 @@ namespace OxyPlot
 
             if (n < 2)
             {
-                result.AddRange(pts);
+                result.AddRange(points);
                 return result;
             }
 
@@ -63,12 +76,12 @@ namespace OxyPlot
             {
                 if (!isClosed)
                 {
-                    Segment(result, pts[0], pts[0], pts[1], pts[1], tension, tension, tolerance);
+                    Segment(result, points[0], points[0], points[1], points[1], tension, tension, tolerance);
                 }
                 else
                 {
-                    Segment(result, pts[1], pts[0], pts[1], pts[0], tension, tension, tolerance);
-                    Segment(result, pts[0], pts[1], pts[0], pts[1], tension, tension, tolerance);
+                    Segment(result, points[1], points[0], points[1], points[0], tension, tension, tolerance);
+                    Segment(result, points[0], points[1], points[0], points[1], tension, tension, tolerance);
                 }
             }
             else
@@ -82,23 +95,23 @@ namespace OxyPlot
 
                     if (i == 0)
                     {
-                        Segment(result, isClosed ? pts[n - 1] : pts[0], pts[0], pts[1], pts[2], t1, t2, tolerance);
+                        Segment(result, isClosed ? points[n - 1] : points[0], points[0], points[1], points[2], t1, t2, tolerance);
                     }
                     else if (i == n - 2)
                     {
                         Segment(
-                            result, pts[i - 1], pts[i], pts[i + 1], isClosed ? pts[0] : pts[i + 1], t1, t2, tolerance);
+                            result, points[i - 1], points[i], points[i + 1], isClosed ? points[0] : points[i + 1], t1, t2, tolerance);
                     }
                     else if (i == n - 1)
                     {
                         if (isClosed)
                         {
-                            Segment(result, pts[i - 1], pts[i], pts[0], pts[1], t1, t2, tolerance);
+                            Segment(result, points[i - 1], points[i], points[0], points[1], t1, t2, tolerance);
                         }
                     }
                     else
                     {
-                        Segment(result, pts[i - 1], pts[i], pts[i + 1], pts[i + 2], t1, t2, tolerance);
+                        Segment(result, points[i - 1], points[i], points[i + 1], points[i + 2], t1, t2, tolerance);
                     }
                 }
             }
@@ -134,13 +147,13 @@ namespace OxyPlot
         /// The tolerance.
         /// </param>
         private static void Segment(
-            IList<ScreenPoint> points, 
-            ScreenPoint pt0, 
-            ScreenPoint pt1, 
-            ScreenPoint pt2, 
-            ScreenPoint pt3, 
-            double t1, 
-            double t2, 
+            IList<ScreenPoint> points,
+            ScreenPoint pt0,
+            ScreenPoint pt1,
+            ScreenPoint pt2,
+            ScreenPoint pt3,
+            double t1,
+            double t2,
             double tolerance)
         {
             // See Petzold, "Programming Microsoft Windows with C#", pages 645-646 or 

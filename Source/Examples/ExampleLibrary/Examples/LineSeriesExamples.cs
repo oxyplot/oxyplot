@@ -223,6 +223,49 @@ namespace ExampleLibrary
             return pm;
         }
 
+        [Example("Smooth Line")]
+        public static PlotModel SmoothLine()
+        {
+            var model = new PlotModel("Smooth Line") { LegendSymbolLength = 24 };
+            var s1 = new LineSeries("Series 1")
+            {
+                Color = OxyColors.Purple,
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 4,
+                MarkerStroke = OxyColors.White,
+                MarkerFill = OxyColors.Purple,
+                MarkerStrokeThickness = 1.0,
+                Smooth = true
+            };
+            s1.Points.Add(new DataPoint(0, 10));
+            s1.Points.Add(new DataPoint(10, 5));
+            s1.Points.Add(new DataPoint(20, 1));
+            s1.Points.Add(new DataPoint(30, 20));
+            model.Series.Add(s1);
+
+
+            s1 = new LineSeries("Series 2 - tracker")
+            {
+                Color = OxyColors.OrangeRed,
+                MarkerType = MarkerType.Diamond,
+                MarkerSize = 4,
+                MarkerStroke = OxyColors.WhiteSmoke,
+                MarkerFill = OxyColors.OrangeRed,
+                MarkerStrokeThickness = 1.0,
+                Smooth = true
+            };
+            s1.Points.Add(new DataPoint(0, 15));
+            s1.Points.Add(new DataPoint(3, 23));
+            s1.Points.Add(new DataPoint(9, 30));
+            s1.Points.Add(new DataPoint(20, 12));
+            s1.Points.Add(new DataPoint(30, 10));
+            model.Series.Add(s1);
+
+            s1.CanTrackerInterpolatePoints = true;
+
+            return model;
+        }
+
         private static PlotModel CreateModel(string title, int n = 20)
         {
             var model = new PlotModel(title);
