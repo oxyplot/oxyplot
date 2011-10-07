@@ -16,9 +16,9 @@ using System.Windows;
 [assembly: AssemblyTitle("AnnotationDemo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("OxyPlot")]
 [assembly: AssemblyProduct("AnnotationDemo")]
-[assembly: AssemblyCopyright("Copyright © OBJO 2011")]
+[assembly: AssemblyCopyright("Copyright (C) OxyPlot 2011.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -56,6 +56,6 @@ using System.Windows;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+// [assembly: AssemblyVersion("2011.10.1")]
+[assembly: AssemblyVersion("2011.10.1")]
+[assembly: AssemblyFileVersion("2011.10.1")]

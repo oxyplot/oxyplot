@@ -14,9 +14,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SilverlightDemo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("OxyPlot")]
 [assembly: AssemblyProduct("SilverlightDemo")]
-[assembly: AssemblyCopyright("Copyright © OBJO 2010")]
+[assembly: AssemblyCopyright("Copyright (C) OxyPlot 2011.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -37,5 +37,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("2011.10.1")]
+[assembly: AssemblyFileVersion("2011.10.1")]

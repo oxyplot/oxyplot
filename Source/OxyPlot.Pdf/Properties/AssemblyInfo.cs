@@ -13,9 +13,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OxyPlot.Pdf")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("OxyPlot")]
 [assembly: AssemblyProduct("OxyPlot.Pdf")]
-[assembly: AssemblyCopyright("Copyright © OBJO 2011")]
+[assembly: AssemblyCopyright("Copyright (C) OxyPlot 2011.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -35,4 +35,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("2011.3.*")]
+[assembly: AssemblyVersion("2011.10.1")]
