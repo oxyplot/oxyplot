@@ -187,6 +187,11 @@ namespace OxyPlot.Reporting
             this.UpdateWidths();
         }
 
+        public override void WriteContent(IReportWriter w)
+        {
+            // todo
+        }
+
         #endregion
 
         #region Methods

@@ -174,11 +174,11 @@ namespace OxyPlot
                     fmt = "{0:" + this.StringFormat + "}·10^{{{1:0}}}";
                 }
 
-                return string.Format(CultureInfo.InvariantCulture, fmt, mantissa, exp);
+                return string.Format(this.ActualCulture, fmt, mantissa, exp);
             }
 
             string format = this.ActualStringFormat ?? this.StringFormat ?? string.Empty;
-            return x.ToString(format, CultureInfo.InvariantCulture);
+            return x.ToString(format, this.ActualCulture);
         }
 
         /// <summary>
@@ -808,31 +808,12 @@ namespace OxyPlot
                 i++;
                 if (x >= min - eps && x <= max + eps)
                 {
-                    x = RemoveNoiseFromDoubleMath(x);
+                    x = x.RemoveNoiseFromDoubleMath();
                     values.Add(x);
                 }
             }
 
             return values;
-        }
-
-        /// <summary>
-        /// Removes the noise from double math.
-        /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// A double without noise.
-        /// </returns>
-        protected static double RemoveNoiseFromDoubleMath(double value)
-        {
-            if (value == 0.0 || Math.Abs(Math.Log10(Math.Abs(value))) < 27)
-            {
-                return (double)((decimal)value);
-            }
-
-            return double.Parse(value.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -923,16 +904,16 @@ namespace OxyPlot
                 if (m == 5)
                 {
                     // reduce 5 to 2
-                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.5);
+                    tempInterval = (tempInterval / 2.5).RemoveNoiseFromDoubleMath();
                 }
                 else if (m == 2 || m == 1 || m == 10)
                 {
                     // reduce 2 to 1, 10 to 5, 1 to 0.5
-                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.0);
+                    tempInterval = (tempInterval / 2.0).RemoveNoiseFromDoubleMath();
                 }
                 else
                 {
-                    tempInterval = RemoveNoiseFromDoubleMath(tempInterval / 2.0);
+                    tempInterval = (tempInterval / 2.0).RemoveNoiseFromDoubleMath();
                 }
 
                 if (range / tempInterval > maxIntervalCount)

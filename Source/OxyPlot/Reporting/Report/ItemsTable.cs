@@ -136,7 +136,7 @@ namespace OxyPlot.Reporting
                 for (int i = 0; i < this.Fields.Count; i++)
                 {
                     ItemsTableField c = this.Fields[i];
-                    string text = c.GetText(item);
+                    string text = c.GetText(item, this.Report.ActualCulture);
                     result[row, i] = text;
                 }
 
@@ -205,11 +205,9 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The write content.
+        /// Writes the content of the item.
         /// </summary>
-        /// <param name="w">
-        /// The w.
-        /// </param>
+        /// <param name="w">The writer.</param>
         public override void WriteContent(IReportWriter w)
         {
             w.WriteTable(this);

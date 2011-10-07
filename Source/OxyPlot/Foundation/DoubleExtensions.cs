@@ -7,6 +7,7 @@
 namespace OxyPlot
 {
     using System;
+    using System.Globalization;
 
     /// <summary>
     /// Represents extension methods for double.
@@ -106,7 +107,7 @@ namespace OxyPlot
                 return (double)((decimal)value);
             }
 
-            return double.Parse(value.ToString());
+            return double.Parse(value.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
         }
 
         /// <summary>

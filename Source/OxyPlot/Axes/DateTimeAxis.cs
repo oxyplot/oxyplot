@@ -117,7 +117,6 @@ namespace OxyPlot
             DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
             : base(pos, title)
         {
-            this.Culture = CultureInfo.CurrentCulture;
             this.FirstDayOfWeek = DayOfWeek.Monday;
             this.CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek;
 
@@ -167,11 +166,6 @@ namespace OxyPlot
         /// Gets or sets CalendarWeekRule.
         /// </summary>
         public CalendarWeekRule CalendarWeekRule { get; set; }
-
-        /// <summary>
-        /// Gets or sets Culture.
-        /// </summary>
-        public CultureInfo Culture { get; set; }
 
         /// <summary>
         /// Gets or sets FirstDayOfWeek.
@@ -300,7 +294,7 @@ namespace OxyPlot
             int week = this.GetWeek(time);
             fmt = fmt.Replace("ww", week.ToString("00"));
             fmt = fmt.Replace("w", week.ToString());
-            return time.ToString(fmt, CultureInfo.InvariantCulture);
+            return time.ToString(fmt, this.ActualCulture);
         }
 
         /// <summary>
@@ -649,7 +643,7 @@ namespace OxyPlot
         /// </returns>
         private int GetWeek(DateTime date)
         {
-            return this.Culture.Calendar.GetWeekOfYear(date, this.CalendarWeekRule, this.FirstDayOfWeek);
+            return this.ActualCulture.Calendar.GetWeekOfYear(date, this.CalendarWeekRule, this.FirstDayOfWeek);
         }
 
         #endregion

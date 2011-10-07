@@ -37,7 +37,7 @@ namespace OxyPlot
         /// The convert to fraction string.
         /// </returns>
         public static string ConvertToFractionString(
-            double value, double unit = 1, string unitSymbol = null, double eps = 1e-6)
+            double value, double unit = 1, string unitSymbol = null, double eps = 1e-6, IFormatProvider formatProvider = null)
         {
             if (Math.Abs(value) < eps)
             {
@@ -69,7 +69,7 @@ namespace OxyPlot
                 }
             }
 
-            return string.Format(CultureInfo.InvariantCulture, "{0}{1}", value, unitSymbol);
+            return string.Format(formatProvider ?? CultureInfo.CurrentCulture, "{0}{1}", value, unitSymbol);
         }
 
         /// <summary>

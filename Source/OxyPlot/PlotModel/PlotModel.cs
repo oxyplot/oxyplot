@@ -9,6 +9,7 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Globalization;
     using System.IO;
     using System.Reflection;
     using OxyPlot.Reporting;
@@ -652,6 +653,25 @@ namespace OxyPlot
         #region Properties
 
         /// <summary>
+        /// Gets or sets the culture.
+        /// </summary>
+        /// <value>
+        /// The culture.
+        /// </value>
+        public CultureInfo Culture { get; set; }
+
+        /// <summary>
+        /// Gets the actual culture.
+        /// </summary>
+        public CultureInfo ActualCulture
+        {
+            get
+            {
+                return this.Culture ?? CultureInfo.CurrentCulture;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the default angle axis.
         /// </summary>
         /// <value>The default angle axis.</value>
@@ -968,6 +988,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Updates all axes and series.
+        /// 0. Updates the owner PlotModel of all plot items (axes, series and annotations)
         /// 1. Updates the data of each Series (only if updateData==true).
         /// 2. Ensure that all series have axes assigned.
         /// 3. Updates the max and min of the axes.
@@ -977,6 +998,23 @@ namespace OxyPlot
         /// </param>
         public void Update(bool updateData = true)
         {
+            // update the owner PlotModel
+            foreach (var s in this.Series)
+            {
+                s.PlotModel = this;
+            }
+            
+            foreach (var a in this.Axes)
+            {
+                a.PlotModel = this;
+            }
+
+            foreach (var a in this.Annotations)
+            {
+                a.PlotModel = this;
+            }
+
+            // Update data of the series
             if (updateData)
             {
                 foreach (Series s in this.Series)
@@ -985,9 +1023,11 @@ namespace OxyPlot
                 }
             }
 
-            // Ensure that there are default axes available
+            // Updates the default axes
             this.EnsureDefaultAxes();
 
+            // Updates axes with information from the series
+            // This is used by the category axis that need to know the number of series using the axis.
             foreach (Axis a in this.Axes)
             {
                 a.UpdateFromSeries(this.Series);
@@ -1209,7 +1249,7 @@ namespace OxyPlot
             if (handler != null)
             {
                 var args = new EventArgs();
-                handler(this,args);
+                handler(this, args);
             }
         }
 

@@ -59,12 +59,6 @@ namespace OxyPlot.Reporting
             base.Update();
         }
 
-        /// <summary>
-        /// The write content.
-        /// </summary>
-        /// <param name="w">
-        /// The w.
-        /// </param>
         public override void WriteContent(IReportWriter w)
         {
             base.WriteContent(w);

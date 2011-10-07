@@ -20,22 +20,23 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// The fill values.
+        /// Fills a list by the specified property of a source list/enumerable.
         /// </summary>
         /// <param name="source">
-        /// The source.
+        /// The source list.
         /// </param>
-        /// <param name="field">
-        /// The field.
+        /// <param name="propertyName">
+        /// The property name.
         /// </param>
         /// <param name="list">
-        /// The list.
+        /// The list to be filled.
         /// </param>
         /// <typeparam name="T">
+        /// The type of the destination list items (and the source property).
         /// </typeparam>
         /// <exception cref="InvalidOperationException">
         /// </exception>
-        public static void FillValues<T>(IEnumerable source, string field, IList<T> list)
+        public static void FillValues<T>(IEnumerable source, string propertyName, IList<T> list)
         {
             PropertyInfo pi = null;
             Type t = null;
@@ -44,11 +45,11 @@ namespace OxyPlot
                 if (pi == null || o.GetType() != t)
                 {
                     t = o.GetType();
-                    pi = t.GetProperty(field);
+                    pi = t.GetProperty(propertyName);
                     if (pi == null)
                     {
                         throw new InvalidOperationException(
-                            string.Format("Could not find field {0} on type {1}", field, t));
+                            string.Format("Could not find field {0} on type {1}", propertyName, t));
                     }
                 }
 

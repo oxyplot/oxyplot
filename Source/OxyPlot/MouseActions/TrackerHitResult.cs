@@ -139,7 +139,7 @@ namespace OxyPlot
             object xValue = this.XAxis != null ? this.XAxis.GetValue(this.DataPoint.X) : this.DataPoint.X;
             object yValue = this.YAxis != null ? this.YAxis.GetValue(this.DataPoint.Y) : this.DataPoint.Y;
             return string.Format(
-                CultureInfo.InvariantCulture, 
+                this.PlotModel.ActualCulture,
                 formatString, 
                 this.Series.Title, 
                 xAxisTitle, 

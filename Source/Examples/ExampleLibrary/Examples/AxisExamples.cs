@@ -10,6 +10,7 @@ namespace ExampleLibrary
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     [Examples("General Axis examples")]
     public class AxisExamples : ExamplesBase
@@ -119,6 +120,38 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X") { TickStyle = TickStyle.Outside });
             model.Axes.Add(new LinearAxis(AxisPosition.Left, "Y") { TickStyle = TickStyle.Outside });
             model.Series.Add(new LineSeries("Butterfly curve") { ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
+            return model;
+        }
+
+        [Example("Current culture")]
+        public static PlotModel CurrentCulture()
+        {
+            var model = CreatePlotModel();
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 1));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 1));
+            model.Series.Add(new FunctionSeries(Math.Sin, -1, 1, 100));
+            return model;
+        }
+
+        [Example("Invariant culture")]
+        public static PlotModel InvariantCulture()
+        {
+            var model = CreatePlotModel();
+            model.Culture = CultureInfo.InvariantCulture;
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 1));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 1));
+            model.Series.Add(new FunctionSeries(Math.Sin, -1, 1, 100));
+            return model;
+        }
+
+        [Example("Custom culture")]
+        public static PlotModel CustomCulture()
+        {
+            var model = CreatePlotModel();
+            model.Culture = new CultureInfo("en-GB") { NumberFormat = { NumberDecimalSeparator = "·" } };
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 1));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 1));
+            model.Series.Add(new FunctionSeries(Math.Sin, -1, 1, 100));
             return model;
         }
 
