@@ -28,12 +28,6 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(CalendarWeekRule.FirstFourDayWeek, DataChanged));
 
         /// <summary>
-        /// The culture property.
-        /// </summary>
-        public static readonly DependencyProperty CultureProperty = DependencyProperty.Register(
-            "Culture", typeof(CultureInfo), typeof(DateTimeAxis), new PropertyMetadata(CultureInfo.CurrentCulture));
-
-        /// <summary>
         /// The first date time property.
         /// </summary>
         public static readonly DependencyProperty FirstDateTimeProperty = DependencyProperty.Register(
@@ -102,22 +96,6 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(CalendarWeekRuleProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets Culture.
-        /// </summary>
-        public CultureInfo Culture
-        {
-            get
-            {
-                return (CultureInfo)this.GetValue(CultureProperty);
-            }
-
-            set
-            {
-                this.SetValue(CultureProperty, value);
             }
         }
 
@@ -232,7 +210,6 @@ namespace OxyPlot.Wpf
             a.MinorIntervalType = this.MinorIntervalType;
             a.FirstDayOfWeek = this.FirstDayOfWeek;
             a.CalendarWeekRule = this.CalendarWeekRule;
-            a.Culture = this.Culture;
 
             if (this.FirstDateTime > DateTime.MinValue)
             {

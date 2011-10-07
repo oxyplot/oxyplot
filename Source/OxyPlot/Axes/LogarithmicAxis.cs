@@ -352,12 +352,12 @@ namespace OxyPlot
                 var e1 = (int)Math.Ceiling(Math.Log(this.ActualMaximum) / logBase);
                 if (!double.IsNaN(this.ActualMinimum))
                 {
-                    this.ActualMinimum = RemoveNoiseFromDoubleMath(Math.Exp(e0 * logBase));
+                    this.ActualMinimum = Math.Exp(e0 * logBase).RemoveNoiseFromDoubleMath();
                 }
 
                 if (!double.IsNaN(this.ActualMaximum))
                 {
-                    this.ActualMaximum = RemoveNoiseFromDoubleMath(Math.Exp(e1 * logBase));
+                    this.ActualMaximum = Math.Exp(e1 * logBase).RemoveNoiseFromDoubleMath();
                 }
             }
 

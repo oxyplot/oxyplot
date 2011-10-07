@@ -29,7 +29,7 @@ namespace OxyPlot.Reporting
         /// The center.
         /// </summary>
         Center
-    } ;
+    }
 
     /// <summary>
     /// The items table field.
@@ -96,22 +96,21 @@ namespace OxyPlot.Reporting
         #region Public Methods
 
         /// <summary>
-        /// The get text.
+        /// Gets the text.
         /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
+        /// <param name="item">The item.</param>
+        /// <param name="formatProvider">The format provider.</param>
         /// <returns>
-        /// The get text.
+        /// The text.
         /// </returns>
-        public string GetText(object item)
+        public string GetText(object item, IFormatProvider formatProvider)
         {
             PropertyInfo pi = item.GetType().GetProperty(this.Path);
             object o = pi.GetValue(item, null);
             var of = o as IFormattable;
             if (of != null)
             {
-                return of.ToString(this.StringFormat, CultureInfo.InvariantCulture);
+                return of.ToString(this.StringFormat, formatProvider);
             }
 
             return o != null ? o.ToString() : null;

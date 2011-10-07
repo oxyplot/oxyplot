@@ -8,12 +8,15 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     /// <summary>
     /// Abstract base class for axes.
+    /// </summary>
+    /// <remarks>
     /// This class contains all properties from the IAxis interface.
     /// This class contains methods that should only be accessible by the PlotModel.
-    /// </summary>
+    /// </remarks>
     [Serializable]
     public abstract class Axis : IAxis
     {
@@ -52,7 +55,7 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis"/> class.
         /// </summary>
-        public Axis()
+        protected Axis()
         {
             this.Position = AxisPosition.Left;
             this.IsAxisVisible = true;
@@ -236,6 +239,25 @@ namespace OxyPlot
         /// Gets or sets the axis line.
         /// </summary>
         public double AxislineThickness { get; set; }
+
+        /// <summary>
+        /// Gets the parent plot model.
+        /// </summary>
+        public PlotModel PlotModel { get; internal set; }
+
+        /// <summary>
+        /// Gets the actual culture.
+        /// </summary>
+        /// <remarks>
+        /// The culture is defined in the parent PlotModel.
+        /// </remarks>
+        public CultureInfo ActualCulture
+        {
+            get
+            {
+                return PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the end position of the axis on the plot area.

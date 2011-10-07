@@ -6,11 +6,32 @@
 
 namespace OxyPlot.Reporting
 {
+    using System.Globalization;
+
     /// <summary>
     /// The report.
     /// </summary>
     public class Report : ReportItem
     {
+        /// <summary>
+        /// Gets or sets the culture.
+        /// </summary>
+        /// <value>
+        /// The culture.
+        /// </value>
+        public CultureInfo Culture { get; set; }
+
+        /// <summary>
+        /// Gets the actual culture.
+        /// </summary>
+        public CultureInfo ActualCulture
+        {
+            get
+            {
+                return this.Culture ?? CultureInfo.CurrentCulture;
+            }
+        }
+
         #region Public Properties
 
         /// <summary>
@@ -40,6 +61,7 @@ namespace OxyPlot.Reporting
         /// </param>
         public override void Write(IReportWriter w)
         {
+            this.UpdateParent(this);
             this.UpdateFigureNumbers();
             base.Write(w);
         }

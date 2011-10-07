@@ -8,6 +8,7 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.ObjectModel;
+    using System.Globalization;
 
     /// <summary>
     /// Abstract base class for all series.
@@ -24,6 +25,25 @@ namespace OxyPlot
         /// </summary>
         /// <value>The background color.</value>
         public OxyColor Background { get; set; }
+
+        /// <summary>
+        /// Gets the parent plot model.
+        /// </summary>
+        public PlotModel PlotModel { get; internal set; }
+
+        /// <summary>
+        /// Gets the actual culture.
+        /// </summary>
+        /// <remarks>
+        /// The culture is defined in the parent PlotModel.
+        /// </remarks>
+        public CultureInfo ActualCulture
+        {
+            get
+            {
+                return PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
+            }
+        }
 
         /// <summary>
         ///   Gets or sets the title of the Series.

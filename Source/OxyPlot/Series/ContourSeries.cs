@@ -299,13 +299,13 @@ namespace OxyPlot
                     }
 
                     rc.DrawClippedLine(
-                        pts, 
-                        clippingRect, 
-                        4, 
-                        this.Color, 
-                        this.StrokeThickness, 
-                        this.LineStyle, 
-                        OxyPenLineJoin.Miter, 
+                        pts,
+                        clippingRect,
+                        4,
+                        this.Color,
+                        this.StrokeThickness,
+                        this.LineStyle,
+                        OxyPenLineJoin.Miter,
                         false);
 
                     // rc.DrawClippedPolygon(pts, clippingRect, 4, model.GetDefaultColor(), OxyColors.Black);
@@ -449,7 +449,7 @@ namespace OxyPlot
                 angle += 180;
             }
 
-            string text = contour.ContourLevel.ToString(this.LabelFormatString, CultureInfo.InvariantCulture);
+            string text = contour.ContourLevel.ToString(this.LabelFormatString, this.ActualCulture);
             contourLabels.Add(new ContourLabel { Position = pos, Angle = angle, Text = text });
         }
 
@@ -580,14 +580,14 @@ namespace OxyPlot
             {
                 string actualLabelFont = this.LabelFont ?? PlotModel.DefaultFont;
                 rc.DrawText(
-                    cl.Position, 
-                    cl.Text, 
-                    this.LabelColor, 
-                    actualLabelFont, 
-                    this.LabelFontSize, 
-                    this.LabelFontWeight, 
-                    cl.Angle, 
-                    HorizontalTextAlign.Center, 
+                    cl.Position,
+                    cl.Text,
+                    this.LabelColor,
+                    actualLabelFont,
+                    this.LabelFontSize,
+                    this.LabelFontWeight,
+                    cl.Angle,
+                    HorizontalTextAlign.Center,
                     VerticalTextAlign.Middle);
             }
         }

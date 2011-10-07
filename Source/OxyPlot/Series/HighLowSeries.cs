@@ -202,7 +202,7 @@ namespace OxyPlot
                         if (this.TrackerFormatString != null)
                         {
                             result.Text = string.Format(
-                                CultureInfo.InvariantCulture, 
+                                this.ActualCulture, 
                                 this.TrackerFormatString, 
                                 this.Title, 
                                 p.X, 

@@ -1,14 +1,18 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ReportItem.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// <summary>
+//   The report item.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Reporting
 {
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Globalization;
 
     /// <summary>
     /// The report item.
@@ -18,7 +22,7 @@ namespace OxyPlot.Reporting
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReportItem"/> class.
+        ///   Initializes a new instance of the <see cref = "ReportItem" /> class.
         /// </summary>
         protected ReportItem()
         {
@@ -30,10 +34,15 @@ namespace OxyPlot.Reporting
         #region Public Properties
 
         /// <summary>
-        /// Gets Children.
+        ///   Gets Children.
         /// </summary>
         public Collection<ReportItem> Children { get; private set; }
 
+        /// <summary>
+        ///   Gets the report.
+        /// </summary>
+        public Report Report { get; internal set; }
+       
         #endregion
 
         #region Public Methods
@@ -192,10 +201,10 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The write content.
+        /// Writes the content of the item.
         /// </summary>
         /// <param name="w">
-        /// The w.
+        /// The writer.
         /// </param>
         public virtual void WriteContent(IReportWriter w)
         {
@@ -240,6 +249,19 @@ namespace OxyPlot.Reporting
             }
         }
 
+        /// <summary>
+        /// Updates the Report property.
+        /// </summary>
+        /// <param name="report">The report.</param>
+        protected void UpdateParent(Report report)
+        {
+            this.Report = report;
+            foreach (var child in this.Children)
+            {
+                child.UpdateParent(report);
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -250,7 +272,7 @@ namespace OxyPlot.Reporting
             #region Constructors and Destructors
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="FigureCounter"/> class.
+            ///   Initializes a new instance of the <see cref = "FigureCounter" /> class.
             /// </summary>
             public FigureCounter()
             {
@@ -263,12 +285,12 @@ namespace OxyPlot.Reporting
             #region Public Properties
 
             /// <summary>
-            /// Gets or sets FigureNumber.
+            ///   Gets or sets FigureNumber.
             /// </summary>
             public int FigureNumber { get; set; }
 
             /// <summary>
-            /// Gets or sets TableNumber.
+            ///   Gets or sets TableNumber.
             /// </summary>
             public int TableNumber { get; set; }
 

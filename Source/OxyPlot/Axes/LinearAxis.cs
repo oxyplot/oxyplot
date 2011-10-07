@@ -135,7 +135,7 @@ namespace OxyPlot
         {
             if (this.FormatAsFractions)
             {
-                return FractionHelper.ConvertToFractionString(x, this.FractionUnit, this.FractionUnitSymbol, 1e-6);
+                return FractionHelper.ConvertToFractionString(x, this.FractionUnit, this.FractionUnitSymbol, 1e-6, this.ActualCulture);
             }
 
             return base.FormatValue(x);
