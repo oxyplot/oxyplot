@@ -11,27 +11,27 @@ namespace OxyPlot
 
     /// <summary>
     /// The BarSeries is used to create clustered or stacked bar charts.
-    /// A bar chart or bar graph is a chart with rectangular bars with lengths proportional to the values that they represent. 
-    /// The bars can be plotted vertically or horizontally.
-    /// http://en.wikipedia.org/wiki/Bar_chart
-    /// 
-    /// The BarSeries requires a CategoryAxis. 
-    /// The Values collection must contain the same number of elements as the number of categories in the CategoryAxis.
-    /// You can define a ItemsSource and ValueField, or add the Values manually.
-    /// 
-    /// Use stacked bar charts with caution... http://lilt.ilstu.edu/gmklass/pos138/datadisplay/badchart.htm
     /// </summary>
+    /// <remarks>
+    /// A bar chart or bar graph is a chart with rectangular bars with lengths proportional to the values that they represent. 
+    ///   The bars can be plotted vertically or horizontally.
+    ///   http://en.wikipedia.org/wiki/Bar_chart
+    ///   The BarSeries requires a CategoryAxis. 
+    ///   The Values collection must contain the same number of elements as the number of categories in the CategoryAxis.
+    ///   You can define a ItemsSource and ValueField, or add the Values manually.
+    ///   Use stacked bar charts with caution... http://lilt.ilstu.edu/gmklass/pos138/datadisplay/badchart.htm
+    /// </remarks>
     public class BarSeries : ItemsSeries
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The actual rectangles for the bars.
+        ///   The actual rectangles for the bars.
         /// </summary>
         internal IList<OxyRect> ActualBarRectangles;
 
         /// <summary>
-        /// The values for the bars of this BarSeries.
+        ///   The values for the bars of this BarSeries.
         /// </summary>
         internal IList<double> InternalValues;
 
@@ -40,7 +40,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BarSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "BarSeries" /> class.
         /// </summary>
         public BarSeries()
         {
@@ -56,8 +56,8 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the width of the bars (as a fraction of the available width).
-        /// The default value is 0.5 (50%)
+        ///   Gets or sets the width of the bars (as a fraction of the available width).
+        ///   The default value is 0.5 (50%)
         /// </summary>
         /// <value>The width of the bars.</value>
         public double BarWidth { get; set; }
@@ -69,7 +69,7 @@ namespace OxyPlot
         public OxyColor FillColor { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this bar series is stacked.
+        ///   Gets or sets a value indicating whether this bar series is stacked.
         /// </summary>
         public bool IsStacked { get; set; }
 
@@ -80,7 +80,7 @@ namespace OxyPlot
         public OxyColor NegativeFillColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the border around the bars.
+        ///   Gets or sets the color of the border around the bars.
         /// </summary>
         /// <value>The color of the stroke.</value>
         public OxyColor StrokeColor { get; set; }

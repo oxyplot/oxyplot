@@ -15,27 +15,27 @@ namespace OxyPlot
     public enum LineAnnotationType
     {
         /// <summary>
-        /// Horizontal line given by the Y property
+        ///   Horizontal line given by the Y property
         /// </summary>
         Horizontal, 
 
         /// <summary>
-        /// Vertical line given by the X property
+        ///   Vertical line given by the X property
         /// </summary>
         Vertical, 
 
         /// <summary>
-        /// Linear equation y=mx+b given by the Slope and Intercept properties
+        ///   Linear equation y=mx+b given by the Slope and Intercept properties
         /// </summary>
         LinearEquation, 
 
         /// <summary>
-        /// Curve equation x=f(y) given by the Equation property
+        ///   Curve equation x=f(y) given by the Equation property
         /// </summary>
         EquationX, 
 
         /// <summary>
-        /// Curve equation y=f(x) given by the Equation property
+        ///   Curve equation y=f(x) given by the Equation property
         /// </summary>
         EquationY
     }
@@ -48,7 +48,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineAnnotation"/> class.
+        ///   Initializes a new instance of the <see cref = "LineAnnotation" /> class.
         /// </summary>
         public LineAnnotation()
         {
@@ -73,23 +73,23 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the color of the line.
+        ///   Gets or sets the color of the line.
         /// </summary>
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// The y=f(x) equation  (only for Type==Equation)
+        ///   The y=f(x) equation  (only for Type==Equation)
         /// </summary>
         public Func<double, double> Equation { get; set; }
 
         /// <summary>
-        /// Linear equation y-intercept (the b in y=mx+b)  (only for Type==LinearEquation)
-        /// http://en.wikipedia.org/wiki/Linear_equation
+        ///   Linear equation y-intercept (the b in y=mx+b)  (only for Type==LinearEquation)
+        ///   http://en.wikipedia.org/wiki/Linear_equation
         /// </summary>
         public double Intercept { get; set; }
 
         /// <summary>
-        /// Gets or sets the line join.
+        ///   Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
         public OxyPenLineJoin LineJoin { get; set; }
@@ -101,71 +101,71 @@ namespace OxyPlot
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum X coordinate for the line.
+        ///   Gets or sets the maximum X coordinate for the line.
         /// </summary>
         public double MaximumX { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum Y coordinate for the line.
+        ///   Gets or sets the maximum Y coordinate for the line.
         /// </summary>
         public double MaximumY { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum X coordinate for the line.
+        ///   Gets or sets the minimum X coordinate for the line.
         /// </summary>
         public double MinimumX { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum Y coordinate for the line.
+        ///   Gets or sets the minimum Y coordinate for the line.
         /// </summary>
         public double MinimumY { get; set; }
 
         /// <summary>
-        /// Linear equation slope (the m in y=mx+b) (only for Type==LinearEquation)
-        /// http://en.wikipedia.org/wiki/Linear_equation
+        ///   Linear equation slope (the m in y=mx+b) (only for Type==LinearEquation)
+        ///   http://en.wikipedia.org/wiki/Linear_equation
         /// </summary>
         public double Slope { get; set; }
 
         /// <summary>
-        /// Thickness of the line.
+        ///   Thickness of the line.
         /// </summary>
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        /// Horizontal alignment of text.
+        ///   Horizontal alignment of text.
         /// </summary>
         public HorizontalTextAlign TextHorizontalAlignment { get; set; }
 
         /// <summary>
-        /// Text margin.
+        ///   Text margin.
         /// </summary>
         public double TextMargin { get; set; }
 
         /// <summary>
-        /// Position of the text along the line [0,1]
-        /// Positions smaller than 0.25 is left aligned at the start of the line
-        /// Positions larger than 0.75 is right aligned at the end of the line
-        /// Other positions are center aligned at the specified position
+        ///   Position of the text along the line [0,1]
+        ///   Positions smaller than 0.25 is left aligned at the start of the line
+        ///   Positions larger than 0.75 is right aligned at the end of the line
+        ///   Other positions are center aligned at the specified position
         /// </summary>
         public double TextPosition { get; set; }
 
         /// <summary>
-        /// Vertical alignment of text (above or below the line).
+        ///   Vertical alignment of text (above or below the line).
         /// </summary>
         public VerticalTextAlign TextVerticalAlignment { get; set; }
 
         /// <summary>
-        /// Type of line equation.
+        ///   Type of line equation.
         /// </summary>
         public LineAnnotationType Type { get; set; }
 
         /// <summary>
-        /// X position for vertical lines (only for Type==Vertical)
+        ///   X position for vertical lines (only for Type==Vertical)
         /// </summary>
         public double X { get; set; }
 
         /// <summary>
-        /// Y position for horizontal lines (only for Type==Horizontal)
+        ///   Y position for horizontal lines (only for Type==Horizontal)
         /// </summary>
         public double Y { get; set; }
 
@@ -344,11 +344,7 @@ namespace OxyPlot
             }
 
             rc.DrawLine(
-                pts, 
-                this.Color, 
-                this.StrokeThickness, 
-                LineStyleHelper.GetDashArray(this.LineStyle), 
-                this.LineJoin);
+                pts, this.Color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle), this.LineJoin);
         }
 
         /// <summary>

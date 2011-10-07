@@ -10,23 +10,23 @@ namespace OxyPlot
 
     /// <summary>
     /// Conrec is a straightforward method of contouring some surface represented 
-    /// as a regular triangular mesh.
+    ///   as a regular triangular mesh.
     /// </summary>
     /// <remarks>
     /// <para>
     /// Ported from C / Fortran code by Paul Borke. 
-    /// See <see cref="http://local.wasp.uwa.edu.au/~pbourke/papers/conrec"/> for 
-    /// full description of code and the original source.
-    /// </para>
+    ///     See <see cref="http://local.wasp.uwa.edu.au/~pbourke/papers/conrec"/> for 
+    ///     full description of code and the original source.
+    ///   </para>
     /// <para>
     /// Contouring aids in visualizing three dimensional surfaces on a two dimensional 
-    /// medium (on paper or in this case a computer graphics screen). Two most common 
-    /// applications are displaying topological features of an area on a map or the air 
-    /// pressure on a weather map. In all cases some parameter is plotted as a function 
-    /// of two variables, the longitude and latitude or x and y axis. One problem with 
-    /// computer contouring is the process is usually CPU intensive and the algorithms 
-    /// often use advanced mathematical techniques making them susceptible to error.
-    /// </para>
+    ///     medium (on paper or in this case a computer graphics screen). Two most common 
+    ///     applications are displaying topological features of an area on a map or the air 
+    ///     pressure on a weather map. In all cases some parameter is plotted as a function 
+    ///     of two variables, the longitude and latitude or x and y axis. One problem with 
+    ///     computer contouring is the process is usually CPU intensive and the algorithms 
+    ///     often use advanced mathematical techniques making them susceptible to error.
+    ///   </para>
     /// </remarks>
     public class Conrec
     {
@@ -58,12 +58,12 @@ namespace OxyPlot
 
         /// <summary>
         /// Contour is a contouring subroutine for rectangularily spaced data
-        /// It emits calls to a line drawing subroutine supplied by the user
-        /// which draws a contour map corresponding to data on a randomly
-        /// spaced rectangular grid. The coordinates emitted are in the same
-        /// units given in the x() and y() arrays.
-        /// Any number of contour levels may be specified but they must be
-        /// in order of increasing value.
+        ///   It emits calls to a line drawing subroutine supplied by the user
+        ///   which draws a contour map corresponding to data on a randomly
+        ///   spaced rectangular grid. The coordinates emitted are in the same
+        ///   units given in the x() and y() arrays.
+        ///   Any number of contour levels may be specified but they must be
+        ///   in order of increasing value.
         /// </summary>
         /// <param name="d">
         /// Matrix of data to contour.

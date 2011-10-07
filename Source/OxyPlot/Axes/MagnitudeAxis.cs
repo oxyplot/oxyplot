@@ -16,7 +16,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MagnitudeAxis"/> class.
+        ///   Initializes a new instance of the <see cref = "MagnitudeAxis" /> class.
         /// </summary>
         public MagnitudeAxis()
         {
@@ -66,8 +66,8 @@ namespace OxyPlot
         #region Properties
 
         /// <summary>
-        /// Gets or sets the midpoint (screen coordinates) of the plot area.
-        /// This is used by polar coordinate systems.
+        ///   Gets or sets the midpoint (screen coordinates) of the plot area.
+        ///   This is used by polar coordinate systems.
         /// </summary>
         internal ScreenPoint MidPoint { get; set; }
 
@@ -165,7 +165,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Updates the scale and offset properties of the transform
-        /// from the specified boundary rectangle.
+        ///   from the specified boundary rectangle.
         /// </summary>
         /// <param name="bounds">
         /// The bounds.

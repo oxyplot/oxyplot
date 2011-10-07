@@ -14,32 +14,32 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The undefined.
+        ///   The undefined.
         /// </summary>
         public static readonly HighLowItem Undefined = new HighLowItem(double.NaN, double.NaN, double.NaN);
 
         /// <summary>
-        /// The close.
+        ///   The close.
         /// </summary>
         private double close;
 
         /// <summary>
-        /// The high.
+        ///   The high.
         /// </summary>
         private double high;
 
         /// <summary>
-        /// The low.
+        ///   The low.
         /// </summary>
         private double low;
 
         /// <summary>
-        /// The open.
+        ///   The open.
         /// </summary>
         private double open;
 
         /// <summary>
-        /// The x.
+        ///   The x.
         /// </summary>
         private double x;
 
@@ -79,7 +79,7 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the close value.
+        ///   Gets or sets the close value.
         /// </summary>
         /// <value>The close value.</value>
         public double Close
@@ -96,7 +96,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the high value.
+        ///   Gets or sets the high value.
         /// </summary>
         /// <value>The high value.</value>
         public double High
@@ -113,7 +113,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the low value.
+        ///   Gets or sets the low value.
         /// </summary>
         /// <value>The low value.</value>
         public double Low
@@ -130,7 +130,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the open value.
+        ///   Gets or sets the open value.
         /// </summary>
         /// <value>The open value.</value>
         public double Open
@@ -147,7 +147,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the X value (time).
+        ///   Gets or sets the X value (time).
         /// </summary>
         /// <value>The X value.</value>
         public double X

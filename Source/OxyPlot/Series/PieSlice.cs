@@ -14,7 +14,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PieSlice"/> class.
+        ///   Initializes a new instance of the <see cref = "PieSlice" /> class.
         /// </summary>
         public PieSlice()
         {
@@ -44,22 +44,22 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Fill.
+        ///   Gets or sets Fill.
         /// </summary>
         public OxyColor Fill { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsExploded.
+        ///   Gets or sets a value indicating whether IsExploded.
         /// </summary>
         public bool IsExploded { get; set; }
 
         /// <summary>
-        /// Gets or sets Label.
+        ///   Gets or sets Label.
         /// </summary>
         public string Label { get; set; }
 
         /// <summary>
-        /// Gets or sets Value.
+        ///   Gets or sets Value.
         /// </summary>
         public double Value { get; set; }
 

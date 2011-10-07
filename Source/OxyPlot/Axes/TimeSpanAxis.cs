@@ -10,12 +10,14 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Time Axis
-    ///   The values should be in seconds.
+    /// Time axis.
+    /// </summary>
+    /// <remarks>
+    /// The values should be in seconds.
     ///   The StringFormat value can be used to force formatting of the axis values
     ///   "h:mm" shows hours and minutes
     ///   "m:ss" shows minutes and seconds
-    /// </summary>
+    /// </remarks>
     public class TimeSpanAxis : LinearAxis
     {
         #region Constructors and Destructors

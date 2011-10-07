@@ -11,15 +11,17 @@ namespace OxyPlot
 
     /// <summary>
     /// StemSeries is used to plot discrete data in a stemplot.
-    /// http://en.wikipedia.org/wiki/Stemplot
-    /// http://www.mathworks.com/help/techdoc/ref/stem.html
     /// </summary>
+    /// <remarks>
+    /// http://en.wikipedia.org/wiki/Stemplot
+    ///   http://www.mathworks.com/help/techdoc/ref/stem.html
+    /// </remarks>
     public class StemSeries : LineSeries
     {
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StemSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "StemSeries" /> class.
         /// </summary>
         public StemSeries()
         {
@@ -27,7 +29,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StemSeries"/> class. 
+        /// Initializes a new instance of the <see cref="StemSeries"/> class.
         /// </summary>
         /// <param name="title">
         /// The title.
@@ -39,7 +41,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StemSeries"/> class. 
+        /// Initializes a new instance of the <see cref="StemSeries"/> class.
         /// </summary>
         /// <param name="color">
         /// The color of the line stroke.
@@ -60,7 +62,7 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Base.
+        ///   Gets or sets Base.
         /// </summary>
         public double Base { get; set; }
 

@@ -7,8 +7,11 @@
 namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// Drawing currently only supports SVG format.
+    /// Represents a drawing report item.
     /// </summary>
+    /// <remarks>
+    /// Drawing currently only supports SVG format.
+    /// </remarks>
     public class DrawingFigure : Figure
     {
         #region Enums
@@ -19,7 +22,7 @@ namespace OxyPlot.Reporting
         public enum DrawingFormat
         {
             /// <summary>
-            /// The svg.
+            ///   The svg.
             /// </summary>
             Svg
         }
@@ -29,12 +32,12 @@ namespace OxyPlot.Reporting
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Content.
+        ///   Gets or sets Content.
         /// </summary>
         public string Content { get; set; }
 
         /// <summary>
-        /// Gets or sets Format.
+        ///   Gets or sets Format.
         /// </summary>
         public DrawingFormat Format { get; set; }
 

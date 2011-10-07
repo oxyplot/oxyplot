@@ -9,7 +9,6 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Globalization;
     using System.Linq;
 
     /// <summary>
@@ -23,12 +22,12 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The contour collection.
+        ///   The contour collection.
         /// </summary>
         private List<Contour> contours;
 
         /// <summary>
-        /// The temporary segment collection.
+        ///   The temporary segment collection.
         /// </summary>
         private List<ContourSegment> segments;
 
@@ -37,7 +36,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContourSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "ContourSeries" /> class.
         /// </summary>
         public ContourSeries()
         {
@@ -63,96 +62,96 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the color.
+        ///   Gets or sets the color.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the column coordinates.
+        ///   Gets or sets the column coordinates.
         /// </summary>
         /// <value>The column coordinates.</value>
         public double[] ColumnCoordinates { get; set; }
 
         /// <summary>
-        /// Gets or sets the contour level step size.
-        /// This property is not used if the ContourLevels vector is set.
+        ///   Gets or sets the contour level step size.
+        ///   This property is not used if the ContourLevels vector is set.
         /// </summary>
         /// <value>The contour level step size.</value>
         public double ContourLevelStep { get; set; }
 
         /// <summary>
-        /// Gets or sets the contour levels.
+        ///   Gets or sets the contour levels.
         /// </summary>
         /// <value>The contour levels.</value>
         public double[] ContourLevels { get; set; }
 
         /// <summary>
-        /// Gets or sets the data.
+        ///   Gets or sets the data.
         /// </summary>
         /// <value>The data.</value>
         public double[,] Data { get; set; }
 
         /// <summary>
-        /// Gets or sets the text background color.
+        ///   Gets or sets the text background color.
         /// </summary>
         /// <value>The text background color.</value>
         public OxyColor LabelBackground { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the text.
+        ///   Gets or sets the color of the text.
         /// </summary>
         /// <value>The color of the text.</value>
         public OxyColor LabelColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the label font.
+        ///   Gets or sets the label font.
         /// </summary>
         /// <value>The font.</value>
         public string LabelFont { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the font.
+        ///   Gets or sets the size of the font.
         /// </summary>
         public double LabelFontSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the font weight.
+        ///   Gets or sets the font weight.
         /// </summary>
         public double LabelFontWeight { get; set; }
 
         /// <summary>
-        /// Gets or sets the format string for contour values.
+        ///   Gets or sets the format string for contour values.
         /// </summary>
         /// <value>The format string.</value>
         public string LabelFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets the label spacing.
+        ///   Gets or sets the label spacing.
         /// </summary>
         /// <value>The label spacing.</value>
         public double LabelSpacing { get; set; }
 
         /// <summary>
-        /// Gets or sets the label step (number of contours per label).
+        ///   Gets or sets the label step (number of contours per label).
         /// </summary>
         /// <value>The label step.</value>
         public int LabelStep { get; set; }
 
         /// <summary>
-        /// Gets or sets the line style.
+        ///   Gets or sets the line style.
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the row coordinates.
+        ///   Gets or sets the row coordinates.
         /// </summary>
         /// <value>The row coordinates.</value>
         public double[] RowCoordinates { get; set; }
 
         /// <summary>
-        /// Gets or sets the stroke thickness.
+        ///   Gets or sets the stroke thickness.
         /// </summary>
         /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
@@ -299,13 +298,13 @@ namespace OxyPlot
                     }
 
                     rc.DrawClippedLine(
-                        pts,
-                        clippingRect,
-                        4,
-                        this.Color,
-                        this.StrokeThickness,
-                        this.LineStyle,
-                        OxyPenLineJoin.Miter,
+                        pts, 
+                        clippingRect, 
+                        4, 
+                        this.Color, 
+                        this.StrokeThickness, 
+                        this.LineStyle, 
+                        OxyPenLineJoin.Miter, 
                         false);
 
                     // rc.DrawClippedPolygon(pts, clippingRect, 4, model.GetDefaultColor(), OxyColors.Black);
@@ -580,14 +579,14 @@ namespace OxyPlot
             {
                 string actualLabelFont = this.LabelFont ?? PlotModel.DefaultFont;
                 rc.DrawText(
-                    cl.Position,
-                    cl.Text,
-                    this.LabelColor,
-                    actualLabelFont,
-                    this.LabelFontSize,
-                    this.LabelFontWeight,
-                    cl.Angle,
-                    HorizontalTextAlign.Center,
+                    cl.Position, 
+                    cl.Text, 
+                    this.LabelColor, 
+                    actualLabelFont, 
+                    this.LabelFontSize, 
+                    this.LabelFontWeight, 
+                    cl.Angle, 
+                    HorizontalTextAlign.Center, 
                     VerticalTextAlign.Middle);
             }
         }
@@ -643,13 +642,13 @@ namespace OxyPlot
             #region Constants and Fields
 
             /// <summary>
-            /// Gets or sets the contour level.
+            ///   Gets or sets the contour level.
             /// </summary>
             /// <value>The contour level.</value>
             internal readonly double ContourLevel;
 
             /// <summary>
-            /// Gets or sets the points.
+            ///   Gets or sets the points.
             /// </summary>
             /// <value>The points.</value>
             internal readonly IList<IDataPoint> Points;
@@ -684,19 +683,19 @@ namespace OxyPlot
             #region Public Properties
 
             /// <summary>
-            /// Gets or sets the angle.
+            ///   Gets or sets the angle.
             /// </summary>
             /// <value>The angle.</value>
             public double Angle { get; set; }
 
             /// <summary>
-            /// Gets or sets the position.
+            ///   Gets or sets the position.
             /// </summary>
             /// <value>The position.</value>
             public ScreenPoint Position { get; set; }
 
             /// <summary>
-            /// Gets or sets the text.
+            ///   Gets or sets the text.
             /// </summary>
             /// <value>The text.</value>
             public string Text { get; set; }
@@ -712,17 +711,17 @@ namespace OxyPlot
             #region Constants and Fields
 
             /// <summary>
-            /// The contour level.
+            ///   The contour level.
             /// </summary>
             internal readonly double ContourLevel;
 
             /// <summary>
-            /// The end point.
+            ///   The end point.
             /// </summary>
             internal readonly DataPoint EndPoint;
 
             /// <summary>
-            /// The start point.
+            ///   The start point.
             /// </summary>
             internal readonly DataPoint StartPoint;
 

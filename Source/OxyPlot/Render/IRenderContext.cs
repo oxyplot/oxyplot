@@ -14,17 +14,17 @@ namespace OxyPlot
     public enum HorizontalTextAlign
     {
         /// <summary>
-        /// Left alignment.
+        ///   Left alignment.
         /// </summary>
         Left = -1, 
 
         /// <summary>
-        /// Center alignment.
+        ///   Center alignment.
         /// </summary>
         Center = 0, 
 
         /// <summary>
-        /// Right alignment.
+        ///   Right alignment.
         /// </summary>
         Right = 1
     }
@@ -35,17 +35,17 @@ namespace OxyPlot
     public enum VerticalTextAlign
     {
         /// <summary>
-        /// Top alignment.
+        ///   Top alignment.
         /// </summary>
         Top = -1, 
 
         /// <summary>
-        /// Middle alignment.
+        ///   Middle alignment.
         /// </summary>
         Middle = 0, 
 
         /// <summary>
-        /// Bottom alignment.
+        ///   Bottom alignment.
         /// </summary>
         Bottom = 1
     }
@@ -56,17 +56,17 @@ namespace OxyPlot
     public enum OxyPenLineJoin
     {
         /// <summary>
-        /// Line joins use regular angular vertices.
+        ///   Line joins use regular angular vertices.
         /// </summary>
         Miter, 
 
         /// <summary>
-        /// Line joins use rounded vertices.
+        ///   Line joins use rounded vertices.
         /// </summary>
         Round, 
 
         /// <summary>
-        /// Line joins use beveled vertices.
+        ///   Line joins use beveled vertices.
         /// </summary>
         Bevel
     }
@@ -79,19 +79,19 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets the height.
+        ///   Gets the height.
         /// </summary>
         /// <value>The height.</value>
         double Height { get; }
 
         /// <summary>
-        /// Gets a value indicating whether to paint the background.
+        ///   Gets a value indicating whether to paint the background.
         /// </summary>
         /// <value><c>true</c> if the background should be painted; otherwise, <c>false</c>.</value>
         bool PaintBackground { get; }
 
         /// <summary>
-        /// Gets the width.
+        ///   Gets the width.
         /// </summary>
         /// <value>The width.</value>
         double Width { get; }
@@ -119,7 +119,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Draws the collection of ellipses, where all have the same stroke and fill.
-        /// This performs better than calling DrawEllipse multiple times.
+        ///   This performs better than calling DrawEllipse multiple times.
         /// </summary>
         /// <param name="rectangles">
         /// The rectangles.
@@ -166,7 +166,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Draws the multiple line segments defined by points (0,1) (2,3) (4,5) etc.
-        /// This should have better performance than calling DrawLine for each segment.
+        ///   This should have better performance than calling DrawLine for each segment.
         /// </summary>
         /// <param name="points">
         /// The points.
@@ -229,7 +229,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Draws a collection of polygons, where all polygons have the same stroke and fill.
-        /// This performs better than calling DrawPolygon multiple times.
+        ///   This performs better than calling DrawPolygon multiple times.
         /// </summary>
         /// <param name="polygons">
         /// The polygons.
@@ -280,7 +280,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Draws a collection of rectangles, where all have the same stroke and fill.
-        /// This performs better than calling DrawRectangle multiple times.
+        ///   This performs better than calling DrawRectangle multiple times.
         /// </summary>
         /// <param name="rectangles">
         /// The rectangles.

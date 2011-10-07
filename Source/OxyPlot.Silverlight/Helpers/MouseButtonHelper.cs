@@ -12,34 +12,34 @@ namespace OxyPlot.Silverlight
 
     /// <summary>
     /// Mouse button helper
-    /// from http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx
+    ///   from http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx
     /// </summary>
     internal static class MouseButtonHelper
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The k_ double click speed.
+        ///   The k_ double click speed.
         /// </summary>
         private const long k_DoubleClickSpeed = 500;
 
         /// <summary>
-        /// The k_ max move distance.
+        ///   The k_ max move distance.
         /// </summary>
         private const double k_MaxMoveDistance = 10;
 
         /// <summary>
-        /// The _ last click ticks.
+        ///   The _ last click ticks.
         /// </summary>
         private static long _LastClickTicks;
 
         /// <summary>
-        /// The _ last position.
+        ///   The _ last position.
         /// </summary>
         private static Point _LastPosition;
 
         /// <summary>
-        /// The _ last sender.
+        ///   The _ last sender.
         /// </summary>
         private static WeakReference _LastSender;
 

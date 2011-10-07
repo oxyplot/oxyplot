@@ -6,20 +6,19 @@
 
 namespace OxyPlot
 {
-    using System;
-    using System.Globalization;
-
     /// <summary>
-    /// Tracker data class.
-    /// This is used as DataContext for the TrackerControl.
-    /// The TrackerControl is visible when the user use the left mouse button to "track" points on the series.
+    /// Tracker hit result container.
     /// </summary>
+    /// <remarks>
+    /// This is used as DataContext for the TrackerControl.
+    ///   The TrackerControl is visible when the user use the left mouse button to "track" points on the series.
+    /// </remarks>
     public class TrackerHitResult
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The default format string.
+        ///   The default format string.
         /// </summary>
         private const string DefaultFormatString = "{1}: {2}\n{3}: {4}";
 
@@ -65,48 +64,48 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the nearest or interpolated data point.
+        ///   Gets or sets the nearest or interpolated data point.
         /// </summary>
         public DataPoint DataPoint { get; set; }
 
         /// <summary>
-        /// Gets or sets the source item of the point.
-        /// If the current point is from an ItemsSource and is not interpolated, this property will contain the item.
+        ///   Gets or sets the source item of the point.
+        ///   If the current point is from an ItemsSource and is not interpolated, this property will contain the item.
         /// </summary>
         public object Item { get; set; }
 
         /// <summary>
-        /// Gets or sets the horizontal/vertical line extents.
+        ///   Gets or sets the horizontal/vertical line extents.
         /// </summary>
         public OxyRect LineExtents { get; set; }
 
         /// <summary>
-        /// Gets or sets the plot model.
+        ///   Gets or sets the plot model.
         /// </summary>
         public PlotModel PlotModel { get; set; }
 
         /// <summary>
-        /// Gets or sets the position in screen coordinates.
+        ///   Gets or sets the position in screen coordinates.
         /// </summary>
         public ScreenPoint Position { get; set; }
 
         /// <summary>
-        /// Gets or sets the series.
+        ///   Gets or sets the series.
         /// </summary>
         public ISeries Series { get; set; }
 
         /// <summary>
-        /// Gets or sets the text shown in the tracker.
+        ///   Gets or sets the text shown in the tracker.
         /// </summary>
         public string Text { get; set; }
 
         /// <summary>
-        /// Gets or sets the X axis.
+        ///   Gets or sets the X axis.
         /// </summary>
         public IAxis XAxis { get; set; }
 
         /// <summary>
-        /// Gets or sets the Y axis.
+        ///   Gets or sets the Y axis.
         /// </summary>
         public IAxis YAxis { get; set; }
 
@@ -139,7 +138,7 @@ namespace OxyPlot
             object xValue = this.XAxis != null ? this.XAxis.GetValue(this.DataPoint.X) : this.DataPoint.X;
             object yValue = this.YAxis != null ? this.YAxis.GetValue(this.DataPoint.Y) : this.DataPoint.Y;
             return string.Format(
-                this.PlotModel.ActualCulture,
+                this.PlotModel.ActualCulture, 
                 formatString, 
                 this.Series.Title, 
                 xAxisTitle, 

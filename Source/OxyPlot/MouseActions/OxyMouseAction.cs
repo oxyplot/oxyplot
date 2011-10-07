@@ -14,7 +14,7 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The pc.
+        ///   The pc.
         /// </summary>
         protected IPlotControl pc;
 

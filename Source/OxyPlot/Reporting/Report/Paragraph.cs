@@ -7,14 +7,14 @@
 namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// The paragraph.
+    /// Represents a paragraph.
     /// </summary>
     public class Paragraph : ReportItem
     {
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Text.
+        ///   Gets or sets Text.
         /// </summary>
         public string Text { get; set; }
 

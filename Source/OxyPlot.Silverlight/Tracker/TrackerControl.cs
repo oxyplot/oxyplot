@@ -24,7 +24,7 @@ namespace OxyPlot.Silverlight
     public class TrackerControl : ContentControl
     {
         /// <summary>
-        /// The horizontal line visibility property.
+        ///   The horizontal line visibility property.
         /// </summary>
         public static readonly DependencyProperty HorizontalLineVisibilityProperty =
             DependencyProperty.Register(
@@ -34,7 +34,7 @@ namespace OxyPlot.Silverlight
                 new PropertyMetadata(Visibility.Visible));
 
         /// <summary>
-        /// The vertical line visibility property.
+        ///   The vertical line visibility property.
         /// </summary>
         public static readonly DependencyProperty VerticalLineVisibilityProperty =
             DependencyProperty.Register(
@@ -44,19 +44,19 @@ namespace OxyPlot.Silverlight
                 new PropertyMetadata(Visibility.Visible));
 
         /// <summary>
-        /// The line stroke property.
+        ///   The line stroke property.
         /// </summary>
         public static readonly DependencyProperty LineStrokeProperty = DependencyProperty.Register(
             "LineStroke", typeof(Brush), typeof(TrackerControl), new PropertyMetadata(null));
 
         /// <summary>
-        /// The line extents property.
+        ///   The line extents property.
         /// </summary>
         public static readonly DependencyProperty LineExtentsProperty = DependencyProperty.Register(
             "LineExtents", typeof(OxyRect), typeof(TrackerControl), new PropertyMetadata(new OxyRect()));
 
         /// <summary>
-        /// The line dash array property.
+        ///   The line dash array property.
         /// </summary>
         public static readonly DependencyProperty LineDashArrayProperty = DependencyProperty.Register(
             "LineDashArray", typeof(DoubleCollection), typeof(TrackerControl), new PropertyMetadata(null));
@@ -64,46 +64,46 @@ namespace OxyPlot.Silverlight
 #if WPF
 
     // <summary>
-    /// The border edge mode property.
-    /// </summary>
+    // The border edge mode property.
+    // </summary>
         public static readonly DependencyProperty BorderEdgeModeProperty = DependencyProperty.Register(
             "BorderEdgeMode", typeof(EdgeMode), typeof(TrackerControl));
 #endif
 
         /// <summary>
-        /// The show arrow property.
+        ///   The show arrow property.
         /// </summary>
         public static readonly DependencyProperty ShowPointerProperty = DependencyProperty.Register(
             "ShowPointer", typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
 
         /// <summary>
-        /// The corner radius property.
+        ///   The corner radius property.
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(double), typeof(TrackerControl), new PropertyMetadata(0.0));
 
         /// <summary>
-        /// The distance property.
+        ///   The distance property.
         /// </summary>
         public static readonly DependencyProperty DistanceProperty = DependencyProperty.Register(
             "Distance", typeof(double), typeof(TrackerControl), new PropertyMetadata(7.0));
 
         /// <summary>
-        /// The can center horizontally property.
+        ///   The can center horizontally property.
         /// </summary>
         public static readonly DependencyProperty CanCenterHorizontallyProperty =
             DependencyProperty.Register(
                 "CanCenterHorizontally", typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
 
         /// <summary>
-        /// The can center vertically property.
+        ///   The can center vertically property.
         /// </summary>
         public static readonly DependencyProperty CanCenterVerticallyProperty =
             DependencyProperty.Register(
                 "CanCenterVertically", typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
 
         /// <summary>
-        /// The position property.
+        ///   The position property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position", 
@@ -112,60 +112,60 @@ namespace OxyPlot.Silverlight
             new PropertyMetadata(new ScreenPoint(), PositionChanged));
 
         /// <summary>
-        /// The path part string.
+        ///   The path part string.
         /// </summary>
         private const string PartPath = "PART_Path";
 
         /// <summary>
-        /// The content part string.
+        ///   The content part string.
         /// </summary>
         private const string PartContent = "PART_Content";
 
         /// <summary>
-        /// The content container part string.
+        ///   The content container part string.
         /// </summary>
         private const string PartContentcontainer = "PART_ContentContainer";
 
         /// <summary>
-        /// The horizontal line part string.
+        ///   The horizontal line part string.
         /// </summary>
         private const string PartHorizontalline = "PART_HorizontalLine";
 
         /// <summary>
-        /// The vertical line part string.
+        ///   The vertical line part string.
         /// </summary>
         private const string PartVerticalline = "PART_VerticalLine";
 
         /// <summary>
-        /// The content.
+        ///   The content.
         /// </summary>
         private ContentPresenter content;
 
         /// <summary>
-        /// The horizontal line.
+        ///   The horizontal line.
         /// </summary>
         private Line horizontalLine;
 
         /// <summary>
-        /// The path.
+        ///   The path.
         /// </summary>
         private Path path;
 
         /// <summary>
-        /// The content container.
+        ///   The content container.
         /// </summary>
         private Grid contentContainer;
 
         /// <summary>
-        /// The vertical line.
+        ///   The vertical line.
         /// </summary>
         private Line verticalLine;
 
 #if WPF
 
     // <summary>
-    /// Initializes static members of the <see cref="TrackerControl"/> class.
-    /// </summary>
+    // Initializes static members of the <see cref="TrackerControl"/> class.
+    // </summary>
         static TrackerControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
@@ -177,7 +177,7 @@ namespace OxyPlot.Silverlight
 #if SILVERLIGHT
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TrackerControl"/> class.
+        ///   Initializes a new instance of the <see cref = "TrackerControl" /> class.
         /// </summary>
         public TrackerControl()
         {
@@ -189,8 +189,8 @@ namespace OxyPlot.Silverlight
 #if WPF
 
     // <summary>
-    /// Gets or sets BorderEdgeMode.
-    /// </summary>
+    // Gets or sets BorderEdgeMode.
+    // </summary>
         public EdgeMode BorderEdgeMode
         {
             get
@@ -206,7 +206,7 @@ namespace OxyPlot.Silverlight
 #endif
 
         /// <summary>
-        /// Gets or sets HorizontalLineVisibility.
+        ///   Gets or sets HorizontalLineVisibility.
         /// </summary>
         public Visibility HorizontalLineVisibility
         {
@@ -222,7 +222,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets VerticalLineVisibility.
+        ///   Gets or sets VerticalLineVisibility.
         /// </summary>
         public Visibility VerticalLineVisibility
         {
@@ -238,7 +238,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets LineStroke.
+        ///   Gets or sets LineStroke.
         /// </summary>
         public Brush LineStroke
         {
@@ -254,7 +254,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets LineExtents.
+        ///   Gets or sets LineExtents.
         /// </summary>
         public OxyRect LineExtents
         {
@@ -270,7 +270,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets LineDashArray.
+        ///   Gets or sets LineDashArray.
         /// </summary>
         public DoubleCollection LineDashArray
         {
@@ -286,7 +286,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to show a 'pointer' on the border.
+        ///   Gets or sets a value indicating whether to show a 'pointer' on the border.
         /// </summary>
         public bool ShowPointer
         {
@@ -302,7 +302,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets the corner radius (only used when ShowPoint=false).
+        ///   Gets or sets the corner radius (only used when ShowPoint=false).
         /// </summary>
         public double CornerRadius
         {
@@ -318,7 +318,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets the distance of the content container from the trackers Position.
+        ///   Gets or sets the distance of the content container from the trackers Position.
         /// </summary>
         public double Distance
         {
@@ -334,7 +334,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the tracker can center its content box horizontally.
+        ///   Gets or sets a value indicating whether the tracker can center its content box horizontally.
         /// </summary>
         public bool CanCenterHorizontally
         {
@@ -350,7 +350,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the tracker can center its content box vertically.
+        ///   Gets or sets a value indicating whether the tracker can center its content box vertically.
         /// </summary>
         public bool CanCenterVertically
         {
@@ -366,7 +366,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets Position of the tracker.
+        ///   Gets or sets Position of the tracker.
         /// </summary>
         public ScreenPoint Position
         {

@@ -476,7 +476,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Linear interpolation
-        /// http://en.wikipedia.org/wiki/Linear_interpolation
+        ///   http://en.wikipedia.org/wiki/Linear_interpolation
         /// </summary>
         /// <param name="x0">
         /// The x0.

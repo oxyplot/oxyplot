@@ -9,20 +9,14 @@ namespace OxyPlot.Reporting
     using System.Globalization;
 
     /// <summary>
-    /// The report.
+    /// Represents a report.
     /// </summary>
     public class Report : ReportItem
     {
-        /// <summary>
-        /// Gets or sets the culture.
-        /// </summary>
-        /// <value>
-        /// The culture.
-        /// </value>
-        public CultureInfo Culture { get; set; }
+        #region Public Properties
 
         /// <summary>
-        /// Gets the actual culture.
+        ///   Gets the actual culture.
         /// </summary>
         public CultureInfo ActualCulture
         {
@@ -32,20 +26,26 @@ namespace OxyPlot.Reporting
             }
         }
 
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets Author.
+        ///   Gets or sets Author.
         /// </summary>
         public string Author { get; set; }
 
         /// <summary>
-        /// Gets or sets SubTitle.
+        ///   Gets or sets the culture.
+        /// </summary>
+        /// <value>
+        ///   The culture.
+        /// </value>
+        public CultureInfo Culture { get; set; }
+
+        /// <summary>
+        ///   Gets or sets SubTitle.
         /// </summary>
         public string SubTitle { get; set; }
 
         /// <summary>
-        /// Gets or sets Title.
+        ///   Gets or sets Title.
         /// </summary>
         public string Title { get; set; }
 

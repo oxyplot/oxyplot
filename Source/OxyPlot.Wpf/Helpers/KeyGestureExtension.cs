@@ -1,4 +1,10 @@
-﻿namespace OxyPlot.Wpf
+//-----------------------------------------------------------------------
+// <copyright file="KeyGestureExtension.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace OxyPlot.Wpf
 {
     using System;
     using System.Windows.Input;

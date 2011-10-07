@@ -1,10 +1,4 @@
-//-----------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
-// </copyright>
-//-----------------------------------------------------------------------
-
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 

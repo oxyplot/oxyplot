@@ -6,22 +6,20 @@
 
 namespace OxyPlot.Reporting
 {
-    using System;
-
     /// <summary>
-    /// The figure.
+    /// Represents a figure (abstract base class for DrawingFigure, Image and PlotFigure).
     /// </summary>
     public abstract class Figure : ReportItem
     {
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets FigureNumber.
+        ///   Gets or sets FigureNumber.
         /// </summary>
         public int FigureNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets FigureText.
+        ///   Gets or sets FigureText.
         /// </summary>
         public string FigureText { get; set; }
 

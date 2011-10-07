@@ -16,7 +16,7 @@ namespace OxyPlot.Reporting
         #region Constants and Fields
 
         /// <summary>
-        /// The indent.
+        ///   The indent.
         /// </summary>
         private string indent = string.Empty;
 

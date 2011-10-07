@@ -32,7 +32,7 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether GenerateCode.
+        ///   Gets or sets a value indicating whether GenerateCode.
         /// </summary>
         public bool GenerateCode { get; set; }
 

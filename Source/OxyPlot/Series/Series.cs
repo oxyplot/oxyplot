@@ -12,12 +12,28 @@ namespace OxyPlot
 
     /// <summary>
     /// Abstract base class for all series.
-    /// This class contains internal methods that should be called only from the PlotModel.
     /// </summary>
+    /// <remarks>
+    /// This class contains internal methods that should be called only from the PlotModel.
+    /// </remarks>
     [Serializable]
     public abstract class Series : ITrackableSeries
     {
         #region Public Properties
+
+        /// <summary>
+        ///   Gets the actual culture.
+        /// </summary>
+        /// <remarks>
+        ///   The culture is defined in the parent PlotModel.
+        /// </remarks>
+        public CultureInfo ActualCulture
+        {
+            get
+            {
+                return this.PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
+            }
+        }
 
         /// <summary>
         ///   Gets or sets the background color of the series.
@@ -27,23 +43,9 @@ namespace OxyPlot
         public OxyColor Background { get; set; }
 
         /// <summary>
-        /// Gets the parent plot model.
+        ///   Gets the parent plot model.
         /// </summary>
         public PlotModel PlotModel { get; internal set; }
-
-        /// <summary>
-        /// Gets the actual culture.
-        /// </summary>
-        /// <remarks>
-        /// The culture is defined in the parent PlotModel.
-        /// </remarks>
-        public CultureInfo ActualCulture
-        {
-            get
-            {
-                return PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
-            }
-        }
 
         /// <summary>
         ///   Gets or sets the title of the Series.
@@ -52,12 +54,12 @@ namespace OxyPlot
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets a format string used for the tracker.
+        ///   Gets or sets a format string used for the tracker.
         /// </summary>
         public string TrackerFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets the key for the tracker to use on this series.
+        ///   Gets or sets the key for the tracker to use on this series.
         /// </summary>
         public string TrackerKey { get; set; }
 
@@ -107,7 +109,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Check if this data series requires X/Y axes.
-        /// (e.g. Pie series do not require axes)
+        ///   (e.g. Pie series do not require axes)
         /// </summary>
         /// <returns>
         /// True if no axes are required.

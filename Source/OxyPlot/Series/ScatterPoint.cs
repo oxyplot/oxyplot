@@ -14,27 +14,27 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The size.
+        ///   The size.
         /// </summary>
         internal double size;
 
         /// <summary>
-        /// The tag.
+        ///   The tag.
         /// </summary>
         internal object tag;
 
         /// <summary>
-        /// The value.
+        ///   The value.
         /// </summary>
         internal double value;
 
         /// <summary>
-        /// The x.
+        ///   The x.
         /// </summary>
         internal double x;
 
         /// <summary>
-        /// The y.
+        ///   The y.
         /// </summary>
         internal double y;
 
@@ -74,7 +74,7 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the size.
+        ///   Gets or sets the size.
         /// </summary>
         /// <value>The size.</value>
         public double Size
@@ -91,7 +91,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the tag.
+        ///   Gets or sets the tag.
         /// </summary>
         /// <value>The tag.</value>
         public object Tag
@@ -108,7 +108,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the value.
+        ///   Gets or sets the value.
         /// </summary>
         /// <value>The value.</value>
         public double Value
@@ -125,7 +125,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the X.
+        ///   Gets or sets the X.
         /// </summary>
         /// <value>The X.</value>
         public double X
@@ -142,7 +142,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the Y.
+        ///   Gets or sets the Y.
         /// </summary>
         /// <value>The Y.</value>
         public double Y

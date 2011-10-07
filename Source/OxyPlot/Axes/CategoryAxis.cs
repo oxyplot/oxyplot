@@ -10,15 +10,18 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Category axes are using label collection indices as the coordinate.
-    /// If you have 5 categories in the Labels collection, the categories will be placed at coordinates 0 to 4. The range of the axis will be from -0.5 to 4.5 (excl. padding).
+    /// Represents a category axes.
     /// </summary>
+    /// <remarks>
+    /// The category axis is using the label collection indices as the coordinate.
+    ///   If you have 5 categories in the Labels collection, the categories will be placed at coordinates 0 to 4. The range of the axis will be from -0.5 to 4.5 (excl. padding).
+    /// </remarks>
     public class CategoryAxis : LinearAxis
     {
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
+        ///   Initializes a new instance of the <see cref = "CategoryAxis" /> class.
         /// </summary>
         public CategoryAxis()
         {
@@ -34,9 +37,9 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether the ticks are centered.
-        /// If this is false, ticks will be drawn between each category.
-        /// If this is true, ticks will be drawn in the middle of each category.
+        ///   Gets or sets a value indicating whether the ticks are centered.
+        ///   If this is false, ticks will be drawn between each category.
+        ///   If this is true, ticks will be drawn in the middle of each category.
         /// </summary>
         public bool IsTickCentered { get; set; }
 
@@ -52,7 +55,7 @@ namespace OxyPlot
         public string LabelField { get; set; }
 
         /// <summary>
-        /// Gets or sets the labels collection.
+        ///   Gets or sets the labels collection.
         /// </summary>
         public IList<string> Labels { get; set; }
 
@@ -61,34 +64,34 @@ namespace OxyPlot
         #region Properties
 
         /// <summary>
-        /// Gets or sets the number of attached series.
-        /// This is used to find the bar width of BarSeries
+        ///   Gets or sets the number of attached series.
+        ///   This is used to find the bar width of BarSeries
         /// </summary>
         internal int AttachedSeriesCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the current offset of the bars (not used for stacked bar series).
+        ///   Gets or sets the current offset of the bars (not used for stacked bar series).
         /// </summary>
         internal double BarOffset { get; set; }
 
         /// <summary>
-        /// Gets or sets the base value. This is used by stacked BarSeries. 
-        /// Each category will contain a BaseValue that helps the rendering to calculate the positions of the stacked bars.
+        ///   Gets or sets the base value. This is used by stacked BarSeries. 
+        ///   Each category will contain a BaseValue that helps the rendering to calculate the positions of the stacked bars.
         /// </summary>
         internal double[] BaseValue { get; set; }
 
         /// <summary>
-        /// Gets or sets the base value in screen coordinate.
+        ///   Gets or sets the base value in screen coordinate.
         /// </summary>
         internal double[] BaseValueScreen { get; set; }
 
         /// <summary>
-        /// Gets or sets the max value (aggregated when using stacked bar series).
+        ///   Gets or sets the max value (aggregated when using stacked bar series).
         /// </summary>
         internal double[] MaxValue { get; set; }
 
         /// <summary>
-        /// Gets or sets the min value.
+        ///   Gets or sets the min value.
         /// </summary>
         /// <value>The min value.</value>
         internal double[] MinValue { get; set; }
@@ -183,7 +186,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary.
-        /// e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
+        ///   e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
         /// <param name="x">
         /// The coordinate.
@@ -202,9 +205,9 @@ namespace OxyPlot
 
         /// <summary>
         /// Updates the actual maximum and minimum values.
-        /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
-        /// If Maximum or Minimum have been set, these values will be used.
-        /// Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
+        ///   If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
+        ///   If Maximum or Minimum have been set, these values will be used.
+        ///   Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
         /// </summary>
         internal override void UpdateActualMaxMin()
         {
@@ -232,7 +235,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Updates the axis with information from the plot series.
-        /// This is used by the category axis that need to know the number of series using the axis.
+        ///   This is used by the category axis that need to know the number of series using the axis.
         /// </summary>
         /// <param name="series">
         /// The series collection.

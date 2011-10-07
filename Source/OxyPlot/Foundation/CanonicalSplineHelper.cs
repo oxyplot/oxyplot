@@ -22,12 +22,24 @@ namespace OxyPlot
         /// <summary>
         /// Creates a spline of data points.
         /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="tension">The tension.</param>
-        /// <param name="tensions">The tensions.</param>
-        /// <param name="isClosed">True if the spline is closed.</param>
-        /// <param name="tolerance">The tolerance.</param>
-        /// <returns>A list of data points.</returns>
+        /// <param name="points">
+        /// The points.
+        /// </param>
+        /// <param name="tension">
+        /// The tension.
+        /// </param>
+        /// <param name="tensions">
+        /// The tensions.
+        /// </param>
+        /// <param name="isClosed">
+        /// True if the spline is closed.
+        /// </param>
+        /// <param name="tolerance">
+        /// The tolerance.
+        /// </param>
+        /// <returns>
+        /// A list of data points.
+        /// </returns>
         internal static List<IDataPoint> CreateSpline(
             IList<IDataPoint> points, double tension, IList<double> tensions, bool isClosed, double tolerance)
         {
@@ -38,19 +50,31 @@ namespace OxyPlot
             {
                 interpolatedDataPoints.Add(new DataPoint(s.X, s.Y));
             }
+
             return interpolatedDataPoints;
         }
-
 
         /// <summary>
         /// Creates a spline of screen points.
         /// </summary>
-        /// <param name="points">The points.</param>
-        /// <param name="tension">The tension.</param>
-        /// <param name="tensions">The tensions.</param>
-        /// <param name="isClosed">True if the spline is closed.</param>
-        /// <param name="tolerance">The tolerance.</param>
-        /// <returns>A list of screen points.</returns>
+        /// <param name="points">
+        /// The points.
+        /// </param>
+        /// <param name="tension">
+        /// The tension.
+        /// </param>
+        /// <param name="tensions">
+        /// The tensions.
+        /// </param>
+        /// <param name="isClosed">
+        /// True if the spline is closed.
+        /// </param>
+        /// <param name="tolerance">
+        /// The tolerance.
+        /// </param>
+        /// <returns>
+        /// A list of screen points.
+        /// </returns>
         internal static List<ScreenPoint> CreateSpline(
             IList<ScreenPoint> points, double tension, IList<double> tensions, bool isClosed, double tolerance)
         {
@@ -95,12 +119,27 @@ namespace OxyPlot
 
                     if (i == 0)
                     {
-                        Segment(result, isClosed ? points[n - 1] : points[0], points[0], points[1], points[2], t1, t2, tolerance);
+                        Segment(
+                            result, 
+                            isClosed ? points[n - 1] : points[0], 
+                            points[0], 
+                            points[1], 
+                            points[2], 
+                            t1, 
+                            t2, 
+                            tolerance);
                     }
                     else if (i == n - 2)
                     {
                         Segment(
-                            result, points[i - 1], points[i], points[i + 1], isClosed ? points[0] : points[i + 1], t1, t2, tolerance);
+                            result, 
+                            points[i - 1], 
+                            points[i], 
+                            points[i + 1], 
+                            isClosed ? points[0] : points[i + 1], 
+                            t1, 
+                            t2, 
+                            tolerance);
                     }
                     else if (i == n - 1)
                     {
@@ -147,13 +186,13 @@ namespace OxyPlot
         /// The tolerance.
         /// </param>
         private static void Segment(
-            IList<ScreenPoint> points,
-            ScreenPoint pt0,
-            ScreenPoint pt1,
-            ScreenPoint pt2,
-            ScreenPoint pt3,
-            double t1,
-            double t2,
+            IList<ScreenPoint> points, 
+            ScreenPoint pt0, 
+            ScreenPoint pt1, 
+            ScreenPoint pt2, 
+            ScreenPoint pt3, 
+            double t1, 
+            double t2, 
             double tolerance)
         {
             // See Petzold, "Programming Microsoft Windows with C#", pages 645-646 or 

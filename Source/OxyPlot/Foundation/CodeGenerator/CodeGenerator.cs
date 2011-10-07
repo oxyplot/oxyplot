@@ -16,34 +16,36 @@ namespace OxyPlot
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// This class generates c# code for the specified PlotModel.
+    /// Generates c# code for the specified PlotModel.
+    /// </summary>
+    /// <remarks>
     /// This is useful for creating examples or unit tests.
-    /// Press Ctrl+Alt+C in a plot to copy code to the clipboard.
-    /// Usage:
+    ///   Press Ctrl+Alt+C in a plot to copy code to the clipboard.
+    ///   Usage:
     ///   var cg = new CodeGenerator(myPlotModel);
     ///   Clipboard.SetText(cg.ToCode());
-    /// </summary>
+    /// </remarks>
     public class CodeGenerator
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The sb.
+        ///   The sb.
         /// </summary>
         private readonly StringBuilder sb;
 
         /// <summary>
-        /// The variables.
+        ///   The variables.
         /// </summary>
         private readonly HashSet<string> variables;
 
         /// <summary>
-        /// The indent string.
+        ///   The indent string.
         /// </summary>
         private string indentString;
 
         /// <summary>
-        /// The indents.
+        ///   The indents.
         /// </summary>
         private int indents;
 
@@ -81,7 +83,7 @@ namespace OxyPlot
         #region Properties
 
         /// <summary>
-        /// Gets or sets Indents.
+        ///   Gets or sets Indents.
         /// </summary>
         private int Indents
         {
@@ -321,7 +323,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Makes a valid variable of a string.
-        /// Invalid characters will simply be removed.
+        ///   Invalid characters will simply be removed.
         /// </summary>
         /// <param name="title">
         /// The title.

@@ -10,30 +10,32 @@ namespace OxyPlot.Reporting
     using System.IO;
 
     /// <summary>
-    /// ANSI text writer.
-    /// This will not write figures/images.
+    /// ANSI text report writer.
     /// </summary>
+    /// <remarks>
+    /// This will not write figures/images.
+    /// </remarks>
     public class TextReportWriter : StreamWriter, IReportWriter
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The table cell separator.
+        ///   The table cell separator.
         /// </summary>
         private const string TableCellSeparator = " | ";
 
         /// <summary>
-        /// The table row end.
+        ///   The table row end.
         /// </summary>
         private const string TableRowEnd = " |";
 
         /// <summary>
-        /// The table row start.
+        ///   The table row start.
         /// </summary>
         private const string TableRowStart = "| ";
 
         /// <summary>
-        /// The table counter.
+        ///   The table counter.
         /// </summary>
         private int tableCounter;
 
@@ -70,7 +72,7 @@ namespace OxyPlot.Reporting
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets MaxLineLength.
+        ///   Gets or sets MaxLineLength.
         /// </summary>
         public int MaxLineLength { get; set; }
 

@@ -7,19 +7,19 @@
 namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// Equations (Tex or MathML)
+    /// Represents an equation.
     /// </summary>
     public class Equation : ReportItem
     {
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Caption.
+        ///   Gets or sets Caption.
         /// </summary>
         public string Caption { get; set; }
 
         /// <summary>
-        /// Gets or sets Content.
+        ///   Gets or sets Content.
         /// </summary>
         public string Content { get; set; }
 

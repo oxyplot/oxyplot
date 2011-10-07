@@ -6,8 +6,6 @@
 
 namespace OxyPlot
 {
-    using System;
-
     /// <summary>
     /// Linear axis class.
     /// </summary>
@@ -98,22 +96,22 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether to format numbers as fractions.
+        ///   Gets or sets a value indicating whether to format numbers as fractions.
         /// </summary>
         public bool FormatAsFractions { get; set; }
 
         /// <summary>
-        /// Gets or sets the fraction unit.
-        /// Remember to set FormatAsFractions to true.
+        ///   Gets or sets the fraction unit.
+        ///   Remember to set FormatAsFractions to true.
         /// </summary>
         /// <value>The fraction unit.</value>
         public double FractionUnit { get; set; }
 
         /// <summary>
-        /// Gets or sets the fraction unit symbol.
-        /// Use FractionUnit = Math.PI and FractionUnitSymbol = "π" if you want the axis to show "π/2,π,3π/2,2π" etc.
-        /// Use FractionUnit = 1 and FractionUnitSymbol = "L" if you want the axis to show "0,L/2,L" etc.
-        /// Remember to set FormatAsFractions to true.
+        ///   Gets or sets the fraction unit symbol.
+        ///   Use FractionUnit = Math.PI and FractionUnitSymbol = "π" if you want the axis to show "π/2,π,3π/2,2π" etc.
+        ///   Use FractionUnit = 1 and FractionUnitSymbol = "L" if you want the axis to show "0,L/2,L" etc.
+        ///   Remember to set FormatAsFractions to true.
         /// </summary>
         /// <value>The fraction unit symbol.</value>
         public string FractionUnitSymbol { get; set; }
@@ -135,7 +133,8 @@ namespace OxyPlot
         {
             if (this.FormatAsFractions)
             {
-                return FractionHelper.ConvertToFractionString(x, this.FractionUnit, this.FractionUnitSymbol, 1e-6, this.ActualCulture);
+                return FractionHelper.ConvertToFractionString(
+                    x, this.FractionUnit, this.FractionUnitSymbol, 1e-6, this.ActualCulture);
             }
 
             return base.FormatValue(x);

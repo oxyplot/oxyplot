@@ -16,27 +16,27 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The down point.
+        ///   The down point.
         /// </summary>
         public ScreenPoint DownPoint;
 
         /// <summary>
-        /// The is zooming.
+        ///   The is zooming.
         /// </summary>
         private bool isZooming;
 
         /// <summary>
-        /// The xaxis.
+        ///   The xaxis.
         /// </summary>
         private IAxis xaxis;
 
         /// <summary>
-        /// The yaxis.
+        ///   The yaxis.
         /// </summary>
         private IAxis yaxis;
 
         /// <summary>
-        /// The zoom rectangle.
+        ///   The zoom rectangle.
         /// </summary>
         private OxyRect zoomRectangle;
 

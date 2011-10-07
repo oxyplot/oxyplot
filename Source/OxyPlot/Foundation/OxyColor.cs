@@ -18,25 +18,25 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the Alpha value.
+        ///   Gets or sets the Alpha value.
         /// </summary>
         /// <value>The A.</value>
         public byte A { get; set; }
 
         /// <summary>
-        /// Gets or sets the Blue value.
+        ///   Gets or sets the Blue value.
         /// </summary>
         /// <value>The B.</value>
         public byte B { get; set; }
 
         /// <summary>
-        /// Gets or sets the Green value.
+        ///   Gets or sets the Green value.
         /// </summary>
         /// <value>The G.</value>
         public byte G { get; set; }
 
         /// <summary>
-        /// Gets or sets the Red value.
+        ///   Gets or sets the Red value.
         /// </summary>
         /// <value>The R.</value>
         public byte R { get; set; }

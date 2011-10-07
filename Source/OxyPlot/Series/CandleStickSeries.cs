@@ -10,16 +10,18 @@ namespace OxyPlot
     using System.Diagnostics;
 
     /// <summary>
-    /// Use CandleStickSeries to create a candlestick chart
-    /// http://en.wikipedia.org/wiki/Candlestick_chart
-    /// http://www.mathworks.com/help/toolbox/finance/candle.html
+    /// Represents a series for candlestick charts.
     /// </summary>
+    /// <remarks>
+    /// http://en.wikipedia.org/wiki/Candlestick_chart
+    ///   http://www.mathworks.com/help/toolbox/finance/candle.html
+    /// </remarks>
     public class CandleStickSeries : HighLowSeries
     {
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CandleStickSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "CandleStickSeries" /> class.
         /// </summary>
         public CandleStickSeries()
         {
@@ -63,7 +65,7 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the width of the candle.
+        ///   Gets or sets the width of the candle.
         /// </summary>
         /// <value>The width of the candle.</value>
         public double CandleWidth { get; set; }

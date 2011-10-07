@@ -6,7 +6,6 @@
 
 namespace OxyPlot
 {
-    using System;
     using System.Globalization;
 
     /// <summary>
@@ -17,7 +16,7 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// Empty Size.
+        ///   Empty Size.
         /// </summary>
         public static OxySize Empty = new OxySize(0, 0);
 
@@ -46,18 +45,18 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the height.
+        ///   Gets or sets the height.
         /// </summary>
         /// <value>
-        /// The height.
+        ///   The height.
         /// </value>
         public double Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the width.
+        ///   Gets or sets the width.
         /// </summary>
         /// <value>
-        /// The width.
+        ///   The width.
         /// </value>
         public double Width { get; set; }
 

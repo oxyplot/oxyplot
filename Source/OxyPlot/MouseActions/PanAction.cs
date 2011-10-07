@@ -14,22 +14,22 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The is panning.
+        ///   The is panning.
         /// </summary>
         private bool isPanning;
 
         /// <summary>
-        /// The ppt.
+        ///   The ppt.
         /// </summary>
         private ScreenPoint ppt;
 
         /// <summary>
-        /// The xaxis.
+        ///   The xaxis.
         /// </summary>
         private IAxis xaxis;
 
         /// <summary>
-        /// The yaxis.
+        ///   The yaxis.
         /// </summary>
         private IAxis yaxis;
 

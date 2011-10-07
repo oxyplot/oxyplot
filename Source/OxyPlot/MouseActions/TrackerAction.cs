@@ -14,7 +14,7 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The current series.
+        ///   The current series.
         /// </summary>
         private ITrackableSeries currentSeries;
 

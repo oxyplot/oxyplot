@@ -7,24 +7,24 @@
 namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// The header.
+    /// Represents a header.
     /// </summary>
     public class Header : ReportItem
     {
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the chapter number(s).
+        ///   Gets or sets the chapter number(s).
         /// </summary>
         public string Chapter { get; set; }
 
         /// <summary>
-        /// Gets or sets the level of the header (1-5).
+        ///   Gets or sets the level of the header (1-5).
         /// </summary>
         public int Level { get; set; }
 
         /// <summary>
-        /// Gets or sets the header text.
+        ///   Gets or sets the header text.
         /// </summary>
         public string Text { get; set; }
 

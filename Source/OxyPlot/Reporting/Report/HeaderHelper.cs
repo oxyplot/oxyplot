@@ -14,7 +14,7 @@ namespace OxyPlot.Reporting
         #region Constants and Fields
 
         /// <summary>
-        /// The header level.
+        ///   The header level.
         /// </summary>
         private readonly int[] headerLevel = new int[10];
 

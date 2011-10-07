@@ -9,19 +9,20 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Globalization;
     using System.Reflection;
 
     /// <summary>
-    /// Use the HighLowSeries to create time series High-Low plots.
-    /// http://www.mathworks.com/help/toolbox/finance/highlowfts.html
+    /// Use the HighLowSeries to create high-low plots.
     /// </summary>
+    /// <remarks>
+    /// http://www.mathworks.com/help/toolbox/finance/highlowfts.html
+    /// </remarks>
     public class HighLowSeries : ItemsSeries
     {
         #region Constants and Fields
 
         /// <summary>
-        /// High/low items
+        ///   High/low items
         /// </summary>
         protected IList<HighLowItem> items;
 
@@ -30,7 +31,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HighLowSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "HighLowSeries" /> class.
         /// </summary>
         public HighLowSeries()
         {
@@ -157,7 +158,7 @@ namespace OxyPlot
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the length of the open/close ticks (screen coordinates).
+        ///   Gets or sets the length of the open/close ticks (screen coordinates).
         /// </summary>
         /// <value>The length of the open/close ticks.</value>
         public double TickLength { get; set; }

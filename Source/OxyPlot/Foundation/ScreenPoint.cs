@@ -10,24 +10,26 @@ namespace OxyPlot
 
     /// <summary>
     /// A point defined in the screen coordinate system.
-    /// The rendering methods transforms DataPoints to ScreenPoints.
     /// </summary>
+    /// <remarks>
+    /// The rendering methods transforms DataPoints to ScreenPoints.
+    /// </remarks>
     public struct ScreenPoint
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The undefined.
+        ///   The undefined.
         /// </summary>
         public static readonly ScreenPoint Undefined = new ScreenPoint(double.NaN, double.NaN);
 
         /// <summary>
-        /// The x.
+        ///   The x.
         /// </summary>
         internal double x;
 
         /// <summary>
-        /// The y.
+        ///   The y.
         /// </summary>
         internal double y;
 
@@ -55,10 +57,10 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the X.
+        ///   Gets or sets the X.
         /// </summary>
         /// <value>
-        /// The X.
+        ///   The X.
         /// </value>
         public double X
         {
@@ -74,10 +76,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the Y.
+        ///   Gets or sets the Y.
         /// </summary>
         /// <value>
-        /// The Y.
+        ///   The Y.
         /// </value>
         public double Y
         {

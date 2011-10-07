@@ -113,7 +113,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Check if this data series requires X/Y axes.
-        /// (e.g. Pie series do not require axes)
+        ///   (e.g. Pie series do not require axes)
         /// </summary>
         /// <returns>
         /// The are axes required.
@@ -356,8 +356,8 @@ namespace OxyPlot
 
         /// <summary>
         /// Converts the value of the specified object to a double precision floating point number.
-        /// DateTime objects are converted using DateTimeAxis.ToDouble
-        /// TimeSpan objects are converted using TimeSpanAxis.ToDouble
+        ///   DateTime objects are converted using DateTimeAxis.ToDouble
+        ///   TimeSpan objects are converted using TimeSpanAxis.ToDouble
         /// </summary>
         /// <param name="value">
         /// The value.
