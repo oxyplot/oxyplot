@@ -19,12 +19,12 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The s.
+        ///   The s.
         /// </summary>
         private Stream s;
 
         /// <summary>
-        /// The w.
+        ///   The w.
         /// </summary>
         private XmlWriter w;
 

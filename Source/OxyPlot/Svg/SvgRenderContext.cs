@@ -18,7 +18,7 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The w.
+        ///   The w.
         /// </summary>
         private readonly SvgWriter w;
 

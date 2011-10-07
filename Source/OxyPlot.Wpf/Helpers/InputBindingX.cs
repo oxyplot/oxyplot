@@ -1,4 +1,10 @@
-﻿namespace OxyPlot.Wpf
+//-----------------------------------------------------------------------
+// <copyright file="InputBindingX.cs" company="OxyPlot">
+//     http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace OxyPlot.Wpf
 {
     using System.Windows;
     using System.Windows.Input;

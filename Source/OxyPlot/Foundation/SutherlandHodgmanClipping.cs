@@ -22,22 +22,22 @@ namespace OxyPlot
         private enum RectangleEdge
         {
             /// <summary>
-            /// The left.
+            ///   The left.
             /// </summary>
             Left, 
 
             /// <summary>
-            /// The right.
+            ///   The right.
             /// </summary>
             Right, 
 
             /// <summary>
-            /// The top.
+            ///   The top.
             /// </summary>
             Top, 
 
             /// <summary>
-            /// The bottom.
+            ///   The bottom.
             /// </summary>
             Bottom
         }
@@ -48,7 +48,7 @@ namespace OxyPlot
 
         /// <summary>
         /// The Sutherland-Hodgman polygon clipping alrogithm.
-        /// http://ezekiel.vancouver.wsu.edu/~cs442/lectures/clip/clip/index.html
+        ///   http://ezekiel.vancouver.wsu.edu/~cs442/lectures/clip/clip/index.html
         /// </summary>
         /// <param name="bounds">
         /// The bounds.

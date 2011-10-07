@@ -11,15 +11,17 @@ namespace OxyPlot
 
     /// <summary>
     /// Generate fraction strings from doubles.
-    /// e.g. 0.75 =&gt; "3/4"
-    /// e.g. 1.57.. =&gt; "PI/2"
     /// </summary>
+    /// <remarks>
+    /// e.g. 0.75 =&gt; "3/4"
+    ///   e.g. 1.57.. =&gt; "PI/2"
+    /// </remarks>
     public class FractionHelper
     {
         #region Public Methods
 
         /// <summary>
-        /// The convert to fraction string.
+        /// Converts a double to a fraction string.
         /// </summary>
         /// <param name="value">
         /// The value.
@@ -31,13 +33,20 @@ namespace OxyPlot
         /// The unit symbol.
         /// </param>
         /// <param name="eps">
-        /// The eps.
+        /// The tolerance.
+        /// </param>
+        /// <param name="formatProvider">
+        /// The format Provider.
         /// </param>
         /// <returns>
         /// The convert to fraction string.
         /// </returns>
         public static string ConvertToFractionString(
-            double value, double unit = 1, string unitSymbol = null, double eps = 1e-6, IFormatProvider formatProvider = null)
+            double value, 
+            double unit = 1, 
+            string unitSymbol = null, 
+            double eps = 1e-6, 
+            IFormatProvider formatProvider = null)
         {
             if (Math.Abs(value) < eps)
             {

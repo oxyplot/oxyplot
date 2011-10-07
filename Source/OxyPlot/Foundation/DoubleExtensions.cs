@@ -44,7 +44,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Mantissa function.
-        /// http://en.wikipedia.org/wiki/Mantissa
+        ///   http://en.wikipedia.org/wiki/Mantissa
         /// </summary>
         /// <param name="x">
         /// The value.
@@ -148,8 +148,9 @@ namespace OxyPlot
 
 #if THISISNOTINUSE
     
+    
     // <summary>
-    /// Gets the mantissa and exponent.
+    // Gets the mantissa and exponent.
     /// </summary>
     /// <remarks>
     /// From <see cref="http://stackoverflow.com/questions/389993/extracting-mantissa-and-exponent-from-double-in-c"/>
@@ -163,6 +164,7 @@ namespace OxyPlot
             // Translate the double into sign, exponent and mantissa.
             long bits = BitConverter.DoubleToInt64Bits(d);
             
+
 // Note that the shift is sign-extended, hence the test against -1 not 1
             negative = (bits < 0);
             exponent = (int)((bits >> 52) & 0x7ffL);
@@ -175,6 +177,7 @@ namespace OxyPlot
                 exponent++;
             }
             
+
 // Normal numbers; leave exponent as it is but add extra
             // bit to the front of the mantissa
             else

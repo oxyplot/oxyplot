@@ -6,7 +6,6 @@
 
 namespace OxyPlot.Reporting
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
@@ -19,12 +18,12 @@ namespace OxyPlot.Reporting
         #region Constants and Fields
 
         /// <summary>
-        /// The figure counter.
+        ///   The figure counter.
         /// </summary>
         private int figureCounter;
 
         /// <summary>
-        /// The style.
+        ///   The style.
         /// </summary>
         private ReportStyle style;
 

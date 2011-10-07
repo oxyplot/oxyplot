@@ -7,7 +7,6 @@
 namespace OxyPlot.Reporting
 {
     using System;
-    using System.Globalization;
     using System.Reflection;
 
     /// <summary>
@@ -16,23 +15,23 @@ namespace OxyPlot.Reporting
     public enum Alignment
     {
         /// <summary>
-        /// The left.
+        ///   The left.
         /// </summary>
         Left, 
 
         /// <summary>
-        /// The right.
+        ///   The right.
         /// </summary>
         Right, 
 
         /// <summary>
-        /// The center.
+        ///   The center.
         /// </summary>
         Center
     }
 
     /// <summary>
-    /// The items table field.
+    /// Represents a field in an items table.
     /// </summary>
     public class ItemsTableField
     {
@@ -67,27 +66,27 @@ namespace OxyPlot.Reporting
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Alignment.
+        ///   Gets or sets Alignment.
         /// </summary>
         public Alignment Alignment { get; set; }
 
         /// <summary>
-        /// Gets or sets Header.
+        ///   Gets or sets Header.
         /// </summary>
         public string Header { get; set; }
 
         /// <summary>
-        /// Gets or sets Path.
+        ///   Gets or sets Path.
         /// </summary>
         public string Path { get; set; }
 
         /// <summary>
-        /// Gets or sets StringFormat.
+        ///   Gets or sets StringFormat.
         /// </summary>
         public string StringFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets Width.
+        ///   Gets or sets Width.
         /// </summary>
         public double Width { get; set; }
 
@@ -98,8 +97,12 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Gets the text.
         /// </summary>
-        /// <param name="item">The item.</param>
-        /// <param name="formatProvider">The format provider.</param>
+        /// <param name="item">
+        /// The item.
+        /// </param>
+        /// <param name="formatProvider">
+        /// The format provider.
+        /// </param>
         /// <returns>
         /// The text.
         /// </returns>

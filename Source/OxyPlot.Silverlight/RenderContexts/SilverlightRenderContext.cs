@@ -6,7 +6,6 @@
 
 namespace OxyPlot.Silverlight
 {
-    using System;
     using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Controls;
@@ -23,12 +22,12 @@ namespace OxyPlot.Silverlight
         #region Constants and Fields
 
         /// <summary>
-        /// The brush cache.
+        ///   The brush cache.
         /// </summary>
         private readonly Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
 
         /// <summary>
-        /// The canvas.
+        ///   The canvas.
         /// </summary>
         private readonly Canvas canvas;
 
@@ -54,16 +53,16 @@ namespace OxyPlot.Silverlight
         #region Public Properties
 
         /// <summary>
-        /// Gets the height.
+        ///   Gets the height.
         /// </summary>
         /// <value>The height.</value>
         public double Height { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether to paint the background.
+        ///   Gets a value indicating whether to paint the background.
         /// </summary>
         /// <value>
-        /// <c>true</c> if the background should be painted; otherwise, <c>false</c>.
+        ///   <c>true</c> if the background should be painted; otherwise, <c>false</c>.
         /// </value>
         public bool PaintBackground
         {
@@ -74,7 +73,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets the width.
+        ///   Gets the width.
         /// </summary>
         /// <value>The width.</value>
         public double Width { get; private set; }
@@ -412,7 +411,7 @@ namespace OxyPlot.Silverlight
 
         /// <summary>
         /// Draws a collection of rectangles, where all have the same stroke and fill.
-        /// This performs better than calling DrawRectangle multiple times.
+        ///   This performs better than calling DrawRectangle multiple times.
         /// </summary>
         /// <param name="rectangles">
         /// The rectangles.

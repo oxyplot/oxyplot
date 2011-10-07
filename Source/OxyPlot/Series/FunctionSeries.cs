@@ -11,15 +11,17 @@ namespace OxyPlot
 
     /// <summary>
     /// The FunctionSeries generates its dataset from a Func.
-    ///   Define f(x) and make a plot on the range [x0,x1]
-    ///   or define fx(t) and fy(t) and make a plot on the range [t0,t1]
     /// </summary>
+    /// <remarks>
+    /// Define f(x) and make a plot on the range [x0,x1]
+    ///   or define fx(t) and fy(t) and make a plot on the range [t0,t1]
+    /// </remarks>
     public class FunctionSeries : LineSeries
     {
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FunctionSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "FunctionSeries" /> class.
         /// </summary>
         public FunctionSeries()
         {
@@ -108,7 +110,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionSeries"/> class. 
-        /// The function series.
+        ///   The function series.
         /// </summary>
         /// <param name="fx">
         /// The function fx(t).

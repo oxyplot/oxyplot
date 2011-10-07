@@ -9,7 +9,7 @@ namespace OxyPlot.Reporting
     using System.Collections.Generic;
 
     /// <summary>
-    /// The table of contents.
+    /// Represents a table of contents.
     /// </summary>
     public class TableOfContents : ItemsTable
     {
@@ -35,12 +35,12 @@ namespace OxyPlot.Reporting
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Base.
+        ///   Gets or sets Base.
         /// </summary>
         public ReportItem Base { get; set; }
 
         /// <summary>
-        /// Gets or sets Contents.
+        ///   Gets or sets Contents.
         /// </summary>
         public List<ContentItem> Contents { get; set; }
 
@@ -57,11 +57,6 @@ namespace OxyPlot.Reporting
             var hh = new HeaderHelper();
             this.Search(this.Base, hh);
             base.Update();
-        }
-
-        public override void WriteContent(IReportWriter w)
-        {
-            base.WriteContent(w);
         }
 
         #endregion
@@ -102,12 +97,12 @@ namespace OxyPlot.Reporting
             #region Public Properties
 
             /// <summary>
-            /// Gets or sets Chapter.
+            ///   Gets or sets Chapter.
             /// </summary>
             public string Chapter { get; set; }
 
             /// <summary>
-            /// Gets or sets Title.
+            ///   Gets or sets Title.
             /// </summary>
             public string Title { get; set; }
 

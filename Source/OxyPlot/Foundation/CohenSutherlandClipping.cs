@@ -15,47 +15,47 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The bottom.
+        ///   The bottom.
         /// </summary>
         private const int BOTTOM = 4; // 0100
 
         /// <summary>
-        /// The inside.
+        ///   The inside.
         /// </summary>
         private const int INSIDE = 0; // 0000
 
         /// <summary>
-        /// The left.
+        ///   The left.
         /// </summary>
         private const int LEFT = 1; // 0001
 
         /// <summary>
-        /// The right.
+        ///   The right.
         /// </summary>
         private const int RIGHT = 2; // 0010
 
         /// <summary>
-        /// The top.
+        ///   The top.
         /// </summary>
         private const int TOP = 8; // 1000
 
         /// <summary>
-        /// The xmax.
+        ///   The xmax.
         /// </summary>
         private readonly double xmax;
 
         /// <summary>
-        /// The xmin.
+        ///   The xmin.
         /// </summary>
         private readonly double xmin;
 
         /// <summary>
-        /// The ymax.
+        ///   The ymax.
         /// </summary>
         private readonly double ymax;
 
         /// <summary>
-        /// The ymin.
+        ///   The ymin.
         /// </summary>
         private readonly double ymin;
 

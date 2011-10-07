@@ -14,12 +14,12 @@ namespace OxyPlot
     public enum AnnotationLayer
     {
         /// <summary>
-        /// The below series.
+        ///   The below series.
         /// </summary>
         BelowSeries, 
 
         /// <summary>
-        /// The over series.
+        ///   The over series.
         /// </summary>
         OverSeries
     }
@@ -32,7 +32,7 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Layer.
+        ///   Gets or sets Layer.
         /// </summary>
         AnnotationLayer Layer { get; set; }
 

@@ -6,7 +6,6 @@
 
 namespace OxyPlot
 {
-    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
@@ -20,7 +19,7 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The end is written.
+        ///   The end is written.
         /// </summary>
         private bool endIsWritten;
 
@@ -76,12 +75,12 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether this writer should produce a stand-alone document.
+        ///   Gets or sets a value indicating whether this writer should produce a stand-alone document.
         /// </summary>
         public bool IsDocument { get; set; }
 
         /// <summary>
-        /// Gets or sets the number format.
+        ///   Gets or sets the number format.
         /// </summary>
         /// <value>The number format.</value>
         public string NumberFormat { get; set; }
@@ -188,7 +187,8 @@ namespace OxyPlot
                     style.Append(";stroke-dasharray:");
                     for (int i = 0; i < dashArray.Length; i++)
                     {
-                        style.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}", i > 0 ? "," : string.Empty, dashArray[i]);
+                        style.AppendFormat(
+                            CultureInfo.InvariantCulture, "{0}{1}", i > 0 ? "," : string.Empty, dashArray[i]);
                     }
                 }
             }

@@ -16,62 +16,62 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The plot.
+        ///   The plot.
         /// </summary>
         protected readonly PlotModel Plot;
 
         /// <summary>
-        /// The rc.
+        ///   The rc.
         /// </summary>
         protected readonly IRenderContext rc;
 
         /// <summary>
-        /// The axisline pen.
+        ///   The axisline pen.
         /// </summary>
         protected OxyPen AxislinePen;
 
         /// <summary>
-        /// The extra pen.
+        ///   The extra pen.
         /// </summary>
         protected OxyPen ExtraPen;
 
         /// <summary>
-        /// The major label values.
+        ///   The major label values.
         /// </summary>
         protected IList<double> MajorLabelValues;
 
         /// <summary>
-        /// The major pen.
+        ///   The major pen.
         /// </summary>
         protected OxyPen MajorPen;
 
         /// <summary>
-        /// The major tick pen.
+        ///   The major tick pen.
         /// </summary>
         protected OxyPen MajorTickPen;
 
         /// <summary>
-        /// The major tick values.
+        ///   The major tick values.
         /// </summary>
         protected IList<double> MajorTickValues;
 
         /// <summary>
-        /// The minor pen.
+        ///   The minor pen.
         /// </summary>
         protected OxyPen MinorPen;
 
         /// <summary>
-        /// The minor tick pen.
+        ///   The minor tick pen.
         /// </summary>
         protected OxyPen MinorTickPen;
 
         /// <summary>
-        /// The minor tick values.
+        ///   The minor tick values.
         /// </summary>
         protected IList<double> MinorTickValues;
 
         /// <summary>
-        /// The zero pen.
+        ///   The zero pen.
         /// </summary>
         protected OxyPen ZeroPen;
 

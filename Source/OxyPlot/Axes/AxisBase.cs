@@ -18,7 +18,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AxisBase"/> class.
+        ///   Initializes a new instance of the <see cref = "AxisBase" /> class.
         /// </summary>
         protected AxisBase()
         {
@@ -59,13 +59,13 @@ namespace OxyPlot
         #region Properties
 
         /// <summary>
-        /// Gets or sets the current view's maximum. This value is used when the user zooms or pans.
+        ///   Gets or sets the current view's maximum. This value is used when the user zooms or pans.
         /// </summary>
         /// <value>The view maximum.</value>
         protected double ViewMaximum { get; set; }
 
         /// <summary>
-        /// Gets or sets the current view's minimum. This value is used when the user zooms or pans.
+        ///   Gets or sets the current view's minimum. This value is used when the user zooms or pans.
         /// </summary>
         /// <value>The view minimum.</value>
         protected double ViewMinimum { get; set; }
@@ -217,7 +217,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary.
-        /// e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
+        ///   e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
         /// <param name="x">
         /// The coordinate.
@@ -252,7 +252,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Inverse transform the specified screen coordinate.
-        /// This method can only be used with non-polar coordinate systems.
+        ///   This method can only be used with non-polar coordinate systems.
         /// </summary>
         /// <param name="sx">
         /// The screen coordinate.
@@ -381,13 +381,15 @@ namespace OxyPlot
             bool isHorizontal = this.IsHorizontal();
 
             double dsx = isHorizontal ? cpt.X - ppt.X : cpt.Y - ppt.Y;
-            Pan(dsx);
+            this.Pan(dsx);
         }
 
         /// <summary>
         /// Pans the specified axis.
         /// </summary>
-        /// <param name="delta">The delta.</param>
+        /// <param name="delta">
+        /// The delta.
+        /// </param>
         public override void Pan(double delta)
         {
             if (!this.IsPanEnabled)
@@ -459,12 +461,12 @@ namespace OxyPlot
         public override string ToString()
         {
             return string.Format(
-                CultureInfo.InvariantCulture,
-                "{0}({1}, {2}, {3}, {4})",
-                this.GetType().Name,
-                this.Position,
-                this.ActualMinimum,
-                this.ActualMaximum,
+                CultureInfo.InvariantCulture, 
+                "{0}({1}, {2}, {3}, {4})", 
+                this.GetType().Name, 
+                this.Position, 
+                this.ActualMinimum, 
+                this.ActualMaximum, 
                 this.ActualMajorStep);
         }
 
@@ -495,7 +497,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Transforms the specified coordinate to screen coordinates.
-        /// This method can only be used with non-polar coordinate systems.
+        ///   This method can only be used with non-polar coordinate systems.
         /// </summary>
         /// <param name="x">
         /// The value.
@@ -584,9 +586,9 @@ namespace OxyPlot
 
         /// <summary>
         /// Updates the actual maximum and minimum values.
-        /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
-        /// If Maximum or Minimum have been set, these values will be used.
-        /// Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
+        ///   If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
+        ///   If Maximum or Minimum have been set, these values will be used.
+        ///   Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
         /// </summary>
         internal override void UpdateActualMaxMin()
         {
@@ -646,7 +648,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Updates the axis with information from the plot series.
-        /// This is used by the category axis that need to know the number of series using the axis.
+        ///   This is used by the category axis that need to know the number of series using the axis.
         /// </summary>
         /// <param name="series">
         /// The series collection.
@@ -696,7 +698,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Updates the scale and offset properties of the transform
-        /// from the specified boundary rectangle.
+        ///   from the specified boundary rectangle.
         /// </summary>
         /// <param name="bounds">
         /// The bounds.
@@ -864,7 +866,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Returns the actual interval to use to determine which values are 
-        /// displayed in the axis.
+        ///   displayed in the axis.
         /// </summary>
         /// <param name="availableSize">
         /// The available size.
@@ -876,7 +878,7 @@ namespace OxyPlot
         /// </param>
         /// <returns>
         /// Actual interval to use to determine which values are 
-        /// displayed in the axis.
+        ///   displayed in the axis.
         /// </returns>
         protected double CalculateActualInterval(double availableSize, double maxIntervalSize, double range)
         {

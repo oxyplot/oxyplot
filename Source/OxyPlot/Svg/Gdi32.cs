@@ -212,12 +212,12 @@ namespace OxyPlot
         public struct Size
         {
             /// <summary>
-            /// The cx.
+            ///   The cx.
             /// </summary>
             public int cx;
 
             /// <summary>
-            /// The cy.
+            ///   The cy.
             /// </summary>
             public int cy;
         }

@@ -14,13 +14,13 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets the X.
+        ///   Gets the X.
         /// </summary>
         /// <value>The X.</value>
         double X { get; }
 
         /// <summary>
-        /// Gets the Y.
+        ///   Gets the Y.
         /// </summary>
         /// <value>The Y.</value>
         double Y { get; }
@@ -36,17 +36,17 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The undefined.
+        ///   The undefined.
         /// </summary>
         public static readonly DataPoint Undefined = new DataPoint(double.NaN, double.NaN);
 
         /// <summary>
-        /// The x.
+        ///   The x.
         /// </summary>
         internal double x;
 
         /// <summary>
-        /// The y.
+        ///   The y.
         /// </summary>
         internal double y;
 
@@ -74,10 +74,10 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the X.
+        ///   Gets or sets the X.
         /// </summary>
         /// <value>
-        /// The X.
+        ///   The X.
         /// </value>
         public double X
         {
@@ -93,10 +93,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the Y.
+        ///   Gets or sets the Y.
         /// </summary>
         /// <value>
-        /// The Y.
+        ///   The Y.
         /// </value>
         public double Y
         {

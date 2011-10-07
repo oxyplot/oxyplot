@@ -14,22 +14,22 @@ namespace OxyPlot
     public enum AxisPosition
     {
         /// <summary>
-        /// Left of the plot area.
+        ///   Left of the plot area.
         /// </summary>
         Left, 
 
         /// <summary>
-        /// Right of the plot area.
+        ///   Right of the plot area.
         /// </summary>
         Right, 
 
         /// <summary>
-        /// Top of the plot area.
+        ///   Top of the plot area.
         /// </summary>
         Top, 
 
         /// <summary>
-        /// Bottom of the plot area.
+        ///   Bottom of the plot area.
         /// </summary>
         Bottom
     }
@@ -40,22 +40,22 @@ namespace OxyPlot
     public enum TickStyle
     {
         /// <summary>
-        /// Crossing the axis line.
+        ///   Crossing the axis line.
         /// </summary>
         Crossing, 
 
         /// <summary>
-        /// Inside of the plot area.
+        ///   Inside of the plot area.
         /// </summary>
         Inside, 
 
         /// <summary>
-        /// Outside the plot area.
+        ///   Outside the plot area.
         /// </summary>
         Outside, 
 
         /// <summary>
-        /// No tick.
+        ///   No tick.
         /// </summary>
         None
     }
@@ -66,12 +66,12 @@ namespace OxyPlot
     public enum AxisLayer
     {
         /// <summary>
-        /// Below all series.
+        ///   Below all series.
         /// </summary>
         BelowSeries, 
 
         /// <summary>
-        /// Above all series.
+        ///   Above all series.
         /// </summary>
         AboveSeries
     }
@@ -82,17 +82,17 @@ namespace OxyPlot
     public enum AxisChangeTypes
     {
         /// <summary>
-        /// The zoom.
+        ///   The zoom.
         /// </summary>
         Zoom, 
 
         /// <summary>
-        /// The pan.
+        ///   The pan.
         /// </summary>
         Pan, 
 
         /// <summary>
-        /// The reset.
+        ///   The reset.
         /// </summary>
         Reset
     }
@@ -105,7 +105,7 @@ namespace OxyPlot
         #region Public Events
 
         /// <summary>
-        /// Occurs when the axis has been changed (by zooming, panning or resetting).
+        ///   Occurs when the axis has been changed (by zooming, panning or resetting).
         /// </summary>
         event EventHandler<AxisChangedEventArgs> AxisChanged;
 
@@ -114,65 +114,65 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets the actual maximum value of the axis.
-        /// If Maximum is not NaN, this value will be defined by Maximum.
-        /// If ViewMaximum is not NaN, this value will be defined by ViewMaximum.
-        /// Otherwise this value will be defined by the maximum (+padding) of the data.
+        ///   Gets the actual maximum value of the axis.
+        ///   If Maximum is not NaN, this value will be defined by Maximum.
+        ///   If ViewMaximum is not NaN, this value will be defined by ViewMaximum.
+        ///   Otherwise this value will be defined by the maximum (+padding) of the data.
         /// </summary>
         double ActualMaximum { get; }
 
         /// <summary>
-        /// Gets the actual minimum value of the axis.
-        /// If Minimum is not NaN, this value will be defined by Minimum.
-        /// If ViewMinimum is not NaN, this value will be defined by ViewMinimum.
-        /// Otherwise this value will be defined by the minimum (+padding) of the data.
+        ///   Gets the actual minimum value of the axis.
+        ///   If Minimum is not NaN, this value will be defined by Minimum.
+        ///   If ViewMinimum is not NaN, this value will be defined by ViewMinimum.
+        ///   Otherwise this value will be defined by the minimum (+padding) of the data.
         /// </summary>
         double ActualMinimum { get; }
 
         /// <summary>
-        /// Gets the actual title.
+        ///   Gets the actual title.
         /// </summary>
         string ActualTitle { get; }
 
         /// <summary>
-        /// Gets a value indicating whether this axis is visible.
+        ///   Gets a value indicating whether this axis is visible.
         /// </summary>
         bool IsAxisVisible { get; }
 
         /// <summary>
-        /// Gets the key of the axis.
-        /// This can be used by series to select which axis to use.
+        ///   Gets the key of the axis.
+        ///   This can be used by series to select which axis to use.
         /// </summary>
         string Key { get; }
 
         /// <summary>
-        /// Gets the position of the axis.
+        ///   Gets the position of the axis.
         /// </summary>
         AxisPosition Position { get; }
 
         /// <summary>
-        /// Gets the screen coordinate of the maximum point on the axis.
+        ///   Gets the screen coordinate of the maximum point on the axis.
         /// </summary>
         ScreenPoint ScreenMax { get; }
 
         /// <summary>
-        /// Gets the screen coordinate of the minimum point on the axis.
+        ///   Gets the screen coordinate of the minimum point on the axis.
         /// </summary>
         ScreenPoint ScreenMin { get; }
 
         /// <summary>
-        /// Gets the title.
+        ///   Gets the title.
         /// </summary>
         string Title { get; }
 
         /// <summary>
-        /// Gets the title format string.
-        /// The formatting is used if a Unit is defined.
+        ///   Gets the title format string.
+        ///   The formatting is used if a Unit is defined.
         /// </summary>
         string TitleFormatString { get; }
 
         /// <summary>
-        /// Gets the unit.
+        ///   Gets the unit.
         /// </summary>
         string Unit { get; }
 
@@ -204,7 +204,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary.
-        /// e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
+        ///   e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
         /// <param name="x">
         /// The coordinate.
@@ -216,7 +216,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Inverse transform the specified screen coordinate.
-        /// This method can only be used with non-polar coordinate systems.
+        ///   This method can only be used with non-polar coordinate systems.
         /// </summary>
         /// <param name="sx">
         /// The screen coordinate.
@@ -242,6 +242,14 @@ namespace OxyPlot
         /// The data point.
         /// </returns>
         DataPoint InverseTransform(double sx, double sy, IAxis yaxis);
+
+        /// <summary>
+        /// Determines whether this axis is horizontal.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if this axis is horizontal; otherwise, <c>false</c>.
+        /// </returns>
+        bool IsHorizontal();
 
         /// <summary>
         /// Determines whether the specified value is valid.
@@ -279,7 +287,9 @@ namespace OxyPlot
         /// <summary>
         /// Pans the axis.
         /// </summary>
-        /// <param name="delta">The delta (screen coordinates).</param>
+        /// <param name="delta">
+        /// The delta (screen coordinates).
+        /// </param>
         void Pan(double delta);
 
         /// <summary>
@@ -298,13 +308,13 @@ namespace OxyPlot
 
         /// <summary>
         /// Resets the user's modification (zooming/panning) to minmum and maximum of this axis.
-        /// This method will not refresh the plot.
+        ///   This method will not refresh the plot.
         /// </summary>
         void Reset();
 
         /// <summary>
         /// Transforms the specified coordinate to screen coordinates.
-        /// This method can only be used with non-polar coordinate systems.
+        ///   This method can only be used with non-polar coordinate systems.
         /// </summary>
         /// <param name="x">
         /// The value.
@@ -340,29 +350,21 @@ namespace OxyPlot
         void Zoom(double scale);
 
         /// <summary>
-        /// Determines whether this axis is horizontal.
-        /// </summary>
-        /// <returns>
-        /// 	<c>true</c> if this axis is horizontal; otherwise, <c>false</c>.
-        /// </returns>
-        bool IsHorizontal();
-
-        /// <summary>
         /// Updates the actual maximum and minimum values.
-        /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
-        /// If Maximum or Minimum have been set, these values will be used.
-        /// Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
+        ///   If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
+        ///   If Maximum or Minimum have been set, these values will be used.
+        ///   Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
         /// </summary>
         /// <summary>
         /// Updates the axis with information from the plot series.
-        /// This is used by the category axis that need to know the number of series using the axis.
+        ///   This is used by the category axis that need to know the number of series using the axis.
         /// </summary>
         /// <summary>
         /// Updates the actual minor and major step intervals.
         /// </summary>
         /// <summary>
         /// Updates the scale and offset properties of the transform
-        /// from the specified boundary rectangle.
+        ///   from the specified boundary rectangle.
         /// </summary>
         /// <summary>
         /// Zooms the axis to the range [x0,x1].
@@ -412,7 +414,7 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the type of the change.
+        ///   Gets or sets the type of the change.
         /// </summary>
         /// <value>The type of the change.</value>
         public AxisChangeTypes ChangeType { get; set; }

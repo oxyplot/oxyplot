@@ -1,21 +1,17 @@
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="ReportItem.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   The report item.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot.Reporting
 {
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Globalization;
 
     /// <summary>
-    /// The report item.
+    /// Represents a report item (abstract base class).
     /// </summary>
     public abstract class ReportItem
     {
@@ -42,7 +38,7 @@ namespace OxyPlot.Reporting
         ///   Gets the report.
         /// </summary>
         public Report Report { get; internal set; }
-       
+
         #endregion
 
         #region Public Methods
@@ -224,6 +220,21 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
+        /// Updates the Report property.
+        /// </summary>
+        /// <param name="report">
+        /// The report.
+        /// </param>
+        protected void UpdateParent(Report report)
+        {
+            this.Report = report;
+            foreach (var child in this.Children)
+            {
+                child.UpdateParent(report);
+            }
+        }
+
+        /// <summary>
         /// The update figure numbers.
         /// </summary>
         /// <param name="fc">
@@ -246,19 +257,6 @@ namespace OxyPlot.Reporting
             foreach (ReportItem child in this.Children)
             {
                 child.UpdateFigureNumbers(fc);
-            }
-        }
-
-        /// <summary>
-        /// Updates the Report property.
-        /// </summary>
-        /// <param name="report">The report.</param>
-        protected void UpdateParent(Report report)
-        {
-            this.Report = report;
-            foreach (var child in this.Children)
-            {
-                child.UpdateParent(report);
             }
         }
 

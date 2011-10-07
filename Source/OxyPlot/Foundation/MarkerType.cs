@@ -12,47 +12,47 @@ namespace OxyPlot
     public enum MarkerType
     {
         /// <summary>
-        /// The none.
+        ///   The none.
         /// </summary>
         None, 
 
         /// <summary>
-        /// The circle.
+        ///   The circle.
         /// </summary>
         Circle, 
 
         /// <summary>
-        /// The square.
+        ///   The square.
         /// </summary>
         Square, 
 
         /// <summary>
-        /// The diamond.
+        ///   The diamond.
         /// </summary>
         Diamond, 
 
         /// <summary>
-        /// The triangle.
+        ///   The triangle.
         /// </summary>
         Triangle, 
 
         /// <summary>
-        /// The cross.
+        ///   The cross.
         /// </summary>
         Cross, 
 
         /// <summary>
-        /// The plus.
+        ///   The plus.
         /// </summary>
         Plus, 
 
         /// <summary>
-        /// The star.
+        ///   The star.
         /// </summary>
         Star, 
 
         /// <summary>
-        /// The custom.
+        ///   The custom.
         /// </summary>
         Custom
     }

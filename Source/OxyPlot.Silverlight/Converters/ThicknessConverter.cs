@@ -13,8 +13,8 @@ namespace OxyPlot.Silverlight
 
     /// <summary>
     /// Converts Thickness to double.
-    /// This is used to convert BorderThickness properties to Path.StrokeThickness (double).
-    /// The maximum thickness value is used.
+    ///   This is used to convert BorderThickness properties to Path.StrokeThickness (double).
+    ///   The maximum thickness value is used.
     /// </summary>
     public class ThicknessConverter : IValueConverter
     {

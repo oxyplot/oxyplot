@@ -1,11 +1,8 @@
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="LineSeries.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Represents a line series.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -22,7 +19,7 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The smoothed points.
+        ///   The smoothed points.
         /// </summary>
         private Lazy<IList<IDataPoint>> smoothedPoints;
 

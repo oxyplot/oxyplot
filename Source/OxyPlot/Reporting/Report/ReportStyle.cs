@@ -84,54 +84,54 @@ namespace OxyPlot.Reporting
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets BodyTextStyle.
+        ///   Gets or sets BodyTextStyle.
         /// </summary>
         public ParagraphStyle BodyTextStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets DefaultStyle.
+        ///   Gets or sets DefaultStyle.
         /// </summary>
         public ParagraphStyle DefaultStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets FigureTextFormatString.
+        ///   Gets or sets FigureTextFormatString.
         /// </summary>
         public string FigureTextFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets FigureTextStyle.
+        ///   Gets or sets FigureTextStyle.
         /// </summary>
         public ParagraphStyle FigureTextStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets HeaderStyles.
+        ///   Gets or sets HeaderStyles.
         /// </summary>
         public ParagraphStyle[] HeaderStyles { get; set; }
 
         /// <summary>
-        /// Gets or sets the page margins (mm).
+        ///   Gets or sets the page margins (mm).
         /// </summary>
         public OxyThickness Margins { get; set; }
 
         // todo: should the FormatStrings be in the Report class?
 
         /// <summary>
-        /// Gets or sets TableCaptionFormatString.
+        ///   Gets or sets TableCaptionFormatString.
         /// </summary>
         public string TableCaptionFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets TableCaptionStyle.
+        ///   Gets or sets TableCaptionStyle.
         /// </summary>
         public ParagraphStyle TableCaptionStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets TableHeaderStyle.
+        ///   Gets or sets TableHeaderStyle.
         /// </summary>
         public ParagraphStyle TableHeaderStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets TableTextStyle.
+        ///   Gets or sets TableTextStyle.
         /// </summary>
         public ParagraphStyle TableTextStyle { get; set; }
 

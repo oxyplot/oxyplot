@@ -12,14 +12,16 @@ namespace OxyPlot
 
     /// <summary>
     /// StairStepSeries is used to create stairstep graphs.
-    /// http://www.mathworks.com/help/techdoc/ref/stairs.html
     /// </summary>
+    /// <remarks>
+    /// http://www.mathworks.com/help/techdoc/ref/stairs.html
+    /// </remarks>
     public class StairStepSeries : LineSeries
     {
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StairStepSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "StairStepSeries" /> class.
         /// </summary>
         public StairStepSeries()
         {
@@ -155,26 +157,26 @@ namespace OxyPlot
                     if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                     {
                         rc.DrawClippedLine(
-                            lpts,
-                            clippingRect,
-                            minDistSquared,
-                            this.Color,
-                            this.StrokeThickness,
-                            this.LineStyle,
-                            this.LineJoin,
+                            lpts, 
+                            clippingRect, 
+                            minDistSquared, 
+                            this.Color, 
+                            this.StrokeThickness, 
+                            this.LineStyle, 
+                            this.LineJoin, 
                             false);
                     }
 
                     if (this.MarkerType != MarkerType.None)
                     {
                         rc.DrawMarkers(
-                            mpts,
-                            clippingRect,
-                            this.MarkerType,
-                            this.MarkerOutline,
-                            new[] { this.MarkerSize },
-                            this.MarkerFill,
-                            this.MarkerStroke,
+                            mpts, 
+                            clippingRect, 
+                            this.MarkerType, 
+                            this.MarkerOutline, 
+                            new[] { this.MarkerSize }, 
+                            this.MarkerFill, 
+                            this.MarkerStroke, 
                             this.MarkerStrokeThickness);
                     }
                 };

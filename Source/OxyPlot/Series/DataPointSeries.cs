@@ -36,7 +36,7 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The points list.
+        ///   The points list.
         /// </summary>
         protected IList<IDataPoint> points = new List<IDataPoint>();
 
@@ -45,7 +45,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataPointSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "DataPointSeries" /> class.
         /// </summary>
         protected DataPointSeries()
         {
@@ -58,7 +58,7 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether CanTrackerInterpolatePoints.
+        ///   Gets or sets a value indicating whether CanTrackerInterpolatePoints.
         /// </summary>
         public bool CanTrackerInterpolatePoints { get; set; }
 
@@ -82,7 +82,7 @@ namespace OxyPlot
         public Func<object, IDataPoint> Mapping { get; set; }
 
         /// <summary>
-        /// Gets or sets the points list.
+        ///   Gets or sets the points list.
         /// </summary>
         /// <value>The points list.</value>
         public IList<IDataPoint> Points
@@ -91,6 +91,7 @@ namespace OxyPlot
             {
                 return this.points;
             }
+
             set
             {
                 this.points = value;

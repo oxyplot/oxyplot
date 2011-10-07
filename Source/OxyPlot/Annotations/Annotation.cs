@@ -17,34 +17,34 @@ namespace OxyPlot
     [Serializable]
     public abstract class Annotation : IAnnotation
     {
-        /// <summary>
-        /// Gets the parent plot model.
-        /// </summary>
-        public PlotModel PlotModel { get; internal set; }
+        #region Public Properties
 
         /// <summary>
-        /// Gets the actual culture.
+        ///   Gets the actual culture.
         /// </summary>
         /// <remarks>
-        /// The culture is defined in the parent PlotModel.
+        ///   The culture is defined in the parent PlotModel.
         /// </remarks>
         public CultureInfo ActualCulture
         {
             get
             {
-                return PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
+                return this.PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
             }
         }
 
-        #region Public Properties
-
         /// <summary>
-        /// Gets or sets Layer.
+        ///   Gets or sets Layer.
         /// </summary>
         public AnnotationLayer Layer { get; set; }
 
         /// <summary>
-        /// Annotation text.
+        ///   Gets the parent plot model.
+        /// </summary>
+        public PlotModel PlotModel { get; internal set; }
+
+        /// <summary>
+        ///   Annotation text.
         /// </summary>
         public string Text { get; set; }
 

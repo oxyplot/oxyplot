@@ -46,31 +46,31 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the color.
+        ///   Gets or sets the color.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the dash array.
+        ///   Gets or sets the dash array.
         /// </summary>
         /// <value>The dash array.</value>
         public double[] DashArray { get; set; }
 
         /// <summary>
-        /// Gets or sets the line join.
+        ///   Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
-        /// Gets or sets the line style.
+        ///   Gets or sets the line style.
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the thickness.
+        ///   Gets or sets the thickness.
         /// </summary>
         /// <value>The thickness.</value>
         public double Thickness { get; set; }

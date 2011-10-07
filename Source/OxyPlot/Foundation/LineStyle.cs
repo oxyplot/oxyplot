@@ -12,57 +12,57 @@ namespace OxyPlot
     public enum LineStyle
     {
         /// <summary>
-        /// The solid.
+        ///   The solid.
         /// </summary>
         Solid, 
 
         /// <summary>
-        /// The dash.
+        ///   The dash.
         /// </summary>
         Dash, 
 
         /// <summary>
-        /// The dot.
+        ///   The dot.
         /// </summary>
         Dot, 
 
         /// <summary>
-        /// The dash dot.
+        ///   The dash dot.
         /// </summary>
         DashDot, 
 
         /// <summary>
-        /// The dash dash dot.
+        ///   The dash dash dot.
         /// </summary>
         DashDashDot, 
 
         /// <summary>
-        /// The dash dot dot.
+        ///   The dash dot dot.
         /// </summary>
         DashDotDot, 
 
         /// <summary>
-        /// The dash dash dot dot.
+        ///   The dash dash dot dot.
         /// </summary>
         DashDashDotDot, 
 
         /// <summary>
-        /// The long dash.
+        ///   The long dash.
         /// </summary>
         LongDash, 
 
         /// <summary>
-        /// The long dash dot.
+        ///   The long dash dot.
         /// </summary>
         LongDashDot, 
 
         /// <summary>
-        /// The long dash dot dot.
+        ///   The long dash dot dot.
         /// </summary>
         LongDashDotDot, 
 
         /// <summary>
-        /// The none.
+        ///   The none.
         /// </summary>
         None
     }

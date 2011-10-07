@@ -14,12 +14,12 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The bold.
+        ///   The bold.
         /// </summary>
         public const double Bold = 700;
 
         /// <summary>
-        /// The normal.
+        ///   The normal.
         /// </summary>
         public const double Normal = 400;
 

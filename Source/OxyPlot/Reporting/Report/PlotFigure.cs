@@ -7,24 +7,24 @@
 namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// The plot figure.
+    /// Represents a plot figure.
     /// </summary>
     public class PlotFigure : Figure
     {
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Height.
+        ///   Gets or sets Height.
         /// </summary>
         public double Height { get; set; }
 
         /// <summary>
-        /// Gets or sets PlotModel.
+        ///   Gets or sets PlotModel.
         /// </summary>
         public PlotModel PlotModel { get; set; }
 
         /// <summary>
-        /// Gets or sets Width.
+        ///   Gets or sets Width.
         /// </summary>
         public double Width { get; set; }
 

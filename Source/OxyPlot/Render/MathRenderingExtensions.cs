@@ -16,22 +16,22 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The subscript alignment.
+        ///   The subscript alignment.
         /// </summary>
         private static double SUB_ALIGNMENT = 0.6;
 
         /// <summary>
-        /// The subscript size.
+        ///   The subscript size.
         /// </summary>
         private static double SUB_SIZE = 0.62;
 
         /// <summary>
-        /// The superscript alignment.
+        ///   The superscript alignment.
         /// </summary>
-        private static double SUPER_ALIGNMENT = 0.0;
+        private static double SUPER_ALIGNMENT;
 
         /// <summary>
-        /// The superscript size.
+        ///   The superscript size.
         /// </summary>
         private static double SUPER_SIZE = 0.62;
 
@@ -41,9 +41,9 @@ namespace OxyPlot
 
         /// <summary>
         /// Draws text supporting sub- and superscript.
-        /// Subscript: H_{2}O
-        /// Superscript: E=mc^{2}
-        /// Both: A^{2}_{i,j}
+        ///   Subscript: H_{2}O
+        ///   Superscript: E=mc^{2}
+        ///   Both: A^{2}_{i,j}
         /// </summary>
         /// <param name="rc">
         /// The rc.

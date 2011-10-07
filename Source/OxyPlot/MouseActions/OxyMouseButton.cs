@@ -12,27 +12,27 @@ namespace OxyPlot
     public enum OxyMouseButton
     {
         /// <summary>
-        /// The left.
+        ///   The left.
         /// </summary>
         Left, 
 
         /// <summary>
-        /// The middle.
+        ///   The middle.
         /// </summary>
         Middle, 
 
         /// <summary>
-        /// The right.
+        ///   The right.
         /// </summary>
         Right, 
 
         /// <summary>
-        /// The x button 1.
+        ///   The x button 1.
         /// </summary>
         XButton1, 
 
         /// <summary>
-        /// The x button 2.
+        ///   The x button 2.
         /// </summary>
         XButton2
     }

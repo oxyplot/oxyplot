@@ -14,7 +14,7 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets the actual model.
+        ///   Gets the actual model.
         /// </summary>
         /// <value>The actual model.</value>
         PlotModel ActualModel { get; }

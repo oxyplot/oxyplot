@@ -12,14 +12,14 @@ namespace OxyPlot.Reporting
     using System.Linq;
 
     /// <summary>
-    /// The items table.
+    /// Represents a table of items.
     /// </summary>
     public class ItemsTable : Table
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The items.
+        ///   The items.
         /// </summary>
         private IEnumerable items;
 
@@ -45,18 +45,18 @@ namespace OxyPlot.Reporting
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Alignment.
+        ///   Gets or sets Alignment.
         /// </summary>
         public Alignment Alignment { get; set; }
 
         /// <summary>
-        /// Gets or sets Fields.
+        ///   Gets or sets Fields.
         /// </summary>
         public IList<ItemsTableField> Fields { get; set; }
 
         /// <summary>
-        /// Gets or sets the items.
-        /// The table will be filled when this property is set. 
+        ///   Gets or sets the items.
+        ///   The table will be filled when this property is set.
         /// </summary>
         /// <value>The items.</value>
         public IEnumerable Items
@@ -74,7 +74,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets a value indicating whether ItemsInRows.
+        ///   Gets a value indicating whether ItemsInRows.
         /// </summary>
         public bool ItemsInRows { get; private set; }
 
@@ -207,7 +207,9 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Writes the content of the item.
         /// </summary>
-        /// <param name="w">The writer.</param>
+        /// <param name="w">
+        /// The writer.
+        /// </param>
         public override void WriteContent(IReportWriter w)
         {
             w.WriteTable(this);

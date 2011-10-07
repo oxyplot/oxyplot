@@ -131,7 +131,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Makes the legend properties safe.
-        /// If Legend is positioned left or right, force it to vertical orientation
+        ///   If Legend is positioned left or right, force it to vertical orientation
         /// </summary>
         private void EnsureLegendProperties()
         {

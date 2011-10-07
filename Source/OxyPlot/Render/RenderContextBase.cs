@@ -16,17 +16,17 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Height.
+        ///   Gets or sets Height.
         /// </summary>
         public double Height { get; protected set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether PaintBackground.
+        ///   Gets or sets a value indicating whether PaintBackground.
         /// </summary>
         public bool PaintBackground { get; protected set; }
 
         /// <summary>
-        /// Gets or sets Width.
+        ///   Gets or sets Width.
         /// </summary>
         public double Width { get; protected set; }
 

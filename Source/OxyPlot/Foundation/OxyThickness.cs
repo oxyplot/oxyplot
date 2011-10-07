@@ -6,7 +6,6 @@
 
 namespace OxyPlot
 {
-    using System;
     using System.Globalization;
 
     /// <summary>
@@ -17,22 +16,22 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The bottom.
+        ///   The bottom.
         /// </summary>
         private double bottom;
 
         /// <summary>
-        /// The left.
+        ///   The left.
         /// </summary>
         private double left;
 
         /// <summary>
-        /// The right.
+        ///   The right.
         /// </summary>
         private double right;
 
         /// <summary>
-        /// The top.
+        ///   The top.
         /// </summary>
         private double top;
 
@@ -79,10 +78,10 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the bottom thickness.
+        ///   Gets or sets the bottom thickness.
         /// </summary>
         /// <value>
-        /// The bottom thickness.
+        ///   The bottom thickness.
         /// </value>
         public double Bottom
         {
@@ -98,7 +97,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the height.
+        ///   Gets the height.
         /// </summary>
         public double Height
         {
@@ -109,10 +108,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the left thickness.
+        ///   Gets or sets the left thickness.
         /// </summary>
         /// <value>
-        /// The left thickness.
+        ///   The left thickness.
         /// </value>
         public double Left
         {
@@ -128,10 +127,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the right thickness.
+        ///   Gets or sets the right thickness.
         /// </summary>
         /// <value>
-        /// The right thickness.
+        ///   The right thickness.
         /// </value>
         public double Right
         {
@@ -147,10 +146,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the top thickness.
+        ///   Gets or sets the top thickness.
         /// </summary>
         /// <value>
-        /// The top thickness.
+        ///   The top thickness.
         /// </value>
         public double Top
         {
@@ -166,7 +165,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the width.
+        ///   Gets the width.
         /// </summary>
         public double Width
         {

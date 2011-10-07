@@ -7,14 +7,14 @@
 namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// Image files (.png, .jpg)
+    /// Represents an image report item.
     /// </summary>
     public class Image : Figure
     {
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Source.
+        ///   Gets or sets Source.
         /// </summary>
         public string Source { get; set; }
 

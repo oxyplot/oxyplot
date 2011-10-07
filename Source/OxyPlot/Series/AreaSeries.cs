@@ -17,7 +17,7 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        /// The points 2.
+        ///   The points 2.
         /// </summary>
         protected List<IDataPoint> points2 = new List<IDataPoint>();
 
@@ -26,7 +26,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AreaSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "AreaSeries" /> class.
         /// </summary>
         public AreaSeries()
         {
@@ -223,7 +223,8 @@ namespace OxyPlot
             var pts = new List<ScreenPoint>();
             pts.AddRange(pts1);
             pts.AddRange(pts0);
-            //pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
+
+            // pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
             rc.DrawClippedPolygon(pts, clippingRect, minDistSquared, this.Fill, null);
 
             // draw the markers on top

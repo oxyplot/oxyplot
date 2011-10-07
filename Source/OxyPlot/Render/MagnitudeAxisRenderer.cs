@@ -113,7 +113,6 @@ namespace OxyPlot
                 }
 
                 // RenderGridline(x, y + y0, x, y + y1, majorTickPen);
-
                 // var pt = new ScreenPoint(x, istop ? y + y1 - TICK_DIST : y + y1 + TICK_DIST);
                 // string text = axis.FormatValue(xValue);
                 // double h = rc.MeasureText(text, axis.Font, axis.FontSize, axis.FontWeight).Height;

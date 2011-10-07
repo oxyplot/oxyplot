@@ -8,19 +8,19 @@ namespace OxyPlot
 {
     /// <summary>
     /// Interface for Series that can be 'tracked'
-    /// The plot control will show a tracker with the current value when moving the mouse over the data.
+    ///   The plot control will show a tracker with the current value when moving the mouse over the data.
     /// </summary>
     public interface ITrackableSeries : ISeries
     {
         #region Public Properties
 
         /// <summary>
-        /// Gets a format string used for the tracker.
+        ///   Gets a format string used for the tracker.
         /// </summary>
         string TrackerFormatString { get; }
 
         /// <summary>
-        /// Gets the tracker key.
+        ///   Gets the tracker key.
         /// </summary>
         string TrackerKey { get; }
 

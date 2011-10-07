@@ -14,8 +14,10 @@ namespace OxyPlot
 
     /// <summary>
     /// ScatterSeries are used to create scatter plots.
-    ///     http://en.wikipedia.org/wiki/Scatter_plot
     /// </summary>
+    /// <remarks>
+    /// http://en.wikipedia.org/wiki/Scatter_plot
+    /// </remarks>
     public class ScatterSeries : DataPointSeries
     {
         #region Constructors and Destructors
@@ -41,7 +43,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "ScatterSeries" /> class.
         /// </summary>
         public ScatterSeries()
         {
@@ -60,57 +62,57 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the screen resolution.
-        /// If this number is greater than 1, bins of that size is created for both x and y directions. Only one point will be drawn in each bin.
+        ///   Gets or sets the screen resolution.
+        ///   If this number is greater than 1, bins of that size is created for both x and y directions. Only one point will be drawn in each bin.
         /// </summary>
         public int BinSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the data field for the size.
+        ///   Gets or sets the data field for the size.
         /// </summary>
         /// <value>The size data field.</value>
         public string DataFieldSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the tag data field.
+        ///   Gets or sets the tag data field.
         /// </summary>
         /// <value>The tag data field.</value>
         public string DataFieldTag { get; set; }
 
         /// <summary>
-        /// Gets or sets the value data field.
+        ///   Gets or sets the value data field.
         /// </summary>
         /// <value>The value data field.</value>
         public string DataFieldValue { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker fill color.
-        /// If null, this color will be automatically set.
+        ///   Gets or sets the marker fill color.
+        ///   If null, this color will be automatically set.
         /// </summary>
         /// <value>The marker fill color.</value>
         public OxyColor MarkerFill { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker outline polygon.
-        /// Set MarkerType to Custom to use this.
+        ///   Gets or sets the marker outline polygon.
+        ///   Set MarkerType to Custom to use this.
         /// </summary>
         /// <value>The marker outline.</value>
         public ScreenPoint[] MarkerOutline { get; set; }
 
         /// <summary>
-        /// Gets or sets the size of the marker (same size for all items).
+        ///   Gets or sets the size of the marker (same size for all items).
         /// </summary>
         /// <value>The size of the markers.</value>
         public double MarkerSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker stroke.
+        ///   Gets or sets the marker stroke.
         /// </summary>
         /// <value>The marker stroke.</value>
         public OxyColor MarkerStroke { get; set; }
 
         /// <summary>
-        /// Gets or sets the marker stroke thickness.
+        ///   Gets or sets the marker stroke thickness.
         /// </summary>
         /// <value>The marker stroke thickness.</value>
         public double MarkerStrokeThickness { get; set; }
@@ -240,7 +242,7 @@ namespace OxyPlot
                 allPoints[i] = this.XAxis.Transform(dp.X, dp.Y, this.YAxis);
                 markerSizes[i] = size;
             }
-            
+
             var binOffset = this.XAxis.Transform(this.MinX, this.MaxY, this.YAxis);
 
             // Draw the markers
@@ -253,7 +255,7 @@ namespace OxyPlot
                 this.MarkerFill, 
                 this.MarkerStroke, 
                 this.MarkerStrokeThickness, 
-                this.BinSize,
+                this.BinSize, 
                 binOffset);
         }
 

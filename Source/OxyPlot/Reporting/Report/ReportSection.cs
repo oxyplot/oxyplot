@@ -7,7 +7,7 @@
 namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// The report section.
+    /// Represents a report section.
     /// </summary>
     public class ReportSection : ReportItem
     {

@@ -64,30 +64,32 @@ namespace OxyPlot
     }
 
     /// <summary>
-    /// DateTime Axis
-    ///   The actual numeric values on the axis are days since 1900/01/01.
+    /// Represents a date/time axis
+    /// </summary>
+    /// <remarks>
+    /// The actual numeric values on the axis are days since 1900/01/01.
     ///   Use the static ToDouble and ToDateTime to convert numeric values to DateTimes.
     ///   The StringFormat value can be used to force formatting of the axis values
     ///   "yyyy-MM-dd" shows date
     ///   "w" or "ww" shows week number
     ///   "h:mm" shows hours and minutes
-    /// </summary>
+    /// </remarks>
     public class DateTimeAxis : LinearAxis
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The time origin.
+        ///   The time origin.
         /// </summary>
         private static DateTime timeOrigin = new DateTime(1900, 1, 1); // Same date values as Excel
 
         /// <summary>
-        /// The actual interval type.
+        ///   The actual interval type.
         /// </summary>
         private DateTimeIntervalType actualIntervalType;
 
         /// <summary>
-        /// The actual minor interval type.
+        ///   The actual minor interval type.
         /// </summary>
         private DateTimeIntervalType actualMinorIntervalType;
 
@@ -163,22 +165,22 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets CalendarWeekRule.
+        ///   Gets or sets CalendarWeekRule.
         /// </summary>
         public CalendarWeekRule CalendarWeekRule { get; set; }
 
         /// <summary>
-        /// Gets or sets FirstDayOfWeek.
+        ///   Gets or sets FirstDayOfWeek.
         /// </summary>
         public DayOfWeek FirstDayOfWeek { get; set; }
 
         /// <summary>
-        /// Gets or sets IntervalType.
+        ///   Gets or sets IntervalType.
         /// </summary>
         public DateTimeIntervalType IntervalType { get; set; }
 
         /// <summary>
-        /// Gets or sets MinorIntervalType.
+        ///   Gets or sets MinorIntervalType.
         /// </summary>
         public DateTimeIntervalType MinorIntervalType { get; set; }
 
@@ -321,7 +323,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary.
-        /// e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
+        ///   e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
         /// <param name="x">
         /// The coordinate.

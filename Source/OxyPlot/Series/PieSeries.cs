@@ -15,15 +15,17 @@ namespace OxyPlot
 
     /// <summary>
     /// The PieSeries class renders a Pie/Circle/Doughnut chart.
-    ///   The arc length/central angle/area of each slice is proportional to the quantity it represents.
-    ///   http://en.wikipedia.org/wiki/Pie_chart
     /// </summary>
+    /// <remarks>
+    /// The arc length/central angle/area of each slice is proportional to the quantity it represents.
+    ///   http://en.wikipedia.org/wiki/Pie_chart
+    /// </remarks>
     public class PieSeries : Series
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The slices.
+        ///   The slices.
         /// </summary>
         private IList<PieSlice> slices;
 
@@ -32,7 +34,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PieSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "PieSeries" /> class.
         /// </summary>
         public PieSeries()
         {
@@ -62,62 +64,62 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets AngleIncrement.
+        ///   Gets or sets AngleIncrement.
         /// </summary>
         public double AngleIncrement { get; set; }
 
         /// <summary>
-        /// Gets or sets AngleSpan.
+        ///   Gets or sets AngleSpan.
         /// </summary>
         public double AngleSpan { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether AreInsideLabelsAngled.
+        ///   Gets or sets a value indicating whether AreInsideLabelsAngled.
         /// </summary>
         public bool AreInsideLabelsAngled { get; set; }
 
         /// <summary>
-        /// Gets or sets ColorField.
+        ///   Gets or sets ColorField.
         /// </summary>
         public string ColorField { get; set; }
 
         /// <summary>
-        /// Gets or sets Diameter.
+        ///   Gets or sets Diameter.
         /// </summary>
         public double Diameter { get; set; }
 
         /// <summary>
-        /// Gets or sets ExplodedDistance.
+        ///   Gets or sets ExplodedDistance.
         /// </summary>
         public double ExplodedDistance { get; set; }
 
         /// <summary>
-        /// Gets or sets Font.
+        ///   Gets or sets Font.
         /// </summary>
         public string Font { get; set; }
 
         /// <summary>
-        /// Gets or sets FontSize.
+        ///   Gets or sets FontSize.
         /// </summary>
         public double FontSize { get; set; }
 
         /// <summary>
-        /// Gets or sets InnerDiameter.
+        ///   Gets or sets InnerDiameter.
         /// </summary>
         public double InnerDiameter { get; set; }
 
         /// <summary>
-        /// Gets or sets InsideLabelFormat.
+        ///   Gets or sets InsideLabelFormat.
         /// </summary>
         public string InsideLabelFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets InsideLabelPosition.
+        ///   Gets or sets InsideLabelPosition.
         /// </summary>
         public double InsideLabelPosition { get; set; }
 
         /// <summary>
-        /// Gets or sets IsExplodedField.
+        ///   Gets or sets IsExplodedField.
         /// </summary>
         public string IsExplodedField { get; set; }
 
@@ -128,22 +130,22 @@ namespace OxyPlot
         public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
-        /// Gets or sets LabelField.
+        ///   Gets or sets LabelField.
         /// </summary>
         public string LabelField { get; set; }
 
         /// <summary>
-        /// Gets or sets LegendFormat.
+        ///   Gets or sets LegendFormat.
         /// </summary>
         public string LegendFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets OutsideLabelFormat.
+        ///   Gets or sets OutsideLabelFormat.
         /// </summary>
         public string OutsideLabelFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets Slices.
+        ///   Gets or sets Slices.
         /// </summary>
         public IList<PieSlice> Slices
         {
@@ -159,42 +161,42 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets StartAngle.
+        ///   Gets or sets StartAngle.
         /// </summary>
         public double StartAngle { get; set; }
 
         /// <summary>
-        /// Gets or sets Stroke.
+        ///   Gets or sets Stroke.
         /// </summary>
         public OxyColor Stroke { get; set; }
 
         /// <summary>
-        /// Gets or sets StrokeThickness.
+        ///   Gets or sets StrokeThickness.
         /// </summary>
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets TickDistance.
+        ///   Gets or sets TickDistance.
         /// </summary>
         public double TickDistance { get; set; }
 
         /// <summary>
-        /// Gets or sets TickHorizontalLength.
+        ///   Gets or sets TickHorizontalLength.
         /// </summary>
         public double TickHorizontalLength { get; set; }
 
         /// <summary>
-        /// Gets or sets TickLabelDistance.
+        ///   Gets or sets TickLabelDistance.
         /// </summary>
         public double TickLabelDistance { get; set; }
 
         /// <summary>
-        /// Gets or sets TickRadialLength.
+        ///   Gets or sets TickRadialLength.
         /// </summary>
         public double TickRadialLength { get; set; }
 
         /// <summary>
-        /// Gets or sets ValueField.
+        ///   Gets or sets ValueField.
         /// </summary>
         public string ValueField { get; set; }
 
