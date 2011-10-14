@@ -300,7 +300,7 @@ namespace OxyPlot.Wpf
         /// The tick style property.
         /// </summary>
         public static readonly DependencyProperty TickStyleProperty = DependencyProperty.Register(
-            "TickStyle", typeof(TickStyle), typeof(Axis), new PropertyMetadata(TickStyle.Inside, AppearanceChanged));
+            "TickStyle", typeof(TickStyle), typeof(Axis), new PropertyMetadata(TickStyle.Outside, AppearanceChanged));
 
         /// <summary>
         /// The tickline color property.

@@ -26,7 +26,6 @@ namespace OxyPlot
         public CategoryAxis()
         {
             this.Labels = new List<string>();
-            this.TickStyle = TickStyle.Outside;
             this.Position = AxisPosition.Bottom;
             this.MinimumPadding = 0;
             this.MaximumPadding = 0;
