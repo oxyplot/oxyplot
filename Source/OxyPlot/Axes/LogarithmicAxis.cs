@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LogarithmicAxis.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -92,6 +92,29 @@ namespace OxyPlot
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Coerces the actual maximum and minimum values.
+        /// </summary>
+        public override void CoerceActualMaxMin()
+        {
+            if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
+            {
+                this.ActualMinimum = 1;
+            }
+
+            if (this.ActualMinimum <= 0)
+            {
+                this.ActualMinimum = 1;
+            }
+
+            if (this.ActualMaximum <= this.ActualMinimum)
+            {
+                this.ActualMaximum = this.ActualMinimum * 100;
+            }
+
+            base.CoerceActualMaxMin();
+        }
 
         /// <summary>
         /// Gets the coordinates used to draw ticks and tick labels (numbers or category names).
