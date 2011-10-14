@@ -54,8 +54,6 @@ namespace OxyPlot.Wpf
                 typeof(CategoryAxis), new PropertyMetadata(AxisPosition.Bottom, DataChanged));
             MinimumPaddingProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(0.0, DataChanged));
             MaximumPaddingProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(0.0, DataChanged));
-            TickStyleProperty.OverrideMetadata(
-                typeof(CategoryAxis), new PropertyMetadata(TickStyle.Outside, DataChanged));
         }
 
         /// <summary>

@@ -73,7 +73,7 @@ namespace OxyPlot
             this.MaximumPadding = 0.01;
             this.MinimumRange = 0;
 
-            this.TickStyle = TickStyle.Inside;
+            this.TickStyle = TickStyle.Outside;
             this.TicklineColor = OxyColors.Black;
 
             this.AxislineStyle = LineStyle.None;
