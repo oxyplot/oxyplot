@@ -262,9 +262,9 @@ namespace OxyPlot.Tests
         [Test]
         public void C01_DateTimeAxis()
         {
-            var plot = new PlotModel("DateTime axis") { PlotMargins = new OxyThickness(100,40,20,100)};
-            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days) { Angle=-46, MajorStep=1 };
-            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days) { Angle=-45, MajorStep=1 };
+            var plot = new PlotModel("DateTime axis") { PlotMargins = new OxyThickness(100, 40, 20, 100) };
+            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days) { Angle = -46, MajorStep = 1 };
+            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days) { Angle = -45, MajorStep = 1 };
             plot.Axes.Add(xaxis);
             plot.Axes.Add(yaxis);
 
@@ -314,6 +314,45 @@ namespace OxyPlot.Tests
             plot.Series.Add(ls);
 
             OxyAssert.AreEqual(plot);
+        }
+
+        [Test, ExpectedException]
+        public void D01_InvalidAbsoluteMaxMin()
+        {
+            var plot = new PlotModel("Simple plot");
+            plot.Axes.Add(new LinearAxis() { AbsoluteMaximum = 0, AbsoluteMinimum = 0 });
+            plot.Update();
+
+        }
+
+        [Test]
+        public void D02_InvalidMaxMin()
+        {
+            var plot = new PlotModel("Simple plot");
+            plot.Axes.Add(new LinearAxis() { Maximum = 0, Minimum = 0 });
+            plot.Update();
+            Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
+            Assert.AreEqual(0, plot.Axes[0].ActualMinimum);
+
+        }
+        [Test]
+        public void D03_InvalidMaxMin()
+        {
+            var plot = new PlotModel("Simple plot");
+            plot.Axes.Add(new LogarithmicAxis { Maximum = 1, Minimum = 1 });
+            plot.Update();
+            Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
+            Assert.AreEqual(1, plot.Axes[0].ActualMinimum);
+        }
+
+        [Test]
+        public void D04_InvalidLogAxis()
+        {
+            var plot = new PlotModel("Simple plot");
+            plot.Axes.Add(new LogarithmicAxis { Maximum = 1, Minimum = 0 });
+            plot.Update();
+            Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
+            Assert.AreEqual(1, plot.Axes[0].ActualMinimum);
         }
     }
 }
