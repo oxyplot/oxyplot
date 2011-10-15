@@ -46,14 +46,16 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Initializes a new instance of the <see cref="TextReportWriter"/> class.
         /// </summary>
-        /// <param name="s">
-        /// The s.
+        /// <param name="stream">
+        /// The stream.
         /// </param>
-        public TextReportWriter(Stream s)
-            : base(s)
+        public TextReportWriter(Stream stream)
+            : base(stream)
         {
             this.MaxLineLength = 60;
         }
+
+#if !METRO
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextReportWriter"/> class.
@@ -66,6 +68,8 @@ namespace OxyPlot.Reporting
         {
             this.MaxLineLength = 60;
         }
+
+#endif
 
         #endregion
 
@@ -191,7 +195,7 @@ namespace OxyPlot.Reporting
             for (int j = 0; j < cols; j++)
             {
                 columnWidth[j] = 0;
-                foreach (TableRow tr in t.Rows)
+                foreach (var tr in t.Rows)
                 {
                     TableCell cell = tr.Cells[j];
                     string text = cell.Content;
@@ -202,7 +206,7 @@ namespace OxyPlot.Reporting
             }
 
             // WriteLine("-".Repeat(totalLength));
-            foreach (TableRow tr in t.Rows)
+            foreach (var tr in t.Rows)
             {
                 for (int j = 0; j < cols; j++)
                 {

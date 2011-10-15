@@ -49,6 +49,8 @@ namespace OxyPlot
             this.PaintBackground = true;
         }
 
+#if !METRO
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SvgRenderContext"/> class.
         /// </summary>
@@ -67,6 +69,8 @@ namespace OxyPlot
             this.Width = width;
             this.Height = height;
         }
+
+#endif
 
         #endregion
 

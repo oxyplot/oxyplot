@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------
-// <copyright file="OxyMouseButton.cs" company="OxyPlot">
+// <copyright file="OxyCursor.cs" company="OxyPlot">
 //     http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 //-----------------------------------------------------------------------
@@ -7,33 +7,33 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The oxy mouse button.
+    /// The oxy cursor.
     /// </summary>
-    public enum OxyMouseButton
+    public enum OxyCursor
     {
         /// <summary>
-        ///   The left.
+        ///   The arrow cursor.
         /// </summary>
-        Left, 
+        Arrow, 
 
         /// <summary>
-        ///   The middle.
+        ///   The four-headed sizing Cursor, which consists of four joined arrows that point north, south, east, and west.
         /// </summary>
-        Middle, 
+        SizeAll, 
 
         /// <summary>
-        ///   The right.
+        ///   The two-headed northwest/southeast sizing cursor.
         /// </summary>
-        Right, 
+        SizeNWSE, 
 
         /// <summary>
-        ///   The x button 1.
+        ///   The crosshair cursor.
         /// </summary>
-        XButton1, 
+        Cross, 
 
         /// <summary>
-        ///   The x button 2.
+        ///   The invisible cursor.
         /// </summary>
-        XButton2
+        None
     }
 }

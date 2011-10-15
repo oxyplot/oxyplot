@@ -58,7 +58,7 @@ namespace OxyPlot
 
             // todo: can this be improved?
             int i = 0;
-            foreach (object item in itemsSource)
+            foreach (var item in itemsSource)
             {
                 if (i++ == index)
                 {

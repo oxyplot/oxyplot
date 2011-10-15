@@ -278,7 +278,7 @@ namespace OxyPlot
 
             // transform to screen coordinates
             var screenPoints = new List<ScreenPoint>(points.Count);
-            foreach (DataPoint p in points)
+            foreach (var p in points)
             {
                 screenPoints.Add(this.XAxis.Transform(p.X, p.Y, this.YAxis));
             }

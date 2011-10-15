@@ -81,7 +81,7 @@ namespace OxyPlot
             double newTop = this.ActualPlotMargins.Top;
             double newRight = this.ActualPlotMargins.Right;
             double newBottom = this.ActualPlotMargins.Bottom;
-            foreach (Axis axis in this.Axes)
+            foreach (var axis in this.Axes)
             {
                 OxySize size = axis.Measure(rc);
                 switch (axis.Position)
@@ -182,7 +182,7 @@ namespace OxyPlot
         /// </param>
         private void RenderAnnotations(IRenderContext rc, AnnotationLayer layer)
         {
-            foreach (Annotation a in this.Annotations.Where(a => a.Layer == layer))
+            foreach (var a in this.Annotations.Where(a => a.Layer == layer))
             {
                 a.Render(rc, this);
             }
@@ -199,7 +199,7 @@ namespace OxyPlot
         /// </param>
         private void RenderAxes(IRenderContext rc, AxisLayer layer)
         {
-            foreach (Axis a in this.Axes)
+            foreach (var a in this.Axes)
             {
                 if (a.IsAxisVisible)
                 {
@@ -229,7 +229,7 @@ namespace OxyPlot
                 rc.DrawRectangleAsPolygon(this.PlotArea, this.PlotAreaBackground, null, 0);
             }
 
-            foreach (Series s in this.Series)
+            foreach (var s in this.Series)
             {
                 var s2 = s as XYAxisSeries;
                 if (s2 == null || s2.Background == null)
@@ -267,12 +267,12 @@ namespace OxyPlot
         {
             // Update undefined colors
             this.ResetDefaultColor();
-            foreach (Series s in this.Series)
+            foreach (var s in this.Series)
             {
                 s.SetDefaultValues(this);
             }
 
-            foreach (Series s in this.Series)
+            foreach (var s in this.Series)
             {
                 s.Render(rc, this);
             }

@@ -32,19 +32,14 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
+        ///   The stack of manipulation events. This is used to try to avoid latency of the ManipulationDelta events.
+        /// </summary>
+        private readonly Stack<ManipulationDeltaEventArgs> manipulationQueue = new Stack<ManipulationDeltaEventArgs>();
+        
+        /// <summary>
         ///   The Grid PART constant.
         /// </summary>
         private const string PartGrid = "PART_Grid";
-
-        /// <summary>
-        ///   The pan action.
-        /// </summary>
-        private readonly PanAction panAction;
-
-        /// <summary>
-        ///   The tracker action.
-        /// </summary>
-        private readonly TrackerAction trackerAction;
 
         /// <summary>
         ///   The tracker definitions.
@@ -52,10 +47,30 @@ namespace OxyPlot.Wpf
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
 
         /// <summary>
-        ///   The zoom action.
+        ///   The last cumulative manipulation scale.
         /// </summary>
-        private readonly ZoomAction zoomAction;
+        private Vector lastManipulationScale;
 
+        /// <summary>
+        ///   The mouse manipulator.
+        /// </summary>
+        private ManipulatorBase mouseManipulator;
+
+        /// <summary>
+        ///   The touch pan manipulator.
+        /// </summary>
+        private PanManipulator touchPan;
+
+        /// <summary>
+        ///   The touch zoom manipulator.
+        /// </summary>
+        private ZoomManipulator touchZoom;
+
+        /// <summary>
+        ///   The touch down point.
+        /// </summary>
+        private Point touchDownPoint;
+      
         /// <summary>
         ///   The canvas.
         /// </summary>
@@ -115,6 +130,7 @@ namespace OxyPlot.Wpf
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Plot), new FrameworkPropertyMetadata(typeof(Plot)));
             PaddingProperty.OverrideMetadata(
                 typeof(Plot), new FrameworkPropertyMetadata(new Thickness(8, 8, 16, 8), AppearanceChanged));
+            ResetAxesCommand = new RoutedCommand();
         }
 
 #endif
@@ -124,12 +140,6 @@ namespace OxyPlot.Wpf
         /// </summary>
         public Plot()
         {
-            this.panAction = new PanAction(this);
-            this.zoomAction = new ZoomAction(this);
-            this.trackerAction = new TrackerAction(this);
-
-            this.MouseActions = new List<OxyMouseAction> { this.panAction, this.zoomAction, this.trackerAction };
-
             this.series = new ObservableCollection<Series>();
             this.axes = new ObservableCollection<Axis>();
             this.annotations = new ObservableCollection<Annotation>();
@@ -149,20 +159,6 @@ namespace OxyPlot.Wpf
 
             // this.CommandBindings.Add(new CommandBinding(CopyCode, this.DoCopyCode));
             // this.InputBindings.Add(new KeyBinding(CopyCode, Key.C, ModifierKeys.Control | ModifierKeys.Alt));
-        }
-
-        /// <summary>
-        /// The reset axes handler.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void ResetAxesHandler(object sender, ExecutedRoutedEventArgs e)
-        {
-            this.ResetAllAxes();
         }
 
         #endregion
@@ -192,12 +188,6 @@ namespace OxyPlot.Wpf
                 return this.annotations;
             }
         }
-
-        /// <summary>
-        ///   Gets the mouse actions.
-        /// </summary>
-        /// <value>The mouse actions.</value>
-        public List<OxyMouseAction> MouseActions { get; private set; }
 
         /// <summary>
         ///   Gets the tracker definitions.
@@ -317,8 +307,7 @@ namespace OxyPlot.Wpf
 
             this.CommandBindings.Add(new CommandBinding(ResetAxesCommand, this.ResetAxesHandler));
 
-            var resetAxesInputBinding = new InputBindingX();
-            resetAxesInputBinding.Command = ResetAxesCommand;
+            var resetAxesInputBinding = new InputBindingX { Command = ResetAxesCommand };
             BindingOperations.SetBinding(
                 resetAxesInputBinding, InputBindingX.GeztureProperty, new Binding("ResetAxesGesture") { Source = this });
             this.InputBindings.Add(resetAxesInputBinding);
@@ -348,21 +337,14 @@ namespace OxyPlot.Wpf
         /// <param name="delta">
         /// The delta.
         /// </param>
-        private void PanAll(Vector delta)
+        public void PanAll(Vector delta)
         {
             foreach (OxyPlot.IAxis a in this.ActualModel.Axes)
             {
-                if (a.IsHorizontal())
-                {
-                    a.Pan(delta.X);
-                }
-                else
-                {
-                    a.Pan(delta.Y);
-                }
+                a.Pan(a.IsHorizontal() ? delta.X : delta.Y);
             }
 
-            this.RefreshPlot(false);
+            this.InvalidatePlot(false);
         }
 
         /// <summary>
@@ -548,7 +530,7 @@ namespace OxyPlot.Wpf
         /// </param>
         public void ZoomAllAxes(double delta)
         {
-            foreach (OxyPlot.IAxis a in this.ActualModel.Axes)
+            foreach (var a in this.ActualModel.Axes)
             {
                 this.ZoomAt(a, delta);
             }
@@ -590,6 +572,34 @@ namespace OxyPlot.Wpf
             }
 
             axis.ZoomAt(factor, x);
+        }
+
+        /// <summary>
+        /// Sets the cursor.
+        /// </summary>
+        /// <param name="cursor">
+        /// The cursor.
+        /// </param>
+        public void SetCursor(OxyCursor cursor)
+        {
+            switch (cursor)
+            {
+                case OxyCursor.Arrow:
+                    this.Cursor = Cursors.Arrow;
+                    break;
+                case OxyCursor.Cross:
+                    this.Cursor = Cursors.Cross;
+                    break;
+                case OxyCursor.SizeAll:
+                    this.Cursor = Cursors.SizeAll;
+                    break;
+                case OxyCursor.SizeNWSE:
+                    this.Cursor = Cursors.SizeNWSE;
+                    break;
+                case OxyCursor.None:
+                    this.Cursor = Cursors.None;
+                    break;
+            }
         }
 
         #endregion
@@ -687,6 +697,64 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted"/> event occurs.
+        /// </summary>
+        /// <param name="e">
+        /// The data for the event.
+        /// </param>
+        protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
+        {
+            base.OnManipulationStarted(e);
+            this.touchPan = new PanManipulator(this);
+            this.touchPan.Started(new ManipulationEventArgs(e.ManipulationOrigin.ToScreenPoint()));
+            this.touchZoom = new ZoomManipulator(this);
+            this.touchZoom.Started(new ManipulationEventArgs(e.ManipulationOrigin.ToScreenPoint()));
+            this.touchDownPoint = e.ManipulationOrigin;
+            this.lastManipulationScale = new Vector(1, 1);
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
+        /// </summary>
+        /// <param name="e">
+        /// The data for the event.
+        /// </param>
+        protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
+        {
+            base.OnManipulationDelta(e);
+            lock (this.manipulationQueue)
+            {
+                this.manipulationQueue.Push(e);
+            }
+
+            // this was the original code, but it seems to add latency to the manipulations...
+            // var position = this.touchDownPoint + e.CumulativeManipulation.Translation;
+            // this.touchPan.Delta(new ManipulationEventArgs(position.ToScreenPoint()));
+
+            // this.touchZoom.Delta(
+            // new ManipulationEventArgs(position.ToScreenPoint())
+            // {
+            // ScaleX = e.DeltaManipulation.Scale.X, ScaleY = e.DeltaManipulation.Scale.Y 
+            // });
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted"/> event occurs.
+        /// </summary>
+        /// <param name="e">
+        /// The data for the event.
+        /// </param>
+        protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
+        {
+            base.OnManipulationCompleted(e);
+            var position = this.touchDownPoint + e.TotalManipulation.Translation;
+            this.touchPan.Completed(new ManipulationEventArgs(position.ToScreenPoint()));
+            e.Handled = true;
+        }
+
+        /// <summary>
         /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
@@ -696,41 +764,22 @@ namespace OxyPlot.Wpf
         {
             base.OnMouseDown(e);
 
+            if (this.mouseManipulator != null)
+            {
+                return;
+            }
+
             this.Focus();
             this.CaptureMouse();
+            this.mouseDownPoint = e.GetPosition(this).ToScreenPoint();
 
-            bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
-            bool shift = Keyboard.IsKeyDown(Key.LeftShift);
-            bool alt = Keyboard.IsKeyDown(Key.LeftAlt);
+            this.mouseManipulator = this.GetManipulator(e);
 
-            OxyMouseButton button = OxyMouseButton.Left;
-            if (e.MiddleButton == MouseButtonState.Pressed)
+            if (this.mouseManipulator != null)
             {
-                button = OxyMouseButton.Middle;
+                this.mouseManipulator.Started(this.CreateManipulationEventArgs(e));
+                e.Handled = true;
             }
-
-            if (e.RightButton == MouseButtonState.Pressed)
-            {
-                button = OxyMouseButton.Right;
-            }
-
-            if (e.XButton1 == MouseButtonState.Pressed)
-            {
-                button = OxyMouseButton.XButton1;
-            }
-
-            if (e.XButton2 == MouseButtonState.Pressed)
-            {
-                button = OxyMouseButton.XButton2;
-            }
-
-            ScreenPoint p = e.GetPosition(this).ToScreenPoint();
-            foreach (var a in this.MouseActions)
-            {
-                a.OnMouseDown(p, button, e.ClickCount, control, shift, alt);
-            }
-
-            this.mouseDownPoint = p;
         }
 
         /// <summary>
@@ -742,16 +791,10 @@ namespace OxyPlot.Wpf
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-
-            bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
-            bool shift = Keyboard.IsKeyDown(Key.LeftShift);
-            bool alt = Keyboard.IsKeyDown(Key.LeftAlt);
-
-            ScreenPoint p = e.GetPosition(this).ToScreenPoint();
-
-            foreach (var a in this.MouseActions)
+            if (this.mouseManipulator != null)
             {
-                a.OnMouseMove(p, control, shift, alt);
+                this.mouseManipulator.Delta(this.CreateManipulationEventArgs(e));
+                e.Handled = true;
             }
         }
 
@@ -764,11 +807,13 @@ namespace OxyPlot.Wpf
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
-
-            foreach (var a in this.MouseActions)
+            if (this.mouseManipulator != null)
             {
-                a.OnMouseUp();
+                this.mouseManipulator.Completed(this.CreateManipulationEventArgs(e));
+                e.Handled = true;
             }
+
+            this.mouseManipulator = null;
 
             this.ReleaseMouseCapture();
             ScreenPoint p = e.GetPosition(this).ToScreenPoint();
@@ -793,6 +838,14 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Called when the visual appearance is changed.
+        /// </summary>
+        protected virtual void OnAppearanceChanged()
+        {
+            this.InvalidatePlot();
+        }
+
+        /// <summary>
         /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseWheel"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
@@ -808,22 +861,18 @@ namespace OxyPlot.Wpf
             }
 
             bool isControlDown = Keyboard.IsKeyDown(Key.LeftCtrl);
-            bool isShiftDown = Keyboard.IsKeyDown(Key.LeftShift);
-            bool isAltDown = Keyboard.IsKeyDown(Key.LeftAlt);
+            //// bool isShiftDown = Keyboard.IsKeyDown(Key.LeftShift);
+            //// bool isAltDown = Keyboard.IsKeyDown(Key.LeftAlt);
 
-            ScreenPoint p = e.GetPosition(this).ToScreenPoint();
-
-            foreach (var a in this.MouseActions)
-            {
-                a.OnMouseWheel(p, e.Delta, isControlDown, isShiftDown, isAltDown);
-            }
+            var m = new ZoomStepManipulator(this, e.Delta * 0.001, isControlDown);
+            m.Started(new ManipulationEventArgs(e.GetPosition(this).ToScreenPoint()));
         }
 
         /// <summary>
         /// Called when the model is changed.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The sender.
         /// </param>
         /// <param name="e">
         /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
@@ -848,11 +897,116 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Called when the visual appearance is changed.
+        /// The reset axes handler.
         /// </summary>
-        protected virtual void OnAppearanceChanged()
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void ResetAxesHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            this.InvalidatePlot();
+            this.ResetAllAxes();
+        }
+
+        /// <summary>
+        /// Handles the stacked manipulation events.
+        /// </summary>
+        private void HandleStackedManipulationEvents()
+        {
+            ManipulationDeltaEventArgs e;
+            lock (this.manipulationQueue)
+            {
+                if (this.manipulationQueue.Count == 0)
+                {
+                    return;
+                }
+
+                // Get the last manipulation event from the stack
+                e = this.manipulationQueue.Pop();
+
+                // Skip all older events
+                this.manipulationQueue.Clear();
+            }
+
+            // Apply the last manipulation event to translation (pan) and scaling (zoom)
+            var position = this.touchDownPoint + e.CumulativeManipulation.Translation;
+            this.touchPan.Delta(new ManipulationEventArgs(position.ToScreenPoint()));
+
+            double scaleX = e.CumulativeManipulation.Scale.X / this.lastManipulationScale.X;
+            double scaleY = e.CumulativeManipulation.Scale.Y / this.lastManipulationScale.Y;
+            this.touchZoom.Delta(
+                new ManipulationEventArgs(position.ToScreenPoint()) { ScaleX = scaleX, ScaleY = scaleY });
+
+            this.lastManipulationScale = e.CumulativeManipulation.Scale;
+        }
+
+        /// <summary>
+        /// The get manipulator.
+        /// </summary>
+        /// <param name="e">
+        /// The event arguments.
+        /// </param>
+        /// <returns>
+        /// A manipulator instance.
+        /// </returns>
+        private ManipulatorBase GetManipulator(MouseButtonEventArgs e)
+        {
+            bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
+            bool shift = Keyboard.IsKeyDown(Key.LeftShift);
+            //// bool alt = Keyboard.IsKeyDown(Key.LeftAlt);
+            bool lmb = e.LeftButton == MouseButtonState.Pressed;
+            bool rmb = e.RightButton == MouseButtonState.Pressed;
+            bool mmb = e.MiddleButton == MouseButtonState.Pressed;
+            bool xb1 = e.XButton1 == MouseButtonState.Pressed;
+            bool xb2 = e.XButton2 == MouseButtonState.Pressed;
+
+            // MMB / control RMB
+            if (mmb || (control && rmb))
+            {
+                if (e.ClickCount == 2)
+                {
+                    return new ResetManipulator(this);
+                }
+
+                return new ZoomRectangleManipulator(this);
+            }
+
+            // Right mouse button
+            if (rmb)
+            {
+                return new PanManipulator(this);
+            }
+
+            // Left mouse button
+            if (lmb)
+            {
+                return new TrackerManipulator(this) { Snap = !control, PointsOnly = shift };
+            }
+
+            // XButtons are zoom-stepping
+            if (xb1 || xb2)
+            {
+                double d = xb1 ? 0.05 : -0.05;
+                return new ZoomStepManipulator(this, d, control);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Creates the manipulation event args.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
+        /// </param>
+        /// <returns>
+        /// A manipulation event args object.
+        /// </returns>
+        private ManipulationEventArgs CreateManipulationEventArgs(MouseEventArgs e)
+        {
+            return new ManipulationEventArgs(e.GetPosition(this).ToScreenPoint());
         }
 
         /// <summary>
@@ -866,6 +1020,8 @@ namespace OxyPlot.Wpf
         /// </param>
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
+            this.HandleStackedManipulationEvents();
+
             lock (this)
             {
                 if (this.isPlotInvalidated)
@@ -1109,37 +1265,6 @@ namespace OxyPlot.Wpf
             this.ActualModel.Update(updateData);
         }
 
-        #endregion
-
-        /// <summary>
-        ///   Gets or sets the reset axes gesture.
-        /// </summary>
-        /// <value>The reset axes gesture.</value>
-        public InputGesture ResetAxesGesture
-        {
-            get
-            {
-                return (InputGesture)this.GetValue(OrthographicToggleGestureProperty);
-            }
-
-            set
-            {
-                this.SetValue(OrthographicToggleGestureProperty, value);
-            }
-        }
-
-        /// <summary>
-        ///   The orthographic toggle gesture property.
-        /// </summary>
-        public static readonly DependencyProperty OrthographicToggleGestureProperty =
-            DependencyProperty.Register(
-                "ResetAxesGesture", typeof(InputGesture), typeof(Plot), new UIPropertyMetadata(new KeyGesture(Key.Home)));
-
-        /// <summary>
-        ///   The reset axes command.
-        /// </summary>
-        public static RoutedCommand ResetAxesCommand = new RoutedCommand();
-
-        
+        #endregion      
     }
 }

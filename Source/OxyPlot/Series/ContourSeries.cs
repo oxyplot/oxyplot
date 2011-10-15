@@ -225,7 +225,7 @@ namespace OxyPlot
         {
             TrackerHitResult result = null;
 
-            foreach (Contour c in this.contours)
+            foreach (var c in this.contours)
             {
                 int index;
                 DataPoint dpn;
@@ -284,14 +284,14 @@ namespace OxyPlot
 
             var contourLabels = new List<ContourLabel>();
 
-            foreach (Contour contour in this.contours)
+            foreach (var contour in this.contours)
             {
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
                     var pts = new ScreenPoint[contour.Points.Count];
                     {
                         int i = 0;
-                        foreach (IDataPoint pt in contour.Points)
+                        foreach (var pt in contour.Points)
                         {
                             pts[i++] = this.XAxis.Transform(pt.X, pt.Y, this.YAxis);
                         }
@@ -315,12 +315,12 @@ namespace OxyPlot
                 }
             }
 
-            foreach (ContourLabel cl in contourLabels)
+            foreach (var cl in contourLabels)
             {
                 this.RenderLabelBackground(rc, cl);
             }
 
-            foreach (ContourLabel cl in contourLabels)
+            foreach (var cl in contourLabels)
             {
                 this.RenderLabel(rc, cl);
             }
@@ -473,7 +473,7 @@ namespace OxyPlot
         private ContourSegment FindConnectedSegment(DataPoint point, double contourLevel, double eps, out bool reverse)
         {
             reverse = false;
-            foreach (ContourSegment s in this.segments)
+            foreach (var s in this.segments)
             {
                 if (!AreClose(s.ContourLevel, contourLevel, eps))
                 {

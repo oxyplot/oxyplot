@@ -94,7 +94,7 @@ namespace OxyPlot
 
             OxyRect clippingRect = this.GetClippingRect();
 
-            foreach (HighLowItem v in this.items)
+            foreach (var v in this.items)
             {
                 if (!this.IsValidPoint(v, this.XAxis, this.YAxis))
                 {

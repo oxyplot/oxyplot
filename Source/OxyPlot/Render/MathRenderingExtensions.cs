@@ -13,38 +13,55 @@ namespace OxyPlot
     /// </summary>
     public static class MathRenderingExtensions
     {
-        #region Constants and Fields
+        #region Constructors and Destructors
 
         /// <summary>
-        ///   The subscript alignment.
+        ///   Initializes static members of the <see cref = "MathRenderingExtensions" /> class.
         /// </summary>
-        private static double SUB_ALIGNMENT = 0.6;
+        static MathRenderingExtensions()
+        {
+            SubAlignment = 0.6;
+            SubSize = 0.62;
+            SuperAlignment = 0;
+            SuperSize = 0.62;
+        }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        ///   The subscript size.
+        ///   Gets or sets the subscript alignment.
         /// </summary>
-        private static double SUB_SIZE = 0.62;
+        private static double SubAlignment { get; set; }
 
         /// <summary>
-        ///   The superscript alignment.
+        ///   Gets or sets the subscript size.
         /// </summary>
-        private static double SUPER_ALIGNMENT;
+        private static double SubSize { get; set; }
 
         /// <summary>
-        ///   The superscript size.
+        ///   Gets or sets the superscript alignment.
         /// </summary>
-        private static double SUPER_SIZE = 0.62;
+        private static double SuperAlignment { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the superscript size.
+        /// </summary>
+        private static double SuperSize { get; set; }
 
         #endregion
 
         #region Public Methods
 
         /// <summary>
-        /// Draws text supporting sub- and superscript.
-        ///   Subscript: H_{2}O
+        /// Draws text containing sub- and superscript.
+        /// </summary>
+        /// <example>
+        /// Subscript: H_{2}O
         ///   Superscript: E=mc^{2}
         ///   Both: A^{2}_{i,j}
-        /// </summary>
+        /// </example>
         /// <param name="rc">
         /// The rc.
         /// </param>
@@ -79,6 +96,7 @@ namespace OxyPlot
         /// if set to <c>true</c> measure the size of the text.
         /// </param>
         /// <returns>
+        /// The size of the text.
         /// </returns>
         public static OxySize DrawMathText(
             this IRenderContext rc, 
@@ -97,8 +115,6 @@ namespace OxyPlot
             {
                 return OxySize.Empty;
             }
-
-            // todo: support sub/superscript math notation also with angled text...
 
             if (angle == 0 && (text.Contains("^{") || text.Contains("_{")))
             {
@@ -159,6 +175,7 @@ namespace OxyPlot
         /// The font weight.
         /// </param>
         /// <returns>
+        /// The size of the text.
         /// </returns>
         public static OxySize MeasureMathText(
             this IRenderContext rc, string text, string fontFamily, double fontSize, double fontWeight)
@@ -206,6 +223,7 @@ namespace OxyPlot
         /// The measure only.
         /// </param>
         /// <returns>
+        /// The size of the text.
         /// </returns>
         private static OxySize InternalDrawMathText(
             IRenderContext rc, 
@@ -225,25 +243,16 @@ namespace OxyPlot
             double maxHeight = 0;
 
             // http://en.wikipedia.org/wiki/Subscript_and_superscript
-            double ySup = y + fontSize * SUPER_ALIGNMENT;
-            double fsSup = fontSize * SUPER_SIZE;
-            double ySub = y + fontSize * SUB_ALIGNMENT;
-            double fsSub = fontSize * SUB_SIZE;
+            double superscriptY = y + fontSize * SuperAlignment;
+            double superscriptFontSize = fontSize * SuperSize;
+            double subscriptY = y + fontSize * SubAlignment;
+            double subscriptFontSize = fontSize * SubSize;
 
             Func<double, double, string, double, OxySize> drawText = (xb, yb, text, fSize) =>
                 {
                     if (!measureOnly)
                     {
-                        rc.DrawText(
-                            new ScreenPoint(xb, yb), 
-                            text, 
-                            textColor, 
-                            fontFamily, 
-                            fSize, 
-                            fontWeight, 
-                            0, 
-                            HorizontalTextAlign.Left, 
-                            VerticalTextAlign.Top);
+                        rc.DrawText(new ScreenPoint(xb, yb), text, textColor, fontFamily, fSize, fontWeight);
                     }
 
                     return rc.MeasureText(text, fontFamily, fSize, fontWeight);
@@ -259,7 +268,7 @@ namespace OxyPlot
                     {
                         string supString = s.Substring(i + 2, i1 - i - 2);
                         i = i1 + 1;
-                        OxySize size = drawText(currentX, ySup, supString, fsSup);
+                        OxySize size = drawText(currentX, superscriptY, supString, superscriptFontSize);
                         if (currentX + size.Width > maximumX)
                         {
                             maximumX = currentX + size.Width;
@@ -277,7 +286,7 @@ namespace OxyPlot
                     {
                         string subString = s.Substring(i + 2, i1 - i - 2);
                         i = i1 + 1;
-                        OxySize size = drawText(currentX, ySub, subString, fsSub);
+                        OxySize size = drawText(currentX, subscriptY, subString, subscriptFontSize);
                         if (currentX + size.Width > maximumX)
                         {
                             maximumX = currentX + size.Width;

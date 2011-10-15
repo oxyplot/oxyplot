@@ -186,7 +186,7 @@ namespace OxyPlot
             var linePoints = new List<ScreenPoint>();
             var markerPoints = new List<ScreenPoint>();
             double previousY = double.NaN;
-            foreach (IDataPoint point in this.Points)
+            foreach (var point in this.Points)
             {
                 if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
                 {

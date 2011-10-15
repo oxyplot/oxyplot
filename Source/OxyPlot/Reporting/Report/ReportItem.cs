@@ -30,7 +30,7 @@ namespace OxyPlot.Reporting
         #region Public Properties
 
         /// <summary>
-        ///   Gets Children.
+        ///   Gets the children.
         /// </summary>
         public Collection<ReportItem> Children { get; private set; }
 
@@ -44,7 +44,7 @@ namespace OxyPlot.Reporting
         #region Public Methods
 
         /// <summary>
-        /// The add.
+        /// Adds a report item to the report.
         /// </summary>
         /// <param name="child">
         /// The child.
@@ -55,7 +55,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The add drawing.
+        /// Adds a drawing to the report.
         /// </summary>
         /// <param name="content">
         /// The content.
@@ -69,7 +69,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The add equation.
+        /// Adds an equation to the report.
         /// </summary>
         /// <param name="equation">
         /// The equation.
@@ -83,7 +83,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The add header.
+        /// Adds a header to the report.
         /// </summary>
         /// <param name="level">
         /// The level.
@@ -97,7 +97,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The add image.
+        /// Adds an image to the report.
         /// </summary>
         /// <param name="src">
         /// The src.
@@ -111,7 +111,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The add items table.
+        /// Adds an items table to the report.
         /// </summary>
         /// <param name="title">
         /// The title.
@@ -128,7 +128,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The add paragraph.
+        /// Adds a paragraph to the report.
         /// </summary>
         /// <param name="content">
         /// The content.
@@ -139,15 +139,16 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The add property table.
+        /// Adds a property table to the report.
         /// </summary>
         /// <param name="title">
         /// The title.
         /// </param>
         /// <param name="obj">
-        /// The obj.
+        /// The object.
         /// </param>
         /// <returns>
+        /// A PropertyTable.
         /// </returns>
         public PropertyTable AddPropertyTable(string title, object obj)
         {
@@ -190,7 +191,7 @@ namespace OxyPlot.Reporting
         {
             this.Update();
             this.WriteContent(w);
-            foreach (ReportItem child in this.Children)
+            foreach (var child in this.Children)
             {
                 child.Write(w);
             }
@@ -254,7 +255,7 @@ namespace OxyPlot.Reporting
                 figure.FigureNumber = fc.FigureNumber++;
             }
 
-            foreach (ReportItem child in this.Children)
+            foreach (var child in this.Children)
             {
                 child.UpdateFigureNumbers(fc);
             }

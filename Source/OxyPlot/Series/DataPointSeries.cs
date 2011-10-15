@@ -245,7 +245,7 @@ namespace OxyPlot
             // Use the mapping to generate the points
             if (this.Mapping != null)
             {
-                foreach (object item in this.ItemsSource)
+                foreach (var item in this.ItemsSource)
                 {
                     points.Add(this.Mapping(item));
                 }
@@ -258,7 +258,7 @@ namespace OxyPlot
             // If DataFields are set, this is not used
             if (this.DataFieldX == null || this.DataFieldY == null)
             {
-                foreach (object item in this.ItemsSource)
+                foreach (var item in this.ItemsSource)
                 {
                     var dp = item as IDataPoint;
                     if (dp != null)
@@ -310,7 +310,7 @@ namespace OxyPlot
             PropertyInfo piy = null;
             Type t = null;
 
-            foreach (object o in itemsSource)
+            foreach (var o in itemsSource)
             {
                 if (pix == null || o.GetType() != t)
                 {
@@ -356,7 +356,7 @@ namespace OxyPlot
             double maxx = this.MaxX;
             double maxy = this.MaxY;
 
-            foreach (IDataPoint pt in pts)
+            foreach (var pt in pts)
             {
                 if (!this.IsValidPoint(pt, this.XAxis, this.YAxis))
                 {

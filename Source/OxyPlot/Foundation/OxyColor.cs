@@ -182,7 +182,7 @@ namespace OxyPlot
         {
             Type t = typeof(OxyColors);
             FieldInfo[] colors = t.GetFields(BindingFlags.Public | BindingFlags.Static);
-            foreach (FieldInfo color in colors)
+            foreach (var color in colors)
             {
                 object c = color.GetValue(null);
                 if (this.Equals(c))

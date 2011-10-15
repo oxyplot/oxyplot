@@ -219,7 +219,7 @@ namespace OxyPlot.Reporting
             // update actual widths of all columns
             double totalWeight = 0;
             double totalWidth = 0;
-            foreach (TableColumn c in this.Columns)
+            foreach (var c in this.Columns)
             {
                 if (double.IsNaN(c.Width))
                 {
@@ -246,7 +246,7 @@ namespace OxyPlot.Reporting
             }
 
             double w = this.ActualWidth - totalWidth;
-            foreach (TableColumn c in this.Columns)
+            foreach (var c in this.Columns)
             {
                 if (c.Width < 0 && totalWeight != 0)
                 {

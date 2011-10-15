@@ -139,7 +139,7 @@ namespace OxyPlot
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             int i = 0;
-            foreach (OxyRect r in this.ActualBarRectangles)
+            foreach (var r in this.ActualBarRectangles)
             {
                 if (point.X >= r.Left && point.X <= r.Right && point.Y >= r.Top && point.Y <= r.Bottom)
                 {

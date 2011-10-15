@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11 Express for Windows 8
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlotM", "OxyPlot\OxyPlotM.csproj", "{442B7161-A60A-473B-94E5-073559ECF851}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Metro", "OxyPlot.Metro\OxyPlot.Metro.csproj", "{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{442B7161-A60A-473B-94E5-073559ECF851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{442B7161-A60A-473B-94E5-073559ECF851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{442B7161-A60A-473B-94E5-073559ECF851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{442B7161-A60A-473B-94E5-073559ECF851}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

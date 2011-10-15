@@ -70,20 +70,19 @@ namespace OxyPlot.Reporting
             this.MaxLineLength = 60;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WikiReportWriter"/> class.
+        #endregion
+
+        // <summary>
+        // Initializes a new instance of the <see cref="WikiReportWriter"/> class.
         /// </summary>
         /// <param name="path">
         /// The path.
         /// </param>
-        public WikiReportWriter(string path)
-            : base(path)
-        {
-            this.MaxLineLength = 60;
-        }
-
-        #endregion
-
+        // public WikiReportWriter(string path)
+        // : base(path)
+        // {
+        // this.MaxLineLength = 60;
+        // }
         #region Public Properties
 
         /// <summary>
@@ -206,7 +205,7 @@ namespace OxyPlot.Reporting
             for (int j = 0; j < cols; j++)
             {
                 columnWidth[j] = 0;
-                foreach (TableRow tr in t.Rows)
+                foreach (var tr in t.Rows)
                 {
                     TableCell cell = tr.Cells[j];
                     string text = cell.Content;
@@ -217,7 +216,7 @@ namespace OxyPlot.Reporting
             }
 
             // WriteLine("-".Repeat(totalLength));
-            foreach (TableRow tr in t.Rows)
+            foreach (var tr in t.Rows)
             {
                 for (int j = 0; j < cols; j++)
                 {
