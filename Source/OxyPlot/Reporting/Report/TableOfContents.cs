@@ -81,7 +81,7 @@ namespace OxyPlot.Reporting
                 this.Contents.Add(new ContentItem { Chapter = h.Chapter, Title = h.Text });
             }
 
-            foreach (ReportItem c in item.Children)
+            foreach (var c in item.Children)
             {
                 this.Search(c, hh);
             }

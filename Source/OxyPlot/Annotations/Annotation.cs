@@ -34,7 +34,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets Layer.
+        ///   Gets or sets the layer.
         /// </summary>
         public AnnotationLayer Layer { get; set; }
 

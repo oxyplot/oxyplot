@@ -68,7 +68,7 @@ namespace OxyPlot
         /// </param>
         public virtual void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
-            foreach (OxyRect r in rectangles)
+            foreach (var r in rectangles)
             {
                 this.DrawEllipse(r, fill, stroke, thickness);
             }
@@ -244,7 +244,7 @@ namespace OxyPlot
         /// </param>
         public virtual void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
-            foreach (OxyRect r in rectangles)
+            foreach (var r in rectangles)
             {
                 this.DrawRectangle(r, fill, stroke, thickness);
             }

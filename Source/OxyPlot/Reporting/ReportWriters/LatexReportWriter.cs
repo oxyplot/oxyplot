@@ -49,6 +49,8 @@ namespace OxyPlot.Reporting
             this.WriteLatexHeader(title, author, fontsize, documentType);
         }
 
+#if !METRO
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LatexReportWriter"/> class.
         /// </summary>
@@ -73,6 +75,8 @@ namespace OxyPlot.Reporting
         {
             this.WriteLatexHeader(title, author, fontsize, documentType);
         }
+
+#endif
 
         #endregion
 
@@ -266,7 +270,7 @@ namespace OxyPlot.Reporting
             int columns = t.Columns.Count;
             string cols = "|";
 
-            foreach (TableColumn t1 in t.Columns)
+            foreach (var t1 in t.Columns)
             {
                 cols += t1.Alignment.ToString().ToLower()[0];
                 cols += "|";
@@ -277,7 +281,7 @@ namespace OxyPlot.Reporting
             this.WriteIndentedLine(@"\begin{tabular}[h]{" + cols + "}");
             this.Indent();
             this.WriteIndentedLine(@"\hline");
-            foreach (TableRow row in t.Rows)
+            foreach (var row in t.Rows)
             {
                 this.WriteIndent();
                 for (int j = 0; j < columns; j++)

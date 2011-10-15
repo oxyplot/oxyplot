@@ -102,7 +102,7 @@ namespace OxyPlot
             Func<double, double> fx, Func<double, double> fy, double t0, double t1, double dt, string title = null)
         {
             this.Title = title;
-            foreach (IDataPoint pt in GetPoints(fx, fy, t0, t1, dt))
+            foreach (var pt in GetPoints(fx, fy, t0, t1, dt))
             {
                 this.Points.Add(pt);
             }

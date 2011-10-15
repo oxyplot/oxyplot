@@ -18,19 +18,31 @@ namespace OxyPlot
     {
         #region Constants and Fields
 
-        /// <summary>
-        ///   The s.
-        /// </summary>
-        private Stream s;
+#if !METRO
 
         /// <summary>
-        ///   The w.
+        ///   The stream.
+        /// </summary>
+        private Stream s;
+#endif
+
+        /// <summary>
+        ///   The xml writer.
         /// </summary>
         private XmlWriter w;
 
         #endregion
 
         #region Constructors and Destructors
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "XmlWriterBase" /> class.
+        /// </summary>
+        public XmlWriterBase()
+        {
+        }
+
+#if !METRO
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlWriterBase"/> class.
@@ -43,6 +55,8 @@ namespace OxyPlot
             this.s = File.OpenWrite(path);
             this.w = XmlWriter.Create(this.s, new XmlWriterSettings { Indent = true, Encoding = Encoding.UTF8 });
         }
+
+#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlWriterBase"/> class.
@@ -64,6 +78,7 @@ namespace OxyPlot
         /// </summary>
         public virtual void Close()
         {
+#if !METRO
             if (this.w == null)
             {
                 return;
@@ -77,6 +92,8 @@ namespace OxyPlot
                 this.s.Close();
                 this.s = null;
             }
+
+#endif
         }
 
         /// <summary>

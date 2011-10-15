@@ -7,13 +7,13 @@
 namespace Oxyplot.WindowsForms
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Drawing;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
     using OxyPlot;
+    using OxyPlot.WindowsForms;
 
     /// <summary>
     /// Represents a control that displays a plot.
@@ -24,37 +24,27 @@ namespace Oxyplot.WindowsForms
         #region Constants and Fields
 
         /// <summary>
-        /// The pan action.
-        /// </summary>
-        private readonly PanAction panAction;
-
-        /// <summary>
-        /// The tracker action.
-        /// </summary>
-        private readonly TrackerAction trackerAction;
-
-        /// <summary>
-        /// The zoom action.
-        /// </summary>
-        private readonly ZoomAction zoomAction;
-
-        /// <summary>
-        /// The is model invalidated.
+        ///   The is model invalidated.
         /// </summary>
         private bool isModelInvalidated;
 
         /// <summary>
-        /// The model.
+        ///   The model.
         /// </summary>
         private PlotModel model;
 
         /// <summary>
-        /// The update data.
+        ///   The mouse manipulator.
+        /// </summary>
+        private ManipulatorBase mouseManipulator;
+
+        /// <summary>
+        ///   The update data.
         /// </summary>
         private bool updateData = true;
 
         /// <summary>
-        /// The zoom rectangle.
+        ///   The zoom rectangle.
         /// </summary>
         private Rectangle zoomRectangle;
 
@@ -63,18 +53,12 @@ namespace Oxyplot.WindowsForms
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Plot"/> class.
+        ///   Initializes a new instance of the <see cref = "Plot" /> class.
         /// </summary>
         public Plot()
         {
             this.DoubleBuffered = true;
             this.Model = new PlotModel();
-
-            this.panAction = new PanAction(this);
-            this.zoomAction = new ZoomAction(this);
-            this.trackerAction = new TrackerAction(this);
-
-            this.MouseActions = new List<OxyMouseAction> { this.panAction, this.zoomAction, this.trackerAction };
         }
 
         #endregion
@@ -94,7 +78,7 @@ namespace Oxyplot.WindowsForms
         }
 
         /// <summary>
-        /// Gets or sets Model.
+        ///   Gets or sets Model.
         /// </summary>
         [Browsable(false)]
         [DefaultValue(null)]
@@ -112,20 +96,15 @@ namespace Oxyplot.WindowsForms
             }
         }
 
-        /// <summary>
-        /// Gets MouseActions.
-        /// </summary>
-        public List<OxyMouseAction> MouseActions { get; private set; }
-
         #endregion
 
         #region Public Methods
 
         /// <summary>
-        /// The get axes from point.
+        /// Get the axes from a point.
         /// </summary>
         /// <param name="pt">
-        /// The pt.
+        /// The point.
         /// </param>
         /// <param name="xaxis">
         /// The xaxis.
@@ -146,10 +125,10 @@ namespace Oxyplot.WindowsForms
         }
 
         /// <summary>
-        /// The get series from point.
+        /// Get the series from a point.
         /// </summary>
         /// <param name="pt">
-        /// The pt.
+        /// The ppint.
         /// </param>
         /// <param name="limit">
         /// The limit.
@@ -247,6 +226,34 @@ namespace Oxyplot.WindowsForms
         }
 
         /// <summary>
+        /// Sets the cursor.
+        /// </summary>
+        /// <param name="cursor">
+        /// The cursor.
+        /// </param>
+        public void SetCursor(OxyCursor cursor)
+        {
+            switch (cursor)
+            {
+                case OxyCursor.Arrow:
+                    this.Cursor = Cursors.Arrow;
+                    break;
+                case OxyCursor.Cross:
+                    this.Cursor = Cursors.Cross;
+                    break;
+                case OxyCursor.SizeAll:
+                    this.Cursor = Cursors.SizeAll;
+                    break;
+                case OxyCursor.SizeNWSE:
+                    this.Cursor = Cursors.SizeNWSE;
+                    break;
+                case OxyCursor.None:
+                    this.Cursor = null;
+                    break;
+            }
+        }
+
+        /// <summary>
         /// The show tracker.
         /// </summary>
         /// <param name="data">
@@ -292,7 +299,7 @@ namespace Oxyplot.WindowsForms
         /// </summary>
         public void ZoomAll()
         {
-            foreach (Axis a in this.Model.Axes)
+            foreach (var a in this.Model.Axes)
             {
                 a.Reset();
             }
@@ -344,32 +351,16 @@ namespace Oxyplot.WindowsForms
                 switch (e.KeyCode)
                 {
                     case Keys.R:
-                        SetClipboardText(this.ActualModel.CreateTextReport());
+                        this.SetClipboardText(this.ActualModel.CreateTextReport());
                         break;
                     case Keys.C:
-                        SetClipboardText(this.ActualModel.ToCode());
+                        this.SetClipboardText(this.ActualModel.ToCode());
                         break;
                     case Keys.X:
 
                         // Clipboard.SetText(this.ToXml());
                         break;
                 }
-            }
-        }
-
-        private void SetClipboardText(string text)
-        {
-            try
-            {
-                // todo: can't get the following solution to work
-                // http://stackoverflow.com/questions/5707990/requested-clipboard-operation-did-not-succeed
-
-                Clipboard.SetText(text);
-            }
-            catch (ExternalException ee)
-            {
-                // Requested Clipboard operation did not succeed.
-                MessageBox.Show(this, ee.Message, "OxyPlot");
             }
         }
 
@@ -383,38 +374,18 @@ namespace Oxyplot.WindowsForms
         {
             base.OnMouseDown(e);
 
+            if (this.mouseManipulator != null)
+            {
+                return;
+            }
+
             this.Focus();
             this.Capture = true;
+            this.mouseManipulator = this.GetManipulator(e);
 
-            bool control = ModifierKeys == Keys.Control;
-            bool shift = ModifierKeys == Keys.Shift;
-            bool alt = ModifierKeys == Keys.Alt;
-
-            OxyMouseButton button = OxyMouseButton.Left;
-            if (e.Button == MouseButtons.Middle)
+            if (this.mouseManipulator != null)
             {
-                button = OxyMouseButton.Middle;
-            }
-
-            if (e.Button == MouseButtons.Right)
-            {
-                button = OxyMouseButton.Right;
-            }
-
-            if (e.Button == MouseButtons.XButton1)
-            {
-                button = OxyMouseButton.XButton1;
-            }
-
-            if (e.Button == MouseButtons.XButton2)
-            {
-                button = OxyMouseButton.XButton2;
-            }
-
-            var p = new ScreenPoint(e.X, e.Y);
-            foreach (OxyMouseAction a in this.MouseActions)
-            {
-                a.OnMouseDown(p, button, e.Clicks, control, shift, alt);
+                this.mouseManipulator.Started(this.CreateManipulationEventArgs(e));
             }
         }
 
@@ -427,57 +398,50 @@ namespace Oxyplot.WindowsForms
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            bool control = ModifierKeys == Keys.Control;
-            bool shift = ModifierKeys == Keys.Shift;
-            bool alt = ModifierKeys == Keys.Alt;
-            var p = new ScreenPoint(e.X, e.Y);
-            foreach (OxyMouseAction a in this.MouseActions)
+            if (this.mouseManipulator != null)
             {
-                a.OnMouseMove(p, control, shift, alt);
+                this.mouseManipulator.Delta(this.CreateManipulationEventArgs(e));
             }
         }
 
         /// <summary>
-        /// The on mouse up.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
-            foreach (OxyMouseAction a in this.MouseActions)
+            if (this.mouseManipulator != null)
             {
-                a.OnMouseUp();
+                this.mouseManipulator.Completed(this.CreateManipulationEventArgs(e));
             }
+
+            this.mouseManipulator = null;
 
             this.Capture = false;
         }
 
         /// <summary>
-        /// The on mouse wheel.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseWheel"/> event.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
-            bool control = ModifierKeys == Keys.Control;
-            bool shift = ModifierKeys == Keys.Shift;
-            bool alt = ModifierKeys == Keys.Alt;
-            var p = new ScreenPoint(e.X, e.Y);
-            foreach (OxyMouseAction a in this.MouseActions)
-            {
-                a.OnMouseWheel(p, e.Delta, control, shift, alt);
-            }
+            bool isControlDown = ModifierKeys == Keys.Control;
+            var m = new ZoomStepManipulator(this, e.Delta * 0.001, isControlDown);
+            m.Started(new ManipulationEventArgs(e.Location.ToScreenPoint()));
         }
 
         /// <summary>
-        /// The on paint.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.Paint"/> event.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -516,15 +480,103 @@ namespace Oxyplot.WindowsForms
         }
 
         /// <summary>
-        /// The on resize.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.Resize"/> event.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// An <see cref="T:System.EventArgs"/> that contains the event data.
         /// </param>
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
             this.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Creates the manipulation event args.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
+        /// </param>
+        /// <returns>
+        /// A manipulation event args object.
+        /// </returns>
+        private ManipulationEventArgs CreateManipulationEventArgs(MouseEventArgs e)
+        {
+            return new ManipulationEventArgs(e.Location.ToScreenPoint());
+        }
+
+        /// <summary>
+        /// The get manipulator.
+        /// </summary>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        private ManipulatorBase GetManipulator(MouseEventArgs e)
+        {
+            bool control = ModifierKeys == Keys.Control;
+            bool shift = ModifierKeys == Keys.Shift;
+            bool alt = ModifierKeys == Keys.Alt;
+
+            bool lmb = e.Button == MouseButtons.Left;
+            bool rmb = e.Button == MouseButtons.Right;
+            bool mmb = e.Button == MouseButtons.Middle;
+            bool x1b = e.Button == MouseButtons.XButton1;
+            bool x2b = e.Button == MouseButtons.XButton2;
+
+            // MMB / control RMB
+            if (mmb || (control && rmb))
+            {
+                if (e.Clicks == 2)
+                {
+                    return new ResetManipulator(this);
+                }
+
+                return new ZoomRectangleManipulator(this);
+            }
+
+            // Right mouse button
+            if (rmb)
+            {
+                return new PanManipulator(this);
+            }
+
+            // Left mouse button
+            if (lmb)
+            {
+                return new TrackerManipulator(this) { Snap = !control, PointsOnly = shift };
+            }
+
+            // XButtons are zoom-stepping
+            if (x1b || x2b)
+            {
+                double d = x1b ? 0.05 : -0.05;
+                return new ZoomStepManipulator(this, d, control);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// The set clipboard text.
+        /// </summary>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        private void SetClipboardText(string text)
+        {
+            try
+            {
+                // todo: can't get the following solution to work
+                // http://stackoverflow.com/questions/5707990/requested-clipboard-operation-did-not-succeed
+                Clipboard.SetText(text);
+            }
+            catch (ExternalException ee)
+            {
+                // Requested Clipboard operation did not succeed.
+                MessageBox.Show(this, ee.Message, "OxyPlot");
+            }
         }
 
         #endregion

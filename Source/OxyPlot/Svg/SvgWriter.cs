@@ -50,6 +50,8 @@ namespace OxyPlot
             this.WriteHeader(width, height);
         }
 
+#if !METRO
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SvgWriter"/> class.
         /// </summary>
@@ -69,6 +71,8 @@ namespace OxyPlot
             this.NumberFormat = "0.####";
             this.WriteHeader(width, height);
         }
+
+#endif
 
         #endregion
 
@@ -497,7 +501,7 @@ namespace OxyPlot
         {
             var sb = new StringBuilder();
             string fmt = "{0:" + this.NumberFormat + "},{1:" + this.NumberFormat + "} ";
-            foreach (ScreenPoint p in pts)
+            foreach (var p in pts)
             {
                 sb.AppendFormat(CultureInfo.InvariantCulture, fmt, p.X, p.Y);
             }

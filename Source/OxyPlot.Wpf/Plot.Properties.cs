@@ -10,13 +10,14 @@ namespace OxyPlot.Wpf
     using System.Globalization;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
     using System.Windows.Media;
 
     /// <summary>
-    /// Represents the WPF Plot control. 
+    /// Represents the WPF Plot control.
     /// </summary>
     /// <remarks>
-    ///   This file contains dependency properties used for defining the plot in XAML.
+    /// This file contains dependency properties used for defining the plot in XAML.
     ///   These properties are only used when Model is null.
     ///   In this case an internal PlotModel is created and the dependency properties are copied from the control to the 
     ///   internal PlotModel.
@@ -32,7 +33,7 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("AutoAdjustPlotMargins", typeof(bool), typeof(Plot), new PropertyMetadata(true));
 
         /// <summary>
-        /// The culture property.
+        ///   The culture property.
         /// </summary>
         public static readonly DependencyProperty CultureProperty = DependencyProperty.Register(
             "Culture", typeof(CultureInfo), typeof(Plot), new UIPropertyMetadata(null));
@@ -107,9 +108,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendFontWeightProperty =
             DependencyProperty.Register(
-                "LegendFontWeight",
-                typeof(FontWeight),
-                typeof(Plot),
+                "LegendFontWeight", 
+                typeof(FontWeight), 
+                typeof(Plot), 
                 new PropertyMetadata(FontWeights.Normal, AppearanceChanged));
 
         /// <summary>
@@ -117,9 +118,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendItemAlignmentProperty =
             DependencyProperty.Register(
-                "LegendItemAlignment",
-                typeof(HorizontalAlignment),
-                typeof(Plot),
+                "LegendItemAlignment", 
+                typeof(HorizontalAlignment), 
+                typeof(Plot), 
                 new PropertyMetadata(HorizontalAlignment.Left, AppearanceChanged));
 
         /// <summary>
@@ -127,9 +128,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendItemOrderProperty =
             DependencyProperty.Register(
-                "LegendItemOrder",
-                typeof(LegendItemOrder),
-                typeof(Plot),
+                "LegendItemOrder", 
+                typeof(LegendItemOrder), 
+                typeof(Plot), 
                 new PropertyMetadata(LegendItemOrder.Normal, AppearanceChanged));
 
         /// <summary>
@@ -150,9 +151,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendOrientationProperty =
             DependencyProperty.Register(
-                "LegendOrientation",
-                typeof(LegendOrientation),
-                typeof(Plot),
+                "LegendOrientation", 
+                typeof(LegendOrientation), 
+                typeof(Plot), 
                 new PropertyMetadata(LegendOrientation.Vertical, AppearanceChanged));
 
         /// <summary>
@@ -166,18 +167,18 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendPlacementProperty =
             DependencyProperty.Register(
-                "LegendPlacement",
-                typeof(LegendPlacement),
-                typeof(Plot),
+                "LegendPlacement", 
+                typeof(LegendPlacement), 
+                typeof(Plot), 
                 new PropertyMetadata(LegendPlacement.Inside, AppearanceChanged));
 
         /// <summary>
         ///   The legend position property.
         /// </summary>
         public static readonly DependencyProperty LegendPositionProperty = DependencyProperty.Register(
-            "LegendPosition",
-            typeof(LegendPosition),
-            typeof(Plot),
+            "LegendPosition", 
+            typeof(LegendPosition), 
+            typeof(Plot), 
             new PropertyMetadata(LegendPosition.RightTop, AppearanceChanged));
 
         /// <summary>
@@ -199,9 +200,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendSymbolPlacementProperty =
             DependencyProperty.Register(
-                "LegendSymbolPlacement",
-                typeof(LegendSymbolPlacement),
-                typeof(Plot),
+                "LegendSymbolPlacement", 
+                typeof(LegendSymbolPlacement), 
+                typeof(Plot), 
                 new PropertyMetadata(LegendSymbolPlacement.Left, AppearanceChanged));
 
         /// <summary>
@@ -223,9 +224,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendTitleFontWeightProperty =
             DependencyProperty.Register(
-                "LegendTitleFontWeight",
-                typeof(FontWeight),
-                typeof(Plot),
+                "LegendTitleFontWeight", 
+                typeof(FontWeight), 
+                typeof(Plot), 
                 new PropertyMetadata(FontWeights.Bold, AppearanceChanged));
 
         /// <summary>
@@ -235,13 +236,20 @@ namespace OxyPlot.Wpf
             "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
 
         /// <summary>
+        ///   The orthographic toggle gesture property.
+        /// </summary>
+        public static readonly DependencyProperty OrthographicToggleGestureProperty =
+            DependencyProperty.Register(
+                "ResetAxesGesture", typeof(InputGesture), typeof(Plot), new UIPropertyMetadata(new KeyGesture(Key.Home)));
+
+        /// <summary>
         ///   The plot area border color property.
         /// </summary>
         public static readonly DependencyProperty PlotAreaBorderColorProperty =
             DependencyProperty.Register(
-                "PlotAreaBorderColor",
-                typeof(Color),
-                typeof(Plot),
+                "PlotAreaBorderColor", 
+                typeof(Color), 
+                typeof(Plot), 
                 new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
@@ -255,9 +263,9 @@ namespace OxyPlot.Wpf
         ///   The plot margins property.
         /// </summary>
         public static readonly DependencyProperty PlotMarginsProperty = DependencyProperty.Register(
-            "PlotMargins",
-            typeof(Thickness),
-            typeof(Plot),
+            "PlotMargins", 
+            typeof(Thickness), 
+            typeof(Plot), 
             new PropertyMetadata(new Thickness(60, 4, 4, 40), AppearanceChanged));
 
         /// <summary>
@@ -278,9 +286,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty SubtitleFontWeightProperty =
             DependencyProperty.Register(
-                "SubtitleFontWeight",
-                typeof(FontWeight),
-                typeof(Plot),
+                "SubtitleFontWeight", 
+                typeof(FontWeight), 
+                typeof(Plot), 
                 new PropertyMetadata(FontWeights.Normal, AppearanceChanged));
 
         /// <summary>
@@ -312,9 +320,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty TitleFontWeightProperty =
             DependencyProperty.Register(
-                "TitleFontWeight",
-                typeof(FontWeight),
-                typeof(Plot),
+                "TitleFontWeight", 
+                typeof(FontWeight), 
+                typeof(Plot), 
                 new PropertyMetadata(FontWeights.Bold, AppearanceChanged));
 
         /// <summary>
@@ -356,6 +364,11 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
+        ///   Gets the reset axes command.
+        /// </summary>
+        public static RoutedCommand ResetAxesCommand { get; private set; }
+
+        /// <summary>
         ///   Gets or sets a value indicating whether AutoAdjustPlotMargins.
         /// </summary>
         public bool AutoAdjustPlotMargins
@@ -384,7 +397,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Culture.
+        ///   Gets or sets Culture.
         /// </summary>
         public CultureInfo Culture
         {
@@ -884,6 +897,23 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(PlotTypeProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the reset axes gesture.
+        /// </summary>
+        /// <value>The reset axes gesture.</value>
+        public InputGesture ResetAxesGesture
+        {
+            get
+            {
+                return (InputGesture)this.GetValue(OrthographicToggleGestureProperty);
+            }
+
+            set
+            {
+                this.SetValue(OrthographicToggleGestureProperty, value);
             }
         }
 

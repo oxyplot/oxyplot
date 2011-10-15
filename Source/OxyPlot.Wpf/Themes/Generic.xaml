@@ -34,7 +34,8 @@
 	<Style TargetType="{x:Type local:Plot}">
 		<Setter Property="Background" Value="White" />
 		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
-		<Setter Property="DefaultTrackerTemplate">
+        <Setter Property="IsManipulationEnabled" Value="true" />
+        <Setter Property="DefaultTrackerTemplate">
 			<Setter.Value>
 				<ControlTemplate>
 					<local:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">

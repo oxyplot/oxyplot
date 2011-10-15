@@ -143,7 +143,7 @@ namespace OxyPlot
         /// </returns>
         public static string FormatConstructor(Type type, string format, params object[] values)
         {
-            return "new " + type.Name + "(" + FormatCode(format, values) + ")";
+            return "new " + TypeHelper.GetTypeName(type) + "(" + FormatCode(format, values) + ")";
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace OxyPlot
             object defaultInstance = Activator.CreateInstance(type);
             string varName = this.GetNewVariableName(type);
             this.variables.Add(varName);
-            this.AppendLine("var {0} = new {1}();", varName, type.Name);
+            this.AppendLine("var {0} = new {1}();", varName, TypeHelper.GetTypeName(type));
             this.SetProperties(obj, varName, defaultInstance);
             return varName;
         }
@@ -195,7 +195,7 @@ namespace OxyPlot
         /// </param>
         private void AddChildren(string name, string collectionName, IEnumerable children)
         {
-            foreach (object child in children)
+            foreach (var child in children)
             {
                 string childName = this.Add(child);
                 this.AppendLine("{0}.{1}.Add({2});", name, collectionName, childName);
@@ -213,7 +213,7 @@ namespace OxyPlot
         /// </param>
         private void AddItems(string name, IList list)
         {
-            foreach (object item in list)
+            foreach (var item in list)
             {
                 var cgi = item as ICodeGenerating;
                 if (cgi != null)
@@ -289,7 +289,7 @@ namespace OxyPlot
         /// </typeparam>
         /// <returns>
         /// </returns>
-        private T GetFirstAttribute<T>(PropertyInfo pi) where T : class
+        private T GetFirstAttribute<T>(PropertyInfo pi) where T : Attribute
         {
             foreach (T a in pi.GetCustomAttributes(typeof(CodeGenerationAttribute), true))
             {
@@ -310,7 +310,7 @@ namespace OxyPlot
         /// </returns>
         private string GetNewVariableName(Type type)
         {
-            string prefix = type.Name;
+            string prefix = TypeHelper.GetTypeName(type);
             prefix = char.ToLower(prefix[0]) + prefix.Substring(1);
             int i = 1;
             while (this.variables.Contains(prefix + i))
@@ -322,14 +322,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Makes a valid variable of a string.
-        ///   Invalid characters will simply be removed.
+        /// Makes a valid variable name of a string. Invalid characters will simply be removed.
         /// </summary>
         /// <param name="title">
         /// The title.
         /// </param>
         /// <returns>
-        /// The make valid variable name.
+        /// A valid variable name.
         /// </returns>
         private string MakeValidVariableName(string title)
         {
@@ -355,8 +354,8 @@ namespace OxyPlot
         /// <summary>
         /// The set properties.
         /// </summary>
-        /// <param name="o">
-        /// The o.
+        /// <param name="instance">
+        /// The instance.
         /// </param>
         /// <param name="varName">
         /// The var name.
@@ -364,10 +363,11 @@ namespace OxyPlot
         /// <param name="defaultValues">
         /// The default values.
         /// </param>
-        private void SetProperties(object o, string varName, object defaultValues)
+        private void SetProperties(object instance, string varName, object defaultValues)
         {
-            Type type = o.GetType();
-            foreach (PropertyInfo pi in type.GetProperties())
+#if !METRO
+            Type type = instance.GetType();
+            foreach (var pi in type.GetProperties())
             {
                 // check the [CodeGeneration] attribute
                 var cga = this.GetFirstAttribute<CodeGenerationAttribute>(pi);
@@ -377,7 +377,7 @@ namespace OxyPlot
                 }
 
                 string name = varName + "." + pi.Name;
-                object value = pi.GetValue(o, null);
+                object value = pi.GetValue(instance, null);
                 object defaultValue = pi.GetValue(defaultValues, null);
 
                 // check if lists are equal
@@ -420,6 +420,8 @@ namespace OxyPlot
 
                 this.SetProperty(pi.PropertyType, name, value);
             }
+
+#endif
         }
 
         /// <summary>

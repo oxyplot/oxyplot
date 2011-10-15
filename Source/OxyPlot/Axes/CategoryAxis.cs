@@ -26,6 +26,7 @@ namespace OxyPlot
         public CategoryAxis()
         {
             this.Labels = new List<string>();
+            this.TickStyle = TickStyle.Outside;
             this.Position = AxisPosition.Bottom;
             this.MinimumPadding = 0;
             this.MaximumPadding = 0;
@@ -243,7 +244,7 @@ namespace OxyPlot
         {
             // count series that are using this axis
             this.AttachedSeriesCount = 0;
-            foreach (Series s in series)
+            foreach (var s in series)
             {
                 if (s.IsUsing(this))
                 {

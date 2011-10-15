@@ -100,6 +100,14 @@ namespace OxyPlot
         void Reset(IAxis axis);
 
         /// <summary>
+        /// Sets the cursor.
+        /// </summary>
+        /// <param name="cursor">
+        /// The cursor.
+        /// </param>
+        void SetCursor(OxyCursor cursor);
+
+        /// <summary>
         /// Shows the tracker.
         /// </summary>
         /// <param name="trackerHitResult">

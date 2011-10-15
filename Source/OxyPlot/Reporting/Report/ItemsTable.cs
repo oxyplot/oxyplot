@@ -16,6 +16,15 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class ItemsTable : Table
     {
+        #region Constants and Fields
+
+        /// <summary>
+        ///   The items.
+        /// </summary>
+        private IEnumerable items;
+
+        #endregion
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -50,7 +59,19 @@ namespace OxyPlot.Reporting
         ///   The table will be filled when this property is set.
         /// </summary>
         /// <value>The items.</value>
-        public IEnumerable Items { get; set; }
+        public IEnumerable Items
+        {
+            get
+            {
+                return this.items;
+            }
+
+            set
+            {
+                this.items = value;
+                this.UpdateItems();
+            }
+        }
 
         /// <summary>
         ///   Gets a value indicating whether ItemsInRows.
@@ -69,7 +90,7 @@ namespace OxyPlot.Reporting
         /// </returns>
         public bool HasHeader()
         {
-            foreach (var c in this.Fields)
+            foreach (ItemsTableField c in this.Fields)
             {
                 if (c.Header != null)
                 {
@@ -110,7 +131,7 @@ namespace OxyPlot.Reporting
                 row++;
             }
 
-            foreach (var item in items)
+            foreach (object item in items)
             {
                 for (int i = 0; i < this.Fields.Count; i++)
                 {
@@ -128,15 +149,6 @@ namespace OxyPlot.Reporting
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// The update.
-        /// </summary>
-        public override void Update()
-        {
-            base.Update();
-            this.UpdateItems();
         }
 
         /// <summary>

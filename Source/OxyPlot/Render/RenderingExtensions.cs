@@ -495,7 +495,7 @@ namespace OxyPlot
             double miny = clippingRect.Top;
             double maxy = clippingRect.Bottom;
 
-            foreach (ScreenPoint p in markerPoints)
+            foreach (var p in markerPoints)
             {
                 if (resolution > 1)
                 {

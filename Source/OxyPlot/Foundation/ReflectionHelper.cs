@@ -40,7 +40,7 @@ namespace OxyPlot
         {
             PropertyInfo pi = null;
             Type t = null;
-            foreach (object o in source)
+            foreach (var o in source)
             {
                 if (pi == null || o.GetType() != t)
                 {

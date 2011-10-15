@@ -31,6 +31,8 @@ namespace OxyPlot.Reporting
 
         #region Constructors and Destructors
 
+#if !METRO
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class.
         /// </summary>
@@ -39,6 +41,28 @@ namespace OxyPlot.Reporting
         /// </param>
         public HtmlReportWriter(string path)
             : base(path)
+        {
+            this.WriteHtmlElement();
+        }
+
+#endif
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class.
+        /// </summary>
+        /// <param name="stream">
+        /// The stream.
+        /// </param>
+        public HtmlReportWriter(Stream stream)
+            : base(stream)
+        {
+            this.WriteHtmlElement();
+        }
+
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
+        private void WriteHtmlElement()
         {
             this.WriteStartElement("html", "http://www.w3.org/1999/xhtml");
         }
@@ -189,7 +213,7 @@ namespace OxyPlot.Reporting
         {
             IList<TableColumn> columns = t.Columns;
 
-            foreach (TableColumn c in columns)
+            foreach (var c in columns)
             {
                 this.WriteStartElement("col");
                 this.WriteAttributeString("align", GetAlignmentString(c.Alignment));
@@ -201,7 +225,7 @@ namespace OxyPlot.Reporting
                 this.WriteEndElement();
             }
 
-            foreach (TableRow row in t.Rows)
+            foreach (var row in t.Rows)
             {
                 if (row.IsHeader)
                 {
@@ -210,7 +234,7 @@ namespace OxyPlot.Reporting
 
                 this.WriteStartElement("tr");
                 int j = 0;
-                foreach (TableCell c in row.Cells)
+                foreach (var c in row.Cells)
                 {
                     bool isHeader = row.IsHeader || t.Columns[j++].IsHeader;
 

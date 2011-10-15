@@ -252,7 +252,7 @@ namespace OxyPlot
             var midPoint = new ScreenPoint(
                 (model.PlotArea.Left + model.PlotArea.Right) * 0.5, (model.PlotArea.Top + model.PlotArea.Bottom) * 0.5);
 
-            foreach (PieSlice slice in this.slices)
+            foreach (var slice in this.slices)
             {
                 var outerPoints = new List<ScreenPoint>();
                 var innerPoints = new List<ScreenPoint>();
@@ -436,7 +436,7 @@ namespace OxyPlot
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
-            foreach (PieSlice slice in this.Slices)
+            foreach (var slice in this.Slices)
             {
                 if (slice.Fill == null)
                 {
@@ -473,7 +473,7 @@ namespace OxyPlot
             PropertyInfo pie = null;
             Type t = null;
 
-            foreach (object o in this.ItemsSource)
+            foreach (var o in this.ItemsSource)
             {
                 if (pil == null || o.GetType() != t)
                 {

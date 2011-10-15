@@ -6,13 +6,13 @@
 
 namespace OxyPlot
 {
+    using System.Globalization;
+
     /// <summary>
-    /// Tracker hit result container.
-    /// </summary>
-    /// <remarks>
-    /// This is used as DataContext for the TrackerControl.
+    /// Tracker data class.
+    ///   This is used as DataContext for the TrackerControl.
     ///   The TrackerControl is visible when the user use the left mouse button to "track" points on the series.
-    /// </remarks>
+    /// </summary>
     public class TrackerHitResult
     {
         #region Constants and Fields
@@ -138,7 +138,7 @@ namespace OxyPlot
             object xValue = this.XAxis != null ? this.XAxis.GetValue(this.DataPoint.X) : this.DataPoint.X;
             object yValue = this.YAxis != null ? this.YAxis.GetValue(this.DataPoint.Y) : this.DataPoint.Y;
             return string.Format(
-                this.PlotModel.ActualCulture, 
+                CultureInfo.InvariantCulture, 
                 formatString, 
                 this.Series.Title, 
                 xAxisTitle, 

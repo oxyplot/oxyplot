@@ -216,7 +216,7 @@ namespace OxyPlot
                         minimumDistance = d2;
                     }
                 };
-            foreach (HighLowItem item in this.items)
+            foreach (var item in this.items)
             {
                 check(new DataPoint(item.X, item.High), item);
                 check(new DataPoint(item.X, item.Low), item);
@@ -275,7 +275,7 @@ namespace OxyPlot
 
             OxyRect clippingRect = this.GetClippingRect();
 
-            foreach (HighLowItem v in this.items)
+            foreach (var v in this.items)
             {
                 if (!this.IsValidPoint(v, this.XAxis, this.YAxis))
                 {
@@ -414,7 +414,7 @@ namespace OxyPlot
             // Use the mapping to generate the points
             if (this.Mapping != null)
             {
-                foreach (object item in this.ItemsSource)
+                foreach (var item in this.ItemsSource)
                 {
                     this.items.Add(this.Mapping(item));
                 }
@@ -430,7 +430,7 @@ namespace OxyPlot
             PropertyInfo piClose = null;
             Type t = null;
 
-            foreach (object o in this.ItemsSource)
+            foreach (var o in this.ItemsSource)
             {
                 if (piX == null || o.GetType() != t)
                 {
@@ -497,7 +497,7 @@ namespace OxyPlot
             double maxx = this.MaxX;
             double maxy = this.MaxY;
 
-            foreach (HighLowItem pt in pts)
+            foreach (var pt in pts)
             {
                 if (!this.IsValidPoint(pt, this.XAxis, this.YAxis))
                 {

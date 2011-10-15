@@ -53,7 +53,7 @@ namespace OxyPlot.Reporting
         private Type GetItemType(IEnumerable items)
         {
             Type result = null;
-            foreach (object item in items)
+            foreach (var item in items)
             {
                 Type t = item.GetType();
                 if (result == null)
@@ -92,16 +92,21 @@ namespace OxyPlot.Reporting
                 var header = pi.Name;
                 Fields.Add(new ItemsTableField(header, pi.Name, null, Alignment.Left));
             }
-#else
-            foreach (PropertyDescriptor p in TypeDescriptor.GetProperties(type))
+#endif
+#if METRO
+
+            // todo
+#endif
+#if !SILVERLIGHT && !METRO
+            foreach (PropertyDescriptor pd in TypeDescriptor.GetProperties(type))
             {
-                if (!p.IsBrowsable)
+                if (!pd.IsBrowsable)
                 {
                     continue;
                 }
 
-                string header = p.DisplayName ?? p.Name;
-                this.Fields.Add(new ItemsTableField(header, p.Name));
+                string header = pd.DisplayName ?? pd.Name;
+                this.Fields.Add(new ItemsTableField(header, pd.Name));
             }
 
 #endif

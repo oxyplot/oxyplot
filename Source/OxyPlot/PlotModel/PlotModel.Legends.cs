@@ -308,7 +308,7 @@ namespace OxyPlot
                                             ? this.Series.Reverse()
                                             : this.Series;
 
-            foreach (Series s in items)
+            foreach (var s in items)
             {
                 if (string.IsNullOrEmpty(s.Title))
                 {
