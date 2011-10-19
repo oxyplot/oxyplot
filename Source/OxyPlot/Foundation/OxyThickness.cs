@@ -189,7 +189,7 @@ namespace OxyPlot
         {
             return string.Format(
                 CultureInfo.InvariantCulture, 
-                "new OxyThickness({0},{1},{2},{3}", 
+                "new OxyThickness({0},{1},{2},{3})", 
                 this.Left, 
                 this.Top, 
                 this.Right, 

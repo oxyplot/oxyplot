@@ -19,6 +19,7 @@ namespace OxyPlot
         ///   Gets or sets the items source.
         /// </summary>
         /// <value>The items source.</value>
+        [CodeGeneration(false)]
         public IEnumerable ItemsSource { get; set; }
 
         #endregion

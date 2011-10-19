@@ -100,6 +100,13 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeAxis"/> class.
         /// </summary>
+        public DateTimeAxis()
+        {            
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimeAxis"/> class.
+        /// </summary>
         /// <param name="pos">
         /// The position.
         /// </param>

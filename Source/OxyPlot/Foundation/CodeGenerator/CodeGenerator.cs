@@ -64,8 +64,9 @@ namespace OxyPlot
             this.variables = new HashSet<string>();
             this.sb = new StringBuilder();
             this.Indents = 8;
-            this.AppendLine("[Example({0})]", model.Title.ToCode());
-            string methodName = this.MakeValidVariableName(model.Title) ?? "Untitled";
+            var title = model.Title ?? "Untitled";
+            this.AppendLine("[Example({0})]", title.ToCode());
+            string methodName = this.MakeValidVariableName(title);
             this.AppendLine("public static PlotModel {0}()", methodName);
             this.AppendLine("{");
             this.Indents += 4;

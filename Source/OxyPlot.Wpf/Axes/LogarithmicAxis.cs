@@ -39,6 +39,7 @@ namespace OxyPlot.Wpf
         public LogarithmicAxis()
         {
             this.internalAxis = new OxyPlot.LogarithmicAxis();
+            this.FilterMinValue = 0;
         }
 
         #endregion
