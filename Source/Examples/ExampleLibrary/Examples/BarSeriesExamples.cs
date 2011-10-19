@@ -69,5 +69,39 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis(horizontal ? AxisPosition.Bottom : AxisPosition.Left) { MinimumPadding = 0, AbsoluteMinimum = 0 });
             return model;
         }
+
+        [Example("Bar series")]
+        public static PlotModel Barseries()
+        {
+            var plotModel1 = new PlotModel();
+            plotModel1.LegendPlacement = LegendPlacement.Outside;
+            plotModel1.Title = "Bar series";
+            var categoryAxis1 = new CategoryAxis();
+            categoryAxis1.LabelField = "Label";
+            categoryAxis1.MajorStep = 1;
+            categoryAxis1.MinorStep = 1;
+            plotModel1.Axes.Add(categoryAxis1);
+            var linearAxis1 = new LinearAxis();
+            linearAxis1.AbsoluteMinimum = 0;
+            linearAxis1.MinimumPadding = 0;
+            plotModel1.Axes.Add(linearAxis1);
+            var barSeries1 = new BarSeries();
+            barSeries1.FillColor = OxyColor.FromArgb(255, 78, 154, 6);
+            barSeries1.ValueField = "Value1";
+            barSeries1.Title = "2009";
+            plotModel1.Series.Add(barSeries1);
+            var barSeries2 = new BarSeries();
+            barSeries2.FillColor = OxyColor.FromArgb(255, 200, 141, 0);
+            barSeries2.ValueField = "Value2";
+            barSeries2.Title = "2010";
+            plotModel1.Series.Add(barSeries2);
+            var barSeries3 = new BarSeries();
+            barSeries3.FillColor = OxyColor.FromArgb(255, 204, 0, 0);
+            barSeries3.ValueField = "Value3";
+            barSeries3.Title = "2011";
+            plotModel1.Series.Add(barSeries3);
+            return plotModel1;
+        }
+
     }
 }
