@@ -101,6 +101,16 @@ namespace OxyPlot
                 return "double.NegativeInfinity";
             }
 
+            if (value == double.MinValue)
+            {
+                return "double.MinValue";
+            }
+
+            if (value == double.MaxValue)
+            {
+                return "double.MaxValue";
+            }
+
             return value.ToString(CultureInfo.InvariantCulture);
         }
 

@@ -25,6 +25,13 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="TimeSpanAxis"/> class.
         /// </summary>
+        public TimeSpanAxis()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimeSpanAxis"/> class.
+        /// </summary>
         /// <param name="pos">
         /// The position.
         /// </param>
