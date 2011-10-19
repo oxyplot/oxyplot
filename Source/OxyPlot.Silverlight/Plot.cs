@@ -947,31 +947,33 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// The get manipulator.
+        /// Gets the manipulator for the current mouse button and modifier keys.
         /// </summary>
         /// <param name="button">
         /// The button.
         /// </param>
         /// <param name="clickCount">
-        /// The click Count.
+        /// The click count.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
         /// <returns>
+        /// A manipulator or null if no gesture was recognized.
         /// </returns>
         private ManipulatorBase GetManipulator(MouseButton button, int clickCount, MouseButtonEventArgs e)
         {
             bool control = IsControlDown();
             bool shift = IsShiftDown();
+            bool alt = IsAltDown();
             bool lmb = button == MouseButton.Left;
             bool rmb = button == MouseButton.Right;
             bool mmb = button == MouseButton.Middle;
             bool xb1 = button == MouseButton.XButton1;
             bool xb2 = button == MouseButton.XButton2;
 
-            // MMB / control RMB
-            if (mmb || (control && rmb))
+            // MMB / control RMB / control+alt LMB
+            if (mmb || (control && rmb) || (control && alt && lmb))
             {
                 if (clickCount == 2)
                 {
@@ -981,8 +983,8 @@ namespace OxyPlot.Silverlight
                 return new ZoomRectangleManipulator(this);
             }
 
-            // Right mouse button
-            if (rmb)
+            // Right mouse button / alt+left mouse button
+            if (rmb || (lmb && alt))
             {
                 return new PanManipulator(this);
             }

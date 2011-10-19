@@ -506,18 +506,17 @@ namespace Oxyplot.WindowsForms
         }
 
         /// <summary>
-        /// The get manipulator.
+        /// Gets the manipulator for the current mouse button and modifier keys.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="e">The event args.</param>
         /// <returns>
+        /// A manipulator or null if no gesture was recognized.
         /// </returns>
         private ManipulatorBase GetManipulator(MouseEventArgs e)
         {
-            bool control = ModifierKeys == Keys.Control;
-            bool shift = ModifierKeys == Keys.Shift;
-            bool alt = ModifierKeys == Keys.Alt;
+            bool control = (ModifierKeys & Keys.Control) == Keys.Control;
+            bool shift = (ModifierKeys & Keys.Shift) == Keys.Shift;
+            bool alt = (ModifierKeys & Keys.Alt) == Keys.Alt;
 
             bool lmb = e.Button == MouseButtons.Left;
             bool rmb = e.Button == MouseButtons.Right;
@@ -525,8 +524,8 @@ namespace Oxyplot.WindowsForms
             bool x1b = e.Button == MouseButtons.XButton1;
             bool x2b = e.Button == MouseButtons.XButton2;
 
-            // MMB / control RMB
-            if (mmb || (control && rmb))
+            // MMB / control RMB / control+alt LMB
+            if (mmb || (control && rmb) || (control && alt && lmb))
             {
                 if (e.Clicks == 2)
                 {
@@ -536,8 +535,8 @@ namespace Oxyplot.WindowsForms
                 return new ZoomRectangleManipulator(this);
             }
 
-            // Right mouse button
-            if (rmb)
+            // Right mouse button / alt+left mouse button
+            if (rmb || (lmb && alt))
             {
                 return new PanManipulator(this);
             }

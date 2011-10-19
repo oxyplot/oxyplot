@@ -666,7 +666,7 @@ namespace OxyPlot.Wpf
                 e.Handled = true;
             }
 
-            if (zoom != 0)
+            if (Math.Abs(zoom) > 1e-8)
             {
                 if (control)
                 {
@@ -821,7 +821,7 @@ namespace OxyPlot.Wpf
             double d = p.DistanceTo(this.mouseDownPoint);
             if (this.ContextMenu != null)
             {
-                if (d == 0 && e.ChangedButton == MouseButton.Right)
+                if (Math.Abs(d) < 1e-8 && e.ChangedButton == MouseButton.Right)
                 {
                     this.ContextMenu.Visibility = Visibility.Visible;
 
@@ -943,27 +943,25 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The get manipulator.
+        /// Gets the manipulator for the current mouse button and modifier keys.
         /// </summary>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
+        /// <param name="e">The event args.</param>
         /// <returns>
-        /// A manipulator instance.
+        /// A manipulator or null if no gesture was recognized.
         /// </returns>
         private ManipulatorBase GetManipulator(MouseButtonEventArgs e)
         {
             bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
             bool shift = Keyboard.IsKeyDown(Key.LeftShift);
-            //// bool alt = Keyboard.IsKeyDown(Key.LeftAlt);
+            bool alt = Keyboard.IsKeyDown(Key.LeftAlt);
             bool lmb = e.LeftButton == MouseButtonState.Pressed;
             bool rmb = e.RightButton == MouseButtonState.Pressed;
             bool mmb = e.MiddleButton == MouseButtonState.Pressed;
             bool xb1 = e.XButton1 == MouseButtonState.Pressed;
             bool xb2 = e.XButton2 == MouseButtonState.Pressed;
 
-            // MMB / control RMB
-            if (mmb || (control && rmb))
+            // MMB / control RMB / control+alt LMB
+            if (mmb || (control && rmb) || (control && alt && lmb))
             {
                 if (e.ClickCount == 2)
                 {
@@ -973,8 +971,8 @@ namespace OxyPlot.Wpf
                 return new ZoomRectangleManipulator(this);
             }
 
-            // Right mouse button
-            if (rmb)
+            // Right mouse button / alt+left mouse button
+            if (rmb || (lmb && alt))
             {
                 return new PanManipulator(this);
             }
