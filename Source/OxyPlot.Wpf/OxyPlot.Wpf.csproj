@@ -73,6 +73,7 @@
     <Compile Include="Plot.Properties.cs" />
     <Compile Include="PngExporter.cs" />
     <Compile Include="Series\BarSeries.cs" />
+    <Compile Include="Series\TwoColorLineSeries.cs" />
     <Compile Include="Series\XYAxisSeries.cs" />
     <Compile Include="Series\ItemsSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
