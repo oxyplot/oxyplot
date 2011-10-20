@@ -1071,7 +1071,6 @@ namespace OxyPlot.Silverlight
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Started(this.CreateManipulationEventArgs(e));
-                e.Handled = true;
             }
         }
 
