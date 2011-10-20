@@ -154,6 +154,7 @@ namespace OxyPlot
                 if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum
                     || p.Y > this.YAxis.ActualMaximum)
                 {
+                   // i++;
                     continue;
                 }
 
