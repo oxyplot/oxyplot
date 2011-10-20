@@ -69,7 +69,6 @@ namespace OxyPlot.Reporting
             set
             {
                 this.items = value;
-                this.UpdateItems();
             }
         }
 
@@ -149,6 +148,15 @@ namespace OxyPlot.Reporting
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// The update.
+        /// </summary>
+        public override void Update()
+        {
+            base.Update();
+            this.UpdateItems();
         }
 
         /// <summary>
