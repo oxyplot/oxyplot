@@ -24,13 +24,13 @@ namespace OxyPlot
         /// <summary>
         ///   XY coordinate system - two perpendicular axes
         /// </summary>
-        XY, 
+        XY,
 
         /// <summary>
         ///   Cartesian coordinate system - perpendicular axes with the same scaling
         ///   http://en.wikipedia.org/wiki/Cartesian_coordinate_system
         /// </summary>
-        Cartesian, 
+        Cartesian,
 
         /// <summary>
         ///   Polar coordinate system - with radial and angular axes
@@ -47,7 +47,7 @@ namespace OxyPlot
         /// <summary>
         ///   The inside.
         /// </summary>
-        Inside, 
+        Inside,
 
         /// <summary>
         ///   The outside.
@@ -63,57 +63,57 @@ namespace OxyPlot
         /// <summary>
         ///   The top left.
         /// </summary>
-        TopLeft, 
+        TopLeft,
 
         /// <summary>
         ///   The top center.
         /// </summary>
-        TopCenter, 
+        TopCenter,
 
         /// <summary>
         ///   The top right.
         /// </summary>
-        TopRight, 
+        TopRight,
 
         /// <summary>
         ///   The bottom left.
         /// </summary>
-        BottomLeft, 
+        BottomLeft,
 
         /// <summary>
         ///   The bottom center.
         /// </summary>
-        BottomCenter, 
+        BottomCenter,
 
         /// <summary>
         ///   The bottom right.
         /// </summary>
-        BottomRight, 
+        BottomRight,
 
         /// <summary>
         ///   The left top.
         /// </summary>
-        LeftTop, 
+        LeftTop,
 
         /// <summary>
         ///   The left middle.
         /// </summary>
-        LeftMiddle, 
+        LeftMiddle,
 
         /// <summary>
         ///   The left bottom.
         /// </summary>
-        LeftBottom, 
+        LeftBottom,
 
         /// <summary>
         ///   The right top.
         /// </summary>
-        RightTop, 
+        RightTop,
 
         /// <summary>
         ///   The right middle.
         /// </summary>
-        RightMiddle, 
+        RightMiddle,
 
         /// <summary>
         ///   The right bottom.
@@ -129,7 +129,7 @@ namespace OxyPlot
         /// <summary>
         ///   The horizontal.
         /// </summary>
-        Horizontal, 
+        Horizontal,
 
         /// <summary>
         ///   The vertical.
@@ -145,7 +145,7 @@ namespace OxyPlot
         /// <summary>
         ///   The normal.
         /// </summary>
-        Normal, 
+        Normal,
 
         /// <summary>
         ///   The reverse.
@@ -161,7 +161,7 @@ namespace OxyPlot
         /// <summary>
         ///   The left.
         /// </summary>
-        Left, 
+        Left,
 
         /// <summary>
         ///   The right.
@@ -717,7 +717,7 @@ namespace OxyPlot
         /// </returns>
         public Report CreateReport()
         {
-            var r = new Report();
+            var r = new Report { Culture = CultureInfo.InvariantCulture };
 
             r.AddHeader(1, "P L O T   R E P O R T");
             r.AddHeader(2, "=== PlotModel ===");

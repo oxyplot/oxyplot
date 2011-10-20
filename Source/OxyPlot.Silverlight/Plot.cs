@@ -129,22 +129,22 @@ namespace OxyPlot.Silverlight
             /// <summary>
             ///   The left.
             /// </summary>
-            Left, 
+            Left,
 
             /// <summary>
             ///   The middle.
             /// </summary>
-            Middle, 
+            Middle,
 
             /// <summary>
             ///   The right.
             /// </summary>
-            Right, 
+            Right,
 
             /// <summary>
             ///   The x button 1.
             /// </summary>
-            XButton1, 
+            XButton1,
 
             /// <summary>
             ///   The x button 2.
@@ -625,9 +625,7 @@ namespace OxyPlot.Silverlight
 
             if (e.Key == Key.C && control)
             {
-                e.Handled = true;
-
-                // todo: Clipboard does not currently support copying image data
+                // e.Handled = true;
             }
 
             if (control && alt && this.ActualModel != null)
@@ -635,18 +633,37 @@ namespace OxyPlot.Silverlight
                 switch (e.Key)
                 {
                     case Key.R:
-                        Clipboard.SetText(this.ActualModel.CreateTextReport());
+                        TrySetClipboardText(this.ActualModel.CreateTextReport());
                         break;
                     case Key.C:
-                        Clipboard.SetText(this.ActualModel.ToCode());
+                        TrySetClipboardText(this.ActualModel.ToCode());
                         break;
                     case Key.X:
-                        Clipboard.SetText(this.ToXaml());
+                        TrySetClipboardText(this.ToXaml());
                         break;
                 }
             }
 
             base.OnKeyDown(e);
+        }
+
+        /// <summary>
+        /// Sets the clipboard text.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns>True if the operation was successful.</returns>
+        private static bool TrySetClipboardText(string text)
+        {
+            try
+            {
+                Clipboard.SetText(text);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return false;
         }
 
         /// <summary>
@@ -677,7 +694,8 @@ namespace OxyPlot.Silverlight
             this.touchZoom.Delta(
                 new ManipulationEventArgs(position.ToScreenPoint())
                     {
-                       ScaleX = e.DeltaManipulation.Scale.X, ScaleY = e.DeltaManipulation.Scale.Y 
+                        ScaleX = e.DeltaManipulation.Scale.X,
+                        ScaleY = e.DeltaManipulation.Scale.Y
                     });
             e.Handled = true;
         }
