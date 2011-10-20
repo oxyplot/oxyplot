@@ -249,7 +249,8 @@ namespace OxyPlot
             double fontWeight, 
             double rotate, 
             HorizontalTextAlign halign, 
-            VerticalTextAlign valign)
+            VerticalTextAlign valign,
+            OxySize? maxSize)
         {
             this.w.WriteText(p, text, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
         }

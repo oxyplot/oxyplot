@@ -21,9 +21,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty AbsoluteMaximumProperty =
             DependencyProperty.Register(
-                "AbsoluteMaximum", 
-                typeof(double), 
-                typeof(Axis), 
+                "AbsoluteMaximum",
+                typeof(double),
+                typeof(Axis),
                 new PropertyMetadata(double.MaxValue, AppearanceChanged));
 
         /// <summary>
@@ -31,9 +31,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty AbsoluteMinimumProperty =
             DependencyProperty.Register(
-                "AbsoluteMinimum", 
-                typeof(double), 
-                typeof(Axis), 
+                "AbsoluteMinimum",
+                typeof(double),
+                typeof(Axis),
                 new PropertyMetadata(double.MinValue, AppearanceChanged));
 
         /// <summary>
@@ -73,9 +73,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty ExtraGridlineStyleProperty =
             DependencyProperty.Register(
-                "ExtraGridlineStyle", 
-                typeof(LineStyle), 
-                typeof(Axis), 
+                "ExtraGridlineStyle",
+                typeof(LineStyle),
+                typeof(Axis),
                 new PropertyMetadata(LineStyle.Solid, AppearanceChanged));
 
         /// <summary>
@@ -162,9 +162,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MajorGridlineColorProperty =
             DependencyProperty.Register(
-                "MajorGridlineColor", 
-                typeof(Color), 
-                typeof(Axis), 
+                "MajorGridlineColor",
+                typeof(Color),
+                typeof(Axis),
                 new PropertyMetadata(Color.FromArgb(0x40, 0, 0, 0), AppearanceChanged));
 
         /// <summary>
@@ -172,9 +172,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MajorGridlineStyleProperty =
             DependencyProperty.Register(
-                "MajorGridlineStyle", 
-                typeof(LineStyle), 
-                typeof(Axis), 
+                "MajorGridlineStyle",
+                typeof(LineStyle),
+                typeof(Axis),
                 new PropertyMetadata(LineStyle.None, AppearanceChanged));
 
         /// <summary>
@@ -231,9 +231,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MinorGridlineColorProperty =
             DependencyProperty.Register(
-                "MinorGridlineColor", 
-                typeof(Color), 
-                typeof(Axis), 
+                "MinorGridlineColor",
+                typeof(Color),
+                typeof(Axis),
                 new PropertyMetadata(Color.FromArgb(0x20, 0, 0, 0), AppearanceChanged));
 
         /// <summary>
@@ -241,9 +241,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MinorGridlineStyleProperty =
             DependencyProperty.Register(
-                "MinorGridlineStyle", 
-                typeof(LineStyle), 
-                typeof(Axis), 
+                "MinorGridlineStyle",
+                typeof(LineStyle),
+                typeof(Axis),
                 new PropertyMetadata(LineStyle.None, AppearanceChanged));
 
         /// <summary>
@@ -1249,6 +1249,7 @@ namespace OxyPlot.Wpf
             a.TicklineColor = this.TicklineColor.ToOxyColor();
             a.TitleFormatString = this.TitleFormatString;
             a.Title = this.Title;
+            a.ToolTip = this.ToolTip != null ? this.ToolTip.ToString() : null;
             a.TickStyle = this.TickStyle;
             a.TitlePosition = this.TitlePosition;
             a.Unit = this.Unit;
