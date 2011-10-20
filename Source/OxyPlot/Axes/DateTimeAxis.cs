@@ -101,7 +101,11 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="DateTimeAxis"/> class.
         /// </summary>
         public DateTimeAxis()
-        {            
+        {
+            this.Position = AxisPosition.Bottom;
+            this.IntervalType = DateTimeIntervalType.Auto;
+            this.FirstDayOfWeek = DayOfWeek.Monday;
+            this.CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek;
         }
 
         /// <summary>

@@ -170,8 +170,18 @@ namespace OxyPlot
         /// </returns>
         public string ToCode()
         {
+            if (double.IsNaN(this.size) && double.IsNaN(this.value))
+            {
+                return CodeGenerator.FormatConstructor(this.GetType(), "{0}, {1}", this.x, this.y);
+            }
+
+            if (double.IsNaN(this.value))
+            {
+                return CodeGenerator.FormatConstructor(this.GetType(), "{0}, {1}, {2}", this.x, this.y, this.size);
+            }
+
             return CodeGenerator.FormatConstructor(
-                this.GetType(), "{0},{1},{2},{3}", this.x, this.y, this.size, this.value);
+                this.GetType(), "{0}, {1}, {2}, {3}", this.x, this.y, this.size, this.value);
         }
 
         /// <summary>

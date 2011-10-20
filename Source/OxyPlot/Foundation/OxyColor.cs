@@ -226,7 +226,7 @@ namespace OxyPlot
                 return string.Format("OxyColors.{0}", name);
             }
 
-            return string.Format("OxyColor.FromArgb({0},{1},{2},{3})", this.A, this.R, this.G, this.B);
+            return string.Format("OxyColor.FromArgb({0}, {1}, {2}, {3})", this.A, this.R, this.G, this.B);
         }
 
         /// <summary>
