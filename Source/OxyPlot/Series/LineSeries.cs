@@ -376,14 +376,18 @@ namespace OxyPlot
                 this.ResetSmoothedPoints();
 
                 var xl = this.SmoothedPoints.Select(s => s.X);
-
-                this.MinX = xl.Min();
-                this.MaxX = xl.Max();
+                if (xl.Count() > 0)
+                {
+                    this.MinX = xl.Min();
+                    this.MaxX = xl.Max();
+                }
 
                 var yl = this.SmoothedPoints.Select(s => s.Y);
-
-                this.MinY = yl.Min();
-                this.MaxY = yl.Max();
+                if (yl.Count() > 0)
+                {
+                    this.MinY = yl.Min();
+                    this.MaxY = yl.Max();
+                }
             }
             else
             {

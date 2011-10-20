@@ -28,6 +28,7 @@ namespace OxyPlot
         public static string ToCode(this string value)
         {
             value = value.Replace("\"", "\\\"");
+            value = value.Replace("\r\n", "\\n");
             value = value.Replace("\n", "\\n");
             value = value.Replace("\t", "\\t");
             return "\"" + value + "\"";
