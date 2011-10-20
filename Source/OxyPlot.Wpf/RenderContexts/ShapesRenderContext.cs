@@ -180,11 +180,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var e = new Polyline();
@@ -223,11 +223,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawLineSegments(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             Path path = null;
@@ -293,12 +293,12 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var e = new Polygon();
@@ -345,12 +345,12 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawPolygons(
-            IList<IList<ScreenPoint>> polygons, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<IList<ScreenPoint>> polygons,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             Path path = null;
@@ -537,15 +537,16 @@ namespace OxyPlot.Wpf
         /// The valign.
         /// </param>
         public void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalTextAlign halign, 
-            VerticalTextAlign valign)
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalTextAlign halign,
+            VerticalTextAlign valign,
+            OxySize? maxSize)
         {
             var tb = new TextBlock { Text = text, Foreground = this.GetCachedBrush(fill) };
             if (fontFamily != null)
@@ -564,27 +565,34 @@ namespace OxyPlot.Wpf
             }
 
             tb.Measure(new Size(1000, 1000));
-
+            var size = tb.DesiredSize;
+            if (maxSize != null)
+            {
+                if (size.Width > maxSize.Value.Width) size.Width = maxSize.Value.Width;
+                if (size.Height > maxSize.Value.Height) size.Height = maxSize.Value.Height;
+                tb.Width = size.Width;
+                tb.Height = size.Height;
+            }
             double dx = 0;
             if (halign == HorizontalTextAlign.Center)
             {
-                dx = -tb.DesiredSize.Width / 2;
+                dx = -size.Width / 2;
             }
 
             if (halign == HorizontalTextAlign.Right)
             {
-                dx = -tb.DesiredSize.Width;
+                dx = -size.Width;
             }
 
             double dy = 0;
             if (valign == VerticalTextAlign.Middle)
             {
-                dy = -tb.DesiredSize.Height / 2;
+                dy = -size.Height / 2;
             }
 
             if (valign == VerticalTextAlign.Bottom)
             {
-                dy = -tb.DesiredSize.Height;
+                dy = -size.Height;
             }
 
             var transform = new TransformGroup();
@@ -598,8 +606,14 @@ namespace OxyPlot.Wpf
             tb.RenderTransform = transform;
 
             tb.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
-
+            this.ApplyTooltip(tb);
             this.Add(tb);
+        }
+
+        private void ApplyTooltip(FrameworkElement element)
+        {
+            if (!String.IsNullOrEmpty(this.CurrentToolTip))
+                element.ToolTip = this.CurrentToolTip;
         }
 
         /// <summary>
@@ -725,11 +739,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         private void SetStroke(
-            Shape shape, 
-            OxyColor stroke, 
-            double thickness, 
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, 
-            double[] dashArray = null, 
+            Shape shape,
+            OxyColor stroke,
+            double thickness,
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            double[] dashArray = null,
             bool aliased = false)
         {
             if (stroke != null && thickness > 0)
@@ -745,7 +759,7 @@ namespace OxyPlot.Wpf
                         shape.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
 
-                        // The default StrokeLineJoin is Miter
+                    // The default StrokeLineJoin is Miter
                 }
 
                 if (thickness != 1)
@@ -768,5 +782,26 @@ namespace OxyPlot.Wpf
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets or sets the current tooltip.
+        /// </summary>
+        /// <value>
+        /// The current tooltip.
+        /// </value>
+        private string CurrentToolTip { get; set; }
+
+        /// <summary>
+        /// Sets the tool tip for the following items.
+        /// </summary>
+        /// <param name="text">The text in the tooltip.</param>
+        /// <params>
+        /// This is only used in the plot controls.
+        ///   </params>
+        public void SetToolTip(string text)
+        {
+            this.CurrentToolTip = text;
+
+        }
     }
 }

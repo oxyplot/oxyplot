@@ -1,11 +1,15 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GraphicsRenderContext.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// <summary>
+//   The graphics render context.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Oxyplot.WindowsForms
 {
+    using System;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Drawing2D;
@@ -21,12 +25,12 @@ namespace Oxyplot.WindowsForms
         #region Constants and Fields
 
         /// <summary>
-        /// The fontsiz e_ factor.
+        ///   The fontsize factor.
         /// </summary>
-        private const float FONTSIZE_FACTOR = 0.8f;
+        private const float FontsizeFactor = 0.8f;
 
         /// <summary>
-        /// The g.
+        ///   The GDI+ drawing surface.
         /// </summary>
         private readonly Graphics g;
 
@@ -275,6 +279,9 @@ namespace Oxyplot.WindowsForms
         /// <param name="valign">
         /// The valign.
         /// </param>
+        /// <param name="maxSize">
+        /// The maximum size of the text.
+        /// </param>
         public override void DrawText(
             ScreenPoint p, 
             string text, 
@@ -284,7 +291,8 @@ namespace Oxyplot.WindowsForms
             double fontWeight, 
             double rotate, 
             HorizontalTextAlign halign, 
-            VerticalTextAlign valign)
+            VerticalTextAlign valign, 
+            OxySize? maxSize)
         {
             FontStyle fs = FontStyle.Regular;
             if (fontWeight >= 700)
@@ -292,12 +300,23 @@ namespace Oxyplot.WindowsForms
                 fs = FontStyle.Bold;
             }
 
-            var font = new Font(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
+            var font = new Font(fontFamily, (float)fontSize * FontsizeFactor, fs);
 
-            var sf = new StringFormat();
-            sf.Alignment = StringAlignment.Near;
+            var sf = new StringFormat { Alignment = StringAlignment.Near };
 
             SizeF size = this.g.MeasureString(text, font);
+            if (maxSize != null)
+            {
+                if (size.Width > maxSize.Value.Width)
+                {
+                    size.Width = (float)maxSize.Value.Width;
+                }
+
+                if (size.Height > maxSize.Value.Height)
+                {
+                    size.Height = (float)maxSize.Value.Height;
+                }
+            }
 
             float dx = 0;
             if (halign == HorizontalTextAlign.Center)
@@ -329,14 +348,15 @@ namespace Oxyplot.WindowsForms
             }
 
             this.g.TranslateTransform((float)p.X, (float)p.Y);
-            if (rotate != 0)
+            if (Math.Abs(rotate) > double.Epsilon)
             {
                 this.g.RotateTransform((float)rotate);
             }
 
             this.g.TranslateTransform(dx, dy);
 
-            this.g.DrawString(text, font, this.ToBrush(fill), 0, 0, sf);
+            var layoutRectangle = new RectangleF(0, 0, size.Width, size.Height);
+            this.g.DrawString(text, font, this.ToBrush(fill), layoutRectangle, sf);
 
             this.g.ResetTransform();
         }
@@ -344,20 +364,11 @@ namespace Oxyplot.WindowsForms
         /// <summary>
         /// The measure text.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <returns></returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (text == null)
@@ -371,7 +382,7 @@ namespace Oxyplot.WindowsForms
                 fs = FontStyle.Bold;
             }
 
-            var font = new Font(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
+            var font = new Font(fontFamily, (float)fontSize * FontsizeFactor, fs);
             SizeF size = this.g.MeasureString(text, font);
             return new OxySize(size.Width, size.Height);
         }

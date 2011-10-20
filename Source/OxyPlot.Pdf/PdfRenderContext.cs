@@ -6,6 +6,7 @@
 
 namespace OxyPlot.Pdf
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -15,30 +16,31 @@ namespace OxyPlot.Pdf
 
     /// <summary>
     /// PDF Render context using PdfSharp (and SilverPDF for Silverlight)
-    /// see http://pdfsharp.codeplex.com
-    /// and http://silverpdf.codeplex.com
     /// </summary>
+    /// <remarks>
+    /// see http://pdfsharp.codeplex.com and http://silverpdf.codeplex.com
+    /// </remarks>
     internal class PdfRenderContext : RenderContextBase
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The fontsiz e_ factor.
+        /// The fontsize factor.
         /// </summary>
-        private const double FONTSIZE_FACTOR = 1.0;
+        private const double FontsizeFactor = 1.0;
 
         /// <summary>
-        /// The doc.
+        /// The pdf document.
         /// </summary>
         private readonly PdfDocument doc;
 
         /// <summary>
-        /// The g.
+        /// The PdfSharp graphics context.
         /// </summary>
         private readonly XGraphics g;
 
         /// <summary>
-        /// The page.
+        /// The pdf page.
         /// </summary>
         private readonly PdfPage page;
 
@@ -226,18 +228,10 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// The draw rectangle.
         /// </summary>
-        /// <param name="rect">
-        /// The rect.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rect.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             if (fill != null)
@@ -255,33 +249,16 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// The draw text.
         /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="rotate">
-        /// The rotate.
-        /// </param>
-        /// <param name="halign">
-        /// The halign.
-        /// </param>
-        /// <param name="valign">
-        /// The valign.
-        /// </param>
+        /// <param name="p">The p.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="rotate">The rotate.</param>
+        /// <param name="halign">The halign.</param>
+        /// <param name="valign">The valign.</param>
+        /// <param name="maxSize">The maximum size of the text.</param>
         public override void DrawText(
             ScreenPoint p, 
             string text, 
@@ -291,7 +268,8 @@ namespace OxyPlot.Pdf
             double fontWeight, 
             double rotate, 
             HorizontalTextAlign halign, 
-            VerticalTextAlign valign)
+            VerticalTextAlign valign,
+            OxySize? maxSize)
         {
             if (text == null)
             {
@@ -304,11 +282,24 @@ namespace OxyPlot.Pdf
                 fs = XFontStyle.Bold;
             }
 
-            var font = new XFont(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
+            var font = new XFont(fontFamily, (float)fontSize * FontsizeFactor, fs);
 
             var sf = new XStringFormat { Alignment = XStringAlignment.Near };
 
-            XSize size = this.g.MeasureString(text, font);
+            var size = this.g.MeasureString(text, font);
+
+            if (maxSize != null)
+            {
+                if (size.Width > maxSize.Value.Width)
+                {
+                    size.Width = maxSize.Value.Width;
+                }
+
+                if (size.Height > maxSize.Value.Height)
+                {
+                    size.Height = maxSize.Value.Height;
+                }
+            }
 
             double dx = 0;
             if (halign == HorizontalTextAlign.Center)
@@ -335,33 +326,28 @@ namespace OxyPlot.Pdf
 
             XGraphicsState state = this.g.Save();
             this.g.TranslateTransform(dx, dy);
-            if (rotate != 0)
+            if (Math.Abs(rotate) > double.Epsilon)
             {
                 this.g.RotateTransform((float)rotate);
             }
 
             this.g.TranslateTransform((float)p.X, (float)p.Y);
 
-            this.g.DrawString(text, font, ToBrush(fill), 0, 0, sf);
+            var layoutRectangle = new XRect(0, 0, size.Width, size.Height);
+           
+            this.g.DrawString(text, font, ToBrush(fill), layoutRectangle, sf);
             this.g.Restore(state);
         }
 
         /// <summary>
         /// The measure text.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
         /// <returns>
+        /// The text size.
         /// </returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
@@ -376,16 +362,16 @@ namespace OxyPlot.Pdf
                 fs = XFontStyle.Bold;
             }
 
-            var font = new XFont(fontFamily, (float)fontSize * FONTSIZE_FACTOR, fs);
+            var font = new XFont(fontFamily, (float)fontSize * FontsizeFactor, fs);
             XSize size = this.g.MeasureString(text, font);
             return new OxySize(size.Width, size.Height);
         }
 
         /// <summary>
-        /// The save.
+        /// Save the document to a stream.
         /// </summary>
         /// <param name="s">
-        /// The s.
+        /// The stream.
         /// </param>
         public void Save(Stream s)
         {
@@ -397,12 +383,11 @@ namespace OxyPlot.Pdf
         #region Methods
 
         /// <summary>
-        /// The to brush.
+        /// Converts an OxyColor to a brush.
         /// </summary>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
+        /// <param name="fill">The fill color.</param>
         /// <returns>
+        /// The brush.
         /// </returns>
         private static XBrush ToBrush(OxyColor fill)
         {
@@ -415,12 +400,11 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The to color.
+        /// Converts an OxyColor to an XColor.
         /// </summary>
-        /// <param name="c">
-        /// The c.
-        /// </param>
+        /// <param name="c">The source color.</param>
         /// <returns>
+        /// The color.
         /// </returns>
         private static XColor ToColor(OxyColor c)
         {
@@ -428,12 +412,11 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The to points.
+        /// Converts a list of points.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
+        /// <param name="points">The list of points.</param>
         /// <returns>
+        /// The points.
         /// </returns>
         private static XPoint[] ToPoints(IList<ScreenPoint> points)
         {

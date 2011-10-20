@@ -320,7 +320,7 @@ namespace OxyPlot.Tests
         public void D01_InvalidAbsoluteMaxMin()
         {
             var plot = new PlotModel("Simple plot");
-            plot.Axes.Add(new LinearAxis() { AbsoluteMaximum = 0, AbsoluteMinimum = 0 });
+            plot.Axes.Add(new LinearAxis { AbsoluteMaximum = 0, AbsoluteMinimum = 0 });
             plot.Update();
 
         }
@@ -329,7 +329,7 @@ namespace OxyPlot.Tests
         public void D02_InvalidMaxMin()
         {
             var plot = new PlotModel("Simple plot");
-            plot.Axes.Add(new LinearAxis() { Maximum = 0, Minimum = 0 });
+            plot.Axes.Add(new LinearAxis { Maximum = 0, Minimum = 0 });
             plot.Update();
             Assert.AreEqual(100, plot.Axes[0].ActualMaximum);
             Assert.AreEqual(0, plot.Axes[0].ActualMinimum);

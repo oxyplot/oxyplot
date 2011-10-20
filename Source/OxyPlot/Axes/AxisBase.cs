@@ -122,7 +122,7 @@ namespace OxyPlot
             // Coerce actual minimum
             if (double.IsNaN(this.ActualMinimum) || double.IsInfinity(this.ActualMinimum))
             {
-                this.ActualMinimum = this is LogarithmicAxis ? 1 : 0;
+                this.ActualMinimum = 0;
             }
 
             // Coerce actual maximum
@@ -133,7 +133,7 @@ namespace OxyPlot
 
             if (this.ActualMaximum <= this.ActualMinimum)
             {
-                this.ActualMaximum = this.ActualMinimum * 100;
+                this.ActualMaximum = this.ActualMinimum + 100;
             }
 
             // Coerce the minimum range
@@ -143,6 +143,11 @@ namespace OxyPlot
                 double avg = (this.ActualMaximum + this.ActualMinimum) * 0.5;
                 this.ActualMinimum = avg - this.MinimumRange * 0.5;
                 this.ActualMaximum = avg + this.MinimumRange * 0.5;
+            }
+
+            if (this.AbsoluteMaximum <= this.AbsoluteMinimum)
+            {
+                throw new InvalidOperationException("AbsoluteMaximum should be larger than AbsoluteMinimum.");
             }
         }
 
@@ -461,12 +466,12 @@ namespace OxyPlot
         public override string ToString()
         {
             return string.Format(
-                CultureInfo.InvariantCulture, 
-                "{0}({1}, {2}, {3}, {4})", 
-                TypeHelper.GetTypeName(this.GetType()), 
-                this.Position, 
-                this.ActualMinimum, 
-                this.ActualMaximum, 
+                CultureInfo.InvariantCulture,
+                "{0}({1}, {2}, {3}, {4})",
+                TypeHelper.GetTypeName(this.GetType()),
+                this.Position,
+                this.ActualMinimum,
+                this.ActualMaximum,
                 this.ActualMajorStep);
         }
 

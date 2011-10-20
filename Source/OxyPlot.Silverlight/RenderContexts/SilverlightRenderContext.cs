@@ -148,8 +148,8 @@ namespace OxyPlot.Silverlight
                 gg.Children.Add(
                     new EllipseGeometry
                         {
-                            Center = new Point(rect.Left + rect.Width / 2, rect.Top + rect.Height / 2), 
-                            RadiusX = rect.Width / 2, 
+                            Center = new Point(rect.Left + rect.Width / 2, rect.Top + rect.Height / 2),
+                            RadiusX = rect.Width / 2,
                             RadiusY = rect.Height / 2
                         });
             }
@@ -180,11 +180,11 @@ namespace OxyPlot.Silverlight
         /// The aliased.
         /// </param>
         public void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var e = new Polyline();
@@ -223,11 +223,11 @@ namespace OxyPlot.Silverlight
         /// The aliased.
         /// </param>
         public void DrawLineSegments(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var path = new Path();
@@ -281,12 +281,12 @@ namespace OxyPlot.Silverlight
         /// The aliased.
         /// </param>
         public void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var po = new Polygon();
@@ -333,12 +333,12 @@ namespace OxyPlot.Silverlight
         /// The aliased.
         /// </param>
         public void DrawPolygons(
-            IList<IList<ScreenPoint>> polygons, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<IList<ScreenPoint>> polygons,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var path = new Path();
@@ -447,43 +447,27 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// The draw text.
         /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="rotate">
-        /// The rotate.
-        /// </param>
-        /// <param name="halign">
-        /// The halign.
-        /// </param>
-        /// <param name="valign">
-        /// The valign.
-        /// </param>
+        /// <param name="p">The p.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="rotate">The rotate.</param>
+        /// <param name="halign">The halign.</param>
+        /// <param name="valign">The valign.</param>
+        /// <param name="maxSize">The maximum size of the text.</param>
         public void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalTextAlign halign, 
-            VerticalTextAlign valign)
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalTextAlign halign,
+            VerticalTextAlign valign,
+            OxySize? maxSize)
         {
             var tb = new TextBlock { Text = text, Foreground = new SolidColorBrush(fill.ToColor()) };
 
@@ -501,27 +485,36 @@ namespace OxyPlot.Silverlight
             tb.FontWeight = GetFontWeight(fontWeight);
 
             tb.Measure(new Size(1000, 1000));
-
+            var size = new Size(tb.ActualWidth, tb.ActualHeight);
+            if (maxSize != null)
+            {
+                if (size.Width > maxSize.Value.Width) size.Width = maxSize.Value.Width;
+                if (size.Height > maxSize.Value.Height) size.Height = maxSize.Value.Height;
+                tb.Clip = new RectangleGeometry()
+                {
+                    Rect = new Rect(0, 0, size.Width, size.Height)
+                };
+            }
             double dx = 0;
             if (halign == HorizontalTextAlign.Center)
             {
-                dx = -tb.ActualWidth / 2;
+                dx = -size.Width / 2;
             }
 
             if (halign == HorizontalTextAlign.Right)
             {
-                dx = -tb.ActualWidth;
+                dx = -size.Width;
             }
 
             double dy = 0;
             if (valign == VerticalTextAlign.Middle)
             {
-                dy = -tb.ActualHeight / 2;
+                dy = -size.Height / 2;
             }
 
             if (valign == VerticalTextAlign.Bottom)
             {
-                dy = -tb.ActualHeight;
+                dy = -size.Height;
             }
 
             var transform = new TransformGroup();
@@ -533,8 +526,16 @@ namespace OxyPlot.Silverlight
 
             transform.Children.Add(new TranslateTransform { X = (int)p.X, Y = (int)p.Y });
             tb.RenderTransform = transform;
-
+            this.ApplyTooltip(tb);
             this.canvas.Children.Add(tb);
+        }
+        
+        private void ApplyTooltip(FrameworkElement element)
+        {
+            if (!string.IsNullOrEmpty(this.CurrentToolTip))
+            {
+                ToolTipService.SetToolTip(element, this.CurrentToolTip);
+            }
         }
 
         /// <summary>
@@ -669,11 +670,11 @@ namespace OxyPlot.Silverlight
         /// The aliased.
         /// </param>
         private void SetStroke(
-            Shape shape, 
-            OxyColor stroke, 
-            double thickness, 
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, 
-            double[] dashArray = null, 
+            Shape shape,
+            OxyColor stroke,
+            double thickness,
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            double[] dashArray = null,
             bool aliased = false)
         {
             if (stroke != null && thickness > 0)
@@ -689,7 +690,7 @@ namespace OxyPlot.Silverlight
                         shape.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
 
-                        // The default StrokeLineJoin is Miter
+                    // The default StrokeLineJoin is Miter
                 }
 
                 if (thickness != 1)
@@ -708,5 +709,25 @@ namespace OxyPlot.Silverlight
         }
 
         #endregion
+        /// <summary>
+        /// Gets or sets the current tooltip.
+        /// </summary>
+        /// <value>
+        /// The current tooltip.
+        /// </value>
+        private string CurrentToolTip { get; set; }
+
+        /// <summary>
+        /// Sets the tool tip for the following items.
+        /// </summary>
+        /// <param name="text">The text in the tooltip.</param>
+        /// <params>
+        /// This is only used in the plot controls.
+        ///   </params>
+        public void SetToolTip(string text)
+        {
+            this.CurrentToolTip = text;
+
+        }
     }
 }

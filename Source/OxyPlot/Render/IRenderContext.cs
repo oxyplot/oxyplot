@@ -1,8 +1,11 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IRenderContext.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// <summary>
+//   Horizontal text alignment.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -79,9 +82,8 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        ///   Gets the height.
+        ///   Gets the height of the rendering area.
         /// </summary>
-        /// <value>The height.</value>
         double Height { get; }
 
         /// <summary>
@@ -91,9 +93,8 @@ namespace OxyPlot
         bool PaintBackground { get; }
 
         /// <summary>
-        ///   Gets the width.
+        ///   Gets the width of the rendering area.
         /// </summary>
-        /// <value>The width.</value>
         double Width { get; }
 
         #endregion
@@ -101,7 +102,7 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// Draws the ellipse.
+        /// Draws an ellipse.
         /// </summary>
         /// <param name="rect">
         /// The rectangle.
@@ -113,7 +114,7 @@ namespace OxyPlot
         /// The stroke color.
         /// </param>
         /// <param name="thickness">
-        /// The stroke thickness.
+        /// The thickness.
         /// </param>
         void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
@@ -326,6 +327,9 @@ namespace OxyPlot
         /// <param name="valign">
         /// The vertical alignment.
         /// </param>
+        /// <param name="maxSize">
+        /// The maximum size of the text.
+        /// </param>
         void DrawText(
             ScreenPoint p, 
             string text, 
@@ -335,7 +339,8 @@ namespace OxyPlot
             double fontWeight = 500, 
             double rotate = 0, 
             HorizontalTextAlign halign = HorizontalTextAlign.Left, 
-            VerticalTextAlign valign = VerticalTextAlign.Top);
+            VerticalTextAlign valign = VerticalTextAlign.Top, 
+            OxySize? maxSize = null);
 
         /// <summary>
         /// Measures the text.
@@ -356,6 +361,17 @@ namespace OxyPlot
         /// The text size.
         /// </returns>
         OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500);
+
+        /// <summary>
+        /// Sets the tool tip for the following items.
+        /// </summary>
+        /// <params>
+        ///   This is only used in the plot controls.
+        /// </params>
+        /// <param name="text">
+        /// The text in the tooltip.
+        /// </param>
+        void SetToolTip(string text);
 
         #endregion
     }

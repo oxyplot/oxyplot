@@ -206,6 +206,14 @@ namespace OxyPlot
         public string ActualStringFormat { get; protected set; }
 
         /// <summary>
+        /// Gets or sets the tool tip.
+        /// </summary>
+        /// <value>
+        /// The tool tip.
+        /// </value>
+        public string ToolTip { get; set; }
+
+        /// <summary>
         ///   Gets the actual title (including Unit if Unit is set).
         /// </summary>
         /// <value>The actual title.</value>

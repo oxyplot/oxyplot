@@ -484,7 +484,8 @@ namespace OxyPlot.Metro
             double fontWeight, 
             double rotate, 
             HorizontalTextAlign halign, 
-            VerticalTextAlign valign)
+            VerticalTextAlign valign,
+            OxySize? maxSize)
         {
             var tb = new TextBlock { Text = text, Foreground = new SolidColorBrush(fill.ToColor()) };
 
@@ -708,6 +709,8 @@ namespace OxyPlot.Metro
             // shape.UseLayoutRounding = aliased;
         }
 
+        public void SetToolTip(string text) {
+        }
         #endregion
     }
 }

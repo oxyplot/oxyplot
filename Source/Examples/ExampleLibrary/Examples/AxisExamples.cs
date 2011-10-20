@@ -130,7 +130,7 @@ namespace ExampleLibrary
         public static PlotModel LeftAndBottom()
         {
             var plotModel1 = new PlotModel();
-            plotModel1.PlotMargins = new OxyThickness(40,40,40,40);
+            plotModel1.PlotMargins = new OxyThickness(40, 40, 40, 40);
             var linearAxis1 = new LinearAxis();
             linearAxis1.MajorGridlineStyle = LineStyle.Solid;
             linearAxis1.MinorGridlineStyle = LineStyle.Dot;
@@ -148,7 +148,7 @@ namespace ExampleLibrary
         public static PlotModel TopRight()
         {
             var plotModel1 = new PlotModel();
-            plotModel1.PlotMargins = new OxyThickness(40,40,40,40);
+            plotModel1.PlotMargins = new OxyThickness(40, 40, 40, 40);
             var linearAxis1 = new LinearAxis();
             linearAxis1.MajorGridlineStyle = LineStyle.Solid;
             linearAxis1.MinorGridlineStyle = LineStyle.Dot;
@@ -167,7 +167,7 @@ namespace ExampleLibrary
         public static PlotModel Untitled()
         {
             var plotModel1 = new PlotModel();
-            plotModel1.PlotMargins = new OxyThickness(60,40,60,30);
+            plotModel1.PlotMargins = new OxyThickness(60, 40, 60, 30);
             var linearAxis1 = new LinearAxis();
             linearAxis1.Angle = 45;
             linearAxis1.MajorGridlineStyle = LineStyle.Solid;
@@ -188,7 +188,7 @@ namespace ExampleLibrary
         {
             var plotModel1 = new PlotModel();
             plotModel1.PlotAreaBorderThickness = 0;
-            plotModel1.PlotMargins = new OxyThickness(10,10,10,10);
+            plotModel1.PlotMargins = new OxyThickness(10, 10, 10, 10);
             var linearAxis1 = new LinearAxis();
             linearAxis1.Maximum = 50;
             linearAxis1.Minimum = -30;
@@ -208,7 +208,7 @@ namespace ExampleLibrary
         public static PlotModel Reversed()
         {
             var plotModel1 = new PlotModel();
-            plotModel1.PlotMargins = new OxyThickness(40,10,10,30);
+            plotModel1.PlotMargins = new OxyThickness(40, 10, 10, 30);
             var linearAxis1 = new LinearAxis();
             linearAxis1.EndPosition = 0;
             linearAxis1.Maximum = 50;
@@ -228,7 +228,7 @@ namespace ExampleLibrary
         public static PlotModel FourAxes()
         {
             var plotModel1 = new PlotModel();
-            plotModel1.PlotMargins = new OxyThickness(70,40,40,40);
+            plotModel1.PlotMargins = new OxyThickness(70, 40, 40, 40);
             var linearAxis1 = new LinearAxis();
             linearAxis1.Maximum = 36;
             linearAxis1.Minimum = 0;
@@ -258,7 +258,7 @@ namespace ExampleLibrary
         public static PlotModel MultiplePanes()
         {
             var plotModel1 = new PlotModel();
-            plotModel1.PlotMargins = new OxyThickness(40,20,40,30);
+            plotModel1.PlotMargins = new OxyThickness(40, 20, 40, 30);
             var linearAxis1 = new LinearAxis();
             linearAxis1.EndPosition = 0.25;
             linearAxis1.Maximum = 1;
@@ -299,7 +299,7 @@ namespace ExampleLibrary
         public static PlotModel LogarithmicAxes()
         {
             var plotModel1 = new PlotModel();
-            plotModel1.PlotMargins = new OxyThickness(80,10,20,30);
+            plotModel1.PlotMargins = new OxyThickness(80, 10, 20, 30);
             var logarithmicAxis1 = new LogarithmicAxis();
             logarithmicAxis1.Maximum = 1000000;
             logarithmicAxis1.Minimum = 1;
@@ -615,5 +615,17 @@ namespace ExampleLibrary
                 yield return new DataPoint(x, y);
             }
         }
+
+        [Example("Long axis titles")]
+        public static PlotModel LongAxisTitles()
+        {
+            var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
+            var tooltip = "The tooltip is " + longTitle;
+            var plotModel1 = new PlotModel("Long axis titles");
+            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left, longTitle) { ToolTip = tooltip });
+            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Bottom, longTitle) { ToolTip = tooltip });
+            return plotModel1;
+        }
+
     }
 }
