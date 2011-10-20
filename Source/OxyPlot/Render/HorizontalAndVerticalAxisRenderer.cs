@@ -95,7 +95,7 @@ namespace OxyPlot
             var majorSegments = new List<ScreenPoint>();
             var majorTickSegments = new List<ScreenPoint>();
 
-            double eps = axis.MinorStep * 1e-3;
+            double eps = axis.ActualMinorStep * 1e-3;
 
             this.GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
 
