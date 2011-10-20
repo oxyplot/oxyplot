@@ -302,8 +302,12 @@ namespace ExampleLibrary
                     5, 0, 7, 7, 4, 3, 5, 5, 11, 4, 2, 3, 2, 1, 0, 2, -1, 0, 0, -3, -6, -13, -10, -10, 0, -4, -5, -4, 3, 0,
                     -5
                 };
+
             for (int i = 0; i < temperature.Length; i++)
+            {
                 s1.Points.Add(new DataPoint(i + 1, temperature[i]));
+            }
+
             model.Series.Add(s1);
             model.Axes.Add(new LinearAxis(AxisPosition.Left) { ExtraGridlines = new[] { 0.0 } });
 
