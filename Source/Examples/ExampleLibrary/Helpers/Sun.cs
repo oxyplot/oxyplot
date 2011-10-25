@@ -94,14 +94,18 @@ namespace ExampleLibrary
 
             //    9. adjust back to UTC
             double UT = T - lngHour;
-            
+
             //    10. convert UT value to local time zone of latitude/longitude
 
-            var utctime = date.Date.AddHours(UT);            
+            var utctime = date.Date.AddHours(UT);
+#if SILVERLIGHT
+            var localtime = utctime;
+#else
             var localtime = TimeZoneInfo.ConvertTimeFromUtc(utctime, tzi);
-            UT = (localtime-date).TotalHours;
+#endif
+            UT = (localtime - date).TotalHours;
             UT = FixValue(UT, 0, 24);
-            return date.AddHours(UT);            
+            return date.AddHours(UT);
         }
     }
 

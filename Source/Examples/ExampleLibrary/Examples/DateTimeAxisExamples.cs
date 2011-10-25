@@ -107,7 +107,7 @@ namespace ExampleLibrary
             public TimeSpan Sunset { get; set; }
         }
 
-        private static Collection<SunItem> CreateSunData(int year, double lat, double lon, TimeZoneInfo tzi)
+        private static Collection<SunItem> CreateSunData(int year, double lat, double lon, TimeZoneInfo tzi = null)
         {
             var data = new Collection<SunItem>();
             var day = new DateTime(year, 1, 1);
@@ -126,10 +126,18 @@ namespace ExampleLibrary
         public static PlotModel SunriseandsunsetinOslo()
         {
             int year = DateTime.Now.Year;
-            var SunData = CreateSunData(year, 59.91, 10.75, TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time"));
-
+#if SILVERLIGHT
+            var sunData = CreateSunData(year, 59.91, 10.75);
+#else
+            var sunData = CreateSunData(year, 59.91, 10.75, TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time"));
+#endif
             var plotModel1 = new PlotModel();
             plotModel1.Title = "Sunrise and sunset in Oslo";
+
+#if SILVERLIGHT
+            plotModel1.Subtitle = "UTC time";
+#endif
+
             var dateTimeAxis1 = new DateTimeAxis
                 {
                     CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek,
@@ -144,7 +152,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(timeSpanAxis1);
             var areaSeries1 = new AreaSeries
                 {
-                    ItemsSource = SunData,
+                    ItemsSource = sunData,
                     DataFieldX = "Day",
                     DataFieldY = "Sunrise",
                     DataFieldX2 = "Day",
