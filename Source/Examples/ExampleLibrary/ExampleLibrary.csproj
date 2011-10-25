@@ -67,6 +67,7 @@
     <Compile Include="Examples\PolarPlotExamples.cs" />
     <Compile Include="Examples\TimeSpanAxisExamples.cs" />
     <Compile Include="Examples\TrackerExamples.cs" />
+    <Compile Include="Helpers\Sun.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Examples\ScatterSeriesExamples.cs" />
   </ItemGroup>
