@@ -14,6 +14,34 @@ namespace OxyPlot.Wpf
     /// </summary>
     public abstract class Axis : FrameworkElement, IAxis
     {
+        public LineStyle AxislineStyle
+        {
+            get { return (LineStyle)GetValue(AxislineStyleProperty); }
+            set { SetValue(AxislineStyleProperty, value); }
+        }
+
+        public static readonly DependencyProperty AxislineStyleProperty =
+            DependencyProperty.Register("AxislineStyle", typeof(LineStyle), typeof(Axis), new UIPropertyMetadata(LineStyle.None));
+        public double AxislineThickness
+        {
+            get { return (double)GetValue(AxislineThicknessProperty); }
+            set { SetValue(AxislineThicknessProperty, value); }
+        }
+
+        public static readonly DependencyProperty AxislineThicknessProperty =
+            DependencyProperty.Register("AxislineThickness", typeof(double), typeof(Axis), new UIPropertyMetadata(1.0));
+
+        public Color AxislineColor
+        {
+            get { return (Color)GetValue(AxislineColorProperty); }
+            set { SetValue(AxislineColorProperty, value); }
+        }
+
+        public static readonly DependencyProperty AxislineColorProperty =
+            DependencyProperty.Register("AxislineColor", typeof(Color), typeof(Axis), new UIPropertyMetadata(Colors.Black));
+
+
+
         #region Constants and Fields
 
         /// <summary>
@@ -277,6 +305,12 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position", typeof(AxisPosition), typeof(Axis), new PropertyMetadata(AxisPosition.Left, AppearanceChanged));
+
+        /// <summary>
+        /// The positionTier property
+        /// </summary>
+        public static readonly DependencyProperty PositionTierProperty = DependencyProperty.Register(
+            "PositionTier", typeof(int), typeof(Axis), new PropertyMetadata((int)0, AppearanceChanged));
 
         /// <summary>
         /// The show minor ticks property.
@@ -942,6 +976,24 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the position tier which defines in which tier the axis is displayed.
+        /// </summary>
+        /// <remarks>
+        /// The bigger the value the the further afar is the axis from the graph.
+        /// </remarks>
+        public int PositionTier
+        {
+            get
+            {
+                return (int)this.GetValue(PositionTierProperty);
+            }
+            set
+            {
+                this.SetValue(PositionTierProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether PositionAtZeroCrossing.
         /// </summary>
         public bool PositionAtZeroCrossing
@@ -1209,10 +1261,15 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected virtual void SynchronizeProperties()
         {
-            var a = this.internalAxis as AxisBase;
+            var a = (AxisBase)this.internalAxis;
             a.AbsoluteMaximum = this.AbsoluteMaximum;
             a.AbsoluteMinimum = this.AbsoluteMinimum;
             a.Angle = this.Angle;
+            a.AxislineColor = this.AxislineColor.ToOxyColor();
+            a.AxislineStyle = this.AxislineStyle;
+            a.AxislineThickness = this.AxislineThickness;
+            a.AxisTitleDistance = this.AxisTitleDistance;
+            a.AxisTickToLabelDistance = this.AxisTickToLabelDistance;
             a.EndPosition = this.EndPosition;
             a.ExtraGridlineColor = this.ExtraGridlineColor.ToOxyColor();
             a.ExtraGridlineStyle = this.ExtraGridlineStyle;
@@ -1223,10 +1280,12 @@ namespace OxyPlot.Wpf
             a.Font = this.Font;
             a.FontSize = this.FontSize;
             a.FontWeight = this.FontWeight.ToOpenTypeWeight();
+            a.IntervalLength = this.IntervalLength;
             a.IsPanEnabled = this.IsPanEnabled;
             a.IsAxisVisible = this.IsAxisVisible;
             a.IsZoomEnabled = this.IsZoomEnabled;
             a.Key = this.Key;
+            a.Layer = this.Layer;
             a.MajorGridlineColor = this.MajorGridlineColor.ToOxyColor();
             a.MinorGridlineColor = this.MinorGridlineColor.ToOxyColor();
             a.MajorGridlineStyle = this.MajorGridlineStyle;
@@ -1242,6 +1301,7 @@ namespace OxyPlot.Wpf
             a.MinimumPadding = this.MinimumPadding;
             a.MaximumPadding = this.MaximumPadding;
             a.Position = this.Position;
+            a.PositionTier = this.PositionTier;
             a.PositionAtZeroCrossing = this.PositionAtZeroCrossing;
             a.ShowMinorTicks = this.ShowMinorTicks;
             a.StartPosition = this.StartPosition;
@@ -1254,10 +1314,6 @@ namespace OxyPlot.Wpf
             a.TitlePosition = this.TitlePosition;
             a.Unit = this.Unit;
             a.UseSuperExponentialFormat = this.UseSuperExponentialFormat;
-            a.AxisTitleDistance = this.AxisTitleDistance;
-            a.AxisTickToLabelDistance = this.AxisTickToLabelDistance;
-            a.IntervalLength = this.IntervalLength;
-            a.Layer = this.Layer;
         }
 
         #endregion

@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AxisBase.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -57,6 +57,24 @@ namespace OxyPlot
         #endregion
 
         #region Properties
+
+        /// <summary>
+        ///   Gets or sets the position tier max shift.
+        /// </summary>
+        /// <value>The position tier max shift.</value>
+        internal double PositionTierMaxShift { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the position tier min shift.
+        /// </summary>
+        /// <value>The position tier min shift.</value>
+        internal double PositionTierMinShift { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the size of the position tier.
+        /// </summary>
+        /// <value>The size of the position tier.</value>
+        internal double PositionTierSize { get; set; }
 
         /// <summary>
         ///   Gets or sets the current view's maximum. This value is used when the user zooms or pans.
@@ -753,7 +771,7 @@ namespace OxyPlot
             double min = this.PreTransform(this.ActualMinimum);
 
             double da = a0 - a1;
-            if (Math.Abs(da) != 0)
+            if (Math.Abs(da) > double.Epsilon)
             {
                 this.Offset = a0 / da * max - a1 / da * min;
             }
@@ -763,7 +781,7 @@ namespace OxyPlot
             }
 
             double range = max - min;
-            if (Math.Abs(range) != 0)
+            if (Math.Abs(range) > double.Epsilon)
             {
                 this.scale = (a1 - a0) / range;
             }
@@ -786,6 +804,7 @@ namespace OxyPlot
         /// The interval.
         /// </param>
         /// <returns>
+        /// A list of tick values.
         /// </returns>
         protected static IList<double> CreateTickValues(double min, double max, double step)
         {
@@ -870,20 +889,13 @@ namespace OxyPlot
         // All other rights reserved.
 
         /// <summary>
-        /// Returns the actual interval to use to determine which values are 
-        ///   displayed in the axis.
+        /// Returns the actual interval to use to determine which values are displayed in the axis.
         /// </summary>
-        /// <param name="availableSize">
-        /// The available size.
-        /// </param>
-        /// <param name="maxIntervalSize">
-        /// The maximum interval size.
-        /// </param>
-        /// <param name="range">
-        /// </param>
+        /// <param name="availableSize">The available size.</param>
+        /// <param name="maxIntervalSize">The maximum interval size.</param>
+        /// <param name="range">The range.</param>
         /// <returns>
-        /// Actual interval to use to determine which values are 
-        ///   displayed in the axis.
+        /// Actual interval to use to determine which values are displayed in the axis.
         /// </returns>
         protected double CalculateActualInterval(double availableSize, double maxIntervalSize, double range)
         {

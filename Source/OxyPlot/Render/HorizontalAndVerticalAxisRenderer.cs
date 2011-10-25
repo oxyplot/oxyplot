@@ -45,48 +45,51 @@ namespace OxyPlot
         {
             base.Render(axis);
 
+            double totalShift = axis.PositionTierMinShift;
+            double tierSize = axis.PositionTierSize - this.Plot.AxisTierDistance;
+
             Axis perpendicularAxis = this.Plot.DefaultXAxis;
             bool isHorizontal = true;
 
             // store properties locally for performance
-            double ppl = this.Plot.PlotArea.Left;
-            double ppr = this.Plot.PlotArea.Right;
-            double ppt = this.Plot.PlotArea.Top;
-            double ppb = this.Plot.PlotArea.Bottom;
+            double plotAreaLeft = this.Plot.PlotArea.Left;
+            double plotAreaRight = this.Plot.PlotArea.Right;
+            double plotAreaTop = this.Plot.PlotArea.Top;
+            double plotAreaBottom = this.Plot.PlotArea.Bottom;
             double actualMinimum = axis.ActualMinimum;
             double actualMaximum = axis.ActualMaximum;
 
             // Axis position (x or y screen coordinate)
-            double apos = 0;
+            double axisPosition = 0;
             double titlePosition = 0;
 
             switch (axis.Position)
             {
                 case AxisPosition.Left:
-                    apos = ppl;
-                    titlePosition = this.Plot.PlotAndAxisArea.Left;
+                    axisPosition = plotAreaLeft - totalShift;
+                    titlePosition = axisPosition - tierSize;
                     isHorizontal = false;
                     break;
                 case AxisPosition.Right:
-                    apos = ppr;
-                    titlePosition = this.Plot.PlotAndAxisArea.Right;
+                    axisPosition = plotAreaRight + totalShift;
+                    titlePosition = axisPosition + tierSize;
                     isHorizontal = false;
                     break;
                 case AxisPosition.Top:
-                    apos = ppt;
-                    titlePosition = this.Plot.PlotAndAxisArea.Top;
+                    axisPosition = plotAreaTop - totalShift;
+                    titlePosition = axisPosition - tierSize;
                     perpendicularAxis = this.Plot.DefaultYAxis;
                     break;
                 case AxisPosition.Bottom:
-                    apos = ppb;
-                    titlePosition = this.Plot.PlotAndAxisArea.Bottom;
+                    axisPosition = plotAreaBottom + totalShift;
+                    titlePosition = axisPosition + tierSize;
                     perpendicularAxis = this.Plot.DefaultYAxis;
                     break;
             }
 
             if (axis.PositionAtZeroCrossing)
             {
-                apos = perpendicularAxis.Transform(0);
+                axisPosition = perpendicularAxis.Transform(0);
             }
 
             double a0, a1;
@@ -120,13 +123,13 @@ namespace OxyPlot
 
                 if (isHorizontal)
                 {
-                    SnapTo(ppl, ref transformedValue);
-                    SnapTo(ppr, ref transformedValue);
+                    SnapTo(plotAreaLeft, ref transformedValue);
+                    SnapTo(plotAreaRight, ref transformedValue);
                 }
                 else
                 {
-                    SnapTo(ppt, ref transformedValue);
-                    SnapTo(ppb, ref transformedValue);
+                    SnapTo(plotAreaTop, ref transformedValue);
+                    SnapTo(plotAreaBottom, ref transformedValue);
                 }
 
                 // Draw the minor grid line
@@ -134,17 +137,17 @@ namespace OxyPlot
                 {
                     if (isHorizontal)
                     {
-                        minorSegments.Add(new ScreenPoint(transformedValue, ppt));
-                        minorSegments.Add(new ScreenPoint(transformedValue, ppb));
+                        minorSegments.Add(new ScreenPoint(transformedValue, plotAreaTop));
+                        minorSegments.Add(new ScreenPoint(transformedValue, plotAreaBottom));
                     }
                     else
                     {
-                        if (transformedValue < ppt || transformedValue > ppb)
+                        if (transformedValue < plotAreaTop || transformedValue > plotAreaBottom)
                         {
                         }
 
-                        minorSegments.Add(new ScreenPoint(ppl, transformedValue));
-                        minorSegments.Add(new ScreenPoint(ppr, transformedValue));
+                        minorSegments.Add(new ScreenPoint(plotAreaLeft, transformedValue));
+                        minorSegments.Add(new ScreenPoint(plotAreaRight, transformedValue));
                     }
                 }
 
@@ -153,13 +156,13 @@ namespace OxyPlot
                 {
                     if (isHorizontal)
                     {
-                        minorTickSegments.Add(new ScreenPoint(transformedValue, apos + a0));
-                        minorTickSegments.Add(new ScreenPoint(transformedValue, apos + a1));
+                        minorTickSegments.Add(new ScreenPoint(transformedValue, axisPosition + a0));
+                        minorTickSegments.Add(new ScreenPoint(transformedValue, axisPosition + a1));
                     }
                     else
                     {
-                        minorTickSegments.Add(new ScreenPoint(apos + a0, transformedValue));
-                        minorTickSegments.Add(new ScreenPoint(apos + a1, transformedValue));
+                        minorTickSegments.Add(new ScreenPoint(axisPosition + a0, transformedValue));
+                        minorTickSegments.Add(new ScreenPoint(axisPosition + a1, transformedValue));
                     }
                 }
             }
@@ -181,26 +184,26 @@ namespace OxyPlot
                 double transformedValue = axis.Transform(value);
                 if (isHorizontal)
                 {
-                    SnapTo(ppl, ref transformedValue);
-                    SnapTo(ppr, ref transformedValue);
+                    SnapTo(plotAreaLeft, ref transformedValue);
+                    SnapTo(plotAreaRight, ref transformedValue);
                 }
                 else
                 {
-                    SnapTo(ppt, ref transformedValue);
-                    SnapTo(ppb, ref transformedValue);
+                    SnapTo(plotAreaTop, ref transformedValue);
+                    SnapTo(plotAreaBottom, ref transformedValue);
                 }
 
                 if (this.MajorPen != null)
                 {
                     if (isHorizontal)
                     {
-                        majorSegments.Add(new ScreenPoint(transformedValue, ppt));
-                        majorSegments.Add(new ScreenPoint(transformedValue, ppb));
+                        majorSegments.Add(new ScreenPoint(transformedValue, plotAreaTop));
+                        majorSegments.Add(new ScreenPoint(transformedValue, plotAreaBottom));
                     }
                     else
                     {
-                        majorSegments.Add(new ScreenPoint(ppl, transformedValue));
-                        majorSegments.Add(new ScreenPoint(ppr, transformedValue));
+                        majorSegments.Add(new ScreenPoint(plotAreaLeft, transformedValue));
+                        majorSegments.Add(new ScreenPoint(plotAreaRight, transformedValue));
                     }
                 }
 
@@ -208,13 +211,13 @@ namespace OxyPlot
                 {
                     if (isHorizontal)
                     {
-                        majorTickSegments.Add(new ScreenPoint(transformedValue, apos + a0));
-                        majorTickSegments.Add(new ScreenPoint(transformedValue, apos + a1));
+                        majorTickSegments.Add(new ScreenPoint(transformedValue, axisPosition + a0));
+                        majorTickSegments.Add(new ScreenPoint(transformedValue, axisPosition + a1));
                     }
                     else
                     {
-                        majorTickSegments.Add(new ScreenPoint(apos + a0, transformedValue));
-                        majorTickSegments.Add(new ScreenPoint(apos + a1, transformedValue));
+                        majorTickSegments.Add(new ScreenPoint(axisPosition + a0, transformedValue));
+                        majorTickSegments.Add(new ScreenPoint(axisPosition + a1, transformedValue));
                     }
                 }
 
@@ -240,13 +243,13 @@ namespace OxyPlot
                 double transformedValue = axis.Transform(value);
                 if (isHorizontal)
                 {
-                    SnapTo(ppl, ref transformedValue);
-                    SnapTo(ppr, ref transformedValue);
+                    SnapTo(plotAreaLeft, ref transformedValue);
+                    SnapTo(plotAreaRight, ref transformedValue);
                 }
                 else
                 {
-                    SnapTo(ppt, ref transformedValue);
-                    SnapTo(ppb, ref transformedValue);
+                    SnapTo(plotAreaTop, ref transformedValue);
+                    SnapTo(plotAreaBottom, ref transformedValue);
                 }
 
                 var pt = new ScreenPoint();
@@ -255,22 +258,22 @@ namespace OxyPlot
                 switch (axis.Position)
                 {
                     case AxisPosition.Left:
-                        pt = new ScreenPoint(apos + a1 - axis.AxisTickToLabelDistance, transformedValue);
+                        pt = new ScreenPoint(axisPosition + a1 - axis.AxisTickToLabelDistance, transformedValue);
                         GetRotatedAlignments(
                             axis.Angle, HorizontalTextAlign.Right, VerticalTextAlign.Middle, out ha, out va);
                         break;
                     case AxisPosition.Right:
-                        pt = new ScreenPoint(apos + a1 + axis.AxisTickToLabelDistance, transformedValue);
+                        pt = new ScreenPoint(axisPosition + a1 + axis.AxisTickToLabelDistance, transformedValue);
                         GetRotatedAlignments(
                             axis.Angle, HorizontalTextAlign.Left, VerticalTextAlign.Middle, out ha, out va);
                         break;
                     case AxisPosition.Top:
-                        pt = new ScreenPoint(transformedValue, apos + a1 - axis.AxisTickToLabelDistance);
+                        pt = new ScreenPoint(transformedValue, axisPosition + a1 - axis.AxisTickToLabelDistance);
                         GetRotatedAlignments(
                             axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Bottom, out ha, out va);
                         break;
                     case AxisPosition.Bottom:
-                        pt = new ScreenPoint(transformedValue, apos + a1 + axis.AxisTickToLabelDistance);
+                        pt = new ScreenPoint(transformedValue, axisPosition + a1 + axis.AxisTickToLabelDistance);
                         GetRotatedAlignments(
                             axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Top, out ha, out va);
                         break;
@@ -296,11 +299,11 @@ namespace OxyPlot
                 double t0 = axis.Transform(0);
                 if (isHorizontal)
                 {
-                    this.rc.DrawLine(t0, ppt, t0, ppb, this.ZeroPen);
+                    this.rc.DrawLine(t0, plotAreaTop, t0, plotAreaBottom, this.ZeroPen);
                 }
                 else
                 {
-                    this.rc.DrawLine(ppl, t0, ppr, t0, this.ZeroPen);
+                    this.rc.DrawLine(plotAreaLeft, t0, plotAreaRight, t0, this.ZeroPen);
                 }
             }
 
@@ -317,11 +320,11 @@ namespace OxyPlot
                     double transformedValue = axis.Transform(value);
                     if (isHorizontal)
                     {
-                        this.rc.DrawLine(transformedValue, ppt, transformedValue, ppb, this.ExtraPen);
+                        this.rc.DrawLine(transformedValue, plotAreaTop, transformedValue, plotAreaBottom, this.ExtraPen);
                     }
                     else
                     {
-                        this.rc.DrawLine(ppl, transformedValue, ppr, transformedValue, this.ExtraPen);
+                        this.rc.DrawLine(plotAreaLeft, transformedValue, plotAreaRight, transformedValue, this.ExtraPen);
                     }
                 }
             }
@@ -330,12 +333,12 @@ namespace OxyPlot
             if (isHorizontal)
             {
                 this.rc.DrawLine(
-                    axis.Transform(actualMinimum), apos, axis.Transform(actualMaximum), apos, this.AxislinePen);
+                    axis.Transform(actualMinimum), axisPosition, axis.Transform(actualMaximum), axisPosition, this.AxislinePen);
             }
             else
             {
                 this.rc.DrawLine(
-                    apos, axis.Transform(actualMinimum), apos, axis.Transform(actualMaximum), this.AxislinePen);
+                    axisPosition, axis.Transform(actualMinimum), axisPosition, axis.Transform(actualMaximum), this.AxislinePen);
             }
 
             // Draw the axis title
