@@ -47,6 +47,11 @@ namespace OxyPlot
         ///   The position.
         /// </summary>
         private AxisPosition position;
+        
+        /// <summary>
+        /// The position tier
+        /// </summary>
+        private int positionTier;
 
         #endregion
 
@@ -58,6 +63,7 @@ namespace OxyPlot
         protected Axis()
         {
             this.Position = AxisPosition.Left;
+            this.PositionTier = 0;
             this.IsAxisVisible = true;
             this.Layer = AxisLayer.BelowSeries;
 
@@ -487,6 +493,25 @@ namespace OxyPlot
             set
             {
                 this.position = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the position tier which defines in which tier the axis is displayed.
+        /// </summary>
+        /// <remarks>
+        /// The bigger the value the the further afar is the axis from the graph.
+        /// </remarks>
+        public int PositionTier
+        {
+            get
+            {
+                return this.positionTier;
+            }
+
+            set
+            {
+                this.positionTier = value;
             }
         }
 

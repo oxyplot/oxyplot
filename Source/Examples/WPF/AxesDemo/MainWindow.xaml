@@ -161,7 +161,7 @@
                     </oxy:Plot.Axes>
                 </oxy:Plot>
             </TabItem>
-            <TabItem Header="Multiple panes">
+            <TabItem Header="Multiple axes">
                 <oxy:Plot PlotMargins="40,20,40,30">
                     <oxy:Plot.Axes>
                         <oxy:LinearAxis Position="Left" Minimum="-1" Maximum="1" Title="C1" StartPosition="0" EndPosition="0.25"/>
@@ -169,6 +169,22 @@
                         <oxy:LinearAxis Position="Left" Minimum="-1" Maximum="1" Title="C3" StartPosition="0.5" EndPosition="0.75"/>
                         <oxy:LinearAxis Position="Right" Minimum="-1" Maximum="1" Title="C4" StartPosition="0.75" EndPosition="1.00"/>
                         <oxy:LinearAxis Position="Bottom" Minimum="0" Maximum="100" Title="s"/>
+                    </oxy:Plot.Axes>
+                </oxy:Plot>
+            </TabItem>
+            <TabItem Header="PositionTier">
+                <oxy:Plot>
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Left" Minimum="-1" Maximum="1" Title="PositionTier=0"/>
+                        <oxy:LinearAxis Position="Left" Minimum="-2" Maximum="2" Title="PositionTier=1" PositionTier="1" AxislineStyle="Solid"/>
+                        <oxy:LinearAxis Position="Right" Minimum="-1" Maximum="1" Title="PositionTier=0"/>
+                        <oxy:LinearAxis Position="Right" Minimum="-2" Maximum="2" Title="PositionTier=1" PositionTier="1" AxislineStyle="Solid"/>
+                        <oxy:LinearAxis Position="Top" Minimum="-1" Maximum="1" Title="PositionTier=0"/>
+                        <oxy:LinearAxis Position="Top" Minimum="-2" Maximum="2" Title="PositionTier=1" PositionTier="1" AxislineStyle="Solid"/>
+                        <oxy:LinearAxis Position="Top" Minimum="-10" Maximum="10" Title="PositionTier=2" PositionTier="2" AxislineStyle="Solid"/>
+                        <oxy:LinearAxis Position="Bottom" Minimum="-1" Maximum="1" Title="PositionTier=0"/>
+                        <oxy:LinearAxis Position="Bottom" Minimum="-2" Maximum="2" Title="PositionTier=1" PositionTier="1" AxislineStyle="Solid"/>
+                        <oxy:LinearAxis Position="Bottom" Minimum="-10" Maximum="10" Title="PositionTier=2" PositionTier="2" AxislineStyle="Solid"/>
                     </oxy:Plot.Axes>
                 </oxy:Plot>
             </TabItem>

@@ -151,6 +151,11 @@ namespace OxyPlot
         AxisPosition Position { get; }
 
         /// <summary>
+        /// Gets the Position Tier of the Axis
+        /// </summary>
+        int PositionTier { get; }
+
+        /// <summary>
         ///   Gets the screen coordinate of the maximum point on the axis.
         /// </summary>
         ScreenPoint ScreenMax { get; }

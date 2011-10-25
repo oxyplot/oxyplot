@@ -255,6 +255,8 @@ namespace OxyPlot
                     OxyColors.Indigo, 
                     OxyColors.Violet
                 };
+
+            this.AxisTierDistance = 4.0;
         }
 
         /// <summary>
@@ -575,6 +577,11 @@ namespace OxyPlot
         public OxyRect PlotArea { get; private set; }
 
         /// <summary>
+        /// Gets or sets the distance between two neighbourhood tiers of the same AxisPosition.
+        /// </summary>
+        public double AxisTierDistance { get; set; }
+
+        /// <summary>
         ///   Gets or sets the color of the background of the plot area.
         /// </summary>
         public OxyColor PlotAreaBackground { get; set; }
@@ -795,24 +802,29 @@ namespace OxyPlot
 
             // Get the axis position of the given point. Using null if the point is inside the plot area.
             AxisPosition? position = null;
+            double plotAreaValue = 0;
             if (pt.X < this.PlotArea.Left)
             {
                 position = AxisPosition.Left;
+                plotAreaValue = this.PlotArea.Left;
             }
 
             if (pt.X > this.PlotArea.Right)
             {
                 position = AxisPosition.Right;
+                plotAreaValue = this.PlotArea.Right;
             }
 
             if (pt.Y < this.PlotArea.Top)
             {
                 position = AxisPosition.Top;
+                plotAreaValue = this.PlotArea.Top;
             }
 
             if (pt.Y > this.PlotArea.Bottom)
             {
                 position = AxisPosition.Bottom;
+                plotAreaValue = this.PlotArea.Bottom;
             }
 
             foreach (var axis in this.Axes)
@@ -830,21 +842,50 @@ namespace OxyPlot
                 }
 
                 double x = axis.InverseTransform(axis.IsHorizontal() ? pt.X : pt.Y);
-                if (x >= axis.ActualMinimum && x <= axis.ActualMaximum
-                    && (position == null || position == axis.Position))
+                if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
                 {
-                    if (axis.IsHorizontal())
+                    if (position == null)
                     {
-                        if (xaxis == null)
+                        if (axis.IsHorizontal())
                         {
-                            xaxis = axis;
+                            if (xaxis == null)
+                            {
+                                xaxis = axis;
+                            }
+                        }
+                        else
+                        {
+                            if (yaxis == null)
+                            {
+                                yaxis = axis;
+                            }
                         }
                     }
-                    else
+                    else if (position == axis.Position) // Choose right tier
                     {
-                        if (yaxis == null)
+                        var a = axis as AxisBase;
+                        double positionTierMinShift = a.PositionTierMinShift;
+                        double positionTierMaxShift = a.PositionTierMaxShift;
+
+                        double posValue = axis.IsHorizontal() ? pt.Y : pt.X;
+                        bool isLeftOrTop = position == AxisPosition.Top || position == AxisPosition.Left;
+                        if ((posValue >= plotAreaValue + positionTierMinShift && posValue < plotAreaValue + positionTierMaxShift && !isLeftOrTop) ||
+                            (posValue <= plotAreaValue - positionTierMinShift && posValue > plotAreaValue - positionTierMaxShift && isLeftOrTop))
                         {
-                            yaxis = axis;
+                            if (axis.IsHorizontal())
+                            {
+                                if (xaxis == null)
+                                {
+                                    xaxis = axis;
+                                }
+                            }
+                            else
+                            {
+                                if (yaxis == null)
+                                {
+                                    yaxis = axis;
+                                }
+                            }
                         }
                     }
                 }
