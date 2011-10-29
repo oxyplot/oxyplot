@@ -25,7 +25,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(80, 10));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "A00");
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(80, 10));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "A01");
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(80, 10));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "A02");
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1.6e-40, 2.5e-38));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "A11");
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1.6e40, 2.5e38));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "A12");
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1.20000000007, 2400000003));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "A13");
         }
 
         [Test]
@@ -133,7 +133,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1.20000000007, 2400000003));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "A13B");
         }
 
         [Test]
@@ -150,7 +150,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(4, 2.4));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "A14");
         }
 
         [Test]
@@ -164,7 +164,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1, 2.4));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "A15");
         }
 
         [Test]
@@ -179,7 +179,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1.000000000001, 2.4));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "A16");
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1000, 400));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "B01");
         }
 
         [Test]
@@ -213,7 +213,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(27, 19));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "B02");
         }
 
         [Test]
@@ -230,7 +230,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1.6e40, 2.5e38));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "B03");
         }
 
         [Test]
@@ -247,7 +247,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(27, 19));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "B04");
         }
 
         [Test]
@@ -256,7 +256,7 @@ namespace OxyPlot.Tests
             var plot = new PlotModel("Logarithmic axis with SuperExponentialFormat");
             plot.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X-axis") { Minimum = 1.8e2, Maximum = 1e5, UseSuperExponentialFormat = true });
             plot.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y-axis") { Minimum = 1e18, Maximum = 1e38, UseSuperExponentialFormat = true });
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "B05");
         }
 
         [Test]
@@ -276,7 +276,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 19), new DateTime(2011, 3, 14)));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "C01");
         }
 
         [Test]
@@ -296,7 +296,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 19), new DateTime(2011, 3, 14)));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "C02");
         }
 
         [Test]
@@ -313,7 +313,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(double.NaN, double.NaN));
             plot.Series.Add(ls);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "C03");
         }
 
         [Test, ExpectedException]
