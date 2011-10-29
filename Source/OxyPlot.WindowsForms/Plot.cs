@@ -495,7 +495,7 @@ namespace Oxyplot.WindowsForms
         /// Creates the manipulation event args.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
+        /// The MouseEventArgs instance containing the event data.
         /// </param>
         /// <returns>
         /// A manipulation event args object.
