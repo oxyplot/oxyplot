@@ -18,7 +18,7 @@ namespace OxyPlot.Tests
         [Test]
         public void ToDouble_ValidDate()
         {
-            Assert.AreEqual(40616,DateTimeAxis.ToDouble(new DateTime(2011, 3, 15)));
+            Assert.AreEqual(40616, DateTimeAxis.ToDouble(new DateTime(2011, 3, 15)));
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace OxyPlot.Tests
         {
             Assert.AreEqual(-693594, DateTimeAxis.ToDouble(new DateTime()));
         }
-        
+
         [Test]
         public void ToDateTime_ValidDate()
         {

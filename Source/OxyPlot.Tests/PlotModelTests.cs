@@ -56,8 +56,8 @@ namespace OxyPlot.Tests
         {
             var plot = new PlotModel("Backgrounds");
             plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
-            var yaxis1 = new LinearAxis(AxisPosition.Left, "Y1") { Key="Y1", StartPosition = 0, EndPosition = 0.5 };
-            var yaxis2 = new LinearAxis(AxisPosition.Left, "Y2") { Key="Y2", StartPosition = 0.5, EndPosition = 1 };
+            var yaxis1 = new LinearAxis(AxisPosition.Left, "Y1") { Key = "Y1", StartPosition = 0, EndPosition = 0.5 };
+            var yaxis2 = new LinearAxis(AxisPosition.Left, "Y2") { Key = "Y2", StartPosition = 0.5, EndPosition = 1 };
             plot.Axes.Add(yaxis1);
             plot.Axes.Add(yaxis2);
 
@@ -78,27 +78,27 @@ namespace OxyPlot.Tests
             AddExamplePoints(ls2);
             plot.Series.Add(ls2);
 
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "B11");
         }
 
         [Test]
         public void C11_FilteringInvalidPoints()
         {
             var plot = FilteringExamples.FilteringInvalidPoints();
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "C11");
         }
 
         [Test]
         public void C12_FilteringNonPositiveValuesOnLogAxes()
         {
             var plot = FilteringExamples.FilteringInvalidPointsLog();
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "C12");
         }
         [Test]
         public void C13_FilteringPointsOutsideRange()
         {
             var plot = FilteringExamples.FilteringPointsOutsideRange();
-            OxyAssert.AreEqual(plot);
+            OxyAssert.AreEqual(plot, "C13");
         }
 
     }
