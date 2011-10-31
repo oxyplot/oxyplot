@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Oxyplot.WindowsForms
+namespace OxyPlot.WindowsForms
 {
     using System;
     using System.ComponentModel;

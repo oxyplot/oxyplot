@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Oxyplot.WindowsForms
+namespace OxyPlot.WindowsForms
 {
     using System;
     using System.Collections.Generic;
