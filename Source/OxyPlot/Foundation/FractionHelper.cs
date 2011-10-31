@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FractionHelper.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -10,7 +10,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Generate fraction strings from doubles.
+    /// Generates fraction strings from double values.
     /// </summary>
     /// <remarks>
     /// e.g. 0.75 =&gt; "3/4"

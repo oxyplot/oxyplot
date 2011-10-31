@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="XYAxisSeries.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -17,19 +17,19 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The x axis key property.
+        ///   The x axis key property.
         /// </summary>
         public static readonly DependencyProperty XAxisKeyProperty = DependencyProperty.Register(
             "XAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The y axis key property.
+        ///   The y axis key property.
         /// </summary>
         public static readonly DependencyProperty YAxisKeyProperty = DependencyProperty.Register(
             "YAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The internal series.
+        ///   The internal series.
         /// </summary>
         protected OxyPlot.Series internalSeries;
 
@@ -38,7 +38,7 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets XAxisKey.
+        ///   Gets or sets XAxisKey.
         /// </summary>
         public string XAxisKey
         {
@@ -54,7 +54,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets YAxisKey.
+        ///   Gets or sets YAxisKey.
         /// </summary>
         public string YAxisKey
         {

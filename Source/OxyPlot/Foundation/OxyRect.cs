@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyRect.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -11,7 +11,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Rectangle class.
+    /// Describes the width, height, and point origin of a rectangle.
     /// </summary>
     public struct OxyRect
     {

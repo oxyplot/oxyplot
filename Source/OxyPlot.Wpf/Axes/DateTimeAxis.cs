@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeAxis.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -18,7 +18,7 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The calendar week rule property.
+        ///   The calendar week rule property.
         /// </summary>
         public static readonly DependencyProperty CalendarWeekRuleProperty =
             DependencyProperty.Register(
@@ -28,13 +28,13 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(CalendarWeekRule.FirstFourDayWeek, DataChanged));
 
         /// <summary>
-        /// The first date time property.
+        ///   The first date time property.
         /// </summary>
         public static readonly DependencyProperty FirstDateTimeProperty = DependencyProperty.Register(
             "FirstDateTime", typeof(DateTime), typeof(DateTimeAxis), new PropertyMetadata(DateTime.MinValue));
 
         /// <summary>
-        /// The first day of week property.
+        ///   The first day of week property.
         /// </summary>
         public static readonly DependencyProperty FirstDayOfWeekProperty = DependencyProperty.Register(
             "FirstDayOfWeek", 
@@ -43,7 +43,7 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(DayOfWeek.Monday, DataChanged));
 
         /// <summary>
-        /// The interval type property.
+        ///   The interval type property.
         /// </summary>
         public static readonly DependencyProperty IntervalTypeProperty = DependencyProperty.Register(
             "IntervalType", 
@@ -52,13 +52,13 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(DateTimeIntervalType.Auto));
 
         /// <summary>
-        /// The last date time property.
+        ///   The last date time property.
         /// </summary>
         public static readonly DependencyProperty LastDateTimeProperty = DependencyProperty.Register(
             "LastDateTime", typeof(DateTime), typeof(DateTimeAxis), new PropertyMetadata(DateTime.MaxValue));
 
         /// <summary>
-        /// The minor interval type property.
+        ///   The minor interval type property.
         /// </summary>
         public static readonly DependencyProperty MinorIntervalTypeProperty =
             DependencyProperty.Register(
@@ -72,7 +72,7 @@ namespace OxyPlot.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeAxis"/> class.
+        ///   Initializes a new instance of the <see cref = "DateTimeAxis" /> class.
         /// </summary>
         public DateTimeAxis()
         {
@@ -84,7 +84,7 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets CalendarWeekRule.
+        ///   Gets or sets CalendarWeekRule.
         /// </summary>
         public CalendarWeekRule CalendarWeekRule
         {
@@ -100,7 +100,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets FirstDateTime.
+        ///   Gets or sets FirstDateTime.
         /// </summary>
         public DateTime FirstDateTime
         {
@@ -116,7 +116,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets FirstDayOfWeek.
+        ///   Gets or sets FirstDayOfWeek.
         /// </summary>
         public DayOfWeek FirstDayOfWeek
         {
@@ -132,7 +132,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets IntervalType.
+        ///   Gets or sets IntervalType.
         /// </summary>
         public DateTimeIntervalType IntervalType
         {
@@ -148,7 +148,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LastDateTime.
+        ///   Gets or sets LastDateTime.
         /// </summary>
         public DateTime LastDateTime
         {
@@ -164,7 +164,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MinorIntervalType.
+        ///   Gets or sets MinorIntervalType.
         /// </summary>
         public DateTimeIntervalType MinorIntervalType
         {

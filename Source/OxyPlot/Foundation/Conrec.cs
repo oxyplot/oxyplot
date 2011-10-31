@@ -1,21 +1,20 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Conrec.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
 
     /// <summary>
-    /// Conrec is a straightforward method of contouring some surface represented 
-    ///   as a regular triangular mesh.
+    /// Creates contours from a triangular mesh.
     /// </summary>
     /// <remarks>
     /// <para>
     /// Ported from C / Fortran code by Paul Borke. 
-    ///     See <see cref="http://local.wasp.uwa.edu.au/~pbourke/papers/conrec"/> for 
+    ///     See http://local.wasp.uwa.edu.au/~pbourke/papers/conrec for 
     ///     full description of code and the original source.
     ///   </para>
     /// <para>

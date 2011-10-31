@@ -1,35 +1,36 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotModel.Legends.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System.Collections.Generic;
     using System.Linq;
 
-    // LegendPosition (LegendPlacement=Outside)
-    // +               +-----------------------------------+                 +
-    // |              Title                |
-    // |            Subtitle               |
-    // +-----------------------------------+
-    // |TopLeft       TopCenter    TopRight|
-    // +-----------------------------------+
-    // |              Top axis             |
-    // +----------+----+-----------------------------------+-----+-----------+
-    // |LeftTop   |    |                                   |     |RightTop   |
-    // |          |    |                                   |     |           |
-    // |          |Left|                                   |Right|           |
-    // |LeftMiddle|axis|              PlotArea             |axis |RightMiddle|
-    // |          |    |                                   |     |           |
-    // |          |    |                                   |     |           |
-    // |LeftBottom|    |                                   |     |RightBottom|
-    // +----------+----+-----------------------------------+-----+-----------+
-    // |             Bottom axis           |
-    // +-----------------------------------+
-    // |BottomLeft BottomCenter BottomRight|
-    // +               +-----------------------------------+                 +
+    ////                LegendPosition (LegendPlacement=Outside)
+    ////
+    //// +               +-----------------------------------+                 +
+    ////                 |              Title                |
+    ////                 |            Subtitle               |
+    ////                 +-----------------------------------+
+    ////                 |TopLeft       TopCenter    TopRight|
+    ////                 +-----------------------------------+
+    ////                 |              Top axis             |
+    //// +----------+----+-----------------------------------+-----+-----------+
+    //// |LeftTop   |    |                                   |     |RightTop   |
+    //// |          |    |                                   |     |           |
+    //// |          |Left|                                   |Right|           |
+    //// |LeftMiddle|axis|              PlotArea             |axis |RightMiddle|
+    //// |          |    |                                   |     |           |
+    //// |          |    |                                   |     |           |
+    //// |LeftBottom|    |                                   |     |RightBottom|
+    //// +----------+----+-----------------------------------+-----+-----------+
+    ////                 |             Bottom axis           |
+    ////                 +-----------------------------------+
+    ////                 |BottomLeft BottomCenter BottomRight|
+    //// +               +-----------------------------------+                 +
 
     /// <summary>
     /// Partial PlotModel class - this file contains methods related to the series legends.
@@ -252,6 +253,7 @@ namespace OxyPlot
         /// The measure only.
         /// </param>
         /// <returns>
+        /// The size of the legends.
         /// </returns>
         private OxySize RenderLegends(IRenderContext rc, OxyRect rect, bool measureOnly = false)
         {

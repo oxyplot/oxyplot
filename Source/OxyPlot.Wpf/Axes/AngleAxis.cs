@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AngleAxis.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -16,7 +16,7 @@ namespace OxyPlot.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="AngleAxis"/> class.
+        ///   Initializes static members of the <see cref = "AngleAxis" /> class.
         /// </summary>
         static AngleAxis()
         {
@@ -25,7 +25,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AngleAxis"/> class.
+        ///   Initializes a new instance of the <see cref = "AngleAxis" /> class.
         /// </summary>
         public AngleAxis()
         {

@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyColor.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -10,7 +10,7 @@ namespace OxyPlot
     using System.Reflection;
 
     /// <summary>
-    /// Color
+    /// Describes a color in terms of alpha, red, green, and blue channels.
     /// </summary>
     [Serializable]
     public class OxyColor : ICodeGenerating

@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DoubleExtensions.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -10,7 +10,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Represents extension methods for double.
+    /// Extension methods for double values.
     /// </summary>
     public static class DoubleExtensions
     {
@@ -148,9 +148,9 @@ namespace OxyPlot
 
 #if THISISNOTINUSE
 
-    /// <summary>
-    /// Gets the mantissa and exponent.
-    /// </summary>
+    // <summary>
+    // Gets the mantissa and exponent.
+    // </summary>
     /// <remarks>
     /// From <see cref="http://stackoverflow.com/questions/389993/extracting-mantissa-and-exponent-from-double-in-c"/>
     /// </remarks>

@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdfRenderContext.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Pdf
 {
@@ -25,22 +25,22 @@ namespace OxyPlot.Pdf
         #region Constants and Fields
 
         /// <summary>
-        /// The fontsize factor.
+        ///   The fontsize factor.
         /// </summary>
         private const double FontsizeFactor = 1.0;
 
         /// <summary>
-        /// The pdf document.
+        ///   The pdf document.
         /// </summary>
         private readonly PdfDocument doc;
 
         /// <summary>
-        /// The PdfSharp graphics context.
+        ///   The PdfSharp graphics context.
         /// </summary>
         private readonly XGraphics g;
 
         /// <summary>
-        /// The pdf page.
+        ///   The pdf page.
         /// </summary>
         private readonly PdfPage page;
 
@@ -228,10 +228,18 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// The draw rectangle.
         /// </summary>
-        /// <param name="rect">The rect.</param>
-        /// <param name="fill">The fill.</param>
-        /// <param name="stroke">The stroke.</param>
-        /// <param name="thickness">The thickness.</param>
+        /// <param name="rect">
+        /// The rect.
+        /// </param>
+        /// <param name="fill">
+        /// The fill.
+        /// </param>
+        /// <param name="stroke">
+        /// The stroke.
+        /// </param>
+        /// <param name="thickness">
+        /// The thickness.
+        /// </param>
         public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             if (fill != null)
@@ -249,16 +257,36 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// The draw text.
         /// </summary>
-        /// <param name="p">The p.</param>
-        /// <param name="text">The text.</param>
-        /// <param name="fill">The fill.</param>
-        /// <param name="fontFamily">The font family.</param>
-        /// <param name="fontSize">The font size.</param>
-        /// <param name="fontWeight">The font weight.</param>
-        /// <param name="rotate">The rotate.</param>
-        /// <param name="halign">The halign.</param>
-        /// <param name="valign">The valign.</param>
-        /// <param name="maxSize">The maximum size of the text.</param>
+        /// <param name="p">
+        /// The p.
+        /// </param>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <param name="fill">
+        /// The fill.
+        /// </param>
+        /// <param name="fontFamily">
+        /// The font family.
+        /// </param>
+        /// <param name="fontSize">
+        /// The font size.
+        /// </param>
+        /// <param name="fontWeight">
+        /// The font weight.
+        /// </param>
+        /// <param name="rotate">
+        /// The rotate.
+        /// </param>
+        /// <param name="halign">
+        /// The halign.
+        /// </param>
+        /// <param name="valign">
+        /// The valign.
+        /// </param>
+        /// <param name="maxSize">
+        /// The maximum size of the text.
+        /// </param>
         public override void DrawText(
             ScreenPoint p, 
             string text, 
@@ -268,7 +296,7 @@ namespace OxyPlot.Pdf
             double fontWeight, 
             double rotate, 
             HorizontalTextAlign halign, 
-            VerticalTextAlign valign,
+            VerticalTextAlign valign, 
             OxySize? maxSize)
         {
             if (text == null)
@@ -334,7 +362,7 @@ namespace OxyPlot.Pdf
             this.g.TranslateTransform((float)p.X, (float)p.Y);
 
             var layoutRectangle = new XRect(0, 0, size.Width, size.Height);
-           
+
             this.g.DrawString(text, font, ToBrush(fill), layoutRectangle, sf);
             this.g.Restore(state);
         }
@@ -342,10 +370,18 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// The measure text.
         /// </summary>
-        /// <param name="text">The text.</param>
-        /// <param name="fontFamily">The font family.</param>
-        /// <param name="fontSize">The font size.</param>
-        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <param name="fontFamily">
+        /// The font family.
+        /// </param>
+        /// <param name="fontSize">
+        /// The font size.
+        /// </param>
+        /// <param name="fontWeight">
+        /// The font weight.
+        /// </param>
         /// <returns>
         /// The text size.
         /// </returns>
@@ -385,7 +421,9 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Converts an OxyColor to a brush.
         /// </summary>
-        /// <param name="fill">The fill color.</param>
+        /// <param name="fill">
+        /// The fill color.
+        /// </param>
         /// <returns>
         /// The brush.
         /// </returns>
@@ -402,7 +440,9 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Converts an OxyColor to an XColor.
         /// </summary>
-        /// <param name="c">The source color.</param>
+        /// <param name="c">
+        /// The source color.
+        /// </param>
         /// <returns>
         /// The color.
         /// </returns>
@@ -414,7 +454,9 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Converts a list of points.
         /// </summary>
-        /// <param name="points">The list of points.</param>
+        /// <param name="points">
+        /// The list of points.
+        /// </param>
         /// <returns>
         /// The points.
         /// </returns>
@@ -427,7 +469,7 @@ namespace OxyPlot.Pdf
 
             var r = new XPoint[points.Count()];
             int i = 0;
-            foreach (ScreenPoint p in points)
+            foreach (var p in points)
             {
                 r[i++] = new XPoint((float)p.X, (float)p.Y);
             }

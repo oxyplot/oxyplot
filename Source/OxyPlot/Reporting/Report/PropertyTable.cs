@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PropertyTable.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Reporting
 {
@@ -90,8 +90,9 @@ namespace OxyPlot.Reporting
             foreach (var pi in type.GetProperties())
             {
                 var header = pi.Name;
-                Fields.Add(new ItemsTableField(header, pi.Name, null, Alignment.Left));
+                this.Fields.Add(new ItemsTableField(header, pi.Name, null, Alignment.Left));
             }
+
 #endif
 #if METRO
 

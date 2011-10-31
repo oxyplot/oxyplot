@@ -1,15 +1,15 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ScatterPoint.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
     /// ScatterPoint - used in ScatterSeries.
     /// </summary>
-    public struct ScatterPoint : IDataPoint, ICodeGenerating
+    public struct ScatterPoint : IDataPoint
     {
         #region Constants and Fields
 

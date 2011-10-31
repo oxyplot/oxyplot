@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeAxis.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -13,58 +13,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// A date time interval.
-    /// </summary>
-    public enum DateTimeIntervalType
-    {
-        /// <summary>
-        ///   Automatically determine interval.
-        /// </summary>
-        Auto = 0, 
-
-        /// <summary>
-        ///   Interval type is milliseconds.
-        /// </summary>
-        Milliseconds = 1, 
-
-        /// <summary>
-        ///   Interval type is seconds.
-        /// </summary>
-        Seconds = 2, 
-
-        /// <summary>
-        ///   Interval type is minutes.
-        /// </summary>
-        Minutes = 3, 
-
-        /// <summary>
-        ///   Interval type is hours.
-        /// </summary>
-        Hours = 4, 
-
-        /// <summary>
-        ///   Interval type is days.
-        /// </summary>
-        Days = 5, 
-
-        /// <summary>
-        ///   Interval type is weeks.
-        /// </summary>
-        Weeks = 6, 
-
-        /// <summary>
-        ///   Interval type is months.
-        /// </summary>
-        Months = 7, 
-
-        /// <summary>
-        ///   Interval type is years.
-        /// </summary>
-        Years = 8, 
-    }
-
-    /// <summary>
-    /// Represents a date/time axis
+    /// Represents a DateTime axis.
     /// </summary>
     /// <remarks>
     /// The actual numeric values on the axis are days since 1900/01/01.
@@ -98,7 +47,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DateTimeAxis"/> class.
+        ///   Initializes a new instance of the <see cref = "DateTimeAxis" /> class.
         /// </summary>
         public DateTimeAxis()
         {

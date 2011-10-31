@@ -1,19 +1,22 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotFrame.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
+#if RENDER_BY_DRAWINGCONTEXT
 namespace OxyPlot.Wpf
 {
+    using System.Windows;
+    using System.Windows.Media;
+
     // <summary>
-    /// Represents a control that renders a PlotModel using a DrawingContext.
-    /// This should give the highest performance with WPF.
-    /// The problem is currently to mix aliased (axes) and anti-aliased (curves) elements...
+    // Represents a control that renders a PlotModel using a DrawingContext.
+    // This should give the highest performance with WPF.
+    // The problem is currently to mix aliased (axes) and anti-aliased (curves) elements...
     /// Currently we are rendering to two different PlotFrames, with and without the Alias property set.
-    /// todo: any good ideas for a better solution?
     /// </summary>
-    /*   internal class PlotFrame : FrameworkElement
+    internal class PlotFrame : FrameworkElement
     {
         private readonly bool aliased;
 
@@ -52,5 +55,6 @@ namespace OxyPlot.Wpf
                 Model.RenderSeries(drc);
             }
         }
-    }*/
+    }
 }
+#endif

@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using Oxyplot.WindowsForms;
+using OxyPlot.WindowsForms;
 
 namespace WindowsFormsDemo
 {
@@ -36,7 +36,7 @@ namespace WindowsFormsDemo
         /// </summary>
         private void InitializeComponent()
         {
-            this.plot1 = new Oxyplot.WindowsForms.Plot();
+            this.plot1 = new OxyPlot.WindowsForms.Plot();
             this.SuspendLayout();
             // 
             // plot1

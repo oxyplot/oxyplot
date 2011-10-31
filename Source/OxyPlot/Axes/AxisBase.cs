@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AxisBase.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
@@ -11,7 +11,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// This class is an abstract base class that is used by the linear and logarithmic axes.
+    /// Axis base class that is used by the linear and logarithmic axes.
     /// </summary>
     public abstract class AxisBase : Axis
     {
@@ -484,12 +484,12 @@ namespace OxyPlot
         public override string ToString()
         {
             return string.Format(
-                CultureInfo.InvariantCulture,
-                "{0}({1}, {2}, {3}, {4})",
-                TypeHelper.GetTypeName(this.GetType()),
-                this.Position,
-                this.ActualMinimum,
-                this.ActualMaximum,
+                CultureInfo.InvariantCulture, 
+                "{0}({1}, {2}, {3}, {4})", 
+                TypeHelper.GetTypeName(this.GetType()), 
+                this.Position, 
+                this.ActualMinimum, 
+                this.ActualMaximum, 
                 this.ActualMajorStep);
         }
 
@@ -891,9 +891,15 @@ namespace OxyPlot
         /// <summary>
         /// Returns the actual interval to use to determine which values are displayed in the axis.
         /// </summary>
-        /// <param name="availableSize">The available size.</param>
-        /// <param name="maxIntervalSize">The maximum interval size.</param>
-        /// <param name="range">The range.</param>
+        /// <param name="availableSize">
+        /// The available size.
+        /// </param>
+        /// <param name="maxIntervalSize">
+        /// The maximum interval size.
+        /// </param>
+        /// <param name="range">
+        /// The range.
+        /// </param>
         /// <returns>
         /// Actual interval to use to determine which values are displayed in the axis.
         /// </returns>

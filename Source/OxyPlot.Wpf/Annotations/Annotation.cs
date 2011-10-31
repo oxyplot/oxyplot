@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Annotation.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -16,13 +16,13 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The layer property.
+        ///   The layer property.
         /// </summary>
         public static readonly DependencyProperty LayerProperty = DependencyProperty.Register(
             "Layer", typeof(AnnotationLayer), typeof(Annotation), new PropertyMetadata(AnnotationLayer.OverSeries));
 
         /// <summary>
-        /// The text property.
+        ///   The text property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
             "Text", typeof(string), typeof(Annotation), new PropertyMetadata(null));
@@ -32,7 +32,7 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Layer.
+        ///   Gets or sets Layer.
         /// </summary>
         public AnnotationLayer Layer
         {
@@ -48,7 +48,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Text.
+        ///   Gets or sets Text.
         /// </summary>
         public string Text
         {
@@ -64,7 +64,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets internalAnnotation.
+        ///   Gets or sets internalAnnotation.
         /// </summary>
         public OxyPlot.Annotation internalAnnotation { get; set; }
 

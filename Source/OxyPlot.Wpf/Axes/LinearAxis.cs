@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LinearAxis.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -16,20 +16,20 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The format as fractions property.
+        ///   The format as fractions property.
         /// </summary>
         public static readonly DependencyProperty FormatAsFractionsProperty =
             DependencyProperty.Register(
                 "FormatAsFractions", typeof(bool), typeof(LinearAxis), new PropertyMetadata(false));
 
         /// <summary>
-        /// The fraction unit property.
+        ///   The fraction unit property.
         /// </summary>
         public static readonly DependencyProperty FractionUnitProperty = DependencyProperty.Register(
             "FractionUnit", typeof(double), typeof(LinearAxis), new PropertyMetadata(1.0));
 
         /// <summary>
-        /// The fraction unit symbol property.
+        ///   The fraction unit symbol property.
         /// </summary>
         public static readonly DependencyProperty FractionUnitSymbolProperty =
             DependencyProperty.Register(
@@ -40,7 +40,7 @@ namespace OxyPlot.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
+        ///   Initializes a new instance of the <see cref = "LinearAxis" /> class.
         /// </summary>
         public LinearAxis()
         {
@@ -52,7 +52,7 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether FormatAsFractions.
+        ///   Gets or sets a value indicating whether FormatAsFractions.
         /// </summary>
         public bool FormatAsFractions
         {
@@ -68,7 +68,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets FractionUnit.
+        ///   Gets or sets FractionUnit.
         /// </summary>
         public double FractionUnit
         {
@@ -84,7 +84,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets FractionUnitSymbol.
+        ///   Gets or sets FractionUnitSymbol.
         /// </summary>
         public string FractionUnitSymbol
         {

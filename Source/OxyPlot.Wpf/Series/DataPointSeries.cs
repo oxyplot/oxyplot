@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DataPointSeries.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -17,13 +17,13 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The data field x property.
+        ///   The data field x property.
         /// </summary>
         public static readonly DependencyProperty DataFieldXProperty = DependencyProperty.Register(
             "DataFieldX", typeof(string), typeof(DataPointSeries), new PropertyMetadata("X", DataChanged));
 
         /// <summary>
-        /// The data field y property.
+        ///   The data field y property.
         /// </summary>
         public static readonly DependencyProperty DataFieldYProperty = DependencyProperty.Register(
             "DataFieldY", typeof(string), typeof(DataPointSeries), new PropertyMetadata("Y", DataChanged));
@@ -33,7 +33,7 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets DataFieldX.
+        ///   Gets or sets DataFieldX.
         /// </summary>
         public string DataFieldX
         {
@@ -49,7 +49,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets DataFieldY.
+        ///   Gets or sets DataFieldY.
         /// </summary>
         public string DataFieldY
         {

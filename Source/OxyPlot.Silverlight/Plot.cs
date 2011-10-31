@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Silverlight
 {
@@ -129,22 +129,22 @@ namespace OxyPlot.Silverlight
             /// <summary>
             ///   The left.
             /// </summary>
-            Left,
+            Left, 
 
             /// <summary>
             ///   The middle.
             /// </summary>
-            Middle,
+            Middle, 
 
             /// <summary>
             ///   The right.
             /// </summary>
-            Right,
+            Right, 
 
             /// <summary>
             ///   The x button 1.
             /// </summary>
-            XButton1,
+            XButton1, 
 
             /// <summary>
             ///   The x button 2.
@@ -648,25 +648,6 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Sets the clipboard text.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        /// <returns>True if the operation was successful.</returns>
-        private static bool TrySetClipboardText(string text)
-        {
-            try
-            {
-                Clipboard.SetText(text);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return false;
-        }
-
-        /// <summary>
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted"/> event occurs.
         /// </summary>
         /// <param name="e">
@@ -694,8 +675,7 @@ namespace OxyPlot.Silverlight
             this.touchZoom.Delta(
                 new ManipulationEventArgs(position.ToScreenPoint())
                     {
-                        ScaleX = e.DeltaManipulation.Scale.X,
-                        ScaleY = e.DeltaManipulation.Scale.Y
+                       ScaleX = e.DeltaManipulation.Scale.X, ScaleY = e.DeltaManipulation.Scale.Y 
                     });
             e.Handled = true;
         }
@@ -891,6 +871,30 @@ namespace OxyPlot.Silverlight
         private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((Plot)d).OnModelChanged();
+        }
+
+        /// <summary>
+        /// Sets the clipboard text.
+        /// </summary>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <returns>
+        /// True if the operation was successful.
+        /// </returns>
+        private static bool TrySetClipboardText(string text)
+        {
+            try
+            {
+                Clipboard.SetText(text);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            return false;
         }
 
         /// <summary>

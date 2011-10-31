@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineSeries.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -17,75 +17,75 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The dashes property.
+        ///   The dashes property.
         /// </summary>
         public static readonly DependencyProperty DashesProperty = DependencyProperty.Register(
             "Dashes", typeof(double[]), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The line join property.
+        ///   The line join property.
         /// </summary>
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
             "LineJoin", typeof(OxyPenLineJoin), typeof(LineSeries), new PropertyMetadata(OxyPenLineJoin.Miter));
 
         /// <summary>
-        /// The line style property.
+        ///   The line style property.
         /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
             "LineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(LineStyle.Solid));
 
         /// <summary>
-        /// The marker fill property.
+        ///   The marker fill property.
         /// </summary>
         public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(
             "MarkerFill", typeof(Color?), typeof(LineSeries), new PropertyMetadata(null));
 
         /// <summary>
-        /// The marker outline property.
+        ///   The marker outline property.
         /// </summary>
         public static readonly DependencyProperty MarkerOutlineProperty = DependencyProperty.Register(
             "MarkerOutline", typeof(Point[]), typeof(LineSeries), new PropertyMetadata(null));
 
         /// <summary>
-        /// The marker size property.
+        ///   The marker size property.
         /// </summary>
         public static readonly DependencyProperty MarkerSizeProperty = DependencyProperty.Register(
             "MarkerSize", typeof(double), typeof(LineSeries), new PropertyMetadata(3.0));
 
         /// <summary>
-        /// The marker stroke property.
+        ///   The marker stroke property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeProperty = DependencyProperty.Register(
             "MarkerStroke", typeof(OxyColor), typeof(LineSeries), new PropertyMetadata(null));
 
         /// <summary>
-        /// The marker stroke thickness property.
+        ///   The marker stroke thickness property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeThicknessProperty =
             DependencyProperty.Register(
                 "MarkerStrokeThickness", typeof(double), typeof(LineSeries), new PropertyMetadata(1.0));
 
         /// <summary>
-        /// The marker type property.
+        ///   The marker type property.
         /// </summary>
         public static readonly DependencyProperty MarkerTypeProperty = DependencyProperty.Register(
             "MarkerType", typeof(MarkerType), typeof(LineSeries), new PropertyMetadata(MarkerType.None));
 
         /// <summary>
-        /// The minimum segment length property.
+        ///   The minimum segment length property.
         /// </summary>
         public static readonly DependencyProperty MinimumSegmentLengthProperty =
             DependencyProperty.Register(
                 "MinimumSegmentLength", typeof(double), typeof(LineSeries), new PropertyMetadata(2.0));
 
         /// <summary>
-        /// The smooth property.
+        ///   The smooth property.
         /// </summary>
         public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
             "Smooth", typeof(bool), typeof(LineSeries), new PropertyMetadata(false));
 
         /// <summary>
-        /// The stroke thickness property.
+        ///   The stroke thickness property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
@@ -96,7 +96,7 @@ namespace OxyPlot.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "LineSeries" /> class.
         /// </summary>
         public LineSeries()
         {
@@ -108,7 +108,7 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Dashes.
+        ///   Gets or sets Dashes.
         /// </summary>
         public double[] Dashes
         {
@@ -124,7 +124,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LineJoin.
+        ///   Gets or sets LineJoin.
         /// </summary>
         public OxyPenLineJoin LineJoin
         {
@@ -140,7 +140,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets LineStyle.
+        ///   Gets or sets LineStyle.
         /// </summary>
         public LineStyle LineStyle
         {
@@ -156,7 +156,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerFill.
+        ///   Gets or sets MarkerFill.
         /// </summary>
         public Color? MarkerFill
         {
@@ -172,7 +172,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerOutline.
+        ///   Gets or sets MarkerOutline.
         /// </summary>
         public Point[] MarkerOutline
         {
@@ -188,7 +188,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerSize.
+        ///   Gets or sets MarkerSize.
         /// </summary>
         public double MarkerSize
         {
@@ -204,7 +204,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerStroke.
+        ///   Gets or sets MarkerStroke.
         /// </summary>
         public OxyColor MarkerStroke
         {
@@ -220,7 +220,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerStrokeThickness.
+        ///   Gets or sets MarkerStrokeThickness.
         /// </summary>
         public double MarkerStrokeThickness
         {
@@ -236,7 +236,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerType.
+        ///   Gets or sets MarkerType.
         /// </summary>
         public MarkerType MarkerType
         {
@@ -252,7 +252,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MinimumSegmentLength.
+        ///   Gets or sets MinimumSegmentLength.
         /// </summary>
         public double MinimumSegmentLength
         {
@@ -268,7 +268,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Smooth.
+        ///   Gets or sets a value indicating whether Smooth.
         /// </summary>
         public bool Smooth
         {
@@ -284,7 +284,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets StrokeThickness.
+        ///   Gets or sets StrokeThickness.
         /// </summary>
         public double StrokeThickness
         {
@@ -321,7 +321,9 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The synchronize properties.
         /// </summary>
-        /// <param name="series">The series.</param>
+        /// <param name="series">
+        /// The series.
+        /// </param>
         protected override void SynchronizeProperties(OxyPlot.ISeries series)
         {
             base.SynchronizeProperties(series);

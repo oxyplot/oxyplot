@@ -11,10 +11,10 @@ namespace OxyPlot
     using System.Diagnostics;
 
     /// <summary>
-    /// Represents a logarithmic axis.
+    /// Represents an axis with logarithmic scale.
     /// </summary>
     /// <remarks>
-    /// See <see cref="http://en.wikipedia.org/wiki/Logarithmic_scale"/>.
+    /// See http://en.wikipedia.org/wiki/Logarithmic_scale.
     /// </remarks>
     public class LogarithmicAxis : AxisBase
     {
@@ -79,7 +79,7 @@ namespace OxyPlot
         ///   Gets or sets the logarithmic base (normally 10).
         /// </summary>
         /// <remarks>
-        ///   See <see cref = "http://en.wikipedia.org/wiki/Logarithm" />.
+        ///   See http://en.wikipedia.org/wiki/Logarithm.
         /// </remarks>
         /// <value>The logarithmic base.</value>
         public double Base { get; set; }

@@ -2,77 +2,11 @@
 // <copyright file="IRenderContext.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Horizontal text alignment.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System.Collections.Generic;
-
-    /// <summary>
-    /// Horizontal text alignment.
-    /// </summary>
-    public enum HorizontalTextAlign
-    {
-        /// <summary>
-        ///   Left alignment.
-        /// </summary>
-        Left = -1, 
-
-        /// <summary>
-        ///   Center alignment.
-        /// </summary>
-        Center = 0, 
-
-        /// <summary>
-        ///   Right alignment.
-        /// </summary>
-        Right = 1
-    }
-
-    /// <summary>
-    /// Vertical text alignment.
-    /// </summary>
-    public enum VerticalTextAlign
-    {
-        /// <summary>
-        ///   Top alignment.
-        /// </summary>
-        Top = -1, 
-
-        /// <summary>
-        ///   Middle alignment.
-        /// </summary>
-        Middle = 0, 
-
-        /// <summary>
-        ///   Bottom alignment.
-        /// </summary>
-        Bottom = 1
-    }
-
-    /// <summary>
-    /// Pen line join.
-    /// </summary>
-    public enum OxyPenLineJoin
-    {
-        /// <summary>
-        ///   Line joins use regular angular vertices.
-        /// </summary>
-        Miter, 
-
-        /// <summary>
-        ///   Line joins use rounded vertices.
-        /// </summary>
-        Round, 
-
-        /// <summary>
-        ///   Line joins use beveled vertices.
-        /// </summary>
-        Bevel
-    }
 
     /// <summary>
     /// Render context interface.

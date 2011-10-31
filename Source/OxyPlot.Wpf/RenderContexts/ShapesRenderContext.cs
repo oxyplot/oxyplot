@@ -1,12 +1,11 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ShapesRenderContext.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
-    using System;
     using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Controls;
@@ -23,22 +22,22 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The max figures per geometry.
+        ///   The max figures per geometry.
         /// </summary>
         public int MaxFiguresPerGeometry = 16;
 
         /// <summary>
-        /// Should not combine too many geometries into the same group...
+        ///   Should not combine too many geometries into the same group...
         /// </summary>
         public int MaxGeometriesPerPath = 256;
 
         /// <summary>
-        /// The brush cache.
+        ///   The brush cache.
         /// </summary>
         private readonly Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
 
         /// <summary>
-        /// The canvas.
+        ///   The canvas.
         /// </summary>
         private readonly Canvas canvas;
 
@@ -64,16 +63,16 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets the height.
+        ///   Gets the height.
         /// </summary>
         /// <value>The height.</value>
         public double Height { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether to paint the background.
+        ///   Gets a value indicating whether to paint the background.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if the background should be painted; otherwise, <c>false</c>.
+        ///   <c>true</c> if the background should be painted; otherwise, <c>false</c>.
         /// </value>
         public bool PaintBackground
         {
@@ -84,10 +83,22 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets the width.
+        ///   Gets the width.
         /// </summary>
         /// <value>The width.</value>
         public double Width { get; private set; }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///   Gets or sets the current tooltip.
+        /// </summary>
+        /// <value>
+        ///   The current tooltip.
+        /// </value>
+        private string CurrentToolTip { get; set; }
 
         #endregion
 
@@ -149,7 +160,7 @@ namespace OxyPlot.Wpf
             }
 
             var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
-            foreach (OxyRect rect in rectangles)
+            foreach (var rect in rectangles)
             {
                 gg.Children.Add(new EllipseGeometry(rect.ToRect(true)));
             }
@@ -180,18 +191,18 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawLine(
-            IList<ScreenPoint> points,
-            OxyColor stroke,
-            double thickness,
-            double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            IList<ScreenPoint> points, 
+            OxyColor stroke, 
+            double thickness, 
+            double[] dashArray, 
+            OxyPenLineJoin lineJoin, 
             bool aliased)
         {
             var e = new Polyline();
             this.SetStroke(e, stroke, thickness, lineJoin, dashArray, aliased);
 
             var pc = new PointCollection(points.Count);
-            foreach (ScreenPoint p in points)
+            foreach (var p in points)
             {
                 pc.Add(p.ToPoint(aliased));
             }
@@ -223,11 +234,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawLineSegments(
-            IList<ScreenPoint> points,
-            OxyColor stroke,
-            double thickness,
-            double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            IList<ScreenPoint> points, 
+            OxyColor stroke, 
+            double thickness, 
+            double[] dashArray, 
+            OxyPenLineJoin lineJoin, 
             bool aliased)
         {
             Path path = null;
@@ -293,12 +304,12 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawPolygon(
-            IList<ScreenPoint> points,
-            OxyColor fill,
-            OxyColor stroke,
-            double thickness,
-            double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            IList<ScreenPoint> points, 
+            OxyColor fill, 
+            OxyColor stroke, 
+            double thickness, 
+            double[] dashArray, 
+            OxyPenLineJoin lineJoin, 
             bool aliased)
         {
             var e = new Polygon();
@@ -310,7 +321,7 @@ namespace OxyPlot.Wpf
             }
 
             var pc = new PointCollection(points.Count);
-            foreach (ScreenPoint p in points)
+            foreach (var p in points)
             {
                 pc.Add(p.ToPoint(aliased));
             }
@@ -345,12 +356,12 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawPolygons(
-            IList<IList<ScreenPoint>> polygons,
-            OxyColor fill,
-            OxyColor stroke,
-            double thickness,
-            double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            IList<IList<ScreenPoint>> polygons, 
+            OxyColor fill, 
+            OxyColor stroke, 
+            double thickness, 
+            double[] dashArray, 
+            OxyPenLineJoin lineJoin, 
             bool aliased)
         {
             Path path = null;
@@ -374,7 +385,7 @@ namespace OxyPlot.Wpf
                 }
 
                 bool first = true;
-                foreach (ScreenPoint p in polygon)
+                foreach (var p in polygon)
                 {
                     if (first)
                     {
@@ -465,7 +476,7 @@ namespace OxyPlot.Wpf
             }
 
             var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
-            foreach (OxyRect rect in rectangles)
+            foreach (var rect in rectangles)
             {
                 gg.Children.Add(new RectangleGeometry { Rect = rect.ToRect(true) });
             }
@@ -536,16 +547,19 @@ namespace OxyPlot.Wpf
         /// <param name="valign">
         /// The valign.
         /// </param>
+        /// <param name="maxSize">
+        /// The maximum size of the text.
+        /// </param>
         public void DrawText(
-            ScreenPoint p,
-            string text,
-            OxyColor fill,
-            string fontFamily,
-            double fontSize,
-            double fontWeight,
-            double rotate,
-            HorizontalTextAlign halign,
-            VerticalTextAlign valign,
+            ScreenPoint p, 
+            string text, 
+            OxyColor fill, 
+            string fontFamily, 
+            double fontSize, 
+            double fontWeight, 
+            double rotate, 
+            HorizontalTextAlign halign, 
+            VerticalTextAlign valign, 
             OxySize? maxSize)
         {
             var tb = new TextBlock { Text = text, Foreground = this.GetCachedBrush(fill) };
@@ -568,11 +582,20 @@ namespace OxyPlot.Wpf
             var size = tb.DesiredSize;
             if (maxSize != null)
             {
-                if (size.Width > maxSize.Value.Width) size.Width = maxSize.Value.Width;
-                if (size.Height > maxSize.Value.Height) size.Height = maxSize.Value.Height;
+                if (size.Width > maxSize.Value.Width)
+                {
+                    size.Width = maxSize.Value.Width;
+                }
+
+                if (size.Height > maxSize.Value.Height)
+                {
+                    size.Height = maxSize.Value.Height;
+                }
+
                 tb.Width = size.Width;
                 tb.Height = size.Height;
             }
+
             double dx = 0;
             if (halign == HorizontalTextAlign.Center)
             {
@@ -608,12 +631,6 @@ namespace OxyPlot.Wpf
             tb.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
             this.ApplyTooltip(tb);
             this.Add(tb);
-        }
-
-        private void ApplyTooltip(FrameworkElement element)
-        {
-            if (!String.IsNullOrEmpty(this.CurrentToolTip))
-                element.ToolTip = this.CurrentToolTip;
         }
 
         /// <summary>
@@ -662,6 +679,20 @@ namespace OxyPlot.Wpf
             return new OxySize(tb.DesiredSize.Width, tb.DesiredSize.Height);
         }
 
+        /// <summary>
+        /// Sets the tool tip for the following items.
+        /// </summary>
+        /// <param name="text">
+        /// The text in the tooltip.
+        /// </param>
+        /// <params>
+        ///   This is only used in the plot controls.
+        /// </params>
+        public void SetToolTip(string text)
+        {
+            this.CurrentToolTip = text;
+        }
+
         #endregion
 
         #region Methods
@@ -688,6 +719,20 @@ namespace OxyPlot.Wpf
         private void Add(FrameworkElement e)
         {
             this.canvas.Children.Add(e);
+        }
+
+        /// <summary>
+        /// The apply tooltip.
+        /// </summary>
+        /// <param name="element">
+        /// The element.
+        /// </param>
+        private void ApplyTooltip(FrameworkElement element)
+        {
+            if (!string.IsNullOrEmpty(this.CurrentToolTip))
+            {
+                element.ToolTip = this.CurrentToolTip;
+            }
         }
 
         /// <summary>
@@ -739,11 +784,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         private void SetStroke(
-            Shape shape,
-            OxyColor stroke,
-            double thickness,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
-            double[] dashArray = null,
+            Shape shape, 
+            OxyColor stroke, 
+            double thickness, 
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, 
+            double[] dashArray = null, 
             bool aliased = false)
         {
             if (stroke != null && thickness > 0)
@@ -759,7 +804,7 @@ namespace OxyPlot.Wpf
                         shape.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
 
-                    // The default StrokeLineJoin is Miter
+                        // The default StrokeLineJoin is Miter
                 }
 
                 if (thickness != 1)
@@ -782,26 +827,5 @@ namespace OxyPlot.Wpf
         }
 
         #endregion
-
-        /// <summary>
-        /// Gets or sets the current tooltip.
-        /// </summary>
-        /// <value>
-        /// The current tooltip.
-        /// </value>
-        private string CurrentToolTip { get; set; }
-
-        /// <summary>
-        /// Sets the tool tip for the following items.
-        /// </summary>
-        /// <param name="text">The text in the tooltip.</param>
-        /// <params>
-        /// This is only used in the plot controls.
-        ///   </params>
-        public void SetToolTip(string text)
-        {
-            this.CurrentToolTip = text;
-
-        }
     }
 }
