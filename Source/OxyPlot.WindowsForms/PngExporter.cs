@@ -9,7 +9,7 @@ namespace OxyPlot.WindowsForms
     using System.Drawing;
     using System.Drawing.Imaging;
 
-    using Oxyplot.WindowsForms;
+    using OxyPlot.WindowsForms;
 
     /// <summary>
     /// The png exporter.
