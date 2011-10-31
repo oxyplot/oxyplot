@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SvgRenderContext.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -240,6 +240,9 @@ namespace OxyPlot
         /// <param name="valign">
         /// The valign.
         /// </param>
+        /// <param name="maxSize">
+        /// Max size of the text (clipping rectangle).
+        /// </param>
         public override void DrawText(
             ScreenPoint p, 
             string text, 
@@ -249,7 +252,7 @@ namespace OxyPlot
             double fontWeight, 
             double rotate, 
             HorizontalTextAlign halign, 
-            VerticalTextAlign valign,
+            VerticalTextAlign valign, 
             OxySize? maxSize)
         {
             this.w.WriteText(p, text, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);

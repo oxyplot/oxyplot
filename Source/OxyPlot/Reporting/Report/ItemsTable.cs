@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsTable.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Reporting
 {
@@ -16,15 +16,6 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class ItemsTable : Table
     {
-        #region Constants and Fields
-
-        /// <summary>
-        ///   The items.
-        /// </summary>
-        private IEnumerable items;
-
-        #endregion
-
         #region Constructors and Destructors
 
         /// <summary>
@@ -59,18 +50,7 @@ namespace OxyPlot.Reporting
         ///   The table will be filled when this property is set.
         /// </summary>
         /// <value>The items.</value>
-        public IEnumerable Items
-        {
-            get
-            {
-                return this.items;
-            }
-
-            set
-            {
-                this.items = value;
-            }
-        }
+        public IEnumerable Items { get; set; }
 
         /// <summary>
         ///   Gets a value indicating whether ItemsInRows.
@@ -89,7 +69,7 @@ namespace OxyPlot.Reporting
         /// </returns>
         public bool HasHeader()
         {
-            foreach (ItemsTableField c in this.Fields)
+            foreach (var c in this.Fields)
             {
                 if (c.Header != null)
                 {
@@ -130,7 +110,7 @@ namespace OxyPlot.Reporting
                 row++;
             }
 
-            foreach (object item in items)
+            foreach (var item in items)
             {
                 for (int i = 0; i < this.Fields.Count; i++)
                 {

@@ -1,22 +1,21 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ScatterSeries.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Reflection;
 
     /// <summary>
     /// ScatterSeries are used to create scatter plots.
     /// </summary>
     /// <remarks>
-    /// http://en.wikipedia.org/wiki/Scatter_plot
+    /// See http://en.wikipedia.org/wiki/Scatter_plot
     /// </remarks>
     public class ScatterSeries : DataPointSeries
     {
@@ -182,19 +181,19 @@ namespace OxyPlot
         /// <param name="pt">
         /// The pointt.
         /// </param>
-        /// <param name="xAxis">
+        /// <param name="xaxis">
         /// The x axis.
         /// </param>
-        /// <param name="yAxis">
+        /// <param name="yaxis">
         /// The y axis.
         /// </param>
         /// <returns>
         /// <c>true</c> if the point is valid; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool IsValidPoint(ScatterPoint pt, IAxis xAxis, IAxis yAxis)
+        public virtual bool IsValidPoint(ScatterPoint pt, IAxis xaxis, IAxis yaxis)
         {
             return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
-                   && (xAxis != null && xAxis.IsValidValue(pt.X)) && (yAxis != null && yAxis.IsValidValue(pt.Y));
+                   && (xaxis != null && xaxis.IsValidValue(pt.X)) && (yaxis != null && yaxis.IsValidValue(pt.Y));
         }
 
         /// <summary>
@@ -214,8 +213,6 @@ namespace OxyPlot
             {
                 return;
             }
-
-            Debug.Assert(this.XAxis != null && this.YAxis != null, "Axis has not been defined.");
 
             OxyRect clippingRect = this.GetClippingRect();
 
@@ -391,10 +388,6 @@ namespace OxyPlot
         /// <param name="dataFieldTag">
         /// The data field tag.
         /// </param>
-        /// <exception cref="InvalidOperationException">
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// </exception>
         protected void AddScatterPoints(
             IList<IDataPoint> dest, 
             IEnumerable itemsSource, 

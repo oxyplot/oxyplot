@@ -1,31 +1,15 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IAnnotation.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System.Collections.ObjectModel;
 
     /// <summary>
-    /// The annotation layer.
-    /// </summary>
-    public enum AnnotationLayer
-    {
-        /// <summary>
-        ///   The below series.
-        /// </summary>
-        BelowSeries, 
-
-        /// <summary>
-        ///   The over series.
-        /// </summary>
-        OverSeries
-    }
-
-    /// <summary>
-    /// The i annotation.
+    /// The annotation interface.
     /// </summary>
     public interface IAnnotation
     {

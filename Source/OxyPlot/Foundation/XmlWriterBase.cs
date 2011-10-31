@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="XmlWriterBase.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -12,7 +12,7 @@ namespace OxyPlot
     using System.Xml;
 
     /// <summary>
-    /// Base class for exporters that writes Xml.
+    /// Abstract base class for exporters that write xml.
     /// </summary>
     public abstract class XmlWriterBase : IDisposable
     {

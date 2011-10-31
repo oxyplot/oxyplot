@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SutherlandHodgmanClipping.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -10,7 +10,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// The sutherland hodgman clipping.
+    /// Polygon clipping by the sutherland-hodgman algortihm.
     /// </summary>
     public static class SutherlandHodgmanClipping
     {
@@ -47,15 +47,20 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// The Sutherland-Hodgman polygon clipping alrogithm.
-        ///   http://ezekiel.vancouver.wsu.edu/~cs442/lectures/clip/clip/index.html
+        /// The Sutherland-Hodgman polygon clipping algorithm.
         /// </summary>
+        /// <remarks>
+        /// http://ezekiel.vancouver.wsu.edu/~cs442/lectures/clip/clip/index.html
+        /// </remarks>
         /// <param name="bounds">
         /// The bounds.
         /// </param>
         /// <param name="v">
-        /// The v.
+        /// The polygon points.
         /// </param>
+        /// <returns>
+        /// The clipped points.
+        /// </returns>
         public static List<ScreenPoint> ClipPolygon(OxyRect bounds, IList<ScreenPoint> v)
         {
             List<ScreenPoint> p1 = ClipOneAxis(bounds, RectangleEdge.Left, v);
@@ -69,7 +74,7 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
-        /// The clip one axis.
+        /// Clips to one axis.
         /// </summary>
         /// <param name="bounds">
         /// The bounds.
@@ -78,9 +83,10 @@ namespace OxyPlot
         /// The edge.
         /// </param>
         /// <param name="v">
-        /// The v.
+        /// The points of the polygon.
         /// </param>
         /// <returns>
+        /// The clipped points.
         /// </returns>
         private static List<ScreenPoint> ClipOneAxis(OxyRect bounds, RectangleEdge edge, IList<ScreenPoint> v)
         {

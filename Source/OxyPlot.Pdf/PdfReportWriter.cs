@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdfReportWriter.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Pdf
 {
@@ -15,7 +15,7 @@ namespace OxyPlot.Pdf
 
     using OxyPlot.Reporting;
 
-    using Paragraph = OxyPlot.Reporting.Paragraph;
+    using Paragraph = MigraDoc.DocumentObjectModel.Paragraph;
     using Table = OxyPlot.Reporting.Table;
 
     /// <summary>
@@ -26,22 +26,22 @@ namespace OxyPlot.Pdf
         #region Constants and Fields
 
         /// <summary>
-        /// The doc.
+        ///   The doc.
         /// </summary>
         protected Document doc;
 
         /// <summary>
-        /// The filename.
+        ///   The filename.
         /// </summary>
         protected string filename;
 
         /// <summary>
-        /// The current section.
+        ///   The current section.
         /// </summary>
         private Section currentSection;
 
         /// <summary>
-        /// The style.
+        ///   The style.
         /// </summary>
         private ReportStyle style;
 
@@ -66,7 +66,7 @@ namespace OxyPlot.Pdf
         #region Properties
 
         /// <summary>
-        /// Gets or sets CurrentSection.
+        ///   Gets or sets CurrentSection.
         /// </summary>
         private Section CurrentSection
         {
@@ -155,7 +155,7 @@ namespace OxyPlot.Pdf
         /// </param>
         public void WriteDrawing(DrawingFigure d)
         {
-            MigraDoc.DocumentObjectModel.Paragraph p = this.WriteStartFigure(d);
+            Paragraph p = this.WriteStartFigure(d);
             this.CurrentSection.AddParagraph("Drawings are not implemented.");
             this.WriteEndFigure(d, p);
         }
@@ -169,7 +169,7 @@ namespace OxyPlot.Pdf
         /// <param name="pa">
         /// The pa.
         /// </param>
-        public void WriteEndFigure(Figure f, MigraDoc.DocumentObjectModel.Paragraph pa)
+        public void WriteEndFigure(Figure f, Paragraph pa)
         {
             pa.AddLineBreak();
             pa.AddFormattedText(f.GetFullCaption(this.style), "FigureText");
@@ -183,7 +183,7 @@ namespace OxyPlot.Pdf
         /// </param>
         public void WriteEquation(Equation equation)
         {
-            MigraDoc.DocumentObjectModel.Paragraph p = this.CurrentSection.AddParagraph();
+            Paragraph p = this.CurrentSection.AddParagraph();
             p.AddText("Equations are not supported.");
         }
 
@@ -216,7 +216,7 @@ namespace OxyPlot.Pdf
         /// </param>
         public void WriteImage(Image i)
         {
-            MigraDoc.DocumentObjectModel.Paragraph p = this.WriteStartFigure(i);
+            Paragraph p = this.WriteStartFigure(i);
             if (i.Source != null)
             {
                 MigraDoc.DocumentObjectModel.Shapes.Image pi = p.AddImage(Path.GetFullPath(i.Source));
@@ -232,7 +232,7 @@ namespace OxyPlot.Pdf
         /// <param name="p">
         /// The p.
         /// </param>
-        public void WriteParagraph(Paragraph p)
+        public void WriteParagraph(Reporting.Paragraph p)
         {
             this.CurrentSection.AddParagraph(p.Text ?? string.Empty);
         }
@@ -245,7 +245,7 @@ namespace OxyPlot.Pdf
         /// </param>
         public void WritePlot(PlotFigure plot)
         {
-            MigraDoc.DocumentObjectModel.Paragraph p = this.WriteStartFigure(plot);
+            Paragraph p = this.WriteStartFigure(plot);
             p.AddText("Plot drawing is not implemented yet.");
             this.WriteEndFigure(plot, p);
         }
@@ -274,7 +274,7 @@ namespace OxyPlot.Pdf
         /// </param>
         /// <returns>
         /// </returns>
-        public MigraDoc.DocumentObjectModel.Paragraph WriteStartFigure(Figure f)
+        public Paragraph WriteStartFigure(Figure f)
         {
             return this.CurrentSection.AddParagraph();
         }
@@ -303,7 +303,7 @@ namespace OxyPlot.Pdf
                 column.Format.Alignment = ConvertToParagraphAlignment(t.Columns[j].Alignment);
             }
 
-            foreach (TableRow tr in t.Rows)
+            foreach (var tr in t.Rows)
             {
                 Row row = table.AddRow();
                 for (int j = 0; j < columns; j++)
@@ -318,7 +318,7 @@ namespace OxyPlot.Pdf
             }
 
             // table.SetEdge(0, 0, t.Columns.Count, t.Items.Count(), Edge.Box, BorderStyle.Single, 1.5, Colors.Black);
-            MigraDoc.DocumentObjectModel.Paragraph pa = this.CurrentSection.AddParagraph();
+            Paragraph pa = this.CurrentSection.AddParagraph();
             pa.AddFormattedText(t.GetFullCaption(this.style), "TableCaption");
 
             this.CurrentSection.Add(table);

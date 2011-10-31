@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FlowDocumentReportWriter.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Pdf
 {
@@ -27,7 +27,7 @@ namespace OxyPlot.Pdf
     using Paragraph = OxyPlot.Reporting.Paragraph;
     using Table = OxyPlot.Reporting.Table;
     using TableCell = OxyPlot.Reporting.TableCell;
-    using TableRow = OxyPlot.Reporting.TableRow;
+    using TableRow = System.Windows.Documents.TableRow;
 
     /// <summary>
     /// XPS report writer using MigraDoc.
@@ -37,7 +37,7 @@ namespace OxyPlot.Pdf
         #region Constants and Fields
 
         /// <summary>
-        /// The doc.
+        ///   The doc.
         /// </summary>
         private readonly FlowDocument doc;
 
@@ -46,7 +46,7 @@ namespace OxyPlot.Pdf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FlowDocumentReportWriter"/> class.
+        ///   Initializes a new instance of the <see cref = "FlowDocumentReportWriter" /> class.
         /// </summary>
         public FlowDocumentReportWriter()
         {
@@ -58,7 +58,7 @@ namespace OxyPlot.Pdf
         #region Public Properties
 
         /// <summary>
-        /// Gets FlowDocument.
+        ///   Gets FlowDocument.
         /// </summary>
         public FlowDocument FlowDocument
         {
@@ -69,7 +69,7 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// Gets or sets Style.
+        ///   Gets or sets Style.
         /// </summary>
         public ReportStyle Style { get; set; }
 
@@ -241,9 +241,9 @@ namespace OxyPlot.Pdf
             var trg2 = new TableRowGroup();
 
             // SetStyle(trg2, Style.TableTextStyle);
-            foreach (TableRow row in t.Rows)
+            foreach (var row in t.Rows)
             {
-                var r = new System.Windows.Documents.TableRow();
+                var r = new TableRow();
                 if (row.IsHeader)
                 {
                     SetStyle(r, row.IsHeader ? this.Style.TableHeaderStyle : this.Style.TableTextStyle);

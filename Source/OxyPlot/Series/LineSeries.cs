@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineSeries.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -258,62 +258,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Renders the transformed points.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
-        /// <param name="clippingRect">The clipping rect.</param>
-        /// <param name="points">The points.</param>
-        protected void RenderPoints(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> points)
-        {
-            IList<ScreenPoint> screenPoints = points;
-            if (this.Smooth)
-            {
-                // spline smoothing (should only be used on small datasets)
-                IList<ScreenPoint> resampledPoints = ScreenPointHelper.ResamplePoints(
-                    points, this.MinimumSegmentLength);
-                screenPoints = CanonicalSplineHelper.CreateSpline(resampledPoints, 0.5, null, false, 0.25);
-            }
-
-            // clip the line segments with the clipping rectangle
-            if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
-            {
-                this.RenderSmoothedLine(rc, clippingRect, screenPoints);
-            }
-
-            if (this.MarkerType != MarkerType.None)
-            {
-                rc.DrawMarkers(
-                    points,
-                    clippingRect,
-                    this.MarkerType,
-                    this.MarkerOutline,
-                    new[] { this.MarkerSize },
-                    this.MarkerFill,
-                    this.MarkerStroke,
-                    this.MarkerStrokeThickness);
-            }
-        }
-
-        /// <summary>
-        /// Renders the smoothed line.
-        /// </summary>
-        /// <param name="rc">The render context.</param>
-        /// <param name="clippingRect">The clipping rect.</param>
-        /// <param name="points">The points.</param>
-        protected virtual void RenderSmoothedLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> points)
-        {
-            rc.DrawClippedLine(
-                  points,
-                  clippingRect,
-                  this.MinimumSegmentLength * this.MinimumSegmentLength,
-                  this.Color,
-                  this.StrokeThickness,
-                  this.LineStyle,
-                  this.LineJoin,
-                  false);
-        }
-
-        /// <summary>
         /// Renders the legend symbol for the line series on the 
         ///   specified rendering context.
         /// </summary>
@@ -331,13 +275,13 @@ namespace OxyPlot
             rc.DrawLine(pts, this.Color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
-                midpt,
-                legendBox,
-                this.MarkerType,
-                this.MarkerOutline,
-                this.MarkerSize,
-                this.MarkerFill,
-                this.MarkerStroke,
+                midpt, 
+                legendBox, 
+                this.MarkerType, 
+                this.MarkerOutline, 
+                this.MarkerSize, 
+                this.MarkerFill, 
+                this.MarkerStroke, 
                 this.MarkerStrokeThickness);
         }
 
@@ -393,6 +337,73 @@ namespace OxyPlot
             {
                 base.UpdateMaxMin();
             }
+        }
+
+        /// <summary>
+        /// Renders the transformed points.
+        /// </summary>
+        /// <param name="rc">
+        /// The render context.
+        /// </param>
+        /// <param name="clippingRect">
+        /// The clipping rect.
+        /// </param>
+        /// <param name="points">
+        /// The points.
+        /// </param>
+        protected void RenderPoints(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> points)
+        {
+            IList<ScreenPoint> screenPoints = points;
+            if (this.Smooth)
+            {
+                // spline smoothing (should only be used on small datasets)
+                IList<ScreenPoint> resampledPoints = ScreenPointHelper.ResamplePoints(points, this.MinimumSegmentLength);
+                screenPoints = CanonicalSplineHelper.CreateSpline(resampledPoints, 0.5, null, false, 0.25);
+            }
+
+            // clip the line segments with the clipping rectangle
+            if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+            {
+                this.RenderSmoothedLine(rc, clippingRect, screenPoints);
+            }
+
+            if (this.MarkerType != MarkerType.None)
+            {
+                rc.DrawMarkers(
+                    points, 
+                    clippingRect, 
+                    this.MarkerType, 
+                    this.MarkerOutline, 
+                    new[] { this.MarkerSize }, 
+                    this.MarkerFill, 
+                    this.MarkerStroke, 
+                    this.MarkerStrokeThickness);
+            }
+        }
+
+        /// <summary>
+        /// Renders the smoothed line.
+        /// </summary>
+        /// <param name="rc">
+        /// The render context.
+        /// </param>
+        /// <param name="clippingRect">
+        /// The clipping rect.
+        /// </param>
+        /// <param name="points">
+        /// The points.
+        /// </param>
+        protected virtual void RenderSmoothedLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> points)
+        {
+            rc.DrawClippedLine(
+                points, 
+                clippingRect, 
+                this.MinimumSegmentLength * this.MinimumSegmentLength, 
+                this.Color, 
+                this.StrokeThickness, 
+                this.LineStyle, 
+                this.LineJoin, 
+                false);
         }
 
         /// <summary>

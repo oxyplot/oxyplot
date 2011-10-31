@@ -1,13 +1,13 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyPen.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// OxyPen class.
+    /// Describes a pen in terms of color, thickness, line style and line join type.
     /// </summary>
     public class OxyPen
     {

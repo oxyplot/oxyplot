@@ -1,15 +1,15 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MagnitudeAxis.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
 
     /// <summary>
-    /// Polar plot magnitude axis.
+    /// Represents a magnitude axis for polar plots.
     /// </summary>
     public class MagnitudeAxis : LinearAxis
     {

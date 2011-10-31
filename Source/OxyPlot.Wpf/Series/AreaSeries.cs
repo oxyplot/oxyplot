@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AreaSeries.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -17,31 +17,31 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The constant y 2 property.
+        ///   The constant y 2 property.
         /// </summary>
         public static readonly DependencyProperty ConstantY2Property = DependencyProperty.Register(
             "ConstantY2", typeof(double), typeof(AreaSeries), new PropertyMetadata(0.0, DataChanged));
 
         /// <summary>
-        /// The data field x 2 property.
+        ///   The data field x 2 property.
         /// </summary>
         public static readonly DependencyProperty DataFieldX2Property = DependencyProperty.Register(
             "DataFieldX2", typeof(string), typeof(AreaSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The data field y 2 property.
+        ///   The data field y 2 property.
         /// </summary>
         public static readonly DependencyProperty DataFieldY2Property = DependencyProperty.Register(
             "DataFieldY2", typeof(string), typeof(AreaSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The fill property.
+        ///   The fill property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof(Color?), typeof(AreaSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The reverse 2 property.
+        ///   The reverse 2 property.
         /// </summary>
         public static readonly DependencyProperty Reverse2Property = DependencyProperty.Register(
             "Reverse2", typeof(bool), typeof(AreaSeries), new PropertyMetadata(true, AppearanceChanged));
@@ -51,7 +51,7 @@ namespace OxyPlot.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AreaSeries"/> class.
+        ///   Initializes a new instance of the <see cref = "AreaSeries" /> class.
         /// </summary>
         public AreaSeries()
         {
@@ -63,7 +63,7 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets ConstantY2.
+        ///   Gets or sets ConstantY2.
         /// </summary>
         public double ConstantY2
         {
@@ -79,7 +79,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets DataFieldX2.
+        ///   Gets or sets DataFieldX2.
         /// </summary>
         public string DataFieldX2
         {
@@ -95,7 +95,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets DataFieldY2.
+        ///   Gets or sets DataFieldY2.
         /// </summary>
         public string DataFieldY2
         {
@@ -111,7 +111,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Fill.
+        ///   Gets or sets Fill.
         /// </summary>
         public Color? Fill
         {
@@ -127,7 +127,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Reverse2.
+        ///   Gets or sets a value indicating whether Reverse2.
         /// </summary>
         public bool Reverse2
         {

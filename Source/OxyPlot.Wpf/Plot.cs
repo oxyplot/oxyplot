@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -35,7 +35,7 @@ namespace OxyPlot.Wpf
         ///   The stack of manipulation events. This is used to try to avoid latency of the ManipulationDelta events.
         /// </summary>
         private readonly Stack<ManipulationDeltaEventArgs> manipulationQueue = new Stack<ManipulationDeltaEventArgs>();
-        
+
         /// <summary>
         ///   The Grid PART constant.
         /// </summary>
@@ -70,7 +70,7 @@ namespace OxyPlot.Wpf
         ///   The touch down point.
         /// </summary>
         private Point touchDownPoint;
-      
+
         /// <summary>
         ///   The canvas.
         /// </summary>
@@ -861,9 +861,9 @@ namespace OxyPlot.Wpf
             }
 
             bool isControlDown = Keyboard.IsKeyDown(Key.LeftCtrl);
+
             //// bool isShiftDown = Keyboard.IsKeyDown(Key.LeftShift);
             //// bool isAltDown = Keyboard.IsKeyDown(Key.LeftAlt);
-
             var m = new ZoomStepManipulator(this, e.Delta * 0.001, isControlDown);
             m.Started(new ManipulationEventArgs(e.GetPosition(this).ToScreenPoint()));
         }
@@ -945,7 +945,9 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets the manipulator for the current mouse button and modifier keys.
         /// </summary>
-        /// <param name="e">The event args.</param>
+        /// <param name="e">
+        /// The event args.
+        /// </param>
         /// <returns>
         /// A manipulator or null if no gesture was recognized.
         /// </returns>
@@ -1263,6 +1265,6 @@ namespace OxyPlot.Wpf
             this.ActualModel.Update(updateData);
         }
 
-        #endregion      
+        #endregion
     }
 }

@@ -1,101 +1,12 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IAxis.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
-
-    /// <summary>
-    /// Axis positions
-    /// </summary>
-    public enum AxisPosition
-    {
-        /// <summary>
-        ///   Left of the plot area.
-        /// </summary>
-        Left, 
-
-        /// <summary>
-        ///   Right of the plot area.
-        /// </summary>
-        Right, 
-
-        /// <summary>
-        ///   Top of the plot area.
-        /// </summary>
-        Top, 
-
-        /// <summary>
-        ///   Bottom of the plot area.
-        /// </summary>
-        Bottom
-    }
-
-    /// <summary>
-    /// Tick styles.
-    /// </summary>
-    public enum TickStyle
-    {
-        /// <summary>
-        ///   Crossing the axis line.
-        /// </summary>
-        Crossing, 
-
-        /// <summary>
-        ///   Inside of the plot area.
-        /// </summary>
-        Inside, 
-
-        /// <summary>
-        ///   Outside the plot area.
-        /// </summary>
-        Outside, 
-
-        /// <summary>
-        ///   No tick.
-        /// </summary>
-        None
-    }
-
-    /// <summary>
-    /// Axis layer position.
-    /// </summary>
-    public enum AxisLayer
-    {
-        /// <summary>
-        ///   Below all series.
-        /// </summary>
-        BelowSeries, 
-
-        /// <summary>
-        ///   Above all series.
-        /// </summary>
-        AboveSeries
-    }
-
-    /// <summary>
-    /// Change types of the IAxis.AxisChanged event.
-    /// </summary>
-    public enum AxisChangeTypes
-    {
-        /// <summary>
-        ///   The zoom.
-        /// </summary>
-        Zoom, 
-
-        /// <summary>
-        ///   The pan.
-        /// </summary>
-        Pan, 
-
-        /// <summary>
-        ///   The reset.
-        /// </summary>
-        Reset
-    }
 
     /// <summary>
     /// Axis interface.
@@ -151,7 +62,7 @@ namespace OxyPlot
         AxisPosition Position { get; }
 
         /// <summary>
-        /// Gets the Position Tier of the Axis
+        ///   Gets the Position Tier of the Axis
         /// </summary>
         int PositionTier { get; }
 
@@ -392,37 +303,6 @@ namespace OxyPlot
         /// The coordinate to zoom at.
         /// </param>
         void ZoomAt(double factor, double x);
-
-        #endregion
-    }
-
-    /// <summary>
-    /// EventArgs for the IAxis.AxisChanged event.
-    /// </summary>
-    public class AxisChangedEventArgs : EventArgs
-    {
-        #region Constructors and Destructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AxisChangedEventArgs"/> class.
-        /// </summary>
-        /// <param name="changeType">
-        /// Type of the change.
-        /// </param>
-        public AxisChangedEventArgs(AxisChangeTypes changeType)
-        {
-            this.ChangeType = changeType;
-        }
-
-        #endregion
-
-        #region Public Properties
-
-        /// <summary>
-        ///   Gets or sets the type of the change.
-        /// </summary>
-        /// <value>The type of the change.</value>
-        public AxisChangeTypes ChangeType { get; set; }
 
         #endregion
     }

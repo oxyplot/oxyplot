@@ -1,13 +1,13 @@
-//-----------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CohenSutherlandClipping.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Line clipping algorithm
+    /// Line clipping algorithm.
     /// </summary>
     public class CohenSutherlandClipping
     {

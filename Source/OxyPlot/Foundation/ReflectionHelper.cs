@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ReflectionHelper.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -13,7 +13,7 @@ namespace OxyPlot
     using System.Reflection;
 
     /// <summary>
-    /// The reflection helper.
+    /// Reflection methods.
     /// </summary>
     public static class ReflectionHelper
     {

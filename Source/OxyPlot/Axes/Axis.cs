@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Axis.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -13,10 +13,6 @@ namespace OxyPlot
     /// <summary>
     /// Abstract base class for axes.
     /// </summary>
-    /// <remarks>
-    /// This class contains all properties from the IAxis interface.
-    ///   This class contains methods that should only be accessible by the PlotModel.
-    /// </remarks>
     [Serializable]
     public abstract class Axis : IAxis
     {
@@ -47,11 +43,6 @@ namespace OxyPlot
         ///   The position.
         /// </summary>
         private AxisPosition position;
-        
-        /// <summary>
-        /// The position tier
-        /// </summary>
-        private int positionTier;
 
         #endregion
 
@@ -210,14 +201,6 @@ namespace OxyPlot
         ///   Gets or sets the actual string format being used.
         /// </summary>
         public string ActualStringFormat { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the tool tip.
-        /// </summary>
-        /// <value>
-        /// The tool tip.
-        /// </value>
-        public string ToolTip { get; set; }
 
         /// <summary>
         ///   Gets the actual title (including Unit if Unit is set).
@@ -497,29 +480,18 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the position tier which defines in which tier the axis is displayed.
-        /// </summary>
-        /// <remarks>
-        /// The bigger the value the the further afar is the axis from the graph.
-        /// </remarks>
-        public int PositionTier
-        {
-            get
-            {
-                return this.positionTier;
-            }
-
-            set
-            {
-                this.positionTier = value;
-            }
-        }
-
-        /// <summary>
         ///   Gets or sets a value indicating whether the axis should
         ///   be positioned on the zero-crossing of the related axis.
         /// </summary>
         public bool PositionAtZeroCrossing { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the position tier which defines in which tier the axis is displayed.
+        /// </summary>
+        /// <remarks>
+        ///   The bigger the value the the further afar is the axis from the graph.
+        /// </remarks>
+        public int PositionTier { get; set; }
 
         /// <summary>
         ///   Gets or sets the related axis.
@@ -598,6 +570,14 @@ namespace OxyPlot
         ///   Gets or sets the position of the title (0.5 is in the middle).
         /// </summary>
         public double TitlePosition { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the tool tip.
+        /// </summary>
+        /// <value>
+        ///   The tool tip.
+        /// </value>
+        public string ToolTip { get; set; }
 
         /// <summary>
         ///   Gets or sets the unit of the axis.

@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotModel.Rendering.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -67,18 +67,58 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
+        /// Calculates the max size of the specified axes.
+        /// </summary>
+        /// <param name="rc">
+        /// The render context.
+        /// </param>
+        /// <param name="axesOfPositionTier">
+        /// The axes of position tier.
+        /// </param>
+        /// <returns>
+        /// The max size.
+        /// </returns>
+        private static double MaxSizeOfPositionTier(IRenderContext rc, IEnumerable<Axis> axesOfPositionTier)
+        {
+            double maxSizeOfPositionTier = 0;
+            foreach (var axis in axesOfPositionTier)
+            {
+                OxySize size = axis.Measure(rc);
+                if (axis.IsHorizontal())
+                {
+                    if (size.Height > maxSizeOfPositionTier)
+                    {
+                        maxSizeOfPositionTier = size.Height;
+                    }
+                }
+                else
+                {
+                    if (size.Width > maxSizeOfPositionTier)
+                    {
+                        maxSizeOfPositionTier = size.Width;
+                    }
+                }
+            }
+
+            return maxSizeOfPositionTier;
+        }
+
+        /// <summary>
         /// Adjust the plot margins.
         /// </summary>
-        /// <param name="rc">The render context.</param>
-        /// <returns>The adjust plot margins.</returns>
+        /// <param name="rc">
+        /// The render context.
+        /// </param>
+        /// <returns>
+        /// The adjust plot margins.
+        /// </returns>
         private bool AdjustPlotMargins(IRenderContext rc)
         {
             bool isAdjusted = false;
-            var newPlotMargins = new Dictionary<AxisPosition, double>
-                {
-                    { AxisPosition.Left, this.ActualPlotMargins.Left },
-                    { AxisPosition.Top, this.ActualPlotMargins.Top },
-                    { AxisPosition.Right, this.ActualPlotMargins.Right },
+            var newPlotMargins = new Dictionary<AxisPosition, double> {
+                    { AxisPosition.Left, this.ActualPlotMargins.Left }, 
+                    { AxisPosition.Top, this.ActualPlotMargins.Top }, 
+                    { AxisPosition.Right, this.ActualPlotMargins.Right }, 
                     { AxisPosition.Bottom, this.ActualPlotMargins.Bottom }
                 };
 
@@ -117,33 +157,13 @@ namespace OxyPlot
             if (isAdjusted)
             {
                 this.ActualPlotMargins = new OxyThickness(
-                    newPlotMargins[AxisPosition.Left],
-                    newPlotMargins[AxisPosition.Top],
-                    newPlotMargins[AxisPosition.Right],
+                    newPlotMargins[AxisPosition.Left], 
+                    newPlotMargins[AxisPosition.Top], 
+                    newPlotMargins[AxisPosition.Right], 
                     newPlotMargins[AxisPosition.Bottom]);
             }
 
             return isAdjusted;
-        }
-
-        private static double MaxSizeOfPositionTier(IRenderContext rc, IEnumerable<Axis> axesOfPositionTier)
-        {
-            double maxSizeOfPositionTier = 0;
-            foreach (var axis in axesOfPositionTier)
-            {
-                OxySize size = axis.Measure(rc);
-                if (axis.IsHorizontal())
-                {
-                    if (size.Height > maxSizeOfPositionTier)
-                        maxSizeOfPositionTier = size.Height;
-                }
-                else
-                {
-                    if (size.Width > maxSizeOfPositionTier)
-                        maxSizeOfPositionTier = size.Width;
-                }
-            }
-            return maxSizeOfPositionTier;
         }
 
         /// <summary>
@@ -315,15 +335,15 @@ namespace OxyPlot
             if (!string.IsNullOrEmpty(this.Title))
             {
                 rc.DrawMathText(
-                    new ScreenPoint(dx, dy),
-                    this.Title,
-                    this.TextColor,
-                    this.ActualTitleFont,
-                    this.TitleFontSize,
-                    this.TitleFontWeight,
-                    0,
-                    HorizontalTextAlign.Center,
-                    VerticalTextAlign.Top,
+                    new ScreenPoint(dx, dy), 
+                    this.Title, 
+                    this.TextColor, 
+                    this.ActualTitleFont, 
+                    this.TitleFontSize, 
+                    this.TitleFontWeight, 
+                    0, 
+                    HorizontalTextAlign.Center, 
+                    VerticalTextAlign.Top, 
                     false);
                 dy += size1.Height;
             }
@@ -331,15 +351,15 @@ namespace OxyPlot
             if (!string.IsNullOrEmpty(this.Subtitle))
             {
                 rc.DrawMathText(
-                    new ScreenPoint(dx, dy),
-                    this.Subtitle,
-                    this.TextColor,
-                    this.SubtitleFont ?? this.ActualTitleFont,
-                    this.SubtitleFontSize,
-                    this.SubtitleFontWeight,
-                    0,
-                    HorizontalTextAlign.Center,
-                    VerticalTextAlign.Top,
+                    new ScreenPoint(dx, dy), 
+                    this.Subtitle, 
+                    this.TextColor, 
+                    this.SubtitleFont ?? this.ActualTitleFont, 
+                    this.SubtitleFontSize, 
+                    this.SubtitleFontWeight, 
+                    0, 
+                    HorizontalTextAlign.Center, 
+                    VerticalTextAlign.Top, 
                     false);
             }
         }
@@ -353,9 +373,9 @@ namespace OxyPlot
         private void UpdatePlotArea(IRenderContext rc)
         {
             var tmp = new OxyRect(
-                this.Padding.Left,
-                this.Padding.Top,
-                rc.Width - this.Padding.Left - this.Padding.Right,
+                this.Padding.Left, 
+                this.Padding.Top, 
+                rc.Width - this.Padding.Left - this.Padding.Right, 
                 rc.Height - this.Padding.Top - this.Padding.Bottom);
 
             OxySize titleSize = this.MeasureTitles(rc);
@@ -419,9 +439,9 @@ namespace OxyPlot
 
             this.PlotArea = tmp;
             this.PlotAndAxisArea = new OxyRect(
-                tmp.Left - this.ActualPlotMargins.Left,
-                tmp.Top - this.ActualPlotMargins.Top,
-                tmp.Width + this.ActualPlotMargins.Left + this.ActualPlotMargins.Right,
+                tmp.Left - this.ActualPlotMargins.Left, 
+                tmp.Top - this.ActualPlotMargins.Top, 
+                tmp.Width + this.ActualPlotMargins.Left + this.ActualPlotMargins.Right, 
                 tmp.Height + this.ActualPlotMargins.Top + this.ActualPlotMargins.Bottom);
             this.TitleArea = new OxyRect(
                 this.PlotArea.Left, this.Padding.Top, this.PlotArea.Width, titleSize.Height + this.TitlePadding * 2);

@@ -1,15 +1,15 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ScreenPoint.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
 
     /// <summary>
-    /// A point defined in the screen coordinate system.
+    /// Describes a point defined in the screen coordinate system.
     /// </summary>
     /// <remarks>
     /// The rendering methods transforms DataPoints to ScreenPoints.

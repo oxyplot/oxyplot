@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="WikiReportWriter.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Reporting
 {
@@ -70,19 +70,20 @@ namespace OxyPlot.Reporting
             this.MaxLineLength = 60;
         }
 
-        #endregion
-
-        // <summary>
-        // Initializes a new instance of the <see cref="WikiReportWriter"/> class.
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WikiReportWriter"/> class.
         /// </summary>
         /// <param name="path">
         /// The path.
         /// </param>
-        // public WikiReportWriter(string path)
-        // : base(path)
-        // {
-        // this.MaxLineLength = 60;
-        // }
+        public WikiReportWriter(string path)
+            : base(path)
+        {
+            this.MaxLineLength = 60;
+        }
+
+        #endregion
+
         #region Public Properties
 
         /// <summary>

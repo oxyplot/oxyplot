@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ContourSeries.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
@@ -15,7 +15,7 @@ namespace OxyPlot
     /// Represents a contour series.
     /// </summary>
     /// <remarks>
-    /// See <see cref="http://en.wikipedia.org/wiki/Contour_line"/> and <see cref="http://www.mathworks.se/help/techdoc/ref/contour.html"/>.
+    /// See http://en.wikipedia.org/wiki/Contour_line and http://www.mathworks.se/help/techdoc/ref/contour.html.
     /// </remarks>
     public class ContourSeries : DataPointSeries
     {

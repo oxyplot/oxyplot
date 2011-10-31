@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TrackerControl.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 #if WPF
 namespace OxyPlot.Wpf
@@ -777,7 +777,7 @@ namespace OxyPlot.Silverlight
             }
 
             var pc = new PointCollection();
-            foreach (Point p in points)
+            foreach (var p in points)
             {
                 pc.Add(p);
             }

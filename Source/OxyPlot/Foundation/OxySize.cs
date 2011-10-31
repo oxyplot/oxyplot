@@ -1,15 +1,15 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxySize.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System.Globalization;
 
     /// <summary>
-    /// Size class.
+    /// Implements a structure that is used to describe the Size of an object.
     /// </summary>
     public struct OxySize
     {

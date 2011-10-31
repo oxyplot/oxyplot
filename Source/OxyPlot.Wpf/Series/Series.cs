@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Series.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -19,19 +19,19 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The color property.
+        ///   The color property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color?), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The title property.
+        ///   The title property.
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The tracker format string property.
+        ///   The tracker format string property.
         /// </summary>
         public static readonly DependencyProperty TrackerFormatStringProperty =
             DependencyProperty.Register(
@@ -41,7 +41,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The tracker key property.
+        ///   The tracker key property.
         /// </summary>
         public static readonly DependencyProperty TrackerKeyProperty = DependencyProperty.Register(
             "TrackerKey", typeof(string), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
@@ -51,7 +51,7 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Color.
+        ///   Gets or sets Color.
         /// </summary>
         public Color? Color
         {
@@ -67,7 +67,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Title.
+        ///   Gets or sets Title.
         /// </summary>
         public string Title
         {
@@ -83,7 +83,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TrackerFormatString.
+        ///   Gets or sets TrackerFormatString.
         /// </summary>
         public string TrackerFormatString
         {
@@ -99,7 +99,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TrackerKey.
+        ///   Gets or sets TrackerKey.
         /// </summary>
         public string TrackerKey
         {

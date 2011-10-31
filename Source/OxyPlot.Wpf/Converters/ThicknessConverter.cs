@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ThicknessConverter.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -13,8 +13,8 @@ namespace OxyPlot.Wpf
 
     /// <summary>
     /// Converts Thickness to double.
-    /// This is used to convert BorderThickness properties to Path.StrokeThickness (double).
-    /// The maximum thickness value is used.
+    ///   This is used to convert BorderThickness properties to Path.StrokeThickness (double).
+    ///   The maximum thickness value is used.
     /// </summary>
     [ValueConversion(typeof(Thickness), typeof(double))]
     public class ThicknessConverter : IValueConverter

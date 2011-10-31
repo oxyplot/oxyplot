@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LogarithmicAxis.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -16,15 +16,15 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// Gets or sets the logarithmic base (normally 10).
-        /// http://en.wikipedia.org/wiki/Logarithm
+        ///   Gets or sets the logarithmic base (normally 10).
+        ///   http://en.wikipedia.org/wiki/Logarithm
         /// </summary>
         /// <value>The logarithmic base.</value>
         public static readonly DependencyProperty BaseProperty = DependencyProperty.Register(
             "Base", typeof(double), typeof(LogarithmicAxis), new PropertyMetadata(10.0, DataChanged));
 
         /// <summary>
-        /// The power padding property.
+        ///   The power padding property.
         /// </summary>
         public static readonly DependencyProperty PowerPaddingProperty = DependencyProperty.Register(
             "PowerPadding", typeof(bool), typeof(LogarithmicAxis), new PropertyMetadata(true, DataChanged));
@@ -34,7 +34,7 @@ namespace OxyPlot.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogarithmicAxis"/> class.
+        ///   Initializes a new instance of the <see cref = "LogarithmicAxis" /> class.
         /// </summary>
         public LogarithmicAxis()
         {
@@ -47,7 +47,7 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Base.
+        ///   Gets or sets Base.
         /// </summary>
         public double Base
         {
@@ -63,7 +63,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the ActualMaximum and ActualMinimum values should be padded to the nearest power of the Base.
+        ///   Gets or sets a value indicating whether the ActualMaximum and ActualMinimum values should be padded to the nearest power of the Base.
         /// </summary>
         public bool PowerPadding
         {

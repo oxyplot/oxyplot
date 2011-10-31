@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="WordDocumentReportWriter.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Pdf
 {
@@ -41,12 +41,12 @@ namespace OxyPlot.Pdf
     using RunProperties = DocumentFormat.OpenXml.Wordprocessing.RunProperties;
     using ShapeProperties = DocumentFormat.OpenXml.Drawing.Pictures.ShapeProperties;
     using Table = OxyPlot.Reporting.Table;
-    using TableCell = OxyPlot.Reporting.TableCell;
+    using TableCell = DocumentFormat.OpenXml.Wordprocessing.TableCell;
     using TableCellBorders = DocumentFormat.OpenXml.Wordprocessing.TableCellBorders;
     using TableCellProperties = DocumentFormat.OpenXml.Wordprocessing.TableCellProperties;
     using TableGrid = DocumentFormat.OpenXml.Wordprocessing.TableGrid;
     using TableProperties = DocumentFormat.OpenXml.Wordprocessing.TableProperties;
-    using TableRow = OxyPlot.Reporting.TableRow;
+    using TableRow = DocumentFormat.OpenXml.Wordprocessing.TableRow;
     using TableStyle = DocumentFormat.OpenXml.Wordprocessing.TableStyle;
     using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
     using TopBorder = DocumentFormat.OpenXml.Wordprocessing.TopBorder;
@@ -62,92 +62,92 @@ namespace OxyPlot.Pdf
         #region Constants and Fields
 
         /// <summary>
-        /// The body.
+        ///   The body.
         /// </summary>
         protected Body body;
 
         /// <summary>
-        /// The document.
+        ///   The document.
         /// </summary>
         protected Document document;
 
         /// <summary>
-        /// The main part.
+        ///   The main part.
         /// </summary>
         protected MainDocumentPart mainPart;
 
         /// <summary>
-        /// The package.
+        ///   The package.
         /// </summary>
         protected WordprocessingDocument package;
 
         /// <summary>
-        /// The body text id.
+        ///   The body text id.
         /// </summary>
         private const string BodyTextID = "Normal";
 
         /// <summary>
-        /// The body text name.
+        ///   The body text name.
         /// </summary>
         private const string BodyTextName = "Normal";
 
         /// <summary>
-        /// The figure text id.
+        ///   The figure text id.
         /// </summary>
         private const string FigureTextID = "FigureText";
 
         /// <summary>
-        /// The figure text name.
+        ///   The figure text name.
         /// </summary>
         private const string FigureTextName = "Figure text";
 
         /// <summary>
-        /// The header id.
+        ///   The header id.
         /// </summary>
         private const string HeaderID = "Heading{0}";
 
         /// <summary>
-        /// The header name.
+        ///   The header name.
         /// </summary>
         private const string HeaderName = "Heading {0}";
 
         /// <summary>
-        /// The table caption id.
+        ///   The table caption id.
         /// </summary>
         private const string TableCaptionID = "TableCaption";
 
         /// <summary>
-        /// The table caption name.
+        ///   The table caption name.
         /// </summary>
         private const string TableCaptionName = "Table caption";
 
         /// <summary>
-        /// The table header id.
+        ///   The table header id.
         /// </summary>
         private const string TableHeaderID = "TableHeader";
 
         /// <summary>
-        /// The table header name.
+        ///   The table header name.
         /// </summary>
         private const string TableHeaderName = "Table header";
 
         /// <summary>
-        /// The table text id.
+        ///   The table text id.
         /// </summary>
         private const string TableTextID = "TableText";
 
         /// <summary>
-        /// The table text name.
+        ///   The table text name.
         /// </summary>
         private const string TableTextName = "Table text";
 
         /// <summary>
-        /// The style part.
+        ///   The style part.
         /// </summary>
         private readonly StyleDefinitionsPart stylePart;
 
         /// <summary>
-        /// The style.
+        ///   The style.
         /// </summary>
         private ReportStyle style;
 
@@ -179,37 +179,37 @@ namespace OxyPlot.Pdf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Creator.
+        ///   Gets or sets Creator.
         /// </summary>
         public string Creator { get; set; }
 
         /// <summary>
-        /// Gets or sets Description.
+        ///   Gets or sets Description.
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets Keywords.
+        ///   Gets or sets Keywords.
         /// </summary>
         public string Keywords { get; set; }
 
         /// <summary>
-        /// Gets or sets Revision.
+        ///   Gets or sets Revision.
         /// </summary>
         public string Revision { get; set; }
 
         /// <summary>
-        /// Gets or sets Subject.
+        ///   Gets or sets Subject.
         /// </summary>
         public string Subject { get; set; }
 
         /// <summary>
-        /// Gets or sets Title.
+        ///   Gets or sets Title.
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets Version.
+        ///   Gets or sets Version.
         /// </summary>
         public string Version { get; set; }
 
@@ -374,21 +374,21 @@ namespace OxyPlot.Pdf
             tableProperties1.Append(tableLook1);
 
             var tableGrid1 = new TableGrid();
-            foreach (TableColumn tc in t.Columns)
+            foreach (var tc in t.Columns)
             {
                 // tc.Width
                 var gridColumn1 = new GridColumn { Width = "3070" };
                 tableGrid1.Append(gridColumn1);
             }
 
-            foreach (TableRow row in t.Rows)
+            foreach (var row in t.Rows)
             {
-                var tr = new DocumentFormat.OpenXml.Wordprocessing.TableRow();
+                var tr = new TableRow();
                 int j = 0;
-                foreach (TableCell c in row.Cells)
+                foreach (var c in row.Cells)
                 {
                     bool isHeader = row.IsHeader || t.Columns[j++].IsHeader;
-                    var cell = new DocumentFormat.OpenXml.Wordprocessing.TableCell();
+                    var cell = new TableCell();
                     var tcp = new TableCellProperties();
                     var borders = new TableCellBorders();
                     borders.Append(

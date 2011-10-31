@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TrackerDefinition.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 #if WPF
 
@@ -23,13 +23,13 @@ namespace OxyPlot.Silverlight
         #region Constants and Fields
 
         /// <summary>
-        /// The tracker key property.
+        ///   The tracker key property.
         /// </summary>
         public static readonly DependencyProperty TrackerKeyProperty = DependencyProperty.Register(
             "TrackerKey", typeof(string), typeof(TrackerDefinition), new PropertyMetadata(null));
 
         /// <summary>
-        /// The tracker template property.
+        ///   The tracker template property.
         /// </summary>
         public static readonly DependencyProperty TrackerTemplateProperty =
             DependencyProperty.Register(
@@ -40,8 +40,8 @@ namespace OxyPlot.Silverlight
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the tracker key.
-        /// The Plot will use this property to find the TrackerDefinition that matches the TrackerKey of the current series.
+        ///   Gets or sets the tracker key.
+        ///   The Plot will use this property to find the TrackerDefinition that matches the TrackerKey of the current series.
         /// </summary>
         public string TrackerKey
         {
@@ -57,9 +57,9 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Gets or sets the tracker template.
-        /// The tracker control will be added/removed from the Tracker overlay as neccessary.
-        /// The DataContext of the tracker will be set to a TrackerHitResult with the current tracker data.
+        ///   Gets or sets the tracker template.
+        ///   The tracker control will be added/removed from the Tracker overlay as neccessary.
+        ///   The DataContext of the tracker will be set to a TrackerHitResult with the current tracker data.
         /// </summary>
         public ControlTemplate TrackerTemplate
         {

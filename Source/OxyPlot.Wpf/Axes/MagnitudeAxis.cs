@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MagnitudeAxis.cs" company="OxyPlot">
-//     http://oxyplot.codeplex.com, license: Ms-PL
+//   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-//-----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
 {
@@ -16,7 +16,7 @@ namespace OxyPlot.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="MagnitudeAxis"/> class.
+        ///   Initializes static members of the <see cref = "MagnitudeAxis" /> class.
         /// </summary>
         static MagnitudeAxis()
         {
@@ -25,7 +25,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MagnitudeAxis"/> class.
+        ///   Initializes a new instance of the <see cref = "MagnitudeAxis" /> class.
         /// </summary>
         public MagnitudeAxis()
         {
