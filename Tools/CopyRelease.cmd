@@ -1,8 +1,4 @@
-cd ..\Source
-mkdir ..\Output
-mkdir ..\Output\ReleaseWPF
-copy ..\Source\OxyPlot.Wpf\bin\Release\*.dll ..\Output\ReleaseWPF
-cd ..\Output\ReleaseWPF
-7z.exe a -r ..\OxyPlot-WPF-Release.zip *.*
-explorer ..
-cd ..\..\Tools
+cd ..\Output
+"C:\Program Files\7-Zip\7z.exe" a OxyPlot-Release.zip *.dll *.XML *.pdb
+explorer .
+cd ..\Tools
