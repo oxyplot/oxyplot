@@ -2,9 +2,6 @@
 // <copyright file="GraphicsRenderContext.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   The graphics render context.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.WindowsForms
