@@ -147,9 +147,9 @@ namespace OxyPlot
                     var dp = new DataPoint(i, this.InternalValues[i]);
                     CategoryAxis categoryAxis = this.GetCategoryAxis();
                     string text = string.Format(
-                        this.TrackerFormatString, 
-                        this.Title, 
-                        categoryAxis.FormatValueForTracker(i), 
+                        this.TrackerFormatString,
+                        this.Title,
+                        categoryAxis.FormatValueForTracker(i),
                         this.InternalValues[i]);
                     return new TrackerHitResult(this, dp, sp, this.GetItem(i), text);
                 }
@@ -365,9 +365,9 @@ namespace OxyPlot
             double xmid = (legendBox.Left + legendBox.Right) / 2;
             double height = legendBox.Bottom - legendBox.Top;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - 0.25 * height, legendBox.Top + height * 0.1, 0.5 * height, height * 0.8), 
-                this.FillColor, 
-                this.StrokeColor, 
+                new OxyRect(xmid - 0.25 * height, legendBox.Top + height * 0.1, 0.5 * height, height * 0.8),
+                this.FillColor,
+                this.StrokeColor,
                 this.StrokeThickness);
         }
 
@@ -463,7 +463,7 @@ namespace OxyPlot
             foreach (double v in this.Values)
             {
                 double baseValue = 0;
-                if (ca.BaseValue != null)
+                if (ca.BaseValue != null && i < ca.BaseValue.Length)
                 {
                     baseValue = ca.BaseValue[i];
                 }

@@ -8,6 +8,9 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using System;
+    using System.Collections.ObjectModel;
+
     [Examples("BarSeries")]
     public static class BarSeriesExamples
     {
@@ -70,38 +73,84 @@ namespace ExampleLibrary
             return model;
         }
 
+        public class Item
+        {
+            public string Label { get; set; }
+            public double Value1 { get; set; }
+            public double Value2 { get; set; }
+            public double Value3 { get; set; }
+        }
+
         [Example("Bar series")]
         public static PlotModel Barseries()
         {
-            var plotModel1 = new PlotModel();
-            plotModel1.LegendPlacement = LegendPlacement.Outside;
-            plotModel1.Title = "Bar series";
-            var categoryAxis1 = new CategoryAxis();
-            categoryAxis1.LabelField = "Label";
-            categoryAxis1.MajorStep = 1;
-            categoryAxis1.MinorStep = 1;
+            var items = new Collection<Item>
+                            {
+                                new Item {Label = "Apples", Value1 = 37, Value2 = 12, Value3 = 19},
+                                new Item {Label = "Pears", Value1 = 7, Value2 = 21, Value3 = 9},
+                                new Item {Label = "Bananas", Value1 = 23, Value2 = 2, Value3 = 29}
+                            };
+            var plotModel1 = new PlotModel { LegendPlacement = LegendPlacement.Outside, Title = "Bar series" };
+            var categoryAxis1 = new CategoryAxis { LabelField = "Label", ItemsSource = items, MajorStep = 1, MinorStep = 1 };
             plotModel1.Axes.Add(categoryAxis1);
-            var linearAxis1 = new LinearAxis();
-            linearAxis1.AbsoluteMinimum = 0;
-            linearAxis1.MinimumPadding = 0;
+            var linearAxis1 = new LinearAxis { AbsoluteMinimum = 0, MinimumPadding = 0 };
             plotModel1.Axes.Add(linearAxis1);
-            var barSeries1 = new BarSeries();
-            barSeries1.FillColor = OxyColor.FromArgb(255, 78, 154, 6);
-            barSeries1.ValueField = "Value1";
-            barSeries1.Title = "2009";
+            var barSeries1 = new BarSeries
+                {
+                    FillColor = OxyColor.FromArgb(255, 78, 154, 6),
+                    ValueField = "Value1",
+                    Title = "2009",
+                    ItemsSource = items
+                };
             plotModel1.Series.Add(barSeries1);
-            var barSeries2 = new BarSeries();
-            barSeries2.FillColor = OxyColor.FromArgb(255, 200, 141, 0);
-            barSeries2.ValueField = "Value2";
-            barSeries2.Title = "2010";
+            var barSeries2 = new BarSeries
+                {
+                    FillColor = OxyColor.FromArgb(255, 200, 141, 0),
+                    ValueField = "Value2",
+                    Title = "2010",
+                    ItemsSource = items
+                };
             plotModel1.Series.Add(barSeries2);
-            var barSeries3 = new BarSeries();
-            barSeries3.FillColor = OxyColor.FromArgb(255, 204, 0, 0);
-            barSeries3.ValueField = "Value3";
-            barSeries3.Title = "2011";
+            var barSeries3 = new BarSeries
+                {
+                    FillColor = OxyColor.FromArgb(255, 204, 0, 0),
+                    ValueField = "Value3",
+                    Title = "2011",
+                    ItemsSource = items
+                };
             plotModel1.Series.Add(barSeries3);
             return plotModel1;
         }
 
+        private class HistogramBin
+        {
+            public string Label { get; set; }
+            public double Value { get; set; }
+        }
+
+        [Example("Histogram (random numbers)")]
+        public static PlotModel Histogram()
+        {
+            int n = 1000;
+            int binCount = 20;
+            var bins = new HistogramBin[binCount];
+            for (int i = 0; i < bins.Length; i++) bins[i] = new HistogramBin() { Label = i.ToString() };
+
+            var r = new Random();
+            for (int i = 0; i < n; i++)
+            {
+                int value = r.Next(binCount);
+                bins[value].Value++;
+            }
+
+            var temp = new PlotModel();
+
+            temp.Series.Add(new BarSeries { BarWidth = 1, ItemsSource = bins, ValueField = "Value" });
+
+            temp.Axes.Add(new CategoryAxis { ItemsSource = bins, LabelField = "Label" });
+            temp.Axes.Add(new LinearAxis { MinimumPadding = 0, AbsoluteMinimum = 0 });
+
+            return temp;
+        }
     }
 }
