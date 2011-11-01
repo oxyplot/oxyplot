@@ -183,6 +183,23 @@ namespace ExampleLibrary
             return m;
         }
 
+        [Example("Heaviside step function")]
+        public static PlotModel HeavisideStepFunction()
+        {
+            // http://en.wikipedia.org/wiki/Heaviside_step_function
+
+            var m = CreatePlotModel();
+            m.PlotType = PlotType.Cartesian;
+            m.Series.Add(new FunctionSeries(x =>
+            {
+                // make a gap in the curve at x=0
+                if (Math.Abs(x) < 1e-8) return double.NaN;
+                return x < 0 ? 0 : 1;
+            }, -2, 2, 0.001));
+            m.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, Color = m.DefaultColors[0], X = 0, MinimumY = 0, MaximumY = 1 });
+            return m;
+        }
+
         [Example("FunctionSeries")]
         public static PlotModel FunctionSeries()
         {

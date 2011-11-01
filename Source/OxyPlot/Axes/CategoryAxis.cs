@@ -254,25 +254,17 @@ namespace OxyPlot
 
             this.BarOffset = 0;
 
-            if (this.ItemsSource == null)
+            if (this.ItemsSource != null)
             {
-                this.BaseValue = new double[this.Labels.Count];
-                this.BaseValueScreen = new double[this.Labels.Count];
-                Fill(this.BaseValueScreen, double.NaN);
-                this.MaxValue = new double[this.Labels.Count];
-                this.MinValue = new double[this.Labels.Count];
-                return;
+                this.Labels.Clear();
+                ReflectionHelper.FillValues(this.ItemsSource, this.LabelField, this.Labels);
             }
 
-            this.Labels.Clear();
-            ReflectionHelper.FillValues(this.ItemsSource, this.LabelField, this.Labels);
-
-            if (this.Labels.Count > 0)
-            {
-                this.BaseValue = new double[this.Labels.Count];
-                this.BaseValueScreen = new double[this.Labels.Count];
-                Fill(this.BaseValueScreen, double.NaN);
-            }
+            this.BaseValue = new double[this.Labels.Count];
+            this.BaseValueScreen = new double[this.Labels.Count];
+            Fill(this.BaseValueScreen, double.NaN);
+            this.MaxValue = new double[this.Labels.Count];
+            this.MinValue = new double[this.Labels.Count];
         }
 
         #endregion
