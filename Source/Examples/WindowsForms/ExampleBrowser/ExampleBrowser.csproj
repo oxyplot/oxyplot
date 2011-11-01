@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OxyPlot">
-      <HintPath>..\..\..\OxyPlot\bin\Debug\OxyPlot.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -60,6 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -84,6 +82,10 @@
     <ProjectReference Include="..\..\..\OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj">
       <Project>{8BC521AD-81CF-4E6C-8898-BE67527E7064}</Project>
       <Name>OxyPlot.WindowsForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
+      <Project>{87F519B8-5A2F-48C6-AD53-C5F13A82EA6B}</Project>
+      <Name>OxyPlot</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ExampleLibrary\ExampleLibrary.csproj">
       <Project>{A941B658-1237-482C-B0C7-378242D27647}</Project>
