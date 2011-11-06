@@ -1114,12 +1114,7 @@ namespace OxyPlot
             // Set the same scaling to all axes if CartesianAxes is selected
             if (this.PlotType == PlotType.Cartesian)
             {
-                double minimumScale = double.MaxValue;
-                foreach (var a in this.Axes)
-                {
-                    minimumScale = Math.Min(minimumScale, Math.Abs(a.Scale));
-                }
-
+                double minimumScale = this.Axes.Min(a => Math.Abs(a.Scale));
                 foreach (var a in this.Axes)
                 {
                     a.Zoom(minimumScale);
