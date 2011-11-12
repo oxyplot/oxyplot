@@ -1,2 +1,1 @@
-mkdir ..\Output
-"C:\Program Files\7-Zip\7z.exe" a ..\Output\OxyPlot-Release-%1.zip *.dll *.XML *.pdb > CopyRelease.log
+"C:\Program Files\7-Zip\7z.exe" a ..\Output\OxyPlot-Release-%1.zip ..\Output\*.dll ..\Output\*.XML ..\Output\*.pdb > CopyRelease.log
