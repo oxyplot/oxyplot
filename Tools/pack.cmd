@@ -1,13 +1,11 @@
-cd ..\Packages
-copy ..\Output\OxyPlot.dll OxyPlot.Wpf\lib
-copy ..\Output\OxyPlot.xml OxyPlot.Wpf\lib
-copy ..\Output\OxyPlot.Wpf.dll OxyPlot.Wpf\lib
-copy ..\Output\OxyPlot.Wpf.xml OxyPlot.Wpf\lib
-..\tools\nuget.exe pack OxyPlot.Wpf\OxyPlot.Wpf.nuspec
+copy ..\Output\OxyPlot.dll ..\Packages\OxyPlot.Wpf\lib
+copy ..\Output\OxyPlot.xml ..\Packages\OxyPlot.Wpf\lib
+copy ..\Output\OxyPlot.Wpf.dll ..\Packages\OxyPlot.Wpf\lib
+copy ..\Output\OxyPlot.Wpf.xml ..\Packages\OxyPlot.Wpf\lib
+nuget.exe pack ..\Packages\OxyPlot.Wpf\OxyPlot.Wpf.nuspec
 
-copy ..\Output\OxyPlotSL.dll OxyPlot.Silverlight\lib
-copy ..\Output\OxyPlotSL.xml OxyPlot.Silverlight\lib
-copy ..\Output\OxyPlot.Silverlight.dll OxyPlot.Silverlight\lib
-copy ..\Output\OxyPlot.Silverlight.xml OxyPlot.Silverlight\lib
-..\tools\nuget.exe pack OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec
-cd ..\Tools
+copy ..\Output\OxyPlotSL.dll ..\Packages\OxyPlot.Silverlight\lib
+copy ..\Output\OxyPlotSL.xml ..\Packages\OxyPlot.Silverlight\lib
+copy ..\Output\OxyPlot.Silverlight.dll ..\Packages\OxyPlot.Silverlight\lib
+copy ..\Output\OxyPlot.Silverlight.xml ..\Packages\OxyPlot.Silverlight\lib
+nuget.exe pack ..\Packages\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec

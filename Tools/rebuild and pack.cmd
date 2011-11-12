@@ -1,7 +1,7 @@
 call setpath
 call update
 call clean
-call updateversion
+call updateversion 0
 call build
 call pack
 call CopyRelease
