@@ -12,9 +12,6 @@ namespace OxyPlot.WindowsForms
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
-    using OxyPlot;
-    using OxyPlot.WindowsForms;
-
     /// <summary>
     /// Represents a control that displays a plot.
     /// </summary>
@@ -59,6 +56,8 @@ namespace OxyPlot.WindowsForms
         {
             this.DoubleBuffered = true;
             this.Model = new PlotModel();
+            this.KeyboardPanHorizontalStep = 0.1;
+            this.KeyboardPanVerticalStep = 0.1;
         }
 
         #endregion
@@ -76,6 +75,18 @@ namespace OxyPlot.WindowsForms
                 return this.Model;
             }
         }
+
+        /// <summary>
+        ///   Gets or sets the keyboard pan horizontal step.
+        /// </summary>
+        /// <value>The keyboard pan horizontal step.</value>
+        public double KeyboardPanHorizontalStep { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the keyboard pan vertical step.
+        /// </summary>
+        /// <value>The keyboard pan vertical step.</value>
+        public double KeyboardPanVerticalStep { get; set; }
 
         /// <summary>
         ///   Gets or sets Model.
@@ -197,6 +208,25 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
+        /// Pans all axes.
+        /// </summary>
+        /// <param name="deltax">
+        /// The deltax.
+        /// </param>
+        /// <param name="deltay">
+        /// The deltay.
+        /// </param>
+        public void PanAll(double deltax, double deltay)
+        {
+            foreach (IAxis a in this.ActualModel.Axes)
+            {
+                a.Pan(a.IsHorizontal() ? deltax : deltay);
+            }
+
+            this.InvalidatePlot(false);
+        }
+
+        /// <summary>
         /// The refresh plot.
         /// </summary>
         /// <param name="updateData">
@@ -308,6 +338,22 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
+        /// Zooms all axes.
+        /// </summary>
+        /// <param name="delta">
+        /// The delta.
+        /// </param>
+        public void ZoomAllAxes(double delta)
+        {
+            foreach (var a in this.ActualModel.Axes)
+            {
+                this.ZoomAt(a, delta);
+            }
+
+            this.RefreshPlot(false);
+        }
+
+        /// <summary>
         /// The zoom at.
         /// </summary>
         /// <param name="axis">
@@ -319,8 +365,14 @@ namespace OxyPlot.WindowsForms
         /// <param name="x">
         /// The x.
         /// </param>
-        public void ZoomAt(IAxis axis, double factor, double x)
+        public void ZoomAt(IAxis axis, double factor, double x = double.NaN)
         {
+            if (double.IsNaN(x))
+            {
+                double sx = (axis.Transform(axis.ActualMaximum) + axis.Transform(axis.ActualMinimum)) * 0.5;
+                x = axis.InverseTransform(sx);
+            }
+
             axis.ZoomAt(factor, x);
             this.InvalidatePlot(false);
         }
@@ -330,14 +382,12 @@ namespace OxyPlot.WindowsForms
         #region Methods
 
         /// <summary>
-        /// The on key down.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.PreviewKeyDown"/> event.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        protected override void OnKeyDown(KeyEventArgs e)
+        /// <param name="e">A <see cref="T:System.Windows.Forms.PreviewKeyDownEventArgs"/> that contains the event data.</param>
+        protected override void OnPreviewKeyDown(PreviewKeyDownEventArgs e)
         {
-            base.OnKeyDown(e);
+            base.OnPreviewKeyDown(e);
             if (e.KeyCode == Keys.A)
             {
                 this.ZoomAll();
@@ -345,6 +395,62 @@ namespace OxyPlot.WindowsForms
 
             bool control = (e.Modifiers & Keys.Control) == Keys.Control;
             bool alt = (e.Modifiers & Keys.Alt) == Keys.Alt;
+
+            double deltax = 0;
+            double deltay = 0;
+            double zoom = 0;
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    deltay = -1;
+                    break;
+                case Keys.Down:
+                    deltay = 1;
+                    break;
+                case Keys.Left:
+                    deltax = -1;
+                    break;
+                case Keys.Right:
+                    deltax = 1;
+                    break;
+                case Keys.Add:
+                case Keys.Oemplus:
+                case Keys.PageUp:
+                    zoom = 1;
+                    break;
+                case Keys.Subtract:
+                case Keys.OemMinus:
+                case Keys.PageDown:
+                    zoom = -1;
+                    break;
+            }
+
+            if (deltax * deltax + deltay * deltay > 0)
+            {
+                deltax = deltax * this.ActualModel.PlotArea.Width * this.KeyboardPanHorizontalStep;
+                deltay = deltay * this.ActualModel.PlotArea.Height * this.KeyboardPanVerticalStep;
+
+                // small steps if the user is pressing control
+                if (control)
+                {
+                    deltax *= 0.2;
+                    deltay *= 0.2;
+                }
+
+                this.PanAll(deltax, deltay);
+                // e.Handled = true;
+            }
+
+            if (Math.Abs(zoom) > 1e-8)
+            {
+                if (control)
+                {
+                    zoom *= 0.2;
+                }
+
+                this.ZoomAllAxes(1 + zoom * 0.12);
+                // e.Handled = true;
+            }
 
             if (control && alt && this.ActualModel != null)
             {
@@ -358,7 +464,7 @@ namespace OxyPlot.WindowsForms
                         break;
                     case Keys.X:
 
-                        // Clipboard.SetText(this.ToXml());
+                        // this.SetClipboardText(this.ActualModel.ToXml());
                         break;
                 }
             }
@@ -508,7 +614,9 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Gets the manipulator for the current mouse button and modifier keys.
         /// </summary>
-        /// <param name="e">The event args.</param>
+        /// <param name="e">
+        /// The event args.
+        /// </param>
         /// <returns>
         /// A manipulator or null if no gesture was recognized.
         /// </returns>
