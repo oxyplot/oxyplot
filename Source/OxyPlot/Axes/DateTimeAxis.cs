@@ -370,8 +370,10 @@ namespace OxyPlot
                     }
 
                     break;
+                case DateTimeIntervalType.Manual:
+                    break;
+                case DateTimeIntervalType.Auto:
                 default:
-                    this.ActualMinorStep = this.ActualMajorStep;
                     break;
             }
         }
@@ -420,7 +422,7 @@ namespace OxyPlot
             this.actualIntervalType = this.IntervalType;
             this.actualMinorIntervalType = this.MinorIntervalType;
 
-            if (this.actualIntervalType == DateTimeIntervalType.Auto)
+            if (this.IntervalType == DateTimeIntervalType.Auto)
             {
                 this.actualIntervalType = DateTimeIntervalType.Seconds;
                 if (interval >= 1.0 / 24 / 60)
