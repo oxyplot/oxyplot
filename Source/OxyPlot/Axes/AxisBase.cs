@@ -484,12 +484,12 @@ namespace OxyPlot
         public override string ToString()
         {
             return string.Format(
-                CultureInfo.InvariantCulture, 
-                "{0}({1}, {2}, {3}, {4})", 
-                TypeHelper.GetTypeName(this.GetType()), 
-                this.Position, 
-                this.ActualMinimum, 
-                this.ActualMaximum, 
+                CultureInfo.InvariantCulture,
+                "{0}({1}, {2}, {3}, {4})",
+                TypeHelper.GetTypeName(this.GetType()),
+                this.Position,
+                this.ActualMinimum,
+                this.ActualMaximum,
                 this.ActualMajorStep);
         }
 
@@ -633,7 +633,7 @@ namespace OxyPlot
                     this.ActualMaximum += zeroRange * 0.5;
                 }
 
-                if (!double.IsNaN(this.ActualMaximum) && !double.IsNaN(this.ActualMaximum))
+                if (!double.IsNaN(this.ActualMinimum) && !double.IsNaN(this.ActualMaximum))
                 {
                     double x1 = this.PreTransform(this.ActualMaximum);
                     double x0 = this.PreTransform(this.ActualMinimum);
