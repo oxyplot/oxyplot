@@ -2,6 +2,9 @@
 // <copyright file="BarSeries.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   The BarSeries is used to create clustered or stacked bar charts.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -63,6 +66,14 @@ namespace OxyPlot
         public double BarWidth { get; set; }
 
         /// <summary>
+        ///   Gets or sets the base value.
+        /// </summary>
+        /// <value>
+        ///   The base value.
+        /// </value>
+        public double BaseValue { get; set; }
+
+        /// <summary>
         ///   Gets or sets the color of the interior of the bars.
         /// </summary>
         /// <value>The color.</value>
@@ -118,9 +129,10 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// The get category axis.
+        /// Gets the category axis.
         /// </summary>
         /// <returns>
+        /// The category axis.
         /// </returns>
         public CategoryAxis GetCategoryAxis()
         {
@@ -136,6 +148,9 @@ namespace OxyPlot
         /// <param name="interpolate">
         /// The interpolate.
         /// </param>
+        /// <returns>
+        /// A TrackerHitResult for the current hit.
+        /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             int i = 0;
@@ -147,9 +162,9 @@ namespace OxyPlot
                     var dp = new DataPoint(i, this.InternalValues[i]);
                     CategoryAxis categoryAxis = this.GetCategoryAxis();
                     string text = string.Format(
-                        this.TrackerFormatString,
-                        this.Title,
-                        categoryAxis.FormatValueForTracker(i),
+                        this.TrackerFormatString, 
+                        this.Title, 
+                        categoryAxis.FormatValueForTracker(i), 
                         this.InternalValues[i]);
                     return new TrackerHitResult(this, dp, sp, this.GetItem(i), text);
                 }
@@ -161,9 +176,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The get value axis.
+        /// Gets the value axis.
         /// </summary>
         /// <returns>
+        /// The value axis.
         /// </returns>
         public IAxis GetValueAxis()
         {
@@ -177,6 +193,7 @@ namespace OxyPlot
         /// The x.
         /// </param>
         /// <returns>
+        /// The value.
         /// </returns>
         public double? GetValueFromX(double x)
         {
@@ -184,31 +201,20 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The is valid point.
+        /// Checks if the specified value is valid.
         /// </summary>
         /// <param name="v">
-        /// The v.
+        /// The value.
         /// </param>
-        /// <param name="yAxis">
+        /// <param name="yaxis">
         /// The y axis.
         /// </param>
         /// <returns>
-        /// The is valid point.
+        /// True if the value is valid.
         /// </returns>
-        public virtual bool IsValidPoint(double v, IAxis yAxis)
+        public virtual bool IsValidPoint(double v, IAxis yaxis)
         {
             return !double.IsNaN(v) && !double.IsInfinity(v);
-        }
-
-        /// <summary>
-        /// The is vertical.
-        /// </summary>
-        /// <returns>
-        /// The is vertical.
-        /// </returns>
-        public bool IsVertical()
-        {
-            return this.GetCategoryAxis() == this.XAxis;
         }
 
         /// <summary>
@@ -257,16 +263,16 @@ namespace OxyPlot
                 double baseValue = this.IsStacked ? categoryAxis.BaseValue[i] : double.NaN;
                 if (double.IsNaN(baseValue))
                 {
-                    baseValue = 0;
+                    baseValue = this.BaseValue;
                 }
 
                 double topValue = this.IsStacked ? baseValue + v : v;
-                int nSeries = this.IsStacked ? 1 : categoryAxis.AttachedSeriesCount;
+                int numberOfSeries = this.IsStacked ? 1 : categoryAxis.AttachedSeriesCount;
                 OxyRect rect;
                 if (isVertical)
                 {
                     ScreenPoint p0 = this.XAxis.Transform(i + dx, baseValue, this.YAxis);
-                    ScreenPoint p1 = this.XAxis.Transform(i + dx + this.BarWidth / nSeries, topValue, this.YAxis);
+                    ScreenPoint p1 = this.XAxis.Transform(i + dx + this.BarWidth / numberOfSeries, topValue, this.YAxis);
 
                     p0.X = (int)p0.X;
                     p0.Y = (int)p0.Y;
@@ -299,7 +305,7 @@ namespace OxyPlot
                 else
                 {
                     ScreenPoint p0 = this.XAxis.Transform(baseValue, i + dx, this.YAxis);
-                    ScreenPoint p1 = this.XAxis.Transform(topValue, i + dx + this.BarWidth / nSeries, this.YAxis);
+                    ScreenPoint p1 = this.XAxis.Transform(topValue, i + dx + this.BarWidth / numberOfSeries, this.YAxis);
 
                     p0.X = (int)p0.X;
                     p0.Y = (int)p0.Y;
@@ -365,9 +371,9 @@ namespace OxyPlot
             double xmid = (legendBox.Left + legendBox.Right) / 2;
             double height = legendBox.Bottom - legendBox.Top;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - 0.25 * height, legendBox.Top + height * 0.1, 0.5 * height, height * 0.8),
-                this.FillColor,
-                this.StrokeColor,
+                new OxyRect(xmid - 0.25 * height, legendBox.Top + height * 0.1, 0.5 * height, height * 0.8), 
+                this.FillColor, 
+                this.StrokeColor, 
                 this.StrokeThickness);
         }
 
@@ -392,8 +398,6 @@ namespace OxyPlot
         /// <summary>
         /// The update axis max min.
         /// </summary>
-        /// <exception cref="Exception">
-        /// </exception>
         protected internal override void UpdateAxisMaxMin()
         {
             CategoryAxis ca = this.XAxis as CategoryAxis ?? this.YAxis as CategoryAxis;
@@ -462,7 +466,7 @@ namespace OxyPlot
             int i = 0;
             foreach (double v in this.Values)
             {
-                double baseValue = 0;
+                double baseValue = this.BaseValue;
                 if (ca.BaseValue != null && i < ca.BaseValue.Length)
                 {
                     baseValue = ca.BaseValue[i];
@@ -498,17 +502,17 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The get item.
+        /// Gets the item at the specified index.
         /// </summary>
         /// <param name="i">
-        /// The i.
+        /// The index.
         /// </param>
         /// <returns>
-        /// The get item.
+        /// The item.
         /// </returns>
         private object GetItem(int i)
         {
-            return null;
+            return this.GetItem(this.ItemsSource, i);
         }
 
         #endregion
