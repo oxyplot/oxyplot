@@ -261,6 +261,7 @@ namespace OxyPlot
             }
 
             this.BaseValue = new double[this.Labels.Count];
+            Fill(this.BaseValue, double.NaN);
             this.BaseValueScreen = new double[this.Labels.Count];
             Fill(this.BaseValueScreen, double.NaN);
             this.MaxValue = new double[this.Labels.Count];

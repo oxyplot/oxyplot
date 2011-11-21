@@ -42,6 +42,32 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Logarithmic axis")]
+        public static PlotModel LogAxisBarSeries()
+        {
+            var model = new PlotModel("BarSeries")
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBorderThickness = 0
+            };
+            var s1 = new BarSeries { Title = "BarSeries 1", BaseValue = 0.1, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s1.Values.Add(25);
+            s1.Values.Add(37);
+            s1.Values.Add(18);
+            s1.Values.Add(40);
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
+            categoryAxis.Labels.Add("Category A");
+            categoryAxis.Labels.Add("Category B");
+            categoryAxis.Labels.Add("Category C");
+            categoryAxis.Labels.Add("Category D");
+            model.Series.Add(s1);
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LogarithmicAxis(AxisPosition.Left) { Minimum = 0.1, MinimumPadding = 0, AbsoluteMinimum = 0 });
+            return model;
+        }
+
         private static PlotModel CreateBarSeriesModel(bool stacked, bool horizontal)
         {
             var model = new PlotModel("BarSeries")
