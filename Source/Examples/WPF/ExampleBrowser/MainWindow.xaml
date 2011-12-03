@@ -64,6 +64,16 @@
                 <TextBlock Margin="20 0 0 0" Text="{Binding FrameRate, StringFormat='{}{0:0.0} fps'}"/>
             </StackPanel>
         </Grid>
-        <oxy:Plot x:Name="Plot1" Model="{Binding SelectedExample.PlotModel}" Background="{Binding PlotBackground}" Grid.Column="1"/>
+        <TabControl Grid.Column="1" TabStripPlacement="Bottom">
+            <TabItem Header="Plot">
+                <oxy:Plot x:Name="Plot1" Model="{Binding SelectedExample.PlotModel}" Background="{Binding PlotBackground}"/>
+            </TabItem>
+            <TabItem Header="Code">
+                <TextBox AcceptsReturn="True" FontFamily="Consolas" 
+                         Text="{Binding SelectedExample.Code, Mode=OneWay}" BorderThickness="0"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         />
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

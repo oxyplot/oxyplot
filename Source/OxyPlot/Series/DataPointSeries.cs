@@ -49,8 +49,8 @@ namespace OxyPlot
         /// </summary>
         protected DataPointSeries()
         {
-            this.DataFieldX = "X";
-            this.DataFieldY = "Y";
+            this.DataFieldX = null;
+            this.DataFieldY = null;
         }
 
         #endregion
@@ -276,12 +276,14 @@ namespace OxyPlot
                     points.Add(idpp.GetDataPoint());
                 }
             }
+            else
+            {
+                // TODO: is there a better way to do this?
+                // http://msdn.microsoft.com/en-us/library/bb613546.aspx
 
-            // TODO: is there a better way to do this?
-            // http://msdn.microsoft.com/en-us/library/bb613546.aspx
-
-            // Using reflection on DataFieldX and DataFieldY
-            this.AddDataPoints(points, this.ItemsSource, this.DataFieldX, this.DataFieldY);
+                // Using reflection on DataFieldX and DataFieldY
+                this.AddDataPoints(points, this.ItemsSource, this.DataFieldX, this.DataFieldY);    
+            }
         }
 
         /// <summary>
