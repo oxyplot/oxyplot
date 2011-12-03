@@ -245,15 +245,15 @@ namespace OxyPlot
 
             // Draw the markers
             rc.DrawMarkers(
-                allPoints, 
-                clippingRect, 
-                this.MarkerType, 
-                this.MarkerOutline, 
-                markerSizes, 
-                this.MarkerFill, 
-                this.MarkerStroke, 
-                this.MarkerStrokeThickness, 
-                this.BinSize, 
+                allPoints,
+                clippingRect,
+                this.MarkerType,
+                this.MarkerOutline,
+                markerSizes,
+                this.MarkerFill,
+                this.MarkerStroke,
+                this.MarkerStrokeThickness,
+                this.BinSize,
                 binOffset);
         }
 
@@ -274,13 +274,13 @@ namespace OxyPlot
 
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
-                midpt, 
-                legendBox, 
-                this.MarkerType, 
-                this.MarkerOutline, 
-                this.MarkerSize, 
-                this.MarkerFill, 
-                this.MarkerStroke, 
+                midpt,
+                legendBox,
+                this.MarkerType,
+                this.MarkerOutline,
+                this.MarkerSize,
+                this.MarkerFill,
+                this.MarkerStroke,
                 this.MarkerStrokeThickness);
         }
 
@@ -389,12 +389,12 @@ namespace OxyPlot
         /// The data field tag.
         /// </param>
         protected void AddScatterPoints(
-            IList<IDataPoint> dest, 
-            IEnumerable itemsSource, 
-            string dataFieldX, 
-            string dataFieldY, 
-            string dataFieldSize, 
-            string dataFieldValue, 
+            IList<IDataPoint> dest,
+            IEnumerable itemsSource,
+            string dataFieldX,
+            string dataFieldY,
+            string dataFieldSize,
+            string dataFieldValue,
             string dataFieldTag)
         {
             PropertyInfo pix = null;
@@ -403,6 +403,10 @@ namespace OxyPlot
             PropertyInfo piv = null;
             PropertyInfo pit = null;
             Type t = null;
+            if (dataFieldX == null || dataFieldY == null)
+            {
+                return;
+            }
 
             foreach (var o in itemsSource)
             {

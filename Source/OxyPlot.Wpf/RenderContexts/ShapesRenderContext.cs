@@ -6,6 +6,7 @@
 
 namespace OxyPlot.Wpf
 {
+    using System;
     using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Controls;
@@ -191,11 +192,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var e = new Polyline();
@@ -234,11 +235,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawLineSegments(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             Path path = null;
@@ -304,12 +305,12 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var e = new Polygon();
@@ -356,12 +357,12 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawPolygons(
-            IList<IList<ScreenPoint>> polygons, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<IList<ScreenPoint>> polygons,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             Path path = null;
@@ -551,15 +552,15 @@ namespace OxyPlot.Wpf
         /// The maximum size of the text.
         /// </param>
         public void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalTextAlign halign, 
-            VerticalTextAlign valign, 
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalTextAlign halign,
+            VerticalTextAlign valign,
             OxySize? maxSize)
         {
             var tb = new TextBlock { Text = text, Foreground = this.GetCachedBrush(fill) };
@@ -636,20 +637,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The measure text.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <returns>The text size.</returns>
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (string.IsNullOrEmpty(text))
@@ -657,26 +649,61 @@ namespace OxyPlot.Wpf
                 return OxySize.Empty;
             }
 
-            var tb = new TextBlock { Text = text };
+            Typeface typeface = new Typeface(
+                new FontFamily(fontFamily), FontStyles.Normal, GetFontWeight(fontWeight), FontStretches.Normal);
 
-            if (fontFamily != null)
+            GlyphTypeface glyphTypeface;
+            if (!typeface.TryGetGlyphTypeface(out glyphTypeface))
             {
-                tb.FontFamily = new FontFamily(fontFamily);
+                throw new InvalidOperationException("No glyph typeface found");
             }
 
-            if (fontSize > 0)
+            return MeasureTextSize(glyphTypeface, fontSize, text);
+        }
+
+        /// <summary>
+        /// Fast text size calculation
+        /// </summary>
+        /// <param name="glyphTypeface">The glyph typeface.</param>
+        /// <param name="sizeInEm">The em size.</param>
+        /// <param name="s">The text.</param>
+        /// <returns>
+        /// The text size.
+        /// </returns>
+        private static OxySize MeasureTextSize(GlyphTypeface glyphTypeface, double sizeInEm, string s)
+        {
+            double width = 0;
+            double lineWidth = 0;
+            int lines = 0;
+            foreach (char ch in s)
             {
-                tb.FontSize = fontSize;
+                switch (ch)
+                {
+                    case '\n':
+                        lines++;
+                        if (lineWidth > width)
+                        {
+                            width = lineWidth;
+                        }
+
+                        lineWidth = 0;
+                        continue;
+                    case '\t':
+                        continue;
+                }
+
+                ushort glyph = glyphTypeface.CharacterToGlyphMap[ch];
+                double advanceWidth = glyphTypeface.AdvanceWidths[glyph];
+                lineWidth += advanceWidth;
             }
 
-            if (fontWeight > 0)
+            lines++;
+            if (lineWidth > width)
             {
-                tb.FontWeight = GetFontWeight(fontWeight);
+                width = lineWidth;
             }
 
-            tb.Measure(new Size(1000, 1000));
-
-            return new OxySize(tb.DesiredSize.Width, tb.DesiredSize.Height);
+            return new OxySize(Math.Round(width * sizeInEm, 2), Math.Round(lines * glyphTypeface.Height * sizeInEm, 2));
         }
 
         /// <summary>
@@ -784,11 +811,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         private void SetStroke(
-            Shape shape, 
-            OxyColor stroke, 
-            double thickness, 
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, 
-            double[] dashArray = null, 
+            Shape shape,
+            OxyColor stroke,
+            double thickness,
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            double[] dashArray = null,
             bool aliased = false)
         {
             if (stroke != null && thickness > 0)
@@ -804,7 +831,7 @@ namespace OxyPlot.Wpf
                         shape.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
 
-                        // The default StrokeLineJoin is Miter
+                    // The default StrokeLineJoin is Miter
                 }
 
                 if (thickness != 1)

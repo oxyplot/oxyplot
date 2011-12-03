@@ -292,7 +292,9 @@ namespace ExampleLibrary
                         MarkerType = MarkerType.Circle,
                         MarkerSize = 3.0,
                         MarkerFill = OxyColors.White,
-                        MarkerStroke = OxyColors.Black
+                        MarkerStroke = OxyColors.Black,
+                        DataFieldX = "X",
+                        DataFieldY = "Y"
                     });
             return pm;
         }

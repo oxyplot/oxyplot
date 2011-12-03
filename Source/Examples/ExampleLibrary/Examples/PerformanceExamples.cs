@@ -112,7 +112,7 @@ namespace ExampleLibrary
         public static PlotModel ScatterSeries2()
         {
             var model = CreatePlotModel();
-            model.Series.Add(new ScatterSeries { ItemsSource = GetPoints(2000) });
+            model.Series.Add(new ScatterSeries { ItemsSource = GetPoints(2000), DataFieldX = "X", DataFieldY = "Y" });
             return model;
         }
 

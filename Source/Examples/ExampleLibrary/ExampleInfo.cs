@@ -14,7 +14,26 @@ namespace ExampleLibrary
         public string Category { get; set; }
         public string Title { get; set; }
         private MethodInfo Method { get; set; }
-        public PlotModel PlotModel { get { return Method.Invoke(null, null) as PlotModel; } }
+
+        private PlotModel plotModel;
+
+        public PlotModel PlotModel
+        {
+            get
+            {
+                if (plotModel == null)
+                    plotModel = Method.Invoke(null, null) as PlotModel;
+                return plotModel;
+            }
+        }
+
+        public string Code
+        {
+            get
+            {
+                return PlotModel.ToCode();
+            }
+        }
 
         public ExampleInfo(string category, string title, MethodInfo method)
         {
