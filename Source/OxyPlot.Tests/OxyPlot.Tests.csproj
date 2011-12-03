@@ -47,6 +47,7 @@
     <Compile Include="AxisTests.cs" />
     <Compile Include="Foundation\ArrayHelperTests.cs" />
     <Compile Include="DateTimeAxisTests.cs" />
+    <Compile Include="Foundation\StringHelperTests.cs" />
     <Compile Include="Foundation\DoubleExtensionsTests.cs" />
     <Compile Include="OxyAssert.cs" />
     <Compile Include="PlotModelTests.cs" />

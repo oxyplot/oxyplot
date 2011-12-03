@@ -52,8 +52,8 @@ namespace OxyPlot
                             string.Format("Could not find field {0} on type {1}", propertyName, t));
                     }
                 }
-
-                var value = (T)Convert.ChangeType(pi.GetValue(o, null), typeof(T), CultureInfo.InvariantCulture);
+                var v = pi.GetValue(o, null);
+                var value = (T)Convert.ChangeType(v, typeof(T), CultureInfo.InvariantCulture);
                 list.Add(value);
             }
         }

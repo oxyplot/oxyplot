@@ -21,6 +21,19 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Simple BarSeries with labels")]
+        public static PlotModel SimpleBarSeriesWithLabels()
+        {
+            var model = CreateBarSeriesModel(false, false);
+            var s0 = model.Series[0] as BarSeries;
+            var s1 = model.Series[1] as BarSeries;            
+            s0.LabelFormatString = "{0}";
+            s1.LabelFormatString = "{0:0.00}";
+            s1.LabelPlacement = LabelPlacement.Middle;
+            s1.LabelColor = OxyColors.White;
+            return model;
+        }
+
         [Example("Stacked BarSeries")]
         public static PlotModel StakcedBarSeries()
         {
@@ -32,6 +45,19 @@ namespace ExampleLibrary
         public static PlotModel SimpleHorizontalBarSeries()
         {
             var model = CreateBarSeriesModel(false, true);
+            return model;
+        }
+
+        [Example("Simple Horizontal BarSeries with labels")]
+        public static PlotModel SimpleHorizontalBarSeriesWithLabels()
+        {
+            var model = CreateBarSeriesModel(false, true);
+            var s0 = model.Series[0] as BarSeries;
+            var s1 = model.Series[1] as BarSeries;
+            s0.LabelFormatString = "{0}";
+            s1.LabelFormatString = "{0:0.00}";
+            s1.LabelPlacement = LabelPlacement.Inside;
+            s1.LabelColor = OxyColors.White;
             return model;
         }
 
@@ -148,7 +174,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        private class HistogramBin
+        public class HistogramBin
         {
             public string Label { get; set; }
             public double Value { get; set; }
