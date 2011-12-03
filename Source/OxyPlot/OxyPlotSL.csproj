@@ -87,6 +87,7 @@
     <Compile Include="Foundation\CodeGenerator\CodeGenerator.cs" />
     <Compile Include="Foundation\CodeGenerator\CodeGeneratorStringExtensions.cs" />
     <Compile Include="Foundation\CodeGenerator\ICodeGenerating.cs" />
+    <Compile Include="Foundation\StringHelper.cs" />
     <Compile Include="Foundation\DoubleExtensions.cs" />
     <Compile Include="Foundation\FractionHelper.cs" />
     <Compile Include="Foundation\ArrayHelper.cs" />

@@ -12,6 +12,8 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
 
+    public enum LabelPlacement { Outside, Inside, Middle, Base }
+
     /// <summary>
     /// The BarSeries is used to create clustered or stacked bar charts.
     /// </summary>
@@ -52,11 +54,23 @@ namespace OxyPlot
             this.StrokeThickness = 0;
             this.BarWidth = 0.5;
             this.TrackerFormatString = "{0}, {1}: {2}";
+            this.LabelMargin = 2;
         }
 
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// Gets or sets the label format string.
+        /// </summary>
+        /// <value>
+        /// The label format string.
+        /// </value>
+        public string LabelFormatString { get; set; }
+        public OxyColor LabelColor { get; set; }
+        public LabelPlacement LabelPlacement { get; set; }
+        public double LabelMargin { get; set; }
 
         /// <summary>
         ///   Gets or sets the width of the bars (as a fraction of the available width).
@@ -162,9 +176,9 @@ namespace OxyPlot
                     var dp = new DataPoint(i, this.InternalValues[i]);
                     CategoryAxis categoryAxis = this.GetCategoryAxis();
                     string text = string.Format(
-                        this.TrackerFormatString, 
-                        this.Title, 
-                        categoryAxis.FormatValueForTracker(i), 
+                        this.TrackerFormatString,
+                        this.Title,
+                        categoryAxis.FormatValueForTracker(i),
                         this.InternalValues[i]);
                     return new TrackerHitResult(this, dp, sp, this.GetItem(i), text);
                 }
@@ -348,6 +362,71 @@ namespace OxyPlot
                 rc.DrawClippedRectangleAsPolygon(
                     rect, clippingRect, actualFillColor, this.StrokeColor, this.StrokeThickness);
 
+                if (this.LabelFormatString != null)
+                {
+                    var s = StringHelper.Format(this.ActualCulture, LabelFormatString, this.GetItem(i), v);
+                    HorizontalTextAlign ha;
+                    VerticalTextAlign va;
+                    ScreenPoint pt = new ScreenPoint();
+                    if (isVertical)
+                    {
+                        ha = HorizontalTextAlign.Center;
+                        va = VerticalTextAlign.Bottom;
+                        switch (LabelPlacement)
+                        {
+                            case LabelPlacement.Inside:
+                                pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top + LabelMargin);
+                                va = VerticalTextAlign.Top;
+                                break;
+                            case LabelPlacement.Middle:
+                                pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Bottom + rect.Top) / 2);
+                                va = VerticalTextAlign.Middle;
+                                break;
+                            case LabelPlacement.Base:
+                                pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Bottom - LabelMargin);
+                                break;
+                            case LabelPlacement.Outside:
+                            default:
+                                pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top - LabelMargin);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        ha = HorizontalTextAlign.Left;
+                        va = VerticalTextAlign.Middle;
+                        switch (LabelPlacement)
+                        {
+                            case LabelPlacement.Inside:
+                                pt = new ScreenPoint(rect.Right - LabelMargin, (rect.Top + rect.Bottom) / 2);
+                                ha = HorizontalTextAlign.Right;
+                                break;
+                            case LabelPlacement.Middle:
+                                pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Top + rect.Bottom) / 2);
+                                ha = HorizontalTextAlign.Center;
+                                break;
+                            case LabelPlacement.Base:
+                                pt = new ScreenPoint(rect.Left + LabelMargin, (rect.Top + rect.Bottom) / 2);
+                                ha = HorizontalTextAlign.Left;
+                                break;
+                            case LabelPlacement.Outside:
+                            default:
+                                pt = new ScreenPoint(rect.Right + LabelMargin, (rect.Top + rect.Bottom) / 2);
+                                ha = HorizontalTextAlign.Left;
+                                break;
+                        }
+                    }
+
+                    rc.DrawText(pt, s,
+                            this.LabelColor ?? model.TextColor,
+                            model.ActualLegendFont,
+                            model.LegendFontSize,
+                            FontWeights.Normal,
+                            0,
+                            ha,
+                            va);
+                }
+
                 i++;
             }
 
@@ -369,11 +448,13 @@ namespace OxyPlot
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double height = legendBox.Bottom - legendBox.Top;
+            double ymid = (legendBox.Top + legendBox.Bottom) / 2;
+            double height = (legendBox.Bottom - legendBox.Top) * 0.8;
+            double width = height;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - 0.25 * height, legendBox.Top + height * 0.1, 0.5 * height, height * 0.8), 
-                this.FillColor, 
-                this.StrokeColor, 
+                new OxyRect(xmid - 0.5 * width, ymid - 0.5 * height, width, height),
+                this.FillColor,
+                this.StrokeColor,
                 this.StrokeThickness);
         }
 

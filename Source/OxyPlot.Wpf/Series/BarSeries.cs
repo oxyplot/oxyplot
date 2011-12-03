@@ -14,6 +14,16 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class BarSeries : ItemsSeries
     {
+        public string LabelFormatString
+        {
+            get { return (string)GetValue(LabelFormatStringProperty); }
+            set { SetValue(LabelFormatStringProperty, value); }
+        }
+
+        public static readonly DependencyProperty LabelFormatStringProperty =
+            DependencyProperty.Register("LabelFormatString", typeof(string), typeof(BarSeries), new UIPropertyMetadata(null));
+
+
         #region Constants and Fields
 
         /// <summary>
@@ -235,6 +245,7 @@ namespace OxyPlot.Wpf
                 s.StrokeColor = this.StrokeColor.ToOxyColor();
                 s.StrokeThickness = this.StrokeThickness;
                 s.ValueField = this.ValueField;
+                s.LabelFormatString = this.LabelFormatString;
             }
         }
 

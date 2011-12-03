@@ -16,7 +16,7 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// Formats a double to a nice string.
+        /// Formats a double to a 'nice' string.
         /// </summary>
         /// <param name="x">
         /// The value.
@@ -30,7 +30,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Formats a DateTime to a nice string.
+        /// Formats a DateTime to a 'nice' string.
         /// </summary>
         /// <param name="x">
         /// The DateTime value.
@@ -44,7 +44,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Formats a TimeSpan to a nice string.
+        /// Formats a TimeSpan to a 'nice' string.
         /// </summary>
         /// <param name="x">
         /// The TimeSpan value.
