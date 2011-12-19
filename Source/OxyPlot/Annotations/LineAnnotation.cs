@@ -257,9 +257,9 @@ namespace OxyPlot
             double minDistSquared = minimumSegmentLength * minimumSegmentLength;
 
             var clipping = new CohenSutherlandClipping(
-                Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X), 
-                Math.Max(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X), 
-                Math.Min(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y), 
+                Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X),
+                Math.Max(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X),
+                Math.Min(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y),
                 Math.Max(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y));
 
             IList<ScreenPoint> clippedPoints = this.RenderClippedLine(rc, screenPoints, clipping, minDistSquared);
@@ -277,18 +277,21 @@ namespace OxyPlot
                 margin *= -1;
             }
 
-            if (this.GetPosition(clippedPoints, this.TextPosition, margin, out position, out angle))
+            if (this.GetPointAtRelativeDistance(clippedPoints, this.TextPosition, margin, out position, out angle))
             {
-                rc.DrawText(
-                    position, 
-                    this.Text, 
-                    model.TextColor, 
-                    model.ActualAnnotationFont, 
-                    model.AnnotationFontSize, 
-                    FontWeights.Normal, 
-                    angle, 
-                    this.TextHorizontalAlignment, 
-                    this.TextVerticalAlignment);
+                if (clipping.IsInside(position))
+                {
+                    rc.DrawText(
+                        position,
+                        this.Text,
+                        model.TextColor,
+                        model.ActualAnnotationFont,
+                        model.AnnotationFontSize,
+                        FontWeights.Normal,
+                        angle,
+                        this.TextHorizontalAlignment,
+                        this.TextVerticalAlignment);
+                }
             }
         }
 
@@ -317,16 +320,16 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The get position.
+        /// Gets the point on a curve at the specified relative distance along the curve.
         /// </summary>
         /// <param name="pts">
-        /// The pts.
+        /// The curve points.
         /// </param>
         /// <param name="p">
-        /// The p.
+        /// The relative distance along the curve.
         /// </param>
         /// <param name="margin">
-        /// The margin.
+        /// The margins.
         /// </param>
         /// <param name="position">
         /// The position.
@@ -335,9 +338,9 @@ namespace OxyPlot
         /// The angle.
         /// </param>
         /// <returns>
-        /// The get position.
+        /// True if a position was found.
         /// </returns>
-        private bool GetPosition(
+        private bool GetPointAtRelativeDistance(
             IList<ScreenPoint> pts, double p, double margin, out ScreenPoint position, out double angle)
         {
             if (pts == null || pts.Count == 0)
