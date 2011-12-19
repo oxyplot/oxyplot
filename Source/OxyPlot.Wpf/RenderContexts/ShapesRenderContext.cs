@@ -16,6 +16,22 @@ namespace OxyPlot.Wpf
     using FontWeights = OxyPlot.FontWeights;
 
     /// <summary>
+    /// The text measurement methods.
+    /// </summary>
+    public enum TextMeasurementMethod
+    {
+        /// <summary>
+        ///   Measurement by TextBlock.
+        /// </summary>
+        TextBlock, 
+
+        /// <summary>
+        ///   Measurement by glyph typeface.
+        /// </summary>
+        GlyphTypeface
+    }
+
+    /// <summary>
     /// Rendering WPF shapes to a Canvas
     /// </summary>
     public class ShapesRenderContext : IRenderContext
@@ -23,14 +39,9 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        ///   The max figures per geometry.
+        ///   The maximum number of figures per geometry.
         /// </summary>
-        public int MaxFiguresPerGeometry = 16;
-
-        /// <summary>
-        ///   Should not combine too many geometries into the same group...
-        /// </summary>
-        public int MaxGeometriesPerPath = 256;
+        private const int maxFiguresPerGeometry = 16;
 
         /// <summary>
         ///   The brush cache.
@@ -57,6 +68,7 @@ namespace OxyPlot.Wpf
             this.canvas = canvas;
             this.Width = canvas.ActualWidth;
             this.Height = canvas.ActualHeight;
+            this.TextMeasurementMethod = TextMeasurementMethod.TextBlock;
         }
 
         #endregion
@@ -68,6 +80,12 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <value>The height.</value>
         public double Height { get; private set; }
+
+        /// <summary>
+        ///   Gets or sets the text measurement method.
+        /// </summary>
+        /// <value>The text measurement method.</value>
+        public TextMeasurementMethod TextMeasurementMethod { get; set; }
 
         /// <summary>
         ///   Gets a value indicating whether to paint the background.
@@ -123,7 +141,7 @@ namespace OxyPlot.Wpf
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var e = new Ellipse();
-            this.SetStroke(e, stroke, thickness, OxyPenLineJoin.Miter, null, false);
+            this.SetStroke(e, stroke, thickness);
             if (fill != null)
             {
                 e.Fill = this.GetCachedBrush(fill);
@@ -192,11 +210,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawLine(
-            IList<ScreenPoint> points,
-            OxyColor stroke,
-            double thickness,
-            double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            IList<ScreenPoint> points, 
+            OxyColor stroke, 
+            double thickness, 
+            double[] dashArray, 
+            OxyPenLineJoin lineJoin, 
             bool aliased)
         {
             var e = new Polyline();
@@ -235,11 +253,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawLineSegments(
-            IList<ScreenPoint> points,
-            OxyColor stroke,
-            double thickness,
-            double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            IList<ScreenPoint> points, 
+            OxyColor stroke, 
+            double thickness, 
+            double[] dashArray, 
+            OxyPenLineJoin lineJoin, 
             bool aliased)
         {
             Path path = null;
@@ -262,7 +280,7 @@ namespace OxyPlot.Wpf
                 count++;
 
                 // Must limit the number of figures, otherwise drawing errors...
-                if (count > this.MaxFiguresPerGeometry)
+                if (count > maxFiguresPerGeometry)
                 {
                     sgc.Close();
                     path.Data = geometry;
@@ -305,12 +323,12 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawPolygon(
-            IList<ScreenPoint> points,
-            OxyColor fill,
-            OxyColor stroke,
-            double thickness,
-            double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            IList<ScreenPoint> points, 
+            OxyColor fill, 
+            OxyColor stroke, 
+            double thickness, 
+            double[] dashArray, 
+            OxyPenLineJoin lineJoin, 
             bool aliased)
         {
             var e = new Polygon();
@@ -357,12 +375,12 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawPolygons(
-            IList<IList<ScreenPoint>> polygons,
-            OxyColor fill,
-            OxyColor stroke,
-            double thickness,
-            double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            IList<IList<ScreenPoint>> polygons, 
+            OxyColor fill, 
+            OxyColor stroke, 
+            double thickness, 
+            double[] dashArray, 
+            OxyPenLineJoin lineJoin, 
             bool aliased)
         {
             Path path = null;
@@ -402,7 +420,7 @@ namespace OxyPlot.Wpf
                 count++;
 
                 // Must limit the number of figures, otherwise drawing errors...
-                if (count > this.MaxFiguresPerGeometry)
+                if (count > maxFiguresPerGeometry)
                 {
                     sgc.Close();
                     path.Data = geometry;
@@ -552,15 +570,15 @@ namespace OxyPlot.Wpf
         /// The maximum size of the text.
         /// </param>
         public void DrawText(
-            ScreenPoint p,
-            string text,
-            OxyColor fill,
-            string fontFamily,
-            double fontSize,
-            double fontWeight,
-            double rotate,
-            HorizontalTextAlign halign,
-            VerticalTextAlign valign,
+            ScreenPoint p, 
+            string text, 
+            OxyColor fill, 
+            string fontFamily, 
+            double fontSize, 
+            double fontWeight, 
+            double rotate, 
+            HorizontalTextAlign halign, 
+            VerticalTextAlign valign, 
             OxySize? maxSize)
         {
             var tb = new TextBlock { Text = text, Foreground = this.GetCachedBrush(fill) };
@@ -579,44 +597,48 @@ namespace OxyPlot.Wpf
                 tb.FontWeight = GetFontWeight(fontWeight);
             }
 
-            tb.Measure(new Size(1000, 1000));
-            var size = tb.DesiredSize;
-            if (maxSize != null)
-            {
-                if (size.Width > maxSize.Value.Width)
-                {
-                    size.Width = maxSize.Value.Width;
-                }
-
-                if (size.Height > maxSize.Value.Height)
-                {
-                    size.Height = maxSize.Value.Height;
-                }
-
-                tb.Width = size.Width;
-                tb.Height = size.Height;
-            }
-
             double dx = 0;
-            if (halign == HorizontalTextAlign.Center)
-            {
-                dx = -size.Width / 2;
-            }
-
-            if (halign == HorizontalTextAlign.Right)
-            {
-                dx = -size.Width;
-            }
-
             double dy = 0;
-            if (valign == VerticalTextAlign.Middle)
-            {
-                dy = -size.Height / 2;
-            }
 
-            if (valign == VerticalTextAlign.Bottom)
+            if (maxSize != null || halign != HorizontalTextAlign.Left || valign != VerticalTextAlign.Top)
             {
-                dy = -size.Height;
+                tb.Measure(new Size(1000, 1000));
+                var size = tb.DesiredSize;
+                if (maxSize != null)
+                {
+                    if (size.Width > maxSize.Value.Width)
+                    {
+                        size.Width = maxSize.Value.Width;
+                    }
+
+                    if (size.Height > maxSize.Value.Height)
+                    {
+                        size.Height = maxSize.Value.Height;
+                    }
+
+                    tb.Width = size.Width;
+                    tb.Height = size.Height;
+                }
+
+                if (halign == HorizontalTextAlign.Center)
+                {
+                    dx = -size.Width / 2;
+                }
+
+                if (halign == HorizontalTextAlign.Right)
+                {
+                    dx = -size.Width;
+                }
+
+                if (valign == VerticalTextAlign.Middle)
+                {
+                    dy = -size.Height / 2;
+                }
+
+                if (valign == VerticalTextAlign.Bottom)
+                {
+                    dy = -size.Height;
+                }
             }
 
             var transform = new TransformGroup();
@@ -635,13 +657,23 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The measure text.
+        /// Measure the size of the specified text.
         /// </summary>
-        /// <param name="text">The text.</param>
-        /// <param name="fontFamily">The font family.</param>
-        /// <param name="fontSize">The font size.</param>
-        /// <param name="fontWeight">The font weight.</param>
-        /// <returns>The text size.</returns>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <param name="fontFamily">
+        /// The font family.
+        /// </param>
+        /// <param name="fontSize">
+        /// The font size.
+        /// </param>
+        /// <param name="fontWeight">
+        /// The font weight.
+        /// </param>
+        /// <returns>
+        /// The size of the text.
+        /// </returns>
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (string.IsNullOrEmpty(text))
@@ -649,7 +681,77 @@ namespace OxyPlot.Wpf
                 return OxySize.Empty;
             }
 
-            Typeface typeface = new Typeface(
+            if (this.TextMeasurementMethod == TextMeasurementMethod.GlyphTypeface)
+            {
+                return this.MeasureTextByGlyphTypeface(text, fontFamily, fontSize, fontWeight);
+            }
+
+            var tb = new TextBlock { Text = text };
+
+            if (fontFamily != null)
+            {
+                tb.FontFamily = new FontFamily(fontFamily);
+            }
+
+            if (fontSize > 0)
+            {
+                tb.FontSize = fontSize;
+            }
+
+            if (fontWeight > 0)
+            {
+                tb.FontWeight = GetFontWeight(fontWeight);
+            }
+
+            tb.Measure(new Size(1000, 1000));
+
+            return new OxySize(tb.DesiredSize.Width, tb.DesiredSize.Height);
+        }
+
+        /// <summary>
+        /// Sets the tool tip for the following items.
+        /// </summary>
+        /// <param name="text">
+        /// The text in the tooltip.
+        /// </param>
+        /// <params>
+        ///   This is only used in the plot controls.
+        /// </params>
+        public void SetToolTip(string text)
+        {
+            this.CurrentToolTip = text;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Measures the size of the specified text by a faster method (using GlyphTypefaces).
+        /// </summary>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <param name="fontFamily">
+        /// The font family.
+        /// </param>
+        /// <param name="fontSize">
+        /// The font size.
+        /// </param>
+        /// <param name="fontWeight">
+        /// The font weight.
+        /// </param>
+        /// <returns>
+        /// The size of the text.
+        /// </returns>
+        protected OxySize MeasureTextByGlyphTypeface(string text, string fontFamily, double fontSize, double fontWeight)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return OxySize.Empty;
+            }
+
+            var typeface = new Typeface(
                 new FontFamily(fontFamily), FontStyles.Normal, GetFontWeight(fontWeight), FontStretches.Normal);
 
             GlyphTypeface glyphTypeface;
@@ -662,11 +764,31 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets the font weight.
+        /// </summary>
+        /// <param name="fontWeight">
+        /// The font weight value.
+        /// </param>
+        /// <returns>
+        /// The font weight.
+        /// </returns>
+        private static FontWeight GetFontWeight(double fontWeight)
+        {
+            return fontWeight > FontWeights.Normal ? System.Windows.FontWeights.Bold : System.Windows.FontWeights.Normal;
+        }
+
+        /// <summary>
         /// Fast text size calculation
         /// </summary>
-        /// <param name="glyphTypeface">The glyph typeface.</param>
-        /// <param name="sizeInEm">The em size.</param>
-        /// <param name="s">The text.</param>
+        /// <param name="glyphTypeface">
+        /// The glyph typeface.
+        /// </param>
+        /// <param name="sizeInEm">
+        /// The em size.
+        /// </param>
+        /// <param name="s">
+        /// The text.
+        /// </param>
         /// <returns>
         /// The text size.
         /// </returns>
@@ -704,37 +826,6 @@ namespace OxyPlot.Wpf
             }
 
             return new OxySize(Math.Round(width * sizeInEm, 2), Math.Round(lines * glyphTypeface.Height * sizeInEm, 2));
-        }
-
-        /// <summary>
-        /// Sets the tool tip for the following items.
-        /// </summary>
-        /// <param name="text">
-        /// The text in the tooltip.
-        /// </param>
-        /// <params>
-        ///   This is only used in the plot controls.
-        /// </params>
-        public void SetToolTip(string text)
-        {
-            this.CurrentToolTip = text;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// The get font weight.
-        /// </summary>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        private static FontWeight GetFontWeight(double fontWeight)
-        {
-            return fontWeight > FontWeights.Normal ? System.Windows.FontWeights.Bold : System.Windows.FontWeights.Normal;
         }
 
         /// <summary>
@@ -811,11 +902,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         private void SetStroke(
-            Shape shape,
-            OxyColor stroke,
-            double thickness,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
-            double[] dashArray = null,
+            Shape shape, 
+            OxyColor stroke, 
+            double thickness, 
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, 
+            IEnumerable<double> dashArray = null, 
             bool aliased = false)
         {
             if (stroke != null && thickness > 0)
@@ -831,7 +922,7 @@ namespace OxyPlot.Wpf
                         shape.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
 
-                    // The default StrokeLineJoin is Miter
+                        // The default StrokeLineJoin is Miter
                 }
 
                 if (thickness != 1)
