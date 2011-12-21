@@ -548,7 +548,7 @@ namespace OxyPlot
             foreach (double v in this.Values)
             {
                 double baseValue = this.BaseValue;
-                if (ca.BaseValue != null && i < ca.BaseValue.Length)
+                if (ca.BaseValue != null && i < ca.BaseValue.Length && !double.IsNaN(ca.BaseValue[i]))
                 {
                     baseValue = ca.BaseValue[i];
                 }
