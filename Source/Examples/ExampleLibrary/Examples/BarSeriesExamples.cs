@@ -26,7 +26,7 @@ namespace ExampleLibrary
         {
             var model = CreateBarSeriesModel(false, false);
             var s0 = model.Series[0] as BarSeries;
-            var s1 = model.Series[1] as BarSeries;            
+            var s1 = model.Series[1] as BarSeries;
             s0.LabelFormatString = "{0}";
             s1.LabelFormatString = "{0:0.00}";
             s1.LabelPlacement = LabelPlacement.Middle;
@@ -105,13 +105,13 @@ namespace ExampleLibrary
                           };
             var s1 = new BarSeries { Title = "BarSeries 1", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
             s1.Values.Add(25);
-            s1.Values.Add(37);
+            s1.Values.Add(137);
             s1.Values.Add(18);
             s1.Values.Add(40);
             var s2 = new BarSeries { Title = "BarSeries 2", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
             s2.Values.Add(12);
             s2.Values.Add(14);
-            s2.Values.Add(20);
+            s2.Values.Add(120);
             s2.Values.Add(26);
             var categoryAxis = new CategoryAxis { Position = horizontal ? AxisPosition.Left : AxisPosition.Bottom };
             categoryAxis.Labels.Add("Category A");
@@ -121,7 +121,7 @@ namespace ExampleLibrary
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Axes.Add(categoryAxis);
-            model.Axes.Add(new LinearAxis(horizontal ? AxisPosition.Bottom : AxisPosition.Left) { MinimumPadding = 0, AbsoluteMinimum = 0 });
+            model.Axes.Add(new LinearAxis(horizontal ? AxisPosition.Bottom : AxisPosition.Left) { MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 });
             return model;
         }
 
