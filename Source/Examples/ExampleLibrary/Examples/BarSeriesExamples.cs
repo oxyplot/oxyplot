@@ -41,6 +41,13 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Stacked BarSeries with negative values")]
+        public static PlotModel StackedNegativeBarSeries()
+        {
+            var model = CreateBarSeriesModelWithNegativeValues(true, false);
+            return model;
+        }
+
         [Example("Simple Horizontal BarSeries")]
         public static PlotModel SimpleHorizontalBarSeries()
         {
@@ -62,9 +69,16 @@ namespace ExampleLibrary
         }
 
         [Example("Stacked Horizontal BarSeries")]
-        public static PlotModel StakcedHorizontalBarSeries()
+        public static PlotModel StackedHorizontalBarSeries()
         {
             var model = CreateBarSeriesModel(true, true);
+            return model;
+        }
+
+        [Example("Stacked Horizontal BarSeries with negative values")]
+        public static PlotModel StackedNegativeHorizontalBarSeries()
+        {
+            var model = CreateBarSeriesModelWithNegativeValues(true, true);
             return model;
         }
 
@@ -118,10 +132,60 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category B");
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
+            var valueAxis = new LinearAxis(horizontal ? AxisPosition.Bottom : AxisPosition.Left) { MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 };
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Axes.Add(categoryAxis);
-            model.Axes.Add(new LinearAxis(horizontal ? AxisPosition.Bottom : AxisPosition.Left) { MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 });
+            model.Axes.Add(valueAxis);
+            return model;
+        }
+
+        private static PlotModel CreateBarSeriesModelWithNegativeValues(bool stacked, bool horizontal)
+        {
+            var model = new PlotModel("BarSeries")
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBorderThickness = 0
+            };
+            var s1 = new BarSeries { Title = "BarSeries 1", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s1.Values.Add(25);
+            s1.Values.Add(137);
+            s1.Values.Add(18);
+            s1.Values.Add(40);
+            var s2 = new BarSeries { Title = "BarSeries 2", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s2.Values.Add(-12);
+            s2.Values.Add(-14);
+            s2.Values.Add(-120);
+            s2.Values.Add(-26);
+            var s3 = new BarSeries { Title = "BarSeries 3", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s3.Values.Add(21);
+            s3.Values.Add(8);
+            s3.Values.Add(48);
+            s3.Values.Add(3);
+            var s4 = new BarSeries { Title = "BarSeries 4", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s4.Values.Add(-8);
+            s4.Values.Add(-21);
+            s4.Values.Add(-3);
+            s4.Values.Add(-48);
+
+            model.Series.Add(s3);
+            model.Series.Add(s4);
+
+            var categoryAxis = new CategoryAxis { Position = horizontal ? AxisPosition.Left : AxisPosition.Bottom };
+            categoryAxis.Labels.Add("Category A");
+            categoryAxis.Labels.Add("Category B");
+            categoryAxis.Labels.Add("Category C");
+            categoryAxis.Labels.Add("Category D");
+            var valueAxis = new LinearAxis(horizontal ? AxisPosition.Bottom : AxisPosition.Left) { MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0.0 } };
+            valueAxis.ExtraGridlineStyle = LineStyle.Solid;
+            valueAxis.ExtraGridlineColor = OxyColors.Black;
+            valueAxis.ExtraGridlineThickness = 1;
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis);
             return model;
         }
 

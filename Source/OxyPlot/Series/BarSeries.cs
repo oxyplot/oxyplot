@@ -274,12 +274,17 @@ namespace OxyPlot
                     continue;
                 }
 
-                double baseValue = this.IsStacked ? categoryAxis.BaseValue[i] : double.NaN;
+                double baseValue = double.NaN;
+                if (this.IsStacked)
+                {
+                    baseValue = v < 0 ? categoryAxis.NegativeBaseValue[i] : categoryAxis.PositiveBaseValue[i];
+                }
+                
                 if (double.IsNaN(baseValue))
                 {
                     baseValue = this.BaseValue;
                 }
-
+                
                 double topValue = this.IsStacked ? baseValue + v : v;
                 int numberOfSeries = this.IsStacked ? 1 : categoryAxis.AttachedSeriesCount;
                 OxyRect rect;
@@ -293,27 +298,35 @@ namespace OxyPlot
                     p1.X = (int)p1.X;
                     p1.Y = (int)p1.Y;
 
-                    if (!double.IsNaN(categoryAxis.BaseValueScreen[i]))
+                    if ((v >= 0 && !double.IsNaN(categoryAxis.PositiveBaseValueScreen[i])) || v < 0 && !double.IsNaN(categoryAxis.NegativeBaseValueScreen[i]))
                     {
                         if (this.IsStacked)
                         {
-                            p0.Y = categoryAxis.BaseValueScreen[i];
+                            p0.Y = v < 0 ? categoryAxis.NegativeBaseValueScreen[i] : categoryAxis.PositiveBaseValueScreen[i];
                         }
                         else
                         {
-                            p0.X = categoryAxis.BaseValueScreen[i];
+                            p0.X = categoryAxis.PositiveBaseValueScreen[i];
                         }
                     }
 
                     rect = OxyRect.Create(p0.X, p0.Y, p1.X, p1.Y);
                     if (this.IsStacked)
                     {
-                        categoryAxis.BaseValue[i] = topValue;
-                        categoryAxis.BaseValueScreen[i] = p1.Y;
+                        if (v < 0)
+                        {
+                            categoryAxis.NegativeBaseValue[i] = topValue;
+                            categoryAxis.NegativeBaseValueScreen[i] = p1.Y;
+                        }
+                        else
+                        {
+                            categoryAxis.PositiveBaseValue[i] = topValue;
+                            categoryAxis.PositiveBaseValueScreen[i] = p1.Y;
+                        }
                     }
                     else
                     {
-                        categoryAxis.BaseValueScreen[i] = p1.X;
+                        categoryAxis.PositiveBaseValueScreen[i] = p1.X;
                     }
                 }
                 else
@@ -326,27 +339,35 @@ namespace OxyPlot
                     p1.X = (int)p1.X;
                     p1.Y = (int)p1.Y;
 
-                    if (!double.IsNaN(categoryAxis.BaseValueScreen[i]))
+                    if ((v >= 0 && !double.IsNaN(categoryAxis.PositiveBaseValueScreen[i])) || v < 0 && !double.IsNaN(categoryAxis.NegativeBaseValueScreen[i]))
                     {
                         if (this.IsStacked)
                         {
-                            p0.X = categoryAxis.BaseValueScreen[i];
+                            p0.X = v < 0 ? categoryAxis.NegativeBaseValueScreen[i] : categoryAxis.PositiveBaseValueScreen[i];
                         }
                         else
                         {
-                            p0.Y = categoryAxis.BaseValueScreen[i];
+                            p0.Y = categoryAxis.PositiveBaseValueScreen[i];
                         }
                     }
 
                     rect = OxyRect.Create(p0.X, p0.Y, p1.X, p1.Y);
                     if (this.IsStacked)
                     {
-                        categoryAxis.BaseValue[i] = topValue;
-                        categoryAxis.BaseValueScreen[i] = p1.X;
+                        if (v < 0)
+                        {
+                            categoryAxis.NegativeBaseValue[i] = topValue;
+                            categoryAxis.NegativeBaseValueScreen[i] = p1.X;
+                        }
+                        else
+                        {
+                            categoryAxis.PositiveBaseValue[i] = topValue;
+                            categoryAxis.PositiveBaseValueScreen[i] = p1.X;
+                        }
                     }
                     else
                     {
-                        categoryAxis.BaseValueScreen[i] = p1.Y;
+                        categoryAxis.PositiveBaseValueScreen[i] = p1.Y;
                     }
                 }
 
@@ -548,9 +569,9 @@ namespace OxyPlot
             foreach (double v in this.Values)
             {
                 double baseValue = this.BaseValue;
-                if (ca.BaseValue != null && i < ca.BaseValue.Length && !double.IsNaN(ca.BaseValue[i]))
+                if (ca.PositiveBaseValue != null && i < ca.PositiveBaseValue.Length && !double.IsNaN(ca.PositiveBaseValue[i]))
                 {
-                    baseValue = ca.BaseValue[i];
+                    baseValue = ca.PositiveBaseValue[i];
                 }
 
                 if (this.IsStacked)
