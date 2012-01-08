@@ -75,15 +75,26 @@ namespace OxyPlot
         internal double BarOffset { get; set; }
 
         /// <summary>
-        ///   Gets or sets the base value. This is used by stacked BarSeries. 
-        ///   Each category will contain a BaseValue that helps the rendering to calculate the positions of the stacked bars.
+        ///   Gets or sets the base value for positive bars. This is used by stacked BarSeries. 
+        ///   Each category will contain a PositiveBaseValue that helps the rendering to calculate the positions of the stacked bars.
         /// </summary>
-        internal double[] BaseValue { get; set; }
+        internal double[] PositiveBaseValue { get; set; }
 
         /// <summary>
-        ///   Gets or sets the base value in screen coordinate.
+        ///   Gets or sets the base value for negative bars. This is used by stacked BarSeries. 
+        ///   Each category will contain a NegativeBaseValue that helps the rendering to calculate the positions of the stacked bars.
         /// </summary>
-        internal double[] BaseValueScreen { get; set; }
+        internal double[] NegativeBaseValue { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the positive base value in screen coordinate.
+        /// </summary>
+        internal double[] PositiveBaseValueScreen { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the negative base value in screen coordinate.
+        /// </summary>
+        internal double[] NegativeBaseValueScreen { get; set; }
 
         /// <summary>
         ///   Gets or sets the max value (aggregated when using stacked bar series).
@@ -260,10 +271,14 @@ namespace OxyPlot
                 ReflectionHelper.FillValues(this.ItemsSource, this.LabelField, this.Labels);
             }
 
-            this.BaseValue = new double[this.Labels.Count];
-            Fill(this.BaseValue, double.NaN);
-            this.BaseValueScreen = new double[this.Labels.Count];
-            Fill(this.BaseValueScreen, double.NaN);
+            this.PositiveBaseValue = new double[this.Labels.Count];
+            Fill(this.PositiveBaseValue, double.NaN);
+            this.NegativeBaseValue = new double[this.Labels.Count];
+            Fill(this.NegativeBaseValue, double.NaN);
+            this.PositiveBaseValueScreen = new double[this.Labels.Count];
+            Fill(this.PositiveBaseValueScreen, double.NaN);
+            this.NegativeBaseValueScreen = new double[this.Labels.Count];
+            Fill(this.NegativeBaseValueScreen, double.NaN);
             this.MaxValue = new double[this.Labels.Count];
             this.MinValue = new double[this.Labels.Count];
         }
