@@ -30,6 +30,7 @@ namespace OxyPlot
             this.Position = AxisPosition.Bottom;
             this.MinimumPadding = 0;
             this.MaximumPadding = 0;
+            this.MajorStep = 1;
         }
 
         #endregion
@@ -240,7 +241,6 @@ namespace OxyPlot
                 this.ActualMaximum += this.MaximumPadding * this.Labels.Count;
             }
 
-            this.MajorStep = 1;
             this.MinorStep = 1;
         }
 
