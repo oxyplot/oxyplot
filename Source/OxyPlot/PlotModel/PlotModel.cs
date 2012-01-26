@@ -280,9 +280,14 @@ namespace OxyPlot
         #region Public Events
 
         /// <summary>
-        ///   The updated.
+        ///   Occurs when the plot has been updated.
         /// </summary>
         public event EventHandler Updated;
+
+        /// <summary>
+        ///   Occurs when the plot is about to be updated.
+        /// </summary>
+        public event EventHandler Updating;
 
         #endregion
 
@@ -1059,6 +1064,8 @@ namespace OxyPlot
         /// </param>
         public void Update(bool updateData = true)
         {
+            this.OnUpdating();
+
             // update the owner PlotModel
             foreach (var s in this.Series)
             {
@@ -1138,6 +1145,19 @@ namespace OxyPlot
         protected virtual void OnUpdated()
         {
             var handler = this.Updated;
+            if (handler != null)
+            {
+                var args = new EventArgs();
+                handler(this, args);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:Updating"/> event.
+        /// </summary>
+        protected virtual void OnUpdating()
+        {
+            var handler = this.Updating;
             if (handler != null)
             {
                 var args = new EventArgs();
