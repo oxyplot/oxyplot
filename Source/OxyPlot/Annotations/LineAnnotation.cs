@@ -8,6 +8,7 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Represents a line annotation.
@@ -30,6 +31,8 @@ namespace OxyPlot
             this.StrokeThickness = 1;
             this.LineStyle = LineStyle.Dash;
             this.LineJoin = OxyPenLineJoin.Miter;
+            this.ClipByXAxis = true;
+            this.ClipByYAxis = true;
 
             this.TextPosition = 1;
             this.TextMargin = 12;
@@ -47,14 +50,18 @@ namespace OxyPlot
         public OxyColor Color { get; set; }
 
         /// <summary>
-        ///   The y=f(x) equation  (only for Type==Equation)
+        ///   Gets or sets the y=f(x) equation when Type is Equation.
         /// </summary>
         public Func<double, double> Equation { get; set; }
 
         /// <summary>
-        ///   Linear equation y-intercept (the b in y=mx+b)  (only for Type==LinearEquation)
-        ///   http://en.wikipedia.org/wiki/Linear_equation
+        /// Gets or sets the y-intercept when Type is LinearEquation.
         /// </summary>
+        /// <value>The intercept value.</value>
+        /// <remarks>
+        /// Linear equation y-intercept (the b in y=mx+b). 
+        /// http://en.wikipedia.org/wiki/Linear_equation
+        /// </remarks>
         public double Intercept { get; set; }
 
         /// <summary>
@@ -90,53 +97,75 @@ namespace OxyPlot
         public double MinimumY { get; set; }
 
         /// <summary>
-        ///   Linear equation slope (the m in y=mx+b) (only for Type==LinearEquation)
-        ///   http://en.wikipedia.org/wiki/Linear_equation
+        /// Gets or sets the slope when Type is LinearEquation.
         /// </summary>
+        /// <value>The slope value.</value>
+        /// <remarks>
+        /// Linear equation slope (the m in y=mx+b)
+        /// http://en.wikipedia.org/wiki/Linear_equation
+        /// </remarks>
         public double Slope { get; set; }
 
         /// <summary>
-        ///   Thickness of the line.
+        /// Gets or sets the stroke thickness.
         /// </summary>
+        /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        ///   Horizontal alignment of text.
+        /// Gets or sets the text horizontal alignment.
         /// </summary>
+        /// <value>The text horizontal alignment.</value>
         public HorizontalTextAlign TextHorizontalAlignment { get; set; }
 
         /// <summary>
-        ///   Text margin.
+        /// Gets or sets the text margin.
         /// </summary>
+        /// <value>The text margin.</value>
         public double TextMargin { get; set; }
 
         /// <summary>
-        ///   Position of the text along the line [0,1]
-        ///   Positions smaller than 0.25 is left aligned at the start of the line
-        ///   Positions larger than 0.75 is right aligned at the end of the line
-        ///   Other positions are center aligned at the specified position
+        /// Gets or sets the text position fraction.
         /// </summary>
+        /// <value>The text position in the interval [0,1].</value>
+        /// <remarks>
+        /// Positions smaller than 0.25 are left aligned at the start of the line
+        /// Positions larger than 0.75 are right aligned at the end of the line
+        /// Other positions are center aligned at the specified position
+        /// </remarks>
         public double TextPosition { get; set; }
 
         /// <summary>
-        ///   Vertical alignment of text (above or below the line).
+        /// Gets or sets the vertical alignment of text (above or below the line).
         /// </summary>
         public VerticalTextAlign TextVerticalAlignment { get; set; }
 
         /// <summary>
-        ///   Type of line equation.
+        /// Gets or sets the type of line equation.
         /// </summary>
         public LineAnnotationType Type { get; set; }
 
         /// <summary>
-        ///   X position for vertical lines (only for Type==Vertical)
+        /// Gets or sets the X position for vertical lines (only for Type==Vertical).
         /// </summary>
         public double X { get; set; }
 
         /// <summary>
-        ///   Y position for horizontal lines (only for Type==Horizontal)
+        /// Gets or sets the Y position for horizontal lines (only for Type==Horizontal)
         /// </summary>
         public double Y { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to clip the annotation line by the X axis range.
+        /// </summary>
+        /// <value><c>true</c> if clipping by the X axis is enabled; otherwise, <c>false</c>.</value>
+        public bool ClipByXAxis { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to clip the annotation line by the Y axis range.
+        /// </summary>
+        /// <value><c>true</c> if clipping by the Y axis is enabled; otherwise, <c>false</c>.</value>
+        public bool ClipByYAxis { get; set; }
 
         #endregion
 
@@ -155,61 +184,73 @@ namespace OxyPlot
         {
             base.Render(rc, model);
 
-            bool isStraightLine = true;
-            if (!(this.XAxis is LinearAxis) || !(this.YAxis is LinearAxis) || this.Type == LineAnnotationType.EquationY)
-            {
-                isStraightLine = false;
-            }
-
             double actualMinimumX = Math.Max(this.MinimumX, this.XAxis.ActualMinimum);
             double actualMaximumX = Math.Min(this.MaximumX, this.XAxis.ActualMaximum);
             double actualMinimumY = Math.Max(this.MinimumY, this.YAxis.ActualMinimum);
             double actualMaximumY = Math.Min(this.MaximumY, this.YAxis.ActualMaximum);
 
-            // y=f(x) or x=f(y)
-            Func<double, double> f;
-            bool isFunctionX = true;
+            if (!this.ClipByXAxis)
+            {
+                double right = XAxis.InverseTransform(PlotModel.PlotArea.Right);
+                double left = XAxis.InverseTransform(PlotModel.PlotArea.Left);
+                actualMaximumX = Math.Max(left, right);
+                actualMinimumX = Math.Min(left, right);
+            }
+
+            if (!this.ClipByYAxis)
+            {
+                double bottom = YAxis.InverseTransform(PlotModel.PlotArea.Bottom);
+                double top = YAxis.InverseTransform(PlotModel.PlotArea.Top);
+                actualMaximumY = Math.Max(top, bottom);
+                actualMinimumY = Math.Min(top, bottom);
+            }
+
+            // y=f(x)
+            Func<double, double> fx = null;
+
+            // x=f(y)
+            Func<double, double> fy = null;
 
             switch (this.Type)
             {
                 case LineAnnotationType.Horizontal:
-                    f = x => this.Y;
+                    fx = x => this.Y;
                     break;
                 case LineAnnotationType.Vertical:
-                    f = y => this.X;
-                    isFunctionX = false;
+                    fy = y => this.X;
                     break;
                 case LineAnnotationType.EquationY:
-                    f = this.Equation;
+                    fx = this.Equation;
                     break;
                 case LineAnnotationType.EquationX:
-                    f = this.Equation;
-                    isFunctionX = false;
+                    fy = this.Equation;
                     break;
                 default:
-                    f = x => this.Slope * x + this.Intercept;
+                    fx = x => this.Slope * x + this.Intercept;
                     break;
             }
 
             var points = new List<DataPoint>();
 
-            if (isStraightLine)
+            bool isCurvedLine = !(this.XAxis is LinearAxis) || !(this.YAxis is LinearAxis) || this.Type == LineAnnotationType.EquationY;
+
+            if (!isCurvedLine)
             {
                 // we only need to calculate two points if it is a straight line
-                if (isFunctionX)
+                if (fx != null)
                 {
-                    points.Add(new DataPoint(actualMinimumX, f(actualMinimumX)));
-                    points.Add(new DataPoint(actualMaximumX, f(actualMaximumX)));
+                    points.Add(new DataPoint(actualMinimumX, fx(actualMinimumX)));
+                    points.Add(new DataPoint(actualMaximumX, fx(actualMaximumX)));
                 }
-                else
+                else if (fy != null)
                 {
-                    points.Add(new DataPoint(f(actualMinimumY), actualMinimumY));
-                    points.Add(new DataPoint(f(actualMaximumY), actualMaximumY));
+                    points.Add(new DataPoint(fy(actualMinimumY), actualMinimumY));
+                    points.Add(new DataPoint(fy(actualMaximumY), actualMaximumY));
                 }
             }
             else
             {
-                if (isFunctionX)
+                if (fx != null)
                 {
                     double x = actualMinimumX;
 
@@ -217,7 +258,7 @@ namespace OxyPlot
                     double dx = (actualMaximumX - actualMinimumX) / 100;
                     while (true)
                     {
-                        points.Add(new DataPoint(x, f(x)));
+                        points.Add(new DataPoint(x, fx(x)));
                         if (x > actualMaximumX)
                         {
                             break;
@@ -226,7 +267,7 @@ namespace OxyPlot
                         x += dx;
                     }
                 }
-                else
+                else if (fy != null)
                 {
                     double y = actualMinimumY;
 
@@ -234,7 +275,7 @@ namespace OxyPlot
                     double dy = (actualMaximumY - actualMinimumY) / 100;
                     while (true)
                     {
-                        points.Add(new DataPoint(f(y), y));
+                        points.Add(new DataPoint(fy(y), y));
                         if (y > actualMaximumY)
                         {
                             break;
@@ -246,23 +287,29 @@ namespace OxyPlot
             }
 
             // transform to screen coordinates
-            var screenPoints = new List<ScreenPoint>(points.Count);
-            foreach (var p in points)
-            {
-                screenPoints.Add(this.XAxis.Transform(p.X, p.Y, this.YAxis));
-            }
+            var screenPoints = points.Select(p => this.XAxis.Transform(p.X, p.Y, this.YAxis)).ToList();
 
-            // clip to the plot area
-            double minimumSegmentLength = 4;
-            double minDistSquared = minimumSegmentLength * minimumSegmentLength;
+            // clip to the area defined by the axes
+            var clipping = new OxyRect(
+                this.ClipByXAxis ? this.XAxis.ScreenMin.X : PlotModel.PlotArea.Left,
+                this.ClipByYAxis ? this.YAxis.ScreenMin.Y : PlotModel.PlotArea.Top,
+                this.ClipByXAxis ? this.XAxis.ScreenMax.X - this.XAxis.ScreenMin.X : PlotModel.PlotArea.Width,
+                this.ClipByYAxis ? this.YAxis.ScreenMax.Y - this.YAxis.ScreenMin.Y : PlotModel.PlotArea.Height);
 
-            var clipping = new CohenSutherlandClipping(
-                Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X),
-                Math.Max(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X),
-                Math.Min(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y),
-                Math.Max(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y));
+            const double MinimumSegmentLength = 4;
 
-            IList<ScreenPoint> clippedPoints = this.RenderClippedLine(rc, screenPoints, clipping, minDistSquared);
+            IList<ScreenPoint> clippedPoints = null;
+
+            rc.DrawClippedLine(
+               screenPoints,
+               clipping,
+               MinimumSegmentLength * MinimumSegmentLength,
+               this.Color,
+               this.StrokeThickness,
+               this.LineStyle,
+                this.LineJoin,
+                false,
+                pts => clippedPoints = pts);
 
             ScreenPoint position;
             double angle;
@@ -277,9 +324,10 @@ namespace OxyPlot
                 margin *= -1;
             }
 
-            if (this.GetPointAtRelativeDistance(clippedPoints, this.TextPosition, margin, out position, out angle))
+            if (clippedPoints != null && GetPointAtRelativeDistance(clippedPoints, this.TextPosition, margin, out position, out angle))
             {
-                if (clipping.IsInside(position))
+                var cs = new CohenSutherlandClipping(clipping);
+                if (cs.IsInside(position))
                 {
                     rc.DrawText(
                         position,
@@ -298,26 +346,6 @@ namespace OxyPlot
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// The render line.
-        /// </summary>
-        /// <param name="rc">
-        /// The rc.
-        /// </param>
-        /// <param name="pts">
-        /// The pts.
-        /// </param>
-        protected void RenderLine(IRenderContext rc, List<ScreenPoint> pts)
-        {
-            if (pts.Count == 0)
-            {
-                return;
-            }
-
-            rc.DrawLine(
-                pts, this.Color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle), this.LineJoin);
-        }
 
         /// <summary>
         /// Gets the point on a curve at the specified relative distance along the curve.
@@ -340,7 +368,7 @@ namespace OxyPlot
         /// <returns>
         /// True if a position was found.
         /// </returns>
-        private bool GetPointAtRelativeDistance(
+        private static bool GetPointAtRelativeDistance(
             IList<ScreenPoint> pts, double p, double margin, out ScreenPoint position, out double angle)
         {
             if (pts == null || pts.Count == 0)
@@ -382,87 +410,6 @@ namespace OxyPlot
             angle = 0;
             return false;
         }
-
-        // todo: refactor - this is the same code as in the LineSeries
-        /// <summary>
-        /// The render clipped line.
-        /// </summary>
-        /// <param name="rc">
-        /// The rc.
-        /// </param>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="clipping">
-        /// The clipping.
-        /// </param>
-        /// <param name="minDistSquared">
-        /// The min dist squared.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        private IList<ScreenPoint> RenderClippedLine(
-            IRenderContext rc, IList<ScreenPoint> points, CohenSutherlandClipping clipping, double minDistSquared)
-        {
-            List<ScreenPoint> result = null;
-
-            int n = points.Count;
-            var pts = new List<ScreenPoint>(n);
-            if (n > 0)
-            {
-                ScreenPoint s0 = points[0];
-                ScreenPoint last = points[0];
-
-                for (int i = 1; i < n; i++)
-                {
-                    ScreenPoint s1 = points[i];
-
-                    // Clipped version of this and next point.
-                    ScreenPoint s0c = s0;
-                    ScreenPoint s1c = s1;
-                    bool isInside = clipping.ClipLine(ref s0c, ref s1c);
-                    s0 = s1;
-
-                    if (!isInside)
-                    {
-                        // keep the previous coordinate
-                        continue;
-                    }
-
-                    // render from s0c-s1c
-                    double dx = s1c.x - last.x;
-                    double dy = s1c.y - last.y;
-
-                    if (dx * dx + dy * dy > minDistSquared || i == 1)
-                    {
-                        if (!s0c.Equals(last) || i == 1)
-                        {
-                            pts.Add(s0c);
-                        }
-
-                        pts.Add(s1c);
-                        last = s1c;
-                    }
-
-                    // render the line if we are leaving the clipping region););
-                    if (!clipping.IsInside(s1))
-                    {
-                        this.RenderLine(rc, pts);
-                        result = pts;
-                        pts = new List<ScreenPoint>();
-                    }
-                }
-
-                this.RenderLine(rc, pts);
-                if (pts.Count > 0)
-                {
-                    result = pts;
-                }
-            }
-
-            return result;
-        }
-
         #endregion
     }
 }

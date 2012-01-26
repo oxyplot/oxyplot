@@ -66,43 +66,27 @@ namespace OxyPlot
         /// <summary>
         /// Draws the clipped line.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="clippingRectangle">
-        /// The clipping rectangle.
-        /// </param>
-        /// <param name="minDistSquared">
-        /// The min dist squared.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="strokeThickness">
-        /// The stroke thickness.
-        /// </param>
-        /// <param name="lineStyle">
-        /// The line style.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// if set to <c>true</c> [aliased].
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="points">The points.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="minDistSquared">The min dist squared.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="lineStyle">The line style.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
+        /// <param name="pointsRendered">The points rendered callback.</param>
         public static void DrawClippedLine(
-            this IRenderContext rc, 
-            IList<ScreenPoint> points, 
-            OxyRect clippingRectangle, 
-            double minDistSquared, 
-            OxyColor stroke, 
-            double strokeThickness, 
-            LineStyle lineStyle, 
-            OxyPenLineJoin lineJoin, 
-            bool aliased)
+            this IRenderContext rc,
+            IList<ScreenPoint> points,
+            OxyRect clippingRectangle,
+            double minDistSquared,
+            OxyColor stroke,
+            double strokeThickness,
+            LineStyle lineStyle,
+            OxyPenLineJoin lineJoin,
+            bool aliased,
+            Action<IList<ScreenPoint>> pointsRendered = null)
         {
             var clipping = new CohenSutherlandClipping(
                 clippingRectangle.Left, clippingRectangle.Right, clippingRectangle.Top, clippingRectangle.Bottom);
@@ -157,9 +141,12 @@ namespace OxyPlot
                         {
                             rc.DrawLine(
                                 pts, stroke, strokeThickness, LineStyleHelper.GetDashArray(lineStyle), lineJoin, aliased);
+                            if (pointsRendered != null)
+                            {
+                                pointsRendered(pts);
+                            }
+                            pts = new List<ScreenPoint>();
                         }
-
-                        pts.Clear();
                     }
                 }
 
@@ -186,6 +173,10 @@ namespace OxyPlot
                 {
                     rc.DrawLine(
                         pts, stroke, strokeThickness, LineStyleHelper.GetDashArray(lineStyle), lineJoin, aliased);
+                    if (pointsRendered != null)
+                    {
+                        pointsRendered(pts);
+                    }
                 }
             }
         }
@@ -224,15 +215,15 @@ namespace OxyPlot
         /// The aliased.
         /// </param>
         public static void DrawClippedPolygon(
-            this IRenderContext rc, 
-            IList<ScreenPoint> points, 
-            OxyRect clippingRectangle, 
-            double minDistSquared, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double strokeThickness = 1.0, 
-            LineStyle lineStyle = LineStyle.Solid, 
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, 
+            this IRenderContext rc,
+            IList<ScreenPoint> points,
+            OxyRect clippingRectangle,
+            double minDistSquared,
+            OxyColor fill,
+            OxyColor stroke,
+            double strokeThickness = 1.0,
+            LineStyle lineStyle = LineStyle.Solid,
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
             bool aliased = false)
         {
             var clippedPoints = SutherlandHodgmanClipping.ClipPolygon(clippingRectangle, points);
@@ -263,11 +254,11 @@ namespace OxyPlot
         /// The stroke thickness.
         /// </param>
         public static void DrawClippedRectangle(
-            this IRenderContext rc, 
-            OxyRect rect, 
-            OxyRect clippingRectangle, 
-            OxyColor fill, 
-            OxyColor stroke, 
+            this IRenderContext rc,
+            OxyRect rect,
+            OxyRect clippingRectangle,
+            OxyColor fill,
+            OxyColor stroke,
             double thickness)
         {
             OxyRect? clippedRect = ClipRect(rect, clippingRectangle);
@@ -301,11 +292,11 @@ namespace OxyPlot
         /// The stroke thickness.
         /// </param>
         public static void DrawClippedRectangleAsPolygon(
-            this IRenderContext rc, 
-            OxyRect rect, 
-            OxyRect clippingRectangle, 
-            OxyColor fill, 
-            OxyColor stroke, 
+            this IRenderContext rc,
+            OxyRect rect,
+            OxyRect clippingRectangle,
+            OxyColor fill,
+            OxyColor stroke,
             double thickness)
         {
             OxyRect? clippedRect = ClipRect(rect, clippingRectangle);
@@ -350,11 +341,11 @@ namespace OxyPlot
             }
 
             rc.DrawLine(
-                new[] { new ScreenPoint(x0, y0), new ScreenPoint(x1, y1) }, 
-                pen.Color, 
-                pen.Thickness, 
-                pen.DashArray, 
-                pen.LineJoin, 
+                new[] { new ScreenPoint(x0, y0), new ScreenPoint(x1, y1) },
+                pen.Color,
+                pen.Thickness,
+                pen.DashArray,
+                pen.LineJoin,
                 aliased);
         }
 
@@ -413,14 +404,14 @@ namespace OxyPlot
         /// The stroke thickness.
         /// </param>
         public static void DrawMarker(
-            this IRenderContext rc, 
-            ScreenPoint p, 
-            OxyRect clippingRect, 
-            MarkerType type, 
-            IList<ScreenPoint> outline, 
-            double size, 
-            OxyColor fill, 
-            OxyColor stroke, 
+            this IRenderContext rc,
+            ScreenPoint p,
+            OxyRect clippingRect,
+            MarkerType type,
+            IList<ScreenPoint> outline,
+            double size,
+            OxyColor fill,
+            OxyColor stroke,
             double strokeThickness)
         {
             rc.DrawMarkers(new[] { p }, clippingRect, type, outline, new[] { size }, fill, stroke, strokeThickness);
@@ -463,16 +454,16 @@ namespace OxyPlot
         /// The bin Offset.
         /// </param>
         public static void DrawMarkers(
-            this IRenderContext rc, 
-            IList<ScreenPoint> markerPoints, 
-            OxyRect clippingRect, 
-            MarkerType markerType, 
-            IList<ScreenPoint> markerOutline, 
-            double[] markerSize, 
-            OxyColor markerFill, 
-            OxyColor markerStroke, 
-            double markerStrokeThickness, 
-            int resolution = 0, 
+            this IRenderContext rc,
+            IList<ScreenPoint> markerPoints,
+            OxyRect clippingRect,
+            MarkerType markerType,
+            IList<ScreenPoint> markerOutline,
+            double[] markerSize,
+            OxyColor markerFill,
+            OxyColor markerStroke,
+            double markerStrokeThickness,
+            int resolution = 0,
             ScreenPoint binOffset = new ScreenPoint())
         {
             if (markerType == MarkerType.None)
@@ -643,13 +634,13 @@ namespace OxyPlot
         /// The lines.
         /// </param>
         private static void AddMarkerGeometry(
-            ScreenPoint p, 
-            MarkerType type, 
-            IList<ScreenPoint> outline, 
-            double size, 
-            IList<OxyRect> ellipses, 
-            IList<OxyRect> rects, 
-            IList<IList<ScreenPoint>> polygons, 
+            ScreenPoint p,
+            MarkerType type,
+            IList<ScreenPoint> outline,
+            double size,
+            IList<OxyRect> ellipses,
+            IList<OxyRect> rects,
+            IList<IList<ScreenPoint>> polygons,
             IList<ScreenPoint> lines)
         {
             if (type == MarkerType.Custom)
