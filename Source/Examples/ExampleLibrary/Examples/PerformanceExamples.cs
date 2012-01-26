@@ -8,6 +8,7 @@ namespace ExampleLibrary
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using OxyPlot;
@@ -19,6 +20,9 @@ namespace ExampleLibrary
         public static PlotModel LineSeries1()
         {
             var model = CreatePlotModel();
+            var watch = new Stopwatch();
+            model.Updating += (sender, args) => watch.Restart();
+            model.Updated += (sender, args) => Debug.WriteLine("Updated in " + watch.ElapsedMilliseconds + " ms");
             var s1 = new LineSeries();
             AddPoints(s1.Points, 100000);
             model.Series.Add(s1);
