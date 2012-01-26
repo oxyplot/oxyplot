@@ -9,7 +9,6 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
 
     /// <summary>
     /// Represents a line series.
@@ -19,9 +18,14 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
+        ///   The divisor value used to calculate tolerance for line smoothing.
+        /// </summary>
+        private const double ToleranceDivisor = 200;
+
+        /// <summary>
         ///   The smoothed points.
         /// </summary>
-        private Lazy<IList<IDataPoint>> smoothedPoints;
+        private IList<IDataPoint> smoothedPoints;
 
         #endregion
 
@@ -37,8 +41,6 @@ namespace OxyPlot
             this.MarkerSize = 3;
             this.MarkerStrokeThickness = 1;
             this.CanTrackerInterpolatePoints = true;
-
-            this.ResetSmoothedPoints();
         }
 
         /// <summary>
@@ -165,7 +167,7 @@ namespace OxyPlot
         {
             get
             {
-                return this.smoothedPoints.Value;
+                return this.smoothedPoints;
             }
         }
 
@@ -190,7 +192,7 @@ namespace OxyPlot
             if (interpolate)
             {
                 // Cannot interpolate if there is no line
-                if (this.Color == null || this.StrokeThickness == 0)
+                if (this.Color == null || this.StrokeThickness.IsZero())
                 {
                     return null;
                 }
@@ -275,13 +277,13 @@ namespace OxyPlot
             rc.DrawLine(pts, this.Color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
-                midpt, 
-                legendBox, 
-                this.MarkerType, 
-                this.MarkerOutline, 
-                this.MarkerSize, 
-                this.MarkerFill, 
-                this.MarkerStroke, 
+                midpt,
+                legendBox,
+                this.MarkerType,
+                this.MarkerOutline,
+                this.MarkerSize,
+                this.MarkerFill,
+                this.MarkerStroke,
                 this.MarkerStrokeThickness);
         }
 
@@ -316,21 +318,19 @@ namespace OxyPlot
         {
             if (this.Smooth)
             {
+                // Update the max/min from the control points
+                base.UpdateMaxMin();
+
                 // Make sure the smooth points are re-evaluated.
                 this.ResetSmoothedPoints();
 
-                var xl = this.SmoothedPoints.Select(s => s.X);
-                if (xl.Count() > 0)
+                // Update the max/min from the smoothed points
+                foreach (var pt in this.SmoothedPoints)
                 {
-                    this.MinX = xl.Min();
-                    this.MaxX = xl.Max();
-                }
-
-                var yl = this.SmoothedPoints.Select(s => s.Y);
-                if (yl.Count() > 0)
-                {
-                    this.MinY = yl.Min();
-                    this.MaxY = yl.Max();
+                    this.MinX = Math.Min(this.MinX, pt.X);
+                    this.MinY = Math.Min(this.MinY, pt.Y);
+                    this.MaxX = Math.Max(this.MaxX, pt.X);
+                    this.MaxY = Math.Max(this.MaxY, pt.Y);
                 }
             }
             else
@@ -348,16 +348,16 @@ namespace OxyPlot
         /// <param name="clippingRect">
         /// The clipping rect.
         /// </param>
-        /// <param name="points">
-        /// The points.
+        /// <param name="pointsToRender">
+        /// The points to render.
         /// </param>
-        protected void RenderPoints(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> points)
+        protected void RenderPoints(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
-            IList<ScreenPoint> screenPoints = points;
+            var screenPoints = pointsToRender;
             if (this.Smooth)
             {
                 // spline smoothing (should only be used on small datasets)
-                IList<ScreenPoint> resampledPoints = ScreenPointHelper.ResamplePoints(points, this.MinimumSegmentLength);
+                var resampledPoints = ScreenPointHelper.ResamplePoints(pointsToRender, this.MinimumSegmentLength);
                 screenPoints = CanonicalSplineHelper.CreateSpline(resampledPoints, 0.5, null, false, 0.25);
             }
 
@@ -370,13 +370,13 @@ namespace OxyPlot
             if (this.MarkerType != MarkerType.None)
             {
                 rc.DrawMarkers(
-                    points, 
-                    clippingRect, 
-                    this.MarkerType, 
-                    this.MarkerOutline, 
-                    new[] { this.MarkerSize }, 
-                    this.MarkerFill, 
-                    this.MarkerStroke, 
+                    pointsToRender,
+                    clippingRect,
+                    this.MarkerType,
+                    this.MarkerOutline,
+                    new[] { this.MarkerSize },
+                    this.MarkerFill,
+                    this.MarkerStroke,
                     this.MarkerStrokeThickness);
             }
         }
@@ -390,19 +390,19 @@ namespace OxyPlot
         /// <param name="clippingRect">
         /// The clipping rect.
         /// </param>
-        /// <param name="points">
-        /// The points.
+        /// <param name="pointsToRender">
+        /// The points to render.
         /// </param>
-        protected virtual void RenderSmoothedLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> points)
+        protected virtual void RenderSmoothedLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
             rc.DrawClippedLine(
-                points, 
-                clippingRect, 
-                this.MinimumSegmentLength * this.MinimumSegmentLength, 
-                this.Color, 
-                this.StrokeThickness, 
-                this.LineStyle, 
-                this.LineJoin, 
+                pointsToRender,
+                clippingRect,
+                this.MinimumSegmentLength * this.MinimumSegmentLength,
+                this.Color,
+                this.StrokeThickness,
+                this.LineStyle,
+                this.LineJoin,
                 false);
         }
 
@@ -411,18 +411,8 @@ namespace OxyPlot
         /// </summary>
         protected void ResetSmoothedPoints()
         {
-            this.smoothedPoints = new Lazy<IList<IDataPoint>>(this.GetSmoothedPoints);
-        }
-
-        /// <summary>
-        /// Gets the smoothed points.
-        /// </summary>
-        /// <returns>
-        /// A list of smooth data points.
-        /// </returns>
-        private IList<IDataPoint> GetSmoothedPoints()
-        {
-            return CanonicalSplineHelper.CreateSpline(this.points, 0.5, null, false, 0.25);
+            double tolerance = Math.Abs(Math.Max(this.MaxX - this.MinX, this.MaxY - this.MinY) / ToleranceDivisor);
+            this.smoothedPoints = CanonicalSplineHelper.CreateSpline(this.points, 0.5, null, false, tolerance);
         }
 
         #endregion

@@ -5,10 +5,13 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using System.Collections.Generic;
+
     [Examples("LineSeries")]
     public class LineSeriesExamples : ExamplesBase
     {
@@ -263,6 +266,23 @@ namespace ExampleLibrary
 
             s1.CanTrackerInterpolatePoints = true;
 
+            return model;
+        }
+
+        [Example("Complex Smooth Line")]
+        public static PlotModel ComplexSmoothLine()
+        {
+            var model = new PlotModel("Complex Smooth Lines");
+
+            var s1 = new LineSeries("Series 1") { Smooth = true };
+            s1.Points.Add(new DataPoint(-0.03, 22695655));
+            s1.Points.Add(new DataPoint(-0.02, 34005991));
+            s1.Points.Add(new DataPoint(-0.01, 40209650));
+            s1.Points.Add(new DataPoint(0, 41306630));
+            s1.Points.Add(new DataPoint(0.01, 37296932));
+            s1.Points.Add(new DataPoint(0.02, 28180557));
+            s1.Points.Add(new DataPoint(0.03, 13957503));
+            model.Series.Add(s1);
             return model;
         }
 

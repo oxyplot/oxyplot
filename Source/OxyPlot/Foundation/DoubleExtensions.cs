@@ -102,12 +102,24 @@ namespace OxyPlot
         /// </returns>
         public static double RemoveNoiseFromDoubleMath(this double value)
         {
-            if (value == 0.0 || Math.Abs(Math.Log10(Math.Abs(value))) < 27)
+            if (value.IsZero() || Math.Abs(Math.Log10(Math.Abs(value))) < 27)
             {
                 return (double)((decimal)value);
             }
 
             return double.Parse(value.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Determines whether the specified value is zero.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// <c>true</c> if the specified value is zero; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsZero(this double value)
+        {
+            return Math.Abs(value) < double.Epsilon;
         }
 
         /// <summary>
