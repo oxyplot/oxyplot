@@ -75,6 +75,21 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Invisible LineSeries")]
+        public static PlotModel InvisibleLineSeries()
+        {
+            var model = new PlotModel("Invisible LineSeries");
+            var s1 = new LineSeries("Series 1");
+            s1.Points.Add(new DataPoint(0, 10));
+            s1.Points.Add(new DataPoint(10, 40));
+            var s2 = new LineSeries("Series 2") { IsVisible = false };
+            s2.Points.Add(new DataPoint(40, 20));
+            s2.Points.Add(new DataPoint(60, 30));
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+            return model;
+        }
+
         [Example("Marker types")]
         public static PlotModel MarkerTypes()
         {

@@ -382,7 +382,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Renders the smoothed line.
+        /// Renders the (smoothed) line.
         /// </summary>
         /// <param name="rc">
         /// The render context.
