@@ -104,7 +104,7 @@
     <Compile Include="Manipulators\TrackerManipulator.cs" />
     <Compile Include="Manipulators\ZoomRectangleManipulator.cs" />
     <Compile Include="Manipulators\ManipulatorBase.cs" />
-    <Compile Include="Manipulators\OxyCursor.cs" />
+    <Compile Include="Manipulators\CursorType.cs" />
     <Compile Include="Manipulators\PanManipulator.cs" />
     <Compile Include="Manipulators\TrackerHitResult.cs" />
     <Compile Include="PlotModel\PlotModel.Legends.cs" />

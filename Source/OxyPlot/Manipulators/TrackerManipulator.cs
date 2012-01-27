@@ -105,9 +105,9 @@ namespace OxyPlot
         /// <returns>
         /// The cursor.
         /// </returns>
-        public override OxyCursor GetCursor()
+        public override CursorType GetCursorType()
         {
-            return OxyCursor.Arrow;
+            return CursorType.Default;
         }
 
         /// <summary>

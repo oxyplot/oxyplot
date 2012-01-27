@@ -66,7 +66,7 @@ namespace OxyPlot
         /// </param>
         public virtual void Completed(ManipulationEventArgs e)
         {
-            this.PlotControl.SetCursor(OxyCursor.Arrow);
+            this.PlotControl.SetCursorType(CursorType.Default);
         }
 
         /// <summary>
@@ -85,9 +85,9 @@ namespace OxyPlot
         /// <returns>
         /// The cursor.
         /// </returns>
-        public virtual OxyCursor GetCursor()
+        public virtual CursorType GetCursorType()
         {
-            return OxyCursor.Arrow;
+            return CursorType.Default;
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace OxyPlot
             this.XAxis = xaxis;
             this.YAxis = yaxis;
 
-            this.PlotControl.SetCursor(this.GetCursor());
+            this.PlotControl.SetCursorType(this.GetCursorType());
         }
 
         #endregion
