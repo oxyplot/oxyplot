@@ -27,14 +27,12 @@ namespace OxyPlot
         XY, 
 
         /// <summary>
-        ///   Cartesian coordinate system - perpendicular axes with the same scaling
-        ///   http://en.wikipedia.org/wiki/Cartesian_coordinate_system
+        ///   Cartesian coordinate system - perpendicular axes with the same scaling http://en.wikipedia.org/wiki/Cartesian_coordinate_system
         /// </summary>
         Cartesian, 
 
         /// <summary>
-        ///   Polar coordinate system - with radial and angular axes
-        ///   http://en.wikipedia.org/wiki/Polar_coordinate_system
+        ///   Polar coordinate system - with radial and angular axes http://en.wikipedia.org/wiki/Polar_coordinate_system
         /// </summary>
         Polar
     }
@@ -191,7 +189,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "PlotModel" /> class.
+        ///   Initializes a new instance of the <see cref="PlotModel" /> class.
         /// </summary>
         public PlotModel()
         {
@@ -263,10 +261,10 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="PlotModel"/> class.
         /// </summary>
         /// <param name="title">
-        /// The title.
+        /// The title. 
         /// </param>
         /// <param name="subtitle">
-        /// The subtitle.
+        /// The subtitle. 
         /// </param>
         public PlotModel(string title, string subtitle = null)
             : this()
@@ -294,10 +292,9 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        ///   Gets the default font.
-        ///   This font is used for text on axes, series, legends and plot title unless other fonts are specified.
+        ///   Gets the default font. This font is used for text on axes, series, legends and plot title unless other fonts are specified.
         /// </summary>
-        /// <value>The default font.</value>
+        /// <value> The default font. </value>
         public static string DefaultFont
         {
             get
@@ -309,7 +306,7 @@ namespace OxyPlot
         /// <summary>
         ///   Gets the actual annotation font.
         /// </summary>
-        /// <value>The actual annotation font.</value>
+        /// <value> The actual annotation font. </value>
         public string ActualAnnotationFont
         {
             get
@@ -332,7 +329,7 @@ namespace OxyPlot
         /// <summary>
         ///   Gets the actual legend font.
         /// </summary>
-        /// <value>The actual legend font.</value>
+        /// <value> The actual legend font. </value>
         public string ActualLegendFont
         {
             get
@@ -344,7 +341,7 @@ namespace OxyPlot
         /// <summary>
         ///   Gets the actual legend title font.
         /// </summary>
-        /// <value>The actual legend title font.</value>
+        /// <value> The actual legend title font. </value>
         public string ActualLegendTitleFont
         {
             get
@@ -356,7 +353,7 @@ namespace OxyPlot
         /// <summary>
         ///   Gets the actual plot margins.
         /// </summary>
-        /// <value>The actual plot margins.</value>
+        /// <value> The actual plot margins. </value>
         public OxyThickness ActualPlotMargins { get; private set; }
 
         /// <summary>
@@ -373,19 +370,19 @@ namespace OxyPlot
         /// <summary>
         ///   Gets or sets the annotation font.
         /// </summary>
-        /// <value>The annotation font.</value>
+        /// <value> The annotation font. </value>
         public string AnnotationFont { get; set; }
 
         /// <summary>
         ///   Gets or sets the size of the annotation font.
         /// </summary>
-        /// <value>The size of the annotation font.</value>
+        /// <value> The size of the annotation font. </value>
         public double AnnotationFontSize { get; set; }
 
         /// <summary>
         ///   Gets or sets the annotations.
         /// </summary>
-        /// <value>The annotations.</value>
+        /// <value> The annotations. </value>
         public Collection<Annotation> Annotations { get; set; }
 
         /// <summary>
@@ -396,7 +393,7 @@ namespace OxyPlot
         /// <summary>
         ///   Gets or sets the axes.
         /// </summary>
-        /// <value>The axes.</value>
+        /// <value> The axes. </value>
         public Collection<Axis> Axes { get; set; }
 
         /// <summary>
@@ -407,117 +404,114 @@ namespace OxyPlot
         /// <summary>
         ///   Gets or sets the culture.
         /// </summary>
-        /// <value>
-        ///   The culture.
-        /// </value>
+        /// <value> The culture. </value>
         public CultureInfo Culture { get; set; }
 
         /// <summary>
         ///   Gets or sets the default colors.
         /// </summary>
-        /// <value>The default colors.</value>
+        /// <value> The default colors. </value>
         public List<OxyColor> DefaultColors { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether the legend is visible.
-        ///   The titles of the series must be set to use the legend.
+        ///   Gets or sets a value indicating whether the legend is visible. The titles of the series must be set to use the legend.
         /// </summary>
         public bool IsLegendVisible { get; set; }
 
         /// <summary>
         ///   Gets the legend area.
         /// </summary>
-        /// <value>The legend area.</value>
+        /// <value> The legend area. </value>
         public OxyRect LegendArea { get; private set; }
 
         /// <summary>
         ///   Gets or sets the background color of the legend. Use null for no background.
         /// </summary>
-        /// <value>The legend background.</value>
+        /// <value> The legend background. </value>
         public OxyColor LegendBackground { get; set; }
 
         /// <summary>
         ///   Gets or sets the border color of the legend.
         /// </summary>
-        /// <value>The legend border.</value>
+        /// <value> The legend border. </value>
         public OxyColor LegendBorder { get; set; }
 
         /// <summary>
         ///   Gets or sets the thickness of the legend border. Use 0 for no border.
         /// </summary>
-        /// <value>The legend border thickness.</value>
+        /// <value> The legend border thickness. </value>
         public double LegendBorderThickness { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend column spacing.
         /// </summary>
-        /// <value>The legend column spacing.</value>
+        /// <value> The legend column spacing. </value>
         public double LegendColumnSpacing { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend font.
         /// </summary>
-        /// <value>The legend font.</value>
+        /// <value> The legend font. </value>
         public string LegendFont { get; set; }
 
         /// <summary>
         ///   Gets or sets the size of the legend font.
         /// </summary>
-        /// <value>The size of the legend font.</value>
+        /// <value> The size of the legend font. </value>
         public double LegendFontSize { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend font weight.
         /// </summary>
-        /// <value>The legend font weight.</value>
+        /// <value> The legend font weight. </value>
         public double LegendFontWeight { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend item alignment.
         /// </summary>
-        /// <value>The legend item alignment.</value>
+        /// <value> The legend item alignment. </value>
         public HorizontalTextAlign LegendItemAlignment { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend item order.
         /// </summary>
-        /// <value>The legend item order.</value>
+        /// <value> The legend item order. </value>
         public LegendItemOrder LegendItemOrder { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend spacing.
         /// </summary>
-        /// <value>The legend spacing.</value>
+        /// <value> The legend spacing. </value>
         public double LegendItemSpacing { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend margin.
         /// </summary>
-        /// <value>The legend margin.</value>
+        /// <value> The legend margin. </value>
         public double LegendMargin { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend orientation.
         /// </summary>
-        /// <value>The legend orientation.</value>
+        /// <value> The legend orientation. </value>
         public LegendOrientation LegendOrientation { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend padding.
         /// </summary>
-        /// <value>The legend padding.</value>
+        /// <value> The legend padding. </value>
         public double LegendPadding { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend placement.
         /// </summary>
-        /// <value>The legend placement.</value>
+        /// <value> The legend placement. </value>
         public LegendPlacement LegendPlacement { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend position.
         /// </summary>
-        /// <value>The legend position.</value>
+        /// <value> The legend position. </value>
         public LegendPosition LegendPosition { get; set; }
 
         /// <summary>
@@ -528,57 +522,55 @@ namespace OxyPlot
         /// <summary>
         ///   Gets or sets the legend symbol margins (distance between the symbol and the text).
         /// </summary>
-        /// <value>The legend symbol margin.</value>
+        /// <value> The legend symbol margin. </value>
         public double LegendSymbolMargin { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend symbol placement.
         /// </summary>
-        /// <value>The legend symbol placement.</value>
+        /// <value> The legend symbol placement. </value>
         public LegendSymbolPlacement LegendSymbolPlacement { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend title.
         /// </summary>
-        /// <value>The legend title.</value>
+        /// <value> The legend title. </value>
         public string LegendTitle { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend title font.
         /// </summary>
-        /// <value>The legend title font.</value>
+        /// <value> The legend title font. </value>
         public string LegendTitleFont { get; set; }
 
         /// <summary>
         ///   Gets or sets the size of the legend title font.
         /// </summary>
-        /// <value>The size of the legend title font.</value>
+        /// <value> The size of the legend title font. </value>
         public double LegendTitleFontSize { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend title font weight.
         /// </summary>
-        /// <value>The legend title font weight.</value>
+        /// <value> The legend title font weight. </value>
         public double LegendTitleFontWeight { get; set; }
 
         /// <summary>
         ///   Gets or sets the padding around the plot.
         /// </summary>
-        /// <value>The padding.</value>
+        /// <value> The padding. </value>
         public OxyThickness Padding { get; set; }
 
         /// <summary>
-        ///   Gets the area including both the plot and the axes.
-        ///   Outside legends are rendered outside this rectangle.
+        ///   Gets the area including both the plot and the axes. Outside legends are rendered outside this rectangle.
         /// </summary>
-        /// <value>The plot and axis area.</value>
+        /// <value> The plot and axis area. </value>
         public OxyRect PlotAndAxisArea { get; private set; }
 
         /// <summary>
-        ///   Gets the plot area.
-        ///   This area is used to draw the series (not including axes or legends).
+        ///   Gets the plot area. This area is used to draw the series (not including axes or legends).
         /// </summary>
-        /// <value>The plot area.</value>
+        /// <value> The plot area. </value>
         public OxyRect PlotArea { get; private set; }
 
         /// <summary>
@@ -594,99 +586,96 @@ namespace OxyPlot
         /// <summary>
         ///   Gets or sets the color of the border around the plot area.
         /// </summary>
-        /// <value>The color of the box.</value>
+        /// <value> The color of the box. </value>
         public OxyColor PlotAreaBorderColor { get; set; }
 
         /// <summary>
         ///   Gets or sets the thickness of the border around the plot area.
         /// </summary>
-        /// <value>The box thickness.</value>
+        /// <value> The box thickness. </value>
         public double PlotAreaBorderThickness { get; set; }
 
         /// <summary>
-        ///   Gets or sets the minimum margins around the plot (this should be large enough to fit the axes).
-        ///   The default value is (60, 4, 4, 40).
-        ///   Set AutoAdjustPlotMargins if you want the margins to be adjusted when the axes require more space.
+        ///   Gets or sets the minimum margins around the plot (this should be large enough to fit the axes). The default value is (60, 4, 4, 40). Set AutoAdjustPlotMargins if you want the margins to be adjusted when the axes require more space.
         /// </summary>
         public OxyThickness PlotMargins { get; set; }
 
         /// <summary>
         ///   Gets or sets the type of the coordinate system.
         /// </summary>
-        /// <value>The type of the plot.</value>
+        /// <value> The type of the plot. </value>
         public PlotType PlotType { get; set; }
 
         /// <summary>
         ///   Gets or sets the series.
         /// </summary>
-        /// <value>The series.</value>
+        /// <value> The series. </value>
         public Collection<Series> Series { get; set; }
 
         /// <summary>
         ///   Gets or sets the subtitle.
         /// </summary>
-        /// <value>The subtitle.</value>
+        /// <value> The subtitle. </value>
         public string Subtitle { get; set; }
 
         /// <summary>
-        ///   Gets or sets the subtitle font.
-        ///   If this property is null, the Title font will be used.
+        ///   Gets or sets the subtitle font. If this property is null, the Title font will be used.
         /// </summary>
-        /// <value>The subtitle font.</value>
+        /// <value> The subtitle font. </value>
         public string SubtitleFont { get; set; }
 
         /// <summary>
         ///   Gets or sets the size of the subtitle font.
         /// </summary>
-        /// <value>The size of the subtitle font.</value>
+        /// <value> The size of the subtitle font. </value>
         public double SubtitleFontSize { get; set; }
 
         /// <summary>
         ///   Gets or sets the subtitle font weight.
         /// </summary>
-        /// <value>The subtitle font weight.</value>
+        /// <value> The subtitle font weight. </value>
         public double SubtitleFontWeight { get; set; }
 
         /// <summary>
         ///   Gets or sets the color of the text.
         /// </summary>
-        /// <value>The color of the text.</value>
+        /// <value> The color of the text. </value>
         public OxyColor TextColor { get; set; }
 
         /// <summary>
         ///   Gets or sets the title.
         /// </summary>
-        /// <value>The title.</value>
+        /// <value> The title. </value>
         public string Title { get; set; }
 
         /// <summary>
         ///   Gets the title area.
         /// </summary>
-        /// <value>The title area.</value>
+        /// <value> The title area. </value>
         public OxyRect TitleArea { get; private set; }
 
         /// <summary>
         ///   Gets or sets the title font.
         /// </summary>
-        /// <value>The title font.</value>
+        /// <value> The title font. </value>
         public string TitleFont { get; set; }
 
         /// <summary>
         ///   Gets or sets the size of the title font.
         /// </summary>
-        /// <value>The size of the title font.</value>
+        /// <value> The size of the title font. </value>
         public double TitleFontSize { get; set; }
 
         /// <summary>
         ///   Gets or sets the title font weight.
         /// </summary>
-        /// <value>The title font weight.</value>
+        /// <value> The title font weight. </value>
         public double TitleFontWeight { get; set; }
 
         /// <summary>
         ///   Gets or sets the padding around the title.
         /// </summary>
-        /// <value>The title padding.</value>
+        /// <value> The title padding. </value>
         public double TitlePadding { get; set; }
 
         #endregion
@@ -696,26 +685,38 @@ namespace OxyPlot
         /// <summary>
         ///   Gets or sets the default angle axis.
         /// </summary>
-        /// <value>The default angle axis.</value>
+        /// <value> The default angle axis. </value>
         internal AngleAxis DefaultAngleAxis { get; set; }
 
         /// <summary>
         ///   Gets or sets the default magnitude axis.
         /// </summary>
-        /// <value>The default magnitude axis.</value>
+        /// <value> The default magnitude axis. </value>
         internal MagnitudeAxis DefaultMagnitudeAxis { get; set; }
 
         /// <summary>
         ///   Gets or sets the default X axis.
         /// </summary>
-        /// <value>The default X axis.</value>
+        /// <value> The default X axis. </value>
         internal Axis DefaultXAxis { get; set; }
 
         /// <summary>
         ///   Gets or sets the default Y axis.
         /// </summary>
-        /// <value>The default Y axis.</value>
+        /// <value> The default Y axis. </value>
         internal Axis DefaultYAxis { get; set; }
+
+        /// <summary>
+        ///   Gets the visible series.
+        /// </summary>
+        /// <value> The visible series. </value>
+        private IEnumerable<Series> VisibleSeries
+        {
+            get
+            {
+                return this.Series.Where(s => s.IsVisible);
+            }
+        }
 
         #endregion
 
@@ -725,7 +726,7 @@ namespace OxyPlot
         /// Creates a report for the plot.
         /// </summary>
         /// <returns>
-        /// A report.
+        /// A report. 
         /// </returns>
         public Report CreateReport()
         {
@@ -771,7 +772,7 @@ namespace OxyPlot
         /// Creates a text report for the plot.
         /// </summary>
         /// <returns>
-        /// The create text report.
+        /// The create text report. 
         /// </returns>
         public string CreateTextReport()
         {
@@ -793,13 +794,13 @@ namespace OxyPlot
         /// Gets the first axes that covers the area of the specified point.
         /// </summary>
         /// <param name="pt">
-        /// The point.
+        /// The point. 
         /// </param>
         /// <param name="xaxis">
-        /// The xaxis.
+        /// The xaxis. 
         /// </param>
         /// <param name="yaxis">
-        /// The yaxis.
+        /// The yaxis. 
         /// </param>
         public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
         {
@@ -905,7 +906,7 @@ namespace OxyPlot
         /// Gets the default color from the DefaultColors palette.
         /// </summary>
         /// <returns>
-        /// The next default color.
+        /// The next default color. 
         /// </returns>
         public OxyColor GetDefaultColor()
         {
@@ -916,7 +917,7 @@ namespace OxyPlot
         /// Gets the default line style.
         /// </summary>
         /// <returns>
-        /// The next default line style.
+        /// The next default line style. 
         /// </returns>
         public LineStyle GetDefaultLineStyle()
         {
@@ -927,19 +928,19 @@ namespace OxyPlot
         /// Gets a series from the specified point.
         /// </summary>
         /// <param name="point">
-        /// The point.
+        /// The point. 
         /// </param>
         /// <param name="limit">
-        /// The limit.
+        /// The limit. 
         /// </param>
         /// <returns>
-        /// The nearest series.
+        /// The nearest series. 
         /// </returns>
         public Series GetSeriesFromPoint(ScreenPoint point, double limit)
         {
             double mindist = double.MaxValue;
             Series closest = null;
-            foreach (var s in this.Series.Reverse())
+            foreach (var s in this.VisibleSeries.Reverse())
             {
                 var ts = s as ITrackableSeries;
                 if (ts == null)
@@ -977,13 +978,13 @@ namespace OxyPlot
         /// Saves the plot to a SVG file.
         /// </summary>
         /// <param name="fileName">
-        /// Name of the file.
+        /// Name of the file. 
         /// </param>
         /// <param name="width">
-        /// The width.
+        /// The width. 
         /// </param>
         /// <param name="height">
-        /// The height.
+        /// The height. 
         /// </param>
         public void SaveSvg(string fileName, double width, double height)
         {
@@ -999,7 +1000,7 @@ namespace OxyPlot
         /// Generates C# code of the model.
         /// </summary>
         /// <returns>
-        /// C# code.
+        /// C# code. 
         /// </returns>
         public string ToCode()
         {
@@ -1011,7 +1012,7 @@ namespace OxyPlot
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="System.String"/> that represents this instance. 
         /// </returns>
         public override string ToString()
         {
@@ -1022,16 +1023,16 @@ namespace OxyPlot
         /// Create an SVG model and return it as a string.
         /// </summary>
         /// <param name="width">
-        /// The width.
+        /// The width. 
         /// </param>
         /// <param name="height">
-        /// The height.
+        /// The height. 
         /// </param>
         /// <param name="isDocument">
-        /// if set to <c>true</c> [is document].
+        /// if set to <c>true</c> [is document]. 
         /// </param>
         /// <returns>
-        /// The to svg.
+        /// The to svg. 
         /// </returns>
         public string ToSvg(double width, double height, bool isDocument = false)
         {
@@ -1053,21 +1054,17 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Updates all axes and series.
-        ///   0. Updates the owner PlotModel of all plot items (axes, series and annotations)
-        ///   1. Updates the data of each Series (only if updateData==true).
-        ///   2. Ensure that all series have axes assigned.
-        ///   3. Updates the max and min of the axes.
+        /// Updates all axes and series. 0. Updates the owner PlotModel of all plot items (axes, series and annotations) 1. Updates the data of each Series (only if updateData==true). 2. Ensure that all series have axes assigned. 3. Updates the max and min of the axes.
         /// </summary>
         /// <param name="updateData">
-        /// if set to <c>true</c>, all data collections will be updated.
+        /// if set to <c>true</c> , all data collections will be updated. 
         /// </param>
         public void Update(bool updateData = true)
         {
             this.OnUpdating();
 
             // update the owner PlotModel
-            foreach (var s in this.Series)
+            foreach (var s in this.VisibleSeries)
             {
                 s.PlotModel = this;
             }
@@ -1085,7 +1082,7 @@ namespace OxyPlot
             // Update data of the series
             if (updateData)
             {
-                foreach (var s in this.Series)
+                foreach (var s in this.VisibleSeries)
                 {
                     s.UpdateData();
                 }
@@ -1098,7 +1095,7 @@ namespace OxyPlot
             // This is used by the category axis that need to know the number of series using the axis.
             foreach (var a in this.Axes)
             {
-                a.UpdateFromSeries(this.Series);
+                a.UpdateFromSeries(this.VisibleSeries);
             }
 
             // Update the max and min of the axes
@@ -1107,8 +1104,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Updates the axis transforms and intervals.
-        ///   This is used after pan/zoom.
+        /// Updates the axis transforms and intervals. This is used after pan/zoom.
         /// </summary>
         public void UpdateAxisTransforms()
         {
@@ -1248,7 +1244,7 @@ namespace OxyPlot
             }
 
             bool areAxesRequired = false;
-            foreach (var s in this.Series)
+            foreach (var s in this.VisibleSeries)
             {
                 if (s.AreAxesRequired())
                 {
@@ -1270,7 +1266,7 @@ namespace OxyPlot
             }
 
             // Update the x/y axes of series without axes defined
-            foreach (var s in this.Series)
+            foreach (var s in this.VisibleSeries)
             {
                 if (s.AreAxesRequired())
                 {
@@ -1297,7 +1293,7 @@ namespace OxyPlot
         /// Update max and min values of the axes from values of all data series.
         /// </summary>
         /// <param name="isDataUpdated">
-        /// if set to <c>true</c>, the data has been updated.
+        /// if set to <c>true</c> , the data has been updated. 
         /// </param>
         private void UpdateMaxMin(bool isDataUpdated)
         {
@@ -1308,13 +1304,13 @@ namespace OxyPlot
 
             if (isDataUpdated)
             {
-                foreach (var s in this.Series)
+                foreach (var s in this.VisibleSeries)
                 {
                     s.UpdateMaxMin();
                 }
             }
 
-            foreach (var s in this.Series)
+            foreach (var s in this.VisibleSeries)
             {
                 s.UpdateAxisMaxMin();
             }

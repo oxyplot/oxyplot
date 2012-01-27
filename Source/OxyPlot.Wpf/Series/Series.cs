@@ -48,6 +48,19 @@ namespace OxyPlot.Wpf
 
         #endregion
 
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes static members of the <see cref="Series"/> class. 
+        /// </summary>
+        static Series()
+        {
+            VisibilityProperty.OverrideMetadata(
+                typeof(Series), new PropertyMetadata(Visibility.Visible, AppearanceChanged));
+        }
+
+        #endregion
+
         #region Public Properties
 
         /// <summary>
@@ -116,7 +129,7 @@ namespace OxyPlot.Wpf
 
         #endregion
 
-        #region Public Methods
+        #region Public Methods and Operators
 
         /// <summary>
         /// The create model.
@@ -133,10 +146,10 @@ namespace OxyPlot.Wpf
         /// The appearance changed.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The d. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The e. 
         /// </param>
         protected static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -147,10 +160,10 @@ namespace OxyPlot.Wpf
         /// The data changed.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The d. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The e. 
         /// </param>
         protected static void DataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -175,10 +188,10 @@ namespace OxyPlot.Wpf
         /// The on items source changed.
         /// </summary>
         /// <param name="oldValue">
-        /// The old value.
+        /// The old value. 
         /// </param>
         /// <param name="newValue">
-        /// The new value.
+        /// The new value. 
         /// </param>
         protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
@@ -202,7 +215,7 @@ namespace OxyPlot.Wpf
         /// The synchronize properties.
         /// </summary>
         /// <param name="series">
-        /// The series.
+        /// The series. 
         /// </param>
         protected virtual void SynchronizeProperties(OxyPlot.ISeries series)
         {
@@ -212,6 +225,7 @@ namespace OxyPlot.Wpf
             s.TrackerFormatString = this.TrackerFormatString;
             s.TrackerKey = this.TrackerKey;
             s.TrackerFormatString = this.TrackerFormatString;
+            s.IsVisible = this.Visibility == Visibility.Visible;
         }
 
         #endregion

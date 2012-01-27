@@ -266,7 +266,7 @@ namespace OxyPlot
                 rc.DrawRectangleAsPolygon(this.PlotArea, this.PlotAreaBackground, null, 0);
             }
 
-            foreach (var s in this.Series)
+            foreach (var s in this.VisibleSeries)
             {
                 var s2 = s as XYAxisSeries;
                 if (s2 == null || s2.Background == null)
@@ -304,12 +304,12 @@ namespace OxyPlot
         {
             // Update undefined colors
             this.ResetDefaultColor();
-            foreach (var s in this.Series)
+            foreach (var s in this.VisibleSeries)
             {
                 s.SetDefaultValues(this);
             }
 
-            foreach (var s in this.Series)
+            foreach (var s in this.VisibleSeries)
             {
                 s.Render(rc, this);
             }

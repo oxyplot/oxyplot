@@ -307,8 +307,8 @@ namespace OxyPlot
             double rowWidth = 0;
 
             IEnumerable<Series> items = this.LegendItemOrder == LegendItemOrder.Reverse
-                                            ? this.Series.Reverse()
-                                            : this.Series;
+                                            ? this.VisibleSeries.Reverse()
+                                            : this.VisibleSeries;
 
             foreach (var s in items)
             {
