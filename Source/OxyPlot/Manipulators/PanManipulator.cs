@@ -66,9 +66,9 @@ namespace OxyPlot
         /// <returns>
         /// The cursor.
         /// </returns>
-        public override OxyCursor GetCursor()
+        public override CursorType GetCursorType()
         {
-            return OxyCursor.SizeAll;
+            return CursorType.Pan;
         }
 
         /// <summary>

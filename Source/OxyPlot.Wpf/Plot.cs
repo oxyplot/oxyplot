@@ -22,6 +22,8 @@ namespace OxyPlot.Wpf
     using System.Windows.Media.Imaging;
     using System.Xml;
 
+    using CursorType = OxyPlot.CursorType;
+
     /// <summary>
     /// Represents a WPF control that displays an OxyPlot plot.
     /// </summary>
@@ -32,44 +34,19 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        ///   The stack of manipulation events. This is used to try to avoid latency of the ManipulationDelta events.
-        /// </summary>
-        private readonly Stack<ManipulationDeltaEventArgs> manipulationQueue = new Stack<ManipulationDeltaEventArgs>();
-
-        /// <summary>
         ///   The Grid PART constant.
         /// </summary>
         private const string PartGrid = "PART_Grid";
 
         /// <summary>
+        ///   The stack of manipulation events. This is used to try to avoid latency of the ManipulationDelta events.
+        /// </summary>
+        private readonly Stack<ManipulationDeltaEventArgs> manipulationQueue = new Stack<ManipulationDeltaEventArgs>();
+
+        /// <summary>
         ///   The tracker definitions.
         /// </summary>
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
-
-        /// <summary>
-        ///   The last cumulative manipulation scale.
-        /// </summary>
-        private Vector lastManipulationScale;
-
-        /// <summary>
-        ///   The mouse manipulator.
-        /// </summary>
-        private ManipulatorBase mouseManipulator;
-
-        /// <summary>
-        ///   The touch pan manipulator.
-        /// </summary>
-        private PanManipulator touchPan;
-
-        /// <summary>
-        ///   The touch zoom manipulator.
-        /// </summary>
-        private ZoomManipulator touchZoom;
-
-        /// <summary>
-        ///   The touch down point.
-        /// </summary>
-        private Point touchDownPoint;
 
         /// <summary>
         ///   The canvas.
@@ -92,14 +69,19 @@ namespace OxyPlot.Wpf
         private PlotModel internalModel;
 
         /// <summary>
+        ///   Flag to update data when the plot has been invalidated.
+        /// </summary>
+        private bool invalidateUpdatesData;
+
+        /// <summary>
         ///   The is plot invalidated.
         /// </summary>
         private bool isPlotInvalidated;
 
         /// <summary>
-        ///   Flag to update data when the plot has been invalidated.
+        ///   The last cumulative manipulation scale.
         /// </summary>
-        private bool invalidateUpdatesData;
+        private Vector lastManipulationScale;
 
         /// <summary>
         ///   The mouse down point.
@@ -107,9 +89,29 @@ namespace OxyPlot.Wpf
         private ScreenPoint mouseDownPoint;
 
         /// <summary>
+        ///   The mouse manipulator.
+        /// </summary>
+        private ManipulatorBase mouseManipulator;
+
+        /// <summary>
         ///   The overlays.
         /// </summary>
         private Canvas overlays;
+
+        /// <summary>
+        ///   The touch down point.
+        /// </summary>
+        private Point touchDownPoint;
+
+        /// <summary>
+        ///   The touch pan manipulator.
+        /// </summary>
+        private PanManipulator touchPan;
+
+        /// <summary>
+        ///   The touch zoom manipulator.
+        /// </summary>
+        private ZoomManipulator touchZoom;
 
         /// <summary>
         ///   The zoom control.
@@ -120,10 +122,8 @@ namespace OxyPlot.Wpf
 
         #region Constructors and Destructors
 
-#if WPF
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "Plot" /> class.
+        ///   Initializes static members of the <see cref="Plot" /> class.
         /// </summary>
         static Plot()
         {
@@ -133,10 +133,8 @@ namespace OxyPlot.Wpf
             ResetAxesCommand = new RoutedCommand();
         }
 
-#endif
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "Plot" /> class.
+        ///   Initializes a new instance of the <see cref="Plot" /> class.
         /// </summary>
         public Plot()
         {
@@ -168,7 +166,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets the actual model.
         /// </summary>
-        /// <value>The actual model.</value>
+        /// <value> The actual model. </value>
         public PlotModel ActualModel
         {
             get
@@ -180,7 +178,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets the annotations.
         /// </summary>
-        /// <value>The annotations.</value>
+        /// <value> The annotations. </value>
         public ObservableCollection<Annotation> Annotations
         {
             get
@@ -192,7 +190,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets the tracker definitions.
         /// </summary>
-        /// <value>The tracker definitions.</value>
+        /// <value> The tracker definitions. </value>
         public ObservableCollection<TrackerDefinition> TrackerDefinitions
         {
             get
@@ -203,19 +201,19 @@ namespace OxyPlot.Wpf
 
         #endregion
 
-        #region Public Methods
+        #region Public Methods and Operators
 
         /// <summary>
         /// Gets the axes from a point.
         /// </summary>
         /// <param name="pt">
-        /// The point.
+        /// The point. 
         /// </param>
         /// <param name="xaxis">
-        /// The x-axis.
+        /// The x-axis. 
         /// </param>
         /// <param name="yaxis">
-        /// The y-axis.
+        /// The y-axis. 
         /// </param>
         public void GetAxesFromPoint(ScreenPoint pt, out OxyPlot.IAxis xaxis, out OxyPlot.IAxis yaxis)
         {
@@ -234,13 +232,13 @@ namespace OxyPlot.Wpf
         /// Gets the series that is nearest the specified point (in screen coordinates).
         /// </summary>
         /// <param name="pt">
-        /// The point.
+        /// The point. 
         /// </param>
         /// <param name="limit">
-        /// The maximum distance, if this is exceeded the method will return null.
+        /// The maximum distance, if this is exceeded the method will return null. 
         /// </param>
         /// <returns>
-        /// The closest DataSeries
+        /// The closest DataSeries 
         /// </returns>
         public OxyPlot.ISeries GetSeriesFromPoint(ScreenPoint pt, double limit)
         {
@@ -271,7 +269,7 @@ namespace OxyPlot.Wpf
         /// Invalidate the plot (not blocking the UI thread)
         /// </summary>
         /// <param name="updateData">
-        /// The update Data.
+        /// The update Data. 
         /// </param>
         public void InvalidatePlot(bool updateData = true)
         {
@@ -283,7 +281,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> .
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -317,13 +315,13 @@ namespace OxyPlot.Wpf
         /// Pans the specified axis.
         /// </summary>
         /// <param name="axis">
-        /// The axis.
+        /// The axis. 
         /// </param>
         /// <param name="ppt">
-        /// The previous point (screen coordinates).
+        /// The previous point (screen coordinates). 
         /// </param>
         /// <param name="cpt">
-        /// The current point (screen coordinates).
+        /// The current point (screen coordinates). 
         /// </param>
         public void Pan(OxyPlot.IAxis axis, ScreenPoint ppt, ScreenPoint cpt)
         {
@@ -335,7 +333,7 @@ namespace OxyPlot.Wpf
         /// Pans all axes.
         /// </summary>
         /// <param name="delta">
-        /// The delta.
+        /// The delta. 
         /// </param>
         public void PanAll(Vector delta)
         {
@@ -351,7 +349,7 @@ namespace OxyPlot.Wpf
         /// Refresh the plot immediately (blocking UI thread)
         /// </summary>
         /// <param name="updateData">
-        /// if set to <c>true</c>, the data collections will be updated.
+        /// if set to <c>true</c> , the data collections will be updated. 
         /// </param>
         public void RefreshPlot(bool updateData)
         {
@@ -363,7 +361,7 @@ namespace OxyPlot.Wpf
         /// Resets the specified axis.
         /// </summary>
         /// <param name="axis">
-        /// The axis.
+        /// The axis. 
         /// </param>
         public void Reset(OxyPlot.IAxis axis)
         {
@@ -371,10 +369,23 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Reset all axes.
+        /// </summary>
+        public void ResetAllAxes()
+        {
+            foreach (OxyPlot.IAxis a in this.ActualModel.Axes)
+            {
+                a.Reset();
+            }
+
+            this.InvalidatePlot(false);
+        }
+
+        /// <summary>
         /// Saves the plot as a bitmap.
         /// </summary>
         /// <param name="fileName">
-        /// Name of the file.
+        /// Name of the file. 
         /// </param>
         public void SaveBitmap(string fileName)
         {
@@ -393,7 +404,7 @@ namespace OxyPlot.Wpf
         /// Saves the plot as xaml.
         /// </summary>
         /// <param name="fileName">
-        /// Name of the file.
+        /// Name of the file. 
         /// </param>
         public void SaveXaml(string fileName)
         {
@@ -404,10 +415,38 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Sets the cursor type.
+        /// </summary>
+        /// <param name="cursorType">
+        /// The cursor type. 
+        /// </param>
+        public void SetCursorType(CursorType cursorType)
+        {
+            switch (cursorType)
+            {
+                case CursorType.Pan:
+                    this.Cursor = this.PanCursor;
+                    break;
+                case CursorType.ZoomRectangle:
+                    this.Cursor = this.ZoomRectangleCursor;
+                    break;
+                case CursorType.ZoomHorizontal:
+                    this.Cursor = this.ZoomHorizontalCursor;
+                    break;
+                case CursorType.ZoomVertical:
+                    this.Cursor = this.ZoomVerticalCursor;
+                    break;
+                default:
+                    this.Cursor = Cursors.Arrow;
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Shows the tracker.
         /// </summary>
         /// <param name="trackerHitResult">
-        /// The tracker data.
+        /// The tracker data. 
         /// </param>
         public void ShowTracker(TrackerHitResult trackerHitResult)
         {
@@ -451,7 +490,7 @@ namespace OxyPlot.Wpf
         /// Shows the zoom rectangle.
         /// </summary>
         /// <param name="r">
-        /// The rectangle.
+        /// The rectangle. 
         /// </param>
         public void ShowZoomRectangle(OxyRect r)
         {
@@ -467,7 +506,7 @@ namespace OxyPlot.Wpf
         /// Renders the plot to a bitmap.
         /// </summary>
         /// <returns>
-        /// A bitmap.
+        /// A bitmap. 
         /// </returns>
         public RenderTargetBitmap ToBitmap()
         {
@@ -488,7 +527,7 @@ namespace OxyPlot.Wpf
         /// Renders the plot to xaml.
         /// </summary>
         /// <returns>
-        /// The to xaml.
+        /// The to xaml. 
         /// </returns>
         public string ToXaml()
         {
@@ -508,13 +547,13 @@ namespace OxyPlot.Wpf
         /// Zooms the specified axis to the specified values.
         /// </summary>
         /// <param name="axis">
-        /// The axis.
+        /// The axis. 
         /// </param>
         /// <param name="p1">
-        /// The new minimum value.
+        /// The new minimum value. 
         /// </param>
         /// <param name="p2">
-        /// The new maximum value.
+        /// The new maximum value. 
         /// </param>
         public void Zoom(OxyPlot.IAxis axis, double p1, double p2)
         {
@@ -526,7 +565,7 @@ namespace OxyPlot.Wpf
         /// Zooms all axes.
         /// </summary>
         /// <param name="delta">
-        /// The delta.
+        /// The delta. 
         /// </param>
         public void ZoomAllAxes(double delta)
         {
@@ -539,29 +578,16 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Reset all axes.
-        /// </summary>
-        public void ResetAllAxes()
-        {
-            foreach (OxyPlot.IAxis a in this.ActualModel.Axes)
-            {
-                a.Reset();
-            }
-
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
         /// Zooms at the specified position.
         /// </summary>
         /// <param name="axis">
-        /// The axis.
+        /// The axis. 
         /// </param>
         /// <param name="factor">
-        /// The zoom factor.
+        /// The zoom factor. 
         /// </param>
         /// <param name="x">
-        /// The position to zoom at.
+        /// The position to zoom at. 
         /// </param>
         public void ZoomAt(OxyPlot.IAxis axis, double factor, double x = double.NaN)
         {
@@ -574,43 +600,23 @@ namespace OxyPlot.Wpf
             axis.ZoomAt(factor, x);
         }
 
-        /// <summary>
-        /// Sets the cursor.
-        /// </summary>
-        /// <param name="cursor">
-        /// The cursor.
-        /// </param>
-        public void SetCursor(OxyCursor cursor)
-        {
-            switch (cursor)
-            {
-                case OxyCursor.Arrow:
-                    this.Cursor = Cursors.Arrow;
-                    break;
-                case OxyCursor.Cross:
-                    this.Cursor = Cursors.Cross;
-                    break;
-                case OxyCursor.SizeAll:
-                    this.Cursor = Cursors.SizeAll;
-                    break;
-                case OxyCursor.SizeNWSE:
-                    this.Cursor = Cursors.SizeNWSE;
-                    break;
-                case OxyCursor.None:
-                    this.Cursor = Cursors.None;
-                    break;
-            }
-        }
-
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Keyboard.KeyDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Called when the visual appearance is changed.
+        /// </summary>
+        protected virtual void OnAppearanceChanged()
+        {
+            this.InvalidatePlot();
+        }
+
+        /// <summary>
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Keyboard.KeyDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.KeyEventArgs"/> that contains the event data.
+        /// The <see cref="T:System.Windows.Input.KeyEventArgs"/> that contains the event data. 
         /// </param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -697,20 +703,16 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted"/> event occurs.
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event.
+        /// The data for the event. 
         /// </param>
-        protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
+        protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
         {
-            base.OnManipulationStarted(e);
-            this.touchPan = new PanManipulator(this);
-            this.touchPan.Started(new ManipulationEventArgs(e.ManipulationOrigin.ToScreenPoint()));
-            this.touchZoom = new ZoomManipulator(this);
-            this.touchZoom.Started(new ManipulationEventArgs(e.ManipulationOrigin.ToScreenPoint()));
-            this.touchDownPoint = e.ManipulationOrigin;
-            this.lastManipulationScale = new Vector(1, 1);
+            base.OnManipulationCompleted(e);
+            var position = this.touchDownPoint + e.TotalManipulation.Translation;
+            this.touchPan.Completed(new ManipulationEventArgs(position.ToScreenPoint()));
             e.Handled = true;
         }
 
@@ -718,7 +720,7 @@ namespace OxyPlot.Wpf
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event.
+        /// The data for the event. 
         /// </param>
         protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
         {
@@ -741,24 +743,28 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted"/> event occurs.
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event.
+        /// The data for the event. 
         /// </param>
-        protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
+        protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
         {
-            base.OnManipulationCompleted(e);
-            var position = this.touchDownPoint + e.TotalManipulation.Translation;
-            this.touchPan.Completed(new ManipulationEventArgs(position.ToScreenPoint()));
+            base.OnManipulationStarted(e);
+            this.touchPan = new PanManipulator(this);
+            this.touchPan.Started(new ManipulationEventArgs(e.ManipulationOrigin.ToScreenPoint()));
+            this.touchZoom = new ZoomManipulator(this);
+            this.touchZoom.Started(new ManipulationEventArgs(e.ManipulationOrigin.ToScreenPoint()));
+            this.touchDownPoint = e.ManipulationOrigin;
+            this.lastManipulationScale = new Vector(1, 1);
             e.Handled = true;
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.
+        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state. 
         /// </param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
@@ -783,10 +789,10 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseMove"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseMove"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.
+        /// The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data. 
         /// </param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -799,10 +805,10 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseUp"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseUp"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the mouse button was released.
+        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the mouse button was released. 
         /// </param>
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
@@ -838,18 +844,10 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Called when the visual appearance is changed.
-        /// </summary>
-        protected virtual void OnAppearanceChanged()
-        {
-            this.InvalidatePlot();
-        }
-
-        /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseWheel"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseWheel"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseWheelEventArgs"/> that contains the event data.
+        /// The <see cref="T:System.Windows.Input.MouseWheelEventArgs"/> that contains the event data. 
         /// </param>
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
@@ -869,27 +867,13 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Called when the model is changed.
-        /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
-        private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((Plot)d).OnModelChanged();
-        }
-
-        /// <summary>
         /// Called when the visual appearance is changed.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The d. 
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
         /// </param>
         private static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -897,59 +881,83 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The reset axes handler.
+        /// Called when the model is changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
+        /// <param name="d">
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
         /// </param>
-        private void ResetAxesHandler(object sender, ExecutedRoutedEventArgs e)
+        private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            this.ResetAllAxes();
+            ((Plot)d).OnModelChanged();
         }
 
         /// <summary>
-        /// Handles the stacked manipulation events.
+        /// Compositions the target rendering.
         /// </summary>
-        private void HandleStackedManipulationEvents()
+        /// <param name="sender">
+        /// The sender. 
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.EventArgs"/> instance containing the event data. 
+        /// </param>
+        private void CompositionTargetRendering(object sender, EventArgs e)
         {
-            ManipulationDeltaEventArgs e;
-            lock (this.manipulationQueue)
+            this.HandleStackedManipulationEvents();
+
+            lock (this)
             {
-                if (this.manipulationQueue.Count == 0)
+                if (this.isPlotInvalidated)
                 {
-                    return;
+                    this.isPlotInvalidated = false;
+                    if (this.ActualWidth > 0 && this.ActualHeight > 0)
+                    {
+                        this.UpdateModel(this.invalidateUpdatesData);
+                        this.invalidateUpdatesData = false;
+                        this.UpdateVisuals();
+                    }
                 }
-
-                // Get the last manipulation event from the stack
-                e = this.manipulationQueue.Pop();
-
-                // Skip all older events
-                this.manipulationQueue.Clear();
             }
+        }
 
-            // Apply the last manipulation event to translation (pan) and scaling (zoom)
-            var position = this.touchDownPoint + e.CumulativeManipulation.Translation;
-            this.touchPan.Delta(new ManipulationEventArgs(position.ToScreenPoint()));
+        /// <summary>
+        /// Creates the manipulation event args.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data. 
+        /// </param>
+        /// <returns>
+        /// A manipulation event args object. 
+        /// </returns>
+        private ManipulationEventArgs CreateManipulationEventArgs(MouseEventArgs e)
+        {
+            return new ManipulationEventArgs(e.GetPosition(this).ToScreenPoint());
+        }
 
-            double scaleX = e.CumulativeManipulation.Scale.X / this.lastManipulationScale.X;
-            double scaleY = e.CumulativeManipulation.Scale.Y / this.lastManipulationScale.Y;
-            this.touchZoom.Delta(
-                new ManipulationEventArgs(position.ToScreenPoint()) { ScaleX = scaleX, ScaleY = scaleY });
-
-            this.lastManipulationScale = e.CumulativeManipulation.Scale;
+        /// <summary>
+        /// Performs the copy operation.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender. 
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.Windows.Input.ExecutedRoutedEventArgs"/> instance containing the event data. 
+        /// </param>
+        private void DoCopy(object sender, ExecutedRoutedEventArgs e)
+        {
+            Clipboard.SetImage(this.ToBitmap());
         }
 
         /// <summary>
         /// Gets the manipulator for the current mouse button and modifier keys.
         /// </summary>
         /// <param name="e">
-        /// The event args.
+        /// The event args. 
         /// </param>
         /// <returns>
-        /// A manipulator or null if no gesture was recognized.
+        /// A manipulator or null if no gesture was recognized. 
         /// </returns>
         private ManipulatorBase GetManipulator(MouseButtonEventArgs e)
         {
@@ -996,69 +1004,45 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Creates the manipulation event args.
+        /// Handles the stacked manipulation events.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
-        /// </param>
-        /// <returns>
-        /// A manipulation event args object.
-        /// </returns>
-        private ManipulationEventArgs CreateManipulationEventArgs(MouseEventArgs e)
+        private void HandleStackedManipulationEvents()
         {
-            return new ManipulationEventArgs(e.GetPosition(this).ToScreenPoint());
-        }
-
-        /// <summary>
-        /// Compositions the target rendering.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.EventArgs"/> instance containing the event data.
-        /// </param>
-        private void CompositionTargetRendering(object sender, EventArgs e)
-        {
-            this.HandleStackedManipulationEvents();
-
-            lock (this)
+            ManipulationDeltaEventArgs e;
+            lock (this.manipulationQueue)
             {
-                if (this.isPlotInvalidated)
+                if (this.manipulationQueue.Count == 0)
                 {
-                    this.isPlotInvalidated = false;
-                    if (this.ActualWidth > 0 && this.ActualHeight > 0)
-                    {
-                        this.UpdateModel(this.invalidateUpdatesData);
-                        this.invalidateUpdatesData = false;
-                        this.UpdateVisuals();
-                    }
+                    return;
                 }
-            }
-        }
 
-        /// <summary>
-        /// Performs the copy operation.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.Input.ExecutedRoutedEventArgs"/> instance containing the event data.
-        /// </param>
-        private void DoCopy(object sender, ExecutedRoutedEventArgs e)
-        {
-            Clipboard.SetImage(this.ToBitmap());
+                // Get the last manipulation event from the stack
+                e = this.manipulationQueue.Pop();
+
+                // Skip all older events
+                this.manipulationQueue.Clear();
+            }
+
+            // Apply the last manipulation event to translation (pan) and scaling (zoom)
+            var position = this.touchDownPoint + e.CumulativeManipulation.Translation;
+            this.touchPan.Delta(new ManipulationEventArgs(position.ToScreenPoint()));
+
+            double scaleX = e.CumulativeManipulation.Scale.X / this.lastManipulationScale.X;
+            double scaleY = e.CumulativeManipulation.Scale.Y / this.lastManipulationScale.Y;
+            this.touchZoom.Delta(
+                new ManipulationEventArgs(position.ToScreenPoint()) { ScaleX = scaleX, ScaleY = scaleY });
+
+            this.lastManipulationScale = e.CumulativeManipulation.Scale;
         }
 
         /// <summary>
         /// Called when annotations is changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data. 
         /// </param>
         private void OnAnnotationsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -1069,10 +1053,10 @@ namespace OxyPlot.Wpf
         /// Called when axes is changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data. 
         /// </param>
         private void OnAxesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -1083,10 +1067,10 @@ namespace OxyPlot.Wpf
         /// Called when the data context is changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
         /// </param>
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -1097,10 +1081,10 @@ namespace OxyPlot.Wpf
         /// Called when the control is loaded.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
+        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data. 
         /// </param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -1119,10 +1103,10 @@ namespace OxyPlot.Wpf
         /// Called when series is changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data. 
         /// </param>
         private void OnSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -1133,10 +1117,10 @@ namespace OxyPlot.Wpf
         /// Called when size of the control is changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.SizeChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="System.Windows.SizeChangedEventArgs"/> instance containing the event data. 
         /// </param>
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -1144,10 +1128,24 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// The reset axes handler.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender. 
+        /// </param>
+        /// <param name="e">
+        /// The e. 
+        /// </param>
+        private void ResetAxesHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.ResetAllAxes();
+        }
+
+        /// <summary>
         /// Synchronizes the logical tree.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data. 
         /// </param>
         private void SyncLogicalTree(NotifyCollectionChangedEventArgs e)
         {
@@ -1171,52 +1169,10 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Updates the visuals.
-        /// </summary>
-        private void UpdateVisuals()
-        {
-            if (this.canvas == null)
-            {
-                return;
-            }
-
-            // if (Model != null && internalModel.Background != null)
-            // {
-            // this.Background = internalModel.Background.ToBrush();
-            // }
-            // else
-            // this.Background = null;
-
-            // Clear the canvas
-            this.canvas.Children.Clear();
-
-            if (this.ActualModel != null)
-            {
-                this.SynchronizeProperties();
-
-                // disconnecting the canvas while updating
-#if !NO_DISCONNECT
-                int idx = this.grid.Children.IndexOf(this.canvas);
-                this.grid.Children.RemoveAt(idx);
-#endif
-                var wrc = new ShapesRenderContext(this.canvas);
-                this.ActualModel.Render(wrc);
-
-#if !NO_DISCONNECT
-
-                // reinsert the canvas again
-                this.grid.Children.Insert(idx, this.canvas);
-#endif
-            }
-        }
-
-        /// <summary>
-        /// Updates the model.
-        ///   If Model==null, an internal model will be created.
-        ///   The ActualModel.UpdateModel will be called (updates all series data).
+        /// Updates the model. If Model==null, an internal model will be created. The ActualModel.UpdateModel will be called (updates all series data).
         /// </summary>
         /// <param name="updateData">
-        /// if set to <c>true</c>, all data collections will be updated.
+        /// if set to <c>true</c> , all data collections will be updated. 
         /// </param>
         private void UpdateModel(bool updateData = true)
         {
@@ -1263,6 +1219,46 @@ namespace OxyPlot.Wpf
             }
 
             this.ActualModel.Update(updateData);
+        }
+
+        /// <summary>
+        /// Updates the visuals.
+        /// </summary>
+        private void UpdateVisuals()
+        {
+            if (this.canvas == null)
+            {
+                return;
+            }
+
+            // if (Model != null && internalModel.Background != null)
+            // {
+            // this.Background = internalModel.Background.ToBrush();
+            // }
+            // else
+            // this.Background = null;
+
+            // Clear the canvas
+            this.canvas.Children.Clear();
+
+            if (this.ActualModel != null)
+            {
+                this.SynchronizeProperties();
+
+                // disconnecting the canvas while updating
+#if !NO_DISCONNECT
+                int idx = this.grid.Children.IndexOf(this.canvas);
+                this.grid.Children.RemoveAt(idx);
+#endif
+                var wrc = new ShapesRenderContext(this.canvas);
+                this.ActualModel.Render(wrc);
+
+#if !NO_DISCONNECT
+
+                // reinsert the canvas again
+                this.grid.Children.Insert(idx, this.canvas);
+#endif
+            }
         }
 
         #endregion

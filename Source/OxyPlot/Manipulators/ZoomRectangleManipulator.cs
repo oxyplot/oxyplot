@@ -109,9 +109,17 @@ namespace OxyPlot
         /// <returns>
         /// The cursor.
         /// </returns>
-        public override OxyCursor GetCursor()
+        public override CursorType GetCursorType()
         {
-            return OxyCursor.SizeNWSE;
+            if (this.XAxis == null)
+            {
+                return CursorType.ZoomVertical;
+            }
+            if (this.YAxis == null)
+            {
+                return CursorType.ZoomHorizontal;
+            }
+            return CursorType.ZoomRectangle;
         }
 
         /// <summary>

@@ -6,9 +6,9 @@
 
 namespace OxyPlot.Silverlight
 {
-    using System;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
 
     /// <summary>
     /// The Silverlight Plot control.
@@ -22,7 +22,7 @@ namespace OxyPlot.Silverlight
         /// </summary>
         public static readonly DependencyProperty DataContextWatcherProperty =
             DependencyProperty.Register(
-                "DataContextWatcher", typeof(Object), typeof(Plot), new PropertyMetadata(DataContextChanged));
+                "DataContextWatcher", typeof(object), typeof(Plot), new PropertyMetadata(DataContextChanged));
 
         /// <summary>
         ///   The default tracker property.
@@ -64,11 +64,38 @@ namespace OxyPlot.Silverlight
             "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
 
         /// <summary>
+        ///   The pan cursor property.
+        /// </summary>
+        public static readonly DependencyProperty PanCursorProperty = DependencyProperty.Register(
+            "PanCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.Hand));
+
+        /// <summary>
+        ///   The zoom horizontal cursor property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomHorizontalCursorProperty =
+            DependencyProperty.Register(
+                "ZoomHorizontalCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeWE));
+
+        /// <summary>
+        ///   The zoom rectangle cursor property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomRectangleCursorProperty =
+            DependencyProperty.Register(
+                "ZoomRectangleCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeNWSE));
+
+        /// <summary>
         ///   The zoom rectangle template property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
             DependencyProperty.Register(
                 "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
+
+        /// <summary>
+        ///   The zoom vertical cursor property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomVerticalCursorProperty =
+            DependencyProperty.Register(
+                "ZoomVerticalCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeNS));
 
         #endregion
 
@@ -125,7 +152,7 @@ namespace OxyPlot.Silverlight
         /// <summary>
         ///   Gets or sets the keyboard pan horizontal step (fraction of plot area width).
         /// </summary>
-        /// <value>The keyboard pan horizontal step.</value>
+        /// <value> The keyboard pan horizontal step. </value>
         public double KeyboardPanHorizontalStep
         {
             get
@@ -142,7 +169,7 @@ namespace OxyPlot.Silverlight
         /// <summary>
         ///   Gets or sets the keyboard pan vertical step size (fraction of plot area height).
         /// </summary>
-        /// <value>The keyboard pan vertical step.</value>
+        /// <value> The keyboard pan vertical step. </value>
         public double KeyboardPanVerticalStep
         {
             get
@@ -159,7 +186,7 @@ namespace OxyPlot.Silverlight
         /// <summary>
         ///   Gets or sets the model.
         /// </summary>
-        /// <value>The model.</value>
+        /// <value> The model. </value>
         public PlotModel Model
         {
             get
@@ -174,9 +201,60 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
+        ///   Gets or sets the pan cursor.
+        /// </summary>
+        /// <value> The pan cursor. </value>
+        public Cursor PanCursor
+        {
+            get
+            {
+                return (Cursor)this.GetValue(PanCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(PanCursorProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the horizontal zoom cursor.
+        /// </summary>
+        /// <value> The zoom horizontal cursor. </value>
+        public Cursor ZoomHorizontalCursor
+        {
+            get
+            {
+                return (Cursor)this.GetValue(ZoomHorizontalCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomHorizontalCursorProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the rectangle zoom cursor.
+        /// </summary>
+        /// <value> The zoom rectangle cursor. </value>
+        public Cursor ZoomRectangleCursor
+        {
+            get
+            {
+                return (Cursor)this.GetValue(ZoomRectangleCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomRectangleCursorProperty, value);
+            }
+        }
+
+        /// <summary>
         ///   Gets or sets the zoom rectangle template.
         /// </summary>
-        /// <value>The zoom rectangle template.</value>
+        /// <value> The zoom rectangle template. </value>
         public ControlTemplate ZoomRectangleTemplate
         {
             get
@@ -187,6 +265,23 @@ namespace OxyPlot.Silverlight
             set
             {
                 this.SetValue(ZoomRectangleTemplateProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the vertical zoom cursor.
+        /// </summary>
+        /// <value> The zoom vertical cursor. </value>
+        public Cursor ZoomVerticalCursor
+        {
+            get
+            {
+                return (Cursor)this.GetValue(ZoomVerticalCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomVerticalCursorProperty, value);
             }
         }
 

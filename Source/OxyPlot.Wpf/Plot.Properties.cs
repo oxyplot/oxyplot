@@ -17,10 +17,7 @@ namespace OxyPlot.Wpf
     /// Represents the WPF Plot control.
     /// </summary>
     /// <remarks>
-    /// This file contains dependency properties used for defining the plot in XAML.
-    ///   These properties are only used when Model is null.
-    ///   In this case an internal PlotModel is created and the dependency properties are copied from the control to the 
-    ///   internal PlotModel.
+    /// This file contains dependency properties used for defining the plot in XAML. These properties are only used when Model is null. In this case an internal PlotModel is created and the dependency properties are copied from the control to the internal PlotModel.
     /// </remarks>
     public partial class Plot
     {
@@ -243,6 +240,12 @@ namespace OxyPlot.Wpf
                 "ResetAxesGesture", typeof(InputGesture), typeof(Plot), new UIPropertyMetadata(new KeyGesture(Key.Home)));
 
         /// <summary>
+        ///   The pan cursor property.
+        /// </summary>
+        public static readonly DependencyProperty PanCursorProperty = DependencyProperty.Register(
+            "PanCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.Hand));
+
+        /// <summary>
         ///   The plot area border color property.
         /// </summary>
         public static readonly DependencyProperty PlotAreaBorderColorProperty =
@@ -338,11 +341,32 @@ namespace OxyPlot.Wpf
             "Title", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
+        ///   The zoom horizontal cursor property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomHorizontalCursorProperty =
+            DependencyProperty.Register(
+                "ZoomHorizontalCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeWE));
+
+        /// <summary>
+        ///   The zoom rectangle cursor property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomRectangleCursorProperty =
+            DependencyProperty.Register(
+                "ZoomRectangleCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeNWSE));
+
+        /// <summary>
         ///   The zoom rectangle template property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
             DependencyProperty.Register(
                 "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
+
+        /// <summary>
+        ///   The zoom vertical cursor property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomVerticalCursorProperty =
+            DependencyProperty.Register(
+                "ZoomVerticalCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeNS));
 
         /// <summary>
         ///   The annotations.
@@ -387,7 +411,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets the axes.
         /// </summary>
-        /// <value>The axes.</value>
+        /// <value> The axes. </value>
         public ObservableCollection<Axis> Axes
         {
             get
@@ -415,7 +439,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets or sets the tracker template.
         /// </summary>
-        /// <value>The tracker template.</value>
+        /// <value> The tracker template. </value>
         public ControlTemplate DefaultTrackerTemplate
         {
             get
@@ -464,7 +488,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets or sets the keyboard pan horizontal step (fraction of plot area width).
         /// </summary>
-        /// <value>The keyboard pan horizontal step.</value>
+        /// <value> The keyboard pan horizontal step. </value>
         public double KeyboardPanHorizontalStep
         {
             get
@@ -481,7 +505,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets or sets the keyboard pan vertical step size (fraction of plot area height).
         /// </summary>
-        /// <value>The keyboard pan vertical step.</value>
+        /// <value> The keyboard pan vertical step. </value>
         public double KeyboardPanVerticalStep
         {
             get
@@ -706,7 +730,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets or sets the legend position.
         /// </summary>
-        /// <value>The legend position.</value>
+        /// <value> The legend position. </value>
         public LegendPosition LegendPosition
         {
             get
@@ -819,7 +843,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets or sets the model.
         /// </summary>
-        /// <value>The model.</value>
+        /// <value> The model. </value>
         public PlotModel Model
         {
             get
@@ -834,9 +858,26 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        ///   Gets or sets the pan cursor.
+        /// </summary>
+        /// <value> The pan cursor. </value>
+        public Cursor PanCursor
+        {
+            get
+            {
+                return (Cursor)this.GetValue(PanCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(PanCursorProperty, value);
+            }
+        }
+
+        /// <summary>
         ///   Gets or sets the color of the plot area border.
         /// </summary>
-        /// <value>The color of the plot area border.</value>
+        /// <value> The color of the plot area border. </value>
         public Color PlotAreaBorderColor
         {
             get
@@ -853,7 +894,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets or sets the thickness of the plot area border.
         /// </summary>
-        /// <value>The thickness of the plot area border.</value>
+        /// <value> The thickness of the plot area border. </value>
         public double PlotAreaBorderThickness
         {
             get
@@ -870,7 +911,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets or sets the plot margins.
         /// </summary>
-        /// <value>The plot margins.</value>
+        /// <value> The plot margins. </value>
         public Thickness PlotMargins
         {
             get
@@ -903,7 +944,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets or sets the reset axes gesture.
         /// </summary>
-        /// <value>The reset axes gesture.</value>
+        /// <value> The reset axes gesture. </value>
         public InputGesture ResetAxesGesture
         {
             get
@@ -920,7 +961,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets the series.
         /// </summary>
-        /// <value>The series.</value>
+        /// <value> The series. </value>
         public ObservableCollection<Series> Series
         {
             get
@@ -932,7 +973,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets or sets the subtitle.
         /// </summary>
-        /// <value>The subtitle.</value>
+        /// <value> The subtitle. </value>
         public string Subtitle
         {
             get
@@ -997,7 +1038,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Gets or sets the title.
         /// </summary>
-        /// <value>The title.</value>
+        /// <value> The title. </value>
         public string Title
         {
             get
@@ -1076,9 +1117,43 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        ///   Gets or sets the horizontal zoom cursor.
+        /// </summary>
+        /// <value> The zoom horizontal cursor. </value>
+        public Cursor ZoomHorizontalCursor
+        {
+            get
+            {
+                return (Cursor)this.GetValue(ZoomHorizontalCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomHorizontalCursorProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the rectangle zoom cursor.
+        /// </summary>
+        /// <value> The zoom rectangle cursor. </value>
+        public Cursor ZoomRectangleCursor
+        {
+            get
+            {
+                return (Cursor)this.GetValue(ZoomRectangleCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomRectangleCursorProperty, value);
+            }
+        }
+
+        /// <summary>
         ///   Gets or sets the zoom rectangle template.
         /// </summary>
-        /// <value>The zoom rectangle template.</value>
+        /// <value> The zoom rectangle template. </value>
         public ControlTemplate ZoomRectangleTemplate
         {
             get
@@ -1089,6 +1164,23 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(ZoomRectangleTemplateProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the vertical zoom cursor.
+        /// </summary>
+        /// <value> The zoom vertical cursor. </value>
+        public Cursor ZoomVerticalCursor
+        {
+            get
+            {
+                return (Cursor)this.GetValue(ZoomVerticalCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomVerticalCursorProperty, value);
             }
         }
 

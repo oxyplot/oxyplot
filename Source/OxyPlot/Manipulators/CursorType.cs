@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OxyCursor.cs" company="OxyPlot">
+// <copyright file="CursorType.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -9,31 +9,31 @@ namespace OxyPlot
     /// <summary>
     /// The oxy cursor.
     /// </summary>
-    public enum OxyCursor
+    public enum CursorType
     {
         /// <summary>
-        ///   The arrow cursor.
+        /// The default cursor
         /// </summary>
-        Arrow, 
+        Default = 0,
 
         /// <summary>
-        ///   The four-headed sizing Cursor, which consists of four joined arrows that point north, south, east, and west.
+        /// The pan cursor
         /// </summary>
-        SizeAll, 
+        Pan,
 
         /// <summary>
-        ///   The two-headed northwest/southeast sizing cursor.
+        /// The zoom rectangle cursor
         /// </summary>
-        SizeNWSE, 
+        ZoomRectangle,
 
         /// <summary>
-        ///   The crosshair cursor.
+        /// The horizontal zoom cursor
         /// </summary>
-        Cross, 
+        ZoomHorizontal,
 
         /// <summary>
-        ///   The invisible cursor.
+        /// The vertical zoom cursor
         /// </summary>
-        None
+        ZoomVertical
     }
 }
