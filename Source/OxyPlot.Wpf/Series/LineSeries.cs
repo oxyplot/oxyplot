@@ -26,7 +26,10 @@ namespace OxyPlot.Wpf
         ///   The line join property.
         /// </summary>
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
-            "LineJoin", typeof(OxyPenLineJoin), typeof(LineSeries), new PropertyMetadata(OxyPenLineJoin.Miter, AppearanceChanged));
+            "LineJoin", 
+            typeof(OxyPenLineJoin), 
+            typeof(LineSeries), 
+            new PropertyMetadata(OxyPenLineJoin.Miter, AppearanceChanged));
 
         /// <summary>
         ///   The line style property.
@@ -63,13 +66,19 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeThicknessProperty =
             DependencyProperty.Register(
-                "MarkerStrokeThickness", typeof(double), typeof(LineSeries), new PropertyMetadata(1.0, AppearanceChanged));
+                "MarkerStrokeThickness", 
+                typeof(double), 
+                typeof(LineSeries), 
+                new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         ///   The marker type property.
         /// </summary>
         public static readonly DependencyProperty MarkerTypeProperty = DependencyProperty.Register(
-            "MarkerType", typeof(MarkerType), typeof(LineSeries), new PropertyMetadata(MarkerType.None, AppearanceChanged));
+            "MarkerType", 
+            typeof(MarkerType), 
+            typeof(LineSeries), 
+            new PropertyMetadata(MarkerType.None, AppearanceChanged));
 
         /// <summary>
         ///   The minimum segment length property.
@@ -96,7 +105,16 @@ namespace OxyPlot.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "LineSeries" /> class.
+        ///   Initializes static members of the <see cref="LineSeries" /> class.
+        /// </summary>
+        static LineSeries()
+        {
+            CanTrackerInterpolatePointsProperty.OverrideMetadata(
+                typeof(LineSeries), new PropertyMetadata(true, AppearanceChanged));
+        }
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="LineSeries" /> class.
         /// </summary>
         public LineSeries()
         {
@@ -301,13 +319,12 @@ namespace OxyPlot.Wpf
 
         #endregion
 
-        #region Public Methods
+        #region Public Methods and Operators
 
         /// <summary>
         /// The create model.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns>The series.</returns>
         public override OxyPlot.Series CreateModel()
         {
             this.SynchronizeProperties(this.internalSeries);
@@ -322,7 +339,7 @@ namespace OxyPlot.Wpf
         /// The synchronize properties.
         /// </summary>
         /// <param name="series">
-        /// The series.
+        /// The series. 
         /// </param>
         protected override void SynchronizeProperties(OxyPlot.ISeries series)
         {

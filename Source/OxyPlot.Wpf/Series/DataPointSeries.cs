@@ -17,6 +17,16 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
+        /// The can tracker interpolate points property.
+        /// </summary>
+        public static readonly DependencyProperty CanTrackerInterpolatePointsProperty =
+            DependencyProperty.Register(
+                "CanTrackerInterpolatePoints", 
+                typeof(bool), 
+                typeof(DataPointSeries), 
+                new PropertyMetadata(false, AppearanceChanged));
+
+        /// <summary>
         ///   The data field x property.
         /// </summary>
         public static readonly DependencyProperty DataFieldXProperty = DependencyProperty.Register(
@@ -31,6 +41,22 @@ namespace OxyPlot.Wpf
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether the tracker can interpolate points.
+        /// </summary>
+        public bool CanTrackerInterpolatePoints
+        {
+            get
+            {
+                return (bool)this.GetValue(CanTrackerInterpolatePointsProperty);
+            }
+
+            set
+            {
+                this.SetValue(CanTrackerInterpolatePointsProperty, value);
+            }
+        }
 
         /// <summary>
         ///   Gets or sets DataFieldX.
@@ -72,10 +98,10 @@ namespace OxyPlot.Wpf
         /// The on items source changed.
         /// </summary>
         /// <param name="oldValue">
-        /// The old value.
+        /// The old value. 
         /// </param>
         /// <param name="newValue">
-        /// The new value.
+        /// The new value. 
         /// </param>
         protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
@@ -87,7 +113,7 @@ namespace OxyPlot.Wpf
         /// The synchronize properties.
         /// </summary>
         /// <param name="series">
-        /// The series.
+        /// The series. 
         /// </param>
         protected override void SynchronizeProperties(OxyPlot.ISeries series)
         {
@@ -96,6 +122,7 @@ namespace OxyPlot.Wpf
             s.ItemsSource = this.ItemsSource;
             s.DataFieldX = this.DataFieldX;
             s.DataFieldY = this.DataFieldY;
+            s.CanTrackerInterpolatePoints = this.CanTrackerInterpolatePoints;
         }
 
         #endregion
