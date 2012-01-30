@@ -58,7 +58,7 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets a value indicating whether CanTrackerInterpolatePoints.
+        ///   Gets or sets a value indicating whether the tracker can interpolate points.
         /// </summary>
         public bool CanTrackerInterpolatePoints { get; set; }
 
