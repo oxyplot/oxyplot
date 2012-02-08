@@ -1040,6 +1040,7 @@ namespace OxyPlot
             using (var ms = new MemoryStream())
             {
                 var svgrc = new SvgRenderContext(ms, width, height, isDocument);
+                this.Update();
                 this.Render(svgrc);
                 svgrc.Complete();
                 svgrc.Flush();
