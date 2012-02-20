@@ -69,7 +69,7 @@ namespace OxyPlot
         /// <returns>
         /// A double without noise.
         /// </returns>
-        public static double RemoveNoise(this double value, int maxDigits = 8)
+        public static double RemoveNoise(this double value)
         {
             return (double)((decimal)value);
         }
@@ -86,7 +86,7 @@ namespace OxyPlot
         /// <returns>
         /// A double without noise.
         /// </returns>
-        public static double RemoveNoise2(this double value, int maxDigits = 8)
+        public static double RemoveNoise(this double value, int maxDigits = 8)
         {
             return double.Parse(value.ToString("e" + maxDigits));
         }
