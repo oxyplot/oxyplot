@@ -2,9 +2,6 @@
 // <copyright file="BarSeries.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   The BarSeries is used to create clustered or stacked bar charts.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -12,40 +9,44 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
 
-    public enum LabelPlacement { Outside, Inside, Middle, Base }
+    /// <summary>
+    /// Placement of the labels.
+    /// </summary>
+    public enum LabelPlacement
+    {
+        /// <summary>
+        /// Placed outside the bar.
+        /// </summary>
+        Outside,
+
+        /// <summary>
+        /// Placed inside the bar.
+        /// </summary>
+        Inside,
+
+        /// <summary>
+        /// Placed inside in the middle/center of the bar.
+        /// </summary>
+        Middle,
+
+        /// <summary>
+        /// Placed inside at the base of the bar.
+        /// </summary>
+        Base
+    }
 
     /// <summary>
     /// The BarSeries is used to create clustered or stacked bar charts.
     /// </summary>
     /// <remarks>
-    /// A bar chart or bar graph is a chart with rectangular bars with lengths proportional to the values that they represent. 
-    ///   The bars can be plotted vertically or horizontally.
-    ///   http://en.wikipedia.org/wiki/Bar_chart
-    ///   The BarSeries requires a CategoryAxis. 
-    ///   The Values collection must contain the same number of elements as the number of categories in the CategoryAxis.
-    ///   You can define a ItemsSource and ValueField, or add the Values manually.
-    ///   Use stacked bar charts with caution... http://lilt.ilstu.edu/gmklass/pos138/datadisplay/badchart.htm
+    /// A bar chart or bar graph is a chart with rectangular bars with lengths proportional to the values that they represent. The bars can be plotted vertically or horizontally. http://en.wikipedia.org/wiki/Bar_chart The BarSeries requires a CategoryAxis. The Values collection must contain the same number of elements as the number of categories in the CategoryAxis. You can define a ItemsSource and ValueField, or add the Values manually. Use stacked bar charts with caution... http://lilt.ilstu.edu/gmklass/pos138/datadisplay/badchart.htm
     /// </remarks>
-    public class BarSeries : ItemsSeries
+    public class BarSeries : XYAxisSeries
     {
-        #region Constants and Fields
-
-        /// <summary>
-        ///   The actual rectangles for the bars.
-        /// </summary>
-        internal IList<OxyRect> ActualBarRectangles;
-
-        /// <summary>
-        ///   The values for the bars of this BarSeries.
-        /// </summary>
-        internal IList<double> InternalValues;
-
-        #endregion
-
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "BarSeries" /> class.
+        ///   Initializes a new instance of the <see cref="BarSeries" /> class.
         /// </summary>
         public BarSeries()
         {
@@ -62,35 +63,21 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the label format string.
+        ///   Gets or sets the width of the bars (as a fraction of the available width). The default value is 0.5 (50%)
         /// </summary>
-        /// <value>
-        /// The label format string.
-        /// </value>
-        public string LabelFormatString { get; set; }
-        public OxyColor LabelColor { get; set; }
-        public LabelPlacement LabelPlacement { get; set; }
-        public double LabelMargin { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the width of the bars (as a fraction of the available width).
-        ///   The default value is 0.5 (50%)
-        /// </summary>
-        /// <value>The width of the bars.</value>
+        /// <value> The width of the bars. </value>
         public double BarWidth { get; set; }
 
         /// <summary>
         ///   Gets or sets the base value.
         /// </summary>
-        /// <value>
-        ///   The base value.
-        /// </value>
+        /// <value> The base value. </value>
         public double BaseValue { get; set; }
 
         /// <summary>
         ///   Gets or sets the color of the interior of the bars.
         /// </summary>
-        /// <value>The color.</value>
+        /// <value> The color. </value>
         public OxyColor FillColor { get; set; }
 
         /// <summary>
@@ -99,21 +86,42 @@ namespace OxyPlot
         public bool IsStacked { get; set; }
 
         /// <summary>
+        /// Gets or sets LabelColor.
+        /// </summary>
+        public OxyColor LabelColor { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the label format string.
+        /// </summary>
+        /// <value> The label format string. </value>
+        public string LabelFormatString { get; set; }
+
+        /// <summary>
+        /// Gets or sets LabelMargin.
+        /// </summary>
+        public double LabelMargin { get; set; }
+
+        /// <summary>
+        /// Gets or sets LabelPlacement.
+        /// </summary>
+        public LabelPlacement LabelPlacement { get; set; }
+
+        /// <summary>
         ///   Gets or sets the color of the interior of the bars when the value is negative.
         /// </summary>
-        /// <value>The color.</value>
+        /// <value> The color. </value>
         public OxyColor NegativeFillColor { get; set; }
 
         /// <summary>
         ///   Gets or sets the color of the border around the bars.
         /// </summary>
-        /// <value>The color of the stroke.</value>
+        /// <value> The color of the stroke. </value>
         public OxyColor StrokeColor { get; set; }
 
         /// <summary>
         ///   Gets or sets the thickness of the bar border strokes.
         /// </summary>
-        /// <value>The stroke thickness.</value>
+        /// <value> The stroke thickness. </value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
@@ -124,7 +132,7 @@ namespace OxyPlot
         /// <summary>
         ///   Gets or sets the values.
         /// </summary>
-        /// <value>The values.</value>
+        /// <value> The values. </value>
         public IList<double> Values
         {
             get
@@ -140,13 +148,27 @@ namespace OxyPlot
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        ///   Gets or sets the actual rectangles for the bars.
+        /// </summary>
+        internal IList<OxyRect> ActualBarRectangles { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the values for the bars of this BarSeries.
+        /// </summary>
+        internal IList<double> InternalValues { get; set; }
+
+        #endregion
+
         #region Public Methods
 
         /// <summary>
         /// Gets the category axis.
         /// </summary>
         /// <returns>
-        /// The category axis.
+        /// The category axis. 
         /// </returns>
         public CategoryAxis GetCategoryAxis()
         {
@@ -157,13 +179,13 @@ namespace OxyPlot
         /// Gets the point in the dataset that is nearest the specified point.
         /// </summary>
         /// <param name="point">
-        /// The point.
+        /// The point. 
         /// </param>
         /// <param name="interpolate">
-        /// The interpolate.
+        /// The interpolate. 
         /// </param>
         /// <returns>
-        /// A TrackerHitResult for the current hit.
+        /// A TrackerHitResult for the current hit. 
         /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
@@ -193,7 +215,7 @@ namespace OxyPlot
         /// Gets the value axis.
         /// </summary>
         /// <returns>
-        /// The value axis.
+        /// The value axis. 
         /// </returns>
         public IAxis GetValueAxis()
         {
@@ -204,10 +226,10 @@ namespace OxyPlot
         /// Gets the value from the specified X.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The x. 
         /// </param>
         /// <returns>
-        /// The value.
+        /// The value. 
         /// </returns>
         public double? GetValueFromX(double x)
         {
@@ -218,13 +240,13 @@ namespace OxyPlot
         /// Checks if the specified value is valid.
         /// </summary>
         /// <param name="v">
-        /// The value.
+        /// The value. 
         /// </param>
         /// <param name="yaxis">
-        /// The y axis.
+        /// The y axis. 
         /// </param>
         /// <returns>
-        /// True if the value is valid.
+        /// True if the value is valid. 
         /// </returns>
         public virtual bool IsValidPoint(double v, IAxis yaxis)
         {
@@ -235,10 +257,10 @@ namespace OxyPlot
         /// Renders the Series on the specified rendering context.
         /// </summary>
         /// <param name="rc">
-        /// The rendering context.
+        /// The rendering context. 
         /// </param>
         /// <param name="model">
-        /// The model.
+        /// The model. 
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
@@ -279,12 +301,12 @@ namespace OxyPlot
                 {
                     baseValue = v < 0 ? categoryAxis.NegativeBaseValue[i] : categoryAxis.PositiveBaseValue[i];
                 }
-                
+
                 if (double.IsNaN(baseValue))
                 {
                     baseValue = this.BaseValue;
                 }
-                
+
                 double topValue = this.IsStacked ? baseValue + v : v;
                 int numberOfSeries = this.IsStacked ? 1 : categoryAxis.AttachedSeriesCount;
                 OxyRect rect;
@@ -298,11 +320,14 @@ namespace OxyPlot
                     p1.X = (int)p1.X;
                     p1.Y = (int)p1.Y;
 
-                    if ((v >= 0 && !double.IsNaN(categoryAxis.PositiveBaseValueScreen[i])) || v < 0 && !double.IsNaN(categoryAxis.NegativeBaseValueScreen[i]))
+                    if ((v >= 0 && !double.IsNaN(categoryAxis.PositiveBaseValueScreen[i]))
+                        || (v < 0 && !double.IsNaN(categoryAxis.NegativeBaseValueScreen[i])))
                     {
                         if (this.IsStacked)
                         {
-                            p0.Y = v < 0 ? categoryAxis.NegativeBaseValueScreen[i] : categoryAxis.PositiveBaseValueScreen[i];
+                            p0.Y = v < 0
+                                       ? categoryAxis.NegativeBaseValueScreen[i]
+                                       : categoryAxis.PositiveBaseValueScreen[i];
                         }
                         else
                         {
@@ -339,11 +364,14 @@ namespace OxyPlot
                     p1.X = (int)p1.X;
                     p1.Y = (int)p1.Y;
 
-                    if ((v >= 0 && !double.IsNaN(categoryAxis.PositiveBaseValueScreen[i])) || v < 0 && !double.IsNaN(categoryAxis.NegativeBaseValueScreen[i]))
+                    if ((v >= 0 && !double.IsNaN(categoryAxis.PositiveBaseValueScreen[i]))
+                        || (v < 0 && !double.IsNaN(categoryAxis.NegativeBaseValueScreen[i])))
                     {
                         if (this.IsStacked)
                         {
-                            p0.X = v < 0 ? categoryAxis.NegativeBaseValueScreen[i] : categoryAxis.PositiveBaseValueScreen[i];
+                            p0.X = v < 0
+                                       ? categoryAxis.NegativeBaseValueScreen[i]
+                                       : categoryAxis.PositiveBaseValueScreen[i];
                         }
                         else
                         {
@@ -385,18 +413,18 @@ namespace OxyPlot
 
                 if (this.LabelFormatString != null)
                 {
-                    var s = StringHelper.Format(this.ActualCulture, LabelFormatString, this.GetItem(i), v);
+                    var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, this.GetItem(i), v);
                     HorizontalTextAlign ha;
                     VerticalTextAlign va;
-                    ScreenPoint pt = new ScreenPoint();
+                    ScreenPoint pt;
                     if (isVertical)
                     {
                         ha = HorizontalTextAlign.Center;
                         va = VerticalTextAlign.Bottom;
-                        switch (LabelPlacement)
+                        switch (this.LabelPlacement)
                         {
                             case LabelPlacement.Inside:
-                                pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top + LabelMargin);
+                                pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top + this.LabelMargin);
                                 va = VerticalTextAlign.Top;
                                 break;
                             case LabelPlacement.Middle:
@@ -404,22 +432,20 @@ namespace OxyPlot
                                 va = VerticalTextAlign.Middle;
                                 break;
                             case LabelPlacement.Base:
-                                pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Bottom - LabelMargin);
+                                pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Bottom - this.LabelMargin);
                                 break;
-                            case LabelPlacement.Outside:
-                            default:
-                                pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top - LabelMargin);
+                            default: // outside
+                                pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top - this.LabelMargin);
                                 break;
                         }
                     }
                     else
                     {
-                        ha = HorizontalTextAlign.Left;
                         va = VerticalTextAlign.Middle;
-                        switch (LabelPlacement)
+                        switch (this.LabelPlacement)
                         {
                             case LabelPlacement.Inside:
-                                pt = new ScreenPoint(rect.Right - LabelMargin, (rect.Top + rect.Bottom) / 2);
+                                pt = new ScreenPoint(rect.Right - this.LabelMargin, (rect.Top + rect.Bottom) / 2);
                                 ha = HorizontalTextAlign.Right;
                                 break;
                             case LabelPlacement.Middle:
@@ -427,18 +453,21 @@ namespace OxyPlot
                                 ha = HorizontalTextAlign.Center;
                                 break;
                             case LabelPlacement.Base:
-                                pt = new ScreenPoint(rect.Left + LabelMargin, (rect.Top + rect.Bottom) / 2);
+                                pt = new ScreenPoint(rect.Left + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
                                 ha = HorizontalTextAlign.Left;
                                 break;
-                            case LabelPlacement.Outside:
-                            default:
-                                pt = new ScreenPoint(rect.Right + LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            default: // Outside
+                                pt = new ScreenPoint(rect.Right + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
                                 ha = HorizontalTextAlign.Left;
                                 break;
                         }
                     }
 
-                    rc.DrawText(pt, s,
+                    if (clippingRect.Contains(pt.X, pt.Y))
+                    {
+                        rc.DrawText(
+                            pt,
+                            s,
                             this.LabelColor ?? model.TextColor,
                             model.ActualLegendFont,
                             model.LegendFontSize,
@@ -446,6 +475,7 @@ namespace OxyPlot
                             0,
                             ha,
                             va);
+                    }
                 }
 
                 i++;
@@ -461,10 +491,10 @@ namespace OxyPlot
         /// Renders the legend symbol on the specified rendering context.
         /// </summary>
         /// <param name="rc">
-        /// The rendering context.
+        /// The rendering context. 
         /// </param>
         /// <param name="legendBox">
-        /// The legend rectangle.
+        /// The legend rectangle. 
         /// </param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
@@ -487,7 +517,7 @@ namespace OxyPlot
         /// The set default values.
         /// </summary>
         /// <param name="model">
-        /// The model.
+        /// The model. 
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
@@ -569,7 +599,8 @@ namespace OxyPlot
             foreach (double v in this.Values)
             {
                 double baseValue = this.BaseValue;
-                if (ca.PositiveBaseValue != null && i < ca.PositiveBaseValue.Length && !double.IsNaN(ca.PositiveBaseValue[i]))
+                if (ca.PositiveBaseValue != null && i < ca.PositiveBaseValue.Length
+                    && !double.IsNaN(ca.PositiveBaseValue[i]))
                 {
                     baseValue = ca.PositiveBaseValue[i];
                 }
@@ -607,10 +638,10 @@ namespace OxyPlot
         /// Gets the item at the specified index.
         /// </summary>
         /// <param name="i">
-        /// The index.
+        /// The index. 
         /// </param>
         /// <returns>
-        /// The item.
+        /// The item. 
         /// </returns>
         private object GetItem(int i)
         {
