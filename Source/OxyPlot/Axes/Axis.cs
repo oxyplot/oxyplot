@@ -178,16 +178,16 @@ namespace OxyPlot
 
         /// <summary>
         ///   Gets or sets the actual maximum value of the axis.
-        ///   If Maximum is not NaN, this value will be defined by Maximum.
         ///   If ViewMaximum is not NaN, this value will be defined by ViewMaximum.
-        ///   Otherwise this value will be defined by the maximum (+padding) of the data.
+        ///   Otherwise, if Maximum is not NaN, this value will be defined by Maximum.
+        ///   Otherwise, this value will be defined by the maximum (+padding) of the data.
         /// </summary>
         public double ActualMaximum { get; protected set; }
 
         /// <summary>
         ///   Gets or sets the actual minimum value of the axis.
-        ///   If Minimum is not NaN, this value will be defined by Minimum.
         ///   If ViewMinimum is not NaN, this value will be defined by ViewMinimum.
+        ///   Otherwise, if Minimum is not NaN, this value will be defined by Minimum.
         ///   Otherwise this value will be defined by the minimum (+padding) of the data.
         /// </summary>
         public double ActualMinimum { get; protected set; }

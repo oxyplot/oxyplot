@@ -24,12 +24,12 @@ namespace OxyPlot
         /// <summary>
         ///   XY coordinate system - two perpendicular axes
         /// </summary>
-        XY, 
+        XY,
 
         /// <summary>
         ///   Cartesian coordinate system - perpendicular axes with the same scaling http://en.wikipedia.org/wiki/Cartesian_coordinate_system
         /// </summary>
-        Cartesian, 
+        Cartesian,
 
         /// <summary>
         ///   Polar coordinate system - with radial and angular axes http://en.wikipedia.org/wiki/Polar_coordinate_system
@@ -45,7 +45,7 @@ namespace OxyPlot
         /// <summary>
         ///   The inside.
         /// </summary>
-        Inside, 
+        Inside,
 
         /// <summary>
         ///   The outside.
@@ -61,57 +61,57 @@ namespace OxyPlot
         /// <summary>
         ///   The top left.
         /// </summary>
-        TopLeft, 
+        TopLeft,
 
         /// <summary>
         ///   The top center.
         /// </summary>
-        TopCenter, 
+        TopCenter,
 
         /// <summary>
         ///   The top right.
         /// </summary>
-        TopRight, 
+        TopRight,
 
         /// <summary>
         ///   The bottom left.
         /// </summary>
-        BottomLeft, 
+        BottomLeft,
 
         /// <summary>
         ///   The bottom center.
         /// </summary>
-        BottomCenter, 
+        BottomCenter,
 
         /// <summary>
         ///   The bottom right.
         /// </summary>
-        BottomRight, 
+        BottomRight,
 
         /// <summary>
         ///   The left top.
         /// </summary>
-        LeftTop, 
+        LeftTop,
 
         /// <summary>
         ///   The left middle.
         /// </summary>
-        LeftMiddle, 
+        LeftMiddle,
 
         /// <summary>
         ///   The left bottom.
         /// </summary>
-        LeftBottom, 
+        LeftBottom,
 
         /// <summary>
         ///   The right top.
         /// </summary>
-        RightTop, 
+        RightTop,
 
         /// <summary>
         ///   The right middle.
         /// </summary>
-        RightMiddle, 
+        RightMiddle,
 
         /// <summary>
         ///   The right bottom.
@@ -127,7 +127,7 @@ namespace OxyPlot
         /// <summary>
         ///   The horizontal.
         /// </summary>
-        Horizontal, 
+        Horizontal,
 
         /// <summary>
         ///   The vertical.
@@ -143,7 +143,7 @@ namespace OxyPlot
         /// <summary>
         ///   The normal.
         /// </summary>
-        Normal, 
+        Normal,
 
         /// <summary>
         ///   The reverse.
@@ -159,7 +159,7 @@ namespace OxyPlot
         /// <summary>
         ///   The left.
         /// </summary>
-        Left, 
+        Left,
 
         /// <summary>
         ///   The right.
@@ -1105,32 +1105,54 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Updates the axis transforms and intervals. This is used after pan/zoom.
+        /// Updates the axis transforms.
         /// </summary>
         public void UpdateAxisTransforms()
         {
-            // Update the transforms
+            // Update the axis transforms
             foreach (var a in this.Axes)
             {
                 a.UpdateTransform(this.PlotArea);
             }
+        }
 
-            // Set the same scaling to all axes if CartesianAxes is selected
-            if (this.PlotType == PlotType.Cartesian)
+        /// <summary>
+        /// Enforces the same scale on all axes.
+        /// </summary>
+        private void EnforceCartesianTransforms()
+        {
+            // Set the same scaling on all axes
+            double sharedScale = this.Axes.Min(a => Math.Abs(a.scale));
+            foreach (var a in this.Axes)
             {
-                double minimumScale = this.Axes.Min(a => Math.Abs(a.Scale));
-                foreach (var a in this.Axes)
-                {
-                    a.Zoom(minimumScale);
-                }
+                a.Zoom(sharedScale);
             }
 
+            sharedScale = this.Axes.Max(a => Math.Abs(a.scale));
+            foreach (var a in this.Axes)
+            {
+                a.Zoom(sharedScale);
+            }
+
+            foreach (var a in this.Axes)
+            {
+                a.UpdateTransform(this.PlotArea);
+            }
+        }
+
+        /// <summary>
+        /// Updates the intervals (major and minor step values).
+        /// </summary>
+        private void UpdateIntervals()
+        {
             // Update the intervals for all axes
             foreach (var a in this.Axes)
             {
                 a.UpdateIntervals(this.PlotArea);
             }
         }
+
+
 
         #endregion
 
@@ -1163,7 +1185,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Find the default x/y axes (first in collection)
+        /// Finds and sets the default horizontal and vertical axes (the first horizontal/vertical axes in the Axes collection).
         /// </summary>
         private void EnsureDefaultAxes()
         {
@@ -1283,7 +1305,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Resets the default color.
+        /// Resets the default color index.
         /// </summary>
         private void ResetDefaultColor()
         {
@@ -1291,7 +1313,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Update max and min values of the axes from values of all data series.
+        /// Updates maximum and minimum values of the axes from values of all data series.
         /// </summary>
         /// <param name="isDataUpdated">
         /// if set to <c>true</c> , the data has been updated. 
@@ -1305,6 +1327,7 @@ namespace OxyPlot
 
             if (isDataUpdated)
             {
+                // data has been updated, so we need to calculate the max/min of the series again
                 foreach (var s in this.VisibleSeries)
                 {
                     s.UpdateMaxMin();

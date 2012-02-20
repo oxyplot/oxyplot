@@ -438,6 +438,7 @@ namespace OxyPlot
 
             this.ViewMinimum = newMinimum;
             this.ViewMaximum = newMaximum;
+            this.UpdateActualMaxMin();
 
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan));
         }
@@ -543,17 +544,51 @@ namespace OxyPlot
         /// </param>
         public override void Zoom(double newScale)
         {
-            double sx1 = (this.ActualMaximum - this.Offset) * this.scale;
-            double sx0 = (this.ActualMinimum - this.Offset) * this.scale;
+            double sx1 = this.Transform(this.ActualMaximum);
+            double sx0 = this.Transform(this.ActualMinimum);
 
             double sgn = Math.Sign(this.scale);
             double mid = (this.ActualMaximum + this.ActualMinimum) / 2;
 
-            double dx = (this.Offset - mid) * this.scale;
+            double dx = (this.offset - mid) * this.scale;
             this.scale = sgn * newScale;
-            this.Offset = dx / this.scale + mid;
-            this.ActualMaximum = sx1 / this.scale + this.Offset;
-            this.ActualMinimum = sx0 / this.scale + this.Offset;
+            this.offset = dx / this.scale + mid;
+
+            double newMaximum = this.InverseTransform(sx1);
+            double newMinimum = this.InverseTransform(sx0);
+
+            if (newMinimum < this.AbsoluteMinimum && newMaximum > this.AbsoluteMaximum)
+            {
+                newMinimum = this.AbsoluteMinimum;
+                newMaximum = this.AbsoluteMaximum;
+            }
+            else
+            {
+                if (newMinimum < this.AbsoluteMinimum)
+                {
+                    double d = newMaximum - newMinimum;
+                    newMinimum = this.AbsoluteMinimum;
+                    newMaximum = this.AbsoluteMinimum + d;
+                    if (newMaximum > this.AbsoluteMaximum)
+                    {
+                        newMaximum = this.AbsoluteMaximum;
+                    }
+                }
+                else if (newMaximum > this.AbsoluteMaximum)
+                {
+                    double d = newMaximum - newMinimum;
+                    newMaximum = this.AbsoluteMaximum;
+                    newMinimum = this.AbsoluteMaximum - d;
+                    if (newMinimum < this.AbsoluteMinimum)
+                    {
+                        newMinimum = this.AbsoluteMinimum;
+                    }
+                }
+            }
+
+            this.ViewMaximum = newMaximum;
+            this.ViewMinimum = newMinimum;
+            this.UpdateActualMaxMin();
         }
 
         /// <summary>
@@ -572,8 +607,13 @@ namespace OxyPlot
                 return;
             }
 
-            this.ViewMinimum = Math.Max(Math.Min(x0, x1), this.AbsoluteMinimum);
-            this.ViewMaximum = Math.Min(Math.Max(x0, x1), this.AbsoluteMaximum);
+            double newMinimum = Math.Max(Math.Min(x0, x1), this.AbsoluteMinimum);
+            double newMaximum = Math.Min(Math.Max(x0, x1), this.AbsoluteMaximum);
+
+            this.ViewMinimum = newMinimum;
+            this.ViewMaximum = newMaximum;
+            this.UpdateActualMaxMin();
+
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom));
         }
 
@@ -597,8 +637,12 @@ namespace OxyPlot
             double dx1 = (this.ActualMaximum - x) * this.scale;
             this.scale *= factor;
 
-            this.ViewMinimum = Math.Max(dx0 / this.scale + x, this.AbsoluteMinimum);
-            this.ViewMaximum = Math.Min(dx1 / this.scale + x, this.AbsoluteMaximum);
+            double newMinimum = Math.Max(dx0 / this.scale + x, this.AbsoluteMinimum);
+            double newMaximum = Math.Min(dx1 / this.scale + x, this.AbsoluteMaximum);
+
+            this.ViewMinimum = newMinimum;
+            this.ViewMaximum = newMaximum;
+            this.UpdateActualMaxMin();
 
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom));
         }
@@ -773,11 +817,11 @@ namespace OxyPlot
             double da = a0 - a1;
             if (Math.Abs(da) > double.Epsilon)
             {
-                this.Offset = a0 / da * max - a1 / da * min;
+                this.offset = a0 / da * max - a1 / da * min;
             }
             else
             {
-                this.Offset = 0;
+                this.offset = 0;
             }
 
             double range = max - min;
