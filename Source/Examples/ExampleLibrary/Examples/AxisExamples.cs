@@ -29,6 +29,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("TickStyle: Inside")]
         public static PlotModel TickStyleInside()
         {
@@ -43,6 +44,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("TickStyle: Crossing")]
         public static PlotModel TickStyleCrossing()
         {
@@ -69,6 +71,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("GridLines: None")]
         public static PlotModel GridLinesNone()
         {
@@ -81,6 +84,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("GridLines: Vertical")]
         public static PlotModel GridLinesVertical()
         {
@@ -95,6 +99,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("GridLines: Horizontal")]
         public static PlotModel GridLinesHorizontal()
         {
@@ -109,6 +114,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("GridLines: Both")]
         public static PlotModel GridLinesBoth()
         {
@@ -144,6 +150,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("Axis position top/right")]
         public static PlotModel TopRight()
         {
@@ -163,6 +170,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("Axis label angle 45deg")]
         public static PlotModel Untitled()
         {
@@ -183,6 +191,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("Zero crossing axis")]
         public static PlotModel ZeroCrossing()
         {
@@ -204,6 +213,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("Reversed")]
         public static PlotModel Reversed()
         {
@@ -224,6 +234,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("Four axes")]
         public static PlotModel FourAxes()
         {
@@ -254,6 +265,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis4);
             return plotModel1;
         }
+
         [Example("Multiple panes")]
         public static PlotModel MultiplePanes()
         {
@@ -295,6 +307,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis5);
             return plotModel1;
         }
+
         [Example("Logarithmic axes")]
         public static PlotModel LogarithmicAxes()
         {
@@ -333,6 +346,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("Small numbers")]
         public static PlotModel SmallNumbers()
         {
@@ -350,6 +364,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("Default padding")]
         public static PlotModel Defaultpadding()
         {
@@ -370,6 +385,7 @@ namespace ExampleLibrary
             plotModel1.Series.Add(lineSeries1);
             return plotModel1;
         }
+
         [Example("No padding")]
         public static PlotModel Nopadding()
         {
@@ -394,6 +410,7 @@ namespace ExampleLibrary
             plotModel1.Series.Add(lineSeries1);
             return plotModel1;
         }
+
         [Example("Padding 10%")]
         public static PlotModel Padding()
         {
@@ -418,6 +435,7 @@ namespace ExampleLibrary
             plotModel1.Series.Add(lineSeries1);
             return plotModel1;
         }
+
         [Example("X-axis MinimumPadding=0.1")]
         public static PlotModel XaxisMinimumPadding()
         {
@@ -439,6 +457,7 @@ namespace ExampleLibrary
             plotModel1.Series.Add(lineSeries1);
             return plotModel1;
         }
+
         [Example("X-axis MaximumPadding=0.1")]
         public static PlotModel XaxisMaximumPadding()
         {
@@ -460,7 +479,6 @@ namespace ExampleLibrary
             plotModel1.Series.Add(lineSeries1);
             return plotModel1;
         }
-
 
         [Example("AbsoluteMinimum and AbsoluteMaximum")]
         public static PlotModel AbsoluteMinimumAndMaximum()
@@ -557,13 +575,25 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Auto adjusting margins")]
+        [Example("Auto adjusting plot margins")]
         public static PlotModel AutoAdjustingMargins()
         {
             var model = CreatePlotModel();
             model.LegendPosition = LegendPosition.RightBottom;
             model.PlotMargins = new OxyThickness(0);
             model.AutoAdjustPlotMargins = true;
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X") { TickStyle = TickStyle.Outside });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, "Y") { TickStyle = TickStyle.Outside });
+            model.Series.Add(new LineSeries("Butterfly curve") { ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
+            return model;
+        }
+
+        [Example("Manual plot margins")]
+        public static PlotModel ManualAdjustingMargins()
+        {
+            var model = CreatePlotModel();
+            model.LegendPosition = LegendPosition.RightBottom;
+            model.AutoAdjustPlotMargins = false;
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X") { TickStyle = TickStyle.Outside });
             model.Axes.Add(new LinearAxis(AxisPosition.Left, "Y") { TickStyle = TickStyle.Outside });
             model.Series.Add(new LineSeries("Butterfly curve") { ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });
@@ -631,75 +661,75 @@ namespace ExampleLibrary
         public static PlotModel PositionTier()
         {
             var plotModel1 = new PlotModel();
-            var linearAxis1 = new LinearAxis();
-            linearAxis1.Maximum = 1;
-            linearAxis1.Minimum = -1;
-            linearAxis1.Title = "PositionTier=0";
+            var linearAxis1 = new LinearAxis { Maximum = 1, Minimum = -1, Title = "PositionTier=0" };
             plotModel1.Axes.Add(linearAxis1);
-            var linearAxis2 = new LinearAxis();
-            linearAxis2.AxislineStyle = LineStyle.Solid;
-            linearAxis2.Maximum = 2;
-            linearAxis2.Minimum = -2;
-            linearAxis2.PositionTier = 1;
-            linearAxis2.Title = "PositionTier=1";
+            var linearAxis2 = new LinearAxis
+                {
+                    AxislineStyle = LineStyle.Solid,
+                    Maximum = 2,
+                    Minimum = -2,
+                    PositionTier = 1,
+                    Title = "PositionTier=1"
+                };
             plotModel1.Axes.Add(linearAxis2);
-            var linearAxis3 = new LinearAxis();
-            linearAxis3.Maximum = 1;
-            linearAxis3.Minimum = -1;
-            linearAxis3.Position = AxisPosition.Right;
-            linearAxis3.Title = "PositionTier=0";
+            var linearAxis3 = new LinearAxis
+                { Maximum = 1, Minimum = -1, Position = AxisPosition.Right, Title = "PositionTier=0" };
             plotModel1.Axes.Add(linearAxis3);
-            var linearAxis4 = new LinearAxis();
-            linearAxis4.AxislineStyle = LineStyle.Solid;
-            linearAxis4.Maximum = 2;
-            linearAxis4.Minimum = -2;
-            linearAxis4.Position = AxisPosition.Right;
-            linearAxis4.PositionTier = 1;
-            linearAxis4.Title = "PositionTier=1";
+            var linearAxis4 = new LinearAxis
+                {
+                    AxislineStyle = LineStyle.Solid,
+                    Maximum = 2,
+                    Minimum = -2,
+                    Position = AxisPosition.Right,
+                    PositionTier = 1,
+                    Title = "PositionTier=1"
+                };
             plotModel1.Axes.Add(linearAxis4);
-            var linearAxis5 = new LinearAxis();
-            linearAxis5.Maximum = 1;
-            linearAxis5.Minimum = -1;
-            linearAxis5.Position = AxisPosition.Top;
-            linearAxis5.Title = "PositionTier=0";
+            var linearAxis5 = new LinearAxis
+                { Maximum = 1, Minimum = -1, Position = AxisPosition.Top, Title = "PositionTier=0" };
             plotModel1.Axes.Add(linearAxis5);
-            var linearAxis6 = new LinearAxis();
-            linearAxis6.AxislineStyle = LineStyle.Solid;
-            linearAxis6.Maximum = 2;
-            linearAxis6.Minimum = -2;
-            linearAxis6.Position = AxisPosition.Top;
-            linearAxis6.PositionTier = 1;
-            linearAxis6.Title = "PositionTier=1";
+            var linearAxis6 = new LinearAxis
+                {
+                    AxislineStyle = LineStyle.Solid,
+                    Maximum = 2,
+                    Minimum = -2,
+                    Position = AxisPosition.Top,
+                    PositionTier = 1,
+                    Title = "PositionTier=1"
+                };
             plotModel1.Axes.Add(linearAxis6);
-            var linearAxis7 = new LinearAxis();
-            linearAxis7.AxislineStyle = LineStyle.Solid;
-            linearAxis7.Maximum = 10;
-            linearAxis7.Minimum = -10;
-            linearAxis7.Position = AxisPosition.Top;
-            linearAxis7.PositionTier = 2;
-            linearAxis7.Title = "PositionTier=2";
+            var linearAxis7 = new LinearAxis
+                {
+                    AxislineStyle = LineStyle.Solid,
+                    Maximum = 10,
+                    Minimum = -10,
+                    Position = AxisPosition.Top,
+                    PositionTier = 2,
+                    Title = "PositionTier=2"
+                };
             plotModel1.Axes.Add(linearAxis7);
-            var linearAxis8 = new LinearAxis();
-            linearAxis8.Maximum = 1;
-            linearAxis8.Minimum = -1;
-            linearAxis8.Position = AxisPosition.Bottom;
-            linearAxis8.Title = "PositionTier=0";
+            var linearAxis8 = new LinearAxis
+                { Maximum = 1, Minimum = -1, Position = AxisPosition.Bottom, Title = "PositionTier=0" };
             plotModel1.Axes.Add(linearAxis8);
-            var linearAxis9 = new LinearAxis();
-            linearAxis9.AxislineStyle = LineStyle.Solid;
-            linearAxis9.Maximum = 2;
-            linearAxis9.Minimum = -2;
-            linearAxis9.Position = AxisPosition.Bottom;
-            linearAxis9.PositionTier = 1;
-            linearAxis9.Title = "PositionTier=1";
+            var linearAxis9 = new LinearAxis
+                {
+                    AxislineStyle = LineStyle.Solid,
+                    Maximum = 2,
+                    Minimum = -2,
+                    Position = AxisPosition.Bottom,
+                    PositionTier = 1,
+                    Title = "PositionTier=1"
+                };
             plotModel1.Axes.Add(linearAxis9);
-            var linearAxis10 = new LinearAxis();
-            linearAxis10.AxislineStyle = LineStyle.Solid;
-            linearAxis10.Maximum = 10;
-            linearAxis10.Minimum = -10;
-            linearAxis10.Position = AxisPosition.Bottom;
-            linearAxis10.PositionTier = 2;
-            linearAxis10.Title = "PositionTier=2";
+            var linearAxis10 = new LinearAxis
+                {
+                    AxislineStyle = LineStyle.Solid,
+                    Maximum = 10,
+                    Minimum = -10,
+                    Position = AxisPosition.Bottom,
+                    PositionTier = 2,
+                    Title = "PositionTier=2"
+                };
             plotModel1.Axes.Add(linearAxis10);
             return plotModel1;
         }
