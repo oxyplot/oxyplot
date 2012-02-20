@@ -11,7 +11,7 @@ namespace OxyPlot
     /// <summary>
     /// Abstract base class for Series that can contains items.
     /// </summary>
-    public abstract class ItemsSeries : XYAxisSeries
+    public abstract class ItemsSeries : Series
     {
         #region Public Properties
 

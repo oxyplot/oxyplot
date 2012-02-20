@@ -20,7 +20,7 @@ namespace OxyPlot
     /// The arc length/central angle/area of each slice is proportional to the quantity it represents.
     ///   http://en.wikipedia.org/wiki/Pie_chart
     /// </remarks>
-    public class PieSeries : Series
+    public class PieSeries : ItemsSeries
     {
         #region Constants and Fields
 
@@ -122,12 +122,6 @@ namespace OxyPlot
         ///   Gets or sets IsExplodedField.
         /// </summary>
         public string IsExplodedField { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the items source.
-        /// </summary>
-        /// <value>The items source.</value>
-        public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
         ///   Gets or sets LabelField.

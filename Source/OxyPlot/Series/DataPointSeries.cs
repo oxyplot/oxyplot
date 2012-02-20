@@ -31,7 +31,7 @@ namespace OxyPlot
     /// <summary>
     /// Base class for series that contain a collection of IDataPoints.
     /// </summary>
-    public abstract class DataPointSeries : ItemsSeries
+    public abstract class DataPointSeries : XYAxisSeries
     {
         #region Constants and Fields
 
