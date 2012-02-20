@@ -14,7 +14,7 @@ namespace OxyPlot
     /// <summary>
     /// Abstract base class for Series that contains an X-axis and Y-axis
     /// </summary>
-    public abstract class XYAxisSeries : Series
+    public abstract class XYAxisSeries : ItemsSeries
     {
         #region Public Properties
 

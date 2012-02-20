@@ -17,7 +17,7 @@ namespace OxyPlot
     /// <remarks>
     /// http://www.mathworks.com/help/toolbox/finance/highlowfts.html
     /// </remarks>
-    public class HighLowSeries : ItemsSeries
+    public class HighLowSeries : XYAxisSeries
     {
         #region Constants and Fields
 
