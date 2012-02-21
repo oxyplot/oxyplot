@@ -228,6 +228,18 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Determines whether the specified point is inside the rectangle.
+        /// </summary>
+        /// <param name="p">The point.</param>
+        /// <returns>
+        /// <c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.
+        /// </returns>
+        public bool Contains(ScreenPoint p)
+        {
+            return Contains(p.x, p.y);
+        }
+        
+        /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
