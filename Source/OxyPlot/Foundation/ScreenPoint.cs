@@ -41,10 +41,10 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="ScreenPoint"/> struct.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The x. 
         /// </param>
         /// <param name="y">
-        /// The y.
+        /// The y. 
         /// </param>
         public ScreenPoint(double x, double y)
         {
@@ -59,9 +59,7 @@ namespace OxyPlot
         /// <summary>
         ///   Gets or sets the X.
         /// </summary>
-        /// <value>
-        ///   The X.
-        /// </value>
+        /// <value> The X. </value>
         public double X
         {
             get
@@ -78,9 +76,7 @@ namespace OxyPlot
         /// <summary>
         ///   Gets or sets the Y.
         /// </summary>
-        /// <value>
-        ///   The Y.
-        /// </value>
+        /// <value> The Y. </value>
         public double Y
         {
             get
@@ -96,16 +92,64 @@ namespace OxyPlot
 
         #endregion
 
+        #region Operators
+
+        /// <summary>
+        ///   Implements the operator +.
+        /// </summary>
+        /// <param name="p1"> The p1. </param>
+        /// <param name="p2"> The p2. </param>
+        /// <returns> The result of the operator. </returns>
+        public static ScreenVector operator +(ScreenPoint p1, ScreenPoint p2)
+        {
+            return new ScreenVector(p1.x + p2.x, p1.y + p2.y);
+        }
+
+        /// <summary>
+        ///   Implements the operator +.
+        /// </summary>
+        /// <param name="p1"> The p1. </param>
+        /// <param name="p2"> The p2. </param>
+        /// <returns> The result of the operator. </returns>
+        public static ScreenPoint operator +(ScreenPoint p1, ScreenVector p2)
+        {
+            return new ScreenPoint(p1.x + p2.x, p1.y + p2.y);
+        }
+
+        /// <summary>
+        ///   Implements the operator -.
+        /// </summary>
+        /// <param name="p1"> The p1. </param>
+        /// <param name="p2"> The p2. </param>
+        /// <returns> The result of the operator. </returns>
+        public static ScreenVector operator -(ScreenPoint p1, ScreenPoint p2)
+        {
+            return new ScreenVector(p1.x - p2.x, p1.y - p2.y);
+        }
+
+        /// <summary>
+        ///   Implements the operator -.
+        /// </summary>
+        /// <param name="p1"> The p1. </param>
+        /// <param name="p2"> The p2. </param>
+        /// <returns> The result of the operator. </returns>
+        public static ScreenPoint operator -(ScreenPoint p1, ScreenVector p2)
+        {
+            return new ScreenPoint(p1.x - p2.x, p1.y - p2.y);
+        }
+
+        #endregion
+        
         #region Public Methods
 
         /// <summary>
         /// Gets the distances to the specified point.
         /// </summary>
         /// <param name="point">
-        /// The point.
+        /// The point. 
         /// </param>
         /// <returns>
-        /// The distance.
+        /// The distance. 
         /// </returns>
         public double DistanceTo(ScreenPoint point)
         {
@@ -118,10 +162,10 @@ namespace OxyPlot
         /// Gets the squared distance to the specified point.
         /// </summary>
         /// <param name="point">
-        /// The point.
+        /// The point. 
         /// </param>
         /// <returns>
-        /// The squared distance.
+        /// The squared distance. 
         /// </returns>
         public double DistanceToSquared(ScreenPoint point)
         {
@@ -134,7 +178,7 @@ namespace OxyPlot
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="System.String"/> that represents this instance. 
         /// </returns>
         public override string ToString()
         {

@@ -52,6 +52,32 @@ namespace OxyPlot
             return result;
         }
 
+        /// <summary>
+        /// Gets the centroid of the specified polygon.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <returns>The centroid.</returns>
+        public static ScreenPoint GetCentroid(IList<ScreenPoint> points)
+        {
+            double cx = 0;
+            double cy = 0;
+            double a = 0;
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                int i1=(i+1)%points.Count;
+                double da = points[i].x * points[i1].y - points[i1].x * points[i].y;
+                cx += (points[i].x + points[i1].x) * da;
+                cy += (points[i].y + points[i1].y) * da;
+                a += da;
+            }
+
+            a *= 0.5;
+            cx /= 6 * a;
+            cy /= 6 * a;
+            return new ScreenPoint(cx, cy);
+        }
+
         #endregion
     }
 }

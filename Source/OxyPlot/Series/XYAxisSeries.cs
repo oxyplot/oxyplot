@@ -201,9 +201,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the clipping rect.
+        /// Gets the clipping rectangle.
         /// </summary>
         /// <returns>
+        /// The clipping rectangle.
         /// </returns>
         protected OxyRect GetClippingRect()
         {

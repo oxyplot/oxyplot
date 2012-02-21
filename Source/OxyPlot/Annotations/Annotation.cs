@@ -126,6 +126,21 @@ namespace OxyPlot
         {
         }
 
+        /// <summary>
+        /// Gets the clipping rectangle.
+        /// </summary>
+        /// <returns>
+        /// The clipping rectangle.
+        /// </returns>
+        protected OxyRect GetClippingRect()
+        {
+            double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
+            double minY = Math.Min(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
+            double maxX = Math.Max(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);
+            double maxY = Math.Max(this.YAxis.ScreenMin.Y, this.YAxis.ScreenMax.Y);
+
+            return new OxyRect(minX, minY, maxX - minX, maxY - minY);
+        }
         #endregion
     }
 }
