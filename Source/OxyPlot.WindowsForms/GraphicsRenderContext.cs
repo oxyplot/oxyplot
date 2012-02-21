@@ -113,14 +113,14 @@ namespace OxyPlot.WindowsForms
         /// The aliased.
         /// </param>
         public override void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
-            if (stroke == null || thickness <= 0)
+            if (stroke == null || thickness <= 0 || points.Count < 2)
             {
                 return;
             }
@@ -142,7 +142,7 @@ namespace OxyPlot.WindowsForms
                     pen.LineJoin = LineJoin.Bevel;
                     break;
 
-                    // The default LineJoin is Miter
+                // The default LineJoin is Miter
             }
 
             this.g.DrawLines(pen, this.ToPoints(points));
@@ -173,14 +173,19 @@ namespace OxyPlot.WindowsForms
         /// The aliased.
         /// </param>
         public override void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
+            if (points.Count < 2)
+            {
+                return;
+            }
+
             this.g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
 
             PointF[] pts = this.ToPoints(points);
@@ -207,7 +212,7 @@ namespace OxyPlot.WindowsForms
                         pen.LineJoin = LineJoin.Bevel;
                         break;
 
-                        // The default LineJoin is Miter
+                    // The default LineJoin is Miter
                 }
 
                 this.g.DrawPolygon(pen, pts);
@@ -280,15 +285,15 @@ namespace OxyPlot.WindowsForms
         /// The maximum size of the text.
         /// </param>
         public override void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalTextAlign halign, 
-            VerticalTextAlign valign, 
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalTextAlign halign,
+            VerticalTextAlign valign,
             OxySize? maxSize)
         {
             FontStyle fs = FontStyle.Regular;
@@ -365,7 +370,7 @@ namespace OxyPlot.WindowsForms
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">The font size.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <returns></returns>
+        /// <returns>The size of the text.</returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (text == null)
@@ -389,12 +394,13 @@ namespace OxyPlot.WindowsForms
         #region Methods
 
         /// <summary>
-        /// The to brush.
+        /// Converts a fill color to a System.Drawing.Brush.
         /// </summary>
         /// <param name="fill">
-        /// The fill.
+        /// The fill color.
         /// </param>
         /// <returns>
+        /// The brush.
         /// </returns>
         private Brush ToBrush(OxyColor fill)
         {
@@ -407,12 +413,13 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// The to color.
+        /// Converts a color to a System.Drawing.Color.
         /// </summary>
         /// <param name="c">
-        /// The c.
+        /// The color.
         /// </param>
         /// <returns>
+        /// The System.Drawing.Color.
         /// </returns>
         private Color ToColor(OxyColor c)
         {
@@ -420,12 +427,13 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// The to float array.
+        /// Converts a double array to a float array.
         /// </summary>
         /// <param name="a">
         /// The a.
         /// </param>
         /// <returns>
+        /// The float array.
         /// </returns>
         private float[] ToFloatArray(double[] a)
         {
@@ -444,12 +452,13 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// The to points.
+        /// Converts a list of point to an array of PointF.
         /// </summary>
         /// <param name="points">
         /// The points.
         /// </param>
         /// <returns>
+        /// An array of points.
         /// </returns>
         private PointF[] ToPoints(IList<ScreenPoint> points)
         {
