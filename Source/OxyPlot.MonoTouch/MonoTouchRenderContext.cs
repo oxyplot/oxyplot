@@ -174,6 +174,8 @@ namespace OxyPlot.MonoTouch
 				return;
 			}
 			
+			fontFamily = GetDefaultFont(fontFamily);
+			
 			if (fontWeight >= 700)
             {
                 //fs = FontStyle.Bold;
@@ -245,6 +247,8 @@ namespace OxyPlot.MonoTouch
 				return OxySize.Empty;
 			}
 			
+			fontFamily = GetDefaultFont(fontFamily);
+			
 			var currentPosition = gctx.TextPosition;
 			
 			gctx.SelectFont(fontFamily, (float)fontSize, CGTextEncoding.MacRoman);
@@ -257,6 +261,20 @@ namespace OxyPlot.MonoTouch
 			var width = newPosition.X - currentPosition.X;
 			
 			return new OxySize(width, fontSize);
+		}
+		
+		/// <summary>
+		/// Gets the default font for IOS if the default font is Segoe UI as this font is not supported by IOS.
+		/// </summary>
+		/// <returns>
+		/// The default font of Helvetica Neue.
+		/// </returns>
+		/// <param name='fontFamily'>
+		/// Font family.
+		/// </param>
+		private string GetDefaultFont(string fontFamily)
+		{
+			return fontFamily == "Segoe UI" ? "Helvetica Neue" : fontFamily;
 		}
 		#endregion
 	}
