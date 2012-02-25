@@ -22,9 +22,6 @@ namespace MonoTouch.Demo
 			plot.PlotMargins = new OxyThickness(20);
 			plot.Background = OxyColors.LightGray;
 			
-			//Set compatible IOS font
-			PlotModel.DefaultFont = "Helvetica";
-			
 			plot.Update(true);
 			
 			var renderer = new MonoTouchRenderContext(UIGraphics.GetCurrentContext(), rect);
