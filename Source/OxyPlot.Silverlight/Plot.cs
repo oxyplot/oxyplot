@@ -32,6 +32,26 @@ namespace OxyPlot.Silverlight
         private const string PartGrid = "PART_Grid";
 
         /// <summary>
+        /// The invalidate lock.
+        /// </summary>
+        private readonly object invalidateLock = new object();
+
+        /// <summary>
+        /// The model lock.
+        /// </summary>
+        private readonly object modelLock = new object();
+
+        /// <summary>
+        /// The rendering lock.
+        /// </summary>
+        private readonly object renderingLock = new object();
+
+        /// <summary>
+        /// The update model and visuals lock.
+        /// </summary>
+        private readonly object updateModelAndVisualsLock = new object();
+
+        /// <summary>
         ///   The tracker definitions.
         /// </summary>
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
@@ -40,6 +60,11 @@ namespace OxyPlot.Silverlight
         ///   The canvas.
         /// </summary>
         private Canvas canvas;
+
+        /// <summary>
+        /// The current model.
+        /// </summary>
+        private PlotModel currentModel;
 
         /// <summary>
         ///   The current tracker.
@@ -55,6 +80,11 @@ namespace OxyPlot.Silverlight
         ///   The internal model.
         /// </summary>
         private PlotModel internalModel;
+
+        /// <summary>
+        ///   Flag to update data when the plot has been invalidated.
+        /// </summary>
+        private bool invalidateUpdatesData;
 
         /// <summary>
         ///   The is plot invalidated.
@@ -85,11 +115,6 @@ namespace OxyPlot.Silverlight
         ///   The touch zoom manipulator.
         /// </summary>
         private ZoomManipulator touchZoom;
-
-        /// <summary>
-        ///   Data has been updated.
-        /// </summary>
-        private bool updateDataFlag;
 
         /// <summary>
         ///   The zoom control.
@@ -129,22 +154,22 @@ namespace OxyPlot.Silverlight
             /// <summary>
             ///   The left.
             /// </summary>
-            Left, 
+            Left,
 
             /// <summary>
             ///   The middle.
             /// </summary>
-            Middle, 
+            Middle,
 
             /// <summary>
             ///   The right.
             /// </summary>
-            Right, 
+            Right,
 
             /// <summary>
             ///   The x button 1.
             /// </summary>
-            XButton1, 
+            XButton1,
 
             /// <summary>
             ///   The x button 2.
@@ -254,10 +279,10 @@ namespace OxyPlot.Silverlight
         /// </param>
         public void InvalidatePlot(bool updateData = true)
         {
-            lock (this)
+            lock (this.invalidateLock)
             {
                 this.isPlotInvalidated = true;
-                this.updateDataFlag = this.updateDataFlag || updateData;
+                this.invalidateUpdatesData = this.invalidateUpdatesData || updateData;
             }
         }
 
@@ -596,7 +621,7 @@ namespace OxyPlot.Silverlight
                     break;
             }
 
-            if (dx != 0 || dy != 0)
+            if (!dx.IsZero() || !dy.IsZero())
             {
                 dx = dx * this.ActualModel.PlotArea.Width * this.KeyboardPanHorizontalStep;
                 dy = dy * this.ActualModel.PlotArea.Height * this.KeyboardPanVerticalStep;
@@ -612,7 +637,7 @@ namespace OxyPlot.Silverlight
                 e.Handled = true;
             }
 
-            if (zoom != 0)
+            if (!zoom.IsZero())
             {
                 if (control)
                 {
@@ -675,7 +700,8 @@ namespace OxyPlot.Silverlight
             this.touchZoom.Delta(
                 new ManipulationEventArgs(position.ToScreenPoint())
                     {
-                       ScaleX = e.DeltaManipulation.Scale.X, ScaleY = e.DeltaManipulation.Scale.Y 
+                        ScaleX = e.DeltaManipulation.Scale.X,
+                        ScaleY = e.DeltaManipulation.Scale.Y
                     });
             e.Handled = true;
         }
@@ -925,18 +951,16 @@ namespace OxyPlot.Silverlight
         /// </param>
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
-            lock (this)
+            lock (this.renderingLock)
             {
                 if (this.isPlotInvalidated)
                 {
                     this.isPlotInvalidated = false;
                     if (this.ActualWidth > 0 && this.ActualHeight > 0)
                     {
-                        this.UpdateModel(this.updateDataFlag);
-                        this.updateDataFlag = false;
+                        this.UpdateModelAndVisuals(this.invalidateUpdatesData);
+                        this.invalidateUpdatesData = false;
                     }
-
-                    this.UpdateVisuals();
                 }
             }
         }
@@ -1047,6 +1071,26 @@ namespace OxyPlot.Silverlight
         /// </summary>
         private void OnModelChanged()
         {
+            lock (this.modelLock)
+            {
+                if (this.currentModel != null)
+                {
+                    this.currentModel.PlotControl = null;
+                }
+
+                if (this.Model != null)
+                {
+                    if (this.Model.PlotControl != null)
+                    {
+                        throw new InvalidOperationException(
+                            "This PlotModel is already in use by some other plot control.");
+                    }
+
+                    this.Model.PlotControl = this;
+                    this.currentModel = this.Model;
+                }
+            }
+
             this.InvalidatePlot();
         }
 
@@ -1094,7 +1138,7 @@ namespace OxyPlot.Silverlight
         /// </param>
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.InvalidatePlot();
+            this.InvalidatePlot(false);
         }
 
         /// <summary>
@@ -1129,13 +1173,28 @@ namespace OxyPlot.Silverlight
         /// <param name="updateData">
         /// The update Data. 
         /// </param>
-        private void UpdateModel(bool updateData)
+        private void UpdateModel(bool updateData = true)
         {
             this.internalModel = this.Model;
 
             if (this.ActualModel != null)
             {
                 this.ActualModel.Update(updateData);
+            }
+        }
+
+        /// <summary>
+        /// Updates the model. If Model==null, an internal model will be created. The ActualModel.UpdateModel will be called (updates all series data).
+        /// </summary>
+        /// <param name="updateData">
+        /// if set to <c>true</c> , all data collections will be updated. 
+        /// </param>
+        private void UpdateModelAndVisuals(bool updateData = true)
+        {
+            lock (this.updateModelAndVisualsLock)
+            {
+                this.UpdateModel(updateData);
+                this.UpdateVisuals();
             }
         }
 

@@ -1368,5 +1368,26 @@ namespace OxyPlot
         // this.XmlSerialize(s);
         // }
         // }
+
+        /// <summary>
+        /// Gets or sets the plot control that renders this plot.
+        /// </summary>
+        /// <remarks>
+        /// Only one PlotControl can render the plot at the same time.
+        /// </remarks>
+        /// <value>The plot control.</value>
+        public IPlotControl PlotControl { get; set; }
+
+        /// <summary>
+        /// Refreshes the plot.
+        /// </summary>
+        /// <param name="updateData">Updates all data sources if set to <c>true</c>.</param>
+        public void RefreshPlot(bool updateData)
+        {
+            if (this.PlotControl != null)
+            {
+                this.PlotControl.RefreshPlot(updateData);
+            }
+        }
     }
 }

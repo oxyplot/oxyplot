@@ -21,6 +21,26 @@ namespace OxyPlot.WindowsForms
         #region Constants and Fields
 
         /// <summary>
+        ///   The invalidate lock.
+        /// </summary>
+        private readonly object invalidateLock = new object();
+
+        /// <summary>
+        ///   The model lock.
+        /// </summary>
+        private readonly object modelLock = new object();
+
+        /// <summary>
+        ///   The rendering lock.
+        /// </summary>
+        private readonly object renderingLock = new object();
+
+        /// <summary>
+        ///   The current model (holding a reference to this plot control).
+        /// </summary>
+        private PlotModel currentModel;
+
+        /// <summary>
         ///   The is model invalidated.
         /// </summary>
         private bool isModelInvalidated;
@@ -106,28 +126,31 @@ namespace OxyPlot.WindowsForms
 
             set
             {
-                this.model = value;
-                this.InvalidatePlot(true);
+                if (this.model != value)
+                {
+                    this.model = value;
+                    this.OnModelChanged();
+                }
             }
         }
 
         /// <summary>
-        /// Gets or sets the pan cursor.
+        ///   Gets or sets the pan cursor.
         /// </summary>
         public Cursor PanCursor { get; set; }
 
         /// <summary>
-        /// Gets or sets the horizontal zoom cursor.
+        ///   Gets or sets the horizontal zoom cursor.
         /// </summary>
         public Cursor ZoomHorizontalCursor { get; set; }
 
         /// <summary>
-        /// Gets or sets the rectangle zoom cursor.
+        ///   Gets or sets the rectangle zoom cursor.
         /// </summary>
         public Cursor ZoomRectangleCursor { get; set; }
 
         /// <summary>
-        /// Gets or sets vertical zoom cursor.
+        ///   Gets or sets vertical zoom cursor.
         /// </summary>
         public Cursor ZoomVerticalCursor { get; set; }
 
@@ -162,9 +185,15 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Get the series from a point.
         /// </summary>
-        /// <param name="pt">The ppint.</param>
-        /// <param name="limit">The limit.</param>
-        /// <returns>The series.</returns>
+        /// <param name="pt">
+        /// The ppint. 
+        /// </param>
+        /// <param name="limit">
+        /// The limit. 
+        /// </param>
+        /// <returns>
+        /// The series. 
+        /// </returns>
         public ISeries GetSeriesFromPoint(ScreenPoint pt, double limit)
         {
             if (this.Model == null)
@@ -199,13 +228,41 @@ namespace OxyPlot.WindowsForms
         /// </param>
         public void InvalidatePlot(bool updateData)
         {
-            lock (this)
+            lock (this.invalidateLock)
             {
                 this.isModelInvalidated = true;
                 this.updateDataFlag = this.updateDataFlag || updateData;
             }
 
             this.Invalidate();
+        }
+
+        /// <summary>
+        /// Called when the Model property has been changed.
+        /// </summary>
+        public void OnModelChanged()
+        {
+            lock (this.modelLock)
+            {
+                if (this.currentModel != null)
+                {
+                    this.currentModel.PlotControl = null;
+                }
+
+                if (this.Model != null)
+                {
+                    if (this.Model.PlotControl != null)
+                    {
+                        throw new InvalidOperationException(
+                            "This PlotModel is already in use by some other plot control.");
+                    }
+
+                    this.Model.PlotControl = this;
+                    this.currentModel = this.Model;
+                }
+            }
+
+            this.InvalidatePlot(true);
         }
 
         /// <summary>
@@ -253,7 +310,7 @@ namespace OxyPlot.WindowsForms
         /// </param>
         public void RefreshPlot(bool updateData)
         {
-            lock (this)
+            lock (this.invalidateLock)
             {
                 this.isModelInvalidated = true;
                 this.updateDataFlag = this.updateDataFlag || updateData;
@@ -483,7 +540,7 @@ namespace OxyPlot.WindowsForms
         {
             base.OnPaint(e);
 
-            lock (this)
+            lock (this.invalidateLock)
             {
                 if (this.isModelInvalidated)
                 {
@@ -497,20 +554,23 @@ namespace OxyPlot.WindowsForms
                 }
             }
 
-            var rc = new GraphicsRenderContext(e.Graphics, this.Width, this.Height); // e.ClipRectangle
-            if (this.model != null)
+            lock (this.renderingLock)
             {
-                this.model.Render(rc);
-            }
-
-            if (this.zoomRectangle != Rectangle.Empty)
-            {
-                using (var zoomBrush = new SolidBrush(Color.FromArgb(0x40, 0xFF, 0xFF, 0x00)))
-                using (var zoomPen = new Pen(Color.Black))
+                var rc = new GraphicsRenderContext(e.Graphics, this.Width, this.Height); // e.ClipRectangle
+                if (this.model != null)
                 {
-                    zoomPen.DashPattern = new float[] { 3, 1 };
-                    e.Graphics.FillRectangle(zoomBrush, this.zoomRectangle);
-                    e.Graphics.DrawRectangle(zoomPen, this.zoomRectangle);
+                    this.model.Render(rc);
+                }
+
+                if (this.zoomRectangle != Rectangle.Empty)
+                {
+                    using (var zoomBrush = new SolidBrush(Color.FromArgb(0x40, 0xFF, 0xFF, 0x00)))
+                    using (var zoomPen = new Pen(Color.Black))
+                    {
+                        zoomPen.DashPattern = new float[] { 3, 1 };
+                        e.Graphics.FillRectangle(zoomBrush, this.zoomRectangle);
+                        e.Graphics.DrawRectangle(zoomPen, this.zoomRectangle);
+                    }
                 }
             }
         }

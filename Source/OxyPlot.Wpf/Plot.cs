@@ -10,9 +10,11 @@ namespace OxyPlot.Wpf
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -20,6 +22,7 @@ namespace OxyPlot.Wpf
     using System.Windows.Markup;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
+    using System.Windows.Threading;
     using System.Xml;
 
     using CursorType = OxyPlot.CursorType;
@@ -39,9 +42,24 @@ namespace OxyPlot.Wpf
         private const string PartGrid = "PART_Grid";
 
         /// <summary>
+        /// The invalidate lock.
+        /// </summary>
+        private readonly object invalidateLock = new object();
+
+        /// <summary>
         ///   The stack of manipulation events. This is used to try to avoid latency of the ManipulationDelta events.
         /// </summary>
         private readonly Stack<ManipulationDeltaEventArgs> manipulationQueue = new Stack<ManipulationDeltaEventArgs>();
+
+        /// <summary>
+        /// The model lock.
+        /// </summary>
+        private readonly object modelLock = new object();
+
+        /// <summary>
+        /// The rendering lock.
+        /// </summary>
+        private readonly object renderingLock = new object();
 
         /// <summary>
         ///   The tracker definitions.
@@ -49,9 +67,19 @@ namespace OxyPlot.Wpf
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
 
         /// <summary>
+        /// The update model and visuals lock.
+        /// </summary>
+        private readonly object updateModelAndVisualsLock = new object();
+
+        /// <summary>
         ///   The canvas.
         /// </summary>
         private Canvas canvas;
+
+        /// <summary>
+        /// The current model.
+        /// </summary>
+        private PlotModel currentModel;
 
         /// <summary>
         ///   The current tracker.
@@ -201,7 +229,7 @@ namespace OxyPlot.Wpf
 
         #endregion
 
-        #region Public Methods and Operators
+        #region Public Methods
 
         /// <summary>
         /// Gets the axes from a point.
@@ -273,7 +301,7 @@ namespace OxyPlot.Wpf
         /// </param>
         public void InvalidatePlot(bool updateData = true)
         {
-            lock (this)
+            lock (this.invalidateLock)
             {
                 this.isPlotInvalidated = true;
                 this.invalidateUpdatesData = this.invalidateUpdatesData || updateData;
@@ -353,8 +381,15 @@ namespace OxyPlot.Wpf
         /// </param>
         public void RefreshPlot(bool updateData)
         {
-            this.UpdateModel(updateData);
-            this.UpdateVisuals();
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(
+                    DispatcherPriority.Normal, new Action(() => this.UpdateModelAndVisuals(updateData)));
+            }
+            else
+            {
+                this.UpdateModelAndVisuals(updateData);
+            }
         }
 
         /// <summary>
@@ -907,16 +942,15 @@ namespace OxyPlot.Wpf
         {
             this.HandleStackedManipulationEvents();
 
-            lock (this)
+            lock (this.renderingLock)
             {
                 if (this.isPlotInvalidated)
                 {
                     this.isPlotInvalidated = false;
                     if (this.ActualWidth > 0 && this.ActualHeight > 0)
                     {
-                        this.UpdateModel(this.invalidateUpdatesData);
+                        this.UpdateModelAndVisuals(this.invalidateUpdatesData);
                         this.invalidateUpdatesData = false;
-                        this.UpdateVisuals();
                     }
                 }
             }
@@ -1096,6 +1130,26 @@ namespace OxyPlot.Wpf
         /// </summary>
         private void OnModelChanged()
         {
+            lock (this.modelLock)
+            {
+                if (this.currentModel != null)
+                {
+                    this.currentModel.PlotControl = null;
+                }
+
+                if (this.Model != null)
+                {
+                    if (this.Model.PlotControl != null)
+                    {
+                        throw new InvalidOperationException(
+                            "This PlotModel is already in use by some other plot control.");
+                    }
+
+                    this.Model.PlotControl = this;
+                    this.currentModel = this.Model;
+                }
+            }
+
             this.InvalidatePlot();
         }
 
@@ -1124,7 +1178,7 @@ namespace OxyPlot.Wpf
         /// </param>
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.InvalidatePlot();
+            this.InvalidatePlot(false);
         }
 
         /// <summary>
@@ -1169,7 +1223,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Updates the model. If Model==null, an internal model will be created. The ActualModel.UpdateModel will be called (updates all series data).
+        /// Updates the model. If Model==null, an internal model will be created. The ActualModel.UpdateModelAndVisuals will be called (updates all series data).
         /// </summary>
         /// <param name="updateData">
         /// if set to <c>true</c> , all data collections will be updated. 
@@ -1222,10 +1276,26 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Updates the model. If Model==null, an internal model will be created. The ActualModel.UpdateModel will be called (updates all series data).
+        /// </summary>
+        /// <param name="updateData">
+        /// if set to <c>true</c> , all data collections will be updated. 
+        /// </param>
+        private void UpdateModelAndVisuals(bool updateData = true)
+        {
+            lock (this.updateModelAndVisualsLock)
+            {
+                this.UpdateModel(updateData);
+                this.UpdateVisuals();
+            }
+        }
+
+        /// <summary>
         /// Updates the visuals.
         /// </summary>
         private void UpdateVisuals()
         {
+        //    Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " Updates visuals");
             if (this.canvas == null)
             {
                 return;
@@ -1246,19 +1316,29 @@ namespace OxyPlot.Wpf
                 this.SynchronizeProperties();
 
                 // disconnecting the canvas while updating
-#if !NO_DISCONNECT
+#if !DONT_DISCONNECT_CANVAS
                 int idx = this.grid.Children.IndexOf(this.canvas);
-                this.grid.Children.RemoveAt(idx);
+                if (idx != -1)
+                {
+                    this.grid.Children.RemoveAt(idx);
+                }
+
 #endif
                 var wrc = new ShapesRenderContext(this.canvas);
                 this.ActualModel.Render(wrc);
 
-#if !NO_DISCONNECT
+#if !DONT_DISCONNECT_CANVAS
 
                 // reinsert the canvas again
-                this.grid.Children.Insert(idx, this.canvas);
+                if (idx != -1)
+                {
+                    this.grid.Children.Insert(idx, this.canvas);
+                }
+
 #endif
             }
+
+       //     Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " done.");
         }
 
         #endregion
