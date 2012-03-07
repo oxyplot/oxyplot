@@ -67,6 +67,7 @@
     <Compile Include="Annotations\Annotation.cs" />
     <Compile Include="Annotations\AnnotationLayer.cs" />
     <Compile Include="Annotations\ArrowAnnotation.cs" />
+    <Compile Include="Annotations\TextAnnotation.cs" />
     <Compile Include="Annotations\PolygonAnnotation.cs" />
     <Compile Include="Annotations\LineAnnotation.cs" />
     <Compile Include="Annotations\LineAnnotationType.cs" />
