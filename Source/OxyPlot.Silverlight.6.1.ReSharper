@@ -1,7 +1,6 @@
 <Configuration>
   <CodeStyleSettings>
-    <ExternalPath IsNull="False">
-    </ExternalPath>
+    <ExternalPath IsNull="False" />
     <Sharing>SOLUTION</Sharing>
     <CSS>
       <FormatSettings />
@@ -457,6 +456,9 @@
         <UserRule Name="XAML_RESOURCE" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
       </Naming2>
     </Xaml>
+    <FileHeader Region="license"><![CDATA[OxyPlot:   http://oxyplot.codeplex.com
+License:   Ms-PL
+]]></FileHeader>
     <GenerateMemberBody />
     <Naming2>
       <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>

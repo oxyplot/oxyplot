@@ -1,8 +1,11 @@
 <Configuration>
   <CodeStyleSettings>
-    <ExternalPath IsNull="False">
-    </ExternalPath>
+    <ExternalPath IsNull="False" />
     <Sharing>SOLUTION</Sharing>
+    <CSS>
+      <FormatSettings />
+      <Naming2 />
+    </CSS>
     <CSharp>
       <FormatSettings>
         <ALIGN_MULTILINE_ARGUMENT>False</ALIGN_MULTILINE_ARGUMENT>
@@ -425,6 +428,13 @@
   </Pattern>
 </Patterns>]]></CustomMemberReorderingPatterns>
     </CSharp>
+    <HTML>
+      <FormatSettings />
+    </HTML>
+    <JavaScript>
+      <FormatSettings />
+      <Naming2 />
+    </JavaScript>
     <VB>
       <FormatSettings />
       <ImportsSettings />
@@ -436,6 +446,9 @@
     <Web>
       <Naming2 />
     </Web>
+    <XML>
+      <FormatSettings />
+    </XML>
     <Xaml>
       <Naming2>
         <UserRule Name="XAML_FIELD" Inspect="True" Prefix="_" Suffix="" Style="aaBb" />
@@ -443,12 +456,6 @@
         <UserRule Name="XAML_RESOURCE" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
       </Naming2>
     </Xaml>
-    <XML>
-      <FormatSettings />
-    </XML>
-    <FileHeader Region="license"><![CDATA[OxyPlot:   http://oxyplot.codeplex.com
-License:   Ms-PL
-]]></FileHeader>
     <GenerateMemberBody />
     <Naming2>
       <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>
