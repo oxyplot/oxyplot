@@ -86,7 +86,7 @@ namespace OxyPlot
         public bool IsStacked { get; set; }
 
         /// <summary>
-        /// Gets or sets LabelColor.
+        /// Gets or sets the label color.
         /// </summary>
         public OxyColor LabelColor { get; set; }
 
@@ -97,12 +97,12 @@ namespace OxyPlot
         public string LabelFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets LabelMargin.
+        /// Gets or sets the label margins.
         /// </summary>
         public double LabelMargin { get; set; }
 
         /// <summary>
-        /// Gets or sets LabelPlacement.
+        /// Gets or sets label placements.
         /// </summary>
         public LabelPlacement LabelPlacement { get; set; }
 
@@ -592,7 +592,7 @@ namespace OxyPlot
                 throw new InvalidOperationException("No value axis defined.");
             }
 
-            double minValue = this.InternalValues[0];
+            double minValue = this.BaseValue + this.InternalValues[0];
             double maxValue = minValue;
 
             int i = 0;
@@ -605,6 +605,16 @@ namespace OxyPlot
                     baseValue = ca.PositiveBaseValue[i];
                 }
 
+                if (double.IsNaN(ca.MaxValue[i]))
+                {
+                    ca.MaxValue[i] = baseValue;
+                }
+
+                if (double.IsNaN(ca.MinValue[i]))
+                {
+                    ca.MinValue[i] = baseValue;
+                }
+
                 if (this.IsStacked)
                 {
                     // Add to the max/min value on the category axis for stacked bars
@@ -613,12 +623,15 @@ namespace OxyPlot
                     minValue = Math.Min(minValue, ca.MinValue[i]);
                     maxValue = Math.Max(maxValue, ca.MaxValue[i]);
                 }
+                else
+                {
+                    minValue = Math.Min(minValue, baseValue);
+                    maxValue = Math.Max(maxValue, baseValue);
 
-                minValue = Math.Min(minValue, baseValue);
-                maxValue = Math.Max(maxValue, baseValue);
+                    minValue = Math.Min(minValue, v);
+                    maxValue = Math.Max(maxValue, v);
+                }
 
-                minValue = Math.Min(minValue, v);
-                maxValue = Math.Max(maxValue, v);
                 i++;
             }
 
