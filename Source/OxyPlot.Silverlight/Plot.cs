@@ -221,7 +221,7 @@ namespace OxyPlot.Silverlight
         /// <param name="yaxis">
         /// The y-axis. 
         /// </param>
-        public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
+        public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis)
         {
             if (this.ActualModel != null)
             {
@@ -246,7 +246,7 @@ namespace OxyPlot.Silverlight
         /// <returns>
         /// The closest DataSeries 
         /// </returns>
-        public ISeries GetSeriesFromPoint(ScreenPoint pt, double limit)
+        public Series GetSeriesFromPoint(ScreenPoint pt, double limit)
         {
             return this.ActualModel != null ? this.ActualModel.GetSeriesFromPoint(pt, limit) : null;
         }
@@ -321,7 +321,7 @@ namespace OxyPlot.Silverlight
         /// <param name="cpt">
         /// The current point (screen coordinates). 
         /// </param>
-        public void Pan(IAxis axis, ScreenPoint ppt, ScreenPoint cpt)
+        public void Pan(Axis axis, ScreenPoint ppt, ScreenPoint cpt)
         {
             axis.Pan(ppt, cpt);
             this.InvalidatePlot(false);
@@ -345,7 +345,7 @@ namespace OxyPlot.Silverlight
         /// <param name="axis">
         /// The axis. 
         /// </param>
-        public void Reset(IAxis axis)
+        public void Reset(Axis axis)
         {
             axis.Reset();
         }
@@ -355,7 +355,7 @@ namespace OxyPlot.Silverlight
         /// </summary>
         public void ResetAllAxes()
         {
-            foreach (IAxis a in this.ActualModel.Axes)
+            foreach (var a in this.ActualModel.Axes)
             {
                 a.Reset();
             }
@@ -525,7 +525,7 @@ namespace OxyPlot.Silverlight
         /// <param name="p2">
         /// The new maximum value. 
         /// </param>
-        public void Zoom(IAxis axis, double p1, double p2)
+        public void Zoom(Axis axis, double p1, double p2)
         {
             axis.Zoom(p1, p2);
             this.RefreshPlot(false);
@@ -559,7 +559,7 @@ namespace OxyPlot.Silverlight
         /// <param name="x">
         /// The position to zoom at. 
         /// </param>
-        public void ZoomAt(IAxis axis, double factor, double x = double.NaN)
+        public void ZoomAt(Axis axis, double factor, double x = double.NaN)
         {
             if (double.IsNaN(x))
             {
@@ -1152,7 +1152,7 @@ namespace OxyPlot.Silverlight
         /// </param>
         private void PanAll(double dx, double dy)
         {
-            foreach (IAxis a in this.ActualModel.Axes)
+            foreach (var a in this.ActualModel.Axes)
             {
                 a.Pan(a.IsHorizontal() ? dx : dy);
             }

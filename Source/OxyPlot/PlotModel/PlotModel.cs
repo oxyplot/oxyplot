@@ -737,13 +737,13 @@ namespace OxyPlot
             r.AddPropertyTable("PlotModel", this);
 
             r.AddHeader(2, "=== Axes ===");
-            foreach (IAxis a in this.Axes)
+            foreach (Axis a in this.Axes)
             {
                 r.AddPropertyTable(TypeHelper.GetTypeName(a.GetType()), a);
             }
 
             r.AddHeader(2, "=== Annotations ===");
-            foreach (IAnnotation a in this.Annotations)
+            foreach (var a in this.Annotations)
             {
                 r.AddPropertyTable(TypeHelper.GetTypeName(a.GetType()), a);
             }
@@ -802,7 +802,7 @@ namespace OxyPlot
         /// <param name="yaxis">
         /// The yaxis. 
         /// </param>
-        public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
+        public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis)
         {
             xaxis = yaxis = null;
 
@@ -1298,9 +1298,9 @@ namespace OxyPlot
             }
 
             // Update the x/y axes of series without axes defined
-            foreach (IAnnotation s in this.Annotations)
+            foreach (var a in this.Annotations)
             {
-                s.EnsureAxes(this.Axes, this.DefaultXAxis, this.DefaultYAxis);
+                a.EnsureAxes(this.Axes, this.DefaultXAxis, this.DefaultYAxis);
             }
         }
 

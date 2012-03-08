@@ -176,7 +176,7 @@ namespace OxyPlot
         /// <param name="rect">
         /// The rect.
         /// </param>
-        private void RenderLegend(IRenderContext rc, ISeries s, OxyRect rect)
+        private void RenderLegend(IRenderContext rc, Series s, OxyRect rect)
         {
             double x = rect.Left;
             switch (this.LegendItemAlignment)

@@ -171,7 +171,7 @@ namespace OxyPlot
         /// <returns>
         /// The is using.
         /// </returns>
-        protected internal override bool IsUsing(IAxis axis)
+        protected internal override bool IsUsing(Axis axis)
         {
             return this.XAxis == axis || this.YAxis == axis;
         }

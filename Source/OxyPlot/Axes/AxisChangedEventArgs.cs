@@ -9,7 +9,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// EventArgs for the IAxis.AxisChanged event.
+    /// EventArgs for the Axis.AxisChanged event.
     /// </summary>
     public class AxisChangedEventArgs : EventArgs
     {

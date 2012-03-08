@@ -217,15 +217,14 @@ namespace OxyPlot.Wpf
         /// <param name="series">
         /// The series. 
         /// </param>
-        protected virtual void SynchronizeProperties(OxyPlot.ISeries series)
+        protected virtual void SynchronizeProperties(OxyPlot.Series series)
         {
-            var s = series as OxyPlot.Series;
-            s.Background = this.Background.ToOxyColor();
-            s.Title = this.Title;
-            s.TrackerFormatString = this.TrackerFormatString;
-            s.TrackerKey = this.TrackerKey;
-            s.TrackerFormatString = this.TrackerFormatString;
-            s.IsVisible = this.Visibility == Visibility.Visible;
+            series.Background = this.Background.ToOxyColor();
+            series.Title = this.Title;
+            series.TrackerFormatString = this.TrackerFormatString;
+            series.TrackerKey = this.TrackerKey;
+            series.TrackerFormatString = this.TrackerFormatString;
+            series.IsVisible = this.Visibility == Visibility.Visible;
         }
 
         #endregion

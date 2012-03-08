@@ -217,7 +217,7 @@ namespace OxyPlot
         /// <returns>
         /// The value axis. 
         /// </returns>
-        public IAxis GetValueAxis()
+        public Axis GetValueAxis()
         {
             return this.XAxis is CategoryAxis ? this.YAxis : this.XAxis;
         }
@@ -248,7 +248,7 @@ namespace OxyPlot
         /// <returns>
         /// True if the value is valid. 
         /// </returns>
-        public virtual bool IsValidPoint(double v, IAxis yaxis)
+        public virtual bool IsValidPoint(double v, Axis yaxis)
         {
             return !double.IsNaN(v) && !double.IsInfinity(v);
         }
@@ -278,7 +278,7 @@ namespace OxyPlot
             }
 
             bool isVertical = categoryAxis == this.XAxis;
-            IAxis valueAxis = isVertical ? this.YAxis : this.XAxis;
+            Axis valueAxis = isVertical ? this.YAxis : this.XAxis;
             if (valueAxis == null)
             {
                 throw new InvalidOperationException("No value axis defined.");

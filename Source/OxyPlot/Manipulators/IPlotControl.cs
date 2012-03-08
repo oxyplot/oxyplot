@@ -35,7 +35,7 @@ namespace OxyPlot
         /// <param name="yaxis">
         /// The y-axis.
         /// </param>
-        void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis);
+        void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis);
 
         /// <summary>
         /// Gets the series from point.
@@ -49,7 +49,7 @@ namespace OxyPlot
         /// <returns>
         /// The series.
         /// </returns>
-        ISeries GetSeriesFromPoint(ScreenPoint pt, double limit = 100);
+        Series GetSeriesFromPoint(ScreenPoint pt, double limit = 100);
 
         /// <summary>
         /// Hides the tracker.
@@ -81,7 +81,7 @@ namespace OxyPlot
         /// <param name="cpt">
         /// The current point (screen coordinates).
         /// </param>
-        void Pan(IAxis axis, ScreenPoint ppt, ScreenPoint cpt);
+        void Pan(Axis axis, ScreenPoint ppt, ScreenPoint cpt);
 
         /// <summary>
         /// Refresh the plot immediately (blocking UI thread)
@@ -97,7 +97,7 @@ namespace OxyPlot
         /// <param name="axis">
         /// The axis.
         /// </param>
-        void Reset(IAxis axis);
+        void Reset(Axis axis);
 
         /// <summary>
         /// Sets the cursor type.
@@ -135,7 +135,7 @@ namespace OxyPlot
         /// <param name="p2">
         /// The new maximum value.
         /// </param>
-        void Zoom(IAxis axis, double p1, double p2);
+        void Zoom(Axis axis, double p1, double p2);
 
         /// <summary>
         /// Zooms at the specified position.
@@ -149,7 +149,7 @@ namespace OxyPlot
         /// <param name="x">
         /// The position to zoom at.
         /// </param>
-        void ZoomAt(IAxis axis, double factor, double x);
+        void ZoomAt(Axis axis, double factor, double x);
 
         #endregion
     }

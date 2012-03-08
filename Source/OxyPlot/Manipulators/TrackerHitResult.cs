@@ -44,7 +44,7 @@ namespace OxyPlot
         /// <param name="text">
         /// The text.
         /// </param>
-        public TrackerHitResult(ISeries series, DataPoint dp, ScreenPoint sp, object item, string text = null)
+        public TrackerHitResult(Series series, DataPoint dp, ScreenPoint sp, object item, string text = null)
         {
             this.DataPoint = dp;
             this.Position = sp;
@@ -90,9 +90,9 @@ namespace OxyPlot
         public ScreenPoint Position { get; set; }
 
         /// <summary>
-        ///   Gets or sets the series.
+        ///   Gets or sets the series that is being tracked.
         /// </summary>
-        public ISeries Series { get; set; }
+        public Series Series { get; set; }
 
         /// <summary>
         ///   Gets or sets the text shown in the tracker.
@@ -102,12 +102,12 @@ namespace OxyPlot
         /// <summary>
         ///   Gets or sets the X axis.
         /// </summary>
-        public IAxis XAxis { get; set; }
+        public Axis XAxis { get; set; }
 
         /// <summary>
         ///   Gets or sets the Y axis.
         /// </summary>
-        public IAxis YAxis { get; set; }
+        public Axis YAxis { get; set; }
 
         #endregion
 

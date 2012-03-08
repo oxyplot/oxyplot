@@ -190,7 +190,7 @@ namespace OxyPlot
         /// <returns>
         /// <c>true</c> if the point is valid; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool IsValidPoint(ScatterPoint pt, IAxis xaxis, IAxis yaxis)
+        public virtual bool IsValidPoint(ScatterPoint pt, Axis xaxis, Axis yaxis)
         {
             return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
                    && (xaxis != null && xaxis.IsValidValue(pt.X)) && (yaxis != null && yaxis.IsValidValue(pt.Y));

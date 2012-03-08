@@ -46,13 +46,13 @@ namespace OxyPlot
         ///   Gets or sets the X axis.
         /// </summary>
         /// <value>The X axis.</value>
-        protected IAxis XAxis { get; set; }
+        protected Axis XAxis { get; set; }
 
         /// <summary>
         ///   Gets or sets the Y axis.
         /// </summary>
         /// <value>The Y axis.</value>
-        protected IAxis YAxis { get; set; }
+        protected Axis YAxis { get; set; }
 
         #endregion
 
@@ -98,8 +98,8 @@ namespace OxyPlot
         /// </param>
         public virtual void Started(ManipulationEventArgs e)
         {
-            IAxis xaxis;
-            IAxis yaxis;
+            Axis xaxis;
+            Axis yaxis;
             this.PlotControl.GetAxesFromPoint(e.CurrentPosition, out xaxis, out yaxis);
             this.StartPosition = e.CurrentPosition;
 

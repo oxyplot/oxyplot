@@ -7,7 +7,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Change types of the IAxis.AxisChanged event.
+    /// Change types of the Axis.AxisChanged event.
     /// </summary>
     public enum AxisChangeTypes
     {

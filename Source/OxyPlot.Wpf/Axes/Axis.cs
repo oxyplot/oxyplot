@@ -12,7 +12,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// The axis base.
     /// </summary>
-    public abstract class Axis : FrameworkElement, IAxis
+    public abstract class Axis : FrameworkElement
     {
         #region Constants and Fields
 
@@ -1227,13 +1227,13 @@ namespace OxyPlot.Wpf
         #region Methods
 
         /// <summary>
-        /// The visual changed.
+        /// The visual appearance changed.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
         protected static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -1244,10 +1244,10 @@ namespace OxyPlot.Wpf
         /// The data changed.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
         protected static void DataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -1255,7 +1255,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The on data changed.
+        /// The on data changed handler.
         /// </summary>
         protected void OnDataChanged()
         {
@@ -1287,7 +1287,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The on visual changed.
+        /// The on visual changed handler.
         /// </summary>
         protected void OnVisualChanged()
         {
