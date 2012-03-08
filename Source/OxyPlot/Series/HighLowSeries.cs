@@ -190,7 +190,7 @@ namespace OxyPlot
 
             Action<DataPoint, HighLowItem> check = (p, item) =>
                 {
-                    ScreenPoint sp = AxisBase.Transform(p, this.XAxis, this.YAxis);
+                    ScreenPoint sp = Axis.Transform(p, this.XAxis, this.YAxis);
                     double dx = sp.x - point.x;
                     double dy = sp.y - point.y;
                     double d2 = dx * dx + dy * dy;

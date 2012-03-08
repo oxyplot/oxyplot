@@ -41,7 +41,7 @@ namespace OxyPlot
         /// <param name="axis">
         /// The axis.
         /// </param>
-        public override void Render(AxisBase axis)
+        public override void Render(Axis axis)
         {
             base.Render(axis);
 

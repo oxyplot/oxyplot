@@ -592,7 +592,7 @@ namespace OxyPlot
                 return this.CreateDateTickValues(min, max, interval, intervalType);
             }
 
-            // For shorter step sizes we use the method from AxisBase
+            // For shorter step sizes we use the method from Axis
             return CreateTickValues(min, max, interval);
         }
 

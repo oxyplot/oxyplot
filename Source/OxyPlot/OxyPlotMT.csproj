@@ -64,7 +64,6 @@
     <Compile Include="Axes\DateTimeIntervalType.cs" />
 
     <Compile Include="Axes\LinearAxis.cs" />
-    <Compile Include="Axes\AxisBase.cs" />
     <Compile Include="Axes\MagnitudeAxis.cs" />
     <Compile Include="Axes\TickStyle.cs" />
     <Compile Include="Axes\TimeSpanAxis.cs" />

@@ -870,7 +870,7 @@ namespace OxyPlot
                     else if (position == axis.Position)
                     {
                         // Choose right tier
-                        var a = axis as AxisBase;
+                        var a = axis as Axis;
                         double positionTierMinShift = a.PositionTierMinShift;
                         double positionTierMaxShift = a.PositionTierMaxShift;
 
