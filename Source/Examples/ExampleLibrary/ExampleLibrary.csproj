@@ -51,6 +51,7 @@
     <Compile Include="Examples\AxisExamples.cs" />
     <Compile Include="Examples\AreaSeriesExamples.cs" />
     <Compile Include="Examples\ContourSeriesExamples.cs" />
+    <Compile Include="Examples\TornadoBarSeriesExamples.cs" />
     <Compile Include="Examples\ItemsSourceExamples.cs" />
     <Compile Include="Examples\FunctionSeriesExamples.cs" />
     <Compile Include="Examples\PerformanceExamples.cs" />
