@@ -280,7 +280,9 @@ namespace OxyPlot
             this.NegativeBaseValueScreen = new double[this.Labels.Count];
             Fill(this.NegativeBaseValueScreen, double.NaN);
             this.MaxValue = new double[this.Labels.Count];
+            Fill(this.MaxValue, double.NaN);
             this.MinValue = new double[this.Labels.Count];
+            Fill(this.MinValue, double.NaN);
         }
 
         #endregion
