@@ -107,7 +107,7 @@ namespace OxyPlot
         /// <returns>
         /// The transformed point.
         /// </returns>
-        public static ScreenPoint Transform(DataPoint p, IAxis xaxis, IAxis yaxis)
+        public static ScreenPoint Transform(DataPoint p, Axis xaxis, Axis yaxis)
         {
             return xaxis.Transform(p.x, p.y, yaxis);
         }
@@ -127,7 +127,7 @@ namespace OxyPlot
         /// <returns>
         /// The transformed point.
         /// </returns>
-        public static ScreenPoint Transform(IDataPoint p, IAxis xaxis, IAxis yaxis)
+        public static ScreenPoint Transform(IDataPoint p, Axis xaxis, Axis yaxis)
         {
             return xaxis.Transform(p.X, p.Y, yaxis);
         }
@@ -268,7 +268,7 @@ namespace OxyPlot
         /// <returns>
         /// The data point.
         /// </returns>
-        public override DataPoint InverseTransform(double x, double y, IAxis yaxis)
+        public override DataPoint InverseTransform(double x, double y, Axis yaxis)
         {
             return new DataPoint(this.InverseTransform(x), yaxis != null ? yaxis.InverseTransform(y) : 0);
         }
@@ -509,7 +509,7 @@ namespace OxyPlot
         /// <returns>
         /// The transformed point.
         /// </returns>
-        public override ScreenPoint Transform(double x, double y, IAxis yaxis)
+        public override ScreenPoint Transform(double x, double y, Axis yaxis)
         {
             if (yaxis == null)
             {

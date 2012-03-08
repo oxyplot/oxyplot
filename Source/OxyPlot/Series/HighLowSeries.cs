@@ -247,7 +247,7 @@ namespace OxyPlot
         /// <returns>
         /// <c>true</c> if [is valid point] [the specified pt]; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool IsValidPoint(HighLowItem pt, IAxis xAxis, IAxis yAxis)
+        public virtual bool IsValidPoint(HighLowItem pt, Axis xAxis, Axis yAxis)
         {
             return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.High)
                    && !double.IsInfinity(pt.High) && !double.IsNaN(pt.Low) && !double.IsInfinity(pt.Low);

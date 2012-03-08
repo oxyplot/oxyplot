@@ -15,7 +15,7 @@ namespace OxyPlot
     /// Annotation base class.
     /// </summary>
     [Serializable]
-    public abstract class Annotation : IAnnotation
+    public abstract class Annotation
     {
         #region Public Properties
 
@@ -52,7 +52,7 @@ namespace OxyPlot
         ///   Gets or sets the X axis.
         /// </summary>
         /// <value>The X axis.</value>
-        public IAxis XAxis { get; set; }
+        public Axis XAxis { get; set; }
 
         /// <summary>
         ///   Gets or sets the X axis key.
@@ -64,7 +64,7 @@ namespace OxyPlot
         ///   Gets or sets the Y axis.
         /// </summary>
         /// <value>The Y axis.</value>
-        public IAxis YAxis { get; set; }
+        public Axis YAxis { get; set; }
 
         /// <summary>
         ///   Gets or sets the Y axis key.
@@ -88,7 +88,7 @@ namespace OxyPlot
         /// <param name="defaultYAxis">
         /// The default y axis.
         /// </param>
-        public void EnsureAxes(Collection<Axis> axes, IAxis defaultXAxis, IAxis defaultYAxis)
+        public void EnsureAxes(Collection<Axis> axes, Axis defaultXAxis, Axis defaultYAxis)
         {
             // todo: refactor - this code is shared with DataPointSeries
             if (this.XAxisKey != null)

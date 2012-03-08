@@ -154,7 +154,7 @@ namespace OxyPlot
         /// <returns>
         /// True if the axis is in use. 
         /// </returns>
-        protected internal abstract bool IsUsing(IAxis axis);
+        protected internal abstract bool IsUsing(Axis axis);
 
         /// <summary>
         /// Sets default values (colors, line style etc) from the plotmodel.

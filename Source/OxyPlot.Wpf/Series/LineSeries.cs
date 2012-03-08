@@ -341,7 +341,7 @@ namespace OxyPlot.Wpf
         /// <param name="series">
         /// The series. 
         /// </param>
-        protected override void SynchronizeProperties(OxyPlot.ISeries series)
+        protected override void SynchronizeProperties(OxyPlot.Series series)
         {
             base.SynchronizeProperties(series);
             var s = series as OxyPlot.LineSeries;

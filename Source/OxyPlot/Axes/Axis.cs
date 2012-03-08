@@ -14,7 +14,7 @@ namespace OxyPlot
     /// Abstract base class for axes.
     /// </summary>
     [Serializable]
-    public abstract class Axis : IAxis
+    public abstract class Axis
     {
         #region Constants and Fields
 
@@ -656,7 +656,7 @@ namespace OxyPlot
         /// <returns>
         /// The data point.
         /// </returns>
-        public abstract DataPoint InverseTransform(double sx, double sy, IAxis yaxis);
+        public abstract DataPoint InverseTransform(double sx, double sy, Axis yaxis);
 
         /// <summary>
         /// Determines whether this axis is horizontal.
@@ -768,7 +768,7 @@ namespace OxyPlot
         /// <returns>
         /// The transformed point.
         /// </returns>
-        public abstract ScreenPoint Transform(double x, double y, IAxis yaxis);
+        public abstract ScreenPoint Transform(double x, double y, Axis yaxis);
 
         /// <summary>
         /// Sets the scaling factor.

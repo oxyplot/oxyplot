@@ -90,7 +90,7 @@ namespace OxyPlot
         /// <returns>
         /// The data point.
         /// </returns>
-        public override DataPoint InverseTransform(double x, double y, IAxis yaxis)
+        public override DataPoint InverseTransform(double x, double y, Axis yaxis)
         {
             var angleAxis = yaxis as AngleAxis;
             if (angleAxis == null)
@@ -145,7 +145,7 @@ namespace OxyPlot
         /// <returns>
         /// The transformed point.
         /// </returns>
-        public override ScreenPoint Transform(double x, double y, IAxis yaxis)
+        public override ScreenPoint Transform(double x, double y, Axis yaxis)
         {
             var angleAxis = yaxis as AngleAxis;
             if (angleAxis == null)

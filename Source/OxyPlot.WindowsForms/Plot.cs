@@ -170,7 +170,7 @@ namespace OxyPlot.WindowsForms
         /// <param name="yaxis">
         /// The yaxis. 
         /// </param>
-        public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
+        public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis)
         {
             if (this.Model == null)
             {
@@ -194,7 +194,7 @@ namespace OxyPlot.WindowsForms
         /// <returns>
         /// The series. 
         /// </returns>
-        public ISeries GetSeriesFromPoint(ScreenPoint pt, double limit)
+        public Series GetSeriesFromPoint(ScreenPoint pt, double limit)
         {
             if (this.Model == null)
             {
@@ -277,7 +277,7 @@ namespace OxyPlot.WindowsForms
         /// <param name="x1">
         /// The x 1. 
         /// </param>
-        public void Pan(IAxis axis, ScreenPoint x0, ScreenPoint x1)
+        public void Pan(Axis axis, ScreenPoint x0, ScreenPoint x1)
         {
             axis.Pan(x0, x1);
             this.InvalidatePlot(false);
@@ -294,7 +294,7 @@ namespace OxyPlot.WindowsForms
         /// </param>
         public void PanAll(double deltax, double deltay)
         {
-            foreach (IAxis a in this.ActualModel.Axes)
+            foreach (var a in this.ActualModel.Axes)
             {
                 a.Pan(a.IsHorizontal() ? deltax : deltay);
             }
@@ -325,7 +325,7 @@ namespace OxyPlot.WindowsForms
         /// <param name="axis">
         /// The axis. 
         /// </param>
-        public void Reset(IAxis axis)
+        public void Reset(Axis axis)
         {
             axis.Reset();
             this.InvalidatePlot(false);
@@ -394,7 +394,7 @@ namespace OxyPlot.WindowsForms
         /// <param name="p2">
         /// The p 2. 
         /// </param>
-        public void Zoom(IAxis axis, double p1, double p2)
+        public void Zoom(Axis axis, double p1, double p2)
         {
             axis.Zoom(p1, p2);
             this.InvalidatePlot(false);
@@ -441,7 +441,7 @@ namespace OxyPlot.WindowsForms
         /// <param name="x">
         /// The x. 
         /// </param>
-        public void ZoomAt(IAxis axis, double factor, double x = double.NaN)
+        public void ZoomAt(Axis axis, double factor, double x = double.NaN)
         {
             if (double.IsNaN(x))
             {

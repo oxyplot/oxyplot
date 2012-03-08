@@ -243,7 +243,7 @@ namespace OxyPlot.Wpf
         /// <param name="yaxis">
         /// The y-axis. 
         /// </param>
-        public void GetAxesFromPoint(ScreenPoint pt, out OxyPlot.IAxis xaxis, out OxyPlot.IAxis yaxis)
+        public void GetAxesFromPoint(ScreenPoint pt, out OxyPlot.Axis xaxis, out OxyPlot.Axis yaxis)
         {
             if (this.ActualModel != null)
             {
@@ -268,7 +268,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// The closest DataSeries 
         /// </returns>
-        public OxyPlot.ISeries GetSeriesFromPoint(ScreenPoint pt, double limit)
+        public OxyPlot.Series GetSeriesFromPoint(ScreenPoint pt, double limit)
         {
             return this.ActualModel != null ? this.ActualModel.GetSeriesFromPoint(pt, limit) : null;
         }
@@ -351,7 +351,7 @@ namespace OxyPlot.Wpf
         /// <param name="cpt">
         /// The current point (screen coordinates). 
         /// </param>
-        public void Pan(OxyPlot.IAxis axis, ScreenPoint ppt, ScreenPoint cpt)
+        public void Pan(OxyPlot.Axis axis, ScreenPoint ppt, ScreenPoint cpt)
         {
             axis.Pan(ppt, cpt);
             this.InvalidatePlot(false);
@@ -365,7 +365,7 @@ namespace OxyPlot.Wpf
         /// </param>
         public void PanAll(Vector delta)
         {
-            foreach (OxyPlot.IAxis a in this.ActualModel.Axes)
+            foreach (OxyPlot.Axis a in this.ActualModel.Axes)
             {
                 a.Pan(a.IsHorizontal() ? delta.X : delta.Y);
             }
@@ -398,7 +398,7 @@ namespace OxyPlot.Wpf
         /// <param name="axis">
         /// The axis. 
         /// </param>
-        public void Reset(OxyPlot.IAxis axis)
+        public void Reset(OxyPlot.Axis axis)
         {
             axis.Reset();
         }
@@ -408,7 +408,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public void ResetAllAxes()
         {
-            foreach (OxyPlot.IAxis a in this.ActualModel.Axes)
+            foreach (OxyPlot.Axis a in this.ActualModel.Axes)
             {
                 a.Reset();
             }
@@ -590,7 +590,7 @@ namespace OxyPlot.Wpf
         /// <param name="p2">
         /// The new maximum value. 
         /// </param>
-        public void Zoom(OxyPlot.IAxis axis, double p1, double p2)
+        public void Zoom(OxyPlot.Axis axis, double p1, double p2)
         {
             axis.Zoom(p1, p2);
             this.RefreshPlot(false);
@@ -624,7 +624,7 @@ namespace OxyPlot.Wpf
         /// <param name="x">
         /// The position to zoom at. 
         /// </param>
-        public void ZoomAt(OxyPlot.IAxis axis, double factor, double x = double.NaN)
+        public void ZoomAt(OxyPlot.Axis axis, double factor, double x = double.NaN)
         {
             if (double.IsNaN(x))
             {
@@ -1255,7 +1255,7 @@ namespace OxyPlot.Wpf
                 {
                     this.internalModel.Axes.Clear();
 
-                    foreach (IAxis a in this.Axes)
+                    foreach (Axis a in this.Axes)
                     {
                         this.internalModel.Axes.Add(a.CreateModel());
                     }

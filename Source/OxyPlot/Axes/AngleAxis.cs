@@ -79,7 +79,7 @@ namespace OxyPlot
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// </exception>
-        public override DataPoint InverseTransform(double x, double y, IAxis yaxis)
+        public override DataPoint InverseTransform(double x, double y, Axis yaxis)
         {
             throw new InvalidOperationException("Angle axis should always be the y-axis.");
         }
@@ -122,7 +122,7 @@ namespace OxyPlot
         /// <returns>
         /// The transformed point.
         /// </returns>
-        public override ScreenPoint Transform(double x, double y, IAxis yaxis)
+        public override ScreenPoint Transform(double x, double y, Axis yaxis)
         {
             throw new InvalidOperationException("Angle axis should always be the y-axis.");
         }

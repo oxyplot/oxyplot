@@ -62,7 +62,6 @@
     <Compile Include="Axes\CategoryAxis.cs" />
     <Compile Include="Axes\DateTimeAxis.cs" />
     <Compile Include="Axes\DateTimeIntervalType.cs" />
-    <Compile Include="Axes\IAxis.cs" />
     <Compile Include="Axes\LinearAxis.cs" />
     <Compile Include="Axes\AxisBase.cs" />
     <Compile Include="Axes\MagnitudeAxis.cs" />
@@ -142,7 +141,6 @@
     <Compile Include="Foundation\OxyPen.cs" />
     <Compile Include="Foundation\LineStyleHelper.cs" />
     <Compile Include="Foundation\DataPoint.cs" />
-    <Compile Include="Annotations\IAnnotation.cs" />
     <Compile Include="Series\BarSeries.cs" />
     <Compile Include="Series\CandleStickSeries.cs" />
     <Compile Include="Foundation\Conrec.cs" />
@@ -161,7 +159,6 @@
     <Compile Include="Series\XYAxisSeries.cs" />
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\FunctionSeries.cs" />
-    <Compile Include="Series\ISeries.cs" />
     <Compile Include="Series\PieSlice.cs" />
     <Compile Include="Svg\Gdi32.cs" />
     <Compile Include="Svg\SvgRenderContext.cs" />
