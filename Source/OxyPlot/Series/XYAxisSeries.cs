@@ -251,8 +251,8 @@ namespace OxyPlot
             {
                 IDataPoint p1 = points[i];
                 IDataPoint p2 = points[i + 1];
-                ScreenPoint sp1 = AxisBase.Transform(p1, this.XAxis, this.YAxis);
-                ScreenPoint sp2 = AxisBase.Transform(p2, this.XAxis, this.YAxis);
+                ScreenPoint sp1 = Axis.Transform(p1, this.XAxis, this.YAxis);
+                ScreenPoint sp2 = Axis.Transform(p2, this.XAxis, this.YAxis);
 
                 double sp21X = sp2.x - sp1.x;
                 double sp21Y = sp2.y - sp1.y;
@@ -336,7 +336,7 @@ namespace OxyPlot
             int i = 0;
             foreach (DataPoint p in points)
             {
-                ScreenPoint sp = AxisBase.Transform(p, this.XAxis, this.YAxis);
+                ScreenPoint sp = Axis.Transform(p, this.XAxis, this.YAxis);
                 double dx = sp.x - point.x;
                 double dy = sp.y - point.y;
                 double d2 = dx * dx + dy * dy;

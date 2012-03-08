@@ -104,7 +104,7 @@ namespace OxyPlot
         /// <param name="axis">
         /// The axis.
         /// </param>
-        public virtual void Render(AxisBase axis)
+        public virtual void Render(Axis axis)
         {
             if (axis == null)
             {
@@ -125,7 +125,7 @@ namespace OxyPlot
         /// <param name="axis">
         /// The axis.
         /// </param>
-        protected void CreatePens(AxisBase axis)
+        protected void CreatePens(Axis axis)
         {
             this.MinorPen = OxyPen.Create(axis.MinorGridlineColor, axis.MinorGridlineThickness, axis.MinorGridlineStyle);
             this.MajorPen = OxyPen.Create(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
@@ -158,7 +158,7 @@ namespace OxyPlot
         /// The x 1.
         /// </param>
         protected void GetTickPositions(
-            AxisBase axis, TickStyle glt, double ticksize, AxisPosition position, out double x0, out double x1)
+            Axis axis, TickStyle glt, double ticksize, AxisPosition position, out double x0, out double x1)
         {
             x0 = 0;
             x1 = 0;

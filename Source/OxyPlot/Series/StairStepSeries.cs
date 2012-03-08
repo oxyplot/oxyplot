@@ -197,7 +197,7 @@ namespace OxyPlot
                     continue;
                 }
 
-                ScreenPoint transformedPoint = AxisBase.Transform(point, this.XAxis, this.YAxis);
+                ScreenPoint transformedPoint = Axis.Transform(point, this.XAxis, this.YAxis);
                 if (!double.IsNaN(previousY))
                 {
                     linePoints.Add(new ScreenPoint(transformedPoint.X, previousY));

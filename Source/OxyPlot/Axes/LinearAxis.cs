@@ -9,7 +9,7 @@ namespace OxyPlot
     /// <summary>
     /// Represents an axis with linear scale.
     /// </summary>
-    public class LinearAxis : AxisBase
+    public class LinearAxis : Axis
     {
         #region Constructors and Destructors
 

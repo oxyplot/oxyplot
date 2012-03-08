@@ -42,11 +42,11 @@ namespace OxyPlot
         /// </param>
         /// <exception cref="NullReferenceException">
         /// </exception>
-        public override void Render(AxisBase axis)
+        public override void Render(Axis axis)
         {
             base.Render(axis);
 
-            var angleAxis = this.Plot.DefaultAngleAxis as AxisBase;
+            var angleAxis = this.Plot.DefaultAngleAxis as Axis;
             if (axis.RelatedAxis != null)
             {
                 angleAxis = axis.RelatedAxis;

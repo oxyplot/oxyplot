@@ -1303,7 +1303,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected virtual void SynchronizeProperties()
         {
-            var a = (AxisBase)this.internalAxis;
+            var a = this.internalAxis;
             a.AbsoluteMaximum = this.AbsoluteMaximum;
             a.AbsoluteMinimum = this.AbsoluteMinimum;
             a.Angle = this.Angle;

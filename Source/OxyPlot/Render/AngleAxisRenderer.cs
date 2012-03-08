@@ -41,7 +41,7 @@ namespace OxyPlot
         /// </param>
         /// <exception cref="InvalidOperationException">
         /// </exception>
-        public override void Render(AxisBase axis)
+        public override void Render(Axis axis)
         {
             base.Render(axis);
 

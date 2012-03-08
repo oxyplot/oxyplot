@@ -97,8 +97,8 @@ namespace OxyPlot
             {
                 IDataPoint p1 = this.points[i];
                 var basePoint = new DataPoint(p1.X, this.Base);
-                ScreenPoint sp1 = AxisBase.Transform(p1, this.XAxis, this.YAxis);
-                ScreenPoint sp2 = AxisBase.Transform(basePoint, this.XAxis, this.YAxis);
+                ScreenPoint sp1 = Axis.Transform(p1, this.XAxis, this.YAxis);
+                ScreenPoint sp2 = Axis.Transform(basePoint, this.XAxis, this.YAxis);
 
                 double sp21X = sp2.x - sp1.x;
                 double sp21Y = sp2.y - sp1.y;

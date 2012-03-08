@@ -16,7 +16,7 @@ namespace OxyPlot
     /// <remarks>
     /// See http://en.wikipedia.org/wiki/Logarithmic_scale.
     /// </remarks>
-    public class LogarithmicAxis : AxisBase
+    public class LogarithmicAxis : Axis
     {
         #region Constructors and Destructors
 

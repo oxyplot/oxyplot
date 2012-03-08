@@ -158,7 +158,7 @@ namespace OxyPlot
                 }
 
                 var dp = new DataPoint(p.X, p.Y);
-                ScreenPoint sp = AxisBase.Transform(dp, this.XAxis, this.YAxis);
+                ScreenPoint sp = Axis.Transform(dp, this.XAxis, this.YAxis);
                 double dx = sp.x - point.x;
                 double dy = sp.y - point.y;
                 double d2 = dx * dx + dy * dy;
