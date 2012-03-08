@@ -35,3 +35,6 @@ _ReSharper*/
 [Bb]uild[Ll]og.*
 *.[Pp]ublish.xml
 [Tt]humbs.db
+*.dotCover
+*.DotSettings
+ClientBin/
