@@ -11,7 +11,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// The annotation base class.
     /// </summary>
-    public abstract class Annotation : FrameworkElement, IAnnotation
+    public abstract class Annotation : FrameworkElement
     {
         #region Constants and Fields
 

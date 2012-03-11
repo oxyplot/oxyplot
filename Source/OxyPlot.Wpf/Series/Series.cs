@@ -14,7 +14,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Abstract base class for series.
     /// </summary>
-    public abstract class Series : ItemsControl, ISeries
+    public abstract class Series : ItemsControl
     {
         #region Constants and Fields
 
