@@ -109,6 +109,7 @@
     <Compile Include="Manipulators\CursorType.cs" />
     <Compile Include="Manipulators\PanManipulator.cs" />
     <Compile Include="Manipulators\TrackerHitResult.cs" />
+    <Compile Include="PlotModel\PlotElement.cs" />
     <Compile Include="PlotModel\PlotModel.Legends.cs" />
     <Compile Include="Foundation\CanonicalSplineHelper.cs" />
     <Compile Include="Foundation\FontWeights.cs" />

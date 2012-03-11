@@ -14,7 +14,7 @@ namespace OxyPlot
     /// Abstract base class for axes.
     /// </summary>
     [Serializable]
-    public abstract class Axis
+    public abstract class Axis : PlotElement
     {
         #region Constants and Fields
 

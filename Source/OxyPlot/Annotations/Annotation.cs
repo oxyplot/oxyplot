@@ -15,7 +15,7 @@ namespace OxyPlot
     /// Annotation base class.
     /// </summary>
     [Serializable]
-    public abstract class Annotation
+    public abstract class Annotation : PlotElement
     {
         #region Public Properties
 
