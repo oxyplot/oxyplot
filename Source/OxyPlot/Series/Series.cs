@@ -17,7 +17,7 @@ namespace OxyPlot
     /// This class contains internal methods that should be called only from the PlotModel.
     /// </remarks>
     [Serializable]
-    public abstract class Series : ITrackableSeries
+    public abstract class Series : PlotElement, ITrackableSeries
     {
         #region Constructors and Destructors
 
