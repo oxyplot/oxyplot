@@ -12,13 +12,18 @@ namespace OxyPlot
     public enum AnnotationLayer
     {
         /// <summary>
-        ///   The below series.
+        ///   Render the annotation below the gridlines of the axes.
+        /// </summary>
+        BelowAxes,
+        
+        /// <summary>
+        ///   Render the annotation below the series.
         /// </summary>
         BelowSeries, 
 
         /// <summary>
-        ///   The over series.
+        ///   Render the annotation above the series.
         /// </summary>
-        OverSeries
+        AboveSeries
     }
 }

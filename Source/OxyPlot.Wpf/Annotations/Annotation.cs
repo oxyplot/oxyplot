@@ -19,7 +19,7 @@ namespace OxyPlot.Wpf
         ///   The layer property.
         /// </summary>
         public static readonly DependencyProperty LayerProperty = DependencyProperty.Register(
-            "Layer", typeof(AnnotationLayer), typeof(Annotation), new PropertyMetadata(AnnotationLayer.OverSeries));
+            "Layer", typeof(AnnotationLayer), typeof(Annotation), new PropertyMetadata(AnnotationLayer.AboveSeries));
 
         /// <summary>
         ///   The text property.

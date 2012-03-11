@@ -56,10 +56,11 @@ namespace OxyPlot
             }
 
             this.RenderBackgrounds(rc);
+            this.RenderAnnotations(rc, AnnotationLayer.BelowAxes);
             this.RenderAxes(rc, AxisLayer.BelowSeries);
             this.RenderAnnotations(rc, AnnotationLayer.BelowSeries);
             this.RenderSeries(rc);
-            this.RenderAnnotations(rc, AnnotationLayer.OverSeries);
+            this.RenderAnnotations(rc, AnnotationLayer.AboveSeries);
             this.RenderTitle(rc);
             this.RenderBox(rc);
             this.RenderAxes(rc, AxisLayer.AboveSeries);
