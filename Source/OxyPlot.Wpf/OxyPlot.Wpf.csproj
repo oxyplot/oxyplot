@@ -55,7 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations\Annotation.cs" />
-    <Compile Include="Annotations\IAnnotation.cs" />
     <Compile Include="Annotations\LineAnnotation.cs" />
     <Compile Include="Axes\AngleAxis.cs" />
     <Compile Include="Axes\Axis.cs" />
@@ -76,7 +75,6 @@
     <Compile Include="Series\XYAxisSeries.cs" />
     <Compile Include="Series\ItemsSeries.cs" />
     <Compile Include="Series\ScatterSeries.cs" />
-    <Compile Include="Series\ISeries.cs" />
     <Compile Include="Series\Series.cs" />
     <Compile Include="Tracker\TrackerControl.cs" />
     <Compile Include="Tracker\TrackerDefinition.cs" />

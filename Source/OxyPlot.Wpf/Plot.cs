@@ -1245,7 +1245,7 @@ namespace OxyPlot.Wpf
                 if (this.Series != null)
                 {
                     this.internalModel.Series.Clear();
-                    foreach (ISeries s in this.Series)
+                    foreach (var s in this.Series)
                     {
                         this.internalModel.Series.Add(s.CreateModel());
                     }
@@ -1255,7 +1255,7 @@ namespace OxyPlot.Wpf
                 {
                     this.internalModel.Axes.Clear();
 
-                    foreach (Axis a in this.Axes)
+                    foreach (var a in this.Axes)
                     {
                         this.internalModel.Axes.Add(a.CreateModel());
                     }
