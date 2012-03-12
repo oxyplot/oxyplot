@@ -7,13 +7,11 @@
 namespace OxyPlot
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Abstract base class for all plottable elements (Axes, Annotations, Series).
     /// </summary>
+    [Serializable]
     public abstract class PlotElement
     {
     }
