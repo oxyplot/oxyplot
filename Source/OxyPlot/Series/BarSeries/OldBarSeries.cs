@@ -10,45 +10,19 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Placement of the labels.
-    /// </summary>
-    public enum LabelPlacement
-    {
-        /// <summary>
-        /// Placed outside the bar.
-        /// </summary>
-        Outside,
-
-        /// <summary>
-        /// Placed inside the bar.
-        /// </summary>
-        Inside,
-
-        /// <summary>
-        /// Placed inside in the middle/center of the bar.
-        /// </summary>
-        Middle,
-
-        /// <summary>
-        /// Placed inside at the base of the bar.
-        /// </summary>
-        Base
-    }
-
-    /// <summary>
     /// The BarSeries is used to create clustered or stacked bar charts.
     /// </summary>
     /// <remarks>
     /// A bar chart or bar graph is a chart with rectangular bars with lengths proportional to the values that they represent. The bars can be plotted vertically or horizontally. http://en.wikipedia.org/wiki/Bar_chart The BarSeries requires a CategoryAxis. The Values collection must contain the same number of elements as the number of categories in the CategoryAxis. You can define a ItemsSource and ValueField, or add the Values manually. Use stacked bar charts with caution... http://lilt.ilstu.edu/gmklass/pos138/datadisplay/badchart.htm
     /// </remarks>
-    public class BarSeries : XYAxisSeries
+    public class OldBarSeries : XYAxisSeries
     {
         #region Constructors and Destructors
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="BarSeries" /> class.
         /// </summary>
-        public BarSeries()
+        public OldBarSeries()
         {
             this.InternalValues = new List<double>();
             this.StrokeColor = OxyColors.Black;
@@ -176,17 +150,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the point in the dataset that is nearest the specified point.
+        /// Gets the nearest point.
         /// </summary>
-        /// <param name="point">
-        /// The point. 
-        /// </param>
-        /// <param name="interpolate">
-        /// The interpolate. 
-        /// </param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit. 
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             int i = 0;
@@ -646,21 +614,6 @@ namespace OxyPlot
                 this.MaxX = maxValue;
             }
         }
-
-        /// <summary>
-        /// Gets the item at the specified index.
-        /// </summary>
-        /// <param name="i">
-        /// The index. 
-        /// </param>
-        /// <returns>
-        /// The item. 
-        /// </returns>
-        private object GetItem(int i)
-        {
-            return this.GetItem(this.ItemsSource, i);
-        }
-
         #endregion
     }
 }

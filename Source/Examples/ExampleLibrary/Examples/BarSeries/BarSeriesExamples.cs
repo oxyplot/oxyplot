@@ -11,22 +11,22 @@ namespace ExampleLibrary
     using System;
     using System.Collections.ObjectModel;
 
-    [Examples("BarSeries")]
+    [Examples("BarSeries and ColumnSeries")]
     public static class BarSeriesExamples
     {
-        [Example("Simple BarSeries")]
-        public static PlotModel SimpleBarSeries()
+        [Example("ColumnSeries")]
+        public static PlotModel SimpleColumnSeries()
         {
-            var model = CreateBarSeriesModel(false, false);
+            var model = CreateColumnSeriesModel(false);
             return model;
         }
 
-        [Example("Simple BarSeries with labels")]
-        public static PlotModel SimpleBarSeriesWithLabels()
+        [Example("ColumnSeries with labels")]
+        public static PlotModel SimpleColumnSeriesWithLabels()
         {
-            var model = CreateBarSeriesModel(false, false);
-            var s0 = model.Series[0] as BarSeries;
-            var s1 = model.Series[1] as BarSeries;
+            var model = CreateColumnSeriesModel(false);
+            var s0 = model.Series[0] as ColumnSeries;
+            var s1 = model.Series[1] as ColumnSeries;
             s0.LabelFormatString = "{0}";
             s1.LabelFormatString = "{0:0.00}";
             s1.LabelPlacement = LabelPlacement.Middle;
@@ -34,31 +34,31 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Stacked BarSeries")]
-        public static PlotModel StakcedBarSeries()
+        [Example("Stacked ColumnSeries")]
+        public static PlotModel StakcedColumnSeries()
         {
-            var model = CreateBarSeriesModel(true, false);
+            var model = CreateColumnSeriesModel(true);
             return model;
         }
 
-        [Example("Stacked BarSeries with negative values")]
-        public static PlotModel StackedNegativeBarSeries()
+        [Example("Stacked ColumnSeries with negative values")]
+        public static PlotModel StackedNegativeColumnSeries()
         {
-            var model = CreateBarSeriesModelWithNegativeValues(true, false);
+            var model = CreateColumnSeriesModelWithNegativeValues(true);
             return model;
         }
 
-        [Example("Simple Horizontal BarSeries")]
+        [Example("BarSeries")]
         public static PlotModel SimpleHorizontalBarSeries()
         {
-            var model = CreateBarSeriesModel(false, true);
+            var model = CreateBarSeriesModel(false);
             return model;
         }
 
-        [Example("Simple Horizontal BarSeries with labels")]
+        [Example("BarSeries with labels")]
         public static PlotModel SimpleHorizontalBarSeriesWithLabels()
         {
-            var model = CreateBarSeriesModel(false, true);
+            var model = CreateBarSeriesModel(false);
             var s0 = model.Series[0] as BarSeries;
             var s1 = model.Series[1] as BarSeries;
             s0.LabelFormatString = "{0}";
@@ -68,31 +68,31 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Stacked Horizontal BarSeries")]
+        [Example("Stacked BarSeries")]
         public static PlotModel StackedHorizontalBarSeries()
         {
-            var model = CreateBarSeriesModel(true, true);
+            var model = CreateBarSeriesModel(true);
             return model;
         }
 
-        [Example("Stacked Horizontal BarSeries with negative values")]
+        [Example("Stacked BarSeries with negative values")]
         public static PlotModel StackedNegativeHorizontalBarSeries()
         {
-            var model = CreateBarSeriesModelWithNegativeValues(true, true);
+            var model = CreateBarSeriesModelWithNegativeValues(true);
             return model;
         }
 
         [Example("Logarithmic axis")]
         public static PlotModel LogAxisBarSeries()
         {
-            var model = new PlotModel("BarSeries")
+            var model = new PlotModel("ColumnSeries")
             {
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
                 LegendBorderThickness = 0
             };
-            var s1 = new BarSeries { Title = "BarSeries 1", BaseValue = 0.1, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            var s1 = new ColumnSeries { Title = "ColumnSeries 1", BaseValue = 0.1, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
             s1.Values.Add(25);
             s1.Values.Add(37);
             s1.Values.Add(18);
@@ -108,7 +108,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        private static PlotModel CreateBarSeriesModel(bool stacked, bool horizontal)
+        private static PlotModel CreateBarSeriesModel(bool stacked)
         {
             var model = new PlotModel("BarSeries")
                           {
@@ -127,12 +127,12 @@ namespace ExampleLibrary
             s2.Values.Add(14);
             s2.Values.Add(120);
             s2.Values.Add(26);
-            var categoryAxis = new CategoryAxis { Position = horizontal ? AxisPosition.Left : AxisPosition.Bottom };
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Left };
             categoryAxis.Labels.Add("Category A");
             categoryAxis.Labels.Add("Category B");
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
-            var valueAxis = new LinearAxis(horizontal ? AxisPosition.Bottom : AxisPosition.Left) { MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 };
+            var valueAxis = new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 };
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Axes.Add(categoryAxis);
@@ -140,7 +140,39 @@ namespace ExampleLibrary
             return model;
         }
 
-        private static PlotModel CreateBarSeriesModelWithNegativeValues(bool stacked, bool horizontal)
+        private static PlotModel CreateColumnSeriesModel(bool stacked)
+        {
+            var model = new PlotModel("ColumnSeries")
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBorderThickness = 0
+            };
+            var s1 = new ColumnSeries { Title = "ColumnSeries 1", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s1.Values.Add(25);
+            s1.Values.Add(137);
+            s1.Values.Add(18);
+            s1.Values.Add(40);
+            var s2 = new ColumnSeries { Title = "ColumnSeries 2", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s2.Values.Add(12);
+            s2.Values.Add(14);
+            s2.Values.Add(120);
+            s2.Values.Add(26);
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
+            categoryAxis.Labels.Add("Category A");
+            categoryAxis.Labels.Add("Category B");
+            categoryAxis.Labels.Add("Category C");
+            categoryAxis.Labels.Add("Category D");
+            var valueAxis = new LinearAxis(AxisPosition.Left) { MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 };
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis);
+            return model;
+        }
+
+        private static PlotModel CreateBarSeriesModelWithNegativeValues(bool stacked)
         {
             var model = new PlotModel("BarSeries")
             {
@@ -173,12 +205,61 @@ namespace ExampleLibrary
             model.Series.Add(s3);
             model.Series.Add(s4);
 
-            var categoryAxis = new CategoryAxis { Position = horizontal ? AxisPosition.Left : AxisPosition.Bottom };
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Left };
             categoryAxis.Labels.Add("Category A");
             categoryAxis.Labels.Add("Category B");
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
-            var valueAxis = new LinearAxis(horizontal ? AxisPosition.Bottom : AxisPosition.Left) { MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0.0 } };
+            var valueAxis = new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0.0 } };
+            valueAxis.ExtraGridlineStyle = LineStyle.Solid;
+            valueAxis.ExtraGridlineColor = OxyColors.Black;
+            valueAxis.ExtraGridlineThickness = 1;
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis);
+            return model;
+        }
+
+        private static PlotModel CreateColumnSeriesModelWithNegativeValues(bool stacked)
+        {
+            var model = new PlotModel("ColumnSeries")
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBorderThickness = 0
+            };
+            var s1 = new ColumnSeries { Title = "ColumnSeries 1", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s1.Values.Add(25);
+            s1.Values.Add(137);
+            s1.Values.Add(18);
+            s1.Values.Add(40);
+            var s2 = new ColumnSeries { Title = "ColumnSeries 2", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s2.Values.Add(-12);
+            s2.Values.Add(-14);
+            s2.Values.Add(-120);
+            s2.Values.Add(-26);
+            var s3 = new ColumnSeries { Title = "ColumnSeries 3", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s3.Values.Add(21);
+            s3.Values.Add(8);
+            s3.Values.Add(48);
+            s3.Values.Add(3);
+            var s4 = new ColumnSeries { Title = "ColumnSeries 4", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s4.Values.Add(-8);
+            s4.Values.Add(-21);
+            s4.Values.Add(-3);
+            s4.Values.Add(-48);
+
+            model.Series.Add(s3);
+            model.Series.Add(s4);
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
+            categoryAxis.Labels.Add("Category A");
+            categoryAxis.Labels.Add("Category B");
+            categoryAxis.Labels.Add("Category C");
+            categoryAxis.Labels.Add("Category D");
+            var valueAxis = new LinearAxis(AxisPosition.Left) { MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0.0 } };
             valueAxis.ExtraGridlineStyle = LineStyle.Solid;
             valueAxis.ExtraGridlineColor = OxyColors.Black;
             valueAxis.ExtraGridlineThickness = 1;
@@ -197,8 +278,8 @@ namespace ExampleLibrary
             public double Value3 { get; set; }
         }
 
-        [Example("Bar series")]
-        public static PlotModel Barseries()
+        [Example("ColumnSeries")]
+        public static PlotModel ColumnSeries()
         {
             var items = new Collection<Item>
                             {
@@ -206,12 +287,12 @@ namespace ExampleLibrary
                                 new Item {Label = "Pears", Value1 = 7, Value2 = 21, Value3 = 9},
                                 new Item {Label = "Bananas", Value1 = 23, Value2 = 2, Value3 = 29}
                             };
-            var plotModel1 = new PlotModel { LegendPlacement = LegendPlacement.Outside, Title = "Bar series" };
+            var plotModel1 = new PlotModel { LegendPlacement = LegendPlacement.Outside, Title = "ColumnSeries" };
             var categoryAxis1 = new CategoryAxis { LabelField = "Label", ItemsSource = items, MajorStep = 1, MinorStep = 1 };
             plotModel1.Axes.Add(categoryAxis1);
             var linearAxis1 = new LinearAxis { AbsoluteMinimum = 0, MinimumPadding = 0 };
             plotModel1.Axes.Add(linearAxis1);
-            var barSeries1 = new BarSeries
+            var barSeries1 = new ColumnSeries
                 {
                     FillColor = OxyColor.FromArgb(255, 78, 154, 6),
                     ValueField = "Value1",
@@ -219,7 +300,7 @@ namespace ExampleLibrary
                     ItemsSource = items
                 };
             plotModel1.Series.Add(barSeries1);
-            var barSeries2 = new BarSeries
+            var barSeries2 = new ColumnSeries
                 {
                     FillColor = OxyColor.FromArgb(255, 200, 141, 0),
                     ValueField = "Value2",
@@ -227,7 +308,7 @@ namespace ExampleLibrary
                     ItemsSource = items
                 };
             plotModel1.Series.Add(barSeries2);
-            var barSeries3 = new BarSeries
+            var barSeries3 = new ColumnSeries
                 {
                     FillColor = OxyColor.FromArgb(255, 204, 0, 0),
                     ValueField = "Value3",
@@ -261,7 +342,7 @@ namespace ExampleLibrary
 
             var temp = new PlotModel();
 
-            temp.Series.Add(new BarSeries { BarWidth = 1, ItemsSource = bins, ValueField = "Value" });
+            temp.Series.Add(new ColumnSeries { BarWidth = 1, ItemsSource = bins, ValueField = "Value" });
 
             temp.Axes.Add(new CategoryAxis { ItemsSource = bins, LabelField = "Label" });
             temp.Axes.Add(new LinearAxis { MinimumPadding = 0, AbsoluteMinimum = 0 });

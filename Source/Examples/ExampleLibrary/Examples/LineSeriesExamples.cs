@@ -104,6 +104,30 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("LineSeries with labels")]
+        public static PlotModel LineSeriesWithLabels()
+        {
+            var model = new PlotModel("LineSeries with labels") { LegendSymbolLength = 24 };
+            var s1 = new LineSeries("Series 1")
+            {
+                LabelFormatString = "{1}",
+                // LabelFormatString = "{0} -> {1}",
+                Color = OxyColors.SkyBlue,
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 6,
+                MarkerStroke = OxyColors.White,
+                MarkerFill = OxyColors.SkyBlue,
+                MarkerStrokeThickness = 1.5
+            };
+            s1.Points.Add(new DataPoint(0, 10));
+            s1.Points.Add(new DataPoint(10, 40));
+            s1.Points.Add(new DataPoint(40, 20));
+            s1.Points.Add(new DataPoint(60, 30));
+            model.Series.Add(s1);
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
+            return model;
+        }
         static readonly Random Randomizer = new Random();
 
         private static Series CreateRandomLineSeries(int n, string title, MarkerType markerType)

@@ -44,7 +44,7 @@ namespace ExampleLibrary
                         StringFormat = "#,0"
                     });
             pm.Series.Add(
-                new BarSeries { FillColor = OxyColors.Black, Values = new List<double> { 3000, 4500, 2100, 4800 } });
+                new ColumnSeries { FillColor = OxyColors.Black, Values = new List<double> { 3000, 4500, 2100, 4800 } });
             return pm;
         }
 
@@ -153,7 +153,7 @@ namespace ExampleLibrary
                         StringFormat = "P0"
                     });
             pm.Series.Add(
-                new BarSeries
+                new ColumnSeries
                     {
                         BarWidth = 1.0,
                         StrokeColor = OxyColors.DarkGray,
@@ -193,7 +193,7 @@ namespace ExampleLibrary
                         StringFormat = "+0;-0;0"
                     });
             pm.Series.Add(
-                new BarSeries
+                new ColumnSeries
                     {
                         FillColor = OxyColors.Orange,
                         NegativeFillColor = OxyColors.Gray,
@@ -236,7 +236,7 @@ namespace ExampleLibrary
                         TickStyle = TickStyle.Outside,
                         StringFormat = "+0;-0;0"
                     });
-            pm.Series.Add(new BarSeries { FillColor = OxyColors.Orange, ItemsSource = values, ValueField = "Value" });
+            pm.Series.Add(new ColumnSeries { FillColor = OxyColors.Orange, ItemsSource = values, ValueField = "Value" });
             return pm;
         }
 

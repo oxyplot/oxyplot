@@ -235,7 +235,7 @@ namespace OxyPlot
         /// Draws the text.
         /// </summary>
         /// <param name="p">
-        /// The p.
+        /// The position.
         /// </param>
         /// <param name="text">
         /// The text.

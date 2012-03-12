@@ -60,13 +60,15 @@
     <Compile Include="Examples.cs" />
     <Compile Include="Attributes\ExamplesAttribute.cs" />
     <Compile Include="Examples\AnnotationExamples.cs" />
-    <Compile Include="Examples\BarSeriesExamples.cs" />
+    <Compile Include="Examples\BarSeries\BarSeriesExamples.cs" />
     <Compile Include="Examples\CartesianAxesExamples.cs" />
     <Compile Include="Examples\CategoryAxisExamples.cs" />
     <Compile Include="Examples\AxisExamples.cs" />
     <Compile Include="Examples\AreaSeriesExamples.cs" />
     <Compile Include="Examples\ContourSeriesExamples.cs" />
-    <Compile Include="Examples\TornadoBarSeriesExamples.cs" />
+    <Compile Include="Examples\BarSeries\IntervalBarSeriesExamples.cs" />
+    <Compile Include="Examples\BarSeries\RectangleBarSeriesExamples.cs" />
+    <Compile Include="Examples\BarSeries\TornadoBarSeriesExamples.cs" />
     <Compile Include="Examples\ItemsSourceExamples.cs" />
     <Compile Include="Examples\FunctionSeriesExamples.cs" />
     <Compile Include="Examples\PerformanceExamples.cs" />
