@@ -86,14 +86,11 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// Gets the point in the dataset that is nearest the specified point.
+        /// Gets the nearest point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// The interpolate.
-        /// </param>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             int index;
@@ -107,13 +104,13 @@ namespace OxyPlot
             {
                 if (this.GetNearestInterpolatedPointInternal(this.points, point, out dpn, out spn1, out index))
                 {
-                    object item = this.GetItem(this.ItemsSource, index);
+                    object item = this.GetItem(index);
                     result1 = new TrackerHitResult(this, dpn, spn1, item);
                 }
 
                 if (this.GetNearestInterpolatedPointInternal(this.points2, point, out dpn, out spn2, out index))
                 {
-                    object item = this.GetItem(this.ItemsSource, index);
+                    object item = this.GetItem(index);
                     result2 = new TrackerHitResult(this, dpn, spn2, item);
                 }
             }
@@ -121,13 +118,13 @@ namespace OxyPlot
             {
                 if (this.GetNearestPointInternal(this.points, point, out dpn, out spn1, out index))
                 {
-                    object item = this.GetItem(this.ItemsSource, index);
+                    object item = this.GetItem(index);
                     result1 = new TrackerHitResult(this, dpn, spn1, item);
                 }
 
                 if (this.GetNearestPointInternal(this.points2, point, out dpn, out spn2, out index))
                 {
-                    object item = this.GetItem(this.ItemsSource, index);
+                    object item = this.GetItem(index);
                     result2 = new TrackerHitResult(this, dpn, spn2, item);
                 }
             }

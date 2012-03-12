@@ -109,14 +109,11 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// Gets the point in the dataset that is nearest the specified point.
+        /// Gets the nearest point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// The interpolate.
-        /// </param>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (interpolate && !this.CanTrackerInterpolatePoints)
@@ -125,14 +122,13 @@ namespace OxyPlot
             }
 
             int index;
-            TrackerHitResult result = null;
             DataPoint dpn;
             ScreenPoint spn;
             if (interpolate)
             {
                 if (this.GetNearestInterpolatedPointInternal(this.Points, point, out dpn, out spn, out index))
                 {
-                    object item = this.GetItem(this.ItemsSource, index);
+                    object item = this.GetItem(index);
                     return new TrackerHitResult(this, dpn, spn, item);
                 }
             }
@@ -140,12 +136,12 @@ namespace OxyPlot
             {
                 if (this.GetNearestPointInternal(this.Points, point, out dpn, out spn, out index))
                 {
-                    object item = this.GetItem(this.ItemsSource, index);
+                    object item = this.GetItem(index);
                     return new TrackerHitResult(this, dpn, spn, item);
                 }
             }
 
-            return result;
+            return null;
         }
 
         /// <summary>
