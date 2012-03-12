@@ -101,32 +101,30 @@ namespace OxyPlot
             const double MinimumSegmentLength = 4;
 
             rc.DrawClippedPolygon(
-                screenPoints, 
-                clipping, 
-                MinimumSegmentLength * MinimumSegmentLength, 
-                this.Fill, 
-                this.Color, 
-                this.StrokeThickness, 
-                this.LineStyle, 
+                screenPoints,
+                clipping,
+                MinimumSegmentLength * MinimumSegmentLength,
+                this.Fill,
+                this.Color,
+                this.StrokeThickness,
+                this.LineStyle,
                 this.LineJoin);
 
             if (!string.IsNullOrEmpty(this.Text))
             {
                 ScreenPoint textPosition = ScreenPointHelper.GetCentroid(screenPoints);
 
-                if (clipping.Contains(textPosition))
-                {
-                    rc.DrawText(
-                        textPosition, 
-                        this.Text, 
-                        model.TextColor, 
-                        model.ActualAnnotationFont, 
-                        model.AnnotationFontSize, 
-                        FontWeights.Normal, 
-                        0, 
-                        HorizontalTextAlign.Center, 
-                        VerticalTextAlign.Middle);
-                }
+                rc.DrawClippedText(
+                    clipping,
+                    textPosition,
+                    this.Text,
+                    model.TextColor,
+                    model.ActualAnnotationFont,
+                    model.AnnotationFontSize,
+                    FontWeights.Normal,
+                    0,
+                    HorizontalTextAlign.Center,
+                    VerticalTextAlign.Middle);
             }
         }
 
