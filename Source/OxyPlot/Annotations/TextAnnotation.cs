@@ -126,9 +126,8 @@ namespace OxyPlot
             rc.DrawClippedPolygon(
                 textBounds, clippingRect, MinDistSquared, this.Background, this.Stroke, this.StrokeThickness);
 
-            if (clippingRect.Contains(position))
-            {
-                rc.DrawText(
+                rc.DrawClippedText(
+                    clippingRect,
                     position, 
                     this.Text, 
                     model.TextColor, 
@@ -138,7 +137,6 @@ namespace OxyPlot
                     this.Rotation, 
                     this.HorizontalAlignment, 
                     this.VerticalAlignment);
-            }
         }
 
         #endregion

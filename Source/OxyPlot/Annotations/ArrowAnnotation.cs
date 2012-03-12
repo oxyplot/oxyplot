@@ -108,7 +108,7 @@ namespace OxyPlot
         public override void Render(IRenderContext rc, PlotModel model)
         {
             base.Render(rc, model);
-            
+
             ScreenPoint startPoint;
             var endPoint = this.XAxis.Transform(this.EndPoint.X, this.EndPoint.Y, this.YAxis);
 
@@ -134,39 +134,38 @@ namespace OxyPlot
             const double MinimumSegmentLength = 4;
 
             rc.DrawClippedLine(
-                new[] { startPoint, p4 }, 
-                clippingRect, 
-                MinimumSegmentLength * MinimumSegmentLength, 
-                this.Color, 
-                this.StrokeThickness, 
-                this.LineStyle, 
-                this.LineJoin, 
+                new[] { startPoint, p4 },
+                clippingRect,
+                MinimumSegmentLength * MinimumSegmentLength,
+                this.Color,
+                this.StrokeThickness,
+                this.LineStyle,
+                this.LineJoin,
                 false);
 
             rc.DrawClippedPolygon(
-                new[] { p3, endPoint, p2, p4 }, 
-                clippingRect, 
-                MinimumSegmentLength * MinimumSegmentLength, 
-                this.Color, 
+                new[] { p3, endPoint, p2, p4 },
+                clippingRect,
+                MinimumSegmentLength * MinimumSegmentLength,
+                this.Color,
                 null);
 
             var ha = d.X < 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
             var va = d.Y < 0 ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
 
             var textPoint = startPoint;
-            if (clippingRect.Contains(textPoint))
-            {
-                rc.DrawText(
-                    textPoint, 
-                    this.Text, 
-                    model.TextColor, 
-                    model.ActualAnnotationFont, 
-                    model.AnnotationFontSize, 
-                    FontWeights.Normal, 
-                    0, 
-                    ha, 
-                    va);
-            }
+            rc.DrawClippedText(
+                clippingRect,
+                textPoint,
+                this.Text,
+                model.TextColor,
+                model.ActualAnnotationFont,
+                model.AnnotationFontSize,
+                FontWeights.Normal,
+                0,
+                ha,
+                va);
+
         }
 
         #endregion
