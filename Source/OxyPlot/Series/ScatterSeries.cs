@@ -129,15 +129,9 @@ namespace OxyPlot
         /// <summary>
         /// Gets the nearest point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// interpolate if set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (interpolate)
@@ -165,7 +159,7 @@ namespace OxyPlot
 
                 if (d2 < minimumDistance)
                 {
-                    result = new TrackerHitResult(this, dp, sp, this.GetItem(this.ItemsSource, i));
+                    result = new TrackerHitResult(this, dp, sp, this.GetItem(i));
                     minimumDistance = d2;
                 }
 

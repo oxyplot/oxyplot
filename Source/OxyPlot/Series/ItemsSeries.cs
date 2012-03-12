@@ -7,6 +7,7 @@
 namespace OxyPlot
 {
     using System.Collections;
+    using System.Linq;
 
     /// <summary>
     /// Abstract base class for Series that can contains items.
@@ -39,7 +40,7 @@ namespace OxyPlot
         /// <returns>
         /// The get item.
         /// </returns>
-        protected object GetItem(IEnumerable itemsSource, int index)
+        protected static object GetItem(IEnumerable itemsSource, int index)
         {
             if (itemsSource == null || index < 0)
             {
@@ -57,17 +58,22 @@ namespace OxyPlot
                 return null;
             }
 
-            // todo: can this be improved?
             int i = 0;
-            foreach (var item in itemsSource)
-            {
-                if (i++ == index)
-                {
-                    return item;
-                }
-            }
+            return itemsSource.Cast<object>().FirstOrDefault(item => i++ == index);
+        }
 
-            return null;
+        /// <summary>
+        /// Gets the item at the specified index.
+        /// </summary>
+        /// <param name="i">
+        /// The index. 
+        /// </param>
+        /// <returns>
+        /// The item. 
+        /// </returns>
+        protected object GetItem(int i)
+        {
+            return GetItem(this.ItemsSource, i);
         }
 
         #endregion

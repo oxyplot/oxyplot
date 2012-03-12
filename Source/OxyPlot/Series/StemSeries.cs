@@ -70,17 +70,6 @@ namespace OxyPlot
 
         #region Public Methods
 
-        /// <summary>
-        /// Gets the point on the curve that is nearest the specified point.
-        /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// The interpolate.
-        /// </param>
-        /// <returns>
-        /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (interpolate)
@@ -137,7 +126,7 @@ namespace OxyPlot
                         this, 
                         new DataPoint(p1.X, p1.Y), 
                         new ScreenPoint(sp1.x, sp1.y), 
-                        this.GetItem(this.ItemsSource, i), 
+                        this.GetItem(i), 
                         null);
                     minimumDistance = distance;
                 }
