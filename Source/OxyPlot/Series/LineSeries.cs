@@ -41,6 +41,8 @@ namespace OxyPlot
             this.MarkerSize = 3;
             this.MarkerStrokeThickness = 1;
             this.CanTrackerInterpolatePoints = true;
+
+            this.LabelMargin = 6;
         }
 
         /// <summary>
@@ -91,6 +93,22 @@ namespace OxyPlot
         /// </summary>
         /// <value>The dashes.</value>
         public double[] Dashes { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the label color.
+        /// </summary>
+        public OxyColor LabelColor { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the label format string.
+        /// </summary>
+        /// <value> The label format string. </value>
+        public string LabelFormatString { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the label margins.
+        /// </summary>
+        public double LabelMargin { get; set; }
 
         /// <summary>
         ///   Gets or sets the line join.
@@ -176,17 +194,11 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// The get nearest point.
+        /// Gets the nearest point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// The interpolate.
-        /// </param>
-        /// <returns>
-        /// A hit result for the nearest point.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (interpolate)
@@ -252,11 +264,68 @@ namespace OxyPlot
                     transformedPoints.Clear();
                     continue;
                 }
-
-                transformedPoints.Add(this.XAxis.Transform(point.X, point.Y, this.YAxis));
+                var pt = this.XAxis.Transform(point.X, point.Y, this.YAxis);
+                transformedPoints.Add(pt);
             }
-
             this.RenderPoints(rc, clippingRect, transformedPoints);
+
+            // render point labels (not optimized for performance)
+            if (this.LabelFormatString != null)
+            {
+                int index = -1;
+                foreach (var point in this.points)
+                {
+                    index++;
+
+                    if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
+                    {
+                        continue;
+                    }
+
+                    var pt = this.XAxis.Transform(point.X, point.Y, this.YAxis);
+                    pt.Y -= this.LabelMargin;
+
+                    if (!clippingRect.Contains(pt))
+                    {
+                        continue;
+                    }
+
+                    var s = StringHelper.Format(
+                        this.ActualCulture, this.LabelFormatString, this.GetItem(index), point.X, point.Y);
+                    HorizontalTextAlign ha;
+                    //switch (this.LabelPlacement)
+                    //{
+                    //    case LabelPlacement.Inside:
+                    //        pt = new ScreenPoint(rect.Right - this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                    //        ha = HorizontalTextAlign.Right;
+                    //        break;
+                    //    case LabelPlacement.Middle:
+                    //        pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Top + rect.Bottom) / 2);
+                    //        ha = HorizontalTextAlign.Center;
+                    //        break;
+                    //    case LabelPlacement.Base:
+                    //        pt = new ScreenPoint(rect.Left + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                    //        ha = HorizontalTextAlign.Left;
+                    //        break;
+                    //    default: // Outside
+                    //        pt = new ScreenPoint(rect.Right + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                    //        ha = HorizontalTextAlign.Left;
+                    //        break;
+                    //}
+
+                    rc.DrawClippedText(
+                        clippingRect,
+                        pt,
+                        s,
+                        this.LabelColor ?? model.TextColor,
+                        model.ActualLegendFont,
+                        model.LegendFontSize,
+                        FontWeights.Normal,
+                        0,
+                        HorizontalTextAlign.Center,
+                        VerticalTextAlign.Bottom);
+                }
+            }
         }
 
         /// <summary>
