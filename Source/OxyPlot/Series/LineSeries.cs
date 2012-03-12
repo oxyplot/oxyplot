@@ -292,7 +292,6 @@ namespace OxyPlot
 
                     var s = StringHelper.Format(
                         this.ActualCulture, this.LabelFormatString, this.GetItem(index), point.X, point.Y);
-                    HorizontalTextAlign ha;
                     //switch (this.LabelPlacement)
                     //{
                     //    case LabelPlacement.Inside:
