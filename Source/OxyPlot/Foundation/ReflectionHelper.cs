@@ -58,6 +58,37 @@ namespace OxyPlot
             }
         }
 
+        public static void FillManyValues<T>(IEnumerable source, IList<T> target, string[] propertyNames, params Action<T, object>[] setPropertyActions) where T : new()
+        {
+            PropertyInfo[] pi = null;
+            Type t = null;
+            foreach (var sourceItem in source)
+            {
+                if (pi == null || sourceItem.GetType() != t)
+                {
+                    t = sourceItem.GetType();
+                    pi = new PropertyInfo[propertyNames.Length];
+                    for (int i = 0; i < propertyNames.Length; i++)
+                    {
+                        pi[i] = t.GetProperty(propertyNames[i]);
+                        if (pi[i] == null)
+                        {
+                            throw new InvalidOperationException(
+                                string.Format("Could not find field {0} on type {1}", propertyNames[i], t));
+                        }
+                    }
+                }
+
+                var item = new T();
+                for (int i = 0; i < propertyNames.Length; i++)
+                {
+                    var value = pi[i].GetValue(sourceItem, null);
+                    setPropertyActions[i](item, value);
+                }
+
+                target.Add(item);
+            }
+        }
         #endregion
     }
 }
