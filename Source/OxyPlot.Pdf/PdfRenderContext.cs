@@ -12,6 +12,7 @@ namespace OxyPlot.Pdf
     using System.Linq;
 
     using PdfSharp.Drawing;
+    using PdfSharp.Drawing.Layout;
     using PdfSharp.Pdf;
 
     /// <summary>
@@ -123,11 +124,11 @@ namespace OxyPlot.Pdf
         /// The aliased.
         /// </param>
         public override void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             if (stroke == null || thickness <= 0)
@@ -152,7 +153,7 @@ namespace OxyPlot.Pdf
                     pen.LineJoin = XLineJoin.Bevel;
                     break;
 
-                    // The default LineJoin is Miter
+                // The default LineJoin is Miter
             }
 
             this.g.DrawLines(pen, ToPoints(points));
@@ -183,12 +184,12 @@ namespace OxyPlot.Pdf
         /// The aliased.
         /// </param>
         public override void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             this.g.SmoothingMode = aliased ? XSmoothingMode.None : XSmoothingMode.HighQuality;
@@ -218,7 +219,7 @@ namespace OxyPlot.Pdf
                         pen.LineJoin = XLineJoin.Bevel;
                         break;
 
-                        // The default LineJoin is Miter
+                    // The default LineJoin is Miter
                 }
 
                 this.g.DrawPolygon(pen, pts);
@@ -288,15 +289,15 @@ namespace OxyPlot.Pdf
         /// The maximum size of the text.
         /// </param>
         public override void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalTextAlign halign, 
-            VerticalTextAlign valign, 
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalTextAlign halign,
+            VerticalTextAlign valign,
             OxySize? maxSize)
         {
             if (text == null)
@@ -357,13 +358,16 @@ namespace OxyPlot.Pdf
             if (Math.Abs(rotate) > double.Epsilon)
             {
                 this.g.RotateTransform((float)rotate);
+                this.g.RotateAtTransform((float)rotate, new XPoint((float)p.X + (float)(size.Width / 2.0), (float)p.Y));
             }
 
             this.g.TranslateTransform((float)p.X, (float)p.Y);
 
             var layoutRectangle = new XRect(0, 0, size.Width, size.Height);
 
-            this.g.DrawString(text, font, ToBrush(fill), layoutRectangle, sf);
+            var tf = new XTextFormatter(this.g);
+            tf.DrawString(text, font, ToBrush(fill), layoutRectangle, sf);
+
             this.g.Restore(state);
         }
 
