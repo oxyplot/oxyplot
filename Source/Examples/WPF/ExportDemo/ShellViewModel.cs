@@ -193,10 +193,16 @@ namespace ExportDemo
             main.AddHeader(2, "Plot (bitmap)");
             main.AddParagraph(
                 "The plot is rendered to PNG and embedded in the report.");
+            
+            // disconnect the Model from the plot control
+            var tmpModel = this.Model;
+            this.Model = null; 
 
             string pngPlotFileName = fileNameWithoutExtension + "_plot.png";
-            PngExporter.Export(Model, pngPlotFileName, 800, 500);
+            PngExporter.Export(tmpModel, pngPlotFileName, 800, 500);
             main.AddImage(pngPlotFileName, "PNG plot");
+
+            this.Model = tmpModel;
 
             main.AddHeader(2, "Data");
             int i = 1;
