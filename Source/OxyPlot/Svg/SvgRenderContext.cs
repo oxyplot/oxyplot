@@ -9,6 +9,7 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// The svg render context.
@@ -143,11 +144,11 @@ namespace OxyPlot
         /// The aliased.
         /// </param>
         public override void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             this.w.WritePolyline(points, this.w.CreateStyle(null, stroke, thickness, dashArray, lineJoin));
@@ -178,12 +179,12 @@ namespace OxyPlot
         /// The aliased.
         /// </param>
         public override void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             this.w.WritePolygon(points, this.w.CreateStyle(fill, stroke, thickness, dashArray, lineJoin));
@@ -255,7 +256,30 @@ namespace OxyPlot
             VerticalTextAlign valign, 
             OxySize? maxSize)
         {
-            this.w.WriteText(p, text, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
+            var lines = Regex.Split(text, "\r\n");
+            if (valign == VerticalTextAlign.Bottom)
+            {
+                for (var i = lines.Length - 1; i >= 0; i--)
+                {
+                    var line = lines[i];
+                    var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
+                    this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
+
+                    p.X += Math.Sin(rotate / 180.0 * Math.PI) * size.Height;
+                    p.Y -= Math.Cos(rotate / 180.0 * Math.PI) * size.Height;
+                }
+            }
+            else
+            {
+                foreach (var line in lines)
+                {
+                    var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
+                    this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
+
+                    p.X -= Math.Sin(rotate / 180.0 * Math.PI) * size.Height;
+                    p.Y += Math.Cos(rotate / 180.0 * Math.PI) * size.Height;
+                }
+            }
         }
 
         /// <summary>

@@ -8,6 +8,7 @@ namespace OxyPlot
 {
     using System;
     using System.Runtime.InteropServices;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// The gdi 32.
@@ -76,7 +77,7 @@ namespace OxyPlot
         /// The measure string.
         /// </summary>
         /// <param name="faceName">
-        /// The face name.
+        /// The font face name.
         /// </param>
         /// <param name="height">
         /// The height.
@@ -85,19 +86,29 @@ namespace OxyPlot
         /// The weight.
         /// </param>
         /// <param name="str">
-        /// The str.
+        /// The string.
         /// </param>
         /// <returns>
+        /// The size of the rendered string.
         /// </returns>
         public static OxySize MeasureString(string faceName, int height, int weight, string str)
         {
-            IntPtr hfont = CreateFont(height, 0, 0, 0, weight, 0, 0, 0, 0, 0, 0, 0, 0, faceName);
-            IntPtr hdc = GetDC(IntPtr.Zero);
-            IntPtr oldobj = SelectObject(hdc, hfont);
-            OxySize result = GetTextExtent(hdc, str);
-            SelectObject(hdc, oldobj);
-            DeleteObject(hfont);
-            DeleteDC(hdc);
+            var lines = Regex.Split(str, "\r\n");
+            OxySize result = new OxySize(0, 0);
+            foreach (var line in lines)
+            {
+                var hfont = CreateFont(height, 0, 0, 0, weight, 0, 0, 0, 0, 0, 0, 0, 0, faceName);
+                var hdc = GetDC(IntPtr.Zero);
+                var oldobj = SelectObject(hdc, hfont);
+                var temp = GetTextExtent(hdc, line);
+                SelectObject(hdc, oldobj);
+                DeleteObject(hfont);
+                DeleteDC(hdc);
+                var lineSpacing = temp.Height / 3.0;
+                result.Height += temp.Height + lineSpacing;
+                result.Width = Math.Max(temp.Width * 1.28, result.Width);
+            }
+
             return result;
         }
 
