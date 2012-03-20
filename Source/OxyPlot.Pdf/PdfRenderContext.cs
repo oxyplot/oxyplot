@@ -194,7 +194,7 @@ namespace OxyPlot.Pdf
         {
             this.g.SmoothingMode = aliased ? XSmoothingMode.None : XSmoothingMode.HighQuality;
 
-            XPoint[] pts = ToPoints(points);
+            var pts = ToPoints(points);
 
             if (fill != null)
             {
@@ -305,7 +305,7 @@ namespace OxyPlot.Pdf
                 return;
             }
 
-            XFontStyle fs = XFontStyle.Regular;
+            var fs = XFontStyle.Regular;
             if (fontWeight > FontWeights.Normal)
             {
                 fs = XFontStyle.Bold;
@@ -353,11 +353,10 @@ namespace OxyPlot.Pdf
                 dy = -size.Height;
             }
 
-            XGraphicsState state = this.g.Save();
+            var state = this.g.Save();
             this.g.TranslateTransform(dx, dy);
             if (Math.Abs(rotate) > double.Epsilon)
             {
-                this.g.RotateTransform((float)rotate);
                 this.g.RotateAtTransform((float)rotate, new XPoint((float)p.X + (float)(size.Width / 2.0), (float)p.Y));
             }
 
@@ -396,14 +395,14 @@ namespace OxyPlot.Pdf
                 return OxySize.Empty;
             }
 
-            XFontStyle fs = XFontStyle.Regular;
+            var fs = XFontStyle.Regular;
             if (fontWeight > FontWeights.Normal)
             {
                 fs = XFontStyle.Bold;
             }
 
             var font = new XFont(fontFamily, (float)fontSize * FontsizeFactor, fs);
-            XSize size = this.g.MeasureString(text, font);
+            var size = this.g.MeasureString(text, font);
             return new OxySize(size.Width, size.Height);
         }
 
