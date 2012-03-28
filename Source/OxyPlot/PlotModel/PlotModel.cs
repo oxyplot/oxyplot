@@ -411,7 +411,7 @@ namespace OxyPlot
         ///   Gets or sets the default colors.
         /// </summary>
         /// <value> The default colors. </value>
-        public List<OxyColor> DefaultColors { get; set; }
+        public IList<OxyColor> DefaultColors { get; set; }
 
         /// <summary>
         ///   Gets or sets a value indicating whether the legend is visible. The titles of the series must be set to use the legend.
