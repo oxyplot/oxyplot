@@ -105,6 +105,8 @@ namespace OxyPlot
 
             this.TitlePosition = 0.5;
             this.TitleFormatString = "{0} [{1}]";
+            this.TitleClippingLength = 0.9;
+            this.ClipTitle = true;
 
             this.Angle = 0;
 
@@ -272,6 +274,22 @@ namespace OxyPlot
         ///   Gets or sets the axis line.
         /// </summary>
         public double AxislineThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to clip the axis title.
+        /// </summary>
+        /// <remarks>
+        /// The default value is true.
+        /// </remarks>
+        public bool ClipTitle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the length of the title clipping rectangle (fraction of the available length of the axis).
+        /// </summary>
+        /// <remarks>
+        /// The default value is 0.9
+        /// </remarks>
+        public double TitleClippingLength { get; set; }
 
         /// <summary>
         ///   Gets or sets the end position of the axis on the plot area. This is a fraction from 0(bottom/left) to 1(top/right).

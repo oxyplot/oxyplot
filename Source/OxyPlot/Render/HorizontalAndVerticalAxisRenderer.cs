@@ -281,15 +281,15 @@ namespace OxyPlot
 
                 string text = axis.FormatValue(value);
                 this.rc.DrawMathText(
-                    pt, 
-                    text, 
-                    this.Plot.TextColor, 
-                    axis.ActualFont, 
-                    axis.FontSize, 
-                    axis.FontWeight, 
-                    axis.Angle, 
-                    ha, 
-                    va, 
+                    pt,
+                    text,
+                    this.Plot.TextColor,
+                    axis.ActualFont,
+                    axis.FontSize,
+                    axis.FontWeight,
+                    axis.Angle,
+                    ha,
+                    va,
                     false);
             }
 
@@ -333,19 +333,19 @@ namespace OxyPlot
             if (isHorizontal)
             {
                 this.rc.DrawLine(
-                    axis.Transform(actualMinimum), 
-                    axisPosition, 
-                    axis.Transform(actualMaximum), 
-                    axisPosition, 
+                    axis.Transform(actualMinimum),
+                    axisPosition,
+                    axis.Transform(actualMaximum),
+                    axisPosition,
                     this.AxislinePen);
             }
             else
             {
                 this.rc.DrawLine(
-                    axisPosition, 
-                    axis.Transform(actualMinimum), 
-                    axisPosition, 
-                    axis.Transform(actualMaximum), 
+                    axisPosition,
+                    axis.Transform(actualMinimum),
+                    axisPosition,
+                    axis.Transform(actualMaximum),
                     this.AxislinePen);
             }
 
@@ -359,19 +359,25 @@ namespace OxyPlot
                 double angle = -90;
                 var lpt = new ScreenPoint();
 
-                HorizontalTextAlign halign = HorizontalTextAlign.Center;
-                VerticalTextAlign valign = VerticalTextAlign.Top;
+                var halign = HorizontalTextAlign.Center;
+                var valign = VerticalTextAlign.Top;
 
                 if (axis.PositionAtZeroCrossing)
                 {
                     ymid = perpendicularAxis.Transform(perpendicularAxis.ActualMaximum);
                 }
 
-                double screenLength = isHorizontal
-                                          ? Math.Abs(axis.ScreenMax.X - axis.ScreenMin.X)
-                                          : Math.Abs(axis.ScreenMax.Y - axis.ScreenMin.Y);
+                OxySize? maxSize = null;
 
-                OxySize? maxSize = new OxySize(screenLength * 0.9, double.MaxValue);
+                if (axis.ClipTitle)
+                {
+                    // Calculate the title clipping dimensions
+                    double screenLength = isHorizontal
+                                              ? Math.Abs(axis.ScreenMax.X - axis.ScreenMin.X)
+                                              : Math.Abs(axis.ScreenMax.Y - axis.ScreenMin.Y);
+
+                    maxSize = new OxySize(screenLength * axis.TitleClippingLength, double.MaxValue);
+                }
 
                 switch (axis.Position)
                 {
@@ -398,15 +404,15 @@ namespace OxyPlot
 
                 this.rc.SetToolTip(axis.ToolTip);
                 this.rc.DrawText(
-                    lpt, 
-                    axis.ActualTitle, 
-                    this.Plot.TextColor, 
-                    axis.ActualFont, 
-                    axis.FontSize, 
-                    axis.FontWeight, 
-                    angle, 
-                    halign, 
-                    valign, 
+                    lpt,
+                    axis.ActualTitle,
+                    this.Plot.TextColor,
+                    axis.ActualFont,
+                    axis.FontSize,
+                    axis.FontWeight,
+                    angle,
+                    halign,
+                    valign,
                     maxSize);
                 this.rc.SetToolTip(null);
             }
@@ -456,10 +462,10 @@ namespace OxyPlot
         /// The rotated vertical alignment.
         /// </param>
         private static void GetRotatedAlignments(
-            double angle, 
-            HorizontalTextAlign defaultHorizontalAlignment, 
-            VerticalTextAlign defaultVerticalAlignment, 
-            out HorizontalTextAlign ha, 
+            double angle,
+            HorizontalTextAlign defaultHorizontalAlignment,
+            VerticalTextAlign defaultVerticalAlignment,
+            out HorizontalTextAlign ha,
             out VerticalTextAlign va)
         {
             ha = defaultHorizontalAlignment;

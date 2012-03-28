@@ -646,14 +646,36 @@ namespace ExampleLibrary
             }
         }
 
-        [Example("Long axis titles")]
-        public static PlotModel LongAxisTitles()
+        [Example("Long axis titles (clipped at 90%)")]
+        public static PlotModel LongAxisTitlesClipped90()
         {
             var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
             var tooltip = "The tooltip is " + longTitle;
             var plotModel1 = new PlotModel("Long axis titles");
             plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left, longTitle) { ToolTip = tooltip });
             plotModel1.Axes.Add(new LinearAxis(AxisPosition.Bottom, longTitle) { ToolTip = tooltip });
+            return plotModel1;
+        }
+
+        [Example("Long axis titles (clipped at 100%)")]
+        public static PlotModel LongAxisTitlesClipped100()
+        {
+            var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
+            var tooltip = "The tooltip is " + longTitle;
+            var plotModel1 = new PlotModel("Long axis titles");
+            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left, longTitle) { ToolTip = tooltip, TitleClippingLength = 1.0 });
+            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Bottom, longTitle) { ToolTip = tooltip, TitleClippingLength = 1.0 });
+            return plotModel1;
+        }
+
+        [Example("Long axis titles (not clipped)")]
+        public static PlotModel LongAxisTitlesNotClipped()
+        {
+            var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
+            var tooltip = "The tooltip is " + longTitle;
+            var plotModel1 = new PlotModel("Long axis titles");
+            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left, longTitle) { ToolTip = tooltip, ClipTitle = false });
+            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Bottom, longTitle) { ToolTip = tooltip, ClipTitle = false });
             return plotModel1;
         }
 
@@ -672,8 +694,7 @@ namespace ExampleLibrary
                     Title = "PositionTier=1"
                 };
             plotModel1.Axes.Add(linearAxis2);
-            var linearAxis3 = new LinearAxis
-                { Maximum = 1, Minimum = -1, Position = AxisPosition.Right, Title = "PositionTier=0" };
+            var linearAxis3 = new LinearAxis { Maximum = 1, Minimum = -1, Position = AxisPosition.Right, Title = "PositionTier=0" };
             plotModel1.Axes.Add(linearAxis3);
             var linearAxis4 = new LinearAxis
                 {
@@ -685,8 +706,7 @@ namespace ExampleLibrary
                     Title = "PositionTier=1"
                 };
             plotModel1.Axes.Add(linearAxis4);
-            var linearAxis5 = new LinearAxis
-                { Maximum = 1, Minimum = -1, Position = AxisPosition.Top, Title = "PositionTier=0" };
+            var linearAxis5 = new LinearAxis { Maximum = 1, Minimum = -1, Position = AxisPosition.Top, Title = "PositionTier=0" };
             plotModel1.Axes.Add(linearAxis5);
             var linearAxis6 = new LinearAxis
                 {
@@ -708,8 +728,7 @@ namespace ExampleLibrary
                     Title = "PositionTier=2"
                 };
             plotModel1.Axes.Add(linearAxis7);
-            var linearAxis8 = new LinearAxis
-                { Maximum = 1, Minimum = -1, Position = AxisPosition.Bottom, Title = "PositionTier=0" };
+            var linearAxis8 = new LinearAxis { Maximum = 1, Minimum = -1, Position = AxisPosition.Bottom, Title = "PositionTier=0" };
             plotModel1.Axes.Add(linearAxis8);
             var linearAxis9 = new LinearAxis
                 {
