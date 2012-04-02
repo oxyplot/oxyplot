@@ -24,7 +24,9 @@ namespace OxyPlot
         /// <summary>
         ///   XY coordinate system - two perpendicular axes
         /// </summary>
+        // ReSharper disable InconsistentNaming
         XY,
+        // ReSharper restore InconsistentNaming
 
         /// <summary>
         ///   Cartesian coordinate system - perpendicular axes with the same scaling http://en.wikipedia.org/wiki/Cartesian_coordinate_system
@@ -203,10 +205,14 @@ namespace OxyPlot
             this.Padding = new OxyThickness(8, 8, 16, 8);
             this.AutoAdjustPlotMargins = true;
 
+            this.DefaultFont = defaultFont;
+            this.DefaultFontSize = 12;
+
             this.TitleFont = null;
             this.TitleFontSize = 18;
-            this.SubtitleFontSize = 14;
             this.TitleFontWeight = FontWeights.Bold;
+            this.SubtitleFont = null;
+            this.SubtitleFontSize = 14;
             this.SubtitleFontWeight = FontWeights.Normal;
             this.TitlePadding = 6;
 
@@ -238,9 +244,8 @@ namespace OxyPlot
             this.LegendItemAlignment = HorizontalTextAlign.Left;
             this.LegendSymbolPlacement = LegendSymbolPlacement.Left;
 
-            this.AnnotationFontSize = 12;
-
-            this.DefaultColors = new List<OxyColor> {
+            this.DefaultColors = new List<OxyColor> 
+            {
                     OxyColor.FromRGB(0x4E, 0x9A, 0x06), 
                     OxyColor.FromRGB(0xC8, 0x8D, 0x00), 
                     OxyColor.FromRGB(0xCC, 0x00, 0x00), 
@@ -292,28 +297,21 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        ///   Gets the default font. This font is used for text on axes, series, legends and plot title unless other fonts are specified.
+        ///   Gets or sets the default font. 
         /// </summary>
         /// <value> The default font. </value>
-        public static string DefaultFont
-        {
-            get
-            {
-                return defaultFont;
-            }
-        }
+        /// <remarks>
+        /// This font is used for text on axes, series, legends and plot titles unless other fonts are specified.
+        /// </remarks>
+        public string DefaultFont { get; set; }
 
         /// <summary>
-        ///   Gets the actual annotation font.
+        /// Gets or sets the default size of the fonts.
         /// </summary>
-        /// <value> The actual annotation font. </value>
-        public string ActualAnnotationFont
-        {
-            get
-            {
-                return this.AnnotationFont ?? DefaultFont;
-            }
-        }
+        /// <value>
+        /// The default size of the font.
+        /// </value>
+        public double DefaultFontSize { get; set; }
 
         /// <summary>
         ///   Gets the actual culture.
@@ -327,57 +325,19 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets the actual legend font.
-        /// </summary>
-        /// <value> The actual legend font. </value>
-        public string ActualLegendFont
-        {
-            get
-            {
-                return this.LegendFont ?? DefaultFont;
-            }
-        }
-
-        /// <summary>
-        ///   Gets the actual legend title font.
-        /// </summary>
-        /// <value> The actual legend title font. </value>
-        public string ActualLegendTitleFont
-        {
-            get
-            {
-                return this.LegendTitleFont ?? DefaultFont;
-            }
-        }
-
-        /// <summary>
         ///   Gets the actual plot margins.
         /// </summary>
         /// <value> The actual plot margins. </value>
         public OxyThickness ActualPlotMargins { get; private set; }
 
         /// <summary>
-        ///   Gets the actual title font.
+        /// Gets or sets the plot control that renders this plot.
         /// </summary>
-        public string ActualTitleFont
-        {
-            get
-            {
-                return this.TitleFont ?? DefaultFont;
-            }
-        }
-
-        /// <summary>
-        ///   Gets or sets the annotation font.
-        /// </summary>
-        /// <value> The annotation font. </value>
-        public string AnnotationFont { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the size of the annotation font.
-        /// </summary>
-        /// <value> The size of the annotation font. </value>
-        public double AnnotationFontSize { get; set; }
+        /// <remarks>
+        /// Only one PlotControl can render the plot at the same time.
+        /// </remarks>
+        /// <value>The plot control.</value>
+        public IPlotControl PlotControl { get; set; }
 
         /// <summary>
         ///   Gets or sets the annotations.
@@ -461,6 +421,17 @@ namespace OxyPlot
         public double LegendFontSize { get; set; }
 
         /// <summary>
+        /// Gets or sets the color of the legend text.
+        /// </summary>
+        /// <value>
+        /// The color of the legend text.
+        /// </value>
+        /// <remarks>
+        /// If this value is null, the TextColor will be used.
+        /// </remarks>
+        public OxyColor LegendTextColor { get; set; }
+
+        /// <summary>
         ///   Gets or sets the legend font weight.
         /// </summary>
         /// <value> The legend font weight. </value>
@@ -536,6 +507,17 @@ namespace OxyPlot
         /// </summary>
         /// <value> The legend title. </value>
         public string LegendTitle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the legend title.
+        /// </summary>
+        /// <value>
+        /// The color of the legend title.
+        /// </value>
+        /// <remarks>
+        /// If this value is null, the TextColor will be used.
+        /// </remarks>
+        public OxyColor LegendTitleColor { get; set; }
 
         /// <summary>
         ///   Gets or sets the legend title font.
@@ -637,7 +619,7 @@ namespace OxyPlot
         public double SubtitleFontWeight { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the text.
+        ///   Gets or sets the default color of the text in the plot (titles, legends, annotations, axes).
         /// </summary>
         /// <value> The color of the text. </value>
         public OxyColor TextColor { get; set; }
@@ -647,6 +629,25 @@ namespace OxyPlot
         /// </summary>
         /// <value> The title. </value>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the title.
+        /// </summary>
+        /// <value>
+        /// The color of the title.
+        /// </value>
+        /// <remarks>
+        /// If the value is null, the TextColor will be used.
+        /// </remarks>
+        public OxyColor TitleColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the subtitle.
+        /// </summary>
+        /// <value>
+        /// The color of the subtitle.
+        /// </value>
+        public OxyColor SubtitleColor { get; set; }
 
         /// <summary>
         ///   Gets the title area.
@@ -706,6 +707,28 @@ namespace OxyPlot
         /// <value> The default Y axis. </value>
         internal Axis DefaultYAxis { get; set; }
 
+        /// <summary>
+        ///   Gets the actual title font.
+        /// </summary>
+        protected string ActualTitleFont
+        {
+            get
+            {
+                return this.TitleFont ?? this.DefaultFont;
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual subtitle font.
+        /// </summary>
+        protected string ActualSubtitleFont
+        {
+            get
+            {
+                return this.SubtitleFont ?? this.DefaultFont;
+            }
+        }
+        
         /// <summary>
         ///   Gets the visible series.
         /// </summary>
@@ -791,6 +814,18 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Refreshes the plot.
+        /// </summary>
+        /// <param name="updateData">Updates all data sources if set to <c>true</c>.</param>
+        public void RefreshPlot(bool updateData)
+        {
+            if (this.PlotControl != null)
+            {
+                this.PlotControl.RefreshPlot(updateData);
+            }
+        }
+
+        /// <summary>
         /// Gets the first axes that covers the area of the specified point.
         /// </summary>
         /// <param name="pt">
@@ -870,9 +905,8 @@ namespace OxyPlot
                     else if (position == axis.Position)
                     {
                         // Choose right tier
-                        var a = axis as Axis;
-                        double positionTierMinShift = a.PositionTierMinShift;
-                        double positionTierMaxShift = a.PositionTierMaxShift;
+                        double positionTierMinShift = axis.PositionTierMinShift;
+                        double positionTierMaxShift = axis.PositionTierMaxShift;
 
                         double posValue = axis.IsHorizontal() ? pt.Y : pt.X;
                         bool isLeftOrTop = position == AxisPosition.Top || position == AxisPosition.Left;
@@ -1070,11 +1104,6 @@ namespace OxyPlot
                 s.PlotModel = this;
             }
 
-            foreach (var a in this.Axes)
-            {
-                a.PlotModel = this;
-            }
-
             foreach (var a in this.Annotations)
             {
                 a.PlotModel = this;
@@ -1091,6 +1120,11 @@ namespace OxyPlot
 
             // Updates the default axes
             this.EnsureDefaultAxes();
+
+            foreach (var a in this.Axes)
+            {
+                a.PlotModel = this;
+            }
 
             // Updates axes with information from the series
             // This is used by the category axis that need to know the number of series using the axis.
@@ -1117,18 +1151,44 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Raises the Updated event.
+        /// </summary>
+        protected virtual void OnUpdated()
+        {
+            var handler = this.Updated;
+            if (handler != null)
+            {
+                var args = new EventArgs();
+                handler(this, args);
+            }
+        }
+
+        /// <summary>
+        /// Raises the Updating event.
+        /// </summary>
+        protected virtual void OnUpdating()
+        {
+            var handler = this.Updating;
+            if (handler != null)
+            {
+                var args = new EventArgs();
+                handler(this, args);
+            }
+        }
+
+        /// <summary>
         /// Enforces the same scale on all axes.
         /// </summary>
         private void EnforceCartesianTransforms()
         {
             // Set the same scaling on all axes
-            double sharedScale = this.Axes.Min(a => Math.Abs(a.scale));
+            double sharedScale = this.Axes.Min(a => Math.Abs(a.Scale));
             foreach (var a in this.Axes)
             {
                 a.Zoom(sharedScale);
             }
 
-            sharedScale = this.Axes.Max(a => Math.Abs(a.scale));
+            sharedScale = this.Axes.Max(a => Math.Abs(a.Scale));
             foreach (var a in this.Axes)
             {
                 a.Zoom(sharedScale);
@@ -1152,37 +1212,9 @@ namespace OxyPlot
             }
         }
 
-
-
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Raises the <see cref="E:Updated"/> event.
-        /// </summary>
-        protected virtual void OnUpdated()
-        {
-            var handler = this.Updated;
-            if (handler != null)
-            {
-                var args = new EventArgs();
-                handler(this, args);
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:Updating"/> event.
-        /// </summary>
-        protected virtual void OnUpdating()
-        {
-            var handler = this.Updating;
-            if (handler != null)
-            {
-                var args = new EventArgs();
-                handler(this, args);
-            }
-        }
 
         /// <summary>
         /// Finds and sets the default horizontal and vertical axes (the first horizontal/vertical axes in the Axes collection).
@@ -1347,47 +1379,28 @@ namespace OxyPlot
 
         #endregion
 
-        ///// <summary>
-        ///// Xml serialize the plotmodel to a stream.
-        ///// </summary>
-        ///// <param name="s">The stream.</param>
-        // public void XmlSerialize(Stream s)
-        // {
-        // var serializer = new XmlSerializer(typeof(PlotModel));
-        // serializer.Serialize(s, this);
-        // }
-
-        ///// <summary>
-        ///// Xml serialize the plotmodel to a file.
-        ///// </summary>
-        ///// <param name="filename">The filename.</param>
-        // public void XmlSerialize(string filename)
-        // {
-        // using (var s = File.OpenWrite(filename))
-        // {
-        // this.XmlSerialize(s);
-        // }
-        // }
-
+#if SERIALIZATION
         /// <summary>
-        /// Gets or sets the plot control that renders this plot.
+        /// Xml serialize the plotmodel to a stream.
         /// </summary>
-        /// <remarks>
-        /// Only one PlotControl can render the plot at the same time.
-        /// </remarks>
-        /// <value>The plot control.</value>
-        public IPlotControl PlotControl { get; set; }
-
-        /// <summary>
-        /// Refreshes the plot.
-        /// </summary>
-        /// <param name="updateData">Updates all data sources if set to <c>true</c>.</param>
-        public void RefreshPlot(bool updateData)
+        /// <param name="s">The stream.</param>
+        public void XmlSerialize(Stream s)
         {
-            if (this.PlotControl != null)
+            var serializer = new System.Xml.Serialization.XmlSerializer(typeof(PlotModel));
+            serializer.Serialize(s, this);
+        }
+
+        /// <summary>
+        /// Xml serialize the plotmodel to a file.
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        public void XmlSerialize(string filename)
+        {
+            using (var s = File.OpenWrite(filename))
             {
-                this.PlotControl.RefreshPlot(updateData);
+                this.XmlSerialize(s);
             }
         }
+#endif
     }
 }

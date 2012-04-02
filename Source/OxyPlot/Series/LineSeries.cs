@@ -93,12 +93,7 @@ namespace OxyPlot
         /// </summary>
         /// <value>The dashes.</value>
         public double[] Dashes { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the label color.
-        /// </summary>
-        public OxyColor LabelColor { get; set; }
-
+       
         /// <summary>
         ///   Gets or sets the label format string.
         /// </summary>
@@ -176,7 +171,6 @@ namespace OxyPlot
         #endregion
 
         #region Properties
-
         /// <summary>
         ///   Gets the smoothed points.
         /// </summary>
@@ -264,9 +258,11 @@ namespace OxyPlot
                     transformedPoints.Clear();
                     continue;
                 }
+
                 var pt = this.XAxis.Transform(point.X, point.Y, this.YAxis);
                 transformedPoints.Add(pt);
             }
+
             this.RenderPoints(rc, clippingRect, transformedPoints);
 
             // render point labels (not optimized for performance)
@@ -292,34 +288,37 @@ namespace OxyPlot
 
                     var s = StringHelper.Format(
                         this.ActualCulture, this.LabelFormatString, this.GetItem(index), point.X, point.Y);
-                    //switch (this.LabelPlacement)
-                    //{
-                    //    case LabelPlacement.Inside:
-                    //        pt = new ScreenPoint(rect.Right - this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                    //        ha = HorizontalTextAlign.Right;
-                    //        break;
-                    //    case LabelPlacement.Middle:
-                    //        pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Top + rect.Bottom) / 2);
-                    //        ha = HorizontalTextAlign.Center;
-                    //        break;
-                    //    case LabelPlacement.Base:
-                    //        pt = new ScreenPoint(rect.Left + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                    //        ha = HorizontalTextAlign.Left;
-                    //        break;
-                    //    default: // Outside
-                    //        pt = new ScreenPoint(rect.Right + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                    //        ha = HorizontalTextAlign.Left;
-                    //        break;
-                    //}
+
+#if SUPPORTLABELPLACEMENT
+                    switch (this.LabelPlacement)
+                    {
+                        case LabelPlacement.Inside:
+                            pt = new ScreenPoint(rect.Right - this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalTextAlign.Right;
+                            break;
+                        case LabelPlacement.Middle:
+                            pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalTextAlign.Center;
+                            break;
+                        case LabelPlacement.Base:
+                            pt = new ScreenPoint(rect.Left + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalTextAlign.Left;
+                            break;
+                        default: // Outside
+                            pt = new ScreenPoint(rect.Right + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalTextAlign.Left;
+                            break;
+                    }
+#endif
 
                     rc.DrawClippedText(
                         clippingRect,
                         pt,
                         s,
-                        this.LabelColor ?? model.TextColor,
-                        model.ActualLegendFont,
-                        model.LegendFontSize,
-                        FontWeights.Normal,
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.ActualFontSize,
+                        this.ActualFontWeight,
                         0,
                         HorizontalTextAlign.Center,
                         VerticalTextAlign.Bottom);

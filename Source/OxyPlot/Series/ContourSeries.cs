@@ -44,10 +44,6 @@ namespace OxyPlot
 
             this.LabelSpacing = double.NaN;
             this.LabelStep = 1;
-            this.LabelFont = null;
-            this.LabelFontSize = 12;
-            this.LabelFontWeight = FontWeights.Normal;
-            this.LabelColor = OxyColors.Black;
             this.LabelBackground = OxyColor.FromAColor(220, OxyColors.White);
 
             this.Color = null;
@@ -97,28 +93,6 @@ namespace OxyPlot
         /// </summary>
         /// <value>The text background color.</value>
         public OxyColor LabelBackground { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the color of the text.
-        /// </summary>
-        /// <value>The color of the text.</value>
-        public OxyColor LabelColor { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the label font.
-        /// </summary>
-        /// <value>The font.</value>
-        public string LabelFont { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the size of the font.
-        /// </summary>
-        public double LabelFontSize { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the font weight.
-        /// </summary>
-        public double LabelFontWeight { get; set; }
 
         /// <summary>
         ///   Gets or sets the format string for contour values.
@@ -298,13 +272,13 @@ namespace OxyPlot
                     }
 
                     rc.DrawClippedLine(
-                        pts, 
-                        clippingRect, 
-                        4, 
-                        this.Color, 
-                        this.StrokeThickness, 
-                        this.LineStyle, 
-                        OxyPenLineJoin.Miter, 
+                        pts,
+                        clippingRect,
+                        4,
+                        this.Color,
+                        this.StrokeThickness,
+                        this.LineStyle,
+                        OxyPenLineJoin.Miter,
                         false);
 
                     // rc.DrawClippedPolygon(pts, clippingRect, 4, model.GetDefaultColor(), OxyColors.Black);
@@ -575,18 +549,17 @@ namespace OxyPlot
         /// </param>
         private void RenderLabel(IRenderContext rc, ContourLabel cl)
         {
-            if (this.LabelColor != null)
+            if (this.ActualFontSize > 0)
             {
-                string actualLabelFont = this.LabelFont ?? PlotModel.DefaultFont;
                 rc.DrawText(
-                    cl.Position, 
-                    cl.Text, 
-                    this.LabelColor, 
-                    actualLabelFont, 
-                    this.LabelFontSize, 
-                    this.LabelFontWeight, 
-                    cl.Angle, 
-                    HorizontalTextAlign.Center, 
+                    cl.Position,
+                    cl.Text,
+                    this.ActualTextColor,
+                    this.ActualFont,
+                    this.ActualFontSize,
+                    this.ActualFontWeight,
+                    cl.Angle,
+                    HorizontalTextAlign.Center,
                     VerticalTextAlign.Middle);
             }
         }
@@ -605,15 +578,11 @@ namespace OxyPlot
             if (this.LabelBackground != null)
             {
                 // Calculate background polygon
-                string actualLabelFont = this.LabelFont ?? PlotModel.DefaultFont;
-                OxySize size = rc.MeasureText(cl.Text, actualLabelFont, this.LabelFontSize, this.LabelFontWeight);
+                var size = rc.MeasureText(cl.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
                 double a = cl.Angle / 180 * Math.PI;
                 double dx = Math.Cos(a);
                 double dy = Math.Sin(a);
 
-                /*double dl = Math.Sqrt(dx * dx + dy * dy);
-                dx /= dl;
-                dy /= dl;*/
                 double ux = dx * 0.6;
                 double uy = dy * 0.6;
                 double vx = -dy * 0.5;

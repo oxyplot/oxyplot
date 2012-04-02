@@ -147,7 +147,7 @@ namespace OxyPlot
             this.ScreenMin = new ScreenPoint(x0, y1);
             this.ScreenMax = new ScreenPoint(x1, y0);
 
-            this.scale = 2 * Math.PI / (this.ActualMaximum - this.ActualMinimum);
+            this.Scale = 2 * Math.PI / (this.ActualMaximum - this.ActualMinimum);
             this.Offset = this.ActualMinimum;
         }
 

@@ -39,13 +39,11 @@ namespace OxyPlot
         public AnnotationLayer Layer { get; set; }
 
         /// <summary>
-        ///   Gets the parent plot model.
+        /// Gets or sets the annotation text.
         /// </summary>
-        public PlotModel PlotModel { get; internal set; }
-
-        /// <summary>
-        ///   Annotation text.
-        /// </summary>
+        /// <value>
+        /// The text.
+        /// </value>
         public string Text { get; set; }
 
         /// <summary>
@@ -71,7 +69,7 @@ namespace OxyPlot
         /// </summary>
         /// <value>The Y axis key.</value>
         public string YAxisKey { get; set; }
-
+       
         #endregion
 
         #region Public Methods

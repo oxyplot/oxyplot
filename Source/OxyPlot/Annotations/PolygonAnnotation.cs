@@ -112,16 +112,16 @@ namespace OxyPlot
 
             if (!string.IsNullOrEmpty(this.Text))
             {
-                ScreenPoint textPosition = ScreenPointHelper.GetCentroid(screenPoints);
+                var textPosition = ScreenPointHelper.GetCentroid(screenPoints);
 
                 rc.DrawClippedText(
                     clipping,
                     textPosition,
                     this.Text,
-                    model.TextColor,
-                    model.ActualAnnotationFont,
-                    model.AnnotationFontSize,
-                    FontWeights.Normal,
+                    this.ActualTextColor,
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
                     0,
                     HorizontalTextAlign.Center,
                     VerticalTextAlign.Middle);

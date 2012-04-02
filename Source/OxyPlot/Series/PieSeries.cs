@@ -79,68 +79,107 @@ namespace OxyPlot
         public bool AreInsideLabelsAngled { get; set; }
 
         /// <summary>
-        ///   Gets or sets ColorField.
+        /// Gets or sets the name of the property containing the color.
         /// </summary>
+        /// <value>
+        /// The color field.
+        /// </value>
         public string ColorField { get; set; }
 
         /// <summary>
-        ///   Gets or sets Diameter.
+        /// Gets or sets the diameter.
         /// </summary>
+        /// <value>
+        /// The diameter.
+        /// </value>
         public double Diameter { get; set; }
 
         /// <summary>
-        ///   Gets or sets ExplodedDistance.
+        /// Gets or sets the exploded distance.
         /// </summary>
+        /// <value>
+        /// The exploded distance.
+        /// </value>
         public double ExplodedDistance { get; set; }
 
         /// <summary>
-        ///   Gets or sets Font.
+        /// Gets or sets the font.
         /// </summary>
+        /// <value>
+        /// The font.
+        /// </value>
         public string Font { get; set; }
 
         /// <summary>
-        ///   Gets or sets FontSize.
+        /// Gets or sets the size of the font.
         /// </summary>
+        /// <value>
+        /// The size of the font.
+        /// </value>
         public double FontSize { get; set; }
 
         /// <summary>
-        ///   Gets or sets InnerDiameter.
+        /// Gets or sets the inner diameter.
         /// </summary>
+        /// <value>
+        /// The inner diameter.
+        /// </value>
         public double InnerDiameter { get; set; }
 
         /// <summary>
-        ///   Gets or sets InsideLabelFormat.
+        /// Gets or sets the inside label format.
         /// </summary>
+        /// <value>
+        /// The inside label format.
+        /// </value>
         public string InsideLabelFormat { get; set; }
 
         /// <summary>
-        ///   Gets or sets InsideLabelPosition.
+        /// Gets or sets the inside label position.
         /// </summary>
+        /// <value>
+        /// The inside label position.
+        /// </value>
         public double InsideLabelPosition { get; set; }
 
         /// <summary>
-        ///   Gets or sets IsExplodedField.
+        /// Gets or sets the is exploded field.
         /// </summary>
+        /// <value>
+        /// The is exploded field.
+        /// </value>
         public string IsExplodedField { get; set; }
 
         /// <summary>
-        ///   Gets or sets LabelField.
+        /// Gets or sets the label field.
         /// </summary>
+        /// <value>
+        /// The label field.
+        /// </value>
         public string LabelField { get; set; }
 
         /// <summary>
-        ///   Gets or sets LegendFormat.
+        /// Gets or sets the legend format.
         /// </summary>
+        /// <value>
+        /// The legend format.
+        /// </value>
         public string LegendFormat { get; set; }
 
         /// <summary>
-        ///   Gets or sets OutsideLabelFormat.
+        /// Gets or sets the outside label format.
         /// </summary>
+        /// <value>
+        /// The outside label format.
+        /// </value>
         public string OutsideLabelFormat { get; set; }
 
         /// <summary>
-        ///   Gets or sets Slices.
+        /// Gets or sets the slices.
         /// </summary>
+        /// <value>
+        /// The slices.
+        /// </value>
         public IList<PieSlice> Slices
         {
             get
@@ -155,43 +194,67 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets StartAngle.
+        /// Gets or sets the start angle.
         /// </summary>
+        /// <value>
+        /// The start angle.
+        /// </value>
         public double StartAngle { get; set; }
 
         /// <summary>
-        ///   Gets or sets Stroke.
+        /// Gets or sets the stroke.
         /// </summary>
+        /// <value>
+        /// The stroke.
+        /// </value>
         public OxyColor Stroke { get; set; }
 
         /// <summary>
-        ///   Gets or sets StrokeThickness.
+        /// Gets or sets the stroke thickness.
         /// </summary>
+        /// <value>
+        /// The stroke thickness.
+        /// </value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        ///   Gets or sets TickDistance.
+        /// Gets or sets the tick distance.
         /// </summary>
+        /// <value>
+        /// The tick distance.
+        /// </value>
         public double TickDistance { get; set; }
 
         /// <summary>
-        ///   Gets or sets TickHorizontalLength.
+        /// Gets or sets the length of the horizontal part of the tick.
         /// </summary>
+        /// <value>
+        /// The length.
+        /// </value>
         public double TickHorizontalLength { get; set; }
 
         /// <summary>
-        ///   Gets or sets TickLabelDistance.
+        /// Gets or sets the tick label distance.
         /// </summary>
+        /// <value>
+        /// The tick label distance.
+        /// </value>
         public double TickLabelDistance { get; set; }
 
         /// <summary>
-        ///   Gets or sets TickRadialLength.
+        /// Gets or sets the length of the tick radial.
         /// </summary>
+        /// <value>
+        /// The length of the tick radial.
+        /// </value>
         public double TickRadialLength { get; set; }
 
         /// <summary>
-        ///   Gets or sets ValueField.
+        /// Gets or sets the name of the property containing the value.
         /// </summary>
+        /// <value>
+        /// The value field.
+        /// </value>
         public string ValueField { get; set; }
 
         #endregion
@@ -258,7 +321,7 @@ namespace OxyPlot
                 double midAngle = angle + sliceAngle / 2;
                 double midAngleRadians = midAngle * Math.PI / 180;
                 var mp = new ScreenPoint(
-                    midPoint.X + explodedRadius * Math.Cos(midAngleRadians), 
+                    midPoint.X + explodedRadius * Math.Cos(midAngleRadians),
                     midPoint.Y + explodedRadius * Math.Sin(midAngleRadians));
 
                 // Create the pie sector points for both outside and inside arcs
@@ -310,10 +373,10 @@ namespace OxyPlot
 
                     // tick points
                     var tp0 = new ScreenPoint(
-                        mp.X + (outerRadius + this.TickDistance) * Math.Cos(midAngleRadians), 
+                        mp.X + (outerRadius + this.TickDistance) * Math.Cos(midAngleRadians),
                         mp.Y + (outerRadius + this.TickDistance) * Math.Sin(midAngleRadians));
                     var tp1 = new ScreenPoint(
-                        tp0.X + this.TickRadialLength * Math.Cos(midAngleRadians), 
+                        tp0.X + this.TickRadialLength * Math.Cos(midAngleRadians),
                         tp0.Y + this.TickRadialLength * Math.Sin(midAngleRadians));
                     var tp2 = new ScreenPoint(tp1.X + this.TickHorizontalLength * sign, tp1.Y);
                     rc.DrawLine(new[] { tp0, tp1, tp2 }, this.Stroke, this.StrokeThickness, null, OxyPenLineJoin.Bevel);
@@ -321,14 +384,14 @@ namespace OxyPlot
                     // label
                     var labelPosition = new ScreenPoint(tp2.X + this.TickLabelDistance * sign, tp2.Y);
                     rc.DrawText(
-                        labelPosition, 
-                        label, 
-                        model.TextColor, 
-                        this.Font ?? PlotModel.DefaultFont, 
-                        model.LegendFontSize, 
-                        FontWeights.Normal, 
-                        0, 
-                        sign > 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right, 
+                        labelPosition,
+                        label,
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.ActualFontSize,
+                        this.ActualFontWeight,
+                        0,
+                        sign > 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right,
                         VerticalTextAlign.Middle);
                 }
 
@@ -351,14 +414,14 @@ namespace OxyPlot
                     }
 
                     rc.DrawText(
-                        labelPosition, 
-                        label, 
-                        model.TextColor, 
-                        this.Font ?? PlotModel.DefaultFont, 
-                        this.FontSize, 
-                        FontWeights.Normal, 
-                        textAngle, 
-                        HorizontalTextAlign.Center, 
+                        labelPosition,
+                        label,
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.ActualFontSize,
+                        this.ActualFontWeight,
+                        textAngle,
+                        HorizontalTextAlign.Center,
                         VerticalTextAlign.Middle);
                 }
             }

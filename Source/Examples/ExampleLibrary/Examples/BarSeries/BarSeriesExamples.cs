@@ -30,7 +30,7 @@ namespace ExampleLibrary
             s0.LabelFormatString = "{0}";
             s1.LabelFormatString = "{0:0.00}";
             s1.LabelPlacement = LabelPlacement.Middle;
-            s1.LabelColor = OxyColors.White;
+            s1.TextColor = OxyColors.White;
             return model;
         }
 
@@ -64,7 +64,7 @@ namespace ExampleLibrary
             s0.LabelFormatString = "{0}";
             s1.LabelFormatString = "{0:0.00}";
             s1.LabelPlacement = LabelPlacement.Inside;
-            s1.LabelColor = OxyColors.White;
+            s1.TextColor = OxyColors.White;
             return model;
         }
 

@@ -110,6 +110,32 @@ namespace ExampleLibrary
             model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 2), Rotation = 20, HorizontalAlignment = HorizontalTextAlign.Left, VerticalAlignment = VerticalTextAlign.Top, Text = "Left/Top" });
             model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 4), Rotation = 20, HorizontalAlignment = HorizontalTextAlign.Left, VerticalAlignment = VerticalTextAlign.Middle, Text = "Left/Middle" });
             model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 6), Rotation = 20, HorizontalAlignment = HorizontalTextAlign.Left, VerticalAlignment = VerticalTextAlign.Bottom, Text = "Left/Bottom" });
+
+            double d = 0.05;
+
+            Action<double, double> addPoint = (x, y) => model.Annotations.Add(
+                new PolygonAnnotation
+                    {
+                        Layer = AnnotationLayer.BelowAxes,
+                        Points =
+                            new[]
+                                {
+                                    new DataPoint(x-d, y-d), new DataPoint(x+d, y-d), new DataPoint(x+d, y+d),
+                                    new DataPoint(x-d,y+d), new DataPoint(x-d,y-d)
+                                }
+                    });
+
+            addPoint(-6, 2);
+            addPoint(-7, 6);
+            addPoint(2, 2);
+            addPoint(2, 4);
+            addPoint(2, 6);
+            addPoint(6, 2);
+            addPoint(6, 4);
+            addPoint(6, 6);
+            addPoint(10, 2);
+            addPoint(10, 4);
+            addPoint(10, 6);
             return model;
         }
     }

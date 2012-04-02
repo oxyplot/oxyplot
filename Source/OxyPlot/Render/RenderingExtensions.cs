@@ -16,32 +16,32 @@ namespace OxyPlot
     /// </summary>
     public static class RenderingExtensions
     {
-        // Length constants used to draw triangles 
-        // ___
-        // /\           |
-        // /  \          |
-        // /    \         | M2
-        // /      \        |
-        // /        \       |
-        // /     +    \     ---
-        // /            \     | 
-        // /              \    | M1
-        // /________________\  _|_
-        // |--------|-------|
-        // 1       1
-
-        // and stars
-        // |           
-        // \     |     /     ---
-        // \   |   /        | M3
-        // \ | /          |
-        // ---------+--------   ---
-        // / | \          | M3
-        // /   |   \        |
-        // /     |     \     ---
-        // |
-        // |-----|-----|
-        // M3    M3
+        //// Length constants used to draw triangles and stars
+        ////                     ___
+        //// /\                   |
+        //// /  \                 |
+        //// /    \               | M2
+        //// /      \             |
+        //// /        \           |
+        //// /     +    \        ---
+        //// /            \       | 
+        //// /              \     | M1
+        //// /________________\  _|_
+        //// |--------|-------|
+        ////      1       1
+        //// 
+        ////          |           
+        ////    \     |     /     ---
+        ////      \   |   /        | M3
+        ////        \ | /          |
+        //// ---------+--------   ---
+        ////        / | \          | M3
+        ////      /   |   \        |
+        ////    /     |     \     ---
+        ////          |
+        ////    |-----|-----|
+        ////      M3    M3
+       
         #region Constants and Fields
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace OxyPlot
         /// <summary>
         ///   The m 2.
         /// </summary>
-        private static readonly double M2 = Math.Sqrt(1 + M1 * M1);
+        private static readonly double M2 = Math.Sqrt(1 + (M1 * M1));
 
         /// <summary>
         ///   The m 3.
@@ -95,8 +95,8 @@ namespace OxyPlot
             int n = points.Count;
             if (n > 0)
             {
-                ScreenPoint s0 = points[0];
-                ScreenPoint last = points[0];
+                var s0 = points[0];
+                var last = points[0];
 
                 if (n == 1)
                 {
@@ -105,11 +105,11 @@ namespace OxyPlot
 
                 for (int i = 1; i < n; i++)
                 {
-                    ScreenPoint s1 = points[i];
+                    var s1 = points[i];
 
                     // Clipped version of this and next point.
-                    ScreenPoint s0c = s0;
-                    ScreenPoint s1c = s1;
+                    var s0c = s0;
+                    var s1c = s1;
                     bool isInside = clipping.ClipLine(ref s0c, ref s1c);
                     s0 = s1;
 
