@@ -136,7 +136,6 @@
     <Compile Include="Foundation\LineStyleHelper.cs" />
     <Compile Include="Foundation\DataPoint.cs" />
     <Compile Include="Series\BarSeries\LabelPlacement.cs" />
-    <Compile Include="Series\BarSeries\OldBarSeries.cs" />
     <Compile Include="Series\CandleStickSeries.cs" />
     <Compile Include="Foundation\Conrec.cs" />
     <Compile Include="Series\ContourSeries.cs" />
