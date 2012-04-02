@@ -326,14 +326,23 @@ namespace OxyPlot.Wpf
             }
         }
 
+        /// <summary>
+        /// Gets or sets the color axis key.
+        /// </summary>
+        /// <value>
+        /// The color axis key.
+        /// </value>
+        public string ColorAxisKey { get; set; }
+
         #endregion
 
         #region Public Methods
 
         /// <summary>
-        /// The create model.
+        /// Creates the internal series.
         /// </summary>
         /// <returns>
+        /// The series.
         /// </returns>
         public override OxyPlot.Series CreateModel()
         {
@@ -371,6 +380,7 @@ namespace OxyPlot.Wpf
                 s.BinSize = this.BinSize;
                 s.Mapping = this.Mapping;
                 s.MarkerOutline = this.MarkerOutline;
+                s.ColorAxisKey = this.ColorAxisKey;
             }
         }
 

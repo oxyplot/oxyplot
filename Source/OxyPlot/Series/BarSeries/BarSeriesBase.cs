@@ -268,8 +268,8 @@ namespace OxyPlot
                 return;
             }
 
-            CategoryAxis ca = this.GetCategoryAxis();
-            var va = this.GetValueAxis();
+            var categoryAxis = this.GetCategoryAxis();
+            var valueAxis = this.GetValueAxis();
 
             double minValue = this.BaseValue + this.InternalValues[0];
             double maxValue = minValue;
@@ -278,29 +278,29 @@ namespace OxyPlot
             foreach (double v in this.Values)
             {
                 double baseValue = this.BaseValue;
-                if (ca.PositiveBaseValue != null && i < ca.PositiveBaseValue.Length
-                    && !double.IsNaN(ca.PositiveBaseValue[i]))
+                if (categoryAxis.PositiveBaseValue != null && i < categoryAxis.PositiveBaseValue.Length
+                    && !double.IsNaN(categoryAxis.PositiveBaseValue[i]))
                 {
-                    baseValue = ca.PositiveBaseValue[i];
+                    baseValue = categoryAxis.PositiveBaseValue[i];
                 }
 
-                if (double.IsNaN(ca.MaxValue[i]))
+                if (double.IsNaN(categoryAxis.MaxValue[i]))
                 {
-                    ca.MaxValue[i] = baseValue;
+                    categoryAxis.MaxValue[i] = baseValue;
                 }
 
-                if (double.IsNaN(ca.MinValue[i]))
+                if (double.IsNaN(categoryAxis.MinValue[i]))
                 {
-                    ca.MinValue[i] = baseValue;
+                    categoryAxis.MinValue[i] = baseValue;
                 }
 
                 if (this.IsStacked)
                 {
                     // Add to the max/min value on the category axis for stacked bars
-                    ca.MaxValue[i] = Math.Max(ca.MaxValue[i], ca.MaxValue[i] + v);
-                    ca.MinValue[i] = Math.Min(ca.MinValue[i], ca.MinValue[i] + v);
-                    minValue = Math.Min(minValue, ca.MinValue[i]);
-                    maxValue = Math.Max(maxValue, ca.MaxValue[i]);
+                    categoryAxis.MaxValue[i] = Math.Max(categoryAxis.MaxValue[i], categoryAxis.MaxValue[i] + v);
+                    categoryAxis.MinValue[i] = Math.Min(categoryAxis.MinValue[i], categoryAxis.MinValue[i] + v);
+                    minValue = Math.Min(minValue, categoryAxis.MinValue[i]);
+                    maxValue = Math.Max(maxValue, categoryAxis.MaxValue[i]);
                 }
                 else
                 {
@@ -314,7 +314,7 @@ namespace OxyPlot
                 i++;
             }
 
-            if (va.IsVertical())
+            if (valueAxis.IsVertical())
             {
                 this.MinY = minValue;
                 this.MaxY = maxValue;

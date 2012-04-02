@@ -8,11 +8,10 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
 
     /// <summary>
-    /// Abstract base class for Series that contains an X-axis and Y-axis
+    /// Abstract base class for series that contains an X-axis and Y-axis
     /// </summary>
     public abstract class XYAxisSeries : ItemsSeries
     {
@@ -43,7 +42,7 @@ namespace OxyPlot
         public double MinY { get; protected set; }
 
         /// <summary>
-        ///   Gets or sets the x-axis.
+        ///   Gets the x-axis.
         /// </summary>
         /// <value>The x-axis.</value>
         public Axis XAxis { get; private set; }
@@ -55,7 +54,7 @@ namespace OxyPlot
         public string XAxisKey { get; set; }
 
         /// <summary>
-        ///   Gets or sets the y-axis.
+        ///   Gets the y-axis.
         /// </summary>
         /// <value>The y-axis.</value>
         public Axis YAxis { get; private set; }
@@ -82,14 +81,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Renders the Series on the specified rendering context.
+        /// Renders the series on the specified render context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
         }
@@ -124,18 +119,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Ensures that the series has axes.
+        /// Ensures that the axes of the series is defined.
         /// </summary>
-        /// <param name="axes">
-        /// The axes collection of the parent PlotModel.
-        /// </param>
-        /// <param name="defaultXAxis">
-        /// The default X axis of the parent PlotModel.
-        /// </param>
-        /// <param name="defaultYAxis">
-        /// The default Y axis of the parent PlotModel.
-        /// </param>
-        protected internal override void EnsureAxes(Collection<Axis> axes, Axis defaultXAxis, Axis defaultYAxis)
+        protected internal override void EnsureAxes()
         {
             // reset
             this.XAxis = null;
@@ -143,23 +129,23 @@ namespace OxyPlot
 
             if (this.XAxisKey != null)
             {
-                this.XAxis = axes.FirstOrDefault(a => a.Key == this.XAxisKey);
+                this.XAxis = PlotModel.Axes.FirstOrDefault(a => a.Key == this.XAxisKey);
             }
 
             if (this.YAxisKey != null)
             {
-                this.YAxis = axes.FirstOrDefault(a => a.Key == this.YAxisKey);
+                this.YAxis = PlotModel.Axes.FirstOrDefault(a => a.Key == this.YAxisKey);
             }
 
             // If axes are not found, use the default axes
             if (this.XAxis == null)
             {
-                this.XAxis = defaultXAxis;
+                this.XAxis = PlotModel.DefaultXAxis;
             }
 
             if (this.YAxis == null)
             {
-                this.YAxis = defaultYAxis;
+                this.YAxis = PlotModel.DefaultYAxis;
             }
         }
 
@@ -179,6 +165,7 @@ namespace OxyPlot
         /// Sets default values from the plotmodel.
         /// </summary>
         /// <param name="model">
+        /// The plot model.
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
@@ -248,10 +235,10 @@ namespace OxyPlot
 
             for (int i = 0; i + 1 < points.Count; i++)
             {
-                IDataPoint p1 = points[i];
-                IDataPoint p2 = points[i + 1];
-                ScreenPoint sp1 = Axis.Transform(p1, this.XAxis, this.YAxis);
-                ScreenPoint sp2 = Axis.Transform(p2, this.XAxis, this.YAxis);
+                var p1 = points[i];
+                var p2 = points[i + 1];
+                var sp1 = Axis.Transform(p1, this.XAxis, this.YAxis);
+                var sp2 = Axis.Transform(p2, this.XAxis, this.YAxis);
 
                 double sp21X = sp2.x - sp1.x;
                 double sp21Y = sp2.y - sp1.y;
@@ -304,26 +291,14 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The get nearest point internal.
+        /// Gets the nearest point.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="dpn">
-        /// The dpn.
-        /// </param>
-        /// <param name="spn">
-        /// The spn.
-        /// </param>
-        /// <param name="index">
-        /// The index.
-        /// </param>
-        /// <returns>
-        /// The get nearest point internal.
-        /// </returns>
+        /// <param name="points">The points (data coordinates).</param>
+        /// <param name="point">The point (screen coordinates).</param>
+        /// <param name="dpn">The nearest data point.</param>
+        /// <param name="spn">The nearest screen point.</param>
+        /// <param name="index">The index of the nearest item.</param>
+        /// <returns>True if a point was found.</returns>
         protected bool GetNearestPointInternal(
             IEnumerable<IDataPoint> points, ScreenPoint point, out DataPoint dpn, out ScreenPoint spn, out int index)
         {

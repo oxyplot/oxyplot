@@ -13,8 +13,8 @@ namespace OxyPlot
     /// Generates fraction strings from double values.
     /// </summary>
     /// <remarks>
-    /// e.g. 0.75 =&gt; "3/4"
-    ///   e.g. 1.57.. =&gt; "PI/2"
+    /// 0.75 =&gt; "3/4"
+    /// 1.57.. =&gt; "PI/2"
     /// </remarks>
     public class FractionHelper
     {

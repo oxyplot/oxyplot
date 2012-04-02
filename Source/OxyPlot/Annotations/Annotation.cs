@@ -75,39 +75,30 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// The ensure axes.
+        /// Ensures that the annotation axes are set.
         /// </summary>
-        /// <param name="axes">
-        /// The axes.
-        /// </param>
-        /// <param name="defaultXAxis">
-        /// The default x axis.
-        /// </param>
-        /// <param name="defaultYAxis">
-        /// The default y axis.
-        /// </param>
-        public void EnsureAxes(Collection<Axis> axes, Axis defaultXAxis, Axis defaultYAxis)
+        public void EnsureAxes()
         {
             // todo: refactor - this code is shared with DataPointSeries
             if (this.XAxisKey != null)
             {
-                this.XAxis = axes.FirstOrDefault(a => a.Key == this.XAxisKey);
+                this.XAxis = PlotModel.Axes.FirstOrDefault(a => a.Key == this.XAxisKey);
             }
 
             if (this.YAxisKey != null)
             {
-                this.YAxis = axes.FirstOrDefault(a => a.Key == this.YAxisKey);
+                this.YAxis = PlotModel.Axes.FirstOrDefault(a => a.Key == this.YAxisKey);
             }
 
             // If axes are not found, use the default axes
             if (this.XAxis == null)
             {
-                this.XAxis = defaultXAxis;
+                this.XAxis = PlotModel.DefaultXAxis;
             }
 
             if (this.YAxis == null)
             {
-                this.YAxis = defaultYAxis;
+                this.YAxis = PlotModel.DefaultYAxis;
             }
         }
 

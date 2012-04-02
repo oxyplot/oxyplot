@@ -7,7 +7,6 @@
 namespace OxyPlot
 {
     using System;
-    using System.Collections.ObjectModel;
     using System.Globalization;
 
     /// <summary>
@@ -93,7 +92,7 @@ namespace OxyPlot
         public abstract TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
 
         /// <summary>
-        /// Renders the Series on the specified render context.
+        /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">
         /// The rendering context. 
@@ -127,18 +126,9 @@ namespace OxyPlot
         protected internal abstract bool AreAxesRequired();
 
         /// <summary>
-        /// Ensures that the series has axes.
+        /// Ensures that the axes of the series is defined.
         /// </summary>
-        /// <param name="axes">
-        /// The axes collection of the parent PlotModel. 
-        /// </param>
-        /// <param name="defaultXAxis">
-        /// The default X axis of the parent PlotModel. 
-        /// </param>
-        /// <param name="defaultYAxis">
-        /// The default Y axis of the parent PlotModel. 
-        /// </param>
-        protected internal abstract void EnsureAxes(Collection<Axis> axes, Axis defaultXAxis, Axis defaultYAxis);
+        protected internal abstract void EnsureAxes();
 
         /// <summary>
         /// Check if the data series is using the specified axis.

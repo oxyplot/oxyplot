@@ -456,18 +456,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The ensure axes.
+        /// Ensures that the axes of the series is defined.
         /// </summary>
-        /// <param name="axes">
-        /// The axes.
-        /// </param>
-        /// <param name="defaultXAxis">
-        /// The default x axis.
-        /// </param>
-        /// <param name="defaultYAxis">
-        /// The default y axis.
-        /// </param>
-        protected internal override void EnsureAxes(Collection<Axis> axes, Axis defaultXAxis, Axis defaultYAxis)
+        protected internal override void EnsureAxes()
         {
         }
 

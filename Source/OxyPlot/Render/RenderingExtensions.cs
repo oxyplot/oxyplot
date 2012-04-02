@@ -494,7 +494,7 @@ namespace OxyPlot
             OxyRect clippingRect,
             MarkerType markerType,
             IList<ScreenPoint> markerOutline,
-            double[] markerSize,
+            IList<double> markerSize,
             OxyColor markerFill,
             OxyColor markerStroke,
             double markerStrokeThickness,
@@ -540,7 +540,7 @@ namespace OxyPlot
                 bool outside = p.x < minx || p.x > maxx || p.y < miny || p.y > maxy;
                 if (!outside)
                 {
-                    int j = i < markerSize.Length ? i : 0;
+                    int j = i < markerSize.Count ? i : 0;
                     AddMarkerGeometry(p, markerType, markerOutline, markerSize[j], ellipses, rects, polygons, lines);
                 }
 
