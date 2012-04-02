@@ -2,6 +2,9 @@
 // <copyright file="BarSeriesBase.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   The BarSeriesBase provides common properties and methods for the BarSeries and ColumnSeries.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -17,7 +20,8 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="BarSeriesBase" /> class.
+        /// Initializes a new instance of the <see cref="BarSeriesBase"/> class. 
+        ///   Initializes a new instance of the <see cref="BarSeriesBase"/> class.
         /// </summary>
         protected BarSeriesBase()
         {
@@ -153,9 +157,9 @@ namespace OxyPlot
                     var dp = new DataPoint(i, this.InternalValues[i]);
                     CategoryAxis categoryAxis = this.GetCategoryAxis();
                     string text = string.Format(
-                        this.TrackerFormatString, 
-                        this.Title, 
-                        categoryAxis.FormatValueForTracker(i), 
+                        this.TrackerFormatString,
+                        this.Title,
+                        categoryAxis.FormatValueForTracker(i),
                         this.InternalValues[i]);
                     return new TrackerHitResult(this, dp, sp, this.GetItem(i), text);
                 }
@@ -182,15 +186,29 @@ namespace OxyPlot
             double height = (legendBox.Bottom - legendBox.Top) * 0.8;
             double width = height;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - 0.5 * width, ymid - 0.5 * height, width, height), 
-                this.FillColor, 
-                this.StrokeColor, 
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
+                this.FillColor,
+                this.StrokeColor,
                 this.StrokeThickness);
         }
 
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Check if the data series is using the specified axis.
+        /// </summary>
+        /// <param name="axis">
+        /// An axis. 
+        /// </param>
+        /// <returns>
+        /// True if the axis is in use. 
+        /// </returns>
+        protected internal override bool IsUsing(Axis axis)
+        {
+            return this.XAxis == axis || this.YAxis == axis;
+        }
 
         /// <summary>
         /// The set default values.

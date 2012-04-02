@@ -48,6 +48,20 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("ColumnSeries and LineSeries")]
+        public static PlotModel SimpleColumnAndLineSeries()
+        {
+            var model = CreateColumnSeriesModel(false);
+            model.Title = "ColumnSeries and LineSeries";
+            var s1 = new LineSeries { Title = "LineSeries 1" };
+            s1.Points.Add(new DataPoint(0, 25));
+            s1.Points.Add(new DataPoint(1, 137));
+            s1.Points.Add(new DataPoint(2, 18));
+            s1.Points.Add(new DataPoint(3, 40));
+            model.Series.Add(s1);
+            return model;
+        }
+
         [Example("BarSeries")]
         public static PlotModel SimpleHorizontalBarSeries()
         {
