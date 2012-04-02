@@ -35,14 +35,14 @@ namespace OxyPlot
         /// <summary>
         ///   The offset.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", 
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate",
             Justification = "Reviewed. Suppression is OK here.")]
         protected double offset;
 
         /// <summary>
         ///   The scale.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", 
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate",
             Justification = "Reviewed. Suppression is OK here.")]
         protected double scale;
 
@@ -112,6 +112,7 @@ namespace OxyPlot
             this.TitleFormatString = "{0} [{1}]";
             this.TitleClippingLength = 0.9;
             this.TitleColor = null;
+            this.TitleFontSize = double.NaN;
             this.ClipTitle = true;
 
             this.Angle = 0;
@@ -942,7 +943,7 @@ namespace OxyPlot
             foreach (double v in majorLabelValues)
             {
                 string s = this.FormatValue(v);
-                OxySize size = rc.MeasureText(s, this.ActualFont, this.FontSize, this.FontWeight);
+                var size = rc.MeasureText(s, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
                 if (size.Width > maximumTextSize.Width)
                 {
                     maximumTextSize.Width = size.Width;
@@ -954,7 +955,7 @@ namespace OxyPlot
                 }
             }
 
-            OxySize labelTextSize = rc.MeasureText(this.ActualTitle, this.ActualFont, this.FontSize, this.FontWeight);
+            var labelTextSize = rc.MeasureText(this.ActualTitle, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
 
             double width = 0;
             double height = 0;
@@ -1103,12 +1104,12 @@ namespace OxyPlot
         public override string ToString()
         {
             return string.Format(
-                CultureInfo.InvariantCulture, 
-                "{0}({1}, {2}, {3}, {4})", 
-                TypeHelper.GetTypeName(this.GetType()), 
-                this.Position, 
-                this.ActualMinimum, 
-                this.ActualMaximum, 
+                CultureInfo.InvariantCulture,
+                "{0}({1}, {2}, {3}, {4})",
+                TypeHelper.GetTypeName(this.GetType()),
+                this.Position,
+                this.ActualMinimum,
+                this.ActualMaximum,
                 this.ActualMajorStep);
         }
 
