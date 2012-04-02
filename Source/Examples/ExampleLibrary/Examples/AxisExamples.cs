@@ -651,7 +651,7 @@ namespace ExampleLibrary
         {
             var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
             var tooltip = "The tooltip is " + longTitle;
-            var plotModel1 = new PlotModel("Long axis titles");
+            var plotModel1 = new PlotModel("Long axis titles (clipped at 90%)");
             plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left, longTitle) { ToolTip = tooltip });
             plotModel1.Axes.Add(new LinearAxis(AxisPosition.Bottom, longTitle) { ToolTip = tooltip });
             return plotModel1;
@@ -662,7 +662,7 @@ namespace ExampleLibrary
         {
             var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
             var tooltip = "The tooltip is " + longTitle;
-            var plotModel1 = new PlotModel("Long axis titles");
+            var plotModel1 = new PlotModel("Long axis titles (clipped at 100%)");
             plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left, longTitle) { ToolTip = tooltip, TitleClippingLength = 1.0 });
             plotModel1.Axes.Add(new LinearAxis(AxisPosition.Bottom, longTitle) { ToolTip = tooltip, TitleClippingLength = 1.0 });
             return plotModel1;
@@ -673,7 +673,7 @@ namespace ExampleLibrary
         {
             var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
             var tooltip = "The tooltip is " + longTitle;
-            var plotModel1 = new PlotModel("Long axis titles");
+            var plotModel1 = new PlotModel("Long axis titles (not clipped)");
             plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left, longTitle) { ToolTip = tooltip, ClipTitle = false });
             plotModel1.Axes.Add(new LinearAxis(AxisPosition.Bottom, longTitle) { ToolTip = tooltip, ClipTitle = false });
             return plotModel1;
