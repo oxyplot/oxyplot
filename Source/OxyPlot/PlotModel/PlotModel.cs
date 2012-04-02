@@ -684,28 +684,34 @@ namespace OxyPlot
         #region Properties
 
         /// <summary>
-        ///   Gets or sets the default angle axis.
+        ///   Gets the default angle axis.
         /// </summary>
         /// <value> The default angle axis. </value>
-        internal AngleAxis DefaultAngleAxis { get; set; }
+        internal AngleAxis DefaultAngleAxis { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the default magnitude axis.
+        ///   Gets the default magnitude axis.
         /// </summary>
         /// <value> The default magnitude axis. </value>
-        internal MagnitudeAxis DefaultMagnitudeAxis { get; set; }
+        internal MagnitudeAxis DefaultMagnitudeAxis { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the default X axis.
+        ///   Gets the default X axis.
         /// </summary>
         /// <value> The default X axis. </value>
-        internal Axis DefaultXAxis { get; set; }
+        internal Axis DefaultXAxis { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the default Y axis.
+        ///   Gets the default Y axis.
         /// </summary>
         /// <value> The default Y axis. </value>
-        internal Axis DefaultYAxis { get; set; }
+        internal Axis DefaultYAxis { get; private set; }
+
+        /// <summary>
+        ///   Gets the default color axis.
+        /// </summary>
+        /// <value> The default color axis. </value>
+        internal ColorAxis DefaultColorAxis { get; private set; }
 
         /// <summary>
         ///   Gets the actual title font.
@@ -728,7 +734,7 @@ namespace OxyPlot
                 return this.SubtitleFont ?? this.DefaultFont;
             }
         }
-        
+
         /// <summary>
         ///   Gets the visible series.
         /// </summary>
@@ -870,6 +876,11 @@ namespace OxyPlot
 
             foreach (var axis in this.Axes)
             {
+                if (axis is ColorAxis)
+                {
+                    continue;
+                }
+
                 if (axis is MagnitudeAxis)
                 {
                     xaxis = axis;
@@ -882,7 +893,17 @@ namespace OxyPlot
                     continue;
                 }
 
-                double x = axis.InverseTransform(axis.IsHorizontal() ? pt.X : pt.Y);
+                double x = double.NaN;
+                if (axis.IsHorizontal())
+                {
+                    x = axis.InverseTransform(pt.X);
+                }
+                
+                if (axis.IsVertical())
+                {
+                    x = axis.InverseTransform(pt.Y);
+                }
+                
                 if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
                 {
                     if (position == null)
@@ -894,7 +915,7 @@ namespace OxyPlot
                                 xaxis = axis;
                             }
                         }
-                        else
+                        else if (axis.IsVertical())
                         {
                             if (yaxis == null)
                             {
@@ -923,7 +944,7 @@ namespace OxyPlot
                                     xaxis = axis;
                                 }
                             }
-                            else
+                            else if (axis.IsVertical())
                             {
                                 if (yaxis == null)
                                 {
@@ -1221,47 +1242,11 @@ namespace OxyPlot
         /// </summary>
         private void EnsureDefaultAxes()
         {
-            this.DefaultXAxis = null;
-            this.DefaultYAxis = null;
-
-            foreach (var a in this.Axes)
-            {
-                if (a is MagnitudeAxis)
-                {
-                    if (this.DefaultMagnitudeAxis == null)
-                    {
-                        this.DefaultMagnitudeAxis = a as MagnitudeAxis;
-                    }
-
-                    continue;
-                }
-
-                if (a is AngleAxis)
-                {
-                    if (this.DefaultAngleAxis == null)
-                    {
-                        this.DefaultAngleAxis = a as AngleAxis;
-                    }
-
-                    continue;
-                }
-
-                if (a.IsHorizontal())
-                {
-                    if (this.DefaultXAxis == null)
-                    {
-                        this.DefaultXAxis = a;
-                    }
-                }
-
-                if (a.IsVertical())
-                {
-                    if (this.DefaultYAxis == null)
-                    {
-                        this.DefaultYAxis = a;
-                    }
-                }
-            }
+            this.DefaultXAxis = this.Axes.FirstOrDefault(a => a.IsHorizontal() && a.IsAxisVisible);
+            this.DefaultYAxis = this.Axes.FirstOrDefault(a => a.IsVertical() && a.IsAxisVisible);
+            this.DefaultMagnitudeAxis = this.Axes.FirstOrDefault(a => a is MagnitudeAxis) as MagnitudeAxis;
+            this.DefaultAngleAxis = this.Axes.FirstOrDefault(a => a is AngleAxis) as AngleAxis;
+            this.DefaultColorAxis = this.Axes.FirstOrDefault(a => a is ColorAxis) as ColorAxis;
 
             if (this.DefaultXAxis == null)
             {
@@ -1320,19 +1305,19 @@ namespace OxyPlot
                 }
             }
 
-            // Update the x/y axes of series without axes defined
+            // Update the x/index axes of series without axes defined
             foreach (var s in this.VisibleSeries)
             {
                 if (s.AreAxesRequired())
                 {
-                    s.EnsureAxes(this.Axes, this.DefaultXAxis, this.DefaultYAxis);
+                    s.EnsureAxes();
                 }
             }
 
-            // Update the x/y axes of series without axes defined
+            // Update the x/index axes of annotations without axes defined
             foreach (var a in this.Annotations)
             {
-                a.EnsureAxes(this.Axes, this.DefaultXAxis, this.DefaultYAxis);
+                a.EnsureAxes();
             }
         }
 

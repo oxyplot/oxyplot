@@ -63,13 +63,10 @@ namespace OxyPlot
         /// <param name="value">
         /// The value.
         /// </param>
-        /// <param name="maxDigits">
-        /// The maximum number of digits.
-        /// </param>
         /// <returns>
         /// A double without noise.
         /// </returns>
-        public static double RemoveNoise(this double value)
+        public static double RemoveNoise2(this double value)
         {
             return (double)((decimal)value);
         }

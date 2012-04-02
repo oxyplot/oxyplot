@@ -74,8 +74,6 @@ namespace ExampleBrowser
             // 
             this.plot1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.plot1.Location = new System.Drawing.Point(0, 0);
-            plotModel1.AnnotationFont = null;
-            plotModel1.AnnotationFontSize = 12D;
             plotModel1.Annotations = ((System.Collections.ObjectModel.Collection<OxyPlot.Annotation>)(resources.GetObject("plotModel1.Annotations")));
             plotModel1.AutoAdjustPlotMargins = true;
             plotModel1.Axes = ((System.Collections.ObjectModel.Collection<OxyPlot.Axis>)(resources.GetObject("plotModel1.Axes")));

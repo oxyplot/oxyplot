@@ -12,6 +12,11 @@ namespace OxyPlot
     public enum AxisPosition
     {
         /// <summary>
+        ///   No position.
+        /// </summary>
+        None,
+
+        /// <summary>
         ///   Left of the plot area.
         /// </summary>
         Left, 
