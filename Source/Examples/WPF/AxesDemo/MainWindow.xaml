@@ -274,6 +274,20 @@
                     </oxy:Plot>
                 </Grid>
             </TabItem>
+            <TabItem Header="Context menu">
+                <oxy:Plot>
+                    <oxy:Plot.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="This is a"/>
+                            <MenuItem Header="context menu!"/>
+                        </ContextMenu>
+                    </oxy:Plot.ContextMenu>
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Left"/>
+                        <oxy:LinearAxis Position="Bottom"/>
+                    </oxy:Plot.Axes>
+                </oxy:Plot>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>
