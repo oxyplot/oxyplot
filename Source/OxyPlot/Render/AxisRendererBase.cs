@@ -21,17 +21,17 @@ namespace OxyPlot
         protected readonly PlotModel Plot;
 
         /// <summary>
-        ///   The rc.
+        ///   The render context.
         /// </summary>
         protected readonly IRenderContext rc;
 
         /// <summary>
-        ///   The axisline pen.
+        ///   The axis lines pen.
         /// </summary>
         protected OxyPen AxislinePen;
 
         /// <summary>
-        ///   The extra pen.
+        ///   The extra grid lines pen.
         /// </summary>
         protected OxyPen ExtraPen;
 
@@ -41,7 +41,7 @@ namespace OxyPlot
         protected IList<double> MajorLabelValues;
 
         /// <summary>
-        ///   The major pen.
+        ///   The major grid lines pen.
         /// </summary>
         protected OxyPen MajorPen;
 
@@ -56,7 +56,7 @@ namespace OxyPlot
         protected IList<double> MajorTickValues;
 
         /// <summary>
-        ///   The minor pen.
+        ///   The minor grid lines pen.
         /// </summary>
         protected OxyPen MinorPen;
 
@@ -71,7 +71,7 @@ namespace OxyPlot
         protected IList<double> MinorTickValues;
 
         /// <summary>
-        ///   The zero pen.
+        ///   The zero grid line pen.
         /// </summary>
         protected OxyPen ZeroPen;
 
@@ -88,7 +88,7 @@ namespace OxyPlot
         /// <param name="plot">
         /// The plot.
         /// </param>
-        public AxisRendererBase(IRenderContext rc, PlotModel plot)
+        protected AxisRendererBase(IRenderContext rc, PlotModel plot)
         {
             this.Plot = plot;
             this.rc = rc;
@@ -129,9 +129,9 @@ namespace OxyPlot
         {
             this.MinorPen = OxyPen.Create(axis.MinorGridlineColor, axis.MinorGridlineThickness, axis.MinorGridlineStyle);
             this.MajorPen = OxyPen.Create(axis.MajorGridlineColor, axis.MajorGridlineThickness, axis.MajorGridlineStyle);
-            this.MinorTickPen = OxyPen.Create(axis.TicklineColor, axis.MinorGridlineThickness, LineStyle.Solid);
-            this.MajorTickPen = OxyPen.Create(axis.TicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
-            this.ZeroPen = OxyPen.Create(axis.TicklineColor, axis.MajorGridlineThickness, LineStyle.Solid);
+            this.MinorTickPen = OxyPen.Create(axis.TicklineColor, axis.MinorGridlineThickness);
+            this.MajorTickPen = OxyPen.Create(axis.TicklineColor, axis.MajorGridlineThickness);
+            this.ZeroPen = OxyPen.Create(axis.TicklineColor, axis.MajorGridlineThickness);
             this.ExtraPen = OxyPen.Create(axis.ExtraGridlineColor, axis.ExtraGridlineThickness, axis.ExtraGridlineStyle);
             this.AxislinePen = OxyPen.Create(axis.AxislineColor, axis.AxislineThickness, axis.AxislineStyle);
         }
@@ -180,19 +180,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The is within.
+        /// Determines whether the specified value is within the specified range.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="min">
-        /// The min.
-        /// </param>
-        /// <param name="max">
-        /// The max.
-        /// </param>
+        /// <param name="d">The value to check.</param>
+        /// <param name="min">The minium value of the range.</param>
+        /// <param name="max">The maximum value of the range.</param>
         /// <returns>
-        /// The is within.
+        ///   <c>true</c> if the specified value is within the range; otherwise, <c>false</c>.
         /// </returns>
         protected bool IsWithin(double d, double min, double max)
         {

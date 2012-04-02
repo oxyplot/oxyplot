@@ -146,7 +146,7 @@ namespace OxyPlot
                 }
 
                 this.rc.DrawMathText(
-                    pt, text, this.Plot.TextColor, axis.ActualFont, axis.FontSize, axis.FontWeight, angle, ha, va, false);
+                    pt, text, axis.ActualTextColor, axis.ActualFont, axis.ActualFontSize, axis.ActualFontWeight, angle, ha, va, false);
             }
         }
 

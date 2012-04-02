@@ -158,14 +158,13 @@ namespace OxyPlot
                 clippingRect,
                 textPoint,
                 this.Text,
-                model.TextColor,
-                model.ActualAnnotationFont,
-                model.AnnotationFontSize,
-                FontWeights.Normal,
+                this.ActualTextColor,
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
                 0,
                 ha,
                 va);
-
         }
 
         #endregion

@@ -59,11 +59,6 @@ namespace OxyPlot
         public bool IsVisible { get; set; }
 
         /// <summary>
-        ///   Gets the parent plot model.
-        /// </summary>
-        public PlotModel PlotModel { get; internal set; }
-
-        /// <summary>
         ///   Gets or sets the title of the Series.
         /// </summary>
         /// <value> The title. </value>

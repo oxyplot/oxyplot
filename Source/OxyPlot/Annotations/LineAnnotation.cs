@@ -290,7 +290,7 @@ namespace OxyPlot
             var screenPoints = points.Select(p => this.XAxis.Transform(p.X, p.Y, this.YAxis)).ToList();
 
             // clip to the area defined by the axes
-            var clipping = new OxyRect(
+            var clippingRectangle = new OxyRect(
                 this.ClipByXAxis ? this.XAxis.ScreenMin.X : PlotModel.PlotArea.Left,
                 this.ClipByYAxis ? this.YAxis.ScreenMin.Y : PlotModel.PlotArea.Top,
                 this.ClipByXAxis ? this.XAxis.ScreenMax.X - this.XAxis.ScreenMin.X : PlotModel.PlotArea.Width,
@@ -302,7 +302,7 @@ namespace OxyPlot
 
             rc.DrawClippedLine(
                screenPoints,
-               clipping,
+               clippingRectangle,
                MinimumSegmentLength * MinimumSegmentLength,
                this.Color,
                this.StrokeThickness,
@@ -326,16 +326,17 @@ namespace OxyPlot
 
             if (clippedPoints != null && GetPointAtRelativeDistance(clippedPoints, this.TextPosition, margin, out position, out angle))
             {
-                var cs = new CohenSutherlandClipping(clipping);
+                var cs = new CohenSutherlandClipping(clippingRectangle);
                 if (cs.IsInside(position))
                 {
-                    rc.DrawText(
+                    rc.DrawClippedText(
+                        clippingRectangle,
                         position,
                         this.Text,
-                        model.TextColor,
-                        model.ActualAnnotationFont,
-                        model.AnnotationFontSize,
-                        FontWeights.Normal,
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.ActualFontSize,
+                        this.ActualFontWeight,
                         angle,
                         this.TextHorizontalAlignment,
                         this.TextVerticalAlignment);

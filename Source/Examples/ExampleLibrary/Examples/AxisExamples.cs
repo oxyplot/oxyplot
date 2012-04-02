@@ -753,5 +753,25 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("Custom axis title color")]
+        public static PlotModel TitleColor()
+        {
+            var model = CreatePlotModel();
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 1, "Bottom axis") { TitleColor = OxyColors.Red });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 1, "Left axis") { TitleColor = OxyColors.Blue });
+            model.Series.Add(new FunctionSeries(Math.Sin, -1, 1, 100));
+            return model;
+        }
+
+        [Example("Custom axis label color")]
+        public static PlotModel LabelColor()
+        {
+            var model = CreatePlotModel();
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 1, "Bottom axis") { TextColor = OxyColors.Red });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 1, "Left axis") { TextColor = OxyColors.Blue });
+            model.Series.Add(new FunctionSeries(Math.Sin, -1, 1, 100));
+            return model;
+        }
+
     }
 }

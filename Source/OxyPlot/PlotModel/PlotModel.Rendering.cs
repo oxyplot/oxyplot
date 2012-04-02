@@ -211,7 +211,7 @@ namespace OxyPlot
         {
             OxySize size1 = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
             OxySize size2 = rc.MeasureText(
-                this.Subtitle, this.SubtitleFont ?? this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
+                this.Subtitle, this.SubtitleFont ?? this.ActualSubtitleFont, this.SubtitleFontSize, this.SubtitleFontWeight);
             double height = size1.Height + size2.Height;
             double width = Math.Max(size1.Width, size2.Width);
             return new OxySize(width, height);
@@ -334,7 +334,7 @@ namespace OxyPlot
         {
             OxySize size1 = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
             OxySize size2 = rc.MeasureText(
-                this.Subtitle, this.SubtitleFont ?? this.ActualTitleFont, this.SubtitleFontSize, this.SubtitleFontWeight);
+                this.Subtitle, this.SubtitleFont ?? this.ActualSubtitleFont, this.SubtitleFontSize, this.SubtitleFontWeight);
 
             // double height = size1.Height + size2.Height;
             // double dy = (TitleArea.Top+TitleArea.Bottom-height)*0.5;
@@ -346,7 +346,7 @@ namespace OxyPlot
                 rc.DrawMathText(
                     new ScreenPoint(dx, dy),
                     this.Title,
-                    this.TextColor,
+                    this.TitleColor ?? this.TextColor,
                     this.ActualTitleFont,
                     this.TitleFontSize,
                     this.TitleFontWeight,
@@ -362,8 +362,8 @@ namespace OxyPlot
                 rc.DrawMathText(
                     new ScreenPoint(dx, dy),
                     this.Subtitle,
-                    this.TextColor,
-                    this.SubtitleFont ?? this.ActualTitleFont,
+                    this.SubtitleColor ?? this.TextColor,
+                    this.ActualSubtitleFont,
                     this.SubtitleFontSize,
                     this.SubtitleFontWeight,
                     0,

@@ -57,11 +57,6 @@ namespace OxyPlot
         public bool IsStacked { get; set; }
 
         /// <summary>
-        ///   Gets or sets the label color.
-        /// </summary>
-        public OxyColor LabelColor { get; set; }
-
-        /// <summary>
         ///   Gets or sets the label format string.
         /// </summary>
         /// <value> The label format string. </value>

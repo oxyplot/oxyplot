@@ -2,12 +2,16 @@
 // <copyright file="Axis.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Abstract base class for axes.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
     /// <summary>
@@ -17,16 +21,6 @@ namespace OxyPlot
     public abstract class Axis : PlotElement
     {
         #region Constants and Fields
-
-        /// <summary>
-        ///   The offset.
-        /// </summary>
-        internal double offset;
-
-        /// <summary>
-        ///   The scale.
-        /// </summary>
-        internal double scale;
 
         /// <summary>
         ///   Exponent function.
@@ -39,6 +33,20 @@ namespace OxyPlot
         protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
 
         /// <summary>
+        ///   The offset.
+        /// </summary>
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", 
+            Justification = "Reviewed. Suppression is OK here.")]
+        protected double offset;
+
+        /// <summary>
+        ///   The scale.
+        /// </summary>
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", 
+            Justification = "Reviewed. Suppression is OK here.")]
+        protected double scale;
+
+        /// <summary>
         ///   The position.
         /// </summary>
         private AxisPosition position;
@@ -48,7 +56,8 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="Axis" /> class.
+        /// Initializes a new instance of the <see cref="Axis"/> class. 
+        ///   Initializes a new instance of the <see cref="Axis"/> class.
         /// </summary>
         protected Axis()
         {
@@ -93,10 +102,6 @@ namespace OxyPlot
 
             this.ShowMinorTicks = true;
 
-            this.Font = null;
-            this.FontSize = 12;
-            this.FontWeight = FontWeights.Normal;
-
             this.MinorTickSize = 4;
             this.MajorTickSize = 7;
 
@@ -106,6 +111,7 @@ namespace OxyPlot
             this.TitlePosition = 0.5;
             this.TitleFormatString = "{0} [{1}]";
             this.TitleClippingLength = 0.9;
+            this.TitleColor = null;
             this.ClipTitle = true;
 
             this.Angle = 0;
@@ -124,6 +130,7 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Axis"/> class. 
         /// Initializes a new instance of the <see cref="Axis"/> class.
         /// </summary>
         /// <param name="pos">
@@ -187,17 +194,6 @@ namespace OxyPlot
             get
             {
                 return this.PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
-            }
-        }
-
-        /// <summary>
-        ///   Gets the actual font.
-        /// </summary>
-        public string ActualFont
-        {
-            get
-            {
-                return this.Font ?? PlotModel.DefaultFont;
             }
         }
 
@@ -276,20 +272,12 @@ namespace OxyPlot
         public double AxislineThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to clip the axis title.
+        ///   Gets or sets a value indicating whether to clip the axis title.
         /// </summary>
         /// <remarks>
-        /// The default value is true.
+        ///   The default value is true.
         /// </remarks>
         public bool ClipTitle { get; set; }
-
-        /// <summary>
-        /// Gets or sets the length of the title clipping rectangle (fraction of the available length of the axis).
-        /// </summary>
-        /// <remarks>
-        /// The default value is 0.9
-        /// </remarks>
-        public double TitleClippingLength { get; set; }
 
         /// <summary>
         ///   Gets or sets the end position of the axis on the plot area. This is a fraction from 0(bottom/left) to 1(top/right).
@@ -333,21 +321,6 @@ namespace OxyPlot
         /// </summary>
         /// <value> The filter min value. </value>
         public double FilterMinValue { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the font name.
-        /// </summary>
-        public string Font { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the size of the font.
-        /// </summary>
-        public double FontSize { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the font weight.
-        /// </summary>
-        public double FontWeight { get; set; }
 
         /// <summary>
         ///   Gets or sets the length of the interval (screen length). The available length of the axis will be divided by this length to get the approximate number of major intervals on the axis. The default value is 60.
@@ -483,11 +456,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets the parent plot model.
-        /// </summary>
-        public PlotModel PlotModel { get; internal set; }
-
-        /// <summary>
         ///   Gets or sets the position of the axis.
         /// </summary>
         public AxisPosition Position
@@ -578,6 +546,41 @@ namespace OxyPlot
         public string Title { get; set; }
 
         /// <summary>
+        ///   Gets or sets the length of the title clipping rectangle (fraction of the available length of the axis).
+        /// </summary>
+        /// <remarks>
+        ///   The default value is 0.9
+        /// </remarks>
+        public double TitleClippingLength { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the color of the title.
+        /// </summary>
+        /// <value> The color of the title. </value>
+        /// <remarks>
+        ///   If TitleColor is null, the parent PlotModel's TextColor will be used.
+        /// </remarks>
+        public OxyColor TitleColor { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the title font.
+        /// </summary>
+        /// <value> The title font. </value>
+        public string TitleFont { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the size of the title font.
+        /// </summary>
+        /// <value> The size of the title font. </value>
+        public double TitleFontSize { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the title font weight.
+        /// </summary>
+        /// <value> The title font weight. </value>
+        public double TitleFontWeight { get; set; }
+
+        /// <summary>
         ///   Gets or sets the format string used for formatting the title and unit when unit is defined. If unit is null, only Title is used. The default value is "{0} [{1}]", where {0} uses the Title and {1} uses the Unit.
         /// </summary>
         public string TitleFormatString { get; set; }
@@ -624,6 +627,52 @@ namespace OxyPlot
         /// </summary>
         /// <value> The size of the position tier. </value>
         internal double PositionTierSize { get; set; }
+
+        /// <summary>
+        ///   Gets the actual color of the title.
+        /// </summary>
+        /// <value> The actual color of the title. </value>
+        protected internal OxyColor ActualTitleColor
+        {
+            get
+            {
+                return this.TitleColor ?? this.PlotModel.TextColor;
+            }
+        }
+
+        /// <summary>
+        ///   Gets the actual title font.
+        /// </summary>
+        protected internal string ActualTitleFont
+        {
+            get
+            {
+                return this.TitleFont ?? PlotModel.DefaultFont;
+            }
+        }
+
+        /// <summary>
+        ///   Gets the actual size of the title font.
+        /// </summary>
+        /// <value> The actual size of the title font. </value>
+        protected internal double ActualTitleFontSize
+        {
+            get
+            {
+                return !double.IsNaN(this.TitleFontSize) ? this.TitleFontSize : this.ActualFontSize;
+            }
+        }
+
+        /// <summary>
+        ///   Gets the actual title font weight.
+        /// </summary>
+        protected internal double ActualTitleFontWeight
+        {
+            get
+            {
+                return !double.IsNaN(this.TitleFontWeight) ? this.TitleFontWeight : this.ActualFontWeight;
+            }
+        }
 
         /// <summary>
         ///   Gets or sets the current view's maximum. This value is used when the user zooms or pans.
@@ -708,8 +757,8 @@ namespace OxyPlot
             if (range < this.MinimumRange)
             {
                 double avg = (this.ActualMaximum + this.ActualMinimum) * 0.5;
-                this.ActualMinimum = avg - this.MinimumRange * 0.5;
-                this.ActualMaximum = avg + this.MinimumRange * 0.5;
+                this.ActualMinimum = avg - (this.MinimumRange * 0.5);
+                this.ActualMaximum = avg + (this.MinimumRange * 0.5);
             }
 
             if (this.AbsoluteMaximum <= this.AbsoluteMinimum)
@@ -832,7 +881,7 @@ namespace OxyPlot
         /// </returns>
         public virtual double InverseTransform(double sx)
         {
-            return this.PostInverseTransform(sx / this.scale + this.Offset);
+            return this.PostInverseTransform((sx / this.scale) + this.offset);
         }
 
         /// <summary>
@@ -1120,7 +1169,7 @@ namespace OxyPlot
 
             double dx = (this.offset - mid) * this.scale;
             this.scale = sgn * newScale;
-            this.offset = dx / this.scale + mid;
+            this.offset = (dx / this.scale) + mid;
 
             double newMaximum = this.InverseTransform(sx1);
             double newMinimum = this.InverseTransform(sx0);
@@ -1205,8 +1254,8 @@ namespace OxyPlot
             double dx1 = (this.ActualMaximum - x) * this.scale;
             this.scale *= factor;
 
-            double newMinimum = Math.Max(dx0 / this.scale + x, this.AbsoluteMinimum);
-            double newMaximum = Math.Min(dx1 / this.scale + x, this.AbsoluteMaximum);
+            double newMinimum = Math.Max((dx0 / this.scale) + x, this.AbsoluteMinimum);
+            double newMaximum = Math.Min((dx1 / this.scale) + x, this.AbsoluteMaximum);
 
             this.ViewMinimum = newMinimum;
             this.ViewMaximum = newMaximum;
@@ -1239,8 +1288,12 @@ namespace OxyPlot
         /// <summary>
         /// "Post-inversetransform" the value. This is used in logarithmic axis.
         /// </summary>
-        /// <param name="x">The x.</param>
-        /// <returns>The 'post-inversetransformed' value</returns>
+        /// <param name="x">
+        /// The x. 
+        /// </param>
+        /// <returns>
+        /// The 'post-inversetransformed' value 
+        /// </returns>
         internal virtual double PostInverseTransform(double x)
         {
             return x;
@@ -1413,8 +1466,8 @@ namespace OxyPlot
             double a1 = this.IsHorizontal() ? x1 : y1;
 
             double dx = a1 - a0;
-            a1 = a0 + this.EndPosition * dx;
-            a0 = a0 + this.StartPosition * dx;
+            a1 = a0 + (this.EndPosition * dx);
+            a0 = a0 + (this.StartPosition * dx);
             this.ScreenMin = new ScreenPoint(a0, a1);
             this.ScreenMax = new ScreenPoint(a1, a0);
 
@@ -1429,7 +1482,7 @@ namespace OxyPlot
             double da = a0 - a1;
             if (Math.Abs(da) > double.Epsilon)
             {
-                this.offset = a0 / da * max - a1 / da * min;
+                this.offset = (a0 / da * max) - (a1 / da * min);
             }
             else
             {
@@ -1643,7 +1696,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Raises the <see cref="E:AxisChanged"/> event.
+        /// Raises the AxisChanged event.
         /// </summary>
         /// <param name="args">
         /// The <see cref="OxyPlot.AxisChangedEventArgs"/> instance containing the event data. 
@@ -1652,7 +1705,7 @@ namespace OxyPlot
         {
             this.UpdateActualMaxMin();
 
-            EventHandler<AxisChangedEventArgs> handler = this.AxisChanged;
+            var handler = this.AxisChanged;
             if (handler != null)
             {
                 handler(this, args);

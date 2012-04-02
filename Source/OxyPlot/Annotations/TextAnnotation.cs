@@ -117,7 +117,7 @@ namespace OxyPlot
             var clippingRect = this.GetClippingRect();
 
             var textSize = rc.MeasureText(
-                this.Text, model.ActualAnnotationFont, model.AnnotationFontSize, FontWeights.Normal);
+                this.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
 
             const double MinDistSquared = 4;
 
@@ -126,17 +126,17 @@ namespace OxyPlot
             rc.DrawClippedPolygon(
                 textBounds, clippingRect, MinDistSquared, this.Background, this.Stroke, this.StrokeThickness);
 
-                rc.DrawClippedText(
-                    clippingRect,
-                    position, 
-                    this.Text, 
-                    model.TextColor, 
-                    model.ActualAnnotationFont, 
-                    model.AnnotationFontSize, 
-                    FontWeights.Normal, 
-                    this.Rotation, 
-                    this.HorizontalAlignment, 
-                    this.VerticalAlignment);
+            rc.DrawClippedText(
+                clippingRect,
+                position,
+                this.Text,
+                this.ActualTextColor,
+            this.ActualFont,
+            this.ActualFontSize,
+            this.ActualFontWeight,
+                this.Rotation,
+                this.HorizontalAlignment,
+                this.VerticalAlignment);
         }
 
         #endregion
@@ -168,11 +168,11 @@ namespace OxyPlot
         /// The background rectangle coordinates.
         /// </returns>
         private static IList<ScreenPoint> GetTextBounds(
-            ScreenPoint position, 
-            OxySize size, 
-            OxyThickness padding, 
-            double rotation, 
-            HorizontalTextAlign horizontalAlignment, 
+            ScreenPoint position,
+            OxySize size,
+            OxyThickness padding,
+            double rotation,
+            HorizontalTextAlign horizontalAlignment,
             VerticalTextAlign verticalAlignment)
         {
             double left, right, top, bottom;

@@ -207,15 +207,15 @@ namespace OxyPlot
             }
 
             OxySize textSize = rc.DrawMathText(
-                new ScreenPoint(x, rect.Top), 
-                s.Title, 
-                this.TextColor, 
-                this.ActualLegendFont, 
-                this.LegendFontSize, 
-                this.LegendFontWeight, 
-                0, 
-                this.LegendItemAlignment, 
-                VerticalTextAlign.Top, 
+                new ScreenPoint(x, rect.Top),
+                s.Title,
+                this.LegendTextColor ?? this.TextColor,
+                this.LegendFont ?? this.DefaultFont,
+                this.LegendFontSize,
+                this.LegendFontWeight,
+                0,
+                this.LegendItemAlignment,
+                VerticalTextAlign.Top,
                 true);
             double x0 = x;
             switch (this.LegendItemAlignment)
@@ -232,9 +232,9 @@ namespace OxyPlot
                 new OxyRect(
                     this.LegendSymbolPlacement == LegendSymbolPlacement.Right
                         ? x0 + textSize.Width + this.LegendSymbolMargin
-                        : x0 - this.LegendSymbolMargin - this.LegendSymbolLength, 
-                    rect.Top, 
-                    this.LegendSymbolLength, 
+                        : x0 - this.LegendSymbolMargin - this.LegendSymbolLength,
+                    rect.Top,
+                    this.LegendSymbolLength,
                     textSize.Height);
 
             s.RenderLegend(rc, symbolRect);
@@ -276,23 +276,23 @@ namespace OxyPlot
                 if (measureOnly)
                 {
                     titleSize = rc.MeasureMathText(
-                        this.LegendTitle, 
-                        this.LegendTitleFont ?? DefaultFont, 
-                        this.LegendTitleFontSize, 
+                        this.LegendTitle,
+                        this.LegendTitleFont ?? DefaultFont,
+                        this.LegendTitleFontSize,
                         this.LegendTitleFontWeight);
                 }
                 else
                 {
                     titleSize = rc.DrawMathText(
-                        new ScreenPoint(rect.Left + x, rect.Top + top), 
-                        this.LegendTitle, 
-                        this.TextColor, 
-                        this.LegendTitleFont ?? DefaultFont, 
-                        this.LegendTitleFontSize, 
-                        this.LegendTitleFontWeight, 
-                        0, 
-                        HorizontalTextAlign.Left, 
-                        VerticalTextAlign.Top, 
+                        new ScreenPoint(rect.Left + x, rect.Top + top),
+                        this.LegendTitle,
+                        this.LegendTitleColor ?? this.TextColor,
+                        this.LegendTitleFont ?? this.DefaultFont,
+                        this.LegendTitleFontSize,
+                        this.LegendTitleFontWeight,
+                        0,
+                        HorizontalTextAlign.Left,
+                        VerticalTextAlign.Top,
                         true);
                 }
 
@@ -318,7 +318,7 @@ namespace OxyPlot
                 }
 
                 OxySize textSize = rc.MeasureMathText(
-                    s.Title, this.ActualLegendFont, this.LegendFontSize, this.LegendFontWeight);
+                    s.Title, this.LegendFont ?? DefaultFont, this.LegendFontSize, this.LegendFontWeight);
                 double itemWidth = this.LegendSymbolLength + this.LegendSymbolMargin + textSize.Width;
                 double itemHeight = textSize.Height;
 

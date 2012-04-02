@@ -1,3 +1,4 @@
+
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HorizontalAndVerticalAxisRenderer.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
@@ -220,11 +221,6 @@ namespace OxyPlot
                         majorTickSegments.Add(new ScreenPoint(axisPosition + a1, transformedValue));
                     }
                 }
-
-                if (Math.Abs(value) < double.Epsilon && axis.PositionAtZeroCrossing)
-                {
-                    continue;
-                }
             }
 
             // Render the axis labels (numbers or category names)
@@ -253,8 +249,8 @@ namespace OxyPlot
                 }
 
                 var pt = new ScreenPoint();
-                HorizontalTextAlign ha = HorizontalTextAlign.Right;
-                VerticalTextAlign va = VerticalTextAlign.Middle;
+                var ha = HorizontalTextAlign.Right;
+                var va = VerticalTextAlign.Middle;
                 switch (axis.Position)
                 {
                     case AxisPosition.Left:
@@ -283,10 +279,10 @@ namespace OxyPlot
                 this.rc.DrawMathText(
                     pt,
                     text,
-                    this.Plot.TextColor,
+                    axis.ActualTextColor,
                     axis.ActualFont,
-                    axis.FontSize,
-                    axis.FontWeight,
+                    axis.ActualFontSize,
+                    axis.ActualFontWeight,
                     axis.Angle,
                     ha,
                     va,
@@ -406,10 +402,10 @@ namespace OxyPlot
                 this.rc.DrawText(
                     lpt,
                     axis.ActualTitle,
-                    this.Plot.TextColor,
-                    axis.ActualFont,
-                    axis.FontSize,
-                    axis.FontWeight,
+                    axis.ActualTitleColor,                    
+                    axis.ActualTitleFont,
+                    axis.ActualTitleFontSize,
+                    axis.ActualTitleFontWeight,
                     angle,
                     halign,
                     valign,
