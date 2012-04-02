@@ -253,7 +253,7 @@ namespace OxyPlot
         /// </param>
         internal override void UpdateFromSeries(IEnumerable<Series> series)
         {
-            // count series that are using this axis
+            // count the series that are using this axis
             this.AttachedSeriesCount = 0;
             foreach (var s in series)
             {

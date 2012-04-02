@@ -472,13 +472,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The is using.
+        /// Check if the data series is using the specified axis.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
+        /// <param name="axis">An axis.</param>
         /// <returns>
-        /// The is using.
+        /// True if the axis is in use.
         /// </returns>
         protected internal override bool IsUsing(Axis axis)
         {
