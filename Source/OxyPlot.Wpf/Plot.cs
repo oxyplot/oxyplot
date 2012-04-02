@@ -857,7 +857,7 @@ namespace OxyPlot.Wpf
             this.mouseManipulator = null;
 
             this.ReleaseMouseCapture();
-            ScreenPoint p = e.GetPosition(this).ToScreenPoint();
+            var p = e.GetPosition(this).ToScreenPoint();
 
             double d = p.DistanceTo(this.mouseDownPoint);
             if (this.ContextMenu != null)
@@ -865,15 +865,12 @@ namespace OxyPlot.Wpf
                 if (Math.Abs(d) < 1e-8 && e.ChangedButton == MouseButton.Right)
                 {
                     this.ContextMenu.Visibility = Visibility.Visible;
-
-                    // todo: The contextmenu has the wrong placement after panning
-                    // ContextMenu.Placement = PlacementMode.Relative;
-                    // ContextMenu.PlacementTarget = this;
-                    // ContextMenu.PlacementRectangle=new Rect(e.GetPosition(this),new Size(0,0));
+                    this.ContextMenu.IsOpen = true;
                 }
                 else
                 {
                     this.ContextMenu.Visibility = Visibility.Collapsed;
+                    this.ContextMenu.IsOpen = false;
                 }
             }
         }
