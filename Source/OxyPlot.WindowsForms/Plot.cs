@@ -539,38 +539,50 @@ namespace OxyPlot.WindowsForms
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-
-            lock (this.invalidateLock)
+            try
             {
-                if (this.isModelInvalidated)
+                lock (this.invalidateLock)
                 {
+                    if (this.isModelInvalidated)
+                    {
+                        if (this.model != null)
+                        {
+                            this.model.Update(this.updateDataFlag);
+                            this.updateDataFlag = false;
+                        }
+
+                        this.isModelInvalidated = false;
+                    }
+                }
+
+                lock (this.renderingLock)
+                {
+                    var rc = new GraphicsRenderContext(e.Graphics, this.Width, this.Height); // e.ClipRectangle
                     if (this.model != null)
                     {
-                        this.model.Update(this.updateDataFlag);
-                        this.updateDataFlag = false;
+                        this.model.Render(rc);
                     }
 
-                    this.isModelInvalidated = false;
+                    if (this.zoomRectangle != Rectangle.Empty)
+                    {
+                        using (var zoomBrush = new SolidBrush(Color.FromArgb(0x40, 0xFF, 0xFF, 0x00)))
+                        using (var zoomPen = new Pen(Color.Black))
+                        {
+                            zoomPen.DashPattern = new float[] { 3, 1 };
+                            e.Graphics.FillRectangle(zoomBrush, this.zoomRectangle);
+                            e.Graphics.DrawRectangle(zoomPen, this.zoomRectangle);
+                        }
+                    }
                 }
             }
-
-            lock (this.renderingLock)
+            catch (Exception paintException)
             {
-                var rc = new GraphicsRenderContext(e.Graphics, this.Width, this.Height); // e.ClipRectangle
-                if (this.model != null)
+                var trace = new System.Diagnostics.StackTrace(paintException);
+                System.Diagnostics.Debug.WriteLine(paintException);
+                System.Diagnostics.Debug.WriteLine(trace);
+                using (var font = new Font("Arial", 10))
                 {
-                    this.model.Render(rc);
-                }
-
-                if (this.zoomRectangle != Rectangle.Empty)
-                {
-                    using (var zoomBrush = new SolidBrush(Color.FromArgb(0x40, 0xFF, 0xFF, 0x00)))
-                    using (var zoomPen = new Pen(Color.Black))
-                    {
-                        zoomPen.DashPattern = new float[] { 3, 1 };
-                        e.Graphics.FillRectangle(zoomBrush, this.zoomRectangle);
-                        e.Graphics.DrawRectangle(zoomPen, this.zoomRectangle);
-                    }
+                    e.Graphics.DrawString("OxyPlot paint exception: " + paintException.Message, font, Brushes.Red, 10, 10);
                 }
             }
         }
