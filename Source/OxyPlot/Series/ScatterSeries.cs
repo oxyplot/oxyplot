@@ -303,33 +303,36 @@ namespace OxyPlot
             // Draw the markers
             if (this.ColorAxis != null)
             {
+                var markerIsStrokedOnly = this.MarkerType == MarkerType.Plus || this.MarkerType == MarkerType.Star
+                                          || this.MarkerType == MarkerType.Cross;
                 foreach (var group in groupPoints)
                 {
+                    var color = this.ColorAxis.GetColor(group.Key);
                     rc.DrawMarkers(
-                        group.Value, 
-                        clippingRect, 
-                        this.MarkerType, 
-                        this.MarkerOutline, 
-                        groupSizes[group.Key], 
-                        this.ColorAxis.GetColor(group.Key), 
-                        this.MarkerStroke, 
-                        this.MarkerStrokeThickness, 
-                        this.BinSize, 
+                        group.Value,
+                        clippingRect,
+                        this.MarkerType,
+                        this.MarkerOutline,
+                        groupSizes[group.Key],
+                        color,
+                        markerIsStrokedOnly ? color : this.MarkerStroke,
+                        this.MarkerStrokeThickness,
+                        this.BinSize,
                         binOffset);
                 }
             }
             else
             {
                 rc.DrawMarkers(
-                    allPoints, 
-                    clippingRect, 
-                    this.MarkerType, 
-                    this.MarkerOutline, 
-                    markerSizes, 
-                    this.MarkerFill, 
-                    this.MarkerStroke, 
-                    this.MarkerStrokeThickness, 
-                    this.BinSize, 
+                    allPoints,
+                    clippingRect,
+                    this.MarkerType,
+                    this.MarkerOutline,
+                    markerSizes,
+                    this.MarkerFill,
+                    this.MarkerStroke,
+                    this.MarkerStrokeThickness,
+                    this.BinSize,
                     binOffset);
             }
         }
@@ -350,13 +353,13 @@ namespace OxyPlot
 
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
-                midpt, 
-                legendBox, 
-                this.MarkerType, 
-                this.MarkerOutline, 
-                this.MarkerSize, 
-                this.MarkerFill, 
-                this.MarkerStroke, 
+                midpt,
+                legendBox,
+                this.MarkerType,
+                this.MarkerOutline,
+                this.MarkerSize,
+                this.MarkerFill,
+                this.MarkerStroke,
                 this.MarkerStrokeThickness);
         }
 
@@ -443,12 +446,12 @@ namespace OxyPlot
 
             // Using reflection to add points
             this.AddScatterPoints(
-                dest, 
-                this.ItemsSource, 
-                this.DataFieldX, 
-                this.DataFieldY, 
-                this.DataFieldSize, 
-                this.DataFieldValue, 
+                dest,
+                this.ItemsSource,
+                this.DataFieldX,
+                this.DataFieldY,
+                this.DataFieldSize,
+                this.DataFieldValue,
                 this.DataFieldTag);
 
             this.Points = new List<IDataPoint>(dest.Cast<IDataPoint>());
@@ -488,12 +491,12 @@ namespace OxyPlot
         /// The data field tag. 
         /// </param>
         protected void AddScatterPoints(
-            IList<ScatterPoint> dest, 
-            IEnumerable itemsSource, 
-            string dataFieldX, 
-            string dataFieldY, 
-            string dataFieldSize, 
-            string dataFieldValue, 
+            IList<ScatterPoint> dest,
+            IEnumerable itemsSource,
+            string dataFieldX,
+            string dataFieldY,
+            string dataFieldSize,
+            string dataFieldValue,
             string dataFieldTag)
         {
 #if NEW_SCATTER_REFLECTION_METHOD
