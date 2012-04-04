@@ -227,6 +227,17 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Determines whether the axis is used for X/Y values.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> . 
+        /// </returns>
+        public override bool IsXyAxis()
+        {
+            return true;
+        }
+
+        /// <summary>
         /// Pans the specified axis.
         /// </summary>
         /// <param name="ppt">

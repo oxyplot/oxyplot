@@ -43,8 +43,6 @@ namespace ExampleLibrary
         public static PlotModel CreateRandomScatterSeriesWithColorAxisPlotModel(int n, OxyPalette palette, AxisPosition colorAxisPosition = AxisPosition.Right, OxyColor highColor = null, OxyColor lowColor = null)
         {
             var model = new PlotModel(string.Format("ScatterSeries (n={0})", n)) { Background = OxyColors.LightGray };
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
             model.Axes.Add(new ColorAxis { Position = colorAxisPosition, Palette = palette, Minimum = -1, Maximum = 1, HighColor = highColor, LowColor = lowColor });
 
             var s1 = new ScatterSeries
@@ -224,6 +222,7 @@ namespace ExampleLibrary
         {
             return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Hot(64), AxisPosition.Right, OxyColors.Magenta, OxyColors.Green);
         }
+
         [Example("ScatterSeries with ColorAxis Hot with extreme colors (top)")]
         public static PlotModel ColorMapHot64ExtremeTopLegend()
         {

@@ -35,14 +35,14 @@ namespace OxyPlot
         /// <summary>
         ///   The offset.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate",
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", 
             Justification = "Reviewed. Suppression is OK here.")]
         protected double offset;
 
         /// <summary>
         ///   The scale.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate",
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", 
             Justification = "Reviewed. Suppression is OK here.")]
         protected double scale;
 
@@ -57,7 +57,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis"/> class. 
-        ///   Initializes a new instance of the <see cref="Axis"/> class.
+        ///   Initializes a new instance of the <see cref="Axis"/> class. Initializes a new instance of the <see cref="Axis"/> class.
         /// </summary>
         protected Axis()
         {
@@ -132,7 +132,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis"/> class. 
-        /// Initializes a new instance of the <see cref="Axis"/> class.
+        /// Initializes a new instance of the <see cref="Axis"/> class. Initializes a new instance of the <see cref="Axis"/> class.
         /// </summary>
         /// <param name="pos">
         /// The position of the axis. 
@@ -648,7 +648,7 @@ namespace OxyPlot
         {
             get
             {
-                return this.TitleFont ?? PlotModel.DefaultFont;
+                return this.TitleFont ?? this.PlotModel.DefaultFont;
             }
         }
 
@@ -923,6 +923,14 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Determines whether the axis is used for X/Y values.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> . 
+        /// </returns>
+        public abstract bool IsXyAxis();
+
+        /// <summary>
         /// Measures the size of the axis (maximum axis label width/height).
         /// </summary>
         /// <param name="rc">
@@ -955,7 +963,8 @@ namespace OxyPlot
                 }
             }
 
-            var labelTextSize = rc.MeasureText(this.ActualTitle, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
+            var labelTextSize = rc.MeasureText(
+                this.ActualTitle, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
 
             double width = 0;
             double height = 0;
@@ -1104,12 +1113,12 @@ namespace OxyPlot
         public override string ToString()
         {
             return string.Format(
-                CultureInfo.InvariantCulture,
-                "{0}({1}, {2}, {3}, {4})",
-                TypeHelper.GetTypeName(this.GetType()),
-                this.Position,
-                this.ActualMinimum,
-                this.ActualMaximum,
+                CultureInfo.InvariantCulture, 
+                "{0}({1}, {2}, {3}, {4})", 
+                TypeHelper.GetTypeName(this.GetType()), 
+                this.Position, 
+                this.ActualMinimum, 
+                this.ActualMaximum, 
                 this.ActualMajorStep);
         }
 
