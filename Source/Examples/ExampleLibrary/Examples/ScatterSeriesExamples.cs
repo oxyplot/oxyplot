@@ -40,14 +40,14 @@ namespace ExampleLibrary
             return model;
         }
 
-        public static PlotModel CreateRandomScatterSeriesWithColorAxisPlotModel(int n, OxyPalette palette, AxisPosition colorAxisPosition = AxisPosition.Right, OxyColor highColor = null, OxyColor lowColor = null)
+        public static PlotModel CreateRandomScatterSeriesWithColorAxisPlotModel(int n, OxyPalette palette, MarkerType markerType = MarkerType.Square, AxisPosition colorAxisPosition = AxisPosition.Right, OxyColor highColor = null, OxyColor lowColor = null)
         {
             var model = new PlotModel(string.Format("ScatterSeries (n={0})", n)) { Background = OxyColors.LightGray };
             model.Axes.Add(new ColorAxis { Position = colorAxisPosition, Palette = palette, Minimum = -1, Maximum = 1, HighColor = highColor, LowColor = lowColor });
 
             var s1 = new ScatterSeries
             {
-                MarkerType = MarkerType.Square,
+                MarkerType = markerType,
                 MarkerSize = 6,
             };
             var random = new Random();
@@ -187,46 +187,46 @@ namespace ExampleLibrary
             return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Rainbow(16));
         }
 
-        [Example("ScatterSeries with ColorAxis Hue(30)")]
+        [Example("ScatterSeries with ColorAxis Hue(30) Star")]
         public static PlotModel ColorMapHue30()
         {
-            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Hue(30));
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Hue(30), MarkerType.Star);
         }
 
         [Example("ScatterSeries with ColorAxis Hot(64)")]
         public static PlotModel ColorMapHot64()
         {
-            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Hot(64));
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Hot(64), MarkerType.Triangle);
         }
 
         [Example("ScatterSeries with ColorAxis Cool(32)")]
         public static PlotModel ColorMapCool32()
         {
-            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Cool(32));
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Cool(32), MarkerType.Circle);
         }
 
         [Example("ScatterSeries with ColorAxis Gray(32)")]
         public static PlotModel ColorMapGray32()
         {
-            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Gray(32));
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Gray(32), MarkerType.Diamond);
         }
 
         [Example("ScatterSeries with ColorAxis Jet(32)")]
         public static PlotModel ColorMapJet32()
         {
-            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Jet(32));
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Jet(32), MarkerType.Plus);
         }
 
         [Example("ScatterSeries with ColorAxis Hot with extreme colors")]
         public static PlotModel ColorMapHot64Extreme()
         {
-            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Hot(64), AxisPosition.Right, OxyColors.Magenta, OxyColors.Green);
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Hot(64), MarkerType.Square, AxisPosition.Right, OxyColors.Magenta, OxyColors.Green);
         }
 
-        [Example("ScatterSeries with ColorAxis Hot with extreme colors (top)")]
+        [Example("ScatterSeries with ColorAxis Hot (top legend)")]
         public static PlotModel ColorMapHot64ExtremeTopLegend()
         {
-            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Hot(64), AxisPosition.Top, OxyColors.Magenta, OxyColors.Green);
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.Hot(64), MarkerType.Cross, AxisPosition.Top, OxyColors.Magenta, OxyColors.Green);
         }
         [Example("ScatterSeries with ColorAxis Hot(16) N=31000")]
         public static PlotModel ColorMapHot16Big()
@@ -261,7 +261,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries with ColorAxis BlackWhiteRed (9) top legend")]
         public static PlotModel ColorMapBlackWhiteRed9TopLegend()
         {
-            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.BlackWhiteRed(9), AxisPosition.Top);
+            return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.BlackWhiteRed(9), MarkerType.Square, AxisPosition.Top);
         }
 
         static readonly Random Randomizer = new Random();
