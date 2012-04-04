@@ -898,12 +898,12 @@ namespace OxyPlot
                 {
                     x = axis.InverseTransform(pt.X);
                 }
-                
+
                 if (axis.IsVertical())
                 {
                     x = axis.InverseTransform(pt.Y);
                 }
-                
+
                 if (x >= axis.ActualMinimum && x <= axis.ActualMaximum)
                 {
                     if (position == null)
@@ -1242,8 +1242,8 @@ namespace OxyPlot
         /// </summary>
         private void EnsureDefaultAxes()
         {
-            this.DefaultXAxis = this.Axes.FirstOrDefault(a => a.IsHorizontal() && a.IsAxisVisible);
-            this.DefaultYAxis = this.Axes.FirstOrDefault(a => a.IsVertical() && a.IsAxisVisible);
+            this.DefaultXAxis = this.Axes.FirstOrDefault(a => a.IsHorizontal() && a.IsXyAxis());
+            this.DefaultYAxis = this.Axes.FirstOrDefault(a => a.IsVertical() && a.IsXyAxis());
             this.DefaultMagnitudeAxis = this.Axes.FirstOrDefault(a => a is MagnitudeAxis) as MagnitudeAxis;
             this.DefaultAngleAxis = this.Axes.FirstOrDefault(a => a is AngleAxis) as AngleAxis;
             this.DefaultColorAxis = this.Axes.FirstOrDefault(a => a is ColorAxis) as ColorAxis;

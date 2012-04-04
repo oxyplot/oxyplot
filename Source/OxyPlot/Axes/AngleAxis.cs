@@ -2,6 +2,9 @@
 // <copyright file="AngleAxis.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Represents a angular axis for polar plots.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -16,7 +19,8 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "AngleAxis" /> class.
+        /// Initializes a new instance of the <see cref="AngleAxis"/> class. 
+        ///   Initializes a new instance of the <see cref="AngleAxis"/> class.
         /// </summary>
         public AngleAxis()
         {
@@ -27,22 +31,23 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AngleAxis"/> class. 
         /// Initializes a new instance of the <see cref="AngleAxis"/> class.
         /// </summary>
         /// <param name="minimum">
-        /// The minimum.
+        /// The minimum. 
         /// </param>
         /// <param name="maximum">
-        /// The maximum.
+        /// The maximum. 
         /// </param>
         /// <param name="majorStep">
-        /// The major step.
+        /// The major step. 
         /// </param>
         /// <param name="minorStep">
-        /// The minor step.
+        /// The minor step. 
         /// </param>
         /// <param name="title">
-        /// The title.
+        /// The title. 
         /// </param>
         public AngleAxis(
             double minimum = double.NaN, 
@@ -67,13 +72,13 @@ namespace OxyPlot
         /// The inverse transform.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The x. 
         /// </param>
         /// <param name="y">
-        /// The y.
+        /// The y. 
         /// </param>
         /// <param name="yaxis">
-        /// The yaxis.
+        /// The yaxis. 
         /// </param>
         /// <returns>
         /// </returns>
@@ -85,16 +90,27 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Determines whether the axis is used for X/Y values.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> . 
+        /// </returns>
+        public override bool IsXyAxis()
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
         /// <param name="rc">
-        /// The render context.
+        /// The render context. 
         /// </param>
         /// <param name="model">
-        /// The model.
+        /// The model. 
         /// </param>
         /// <param name="axisLayer">
-        /// The rendering order.
+        /// The rendering order. 
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer)
         {
@@ -111,16 +127,16 @@ namespace OxyPlot
         /// Transforms the specified point to screen coordinates.
         /// </summary>
         /// <param name="x">
-        /// The x value (for the current axis).
+        /// The x value (for the current axis). 
         /// </param>
         /// <param name="y">
-        /// The y value.
+        /// The y value. 
         /// </param>
         /// <param name="yaxis">
-        /// The y axis.
+        /// The y axis. 
         /// </param>
         /// <returns>
-        /// The transformed point.
+        /// The transformed point. 
         /// </returns>
         public override ScreenPoint Transform(double x, double y, Axis yaxis)
         {
@@ -135,7 +151,7 @@ namespace OxyPlot
         /// The update transform.
         /// </summary>
         /// <param name="bounds">
-        /// The bounds.
+        /// The bounds. 
         /// </param>
         internal override void UpdateTransform(OxyRect bounds)
         {

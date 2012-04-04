@@ -19,6 +19,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ColorAxis"/> class. 
         ///   Initializes a new instance of the <see cref="ColorAxis"/> class.
         /// </summary>
         public ColorAxis()
@@ -116,7 +117,9 @@ namespace OxyPlot
                 return -2;
             }
 
-            int index = (int)((value - this.ActualMinimum) / (this.ActualMaximum - this.ActualMinimum) * this.Palette.Colors.Count);
+            int index =
+                (int)
+                ((value - this.ActualMinimum) / (this.ActualMaximum - this.ActualMinimum) * this.Palette.Colors.Count);
 
             if (index < 0)
             {
@@ -129,6 +132,17 @@ namespace OxyPlot
             }
 
             return index;
+        }
+
+        /// <summary>
+        /// Determines whether the axis is used for X/Y values.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> . 
+        /// </returns>
+        public override bool IsXyAxis()
+        {
+            return false;
         }
 
         /// <summary>
@@ -182,8 +196,8 @@ namespace OxyPlot
                     rc.DrawRectangle(
                         this.IsHorizontal()
                             ? new OxyRect(ymin, top, ymax - ymin, height)
-                            : new OxyRect(left, ymin, width, ymax - ymin),
-                        color,
+                            : new OxyRect(left, ymin, width, ymax - ymin), 
+                        color, 
                         null);
                 };
 
@@ -216,25 +230,39 @@ namespace OxyPlot
             base.Render(rc, model, axisLayer);
         }
 
-        /// <summary>
-        /// Gets the low value of the specified palette index.
-        /// </summary>
-        /// <param name="paletteIndex">Index of the palette.</param>
-        /// <returns>The value.</returns>
-        protected double GetLowValue(int paletteIndex)
-        {
-            return ((double)paletteIndex / this.Palette.Colors.Count * (this.ActualMaximum - this.ActualMinimum)) + this.ActualMinimum;
-        }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Gets the high value of the specified palette index.
         /// </summary>
-        /// <param name="paletteIndex">Index of the palette.</param>
-        /// <returns>The value.</returns>
+        /// <param name="paletteIndex">
+        /// Index of the palette. 
+        /// </param>
+        /// <returns>
+        /// The value. 
+        /// </returns>
         protected double GetHighValue(int paletteIndex)
         {
             return this.GetLowValue(paletteIndex + 1);
         }
+
+        /// <summary>
+        /// Gets the low value of the specified palette index.
+        /// </summary>
+        /// <param name="paletteIndex">
+        /// Index of the palette. 
+        /// </param>
+        /// <returns>
+        /// The value. 
+        /// </returns>
+        protected double GetLowValue(int paletteIndex)
+        {
+            return ((double)paletteIndex / this.Palette.Colors.Count * (this.ActualMaximum - this.ActualMinimum))
+                   + this.ActualMinimum;
+        }
+
         #endregion
     }
 }
