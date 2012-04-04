@@ -9,6 +9,8 @@
 
 namespace OxyPlot
 {
+    using System;
+
     /// <summary>
     /// The color axis.
     /// </summary>
@@ -17,7 +19,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorAxis"/> class. 
+        ///   Initializes a new instance of the <see cref="ColorAxis"/> class.
         /// </summary>
         public ColorAxis()
         {
@@ -114,7 +116,7 @@ namespace OxyPlot
                 return -2;
             }
 
-            int index = (int)((value - this.Minimum) / (this.Maximum - this.Minimum) * this.Palette.Colors.Count);
+            int index = (int)((value - this.ActualMinimum) / (this.ActualMaximum - this.ActualMinimum) * this.Palette.Colors.Count);
 
             if (index < 0)
             {
@@ -132,11 +134,106 @@ namespace OxyPlot
         /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
-        /// <param name="rc">The render context.</param>
-        /// <param name="model">The model.</param>
-        /// <param name="axisLayer">The rendering order.</param>
+        /// <param name="rc">
+        /// The render context. 
+        /// </param>
+        /// <param name="model">
+        /// The model. 
+        /// </param>
+        /// <param name="axisLayer">
+        /// The rendering order. 
+        /// </param>
         public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer)
         {
+            if (this.Position == AxisPosition.None)
+            {
+                return;
+            }
+
+            double left = model.PlotArea.Left;
+            double top = model.PlotArea.Top;
+            double width = this.MajorTickSize - 2;
+            double height = this.MajorTickSize - 2;
+
+            switch (this.Position)
+            {
+                case AxisPosition.Left:
+                    left = model.PlotArea.Left - this.PositionTierMinShift - width;
+                    top = model.PlotArea.Top;
+                    break;
+                case AxisPosition.Right:
+                    left = model.PlotArea.Right + this.PositionTierMinShift;
+                    top = model.PlotArea.Top;
+                    break;
+                case AxisPosition.Top:
+                    left = model.PlotArea.Left;
+                    top = model.PlotArea.Top - this.PositionTierMinShift - height;
+                    break;
+                case AxisPosition.Bottom:
+                    left = model.PlotArea.Left;
+                    top = model.PlotArea.Bottom + this.PositionTierMinShift;
+                    break;
+            }
+
+            Action<double, double, OxyColor> drawColorRect = (ylow, yhigh, color) =>
+                {
+                    double ymin = Math.Min(ylow, yhigh);
+                    double ymax = Math.Max(ylow, yhigh);
+                    rc.DrawRectangle(
+                        this.IsHorizontal()
+                            ? new OxyRect(ymin, top, ymax - ymin, height)
+                            : new OxyRect(left, ymin, width, ymax - ymin),
+                        color,
+                        null);
+                };
+
+            int n = this.Palette.Colors.Count;
+            for (int i = 0; i < n; i++)
+            {
+                double ylow = this.Transform(this.GetLowValue(i));
+                double yhigh = this.Transform(this.GetHighValue(i));
+                drawColorRect(ylow, yhigh, this.Palette.Colors[i]);
+            }
+
+            double highLowLength = 10;
+            if (this.IsHorizontal())
+            {
+                highLowLength *= -1;
+            }
+
+            if (this.LowColor != null)
+            {
+                double ylow = this.Transform(this.ActualMinimum);
+                drawColorRect(ylow, ylow + highLowLength, this.LowColor);
+            }
+
+            if (this.HighColor != null)
+            {
+                double yhigh = this.Transform(this.ActualMaximum);
+                drawColorRect(yhigh, yhigh - highLowLength, this.HighColor);
+            }
+
+            base.Render(rc, model, axisLayer);
+        }
+
+        /// <summary>
+        /// Gets the low value of the specified palette index.
+        /// </summary>
+        /// <param name="paletteIndex">Index of the palette.</param>
+        /// <returns>The value.</returns>
+        protected double GetLowValue(int paletteIndex)
+        {
+            return ((double)paletteIndex / this.Palette.Colors.Count * (this.ActualMaximum - this.ActualMinimum)) + this.ActualMinimum;
+        }
+
+        /// <summary>
+        /// Gets the high value of the specified palette index.
+        /// </summary>
+        /// <param name="paletteIndex">Index of the palette.</param>
+        /// <returns>The value.</returns>
+        protected double GetHighValue(int paletteIndex)
+        {
+            return this.GetLowValue(paletteIndex + 1);
         }
         #endregion
     }

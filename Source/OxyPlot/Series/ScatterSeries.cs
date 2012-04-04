@@ -140,6 +140,16 @@ namespace OxyPlot
         /// <value> The type of the marker. </value>
         public MarkerType MarkerType { get; set; }
 
+        /// <summary>
+        ///   Gets the max value of the points.
+        /// </summary>
+        public double MaxValue { get; private set; }
+
+        /// <summary>
+        ///   Gets the min value of the points.
+        /// </summary>
+        public double MinValue { get; private set; }
+
         #endregion
 
         #region Public Methods
@@ -296,30 +306,30 @@ namespace OxyPlot
                 foreach (var group in groupPoints)
                 {
                     rc.DrawMarkers(
-                        group.Value,
-                        clippingRect,
-                        this.MarkerType,
-                        this.MarkerOutline,
-                        groupSizes[group.Key],
-                        this.ColorAxis.GetColor(group.Key),
-                        this.MarkerStroke,
-                        this.MarkerStrokeThickness,
-                        this.BinSize,
+                        group.Value, 
+                        clippingRect, 
+                        this.MarkerType, 
+                        this.MarkerOutline, 
+                        groupSizes[group.Key], 
+                        this.ColorAxis.GetColor(group.Key), 
+                        this.MarkerStroke, 
+                        this.MarkerStrokeThickness, 
+                        this.BinSize, 
                         binOffset);
                 }
             }
             else
             {
                 rc.DrawMarkers(
-                    allPoints,
-                    clippingRect,
-                    this.MarkerType,
-                    this.MarkerOutline,
-                    markerSizes,
-                    this.MarkerFill,
-                    this.MarkerStroke,
-                    this.MarkerStrokeThickness,
-                    this.BinSize,
+                    allPoints, 
+                    clippingRect, 
+                    this.MarkerType, 
+                    this.MarkerOutline, 
+                    markerSizes, 
+                    this.MarkerFill, 
+                    this.MarkerStroke, 
+                    this.MarkerStrokeThickness, 
+                    this.BinSize, 
                     binOffset);
             }
         }
@@ -340,13 +350,13 @@ namespace OxyPlot
 
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
-                midpt,
-                legendBox,
-                this.MarkerType,
-                this.MarkerOutline,
-                this.MarkerSize,
-                this.MarkerFill,
-                this.MarkerStroke,
+                midpt, 
+                legendBox, 
+                this.MarkerType, 
+                this.MarkerOutline, 
+                this.MarkerSize, 
+                this.MarkerFill, 
+                this.MarkerStroke, 
                 this.MarkerStrokeThickness);
         }
 
@@ -429,17 +439,16 @@ namespace OxyPlot
 
                 return;
             }*/
-
             var dest = new List<ScatterPoint>();
 
             // Using reflection to add points
             this.AddScatterPoints(
-                dest,
-                this.ItemsSource,
-                this.DataFieldX,
-                this.DataFieldY,
-                this.DataFieldSize,
-                this.DataFieldValue,
+                dest, 
+                this.ItemsSource, 
+                this.DataFieldX, 
+                this.DataFieldY, 
+                this.DataFieldSize, 
+                this.DataFieldValue, 
                 this.DataFieldTag);
 
             this.Points = new List<IDataPoint>(dest.Cast<IDataPoint>());
@@ -451,7 +460,7 @@ namespace OxyPlot
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            this.InternalUpdateMaxMin(this.points);
+            this.InternalUpdateMaxMinValue(this.points);
         }
 
         /// <summary>
@@ -479,21 +488,21 @@ namespace OxyPlot
         /// The data field tag. 
         /// </param>
         protected void AddScatterPoints(
-            IList<ScatterPoint> dest,
-            IEnumerable itemsSource,
-            string dataFieldX,
-            string dataFieldY,
-            string dataFieldSize,
-            string dataFieldValue,
+            IList<ScatterPoint> dest, 
+            IEnumerable itemsSource, 
+            string dataFieldX, 
+            string dataFieldY, 
+            string dataFieldSize, 
+            string dataFieldValue, 
             string dataFieldTag)
         {
 #if NEW_SCATTER_REFLECTION_METHOD
-            ReflectionHelper.FillManyValues(itemsSource, dest, new[] { dataFieldX, dataFieldY, dataFieldSize, dataFieldValue, dataFieldTag },
-                (p, x) => p.X = Convert.ToDouble(x),
-                (p, y) => p.Y = Convert.ToDouble(y),
-                (p, size) => p.Size = Convert.ToDouble(size),
-                (p, value) => p.Value = Convert.ToDouble(value),
-                (p, tag) => p.Tag = tag,
+            ReflectionHelper.FillManyValues(itemsSource, dest, new[] { dataFieldX, dataFieldY, dataFieldSize, dataFieldValue, dataFieldTag }, 
+                (p, x) => p.X = Convert.ToDouble(x), 
+                (p, y) => p.Y = Convert.ToDouble(y), 
+                (p, size) => p.Size = Convert.ToDouble(size), 
+                (p, value) => p.Value = Convert.ToDouble(value), 
+                (p, tag) => p.Tag = tag, 
                 (p, x) => p.X = Convert.ToDouble(x));
 #endif
 
@@ -543,60 +552,49 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Updates the Max/Min limits from the specified point list.
+        /// Updates the Max/Min limits from the values in the specified point list.
         /// </summary>
         /// <param name="pts">
         /// The points. 
         /// </param>
-        protected void InternalUpdateMaxMin(IList<ScatterPoint> pts)
+        protected void InternalUpdateMaxMinValue(IList<IDataPoint> pts)
         {
             if (pts == null || pts.Count == 0)
             {
                 return;
             }
 
-            double minx = this.MinX;
-            double miny = this.MinY;
-            double maxx = this.MaxX;
-            double maxy = this.MaxY;
+            double minvalue = double.NaN;
+            double maxvalue = double.NaN;
 
             foreach (var pt in pts)
             {
-                if (!this.IsValidPoint(pt, this.XAxis, this.YAxis))
+                if (!(pt is ScatterPoint))
                 {
                     continue;
                 }
 
-                if (pt.x < minx || double.IsNaN(minx))
+                double value = ((ScatterPoint)pt).value;
+
+                if (value < minvalue || double.IsNaN(minvalue))
                 {
-                    minx = pt.x;
+                    minvalue = value;
                 }
 
-                if (pt.x > maxx || double.IsNaN(maxx))
+                if (value > maxvalue || double.IsNaN(maxvalue))
                 {
-                    maxx = pt.x;
-                }
-
-                if (pt.y < miny || double.IsNaN(miny))
-                {
-                    miny = pt.y;
-                }
-
-                if (pt.y > maxy || double.IsNaN(maxy))
-                {
-                    maxy = pt.y;
+                    maxvalue = value;
                 }
             }
 
-            this.MinX = minx;
-            this.MinY = miny;
-            this.MaxX = maxx;
-            this.MaxY = maxy;
+            this.MinValue = minvalue;
+            this.MaxValue = maxvalue;
 
-            this.XAxis.Include(this.MinX);
-            this.XAxis.Include(this.MaxX);
-            this.YAxis.Include(this.MinY);
-            this.YAxis.Include(this.MaxY);
+            if (this.ColorAxis != null)
+            {
+                this.ColorAxis.Include(this.MinValue);
+                this.ColorAxis.Include(this.MaxValue);
+            }
         }
 
         #endregion
