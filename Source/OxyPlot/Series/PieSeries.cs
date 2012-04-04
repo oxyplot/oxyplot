@@ -103,22 +103,6 @@ namespace OxyPlot
         public double ExplodedDistance { get; set; }
 
         /// <summary>
-        /// Gets or sets the font.
-        /// </summary>
-        /// <value>
-        /// The font.
-        /// </value>
-        public string Font { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size of the font.
-        /// </summary>
-        /// <value>
-        /// The size of the font.
-        /// </value>
-        public double FontSize { get; set; }
-
-        /// <summary>
         /// Gets or sets the inner diameter.
         /// </summary>
         /// <value>
