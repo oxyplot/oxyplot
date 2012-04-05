@@ -44,23 +44,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AxisTests.cs" />
+    <Compile Include="Axes\AxisTests.cs" />
     <Compile Include="Foundation\ArrayHelperTests.cs" />
-    <Compile Include="DateTimeAxisTests.cs" />
+    <Compile Include="Axes\DateTimeAxisTests.cs" />
+    <Compile Include="Foundation\ConrecTests.cs" />
+    <Compile Include="Foundation\CohenSutherlandClippingTests.cs" />
+    <Compile Include="Foundation\TypeHelperTests.cs" />
+    <Compile Include="Foundation\SutherlandHodgmanClippingTests.cs" />
+    <Compile Include="Foundation\ScreenPointHelperTests.cs" />
+    <Compile Include="Foundation\ReflectionHelperTests.cs" />
+    <Compile Include="Foundation\OxyPaletteTests.cs" />
+    <Compile Include="Foundation\FractionHelperTests.cs" />
     <Compile Include="Foundation\StringHelperTests.cs" />
     <Compile Include="Foundation\DoubleExtensionsTests.cs" />
-    <Compile Include="OxyAssert.cs" />
-    <Compile Include="PlotModelTests.cs" />
+    <Compile Include="PlotModel\PlotModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Svg\SvgValidator.cs" />
+    <Compile Include="Svg\SvgWriterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj">
       <Project>{A941B658-1237-482C-B0C7-378242D27647}</Project>
       <Name>ExampleLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
-      <Project>{698CCD8E-ADCC-4565-8517-5EDD36F07155}</Project>
-      <Name>OxyPlot.Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
       <Project>{87F519B8-5A2F-48C6-AD53-C5F13A82EA6B}</Project>
@@ -69,15 +74,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Svg\svg.xsd">
+    <Content Include="Svg\svg.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Svg\xlink.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Svg\xlink.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Svg\xml.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Svg\xml.xsd">
       <SubType>Designer</SubType>
-    </None>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -10,43 +10,50 @@ using NUnit.Framework;
 
 namespace OxyPlot.Tests
 {
+    using System.IO;
     using System.Xml.Serialization;
 
     [TestFixture]
     public class PlotModelTests
     {
         [Test]
-        public void Render_SimplePlot_ValidSvgFile()
+        public void SaveSvg_AllExamplesInExampleLibrary_CheckThatFileExists()
         {
-            var plot = new PlotModel();
-            plot.Title = "Test1";
-            plot.Subtitle = "subtitle";
-            var ls = new LineSeries();
-            for (double i = 0; i < 30; i += 0.1)
-                ls.Points.Add(new DataPoint(i, Math.Sin(i) * 20));
-            plot.Series.Add(ls);
-            plot.Axes.Add(new LinearAxis { Title = "Y-axis1", Position = AxisPosition.Left });
-            plot.Axes.Add(new LinearAxis { Title = "X-axis1", Position = AxisPosition.Bottom });
-            plot.Axes.Add(new LinearAxis { Title = "Y-axis2", Position = AxisPosition.Right });
-            plot.Axes.Add(new LinearAxis { Title = "X-axis2", Position = AxisPosition.Top });
-
-            using (var svgrc = new SvgRenderContext("test.svg", 1200, 800))
+            var destinationDirectory = "svg";
+            if (!Directory.Exists(destinationDirectory))
             {
-                plot.Update();
-                plot.Render(svgrc);
+                Directory.CreateDirectory(destinationDirectory);
             }
-            // todo: validate SVG
+
+            foreach (var example in Examples.GetList())
+            {
+                var path = Path.Combine(destinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".svg"));
+                example.PlotModel.SaveSvg(path, 800, 500);
+                Assert.IsTrue(File.Exists(path));
+            }
+        }
+
+        [Test]
+        public void SaveSvg_SimplePlot_ValidSvgFile()
+        {
+            var path = "test1.svg";
+            var plot = new PlotModel("f(x)=sin(x)");
+            var ls = new FunctionSeries(Math.Sin, 0, 30, 300);
+            plot.Series.Add(ls);
+            plot.SaveSvg(path, 800, 400);
+            // Assert.IsTrue(SvgValidator.IsValid(path));
         }
 
         [Test]
         public void XmlSerialize_PlotModel()
         {
-            var plot = new PlotModel();
-            plot.Title = "Test1";
-            plot.Subtitle = "subtitle";
+            var plot = new PlotModel("test1");
             var ls = new LineSeries();
             for (double i = 0; i < 30; i += 0.1)
+            {
                 ls.Points.Add(new DataPoint(i, Math.Sin(i) * 20));
+            }
+
             plot.Update();
             // plot.XmlSerialize("test.xml");
         }
@@ -78,28 +85,7 @@ namespace OxyPlot.Tests
             AddExamplePoints(ls2);
             plot.Series.Add(ls2);
 
-            OxyAssert.AreEqual(plot, "B11");
-        }
-
-        [Test]
-        public void C11_FilteringInvalidPoints()
-        {
-            var plot = FilteringExamples.FilteringInvalidPoints();
-            OxyAssert.AreEqual(plot, "C11");
-        }
-
-        [Test]
-        public void C12_FilteringNonPositiveValuesOnLogAxes()
-        {
-            var plot = FilteringExamples.FilteringInvalidPointsLog();
-            OxyAssert.AreEqual(plot, "C12");
-        }
-        [Test]
-        public void C13_FilteringPointsOutsideRange()
-        {
-            var plot = FilteringExamples.FilteringPointsOutsideRange();
-            OxyAssert.AreEqual(plot, "C13");
-        }
-
+            //  OxyAssert.AreEqual(plot, "B11");
+        }        
     }
 }

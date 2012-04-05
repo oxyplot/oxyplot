@@ -12,7 +12,7 @@ namespace OxyPlot.Tests
     public class ArrayHelperTests
     {
         [Test]
-        public void CreateVector()
+        public void CreateVector_ByDelta_ReturnsExpectedArray()
         {
             var v = ArrayHelper.CreateVector(0, 1, 0.1);
             Assert.AreEqual(11, v.Length);
@@ -24,7 +24,7 @@ namespace OxyPlot.Tests
         }
         
         [Test]
-        public void CreateVector2()
+        public void CreateVector_ByNumberOfSteps_ReturnsExpectedArray()
         {
             var v = ArrayHelper.CreateVector(0, 1, 11);
             Assert.AreEqual(11, v.Length);

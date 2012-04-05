@@ -17,8 +17,7 @@ namespace OxyPlot.Wpf.Tests
     [TestFixture]
     public class PngExporterTests
     {
-        [Test]
-        public PlotModel CreateModel()
+        public PlotModel CreateSimpleModel()
         {
             var model = new PlotModel("Test");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
@@ -28,12 +27,30 @@ namespace OxyPlot.Wpf.Tests
         }
 
         [Test]
-        public void ExportToFile()
+        public void Export_SimpleModel_CheckThatFileExists()
         {
-            PlotModel model = this.CreateModel();
-            const string FileName = "plot1.png";
-            PngExporter.Export(model, FileName, 400, 300);
-            Assert.IsTrue(File.Exists(FileName));
+            var model = this.CreateSimpleModel();
+            const string fileName = "plot1.png";
+            PngExporter.Export(model, fileName, 400, 300);
+            Assert.IsTrue(File.Exists(fileName));
         }
+
+        [Test]
+        public void Export_AllExamplesInExampleLibrary()
+        {
+            var destinationDirectory = "ExampleLibrary";
+
+            if (!Directory.Exists(destinationDirectory))
+            {
+                Directory.CreateDirectory(destinationDirectory);
+            }
+
+            foreach (var example in ExampleLibrary.Examples.GetList())
+            {
+                var path = Path.Combine(destinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".png"));
+                PngExporter.Export(example.PlotModel, path, 800, 500, OxyColors.White);
+            }
+        }
+
     }
 }
