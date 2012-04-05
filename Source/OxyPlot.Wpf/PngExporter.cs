@@ -45,9 +45,11 @@ namespace OxyPlot.Wpf
             var p = new Plot { Model = model };
             g.Children.Add(p);
 
+
             var size = new Size(width, height);
             g.Measure(size);
             g.Arrange(new Rect(0, 0, width, height));
+            p.RefreshPlot(true);
             g.UpdateLayout();
 
             p.SaveBitmap(fileName);
