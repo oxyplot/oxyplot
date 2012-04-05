@@ -27,7 +27,7 @@ namespace OxyPlot
     ///     often use advanced mathematical techniques making them susceptible to error.
     ///   </para>
     /// </remarks>
-    public class Conrec
+    public static class Conrec
     {
         #region Delegates
 
@@ -105,10 +105,11 @@ namespace OxyPlot
             // Note that castab is arranged differently from the FORTRAN code because
             // Fortran and C/C++ arrays are transposed of each other, in this case
             // it is more tricky as castab is in 3 dimension
-            int[,,] castab = {
+            int[,,] castab = 
+                            {
                                  { { 0, 0, 8 }, { 0, 2, 5 }, { 7, 6, 9 } }, { { 0, 3, 4 }, { 1, 3, 1 }, { 4, 3, 0 } }, 
                                  { { 9, 6, 7 }, { 5, 2, 0 }, { 8, 0, 0 } }
-                             };
+                            };
 
             Func<int, int, double> xsect = (p1, p2) => (h[p2] * xh[p1] - h[p1] * xh[p2]) / (h[p2] - h[p1]);
             Func<int, int, double> ysect = (p1, p2) => (h[p2] * yh[p1] - h[p1] * yh[p2]) / (h[p2] - h[p1]);
@@ -164,28 +165,29 @@ namespace OxyPlot
                                     }
                                 }
 
-                                // Note: at this stage the relative heights of the corners and the
-                                // centre are in the h array, and the corresponding coordinates are
-                                // in the xh and yh arrays. The centre of the box is indexed by 0
-                                // and the 4 corners by 1 to 4 as shown below.
-                                // Each triangle is then indexed by the parameter m, and the 3
-                                // vertices of each triangle are indexed by parameters m1,m2,and
-                                // m3.
-                                // It is assumed that the centre of the box is always vertex 2
-                                // though this isimportant only when all 3 vertices lie exactly on
-                                // the same contour level, in which case only the side of the box
-                                // is drawn.
-                                // vertex 4 +-------------------+ vertex 3
-                                // | \               / |
-                                // |   \    m-3    /   |
-                                // |     \       /     |
-                                // |       \   /       |
-                                // |  m=2    X   m=2   |       the centre is vertex 0
-                                // |       /   \       |
-                                // |     /       \     |
-                                // |   /    m=1    \   |
-                                // | /               \ |
-                                // vertex 1 +-------------------+ vertex 2
+                                //// Note: at this stage the relative heights of the corners and the
+                                //// centre are in the h array, and the corresponding coordinates are
+                                //// in the xh and yh arrays. The centre of the box is indexed by 0
+                                //// and the 4 corners by 1 to 4 as shown below.
+                                //// Each triangle is then indexed by the parameter m, and the 3
+                                //// vertices of each triangle are indexed by parameters m1,m2,and
+                                //// m3.
+                                //// It is assumed that the centre of the box is always vertex 2
+                                //// though this isimportant only when all 3 vertices lie exactly on
+                                //// the same contour level, in which case only the side of the box
+                                //// is drawn.
+                                //// vertex 4 +-------------------+ vertex 3
+                                ////          | \               / |
+                                ////          |   \    m-3    /   |
+                                ////          |     \       /     |
+                                ////          |       \   /       |
+                                ////          |  m=2    X   m=2   |       the centre is vertex 0
+                                ////          |       /   \       |
+                                ////          |     /       \     |
+                                ////          |   /    m=1    \   |
+                                ////          | /               \ |
+                                //// vertex 1 +-------------------+ vertex 2
+
                                 // Scan each triangle in the box
                                 for (m = 1; m <= 4; m++)
                                 {
@@ -259,8 +261,6 @@ namespace OxyPlot
                                                 y1 = ysect(m3, m1);
                                                 x2 = xsect(m1, m2);
                                                 y2 = ysect(m1, m2);
-                                                break;
-                                            default:
                                                 break;
                                         }
 
