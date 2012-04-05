@@ -16,11 +16,11 @@ namespace OxyPlot.Tests
         [Test]
         public void Format_StandardFormatString()
         {
-            Assert.AreEqual("3.1",StringHelper.Format(CultureInfo.InvariantCulture, "{0}", null, 3.1));
-            Assert.AreEqual("3.14",StringHelper.Format(CultureInfo.InvariantCulture, "{0:0.00}", null, Math.PI));
-            Assert.AreEqual("PI=3.14",StringHelper.Format(CultureInfo.InvariantCulture, "PI={0:0.00}", null, Math.PI));
+            Assert.AreEqual("3.1", StringHelper.Format(CultureInfo.InvariantCulture, "{0}", null, 3.1));
+            Assert.AreEqual("3.14", StringHelper.Format(CultureInfo.InvariantCulture, "{0:0.00}", null, Math.PI));
+            Assert.AreEqual("PI=3.14", StringHelper.Format(CultureInfo.InvariantCulture, "PI={0:0.00}", null, Math.PI));
         }
-        
+
         [Test]
         public void Format_Item()
         {
