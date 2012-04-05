@@ -327,7 +327,7 @@ namespace OxyPlot
             if (clippedPoints != null && GetPointAtRelativeDistance(clippedPoints, this.TextPosition, margin, out position, out angle))
             {
                 var cs = new CohenSutherlandClipping(clippingRectangle);
-                if (cs.IsInside(position))
+                if (!string.IsNullOrEmpty(this.Text) && cs.IsInside(position))
                 {
                     rc.DrawClippedText(
                         clippingRectangle,
