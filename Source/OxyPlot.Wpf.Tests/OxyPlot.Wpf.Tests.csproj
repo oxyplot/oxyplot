@@ -60,6 +60,10 @@
       <Project>{A941B658-1237-482C-B0C7-378242D27647}</Project>
       <Name>ExampleLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OxyPlot.Tests\OxyPlot.Tests.csproj">
+      <Project>{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}</Project>
+      <Name>OxyPlot.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
       <Project>{698CCD8E-ADCC-4565-8517-5EDD36F07155}</Project>
       <Name>OxyPlot.Wpf</Name>

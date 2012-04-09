@@ -6,51 +6,41 @@
 
 namespace OxyPlot.Wpf.Tests
 {
-    using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
-    using OxyPlot;
-    using NUnit.Framework;
 
-    /// <summary>
-    /// Unit tests for PdfExporter.
-    /// </summary>
+    using NUnit.Framework;
+    using OxyPlot.Tests;
+
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class PngExporterTests
     {
-        public PlotModel CreateSimpleModel()
+        [Test]
+        public void ExportToFile_TestPlot_CheckThatFileExists()
         {
-            var model = new PlotModel("Test");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left));
-            model.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 2, 100, "sin(x)"));
-            return model;
+            var plotModel = TestModels.CreateTestModel1();
+            const string FileName = "PngExporterTests_Plot1.png";
+            PngExporter.Export(plotModel, FileName, 400, 300);
+            Assert.IsTrue(File.Exists(FileName));
         }
 
         [Test]
-        public void Export_SimpleModel_CheckThatFileExists()
+        public void ExportToFile_AllExamples_CheckThatFilesExist()
         {
-            var model = this.CreateSimpleModel();
-            const string fileName = "plot1.png";
-            PngExporter.Export(model, fileName, 400, 300);
-            Assert.IsTrue(File.Exists(fileName));
-        }
+            const string DestinationDirectory = "ExampleLibrary";
 
-        [Test]
-        public void Export_AllExamplesInExampleLibrary()
-        {
-            var destinationDirectory = "ExampleLibrary";
-
-            if (!Directory.Exists(destinationDirectory))
+            if (!Directory.Exists(DestinationDirectory))
             {
-                Directory.CreateDirectory(destinationDirectory);
+                Directory.CreateDirectory(DestinationDirectory);
             }
 
             foreach (var example in ExampleLibrary.Examples.GetList())
             {
-                var path = Path.Combine(destinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".png"));
+                var path = Path.Combine(DestinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".png"));
                 PngExporter.Export(example.PlotModel, path, 800, 500, OxyColors.White);
             }
         }
-
     }
 }

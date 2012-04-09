@@ -6,8 +6,12 @@
 
 namespace OxyPlot.Wpf.Tests
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using NUnit.Framework;
 
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class SeriesTests
     {
@@ -15,7 +19,7 @@ namespace OxyPlot.Wpf.Tests
         public void LineSeries()
         {
             var s1 = new OxyPlot.LineSeries();
-            var s2 = new OxyPlot.Wpf.LineSeries();
+            var s2 = new LineSeries();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
 
@@ -23,23 +27,26 @@ namespace OxyPlot.Wpf.Tests
         public void AreaSeries()
         {
             var s1 = new OxyPlot.AreaSeries();
-            var s2 = new OxyPlot.Wpf.AreaSeries();
+            var s2 = new AreaSeries();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
+
         [Test]
         public void BarSeries()
         {
             var s1 = new OxyPlot.BarSeries();
-            var s2 = new OxyPlot.Wpf.BarSeries();
+            var s2 = new BarSeries();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
+
         [Test]
         public void ScatterSeries()
         {
             var s1 = new OxyPlot.ScatterSeries();
-            var s2 = new OxyPlot.Wpf.ScatterSeries();
+            var s2 = new ScatterSeries();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
+
         /*
         [Test]
         public void CandleStickSeries()
@@ -83,7 +90,5 @@ namespace OxyPlot.Wpf.Tests
             var s2 = new OxyPlot.Wpf.StemSeries();
             Assert.PropertiesAreEqual(s1, s2);
         }*/
-
-       
     }
 }

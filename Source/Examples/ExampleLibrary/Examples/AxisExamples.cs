@@ -519,7 +519,7 @@ namespace ExampleLibrary
         [Example("Dense intervals")]
         public static PlotModel DenseIntervals()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Dense intervals");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { IntervalLength = 30 });
             model.Axes.Add(new LinearAxis(AxisPosition.Left) { IntervalLength = 20 });
             return model;
@@ -528,7 +528,7 @@ namespace ExampleLibrary
         [Example("Graph Paper")]
         public static PlotModel GraphPaper()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Graph Paper");
             var c = OxyColors.DarkBlue;
             model.PlotType = PlotType.Cartesian;
             model.Axes.Add(
@@ -540,7 +540,7 @@ namespace ExampleLibrary
         [Example("Log-Log Paper")]
         public static PlotModel LogLogPaper()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Log-Log Paper");
             var c = OxyColors.DarkBlue;
             model.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X") { Minimum = 0.1, Maximum = 1000, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
             model.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y") { Minimum = 0.1, Maximum = 1000, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
@@ -550,7 +550,7 @@ namespace ExampleLibrary
         [Example("Black background")]
         public static PlotModel OnBlack()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Black background");
             model.Background = OxyColors.Black;
             model.TextColor = OxyColors.White;
             model.PlotAreaBorderColor = OxyColors.White;
@@ -565,7 +565,7 @@ namespace ExampleLibrary
         [Example("Background and PlotAreaBackground")]
         public static PlotModel Backgrounds()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Background and PlotAreaBackground");
             model.Background = OxyColors.Silver;
             model.PlotAreaBackground = OxyColors.Gray;
             model.PlotAreaBorderColor = OxyColors.Black;
@@ -578,7 +578,7 @@ namespace ExampleLibrary
         [Example("Auto adjusting plot margins")]
         public static PlotModel AutoAdjustingMargins()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Auto adjusting plot margins");
             model.LegendPosition = LegendPosition.RightBottom;
             model.PlotMargins = new OxyThickness(0);
             model.AutoAdjustPlotMargins = true;
@@ -591,7 +591,7 @@ namespace ExampleLibrary
         [Example("Manual plot margins")]
         public static PlotModel ManualAdjustingMargins()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Manual plot margins");
             model.LegendPosition = LegendPosition.RightBottom;
             model.AutoAdjustPlotMargins = false;
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X") { TickStyle = TickStyle.Outside });
@@ -603,7 +603,7 @@ namespace ExampleLibrary
         [Example("Current culture")]
         public static PlotModel CurrentCulture()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Current culture");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 1));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 1));
             model.Series.Add(new FunctionSeries(Math.Sin, -1, 1, 100));
@@ -613,7 +613,7 @@ namespace ExampleLibrary
         [Example("Invariant culture")]
         public static PlotModel InvariantCulture()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Invariant culture");
             model.Culture = CultureInfo.InvariantCulture;
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 1));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 1));
@@ -624,7 +624,7 @@ namespace ExampleLibrary
         [Example("Custom culture")]
         public static PlotModel CustomCulture()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Custom culture");
             model.Culture = new CultureInfo("en-GB") { NumberFormat = { NumberDecimalSeparator = "·" } };
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 1));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 1));
@@ -756,7 +756,7 @@ namespace ExampleLibrary
         [Example("Custom axis title color")]
         public static PlotModel TitleColor()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Custom axis title color");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 1, "Bottom axis") { TitleColor = OxyColors.Red });
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 1, "Left axis") { TitleColor = OxyColors.Blue });
             model.Series.Add(new FunctionSeries(Math.Sin, -1, 1, 100));
@@ -766,7 +766,7 @@ namespace ExampleLibrary
         [Example("Custom axis label color")]
         public static PlotModel LabelColor()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Custom axis label color");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 1, "Bottom axis") { TextColor = OxyColors.Red });
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 1, "Left axis") { TextColor = OxyColors.Blue });
             model.Series.Add(new FunctionSeries(Math.Sin, -1, 1, 100));

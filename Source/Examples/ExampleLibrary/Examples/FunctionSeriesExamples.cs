@@ -125,7 +125,7 @@ namespace ExampleLibrary
         {
             // http://en.wikipedia.org/wiki/Rose_curve
 
-            var m = CreatePlotModel();
+            var m = new PlotModel("Rose curve");
             m.PlotMargins = new OxyThickness(60, 20, 4, 40);
             m.PlotType = PlotType.Polar;
             m.PlotAreaBorderThickness = 0;
@@ -152,8 +152,7 @@ namespace ExampleLibrary
         {
             // http://en.wikipedia.org/wiki/Lima%C3%A7on
 
-            var m = CreatePlotModel();
-            m.PlotType = PlotType.Cartesian;
+            var m = new PlotModel("Limaçon of Pascal") { PlotType = PlotType.Cartesian };
             for (int a = 4; a <= 4; a++)
                 for (int b = 0; b <= 10; b++)
                 {
@@ -176,8 +175,7 @@ namespace ExampleLibrary
             // http://en.wikipedia.org/wiki/Trisectrix_of_Maclaurin
             // http://mathworld.wolfram.com/MaclaurinTrisectrix.html
 
-            var m = CreatePlotModel();
-            m.PlotType = PlotType.Cartesian;
+            var m = new PlotModel("Trisectrix of Maclaurin") { PlotType = PlotType.Cartesian };
             double a = 1;
             m.Series.Add(new FunctionSeries(t => a * (t * t - 3) / (t * t + 1), t => a * t * (t * t - 3) / (t * t + 1), -5, 5, 1000));
             return m;
@@ -188,8 +186,7 @@ namespace ExampleLibrary
         {
             // http://en.wikipedia.org/wiki/Heaviside_step_function
 
-            var m = CreatePlotModel();
-            m.PlotType = PlotType.Cartesian;
+            var m = new PlotModel("Heaviside step function") { PlotType = PlotType.Cartesian };
             m.Series.Add(new FunctionSeries(x =>
             {
                 // make a gap in the curve at x=0

@@ -50,7 +50,7 @@ namespace OxyPlot
 
                 var v = pi.GetValue(item, null);
                 var format = match.Groups["Format"].Value;
-                if (format == null) format = "";
+
                 var fs = "{0" + format + "}";
                 return string.Format(provider, fs, v);
             });
@@ -60,6 +60,7 @@ namespace OxyPlot
             return s;
         }
 
+#if !SILVERLIGHT && !METRO
         /// <summary>
         /// Creates a valid file name.
         /// </summary>
@@ -87,7 +88,6 @@ namespace OxyPlot
 
             return validFileName + extension;
         }
-
-
+#endif
     }
 }

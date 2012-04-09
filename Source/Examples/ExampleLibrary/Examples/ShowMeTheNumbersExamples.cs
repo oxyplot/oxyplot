@@ -27,7 +27,7 @@ namespace ExampleLibrary
         [Example("Q1 2003 Calls by Region")]
         public static PlotModel Graph1()
         {
-            var pm = CreatePlotModel();
+            var pm = new PlotModel("Q1 2003 Calls by Region");
             pm.PlotAreaBorderThickness = 0;
             pm.Axes.Add(
                 new CategoryAxis
@@ -56,7 +56,7 @@ namespace ExampleLibrary
         [Example("2003 Sales")]
         public static PlotModel Graph2()
         {
-            var pm = CreatePlotModel();
+            var pm = new PlotModel("2003 Sales");
             pm.PlotAreaBorderThickness = 0;
             pm.IsLegendVisible = false;
             var months = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
@@ -100,7 +100,7 @@ namespace ExampleLibrary
         [Example("Headcount")]
         public static PlotModel Graph3()
         {
-            var pm = CreatePlotModel();
+            var pm = new PlotModel("Headcount");
             pm.PlotAreaBorderThickness = 0;
             pm.PlotMargins = new OxyThickness(100, 40, 20, 40);
             var values = new Dictionary<string, double> {
@@ -137,7 +137,7 @@ namespace ExampleLibrary
         [Example("Regional % of Total Expenses")]
         public static PlotModel Graph4()
         {
-            var pm = CreatePlotModel();
+            var pm = new PlotModel("Regional % of Total Expenses");
             pm.PlotAreaBorderThickness = 0;
             pm.Axes.Add(
                 new CategoryAxis
@@ -172,7 +172,7 @@ namespace ExampleLibrary
         [Example("Actual to Plan Variance")]
         public static PlotModel Graph5()
         {
-            var pm = CreatePlotModel();
+            var pm = new PlotModel("Actual to Plan Variance");
             pm.PlotAreaBorderThickness = 0;
             var values = new Dictionary<string, double>();
             values.Add("Sales", 7);
@@ -211,7 +211,7 @@ namespace ExampleLibrary
         [Example("Order Count by Order Size")]
         public static PlotModel Graph6()
         {
-            var pm = CreatePlotModel();
+            var pm = new PlotModel("Order Count by Order Size");
             pm.PlotAreaBorderThickness = 0;
             pm.PlotMargins = new OxyThickness(60, 4, 4, 60);
             var values = new Dictionary<string, double>
