@@ -33,6 +33,23 @@ namespace OxyPlot
             this.MajorStep = 1;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <param name="categories">The categories.</param>
+        public CategoryAxis(string title, params string[] categories)
+            : this()
+        {
+            this.Title = title;
+            if (categories != null)
+            {
+                foreach (var c in categories)
+                {
+                    this.Labels.Add(c);
+                }
+            }
+        }
         #endregion
 
         #region Public Properties
