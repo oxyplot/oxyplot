@@ -10,11 +10,7 @@ namespace OxyPlot.Wpf
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
-    using System.Diagnostics;
-    using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -23,7 +19,6 @@ namespace OxyPlot.Wpf
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using System.Windows.Threading;
-    using System.Xml;
 
     using CursorType = OxyPlot.CursorType;
 
@@ -419,20 +414,30 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Saves the plot as a bitmap.
         /// </summary>
-        /// <param name="fileName">
-        /// Name of the file. 
-        /// </param>
-        public void SaveBitmap(string fileName)
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="background">The background.</param>
+        public void SaveBitmap(string fileName, int width = 0, int height = 0, OxyColor background = null)
         {
-            RenderTargetBitmap bmp = this.ToBitmap();
-
-            var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(bmp));
-
-            using (FileStream s = File.Create(fileName))
+            // var tmp = this.Model;
+            // this.Model = null;
+            if (width == 0)
             {
-                encoder.Save(s);
+                width = (int)this.ActualWidth;
             }
+
+            if (height == 0)
+            {
+                height = (int)this.ActualHeight;
+            }
+
+            if (background == null)
+            {
+                background = this.Background.ToOxyColor();
+            }
+
+            PngExporter.Export(this.ActualModel, fileName, width, height, background);
         }
 
         /// <summary>
@@ -443,10 +448,7 @@ namespace OxyPlot.Wpf
         /// </param>
         public void SaveXaml(string fileName)
         {
-            using (var w = new StreamWriter(fileName))
-            {
-                w.Write(this.ToXaml());
-            }
+            XamlExporter.Export(this.ActualModel, fileName, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
         }
 
         /// <summary>
@@ -543,39 +545,20 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// A bitmap. 
         /// </returns>
-        public RenderTargetBitmap ToBitmap()
+        public BitmapSource ToBitmap()
         {
-            var bmp = new RenderTargetBitmap(
-                (int)this.ActualWidth, (int)this.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-
-            var clientRect = new Rect(this.VisualOffset.X, this.VisualOffset.Y, this.ActualWidth, this.ActualHeight);
-
-            // move the client area, otherwise the rendering may be at the wrong offset
-            this.Arrange(new Rect(0, 0, bmp.Width, bmp.Height));
-            bmp.Render(this);
-
-            this.Arrange(clientRect);
-            return bmp;
+            return PngExporter.ExportToBitmap(this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, this.Background.ToOxyColor());
         }
 
         /// <summary>
         /// Renders the plot to xaml.
         /// </summary>
         /// <returns>
-        /// The to xaml. 
+        /// The xaml. 
         /// </returns>
         public string ToXaml()
         {
-            var sb = new StringBuilder();
-            var tw = new StringWriter(sb);
-            XmlWriter xw = XmlWriter.Create(tw, new XmlWriterSettings { Indent = true });
-            if (this.canvas != null)
-            {
-                XamlWriter.Save(this.canvas, xw);
-            }
-
-            xw.Close();
-            return sb.ToString();
+            return XamlExporter.ExportToString(this.ActualModel, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
         }
 
         /// <summary>
@@ -1292,18 +1275,11 @@ namespace OxyPlot.Wpf
         /// </summary>
         private void UpdateVisuals()
         {
-        //    Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " Updates visuals");
+            //    Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " Updates visuals");
             if (this.canvas == null)
             {
                 return;
             }
-
-            // if (Model != null && internalModel.Background != null)
-            // {
-            // this.Background = internalModel.Background.ToBrush();
-            // }
-            // else
-            // this.Background = null;
 
             // Clear the canvas
             this.canvas.Children.Clear();
@@ -1335,7 +1311,7 @@ namespace OxyPlot.Wpf
 #endif
             }
 
-       //     Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " done.");
+            //     Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " done.");
         }
 
         #endregion

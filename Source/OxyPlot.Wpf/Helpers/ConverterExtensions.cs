@@ -47,7 +47,7 @@ namespace OxyPlot.Wpf
         /// </returns>
         public static Brush ToBrush(this OxyColor c)
         {
-            return new SolidColorBrush(c.ToColor());
+            return c != null ? new SolidColorBrush(c.ToColor()) : null;
         }
 
         /// <summary>

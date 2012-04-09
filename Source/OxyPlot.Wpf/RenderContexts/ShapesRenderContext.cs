@@ -23,7 +23,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   Measurement by TextBlock.
         /// </summary>
-        TextBlock, 
+        TextBlock,
 
         /// <summary>
         ///   Measurement by glyph typeface.
@@ -69,11 +69,22 @@ namespace OxyPlot.Wpf
             this.Width = canvas.ActualWidth;
             this.Height = canvas.ActualHeight;
             this.TextMeasurementMethod = TextMeasurementMethod.TextBlock;
+            this.UseStreamGeometry = true;
         }
 
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use stream geometry for lines and polygons rendering.
+        /// </summary>
+        /// <value><c>true</c> if stream geometry should be used; otherwise, <c>false</c>.</value>
+        /// <remarks>
+        /// The XamlWriter does not serialize StreamGeometry, so set this to false if you want to export to XAML.
+        /// Using stream geometry seems to be slightly faster than using path geometry.
+        /// </remarks>
+        public bool UseStreamGeometry { get; set; }
 
         /// <summary>
         ///   Gets the height.
@@ -210,11 +221,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var e = new Polyline();
@@ -253,16 +264,20 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawLineSegments(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
+            var usg = this.UseStreamGeometry;
             Path path = null;
-            StreamGeometry geometry = null;
+            StreamGeometry segmentGeometry = null;
             StreamGeometryContext sgc = null;
+
+            PathGeometry pathGeometry = null;
+
             int count = 0;
 
             for (int i = 0; i + 1 < points.Count; i += 2)
@@ -271,19 +286,45 @@ namespace OxyPlot.Wpf
                 {
                     path = new Path();
                     this.SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
-                    geometry = new StreamGeometry();
-                    sgc = geometry.Open();
+
+                    if (usg)
+                    {
+                        segmentGeometry = new StreamGeometry();
+                        sgc = segmentGeometry.Open();
+                    }
+                    else
+                    {
+                        pathGeometry = new PathGeometry();
+                    }
                 }
 
-                sgc.BeginFigure(points[i].ToPoint(aliased), false, false);
-                sgc.LineTo(points[i + 1].ToPoint(aliased), true, false);
+                if (usg)
+                {
+                    sgc.BeginFigure(points[i].ToPoint(aliased), false, false);
+                    sgc.LineTo(points[i + 1].ToPoint(aliased), true, false);
+                }
+                else
+                {
+                    var figure = new PathFigure { StartPoint = points[i].ToPoint(aliased), IsClosed = false };
+                    figure.Segments.Add(new LineSegment(points[i + 1].ToPoint(aliased), true) { IsSmoothJoin = false });
+                    pathGeometry.Figures.Add(figure);
+                }
+
                 count++;
 
                 // Must limit the number of figures, otherwise drawing errors...
                 if (count > maxFiguresPerGeometry)
                 {
-                    sgc.Close();
-                    path.Data = geometry;
+                    if (usg)
+                    {
+                        sgc.Close();
+                        path.Data = segmentGeometry;
+                    }
+                    else
+                    {
+                        path.Data = pathGeometry;
+                    }
+
                     this.Add(path);
                     path = null;
                     count = 0;
@@ -292,8 +333,16 @@ namespace OxyPlot.Wpf
 
             if (path != null)
             {
-                sgc.Close();
-                path.Data = geometry;
+                if (usg)
+                {
+                    sgc.Close();
+                    path.Data = segmentGeometry;
+                }
+                else
+                {
+                    path.Data = pathGeometry;
+                }
+
                 this.Add(path);
             }
         }
@@ -323,12 +372,12 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var e = new Polygon();
@@ -375,17 +424,19 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         public void DrawPolygons(
-            IList<IList<ScreenPoint>> polygons, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<IList<ScreenPoint>> polygons,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
+            var usg = this.UseStreamGeometry;
             Path path = null;
-            StreamGeometry geometry = null;
+            StreamGeometry streamGeometry = null;
             StreamGeometryContext sgc = null;
+            PathGeometry pathGeometry = null;
             int count = 0;
 
             foreach (var polygon in polygons)
@@ -399,21 +450,45 @@ namespace OxyPlot.Wpf
                         path.Fill = this.GetCachedBrush(fill);
                     }
 
-                    geometry = new StreamGeometry { FillRule = FillRule.Nonzero };
-                    sgc = geometry.Open();
+                    if (usg)
+                    {
+                        streamGeometry = new StreamGeometry { FillRule = FillRule.Nonzero };
+                        sgc = streamGeometry.Open();
+                    }
+                    else
+                    {
+                        pathGeometry = new PathGeometry { FillRule = FillRule.Nonzero };
+                    }
                 }
 
+                PathFigure figure = null;
                 bool first = true;
                 foreach (var p in polygon)
                 {
                     if (first)
                     {
-                        sgc.BeginFigure(p.ToPoint(aliased), fill != null, true);
+                        if (usg)
+                        {
+                            sgc.BeginFigure(p.ToPoint(aliased), fill != null, true);
+                        }
+                        else
+                        {
+                            figure = new PathFigure() { StartPoint = p.ToPoint(aliased), IsFilled = fill != null, IsClosed = true };
+                            pathGeometry.Figures.Add(figure);
+                        }
+
                         first = false;
                     }
                     else
                     {
-                        sgc.LineTo(p.ToPoint(aliased), stroke != null, true);
+                        if (usg)
+                        {
+                            sgc.LineTo(p.ToPoint(aliased), stroke != null, true);
+                        }
+                        else
+                        {
+                            figure.Segments.Add(new LineSegment(p.ToPoint(aliased), stroke != null) { IsSmoothJoin = true });
+                        }
                     }
                 }
 
@@ -422,8 +497,16 @@ namespace OxyPlot.Wpf
                 // Must limit the number of figures, otherwise drawing errors...
                 if (count > maxFiguresPerGeometry)
                 {
-                    sgc.Close();
-                    path.Data = geometry;
+                    if (usg)
+                    {
+                        sgc.Close();
+                        path.Data = streamGeometry;
+                    }
+                    else
+                    {
+                        path.Data = pathGeometry;
+                    }
+
                     this.Add(path);
                     path = null;
                     count = 0;
@@ -432,8 +515,16 @@ namespace OxyPlot.Wpf
 
             if (path != null)
             {
-                sgc.Close();
-                path.Data = geometry;
+                if (usg)
+                {
+                    sgc.Close();
+                    path.Data = streamGeometry;
+                }
+                else
+                {
+                    path.Data = pathGeometry;
+                }
+
                 this.Add(path);
             }
         }
@@ -570,15 +661,15 @@ namespace OxyPlot.Wpf
         /// The maximum size of the text.
         /// </param>
         public void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalTextAlign halign, 
-            VerticalTextAlign valign, 
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalTextAlign halign,
+            VerticalTextAlign valign,
             OxySize? maxSize)
         {
             var tb = new TextBlock { Text = text, Foreground = this.GetCachedBrush(fill) };
@@ -902,11 +993,11 @@ namespace OxyPlot.Wpf
         /// The aliased.
         /// </param>
         private void SetStroke(
-            Shape shape, 
-            OxyColor stroke, 
-            double thickness, 
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, 
-            IEnumerable<double> dashArray = null, 
+            Shape shape,
+            OxyColor stroke,
+            double thickness,
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            IEnumerable<double> dashArray = null,
             bool aliased = false)
         {
             if (stroke != null && thickness > 0)
@@ -922,7 +1013,7 @@ namespace OxyPlot.Wpf
                         shape.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
 
-                        // The default StrokeLineJoin is Miter
+                    // The default StrokeLineJoin is Miter
                 }
 
                 if (thickness != 1)
