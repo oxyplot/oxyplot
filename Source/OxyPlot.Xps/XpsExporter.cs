@@ -11,78 +11,78 @@ namespace OxyPlot.Wpf
     using System.Printing;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Xps;
     using System.Windows.Xps.Packaging;
 
     /// <summary>
-    /// Export or print a PlotModel using XPS
+    /// Exports or prints a PlotModel using xps.
     /// </summary>
     public static class XpsExporter
     {
         #region Public Methods
 
         /// <summary>
-        /// The export.
+        /// Exports the specified plot model to an xps file.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="fileName">
-        /// The file name.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        public static void Export(PlotModel model, string fileName, double width, double height)
+        /// <param name="model">The model.</param>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="background">The background color.</param>
+        public static void Export(PlotModel model, string fileName, double width, double height, OxyColor background = null)
         {
-            using (Package xpsPackage = Package.Open(fileName, FileMode.Create, FileAccess.ReadWrite))
+            using (var xpsPackage = Package.Open(fileName, FileMode.Create, FileAccess.ReadWrite))
             {
                 using (var doc = new XpsDocument(xpsPackage))
                 {
-                    var g = new Grid();
-                    var p = new Plot { Model = model };
-                    g.Children.Add(p);
+                    var canvas = new Canvas { Width = width, Height = height, Background = background.ToBrush() };
+                    canvas.Measure(new Size(width, height));
+                    canvas.Arrange(new Rect(0, 0, width, height));
 
-                    // var size = new Size(area.MediaSizeWidth, area.MediaSizeHeight);
-                    var size = new Size(width, height);
-                    g.Measure(size);
-                    g.Arrange(new Rect(size));
-                    g.UpdateLayout();
+                    var rc = new ShapesRenderContext(canvas);
+                    model.Update();
+                    model.Render(rc);
 
-                    XpsDocumentWriter xpsdw = XpsDocument.CreateXpsDocumentWriter(doc);
-                    if (xpsdw != null)
-                    {
-                        xpsdw.Write(g);
-                    }
+                    canvas.UpdateLayout();
+
+                    var xpsdw = XpsDocument.CreateXpsDocumentWriter(doc);
+                    xpsdw.Write(canvas);
                 }
             }
         }
 
         /// <summary>
-        /// The print.
+        /// Prints the specified plot model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        public static void Print(PlotModel model)
+        /// <param name="model">The model.</param>
+        /// <param name="width">The width (using the actual media width if not specified).</param>
+        /// <param name="height">The height (using the actual media height if not specified).</param>
+        public static void Print(PlotModel model, double width = double.NaN, double height = double.NaN)
         {
             PrintDocumentImageableArea area = null;
-            XpsDocumentWriter xpsdw = PrintQueue.CreateXpsDocumentWriter(ref area);
-            if (xpsdw != null)
+            var xpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(ref area);
+            if (xpsDocumentWriter != null)
             {
-                var g = new Grid();
-                var p = new Plot { Model = model };
-                g.Children.Add(p);
+                if (double.IsNaN(width))
+                {
+                    width = area.MediaSizeWidth;
+                }
 
-                var size = new Size(area.MediaSizeWidth, area.MediaSizeHeight);
-                g.Measure(size);
-                g.Arrange(new Rect(size));
-                g.UpdateLayout();
+                if (double.IsNaN(height))
+                {
+                    height = area.MediaSizeHeight;
+                }
 
-                xpsdw.Write(g);
+                var canvas = new Canvas { Width = width, Height = height };
+                canvas.Measure(new Size(width, height));
+                canvas.Arrange(new Rect(0, 0, width, height));
+
+                var rc = new ShapesRenderContext(canvas);
+                model.Update();
+                model.Render(rc);
+
+                canvas.UpdateLayout();
+
+                xpsDocumentWriter.Write(canvas);
             }
         }
 
