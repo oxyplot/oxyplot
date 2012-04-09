@@ -11,6 +11,27 @@ namespace OxyPlot
     using System.Diagnostics;
 
     /// <summary>
+    /// Specifies the position of legends rendered on a line series.
+    /// </summary>
+    public enum LineLegendPosition
+    {
+        /// <summary>
+        /// No legend on the line.
+        /// </summary>
+        None, 
+
+        /// <summary>
+        /// Legend at the start of the line.
+        /// </summary>
+        Start, 
+        
+        /// <summary>
+        /// Legend at the end of the line.
+        /// </summary>
+        End
+    }
+
+    /// <summary>
     /// Represents a line series.
     /// </summary>
     public class LineSeries : DataPointSeries
@@ -93,7 +114,7 @@ namespace OxyPlot
         /// </summary>
         /// <value>The dashes.</value>
         public double[] Dashes { get; set; }
-       
+
         /// <summary>
         ///   Gets or sets the label format string.
         /// </summary>
@@ -116,6 +137,12 @@ namespace OxyPlot
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value specifying the position of a legend rendered on the line.
+        /// </summary>
+        /// <value>A value specifying the position of the legend.</value>
+        public LineLegendPosition LineLegendPosition { get; set; }
 
         /// <summary>
         ///   Gets or sets the marker fill color.
@@ -263,66 +290,19 @@ namespace OxyPlot
                 transformedPoints.Add(pt);
             }
 
+            // Render the remaining points
             this.RenderPoints(rc, clippingRect, transformedPoints);
 
-            // render point labels (not optimized for performance)
             if (this.LabelFormatString != null)
             {
-                int index = -1;
-                foreach (var point in this.points)
-                {
-                    index++;
+                // render point labels (not optimized for performance)
+                this.RenderPointLabels(rc, clippingRect);            
+            }
 
-                    if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
-                    {
-                        continue;
-                    }
-
-                    var pt = this.XAxis.Transform(point.X, point.Y, this.YAxis);
-                    pt.Y -= this.LabelMargin;
-
-                    if (!clippingRect.Contains(pt))
-                    {
-                        continue;
-                    }
-
-                    var s = StringHelper.Format(
-                        this.ActualCulture, this.LabelFormatString, this.GetItem(index), point.X, point.Y);
-
-#if SUPPORTLABELPLACEMENT
-                    switch (this.LabelPlacement)
-                    {
-                        case LabelPlacement.Inside:
-                            pt = new ScreenPoint(rect.Right - this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                            ha = HorizontalTextAlign.Right;
-                            break;
-                        case LabelPlacement.Middle:
-                            pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Top + rect.Bottom) / 2);
-                            ha = HorizontalTextAlign.Center;
-                            break;
-                        case LabelPlacement.Base:
-                            pt = new ScreenPoint(rect.Left + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                            ha = HorizontalTextAlign.Left;
-                            break;
-                        default: // Outside
-                            pt = new ScreenPoint(rect.Right + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                            ha = HorizontalTextAlign.Left;
-                            break;
-                    }
-#endif
-
-                    rc.DrawClippedText(
-                        clippingRect,
-                        pt,
-                        s,
-                        this.ActualTextColor,
-                        this.ActualFont,
-                        this.ActualFontSize,
-                        this.ActualFontWeight,
-                        0,
-                        HorizontalTextAlign.Center,
-                        VerticalTextAlign.Bottom);
-                }
+            if (this.LineLegendPosition != LineLegendPosition.None && this.points.Count > 0 && !string.IsNullOrEmpty(this.Title))
+            {
+                // renders a legend on the line
+                this.RenderLegendOnLine(rc, clippingRect);
             }
         }
 
@@ -406,6 +386,113 @@ namespace OxyPlot
             }
         }
 
+        /// <summary>
+        /// Renders the point labels.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="clippingRect">The clipping rect.</param>
+        protected void RenderPointLabels(IRenderContext rc, OxyRect clippingRect)
+        {
+            int index = -1;
+            foreach (var point in this.points)
+            {
+                index++;
+
+                if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
+                {
+                    continue;
+                }
+
+                var pt = this.XAxis.Transform(point.X, point.Y, this.YAxis);
+                pt.Y -= this.LabelMargin;
+
+                if (!clippingRect.Contains(pt))
+                {
+                    continue;
+                }
+
+                var s = StringHelper.Format(
+                    this.ActualCulture, this.LabelFormatString, this.GetItem(index), point.X, point.Y);
+
+#if SUPPORTLABELPLACEMENT
+                    switch (this.LabelPlacement)
+                    {
+                        case LabelPlacement.Inside:
+                            pt = new ScreenPoint(rect.Right - this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalTextAlign.Right;
+                            break;
+                        case LabelPlacement.Middle:
+                            pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalTextAlign.Center;
+                            break;
+                        case LabelPlacement.Base:
+                            pt = new ScreenPoint(rect.Left + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalTextAlign.Left;
+                            break;
+                        default: // Outside
+                            pt = new ScreenPoint(rect.Right + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
+                            ha = HorizontalTextAlign.Left;
+                            break;
+                    }
+#endif
+
+                rc.DrawClippedText(
+                    clippingRect,
+                    pt,
+                    s,
+                    this.ActualTextColor,
+                    this.ActualFont,
+                    this.ActualFontSize,
+                    this.ActualFontWeight,
+                    0,
+                    HorizontalTextAlign.Center,
+                    VerticalTextAlign.Bottom);
+            }
+        }
+
+        /// <summary>
+        /// Renders a legend on the line.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        protected void RenderLegendOnLine(IRenderContext rc, OxyRect clippingRect)
+        {
+            // Find the position
+            IDataPoint point;
+            var ha = HorizontalTextAlign.Left;
+            double dx;
+            switch (this.LineLegendPosition)
+            {
+                case LineLegendPosition.Start:
+                    // start position
+                    point = this.points[0];
+                    ha = HorizontalTextAlign.Right;
+                    dx = -4;
+                    break;
+                default:
+                    // end position
+                    point = this.points[this.points.Count - 1];
+                    dx = 4;
+                    break;
+            }
+
+            var pt = this.XAxis.Transform(point.X, point.Y, this.YAxis);
+            pt.X += dx;
+
+            // Render the legend
+            rc.DrawClippedText(
+                clippingRect,
+                pt,
+                this.Title,
+                this.ActualTextColor,
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
+                0,
+                ha,
+                VerticalTextAlign.Middle);
+        }
+        
         /// <summary>
         /// Renders the transformed points.
         /// </summary>

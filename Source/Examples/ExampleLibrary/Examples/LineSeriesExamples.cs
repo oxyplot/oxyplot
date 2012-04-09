@@ -5,7 +5,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Linq;
 using OxyPlot;
 
 namespace ExampleLibrary
@@ -372,6 +371,34 @@ namespace ExampleLibrary
 
             return model;
         }
+        [Example("LineSeries with legend at the end of the line")]
+        public static PlotModel LineLegendPositionAtEnd()
+        {
+            // http://www.perceptualedge.com/example2.php
+            var model = new PlotModel("Average (Mean) monthly temperatures in 2003") { PlotMargins = new OxyThickness(60, 4, 60, 40), PlotAreaBorderThickness = 0, IsLegendVisible = false };
+            var phoenix = new LineSeries("Phoenix") { LineLegendPosition = LineLegendPosition.End };
+            var raleigh = new LineSeries("Raleigh") { LineLegendPosition = LineLegendPosition.End };
+            var minneapolis = new LineSeries("Minneapolis") { LineLegendPosition = LineLegendPosition.End };
 
+            var phoenixTemps = new[] { 52.1, 55.1, 59.7, 67.7, 76.3, 84.6, 91.2, 89.1, 83.8, 72.2, 59.8, 52.5 };
+            var raleighTemps = new[] { 40.5, 42.2, 49.2, 59.5, 67.4, 74.4, 77.5, 76.5, 70.6, 60.2, 50.0, 41.2 };
+            var minneapolisTemps = new[] { 12.2, 16.5, 28.3, 45.1, 57.1, 66.9, 71.9, 70.2, 60.0, 50.0, 32.4, 18.6 };
+
+            for (int i = 0; i < 12; i++)
+            {
+                phoenix.Points.Add(new DataPoint(i, phoenixTemps[i]));
+                raleigh.Points.Add(new DataPoint(i, raleighTemps[i]));
+                minneapolis.Points.Add(new DataPoint(i, minneapolisTemps[i]));
+            }
+
+            model.Series.Add(phoenix);
+            model.Series.Add(raleigh);
+            model.Series.Add(minneapolis);
+
+            model.Axes.Add(new CategoryAxis(null, "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec") { AxislineStyle = LineStyle.Solid });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, "Fahrenheit") { AxislineStyle = LineStyle.Solid });
+
+            return model;
+        }
     }
 }
