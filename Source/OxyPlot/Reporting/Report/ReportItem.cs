@@ -69,6 +69,18 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
+        /// Adds a plot to the report.
+        /// </summary>
+        /// <param name="plot">The plot model.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        public void AddPlot(PlotModel plot, string text, double width, double height)
+        {
+            this.Add(new PlotFigure { PlotModel = plot, Width = width, Height = height, FigureText = text });
+        }
+
+        /// <summary>
         /// Adds an equation to the report.
         /// </summary>
         /// <param name="equation">

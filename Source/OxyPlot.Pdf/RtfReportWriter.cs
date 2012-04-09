@@ -21,7 +21,7 @@ namespace OxyPlot.Pdf
         /// Initializes a new instance of the <see cref="RtfReportWriter"/> class.
         /// </summary>
         /// <param name="filename">
-        /// The filename.
+        /// The FileName.
         /// </param>
         public RtfReportWriter(string filename)
             : base(filename)
@@ -38,7 +38,7 @@ namespace OxyPlot.Pdf
         public override void Close()
         {
             var r = new RtfDocumentRenderer();
-            r.Render(this.doc, this.filename, Path.GetTempPath());
+            r.Render(this.Document, this.FileName, Path.GetTempPath());
         }
 
         #endregion

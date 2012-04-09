@@ -19,6 +19,7 @@ namespace OxyPlot.Pdf
     using DocumentFormat.OpenXml.Wordprocessing;
 
     using OxyPlot.Reporting;
+    using OxyPlot.Wpf;
 
     using BlipFill = DocumentFormat.OpenXml.Drawing.Pictures.BlipFill;
     using BottomBorder = DocumentFormat.OpenXml.Wordprocessing.BottomBorder;
@@ -163,6 +164,7 @@ namespace OxyPlot.Pdf
         /// </param>
         public WordDocumentReportWriter(string filePath)
         {
+            this.FileName = filePath;
             this.package = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document);
 
             this.mainPart = this.package.AddMainDocumentPart();
@@ -177,6 +179,12 @@ namespace OxyPlot.Pdf
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// Gets the name of the file.
+        /// </summary>
+        /// <value>The name of the file.</value>
+        public string FileName { get; private set; }
 
         /// <summary>
         ///   Gets or sets Creator.
@@ -277,32 +285,36 @@ namespace OxyPlot.Pdf
                 return;
             }
 
+            this.AppendImage(i.Source, "Picture " + i.FigureNumber);
+
+            this.body.Append(CreateParagraph(i.GetFullCaption(this.style), FigureTextID));
+        }
+
+        private void AppendImage(string source, string name)
+        {
             // http://msdn.microsoft.com/en-us/library/bb497430.aspx
-            string ext = Path.GetExtension(i.Source).ToLower();
+            string ext = Path.GetExtension(source).ToLower();
             ImagePartType ipt = ImagePartType.Jpeg;
             if (ext == ".png")
             {
                 ipt = ImagePartType.Png;
             }
 
-            ImagePart imagePart = this.mainPart.AddImagePart(ipt);
-            using (var stream = new FileStream(i.Source, FileMode.Open))
+            var imagePart = this.mainPart.AddImagePart(ipt);
+            using (var stream = new FileStream(source, FileMode.Open))
             {
                 imagePart.FeedData(stream);
             }
 
-            using (var bmp = new Bitmap(i.Source))
+            using (var bmp = new Bitmap(source))
             {
                 double width = bmp.Width / bmp.HorizontalResolution; // inches
                 double height = bmp.Height / bmp.VerticalResolution; // inches
                 double w = 15 / 2.54;
                 double h = height / width * w;
                 this.body.Append(
-                    this.CreateImageParagraph(
-                        this.mainPart.GetIdOfPart(imagePart), "Picture " + i.FigureNumber, i.Source, w, h));
+                    this.CreateImageParagraph(this.mainPart.GetIdOfPart(imagePart), name, source, w, h));
             }
-
-            this.body.Append(CreateParagraph(i.GetFullCaption(this.style), FigureTextID));
         }
 
         /// <summary>
@@ -324,7 +336,28 @@ namespace OxyPlot.Pdf
         /// </param>
         public void WritePlot(PlotFigure plot)
         {
-            this.body.AppendChild(CreateParagraph("PlotFigures are not yet supported."));
+            if (this.FileName == null)
+            {
+                return;
+            }
+
+            var directory = Path.GetDirectoryName(this.FileName);
+            if (directory == null)
+            {
+                return;
+            }
+
+            var source = string.Format("{0}_Plot{1}.png", Path.GetFileNameWithoutExtension(this.FileName), plot.FigureNumber);
+            var sourceFullPath = Path.Combine(directory, source);
+
+            // write to a png
+            // todo: write to a stream, not to disk
+            PngExporter.Export(plot.PlotModel, sourceFullPath, (int)plot.Width, (int)plot.Height);
+
+            // append the image to the document
+            this.AppendImage(sourceFullPath, "Plot" + plot.FigureNumber);
+
+            this.body.Append(CreateParagraph(plot.GetFullCaption(this.style), FigureTextID));
         }
 
         /// <summary>
@@ -360,12 +393,12 @@ namespace OxyPlot.Pdf
             var tableWidth1 = new TableWidth { Width = "0", Type = TableWidthUnitValues.Auto };
             var tableLook1 = new TableLook
                 {
-                    Val = "04A0", 
-                    FirstRow = true, 
-                    LastRow = false, 
-                    FirstColumn = true, 
-                    LastColumn = false, 
-                    NoHorizontalBand = false, 
+                    Val = "04A0",
+                    FirstRow = true,
+                    LastRow = false,
+                    FirstColumn = true,
+                    LastColumn = false,
+                    NoHorizontalBand = false,
                     NoVerticalBand = true
                 };
 
@@ -384,6 +417,15 @@ namespace OxyPlot.Pdf
             foreach (var row in t.Rows)
             {
                 var tr = new TableRow();
+
+                if (row.IsHeader)
+                {
+                    var trp = new TableRowProperties();
+                    var tableHeader1 = new TableHeader();
+                    trp.Append(tableHeader1);
+                    tr.Append(trp);
+                }
+
                 int j = 0;
                 foreach (var c in row.Cells)
                 {
@@ -394,33 +436,33 @@ namespace OxyPlot.Pdf
                     borders.Append(
                         new BottomBorder
                             {
-                                Val = BorderValues.Single, 
-                                Size = (UInt32Value)4U, 
-                                Space = (UInt32Value)0U, 
+                                Val = BorderValues.Single,
+                                Size = (UInt32Value)4U,
+                                Space = (UInt32Value)0U,
                                 Color = "auto"
                             });
                     borders.Append(
                         new TopBorder
                             {
-                                Val = BorderValues.Single, 
-                                Size = (UInt32Value)4U, 
-                                Space = (UInt32Value)0U, 
+                                Val = BorderValues.Single,
+                                Size = (UInt32Value)4U,
+                                Space = (UInt32Value)0U,
                                 Color = "auto"
                             });
                     borders.Append(
                         new LeftBorder
                             {
-                                Val = BorderValues.Single, 
-                                Size = (UInt32Value)4U, 
-                                Space = (UInt32Value)0U, 
+                                Val = BorderValues.Single,
+                                Size = (UInt32Value)4U,
+                                Space = (UInt32Value)0U,
                                 Color = "auto"
                             });
                     borders.Append(
                         new RightBorder
                             {
-                                Val = BorderValues.Single, 
-                                Size = (UInt32Value)4U, 
-                                Space = (UInt32Value)0U, 
+                                Val = BorderValues.Single,
+                                Size = (UInt32Value)4U,
+                                Space = (UInt32Value)0U,
                                 Color = "auto"
                             });
                     tcp.Append(borders);
@@ -496,12 +538,12 @@ namespace OxyPlot.Pdf
         /// <returns>
         /// </returns>
         private static Style CreateStyle(
-            ParagraphStyle ps, 
-            string styleID, 
-            string styleName, 
-            string basedOnStyleID, 
-            string nextStyleID, 
-            bool isDefault = false, 
+            ParagraphStyle ps,
+            string styleID,
+            string styleName,
+            string basedOnStyleID,
+            string nextStyleID,
+            bool isDefault = false,
             bool isCustomStyle = true)
         {
             // todo: add font to FontTable?
@@ -517,7 +559,7 @@ namespace OxyPlot.Pdf
             rPr.Append(
                 new FontSizeComplexScript
                     {
-                       Val = new StringValue((ps.FontSize * 2).ToString(CultureInfo.InvariantCulture)) 
+                        Val = new StringValue((ps.FontSize * 2).ToString(CultureInfo.InvariantCulture))
                     });
 
             if (ps.Bold)
@@ -533,14 +575,14 @@ namespace OxyPlot.Pdf
             var pPr = new StyleParagraphProperties();
             var spacingBetweenLines2 = new SpacingBetweenLines
                 {
-                    After = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingAfter * 20), 
-                    Before = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingBefore * 20), 
-                    Line = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LineSpacing * 240), 
+                    After = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingAfter * 20),
+                    Before = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingBefore * 20),
+                    Line = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LineSpacing * 240),
                     LineRule = LineSpacingRuleValues.Auto
                 };
             var indentation = new Indentation
                 {
-                    Left = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LeftIndentation * 20), 
+                    Left = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LeftIndentation * 20),
                     Right = string.Format(CultureInfo.InvariantCulture, "{0}", ps.RightIndentation * 20)
                 };
             var contextualSpacing1 = new ContextualSpacing();
@@ -559,9 +601,9 @@ namespace OxyPlot.Pdf
             // http://msdn.microsoft.com/en-us/library/documentformat.openxml.wordprocessing.style.aspx
             var style = new Style
                 {
-                    Default = new OnOffValue(isDefault), 
-                    CustomStyle = new OnOffValue(isCustomStyle), 
-                    StyleId = styleID, 
+                    Default = new OnOffValue(isDefault),
+                    CustomStyle = new OnOffValue(isCustomStyle),
+                    StyleId = styleID,
                     Type = StyleValues.Paragraph
                 };
 
@@ -604,12 +646,12 @@ namespace OxyPlot.Pdf
             {
                 sdp.Styles.Append(
                     CreateStyle(
-                        style.HeaderStyles[i], 
-                        string.Format(HeaderID, i + 1), 
-                        string.Format(HeaderName, i + 1), 
-                        "Heading1", 
-                        BodyTextID, 
-                        false, 
+                        style.HeaderStyles[i],
+                        string.Format(HeaderID, i + 1),
+                        string.Format(HeaderName, i + 1),
+                        "Heading1",
+                        BodyTextID,
+                        false,
                         false));
             }
 
@@ -687,7 +729,8 @@ namespace OxyPlot.Pdf
             // The possible values for this attribute are defined by the ST_PositiveCoordinate simple type (§20.1.10.42).
             var paragraph1 = new DocumentFormat.OpenXml.Wordprocessing.Paragraph
                 {
-                   RsidParagraphAddition = "00D91137", RsidRunAdditionDefault = "00AC08EB" 
+                    RsidParagraphAddition = "00D91137",
+                    RsidRunAdditionDefault = "00AC08EB"
                 };
 
             var run1 = new Run();
@@ -701,7 +744,10 @@ namespace OxyPlot.Pdf
 
             var inline1 = new Inline
                 {
-                   DistanceFromTop = 0U, DistanceFromBottom = 0U, DistanceFromLeft = 0U, DistanceFromRight = 0U 
+                    DistanceFromTop = 0U,
+                    DistanceFromBottom = 0U,
+                    DistanceFromLeft = 0U,
+                    DistanceFromRight = 0U
                 };
             var extent1 = new Extent { Cx = 5753100L, Cy = 3600450L };
             extent1.Cx = (long)(width * 914400);
@@ -728,7 +774,9 @@ namespace OxyPlot.Pdf
             var nonVisualPictureProperties1 = new NonVisualPictureProperties();
             var nonVisualDrawingProperties1 = new NonVisualDrawingProperties
                 {
-                   Id = 0U, Name = name, Description = description 
+                    Id = 0U,
+                    Name = name,
+                    Description = description
                 };
 
             var nonVisualPictureDrawingProperties1 = new NonVisualPictureDrawingProperties();

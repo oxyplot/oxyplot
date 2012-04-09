@@ -47,6 +47,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
+      <Project>{698CCD8E-ADCC-4565-8517-5EDD36F07155}</Project>
+      <Name>OxyPlot.Wpf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
       <Project>{87F519B8-5A2F-48C6-AD53-C5F13A82EA6B}</Project>
       <Name>OxyPlot</Name>
