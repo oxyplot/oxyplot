@@ -4,11 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using NUnit.Framework;
-
 namespace OxyPlot.Tests
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+
+    using NUnit.Framework;
+    
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class AxisTests
     {
@@ -25,7 +29,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(80, 10));
             plot.Series.Add(ls);
 
-            // OxyAssert.AreEqual(plot, "A00");
+            OxyAssert.AreEqual(plot, "A00");
         }
 
         [Test]
@@ -43,7 +47,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(80, 10));
             plot.Series.Add(ls);
 
-            // OxyAssert.AreEqual(plot, "A01");
+            OxyAssert.AreEqual(plot, "A01");
         }
 
         [Test]
@@ -61,14 +65,13 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(80, 10));
             plot.Series.Add(ls);
 
-            // OxyAssert.AreEqual(plot, "A02");
+            OxyAssert.AreEqual(plot, "A02");
         }
 
         [Test]
         public void A11_SmallRangeAxis()
         {
-            var plot = new PlotModel("Small range axis");
-            plot.PlotMargins = new OxyThickness(80, 60, 50, 50);
+            var plot = new PlotModel("Small range axis") { PlotMargins = new OxyThickness(80, 60, 50, 50) };
             plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
             plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
 
@@ -79,14 +82,13 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1.6e-40, 2.5e-38));
             plot.Series.Add(ls);
 
-            // OxyAssert.AreEqual(plot, "A11");
+            OxyAssert.AreEqual(plot, "A11");
         }
 
         [Test]
         public void A12_LargeRangeAxis()
         {
-            var plot = new PlotModel("Large range axis");
-            plot.PlotMargins = new OxyThickness(80, 60, 50, 50);
+            var plot = new PlotModel("Large range axis") { PlotMargins = new OxyThickness(80, 60, 50, 50) };
             plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
             plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
 
@@ -97,14 +99,13 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1.6e40, 2.5e38));
             plot.Series.Add(ls);
 
-            //  OxyAssert.AreEqual(plot, "A12");
+            OxyAssert.AreEqual(plot, "A12");
         }
 
         [Test]
         public void A13_BadConditionedAxis()
         {
-            var plot = new PlotModel("Bad conditioned axis");
-            plot.PlotMargins = new OxyThickness(80, 60, 50, 50);
+            var plot = new PlotModel("Bad conditioned axis") { PlotMargins = new OxyThickness(80, 60, 50, 50) };
             plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
             plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
 
@@ -115,14 +116,14 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1.20000000007, 2400000003));
             plot.Series.Add(ls);
 
-            //  OxyAssert.AreEqual(plot, "A13");
+            OxyAssert.AreEqual(plot, "A13");
         }
 
         [Test]
         public void A13B_BadConditionedAxis_SettingMinimumRange()
         {
-            var plot = new PlotModel("Bad conditioned axis with MinimumRange");
-            plot.PlotMargins = new OxyThickness(80, 60, 50, 50);
+            var plot = new PlotModel("Bad conditioned axis with MinimumRange")
+                { PlotMargins = new OxyThickness(80, 60, 50, 50) };
             plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { MinimumRange = 1e-3 });
             plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { MinimumRange = 1e8, StringFormat = "0.00E00" });
 
@@ -133,7 +134,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1.20000000007, 2400000003));
             plot.Series.Add(ls);
 
-            // OxyAssert.AreEqual(plot, "A13B");
+            OxyAssert.AreEqual(plot, "A13B");
         }
 
         [Test]
@@ -150,7 +151,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(4, 2.4));
             plot.Series.Add(ls);
 
-            // OxyAssert.AreEqual(plot, "A14");
+            OxyAssert.AreEqual(plot, "A14");
         }
 
         [Test]
@@ -164,7 +165,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1, 2.4));
             plot.Series.Add(ls);
 
-            //  OxyAssert.AreEqual(plot, "A15");
+            OxyAssert.AreEqual(plot, "A15");
         }
 
         [Test]
@@ -179,7 +180,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1.000000000001, 2.4));
             plot.Series.Add(ls);
 
-            //  OxyAssert.AreEqual(plot, "A16");
+            OxyAssert.AreEqual(plot, "A16");
         }
 
         [Test]
@@ -196,7 +197,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1000, 400));
             plot.Series.Add(ls);
 
-            //  OxyAssert.AreEqual(plot, "B01");
+            OxyAssert.AreEqual(plot, "B01");
         }
 
         [Test]
@@ -213,7 +214,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(27, 19));
             plot.Series.Add(ls);
 
-            // OxyAssert.AreEqual(plot, "B02");
+            OxyAssert.AreEqual(plot, "B02");
         }
 
         [Test]
@@ -230,7 +231,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(1.6e40, 2.5e38));
             plot.Series.Add(ls);
 
-            //  OxyAssert.AreEqual(plot, "B03");
+            OxyAssert.AreEqual(plot, "B03");
         }
 
         [Test]
@@ -247,7 +248,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(27, 19));
             plot.Series.Add(ls);
 
-            //   OxyAssert.AreEqual(plot, "B04");
+            OxyAssert.AreEqual(plot, "B04");
         }
 
         [Test]
@@ -256,7 +257,7 @@ namespace OxyPlot.Tests
             var plot = new PlotModel("Logarithmic axis with SuperExponentialFormat");
             plot.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X-axis") { Minimum = 1.8e2, Maximum = 1e5, UseSuperExponentialFormat = true });
             plot.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y-axis") { Minimum = 1e18, Maximum = 1e38, UseSuperExponentialFormat = true });
-            //   OxyAssert.AreEqual(plot, "B05");
+            OxyAssert.AreEqual(plot, "B05");
         }
 
         [Test]
@@ -276,7 +277,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 19), new DateTime(2011, 3, 14)));
             plot.Series.Add(ls);
 
-            //   OxyAssert.AreEqual(plot, "C01");
+            OxyAssert.AreEqual(plot, "C01");
         }
 
         [Test]
@@ -296,7 +297,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(DateTimeAxis.CreateDataPoint(new DateTime(2011, 1, 19), new DateTime(2011, 3, 14)));
             plot.Series.Add(ls);
 
-            //   OxyAssert.AreEqual(plot, "C02");
+            OxyAssert.AreEqual(plot, "C02");
         }
 
         [Test]
@@ -313,7 +314,7 @@ namespace OxyPlot.Tests
             ls.Points.Add(new DataPoint(double.NaN, double.NaN));
             plot.Series.Add(ls);
 
-            //   OxyAssert.AreEqual(plot, "C03");
+            OxyAssert.AreEqual(plot, "C03");
         }
 
         [Test, ExpectedException]
@@ -322,7 +323,6 @@ namespace OxyPlot.Tests
             var plot = new PlotModel("Simple plot");
             plot.Axes.Add(new LinearAxis { AbsoluteMaximum = 0, AbsoluteMinimum = 0 });
             plot.Update();
-
         }
 
         [Test]

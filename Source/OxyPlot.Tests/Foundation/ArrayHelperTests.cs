@@ -6,8 +6,12 @@
 
 namespace OxyPlot.Tests
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using NUnit.Framework;
 
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class ArrayHelperTests
     {
@@ -38,15 +42,15 @@ namespace OxyPlot.Tests
         [Test]
         public void Evaluate()
         {
-            var X = ArrayHelper.CreateVector(0, 1, 0.1);
-            var Y = ArrayHelper.CreateVector(0, 1, 0.1);
-            var D = ArrayHelper.Evaluate((x, y) => x * y, X, Y);
+            var xvector = ArrayHelper.CreateVector(0, 1, 0.1);
+            var yvector = ArrayHelper.CreateVector(0, 1, 0.1);
+            var dvector = ArrayHelper.Evaluate((x, y) => x * y, xvector, yvector);
 
-            Assert.AreEqual(10, D.GetUpperBound(0));
-            Assert.AreEqual(10, D.GetUpperBound(1));
-            Assert.AreEqual(0, D[0, 0]);
-            Assert.AreEqual(1, D[10, 10]);
-            Assert.AreEqual(0.3 * 0.4, D[3, 4]);
+            Assert.AreEqual(10, dvector.GetUpperBound(0));
+            Assert.AreEqual(10, dvector.GetUpperBound(1));
+            Assert.AreEqual(0, dvector[0, 0]);
+            Assert.AreEqual(1, dvector[10, 10]);
+            Assert.AreEqual(0.3 * 0.4, dvector[3, 4]);
         }
     }
 }

@@ -1030,23 +1030,20 @@ namespace OxyPlot
 #if !METRO
 
         /// <summary>
-        /// Saves the plot to a SVG file.
+        /// Saves the plot to a svg file.
         /// </summary>
         /// <param name="fileName">
         /// Name of the file. 
         /// </param>
         /// <param name="width">
-        /// The width. 
+        /// The width (points). 
         /// </param>
         /// <param name="height">
-        /// The height. 
+        /// The height (points). 
         /// </param>
         public void SaveSvg(string fileName, double width, double height)
         {
-            using (var svgrc = new SvgRenderContext(fileName, width, height))
-            {
-                this.Render(svgrc);
-            }
+            SvgExporter.Export(this, fileName, width, height);
         }
 
 #endif
@@ -1075,38 +1072,21 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Create an SVG model and return it as a string.
+        /// Create an svg model and return it as a string.
         /// </summary>
         /// <param name="width">
-        /// The width. 
+        /// The width (points). 
         /// </param>
         /// <param name="height">
-        /// The height. 
+        /// The height (points). 
         /// </param>
-        /// <param name="isDocument">
-        /// if set to <c>true</c> [is document]. 
-        /// </param>
+        /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
         /// <returns>
         /// The to svg. 
         /// </returns>
         public string ToSvg(double width, double height, bool isDocument = false)
         {
-            string svg;
-            using (var ms = new MemoryStream())
-            {
-                var svgrc = new SvgRenderContext(ms, width, height, isDocument);
-                this.Update();
-                this.Render(svgrc);
-                svgrc.Complete();
-                svgrc.Flush();
-                ms.Flush();
-                ms.Position = 0;
-                var sr = new StreamReader(ms);
-                svg = sr.ReadToEnd();
-                svgrc.Close();
-            }
-
-            return svg;
+            return SvgExporter.ExportToString(this, width, height, isDocument);
         }
 
         /// <summary>
@@ -1364,7 +1344,7 @@ namespace OxyPlot
 
         #endregion
 
-#if SERIALIZATION
+#if SERIALIZATION_ENABLED
         /// <summary>
         /// Xml serialize the plotmodel to a stream.
         /// </summary>

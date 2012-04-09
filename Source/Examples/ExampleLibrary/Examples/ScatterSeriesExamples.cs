@@ -162,7 +162,7 @@ namespace ExampleLibrary
         [Example("Marker types")]
         public static PlotModel MarkerTypes()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Marker types");
             model.Series.Add(CreateRandomScatterSeries(10, "Circle", MarkerType.Circle));
             model.Series.Add(CreateRandomScatterSeries(10, "Cross", MarkerType.Cross));
             model.Series.Add(CreateRandomScatterSeries(10, "Diamond", MarkerType.Diamond));
@@ -176,7 +176,7 @@ namespace ExampleLibrary
         [Example("Scatter plot of DataPoints")]
         public static PlotModel DataPoints()
         {
-            var model = CreatePlotModel();
+            var model = new PlotModel("Scatter plot of DataPoints");
             model.Series.Add(CreateRandomScatterSeries2(100, null, MarkerType.Square));
             return model;
         }

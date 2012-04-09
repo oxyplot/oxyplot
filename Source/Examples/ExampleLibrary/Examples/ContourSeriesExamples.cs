@@ -21,7 +21,7 @@ namespace ExampleLibrary
                - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y)
                - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
 
-            var model = CreatePlotModel();
+            var model = new PlotModel("Peaks");
             var cs = new ContourSeries
                 {
                     ColumnCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05),

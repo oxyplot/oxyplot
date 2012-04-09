@@ -4,59 +4,59 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using ExampleLibrary;
-using NUnit.Framework;
-
 namespace OxyPlot.Tests
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
-    using System.Xml.Serialization;
 
+    using ExampleLibrary;
+
+    using NUnit.Framework;
+
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class PlotModelTests
     {
         [Test]
-        public void SaveSvg_AllExamplesInExampleLibrary_CheckThatFileExists()
+        public void Update_AllExamples_ThrowsNoExceptions()
         {
-            var destinationDirectory = "svg";
-            if (!Directory.Exists(destinationDirectory))
-            {
-                Directory.CreateDirectory(destinationDirectory);
-            }
-
             foreach (var example in Examples.GetList())
             {
-                var path = Path.Combine(destinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".svg"));
-                example.PlotModel.SaveSvg(path, 800, 500);
-                Assert.IsTrue(File.Exists(path));
+                example.PlotModel.Update();
             }
         }
 
         [Test]
-        public void SaveSvg_SimplePlot_ValidSvgFile()
+        public void ToSvg_TestPlot_ValidSvgString()
         {
-            var path = "test1.svg";
-            var plot = new PlotModel("f(x)=sin(x)");
-            var ls = new FunctionSeries(Math.Sin, 0, 30, 300);
-            plot.Series.Add(ls);
-            plot.SaveSvg(path, 800, 400);
-            // Assert.IsTrue(SvgValidator.IsValid(path));
+            var plotModel = TestModels.CreateTestModel1();
+
+            var svg1 = plotModel.ToSvg(800, 500, true);
+            SvgAssert.IsValidDocument(svg1);
+            var svg2 = plotModel.ToSvg(800, 500);
+            SvgAssert.IsValidElement(svg2);
         }
 
         [Test]
-        public void XmlSerialize_PlotModel()
+        public void SaveSvg_TestPlot_ValidSvgFile()
         {
-            var plot = new PlotModel("test1");
-            var ls = new LineSeries();
-            for (double i = 0; i < 30; i += 0.1)
-            {
-                ls.Points.Add(new DataPoint(i, Math.Sin(i) * 20));
-            }
+            var plotModel = TestModels.CreateTestModel1();
 
-            plot.Update();
+            const string FileName = "PlotModelTests_Test1.svg";
+            plotModel.SaveSvg(FileName, 800, 500);
+            SvgAssert.IsValidFile(FileName);
+        }
+
+#if SERIALIZATION_ENABLED
+        [Test]
+        public void XmlSerialize_PlotModel_ValidXml()
+        {
+            // var plotModel = TestModels.CreateTestModel1();
             // plot.XmlSerialize("test.xml");
         }
+#endif
 
         [Test]
         public void B11_Backgrounds()
@@ -68,24 +68,24 @@ namespace OxyPlot.Tests
             plot.Axes.Add(yaxis1);
             plot.Axes.Add(yaxis2);
 
-            Action<LineSeries> AddExamplePoints = ls =>
-                                                      {
-                                                          ls.Points.Add(new DataPoint(3, 13));
-                                                          ls.Points.Add(new DataPoint(10, 47));
-                                                          ls.Points.Add(new DataPoint(30, 23));
-                                                          ls.Points.Add(new DataPoint(40, 65));
-                                                          ls.Points.Add(new DataPoint(80, 10));
-                                                      };
+            Action<LineSeries> addExamplePoints = ls =>
+                {
+                    ls.Points.Add(new DataPoint(3, 13));
+                    ls.Points.Add(new DataPoint(10, 47));
+                    ls.Points.Add(new DataPoint(30, 23));
+                    ls.Points.Add(new DataPoint(40, 65));
+                    ls.Points.Add(new DataPoint(80, 10));
+                };
 
             var ls1 = new LineSeries { Background = OxyColors.LightSeaGreen, YAxisKey = "Y1" };
-            AddExamplePoints(ls1);
+            addExamplePoints(ls1);
             plot.Series.Add(ls1);
 
             var ls2 = new LineSeries { Background = OxyColors.LightSkyBlue, YAxisKey = "Y2" };
-            AddExamplePoints(ls2);
+            addExamplePoints(ls2);
             plot.Series.Add(ls2);
 
-            //  OxyAssert.AreEqual(plot, "B11");
-        }        
+            // OxyAssert.AreEqual(plot, "B11");
+        }
     }
 }

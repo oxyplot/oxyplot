@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DoubleExtensionsTests.cs" company="OxyPlot">
+// <copyright file="SvgWriterTests.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,17 +7,20 @@
 namespace OxyPlot.Tests
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using NUnit.Framework;
 
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class SvgWriterTests
     {
         [Test]
         public void WriteEllipse()
         {
-            var path = "ellipse.svg";
-            using (var w = new SvgWriter(path, 200, 200))
+            const string FileName = "SvgWriterTests_WriteEllipse.svg";
+            using (var w = new SvgWriter(FileName, 200, 200))
             {
                 w.WriteEllipse(
                     10,
@@ -26,65 +29,82 @@ namespace OxyPlot.Tests
                     60,
                     w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
             }
-            // Assert.IsTrue(IsValid(path));
+
+            SvgAssert.IsValidFile(FileName);
         }
 
         [Test]
         public void WriteLine()
         {
-            using (var w = new SvgWriter("line.svg", 200, 200))
+            const string FileName = "SvgWriterTests_WriteLine.svg";
+            using (var w = new SvgWriter(FileName, 200, 200))
             {
-                w.WriteLine(new ScreenPoint(10, 10), new ScreenPoint(150, 80),
+                w.WriteLine(
+                    new ScreenPoint(10, 10),
+                    new ScreenPoint(150, 80),
                     w.CreateStyle(null, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
             }
+
+            SvgAssert.IsValidFile(FileName);
         }
 
         [Test]
         public void WritePolygon()
         {
-            using (var w = new SvgWriter("polygon.svg", 200, 200))
+            const string FileName = "SvgWriterTests_WritePolygon.svg";
+            using (var w = new SvgWriter(FileName, 200, 200))
             {
-                w.WritePolygon(CreatePointList(),
-                    w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                w.WritePolygon(CreatePointList(), w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
             }
+
+            SvgAssert.IsValidFile(FileName);
         }
 
         [Test]
         public void WritePolyline()
         {
-            using (var w = new SvgWriter("polyline.svg", 200, 200))
+            const string FileName = "SvgWriterTests_WritePolyLine.svg";
+            using (var w = new SvgWriter(FileName, 200, 200))
             {
                 w.WritePolyline(CreatePointList(), w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
             }
+
+            SvgAssert.IsValidFile(FileName);
         }
 
         [Test]
         public void WriteRectangle()
         {
-            using (var w = new SvgWriter("rectangle.svg", 200, 200))
+            const string FileName = "SvgWriterTests_WriteRectangle.svg";
+            using (var w = new SvgWriter(FileName, 200, 200))
             {
                 w.WriteRectangle(10, 20, 150, 80, w.CreateStyle(OxyColors.Green, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
             }
+
+            SvgAssert.IsValidFile(FileName);
         }
 
         [Test]
         public void WriteText()
         {
-            using (var w = new SvgWriter("text.svg", 200, 200))
+            const string FileName = "SvgWriterTests_WriteText.svg";
+            using (var w = new SvgWriter(FileName, 200, 200))
             {
                 w.WriteText(new ScreenPoint(10, 10), "Hello world!", OxyColors.Black);
             }
+
+            SvgAssert.IsValidFile(FileName);
         }
 
-        private static IList<ScreenPoint> CreatePointList()
+        private static IEnumerable<ScreenPoint> CreatePointList()
         {
-            var points = new List<ScreenPoint>();
-            points.Add(new ScreenPoint(10, 20));
-            points.Add(new ScreenPoint(80, 30));
-            points.Add(new ScreenPoint(140, 120));
-            points.Add(new ScreenPoint(30, 140));
-            return points;
+            return new List<ScreenPoint>
+                {
+                    new ScreenPoint(10, 20),
+                    new ScreenPoint(80, 30),
+                    new ScreenPoint(140, 120),
+                    new ScreenPoint(30, 140)
+                };
         }
-
     }
 }

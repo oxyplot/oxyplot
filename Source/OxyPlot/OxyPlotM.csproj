@@ -87,6 +87,7 @@
     <Compile Include="Manipulators\CursorType.cs" />
     <Compile Include="Manipulators\PanManipulator.cs" />
     <Compile Include="Manipulators\TrackerHitResult.cs" />
+    <Compile Include="Svg\SvgExporter.cs" />
     <Compile Include="PlotModel\PlotElement.cs" />
     <Compile Include="PlotModel\PlotModel.Legends.cs" />
     <Compile Include="Foundation\CanonicalSplineHelper.cs" />
@@ -111,7 +112,6 @@
     <Compile Include="Render\IRenderContext.cs" />
     <Compile Include="Render\VerticalTextAlign.cs" />
     <Compile Include="Reporting\ReportWriters\WikiReportWriter.cs" />
-    <Compile Include="Reporting\ReportWriters\LatexReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\HtmlReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\IReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\StringExtensions.cs" />

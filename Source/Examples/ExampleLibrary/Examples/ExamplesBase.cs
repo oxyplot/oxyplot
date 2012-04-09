@@ -11,15 +11,6 @@ namespace ExampleLibrary
     public abstract class ExamplesBase
     {
         /// <summary>
-        /// Creates a plot model using the ExampleAttribute as title.
-        /// </summary>
-        /// <returns>A new plot model.</returns>
-        protected static PlotModel CreatePlotModel()
-        {
-            return new PlotModel(GetTitle(2));
-        }
-
-        /// <summary>
         /// Gets the title from the ExampleAttribute of the calling method.
         /// </summary>
         /// <param name="frameIndex">Index of the stack frame.</param>

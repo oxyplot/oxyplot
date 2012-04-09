@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DoubleExtensionsTests.cs" company="OxyPlot">
+// <copyright file="SutherlandHodgmanClippingTests.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,9 +7,12 @@
 namespace OxyPlot.Tests
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using NUnit.Framework;
 
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class SutherlandHodgmanClippingTests
     {
@@ -24,12 +27,7 @@ namespace OxyPlot.Tests
 
         private static IList<ScreenPoint> CreatePointList()
         {
-            var points = new List<ScreenPoint>();
-            points.Add(new ScreenPoint(-1, -1));
-            points.Add(new ScreenPoint(1, -2));
-            points.Add(new ScreenPoint(2, 2));
-            points.Add(new ScreenPoint(-2, 3));
-            return points;
+            return new List<ScreenPoint> { new ScreenPoint(-1, -1), new ScreenPoint(1, -2), new ScreenPoint(2, 2), new ScreenPoint(-2, 3) };
         }
     }
 }

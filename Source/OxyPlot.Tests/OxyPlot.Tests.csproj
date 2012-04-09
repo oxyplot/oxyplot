@@ -45,6 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axes\AxisTests.cs" />
+    <Compile Include="OxyAssert.cs" />
+    <Compile Include="TestModels.cs" />
+    <Compile Include="Svg\SvgAssert.cs" />
+    <Compile Include="Svg\SvgExporterTests.cs" />
     <Compile Include="Foundation\ArrayHelperTests.cs" />
     <Compile Include="Axes\DateTimeAxisTests.cs" />
     <Compile Include="Foundation\ConrecTests.cs" />
@@ -73,19 +77,25 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Schemas\svg\svg.xsd">
+      <Link>Schemas\svg.xsd</Link>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Schemas\svg\xlink.xsd">
+      <Link>Schemas\xlink.xsd</Link>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Schemas\svg\xml.xsd">
+      <Link>Schemas\xml.xsd</Link>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config" />
-    <Content Include="Svg\svg.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Svg\xlink.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Svg\xml.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Series\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

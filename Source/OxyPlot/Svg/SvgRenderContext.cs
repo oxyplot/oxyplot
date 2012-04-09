@@ -256,6 +256,11 @@ namespace OxyPlot
             VerticalTextAlign valign, 
             OxySize? maxSize)
         {
+            if (string.IsNullOrEmpty(text))
+            {
+                return;
+            }
+
             var lines = Regex.Split(text, "\r\n");
             if (valign == VerticalTextAlign.Bottom)
             {

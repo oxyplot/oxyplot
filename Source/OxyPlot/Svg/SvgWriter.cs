@@ -6,6 +6,7 @@
 
 namespace OxyPlot
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
@@ -40,7 +41,7 @@ namespace OxyPlot
         /// The height.
         /// </param>
         /// <param name="isDocument">
-        /// if set to <c>true</c> [is document].
+        /// if set to <c>true</c>, the writer will write the xml headers (?xml and !DOCTYPE).
         /// </param>
         public SvgWriter(Stream stream, double width, double height, bool isDocument = true)
             : base(stream)
@@ -94,7 +95,7 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// The close.
+        /// Closes the svg document.
         /// </summary>
         public override void Close()
         {
@@ -107,7 +108,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The complete.
+        /// Writes the end of the document.
         /// </summary>
         public void Complete()
         {
@@ -121,31 +122,31 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The create style.
+        /// Creates a style.
         /// </summary>
         /// <param name="fill">
-        /// The fill.
+        /// The fill color.
         /// </param>
         /// <param name="stroke">
-        /// The stroke.
+        /// The stroke color.
         /// </param>
         /// <param name="thickness">
-        /// The thickness.
+        /// The stroke thickness.
         /// </param>
         /// <param name="dashArray">
-        /// The dash array.
+        /// The line dash array.
         /// </param>
         /// <param name="lineJoin">
-        /// The line join.
+        /// The line join type.
         /// </param>
         /// <returns>
-        /// The create style.
+        /// A style string.
         /// </returns>
         public string CreateStyle(
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
             OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
             // http://oreilly.com/catalog/svgess/chapter/ch03.html
@@ -169,8 +170,8 @@ namespace OxyPlot
             }
             else
             {
-                style.AppendFormat(
-                    "stroke:{0};stroke-width:{1:" + this.NumberFormat + "}", this.ColorToString(stroke), thickness);
+                string formatString = "stroke:{0};stroke-width:{1:" + this.NumberFormat + "}";
+                style.AppendFormat(formatString, this.ColorToString(stroke), thickness);
                 switch (lineJoin)
                 {
                     case OxyPenLineJoin.Round:
@@ -201,13 +202,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write ellipse.
+        /// Writes an ellipse.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The x coordinate of the center.
         /// </param>
         /// <param name="y">
-        /// The y.
+        /// The y coordinate of the center.
         /// </param>
         /// <param name="width">
         /// The width.
@@ -226,18 +227,18 @@ namespace OxyPlot
             this.WriteAttributeString("cy", y + height / 2);
             this.WriteAttributeString("rx", width / 2);
             this.WriteAttributeString("ry", height / 2);
-            WriteAttributeString("style", style);
+            this.WriteAttributeString("style", style);
             this.WriteEndElement();
         }
 
         /// <summary>
-        /// The write line.
+        /// Writes a line.
         /// </summary>
         /// <param name="p1">
-        /// The p 1.
+        /// The first point.
         /// </param>
         /// <param name="p2">
-        /// The p 2.
+        /// The second point.
         /// </param>
         /// <param name="style">
         /// The style.
@@ -251,33 +252,33 @@ namespace OxyPlot
             this.WriteAttributeString("y1", p1.Y);
             this.WriteAttributeString("x2", p2.X);
             this.WriteAttributeString("y2", p2.Y);
-            WriteAttributeString("style", style);
+            this.WriteAttributeString("style", style);
             this.WriteEndElement();
         }
 
         /// <summary>
-        /// The write polygon.
+        /// Writes a polygon.
         /// </summary>
-        /// <param name="pts">
-        /// The pts.
+        /// <param name="points">
+        /// The points.
         /// </param>
         /// <param name="style">
         /// The style.
         /// </param>
-        public void WritePolygon(IEnumerable<ScreenPoint> pts, string style)
+        public void WritePolygon(IEnumerable<ScreenPoint> points, string style)
         {
             // http://www.w3.org/TR/SVG/shapes.html#PolygonElement
             this.WriteStartElement("polygon");
-            this.WriteAttributeString("points", this.PointsToString(pts));
-            WriteAttributeString("style", style);
+            this.WriteAttributeString("points", this.PointsToString(points));
+            this.WriteAttributeString("style", style);
             this.WriteEndElement();
         }
 
         /// <summary>
-        /// The write polyline.
+        /// Writes a polyline.
         /// </summary>
         /// <param name="pts">
-        /// The pts.
+        /// The points.
         /// </param>
         /// <param name="style">
         /// The style.
@@ -287,18 +288,18 @@ namespace OxyPlot
             // http://www.w3.org/TR/SVG/shapes.html#PolylineElement
             this.WriteStartElement("polyline");
             this.WriteAttributeString("points", this.PointsToString(pts));
-            WriteAttributeString("style", style);
+            this.WriteAttributeString("style", style);
             this.WriteEndElement();
         }
 
         /// <summary>
-        /// The write rectangle.
+        /// Writes a rectangle.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The x coordinate.
         /// </param>
         /// <param name="y">
-        /// The y.
+        /// The y coordinate.
         /// </param>
         /// <param name="width">
         /// The width.
@@ -317,21 +318,21 @@ namespace OxyPlot
             this.WriteAttributeString("y", y);
             this.WriteAttributeString("width", width);
             this.WriteAttributeString("height", height);
-            WriteAttributeString("style", style);
+            this.WriteAttributeString("style", style);
             this.WriteEndElement();
         }
 
         /// <summary>
-        /// The write text.
+        /// Writes text.
         /// </summary>
-        /// <param name="pt">
-        /// The pt.
+        /// <param name="position">
+        /// The position.
         /// </param>
         /// <param name="text">
         /// The text.
         /// </param>
         /// <param name="fill">
-        /// The fill.
+        /// The text color.
         /// </param>
         /// <param name="fontFamily">
         /// The font family.
@@ -343,30 +344,30 @@ namespace OxyPlot
         /// The font weight.
         /// </param>
         /// <param name="rotate">
-        /// The rotate.
+        /// The rotation angle.
         /// </param>
         /// <param name="halign">
-        /// The halign.
+        /// The horizontal alignment.
         /// </param>
         /// <param name="valign">
-        /// The valign.
+        /// The vertical alignment.
         /// </param>
         public void WriteText(
-            ScreenPoint pt, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily = null, 
-            double fontSize = 10, 
-            double fontWeight = FontWeights.Normal, 
-            double rotate = 0, 
-            HorizontalTextAlign halign = HorizontalTextAlign.Left, 
+            ScreenPoint position,
+            string text,
+            OxyColor fill,
+            string fontFamily = null,
+            double fontSize = 10,
+            double fontWeight = FontWeights.Normal,
+            double rotate = 0,
+            HorizontalTextAlign halign = HorizontalTextAlign.Left,
             VerticalTextAlign valign = VerticalTextAlign.Top)
         {
             // http://www.w3.org/TR/SVG/text.html
             this.WriteStartElement("text");
 
-            // WriteAttributeString("x", pt.X);
-            // WriteAttributeString("y", pt.Y);
+            // WriteAttributeString("x", position.X);
+            // WriteAttributeString("y", position.Y);
             string baselineAlignment = "hanging";
             if (valign == VerticalTextAlign.Middle)
             {
@@ -378,7 +379,7 @@ namespace OxyPlot
                 baselineAlignment = "baseline";
             }
 
-            WriteAttributeString("dominant-baseline", baselineAlignment);
+            this.WriteAttributeString("dominant-baseline", baselineAlignment);
 
             string textAnchor = "start";
             if (halign == HorizontalTextAlign.Center)
@@ -391,20 +392,20 @@ namespace OxyPlot
                 textAnchor = "end";
             }
 
-            WriteAttributeString("text-anchor", textAnchor);
+            this.WriteAttributeString("text-anchor", textAnchor);
 
             string fmt = "translate({0:" + this.NumberFormat + "},{1:" + this.NumberFormat + "})";
-            string transform = string.Format(CultureInfo.InvariantCulture, fmt, pt.X, pt.Y);
-            if (rotate != 0)
+            string transform = string.Format(CultureInfo.InvariantCulture, fmt, position.X, position.Y);
+            if (Math.Abs(rotate) > 0)
             {
                 transform += string.Format(CultureInfo.InvariantCulture, " rotate({0})", rotate);
             }
 
-            WriteAttributeString("transform", transform);
+            this.WriteAttributeString("transform", transform);
 
             if (fontFamily != null)
             {
-                WriteAttributeString("font-family", fontFamily);
+                this.WriteAttributeString("font-family", fontFamily);
             }
 
             if (fontSize > 0)
@@ -429,14 +430,10 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
-        /// The color to string.
+        /// Converts a color to a svg color string.
         /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// The color to string.
-        /// </returns>
+        /// <param name="color">The color.</param>
+        /// <returns>The color string.</returns>
         protected string ColorToString(OxyColor color)
         {
             if (color == OxyColors.Black)
@@ -444,12 +441,8 @@ namespace OxyPlot
                 return "black";
             }
 
-            return
-                string.Format(
-                    "rgb({0:" + this.NumberFormat + "},{1:" + this.NumberFormat + "},{2:" + this.NumberFormat + "})", 
-                    color.R, 
-                    color.G, 
-                    color.B);
+            var formatString = "rgb({0:" + this.NumberFormat + "},{1:" + this.NumberFormat + "},{2:" + this.NumberFormat + "})";
+            return string.Format(formatString, color.R, color.G, color.B);
         }
 
         /// <summary>
@@ -463,21 +456,15 @@ namespace OxyPlot
         /// </param>
         protected void WriteAttributeString(string name, double value)
         {
-            WriteAttributeString(name, value.ToString(this.NumberFormat, CultureInfo.InvariantCulture));
+            this.WriteAttributeString(name, value.ToString(this.NumberFormat, CultureInfo.InvariantCulture));
         }
 
         /// <summary>
-        /// The get auto value.
+        /// Converts a value to a string or to the specified "auto" string if the value is NaN.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="auto">
-        /// The auto.
-        /// </param>
-        /// <returns>
-        /// The get auto value.
-        /// </returns>
+        /// <param name="value">The value.</param>
+        /// <param name="auto">The string to return if value is NaN.</param>
+        /// <returns>A string.</returns>
         private string GetAutoValue(double value, string auto)
         {
             if (double.IsNaN(value))
@@ -489,19 +476,15 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The points to string.
+        /// Converts a list of points to a string.
         /// </summary>
-        /// <param name="pts">
-        /// The pts.
-        /// </param>
-        /// <returns>
-        /// The points to string.
-        /// </returns>
-        private string PointsToString(IEnumerable<ScreenPoint> pts)
+        /// <param name="points">The points.</param>
+        /// <returns>A string.</returns>
+        private string PointsToString(IEnumerable<ScreenPoint> points)
         {
             var sb = new StringBuilder();
             string fmt = "{0:" + this.NumberFormat + "},{1:" + this.NumberFormat + "} ";
-            foreach (var p in pts)
+            foreach (var p in points)
             {
                 sb.AppendFormat(CultureInfo.InvariantCulture, fmt, p.X, p.Y);
             }
