@@ -10,7 +10,6 @@ namespace OxyPlot.Pdf
     using System.IO;
 
     using MigraDoc.DocumentObjectModel;
-    using MigraDoc.DocumentObjectModel.Tables;
     using MigraDoc.Rendering;
 
     using OxyPlot.Reporting;
@@ -24,16 +23,6 @@ namespace OxyPlot.Pdf
     public class PdfReportWriter : IDisposable, IReportWriter
     {
         #region Constants and Fields
-
-        /// <summary>
-        ///   The doc.
-        /// </summary>
-        protected Document doc;
-
-        /// <summary>
-        ///   The filename.
-        /// </summary>
-        protected string filename;
 
         /// <summary>
         ///   The current section.
@@ -53,12 +42,12 @@ namespace OxyPlot.Pdf
         /// Initializes a new instance of the <see cref="PdfReportWriter"/> class.
         /// </summary>
         /// <param name="filename">
-        /// The filename.
+        /// The FileName.
         /// </param>
         public PdfReportWriter(string filename)
         {
-            this.filename = filename;
-            this.doc = new Document();
+            this.FileName = filename;
+            this.Document = new Document();
         }
 
         #endregion
@@ -66,23 +55,23 @@ namespace OxyPlot.Pdf
         #region Properties
 
         /// <summary>
-        ///   Gets or sets CurrentSection.
+        ///   Gets or sets the pdf document.
+        /// </summary>
+        protected Document Document { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the file name.
+        /// </summary>
+        protected string FileName { get; set; }
+
+        /// <summary>
+        ///   Gets the current section.
         /// </summary>
         private Section CurrentSection
         {
             get
             {
-                if (this.currentSection == null)
-                {
-                    this.currentSection = this.doc.AddSection();
-                }
-
-                return this.currentSection;
-            }
-
-            set
-            {
-                this.currentSection = value;
+                return this.currentSection ?? (this.currentSection = this.Document.AddSection());
             }
         }
 
@@ -134,9 +123,9 @@ namespace OxyPlot.Pdf
         /// </summary>
         public virtual void Close()
         {
-            var r = new PdfDocumentRenderer { Document = this.doc };
+            var r = new PdfDocumentRenderer { Document = this.Document };
             r.RenderDocument();
-            r.PdfDocument.Save(this.filename);
+            r.PdfDocument.Save(this.FileName);
         }
 
         /// <summary>
@@ -245,83 +234,104 @@ namespace OxyPlot.Pdf
         /// </param>
         public void WritePlot(PlotFigure plot)
         {
-            Paragraph p = this.WriteStartFigure(plot);
-            p.AddText("Plot drawing is not implemented yet.");
+            if (this.FileName == null)
+            {
+                return;
+            }
+
+            var directory = Path.GetDirectoryName(this.FileName);
+            if (directory == null)
+            {
+                return;
+            }
+
+            var source = string.Format(
+                "{0}_Plot{1}.pdf", Path.GetFileNameWithoutExtension(this.FileName), plot.FigureNumber);
+            var sourceFullPath = Path.Combine(directory, source);
+
+            PdfExporter.Export(plot.PlotModel, sourceFullPath, plot.Width, plot.Height);
+
+            var p = this.WriteStartFigure(plot);
+            MigraDoc.DocumentObjectModel.Shapes.Image pi = p.AddImage(sourceFullPath);
+            pi.Width = Unit.FromCentimeter(15);
+
             this.WriteEndFigure(plot, p);
         }
 
         /// <summary>
-        /// The write report.
+        /// Writes the report.
         /// </summary>
-        /// <param name="report">
-        /// The report.
-        /// </param>
-        /// <param name="style">
-        /// The style.
-        /// </param>
-        public void WriteReport(Report report, ReportStyle style)
+        /// <param name="report">The report.</param>
+        /// <param name="reportStyle">The report style.</param>
+        public void WriteReport(Report report, ReportStyle reportStyle)
         {
-            this.style = style;
-            DefineStyles(this.doc, style);
+            this.style = reportStyle;
+            DefineStyles(this.Document, reportStyle);
             report.Write(this);
         }
 
         /// <summary>
-        /// The write start figure.
+        /// Writes the start of a figure.
         /// </summary>
-        /// <param name="f">
-        /// The f.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="f">The figure.</param>
+        /// <returns>A paragraph</returns>
         public Paragraph WriteStartFigure(Figure f)
         {
             return this.CurrentSection.AddParagraph();
         }
 
         /// <summary>
-        /// The write table.
+        /// Writes the table.
         /// </summary>
-        /// <param name="t">
-        /// The t.
-        /// </param>
-        public void WriteTable(Table t)
+        /// <param name="table">The table.</param>
+        public void WriteTable(Table table)
         {
-            if (t.Rows == null)
+            if (table.Rows == null)
             {
                 return;
             }
 
-            var table = new MigraDoc.DocumentObjectModel.Tables.Table { Borders = { Width = 0.75 } };
+            var pdfTable = new MigraDoc.DocumentObjectModel.Tables.Table();
+            
+            // pdfTable.Style = "Table";
+            // pdfTable.Borders.Color = TableBorder;
+            pdfTable.Borders.Width = 0.25;
+            pdfTable.Borders.Left.Width = 0.5;
+            pdfTable.Borders.Right.Width = 0.5;
+            pdfTable.Rows.LeftIndent = 0;
 
-            int columns = t.Columns.Count;
+            int columns = table.Columns.Count;
 
             for (int j = 0; j < columns; j++)
             {
-                Column column = table.AddColumn();
-                column.Width = Unit.FromMillimeter(t.Columns[j].ActualWidth);
-                column.Format.Alignment = ConvertToParagraphAlignment(t.Columns[j].Alignment);
+                var pdfColumn = pdfTable.AddColumn();
+                
+                // todo: the widths are not working
+                //// pdfColumn.Width = Unit.FromMillimeter(table.Columns[j].ActualWidth);
+                
+                pdfColumn.Format.Alignment = ConvertToParagraphAlignment(table.Columns[j].Alignment);
             }
 
-            foreach (var tr in t.Rows)
+            foreach (var tr in table.Rows)
             {
-                Row row = table.AddRow();
+                var pdfRow = pdfTable.AddRow();
                 for (int j = 0; j < columns; j++)
                 {
-                    bool isHeader = tr.IsHeader || t.Columns[j].IsHeader;
+                    bool isHeader = tr.IsHeader || table.Columns[j].IsHeader;
 
-                    TableCell c = tr.Cells[j];
-                    Cell cell = row.Cells[j];
-                    cell.AddParagraph(c.Content ?? string.Empty);
-                    cell.Style = isHeader ? "TableHeader" : "TableText";
+                    var c = tr.Cells[j];
+                    var pdfCell = pdfRow.Cells[j];
+                    pdfCell.AddParagraph(c.Content ?? string.Empty);
+                    pdfCell.Style = isHeader ? "TableHeader" : "TableText";
+                    pdfCell.Format.Alignment = ConvertToParagraphAlignment(table.Columns[j].Alignment);
                 }
             }
 
             // table.SetEdge(0, 0, t.Columns.Count, t.Items.Count(), Edge.Box, BorderStyle.Single, 1.5, Colors.Black);
-            Paragraph pa = this.CurrentSection.AddParagraph();
-            pa.AddFormattedText(t.GetFullCaption(this.style), "TableCaption");
+            var pa = this.CurrentSection.AddParagraph();
+            pa.AddFormattedText(table.GetFullCaption(this.style), "TableCaption");
 
-            this.CurrentSection.Add(table);
+            this.CurrentSection.Add(pdfTable);
         }
 
         #endregion
@@ -329,12 +339,13 @@ namespace OxyPlot.Pdf
         #region Methods
 
         /// <summary>
-        /// The convert to paragraph alignment.
+        /// Converts paragraph alignment.
         /// </summary>
         /// <param name="alignment">
         /// The alignment.
         /// </param>
         /// <returns>
+        /// The pdf alignment.
         /// </returns>
         private static ParagraphAlignment ConvertToParagraphAlignment(Alignment alignment)
         {
@@ -376,12 +387,13 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The to migra doc color.
+        /// Converts an OxyColor to a migra doc color.
         /// </summary>
         /// <param name="c">
-        /// The c.
+        /// The color.
         /// </param>
         /// <returns>
+        /// The converted color.
         /// </returns>
         private static Color ToMigraDocColor(OxyColor c)
         {

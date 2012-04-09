@@ -11,10 +11,32 @@ namespace OxyPlot.Reporting
     using System.Text;
 
     /// <summary>
+    /// Specifies the html element type to use when writing plots.
+    /// </summary>
+    public enum HtmlPlotElementType
+    {
+        /// <summary>
+        /// Use the embed tag and reference an external svg file.
+        /// </summary>
+        Embed, 
+
+        /// <summary>
+        /// Use the object tag and reference an external svg file.
+        /// </summary>
+        Object, 
+
+        /// <summary>
+        /// Use the svg tag and include the plot inline.
+        /// </summary>
+        Svg
+    }
+
+    /// <summary>
     /// HTML5 report writer.
     /// </summary>
     public class HtmlReportWriter : XmlWriterBase, IReportWriter
     {
+
         #region Constants and Fields
 
         /// <summary>
@@ -27,6 +49,15 @@ namespace OxyPlot.Reporting
         /// </summary>
         private ReportStyle style;
 
+        /// <summary>
+        /// The directory of the output file.
+        /// </summary>
+        private string directory;
+
+        /// <summary>
+        /// The path of the output file.
+        /// </summary>
+        private string outputFile;
         #endregion
 
         #region Constructors and Destructors
@@ -42,6 +73,9 @@ namespace OxyPlot.Reporting
         public HtmlReportWriter(string path)
             : base(path)
         {
+            this.directory = Path.GetDirectoryName(path);
+            this.outputFile = path;
+            this.PlotElementType = HtmlPlotElementType.Embed;
             this.WriteHtmlElement();
         }
 
@@ -57,17 +91,12 @@ namespace OxyPlot.Reporting
             : base(stream)
         {
             this.WriteHtmlElement();
-        }
-
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        private void WriteHtmlElement()
-        {
-            this.WriteStartElement("html", "http://www.w3.org/1999/xhtml");
+            this.PlotElementType = HtmlPlotElementType.Svg;
         }
 
         #endregion
+
+        public HtmlPlotElementType PlotElementType { get; set; }
 
         #region Public Methods
 
@@ -84,17 +113,17 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Writes the class ID.
         /// </summary>
-        /// <param name="_class">
-        /// The _class.
+        /// <param name="className">
+        /// The class.
         /// </param>
         /// <param name="id">
         /// The id.
         /// </param>
-        public void WriteClassID(string _class, string id = null)
+        public void WriteClassId(string className, string id = null)
         {
-            if (_class != null)
+            if (className != null)
             {
-                this.WriteAttributeString("class", _class);
+                this.WriteAttributeString("class", className);
             }
 
             if (id != null)
@@ -107,7 +136,7 @@ namespace OxyPlot.Reporting
         /// Writes the drawing.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The drawing.
         /// </param>
         public void WriteDrawing(DrawingFigure d)
         {
@@ -131,7 +160,7 @@ namespace OxyPlot.Reporting
         /// Writes the header.
         /// </summary>
         /// <param name="h">
-        /// The h.
+        /// The header.
         /// </param>
         public void WriteHeader(Header h)
         {
@@ -149,7 +178,7 @@ namespace OxyPlot.Reporting
         /// Writes the image.
         /// </summary>
         /// <param name="i">
-        /// The i.
+        /// The image.
         /// </param>
         public void WriteImage(Image i)
         {
@@ -167,7 +196,7 @@ namespace OxyPlot.Reporting
         /// Writes the paragraph.
         /// </summary>
         /// <param name="p">
-        /// The p.
+        /// The paragraph.
         /// </param>
         public void WriteParagraph(Paragraph p)
         {
@@ -183,7 +212,22 @@ namespace OxyPlot.Reporting
         public void WritePlot(PlotFigure plot)
         {
             this.WriteStartFigure(plot);
-            this.WriteRaw(plot.PlotModel.ToSvg(plot.Width, plot.Height));
+            switch (this.PlotElementType)
+            {
+                case HtmlPlotElementType.Embed:
+                case HtmlPlotElementType.Object:
+                    string source = string.Format("{0}_Plot{1}.svg", Path.GetFileNameWithoutExtension(this.outputFile), plot.FigureNumber);
+                    plot.PlotModel.SaveSvg(this.GetFullFileName(source), plot.Width, plot.Height);
+                    this.WriteStartElement(this.PlotElementType == HtmlPlotElementType.Embed ? "embed" : "object");
+                    this.WriteAttributeString("src", source);
+                    this.WriteAttributeString("type", "image/svg+xml");
+                    this.WriteEndElement();
+                    break;
+                case HtmlPlotElementType.Svg:
+                    this.WriteRaw(plot.PlotModel.ToSvg(plot.Width, plot.Height));
+                    break;
+            }
+
             this.WriteEndFigure(plot.FigureText);
         }
 
@@ -290,13 +334,31 @@ namespace OxyPlot.Reporting
         #region Methods
 
         /// <summary>
-        /// The create css.
+        /// Gets the full name of the specified file.
+        /// </summary>
+        /// <param name="filename">The filename (relative to the output file).</param>
+        /// <returns>A full path to the file.</returns>
+        private string GetFullFileName(string filename)
+        {
+            return Path.GetFullPath(Path.Combine(this.directory, filename));
+        }
+
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
+        private void WriteHtmlElement()
+        {
+            this.WriteStartElement("html", "http://www.w3.org/1999/xhtml");
+        }
+
+        /// <summary>
+        /// Creates the css section.
         /// </summary>
         /// <param name="style">
         /// The style.
         /// </param>
         /// <returns>
-        /// The create css.
+        /// The css.
         /// </returns>
         private static string CreateCss(ReportStyle style)
         {
@@ -327,28 +389,20 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The get alignment string.
+        /// Gets the alignment string.
         /// </summary>
-        /// <param name="a">
-        /// The a.
-        /// </param>
-        /// <returns>
-        /// The get alignment string.
-        /// </returns>
+        /// <param name="a">The alignment type.</param>
+        /// <returns>An alignment string.</returns>
         private static string GetAlignmentString(Alignment a)
         {
             return a.ToString().ToLower();
         }
 
         /// <summary>
-        /// The paragraph style to css.
+        /// Converts a paragraphes style to css.
         /// </summary>
-        /// <param name="s">
-        /// The s.
-        /// </param>
-        /// <returns>
-        /// The paragraph style to css.
-        /// </returns>
+        /// <param name="s">The style.</param>
+        /// <returns>A css string.</returns>
         private static string ParagraphStyleToCss(ParagraphStyle s)
         {
             var css = new StringBuilder();
@@ -367,14 +421,10 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The write div.
+        /// Writes the div.
         /// </summary>
-        /// <param name="style">
-        /// The style.
-        /// </param>
-        /// <param name="content">
-        /// The content.
-        /// </param>
+        /// <param name="style">The style.</param>
+        /// <param name="content">The content.</param>
         private void WriteDiv(string style, string content)
         {
             this.WriteStartElement("div");
@@ -384,11 +434,9 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The write end figure.
+        /// Writes the end figure.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
+        /// <param name="text">The figure text.</param>
         private void WriteEndFigure(string text)
         {
             this.WriteDiv("figuretext", string.Format("Fig {0}. {1}", this.figureCounter, text));
@@ -396,17 +444,11 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The write html header.
+        /// Writes the HTML header.
         /// </summary>
-        /// <param name="title">
-        /// The title.
-        /// </param>
-        /// <param name="cssPath">
-        /// The css path.
-        /// </param>
-        /// <param name="style">
-        /// The style.
-        /// </param>
+        /// <param name="title">The title.</param>
+        /// <param name="cssPath">The CSS path.</param>
+        /// <param name="style">The style.</param>
         private void WriteHtmlHeader(string title, string cssPath, string style)
         {
             this.WriteStartElement("head");
@@ -438,16 +480,14 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The write start figure.
+        /// Writes the start figure element.
         /// </summary>
-        /// <param name="f">
-        /// The f.
-        /// </param>
+        /// <param name="f">The figure.</param>
         private void WriteStartFigure(Figure f)
         {
             this.figureCounter++;
             this.WriteStartElement("p");
-            this.WriteClassID("figure");
+            this.WriteClassId("figure");
         }
 
         #endregion

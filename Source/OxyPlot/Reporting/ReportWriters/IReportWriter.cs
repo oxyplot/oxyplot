@@ -14,71 +14,53 @@ namespace OxyPlot.Reporting
         #region Public Methods
 
         /// <summary>
-        /// The write drawing.
+        /// Writes the drawing.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        void WriteDrawing(DrawingFigure d);
+        /// <param name="drawing">The drawing.</param>
+        void WriteDrawing(DrawingFigure drawing);
 
         /// <summary>
-        /// The write equation.
+        /// Writes the equation.
         /// </summary>
-        /// <param name="equation">
-        /// The equation.
-        /// </param>
+        /// <param name="equation">The equation.</param>
         void WriteEquation(Equation equation);
 
         /// <summary>
-        /// The write header.
+        /// Writes the header.
         /// </summary>
-        /// <param name="h">
-        /// The h.
-        /// </param>
-        void WriteHeader(Header h);
+        /// <param name="header">The header.</param>
+        void WriteHeader(Header header);
 
         /// <summary>
-        /// The write image.
+        /// Writes the image.
         /// </summary>
-        /// <param name="i">
-        /// The i.
-        /// </param>
-        void WriteImage(Image i);
+        /// <param name="image">The image.</param>
+        void WriteImage(Image image);
 
         /// <summary>
-        /// The write paragraph.
+        /// Writes the paragraph.
         /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        void WriteParagraph(Paragraph p);
+        /// <param name="paragraph">The paragraph.</param>
+        void WriteParagraph(Paragraph paragraph);
 
         /// <summary>
-        /// The write plot.
+        /// Writes the plot.
         /// </summary>
-        /// <param name="plot">
-        /// The plot.
-        /// </param>
+        /// <param name="plot">The plot.</param>
         void WritePlot(PlotFigure plot);
 
         /// <summary>
-        /// The write report.
+        /// Writes the report.
         /// </summary>
-        /// <param name="report">
-        /// The report.
-        /// </param>
-        /// <param name="style">
-        /// The style.
-        /// </param>
+        /// <param name="report">The report.</param>
+        /// <param name="style">The style.</param>
         void WriteReport(Report report, ReportStyle style);
 
         /// <summary>
-        /// The write table.
+        /// Writes the table.
         /// </summary>
-        /// <param name="t">
-        /// The t.
-        /// </param>
-        void WriteTable(Table t);
+        /// <param name="table">The table.</param>
+        void WriteTable(Table table);
 
         #endregion
     }
