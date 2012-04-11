@@ -102,11 +102,18 @@ namespace OxyPlot
                 if (r.Contains(point))
                 {
                     double value = (this.Items[i].Y0 + this.Items[i].Y1) / 2;
-                    ScreenPoint sp = point;
+                    var sp = point;
                     var dp = new DataPoint(i, value);
                     var item = this.GetItem(i);
-                    var text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, item,
-                        this.Items[i].X0, this.Items[i].X1, this.Items[i].Y0, this.Items[i].Y1, this.Items[i].Title);
+                    var text = StringHelper.Format(
+                        this.ActualCulture, 
+                        this.TrackerFormatString, 
+                        item,
+                        this.Items[i].X0, 
+                        this.Items[i].X1, 
+                        this.Items[i].Y0, 
+                        this.Items[i].Y1, 
+                        this.Items[i].Title);
                     return new TrackerHitResult(this, dp, sp, item, text);
                 }
             }
@@ -161,8 +168,8 @@ namespace OxyPlot
                     continue;
                 }
 
-                var p0 = this.XAxis.Transform(item.X0, item.Y0, this.YAxis);
-                var p1 = this.XAxis.Transform(item.X1, item.Y1, this.YAxis);
+                var p0 = this.Transform(item.X0, item.Y0);
+                var p1 = this.Transform(item.X1, item.Y1);
 
                 var rectangle = OxyRect.Create(p0.X, p0.Y, p1.X, p1.Y);
 
@@ -214,7 +221,7 @@ namespace OxyPlot
             double height = (legendBox.Bottom - legendBox.Top) * 0.8;
             double width = height;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - 0.5 * width, ymid - 0.5 * height, width, height),
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
                 this.FillColor,
                 this.StrokeColor,
                 this.StrokeThickness);
@@ -239,17 +246,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Updates the axis maximum and minimum values.
-        /// </summary>
-        protected internal override void UpdateAxisMaxMin()
-        {
-            this.XAxis.Include(this.MinX);
-            this.XAxis.Include(this.MaxX);
-            this.YAxis.Include(this.MinY);
-            this.YAxis.Include(this.MaxY);
-        }
-
-        /// <summary>
         /// Updates the data.
         /// </summary>
         protected internal override void UpdateData()
@@ -261,13 +257,13 @@ namespace OxyPlot
 
             this.Items.Clear();
 
-            throw new NotImplementedException();
-            //ReflectionHelper.FillManyValues(
+            // ReflectionHelper.FillList(
             //    this.ItemsSource,
             //    this.Items,
             //    new[] { this.MinimumField, this.MaximumField },
             //    (item, value) => item.Minimum = Convert.ToDouble(value),
             //    (item, value) => item.Maximum = Convert.ToDouble(value));
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -300,8 +296,6 @@ namespace OxyPlot
             this.MinY = minValueY;
             this.MaxY = maxValueY;
         }
-
-
         #endregion
     }
 }

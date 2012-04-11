@@ -84,50 +84,32 @@ namespace OxyPlot
 
             for (int i = 0; i < this.points.Count; i++)
             {
-                IDataPoint p1 = this.points[i];
+                var p1 = this.points[i];
                 var basePoint = new DataPoint(p1.X, this.Base);
-                ScreenPoint sp1 = Axis.Transform(p1, this.XAxis, this.YAxis);
-                ScreenPoint sp2 = Axis.Transform(basePoint, this.XAxis, this.YAxis);
+                var sp1 = this.Transform(p1);
+                var sp2 = this.Transform(basePoint);
+                var u = ScreenPoint.FindPositionOnLine(point, sp1, sp2);
 
-                double sp21X = sp2.x - sp1.x;
-                double sp21Y = sp2.y - sp1.y;
-                double u1 = (point.x - sp1.x) * sp21X + (point.y - sp1.y) * sp21Y;
-                double u2 = sp21X * sp21X + sp21Y * sp21Y;
-                double ds = sp21X * sp21X + sp21Y * sp21Y;
-
-                if (ds < 4)
+                if (double.IsNaN(u))
                 {
-                    // if the points are very close, we can get numerical problems, just use the first point...
-                    u1 = 0;
-                    u2 = 1;
+                    continue;
                 }
 
-                if (u2 == 0)
-                {
-                    continue; // P1 && P2 coincident
-                }
-
-                double u = u1 / u2;
                 if (u < 0 || u > 1)
                 {
                     continue; // outside line
                 }
 
-                double sx = sp1.x + u * sp21X;
-                double sy = sp1.y + u * sp21Y;
-
-                double dx = point.x - sx;
-                double dy = point.y - sy;
-                double distance = dx * dx + dy * dy;
+                var sp = sp1 + (sp2 - sp1) * u;
+                double distance = (point - sp).LengthSquared;
 
                 if (distance < minimumDistance)
                 {
                     result = new TrackerHitResult(
-                        this, 
-                        new DataPoint(p1.X, p1.Y), 
-                        new ScreenPoint(sp1.x, sp1.y), 
-                        this.GetItem(i), 
-                        null);
+                        this,
+                        new DataPoint(p1.X, p1.Y),
+                        new ScreenPoint(sp1.x, sp1.y),
+                        this.GetItem(i));
                     minimumDistance = distance;
                 }
             }
@@ -167,19 +149,19 @@ namespace OxyPlot
                     continue;
                 }
 
-                ScreenPoint p0 = this.XAxis.Transform(point.X, this.Base, this.YAxis);
-                ScreenPoint p1 = this.XAxis.Transform(point.X, point.Y, this.YAxis);
+                ScreenPoint p0 = this.Transform(point.X, this.Base);
+                ScreenPoint p1 = this.Transform(point.X, point.Y);
 
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
                     rc.DrawClippedLine(
-                        new[] { p0, p1 }, 
-                        clippingRect, 
-                        minDistSquared, 
-                        this.Color, 
-                        this.StrokeThickness, 
-                        this.LineStyle, 
-                        this.LineJoin, 
+                        new[] { p0, p1 },
+                        clippingRect,
+                        minDistSquared,
+                        this.Color,
+                        this.StrokeThickness,
+                        this.LineStyle,
+                        this.LineJoin,
                         false);
                 }
 
@@ -189,13 +171,13 @@ namespace OxyPlot
             if (this.MarkerType != MarkerType.None)
             {
                 rc.DrawMarkers(
-                    markerPoints, 
-                    clippingRect, 
-                    this.MarkerType, 
-                    this.MarkerOutline, 
-                    new[] { this.MarkerSize }, 
-                    this.MarkerFill, 
-                    this.MarkerStroke, 
+                    markerPoints,
+                    clippingRect,
+                    this.MarkerType,
+                    this.MarkerOutline,
+                    new[] { this.MarkerSize },
+                    this.MarkerFill,
+                    this.MarkerStroke,
                     this.MarkerStrokeThickness);
             }
         }

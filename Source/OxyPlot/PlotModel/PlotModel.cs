@@ -1003,7 +1003,7 @@ namespace OxyPlot
                     continue;
                 }
 
-                TrackerHitResult thr = ts.GetNearestPoint(point, true) ?? ts.GetNearestPoint(point, false);
+                var thr = ts.GetNearestPoint(point, true) ?? ts.GetNearestPoint(point, false);
 
                 if (thr == null)
                 {

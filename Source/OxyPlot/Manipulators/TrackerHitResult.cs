@@ -6,13 +6,13 @@
 
 namespace OxyPlot
 {
-    using System.Globalization;
-
     /// <summary>
-    /// Tracker data class.
+    ///   Provides a data container for a tracker hit result.
+    /// </summary>
+    /// <remarks>
     ///   This is used as DataContext for the TrackerControl.
     ///   The TrackerControl is visible when the user use the left mouse button to "track" points on the series.
-    /// </summary>
+    /// </remarks>
     public class TrackerHitResult
     {
         #region Constants and Fields
@@ -20,7 +20,7 @@ namespace OxyPlot
         /// <summary>
         ///   The default format string.
         /// </summary>
-        private const string DefaultFormatString = "{1}: {2}\n{3}: {4}";
+        private const string DefaultFormatString = "{0}\n{1}: {2}\n{3}: {4}";
 
         #endregion
 
@@ -33,10 +33,10 @@ namespace OxyPlot
         /// The series.
         /// </param>
         /// <param name="dp">
-        /// The dp.
+        /// The data point.
         /// </param>
         /// <param name="sp">
-        /// The sp.
+        /// The screen point.
         /// </param>
         /// <param name="item">
         /// The item.
@@ -44,7 +44,7 @@ namespace OxyPlot
         /// <param name="text">
         /// The text.
         /// </param>
-        public TrackerHitResult(Series series, DataPoint dp, ScreenPoint sp, object item, string text = null)
+        public TrackerHitResult(Series series, IDataPoint dp, ScreenPoint sp, object item = null, string text = null)
         {
             this.DataPoint = dp;
             this.Position = sp;
@@ -66,7 +66,7 @@ namespace OxyPlot
         /// <summary>
         ///   Gets or sets the nearest or interpolated data point.
         /// </summary>
-        public DataPoint DataPoint { get; set; }
+        public IDataPoint DataPoint { get; set; }
 
         /// <summary>
         ///   Gets or sets the source item of the point.
@@ -114,10 +114,10 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// The to string.
+        /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// The to string.
+        /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -133,19 +133,21 @@ namespace OxyPlot
                 formatString = ts.TrackerFormatString;
             }
 
-            string xAxisTitle = (this.XAxis != null ? this.XAxis.Title : null) ?? "X";
-            string yAxisTitle = (this.YAxis != null ? this.YAxis.Title : null) ?? "Y";
-            object xValue = this.XAxis != null ? this.XAxis.GetValue(this.DataPoint.X) : this.DataPoint.X;
-            object yValue = this.YAxis != null ? this.YAxis.GetValue(this.DataPoint.Y) : this.DataPoint.Y;
-            return string.Format(
-                CultureInfo.InvariantCulture, 
-                formatString, 
-                this.Series.Title, 
-                xAxisTitle, 
-                xValue, 
-                yAxisTitle, 
-                yValue, 
-                this.Item);
+            string xaxisTitle = (this.XAxis != null ? this.XAxis.Title : null) ?? "X";
+            string yaxisTitle = (this.YAxis != null ? this.YAxis.Title : null) ?? "Y";
+            object xvalue = this.XAxis != null ? this.XAxis.GetValue(this.DataPoint.X) : this.DataPoint.X;
+            object yvalue = this.YAxis != null ? this.YAxis.GetValue(this.DataPoint.Y) : this.DataPoint.Y;
+
+            return StringHelper.Format(
+                this.Series.ActualCulture,
+                formatString,
+                this.Item,
+                this.Series.Title,
+                xaxisTitle,
+                xvalue,
+                yaxisTitle,
+                yvalue,
+                this.Item).Trim();
         }
 
         #endregion

@@ -184,6 +184,8 @@ namespace OxyPlot
         {
             base.Render(rc, model);
 
+            bool aliased = false;
+
             double actualMinimumX = Math.Max(this.MinimumX, this.XAxis.ActualMinimum);
             double actualMaximumX = Math.Min(this.MaximumX, this.XAxis.ActualMaximum);
             double actualMinimumY = Math.Max(this.MinimumY, this.YAxis.ActualMinimum);
@@ -226,7 +228,7 @@ namespace OxyPlot
                     fy = this.Equation;
                     break;
                 default:
-                    fx = x => this.Slope * x + this.Intercept;
+                    fx = x => (this.Slope * x) + this.Intercept;
                     break;
             }
 
@@ -246,6 +248,12 @@ namespace OxyPlot
                 {
                     points.Add(new DataPoint(fy(actualMinimumY), actualMinimumY));
                     points.Add(new DataPoint(fy(actualMaximumY), actualMaximumY));
+                }
+
+                if (this.Type == LineAnnotationType.Horizontal || this.Type == LineAnnotationType.Vertical)
+                {
+                    // use aliased line drawing for horizontal and vertical lines
+                    aliased = true;
                 }
             }
             else
@@ -287,7 +295,7 @@ namespace OxyPlot
             }
 
             // transform to screen coordinates
-            var screenPoints = points.Select(p => this.XAxis.Transform(p.X, p.Y, this.YAxis)).ToList();
+            var screenPoints = points.Select(p => this.Transform(p)).ToList();
 
             // clip to the area defined by the axes
             var clippingRectangle = new OxyRect(
@@ -308,7 +316,7 @@ namespace OxyPlot
                this.StrokeThickness,
                this.LineStyle,
                 this.LineJoin,
-                false,
+                aliased,
                 pts => clippedPoints = pts);
 
             ScreenPoint position;
@@ -382,24 +390,22 @@ namespace OxyPlot
             double length = 0;
             for (int i = 1; i < pts.Count; i++)
             {
-                double dx = pts[i].X - pts[i - 1].X;
-                double dy = pts[i].Y - pts[i - 1].Y;
-                length += Math.Sqrt(dx * dx + dy * dy);
+                length += (pts[i] - pts[i - 1]).Length;
             }
 
-            double l = length * p + margin;
+            double l = (length * p) + margin;
             length = 0;
             for (int i = 1; i < pts.Count; i++)
             {
-                double dx = pts[i].X - pts[i - 1].X;
-                double dy = pts[i].Y - pts[i - 1].Y;
-                double dl = Math.Sqrt(dx * dx + dy * dy);
+                double dl = (pts[i] - pts[i - 1]).Length;
                 if (l >= length && l <= length + dl)
                 {
                     double f = (l - length) / dl;
-                    double x = pts[i].X * f + pts[i - 1].X * (1 - f);
-                    double y = pts[i].Y * f + pts[i - 1].Y * (1 - f);
+                    double x = (pts[i].X * f) + (pts[i - 1].X * (1 - f));
+                    double y = (pts[i].Y * f) + (pts[i - 1].Y * (1 - f));
                     position = new ScreenPoint(x, y);
+                    double dx = pts[i].X - pts[i - 1].X;
+                    double dy = pts[i].Y - pts[i - 1].Y;
                     angle = Math.Atan2(dy, dx) / Math.PI * 180;
                     return true;
                 }

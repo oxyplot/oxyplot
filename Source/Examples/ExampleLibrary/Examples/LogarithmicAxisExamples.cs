@@ -21,7 +21,8 @@ namespace ExampleLibrary
             Func<double, int, double> maxSpeedup = (p, n) => 1.0 / ((1.0 - p) + (double)p / n);
             Func<double, LineSeries> createSpeedupCurve = p =>
             {
-                var ls = new LineSeries(p.ToString("P0")) { Smooth = true };
+                // todo: tracker does not work when smoothing = true (too few points interpolated on the left end of the curve)
+                var ls = new LineSeries(p.ToString("P0")) { Smooth = false };
                 for (int n = 1; n <= 65536; n *= 2) ls.Points.Add(new DataPoint(n, maxSpeedup(p, n)));
                 return ls;
             };

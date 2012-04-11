@@ -217,7 +217,7 @@ namespace OxyPlot
 
             var valueAxis = this.XAxis;
 
-            double dx = categoryAxis.BarOffset - this.BarWidth * 0.5;
+            double dx = categoryAxis.BarOffset - (this.BarWidth * 0.5);
 
             int i = 0;
 
@@ -233,9 +233,9 @@ namespace OxyPlot
 
                 double baseValue = double.IsNaN(item.BaseValue) ? this.BaseValue : item.BaseValue;
 
-                var p0 = this.XAxis.Transform(item.Minimum, i + dx, this.YAxis);
-                var p1 = this.XAxis.Transform(item.Maximum, i + dx + this.BarWidth, this.YAxis);
-                var p2 = this.XAxis.Transform(baseValue, i + dx, this.YAxis);
+                var p0 = this.Transform(item.Minimum, i + dx);
+                var p1 = this.Transform(item.Maximum, i + dx + this.BarWidth);
+                var p2 = this.Transform(baseValue, i + dx);
                 p2.X = (int)p2.X;
 
                 var minimumRectangle = OxyRect.Create(p0.X, p0.Y, p2.X, p1.Y);
@@ -315,12 +315,12 @@ namespace OxyPlot
             double height = (legendBox.Bottom - legendBox.Top) * 0.8;
             double width = height;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - 0.5 * width, ymid - 0.5 * height, 0.5 * width, height),
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), 0.5 * width, height),
                 this.MinimumFillColor,
                 this.StrokeColor,
                 this.StrokeThickness);
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid, ymid - 0.5 * height, 0.5 * width, height),
+                new OxyRect(xmid, ymid - (0.5 * height), 0.5 * width, height),
                 this.MaximumFillColor,
                 this.StrokeColor,
                 this.StrokeThickness);
@@ -370,7 +370,7 @@ namespace OxyPlot
 
             this.Items.Clear();
 
-            ReflectionHelper.FillManyValues(
+            ReflectionHelper.FillList(
                 this.ItemsSource,
                 this.Items,
                 new[] { this.MinimumField, this.MaximumField },

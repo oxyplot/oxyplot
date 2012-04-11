@@ -285,7 +285,7 @@ namespace OxyPlot
             if (this.ItemsSource != null)
             {
                 this.Labels.Clear();
-                ReflectionHelper.FillValues(this.ItemsSource, this.LabelField, this.Labels);
+                ReflectionHelper.FillList(this.ItemsSource, this.LabelField, this.Labels);
             }
 
             this.PositiveBaseValue = new double[this.Labels.Count];

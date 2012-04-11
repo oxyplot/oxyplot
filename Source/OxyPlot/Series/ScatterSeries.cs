@@ -168,6 +168,11 @@ namespace OxyPlot
         /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
+            if (this.XAxis == null || this.YAxis == null)
+            {
+                return null;
+            }
+
             if (interpolate)
             {
                 return null;
@@ -176,6 +181,22 @@ namespace OxyPlot
             TrackerHitResult result = null;
             double minimumDistance = double.MaxValue;
             int i = 0;
+
+            var xaxisTitle = this.XAxis.Title ?? "X";
+            var yaxisTitle = this.YAxis.Title ?? "Y";
+            var colorAxisTitle = (this.ColorAxis != null ? this.ColorAxis.Title : null) ?? "Z";
+
+            var formatString = TrackerFormatString;
+            if (string.IsNullOrEmpty(TrackerFormatString))
+            {
+                // Create a default format string
+                formatString = "{1}: {2}\n{3}: {4}";
+                if (this.ColorAxis != null)
+                {
+                    formatString += "\n{5}: {6}";
+                }
+            }
+
             foreach (var p in this.points)
             {
                 if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum
@@ -193,7 +214,34 @@ namespace OxyPlot
 
                 if (d2 < minimumDistance)
                 {
-                    result = new TrackerHitResult(this, dp, sp, this.GetItem(i));
+                    var item = this.GetItem(i);
+                    result = new TrackerHitResult(this, dp, sp, item);
+
+                    object xvalue = this.XAxis != null ? this.XAxis.GetValue(dp.X) : dp.X;
+                    object yvalue = this.YAxis != null ? this.YAxis.GetValue(dp.Y) : dp.Y;
+                    object zvalue = null;
+
+                    if (p is ScatterPoint)
+                    {
+                        var scatterPoint = (ScatterPoint)p;
+                        if (!double.IsNaN(scatterPoint.Value) && !double.IsInfinity(scatterPoint.Value))
+                        {
+                            zvalue = scatterPoint.Value;
+                        }
+                    }
+
+                    result.Text = StringHelper.Format(
+                        this.ActualCulture,
+                        formatString,
+                        item,
+                        Title,
+                        xaxisTitle,
+                        xvalue,
+                        yaxisTitle,
+                        yvalue,
+                        colorAxisTitle,
+                        zvalue);
+
                     minimumDistance = d2;
                 }
 

@@ -258,7 +258,7 @@ namespace OxyPlot
             double x0 = this.InverseTransform(isHorizontal ? ppt.X : ppt.Y);
             double x1 = this.InverseTransform(isHorizontal ? cpt.X : cpt.Y);
 
-            if (x1 == 0)
+            if (Math.Abs(x1) < double.Epsilon)
             {
                 return;
             }

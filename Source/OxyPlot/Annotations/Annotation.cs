@@ -69,7 +69,7 @@ namespace OxyPlot
         /// </summary>
         /// <value>The Y axis key.</value>
         public string YAxisKey { get; set; }
-       
+
         #endregion
 
         #region Public Methods
@@ -113,6 +113,37 @@ namespace OxyPlot
         /// </param>
         public virtual void Render(IRenderContext rc, PlotModel model)
         {
+        }
+
+        /// <summary>
+        /// Transforms the specified coordinates to a screen point.
+        /// </summary>
+        /// <param name="x">
+        /// The x coordinate. 
+        /// </param>
+        /// <param name="y">
+        /// The y coordinate. 
+        /// </param>
+        /// <returns>
+        /// A screen point. 
+        /// </returns>
+        protected ScreenPoint Transform(double x, double y)
+        {
+            return this.XAxis.Transform(x, y, this.YAxis);
+        }
+
+        /// <summary>
+        /// Transforms the specified data point to a screen point.
+        /// </summary>
+        /// <param name="p">
+        /// The point. 
+        /// </param>
+        /// <returns>
+        /// A screen point. 
+        /// </returns>
+        protected ScreenPoint Transform(IDataPoint p)
+        {
+            return this.XAxis.Transform(p.X, p.Y, this.YAxis);
         }
 
         /// <summary>

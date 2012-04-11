@@ -2,11 +2,15 @@
 // <copyright file="ScreenVector.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Represents a vector defined in the screen coordinate system.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Represents a vector defined in the screen coordinate system.
@@ -18,11 +22,15 @@ namespace OxyPlot
         /// <summary>
         ///   The x.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", 
+            Justification = "Reviewed. Suppression is OK here.")]
         internal double x;
 
         /// <summary>
         ///   The y.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", 
+            Justification = "Reviewed. Suppression is OK here.")]
         internal double y;
 
         #endregion
@@ -30,13 +38,14 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ScreenVector"/> struct. 
         /// Initializes a new instance of the <see cref="ScreenVector"/> struct.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The x. 
         /// </param>
         /// <param name="y">
-        /// The y.
+        /// The y. 
         /// </param>
         public ScreenVector(double x, double y)
         {
@@ -47,6 +56,28 @@ namespace OxyPlot
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        ///   Gets the length.
+        /// </summary>
+        public double Length
+        {
+            get
+            {
+                return Math.Sqrt((this.x * this.x) + (this.y * this.y));
+            }
+        }
+
+        /// <summary>
+        ///   Gets the length squared.
+        /// </summary>
+        public double LengthSquared
+        {
+            get
+            {
+                return (this.x * this.x) + (this.y * this.y);
+            }
+        }
 
         /// <summary>
         ///   Gets or sets the X.
@@ -91,7 +122,7 @@ namespace OxyPlot
         /// </summary>
         public void Normalize()
         {
-            double l = Math.Sqrt(this.x * this.x + this.y * this.y);
+            double l = Math.Sqrt((this.x * this.x) + (this.y * this.y));
             if (l > 0)
             {
                 this.x /= l;
@@ -111,16 +142,20 @@ namespace OxyPlot
         }
 
         #endregion
+
+        #region Operators
+
         /// <summary>
-        /// Implements the operator *.
+        ///   Implements the operator *.
         /// </summary>
-        /// <param name="v">The v.</param>
-        /// <param name="d">The d.</param>
-        /// <returns>The result of the operator.</returns>
+        /// <param name="v"> The v. </param>
+        /// <param name="d"> The d. </param>
+        /// <returns> The result of the operator. </returns>
         public static ScreenVector operator *(ScreenVector v, double d)
         {
             return new ScreenVector(v.x * d, v.y * d);
         }
 
+        #endregion
     }
 }

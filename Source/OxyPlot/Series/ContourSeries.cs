@@ -202,7 +202,7 @@ namespace OxyPlot
             foreach (var c in this.contours)
             {
                 int index;
-                DataPoint dpn;
+                IDataPoint dpn;
                 ScreenPoint spn;
                 if (interpolate)
                 {
@@ -267,7 +267,7 @@ namespace OxyPlot
                         int i = 0;
                         foreach (var pt in contour.Points)
                         {
-                            pts[i++] = this.XAxis.Transform(pt.X, pt.Y, this.YAxis);
+                            pts[i++] = this.Transform(pt.X, pt.Y);
                         }
                     }
 
@@ -370,9 +370,9 @@ namespace OxyPlot
         {
             double dx = p0.X - p1.X;
             double dy = p0.Y - p1.Y;
-            return dx * dx + dy * dy < eps;
+            return (dx * dx) + (dy * dy) < eps;
         }
-
+        
         /// <summary>
         /// The add contour labels.
         /// </summary>

@@ -110,7 +110,7 @@ namespace OxyPlot
             base.Render(rc, model);
 
             ScreenPoint startPoint;
-            var endPoint = this.XAxis.Transform(this.EndPoint.X, this.EndPoint.Y, this.YAxis);
+            var endPoint = this.Transform(this.EndPoint);
 
             if (!this.ArrowDirection.x.IsZero() || !this.ArrowDirection.y.IsZero())
             {
@@ -118,7 +118,7 @@ namespace OxyPlot
             }
             else
             {
-                startPoint = this.XAxis.Transform(this.StartPoint.X, this.StartPoint.Y, this.YAxis);
+                startPoint = this.Transform(this.StartPoint);
             }
 
             var d = endPoint - startPoint;

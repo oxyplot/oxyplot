@@ -179,7 +179,7 @@ namespace OxyPlot
 
             var valueAxis = this.XAxis;
 
-            double dx = categoryAxis.BarOffset - this.BarWidth * 0.5;
+            double dx = categoryAxis.BarOffset - (this.BarWidth * 0.5);
 
             int i = 0;
 
@@ -192,8 +192,8 @@ namespace OxyPlot
                     continue;
                 }
 
-                var p0 = this.XAxis.Transform(item.Start, i + dx, this.YAxis);
-                var p1 = this.XAxis.Transform(item.End, i + dx + this.BarWidth, this.YAxis);
+                var p0 = this.Transform(item.Start, i + dx);
+                var p1 = this.Transform(item.End, i + dx + this.BarWidth);
 
                 var rectangle = OxyRect.Create(p0.X, p0.Y, p1.X, p1.Y);
 
@@ -245,7 +245,7 @@ namespace OxyPlot
             double height = (legendBox.Bottom - legendBox.Top) * 0.8;
             double width = height;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - 0.5 * width, ymid - 0.5 * height, width, height),
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
                 this.FillColor,
                 this.StrokeColor,
                 this.StrokeThickness);
@@ -290,7 +290,7 @@ namespace OxyPlot
 
             this.Items.Clear();
 
-            ReflectionHelper.FillManyValues(
+            ReflectionHelper.FillList(
                 this.ItemsSource,
                 this.Items,
                 new[] { this.MinimumField, this.MaximumField },

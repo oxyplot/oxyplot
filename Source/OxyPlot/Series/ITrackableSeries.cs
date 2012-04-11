@@ -17,6 +17,9 @@ namespace OxyPlot
         /// <summary>
         ///   Gets a format string used for the tracker.
         /// </summary>
+        /// <remarks>
+        ///   The fields that can be used in the format string depends on the series.
+        /// </remarks>
         string TrackerFormatString { get; }
 
         /// <summary>
@@ -29,13 +32,13 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// Gets the nearest point.
+        /// Gets the point on the series that is nearest the specified point.
         /// </summary>
         /// <param name="point">
         /// The point.
         /// </param>
         /// <param name="interpolate">
-        /// interpolate if set to <c>true</c>.
+        /// Interpolate the series if this flag is set to <c>true</c>.
         /// </param>
         /// <returns>
         /// A TrackerHitResult for the current hit.
