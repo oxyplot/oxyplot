@@ -19,7 +19,7 @@ namespace OxyPlot.Tests
         public void FillValues()
         {
             // todo
-            // ReflectionHelper.FillValues();
+            // ReflectionHelper.FillList();
         }
 
         [Test]

@@ -240,7 +240,7 @@ namespace OxyPlot
             {
                 // interpolate smoothed line
                 int index;
-                DataPoint dpn;
+                IDataPoint dpn;
                 ScreenPoint spn;
                 if (this.GetNearestInterpolatedPointInternal(this.SmoothedPoints, point, out dpn, out spn, out index))
                 {

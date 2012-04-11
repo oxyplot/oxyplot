@@ -78,16 +78,12 @@ namespace OxyPlot
         #region Public Methods and Operators
 
         /// <summary>
-        /// Gets the nearest point.
+        /// Gets the point on the series that is nearest the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point. 
-        /// </param>
-        /// <param name="interpolate">
-        /// interpolate if set to <c>true</c> . 
-        /// </param>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
         /// <returns>
-        /// A TrackerHitResult for the current hit. 
+        /// A TrackerHitResult for the current hit.
         /// </returns>
         public abstract TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
 

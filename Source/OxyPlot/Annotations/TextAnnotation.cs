@@ -110,7 +110,7 @@ namespace OxyPlot
         {
             base.Render(rc, model);
 
-            var position = this.XAxis.Transform(this.Position.X, this.Position.Y, this.YAxis);
+            var position = this.Transform(this.Position);
             position.X += this.Offset.X;
             position.Y += this.Offset.Y;
 

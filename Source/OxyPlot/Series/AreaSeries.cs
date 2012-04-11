@@ -17,7 +17,7 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        ///   The points 2.
+        ///   The second list of points.
         /// </summary>
         protected List<IDataPoint> points2 = new List<IDataPoint>();
 
@@ -61,9 +61,9 @@ namespace OxyPlot
         public OxyColor Fill { get; set; }
 
         /// <summary>
-        ///   Gets or sets the second set of points.
+        ///   Gets the second list of points.
         /// </summary>
-        /// <value>The second set of points.</value>
+        /// <value>The second list of points.</value>
         public List<IDataPoint> Points2
         {
             get
@@ -76,7 +76,7 @@ namespace OxyPlot
         ///   Gets or sets a value indicating whether the second 
         ///   data collection should be reversed.
         ///   The first dataset is not reversed, and normally
-        ///   the second dataset must be reversed to get a 
+        ///   the second dataset should be reversed to get a 
         ///   closed polygon.
         /// </summary>
         public bool Reverse2 { get; set; }
@@ -96,7 +96,7 @@ namespace OxyPlot
             int index;
             TrackerHitResult result1 = null;
             TrackerHitResult result2 = null;
-            DataPoint dpn;
+            IDataPoint dpn;
             ScreenPoint spn1;
             ScreenPoint spn2;
 

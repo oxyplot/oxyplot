@@ -89,7 +89,7 @@ namespace OxyPlot
             }
 
             // transform to screen coordinates
-            var screenPoints = this.Points.Select(p => this.XAxis.Transform(p.X, p.Y, this.YAxis)).ToList();
+            var screenPoints = this.Points.Select(p => this.Transform(p)).ToList();
             if (screenPoints.Count == 0)
             {
                 return;

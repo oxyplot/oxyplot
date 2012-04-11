@@ -81,8 +81,8 @@ namespace OxyPlot
                 double topValue = this.IsStacked ? baseValue + v : v;
                 int numberOfSeries = this.IsStacked ? 1 : categoryAxis.AttachedSeriesCount;
 
-                ScreenPoint p0 = this.XAxis.Transform(i + dx, baseValue, this.YAxis);
-                ScreenPoint p1 = this.XAxis.Transform(i + dx + this.BarWidth / numberOfSeries, topValue, this.YAxis);
+                ScreenPoint p0 = this.Transform(i + dx, baseValue);
+                ScreenPoint p1 = this.Transform(i + dx + this.BarWidth / numberOfSeries, topValue);
 
                 p0.X = (int)p0.X;
                 p0.Y = (int)p0.Y;

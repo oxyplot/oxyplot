@@ -22,6 +22,7 @@ namespace OxyPlot
         /// Gets the data point.
         /// </summary>
         /// <returns>
+        /// The data point.
         /// </returns>
         DataPoint GetDataPoint();
 
@@ -122,7 +123,7 @@ namespace OxyPlot
             }
 
             int index;
-            DataPoint dpn;
+            IDataPoint dpn;
             ScreenPoint spn;
             if (interpolate)
             {
@@ -144,67 +145,9 @@ namespace OxyPlot
             return null;
         }
 
-        /// <summary>
-        /// Gets the value from the specified X.
-        /// </summary>
-        /// <param name="x">
-        /// The x coordinate.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public double? GetValueFromX(double x)
-        {
-            int n = this.Points.Count;
-
-            for (int i = 0; i + 1 < n; i++)
-            {
-                if (IsBetween(x, this.Points[i].X, this.Points[i + 1].Y))
-                {
-                    return this.Points[i].Y
-                           +
-                           (this.Points[i + 1].Y - this.Points[i].Y) / (this.Points[i + 1].X - this.Points[i].X)
-                           * (x - this.Points[i].X);
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Determines whether the specified point is valid.
-        /// </summary>
-        /// <param name="pt">
-        /// The pointt.
-        /// </param>
-        /// <param name="xAxis">
-        /// The x axis.
-        /// </param>
-        /// <param name="yAxis">
-        /// The y axis.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the point is valid; otherwise, <c>false</c>.
-        /// </returns>
-        public virtual bool IsValidPoint(IDataPoint pt, Axis xAxis, Axis yAxis)
-        {
-            return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
-                   && (xAxis != null && xAxis.IsValidValue(pt.X)) && (yAxis != null && yAxis.IsValidValue(pt.Y));
-        }
-
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Updates the axes to include the max and min of this series.
-        /// </summary>
-        protected internal override void UpdateAxisMaxMin()
-        {
-            this.XAxis.Include(this.MinX);
-            this.XAxis.Include(this.MaxX);
-            this.YAxis.Include(this.MinY);
-            this.YAxis.Include(this.MaxY);
-        }
 
         /// <summary>
         /// The update data.
@@ -231,19 +174,19 @@ namespace OxyPlot
         /// <summary>
         /// The add data points.
         /// </summary>
-        /// <param name="points">
+        /// <param name="pts">
         /// The points.
         /// </param>
-        protected void AddDataPoints(IList<IDataPoint> points)
+        protected void AddDataPoints(IList<IDataPoint> pts)
         {
-            points.Clear();
+            pts.Clear();
 
             // Use the mapping to generate the points
             if (this.Mapping != null)
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    points.Add(this.Mapping(item));
+                    pts.Add(this.Mapping(item));
                 }
 
                 return;
@@ -259,7 +202,7 @@ namespace OxyPlot
                     var dp = item as IDataPoint;
                     if (dp != null)
                     {
-                        points.Add(dp);
+                        pts.Add(dp);
                         continue;
                     }
 
@@ -269,7 +212,7 @@ namespace OxyPlot
                         continue;
                     }
 
-                    points.Add(idpp.GetDataPoint());
+                    pts.Add(idpp.GetDataPoint());
                 }
             }
             else
@@ -278,7 +221,7 @@ namespace OxyPlot
                 // http://msdn.microsoft.com/en-us/library/bb613546.aspx
 
                 // Using reflection on DataFieldX and DataFieldY
-                this.AddDataPoints(points, this.ItemsSource, this.DataFieldX, this.DataFieldY);    
+                this.AddDataPoints(pts, this.ItemsSource, this.DataFieldX, this.DataFieldY);    
             }
         }
 
@@ -297,10 +240,6 @@ namespace OxyPlot
         /// <param name="dataFieldY">
         /// The data field y.
         /// </param>
-        /// <exception cref="InvalidOperationException">
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// </exception>
         protected void AddDataPoints(
             IList<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
         {
@@ -389,37 +328,6 @@ namespace OxyPlot
             this.MaxX = maxx;
             this.MaxY = maxy;
         }
-
-        /// <summary>
-        /// The is between.
-        /// </summary>
-        /// <param name="x">
-        /// The x.
-        /// </param>
-        /// <param name="x0">
-        /// The x 0.
-        /// </param>
-        /// <param name="x1">
-        /// The x 1.
-        /// </param>
-        /// <returns>
-        /// The is between.
-        /// </returns>
-        private static bool IsBetween(double x, double x0, double x1)
-        {
-            if (x >= x0 && x <= x1)
-            {
-                return true;
-            }
-
-            if (x >= x1 && x <= x0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         #endregion
     }
 }

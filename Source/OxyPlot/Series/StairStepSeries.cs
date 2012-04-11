@@ -77,8 +77,8 @@ namespace OxyPlot
             {
                 IDataPoint p1 = this.Points[i];
                 IDataPoint p2 = this.Points[i + 1];
-                ScreenPoint sp1 = this.XAxis.Transform(p1.X, p1.Y, this.YAxis);
-                ScreenPoint sp2 = this.XAxis.Transform(p2.X, p1.Y, this.YAxis);
+                ScreenPoint sp1 = this.Transform(p1.X, p1.Y);
+                ScreenPoint sp2 = this.Transform(p2.X, p1.Y);
 
                 double sp21X = sp2.x - sp1.x;
                 double sp21Y = sp2.y - sp1.y;
@@ -192,7 +192,7 @@ namespace OxyPlot
                     continue;
                 }
 
-                ScreenPoint transformedPoint = Axis.Transform(point, this.XAxis, this.YAxis);
+                ScreenPoint transformedPoint = this.Transform(point);
                 if (!double.IsNaN(previousY))
                 {
                     linePoints.Add(new ScreenPoint(transformedPoint.X, previousY));

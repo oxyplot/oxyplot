@@ -6,6 +6,8 @@
 
 namespace OxyPlot
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// DataPoint value type.
     /// </summary>
@@ -21,11 +23,15 @@ namespace OxyPlot
         /// <summary>
         ///   The x.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
+            Justification = "Reviewed. Suppression is OK here.")]
         internal double x;
 
         /// <summary>
         ///   The y.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
+            Justification = "Reviewed. Suppression is OK here.")]
         internal double y;
 
         #endregion

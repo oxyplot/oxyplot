@@ -34,7 +34,7 @@ namespace OxyPlot
         /// <typeparam name="T">
         /// The type of the destination list items (and the source property).
         /// </typeparam>
-        public static void FillValues<T>(IEnumerable source, string propertyName, IList<T> list)
+        public static void FillList<T>(IEnumerable source, string propertyName, IList<T> list)
         {
             PropertyInfo pi = null;
             Type t = null;
@@ -65,7 +65,7 @@ namespace OxyPlot
         /// <param name="target">The target list.</param>
         /// <param name="propertyNames">The property names.</param>
         /// <param name="setPropertyActions">The set property actions.</param>
-        public static void FillManyValues<T>(IEnumerable source, IList<T> target, string[] propertyNames, params Action<T, object>[] setPropertyActions) where T : new()
+        public static void FillList<T>(IEnumerable source, IList<T> target, string[] propertyNames, params Action<T, object>[] setPropertyActions) where T : new()
         {
             PropertyInfo[] pi = null;
             Type t = null;

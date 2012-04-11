@@ -69,8 +69,8 @@ namespace OxyPlot
                 double topValue = this.IsStacked ? baseValue + v : v;
                 int numberOfSeries = this.IsStacked ? 1 : categoryAxis.AttachedSeriesCount;
 
-                var p0 = this.XAxis.Transform(baseValue, i + dx, this.YAxis);
-                var p1 = this.XAxis.Transform(topValue, i + dx + this.BarWidth / numberOfSeries, this.YAxis);
+                var p0 = this.Transform(baseValue, i + dx);
+                var p1 = this.Transform(topValue, i + dx + this.BarWidth / numberOfSeries);
 
                 p0.X = (int)p0.X;
                 p0.Y = (int)p0.Y;

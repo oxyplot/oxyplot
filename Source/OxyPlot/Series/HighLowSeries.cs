@@ -15,7 +15,7 @@ namespace OxyPlot
     /// Use the HighLowSeries to create high-low plots.
     /// </summary>
     /// <remarks>
-    /// http://www.mathworks.com/help/toolbox/finance/highlowfts.html
+    /// See http://www.mathworks.com/help/toolbox/finance/highlowfts.html
     /// </remarks>
     public class HighLowSeries : XYAxisSeries
     {
@@ -168,19 +168,16 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// Gets the nearest point.
+        /// Gets the point on the series that is nearest the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolated">
-        /// if set to <c>true</c> [interpolated].
-        /// </param>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
         /// <returns>
+        /// A TrackerHitResult for the current hit.
         /// </returns>
-        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolated)
+        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            if (interpolated)
+            if (interpolate)
             {
                 return null;
             }
@@ -190,7 +187,7 @@ namespace OxyPlot
 
             Action<DataPoint, HighLowItem> check = (p, item) =>
                 {
-                    ScreenPoint sp = Axis.Transform(p, this.XAxis, this.YAxis);
+                    var sp = this.Transform(p);
                     double dx = sp.x - point.x;
                     double dy = sp.y - point.y;
                     double d2 = dx * dx + dy * dy;
@@ -202,9 +199,10 @@ namespace OxyPlot
                         result.Item = item;
                         if (this.TrackerFormatString != null)
                         {
-                            result.Text = string.Format(
+                            result.Text = StringHelper.Format(
                                 this.ActualCulture, 
-                                this.TrackerFormatString, 
+                                this.TrackerFormatString,
+                                item,
                                 this.Title, 
                                 p.X, 
                                 item.High, 
@@ -284,8 +282,8 @@ namespace OxyPlot
 
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
-                    ScreenPoint high = this.XAxis.Transform(v.X, v.High, this.YAxis);
-                    ScreenPoint low = this.XAxis.Transform(v.X, v.Low, this.YAxis);
+                    ScreenPoint high = this.Transform(v.X, v.High);
+                    ScreenPoint low = this.Transform(v.X, v.Low);
 
                     rc.DrawClippedLine(
                         new[] { low, high }, 
@@ -298,7 +296,7 @@ namespace OxyPlot
                         true);
                     if (!double.IsNaN(v.Open))
                     {
-                        ScreenPoint open = this.XAxis.Transform(v.X, v.Open, this.YAxis);
+                        ScreenPoint open = this.Transform(v.X, v.Open);
                         ScreenPoint openTick = open;
                         openTick.X -= this.TickLength;
                         rc.DrawClippedLine(
@@ -314,7 +312,7 @@ namespace OxyPlot
 
                     if (!double.IsNaN(v.Close))
                     {
-                        ScreenPoint close = this.XAxis.Transform(v.X, v.Close, this.YAxis);
+                        ScreenPoint close = this.Transform(v.X, v.Close);
                         ScreenPoint closeTick = close;
                         closeTick.X += this.TickLength;
                         rc.DrawClippedLine(
@@ -386,17 +384,6 @@ namespace OxyPlot
                 this.LineStyle = model.GetDefaultLineStyle();
                 this.Color = model.GetDefaultColor();
             }
-        }
-
-        /// <summary>
-        /// The update axis max min.
-        /// </summary>
-        protected internal override void UpdateAxisMaxMin()
-        {
-            this.XAxis.Include(this.MinX);
-            this.XAxis.Include(this.MaxX);
-            this.YAxis.Include(this.MinY);
-            this.YAxis.Include(this.MaxY);
         }
 
         /// <summary>

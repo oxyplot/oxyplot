@@ -153,15 +153,18 @@ namespace OxyPlot
             {
                 if (point.X >= r.Left && point.X <= r.Right && point.Y >= r.Top && point.Y <= r.Bottom)
                 {
-                    ScreenPoint sp = point; // new ScreenPoint((r.Left + r.Right) / 2, r.Top);
+                    var sp = point; // new ScreenPoint((r.Left + r.Right) / 2, r.Top);
                     var dp = new DataPoint(i, this.InternalValues[i]);
-                    CategoryAxis categoryAxis = this.GetCategoryAxis();
-                    string text = string.Format(
+                    var item = this.GetItem(i);
+                    var categoryAxis = this.GetCategoryAxis();
+                    string text = StringHelper.Format(
+                        this.ActualCulture,
                         this.TrackerFormatString,
+                        item,
                         this.Title,
                         categoryAxis.FormatValueForTracker(i),
                         this.InternalValues[i]);
-                    return new TrackerHitResult(this, dp, sp, this.GetItem(i), text);
+                    return new TrackerHitResult(this, dp, sp, item, text);
                 }
 
                 i++;
@@ -253,7 +256,7 @@ namespace OxyPlot
             }
 
             this.InternalValues.Clear();
-            ReflectionHelper.FillValues(this.ItemsSource, this.ValueField, this.InternalValues);
+            ReflectionHelper.FillList(this.ItemsSource, this.ValueField, this.InternalValues);
         }
 
         /// <summary>

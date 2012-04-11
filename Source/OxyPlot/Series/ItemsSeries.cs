@@ -29,7 +29,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Gets the item of the specified index.
-        ///   Returns null if ItemsSource is not set, or the index is outside the boundaries.
         /// </summary>
         /// <param name="itemsSource">
         /// The items source.
@@ -40,6 +39,9 @@ namespace OxyPlot
         /// <returns>
         /// The get item.
         /// </returns>
+        /// <remarks>
+        /// Returns null if ItemsSource is not set, or the index is outside the boundaries.
+        /// </remarks>
         protected static object GetItem(IEnumerable itemsSource, int index)
         {
             if (itemsSource == null || index < 0)
