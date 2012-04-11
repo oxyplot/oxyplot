@@ -87,6 +87,8 @@
     <Compile Include="Manipulators\CursorType.cs" />
     <Compile Include="Manipulators\PanManipulator.cs" />
     <Compile Include="Manipulators\TrackerHitResult.cs" />
+    <Compile Include="Series\BoxPlotItem.cs" />
+    <Compile Include="Series\BoxPlotSeries.cs" />
     <Compile Include="Svg\SvgExporter.cs" />
     <Compile Include="PlotModel\PlotElement.cs" />
     <Compile Include="PlotModel\PlotModel.Legends.cs" />
