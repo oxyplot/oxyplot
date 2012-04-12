@@ -53,8 +53,8 @@ namespace OxyPlot.Reporting
         /// Writes the report.
         /// </summary>
         /// <param name="report">The report.</param>
-        /// <param name="style">The style.</param>
-        void WriteReport(Report report, ReportStyle style);
+        /// <param name="reportStyle">The style.</param>
+        void WriteReport(Report report, ReportStyle reportStyle);
 
         /// <summary>
         /// Writes the table.

@@ -147,6 +147,18 @@ namespace OxyPlot
             return new ScreenPoint(p1.x + (u * dx), p1.y + (u * dy));
         }
 
+        /// <summary>
+        /// Finds the nearest point on line.
+        /// </summary>
+        /// <param name="p">The point.</param>
+        /// <param name="p1">The start point on the line.</param>
+        /// <param name="p2">The end point on the line.</param>
+        /// <returns>
+        /// The relative position of the nearest point.
+        /// </returns>
+        /// <remarks>
+        /// See http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
+        /// </remarks>
         public static double FindPositionOnLine(ScreenPoint p, ScreenPoint p1, ScreenPoint p2)
         {
             double dx = p2.x - p1.x;

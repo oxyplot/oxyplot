@@ -168,10 +168,10 @@ namespace OxyPlot.Reporting
         /// <param name="report">
         /// The report.
         /// </param>
-        /// <param name="style">
+        /// <param name="reportStyle">
         /// The style.
         /// </param>
-        public void WriteReport(Report report, ReportStyle style)
+        public void WriteReport(Report report, ReportStyle reportStyle)
         {
             report.Write(this);
         }
