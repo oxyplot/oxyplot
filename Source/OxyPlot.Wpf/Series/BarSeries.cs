@@ -14,16 +14,6 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class BarSeries : ItemsSeries
     {
-        public string LabelFormatString
-        {
-            get { return (string)GetValue(LabelFormatStringProperty); }
-            set { SetValue(LabelFormatStringProperty, value); }
-        }
-
-        public static readonly DependencyProperty LabelFormatStringProperty =
-            DependencyProperty.Register("LabelFormatString", typeof(string), typeof(BarSeries), new UIPropertyMetadata(null));
-
-
         #region Constants and Fields
 
         /// <summary>
@@ -43,6 +33,13 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty IsStackedProperty = DependencyProperty.Register(
             "IsStacked", typeof(bool), typeof(BarSeries), new PropertyMetadata(false, AppearanceChanged));
+
+        /// <summary>
+        /// The label format string property.
+        /// </summary>
+        public static readonly DependencyProperty LabelFormatStringProperty =
+            DependencyProperty.Register(
+                "LabelFormatString", typeof(string), typeof(BarSeries), new UIPropertyMetadata(null));
 
         /// <summary>
         ///   The negative fill color property.
@@ -75,7 +72,7 @@ namespace OxyPlot.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes static members of the <see cref = "BarSeries" /> class.
+        /// Initializes static members of the <see cref="BarSeries"/> class. 
         /// </summary>
         static BarSeries()
         {
@@ -84,7 +81,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "BarSeries" /> class.
+        /// Initializes a new instance of the <see cref="BarSeries"/> class. 
         /// </summary>
         public BarSeries()
         {
@@ -140,6 +137,23 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(IsStackedProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the label format string.
+        /// </summary>
+        /// <value> The label format string. </value>
+        public string LabelFormatString
+        {
+            get
+            {
+                return (string)this.GetValue(LabelFormatStringProperty);
+            }
+
+            set
+            {
+                this.SetValue(LabelFormatStringProperty, value);
             }
         }
 
@@ -212,9 +226,10 @@ namespace OxyPlot.Wpf
         #region Public Methods
 
         /// <summary>
-        /// The create model.
+        /// Creates the model.
         /// </summary>
         /// <returns>
+        /// The series.
         /// </returns>
         public override OxyPlot.Series CreateModel()
         {
@@ -230,7 +245,7 @@ namespace OxyPlot.Wpf
         /// The synchronize properties.
         /// </summary>
         /// <param name="series">
-        /// The series.
+        /// The series. 
         /// </param>
         protected override void SynchronizeProperties(OxyPlot.Series series)
         {

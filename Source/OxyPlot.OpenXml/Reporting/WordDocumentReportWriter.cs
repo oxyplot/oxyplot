@@ -366,13 +366,13 @@ namespace OxyPlot.Pdf
         /// <param name="report">
         /// The report.
         /// </param>
-        /// <param name="style">
+        /// <param name="reportStyle">
         /// The style.
         /// </param>
-        public void WriteReport(Report report, ReportStyle style)
+        public void WriteReport(Report report, ReportStyle reportStyle)
         {
-            this.style = style;
-            this.AddStyles(this.stylePart, style);
+            this.style = reportStyle;
+            this.AddStyles(this.stylePart, reportStyle);
             report.Write(this);
         }
 
