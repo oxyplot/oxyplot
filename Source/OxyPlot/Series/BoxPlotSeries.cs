@@ -26,7 +26,9 @@ namespace OxyPlot
         {
             this.Items = new List<BoxPlotItem>();
             this.TrackerFormatString =
-                "X: {1:0.00}\nUpper Whisker: {2:0.00}\nThird Quartil: {3:0.00}\nMedian: {4:0.00}\nFirst Quartil: {5:0.00}\nLower Whisker: {6:0.00}\nOutliers: {7}";
+                "X: {1:0.00}\nUpper Whisker: {2:0.00}\nThird Quartil: {3:0.00}\nMedian: {4:0.00}\nFirst Quartil: {5:0.00}\nLower Whisker: {6:0.00}";
+            this.OutlierTrackerFormatString =
+                "X: {1:0.00}\nY: {2:0.00}";
             this.Title = null;
             this.Fill = null;
             this.Stroke = OxyColors.Black;
@@ -63,6 +65,17 @@ namespace OxyPlot
         /// </summary>
         /// <value> The size of the outlier. </value>
         public double OutlierSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tracker format string for the outliers.
+        /// </summary>
+        /// <value>
+        /// The tracker format string for the outliers.
+        /// </value>
+        /// <remarks>
+        /// Use {0} for series title, {1} for x- and {2} for y-value.
+        /// </remarks>
+        public string OutlierTrackerFormatString { get; set; }
 
         /// <summary>
         ///   Gets or sets the stroke.
@@ -113,6 +126,13 @@ namespace OxyPlot
                         result.DataPoint = new DataPoint(item.X, outlier);
                         result.Position = sp;
                         result.Item = item;
+                        result.Text = StringHelper.Format(
+                            this.ActualCulture,
+                            this.OutlierTrackerFormatString,
+                            item,
+                            this.Title,
+                            result.DataPoint.X,
+                            outlier);
                         minimumDistance = d;
                     }
                 }
@@ -124,6 +144,19 @@ namespace OxyPlot
                     result.DataPoint = new DataPoint(item.X, this.YAxis.InverseTransform(point.Y));
                     result.Position = this.Transform(result.DataPoint);
                     result.Item = item;
+
+                    result.Text = StringHelper.Format(
+                        this.ActualCulture,
+                        this.TrackerFormatString,
+                        item,
+                        this.Title,
+                        result.DataPoint.X,
+                        item.UpperWhisker,
+                        item.BoxTop,
+                        item.Median,
+                        item.BoxBottom,
+                        item.LowerWhisker);
+
                     minimumDistance = 0;
                 }
 
@@ -138,26 +171,23 @@ namespace OxyPlot
                     result.DataPoint = this.InverseTransform(p);
                     result.Position = this.Transform(result.DataPoint);
                     result.Item = item;
+                    result.Text = StringHelper.Format(
+                        this.ActualCulture,
+                        this.TrackerFormatString,
+                        item,
+                        this.Title,
+                        result.DataPoint.X,
+                        item.UpperWhisker,
+                        item.BoxTop,
+                        item.Median,
+                        item.BoxBottom,
+                        item.LowerWhisker);
                     minimumDistance = d2;
                 }
             }
 
             if (minimumDistance < double.MaxValue)
             {
-                var item = (BoxPlotItem)result.Item;
-                result.Text = StringHelper.Format(
-                    this.ActualCulture,
-                    this.TrackerFormatString,
-                    item,
-                    this.Title,
-                    result.DataPoint.X,
-                    item.UpperWhisker,
-                    item.BoxTop,
-                    item.Median,
-                    item.BoxBottom,
-                    item.LowerWhisker,
-                    StringHelper.CreateList(this.ActualCulture, item.Outliers, "{0:0.########}"));
-
                 return result;
             }
 
