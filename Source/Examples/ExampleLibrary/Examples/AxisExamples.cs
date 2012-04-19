@@ -494,7 +494,7 @@ namespace ExampleLibrary
         {
             var model = new PlotModel("Axis titles with units");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { Title = "Speed", Unit = "km/h" });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { Title = "Mass", Unit = "kg" });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left) { Title = "Temperature", Unit = "°C" });
             return model;
         }
 
