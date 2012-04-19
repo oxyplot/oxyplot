@@ -191,7 +191,7 @@ namespace OxyPlot
         {
             if (!(this.XAxis is CategoryAxis))
             {
-                throw new Exception("The x-axis should be a CategoryAxis.");
+                throw new Exception("A ColumnSeries requires a CategoryAxis on the x-axis. Use a BarSeries if you want horizontal bars.");
             }
 
             return this.XAxis as CategoryAxis;
