@@ -8,6 +8,7 @@ namespace OxyPlot.WindowsForms
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Drawing;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
@@ -19,6 +20,11 @@ namespace OxyPlot.WindowsForms
     public class Plot : Control, IPlotControl
     {
         #region Constants and Fields
+
+        /// <summary>
+        ///   The category for the properties of this control.
+        /// </summary>
+        private const string OxyPlotCategory = "OxyPlot";
 
         /// <summary>
         ///   The invalidate lock.
@@ -70,12 +76,11 @@ namespace OxyPlot.WindowsForms
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="Plot" /> class.
+        /// Initializes a new instance of the <see cref="Plot"/> class. 
         /// </summary>
         public Plot()
         {
             this.DoubleBuffered = true;
-            this.Model = new PlotModel();
             this.KeyboardPanHorizontalStep = 0.1;
             this.KeyboardPanVerticalStep = 0.1;
             this.PanCursor = Cursors.Hand;
@@ -104,19 +109,22 @@ namespace OxyPlot.WindowsForms
         ///   Gets or sets the keyboard pan horizontal step.
         /// </summary>
         /// <value> The keyboard pan horizontal step. </value>
+        [Category(OxyPlotCategory)]
         public double KeyboardPanHorizontalStep { get; set; }
 
         /// <summary>
         ///   Gets or sets the keyboard pan vertical step.
         /// </summary>
         /// <value> The keyboard pan vertical step. </value>
+        [Category(OxyPlotCategory)]
         public double KeyboardPanVerticalStep { get; set; }
 
         /// <summary>
-        ///   Gets or sets Model.
+        ///   Gets or sets the model.
         /// </summary>
         [Browsable(false)]
         [DefaultValue(null)]
+        [Category(OxyPlotCategory)]
         public PlotModel Model
         {
             get
@@ -137,21 +145,25 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         ///   Gets or sets the pan cursor.
         /// </summary>
+        [Category(OxyPlotCategory)]
         public Cursor PanCursor { get; set; }
 
         /// <summary>
         ///   Gets or sets the horizontal zoom cursor.
         /// </summary>
+        [Category(OxyPlotCategory)]
         public Cursor ZoomHorizontalCursor { get; set; }
 
         /// <summary>
         ///   Gets or sets the rectangle zoom cursor.
         /// </summary>
+        [Category(OxyPlotCategory)]
         public Cursor ZoomRectangleCursor { get; set; }
 
         /// <summary>
         ///   Gets or sets vertical zoom cursor.
         /// </summary>
+        [Category(OxyPlotCategory)]
         public Cursor ZoomVerticalCursor { get; set; }
 
         #endregion
@@ -246,7 +258,7 @@ namespace OxyPlot.WindowsForms
             {
                 if (this.currentModel != null)
                 {
-                    this.currentModel.PlotControl = null;
+                    this.currentModel.AttachPlotControl(null);
                 }
 
                 if (this.Model != null)
@@ -257,7 +269,7 @@ namespace OxyPlot.WindowsForms
                             "This PlotModel is already in use by some other plot control.");
                     }
 
-                    this.Model.PlotControl = this;
+                    this.Model.AttachPlotControl(this);
                     this.currentModel = this.Model;
                 }
             }
@@ -577,12 +589,13 @@ namespace OxyPlot.WindowsForms
             }
             catch (Exception paintException)
             {
-                var trace = new System.Diagnostics.StackTrace(paintException);
-                System.Diagnostics.Debug.WriteLine(paintException);
-                System.Diagnostics.Debug.WriteLine(trace);
+                var trace = new StackTrace(paintException);
+                Debug.WriteLine(paintException);
+                Debug.WriteLine(trace);
                 using (var font = new Font("Arial", 10))
                 {
-                    e.Graphics.DrawString("OxyPlot paint exception: " + paintException.Message, font, Brushes.Red, 10, 10);
+                    e.Graphics.DrawString(
+                        "OxyPlot paint exception: " + paintException.Message, font, Brushes.Red, 10, 10);
                 }
             }
         }
