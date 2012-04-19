@@ -331,13 +331,13 @@ namespace OxyPlot
         public OxyThickness ActualPlotMargins { get; private set; }
 
         /// <summary>
-        /// Gets or sets the plot control that renders this plot.
+        /// Gets the plot control that renders this plot.
         /// </summary>
         /// <remarks>
         /// Only one PlotControl can render the plot at the same time.
         /// </remarks>
         /// <value>The plot control.</value>
-        public IPlotControl PlotControl { get; set; }
+        public IPlotControl PlotControl { get; private set; }
 
         /// <summary>
         ///   Gets or sets the annotations.
@@ -752,6 +752,19 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
+        /// Attaches this model to the specified plot control.
+        /// </summary>
+        /// <param name="plotControl">The plot control.</param>
+        /// <remarks>
+        /// Only one plot control can be attached to the plot model.
+        /// The plot model contains data (e.g. axis scaling) that is only relevant to the current plot control.
+        /// </remarks>
+        public void AttachPlotControl(IPlotControl plotControl)
+        {
+            this.PlotControl = plotControl;
+        }
+
+        /// <summary>
         /// Creates a report for the plot.
         /// </summary>
         /// <returns>
@@ -825,10 +838,12 @@ namespace OxyPlot
         /// <param name="updateData">Updates all data sources if set to <c>true</c>.</param>
         public void RefreshPlot(bool updateData)
         {
-            if (this.PlotControl != null)
+            if (this.PlotControl == null)
             {
-                this.PlotControl.RefreshPlot(updateData);
+                throw new InvalidOperationException("RefreshPlot: The plot model is not connected to a plot control.");
             }
+
+            this.PlotControl.RefreshPlot(updateData);
         }
 
         /// <summary>

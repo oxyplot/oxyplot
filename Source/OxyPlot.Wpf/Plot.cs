@@ -1114,7 +1114,7 @@ namespace OxyPlot.Wpf
             {
                 if (this.currentModel != null)
                 {
-                    this.currentModel.PlotControl = null;
+                    this.currentModel.AttachPlotControl(null);
                 }
 
                 if (this.Model != null)
@@ -1125,7 +1125,7 @@ namespace OxyPlot.Wpf
                             "This PlotModel is already in use by some other plot control.");
                     }
 
-                    this.Model.PlotControl = this;
+                    this.Model.AttachPlotControl(this);
                     this.currentModel = this.Model;
                 }
             }
