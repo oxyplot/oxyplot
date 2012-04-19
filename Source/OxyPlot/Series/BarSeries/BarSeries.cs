@@ -180,7 +180,7 @@ namespace OxyPlot
         {
             if (!(this.YAxis is CategoryAxis))
             {
-                throw new Exception("The y-axis should be a CategoryAxis.");
+                throw new Exception("A BarSeries requires a CategoryAxis on the y-axis. Use a ColumnSeries if you want vertical bars.");
             }
 
             return this.YAxis as CategoryAxis;
