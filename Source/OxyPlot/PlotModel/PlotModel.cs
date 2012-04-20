@@ -847,6 +847,20 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Invalidates the plot.
+        /// </summary>
+        /// <param name="updateData">Updates all data sources if set to <c>true</c>.</param>
+        public void InvalidatePlot(bool updateData)
+        {
+            if (this.PlotControl == null)
+            {
+                throw new InvalidOperationException("InvalidatePlot: The plot model is not connected to a plot control.");
+            }
+
+            this.PlotControl.InvalidatePlot(updateData);
+        }
+
+        /// <summary>
         /// Gets the first axes that covers the area of the specified point.
         /// </summary>
         /// <param name="pt">
