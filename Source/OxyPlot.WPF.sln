@@ -61,6 +61,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DemoApplications", "DemoApp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefreshDemo", "Examples\WPF\RefreshDemo\RefreshDemo.csproj", "{89FCFDAD-6BC2-4636-8346-EB6BB67AA5E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryTest", "Examples\WPF\MemoryTest\MemoryTest.csproj", "{2F190086-3322-4407-A052-845E0DA24392}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -351,6 +353,16 @@ Global
 		{89FCFDAD-6BC2-4636-8346-EB6BB67AA5E4}.Release|Mixed Platforms.Build.0 = Release|x86
 		{89FCFDAD-6BC2-4636-8346-EB6BB67AA5E4}.Release|x86.ActiveCfg = Release|x86
 		{89FCFDAD-6BC2-4636-8346-EB6BB67AA5E4}.Release|x86.Build.0 = Release|x86
+		{2F190086-3322-4407-A052-845E0DA24392}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{2F190086-3322-4407-A052-845E0DA24392}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{2F190086-3322-4407-A052-845E0DA24392}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{2F190086-3322-4407-A052-845E0DA24392}.Debug|x86.ActiveCfg = Debug|x86
+		{2F190086-3322-4407-A052-845E0DA24392}.Debug|x86.Build.0 = Debug|x86
+		{2F190086-3322-4407-A052-845E0DA24392}.Release|Any CPU.ActiveCfg = Release|x86
+		{2F190086-3322-4407-A052-845E0DA24392}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{2F190086-3322-4407-A052-845E0DA24392}.Release|Mixed Platforms.Build.0 = Release|x86
+		{2F190086-3322-4407-A052-845E0DA24392}.Release|x86.ActiveCfg = Release|x86
+		{2F190086-3322-4407-A052-845E0DA24392}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -378,5 +390,6 @@ Global
 		{BF3F3951-21F4-4854-9FFB-17727A2D69A7} = {831970F4-9390-4214-848B-70E6250443DC}
 		{0C7A4A18-4A78-4074-903C-79E5857E0A04} = {831970F4-9390-4214-848B-70E6250443DC}
 		{89FCFDAD-6BC2-4636-8346-EB6BB67AA5E4} = {831970F4-9390-4214-848B-70E6250443DC}
+		{2F190086-3322-4407-A052-845E0DA24392} = {831970F4-9390-4214-848B-70E6250443DC}
 	EndGlobalSection
 EndGlobal
