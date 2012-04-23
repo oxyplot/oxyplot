@@ -298,11 +298,11 @@ namespace OxyPlot
             var screenPoints = points.Select(p => this.Transform(p)).ToList();
 
             // clip to the area defined by the axes
-            var clippingRectangle = new OxyRect(
+            var clippingRectangle = OxyRect.Create(
                 this.ClipByXAxis ? this.XAxis.ScreenMin.X : PlotModel.PlotArea.Left,
                 this.ClipByYAxis ? this.YAxis.ScreenMin.Y : PlotModel.PlotArea.Top,
-                this.ClipByXAxis ? this.XAxis.ScreenMax.X - this.XAxis.ScreenMin.X : PlotModel.PlotArea.Width,
-                this.ClipByYAxis ? this.YAxis.ScreenMax.Y - this.YAxis.ScreenMin.Y : PlotModel.PlotArea.Height);
+                this.ClipByXAxis ? this.XAxis.ScreenMax.X : PlotModel.PlotArea.Right,
+                this.ClipByYAxis ? this.YAxis.ScreenMax.Y : PlotModel.PlotArea.Bottom);
 
             const double MinimumSegmentLength = 4;
 
@@ -322,6 +322,12 @@ namespace OxyPlot
             ScreenPoint position;
             double angle;
             double margin = this.TextMargin;
+
+            if (this.TextHorizontalAlignment == HorizontalTextAlign.Left)
+            {
+                margin *= this.TextPosition < 0.5 ? 1 : 0;
+            }
+
             if (this.TextHorizontalAlignment == HorizontalTextAlign.Center)
             {
                 margin = 0;
@@ -329,11 +335,21 @@ namespace OxyPlot
 
             if (this.TextHorizontalAlignment == HorizontalTextAlign.Right)
             {
-                margin *= -1;
+                margin *= this.TextPosition > 0.5 ? -1 : 0;
             }
 
             if (clippedPoints != null && GetPointAtRelativeDistance(clippedPoints, this.TextPosition, margin, out position, out angle))
             {
+                if (angle < -90)
+                {
+                    angle += 180;
+                }
+
+                if (angle > 90)
+                {
+                    angle -= 180;
+                }
+
                 var cs = new CohenSutherlandClipping(clippingRectangle);
                 if (!string.IsNullOrEmpty(this.Text) && cs.IsInside(position))
                 {
