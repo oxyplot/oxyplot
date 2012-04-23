@@ -43,16 +43,16 @@ namespace ExampleLibrary
         [Example("No clipping")]
         public static PlotModel LinearAxesMultipleAxes()
         {
-            var model = new PlotModel("ClipByXAxis = false, ClipByYAxis = false");
+            var model = new PlotModel("ClipByXAxis");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80) { StartPosition = 0, EndPosition = 0.5 });
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { StartPosition = 0, EndPosition = 0.5 });
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80) { StartPosition = 0.5, EndPosition = 1 });
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { StartPosition = 0.5, EndPosition = 1 });
 
-            //  model.Annotations.Add(new LineAnnotation() { ClipByXAxis = false, ClipByYAxis = false, Slope = 0.1, Intercept = 1, Text = "First" });
-            //  model.Annotations.Add(new LineAnnotation() { ClipByXAxis = false, ClipByYAxis = false, Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second" });
-            model.Annotations.Add(new LineAnnotation { ClipByYAxis = false, Type = LineAnnotationType.Vertical, X = 0, Color = OxyColors.Green, Text = "Vertical" });
-            model.Annotations.Add(new LineAnnotation { ClipByXAxis = false, Type = LineAnnotationType.Horizontal, Y = 2, Color = OxyColors.Gold, Text = "Horizontal" });
+            model.Annotations.Add(new LineAnnotation { ClipByYAxis = true, Type = LineAnnotationType.Vertical, X = 0, Color = OxyColors.Green, Text = "Vertical, ClipByAxis = true" });
+            model.Annotations.Add(new LineAnnotation { ClipByYAxis = false, Type = LineAnnotationType.Vertical, X = 20, Color = OxyColors.Green, Text = "Vertical, ClipByAxis = false" });
+            model.Annotations.Add(new LineAnnotation { ClipByXAxis = true, Type = LineAnnotationType.Horizontal, Y = 2, Color = OxyColors.Gold, Text = "Horizontal, ClipByAxis = true" });
+            model.Annotations.Add(new LineAnnotation { ClipByXAxis = false, Type = LineAnnotationType.Horizontal, Y = 8, Color = OxyColors.Gold, Text = "Horizontal, ClipByAxis = false" });
             return model;
         }
 
@@ -136,6 +136,19 @@ namespace ExampleLibrary
             addPoint(10, 2);
             addPoint(10, 4);
             addPoint(10, 6);
+            return model;
+        }
+
+        [Example("Annotations on reversed axes")]
+        public static PlotModel ReversedAxes()
+        {
+            var model = new PlotModel("Annotations on reversed axes");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80) { StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { StartPosition = 1, EndPosition = 0 });
+            model.Annotations.Add(new LineAnnotation() { Slope = 0.1, Intercept = 1, Text = "First", TextHorizontalAlignment = HorizontalTextAlign.Left });
+            model.Annotations.Add(new LineAnnotation() { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second", TextHorizontalAlignment = HorizontalTextAlign.Left,TextVerticalAlignment = VerticalTextAlign.Bottom});
+            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical", TextHorizontalAlignment = HorizontalTextAlign.Right });
+            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal", TextHorizontalAlignment = HorizontalTextAlign.Left});
             return model;
         }
     }
