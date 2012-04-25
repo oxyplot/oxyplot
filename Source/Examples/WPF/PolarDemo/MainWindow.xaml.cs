@@ -26,18 +26,12 @@ namespace PolarDemo
         {
             this.InitializeComponent();
             this.DataContext = this;
-            this.SpiralPoints = new List<IDataPoint>();
             this.MaxAngle = Math.PI * 2;
             this.MajorStep = Math.PI / 4;
             this.MinorStep = Math.PI / 16;
             this.PI = Math.PI;
-
-            foreach (IDataPoint pt in FunctionSeries.GetPoints(t => t, t => t, 0, Math.PI * 6, 0.01))
-            {
-                this.SpiralPoints.Add(pt);
-            }
-
             this.MyModel = this.CreateModel();
+            this.SpiralPoints = ((FunctionSeries)this.MyModel.Series[0]).Points;
         }
 
         #endregion
@@ -72,7 +66,7 @@ namespace PolarDemo
         /// <summary>
         /// Gets or sets SpiralPoints.
         /// </summary>
-        public List<IDataPoint> SpiralPoints { get; set; }
+        public IList<IDataPoint> SpiralPoints { get; set; }
 
         #endregion
 
@@ -88,19 +82,19 @@ namespace PolarDemo
         {
             var model = new PlotModel("Polar plot", "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π")
                 {
-                   PlotType = PlotType.Polar, 
-                   PlotMargins = new OxyThickness(20, 20, 4, 40), 
-                   PlotAreaBorderThickness = 0 
+                    PlotType = PlotType.Polar,
+                    PlotMargins = new OxyThickness(20, 20, 4, 40),
+                    PlotAreaBorderThickness = 0
                 };
             model.Axes.Add(
                 new AngleAxis(0, this.MaxAngle, this.MajorStep, this.MinorStep)
                     {
-                       FormatAsFractions = true, 
-                       FractionUnit = Math.PI, 
-                       FractionUnitSymbol = "π" 
+                        FormatAsFractions = true,
+                        FractionUnit = Math.PI,
+                        FractionUnitSymbol = "π"
                     });
             model.Axes.Add(new MagnitudeAxis());
-            model.Series.Add(new LineSeries { ItemsSource = this.SpiralPoints });
+            model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
             return model;
         }
 
