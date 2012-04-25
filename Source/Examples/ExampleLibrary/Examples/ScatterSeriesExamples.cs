@@ -10,12 +10,9 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
-    using System.Collections.Specialized;
-
     [Examples("ScatterSeries")]
     public class ScatterSeriesExamples : ExamplesBase
     {
-
         [Example("Random points")]
         public static PlotModel RandomScatter()
         {
@@ -308,18 +305,6 @@ namespace ExampleLibrary
                 s1.Points.Add(p);
             }
             return s1;
-        }
-
-        private static ScatterSeries CreateRandomScatterSeries2(int n, string title, MarkerType markerType)
-        {
-            return new ScatterSeries
-                {
-                    Title = title,
-                    MarkerType = markerType,
-                    MarkerStroke = OxyColors.Black,
-                    MarkerStrokeThickness = 1.0,
-                    Points = CreateRandomPoints(n)
-                };
         }
 
         private static IList<IDataPoint> CreateRandomPoints(int n)
