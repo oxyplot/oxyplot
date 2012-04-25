@@ -61,6 +61,8 @@ namespace OxyPlot
         /// </summary>
         public ScatterPoint()
         {
+            this.Size = double.NaN;
+            this.Value = double.NaN;
         }
 
         /// <summary>
