@@ -4,19 +4,19 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using OxyPlot;
-
 namespace ExampleLibrary
 {
-    [Examples("Custom Series")]
+    using System;
+    using OxyPlot;
+
+    [Examples("Custom series")]
     public static class CustomSeriesExamples
     {
-
         [Example("ErrorSeries")]
         public static PlotModel ErrorSeries()
         {
             int n = 20;
+
             var model = new PlotModel("ErrorSeries");
 
             var s1 = new ErrorSeries { Title = "Measurements" };
@@ -25,13 +25,13 @@ namespace ExampleLibrary
             double y = 0;
             for (int i = 0; i < n; i++)
             {
-                x += 2 + random.NextDouble() * 10;
+                x += 2 + (random.NextDouble() * 10);
                 y += 1 + random.NextDouble();
-                var p = new DataPoint(x, y);
-                s1.Points.Add(p);
-                s1.XErrors.Add(1 + random.NextDouble() * 2);
-                s1.YErrors.Add(1 + random.NextDouble() * 2);
+                double xe = 1 + (random.NextDouble() * 2);
+                double ye = 1 + (random.NextDouble() * 2);
+                s1.Points.Add(new ErrorItem(x, y, xe, ye));
             }
+
             model.Series.Add(s1);
             return model;
         }

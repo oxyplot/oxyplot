@@ -2,9 +2,6 @@
 // <copyright file="MagnitudeAxis.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Represents a magnitude axis for polar plots.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -105,9 +102,9 @@ namespace OxyPlot
             x -= this.MidPoint.x;
             y -= this.MidPoint.y;
             double th = Math.Atan2(y, x);
-            double r = Math.Sqrt(x * x + y * y);
-            x = r / this.scale + this.offset;
-            y = yaxis != null ? th / angleAxis.Scale + angleAxis.Offset : double.NaN;
+            double r = Math.Sqrt((x * x) + (y * y));
+            x = (r / this.scale) + this.offset;
+            y = (th / angleAxis.Scale) + angleAxis.Offset;
             return new DataPoint(x, y);
         }
 
@@ -169,9 +166,9 @@ namespace OxyPlot
             }
 
             double r = (x - this.Offset) * this.scale;
-            double theta = yaxis != null ? (y - angleAxis.Offset) * angleAxis.Scale : double.NaN;
+            double theta = (y - angleAxis.Offset) * angleAxis.Scale;
 
-            return new ScreenPoint(this.MidPoint.x + r * Math.Cos(theta), this.MidPoint.y + r * Math.Sin(theta));
+            return new ScreenPoint(this.MidPoint.x + (r * Math.Cos(theta)), this.MidPoint.y + (r * Math.Sin(theta)));
         }
 
         #endregion

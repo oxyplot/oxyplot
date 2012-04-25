@@ -9,6 +9,7 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -177,9 +178,14 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
+        /// The default selection color.
+        /// </summary>
+        internal static readonly OxyColor DefaultSelectionColor = OxyColors.Yellow;
+
+        /// <summary>
         ///   The default font.
         /// </summary>
-        private static string defaultFont = "Segoe UI";
+        private const string PrivateDefaultFont = "Segoe UI";
 
         /// <summary>
         ///   The current color index.
@@ -205,7 +211,7 @@ namespace OxyPlot
             this.Padding = new OxyThickness(8, 8, 16, 8);
             this.AutoAdjustPlotMargins = true;
 
-            this.DefaultFont = defaultFont;
+            this.DefaultFont = PrivateDefaultFont;
             this.DefaultFontSize = 12;
 
             this.TitleFont = null;
@@ -587,6 +593,14 @@ namespace OxyPlot
         /// </summary>
         /// <value> The type of the plot. </value>
         public PlotType PlotType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color of the selection.
+        /// </summary>
+        /// <value>
+        /// The color of the selection.
+        /// </value>
+        public OxyColor SelectionColor { get; set; }
 
         /// <summary>
         ///   Gets or sets the series.
@@ -1119,7 +1133,32 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Updates all axes and series. 0. Updates the owner PlotModel of all plot items (axes, series and annotations) 1. Updates the data of each Series (only if updateData==true). 2. Ensure that all series have axes assigned. 3. Updates the max and min of the axes.
+        /// Gets all elements of the plot model.
+        /// </summary>
+        /// <returns>An enumerator of the plot elements.</returns>
+        public IEnumerable<PlotElement> GetElements()
+        {
+            foreach (var axis in this.Axes)
+            {
+                yield return axis;
+            }
+
+            foreach (var annotation in this.Annotations)
+            {
+                yield return annotation;
+            }
+
+            foreach (var s in this.Series)
+            {
+                yield return s;
+            }
+        }
+
+        /// <summary>
+        /// Updates all axes and series. 0. Updates the owner PlotModel of all plot items (axes, series and annotations) 
+        /// 1. Updates the data of each Series (only if updateData==true). 
+        /// 2. Ensure that all series have axes assigned. 
+        /// 3. Updates the max and min of the axes.
         /// </summary>
         /// <param name="updateData">
         /// if set to <c>true</c> , all data collections will be updated. 
@@ -1181,6 +1220,22 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Gets the axis for the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="defaultAxis">The default axis.</param>
+        /// <returns>The axis, or the defaultAxis if the key is not found.</returns>
+        internal Axis GetAxisOrDefault(string key, Axis defaultAxis)
+        {
+            if (key != null)
+            {
+                return this.Axes.FirstOrDefault(a => a.Key == key) ?? defaultAxis;
+            }
+
+            return defaultAxis;
+        }
+
+        /// <summary>
         /// Raises the Updated event.
         /// </summary>
         protected virtual void OnUpdated()
@@ -1204,6 +1259,17 @@ namespace OxyPlot
                 var args = new EventArgs();
                 handler(this, args);
             }
+        }
+
+        /// <summary>
+        /// Traces the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        protected void Trace(string message)
+        {
+#if !SILVERLIGHT
+            System.Diagnostics.Trace.WriteLine(string.Format("{0}: {1}", this.GetType().Name, message));
+#endif
         }
 
         /// <summary>
@@ -1283,12 +1349,26 @@ namespace OxyPlot
             {
                 if (this.DefaultXAxis == null)
                 {
-                    this.DefaultXAxis = new LinearAxis { Position = AxisPosition.Bottom };
+                    if (this.Series.Any(series => series is ColumnSeries))
+                    {
+                        this.DefaultXAxis = new CategoryAxis { Position = AxisPosition.Bottom };
+                    }
+                    else
+                    {
+                        this.DefaultXAxis = new LinearAxis { Position = AxisPosition.Bottom };
+                    }
                 }
 
                 if (this.DefaultYAxis == null)
                 {
-                    this.DefaultYAxis = new LinearAxis { Position = AxisPosition.Left };
+                    if (this.Series.Any(series => series is BarSeries))
+                    {
+                        this.DefaultYAxis = new CategoryAxis { Position = AxisPosition.Left };
+                    }
+                    else
+                    {
+                        this.DefaultYAxis = new LinearAxis { Position = AxisPosition.Left };
+                    }
                 }
             }
 
@@ -1305,12 +1385,20 @@ namespace OxyPlot
             {
                 if (!this.Axes.Contains(this.DefaultXAxis))
                 {
-                    this.Axes.Add(this.DefaultXAxis);
+                    Debug.Assert(this.DefaultXAxis != null, "Default x-axis not created.");
+                    if (this.DefaultXAxis != null)
+                    {
+                        this.Axes.Add(this.DefaultXAxis);
+                    }
                 }
 
                 if (!this.Axes.Contains(this.DefaultYAxis))
                 {
-                    this.Axes.Add(this.DefaultYAxis);
+                    Debug.Assert(this.DefaultYAxis != null, "Default y-axis not created.");
+                    if (this.DefaultYAxis != null)
+                    {
+                        this.Axes.Add(this.DefaultYAxis);
+                    }
                 }
             }
 

@@ -8,8 +8,10 @@ namespace OxyPlot
 {
     /// <summary>
     /// Interface for Series that can be 'tracked'
-    ///   The plot control will show a tracker with the current value when moving the mouse over the data.
     /// </summary>
+    /// <remarks>
+    /// The plot control will show a tracker with the current value when moving the mouse over the data.
+    /// </remarks>
     public interface ITrackableSeries 
     {
         #region Public Properties

@@ -7,10 +7,9 @@
 namespace OxyPlot
 {
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     /// <summary>
-    /// StemSeries is used to plot discrete data in a stemplot.
+    /// Represents a series that plots discrete data in a stem plot.
     /// </summary>
     /// <remarks>
     /// http://en.wikipedia.org/wiki/Stemplot
@@ -96,7 +95,7 @@ namespace OxyPlot
                 var basePoint = new DataPoint(p1.X, this.Base);
                 var sp1 = this.Transform(p1);
                 var sp2 = this.Transform(basePoint);
-                var u = ScreenPoint.FindPositionOnLine(point, sp1, sp2);
+                var u = ScreenPointHelper.FindPositionOnLine(point, sp1, sp2);
 
                 if (double.IsNaN(u))
                 {
@@ -108,7 +107,7 @@ namespace OxyPlot
                     continue; // outside line
                 }
 
-                var sp = sp1 + (sp2 - sp1) * u;
+                var sp = sp1 + ((sp2 - sp1) * u);
                 double distance = (point - sp).LengthSquared;
 
                 if (distance < minimumDistance)
@@ -141,7 +140,11 @@ namespace OxyPlot
                 return;
             }
 
-            Debug.Assert(this.XAxis != null && this.YAxis != null, "Axis has not been defined.");
+            if (this.XAxis == null || this.YAxis == null)
+            {
+                Trace("Axis not defined.");
+                return;
+            }
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
@@ -166,7 +169,7 @@ namespace OxyPlot
                         new[] { p0, p1 },
                         clippingRect,
                         minDistSquared,
-                        this.Color,
+                        this.GetSelectableColor(this.Color),
                         this.StrokeThickness,
                         this.LineStyle,
                         this.LineJoin,

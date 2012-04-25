@@ -15,6 +15,11 @@ namespace OxyPlot
     /// </summary>
     public class LineAnnotation : Annotation
     {
+        /// <summary>
+        /// The points of the line, transformed to screen coordinates.
+        /// </summary>
+        private IList<ScreenPoint> screenPoints;
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -295,7 +300,7 @@ namespace OxyPlot
             }
 
             // transform to screen coordinates
-            var screenPoints = points.Select(p => this.Transform(p)).ToList();
+            this.screenPoints = points.Select(p => this.Transform(p)).ToList();
 
             // clip to the area defined by the axes
             var clippingRectangle = OxyRect.Create(
@@ -309,10 +314,10 @@ namespace OxyPlot
             IList<ScreenPoint> clippedPoints = null;
 
             rc.DrawClippedLine(
-               screenPoints,
+               this.screenPoints,
                clippingRectangle,
                MinimumSegmentLength * MinimumSegmentLength,
-               this.Color,
+               this.GetSelectableColor(this.Color),
                this.StrokeThickness,
                this.LineStyle,
                 this.LineJoin,
@@ -371,6 +376,25 @@ namespace OxyPlot
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Tests if the plot element is hit by the specified point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>
+        /// A hit test result.
+        /// </returns>
+        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
+        {
+            var nearestPoint = ScreenPointHelper.FindNearestPointOnPolyline(point, this.screenPoints);
+            double dist = (point - nearestPoint).Length;
+            if (dist < tolerance)
+            {
+                return new HitTestResult(nearestPoint);
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Gets the point on a curve at the specified relative distance along the curve.

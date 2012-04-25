@@ -138,43 +138,7 @@ namespace OxyPlot.Silverlight
             CompositionTarget.Rendering += this.CompositionTargetRendering;
 
             // http://nuggets.hammond-turner.org.uk/2009/01/quickie-simulating-datacontextchanged.html
-            // TODO: doesn't work?
             this.SetBinding(DataContextWatcherProperty, new Binding());
-        }
-
-        #endregion
-
-        #region Enums
-
-        /// <summary>
-        /// The mouse button.
-        /// </summary>
-        public enum MouseButton
-        {
-            /// <summary>
-            ///   The left.
-            /// </summary>
-            Left,
-
-            /// <summary>
-            ///   The middle.
-            /// </summary>
-            Middle,
-
-            /// <summary>
-            ///   The right.
-            /// </summary>
-            Right,
-
-            /// <summary>
-            ///   The x button 1.
-            /// </summary>
-            XButton1,
-
-            /// <summary>
-            ///   The x button 2.
-            /// </summary>
-            XButton2
         }
 
         #endregion
@@ -644,7 +608,7 @@ namespace OxyPlot.Silverlight
                     zoom *= 0.2;
                 }
 
-                this.ZoomAllAxes(1 + zoom * 0.12);
+                this.ZoomAllAxes(1 + (zoom * 0.12));
                 e.Handled = true;
             }
 
@@ -724,13 +688,24 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Raises the <see cref="E:MouseButtonUp"/> event.
+        /// Raises the MouseButtonUp event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data. 
-        /// </param>
-        protected void OnMouseButtonUp(MouseButtonEventArgs e)
+        /// <param name="button">The button.</param>
+        /// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.</param>
+        protected void OnMouseButtonUp(OxyMouseButton button, MouseButtonEventArgs e)
         {
+            this.ReleaseMouseCapture();
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(button, e);
+                this.ActualModel.HandleMouseUp(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Completed(this.CreateManipulationEventArgs(e));
@@ -738,7 +713,6 @@ namespace OxyPlot.Silverlight
             }
 
             this.mouseManipulator = null;
-            this.ReleaseMouseCapture();
         }
 
         /// <summary>
@@ -750,7 +724,7 @@ namespace OxyPlot.Silverlight
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
-            this.OnMouseButtonDown(MouseButton.Left, e);
+            this.OnMouseButtonDown(OxyMouseButton.Left, e);
             e.Handled = true;
         }
 
@@ -763,7 +737,7 @@ namespace OxyPlot.Silverlight
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonUp(e);
-            this.OnMouseButtonUp(e);
+            this.OnMouseButtonUp(OxyMouseButton.Left, e);
             e.Handled = true;
         }
 
@@ -776,6 +750,17 @@ namespace OxyPlot.Silverlight
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(OxyMouseButton.None, e);
+                this.ActualModel.HandleMouseMove(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Delta(this.CreateManipulationEventArgs(e));
@@ -791,7 +776,7 @@ namespace OxyPlot.Silverlight
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseRightButtonDown(e);
-            this.OnMouseButtonDown(MouseButton.Right, e);
+            this.OnMouseButtonDown(OxyMouseButton.Right, e);
             if (this.HandleRightClicks)
             {
                 e.Handled = true;
@@ -807,7 +792,7 @@ namespace OxyPlot.Silverlight
         protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseRightButtonUp(e);
-            this.OnMouseButtonUp(e);
+            this.OnMouseButtonUp(OxyMouseButton.Right, e);
             if (this.HandleRightClicks)
             {
                 e.Handled = true;
@@ -846,7 +831,7 @@ namespace OxyPlot.Silverlight
         /// </param>
         private static void DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ((Plot)sender).OnDataContextChanged(sender, e);
+            ((Plot)sender).OnDataContextChanged();
         }
 
         /// <summary>
@@ -905,22 +890,36 @@ namespace OxyPlot.Silverlight
         /// <param name="text">
         /// The text. 
         /// </param>
-        /// <returns>
-        /// True if the operation was successful. 
-        /// </returns>
-        private static bool TrySetClipboardText(string text)
+        private static void TrySetClipboardText(string text)
         {
             try
             {
                 Clipboard.SetText(text);
-                return true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
 
-            return false;
+        /// <summary>
+        /// Creates the mouse event arguments.
+        /// </summary>
+        /// <param name="button">The button.</param>
+        /// <param name="e">The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.</param>
+        /// <returns>
+        /// Mouse event arguments.
+        /// </returns>
+        private OxyMouseEventArgs CreateMouseEventArgs(OxyMouseButton button, MouseEventArgs e)
+        {
+            return new OxyMouseEventArgs
+            {
+                ChangedButton = button,
+                Position = e.GetPosition(this).ToScreenPoint(),
+                IsShiftDown = IsShiftDown(),
+                IsControlDown = IsControlDown(),
+                IsAltDown = IsAltDown()
+            };
         }
 
         /// <summary>
@@ -982,28 +981,21 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Gets the manipulator for the current mouse button and modifier keys.
         /// </summary>
-        /// <param name="button">
-        /// The button. 
-        /// </param>
-        /// <param name="clickCount">
-        /// The click count. 
-        /// </param>
-        /// <param name="e">
-        /// The event args. 
-        /// </param>
+        /// <param name="button">The button.</param>
+        /// <param name="clickCount">The click count.</param>
         /// <returns>
-        /// A manipulator or null if no gesture was recognized. 
+        /// A manipulator or null if no gesture was recognized.
         /// </returns>
-        private ManipulatorBase GetManipulator(MouseButton button, int clickCount, MouseButtonEventArgs e)
+        private ManipulatorBase GetManipulator(OxyMouseButton button, int clickCount)
         {
             bool control = IsControlDown();
             bool shift = IsShiftDown();
             bool alt = IsAltDown();
-            bool lmb = button == MouseButton.Left;
-            bool rmb = button == MouseButton.Right;
-            bool mmb = button == MouseButton.Middle;
-            bool xb1 = button == MouseButton.XButton1;
-            bool xb2 = button == MouseButton.XButton2;
+            bool lmb = button == OxyMouseButton.Left;
+            bool rmb = button == OxyMouseButton.Right;
+            bool mmb = button == OxyMouseButton.Middle;
+            bool xb1 = button == OxyMouseButton.XButton1;
+            bool xb2 = button == OxyMouseButton.XButton2;
 
             // MMB / control RMB / control+alt LMB
             if (mmb || (control && rmb) || (control && alt && lmb))
@@ -1041,13 +1033,7 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Called when data context is changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender. 
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
-        /// </param>
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void OnDataContextChanged()
         {
             this.OnModelChanged();
         }
@@ -1103,7 +1089,7 @@ namespace OxyPlot.Silverlight
         /// <param name="e">
         /// The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data. 
         /// </param>
-        private void OnMouseButtonDown(MouseButton button, MouseButtonEventArgs e)
+        private void OnMouseButtonDown(OxyMouseButton button, MouseButtonEventArgs e)
         {
             if (this.mouseManipulator != null)
             {
@@ -1119,7 +1105,17 @@ namespace OxyPlot.Silverlight
                 clickCount = 2;
             }
 
-            this.mouseManipulator = this.GetManipulator(button, clickCount, e);
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(button, e);
+                this.ActualModel.HandleMouseDown(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
+            this.mouseManipulator = this.GetManipulator(button, clickCount);
 
             if (this.mouseManipulator != null)
             {

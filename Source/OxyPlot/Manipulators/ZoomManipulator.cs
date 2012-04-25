@@ -29,11 +29,9 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// The started.
+        /// Occurs when the input device changes position during a manipulation.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="e">The <see cref="OxyPlot.ManipulationEventArgs"/> instance containing the event data.</param>
         public override void Delta(ManipulationEventArgs e)
         {
             base.Delta(e);
@@ -51,7 +49,6 @@ namespace OxyPlot
             }
 
             this.PlotControl.InvalidatePlot();
-            return;
         }
 
         #endregion

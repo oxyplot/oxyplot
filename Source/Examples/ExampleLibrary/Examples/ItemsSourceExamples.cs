@@ -8,9 +8,6 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
-
-    
-
     [Examples("ItemsSource")]
     public class ItemsSourceExamples : ExamplesBase
     {
@@ -41,72 +38,95 @@ namespace ExampleLibrary
             return model;
         }
 
-public class MeasurementType1 : IDataPointProvider
-    {
-        public double Abscissa { get; set; }
-        public double Ordinate { get; set; }
-
-        public MeasurementType1(double abscissa, double ordinate)
+        [Example("Using Mapping property")]
+        public static PlotModel UsingMappingProperty()
         {
-            this.Abscissa = abscissa;
-            this.Ordinate = ordinate;
+            var measurements = new[] { new MeasurementType3(0, 12), new MeasurementType3(10, 8), new MeasurementType3(15, 10) };
+            var model = new PlotModel("Using Mapping property");
+            model.Series.Add(
+                new LineSeries
+                    {
+                        ItemsSource = measurements,
+                        Mapping =
+                            item => new DataPoint(((MeasurementType3)item).Abscissa, ((MeasurementType3)item).Ordinate)
+                    });
+            return model;
         }
 
-        public DataPoint GetDataPoint()
+        private class MeasurementType1 : IDataPointProvider
         {
-            return new DataPoint(Abscissa, Ordinate);
-        }
-    }
+            public double Abscissa { get; set; }
+            public double Ordinate { get; set; }
 
-    public class MeasurementType2 : IDataPoint
-    {
-        public double Abscissa { get; set; }
-        public double Ordinate { get; set; }
-
-        public MeasurementType2(double abscissa, double ordinate)
-        {
-            this.Abscissa = abscissa;
-            this.Ordinate = ordinate;
-        }
-
-        public DataPoint GetDataPoint()
-        {
-            return new DataPoint(Abscissa, Ordinate);
-        }
-
-        public string ToCode()
-        {
-            return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1}", this.Abscissa, this.Ordinate);
-        }
-
-        public double X
-        {
-            get
+            public MeasurementType1(double abscissa, double ordinate)
             {
-                return Abscissa;
+                this.Abscissa = abscissa;
+                this.Ordinate = ordinate;
+            }
+
+            public DataPoint GetDataPoint()
+            {
+                return new DataPoint(Abscissa, Ordinate);
             }
         }
 
-        public double Y
+        private class MeasurementType2 : IDataPoint
         {
-            get
+            public double Abscissa { get; set; }
+            public double Ordinate { get; set; }
+
+            public MeasurementType2(double abscissa, double ordinate)
             {
-                return Ordinate;
+                this.Abscissa = abscissa;
+                this.Ordinate = ordinate;
+            }
+
+            public DataPoint GetDataPoint()
+            {
+                return new DataPoint(Abscissa, Ordinate);
+            }
+
+            public string ToCode()
+            {
+                return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1}", this.Abscissa, this.Ordinate);
+            }
+
+            public double X
+            {
+                get
+                {
+                    return Abscissa;
+                }
+                set
+                {
+                    Abscissa = value;
+                }
+            }
+
+            public double Y
+            {
+                get
+                {
+                    return Ordinate;
+                }
+                set
+                {
+                    Ordinate = value;
+                }
             }
         }
-    }
 
-    public class MeasurementType3
-    {
-        public double Abscissa { get; set; }
-
-        public double Ordinate { get; set; }
-
-        public MeasurementType3(double abscissa, double ordinate)
+        private class MeasurementType3
         {
-            this.Abscissa = abscissa;
-            this.Ordinate = ordinate;
+            public double Abscissa { get; set; }
+
+            public double Ordinate { get; set; }
+
+            public MeasurementType3(double abscissa, double ordinate)
+            {
+                this.Abscissa = abscissa;
+                this.Ordinate = ordinate;
+            }
         }
-    }
     }
 }

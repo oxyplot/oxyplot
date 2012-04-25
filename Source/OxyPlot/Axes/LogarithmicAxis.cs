@@ -296,8 +296,8 @@ namespace OxyPlot
         /// </returns>
         public override double Transform(double x)
         {
-            Debug.Assert(x > 0, "X should be positive.");
-            if (x < 0)
+            Debug.Assert(x > 0, "Value should be positive.");
+            if (x <= 0)
             {
                 return -1;
             }
@@ -361,7 +361,7 @@ namespace OxyPlot
         /// </returns>
         internal override double PreTransform(double x)
         {
-            Debug.Assert(x > 0, "X should be positive.");
+            Debug.Assert(x > 0, "Value should be positive.");
 
             if (x <= 0)
             {

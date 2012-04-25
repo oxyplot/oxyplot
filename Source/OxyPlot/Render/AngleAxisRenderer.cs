@@ -39,8 +39,6 @@ namespace OxyPlot
         /// <param name="axis">
         /// The axis.
         /// </param>
-        /// <exception cref="InvalidOperationException">
-        /// </exception>
         public override void Render(Axis axis)
         {
             base.Render(axis);

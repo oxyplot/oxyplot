@@ -124,12 +124,12 @@ namespace OxyPlot
                 var r = this.ActualBarRectangles[i];
                 if (r.Contains(point))
                 {
+                    var item = this.GetItem(i);
                     double value = (this.Items[i].Start + this.Items[i].End) / 2;
                     ScreenPoint sp = point;
                     var dp = new DataPoint(i, value);
-                    var item = this.GetItem(i);
                     var text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, item, this.Items[i].Start, this.Items[i].End, this.Items[i].Title);
-                    return new TrackerHitResult(this, dp, sp, item, text);
+                    return new TrackerHitResult(this, dp, sp, item, i, text);
                 }
             }
 
@@ -202,7 +202,7 @@ namespace OxyPlot
                 rc.DrawClippedRectangleAsPolygon(
                     rectangle,
                     clippingRect,
-                    item.Color ?? this.FillColor,
+                    this.GetSelectableFillColor(item.Color ?? this.FillColor),
                     this.StrokeColor,
                     this.StrokeThickness);
 
@@ -246,7 +246,7 @@ namespace OxyPlot
             double width = height;
             rc.DrawRectangleAsPolygon(
                 new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
-                this.FillColor,
+                this.GetSelectableFillColor(this.FillColor),
                 this.StrokeColor,
                 this.StrokeThickness);
         }
@@ -290,12 +290,10 @@ namespace OxyPlot
 
             this.Items.Clear();
 
-            ReflectionHelper.FillList(
-                this.ItemsSource,
-                this.Items,
-                new[] { this.MinimumField, this.MaximumField },
-                (item, value) => item.Start = Convert.ToDouble(value),
-                (item, value) => item.End = Convert.ToDouble(value));
+            var filler = new ListFiller<IntervalBarItem>();
+            filler.Add(this.MinimumField, (item, value) => item.Start = Convert.ToDouble(value));
+            filler.Add(this.MaximumField, (item, value) => item.End = Convert.ToDouble(value));
+            filler.FillT(this.Items, this.ItemsSource);
         }
 
         /// <summary>

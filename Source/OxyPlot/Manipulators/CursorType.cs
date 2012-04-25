@@ -7,7 +7,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The oxy cursor.
+    /// Specifies the cursor type.
     /// </summary>
     public enum CursorType
     {

@@ -413,31 +413,15 @@ namespace OxyPlot
         /// <summary>
         /// Renders the marker.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="p">
-        /// The center point of the marker.
-        /// </param>
-        /// <param name="clippingRect">
-        /// </param>
-        /// <param name="type">
-        /// The marker type.
-        /// </param>
-        /// <param name="outline">
-        /// </param>
-        /// <param name="size">
-        /// The size of the marker.
-        /// </param>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="strokeThickness">
-        /// The stroke thickness.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="p">The center point of the marker.</param>
+        /// <param name="clippingRect">The clipping rect.</param>
+        /// <param name="type">The marker type.</param>
+        /// <param name="outline">The outline.</param>
+        /// <param name="size">The size of the marker.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
         public static void DrawMarker(
             this IRenderContext rc,
             ScreenPoint p,
@@ -682,7 +666,7 @@ namespace OxyPlot
             {
                 Debug.Assert(outline != null, "MarkerOutline should be set if MarkerType=Custom.");
                 List<ScreenPoint> poly =
-                    outline.Select(o => new ScreenPoint(p.X + o.x * size, p.Y + o.y * size)).ToList();
+                    outline.Select(o => new ScreenPoint(p.X + (o.x * size), p.Y + (o.y * size))).ToList();
                 polygons.Add(poly);
                 return;
             }

@@ -21,11 +21,5 @@ namespace OxyPlot.Tests
             // todo
             // ReflectionHelper.FillList();
         }
-
-        [Test]
-        public void FillManyValues()
-        {
-            // todo
-        }
     }
 }

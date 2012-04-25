@@ -223,8 +223,8 @@ namespace OxyPlot
         {
             // http://www.w3.org/TR/SVG/shapes.html#EllipseElement
             this.WriteStartElement("ellipse");
-            this.WriteAttributeString("cx", x + width / 2);
-            this.WriteAttributeString("cy", y + height / 2);
+            this.WriteAttributeString("cx", x + (width / 2));
+            this.WriteAttributeString("cy", y + (height / 2));
             this.WriteAttributeString("rx", width / 2);
             this.WriteAttributeString("ry", height / 2);
             this.WriteAttributeString("style", style);

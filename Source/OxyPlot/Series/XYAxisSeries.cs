@@ -2,19 +2,15 @@
 // <copyright file="XYAxisSeries.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Abstract base class for series that contains an X-axis and Y-axis
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
-    /// Abstract base class for series that contains an X-axis and Y-axis
+    /// Abstract base class for series that contains an X-axis and Y-axis.
     /// </summary>
     public abstract class XYAxisSeries : ItemsSeries
     {
@@ -109,6 +105,51 @@ namespace OxyPlot
         {
         }
 
+        /// <summary>
+        /// Transforms from a screen point to a data point by the axes of this series.
+        /// </summary>
+        /// <param name="p">
+        /// The screen point. 
+        /// </param>
+        /// <returns>
+        /// A data point. 
+        /// </returns>
+        public DataPoint InverseTransform(ScreenPoint p)
+        {
+            return this.XAxis.InverseTransform(p.X, p.Y, this.YAxis);
+        }
+
+        /// <summary>
+        /// Transforms the specified coordinates to a screen point by the axes of this series.
+        /// </summary>
+        /// <param name="x">
+        /// The x coordinate. 
+        /// </param>
+        /// <param name="y">
+        /// The y coordinate. 
+        /// </param>
+        /// <returns>
+        /// A screen point. 
+        /// </returns>
+        public ScreenPoint Transform(double x, double y)
+        {
+            return this.XAxis.Transform(x, y, this.YAxis);
+        }
+
+        /// <summary>
+        /// Transforms the specified data point to a screen point by the axes of this series.
+        /// </summary>
+        /// <param name="p">
+        /// The point. 
+        /// </param>
+        /// <returns>
+        /// A screen point. 
+        /// </returns>
+        public ScreenPoint Transform(IDataPoint p)
+        {
+            return this.XAxis.Transform(p.X, p.Y, this.YAxis);
+        }
+
         #endregion
 
         #region Methods
@@ -129,30 +170,8 @@ namespace OxyPlot
         /// </summary>
         protected internal override void EnsureAxes()
         {
-            // reset
-            this.XAxis = null;
-            this.YAxis = null;
-
-            if (this.XAxisKey != null)
-            {
-                this.XAxis = this.PlotModel.Axes.FirstOrDefault(a => a.Key == this.XAxisKey);
-            }
-
-            if (this.YAxisKey != null)
-            {
-                this.YAxis = this.PlotModel.Axes.FirstOrDefault(a => a.Key == this.YAxisKey);
-            }
-
-            // If axes are not found, use the default axes
-            if (this.XAxis == null)
-            {
-                this.XAxis = this.PlotModel.DefaultXAxis;
-            }
-
-            if (this.YAxis == null)
-            {
-                this.YAxis = this.PlotModel.DefaultYAxis;
-            }
+            this.XAxis = PlotModel.GetAxisOrDefault(this.XAxisKey, PlotModel.DefaultXAxis);
+            this.YAxis = PlotModel.GetAxisOrDefault(this.YAxisKey, PlotModel.DefaultYAxis);
         }
 
         /// <summary>
@@ -230,24 +249,14 @@ namespace OxyPlot
         /// <param name="point">
         /// The point. 
         /// </param>
-        /// <param name="dpn">
-        /// The nearest point (data coordinates). 
-        /// </param>
-        /// <param name="spn">
-        /// The nearest point (screen coordinates). 
-        /// </param>
-        /// <param name="index">
-        /// The index. 
-        /// </param>
         /// <returns>
-        /// True if a point was found. 
+        /// A tracker hit result if a point was found. 
         /// </returns>
-        protected bool GetNearestInterpolatedPointInternal(
-            IList<IDataPoint> points, ScreenPoint point, out IDataPoint dpn, out ScreenPoint spn, out int index)
+        protected TrackerHitResult GetNearestInterpolatedPointInternal(IList<IDataPoint> points, ScreenPoint point)
         {
-            spn = default(ScreenPoint);
-            dpn = default(DataPoint);
-            index = -1;
+            var spn = default(ScreenPoint);
+            var dpn = default(DataPoint);
+            double index = -1;
 
             double minimumDistance = double.MaxValue;
 
@@ -264,7 +273,7 @@ namespace OxyPlot
                 var sp2 = this.Transform(p2);
 
                 // Find the nearest point on the line segment.
-                var spl = ScreenPoint.FindPointOnLine(point, sp1, sp2);
+                var spl = ScreenPointHelper.FindPointOnLine(point, sp1, sp2);
 
                 if (ScreenPoint.IsUndefined(spl))
                 {
@@ -280,11 +289,17 @@ namespace OxyPlot
                     dpn = new DataPoint(p1.X + (u * (p2.X - p1.X)), p1.Y + (u * (p2.Y - p1.Y)));
                     spn = spl;
                     minimumDistance = l2;
-                    index = i;
+                    index = i + u;
                 }
             }
 
-            return minimumDistance < double.MaxValue;
+            if (minimumDistance < double.MaxValue)
+            {
+                object item = this.GetItem((int)index);
+                return new TrackerHitResult(this, dpn, spn, item) { Index = index };
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -296,24 +311,14 @@ namespace OxyPlot
         /// <param name="point">
         /// The point (screen coordinates). 
         /// </param>
-        /// <param name="dpn">
-        /// The nearest data point. 
-        /// </param>
-        /// <param name="spn">
-        /// The nearest screen point. 
-        /// </param>
-        /// <param name="index">
-        /// The index of the nearest item. 
-        /// </param>
         /// <returns>
         /// True if a point was found. 
         /// </returns>
-        protected bool GetNearestPointInternal(
-            IEnumerable<IDataPoint> points, ScreenPoint point, out IDataPoint dpn, out ScreenPoint spn, out int index)
+        protected TrackerHitResult GetNearestPointInternal(IEnumerable<IDataPoint> points, ScreenPoint point)
         {
-            spn = default(ScreenPoint);
-            dpn = default(DataPoint);
-            index = -1;
+            var spn = default(ScreenPoint);
+            IDataPoint dpn = default(DataPoint);
+            double index = -1;
 
             double minimumDistance = double.MaxValue;
             int i = 0;
@@ -338,21 +343,13 @@ namespace OxyPlot
                 i++;
             }
 
-            return minimumDistance < double.MaxValue;
-        }
+            if (minimumDistance < double.MaxValue)
+            {
+                object item = this.GetItem((int)index);
+                return new TrackerHitResult(this, dpn, spn, item) { Index = index };
+            }
 
-        /// <summary>
-        /// Transforms from a screen point to a data point.
-        /// </summary>
-        /// <param name="p">
-        /// The screen point. 
-        /// </param>
-        /// <returns>
-        /// A data point. 
-        /// </returns>
-        protected DataPoint InverseTransform(ScreenPoint p)
-        {
-            return this.XAxis.InverseTransform(p.X, p.Y, this.YAxis);
+            return null;
         }
 
         /// <summary>
@@ -398,37 +395,6 @@ namespace OxyPlot
             }
 
             return Convert.ToDouble(value);
-        }
-
-        /// <summary>
-        /// Transforms the specified coordinates to a screen point.
-        /// </summary>
-        /// <param name="x">
-        /// The x coordinate. 
-        /// </param>
-        /// <param name="y">
-        /// The y coordinate. 
-        /// </param>
-        /// <returns>
-        /// A screen point. 
-        /// </returns>
-        protected ScreenPoint Transform(double x, double y)
-        {
-            return this.XAxis.Transform(x, y, this.YAxis);
-        }
-
-        /// <summary>
-        /// Transforms the specified data point to a screen point.
-        /// </summary>
-        /// <param name="p">
-        /// The point. 
-        /// </param>
-        /// <returns>
-        /// A screen point. 
-        /// </returns>
-        protected ScreenPoint Transform(IDataPoint p)
-        {
-            return this.XAxis.Transform(p.X, p.Y, this.YAxis);
         }
 
         #endregion

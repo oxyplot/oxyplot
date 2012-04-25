@@ -7,7 +7,6 @@
 namespace OxyPlot
 {
     using System;
-    using System.Diagnostics;
 
     /// <summary>
     /// Represents a series for candlestick charts.
@@ -85,72 +84,76 @@ namespace OxyPlot
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.items.Count == 0)
+            if (this.Items.Count == 0)
             {
                 return;
             }
 
-            Debug.Assert(this.XAxis != null && this.YAxis != null, "Axis has not been defined.");
-
-            OxyRect clippingRect = this.GetClippingRect();
-
-            foreach (var v in this.items)
+            if (this.XAxis == null || this.YAxis == null)
             {
-                if (!this.IsValidPoint(v, this.XAxis, this.YAxis))
+                Trace("Axis not defined.");
+                return;
+            }
+
+            var clippingRect = this.GetClippingRect();
+
+            foreach (var v in this.Items)
+            {
+                if (!this.IsValidItem(v, this.XAxis, this.YAxis))
                 {
                     continue;
                 }
 
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
-                    ScreenPoint high = this.Transform(v.X, v.High);
-                    ScreenPoint low = this.Transform(v.X, v.Low);
+                    var high = this.Transform(v.X, v.High);
+                    var low = this.Transform(v.X, v.Low);
 
                     if (double.IsNaN(v.Open) || double.IsNaN(v.Close))
                     {
                         rc.DrawClippedLine(
-                            new[] { low, high }, 
-                            clippingRect, 
-                            0, 
-                            this.Color, 
-                            this.StrokeThickness, 
-                            this.LineStyle, 
-                            this.LineJoin, 
+                            new[] { low, high },
+                            clippingRect,
+                            0,
+                            this.GetSelectableColor(this.Color),
+                            this.StrokeThickness,
+                            this.LineStyle,
+                            this.LineJoin,
                             false);
                     }
                     else
                     {
-                        ScreenPoint open = this.Transform(v.X, v.Open);
-                        ScreenPoint close = this.Transform(v.X, v.Close);
+                        var open = this.Transform(v.X, v.Open);
+                        var close = this.Transform(v.X, v.Close);
                         var max = new ScreenPoint(open.X, Math.Max(open.Y, close.Y));
                         var min = new ScreenPoint(open.X, Math.Min(open.Y, close.Y));
 
                         rc.DrawClippedLine(
-                            new[] { high, min }, 
-                            clippingRect, 
-                            0, 
-                            this.Color, 
-                            this.StrokeThickness, 
-                            this.LineStyle, 
-                            this.LineJoin, 
+                            new[] { high, min },
+                            clippingRect,
+                            0,
+                            this.GetSelectableColor(this.Color),
+                            this.StrokeThickness,
+                            this.LineStyle,
+                            this.LineJoin,
                             true);
 
                         rc.DrawClippedLine(
-                            new[] { max, low }, 
-                            clippingRect, 
-                            0, 
-                            this.Color, 
-                            this.StrokeThickness, 
-                            this.LineStyle, 
-                            this.LineJoin, 
+                            new[] { max, low },
+                            clippingRect,
+                            0,
+                            this.GetSelectableColor(this.Color),
+                            this.StrokeThickness,
+                            this.LineStyle,
+                            this.LineJoin,
                             true);
-                        ScreenPoint openLeft = open;
+                        var openLeft = open;
                         openLeft.X -= this.CandleWidth * 0.5;
-                        ScreenPoint closeRight = close;
+                        var closeRight = close;
                         closeRight.X += this.CandleWidth * 0.5;
                         var rect = new OxyRect(openLeft.X, min.Y, this.CandleWidth, max.Y - min.Y);
                         rc.DrawClippedRectangleAsPolygon(
-                            rect, clippingRect, v.Open > v.Close ? this.Color : null, this.Color, this.StrokeThickness);
+                            rect, clippingRect, v.Open > v.Close ? this.GetSelectableFillColor(this.Color) : null, this.GetSelectableColor(this.Color), this.StrokeThickness);
                     }
                 }
             }
@@ -168,20 +171,20 @@ namespace OxyPlot
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double yOpen = legendBox.Top + (legendBox.Bottom - legendBox.Top) * 0.7;
-            double yClose = legendBox.Top + (legendBox.Bottom - legendBox.Top) * 0.3;
+            double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
+            double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
             double[] dashArray = LineStyleHelper.GetDashArray(this.LineStyle);
             rc.DrawLine(
-                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) }, 
-                this.Color, 
-                this.StrokeThickness, 
-                dashArray, 
-                OxyPenLineJoin.Miter, 
+                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
+                this.GetSelectableColor(this.Color),
+                this.StrokeThickness,
+                dashArray,
+                OxyPenLineJoin.Miter,
                 true);
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - this.CandleWidth * 0.5, yClose, this.CandleWidth, yOpen - yClose), 
-                this.Color, 
-                this.Color, 
+                new OxyRect(xmid - (this.CandleWidth * 0.5), yclose, this.CandleWidth, yopen - yclose),
+                this.GetSelectableFillColor(this.Color),
+                this.GetSelectableColor(this.Color),
                 this.StrokeThickness);
         }
 

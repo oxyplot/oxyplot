@@ -14,10 +14,19 @@ namespace OxyPlot
     /// </summary>
     public class PolygonAnnotation : Annotation
     {
+        #region Constants and Fields
+
+        /// <summary>
+        ///   The polygon points transformed to screen coordinates.
+        /// </summary>
+        private IList<ScreenPoint> screenPoints;
+
+        #endregion
+
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="PolygonAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="PolygonAnnotation"/> class. 
         /// </summary>
         public PolygonAnnotation()
         {
@@ -89,8 +98,8 @@ namespace OxyPlot
             }
 
             // transform to screen coordinates
-            var screenPoints = this.Points.Select(p => this.Transform(p)).ToList();
-            if (screenPoints.Count == 0)
+            this.screenPoints = this.Points.Select(p => this.Transform(p)).ToList();
+            if (this.screenPoints.Count == 0)
             {
                 return;
             }
@@ -101,31 +110,57 @@ namespace OxyPlot
             const double MinimumSegmentLength = 4;
 
             rc.DrawClippedPolygon(
-                screenPoints,
-                clipping,
-                MinimumSegmentLength * MinimumSegmentLength,
-                this.Fill,
-                this.Color,
-                this.StrokeThickness,
-                this.LineStyle,
+                this.screenPoints, 
+                clipping, 
+                MinimumSegmentLength * MinimumSegmentLength, 
+                this.GetSelectableFillColor(this.Fill), 
+                this.GetSelectableColor(this.Color), 
+                this.StrokeThickness, 
+                this.LineStyle, 
                 this.LineJoin);
 
             if (!string.IsNullOrEmpty(this.Text))
             {
-                var textPosition = ScreenPointHelper.GetCentroid(screenPoints);
+                var textPosition = ScreenPointHelper.GetCentroid(this.screenPoints);
 
                 rc.DrawClippedText(
-                    clipping,
-                    textPosition,
-                    this.Text,
-                    this.ActualTextColor,
-                this.ActualFont,
-                this.ActualFontSize,
-                this.ActualFontWeight,
-                    0,
-                    HorizontalTextAlign.Center,
+                    clipping, 
+                    textPosition, 
+                    this.Text, 
+                    this.ActualTextColor, 
+                    this.ActualFont, 
+                    this.ActualFontSize, 
+                    this.ActualFontWeight, 
+                    0, 
+                    HorizontalTextAlign.Center, 
                     VerticalTextAlign.Middle);
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Tests if the plot element is hit by the specified point.
+        /// </summary>
+        /// <param name="point">
+        /// The point. 
+        /// </param>
+        /// <param name="tolerance">
+        /// The tolerance. 
+        /// </param>
+        /// <returns>
+        /// A hit test result. 
+        /// </returns>
+        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
+        {
+            if (ScreenPointHelper.IsPointInPolygon(point, this.screenPoints))
+            {
+                return new HitTestResult(point);
+            }
+
+            return null;
         }
 
         #endregion

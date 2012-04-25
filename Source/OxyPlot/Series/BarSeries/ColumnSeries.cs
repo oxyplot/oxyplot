@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BarSeries.cs" company="OxyPlot">
+// <copyright file="ColumnSeries.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -41,9 +41,9 @@ namespace OxyPlot
                 return;
             }
 
-            OxyRect clippingRect = this.GetClippingRect();
+            var clippingRect = this.GetClippingRect();
 
-            CategoryAxis categoryAxis = this.XAxis as CategoryAxis;
+            var categoryAxis = this.XAxis as CategoryAxis;
             if (categoryAxis == null)
             {
                 throw new InvalidOperationException("No category x-axis defined.");
@@ -55,7 +55,7 @@ namespace OxyPlot
                 throw new InvalidOperationException("No value y-axis defined.");
             }
 
-            double dx = categoryAxis.BarOffset - this.BarWidth * 0.5;
+            double dx = categoryAxis.BarOffset - (this.BarWidth * 0.5);
 
             int i = 0;
             this.ActualBarRectangles = new List<OxyRect>();
@@ -81,8 +81,8 @@ namespace OxyPlot
                 double topValue = this.IsStacked ? baseValue + v : v;
                 int numberOfSeries = this.IsStacked ? 1 : categoryAxis.AttachedSeriesCount;
 
-                ScreenPoint p0 = this.Transform(i + dx, baseValue);
-                ScreenPoint p1 = this.Transform(i + dx + this.BarWidth / numberOfSeries, topValue);
+                var p0 = this.Transform(i + dx, baseValue);
+                var p1 = this.Transform(i + dx + (this.BarWidth / numberOfSeries), topValue);
 
                 p0.X = (int)p0.X;
                 p0.Y = (int)p0.Y;
@@ -131,7 +131,7 @@ namespace OxyPlot
                     actualFillColor = this.NegativeFillColor;
                 }
 
-                rc.DrawClippedRectangleAsPolygon(rect, clippingRect, actualFillColor, this.StrokeColor, this.StrokeThickness);
+                rc.DrawClippedRectangleAsPolygon(rect, clippingRect, this.GetSelectableColor(actualFillColor), this.StrokeColor, this.StrokeThickness);
 
                 if (this.LabelFormatString != null)
                 {

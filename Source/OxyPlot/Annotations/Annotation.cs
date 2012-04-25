@@ -7,15 +7,13 @@
 namespace OxyPlot
 {
     using System;
-    using System.Collections.ObjectModel;
     using System.Globalization;
-    using System.Linq;
 
     /// <summary>
     /// Annotation base class.
     /// </summary>
     [Serializable]
-    public abstract class Annotation : PlotElement
+    public abstract class Annotation : UIPlotElement
     {
         #region Public Properties
 
@@ -79,27 +77,8 @@ namespace OxyPlot
         /// </summary>
         public void EnsureAxes()
         {
-            // todo: refactor - this code is shared with DataPointSeries
-            if (this.XAxisKey != null)
-            {
-                this.XAxis = PlotModel.Axes.FirstOrDefault(a => a.Key == this.XAxisKey);
-            }
-
-            if (this.YAxisKey != null)
-            {
-                this.YAxis = PlotModel.Axes.FirstOrDefault(a => a.Key == this.YAxisKey);
-            }
-
-            // If axes are not found, use the default axes
-            if (this.XAxis == null)
-            {
-                this.XAxis = PlotModel.DefaultXAxis;
-            }
-
-            if (this.YAxis == null)
-            {
-                this.YAxis = PlotModel.DefaultYAxis;
-            }
+            this.XAxis = PlotModel.GetAxisOrDefault(this.XAxisKey, PlotModel.DefaultXAxis);
+            this.YAxis = PlotModel.GetAxisOrDefault(this.YAxisKey, PlotModel.DefaultYAxis);
         }
 
         /// <summary>
@@ -127,7 +106,7 @@ namespace OxyPlot
         /// <returns>
         /// A screen point. 
         /// </returns>
-        protected ScreenPoint Transform(double x, double y)
+        public ScreenPoint Transform(double x, double y)
         {
             return this.XAxis.Transform(x, y, this.YAxis);
         }
@@ -141,9 +120,19 @@ namespace OxyPlot
         /// <returns>
         /// A screen point. 
         /// </returns>
-        protected ScreenPoint Transform(IDataPoint p)
+        public ScreenPoint Transform(IDataPoint p)
         {
             return this.XAxis.Transform(p.X, p.Y, this.YAxis);
+        }
+
+        /// <summary>
+        /// Transforms the specified screen position to a data point.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <returns>A data point</returns>
+        public DataPoint InverseTransform(ScreenPoint position)
+        {
+            return Axis.InverseTransform(position, this.XAxis, this.YAxis);
         }
 
         /// <summary>

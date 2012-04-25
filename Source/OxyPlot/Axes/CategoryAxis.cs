@@ -6,8 +6,10 @@
 
 namespace OxyPlot
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
 
     /// <summary>
     /// Represents a category axes.
@@ -272,11 +274,17 @@ namespace OxyPlot
         {
             // count the series that are using this axis
             this.AttachedSeriesCount = 0;
+            int maxItems = 0;
             foreach (var s in series)
             {
                 if (s.IsUsing(this))
                 {
                     this.AttachedSeriesCount++;
+                    var bsb = s as BarSeriesBase;
+                    if (bsb != null)
+                    {
+                        maxItems = Math.Max(maxItems, bsb.Values.Count);
+                    }
                 }
             }
 
@@ -286,6 +294,12 @@ namespace OxyPlot
             {
                 this.Labels.Clear();
                 ReflectionHelper.FillList(this.ItemsSource, this.LabelField, this.Labels);
+            }
+
+            // Add default labels if neccessary
+            while (this.Labels.Count < maxItems)
+            {
+                this.Labels.Add((this.Labels.Count + 1).ToString(CultureInfo.InvariantCulture));
             }
 
             this.PositiveBaseValue = new double[this.Labels.Count];

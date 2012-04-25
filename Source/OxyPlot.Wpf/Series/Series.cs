@@ -132,9 +132,10 @@ namespace OxyPlot.Wpf
         #region Public Methods and Operators
 
         /// <summary>
-        /// The create model.
+        /// Creates the model.
         /// </summary>
         /// <returns>
+        /// A series.
         /// </returns>
         public abstract OxyPlot.Series CreateModel();
 

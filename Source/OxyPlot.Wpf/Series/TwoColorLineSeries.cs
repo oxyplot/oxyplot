@@ -46,7 +46,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public TwoColorLineSeries()
         {
-            this.internalSeries = new OxyPlot.TwoColorLineSeries();
+            this.InternalSeries = new OxyPlot.TwoColorLineSeries();
         }
 
         #endregion

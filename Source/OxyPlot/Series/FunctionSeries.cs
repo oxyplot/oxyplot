@@ -7,21 +7,19 @@
 namespace OxyPlot
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>
-    /// The FunctionSeries generates its dataset from a Func.
+    /// Represents a line series that generates its dataset from a function.
     /// </summary>
     /// <remarks>
-    /// Define f(x) and make a plot on the range [x0,x1]
-    ///   or define fx(t) and fy(t) and make a plot on the range [t0,t1]
+    /// Define f(x) and make a plot on the range [x0,x1] or define fx(t) and fy(t) and make a plot on the range [t0,t1].
     /// </remarks>
     public class FunctionSeries : LineSeries
     {
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "FunctionSeries" /> class.
+        /// Initializes a new instance of the <see cref = "FunctionSeries" /> class.
         /// </summary>
         public FunctionSeries()
         {
@@ -48,7 +46,7 @@ namespace OxyPlot
         public FunctionSeries(Func<double, double> f, double x0, double x1, double dx, string title = null)
         {
             this.Title = title;
-            for (double x = x0; x <= x1 + dx / 2; x += dx)
+            for (double x = x0; x <= x1 + (dx * 0.5); x += dx)
             {
                 this.Points.Add(new DataPoint(x, f(x)));
             }
@@ -98,19 +96,17 @@ namespace OxyPlot
         /// <param name="title">
         /// The title.
         /// </param>
-        public FunctionSeries(
-            Func<double, double> fx, Func<double, double> fy, double t0, double t1, double dt, string title = null)
+        public FunctionSeries(Func<double, double> fx, Func<double, double> fy, double t0, double t1, double dt, string title = null)
         {
             this.Title = title;
-            foreach (var pt in GetPoints(fx, fy, t0, t1, dt))
+            for (double t = t0; t <= t1 + (dt * 0.5); t += dt)
             {
-                this.Points.Add(pt);
+                this.Points.Add(new DataPoint(fx(t), fy(t)));
             }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionSeries"/> class. 
-        ///   The function series.
         /// </summary>
         /// <param name="fx">
         /// The function fx(t).
@@ -134,39 +130,6 @@ namespace OxyPlot
             Func<double, double> fx, Func<double, double> fy, double t0, double t1, int n, string title = null)
             : this(fx, fy, t0, t1, (t1 - t0) / (n - 1), title)
         {
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// The get points.
-        /// </summary>
-        /// <param name="fx">
-        /// The fx.
-        /// </param>
-        /// <param name="fy">
-        /// The fy.
-        /// </param>
-        /// <param name="t0">
-        /// The t 0.
-        /// </param>
-        /// <param name="t1">
-        /// The t 1.
-        /// </param>
-        /// <param name="dt">
-        /// The dt.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static IEnumerable<IDataPoint> GetPoints(
-            Func<double, double> fx, Func<double, double> fy, double t0, double t1, double dt)
-        {
-            for (double t = t0; t <= t1 + dt / 2; t += dt)
-            {
-                yield return new DataPoint(fx(t), fy(t));
-            }
         }
 
         #endregion

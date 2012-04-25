@@ -73,9 +73,9 @@ namespace OxyPlot
         /// The interval type.
         /// </param>
         public DateTimeAxis(
-            AxisPosition pos = AxisPosition.Bottom, 
-            string title = null, 
-            string format = null, 
+            AxisPosition pos = AxisPosition.Bottom,
+            string title = null,
+            string format = null,
             DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
             : base(pos, title)
         {
@@ -108,11 +108,11 @@ namespace OxyPlot
         /// The interval type.
         /// </param>
         public DateTimeAxis(
-            DateTime firstDateTime, 
-            DateTime lastDateTime, 
-            AxisPosition pos = AxisPosition.Bottom, 
-            string title = null, 
-            string format = null, 
+            DateTime firstDateTime,
+            DateTime lastDateTime,
+            AxisPosition pos = AxisPosition.Bottom,
+            string title = null,
+            string format = null,
             DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
             : this(pos, title, format, intervalType)
         {
@@ -255,7 +255,7 @@ namespace OxyPlot
 
             int week = this.GetWeek(time);
             fmt = fmt.Replace("ww", week.ToString("00"));
-            fmt = fmt.Replace("w", week.ToString());
+            fmt = fmt.Replace("w", week.ToString(CultureInfo.InvariantCulture));
             return time.ToString(fmt, this.ActualCulture);
         }
 
@@ -373,7 +373,6 @@ namespace OxyPlot
                 case DateTimeIntervalType.Manual:
                     break;
                 case DateTimeIntervalType.Auto:
-                default:
                     break;
             }
         }
@@ -411,7 +410,7 @@ namespace OxyPlot
                 }
 
                 double nextInterval = goodIntervals.FirstOrDefault(i => i > interval);
-                if (nextInterval == 0)
+                if (Math.Abs(nextInterval) < double.Epsilon)
                 {
                     nextInterval = interval * 2;
                 }

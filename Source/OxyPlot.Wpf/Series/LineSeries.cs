@@ -118,7 +118,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public LineSeries()
         {
-            this.internalSeries = new OxyPlot.LineSeries();
+            this.InternalSeries = new OxyPlot.LineSeries();
         }
 
         #endregion
@@ -327,8 +327,8 @@ namespace OxyPlot.Wpf
         /// <returns>The series.</returns>
         public override OxyPlot.Series CreateModel()
         {
-            this.SynchronizeProperties(this.internalSeries);
-            return this.internalSeries;
+            this.SynchronizeProperties(this.InternalSeries);
+            return this.InternalSeries;
         }
 
         #endregion
@@ -344,7 +344,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties(OxyPlot.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = series as OxyPlot.LineSeries;
+            var s = (OxyPlot.LineSeries)series;
             s.Color = this.Color.ToOxyColor();
             s.StrokeThickness = this.StrokeThickness;
             s.LineStyle = this.LineStyle;

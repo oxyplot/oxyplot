@@ -35,18 +35,15 @@ namespace OxyPlot
     /// <summary>
     /// Partial PlotModel class - this file contains methods related to the series legends.
     /// </summary>
-    partial class PlotModel
+    public partial class PlotModel
     {
         #region Methods
 
         /// <summary>
         /// Gets the rectangle of the legend box.
         /// </summary>
-        /// <param name="legendSize">
-        /// Size of the legend box.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="legendSize">Size of the legend box.</param>
+        /// <returns>A rectangle.</returns>
         private OxyRect GetLegendRectangle(OxySize legendSize)
         {
             double top = 0;
@@ -221,7 +218,7 @@ namespace OxyPlot
             switch (this.LegendItemAlignment)
             {
                 case HorizontalTextAlign.Center:
-                    x0 = x - textSize.Width / 2;
+                    x0 = x - (textSize.Width * 0.5);
                     break;
                 case HorizontalTextAlign.Right:
                     x0 = x - textSize.Width;

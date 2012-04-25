@@ -7,9 +7,9 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Data item type used in HighLowSeries.
+    /// Represents an item in a HighLowSeries.
     /// </summary>
-    public struct HighLowItem
+    public class HighLowItem
     {
         #region Constants and Fields
 
@@ -46,6 +46,13 @@ namespace OxyPlot
         #endregion
 
         #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HighLowItem"/> class.
+        /// </summary>
+        public HighLowItem()
+        {            
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HighLowItem"/> struct.

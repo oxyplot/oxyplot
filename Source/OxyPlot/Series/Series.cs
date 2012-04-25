@@ -16,7 +16,7 @@ namespace OxyPlot
     /// This class contains internal methods that should be called only from the PlotModel.
     /// </remarks>
     [Serializable]
-    public abstract class Series : PlotElement, ITrackableSeries
+    public abstract class Series : UIPlotElement, ITrackableSeries
     {
         #region Constructors and Destructors
 
@@ -108,6 +108,31 @@ namespace OxyPlot
         /// The legend rectangle. 
         /// </param>
         public abstract void RenderLegend(IRenderContext rc, OxyRect legendBox);
+
+        /// <summary>
+        /// Tests if the plot element is hit by the specified point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>
+        /// A hit test result.
+        /// </returns>
+        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
+        {
+            var thr = this.GetNearestPoint(point, true);
+            if (thr != null)
+            {
+                double distance = thr.Position.DistanceTo(point);
+                if (distance > tolerance)
+                {
+                    return null;
+                }
+
+                return new HitTestResult(thr.Position, thr.Item, thr.Index);
+            }
+
+            return null;
+        }
 
         #endregion
 

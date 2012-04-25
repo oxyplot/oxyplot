@@ -1,17 +1,45 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SvgValidator.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Tests
 {
-    using System;
     using System.IO;
     using System.Xml;
     using System.Xml.Schema;
 
+    /// <summary>
+    /// Provides validation by the Svg schema.
+    /// </summary>
     public static class SvgValidator
     {
+        #region Public Methods
+
+        /// <summary>
+        /// Determines whether the specified file is a valid svg file.
+        /// </summary>
+        /// <param name="path">
+        /// The path to the file. 
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified file is valid; otherwise, <c>false</c> . 
+        /// </returns>
         public static bool IsValid(string path)
         {
             return Validate(path) == null;
         }
 
+        /// <summary>
+        /// Validates the specified svg file.
+        /// </summary>
+        /// <param name="path">
+        /// The path. 
+        /// </param>
+        /// <returns>
+        /// A validation result string. 
+        /// </returns>
         public static string Validate(string path)
         {
             var sc = new XmlSchemaSet();
@@ -22,13 +50,23 @@ namespace OxyPlot.Tests
             return Validate(path, sc);
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Validates the specified XML file against a XSL schema.
         /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="sc">The schema.</param>
-        /// <returns>Number of errors and warnings, or null if the number of errors and warnings is zero.</returns>
-        static string Validate(string path, XmlSchemaSet sc)
+        /// <param name="path">
+        /// The path. 
+        /// </param>
+        /// <param name="sc">
+        /// The schema. 
+        /// </param>
+        /// <returns>
+        /// Number of errors and warnings, or null if the number of errors and warnings is zero. 
+        /// </returns>
+        private static string Validate(string path, XmlSchemaSet sc)
         {
             // http://msdn.microsoft.com/en-us/library/as3tta56.aspx
             var settings = new XmlReaderSettings
@@ -37,7 +75,8 @@ namespace OxyPlot.Tests
                     DtdProcessing = DtdProcessing.Ignore,
                     ValidationType = ValidationType.Schema,
                     Schemas = sc,
-                    ValidationFlags = XmlSchemaValidationFlags.ProcessSchemaLocation | XmlSchemaValidationFlags.ProcessInlineSchema,
+                    ValidationFlags =
+                        XmlSchemaValidationFlags.ProcessSchemaLocation | XmlSchemaValidationFlags.ProcessInlineSchema,
                 };
 
             int warnings = 0;
@@ -45,7 +84,7 @@ namespace OxyPlot.Tests
 
             settings.ValidationEventHandler += (sender, e) =>
                 {
-                    Console.WriteLine(e.Message);
+                    System.Diagnostics.Trace.WriteLine(e.Message);
                     if (e.Severity == XmlSeverityType.Warning)
                     {
                         warnings++;
@@ -70,7 +109,8 @@ namespace OxyPlot.Tests
                         return null;
                     }
 
-                    return String.Format("Errors: {0}, Warnings: {1}", errors, warnings);
+                    return string.Format("Errors: {0}, Warnings: {1}", errors, warnings);
+
                     /*
                     catch (XmlSchemaException e)
                     {
@@ -89,5 +129,7 @@ namespace OxyPlot.Tests
                 }
             }
         }
+
+        #endregion
     }
 }

@@ -40,8 +40,6 @@ namespace OxyPlot
         /// <param name="axis">
         /// The axis.
         /// </param>
-        /// <exception cref="NullReferenceException">
-        /// </exception>
         public override void Render(Axis axis)
         {
             base.Render(axis);

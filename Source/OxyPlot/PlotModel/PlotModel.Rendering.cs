@@ -124,7 +124,8 @@ namespace OxyPlot
         private bool AdjustPlotMargins(IRenderContext rc)
         {
             bool isAdjusted = false;
-            var newPlotMargins = new Dictionary<AxisPosition, double> {
+            var newPlotMargins = new Dictionary<AxisPosition, double> 
+                {
                     { AxisPosition.Left, this.ActualPlotMargins.Left }, 
                     { AxisPosition.Top, this.ActualPlotMargins.Top }, 
                     { AxisPosition.Right, this.ActualPlotMargins.Right }, 
@@ -333,7 +334,7 @@ namespace OxyPlot
         private void RenderTitle(IRenderContext rc)
         {
             OxySize size1 = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
-            OxySize size2 = rc.MeasureText(
+            rc.MeasureText(
                 this.Subtitle, this.SubtitleFont ?? this.ActualSubtitleFont, this.SubtitleFontSize, this.SubtitleFontWeight);
 
             // double height = size1.Height + size2.Height;
@@ -452,8 +453,7 @@ namespace OxyPlot
                 tmp.Top - this.ActualPlotMargins.Top,
                 tmp.Width + this.ActualPlotMargins.Left + this.ActualPlotMargins.Right,
                 tmp.Height + this.ActualPlotMargins.Top + this.ActualPlotMargins.Bottom);
-            this.TitleArea = new OxyRect(
-                this.PlotArea.Left, this.Padding.Top, this.PlotArea.Width, titleSize.Height + this.TitlePadding * 2);
+            this.TitleArea = new OxyRect(this.PlotArea.Left, this.Padding.Top, this.PlotArea.Width, titleSize.Height + (this.TitlePadding * 2));
             this.LegendArea = this.GetLegendRectangle(legendSize);
         }
 

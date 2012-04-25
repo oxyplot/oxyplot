@@ -2,9 +2,6 @@
 // <copyright file="PlotElement.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Abstract base class for all plottable elements (Axes, Annotations, Series).
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -20,7 +17,6 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotElement"/> class. 
         ///   Initializes a new instance of the <see cref="PlotElement"/> class.
         /// </summary>
         protected PlotElement()
@@ -131,6 +127,16 @@ namespace OxyPlot
             }
         }
 
+        /// <summary>
+        /// Traces the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        protected void Trace(string message)
+        {
+#if !SILVERLIGHT
+            System.Diagnostics.Trace.WriteLine(string.Format("{0}: {1}", this.GetType().Name, message));
+#endif
+        }
         #endregion
     }
 }

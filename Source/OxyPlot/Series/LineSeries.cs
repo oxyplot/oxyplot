@@ -8,28 +8,6 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
-
-    /// <summary>
-    /// Specifies the position of legends rendered on a line series.
-    /// </summary>
-    public enum LineLegendPosition
-    {
-        /// <summary>
-        /// No legend on the line.
-        /// </summary>
-        None, 
-
-        /// <summary>
-        /// Legend at the start of the line.
-        /// </summary>
-        Start, 
-        
-        /// <summary>
-        /// Legend at the end of the line.
-        /// </summary>
-        End
-    }
 
     /// <summary>
     /// Represents a line series.
@@ -62,7 +40,6 @@ namespace OxyPlot
             this.MarkerSize = 3;
             this.MarkerStrokeThickness = 1;
             this.CanTrackerInterpolatePoints = true;
-
             this.LabelMargin = 6;
         }
 
@@ -240,22 +217,14 @@ namespace OxyPlot
 
             if (interpolate && this.Smooth)
             {
-                // interpolate smoothed line
-                int index;
-                IDataPoint dpn;
-                ScreenPoint spn;
-                if (this.GetNearestInterpolatedPointInternal(this.SmoothedPoints, point, out dpn, out spn, out index))
-                {
-                    object item = this.SmoothedPoints[index];
-                    return new TrackerHitResult(this, dpn, spn, item);
-                }
+                return this.GetNearestInterpolatedPointInternal(this.SmoothedPoints, point);
             }
 
             return base.GetNearestPoint(point, interpolate);
         }
 
         /// <summary>
-        /// Renders the LineSeries on the specified rendering context.
+        /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">
         /// The rendering context.
@@ -272,7 +241,11 @@ namespace OxyPlot
                 return;
             }
 
-            Debug.Assert(this.XAxis != null && this.YAxis != null, "Axis has not been defined.");
+            if (this.XAxis == null || this.YAxis == null)
+            {
+                Trace("Axis not defined.");
+                return;
+            }
 
             var clippingRect = this.GetClippingRect();
             var transformedPoints = new List<ScreenPoint>();
@@ -298,7 +271,7 @@ namespace OxyPlot
             if (this.LabelFormatString != null)
             {
                 // render point labels (not optimized for performance)
-                this.RenderPointLabels(rc, clippingRect);            
+                this.RenderPointLabels(rc, clippingRect);
             }
 
             if (this.LineLegendPosition != LineLegendPosition.None && this.points.Count > 0 && !string.IsNullOrEmpty(this.Title))
@@ -323,7 +296,7 @@ namespace OxyPlot
             double xmid = (legendBox.Left + legendBox.Right) / 2;
             double ymid = (legendBox.Top + legendBox.Bottom) / 2;
             var pts = new[] { new ScreenPoint(legendBox.Left, ymid), new ScreenPoint(legendBox.Right, ymid) };
-            rc.DrawLine(pts, this.Color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
+            rc.DrawLine(pts, this.GetSelectableColor(this.Color), this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
                 midpt,
@@ -494,7 +467,7 @@ namespace OxyPlot
                 ha,
                 VerticalTextAlign.Middle);
         }
-        
+
         /// <summary>
         /// Renders the transformed points.
         /// </summary>
@@ -555,7 +528,7 @@ namespace OxyPlot
                 pointsToRender,
                 clippingRect,
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
-                this.Color,
+                this.GetSelectableColor(this.Color),
                 this.StrokeThickness,
                 this.LineStyle,
                 this.LineJoin,

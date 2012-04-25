@@ -24,17 +24,17 @@ namespace OxyPlot
             /// <summary>
             ///   The left.
             /// </summary>
-            Left, 
+            Left,
 
             /// <summary>
             ///   The right.
             /// </summary>
-            Right, 
+            Right,
 
             /// <summary>
             ///   The top.
             /// </summary>
-            Top, 
+            Top,
 
             /// <summary>
             ///   The bottom.
@@ -50,7 +50,7 @@ namespace OxyPlot
         /// The Sutherland-Hodgman polygon clipping algorithm.
         /// </summary>
         /// <remarks>
-        /// http://ezekiel.vancouver.wsu.edu/~cs442/lectures/clip/clip/index.html
+        /// See http://ezekiel.vancouver.wsu.edu/~cs442/lectures/clip/clip/index.html
         /// </remarks>
         /// <param name="bounds">
         /// The bounds.
@@ -97,30 +97,30 @@ namespace OxyPlot
 
             var polygon = new List<ScreenPoint>(v.Count);
 
-            ScreenPoint s = v[v.Count - 1];
+            var s = v[v.Count - 1];
 
             for (int i = 0; i < v.Count; ++i)
             {
-                ScreenPoint p = v[i];
-                bool pIn = IsInside(bounds, edge, p);
-                bool sIn = IsInside(bounds, edge, s);
+                var p = v[i];
+                bool pin = IsInside(bounds, edge, p);
+                bool sin = IsInside(bounds, edge, s);
 
-                if (sIn && pIn)
+                if (sin && pin)
                 {
                     // case 1: inside -> inside
                     polygon.Add(p);
                 }
-                else if (sIn && !pIn)
+                else if (sin)
                 {
                     // case 2: inside -> outside
                     polygon.Add(LineIntercept(bounds, edge, s, p));
                 }
-                else if (!sIn && !pIn)
+                else if (!pin)
                 {
                     // case 3: outside -> outside
                     // emit nothing
                 }
-                else if (!sIn && pIn)
+                else
                 {
                     // case 4: outside -> inside
                     polygon.Add(LineIntercept(bounds, edge, s, p));
@@ -134,22 +134,14 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The is inside.
+        /// Determines whether the specified point is inside the edge/bounds.
         /// </summary>
-        /// <param name="bounds">
-        /// The bounds.
-        /// </param>
-        /// <param name="edge">
-        /// The edge.
-        /// </param>
-        /// <param name="p">
-        /// The p.
-        /// </param>
+        /// <param name="bounds">The bounds.</param>
+        /// <param name="edge">The edge to test.</param>
+        /// <param name="p">The point.</param>
         /// <returns>
-        /// The is inside.
+        ///   <c>true</c> if the specified point is inside; otherwise, <c>false</c>.
         /// </returns>
-        /// <exception cref="ArgumentException">
-        /// </exception>
         private static bool IsInside(OxyRect bounds, RectangleEdge edge, ScreenPoint p)
         {
             switch (edge)
@@ -172,32 +164,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The line intercept.
+        /// Fines the edge interception.
         /// </summary>
-        /// <param name="bounds">
-        /// The bounds.
-        /// </param>
-        /// <param name="edge">
-        /// The edge.
-        /// </param>
-        /// <param name="a">
-        /// The a.
-        /// </param>
-        /// <param name="b">
-        /// The b.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// </exception>
+        /// <param name="bounds">The bounds.</param>
+        /// <param name="edge">The edge.</param>
+        /// <param name="a">The first point.</param>
+        /// <param name="b">The second point.</param>
+        /// <returns>The interception.</returns>
         private static ScreenPoint LineIntercept(OxyRect bounds, RectangleEdge edge, ScreenPoint a, ScreenPoint b)
         {
             if (a.x == b.x && a.y == b.y)

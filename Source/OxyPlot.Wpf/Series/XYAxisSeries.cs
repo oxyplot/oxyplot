@@ -28,17 +28,12 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty YAxisKeyProperty = DependencyProperty.Register(
             "YAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
 
-        /// <summary>
-        ///   The internal series.
-        /// </summary>
-        protected OxyPlot.Series internalSeries;
-
         #endregion
 
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets XAxisKey.
+        ///   Gets or sets the x-axis key.
         /// </summary>
         public string XAxisKey
         {
@@ -54,7 +49,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets YAxisKey.
+        ///   Gets or sets the y axis key.
         /// </summary>
         public string YAxisKey
         {
@@ -68,6 +63,11 @@ namespace OxyPlot.Wpf
                 this.SetValue(YAxisKeyProperty, value);
             }
         }
+
+        /// <summary>
+        ///   Gets or sets the internal series.
+        /// </summary>
+        protected OxyPlot.Series InternalSeries { get; set; }
 
         #endregion
 
@@ -97,7 +97,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties(OxyPlot.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = series as OxyPlot.XYAxisSeries;
+            var s = (OxyPlot.XYAxisSeries)series;
             s.XAxisKey = this.XAxisKey;
             s.YAxisKey = this.YAxisKey;
         }

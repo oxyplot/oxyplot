@@ -118,7 +118,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties(OxyPlot.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = series as OxyPlot.DataPointSeries;
+            var s = (OxyPlot.DataPointSeries)series;
             s.ItemsSource = this.ItemsSource;
             s.DataFieldX = this.DataFieldX;
             s.DataFieldY = this.DataFieldY;

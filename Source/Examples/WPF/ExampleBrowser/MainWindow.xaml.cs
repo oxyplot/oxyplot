@@ -4,54 +4,80 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 namespace ExampleBrowser
 {
+    using System;
     using System.Diagnostics;
+    using System.Windows;
+    using System.Windows.Media;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        MainWindowViewModel vm = new MainWindowViewModel();
+        #region Constants and Fields
+
+        /// <summary>
+        /// The frame count.
+        /// </summary>
+        private int frameCount;
+
+        /// <summary>
+        /// The vm.
+        /// </summary>
+        private MainWindowViewModel vm = new MainWindowViewModel();
+
+        /// <summary>
+        /// The watch.
+        /// </summary>
+        private Stopwatch watch = new Stopwatch();
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class. 
+        ///   Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
         public MainWindow()
         {
-            InitializeComponent();
-            DataContext = vm;
-            CompositionTarget.Rendering += CompositionTarget_Rendering;
-            watch.Start();
+            this.InitializeComponent();
+            this.DataContext = this.vm;
+            CompositionTarget.Rendering += this.CompositionTargetRendering;
+            this.watch.Start();
         }
 
-        private int frameCount = 0;
-        Stopwatch watch = new Stopwatch();
+        #endregion
 
-        private void CompositionTarget_Rendering(object sender, EventArgs e)
+        #region Methods
+
+        /// <summary>
+        /// Handles the Rendering event of the CompositionTarget control.
+        /// </summary>
+        /// <param name="sender">
+        /// The source of the event. 
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.EventArgs"/> instance containing the event data. 
+        /// </param>
+        private void CompositionTargetRendering(object sender, EventArgs e)
         {
-            frameCount++;
-            if (watch.ElapsedMilliseconds > 1000 && frameCount > 1)
+            this.frameCount++;
+            if (this.watch.ElapsedMilliseconds > 1000 && this.frameCount > 1)
             {
-                vm.FrameRate = frameCount / (watch.ElapsedMilliseconds * 0.001);
-                frameCount = 0;
-                watch.Restart();
+                this.vm.FrameRate = this.frameCount / (this.watch.ElapsedMilliseconds * 0.001);
+                this.frameCount = 0;
+                this.watch.Restart();
             }
 
-            if (vm.MeasureFrameRate)
+            if (this.vm.MeasureFrameRate)
             {
-                Plot1.RefreshPlot(true);
+                this.Plot1.RefreshPlot(true);
             }
         }
+
+        #endregion
     }
 }

@@ -1,4 +1,3 @@
-
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HorizontalAndVerticalAxisRenderer.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
@@ -402,7 +401,7 @@ namespace OxyPlot
                 this.rc.DrawText(
                     lpt,
                     axis.ActualTitle,
-                    axis.ActualTitleColor,                    
+                    axis.ActualTitleColor,
                     axis.ActualTitleFont,
                     axis.ActualTitleFontSize,
                     axis.ActualTitleFontWeight,
@@ -492,7 +491,6 @@ namespace OxyPlot
             {
                 ha = (HorizontalTextAlign)(-(int)defaultVerticalAlignment);
                 va = (VerticalTextAlign)((int)defaultHorizontalAlignment);
-                return;
             }
         }
 
@@ -514,7 +512,7 @@ namespace OxyPlot
         /// </returns>
         private static double Lerp(double x0, double x1, double f)
         {
-            return x0 * (1 - f) + x1 * f;
+            return (x0 * (1 - f)) + (x1 * f);
         }
 
         /// <summary>

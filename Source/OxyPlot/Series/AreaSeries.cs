@@ -7,19 +7,18 @@
 namespace OxyPlot
 {
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     /// <summary>
-    /// The AreaSeries class fills the polygon defined by two sets of points.
+    /// Represents an area series that fills the polygon defined by one or two sets of points.
     /// </summary>
     public class AreaSeries : LineSeries
     {
         #region Constants and Fields
 
         /// <summary>
-        ///   The second list of points.
+        /// The second list of points.
         /// </summary>
-        protected List<IDataPoint> points2 = new List<IDataPoint>();
+        private readonly List<IDataPoint> points2 = new List<IDataPoint>();
 
         #endregion
 
@@ -93,71 +92,51 @@ namespace OxyPlot
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            int index;
-            TrackerHitResult result1 = null;
-            TrackerHitResult result2 = null;
-            IDataPoint dpn;
-            ScreenPoint spn1;
-            ScreenPoint spn2;
-
             if (interpolate)
             {
-                if (this.GetNearestInterpolatedPointInternal(this.points, point, out dpn, out spn1, out index))
+                var r1 = this.GetNearestInterpolatedPointInternal(this.points, point);
+                if (r1 != null)
                 {
-                    object item = this.GetItem(index);
-                    result1 = new TrackerHitResult(this, dpn, spn1, item);
+                    return r1;
                 }
 
-                if (this.GetNearestInterpolatedPointInternal(this.points2, point, out dpn, out spn2, out index))
+                var r2 = this.GetNearestInterpolatedPointInternal(this.points2, point);
+                if (r2 != null)
                 {
-                    object item = this.GetItem(index);
-                    result2 = new TrackerHitResult(this, dpn, spn2, item);
+                    return r2;
                 }
             }
             else
             {
-                if (this.GetNearestPointInternal(this.points, point, out dpn, out spn1, out index))
+                var result1 = this.GetNearestPointInternal(this.points, point);
+                var result2 = this.GetNearestPointInternal(this.points2, point);
+
+                if (result1 != null && result2 != null)
                 {
-                    object item = this.GetItem(index);
-                    result1 = new TrackerHitResult(this, dpn, spn1, item);
+                    double dist1 = result1.Position.DistanceTo(point);
+                    double dist2 = result2.Position.DistanceTo(point);
+                    return dist1 < dist2 ? result1 : result2;
                 }
 
-                if (this.GetNearestPointInternal(this.points2, point, out dpn, out spn2, out index))
+                if (result1 != null)
                 {
-                    object item = this.GetItem(index);
-                    result2 = new TrackerHitResult(this, dpn, spn2, item);
+                    return result1;
                 }
-            }
 
-            if (result1 != null && result2 != null)
-            {
-                double dist1 = spn1.DistanceTo(point);
-                double dist2 = spn2.DistanceTo(point);
-                return dist1 < dist2 ? result1 : result2;
-            }
-
-            if (result1 != null)
-            {
-                return result1;
-            }
-
-            if (result2 != null)
-            {
-                return result2;
+                if (result2 != null)
+                {
+                    return result2;
+                }
             }
 
             return null;
         }
 
         /// <summary>
-        /// The render.
+        /// Renders the series on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rc.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.points.Count == 0)
@@ -165,11 +144,15 @@ namespace OxyPlot
                 return;
             }
 
-            Debug.Assert(this.XAxis != null && this.YAxis != null, "Axis is not defined.");
+            if (this.XAxis == null || this.YAxis == null)
+            {
+                Trace("Axis not defined.");
+                return;
+            }
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
-            OxyRect clippingRect = this.GetClippingRect();
+            var clippingRect = this.GetClippingRect();
 
             // Transform all points to screen coordinates
             int n0 = this.points.Count;
@@ -189,8 +172,8 @@ namespace OxyPlot
 
             if (this.Smooth)
             {
-                IList<ScreenPoint> rpts0 = ScreenPointHelper.ResamplePoints(pts0, this.MinimumSegmentLength);
-                IList<ScreenPoint> rpts1 = ScreenPointHelper.ResamplePoints(pts1, this.MinimumSegmentLength);
+                var rpts0 = ScreenPointHelper.ResamplePoints(pts0, this.MinimumSegmentLength);
+                var rpts1 = ScreenPointHelper.ResamplePoints(pts1, this.MinimumSegmentLength);
 
                 pts0 = CanonicalSplineHelper.CreateSpline(rpts0, 0.5, null, false, 0.25);
                 pts1 = CanonicalSplineHelper.CreateSpline(rpts1, 0.5, null, false, 0.25);
@@ -198,22 +181,22 @@ namespace OxyPlot
 
             // draw the clipped lines
             rc.DrawClippedLine(
-                pts0, 
-                clippingRect, 
-                minDistSquared, 
-                this.Color, 
-                this.StrokeThickness, 
-                this.LineStyle, 
-                this.LineJoin, 
+                pts0,
+                clippingRect,
+                minDistSquared,
+                this.GetSelectableColor(this.Color),
+                this.StrokeThickness,
+                this.LineStyle,
+                this.LineJoin,
                 false);
             rc.DrawClippedLine(
-                pts1, 
-                clippingRect, 
-                minDistSquared, 
-                this.Color, 
-                this.StrokeThickness, 
-                this.LineStyle, 
-                this.LineJoin, 
+                pts1,
+                clippingRect,
+                minDistSquared,
+                this.GetSelectableColor(this.Color),
+                this.StrokeThickness,
+                this.LineStyle,
+                this.LineJoin,
                 false);
 
             // combine the two lines and draw the clipped area
@@ -222,28 +205,28 @@ namespace OxyPlot
             pts.AddRange(pts0);
 
             // pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
-            rc.DrawClippedPolygon(pts, clippingRect, minDistSquared, this.Fill, null);
+            rc.DrawClippedPolygon(pts, clippingRect, minDistSquared, this.GetSelectableFillColor(this.Fill), null);
 
             // draw the markers on top
             rc.DrawMarkers(
-                pts0, 
-                clippingRect, 
-                this.MarkerType, 
-                null, 
-                new[] { this.MarkerSize }, 
-                this.MarkerFill, 
-                this.MarkerStroke, 
-                this.MarkerStrokeThickness, 
+                pts0,
+                clippingRect,
+                this.MarkerType,
+                null,
+                new[] { this.MarkerSize },
+                this.MarkerFill,
+                this.MarkerStroke,
+                this.MarkerStrokeThickness,
                 1);
             rc.DrawMarkers(
-                pts1, 
-                clippingRect, 
-                this.MarkerType, 
-                null, 
-                new[] { this.MarkerSize }, 
-                this.MarkerFill, 
-                this.MarkerStroke, 
-                this.MarkerStrokeThickness, 
+                pts1,
+                clippingRect,
+                this.MarkerType,
+                null,
+                new[] { this.MarkerSize },
+                this.MarkerFill,
+                this.MarkerStroke,
+                this.MarkerStrokeThickness,
                 1);
         }
 
@@ -259,19 +242,19 @@ namespace OxyPlot
         /// </param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
-            double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double y0 = legendBox.Top * 0.2 + legendBox.Bottom * 0.8;
-            double y1 = legendBox.Top * 0.4 + legendBox.Bottom * 0.6;
-            double y2 = legendBox.Top * 0.8 + legendBox.Bottom * 0.2;
+            double y0 = (legendBox.Top * 0.2) + (legendBox.Bottom * 0.8);
+            double y1 = (legendBox.Top * 0.4) + (legendBox.Bottom * 0.6);
+            double y2 = (legendBox.Top * 0.8) + (legendBox.Bottom * 0.2);
 
             var pts0 = new[] { new ScreenPoint(legendBox.Left, y0), new ScreenPoint(legendBox.Right, y0) };
             var pts1 = new[] { new ScreenPoint(legendBox.Right, y2), new ScreenPoint(legendBox.Left, y1) };
             var pts = new List<ScreenPoint>();
             pts.AddRange(pts0);
             pts.AddRange(pts1);
-            rc.DrawLine(pts0, this.Color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
-            rc.DrawLine(pts1, this.Color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
-            rc.DrawPolygon(pts, this.Fill, null);
+            var color = this.GetSelectableColor(this.Color);
+            rc.DrawLine(pts0, color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
+            rc.DrawLine(pts1, color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
+            rc.DrawPolygon(pts, this.GetSelectableFillColor(this.Fill), null);
         }
 
         #endregion

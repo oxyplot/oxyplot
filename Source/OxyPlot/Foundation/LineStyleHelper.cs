@@ -7,14 +7,14 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// LineStyle helper class.
+    /// Converts from LineStyle to stroke dash array.
     /// </summary>
     public static class LineStyleHelper
     {
         #region Public Methods
 
         /// <summary>
-        /// Gets the stroke dash collection for a given <see cref="LineStyle"/>.
+        /// Gets the stroke dash array for a given <see cref="LineStyle"/>.
         /// </summary>
         /// <param name="style">
         /// The line style.

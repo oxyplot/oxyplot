@@ -7,7 +7,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// A slice of the PieSeries
+    /// Represent a slice of a PieSeries.
     /// </summary>
     public class PieSlice
     {

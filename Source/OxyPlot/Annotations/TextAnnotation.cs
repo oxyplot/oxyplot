@@ -130,10 +130,10 @@ namespace OxyPlot
                 clippingRect,
                 position,
                 this.Text,
-                this.ActualTextColor,
-            this.ActualFont,
-            this.ActualFontSize,
-            this.ActualFontWeight,
+                this.GetSelectableFillColor(this.ActualTextColor),
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
                 this.Rotation,
                 this.HorizontalAlignment,
                 this.VerticalAlignment);
@@ -142,6 +142,19 @@ namespace OxyPlot
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Tests if the plot element is hit by the specified point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>
+        /// A hit test result.
+        /// </returns>
+        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
+        {
+            return null;
+        }
 
         /// <summary>
         /// Gets the coordinates of the (rotated) background rectangle.
@@ -219,7 +232,6 @@ namespace OxyPlot
             polygon[3] = position + u * (left - padding.Left) + v * (bottom + padding.Bottom);
             return polygon;
         }
-
         #endregion
     }
 }

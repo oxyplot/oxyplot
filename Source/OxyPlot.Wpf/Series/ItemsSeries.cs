@@ -39,7 +39,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties(OxyPlot.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = series as OxyPlot.ItemsSeries;
+            var s = (OxyPlot.ItemsSeries)series;
             s.ItemsSource = this.ItemsSource;
         }
 

@@ -19,7 +19,7 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        ///   The w.
+        ///   The svg writer.
         /// </summary>
         private readonly SvgWriter w;
 
@@ -78,7 +78,7 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// The close.
+        /// Closes the svg writer.
         /// </summary>
         public void Close()
         {
@@ -86,7 +86,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The complete.
+        /// Completes the svg element.
         /// </summary>
         public void Complete()
         {
@@ -94,7 +94,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The dispose.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -102,20 +102,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The draw ellipse.
+        /// Draws an ellipse.
         /// </summary>
-        /// <param name="rect">
-        /// The rect.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The thickness.</param>
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             this.w.WriteEllipse(
@@ -123,26 +115,14 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The draw line.
+        /// Draws the polyline from the specified points.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public override void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -155,29 +135,15 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The draw polygon.
+        /// Draws the polygon from the specified points. The polygon can have stroke and/or fill.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public override void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
@@ -191,20 +157,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The draw rectangle.
+        /// Draws the rectangle.
         /// </summary>
-        /// <param name="rect">
-        /// The rect.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             this.w.WriteRectangle(
@@ -212,38 +170,18 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The draw text.
+        /// Draws the text.
         /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="c">
-        /// The c.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="rotate">
-        /// The rotate.
-        /// </param>
-        /// <param name="halign">
-        /// The halign.
-        /// </param>
-        /// <param name="valign">
-        /// The valign.
-        /// </param>
-        /// <param name="maxSize">
-        /// Max size of the text (clipping rectangle).
-        /// </param>
+        /// <param name="p">The p.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="c">The c.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="rotate">The rotate.</param>
+        /// <param name="halign">The halign.</param>
+        /// <param name="valign">The valign.</param>
+        /// <param name="maxSize">Size of the max.</param>
         public override void DrawText(
             ScreenPoint p, 
             string text, 
@@ -288,7 +226,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The flush.
+        /// Flushes this instance.
         /// </summary>
         public void Flush()
         {
@@ -296,21 +234,14 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The measure text.
+        /// Measures the text.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
         /// <returns>
+        /// The text size.
         /// </returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {

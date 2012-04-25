@@ -2,9 +2,6 @@
 // <copyright file="Axis.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Abstract base class for axes.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -35,14 +32,14 @@ namespace OxyPlot
         /// <summary>
         ///   The offset.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", 
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate",
             Justification = "Reviewed. Suppression is OK here.")]
         protected double offset;
 
         /// <summary>
         ///   The scale.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", 
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate",
             Justification = "Reviewed. Suppression is OK here.")]
         protected double scale;
 
@@ -712,6 +709,18 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Transform the specified screen point to data coordinates.
+        /// </summary>
+        /// <param name="p">The point.</param>
+        /// <param name="xaxis">The xaxis.</param>
+        /// <param name="yaxis">The yaxis.</param>
+        /// <returns>The data point.</returns>
+        public static DataPoint InverseTransform(ScreenPoint p, Axis xaxis, Axis yaxis)
+        {
+            return xaxis.InverseTransform(p.x, p.y, yaxis);
+        }
+
+        /// <summary>
         /// Transforms the specified point to screen coordinates.
         /// </summary>
         /// <param name="p">
@@ -814,7 +823,7 @@ namespace OxyPlot
         /// </returns>
         public virtual string FormatValueForTracker(double x)
         {
-            return x.ToNiceString();
+            return x.ToString(this.ActualCulture);
         }
 
         /// <summary>
@@ -1113,12 +1122,12 @@ namespace OxyPlot
         public override string ToString()
         {
             return string.Format(
-                CultureInfo.InvariantCulture, 
-                "{0}({1}, {2}, {3}, {4})", 
-                TypeHelper.GetTypeName(this.GetType()), 
-                this.Position, 
-                this.ActualMinimum, 
-                this.ActualMaximum, 
+                CultureInfo.InvariantCulture,
+                "{0}({1}, {2}, {3}, {4})",
+                TypeHelper.GetTypeName(this.GetType()),
+                this.Position,
+                this.ActualMinimum,
+                this.ActualMaximum,
                 this.ActualMajorStep);
         }
 
