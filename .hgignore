@@ -35,7 +35,6 @@ ClientBin/
 
 _ReSharper*/
 *.dotCover
-*.DotSettings
 
 [Tt]est[Rr]esult*
 [Bb]uild[Ll]og.*

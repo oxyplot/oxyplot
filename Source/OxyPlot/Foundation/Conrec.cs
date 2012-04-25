@@ -111,8 +111,8 @@ namespace OxyPlot
                                  { { 9, 6, 7 }, { 5, 2, 0 }, { 8, 0, 0 } }
                             };
 
-            Func<int, int, double> xsect = (p1, p2) => (h[p2] * xh[p1] - h[p1] * xh[p2]) / (h[p2] - h[p1]);
-            Func<int, int, double> ysect = (p1, p2) => (h[p2] * yh[p1] - h[p1] * yh[p2]) / (h[p2] - h[p1]);
+            Func<int, int, double> xsect = (p1, p2) => ((h[p2] * xh[p1]) - (h[p1] * xh[p2])) / (h[p2] - h[p1]);
+            Func<int, int, double> ysect = (p1, p2) => ((h[p2] * yh[p1]) - (h[p1] * yh[p2])) / (h[p2] - h[p1]);
 
             for (int j = jub - 1; j >= jlb; j--)
             {

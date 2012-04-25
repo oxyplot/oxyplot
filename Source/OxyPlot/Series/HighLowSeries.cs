@@ -8,11 +8,9 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Reflection;
 
     /// <summary>
-    /// Use the HighLowSeries to create high-low plots.
+    /// Represents a series for high-low plots.
     /// </summary>
     /// <remarks>
     /// See http://www.mathworks.com/help/toolbox/finance/highlowfts.html
@@ -24,7 +22,7 @@ namespace OxyPlot
         /// <summary>
         ///   High/low items
         /// </summary>
-        protected IList<HighLowItem> items;
+        private IList<HighLowItem> items;
 
         #endregion
 
@@ -183,43 +181,45 @@ namespace OxyPlot
             }
 
             double minimumDistance = double.MaxValue;
-            var result = new TrackerHitResult(this, DataPoint.Undefined, ScreenPoint.Undefined, null, null);
+            var result = new TrackerHitResult(this, DataPoint.Undefined, ScreenPoint.Undefined);
 
-            Action<DataPoint, HighLowItem> check = (p, item) =>
+            Action<DataPoint, HighLowItem, int> check = (p, item, index) =>
                 {
                     var sp = this.Transform(p);
                     double dx = sp.x - point.x;
                     double dy = sp.y - point.y;
-                    double d2 = dx * dx + dy * dy;
+                    double d2 = (dx * dx) + (dy * dy);
 
                     if (d2 < minimumDistance)
                     {
                         result.DataPoint = p;
                         result.Position = sp;
                         result.Item = item;
+                        result.Index = index;
                         if (this.TrackerFormatString != null)
                         {
                             result.Text = StringHelper.Format(
-                                this.ActualCulture, 
+                                this.ActualCulture,
                                 this.TrackerFormatString,
                                 item,
-                                this.Title, 
-                                p.X, 
-                                item.High, 
-                                item.Low, 
-                                item.Open, 
+                                this.Title,
+                                p.X,
+                                item.High,
+                                item.Low,
+                                item.Open,
                                 item.Close);
                         }
 
                         minimumDistance = d2;
                     }
                 };
+            int i = 0;
             foreach (var item in this.items)
             {
-                check(new DataPoint(item.X, item.High), item);
-                check(new DataPoint(item.X, item.Low), item);
-                check(new DataPoint(item.X, item.Open), item);
-                check(new DataPoint(item.X, item.Close), item);
+                check(new DataPoint(item.X, item.High), item, i);
+                check(new DataPoint(item.X, item.Low), item, i);
+                check(new DataPoint(item.X, item.Open), item, i);
+                check(new DataPoint(item.X, item.Close), item, i++);
             }
 
             if (minimumDistance < double.MaxValue)
@@ -233,19 +233,13 @@ namespace OxyPlot
         /// <summary>
         /// Determines whether the point is valid.
         /// </summary>
-        /// <param name="pt">
-        /// The point.
-        /// </param>
-        /// <param name="xAxis">
-        /// The x axis.
-        /// </param>
-        /// <param name="yAxis">
-        /// The y axis.
-        /// </param>
+        /// <param name="pt">The point.</param>
+        /// <param name="xaxis">The x axis.</param>
+        /// <param name="yaxis">The y axis.</param>
         /// <returns>
-        /// <c>true</c> if [is valid point] [the specified pt]; otherwise, <c>false</c>.
+        ///   <c>true</c> if [is valid point] [the specified pt]; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool IsValidPoint(HighLowItem pt, Axis xAxis, Axis yAxis)
+        public virtual bool IsValidItem(HighLowItem pt, Axis xaxis, Axis yaxis)
         {
             return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.High)
                    && !double.IsInfinity(pt.High) && !double.IsNaN(pt.Low) && !double.IsInfinity(pt.Low);
@@ -269,13 +263,17 @@ namespace OxyPlot
                 return;
             }
 
-            Debug.Assert(this.XAxis != null && this.YAxis != null, "Axis has not been defined.");
+            if (this.XAxis == null || this.YAxis == null)
+            {
+                Trace("Axis not defined.");
+                return;
+            }
 
             OxyRect clippingRect = this.GetClippingRect();
 
             foreach (var v in this.items)
             {
-                if (!this.IsValidPoint(v, this.XAxis, this.YAxis))
+                if (!this.IsValidItem(v, this.XAxis, this.YAxis))
                 {
                     continue;
                 }
@@ -286,13 +284,13 @@ namespace OxyPlot
                     ScreenPoint low = this.Transform(v.X, v.Low);
 
                     rc.DrawClippedLine(
-                        new[] { low, high }, 
-                        clippingRect, 
-                        0, 
-                        this.Color, 
-                        this.StrokeThickness, 
-                        this.LineStyle, 
-                        this.LineJoin, 
+                        new[] { low, high },
+                        clippingRect,
+                        0,
+                        this.GetSelectableColor(this.Color),
+                        this.StrokeThickness,
+                        this.LineStyle,
+                        this.LineJoin,
                         true);
                     if (!double.IsNaN(v.Open))
                     {
@@ -300,13 +298,13 @@ namespace OxyPlot
                         ScreenPoint openTick = open;
                         openTick.X -= this.TickLength;
                         rc.DrawClippedLine(
-                            new[] { open, openTick }, 
-                            clippingRect, 
-                            0, 
-                            this.Color, 
-                            this.StrokeThickness, 
-                            this.LineStyle, 
-                            this.LineJoin, 
+                            new[] { open, openTick },
+                            clippingRect,
+                            0,
+                            this.GetSelectableColor(this.Color),
+                            this.StrokeThickness,
+                            this.LineStyle,
+                            this.LineJoin,
                             true);
                     }
 
@@ -316,13 +314,13 @@ namespace OxyPlot
                         ScreenPoint closeTick = close;
                         closeTick.X += this.TickLength;
                         rc.DrawClippedLine(
-                            new[] { close, closeTick }, 
-                            clippingRect, 
-                            0, 
-                            this.Color, 
-                            this.StrokeThickness, 
-                            this.LineStyle, 
-                            this.LineJoin, 
+                            new[] { close, closeTick },
+                            clippingRect,
+                            0,
+                            this.GetSelectableColor(this.Color),
+                            this.StrokeThickness,
+                            this.LineStyle,
+                            this.LineJoin,
                             true);
                     }
                 }
@@ -341,29 +339,30 @@ namespace OxyPlot
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double yOpen = legendBox.Top + (legendBox.Bottom - legendBox.Top) * 0.7;
-            double yClose = legendBox.Top + (legendBox.Bottom - legendBox.Top) * 0.3;
+            double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
+            double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
             double[] dashArray = LineStyleHelper.GetDashArray(this.LineStyle);
+            var color = this.GetSelectableColor(this.Color);
             rc.DrawLine(
-                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) }, 
-                this.Color, 
-                this.StrokeThickness, 
-                dashArray, 
-                OxyPenLineJoin.Miter, 
+                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
+                color,
+                this.StrokeThickness,
+                dashArray,
+                OxyPenLineJoin.Miter,
                 true);
             rc.DrawLine(
-                new[] { new ScreenPoint(xmid - this.TickLength, yOpen), new ScreenPoint(xmid, yOpen) }, 
-                this.Color, 
-                this.StrokeThickness, 
-                dashArray, 
-                OxyPenLineJoin.Miter, 
+                new[] { new ScreenPoint(xmid - this.TickLength, yopen), new ScreenPoint(xmid, yopen) },
+                color,
+                this.StrokeThickness,
+                dashArray,
+                OxyPenLineJoin.Miter,
                 true);
             rc.DrawLine(
-                new[] { new ScreenPoint(xmid + this.TickLength, yClose), new ScreenPoint(xmid, yClose) }, 
-                this.Color, 
-                this.StrokeThickness, 
-                dashArray, 
-                OxyPenLineJoin.Miter, 
+                new[] { new ScreenPoint(xmid + this.TickLength, yclose), new ScreenPoint(xmid, yclose) },
+                color,
+                this.StrokeThickness,
+                dashArray,
+                OxyPenLineJoin.Miter,
                 true);
         }
 
@@ -409,52 +408,13 @@ namespace OxyPlot
                 return;
             }
 
-            // Using reflection 
-            PropertyInfo piX = null;
-            PropertyInfo piHigh = null;
-            PropertyInfo piLow = null;
-            PropertyInfo piOpen = null;
-            PropertyInfo piClose = null;
-            Type t = null;
-
-            foreach (var o in this.ItemsSource)
-            {
-                if (piX == null || o.GetType() != t)
-                {
-                    t = o.GetType();
-                    piX = t.GetProperty(this.DataFieldX);
-                    piHigh = t.GetProperty(this.DataFieldHigh);
-                    piLow = t.GetProperty(this.DataFieldLow);
-                    piOpen = this.DataFieldOpen != null ? t.GetProperty(this.DataFieldOpen) : null;
-                    piClose = this.DataFieldClose != null ? t.GetProperty(this.DataFieldClose) : null;
-                    if (piX == null)
-                    {
-                        throw new InvalidOperationException(
-                            string.Format("Could not find data field {0} on type {1}", this.DataFieldX, t));
-                    }
-
-                    if (piHigh == null)
-                    {
-                        throw new InvalidOperationException(
-                            string.Format("Could not find data field {0} on type {1}", this.DataFieldHigh, t));
-                    }
-
-                    if (piLow == null)
-                    {
-                        throw new InvalidOperationException(
-                            string.Format("Could not find data field {0} on type {1}", this.DataFieldLow, t));
-                    }
-                }
-
-                double x = this.ToDouble(piX.GetValue(o, null));
-                double high = this.ToDouble(piHigh.GetValue(o, null));
-                double low = this.ToDouble(piLow.GetValue(o, null));
-                double open = piOpen != null ? this.ToDouble(piOpen.GetValue(o, null)) : double.NaN;
-                double close = piClose != null ? this.ToDouble(piClose.GetValue(o, null)) : double.NaN;
-
-                var pp = new HighLowItem(x, high, low, open, close);
-                this.items.Add(pp);
-            }
+            var filler = new ListFiller<HighLowItem>();
+            filler.Add(this.DataFieldX, (p, v) => p.X = this.ToDouble(v));
+            filler.Add(this.DataFieldHigh, (p, v) => p.High = this.ToDouble(v));
+            filler.Add(this.DataFieldLow, (p, v) => p.Low = this.ToDouble(v));
+            filler.Add(this.DataFieldOpen, (p, v) => p.Open = this.ToDouble(v));
+            filler.Add(this.DataFieldClose, (p, v) => p.Close = this.ToDouble(v));
+            filler.FillT(this.items, this.ItemsSource);
         }
 
         /// <summary>
@@ -486,7 +446,7 @@ namespace OxyPlot
 
             foreach (var pt in pts)
             {
-                if (!this.IsValidPoint(pt, this.XAxis, this.YAxis))
+                if (!this.IsValidItem(pt, this.XAxis, this.YAxis))
                 {
                     continue;
                 }

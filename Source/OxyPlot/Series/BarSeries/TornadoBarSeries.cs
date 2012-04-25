@@ -157,7 +157,7 @@ namespace OxyPlot
                     var dp = new DataPoint(i, value);
                     var item = this.GetItem(i);
                     var text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, item, value);
-                    return new TrackerHitResult(this, dp, point, item, text);
+                    return new TrackerHitResult(this, dp, point, item, i, text);
                 }
 
                 r = this.ActualMaximumBarRectangles[i];
@@ -167,7 +167,7 @@ namespace OxyPlot
                     var dp = new DataPoint(i, value);
                     var item = this.GetItem(i);
                     var text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, item, value);
-                    return new TrackerHitResult(this, dp, point, item, text);
+                    return new TrackerHitResult(this, dp, point, item, i, text);
                 }
             }
 
@@ -370,12 +370,10 @@ namespace OxyPlot
 
             this.Items.Clear();
 
-            ReflectionHelper.FillList(
-                this.ItemsSource,
-                this.Items,
-                new[] { this.MinimumField, this.MaximumField },
-                (item, value) => item.Minimum = Convert.ToDouble(value),
-                (item, value) => item.Maximum = Convert.ToDouble(value));
+            var filler = new ListFiller<TornadoBarItem>();
+            filler.Add(this.MinimumField, (item, value) => item.Minimum = Convert.ToDouble(value));
+            filler.Add(this.MaximumField, (item, value) => item.Maximum = Convert.ToDouble(value));
+            filler.FillT(this.Items, this.ItemsSource);
         }
 
         /// <summary>

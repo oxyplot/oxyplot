@@ -46,6 +46,7 @@ namespace OxyPlot
             var screenPoints = points.Select(p => new ScreenPoint(p.X, p.Y)).ToList();
             var interpolatedScreenPoints = CreateSpline(screenPoints, tension, tensions, isClosed, tolerance);
             var interpolatedDataPoints = new List<IDataPoint>(interpolatedScreenPoints.Count);
+            
             foreach (var s in interpolatedScreenPoints)
             {
                 interpolatedDataPoints.Add(new DataPoint(s.X, s.Y));
@@ -220,7 +221,8 @@ namespace OxyPlot
             {
                 double t = (double)i / (num - 1);
                 var pt = new ScreenPoint(
-                    ax * t * t * t + bx * t * t + cx * t + dx, ay * t * t * t + by * t * t + cy * t + dy);
+                    ax * t * t * t + bx * t * t + cx * t + dx, 
+                    ay * t * t * t + by * t * t + cy * t + dy);
                 points.Add(pt);
             }
         }

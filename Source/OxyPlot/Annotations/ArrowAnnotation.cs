@@ -11,6 +11,20 @@ namespace OxyPlot
     /// </summary>
     public class ArrowAnnotation : Annotation
     {
+        #region Constants and Fields
+
+        /// <summary>
+        ///   The end point in screen coordinates.
+        /// </summary>
+        private ScreenPoint endPoint;
+
+        /// <summary>
+        ///   The start point in screen coordinates.
+        /// </summary>
+        private ScreenPoint startPoint;
+
+        #endregion
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -31,10 +45,10 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the arrow direction.
+        ///   Gets or sets the arrow direction.
         /// </summary>
         /// <remarks>
-        /// Setting this property overrides the StartPoint property.
+        ///   Setting this property overrides the StartPoint property.
         /// </remarks>
         public ScreenVector ArrowDirection { get; set; }
 
@@ -44,7 +58,7 @@ namespace OxyPlot
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the end point.
+        ///   Gets or sets the end point.
         /// </summary>
         public DataPoint EndPoint { get; set; }
 
@@ -73,10 +87,10 @@ namespace OxyPlot
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets StartPoint.
+        ///   Gets or sets StartPoint.
         /// </summary>
         /// <remarks>
-        /// This property is overridden by the ArrowDirection property, if set.
+        ///   This property is overridden by the ArrowDirection property, if set.
         /// </remarks>
         public DataPoint StartPoint { get; set; }
 
@@ -109,62 +123,98 @@ namespace OxyPlot
         {
             base.Render(rc, model);
 
-            ScreenPoint startPoint;
-            var endPoint = this.Transform(this.EndPoint);
+            this.endPoint = this.Transform(this.EndPoint);
 
             if (!this.ArrowDirection.x.IsZero() || !this.ArrowDirection.y.IsZero())
             {
-                startPoint = endPoint - this.ArrowDirection;
+                this.startPoint = this.endPoint - this.ArrowDirection;
             }
             else
             {
-                startPoint = this.Transform(this.StartPoint);
+                this.startPoint = this.Transform(this.StartPoint);
             }
 
-            var d = endPoint - startPoint;
+            var d = this.endPoint - this.startPoint;
             d.Normalize();
             var n = new ScreenVector(d.Y, -d.X);
 
-            var p1 = endPoint - d * this.HeadLength * this.StrokeThickness;
-            var p2 = p1 + n * this.HeadWidth * this.StrokeThickness;
-            var p3 = p1 - n * this.HeadWidth * this.StrokeThickness;
-            var p4 = p1 + d * this.Veeness * this.StrokeThickness;
+            var p1 = this.endPoint - (d * this.HeadLength * this.StrokeThickness);
+            var p2 = p1 + (n * this.HeadWidth * this.StrokeThickness);
+            var p3 = p1 - (n * this.HeadWidth * this.StrokeThickness);
+            var p4 = p1 + (d * this.Veeness * this.StrokeThickness);
 
             OxyRect clippingRect = this.GetClippingRect();
             const double MinimumSegmentLength = 4;
 
             rc.DrawClippedLine(
-                new[] { startPoint, p4 },
-                clippingRect,
-                MinimumSegmentLength * MinimumSegmentLength,
-                this.Color,
-                this.StrokeThickness,
-                this.LineStyle,
-                this.LineJoin,
+                new[] { this.startPoint, p4 }, 
+                clippingRect, 
+                MinimumSegmentLength * MinimumSegmentLength, 
+                this.GetSelectableColor(this.Color), 
+                this.StrokeThickness, 
+                this.LineStyle, 
+                this.LineJoin, 
                 false);
 
             rc.DrawClippedPolygon(
-                new[] { p3, endPoint, p2, p4 },
-                clippingRect,
-                MinimumSegmentLength * MinimumSegmentLength,
-                this.Color,
+                new[] { p3, this.endPoint, p2, p4 }, 
+                clippingRect, 
+                MinimumSegmentLength * MinimumSegmentLength, 
+                this.GetSelectableColor(this.Color), 
                 null);
 
             var ha = d.X < 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
             var va = d.Y < 0 ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
 
-            var textPoint = startPoint;
+            var textPoint = this.startPoint;
             rc.DrawClippedText(
-                clippingRect,
-                textPoint,
-                this.Text,
-                this.ActualTextColor,
-                this.ActualFont,
-                this.ActualFontSize,
-                this.ActualFontWeight,
-                0,
-                ha,
+                clippingRect, 
+                textPoint, 
+                this.Text, 
+                this.ActualTextColor, 
+                this.ActualFont, 
+                this.ActualFontSize, 
+                this.ActualFontWeight, 
+                0, 
+                ha, 
                 va);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Tests if the plot element is hit by the specified point.
+        /// </summary>
+        /// <param name="point">
+        /// The point. 
+        /// </param>
+        /// <param name="tolerance">
+        /// The tolerance. 
+        /// </param>
+        /// <returns>
+        /// A hit test result. 
+        /// </returns>
+        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
+        {
+            if ((point - this.startPoint).Length < tolerance)
+            {
+                return new HitTestResult(this.startPoint, null, 1);
+            }
+
+            if ((point - this.endPoint).Length < tolerance)
+            {
+                return new HitTestResult(this.endPoint, null, 2);
+            }
+
+            var p = ScreenPointHelper.FindPointOnLine(point, this.startPoint, this.endPoint);
+            if ((p - point).Length < tolerance)
+            {
+                return new HitTestResult(p);
+            }
+
+            return null;
         }
 
         #endregion

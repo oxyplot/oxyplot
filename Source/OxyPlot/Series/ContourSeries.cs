@@ -8,11 +8,10 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     /// <summary>
-    /// Represents a contour series.
+    /// Represents a series for contour plots.
     /// </summary>
     /// <remarks>
     /// See http://en.wikipedia.org/wiki/Contour_line and http://www.mathworks.se/help/techdoc/ref/contour.html.
@@ -50,7 +49,7 @@ namespace OxyPlot
             this.StrokeThickness = 1.0;
             this.LineStyle = LineStyle.Solid;
 
-            this.TrackerFormatString = "{1}: {2:0.000}\n{3}: {4:0.000}\nZ: {5:0.000}";
+            this.TrackerFormatString = "{1}: {2:0.####}\n{3}: {4:0.####}\n{5}: {6:0.####}";
         }
 
         #endregion
@@ -199,29 +198,29 @@ namespace OxyPlot
         {
             TrackerHitResult result = null;
 
+            var xaxisTitle = this.XAxis.Title ?? "X";
+            var yaxisTitle = this.YAxis.Title ?? "Y";
+            var zaxisTitle = "Z";
+
             foreach (var c in this.contours)
             {
-                int index;
-                IDataPoint dpn;
-                ScreenPoint spn;
-                if (interpolate)
+                var r = interpolate ? this.GetNearestInterpolatedPointInternal(c.Points, point) : this.GetNearestPointInternal(c.Points, point);
+                if (r != null)
                 {
-                    if (this.GetNearestInterpolatedPointInternal(c.Points, point, out dpn, out spn, out index))
+                    if (result == null || result.Position.DistanceToSquared(point) > r.Position.DistanceToSquared(point))
                     {
-                        if (result == null || result.Position.DistanceToSquared(point) > spn.DistanceToSquared(point))
-                        {
-                            result = new TrackerHitResult(this, dpn, spn, c.ContourLevel);
-                        }
-                    }
-                }
-                else
-                {
-                    if (this.GetNearestPointInternal(c.Points, point, out dpn, out spn, out index))
-                    {
-                        if (result == null || result.Position.DistanceToSquared(point) > spn.DistanceToSquared(spn))
-                        {
-                            result = new TrackerHitResult(this, dpn, spn, c.ContourLevel);
-                        }
+                        result = r;
+                        result.Text = StringHelper.Format(
+                            this.ActualCulture,
+                            this.TrackerFormatString,
+                            null,
+                            this.Title,
+                            xaxisTitle,
+                            r.DataPoint.X,
+                            yaxisTitle,
+                            r.DataPoint.Y,
+                            zaxisTitle,
+                            c.ContourLevel);
                     }
                 }
             }
@@ -230,7 +229,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Renders the Series on the specified rendering context.
+        /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">
         /// The rendering context.
@@ -252,7 +251,11 @@ namespace OxyPlot
                 return;
             }
 
-            Debug.Assert(this.XAxis != null && this.YAxis != null, "Axis has not been defined.");
+            if (this.XAxis == null || this.YAxis == null)
+            {
+                Trace("Axis not defined.");
+                return;
+            }
 
             OxyRect clippingRect = this.GetClippingRect();
 
@@ -275,7 +278,7 @@ namespace OxyPlot
                         pts,
                         clippingRect,
                         4,
-                        this.Color,
+                        this.GetSelectableColor(this.Color),
                         this.StrokeThickness,
                         this.LineStyle,
                         OxyPenLineJoin.Miter,
@@ -372,7 +375,7 @@ namespace OxyPlot
             double dy = p0.Y - p1.Y;
             return (dx * dx) + (dy * dy) < eps;
         }
-        
+
         /// <summary>
         /// The add contour labels.
         /// </summary>
@@ -403,8 +406,8 @@ namespace OxyPlot
             int i1 = i0 + 1;
             double dx = pts[i1].X - pts[i0].X;
             double dy = pts[i1].Y - pts[i0].Y;
-            double x = pts[i0].X + dx * (i - i0);
-            double y = pts[i0].Y + dy * (i - i0);
+            double x = pts[i0].X + (dx * (i - i0));
+            double y = pts[i0].Y + (dy * (i - i0));
             if (!clippingRect.Contains(x, y))
             {
                 return;

@@ -41,7 +41,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         ///   The maximum number of figures per geometry.
         /// </summary>
-        private const int maxFiguresPerGeometry = 16;
+        private const int MaxFiguresPerGeometry = 16;
 
         /// <summary>
         ///   The brush cache.
@@ -313,7 +313,7 @@ namespace OxyPlot.Wpf
                 count++;
 
                 // Must limit the number of figures, otherwise drawing errors...
-                if (count > maxFiguresPerGeometry)
+                if (count > MaxFiguresPerGeometry)
                 {
                     if (usg)
                     {
@@ -473,7 +473,7 @@ namespace OxyPlot.Wpf
                         }
                         else
                         {
-                            figure = new PathFigure() { StartPoint = p.ToPoint(aliased), IsFilled = fill != null, IsClosed = true };
+                            figure = new PathFigure { StartPoint = p.ToPoint(aliased), IsFilled = fill != null, IsClosed = true };
                             pathGeometry.Figures.Add(figure);
                         }
 
@@ -495,7 +495,7 @@ namespace OxyPlot.Wpf
                 count++;
 
                 // Must limit the number of figures, otherwise drawing errors...
-                if (count > maxFiguresPerGeometry)
+                if (count > MaxFiguresPerGeometry)
                 {
                     if (usg)
                     {
@@ -734,7 +734,7 @@ namespace OxyPlot.Wpf
 
             var transform = new TransformGroup();
             transform.Children.Add(new TranslateTransform(dx, dy));
-            if (rotate != 0)
+            if (Math.Abs(rotate) > double.Epsilon)
             {
                 transform.Children.Add(new RotateTransform(rotate));
             }
@@ -1016,9 +1016,9 @@ namespace OxyPlot.Wpf
                     // The default StrokeLineJoin is Miter
                 }
 
-                if (thickness != 1)
+                if (Math.Abs(thickness - 1) > double.Epsilon)
                 {
-                    // default values is 1
+                    // only set if different from the default value (1)
                     shape.StrokeThickness = thickness;
                 }
 

@@ -80,7 +80,6 @@ namespace OxyPlot
             }
 
             this.PlotControl.InvalidatePlot();
-            return;
         }
 
         #endregion

@@ -2,9 +2,6 @@
 // <copyright file="OxyColor.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Describes a color in terms of alpha, red, green, and blue channels.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -145,11 +142,11 @@ namespace OxyPlot
         /// </returns>
         public static OxyColor Interpolate(OxyColor color1, OxyColor color2, double t)
         {
-            double a = color1.A * (1 - t) + color2.A * t;
-            double r = color1.R * (1 - t) + color2.R * t;
-            double g = color1.G * (1 - t) + color2.G * t;
-            double b = color1.B * (1 - t) + color2.B * t;
-            return OxyColor.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
+            double a = (color1.A * (1 - t)) + (color2.A * t);
+            double r = (color1.R * (1 - t)) + (color2.R * t);
+            double g = (color1.G * (1 - t)) + (color2.G * t);
+            double b = (color1.B * (1 - t)) + (color2.B * t);
+            return FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
         }
 
         /// <summary>

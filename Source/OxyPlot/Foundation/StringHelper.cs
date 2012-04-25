@@ -2,9 +2,6 @@
 // <copyright file="StringHelper.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   String formatting utilities.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -17,14 +14,14 @@ namespace OxyPlot
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// String formatting utilities.
+    /// Provides support for string formatting.
     /// </summary>
     public static class StringHelper
     {
         /// <summary>
         /// The formatting expression.
         /// </summary>
-        private static Regex formattingExpression = new Regex("{(?<Property>.+?)(?<Format>\\:.*?)?}");
+        private static readonly Regex FormattingExpression = new Regex("{(?<Property>.+?)(?<Format>\\:.*?)?}");
 
         /// <summary>
         /// Replaces the format items in the specified string.
@@ -50,7 +47,7 @@ namespace OxyPlot
         public static string Format(IFormatProvider provider, string formatString, object item, params object[] values)
         {
             // Replace items on the format {Property[:Formatstring]}
-            var s = formattingExpression.Replace(
+            var s = FormattingExpression.Replace(
                 formatString, 
                 delegate(Match match)
                     {

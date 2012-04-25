@@ -2,9 +2,6 @@
 // <copyright file="ScreenVector.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Represents a vector defined in the screen coordinate system.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot

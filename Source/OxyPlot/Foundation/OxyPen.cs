@@ -6,6 +6,8 @@
 
 namespace OxyPlot
 {
+    using System;
+
     /// <summary>
     /// Describes a pen in terms of color, thickness, line style and line join type.
     /// </summary>
@@ -29,9 +31,9 @@ namespace OxyPlot
         /// The line join.
         /// </param>
         public OxyPen(
-            OxyColor color, 
-            double thickness = 1.0, 
-            LineStyle lineStyle = LineStyle.Solid, 
+            OxyColor color,
+            double thickness = 1.0,
+            LineStyle lineStyle = LineStyle.Solid,
             OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
             this.Color = color;
@@ -82,27 +84,18 @@ namespace OxyPlot
         /// <summary>
         /// Creates the specified pen.
         /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="lineStyle">
-        /// The line style.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="color">The color.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="lineStyle">The line style.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <returns>A pen.</returns>
         public static OxyPen Create(
-            OxyColor color, 
-            double thickness, 
-            LineStyle lineStyle = LineStyle.Solid, 
+            OxyColor color,
+            double thickness,
+            LineStyle lineStyle = LineStyle.Solid,
             OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
-            if (color == null || lineStyle == LineStyle.None || thickness == 0)
+            if (color == null || lineStyle == LineStyle.None || Math.Abs(thickness) < double.Epsilon)
             {
                 return null;
             }

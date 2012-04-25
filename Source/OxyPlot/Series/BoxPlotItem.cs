@@ -2,9 +2,6 @@
 // <copyright file="BoxPlotItem.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Represents an item in a BoxPlotSeries.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot

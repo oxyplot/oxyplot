@@ -115,10 +115,12 @@ namespace OxyPlot
             {
                 return CursorType.ZoomVertical;
             }
+
             if (this.YAxis == null)
             {
                 return CursorType.ZoomHorizontal;
             }
+
             return CursorType.ZoomRectangle;
         }
 

@@ -36,15 +36,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axes\AxisTests.cs" />
+    <Compile Include="Foundation\ListFillerTests.cs" />
     <Compile Include="OxyAssert.cs" />
     <Compile Include="TestModels.cs" />
     <Compile Include="Svg\SvgAssert.cs" />

@@ -9,7 +9,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Type helper methods.
+    /// Provides support for type methods not found in Metro (?).
     /// </summary>
     public static class TypeHelper
     {

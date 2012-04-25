@@ -8,13 +8,12 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     /// <summary>
-    /// StairStepSeries is used to create stairstep graphs.
+    /// Represents a series for stairstep graphs.
     /// </summary>
     /// <remarks>
-    /// http://www.mathworks.com/help/techdoc/ref/stairs.html
+    /// See http://www.mathworks.com/help/techdoc/ref/stairs.html
     /// </remarks>
     public class StairStepSeries : LineSeries
     {
@@ -75,16 +74,16 @@ namespace OxyPlot
 
             for (int i = 0; i + 1 < this.Points.Count; i++)
             {
-                IDataPoint p1 = this.Points[i];
-                IDataPoint p2 = this.Points[i + 1];
-                ScreenPoint sp1 = this.Transform(p1.X, p1.Y);
-                ScreenPoint sp2 = this.Transform(p2.X, p1.Y);
+                var p1 = this.Points[i];
+                var p2 = this.Points[i + 1];
+                var sp1 = this.Transform(p1.X, p1.Y);
+                var sp2 = this.Transform(p2.X, p1.Y);
 
-                double sp21X = sp2.x - sp1.x;
-                double sp21Y = sp2.y - sp1.y;
-                double u1 = (point.x - sp1.x) * sp21X + (point.y - sp1.y) * sp21Y;
-                double u2 = sp21X * sp21X + sp21Y * sp21Y;
-                double ds = sp21X * sp21X + sp21Y * sp21Y;
+                double spdx = sp2.x - sp1.x;
+                double spdy = sp2.y - sp1.y;
+                double u1 = ((point.x - sp1.x) * spdx) + ((point.y - sp1.y) * spdy);
+                double u2 = (spdx * spdx) + (spdy * spdy);
+                double ds = (spdx * spdx) + (spdy * spdy);
 
                 if (ds < 4)
                 {
@@ -93,7 +92,7 @@ namespace OxyPlot
                     u2 = 1;
                 }
 
-                if (u2 == 0)
+                if (Math.Abs(u2) < double.Epsilon)
                 {
                     continue; // P1 && P2 coincident
                 }
@@ -104,19 +103,18 @@ namespace OxyPlot
                     continue; // outside line
                 }
 
-                double sx = sp1.x + u * sp21X;
-                double sy = sp1.y + u * sp21Y;
+                double sx = sp1.x + (u * spdx);
+                double sy = sp1.y + (u * spdy);
 
                 double dx = point.x - sx;
                 double dy = point.y - sy;
-                double distance = dx * dx + dy * dy;
+                double distance = (dx * dx) + (dy * dy);
 
                 if (distance < minimumDistance)
                 {
-                    double px = p1.X + u * (p2.X - p1.X);
+                    double px = p1.X + (u * (p2.X - p1.X));
                     double py = p1.Y;
-                    result = new TrackerHitResult(
-                        this, new DataPoint(px, py), new ScreenPoint(sx, sy), this.GetItem(i), null);
+                    result = new TrackerHitResult(this, new DataPoint(px, py), new ScreenPoint(sx, sy), this.GetItem(i), i);
                     minimumDistance = distance;
                 }
             }
@@ -140,11 +138,15 @@ namespace OxyPlot
                 return;
             }
 
-            Debug.Assert(this.XAxis != null && this.YAxis != null, "Axis has not been defined.");
+            if (this.XAxis == null || this.YAxis == null)
+            {
+                Trace("Axis not defined.");
+                return;
+            }
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
-            OxyRect clippingRect = this.GetClippingRect();
+            var clippingRect = this.GetClippingRect();
 
             Action<IList<ScreenPoint>, IList<ScreenPoint>> renderPoints = (lpts, mpts) =>
                 {
@@ -152,26 +154,26 @@ namespace OxyPlot
                     if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                     {
                         rc.DrawClippedLine(
-                            lpts, 
-                            clippingRect, 
-                            minDistSquared, 
-                            this.Color, 
-                            this.StrokeThickness, 
-                            this.LineStyle, 
-                            this.LineJoin, 
+                            lpts,
+                            clippingRect,
+                            minDistSquared,
+                            this.GetSelectableColor(this.Color),
+                            this.StrokeThickness,
+                            this.LineStyle,
+                            this.LineJoin,
                             false);
                     }
 
                     if (this.MarkerType != MarkerType.None)
                     {
                         rc.DrawMarkers(
-                            mpts, 
-                            clippingRect, 
-                            this.MarkerType, 
-                            this.MarkerOutline, 
-                            new[] { this.MarkerSize }, 
-                            this.MarkerFill, 
-                            this.MarkerStroke, 
+                            mpts,
+                            clippingRect,
+                            this.MarkerType,
+                            this.MarkerOutline,
+                            new[] { this.MarkerSize },
+                            this.MarkerFill,
+                            this.MarkerStroke,
                             this.MarkerStrokeThickness);
                     }
                 };

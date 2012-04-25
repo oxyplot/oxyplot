@@ -13,7 +13,7 @@ namespace OxyPlot
     using System.Reflection;
 
     /// <summary>
-    /// Reflection methods.
+    /// Provides reflection based support methods.
     /// </summary>
     public static class ReflectionHelper
     {
@@ -57,53 +57,6 @@ namespace OxyPlot
             }
         }
 
-        /// <summary>
-        /// Fills a list by from source items and specified properties.
-        /// </summary>
-        /// <typeparam name="T">The type of the destination items.</typeparam>
-        /// <param name="source">The source items.</param>
-        /// <param name="target">The target list.</param>
-        /// <param name="propertyNames">The property names.</param>
-        /// <param name="setPropertyActions">The set property actions.</param>
-        public static void FillList<T>(IEnumerable source, IList<T> target, string[] propertyNames, params Action<T, object>[] setPropertyActions) where T : new()
-        {
-            PropertyInfo[] pi = null;
-            Type t = null;
-            foreach (var sourceItem in source)
-            {
-                if (pi == null || sourceItem.GetType() != t)
-                {
-                    t = sourceItem.GetType();
-                    pi = new PropertyInfo[propertyNames.Length];
-                    for (int i = 0; i < propertyNames.Length; i++)
-                    {
-                        if (string.IsNullOrEmpty(propertyNames[i]))
-                        {
-                            continue;
-                        }
-
-                        pi[i] = t.GetProperty(propertyNames[i]);
-                        if (pi[i] == null)
-                        {
-                            throw new InvalidOperationException(
-                                string.Format("Could not find field {0} on type {1}", propertyNames[i], t));
-                        }
-                    }
-                }
-
-                var item = new T();
-                for (int i = 0; i < propertyNames.Length; i++)
-                {
-                    if (pi[i] != null)
-                    {
-                        var value = pi[i].GetValue(sourceItem, null);
-                        setPropertyActions[i](item, value);
-                    }
-                }
-
-                target.Add(item);
-            }
-        }
         #endregion
     }
 }

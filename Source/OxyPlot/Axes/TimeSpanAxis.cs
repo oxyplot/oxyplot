@@ -66,10 +66,10 @@ namespace OxyPlot
         /// The string format for the axis values.
         /// </param>
         public TimeSpanAxis(
-            AxisPosition pos = AxisPosition.Bottom, 
-            double min = double.NaN, 
-            double max = double.NaN, 
-            string title = null, 
+            AxisPosition pos = AxisPosition.Bottom,
+            double min = double.NaN,
+            double max = double.NaN,
+            string title = null,
             string format = "m:ss")
             : base(pos, min, max, title)
         {
@@ -81,13 +81,13 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// The to double.
+        /// Converts a time span to a double.
         /// </summary>
         /// <param name="s">
-        /// The s.
+        /// The time span.
         /// </param>
         /// <returns>
-        /// The to double.
+        /// A double value.
         /// </returns>
         public static double ToDouble(TimeSpan s)
         {
@@ -95,12 +95,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The to time span.
+        /// Converts a double to a time span.
         /// </summary>
         /// <param name="value">
         /// The value.
         /// </param>
         /// <returns>
+        /// A time span.
         /// </returns>
         public static TimeSpan ToTimeSpan(double value)
         {
@@ -132,13 +133,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The get value.
+        /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary. e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
-        /// <param name="x">
-        /// The x.
-        /// </param>
+        /// <param name="x">The coordinate.</param>
         /// <returns>
-        /// The get value.
+        /// The value.
         /// </returns>
         public override object GetValue(double x)
         {
@@ -150,14 +149,10 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
-        /// The calculate actual interval.
+        /// Calculates the actual interval.
         /// </summary>
-        /// <param name="availableSize">
-        /// The available size.
-        /// </param>
-        /// <param name="maxIntervalSize">
-        /// The max interval size.
-        /// </param>
+        /// <param name="availableSize">Size of the available area.</param>
+        /// <param name="maxIntervalSize">Maximum length of the intervals.</param>
         /// <returns>
         /// The calculate actual interval.
         /// </returns>
@@ -177,7 +172,7 @@ namespace OxyPlot
                 }
 
                 double nextInterval = goodIntervals.FirstOrDefault(i => i > interval);
-                if (nextInterval == 0)
+                if (Math.Abs(nextInterval) < double.Epsilon)
                 {
                     nextInterval = interval * 2;
                 }

@@ -6,44 +6,65 @@
 
 namespace OxyPlot
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
-    /// ScatterPoint - used in ScatterSeries.
+    /// Represents a point in a ScatterSeries.
     /// </summary>
-    public struct ScatterPoint : IDataPoint
+    public class ScatterPoint : IDataPoint
     {
         #region Constants and Fields
+        // ReSharper disable InconsistentNaming
 
         /// <summary>
         ///   The size.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         internal double size;
 
         /// <summary>
         ///   The tag.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         internal object tag;
 
         /// <summary>
         ///   The value.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         internal double value;
 
         /// <summary>
         ///   The x.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         internal double x;
 
         /// <summary>
         ///   The y.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         internal double y;
 
+        // ReSharper restore InconsistentNaming
         #endregion
 
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterPoint"/> struct.
+        /// Initializes a new instance of the <see cref="ScatterPoint"/> class.
+        /// </summary>
+        public ScatterPoint()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScatterPoint"/> class.
         /// </summary>
         /// <param name="x">
         /// The x.

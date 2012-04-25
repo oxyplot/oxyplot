@@ -2,6 +2,9 @@
 // <copyright file="Plot.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Represents a WPF control that displays an OxyPlot plot.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -37,7 +40,7 @@ namespace OxyPlot.Wpf
         private const string PartGrid = "PART_Grid";
 
         /// <summary>
-        /// The invalidate lock.
+        ///   The invalidate lock.
         /// </summary>
         private readonly object invalidateLock = new object();
 
@@ -47,12 +50,12 @@ namespace OxyPlot.Wpf
         private readonly Stack<ManipulationDeltaEventArgs> manipulationQueue = new Stack<ManipulationDeltaEventArgs>();
 
         /// <summary>
-        /// The model lock.
+        ///   The model lock.
         /// </summary>
         private readonly object modelLock = new object();
 
         /// <summary>
-        /// The rendering lock.
+        ///   The rendering lock.
         /// </summary>
         private readonly object renderingLock = new object();
 
@@ -62,7 +65,7 @@ namespace OxyPlot.Wpf
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
 
         /// <summary>
-        /// The update model and visuals lock.
+        ///   The update model and visuals lock.
         /// </summary>
         private readonly object updateModelAndVisualsLock = new object();
 
@@ -72,7 +75,7 @@ namespace OxyPlot.Wpf
         private Canvas canvas;
 
         /// <summary>
-        /// The current model.
+        ///   The current model.
         /// </summary>
         private PlotModel currentModel;
 
@@ -146,7 +149,7 @@ namespace OxyPlot.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes static members of the <see cref="Plot" /> class.
+        /// Initializes static members of the <see cref="Plot"/> class. 
         /// </summary>
         static Plot()
         {
@@ -157,7 +160,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="Plot" /> class.
+        /// Initializes a new instance of the <see cref="Plot"/> class. 
         /// </summary>
         public Plot()
         {
@@ -414,10 +417,18 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Saves the plot as a bitmap.
         /// </summary>
-        /// <param name="fileName">Name of the file.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="background">The background.</param>
+        /// <param name="fileName">
+        /// Name of the file. 
+        /// </param>
+        /// <param name="width">
+        /// The width. 
+        /// </param>
+        /// <param name="height">
+        /// The height. 
+        /// </param>
+        /// <param name="background">
+        /// The background. 
+        /// </param>
         public void SaveBitmap(string fileName, int width = 0, int height = 0, OxyColor background = null)
         {
             // var tmp = this.Model;
@@ -448,7 +459,8 @@ namespace OxyPlot.Wpf
         /// </param>
         public void SaveXaml(string fileName)
         {
-            XamlExporter.Export(this.ActualModel, fileName, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
+            XamlExporter.Export(
+                this.ActualModel, fileName, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
         }
 
         /// <summary>
@@ -547,7 +559,8 @@ namespace OxyPlot.Wpf
         /// </returns>
         public BitmapSource ToBitmap()
         {
-            return PngExporter.ExportToBitmap(this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, this.Background.ToOxyColor());
+            return PngExporter.ExportToBitmap(
+                this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, this.Background.ToOxyColor());
         }
 
         /// <summary>
@@ -558,7 +571,8 @@ namespace OxyPlot.Wpf
         /// </returns>
         public string ToXaml()
         {
-            return XamlExporter.ExportToString(this.ActualModel, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
+            return XamlExporter.ExportToString(
+                this.ActualModel, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
         }
 
         /// <summary>
@@ -631,7 +645,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Keyboard.KeyDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled KeyDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
         /// The <see cref="T:System.Windows.Input.KeyEventArgs"/> that contains the event data. 
@@ -697,7 +711,7 @@ namespace OxyPlot.Wpf
                     zoom *= 0.2;
                 }
 
-                this.ZoomAllAxes(1 + zoom * 0.12);
+                this.ZoomAllAxes(1 + (zoom * 0.12));
                 e.Handled = true;
             }
 
@@ -779,7 +793,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled MouseDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
         /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state. 
@@ -787,7 +801,6 @@ namespace OxyPlot.Wpf
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-
             if (this.mouseManipulator != null)
             {
                 return;
@@ -795,7 +808,18 @@ namespace OxyPlot.Wpf
 
             this.Focus();
             this.CaptureMouse();
+
             this.mouseDownPoint = e.GetPosition(this).ToScreenPoint();
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(e);
+                this.ActualModel.HandleMouseDown(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
 
             this.mouseManipulator = this.GetManipulator(e);
 
@@ -807,7 +831,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseMove"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled MouseMove attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
         /// The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data. 
@@ -815,6 +839,17 @@ namespace OxyPlot.Wpf
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(e);
+                this.ActualModel.HandleMouseMove(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Delta(this.CreateManipulationEventArgs(e));
@@ -823,7 +858,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseUp"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled MouseUp routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
         /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the mouse button was released. 
@@ -831,6 +866,18 @@ namespace OxyPlot.Wpf
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
+            this.ReleaseMouseCapture();
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(e);
+                this.ActualModel.HandleMouseUp(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Completed(this.CreateManipulationEventArgs(e));
@@ -839,10 +886,9 @@ namespace OxyPlot.Wpf
 
             this.mouseManipulator = null;
 
-            this.ReleaseMouseCapture();
             var p = e.GetPosition(this).ToScreenPoint();
-
             double d = p.DistanceTo(this.mouseDownPoint);
+
             if (this.ContextMenu != null)
             {
                 if (Math.Abs(d) < 1e-8 && e.ChangedButton == MouseButton.Right)
@@ -859,7 +905,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseWheel"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled MouseWheel attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
         /// The <see cref="T:System.Windows.Input.MouseWheelEventArgs"/> that contains the event data. 
@@ -893,6 +939,38 @@ namespace OxyPlot.Wpf
         private static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((Plot)d).OnAppearanceChanged();
+        }
+
+        /// <summary>
+        /// Converts the changed button.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data. 
+        /// </param>
+        /// <returns>
+        /// The mouse button. 
+        /// </returns>
+        private static OxyMouseButton ConvertChangedButton(MouseEventArgs e)
+        {
+            var mbe = e as MouseButtonEventArgs;
+            if (mbe != null)
+            {
+                switch (mbe.ChangedButton)
+                {
+                    case MouseButton.Left:
+                        return OxyMouseButton.Left;
+                    case MouseButton.Middle:
+                        return OxyMouseButton.Middle;
+                    case MouseButton.Right:
+                        return OxyMouseButton.Right;
+                    case MouseButton.XButton1:
+                        return OxyMouseButton.XButton1;
+                    case MouseButton.XButton2:
+                        return OxyMouseButton.XButton2;
+                }
+            }
+
+            return OxyMouseButton.Left;
         }
 
         /// <summary>
@@ -948,6 +1026,27 @@ namespace OxyPlot.Wpf
         private ManipulationEventArgs CreateManipulationEventArgs(MouseEventArgs e)
         {
             return new ManipulationEventArgs(e.GetPosition(this).ToScreenPoint());
+        }
+
+        /// <summary>
+        /// Creates the mouse event arguments.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data. 
+        /// </param>
+        /// <returns>
+        /// Mouse event arguments. 
+        /// </returns>
+        private OxyMouseEventArgs CreateMouseEventArgs(MouseEventArgs e)
+        {
+            return new OxyMouseEventArgs
+                {
+                    ChangedButton = ConvertChangedButton(e), 
+                    Position = e.GetPosition(this).ToScreenPoint(), 
+                    IsShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift), 
+                    IsControlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl), 
+                    IsAltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt), 
+                };
         }
 
         /// <summary>
@@ -1275,7 +1374,6 @@ namespace OxyPlot.Wpf
         /// </summary>
         private void UpdateVisuals()
         {
-            //    Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " Updates visuals");
             if (this.canvas == null)
             {
                 return;
@@ -1307,11 +1405,8 @@ namespace OxyPlot.Wpf
                 {
                     this.grid.Children.Insert(idx, this.canvas);
                 }
-
 #endif
             }
-
-            //     Debug.WriteLine(Thread.CurrentThread.ManagedThreadId + " done.");
         }
 
         #endregion

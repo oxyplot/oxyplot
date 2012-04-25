@@ -114,7 +114,7 @@ namespace OxyPlot
                         this.Items[i].Y0, 
                         this.Items[i].Y1, 
                         this.Items[i].Title);
-                    return new TrackerHitResult(this, dp, sp, item, text);
+                    return new TrackerHitResult(this, dp, sp, item, i, text);
                 }
             }
 
@@ -178,7 +178,7 @@ namespace OxyPlot
                 rc.DrawClippedRectangleAsPolygon(
                     rectangle,
                     clippingRect,
-                    item.Color ?? this.FillColor,
+                    this.GetSelectableFillColor(item.Color ?? this.FillColor),
                     this.StrokeColor,
                     this.StrokeThickness);
 
@@ -222,7 +222,7 @@ namespace OxyPlot
             double width = height;
             rc.DrawRectangleAsPolygon(
                 new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
-                this.FillColor,
+                this.GetSelectableFillColor(this.FillColor),
                 this.StrokeColor,
                 this.StrokeThickness);
         }

@@ -10,7 +10,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Abstract base class for Series that can contains items.
+    /// Abstract base class for series that can contain items.
     /// </summary>
     public abstract class ItemsSeries : Series
     {
@@ -28,7 +28,7 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
-        /// Gets the item of the specified index.
+        /// Gets the item for the specified index.
         /// </summary>
         /// <param name="itemsSource">
         /// The items source.

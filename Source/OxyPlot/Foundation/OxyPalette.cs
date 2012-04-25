@@ -2,9 +2,6 @@
 // <copyright file="OxyPalette.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Represents a palette of colors.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot

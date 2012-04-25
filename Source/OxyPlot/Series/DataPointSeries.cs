@@ -12,24 +12,6 @@ namespace OxyPlot
     using System.Reflection;
 
     /// <summary>
-    /// DataPointProvider interface.
-    /// </summary>
-    public interface IDataPointProvider
-    {
-        #region Public Methods
-
-        /// <summary>
-        /// Gets the data point.
-        /// </summary>
-        /// <returns>
-        /// The data point.
-        /// </returns>
-        DataPoint GetDataPoint();
-
-        #endregion
-    }
-
-    /// <summary>
     /// Base class for series that contain a collection of IDataPoints.
     /// </summary>
     public abstract class DataPointSeries : XYAxisSeries
@@ -37,7 +19,7 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        ///   The points list.
+        ///   The list of data points.
         /// </summary>
         protected IList<IDataPoint> points = new List<IDataPoint>();
 
@@ -124,27 +106,12 @@ namespace OxyPlot
                 return null;
             }
 
-            int index;
-            IDataPoint dpn;
-            ScreenPoint spn;
             if (interpolate)
             {
-                if (this.GetNearestInterpolatedPointInternal(this.Points, point, out dpn, out spn, out index))
-                {
-                    object item = this.GetItem(index);
-                    return new TrackerHitResult(this, dpn, spn, item);
-                }
-            }
-            else
-            {
-                if (this.GetNearestPointInternal(this.Points, point, out dpn, out spn, out index))
-                {
-                    object item = this.GetItem(index);
-                    return new TrackerHitResult(this, dpn, spn, item);
-                }
+                return this.GetNearestInterpolatedPointInternal(this.Points, point);
             }
 
-            return null;
+            return this.GetNearestPointInternal(this.Points, point);
         }
 
         #endregion
@@ -223,7 +190,7 @@ namespace OxyPlot
                 // http://msdn.microsoft.com/en-us/library/bb613546.aspx
 
                 // Using reflection on DataFieldX and DataFieldY
-                this.AddDataPoints(pts, this.ItemsSource, this.DataFieldX, this.DataFieldY);    
+                this.AddDataPoints((IList)pts, this.ItemsSource, this.DataFieldX, this.DataFieldY);
             }
         }
 
@@ -242,8 +209,7 @@ namespace OxyPlot
         /// <param name="dataFieldY">
         /// The data field y.
         /// </param>
-        protected void AddDataPoints(
-            IList<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
+        protected void AddDataPoints(IList dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
         {
             PropertyInfo pix = null;
             PropertyInfo piy = null;
@@ -275,6 +241,11 @@ namespace OxyPlot
                 var pp = new DataPoint(x, y);
                 dest.Add(pp);
             }
+
+            //var filler = new ListFiller<DataPoint>();
+            //filler.Add(dataFieldX, (item, value) => item.X = this.ToDouble(value));
+            //filler.Add(dataFieldY, (item, value) => item.Y = this.ToDouble(value));
+            //filler.Fill(dest, itemsSource);
         }
 
         /// <summary>

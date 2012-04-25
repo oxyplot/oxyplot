@@ -2,9 +2,6 @@
 // <copyright file="BoxPlotSeries.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   The box plot series.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -13,7 +10,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// The box plot series.
+    /// Represents a series for box plots.
     /// </summary>
     public class BoxPlotSeries : XYAxisSeries
     {
@@ -164,7 +161,7 @@ namespace OxyPlot
                 var bottomWhisker = this.Transform(item.X, item.LowerWhisker);
 
                 // check if we are near the line
-                var p = ScreenPoint.FindPointOnLine(point, topWhisker, bottomWhisker);
+                var p = ScreenPointHelper.FindPointOnLine(point, topWhisker, bottomWhisker);
                 double d2 = (p - point).LengthSquared;
                 if (d2 < minimumDistance)
                 {
@@ -239,6 +236,8 @@ namespace OxyPlot
             var outlierScreenPoints = new List<ScreenPoint>();
             var halfBoxWidth = this.BoxWidth * 0.5;
             var halfWhiskerWidth = halfBoxWidth * this.WhiskerWidth;
+            var strokeColor = this.GetSelectableColor(this.Stroke);
+            var fillColor = this.GetSelectableFillColor(this.Fill);
 
             foreach (var item in this.Items)
             {
@@ -262,7 +261,7 @@ namespace OxyPlot
                     new[] { topWhiskerTop, topWhiskerBottom },
                     clippingRect,
                     0,
-                    this.Stroke,
+                    strokeColor,
                     this.StrokeThickness,
                     LineStyle.Dash,
                     OxyPenLineJoin.Miter,
@@ -271,7 +270,7 @@ namespace OxyPlot
                     new[] { bottomWhiskerTop, bottomWhiskerBottom },
                     clippingRect,
                     0,
-                    this.Stroke,
+                    strokeColor,
                     this.StrokeThickness,
                     LineStyle.Dash,
                     OxyPenLineJoin.Miter,
@@ -280,7 +279,7 @@ namespace OxyPlot
                     new[] { topWhiskerLine1, topWhiskerLine2 },
                     clippingRect,
                     0,
-                    this.Stroke,
+                    strokeColor,
                     this.StrokeThickness,
                     LineStyle.Solid,
                     OxyPenLineJoin.Miter,
@@ -289,7 +288,7 @@ namespace OxyPlot
                     new[] { bottomWhiskerLine1, bottomWhiskerLine2 },
                     clippingRect,
                     0,
-                    this.Stroke,
+                    strokeColor,
                     this.StrokeThickness,
                     LineStyle.Solid,
                     OxyPenLineJoin.Miter,
@@ -297,7 +296,7 @@ namespace OxyPlot
 
                 // Draw the box
                 var rect = this.GetBoxRect(item);
-                rc.DrawClippedRectangleAsPolygon(rect, clippingRect, this.Fill, this.Stroke, this.StrokeThickness);
+                rc.DrawClippedRectangleAsPolygon(rect, clippingRect, fillColor, strokeColor, this.StrokeThickness);
 
                 // Draw the median
                 var medianLeft = this.Transform(item.X - halfBoxWidth, item.Median);
@@ -306,7 +305,7 @@ namespace OxyPlot
                     new[] { medianLeft, medianRight },
                     clippingRect,
                     0,
-                    this.Stroke,
+                    strokeColor,
                     this.StrokeThickness * 2,
                     LineStyle.Solid,
                     OxyPenLineJoin.Miter,
@@ -321,8 +320,8 @@ namespace OxyPlot
                 MarkerType.Circle,
                 null,
                 markerSizes,
-                this.Fill,
-                this.Stroke,
+                fillColor,
+                strokeColor,
                 this.StrokeThickness);
         }
 
@@ -344,10 +343,12 @@ namespace OxyPlot
             var halfBoxWidth = legendBox.Width * 0.24;
             var halfWhiskerWidth = halfBoxWidth * this.WhiskerWidth;
             double strokeThickness = 1;
+            var strokeColor = this.GetSelectableColor(this.Stroke);
+            var fillColor = this.GetSelectableFillColor(this.Fill);
 
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
-                this.Stroke,
+                strokeColor,
                 strokeThickness,
                 LineStyleHelper.GetDashArray(LineStyle.Solid),
                 OxyPenLineJoin.Miter,
@@ -360,7 +361,7 @@ namespace OxyPlot
                         new ScreenPoint(xmid - halfWhiskerWidth - 1, legendBox.Bottom), 
                         new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Bottom)
                     },
-                this.Stroke,
+                strokeColor,
                 strokeThickness,
                 LineStyleHelper.GetDashArray(LineStyle.Solid),
                 OxyPenLineJoin.Miter,
@@ -373,7 +374,7 @@ namespace OxyPlot
                         new ScreenPoint(xmid - halfWhiskerWidth - 1, legendBox.Top), 
                         new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Top)
                     },
-                this.Stroke,
+                strokeColor,
                 strokeThickness,
                 LineStyleHelper.GetDashArray(LineStyle.Solid),
                 OxyPenLineJoin.Miter,
@@ -382,8 +383,8 @@ namespace OxyPlot
             // box
             rc.DrawRectangleAsPolygon(
                 new OxyRect(xmid - halfBoxWidth, yclose, 2 * halfBoxWidth, yopen - yclose),
-                this.Fill,
-                this.Stroke,
+                fillColor,
+                strokeColor,
                 strokeThickness);
 
             // median
@@ -393,7 +394,7 @@ namespace OxyPlot
                         new ScreenPoint(xmid - halfBoxWidth, (yopen + yclose) * 0.5), 
                         new ScreenPoint(xmid + halfBoxWidth, (yopen + yclose) * 0.5)
                     },
-                this.Stroke,
+                strokeColor,
                 strokeThickness,
                 LineStyleHelper.GetDashArray(LineStyle.Solid),
                 OxyPenLineJoin.Miter,

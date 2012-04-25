@@ -80,7 +80,9 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         public Plot()
         {
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             this.DoubleBuffered = true;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
             this.KeyboardPanHorizontalStep = 0.1;
             this.KeyboardPanVerticalStep = 0.1;
             this.PanCursor = Cursors.Hand;
@@ -486,6 +488,17 @@ namespace OxyPlot.WindowsForms
 
             this.Focus();
             this.Capture = true;
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(e);
+                this.ActualModel.HandleMouseDown(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             this.mouseManipulator = this.GetManipulator(e);
 
             if (this.mouseManipulator != null)
@@ -503,6 +516,17 @@ namespace OxyPlot.WindowsForms
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(e);
+                this.ActualModel.HandleMouseMove(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Delta(this.CreateManipulationEventArgs(e));
@@ -518,14 +542,24 @@ namespace OxyPlot.WindowsForms
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
+            this.Capture = false;
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(e);
+                this.ActualModel.HandleMouseUp(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Completed(this.CreateManipulationEventArgs(e));
             }
 
             this.mouseManipulator = null;
-
-            this.Capture = false;
         }
 
         /// <summary>
@@ -646,7 +680,7 @@ namespace OxyPlot.WindowsForms
                     break;
             }
 
-            if (deltax * deltax + deltay * deltay > 0)
+            if ((deltax * deltax) + (deltay * deltay) > 0)
             {
                 deltax = deltax * this.ActualModel.PlotArea.Width * this.KeyboardPanHorizontalStep;
                 deltay = deltay * this.ActualModel.PlotArea.Height * this.KeyboardPanVerticalStep;
@@ -670,7 +704,7 @@ namespace OxyPlot.WindowsForms
                     zoom *= 0.2;
                 }
 
-                this.ZoomAllAxes(1 + zoom * 0.12);
+                this.ZoomAllAxes(1 + (zoom * 0.12));
 
                 // e.Handled = true;
             }
@@ -703,6 +737,55 @@ namespace OxyPlot.WindowsForms
         {
             base.OnResize(e);
             this.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Converts the changed button.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. 
+        /// </param>
+        /// <returns>
+        /// The mouse button. 
+        /// </returns>
+        private static OxyMouseButton ConvertChangedButton(MouseEventArgs e)
+        {
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    return OxyMouseButton.Left;
+                case MouseButtons.Middle:
+                    return OxyMouseButton.Middle;
+                case MouseButtons.Right:
+                    return OxyMouseButton.Right;
+                case MouseButtons.XButton1:
+                    return OxyMouseButton.XButton1;
+                case MouseButtons.XButton2:
+                    return OxyMouseButton.XButton2;
+            }
+
+            return OxyMouseButton.Left;
+        }
+
+        /// <summary>
+        /// Creates the mouse event arguments.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. 
+        /// </param>
+        /// <returns>
+        /// Mouse event arguments. 
+        /// </returns>
+        private OxyMouseEventArgs CreateMouseEventArgs(MouseEventArgs e)
+        {
+            return new OxyMouseEventArgs
+            {
+                ChangedButton = ConvertChangedButton(e),
+                Position = new ScreenPoint(e.Location.X, e.Location.Y),
+                IsShiftDown = (ModifierKeys & Keys.Shift) == Keys.Shift,
+                IsControlDown = (ModifierKeys & Keys.Control) == Keys.Control,
+                IsAltDown = (ModifierKeys & Keys.Alt) == Keys.Alt,
+            };
         }
 
         /// <summary>

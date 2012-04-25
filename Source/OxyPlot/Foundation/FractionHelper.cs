@@ -13,8 +13,7 @@ namespace OxyPlot
     /// Generates fraction strings from double values.
     /// </summary>
     /// <remarks>
-    /// 0.75 =&gt; "3/4"
-    /// 1.57.. =&gt; "PI/2"
+    /// Examples: "3/4", "PI/2"
     /// </remarks>
     public class FractionHelper
     {
@@ -66,15 +65,13 @@ namespace OxyPlot
                 var ni = (int)Math.Round(n);
                 if (Math.Abs(n - ni) < eps)
                 {
-                    string nis = unitSymbol == null || ni != 1 ? ni.ToString() : string.Empty;
+                    string nis = unitSymbol == null || ni != 1 ? ni.ToString(CultureInfo.InvariantCulture) : string.Empty;
                     if (d == 1)
                     {
                         return string.Format("{0}{1}", nis, unitSymbol);
                     }
-                    else
-                    {
-                        return string.Format("{0}{1}/{2}", nis, unitSymbol, d);
-                    }
+
+                    return string.Format("{0}{1}/{2}", nis, unitSymbol, d);
                 }
             }
 

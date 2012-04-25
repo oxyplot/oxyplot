@@ -15,47 +15,47 @@ namespace OxyPlot
         #region Constants and Fields
 
         /// <summary>
-        ///   The bottom.
+        ///   The bottom code.
         /// </summary>
-        private const int BOTTOM = 4; // 0100
+        private const int Bottom = 4; // 0100
 
         /// <summary>
-        ///   The inside.
+        ///   The inside code.
         /// </summary>
-        private const int INSIDE = 0; // 0000
+        private const int Inside = 0; // 0000
 
         /// <summary>
-        ///   The left.
+        ///   The left code.
         /// </summary>
-        private const int LEFT = 1; // 0001
+        private const int Left = 1; // 0001
 
         /// <summary>
-        ///   The right.
+        ///   The right code.
         /// </summary>
-        private const int RIGHT = 2; // 0010
+        private const int Right = 2; // 0010
 
         /// <summary>
-        ///   The top.
+        ///   The top code.
         /// </summary>
-        private const int TOP = 8; // 1000
+        private const int Top = 8; // 1000
 
         /// <summary>
-        ///   The xmax.
+        ///   The x maximum.
         /// </summary>
         private readonly double xmax;
 
         /// <summary>
-        ///   The xmin.
+        ///   The x minimum.
         /// </summary>
         private readonly double xmin;
 
         /// <summary>
-        ///   The ymax.
+        ///   The y maximum.
         /// </summary>
         private readonly double ymax;
 
         /// <summary>
-        ///   The ymin.
+        ///   The y minimum.
         /// </summary>
         private readonly double ymin;
 
@@ -111,16 +111,12 @@ namespace OxyPlot
         ///   P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with 
         ///   diagonal from (xmin, ymin) to (xmax, ymax).
         /// </summary>
-        /// <param name="x0">
-        /// </param>
-        /// <param name="y0">
-        /// </param>
-        /// <param name="x1">
-        /// </param>
-        /// <param name="y1">
-        /// </param>
+        /// <param name="x0">X coordinate of the first point.</param>
+        /// <param name="y0">Y coordinate of the first point.</param>
+        /// <param name="x1">X coordinate of the second point.</param>
+        /// <param name="y1">Y coordinate of the second point.</param>
         /// <returns>
-        /// true if the line is inside
+        /// true if the line is inside.
         /// </returns>
         public bool ClipLine(ref double x0, ref double y0, ref double x1, ref double y1)
         {
@@ -153,28 +149,28 @@ namespace OxyPlot
 
                 // Now find the intersection point;
                 // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
-                if ((outcodeOut & TOP) != 0)
+                if ((outcodeOut & Top) != 0)
                 {
                     // point is above the clip rectangle
-                    x = x0 + (x1 - x0) * (this.ymax - y0) / (y1 - y0);
+                    x = x0 + ((x1 - x0) * (this.ymax - y0) / (y1 - y0));
                     y = this.ymax;
                 }
-                else if ((outcodeOut & BOTTOM) != 0)
+                else if ((outcodeOut & Bottom) != 0)
                 {
                     // point is below the clip rectangle
-                    x = x0 + (x1 - x0) * (this.ymin - y0) / (y1 - y0);
+                    x = x0 + ((x1 - x0) * (this.ymin - y0) / (y1 - y0));
                     y = this.ymin;
                 }
-                else if ((outcodeOut & RIGHT) != 0)
+                else if ((outcodeOut & Right) != 0)
                 {
                     // point is to the right of clip rectangle
-                    y = y0 + (y1 - y0) * (this.xmax - x0) / (x1 - x0);
+                    y = y0 + ((y1 - y0) * (this.xmax - x0) / (x1 - x0));
                     x = this.xmax;
                 }
-                else if ((outcodeOut & LEFT) != 0)
+                else if ((outcodeOut & Left) != 0)
                 {
                     // point is to the left of clip rectangle
-                    y = y0 + (y1 - y0) * (this.xmin - x0) / (x1 - x0);
+                    y = y0 + ((y1 - y0) * (this.xmin - x0) / (x1 - x0));
                     x = this.xmin;
                 }
 
@@ -217,34 +213,28 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The is inside.
+        /// Determines whether the specified point is inside the rectangle.
         /// </summary>
-        /// <param name="x">
-        /// The x.
-        /// </param>
-        /// <param name="y">
-        /// The y.
-        /// </param>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
         /// <returns>
-        /// The is inside.
+        ///   <c>true</c> if the specified point is inside; otherwise, <c>false</c>.
         /// </returns>
         public bool IsInside(double x, double y)
         {
-            return this.ComputeOutCode(x, y) == INSIDE;
+            return this.ComputeOutCode(x, y) == Inside;
         }
 
         /// <summary>
-        /// The is inside.
+        /// Determines whether the specified point is inside the rectangle.
         /// </summary>
-        /// <param name="s">
-        /// The s.
-        /// </param>
+        /// <param name="s">The point.</param>
         /// <returns>
-        /// The is inside.
+        ///   <c>true</c> if the specified point is inside; otherwise, <c>false</c>.
         /// </returns>
         public bool IsInside(ScreenPoint s)
         {
-            return this.ComputeOutCode(s.X, s.Y) == INSIDE;
+            return this.ComputeOutCode(s.X, s.Y) == Inside;
         }
 
         #endregion
@@ -252,7 +242,7 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
-        /// The compute out code.
+        /// Computes the out code.
         /// </summary>
         /// <param name="x">
         /// The x.
@@ -261,32 +251,32 @@ namespace OxyPlot
         /// The y.
         /// </param>
         /// <returns>
-        /// The compute out code.
+        /// The out code.
         /// </returns>
         private int ComputeOutCode(double x, double y)
         {
-            int code = INSIDE; // initialized as being inside of clip window
+            int code = Inside; // initialized as being inside of clip window
 
             if (x < this.xmin)
             {
                 // to the left of clip window
-                code |= LEFT;
+                code |= Left;
             }
             else if (x > this.xmax)
             {
                 // to the right of clip window
-                code |= RIGHT;
+                code |= Right;
             }
 
             if (y < this.ymin)
             {
                 // below the clip window
-                code |= BOTTOM;
+                code |= Bottom;
             }
             else if (y > this.ymax)
             {
                 // above the clip window
-                code |= TOP;
+                code |= Top;
             }
 
             return code;

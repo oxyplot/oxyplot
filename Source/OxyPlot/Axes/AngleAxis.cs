@@ -2,9 +2,6 @@
 // <copyright file="AngleAxis.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Represents a angular axis for polar plots.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -69,21 +66,14 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        /// The inverse transform.
+        /// Inverse transform the specified screen point.
         /// </summary>
-        /// <param name="x">
-        /// The x. 
-        /// </param>
-        /// <param name="y">
-        /// The y. 
-        /// </param>
-        /// <param name="yaxis">
-        /// The yaxis. 
-        /// </param>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="yaxis">The y-axis.</param>
         /// <returns>
+        /// The data point.
         /// </returns>
-        /// <exception cref="InvalidOperationException">
-        /// </exception>
         public override DataPoint InverseTransform(double x, double y, Axis yaxis)
         {
             throw new InvalidOperationException("Angle axis should always be the y-axis.");

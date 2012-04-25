@@ -2,9 +2,6 @@
 // <copyright file="ScatterSeries.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   ScatterSeries are used to create scatter plots.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -12,11 +9,9 @@ namespace OxyPlot
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
 
     /// <summary>
-    /// ScatterSeries are used to create scatter plots.
+    /// Represents a series for scatter plots.
     /// </summary>
     /// <remarks>
     /// See http://en.wikipedia.org/wiki/Scatter_plot
@@ -199,7 +194,7 @@ namespace OxyPlot
 
             foreach (var p in this.points)
             {
-                if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum
+                if (this.XAxis == null || this.YAxis == null || p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum
                     || p.Y > this.YAxis.ActualMaximum)
                 {
                     i++;
@@ -221,9 +216,9 @@ namespace OxyPlot
                     object yvalue = this.YAxis != null ? this.YAxis.GetValue(dp.Y) : dp.Y;
                     object zvalue = null;
 
-                    if (p is ScatterPoint)
+                    var scatterPoint = p as ScatterPoint;
+                    if (scatterPoint != null)
                     {
-                        var scatterPoint = (ScatterPoint)p;
                         if (!double.IsNaN(scatterPoint.Value) && !double.IsInfinity(scatterPoint.Value))
                         {
                             zvalue = scatterPoint.Value;
@@ -311,10 +306,12 @@ namespace OxyPlot
                 var dp = new DataPoint(this.points[i].X, this.points[i].Y);
                 double size = double.NaN;
                 double value = double.NaN;
-                if (this.points[i] is ScatterPoint)
+
+                var scatterPoint = this.points[i] as ScatterPoint;
+                if (scatterPoint != null)
                 {
-                    size = ((ScatterPoint)this.points[i]).Size;
-                    value = ((ScatterPoint)this.points[i]).Value;
+                    size = scatterPoint.Size;
+                    value = scatterPoint.Value;
                 }
 
                 if (double.IsNaN(size))
@@ -341,8 +338,10 @@ namespace OxyPlot
                 }
                 else
                 {
+// ReSharper disable PossibleNullReferenceException
                     allPoints[i] = screenPoint;
                     markerSizes[i] = size;
+// ReSharper restore PossibleNullReferenceException
                 }
             }
 
@@ -422,17 +421,7 @@ namespace OxyPlot
         {
             base.EnsureAxes();
 
-            this.ColorAxis = null;
-
-            if (this.ColorAxisKey != null)
-            {
-                this.ColorAxis = this.PlotModel.Axes.FirstOrDefault(a => a.Key == this.ColorAxisKey) as ColorAxis;
-            }
-
-            if (this.ColorAxis == null)
-            {
-                this.ColorAxis = this.PlotModel.DefaultColorAxis;
-            }
+            this.ColorAxis = PlotModel.GetAxisOrDefault(this.ColorAxisKey, PlotModel.DefaultColorAxis) as ColorAxis;
         }
 
         /// <summary>
@@ -490,19 +479,19 @@ namespace OxyPlot
 
                 return;
             }*/
-            var dest = new List<ScatterPoint>();
+
+            var dest = new List<IDataPoint>();
 
             // Using reflection to add points
-            this.AddScatterPoints(
-                dest,
-                this.ItemsSource,
-                this.DataFieldX,
-                this.DataFieldY,
-                this.DataFieldSize,
-                this.DataFieldValue,
-                this.DataFieldTag);
+            var filler = new ListFiller<ScatterPoint>();
+            filler.Add(this.DataFieldX, (item, value) => item.X = Convert.ToDouble(value));
+            filler.Add(this.DataFieldY, (item, value) => item.Y = Convert.ToDouble(value));
+            filler.Add(this.DataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
+            filler.Add(this.DataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
+            filler.Add(this.DataFieldTag, (item, value) => item.Tag = value);
+            filler.Fill(dest, this.ItemsSource);
 
-            this.Points = new List<IDataPoint>(dest.Cast<IDataPoint>());
+            this.Points = dest;
         }
 
         /// <summary>
@@ -547,59 +536,13 @@ namespace OxyPlot
             string dataFieldValue,
             string dataFieldTag)
         {
-#if NEW_SCATTER_REFLECTION_METHOD
-            ReflectionHelper.FillManyValues(itemsSource, dest, new[] { dataFieldX, dataFieldY, dataFieldSize, dataFieldValue, dataFieldTag }, 
-                (p, x) => p.X = Convert.ToDouble(x), 
-                (p, y) => p.Y = Convert.ToDouble(y), 
-                (p, size) => p.Size = Convert.ToDouble(size), 
-                (p, value) => p.Value = Convert.ToDouble(value), 
-                (p, tag) => p.Tag = tag, 
-                (p, x) => p.X = Convert.ToDouble(x));
-#endif
-
-            PropertyInfo pix = null;
-            PropertyInfo piy = null;
-            PropertyInfo pis = null;
-            PropertyInfo piv = null;
-            PropertyInfo pit = null;
-            Type t = null;
-            if (dataFieldX == null || dataFieldY == null)
-            {
-                return;
-            }
-
-            foreach (var o in itemsSource)
-            {
-                if (pix == null || o.GetType() != t)
-                {
-                    t = o.GetType();
-                    pix = t.GetProperty(dataFieldX);
-                    piy = t.GetProperty(dataFieldY);
-                    pis = dataFieldSize != null ? t.GetProperty(dataFieldSize) : null;
-                    piv = dataFieldValue != null ? t.GetProperty(dataFieldValue) : null;
-                    pit = dataFieldTag != null ? t.GetProperty(dataFieldTag) : null;
-                    if (pix == null)
-                    {
-                        throw new InvalidOperationException(
-                            string.Format("Could not find data field {0} on type {1}", this.DataFieldX, t));
-                    }
-
-                    if (piy == null)
-                    {
-                        throw new InvalidOperationException(
-                            string.Format("Could not find data field {0} on type {1}", this.DataFieldY, t));
-                    }
-                }
-
-                double x = this.ToDouble(pix.GetValue(o, null));
-                double y = this.ToDouble(piy.GetValue(o, null));
-                double s = pis != null ? this.ToDouble(pis.GetValue(o, null)) : double.NaN;
-                double v = piv != null ? this.ToDouble(piv.GetValue(o, null)) : double.NaN;
-                object tag = pit != null ? pit.GetValue(o, null) : null;
-
-                var p = new ScatterPoint(x, y, s, v, tag);
-                dest.Add(p);
-            }
+            var filler = new ListFiller<ScatterPoint>();
+            filler.Add(dataFieldX, (item, value) => item.X = Convert.ToDouble(value));
+            filler.Add(dataFieldY, (item, value) => item.Y = Convert.ToDouble(value));
+            filler.Add(dataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
+            filler.Add(dataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
+            filler.Add(dataFieldTag, (item, value) => item.Tag = value);
+            filler.FillT(dest, itemsSource);
         }
 
         /// <summary>

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ExampleAttribute.cs" />
+    <Compile Include="CustomSeries\ErrorItem.cs" />
     <Compile Include="ExampleInfo.cs" />
     <Compile Include="Examples.cs" />
     <Compile Include="Attributes\ExamplesAttribute.cs" />
@@ -55,6 +56,8 @@
     <Compile Include="Examples\BarSeries\IntervalBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\RectangleBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\TornadoBarSeriesExamples.cs" />
+    <Compile Include="Examples\MiscExamples.cs" />
+    <Compile Include="Examples\MouseEventExamples.cs" />
     <Compile Include="Examples\ExamplesBase.cs" />
     <Compile Include="Examples\ItemsSourceExamples.cs" />
     <Compile Include="Examples\FunctionSeriesExamples.cs" />

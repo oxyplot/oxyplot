@@ -62,6 +62,14 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("ColumnSeries with no axes defined")]
+        public static PlotModel SimpleColumnSeriesNoAxes()
+        {
+            var model = CreateColumnSeriesModel(false);
+            model.Axes.Clear(); // default axes will be generated
+            return model;
+        }
+
         [Example("BarSeries")]
         public static PlotModel SimpleHorizontalBarSeries()
         {
@@ -93,6 +101,14 @@ namespace ExampleLibrary
         public static PlotModel StackedNegativeHorizontalBarSeries()
         {
             var model = CreateBarSeriesModelWithNegativeValues(true);
+            return model;
+        }
+
+        [Example("BarSeries with no axes defined")]
+        public static PlotModel SimpleHorizontalBarSeriesNoAxes()
+        {
+            var model = CreateBarSeriesModel(false);
+            model.Axes.Clear(); // default axes will be generated
             return model;
         }
 

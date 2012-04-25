@@ -37,7 +37,7 @@ namespace ExampleBrowser
 
         public MainWindowViewModel()
         {
-            Examples = ExampleLibrary.Examples.GetList();
+            this.Examples = ExampleLibrary.Examples.GetList().OrderBy(e => e.Category);
         }
 
         public Color PlotBackground

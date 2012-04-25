@@ -23,7 +23,7 @@ namespace ExampleLibrary
 #if !SILVERLIGHT
             var watch = new Stopwatch();
             model.Updating += (sender, args) => watch.Restart();
-            model.Updated += (sender, args) => Debug.WriteLine("Updated in " + watch.ElapsedMilliseconds + " ms");
+            model.Updated += (sender, args) => Trace.WriteLine("Updated in " + watch.ElapsedMilliseconds + " ms");
 #endif
             var s1 = new LineSeries();
             AddPoints(s1.Points, 100000);

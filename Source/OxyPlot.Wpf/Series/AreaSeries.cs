@@ -55,7 +55,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public AreaSeries()
         {
-            this.internalSeries = new OxyPlot.AreaSeries();
+            this.InternalSeries = new OxyPlot.AreaSeries();
         }
 
         #endregion
@@ -153,8 +153,8 @@ namespace OxyPlot.Wpf
         /// </returns>
         public override OxyPlot.Series CreateModel()
         {
-            this.SynchronizeProperties(this.internalSeries);
-            return this.internalSeries;
+            this.SynchronizeProperties(this.InternalSeries);
+            return this.InternalSeries;
         }
 
         #endregion

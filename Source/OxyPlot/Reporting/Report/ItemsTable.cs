@@ -148,7 +148,6 @@ namespace OxyPlot.Reporting
             this.Columns.Clear();
             if (this.Fields == null || this.Fields.Count == 0)
             {
-                Debug.WriteLine("ItemsTable: Fields are not defined.");
                 return;
             }
 

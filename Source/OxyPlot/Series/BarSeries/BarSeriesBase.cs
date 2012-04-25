@@ -2,9 +2,6 @@
 // <copyright file="BarSeriesBase.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   The BarSeriesBase provides common properties and methods for the BarSeries and ColumnSeries.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -13,7 +10,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// The BarSeriesBase provides common properties and methods for the BarSeries and ColumnSeries.
+    /// Base class that provides common properties and methods for the BarSeries and ColumnSeries.
     /// </summary>
     public abstract class BarSeriesBase : XYAxisSeries
     {
@@ -164,7 +161,7 @@ namespace OxyPlot
                         this.Title,
                         categoryAxis.FormatValueForTracker(i),
                         this.InternalValues[i]);
-                    return new TrackerHitResult(this, dp, sp, item, text);
+                    return new TrackerHitResult(this, dp, sp, item, i, text);
                 }
 
                 i++;
@@ -190,7 +187,7 @@ namespace OxyPlot
             double width = height;
             rc.DrawRectangleAsPolygon(
                 new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
-                this.FillColor,
+                this.GetSelectableColor(this.FillColor),
                 this.StrokeColor,
                 this.StrokeThickness);
         }

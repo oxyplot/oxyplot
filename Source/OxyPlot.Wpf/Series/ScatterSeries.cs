@@ -111,7 +111,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public ScatterSeries()
         {
-            this.internalSeries = new OxyPlot.ScatterSeries();
+            this.InternalSeries = new OxyPlot.ScatterSeries();
         }
 
         #endregion
@@ -346,8 +346,8 @@ namespace OxyPlot.Wpf
         /// </returns>
         public override OxyPlot.Series CreateModel()
         {
-            this.SynchronizeProperties(this.internalSeries);
-            return this.internalSeries;
+            this.SynchronizeProperties(this.InternalSeries);
+            return this.InternalSeries;
         }
 
         #endregion

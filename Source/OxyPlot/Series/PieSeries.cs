@@ -2,9 +2,6 @@
 // <copyright file="PieSeries.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   The PieSeries class renders a Pie/Circle/Doughnut chart.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -12,13 +9,12 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     /// <summary>
-    /// The PieSeries class renders a Pie/Circle/Doughnut chart.
+    /// Represents a series for pie/circle/doughnut charts.
     /// </summary>
     /// <remarks>
-    /// The arc length/central angle/area of each slice is proportional to the quantity it represents. http://en.wikipedia.org/wiki/Pie_chart
+    /// The arc length/central angle/area of each slice is proportional to the quantity it represents. See http://en.wikipedia.org/wiki/Pie_chart
     /// </remarks>
     public class PieSeries : ItemsSeries
     {
@@ -307,7 +303,7 @@ namespace OxyPlot
 
                 innerPoints.Add(outerPoints[0]);
 
-                List<ScreenPoint> points = outerPoints;
+                var points = outerPoints;
                 points.AddRange(innerPoints);
 
                 rc.DrawPolygon(points, slice.Fill, this.Stroke, this.StrokeThickness, null, OxyPenLineJoin.Bevel);
@@ -321,16 +317,16 @@ namespace OxyPlot
 
                     // tick points
                     var tp0 = new ScreenPoint(
-                        mp.X + (outerRadius + this.TickDistance) * Math.Cos(midAngleRadians), 
-                        mp.Y + (outerRadius + this.TickDistance) * Math.Sin(midAngleRadians));
+                        mp.X + ((outerRadius + this.TickDistance) * Math.Cos(midAngleRadians)), 
+                        mp.Y + ((outerRadius + this.TickDistance) * Math.Sin(midAngleRadians)));
                     var tp1 = new ScreenPoint(
-                        tp0.X + this.TickRadialLength * Math.Cos(midAngleRadians), 
-                        tp0.Y + this.TickRadialLength * Math.Sin(midAngleRadians));
-                    var tp2 = new ScreenPoint(tp1.X + this.TickHorizontalLength * sign, tp1.Y);
+                        tp0.X + (this.TickRadialLength * Math.Cos(midAngleRadians)),
+                        tp0.Y + (this.TickRadialLength * Math.Sin(midAngleRadians)));
+                    var tp2 = new ScreenPoint(tp1.X + (this.TickHorizontalLength * sign), tp1.Y);
                     rc.DrawLine(new[] { tp0, tp1, tp2 }, this.Stroke, this.StrokeThickness, null, OxyPenLineJoin.Bevel);
 
                     // label
-                    var labelPosition = new ScreenPoint(tp2.X + this.TickLabelDistance * sign, tp2.Y);
+                    var labelPosition = new ScreenPoint(tp2.X + (this.TickLabelDistance * sign), tp2.Y);
                     rc.DrawText(
                         labelPosition, 
                         label, 
@@ -348,9 +344,9 @@ namespace OxyPlot
                 {
                     string label = string.Format(
                         this.InsideLabelFormat, slice.Value, slice.Label, slice.Value / total * 100);
-                    double r = innerRadius * (1 - this.InsideLabelPosition) + outerRadius * this.InsideLabelPosition;
+                    double r = (innerRadius * (1 - this.InsideLabelPosition)) + (outerRadius * this.InsideLabelPosition);
                     var labelPosition = new ScreenPoint(
-                        mp.X + r * Math.Cos(midAngleRadians), mp.Y + r * Math.Sin(midAngleRadians));
+                        mp.X + (r * Math.Cos(midAngleRadians)), mp.Y + (r * Math.Sin(midAngleRadians)));
                     double textAngle = 0;
                     if (this.AreInsideLabelsAngled)
                     {
@@ -460,47 +456,12 @@ namespace OxyPlot
 
             this.slices.Clear();
 
-            // Use reflection to find the data items
-            PropertyInfo pil = null;
-            PropertyInfo piv = null;
-            PropertyInfo pic = null;
-            PropertyInfo pie = null;
-            Type t = null;
-
-            foreach (var o in this.ItemsSource)
-            {
-                if (pil == null || o.GetType() != t)
-                {
-                    t = o.GetType();
-                    pil = t.GetProperty(this.LabelField);
-                    piv = t.GetProperty(this.ValueField);
-                    pic = t.GetProperty(this.ColorField);
-                    pie = t.GetProperty(this.IsExplodedField);
-                    if (piv == null)
-                    {
-                        throw new InvalidOperationException(
-                            string.Format("Could not find value data field {0} on type {1}", this.ValueField, t));
-                    }
-                }
-
-                var slice = new PieSlice { Value = Convert.ToDouble(piv.GetValue(o, null)) };
-                if (pil != null)
-                {
-                    slice.Label = Convert.ToString(pil.GetValue(o, null));
-                }
-
-                if (pic != null)
-                {
-                    slice.Fill = (OxyColor)pic.GetValue(o, null);
-                }
-
-                if (pie != null)
-                {
-                    slice.IsExploded = (bool)pie.GetValue(o, null);
-                }
-
-                this.slices.Add(slice);
-            }
+            var filler = new ListFiller<PieSlice>();
+            filler.Add(this.LabelField, (item, value) => item.Label = Convert.ToString(value));
+            filler.Add(this.ValueField, (item, value) => item.Value = Convert.ToDouble(value));
+            filler.Add(this.ColorField, (item, value) => item.Fill = (OxyColor)value);
+            filler.Add(this.IsExplodedField, (item, value) => item.IsExploded = (bool)value);
+            filler.FillT(this.slices, this.ItemsSource);
         }
 
         /// <summary>

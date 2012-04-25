@@ -14,16 +14,16 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        ///   Gets the X.
+        ///   Gets or sets the X.
         /// </summary>
         /// <value>The X.</value>
-        double X { get; }
+        double X { get; set; }
 
         /// <summary>
-        ///   Gets the Y.
+        ///   Gets or sets the Y.
         /// </summary>
         /// <value>The Y.</value>
-        double Y { get; }
+        double Y { get; set; }
 
         #endregion
     }

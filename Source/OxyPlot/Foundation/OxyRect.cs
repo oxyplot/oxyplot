@@ -62,7 +62,8 @@ namespace OxyPlot
             this.top = top;
             this.width = width;
             this.height = height;
-            Debug.Assert(width >= 0 && height >= 0, "Width and height should be larger than 0.");
+            Debug.Assert(width >= 0, "Width should be larger than 0.");
+            Debug.Assert(height >= 0, "Height should be larger than 0.");
         }
 
         #endregion
@@ -236,9 +237,9 @@ namespace OxyPlot
         /// </returns>
         public bool Contains(ScreenPoint p)
         {
-            return Contains(p.x, p.y);
+            return this.Contains(p.x, p.y);
         }
-        
+
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>

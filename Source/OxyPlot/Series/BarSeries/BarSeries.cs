@@ -117,7 +117,7 @@ namespace OxyPlot
                     actualFillColor = this.NegativeFillColor;
                 }
 
-                rc.DrawClippedRectangleAsPolygon(rect, clippingRect, actualFillColor, this.StrokeColor, this.StrokeThickness);
+                rc.DrawClippedRectangleAsPolygon(rect, clippingRect, this.GetSelectableFillColor(actualFillColor), this.StrokeColor, this.StrokeThickness);
 
                 if (this.LabelFormatString != null)
                 {

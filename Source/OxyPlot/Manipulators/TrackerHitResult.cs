@@ -29,26 +29,18 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackerHitResult"/> class.
         /// </summary>
-        /// <param name="series">
-        /// The series.
-        /// </param>
-        /// <param name="dp">
-        /// The data point.
-        /// </param>
-        /// <param name="sp">
-        /// The screen point.
-        /// </param>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        public TrackerHitResult(Series series, IDataPoint dp, ScreenPoint sp, object item = null, string text = null)
+        /// <param name="series">The series.</param>
+        /// <param name="dp">The data point.</param>
+        /// <param name="sp">The screen point.</param>
+        /// <param name="item">The item.</param>
+        /// <param name="index">The index.</param>
+        /// <param name="text">The text.</param>
+        public TrackerHitResult(Series series, IDataPoint dp, ScreenPoint sp, object item = null, double index = -1, string text = null)
         {
             this.DataPoint = dp;
             this.Position = sp;
             this.Item = item;
+            this.Index = index;
             this.Series = series;
             this.Text = text;
             var ds = series as DataPointSeries;
@@ -73,6 +65,11 @@ namespace OxyPlot
         ///   If the current point is from an ItemsSource and is not interpolated, this property will contain the item.
         /// </summary>
         public object Item { get; set; }
+
+        /// <summary>
+        /// Gets or sets the index for the Item.
+        /// </summary>
+        public double Index { get; set; }
 
         /// <summary>
         ///   Gets or sets the horizontal/vertical line extents.
