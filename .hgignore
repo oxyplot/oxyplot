@@ -25,6 +25,7 @@ syntax: glob
 *.lib
 *.sbr
 *.scc
+*.nupkg
 
 [Bb]in
 [Dd]ebug*/
@@ -32,6 +33,7 @@ syntax: glob
 [Rr]elease*/
 Output/
 ClientBin/
+lib/
 
 _ReSharper*/
 *.dotCover
