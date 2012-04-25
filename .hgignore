@@ -1,0 +1,44 @@
+# Mercurial .hgignore file for C# / .NET / VisualStudio 2010
+# http://stackoverflow.com/questions/34784/mercurial-hgignore-for-visual-studio-2008-projects
+
+# use glob syntax
+syntax: glob
+
+# Ignore Visual Studio files
+*.obj
+*.exe
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.scc
+*.nupkg
+
+[Bb]in
+[Dd]ebug*/
+[Oo]bj/
+[Rr]elease*/
+Output/
+ClientBin/
+lib/
+
+_ReSharper*/
+*.dotCover
+
+[Tt]est[Rr]esult*
+[Bb]uild[Ll]og.*
+*.[Pp]ublish.xml
+[Tt]humbs.db

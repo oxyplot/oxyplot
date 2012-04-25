@@ -1,0 +1,1726 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>System.Windows.Controls</name>
+  </assembly>
+  <members>
+    <member name="T:System.Windows.HierarchicalDataTemplate">
+      <summary>Represents a <see cref="T:System.Windows.DataTemplate" /> that supports <see cref="T:System.Windows.Controls.HeaderedItemsControl" /> objects, such as <see cref="T:System.Windows.Controls.TreeViewItem" />.</summary>
+    </member>
+    <member name="M:System.Windows.HierarchicalDataTemplate.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.HierarchicalDataTemplate" /> class.</summary>
+    </member>
+    <member name="P:System.Windows.HierarchicalDataTemplate.ItemContainerStyle">
+      <summary>Gets or sets the <see cref="T:System.Windows.Style" /> that is applied to the item container for each child item.</summary>
+      <returns>The style that is applied to the item container for each child item.</returns>
+    </member>
+    <member name="P:System.Windows.HierarchicalDataTemplate.ItemsSource">
+      <summary>Gets or sets the binding that is used to generate content for the next sublevel in the data hierarchy.</summary>
+      <returns>The binding that is used to generate content for the next sublevel in the data hierarchy. The default value is null.</returns>
+    </member>
+    <member name="P:System.Windows.HierarchicalDataTemplate.ItemTemplate">
+      <summary>Gets or sets the <see cref="T:System.Windows.DataTemplate" /> to apply to the <see cref="P:System.Windows.Controls.ItemsControl.ItemTemplate" /> property on a generated <see cref="T:System.Windows.Controls.HeaderedItemsControl" />, such as a <see cref="T:System.Windows.Controls.TreeViewItem" />, to indicate how to display items in the next sublevel in the data hierarchy.</summary>
+      <returns>The <see cref="T:System.Windows.DataTemplate" /> to apply to the <see cref="P:System.Windows.Controls.ItemsControl.ItemTemplate" /> property on a generated <see cref="T:System.Windows.Controls.HeaderedItemsControl" />, such as a <see cref="T:System.Windows.Controls.TreeViewItem" />, to indicate how to display items in the next sublevel in the data hierarchy.</returns>
+    </member>
+    <member name="T:System.Windows.Automation.Peers.CalendarAutomationPeer">
+      <summary>Exposes <see cref="T:System.Windows.Controls.Calendar" /> types to UI automation.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarAutomationPeer.#ctor(System.Windows.Controls.Calendar)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Automation.Peers.CalendarAutomationPeer" /> class.</summary>
+      <param name="owner">The <see cref="T:System.Windows.Controls.Calendar" /> instance to associate with the <see cref="T:System.Windows.Automation.Peers.CalendarAutomationPeer" />.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarAutomationPeer.GetAutomationControlTypeCore">
+      <summary>Gets the control type for the <see cref="T:System.Windows.Controls.Calendar" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.CalendarAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType" />.</summary>
+      <returns>By default, the <see cref="F:System.Windows.Automation.Peers.AutomationControlType.Calendar" /> enumeration value.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarAutomationPeer.GetClassNameCore">
+      <summary>Gets the name of the <see cref="T:System.Windows.Controls.Calendar" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.CalendarAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName" />.</summary>
+      <returns>By default, the type name of the <paramref name="owner" /> value that the automation peer is constructed with.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarAutomationPeer.GetNameCore">
+      <summary>Gets the name of the class of the object associated with this <see cref="T:System.Windows.Automation.Peers.CalendarAutomationPeer" />. Called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetName" />.</summary>
+      <returns>A name from a "Labeled By" associated control if it exists, otherwise, a name from the <paramref name="owner" /> value.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+      <summary>Gets the control pattern for this <see cref="T:System.Windows.Automation.Peers.CalendarAutomationPeer" />.</summary>
+      <returns>The object that implements the pattern interface, or null if the specified pattern interface is not implemented by this peer.</returns>
+      <param name="patternInterface">One of the enumeration values.</param>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#IGridProvider#ColumnCount">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IGridProvider.ColumnCount" />.</summary>
+      <returns>The total number of columns in a grid. </returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#IGridProvider#GetItem(System.Int32,System.Int32)">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IGridProvider.GetItem(System.Int32,System.Int32)" />.</summary>
+      <returns>The UI automation provider for the specified cell. </returns>
+      <param name="row">The ordinal number of the row.</param>
+      <param name="column">The ordinal number of the column.</param>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#IGridProvider#RowCount">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IGridProvider.RowCount" />.</summary>
+      <returns>The total number of rows in a grid. </returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#IMultipleViewProvider#CurrentView">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IMultipleViewProvider.CurrentView" />.</summary>
+      <returns>The value for the current view of the UI automation element. </returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#IMultipleViewProvider#GetSupportedViews">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IMultipleViewProvider.GetSupportedViews" />.</summary>
+      <returns>A collection of values that identifies the views that are available for a UI automation element.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#IMultipleViewProvider#GetViewName(System.Int32)">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IMultipleViewProvider.GetViewName(System.Int32)" />. </summary>
+      <returns>A localized name for the view. </returns>
+      <param name="viewId">The view identifier.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#IMultipleViewProvider#SetCurrentView(System.Int32)">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IMultipleViewProvider.SetCurrentView(System.Int32)" />.</summary>
+      <param name="viewId">A view identifier.</param>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#ISelectionProvider#CanSelectMultiple">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionProvider.CanSelectMultiple" />.</summary>
+      <returns>true if multiple selection is allowed; otherwise, false. </returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#ISelectionProvider#GetSelection">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionProvider.GetSelection" />.</summary>
+      <returns>A list of UI automation providers. </returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#ISelectionProvider#IsSelectionRequired">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionProvider.IsSelectionRequired" />.</summary>
+      <returns>true if selection is required; otherwise, false. </returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#ITableProvider#GetColumnHeaders">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ITableProvider.GetColumnHeaders" />.</summary>
+      <returns>A collection of UI automation providers. </returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#ITableProvider#GetRowHeaders">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ITableProvider.GetRowHeaders" />.</summary>
+      <returns>A collection of UI automation providers. </returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarAutomationPeer.System#Windows#Automation#Provider#ITableProvider#RowOrColumnMajor">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ITableProvider.RowOrColumnMajor" />.</summary>
+      <returns>The primary direction of traversal. </returns>
+    </member>
+    <member name="T:System.Windows.Automation.Peers.CalendarButtonAutomationPeer">
+      <summary>Exposes <see cref="T:System.Windows.Controls.Primitives.CalendarButton" /> types to UI automation.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.#ctor(System.Windows.Controls.Primitives.CalendarButton)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Automation.Peers.CalendarButtonAutomationPeer" /> class.</summary>
+      <param name="owner">The <see cref="T:System.Windows.Controls.Primitives.CalendarButton" /> to associate with this <see cref="T:System.Windows.Automation.Peers.AutomationPeer" />.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.GetAutomationControlTypeCore">
+      <summary>Gets the control type for this <see cref="T:System.Windows.Automation.Peers.CalendarButtonAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType" />.</summary>
+      <returns>The control type as a value of the enumeration.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.GetClassNameCore">
+      <summary>Gets the name of the class that is associated with this <see cref="T:System.Windows.Automation.Peers.CalendarButtonAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName" />.</summary>
+      <returns>By default, the type name of the <paramref name="owner" /> value that the automation peer is constructed with.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.GetHelpTextCore">
+      <summary>Returns the string that describes the functionality of the item that is associated with this <see cref="T:System.Windows.Automation.Peers.CalendarButtonAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetHelpText" />.</summary>
+      <returns>The help text, or <see cref="F:System.String.Empty" /> if there is no help text. By default, this implementation provides a DateTime.ToString behavior.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.GetLocalizedControlTypeCore">
+      <summary>Returns the localized version of the control type for the owner type that is associated with this <see cref="T:System.Windows.Automation.Peers.CalendarButtonAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetLocalizedControlType" />.</summary>
+      <returns>The string that contains the type of control.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.GetNameCore">
+      <summary>Gets the name of the class of the object associated with this <see cref="T:System.Windows.Automation.Peers.CalendarButtonAutomationPeer" />. Called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetName" />.</summary>
+      <returns>A name from a "Labeled By" control if it exists, otherwise from the <paramref name="owner" /> value.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+      <summary>Gets the control pattern for this <see cref="T:System.Windows.Automation.Peers.CalendarButtonAutomationPeer" />.</summary>
+      <returns>The object that implements the pattern interface, or null if the specified pattern interface is not implemented by this peer.</returns>
+      <param name="patternInterface">One of the enumeration values.</param>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.System#Windows#Automation#Provider#IGridItemProvider#Column">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IGridItemProvider.Column" />.</summary>
+      <returns>A zero-based ordinal number that identifies the column that contains the cell or item.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.System#Windows#Automation#Provider#IGridItemProvider#ColumnSpan">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IGridItemProvider.ColumnSpan" />.</summary>
+      <returns>The number of columns spanned.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.System#Windows#Automation#Provider#IGridItemProvider#ContainingGrid">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IGridItemProvider.ContainingGrid" />.</summary>
+      <returns>A UI automation provider that implements the <see cref="F:System.Windows.Automation.Peers.PatternInterface.Grid" /> control pattern and that represents the cell or item container.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.System#Windows#Automation#Provider#IGridItemProvider#Row">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IGridItemProvider.Row" />.</summary>
+      <returns>A zero-based ordinal number that identifies the row that contains the cell or item.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.System#Windows#Automation#Provider#IGridItemProvider#RowSpan">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IGridItemProvider.RowSpan" />.</summary>
+      <returns>The number of rows that are spanned. </returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.System#Windows#Automation#Provider#IInvokeProvider#Invoke">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IInvokeProvider.Invoke" />.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#AddToSelection">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionItemProvider.AddToSelection" />.</summary>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#IsSelected">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionItemProvider.IsSelected" />.</summary>
+      <returns>true if the element is selected; otherwise, false.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#RemoveFromSelection">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionItemProvider.RemoveFromSelection" />.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#Select">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionItemProvider.Select" />.</summary>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarButtonAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#SelectionContainer">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionItemProvider.SelectionContainer" />.</summary>
+      <returns>The provider that supports <see cref="T:System.Windows.Automation.Provider.ISelectionProvider" />.</returns>
+    </member>
+    <member name="T:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer">
+      <summary>Exposes <see cref="T:System.Windows.Controls.Primitives.CalendarDayButton" /> types to UI Automation.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.#ctor(System.Windows.Controls.Primitives.CalendarDayButton)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer" /> class.</summary>
+      <param name="owner">The <see cref="T:System.Windows.Controls.Primitives.CalendarDayButton" /> instance that is associated with this <see cref="T:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer" />.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.GetAutomationControlTypeCore">
+      <summary>Gets the control type for this <see cref="T:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType" />.</summary>
+      <returns>The control type as a value of the enumeration. By default, this method returns <see cref="F:System.Windows.Automation.Peers.AutomationControlType.Button" />.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.GetClassNameCore">
+      <summary>Gets the name of the class that is associated with this <see cref="T:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName" />.</summary>
+      <returns>By default, the type name of the <paramref name="owner" /> value that the automation peer is constructed with.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.GetHelpTextCore">
+      <summary>Returns the string that describes the functionality of the item that is associated with this <see cref="T:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetHelpText" />.</summary>
+      <returns>The help text, or <see cref="F:System.String.Empty" /> if there is no help text.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.GetLocalizedControlTypeCore">
+      <summary>Returns the localized version of the control type for the owner type that is associated with this <see cref="T:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetLocalizedControlType" />.</summary>
+      <returns>The string that contains the type of control.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.GetNameCore">
+      <summary>Gets the text label of the object associated with this <see cref="T:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer" />. Called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetName" />.</summary>
+      <returns>A name from a "Labeled By" control if it exists, otherwise from the <paramref name="owner" /> value.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+      <summary>Gets the control pattern implementation for this <see cref="T:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer" />.</summary>
+      <returns>The object that implements the pattern interface, or null if the specified pattern interface is not implemented by this peer.</returns>
+      <param name="patternInterface">One of the enumeration values.</param>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#IGridItemProvider#Column">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IGridItemProvider.Column" />.</summary>
+      <returns>A zero-based ordinal number that identifies the column that contains the cell or item. </returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#IGridItemProvider#ColumnSpan">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IGridItemProvider.ColumnSpan" />.</summary>
+      <returns>The number of columns. </returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#IGridItemProvider#ContainingGrid">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IGridItemProvider.ContainingGrid" />.</summary>
+      <returns>The UI Automation provider.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#IGridItemProvider#Row">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IGridItemProvider.Row" />.</summary>
+      <returns>A zero-based ordinal number that identifies the row that contains the cell or item. </returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#IGridItemProvider#RowSpan">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IGridItemProvider.RowSpan" />.</summary>
+      <returns>The number of rows. </returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#IInvokeProvider#Invoke">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IInvokeProvider.Invoke" />.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#AddToSelection">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionItemProvider.AddToSelection" />.</summary>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#IsSelected">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionItemProvider.IsSelected" />.</summary>
+      <returns>true if the element is selected; otherwise, false. </returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#RemoveFromSelection">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionItemProvider.RemoveFromSelection" />.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#Select">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionItemProvider.Select" />.</summary>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#SelectionContainer">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionItemProvider.SelectionContainer" />.</summary>
+      <returns>The UI Automation provider.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#ITableItemProvider#GetColumnHeaderItems">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ITableItemProvider.GetColumnHeaderItems" />.</summary>
+      <returns>A collection of UI Automation providers.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.CalendarDayButtonAutomationPeer.System#Windows#Automation#Provider#ITableItemProvider#GetRowHeaderItems">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ITableItemProvider.GetRowHeaderItems" />.</summary>
+      <returns>A collection of UI Automation providers.</returns>
+    </member>
+    <member name="T:System.Windows.Automation.Peers.ChildWindowAutomationPeer">
+      <summary>Exposes <see cref="T:System.Windows.Controls.ChildWindow" /> types to UI automation.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.ChildWindowAutomationPeer.#ctor(System.Windows.Controls.ChildWindow)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Automation.Peers.ChildWindowAutomationPeer" /> class. </summary>
+      <param name="owner">The <see cref="T:System.Windows.Controls.ChildWindow" /> to associate with this <see cref="T:System.Windows.Automation.Peers.ChildWindowAutomationPeer" />.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="owner" /> is null.</exception>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.ChildWindowAutomationPeer.GetAutomationControlTypeCore">
+      <summary>Gets the <see cref="T:System.Windows.Automation.Peers.AutomationControlType" /> for the element associated with this <see cref="T:System.Windows.Automation.Peers.ChildWindowAutomationPeer" />. Called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType" />.</summary>
+      <returns>A value of the enumeration.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.ChildWindowAutomationPeer.GetClassNameCore">
+      <summary>Gets the name of the class for the object associated with this <see cref="T:System.Windows.Automation.Peers.ChildWindowAutomationPeer" />. Called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName" />.</summary>
+      <returns>A string value that represents the type of the child window.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.ChildWindowAutomationPeer.GetNameCore">
+      <summary>Gets the text label of the <see cref="T:System.Windows.Controls.ChildWindow" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.ChildWindowAutomationPeer" />. Called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetName" />.</summary>
+      <returns>The text label of the element that is associated with this automation peer.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.ChildWindowAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+      <summary>Gets the control pattern for this <see cref="T:System.Windows.Automation.Peers.ChildWindowAutomationPeer" />.</summary>
+      <returns>The object that implements the pattern interface, or null if the specified pattern interface is not implemented by this peer.</returns>
+      <param name="patternInterface">One of the enumeration values.</param>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#ITransformProvider#CanMove">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ITransformProvider.CanMove" />.</summary>
+      <returns>true in all cases.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#ITransformProvider#CanResize">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ITransformProvider.CanResize" />.</summary>
+      <returns>false in all cases.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#ITransformProvider#CanRotate">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ITransformProvider.CanRotate" />.</summary>
+      <returns>false in all cases.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#ITransformProvider#Move(System.Double,System.Double)">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ITransformProvider.Move(System.Double,System.Double)" />.</summary>
+      <param name="x">The absolute screen coordinates of the left side of the control.</param>
+      <param name="y">The absolute screen coordinates of the top of the control.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#ITransformProvider#Resize(System.Double,System.Double)">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ITransformProvider.Resize(System.Double,System.Double)" />.</summary>
+      <param name="width">The new width of the window, in pixels.</param>
+      <param name="height">The new height of the window, in pixels.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#ITransformProvider#Rotate(System.Double)">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ITransformProvider.Rotate(System.Double)" />.</summary>
+      <param name="degrees">The number of degrees to rotate the control. A positive number rotates the control clockwise. A negative number rotates the control counterclockwise.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#IWindowProvider#Close">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IWindowProvider.Close" />.</summary>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#IWindowProvider#InteractionState">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IWindowProvider.InteractionState" />.</summary>
+      <returns>The interaction state of the control, as a value of the enumeration.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#IWindowProvider#IsModal">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IWindowProvider.IsModal" />.</summary>
+      <returns>true in all cases.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#IWindowProvider#IsTopmost">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IWindowProvider.IsTopmost" />.</summary>
+      <returns>true if the window is topmost; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#IWindowProvider#Maximizable">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IWindowProvider.Maximizable" />.</summary>
+      <returns>false in all cases.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#IWindowProvider#Minimizable">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IWindowProvider.Minimizable" />.</summary>
+      <returns>false in all cases.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#IWindowProvider#SetVisualState(System.Windows.Automation.WindowVisualState)">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IWindowProvider.SetVisualState(System.Windows.Automation.WindowVisualState)" />.</summary>
+      <param name="state">The visual state of the window to change to, as a value of the enumeration.</param>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#IWindowProvider#VisualState">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IWindowProvider.VisualState" />.</summary>
+      <returns>
+        <see cref="F:System.Windows.Automation.WindowVisualState.Normal" /> in all cases.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.ChildWindowAutomationPeer.System#Windows#Automation#Provider#IWindowProvider#WaitForInputIdle(System.Int32)">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IWindowProvider.WaitForInputIdle(System.Int32)" />.</summary>
+      <returns>true if the window has entered the idle state; false if the timeout occurred.</returns>
+      <param name="milliseconds">The amount of time, in milliseconds, to wait for the associated process to become idle.</param>
+    </member>
+    <member name="T:System.Windows.Automation.Peers.DatePickerAutomationPeer">
+      <summary>Exposes <see cref="T:System.Windows.Controls.DatePicker" /> types to UI automation.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.DatePickerAutomationPeer.#ctor(System.Windows.Controls.DatePicker)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Automation.Peers.DatePickerAutomationPeer" /> class.</summary>
+      <param name="owner">The <see cref="T:System.Windows.Controls.DatePicker" /> to associate with the <see cref="T:System.Windows.Automation.Peers.DatePickerAutomationPeer" />.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.DatePickerAutomationPeer.GetAutomationControlTypeCore">
+      <summary>Gets the control type for this <see cref="T:System.Windows.Automation.Peers.DatePickerAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType" />.</summary>
+      <returns>The control type as a value of the enumeration. By default, this method returns <see cref="F:System.Windows.Automation.Peers.AutomationControlType.Calendar" />.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.DatePickerAutomationPeer.GetClassNameCore">
+      <summary>Gets the name of the class that is associated with this <see cref="T:System.Windows.Automation.Peers.DatePickerAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName" />.</summary>
+      <returns>By default, the type name of the <paramref name="owner" /> value that the automation peer is constructed with.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.DatePickerAutomationPeer.GetLocalizedControlTypeCore">
+      <summary>Returns the localized version of the control type for the owner type that is associated with this <see cref="T:System.Windows.Automation.Peers.DatePickerAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetLocalizedControlType" />.</summary>
+      <returns>The string that contains the type of control.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.DatePickerAutomationPeer.GetNameCore">
+      <summary>Gets the name of the class of the object associated with this <see cref="T:System.Windows.Automation.Peers.DatePickerAutomationPeer" />. Called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetName" />.</summary>
+      <returns>A name from a "Labeled By" value if it exists, otherwise from the <paramref name="owner" /> value.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.DatePickerAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+      <summary>Gets the control pattern for the <see cref="T:System.Windows.Controls.DatePicker" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.DatePickerAutomationPeer" />.</summary>
+      <returns>The object that implements the pattern interface, or null if the specified pattern interface is not implemented by this peer.</returns>
+      <param name="patternInterface">One of the enumeration values.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.DatePickerAutomationPeer.System#Windows#Automation#Provider#IExpandCollapseProvider#Collapse">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IExpandCollapseProvider.Collapse" />.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.DatePickerAutomationPeer.System#Windows#Automation#Provider#IExpandCollapseProvider#Expand">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IExpandCollapseProvider.Expand" />.</summary>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.DatePickerAutomationPeer.System#Windows#Automation#Provider#IExpandCollapseProvider#ExpandCollapseState">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IExpandCollapseProvider.ExpandCollapseState" />.</summary>
+      <returns>The state, expanded or collapsed, of the control. </returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.DatePickerAutomationPeer.System#Windows#Automation#Provider#IValueProvider#IsReadOnly">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IValueProvider.IsReadOnly" />.</summary>
+      <returns>Returns false.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.DatePickerAutomationPeer.System#Windows#Automation#Provider#IValueProvider#SetValue(System.String)">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IValueProvider.SetValue(System.String)" />.</summary>
+      <param name="value">The value to set. The provider is responsible for converting the value to the appropriate data type. </param>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.DatePickerAutomationPeer.System#Windows#Automation#Provider#IValueProvider#Value">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IValueProvider.Value" />.</summary>
+      <returns>The value of the control as a string. </returns>
+    </member>
+    <member name="T:System.Windows.Automation.Peers.GridSplitterAutomationPeer">
+      <summary>Exposes <see cref="T:System.Windows.Controls.GridSplitter" /> types to UI automation.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.GridSplitterAutomationPeer.#ctor(System.Windows.Controls.GridSplitter)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Automation.Peers.GridSplitterAutomationPeer" /> class.</summary>
+      <param name="owner">The <see cref="T:System.Windows.Controls.GridSplitter" /> to associate with the <see cref="T:System.Windows.Automation.Peers.GridSplitterAutomationPeer" />.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.GridSplitterAutomationPeer.GetAutomationControlTypeCore">
+      <summary>Gets the control type for this <see cref="T:System.Windows.Automation.Peers.GridSplitterAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType" />.</summary>
+      <returns>The control type as a value of the enumeration. By default, this method returns <see cref="F:System.Windows.Automation.Peers.AutomationControlType.Thumb" />.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.GridSplitterAutomationPeer.GetClassNameCore">
+      <summary>Gets the name of the class that is associated with this <see cref="T:System.Windows.Automation.Peers.GridSplitterAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName" />.</summary>
+      <returns>By default, the type name of the <paramref name="owner" /> value that the automation peer is constructed with.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.GridSplitterAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+      <summary>Gets the control pattern for the <see cref="T:System.Windows.Controls.GridSplitter" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.GridSplitterAutomationPeer" />.</summary>
+      <returns>The object that implements the pattern interface, or null if the specified pattern interface is not implemented by this peer.</returns>
+      <param name="patternInterface">One of the enumeration values.</param>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.GridSplitterAutomationPeer.System#Windows#Automation#Provider#ITransformProvider#CanMove">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ITransformProvider.CanMove" />.</summary>
+      <returns>true if the element can be moved; otherwise, false. </returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.GridSplitterAutomationPeer.System#Windows#Automation#Provider#ITransformProvider#CanResize">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ITransformProvider.CanResize" />.</summary>
+      <returns>true if the element can be resized; otherwise, false. </returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.GridSplitterAutomationPeer.System#Windows#Automation#Provider#ITransformProvider#CanRotate">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ITransformProvider.CanRotate" />.</summary>
+      <returns>true if the element can be rotated; otherwise, false. </returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.GridSplitterAutomationPeer.System#Windows#Automation#Provider#ITransformProvider#Move(System.Double,System.Double)">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ITransformProvider.Move(System.Double,System.Double)" />.</summary>
+      <param name="x">Absolute screen coordinates of the left side of the control.</param>
+      <param name="y">Absolute screen coordinates of the top of the control.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.GridSplitterAutomationPeer.System#Windows#Automation#Provider#ITransformProvider#Resize(System.Double,System.Double)">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ITransformProvider.Resize(System.Double,System.Double)" />.</summary>
+      <param name="width">The new width of the window, in pixels. </param>
+      <param name="height">The new height of the window, in pixels. </param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.GridSplitterAutomationPeer.System#Windows#Automation#Provider#ITransformProvider#Rotate(System.Double)">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ITransformProvider.Rotate(System.Double)" />.</summary>
+      <param name="degrees">The number of degrees to rotate the control. A positive number rotates clockwise; a negative number rotates counterclockwise. </param>
+    </member>
+    <member name="T:System.Windows.Automation.Peers.TabControlAutomationPeer">
+      <summary>Exposes <see cref="T:System.Windows.Controls.TabControl" /> types to UI automation.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabControlAutomationPeer.#ctor(System.Windows.Controls.TabControl)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Automation.Peers.TabControlAutomationPeer" /> class.</summary>
+      <param name="owner">The <see cref="T:System.Windows.Controls.TabControl" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.TabControlAutomationPeer" />.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabControlAutomationPeer.GetAutomationControlTypeCore">
+      <summary>Gets the control type for this <see cref="T:System.Windows.Automation.Peers.TabControlAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType" />.</summary>
+      <returns>The control type as a value of the enumeration. By default, this method returns <see cref="F:System.Windows.Automation.Peers.AutomationControlType.Tab" />.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabControlAutomationPeer.GetClassNameCore">
+      <summary>Gets the name of the class that is associated with this <see cref="T:System.Windows.Automation.Peers.TabControlAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName" />.</summary>
+      <returns>The type name of the <paramref name="owner" /> value that the automation peer is constructed with.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabControlAutomationPeer.GetClickablePointCore">
+      <summary>Gets a clickable point on the control.</summary>
+      <returns>A point with <see cref="F:System.Double.NaN" /> coordinates, which indicates to automation that the tab itself has no clickable points (the item in the tab is the element that should be reported as clickable).</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabControlAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+      <summary>Gets the control pattern for the <see cref="T:System.Windows.Controls.TabControl" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.TabControlAutomationPeer" />.</summary>
+      <returns>The object that implements the pattern interface, or null if the specified pattern interface is not implemented by this peer.</returns>
+      <param name="patternInterface">One of the enumeration values.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabControlAutomationPeer.IsKeyboardFocusableCore">
+      <summary>Retrieves a value that indicates whether the tab control can accept keyboard focus</summary>
+      <returns>true if the element can accept keyboard focus; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.TabControlAutomationPeer.System#Windows#Automation#Provider#ISelectionProvider#CanSelectMultiple">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionProvider.CanSelectMultiple" />.</summary>
+      <returns>true if multiple selection is allowed; otherwise, false. </returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabControlAutomationPeer.System#Windows#Automation#Provider#ISelectionProvider#GetSelection">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionProvider.GetSelection" />.</summary>
+      <returns>A list of UI automation providers.</returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.TabControlAutomationPeer.System#Windows#Automation#Provider#ISelectionProvider#IsSelectionRequired">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionProvider.IsSelectionRequired" />.</summary>
+      <returns>true if selection is required; otherwise, false. </returns>
+    </member>
+    <member name="T:System.Windows.Automation.Peers.TabItemAutomationPeer">
+      <summary>Exposes <see cref="T:System.Windows.Controls.TabItem" /> types to UI automation.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabItemAutomationPeer.#ctor(System.Object)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Automation.Peers.TabItemAutomationPeer" /> class.</summary>
+      <param name="owner">The <see cref="T:System.Windows.Controls.TabItem" /> to associate with the <see cref="T:System.Windows.Automation.Peers.TabItemAutomationPeer" />.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabItemAutomationPeer.GetAutomationControlTypeCore">
+      <summary>Gets the control type for this <see cref="T:System.Windows.Automation.Peers.TabItemAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType" />.</summary>
+      <returns>The control type as a value of the enumeration. By default, this method returns <see cref="F:System.Windows.Automation.Peers.AutomationControlType.TabItem" />.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabItemAutomationPeer.GetChildrenCore">
+      <summary>Gets the collection of child elements of the <see cref="T:System.Windows.Controls.TabItem" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.TabItemAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetChildren" />.</summary>
+      <returns>The collection of child elements of automation peers, for cases where the <see cref="P:System.Windows.Controls.ContentControl.Content" /> of a <see cref="T:System.Windows.Controls.TabControl" /> is a collection of elements and not a single element.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabItemAutomationPeer.GetClassNameCore">
+      <summary>Gets the name of the class that is associated with this <see cref="T:System.Windows.Automation.Peers.TabItemAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName" />.</summary>
+      <returns>The type name of the <paramref name="owner" /> value that the automation peer is constructed with.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabItemAutomationPeer.GetNameCore">
+      <summary>Gets the name of the class of the object associated with this <see cref="T:System.Windows.Automation.Peers.TabItemAutomationPeer" />. Called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetName" />.</summary>
+      <returns>The string value from the tab item's <see cref="P:System.Windows.Controls.TabItem.Header" /> if available. Otherwise, <see cref="F:System.String.Empty" /></returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabItemAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+      <summary>Gets the control pattern for the <see cref="T:System.Windows.Controls.TabItem" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.TabItemAutomationPeer" />.</summary>
+      <returns>The object that implements the pattern interface, or null if the specified pattern interface is not implemented by this peer.</returns>
+      <param name="patternInterface">One of the enumeration values.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabItemAutomationPeer.IsKeyboardFocusableCore">
+      <summary>Retrieves a value that indicates whether the tab item can accept keyboard focus</summary>
+      <returns>true if the element can accept keyboard focus; otherwise, false.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabItemAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#AddToSelection">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionItemProvider.AddToSelection" />.</summary>
+      <exception cref="T:System.Windows.Automation.ElementNotEnabledException">Owner element is not enabled.</exception>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.TabItemAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#IsSelected">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionItemProvider.IsSelected" />.</summary>
+      <returns>true if the element is selected; otherwise, false.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabItemAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#RemoveFromSelection">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionItemProvider.RemoveFromSelection" />.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TabItemAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#Select">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionItemProvider.Select" />.</summary>
+      <exception cref="T:System.Windows.Automation.ElementNotEnabledException">Owner element is not enabled.</exception>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.TabItemAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#SelectionContainer">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionItemProvider.SelectionContainer" />.</summary>
+      <returns>The provider that supports <see cref="T:System.Windows.Automation.Provider.ISelectionProvider" />.</returns>
+    </member>
+    <member name="T:System.Windows.Automation.Peers.TreeViewAutomationPeer">
+      <summary>Exposes <see cref="T:System.Windows.Controls.TreeView" /> types to UI automation.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewAutomationPeer.#ctor(System.Windows.Controls.TreeView)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Automation.Peers.TreeViewAutomationPeer" /> class.</summary>
+      <param name="owner">The <see cref="T:System.Windows.Controls.TreeView" /> to associate with the <see cref="T:System.Windows.Automation.Peers.TreeViewAutomationPeer" />.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewAutomationPeer.GetAutomationControlTypeCore">
+      <summary>Gets the control type for the <see cref="T:System.Windows.Controls.TreeView" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.TreeViewAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType" />.</summary>
+      <returns>A value of the enumeration. </returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewAutomationPeer.GetChildrenCore">
+      <summary>Gets the collection of child elements of the <see cref="T:System.Windows.Controls.TreeView" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.TreeViewAutomationPeer" />. </summary>
+      <returns>The collection of child elements.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewAutomationPeer.GetClassNameCore">
+      <summary>Gets the name of the <see cref="T:System.Windows.Controls.TreeView" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.TreeViewAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName" />.</summary>
+      <returns>The string TreeView.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+      <summary>Gets a control pattern for the <see cref="T:System.Windows.Controls.TreeView" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.TreeViewAutomationPeer" />.</summary>
+      <returns>The object that implements the pattern interface, or null if the specified pattern interface is not implemented by this peer.</returns>
+      <param name="patternInterface">One of the enumeration values that indicates the control pattern.</param>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.TreeViewAutomationPeer.System#Windows#Automation#Provider#ISelectionProvider#CanSelectMultiple">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionProvider.CanSelectMultiple" />.</summary>
+      <returns>true if multiple selection is allowed; otherwise, false.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewAutomationPeer.System#Windows#Automation#Provider#ISelectionProvider#GetSelection">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionProvider.GetSelection" />.</summary>
+      <returns>A list of UI automation providers. </returns>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.TreeViewAutomationPeer.System#Windows#Automation#Provider#ISelectionProvider#IsSelectionRequired">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionProvider.IsSelectionRequired" />.</summary>
+      <returns>true if selection is required; otherwise, false.</returns>
+    </member>
+    <member name="T:System.Windows.Automation.Peers.TreeViewItemAutomationPeer">
+      <summary>Exposes the items in <see cref="T:System.Windows.Controls.TreeViewItem" /> types to UI automation.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.#ctor(System.Windows.Controls.TreeViewItem)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Automation.Peers.TreeViewItemAutomationPeer" /> class.</summary>
+      <param name="owner">The <see cref="T:System.Windows.Controls.TreeViewItem" /> instance to associate with this <see cref="T:System.Windows.Automation.Peers.TreeViewItemAutomationPeer" />.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.GetAutomationControlTypeCore">
+      <summary>Gets the control type for the <see cref="T:System.Windows.Controls.TreeViewItem" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.TreeViewItemAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType" />.</summary>
+      <returns>A value of the enumeration. </returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.GetClassNameCore">
+      <summary>Gets the name of the <see cref="T:System.Windows.Controls.TreeViewItem" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.TreeViewItemAutomationPeer" />. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName" />.</summary>
+      <returns>The string TreeViewItem.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+      <summary>Gets the control pattern for the <see cref="T:System.Windows.Controls.TreeViewItem" /> that is associated with this <see cref="T:System.Windows.Automation.Peers.TreeViewItemAutomationPeer" />.</summary>
+      <returns>The object that implements the pattern interface, or null if the specified pattern interface is not implemented by this peer.</returns>
+      <param name="patternInterface">One of the enumeration values.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.System#Windows#Automation#Provider#IExpandCollapseProvider#Collapse">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IExpandCollapseProvider.Collapse" />.</summary>
+      <exception cref="T:System.Windows.Automation.ElementNotEnabledException">Owner control is not enabled.</exception>
+      <exception cref="T:System.InvalidOperationException">Owner control has no leaf nodes.</exception>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.System#Windows#Automation#Provider#IExpandCollapseProvider#Expand">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IExpandCollapseProvider.Expand" />.</summary>
+      <exception cref="T:System.Windows.Automation.ElementNotEnabledException">Owner control is not enabled.</exception>
+      <exception cref="T:System.InvalidOperationException">Owner control has no leaf nodes.</exception>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.System#Windows#Automation#Provider#IExpandCollapseProvider#ExpandCollapseState">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.IExpandCollapseProvider.ExpandCollapseState" />.</summary>
+      <returns>The state (expanded or collapsed) of the control.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.System#Windows#Automation#Provider#IScrollItemProvider#ScrollIntoView">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.IScrollItemProvider.ScrollIntoView" />.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#AddToSelection">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionItemProvider.AddToSelection" />.</summary>
+      <exception cref="T:System.InvalidOperationException">Attempted a multiple selection. Tree views do not support multiple selection.</exception>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#IsSelected">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionItemProvider.IsSelected" />. </summary>
+      <returns>true if an item is selected; otherwise, false.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#RemoveFromSelection">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionItemProvider.RemoveFromSelection" />.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#Select">
+      <summary>For a description of this member, see <see cref="M:System.Windows.Automation.Provider.ISelectionItemProvider.Select" />.</summary>
+    </member>
+    <member name="P:System.Windows.Automation.Peers.TreeViewItemAutomationPeer.System#Windows#Automation#Provider#ISelectionItemProvider#SelectionContainer">
+      <summary>For a description of this member, see <see cref="P:System.Windows.Automation.Provider.ISelectionItemProvider.SelectionContainer" />.</summary>
+      <returns>The UI automation provider.</returns>
+    </member>
+    <member name="T:System.Windows.Controls.Calendar">
+      <summary>Represents a control that enables a user to select a date by using a visual calendar display. </summary>
+    </member>
+    <member name="M:System.Windows.Controls.Calendar.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.Calendar" /> class. </summary>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.BlackoutDates">
+      <summary>Gets or sets a collection of dates that are marked as not selectable.</summary>
+      <returns>A collection of dates that cannot be selected. The default value is an empty collection.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.CalendarButtonStyle">
+      <summary>Gets or sets the <see cref="T:System.Windows.Style" /> associated with the control's internal <see cref="T:System.Windows.Controls.Primitives.CalendarButton" /> object.</summary>
+      <returns>The current style of the <see cref="T:System.Windows.Controls.Primitives.CalendarButton" /> object.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Calendar.CalendarButtonStyleProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.Calendar.CalendarButtonStyle" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.Calendar.CalendarButtonStyle" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.CalendarDayButtonStyle">
+      <summary>Gets or sets the <see cref="T:System.Windows.Style" /> associated with the control's internal <see cref="T:System.Windows.Controls.Primitives.CalendarDayButton" /> object.</summary>
+      <returns>The current style of the <see cref="T:System.Windows.Controls.Primitives.CalendarDayButton" /> object.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Calendar.CalendarDayButtonStyleProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.Calendar.CalendarDayButtonStyle" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.Calendar.CalendarDayButtonStyle" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.CalendarItemStyle">
+      <summary>Gets or sets the <see cref="T:System.Windows.Style" /> associated with the control's internal <see cref="T:System.Windows.Controls.Primitives.CalendarItem" /> object.</summary>
+      <returns>The current style of the <see cref="T:System.Windows.Controls.Primitives.CalendarItem" /> object.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Calendar.CalendarItemStyleProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.Calendar.CalendarItemStyle" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.Calendar.CalendarItemStyle" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.DisplayDate">
+      <summary>Gets or sets the date to display.</summary>
+      <returns>The date to display.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">The given date is not in the range specified by <see cref="P:System.Windows.Controls.Calendar.DisplayDateStart" /> and <see cref="P:System.Windows.Controls.Calendar.DisplayDateEnd" />.</exception>
+    </member>
+    <member name="E:System.Windows.Controls.Calendar.DisplayDateChanged">
+      <summary>Occurs when the <see cref="P:System.Windows.Controls.Calendar.DisplayDate" /> property is changed.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.DisplayDateEnd">
+      <summary>Gets or sets the last date to be displayed.</summary>
+      <returns>The last date to display.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Calendar.DisplayDateEndProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.Calendar.DisplayDateEnd" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.Calendar.DisplayDateEnd" /> dependency property.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Calendar.DisplayDateProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.Calendar.DisplayDate" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.Calendar.DisplayDate" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.DisplayDateStart">
+      <summary>Gets or sets the first date to be displayed.</summary>
+      <returns>The first date to display.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Calendar.DisplayDateStartProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.Calendar.DisplayDateStart" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.Calendar.DisplayDateStart" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.DisplayMode">
+      <summary>Gets or sets a value indicating whether the calendar is displayed in months, years, or decades.</summary>
+      <returns>A value indicating what length of time the <see cref="T:System.Windows.Controls.Calendar" /> should display.</returns>
+    </member>
+    <member name="E:System.Windows.Controls.Calendar.DisplayModeChanged">
+      <summary>Occurs when the <see cref="P:System.Windows.Controls.Calendar.DisplayMode" /> property is changed. </summary>
+    </member>
+    <member name="F:System.Windows.Controls.Calendar.DisplayModeProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.Calendar.DisplayMode" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.Calendar.DisplayMode" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.FirstDayOfWeek">
+      <summary>Gets or sets the day that is considered the beginning of the week.</summary>
+      <returns>A <see cref="T:System.DayOfWeek" /> representing the beginning of the week. The default is <see cref="F:System.DayOfWeek.Sunday" />.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Calendar.FirstDayOfWeekProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.Calendar.FirstDayOfWeek" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.Calendar.FirstDayOfWeek" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.IsTodayHighlighted">
+      <summary>Gets or sets a value indicating whether the current date is highlighted.</summary>
+      <returns>true if the current date is highlighted; otherwise, false. The default is true. </returns>
+    </member>
+    <member name="F:System.Windows.Controls.Calendar.IsTodayHighlightedProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.Calendar.IsTodayHighlighted" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.Calendar.IsTodayHighlighted" /> dependency property.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.Calendar.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.Calendar" /> when a new template is applied.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Calendar.OnCreateAutomationPeer">
+      <summary>Returns a <see cref="T:System.Windows.Automation.Peers.CalendarAutomationPeer" /> for use by the Silverlight automation infrastructure.</summary>
+      <returns>A <see cref="T:System.Windows.Automation.Peers.CalendarAutomationPeer" /> for the <see cref="T:System.Windows.Controls.Calendar" /> object.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.Calendar.OnMouseWheel(System.Windows.Input.MouseWheelEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.MouseWheel" /> event</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.MouseWheelEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.SelectedDate">
+      <summary>Gets or sets the currently selected date.</summary>
+      <returns>The date currently selected. The default is null.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">The given date is outside the range specified by <see cref="P:System.Windows.Controls.Calendar.DisplayDateStart" /> and <see cref="P:System.Windows.Controls.Calendar.DisplayDateEnd" />-or-The given date is in the <see cref="P:System.Windows.Controls.Calendar.BlackoutDates" /> collection.</exception>
+      <exception cref="T:System.InvalidOperationException">If set to anything other than null when <see cref="P:System.Windows.Controls.Calendar.SelectionMode" /> is set to <see cref="F:System.Windows.Controls.CalendarSelectionMode.None" />.</exception>
+    </member>
+    <member name="F:System.Windows.Controls.Calendar.SelectedDateProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.Calendar.SelectedDate" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.Calendar.SelectedDate" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.SelectedDates">
+      <summary>Gets a collection of selected dates.</summary>
+      <returns>A <see cref="T:System.Windows.Controls.SelectedDatesCollection" /> object that contains the currently selected dates. The default is an empty collection.</returns>
+    </member>
+    <member name="E:System.Windows.Controls.Calendar.SelectedDatesChanged">
+      <summary>Occurs when the collection returned by the <see cref="P:System.Windows.Controls.Calendar.SelectedDates" /> property is changed. </summary>
+    </member>
+    <member name="P:System.Windows.Controls.Calendar.SelectionMode">
+      <summary>Gets or sets a value that indicates what kind of selections are allowed.</summary>
+      <returns>A value that indicates the current selection mode. The default is <see cref="F:System.Windows.Controls.CalendarSelectionMode.SingleDate" />.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Calendar.SelectionModeProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.Calendar.SelectionMode" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.Calendar.SelectionMode" /> dependency property.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.Calendar.ToString">
+      <summary>Provides a text representation of the selected date.</summary>
+      <returns>A text representation of the selected date, or an empty string if <see cref="P:System.Windows.Controls.Calendar.SelectedDate" /> is null.</returns>
+    </member>
+    <member name="T:System.Windows.Controls.CalendarBlackoutDatesCollection">
+      <summary>Represents a collection of non-selectable dates in a <see cref="T:System.Windows.Controls.Calendar" />.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.CalendarBlackoutDatesCollection.#ctor(System.Windows.Controls.Calendar)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.CalendarBlackoutDatesCollection" /> class. </summary>
+      <param name="owner">The <see cref="T:System.Windows.Controls.Calendar" /> whose dates this object represents.</param>
+    </member>
+    <member name="M:System.Windows.Controls.CalendarBlackoutDatesCollection.AddDatesInPast">
+      <summary>Adds all dates before <see cref="P:System.DateTime.Today" /> to the collection.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.CalendarBlackoutDatesCollection.Contains(System.DateTime)">
+      <summary>Returns a value that represents whether this collection contains the specified date.</summary>
+      <returns>true if the collection contains the specified date; otherwise, false.</returns>
+      <param name="date">The date to search for.</param>
+    </member>
+    <member name="M:System.Windows.Controls.CalendarBlackoutDatesCollection.Contains(System.DateTime,System.DateTime)">
+      <summary>Returns a value that represents whether this collection contains the specified range of dates.</summary>
+      <returns>true if all dates in the range are contained in the collection; otherwise, false.</returns>
+      <param name="start">The start of the date range.</param>
+      <param name="end">The end of the date range.</param>
+    </member>
+    <member name="M:System.Windows.Controls.CalendarBlackoutDatesCollection.ContainsAny(System.Windows.Controls.CalendarDateRange)">
+      <summary>Returns a value that represents whether this collection contains any date in the specified range.</summary>
+      <returns>true if any date in the range is contained in the collection; otherwise, false.</returns>
+      <param name="range">The range of dates to search for.</param>
+    </member>
+    <member name="T:System.Windows.Controls.CalendarDateChangedEventArgs">
+      <summary>Provides data for the <see cref="E:System.Windows.Controls.Calendar.DisplayDateChanged" /> event. </summary>
+    </member>
+    <member name="P:System.Windows.Controls.CalendarDateChangedEventArgs.AddedDate">
+      <summary>Gets or sets the date to be newly displayed.</summary>
+      <returns>The new date to display.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.CalendarDateChangedEventArgs.RemovedDate">
+      <summary>Getsor sets the date that was previously displayed.</summary>
+      <returns>The date previously displayed. </returns>
+    </member>
+    <member name="T:System.Windows.Controls.CalendarDateRange">
+      <summary>Represents a range of dates in a <see cref="T:System.Windows.Controls.Calendar" />.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.CalendarDateRange.#ctor(System.DateTime)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.CalendarDateRange" /> class with a single date.</summary>
+      <param name="day">The date to be represented by the range.</param>
+    </member>
+    <member name="M:System.Windows.Controls.CalendarDateRange.#ctor(System.DateTime,System.DateTime)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.CalendarDateRange" /> class with a range of dates.</summary>
+      <param name="start">The start of the range to be represented.</param>
+      <param name="end">The end of the range to be represented.</param>
+    </member>
+    <member name="P:System.Windows.Controls.CalendarDateRange.End">
+      <summary>Gets the last date in the represented range.</summary>
+      <returns>The last date in the represented range.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.CalendarDateRange.Start">
+      <summary>Gets the first date in the represented range.</summary>
+      <returns>The first date in the represented range.</returns>
+    </member>
+    <member name="T:System.Windows.Controls.CalendarMode">
+      <summary>Specifies values for the different modes of operation of a <see cref="T:System.Windows.Controls.Calendar" />. </summary>
+    </member>
+    <member name="F:System.Windows.Controls.CalendarMode.Month">
+      <summary>The <see cref="T:System.Windows.Controls.Calendar" /> displays a month at a time.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.CalendarMode.Year">
+      <summary>The <see cref="T:System.Windows.Controls.Calendar" /> displays a year at a time.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.CalendarMode.Decade">
+      <summary>The <see cref="T:System.Windows.Controls.Calendar" /> displays a decade at a time.</summary>
+    </member>
+    <member name="T:System.Windows.Controls.CalendarModeChangedEventArgs">
+      <summary>Provides data for the <see cref="E:System.Windows.Controls.Calendar.DisplayModeChanged" /> event. </summary>
+    </member>
+    <member name="M:System.Windows.Controls.CalendarModeChangedEventArgs.#ctor(System.Windows.Controls.CalendarMode,System.Windows.Controls.CalendarMode)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.CalendarModeChangedEventArgs" /> class. </summary>
+      <param name="oldMode">The previous mode.</param>
+      <param name="newMode">The new mode.</param>
+    </member>
+    <member name="P:System.Windows.Controls.CalendarModeChangedEventArgs.NewMode">
+      <summary>Gets the new mode of the <see cref="T:System.Windows.Controls.Calendar" />.</summary>
+      <returns>A <see cref="T:System.Windows.Controls.CalendarMode" /> representing the new mode. </returns>
+    </member>
+    <member name="P:System.Windows.Controls.CalendarModeChangedEventArgs.OldMode">
+      <summary>Gets the previous mode of the <see cref="T:System.Windows.Controls.Calendar" />.</summary>
+      <returns>A <see cref="T:System.Windows.Controls.CalendarMode" /> representing the previous mode. </returns>
+    </member>
+    <member name="T:System.Windows.Controls.CalendarSelectionMode">
+      <summary>Specifies values that describe the available selection modes for a <see cref="T:System.Windows.Controls.Calendar" />.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.CalendarSelectionMode.SingleDate">
+      <summary>Only a single date can be selected. Use the <see cref="P:System.Windows.Controls.Calendar.SelectedDate" /> property to retrieve the selected date.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.CalendarSelectionMode.SingleRange">
+      <summary>A single range of dates can be selected. Use the <see cref="P:System.Windows.Controls.Calendar.SelectedDates" /> property to retrieve the selected dates.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.CalendarSelectionMode.MultipleRange">
+      <summary>Multiple non-contiguous ranges of dates can be selected. Use the <see cref="P:System.Windows.Controls.Calendar.SelectedDates" /> property to retrieve the selected dates.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.CalendarSelectionMode.None">
+      <summary>No selections are allowed.</summary>
+    </member>
+    <member name="T:System.Windows.Controls.ChildWindow">
+      <summary>Provides a window that can be displayed over a parent window and blocks interaction with the parent window.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.ChildWindow.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.ChildWindow" /> class.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.ChildWindow.Close">
+      <summary>Closes a <see cref="T:System.Windows.Controls.ChildWindow" />.</summary>
+    </member>
+    <member name="E:System.Windows.Controls.ChildWindow.Closed">
+      <summary>Occurs when the <see cref="T:System.Windows.Controls.ChildWindow" /> is closed.</summary>
+    </member>
+    <member name="E:System.Windows.Controls.ChildWindow.Closing">
+      <summary>Occurs when the <see cref="T:System.Windows.Controls.ChildWindow" /> is closing.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.ChildWindow.DialogResult">
+      <summary>Gets or sets a value that indicates whether the <see cref="T:System.Windows.Controls.ChildWindow" /> was accepted or canceled.</summary>
+      <returns>true if the child window was accepted; false if the child window was canceled. The default is null.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.ChildWindow.HasCloseButton">
+      <summary>Gets or sets a value that indicates whether the <see cref="T:System.Windows.Controls.ChildWindow" /> has a close button.</summary>
+      <returns>true if the child window has a close button; otherwise, false. The default is true.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.ChildWindow.HasCloseButtonProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.ChildWindow.HasCloseButton" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.ChildWindow.HasCloseButton" /> dependency property.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.ChildWindow.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.ChildWindow" /> control when a new template is applied.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.ChildWindow.OnClosed(System.EventArgs)">
+      <summary>Raises the <see cref="E:System.Windows.Controls.ChildWindow.Closed" /> event.</summary>
+      <param name="e">The event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.ChildWindow.OnClosing(System.ComponentModel.CancelEventArgs)">
+      <summary>Raises the <see cref="E:System.Windows.Controls.ChildWindow.Closing" /> event.</summary>
+      <param name="e">The event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.ChildWindow.OnCreateAutomationPeer">
+      <summary>Returns a <see cref="T:System.Windows.Automation.Peers.ChildWindowAutomationPeer" /> for use by the Silverlight automation infrastructure.</summary>
+      <returns>
+        <see cref="T:System.Windows.Automation.Peers.ChildWindowAutomationPeer" /> for the <see cref="T:System.Windows.Controls.ChildWindow" /> object.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.ChildWindow.OnOpened">
+      <summary>This method is called every time a <see cref="T:System.Windows.Controls.ChildWindow" /> is displayed.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.ChildWindow.OverlayBrush">
+      <summary>Gets or sets the visual brush that is used to cover the parent window when the child window is open.</summary>
+      <returns>The visual brush that is used to cover the parent window when the <see cref="T:System.Windows.Controls.ChildWindow" /> is open. The default is null.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.ChildWindow.OverlayBrushProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.ChildWindow.OverlayBrush" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.ChildWindow.OverlayBrush" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.ChildWindow.OverlayOpacity">
+      <summary>Gets or sets the opacity of the overlay brush that is used to cover the parent window when the child window is open.</summary>
+      <returns>The opacity of the overlay brush that is used to cover the parent window when the <see cref="T:System.Windows.Controls.ChildWindow" /> is open. The default is 1.0.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.ChildWindow.OverlayOpacityProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.ChildWindow.OverlayOpacity" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.ChildWindow.OverlayOpacity" /> dependency property.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.ChildWindow.Show">
+      <summary>Opens a <see cref="T:System.Windows.Controls.ChildWindow" /> and returns without waiting for the <see cref="T:System.Windows.Controls.ChildWindow" /> to close.</summary>
+      <exception cref="T:System.InvalidOperationException">The child window is already in the visual tree.</exception>
+    </member>
+    <member name="P:System.Windows.Controls.ChildWindow.Title">
+      <summary>Gets or sets the title of the <see cref="T:System.Windows.Controls.ChildWindow" />.</summary>
+      <returns>The title of the child window. The default is null.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.ChildWindow.TitleProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.ChildWindow.Title" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.ChildWindow.Title" /> dependency property.</returns>
+    </member>
+    <member name="T:System.Windows.Controls.DatePicker">
+      <summary>Represents a control that allows the user to select a date.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.DatePicker.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.DatePicker" /> class. </summary>
+    </member>
+    <member name="P:System.Windows.Controls.DatePicker.BlackoutDates">
+      <summary>Gets or sets a collection of dates that are marked as not selectable.</summary>
+      <returns>A collection of dates that cannot be selected. The default value is an empty collection.</returns>
+    </member>
+    <member name="E:System.Windows.Controls.DatePicker.CalendarClosed">
+      <summary>Occurs when the drop-down <see cref="T:System.Windows.Controls.Calendar" /> is closed.</summary>
+    </member>
+    <member name="E:System.Windows.Controls.DatePicker.CalendarOpened">
+      <summary>Occurs when the drop-down <see cref="T:System.Windows.Controls.Calendar" /> is opened.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.DatePicker.CalendarStyle">
+      <summary>Gets or sets the style that is used when rendering the calendar.</summary>
+      <returns>The style that is used when rendering the calendar.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.DatePicker.CalendarStyleProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.DatePicker.CalendarStyle" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.DatePicker.CalendarStyle" /> dependency property.</returns>
+    </member>
+    <member name="E:System.Windows.Controls.DatePicker.DateValidationError">
+      <summary>Occurs when <see cref="P:System.Windows.Controls.DatePicker.Text" /> is assigned a value that cannot be interpreted as a date.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.DatePicker.DisplayDate">
+      <summary>Gets or sets the date to display.</summary>
+      <returns>The date to display. The default is <see cref="P:System.DateTime.Today" />.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">The specified date is not in the range defined by <see cref="P:System.Windows.Controls.DatePicker.DisplayDateStart" />. and <see cref="P:System.Windows.Controls.DatePicker.DisplayDateEnd" />.</exception>
+    </member>
+    <member name="P:System.Windows.Controls.DatePicker.DisplayDateEnd">
+      <summary>Gets or sets the last date to be displayed.</summary>
+      <returns>The last date to display.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.DatePicker.DisplayDateEndProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.DatePicker.DisplayDateEnd" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.DatePicker.DisplayDateEnd" /> dependency property.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.DatePicker.DisplayDateProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.DatePicker.DisplayDate" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.DatePicker.DisplayDate" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.DatePicker.DisplayDateStart">
+      <summary>Gets or sets the first date to be displayed.</summary>
+      <returns>The first date to display.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.DatePicker.DisplayDateStartProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.DatePicker.DisplayDateStart" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.DatePicker.DisplayDateStart" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.DatePicker.FirstDayOfWeek">
+      <summary>Gets or sets the day that is considered the beginning of the week.</summary>
+      <returns>A <see cref="T:System.DayOfWeek" /> representing the beginning of the week. The default is <see cref="F:System.DayOfWeek.Sunday" />.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.DatePicker.FirstDayOfWeekProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.DatePicker.FirstDayOfWeek" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.DatePicker.FirstDayOfWeek" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.DatePicker.IsDropDownOpen">
+      <summary>Gets or sets a value that indicates whether the drop-down <see cref="T:System.Windows.Controls.Calendar" /> is open or closed.</summary>
+      <returns>true if the <see cref="T:System.Windows.Controls.Calendar" /> is open; otherwise, false. The default is false.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.DatePicker.IsDropDownOpenProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.DatePicker.IsDropDownOpen" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.DatePicker.IsDropDownOpen" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.DatePicker.IsTodayHighlighted">
+      <summary>Gets or sets a value that indicates whether the current date will be highlighted.</summary>
+      <returns>true if the current date is highlighted; otherwise, false. The default is true. </returns>
+    </member>
+    <member name="F:System.Windows.Controls.DatePicker.IsTodayHighlightedProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.DatePicker.IsTodayHighlighted" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.DatePicker.IsTodayHighlighted" /> dependency property.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.DatePicker.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.DatePicker" /> control when a new template is applied.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.DatePicker.OnCreateAutomationPeer">
+      <summary>Returns a <see cref="T:System.Windows.Automation.Peers.DatePickerAutomationPeer" /> for use by the Silverlight automation infrastructure.</summary>
+      <returns>A <see cref="T:System.Windows.Automation.Peers.DatePickerAutomationPeer" /> for the <see cref="T:System.Windows.Controls.DatePicker" /> object.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.DatePicker.OnDateValidationError(System.Windows.Controls.DatePickerDateValidationErrorEventArgs)">
+      <summary>Raises the <see cref="E:System.Windows.Controls.DatePicker.DateValidationError" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.Controls.DatePickerDateValidationErrorEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.DatePicker.OnMouseWheel(System.Windows.Input.MouseWheelEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.MouseWheel" /> event.</summary>
+      <param name="e">A <see cref="System.Windows.Input.MouseWheelEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="P:System.Windows.Controls.DatePicker.SelectedDate">
+      <summary>Gets or sets the currently selected date.</summary>
+      <returns>The date currently selected. The default is null.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">The specified date is not in the range defined by <see cref="P:System.Windows.Controls.DatePicker.DisplayDateStart" /> and <see cref="P:System.Windows.Controls.DatePicker.DisplayDateEnd" />, or the specified date is in the <see cref="P:System.Windows.Controls.DatePicker.BlackoutDates" /> collection. </exception>
+    </member>
+    <member name="E:System.Windows.Controls.DatePicker.SelectedDateChanged">
+      <summary>Occurs when the <see cref="P:System.Windows.Controls.DatePicker.SelectedDate" /> property is changed.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.DatePicker.SelectedDateFormat">
+      <summary>Gets or sets the format that is used to display the selected date.</summary>
+      <returns>The format that is used to display the selected date. The default is <see cref="F:System.Windows.Controls.DatePickerFormat.Short" />.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">The specified format is not valid.</exception>
+    </member>
+    <member name="F:System.Windows.Controls.DatePicker.SelectedDateFormatProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.DatePicker.SelectedDateFormat" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.DatePicker.SelectedDateFormat" /> dependency property.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.DatePicker.SelectedDateProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.DatePicker.SelectedDate" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.DatePicker.SelectedDate" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.DatePicker.SelectionBackground">
+      <summary>Gets or sets the background used for selected dates.</summary>
+      <returns>The background used for selected dates.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.DatePicker.SelectionBackgroundProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.DatePicker.SelectionBackground" /> dependency property. </summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.DatePicker.SelectionBackground" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.DatePicker.Text">
+      <summary>Gets the text that is displayed by the <see cref="T:System.Windows.Controls.DatePicker" />, or sets the selected date.</summary>
+      <returns>The text displayed by the <see cref="T:System.Windows.Controls.DatePicker" />.</returns>
+      <exception cref="T:System.FormatException">The text entered cannot be parsed to a valid date, and the exception is not suppressed.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The text entered parses to a date that is not selectable.</exception>
+    </member>
+    <member name="F:System.Windows.Controls.DatePicker.TextProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.DatePicker.Text" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.DatePicker.Text" /> dependency property.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.DatePicker.ToString"></member>
+    <member name="T:System.Windows.Controls.DatePickerDateValidationErrorEventArgs">
+      <summary>Provides data for the <see cref="E:System.Windows.Controls.DatePicker.DateValidationError" /> event.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.DatePickerDateValidationErrorEventArgs.#ctor(System.Exception,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.DatePickerDateValidationErrorEventArgs" /> class. </summary>
+      <param name="exception">The initial exception from the <see cref="E:System.Windows.Controls.DatePicker.DateValidationError" /> event.</param>
+      <param name="text">The text that caused the <see cref="E:System.Windows.Controls.DatePicker.DateValidationError" /> event.</param>
+    </member>
+    <member name="P:System.Windows.Controls.DatePickerDateValidationErrorEventArgs.Exception">
+      <summary>Gets or sets the initial exception associated with the <see cref="E:System.Windows.Controls.DatePicker.DateValidationError" /> event.</summary>
+      <returns>The exception associated with the validation failure.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.DatePickerDateValidationErrorEventArgs.Text">
+      <summary>Gets or sets the text that caused the <see cref="E:System.Windows.Controls.DatePicker.DateValidationError" /> event.</summary>
+      <returns>The text that caused the validation failure.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.DatePickerDateValidationErrorEventArgs.ThrowException">
+      <summary>Gets or sets a value that indicates whether <see cref="P:System.Windows.Controls.DatePickerDateValidationErrorEventArgs.Exception" /> should be thrown.</summary>
+      <returns>true if the exception should be thrown; otherwise, false.</returns>
+      <exception cref="T:System.ArgumentException">If set to true and <see cref="P:System.Windows.Controls.DatePickerDateValidationErrorEventArgs.Exception" /> is null.</exception>
+    </member>
+    <member name="T:System.Windows.Controls.DatePickerFormat">
+      <summary>Specifies date formats for a <see cref="T:System.Windows.Controls.DatePicker" />.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.DatePickerFormat.Long">
+      <summary>Specifies that the date should be displayed using unabbreviated days of the week and month names.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.DatePickerFormat.Short">
+      <summary>Specifies that the date should be displayed using abbreviated days of the week and month names.</summary>
+    </member>
+    <member name="T:System.Windows.Controls.DateTimeTypeConverter">
+      <summary>Provides a converter to convert <see cref="T:System.DateTime" /> objects to and from other representations.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.DateTimeTypeConverter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.DateTimeTypeConverter" /> class. </summary>
+    </member>
+    <member name="M:System.Windows.Controls.DateTimeTypeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Gets a value that indicates whether it is possible to convert the specified type to a <see cref="T:System.DateTime" /> with the specified format context.</summary>
+      <returns>true if the conversion is possible; otherwise, false.</returns>
+      <param name="context">The format context that is used to convert the specified type.</param>
+      <param name="sourceType">The type to convert.</param>
+    </member>
+    <member name="M:System.Windows.Controls.DateTimeTypeConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Gets a value that indicates whether it is possible to convert a <see cref="T:System.DateTime" /> to the specified type within the specified format context.</summary>
+      <returns>true if the conversion is possible; otherwise, false.</returns>
+      <param name="context">The format context that is used to convert.</param>
+      <param name="destinationType">The type to convert to.</param>
+    </member>
+    <member name="M:System.Windows.Controls.DateTimeTypeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+      <summary>Converts the specified object to a <see cref="T:System.DateTime" /> with the specified culture with the specified format context.</summary>
+      <returns>A <see cref="T:System.DateTime" /> object that represents <paramref name="value" />.</returns>
+      <param name="context">The format context that is used to convert the specified type.</param>
+      <param name="culture">The culture to use for the result.</param>
+      <param name="value">The value to convert.</param>
+      <exception cref="T:System.FormatException">The conversion cannot be performed.</exception>
+    </member>
+    <member name="M:System.Windows.Controls.DateTimeTypeConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+      <summary>Converts a <see cref="T:System.DateTime" /> with the specified culture to the specified object with the specified format context.</summary>
+      <returns>An object of the specified type that represents <paramref name="value" />.</returns>
+      <param name="context">The format context that is used to convert to the specified type.</param>
+      <param name="culture">The culture to use for the converting date.</param>
+      <param name="value">The date to convert.</param>
+      <param name="destinationType">The type to convert to.</param>
+    </member>
+    <member name="T:System.Windows.Controls.Dock">
+      <summary>Specifies values that control the behavior of a control positioned inside another control.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.Dock.Left">
+      <summary>Specifies that the control should be positioned on the left of the control.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.Dock.Top">
+      <summary>Specifies that the control should be positioned on top of the control.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.Dock.Right">
+      <summary>Specifies that the control should be positioned on the right of the control.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.Dock.Bottom">
+      <summary>Specifies that the control should be positioned at the bottom of the control.</summary>
+    </member>
+    <member name="T:System.Windows.Controls.GridSplitter">
+      <summary>Represents a control that redistributes space between the rows of columns of a <see cref="T:System.Windows.Controls.Grid" /> control.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.GridSplitter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.GridSplitter" /> class. </summary>
+    </member>
+    <member name="M:System.Windows.Controls.GridSplitter.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.GridSplitter" /> control when a new template is applied.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.GridSplitter.OnCreateAutomationPeer">
+      <summary>Returns a <see cref="T:System.Windows.Automation.Peers.GridSplitterAutomationPeer" /> for use by the Silverlight automation infrastructure.</summary>
+      <returns>A <see cref="T:System.Windows.Automation.Peers.GridSplitterAutomationPeer" /> for the <see cref="T:System.Windows.Controls.GridSplitter" /> object.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.GridSplitter.PreviewStyle">
+      <summary>Gets or sets the <see cref="T:System.Windows.Style" /> that is used for previewing changes.</summary>
+      <returns>The style that is used to preview changes.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.GridSplitter.PreviewStyleProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.GridSplitter.PreviewStyle" /> dependency property.</summary>
+      <returns>An identifier for the <see cref="P:System.Windows.Controls.GridSplitter.PreviewStyle" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.GridSplitter.ShowsPreview">
+      <summary>Gets or sets a value that indicates whether the <see cref="T:System.Windows.Controls.GridSplitter" /> control updates the column or row size as the user drags the control with the mouse.</summary>
+      <returns>true if a preview is displayed; otherwise, false.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.GridSplitter.ShowsPreviewProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.GridSplitter.ShowsPreview" /> dependency property.</summary>
+      <returns>An identifier for the <see cref="P:System.Windows.Controls.GridSplitter.ShowsPreview" /> dependency property.</returns>
+    </member>
+    <member name="T:System.Windows.Controls.HeaderedItemsControl">
+      <summary>Represents a control that contains a header and collection of items.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.HeaderedItemsControl.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.HeaderedItemsControl" /> class.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.HeaderedItemsControl.Header">
+      <summary>Gets or sets the item that labels the control. </summary>
+      <returns>The item that labels the control. The default value is null. </returns>
+    </member>
+    <member name="F:System.Windows.Controls.HeaderedItemsControl.HeaderProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.HeaderedItemsControl.Header" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.HeaderedItemsControl.Header" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.HeaderedItemsControl.HeaderTemplate">
+      <summary>Gets or sets a data template that is used to display the contents of the control's <see cref="P:System.Windows.Controls.HeaderedItemsControl.Header" />.</summary>
+      <returns>Gets or sets a data template that is used to display the contents of the control's header. The default is null.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.HeaderedItemsControl.HeaderTemplateProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.HeaderedItemsControl.HeaderTemplate" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.HeaderedItemsControl.HeaderTemplate" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.HeaderedItemsControl.ItemContainerStyle">
+      <summary>Gets or sets the <see cref="T:System.Windows.Style" /> that is applied to the container element generated for each item.</summary>
+      <returns>The <see cref="T:System.Windows.Style" /> that is applied to the container element generated for each item. The default is null.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.HeaderedItemsControl.ItemContainerStyleProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.HeaderedItemsControl.ItemContainerStyle" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.HeaderedItemsControl.ItemContainerStyle" /> dependency property.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.HeaderedItemsControl.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.HeaderedItemsControl" /> when a new template is applied.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.HeaderedItemsControl.OnHeaderChanged(System.Object,System.Object)">
+      <summary>Called when the value of the <see cref="P:System.Windows.Controls.HeaderedItemsControl.Header" /> property changes.</summary>
+      <param name="oldHeader">The old value of the <see cref="P:System.Windows.Controls.HeaderedItemsControl.Header" /> property.</param>
+      <param name="newHeader">The new value of the <see cref="P:System.Windows.Controls.HeaderedItemsControl.Header" /> property.</param>
+    </member>
+    <member name="M:System.Windows.Controls.HeaderedItemsControl.OnHeaderTemplateChanged(System.Windows.DataTemplate,System.Windows.DataTemplate)">
+      <summary>Called when the value of the <see cref="P:System.Windows.Controls.HeaderedItemsControl.HeaderTemplate" /> property changes.</summary>
+      <param name="oldHeaderTemplate">The old value of the <see cref="P:System.Windows.Controls.HeaderedItemsControl.HeaderTemplate" /> property.</param>
+      <param name="newHeaderTemplate">The new value of the <see cref="P:System.Windows.Controls.HeaderedItemsControl.HeaderTemplate" /> property.</param>
+    </member>
+    <member name="M:System.Windows.Controls.HeaderedItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+      <summary>Prepares the specified element to display the specified item.</summary>
+      <param name="element">The container element used to display the specified item.</param>
+      <param name="item">The content to display.</param>
+    </member>
+    <member name="T:System.Windows.Controls.RoutedPropertyChangingEventArgs`1">
+      <summary>Provides event data for various routed events that track property values changing. Typically the events denote a cancellable action.</summary>
+      <typeparam name="T">The type of the value for the dependency property that is changing.</typeparam>
+    </member>
+    <member name="M:System.Windows.Controls.RoutedPropertyChangingEventArgs`1.#ctor(System.Windows.DependencyProperty,`0,`0,System.Boolean)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.RoutedPropertyChangingEventArgs`1" /> class,</summary>
+      <param name="property">The <see cref="T:System.Windows.DependencyProperty" /> identifier for the property that is changing.</param>
+      <param name="oldValue">The previous value of the property.</param>
+      <param name="newValue">The new value of the property, assuming that the property change is not cancelled.</param>
+      <param name="isCancelable">true if the property change is cancellable by setting <see cref="P:System.Windows.Controls.RoutedPropertyChangingEventArgs`1.Cancel" /> to true in event handling. false if the property change is not cancellable.</param>
+    </member>
+    <member name="P:System.Windows.Controls.RoutedPropertyChangingEventArgs`1.Cancel">
+      <summary>Gets or sets a value that determines whether the property change that originated the RoutedPropertyChanging event should be cancelled.</summary>
+      <returns>true to cancel the property change; this resets the property to <see cref="P:System.Windows.Controls.RoutedPropertyChangingEventArgs`1.OldValue" />. false to not cancel the property change; the value changes to <see cref="P:System.Windows.Controls.RoutedPropertyChangingEventArgs`1.NewValue" />.</returns>
+      <exception cref="T:System.InvalidOperationException">Attempted to cancel in an instance where <see cref="P:System.Windows.Controls.RoutedPropertyChangingEventArgs`1.IsCancelable" /> is false.</exception>
+    </member>
+    <member name="P:System.Windows.Controls.RoutedPropertyChangingEventArgs`1.InCoercion">
+      <summary>Gets or sets a value indicating whether internal value coercion is acting on the property change that originated the RoutedPropertyChanging event.</summary>
+      <returns>true if coercion is active. false if coercion is not active.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.RoutedPropertyChangingEventArgs`1.IsCancelable">
+      <summary>Gets a value indicating whether the property change that originated the RoutedPropertyChanging event is cancellable.</summary>
+      <returns>true if the property change is cancellable. false if the property change is not cancellable.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.RoutedPropertyChangingEventArgs`1.NewValue">
+      <summary>Gets a value that reports the new value of the changing property, assuming that the property change is not cancelled.</summary>
+      <returns>The new value of the changing property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.RoutedPropertyChangingEventArgs`1.OldValue">
+      <summary>Gets a value that reports the previous value of the changing property.</summary>
+      <returns>The previous value of the changing property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.RoutedPropertyChangingEventArgs`1.Property">
+      <summary>Gets the <see cref="T:System.Windows.DependencyProperty" /> identifier for the property that is changing.</summary>
+      <returns>The <see cref="T:System.Windows.DependencyProperty" /> identifier for the property that is changing.</returns>
+    </member>
+    <member name="T:System.Windows.Controls.RoutedPropertyChangingEventHandler`1">
+      <summary>Represents methods that handle various routed events that track property values changing. Typically the events denote a cancellable action.</summary>
+      <param name="sender">The object where the initiating property is changing.</param>
+      <param name="e">Event data for the event,</param>
+      <typeparam name="T">The type of the value for the dependency property that is changing.</typeparam>
+    </member>
+    <member name="T:System.Windows.Controls.SelectedDatesCollection">
+      <summary>Represents a set of selected dates in a <see cref="T:System.Windows.Controls.Calendar" />.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.SelectedDatesCollection.#ctor(System.Windows.Controls.Calendar)">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.SelectedDatesCollection" /> class. </summary>
+      <param name="owner">The <see cref="T:System.Windows.Controls.Calendar" /> associated with this object.</param>
+    </member>
+    <member name="M:System.Windows.Controls.SelectedDatesCollection.AddRange(System.DateTime,System.DateTime)">
+      <summary>Adds all the dates in the specified range, which includes the first and last dates, to the collection.</summary>
+      <param name="start">The first date to add to the collection.</param>
+      <param name="end">The last date to add to the collection.</param>
+    </member>
+    <member name="T:System.Windows.Controls.TabControl">
+      <summary>Represents a control that contains multiple items that share the same space on the screen.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.TabControl.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.TabControl" /> class. </summary>
+    </member>
+    <member name="M:System.Windows.Controls.TabControl.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.TabControl" /> when a new template is applied.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.TabControl.OnCreateAutomationPeer">
+      <summary>Returns a <see cref="T:System.Windows.Automation.Peers.TabControlAutomationPeer" /> for use by the Silverlight automation infrastructure.</summary>
+      <returns>A <see cref="T:System.Windows.Automation.Peers.TabControlAutomationPeer" /> for the <see cref="T:System.Windows.Controls.TabControl" /> object.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.TabControl.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+      <param name="e">Data used by the event.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TabControl.OnKeyDown(System.Windows.Input.KeyEventArgs)">
+      <param name="e">Data used by the event.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TabControl.OnSelectionChanged(System.Windows.Controls.SelectionChangedEventArgs)">
+      <summary>Raises the <see cref="E:System.Windows.Controls.TabControl.SelectionChanged" /> event.</summary>
+      <param name="args">Provides data for the <see cref="E:System.Windows.Controls.TabControl.SelectionChanged" /> event.</param>
+    </member>
+    <member name="P:System.Windows.Controls.TabControl.SelectedContent">
+      <summary>Gets the content of the currently selected <see cref="T:System.Windows.Controls.TabItem" />.</summary>
+      <returns>The content of the currently selected <see cref="T:System.Windows.Controls.TabItem" />. The default is null.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TabControl.SelectedContentProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TabControl.SelectedContent" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TabControl.SelectedContent" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.TabControl.SelectedIndex">
+      <summary>Gets or sets the index of the currently selected <see cref="T:System.Windows.Controls.TabItem" />.</summary>
+      <returns>The index of the currently selected <see cref="T:System.Windows.Controls.TabItem" />, or -1 if a <see cref="T:System.Windows.Controls.TabItem" /> is not selected.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TabControl.SelectedIndexProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TabControl.SelectedIndex" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TabControl.SelectedIndex" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.TabControl.SelectedItem">
+      <summary>Gets or sets the currently selected <see cref="T:System.Windows.Controls.TabItem" />.</summary>
+      <returns>The currently selected <see cref="T:System.Windows.Controls.TabItem" />, or null if a <see cref="T:System.Windows.Controls.TabItem" /> is not selected.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TabControl.SelectedItemProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TabControl.SelectedItem" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TabControl.SelectedItem" /> dependency property.</returns>
+    </member>
+    <member name="E:System.Windows.Controls.TabControl.SelectionChanged">
+      <summary>Occurs when the selected <see cref="T:System.Windows.Controls.TabItem" /> changes.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.TabControl.TabStripPlacement">
+      <summary>Gets or sets how <see cref="T:System.Windows.Controls.TabItem" /> headers align relative to the <see cref="T:System.Windows.Controls.TabItem" /> content.</summary>
+      <returns>The alignment of <see cref="T:System.Windows.Controls.TabItem" /> headers relative to the <see cref="T:System.Windows.Controls.TabItem" /> content. The default is <see cref="F:System.Windows.Controls.Dock.Top" />.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TabControl.TabStripPlacementProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TabControl.TabStripPlacement" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TabControl.TabStripPlacement" /> dependency property.</returns>
+    </member>
+    <member name="T:System.Windows.Controls.TabItem">
+      <summary>Represents a selectable item in a <see cref="T:System.Windows.Controls.TabControl" />.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.TabItem.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.TabItem" /> class. </summary>
+    </member>
+    <member name="P:System.Windows.Controls.TabItem.HasHeader">
+      <summary>Gets a value that indicates whether the <see cref="T:System.Windows.Controls.TabItem" /> has a header.</summary>
+      <returns>true if <see cref="P:System.Windows.Controls.TabItem.Header" /> is not null; otherwise, false.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TabItem.HasHeaderProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TabItem.HasHeader" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TabItem.HasHeader" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.TabItem.Header">
+      <summary>Gets or sets the header of the <see cref="T:System.Windows.Controls.TabItem" />.</summary>
+      <returns>The current header of the <see cref="T:System.Windows.Controls.TabItem" />.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TabItem.HeaderProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TabItem.Header" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TabItem.Header" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.TabItem.HeaderTemplate">
+      <summary>Gets or sets the template that is used to display the content of the <see cref="T:System.Windows.Controls.TabItem" /> header.</summary>
+      <returns>The current template that is used to display <see cref="T:System.Windows.Controls.TabItem" /> header content.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TabItem.HeaderTemplateProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TabItem.HeaderTemplate" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TabItem.HeaderTemplate" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.TabItem.IsFocused">
+      <summary>Gets a value indicating whether the <see cref="T:System.Windows.Controls.TabItem" /> has focus.</summary>
+      <returns>true if the <see cref="T:System.Windows.Controls.TabItem" /> has focus; otherwise, false. The default is false.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TabItem.IsFocusedProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TabItem.IsFocused" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TabItem.IsFocused" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.TabItem.IsSelected">
+      <summary>Gets or sets a value that indicates whether the <see cref="T:System.Windows.Controls.TabItem" /> is currently selected.</summary>
+      <returns>true if the <see cref="T:System.Windows.Controls.TabItem" /> is selected; otherwise, false.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TabItem.IsSelectedProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TabItem.IsSelected" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TabItem.IsSelected" /> dependency property.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.TabItem.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.TabItem" /> when a new template is applied.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.TabItem.OnContentChanged(System.Object,System.Object)">
+      <param name="oldContent">The previous <see cref="T:System.Windows.Controls.TabItem" /> content.</param>
+      <param name="newContent">The new <see cref="T:System.Windows.Controls.TabItem" /> content.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TabItem.OnCreateAutomationPeer">
+      <summary>Creates and returns an <see cref="T:System.Windows.Automation.Peers.AutomationPeer" /> for this <see cref="T:System.Windows.Controls.TabItem" />.</summary>
+      <returns>An automation peer for this <see cref="T:System.Windows.Controls.TabItem" />.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.TabItem.OnHeaderChanged(System.Object,System.Object)">
+      <summary>Called when the <see cref="P:System.Windows.Controls.TabItem.Header" /> property changes.</summary>
+      <param name="oldHeader">The previous value of the <see cref="P:System.Windows.Controls.TabItem.Header" /> property.</param>
+      <param name="newHeader">The new value of the <see cref="P:System.Windows.Controls.TabItem.Header" /> property.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TabItem.OnHeaderTemplateChanged(System.Windows.DataTemplate,System.Windows.DataTemplate)">
+      <summary>Called when the <see cref="P:System.Windows.Controls.TabItem.HeaderTemplate" /> property changes.</summary>
+      <param name="oldHeaderTemplate">The previous value of the <see cref="P:System.Windows.Controls.TabItem.HeaderTemplate" /> property.</param>
+      <param name="newHeaderTemplate">The new value of the <see cref="P:System.Windows.Controls.TabItem.HeaderTemplate" /> property.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TabItem.OnIsFocusChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>Called when the value of the <see cref="P:System.Windows.Controls.TabItem.IsFocused" /> property changes.</summary>
+      <param name="e">A <see cref="T:System.Windows.DependencyPropertyChangedEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TabItem.OnKeyDown(System.Windows.Input.KeyEventArgs)">
+      <param name="e">A <see cref="T:System.Windows.Input.KeyEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TabItem.OnSelected(System.Windows.RoutedEventArgs)">
+      <summary>Called to indicate that the <see cref="P:System.Windows.Controls.TabItem.IsSelected" /> property has changed to true.</summary>
+      <param name="e">A <see cref="T:System.Windows.RoutedEventArgs" /> that contains the event data. </param>
+    </member>
+    <member name="M:System.Windows.Controls.TabItem.OnUnselected(System.Windows.RoutedEventArgs)">
+      <summary>Called to indicate that the <see cref="P:System.Windows.Controls.TabItem.IsSelected" /> property has changed to false.</summary>
+      <param name="e">A <see cref="T:System.Windows.RoutedEventArgs" /> that contains the event data. </param>
+    </member>
+    <member name="P:System.Windows.Controls.TabItem.TabStripPlacement">
+      <summary>Gets the location of the tab strip relative to the <see cref="T:System.Windows.Controls.TabItem" /> content.</summary>
+      <returns>The location of the tab strip relative to the <see cref="T:System.Windows.Controls.TabItem" /> content.</returns>
+    </member>
+    <member name="T:System.Windows.Controls.TreeView">
+      <summary>Represents a control that displays hierarchical data in a tree structure that has items that can expand and collapse.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.TreeView" /> class. </summary>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+      <summary>Removes all templates, styles, and bindings for the object displayed as a <see cref="T:System.Windows.Controls.TreeViewItem" />.</summary>
+      <param name="element">The <see cref="T:System.Windows.Controls.TreeViewItem" /> element to clear.</param>
+      <param name="item">The item that is contained in the <see cref="T:System.Windows.Controls.TreeViewItem" />.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.GetContainerForItemOverride">
+      <summary>Creates a <see cref="T:System.Windows.Controls.TreeViewItem" /> to display content.</summary>
+      <returns>A <see cref="T:System.Windows.Controls.TreeViewItem" /> to use as a container for content.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.IsItemItsOwnContainerOverride(System.Object)">
+      <summary>Determines whether the specified item is a <see cref="T:System.Windows.Controls.TreeViewItem" />, which is the default container for items in the <see cref="T:System.Windows.Controls.TreeView" /> control.</summary>
+      <returns>true if the item is a <see cref="T:System.Windows.Controls.TreeViewItem" />; otherwise, false,</returns>
+      <param name="item">The object to evaluate.</param>
+    </member>
+    <member name="P:System.Windows.Controls.TreeView.ItemContainerStyle">
+      <summary>Gets or sets the <see cref="T:System.Windows.Style" /> that is applied to the container element generated for each item.</summary>
+      <returns>The <see cref="T:System.Windows.Style" /> applied to the container element that contains each item.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TreeView.ItemContainerStyleProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TreeView.ItemContainerStyle" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TreeView.ItemContainerStyle" /> dependency property.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.TreeView" /> control when a new control template is applied.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnCreateAutomationPeer">
+      <summary>Returns a <see cref="T:System.Windows.Automation.Peers.TreeViewAutomationPeer" /> for use by the Silverlight automation infrastructure.</summary>
+      <returns>A <see cref="T:System.Windows.Automation.Peers.TreeViewAutomationPeer" /> for the <see cref="T:System.Windows.Controls.TreeView" /> control.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnGotFocus(System.Windows.RoutedEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.GotFocus" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.RoutedEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+      <summary>Makes adjustments to the <see cref="T:System.Windows.Controls.TreeView" /> control when the value of the <see cref="P:System.Windows.Controls.ItemsControl.Items" /> property changes.</summary>
+      <param name="e">A <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> that contains data about the change. </param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnKeyDown(System.Windows.Input.KeyEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.KeyDown" /> event when a key is pressed while the control has focus.</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.KeyEventArgs" /> that contains the event data.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="e " />is null.</exception>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnKeyUp(System.Windows.Input.KeyEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.KeyUp" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.KeyEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnLostFocus(System.Windows.RoutedEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.LostFocus" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.RoutedEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnMouseEnter(System.Windows.Input.MouseEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.MouseEnter" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.MouseEventArgs" /> that contains the event data. </param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnMouseLeave(System.Windows.Input.MouseEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.MouseLeave" /> event.</summary>
+      <param name="e">
+        <see cref="T:System.Windows.Input.MouseEventArgs" />
+      </param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.MouseLeftButtonDown" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.MouseLeftButtonUp" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnMouseMove(System.Windows.Input.MouseEventArgs)">
+      <summary>Provided handling for the <see cref="E:System.Windows.UIElement.MouseMove" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.MouseEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.OnSelectedItemChanged(System.Windows.RoutedPropertyChangedEventArgs{System.Object})">
+      <summary>Raises the <see cref="E:System.Windows.Controls.TreeView.SelectedItemChanged" /> event when the <see cref="P:System.Windows.Controls.TreeView.SelectedItem" /> property value changes.</summary>
+      <param name="e">A <see cref="T:System.Windows.RoutedPropertyChangedEventArgs`1" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeView.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+      <summary>Prepares the container element to display the specified item.</summary>
+      <param name="element">The container element used to display the specified item.</param>
+      <param name="item">The item to display.</param>
+    </member>
+    <member name="P:System.Windows.Controls.TreeView.SelectedItem">
+      <summary>Gets the selected item in a <see cref="T:System.Windows.Controls.TreeView" />.</summary>
+      <returns>The currently selected item or null if no item is selected. The default value is null.</returns>
+    </member>
+    <member name="E:System.Windows.Controls.TreeView.SelectedItemChanged">
+      <summary>Occurs when the value of the <see cref="P:System.Windows.Controls.TreeView.SelectedItem" /> property changes.</summary>
+    </member>
+    <member name="F:System.Windows.Controls.TreeView.SelectedItemProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TreeView.SelectedItem" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TreeView.SelectedItem" /> property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.TreeView.SelectedValue">
+      <summary>Gets the value of the <see cref="P:System.Windows.Controls.TreeView.SelectedItem" /> property that is specified by the <see cref="P:System.Windows.Controls.TreeView.SelectedValuePath" /> property.</summary>
+      <returns>The value of the <see cref="P:System.Windows.Controls.TreeView.SelectedItem" /> property that is specified by the <see cref="P:System.Windows.Controls.TreeView.SelectedValuePath" /> property, or null if no item is selected. The default value is null.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.TreeView.SelectedValuePath">
+      <summary>Gets or sets the property path that is used to get the <see cref="P:System.Windows.Controls.TreeView.SelectedValue" /> property of the <see cref="P:System.Windows.Controls.TreeView.SelectedItem" /> property in a <see cref="T:System.Windows.Controls.TreeView" />.</summary>
+      <returns>The property path that is used to get the <see cref="P:System.Windows.Controls.TreeView.SelectedValue" /> property of the <see cref="P:System.Windows.Controls.TreeView.SelectedItem" /> property in a <see cref="T:System.Windows.Controls.TreeView" />. The default value is <see cref="F:System.String.Empty" />.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TreeView.SelectedValuePathProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TreeView.SelectedValuePath" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TreeView.SelectedValuePath" /> dependency property.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TreeView.SelectedValueProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TreeView.SelectedValue" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TreeView.SelectedValue" /> dependency property. </returns>
+    </member>
+    <member name="T:System.Windows.Controls.TreeViewItem">
+      <summary>Provides a hierarchical selectable item for the <see cref="T:System.Windows.Controls.TreeView" /> control.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.TreeViewItem" /> class.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+      <summary>Removes all templates, styles, and bindings for the object displayed as a <see cref="T:System.Windows.Controls.TreeViewItem" />.</summary>
+      <param name="element">The <see cref="T:System.Windows.Controls.TreeViewItem" /> element to clear.</param>
+      <param name="item">The item that is contained in the <see cref="T:System.Windows.Controls.TreeViewItem" />.</param>
+    </member>
+    <member name="E:System.Windows.Controls.TreeViewItem.Collapsed">
+      <summary>Occurs when the <see cref="P:System.Windows.Controls.TreeViewItem.IsExpanded" /> property changes from true to false.</summary>
+    </member>
+    <member name="E:System.Windows.Controls.TreeViewItem.Expanded">
+      <summary>Occurs when the <see cref="P:System.Windows.Controls.TreeViewItem.IsExpanded" /> property changes from false to true.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.GetContainerForItemOverride">
+      <summary>Creates a <see cref="T:System.Windows.Controls.TreeViewItem" /> to display content.</summary>
+      <returns>A <see cref="T:System.Windows.Controls.TreeViewItem" /> to use as a container for content.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.TreeViewItem.HasItems">
+      <summary>Gets a value that indicates whether this <see cref="T:System.Windows.Controls.TreeViewItem" /> contains items.</summary>
+      <returns>true if this <see cref="T:System.Windows.Controls.TreeViewItem" /> contains items; otherwise, false. The default is false.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TreeViewItem.HasItemsProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TreeViewItem.HasItems" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TreeViewItem.HasItems" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.TreeViewItem.IsExpanded">
+      <summary>Gets or sets a value that indicates whether the <see cref="P:System.Windows.Controls.ItemsControl.Items" /> contained by this <see cref="T:System.Windows.Controls.TreeViewItem" /> are expanded or collapsed.</summary>
+      <returns>true to indicate the contents of the <see cref="P:System.Windows.Controls.ItemsControl.Items" /> collection are expanded; false to indicate the items are collapsed. The default is false.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TreeViewItem.IsExpandedProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TreeViewItem.IsExpanded" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TreeViewItem.IsExpanded" /> dependency property.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.IsItemItsOwnContainerOverride(System.Object)">
+      <summary>Determines whether an object is a <see cref="T:System.Windows.Controls.TreeViewItem" />.</summary>
+      <returns>true if <paramref name="item" /> is a <see cref="T:System.Windows.Controls.TreeViewItem" />; otherwise, false.</returns>
+      <param name="item">The object to evaluate.</param>
+    </member>
+    <member name="P:System.Windows.Controls.TreeViewItem.IsSelected">
+      <summary>Gets or sets a value that indicates whether this <see cref="T:System.Windows.Controls.TreeViewItem" /> is selected.</summary>
+      <returns>true if this <see cref="T:System.Windows.Controls.TreeViewItem" /> is selected; otherwise, false. The default is false.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TreeViewItem.IsSelectedProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TreeViewItem.IsSelected" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TreeViewItem.IsSelected" /> dependency property.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.TreeViewItem.IsSelectionActive">
+      <summary>Gets a value that indicates whether the <see cref="T:System.Windows.Controls.TreeViewItem" /> has focus.</summary>
+      <returns>true if this <see cref="T:System.Windows.Controls.TreeViewItem" /> has focus; otherwise, false. The default is false.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.TreeViewItem.IsSelectionActiveProperty">
+      <summary>Identifies the <see cref="P:System.Windows.Controls.TreeViewItem.IsSelectionActive" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:System.Windows.Controls.TreeViewItem.IsSelectionActive" /> dependency property.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.TreeViewItem" /> control when a new control template is applied.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnCollapsed(System.Windows.RoutedEventArgs)">
+      <summary>Raises a <see cref="E:System.Windows.Controls.TreeViewItem.Collapsed" /> event when the <see cref="P:System.Windows.Controls.TreeViewItem.IsExpanded" /> property changes from true to false.</summary>
+      <param name="e">A <see cref="T:System.Windows.RoutedEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnCreateAutomationPeer">
+      <summary>Returns a <see cref="T:System.Windows.Automation.Peers.TreeViewItemAutomationPeer" /> for use by the Silverlight automation infrastructure.</summary>
+      <returns>A <see cref="T:System.Windows.Automation.Peers.TreeViewItemAutomationPeer" /> object for the <see cref="T:System.Windows.Controls.TreeViewItem" />.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnExpanded(System.Windows.RoutedEventArgs)">
+      <summary>Raises an <see cref="E:System.Windows.Controls.TreeViewItem.Expanded" /> event when the <see cref="P:System.Windows.Controls.TreeViewItem.IsExpanded" /> property changes from false to true.</summary>
+      <param name="e">A <see cref="T:System.Windows.RoutedEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnGotFocus(System.Windows.RoutedEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.GotFocus" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.RoutedEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+      <summary>Makes adjustments to the <see cref="T:System.Windows.Controls.TreeViewItem" /> when the value of the <see cref="P:System.Windows.Controls.ItemsControl.Items" /> property changes. </summary>
+      <param name="e">A <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> that contains data about the change.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnKeyDown(System.Windows.Input.KeyEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.KeyDown" /> event when the <see cref="T:System.Windows.Controls.TreeViewItem" /> has focus.</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.KeyEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnKeyUp(System.Windows.Input.KeyEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.KeyUp" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.KeyEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnLostFocus(System.Windows.RoutedEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.LostFocus" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.RoutedEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnMouseEnter(System.Windows.Input.MouseEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.MouseEnter" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.MouseEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnMouseLeave(System.Windows.Input.MouseEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.MouseLeave" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.MouseEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.MouseLeftButtonDown" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+      <summary>Provides handling for the <see cref="E:System.Windows.UIElement.MouseLeftButtonUp" /> event.</summary>
+      <param name="e">A <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnSelected(System.Windows.RoutedEventArgs)">
+      <summary>Raises the <see cref="E:System.Windows.Controls.TreeViewItem.Selected" /> event when the <see cref="P:System.Windows.Controls.TreeViewItem.IsSelected" /> property changes from false to true.</summary>
+      <param name="e">A <see cref="T:System.Windows.RoutedEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.OnUnselected(System.Windows.RoutedEventArgs)">
+      <summary>Raises the <see cref="E:System.Windows.Controls.TreeViewItem.Unselected" /> event when the <see cref="P:System.Windows.Controls.TreeViewItem.IsSelected" /> property changes from true to false.</summary>
+      <param name="e">A <see cref="T:System.Windows.RoutedEventArgs" /> that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.TreeViewItem.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+      <summary>Prepares the specified container element to display the specified item.</summary>
+      <param name="element">Container element used to display the specified item.</param>
+      <param name="item">The item to display.</param>
+    </member>
+    <member name="E:System.Windows.Controls.TreeViewItem.Selected">
+      <summary>Occurs when the <see cref="P:System.Windows.Controls.TreeViewItem.IsSelected" /> property of a <see cref="T:System.Windows.Controls.TreeViewItem" /> changes from false to true.</summary>
+    </member>
+    <member name="E:System.Windows.Controls.TreeViewItem.Unselected">
+      <summary>Occurs when the <see cref="P:System.Windows.Controls.TreeViewItem.IsSelected" /> property of a <see cref="T:System.Windows.Controls.TreeViewItem" /> changes from true to false.</summary>
+    </member>
+    <member name="T:System.Windows.Controls.Primitives.CalendarButton">
+      <summary>Represents a button on a <see cref="T:System.Windows.Controls.Calendar" />.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Primitives.CalendarButton.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.Primitives.CalendarButton" /> class. </summary>
+    </member>
+    <member name="E:System.Windows.Controls.Primitives.CalendarButton.CalendarButtonMouseDown">
+      <summary>Occurs when the left mouse button is pressed (or when the tip of the stylus touches the tablet) while the mouse pointer is over a <see cref="T:System.Windows.Controls.Primitives.CalendarButton" />.</summary>
+    </member>
+    <member name="E:System.Windows.Controls.Primitives.CalendarButton.CalendarButtonMouseUp">
+      <summary>Occurs when the left mouse button is released while the mouse pointer is over a <see cref="T:System.Windows.Controls.Primitives.CalendarButton" />.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Primitives.CalendarButton.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.Primitives.CalendarButton" /> when a new template is applied.</summary>
+    </member>
+    <member name="T:System.Windows.Controls.Primitives.CalendarDayButton">
+      <summary>Represents a day on a <see cref="T:System.Windows.Controls.Calendar" />.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Primitives.CalendarDayButton.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.Primitives.CalendarDayButton" /> class. </summary>
+    </member>
+    <member name="E:System.Windows.Controls.Primitives.CalendarDayButton.CalendarDayButtonMouseDown">
+      <summary>Occurs when the left mouse button is pressed (or when the tip of the stylus touches the tablet) while the mouse pointer is over a <see cref="T:System.Windows.Controls.Primitives.CalendarDayButton" />.</summary>
+    </member>
+    <member name="E:System.Windows.Controls.Primitives.CalendarDayButton.CalendarDayButtonMouseUp">
+      <summary>Occurs when the left mouse button is released while the mouse pointer is over a <see cref="T:System.Windows.Controls.Primitives.CalendarDayButton" />.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Primitives.CalendarDayButton.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.Primitives.CalendarDayButton" /> when a new template is applied.</summary>
+    </member>
+    <member name="T:System.Windows.Controls.Primitives.CalendarItem">
+      <summary>Represents the currently displayed month or year on a <see cref="T:System.Windows.Controls.Calendar" />.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Primitives.CalendarItem.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.Primitives.CalendarItem" /> class. </summary>
+    </member>
+    <member name="M:System.Windows.Controls.Primitives.CalendarItem.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.Primitives.CalendarItem" /> when a new template is applied.</summary>
+    </member>
+    <member name="T:System.Windows.Controls.Primitives.DatePickerTextBox">
+      <summary>Represents the text input of a <see cref="T:System.Windows.Controls.DatePicker" />. </summary>
+    </member>
+    <member name="M:System.Windows.Controls.Primitives.DatePickerTextBox.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.Primitives.DatePickerTextBox" /> class. </summary>
+    </member>
+    <member name="M:System.Windows.Controls.Primitives.DatePickerTextBox.OnApplyTemplate">
+      <summary>Builds the visual tree for the <see cref="T:System.Windows.Controls.Primitives.DatePickerTextBox" /> when a new template is applied.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.Primitives.DatePickerTextBox.Watermark">
+      <summary>Gets or sets the content displayed as a watermark in the <see cref="T:System.Windows.Controls.Primitives.DatePickerTextBox" /> when it is empty.</summary>
+      <returns>The content displayed as a watermark in the <see cref="T:System.Windows.Controls.Primitives.DatePickerTextBox" /> when it is empty.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Primitives.DatePickerTextBox.WatermarkProperty">
+      <summary>Indentifies the <see cref="P:System.Windows.Controls.Primitives.DatePickerTextBox.Watermark" /> dependency property.</summary>
+    </member>
+    <member name="T:System.Windows.Controls.Primitives.TabPanel">
+      <summary>Handles the layout of <see cref="T:System.Windows.Controls.TabItem" /> objects on a <see cref="T:System.Windows.Controls.TabControl" />.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Primitives.TabPanel.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Controls.Primitives.TabPanel" /> class. </summary>
+    </member>
+    <member name="M:System.Windows.Controls.Primitives.TabPanel.ArrangeOverride(System.Windows.Size)">
+      <summary>Arranges and sizes the content of a <see cref="T:System.Windows.Controls.Primitives.TabPanel" /> object.</summary>
+      <returns>The size of the arranged control.</returns>
+      <param name="finalSize">The size that a tab panel uses to position child elements.</param>
+    </member>
+    <member name="M:System.Windows.Controls.Primitives.TabPanel.MeasureOverride(System.Windows.Size)">
+      <summary>Called when remeasuring the control is required.</summary>
+      <returns>The measured size of the control.</returns>
+      <param name="availableSize">Constraint size as an upper limit. The return value should not exceed this size.</param>
+    </member>
+  </members>
+</doc>

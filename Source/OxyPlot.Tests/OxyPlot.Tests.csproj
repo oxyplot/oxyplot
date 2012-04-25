@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E6218B88-69F5-4E3F-9ABC-93AB82FD77AD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OxyPlot.Tests</RootNamespace>
+    <AssemblyName>OxyPlot.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.5.10112, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Axes\AxisTests.cs" />
+    <Compile Include="Foundation\ListFillerTests.cs" />
+    <Compile Include="OxyAssert.cs" />
+    <Compile Include="TestModels.cs" />
+    <Compile Include="Svg\SvgAssert.cs" />
+    <Compile Include="Svg\SvgExporterTests.cs" />
+    <Compile Include="Foundation\ArrayHelperTests.cs" />
+    <Compile Include="Axes\DateTimeAxisTests.cs" />
+    <Compile Include="Foundation\ConrecTests.cs" />
+    <Compile Include="Foundation\CohenSutherlandClippingTests.cs" />
+    <Compile Include="Foundation\TypeHelperTests.cs" />
+    <Compile Include="Foundation\SutherlandHodgmanClippingTests.cs" />
+    <Compile Include="Foundation\ScreenPointHelperTests.cs" />
+    <Compile Include="Foundation\ReflectionHelperTests.cs" />
+    <Compile Include="Foundation\OxyPaletteTests.cs" />
+    <Compile Include="Foundation\FractionHelperTests.cs" />
+    <Compile Include="Foundation\StringHelperTests.cs" />
+    <Compile Include="Foundation\DoubleExtensionsTests.cs" />
+    <Compile Include="PlotModel\PlotModelTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Svg\SvgValidator.cs" />
+    <Compile Include="Svg\SvgWriterTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj">
+      <Project>{A941B658-1237-482C-B0C7-378242D27647}</Project>
+      <Name>ExampleLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
+      <Project>{87F519B8-5A2F-48C6-AD53-C5F13A82EA6B}</Project>
+      <Name>OxyPlot</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Schemas\svg\svg.xsd">
+      <Link>Schemas\svg.xsd</Link>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Schemas\svg\xlink.xsd">
+      <Link>Schemas\xlink.xsd</Link>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Schemas\svg\xml.xsd">
+      <Link>Schemas\xml.xsd</Link>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Series\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
