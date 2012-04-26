@@ -31,7 +31,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MagnitudeAxis"/> class. 
-        /// Initializes a new instance of the <see cref="MagnitudeAxis"/> class.
         /// </summary>
         /// <param name="minimum">
         /// The minimum. 

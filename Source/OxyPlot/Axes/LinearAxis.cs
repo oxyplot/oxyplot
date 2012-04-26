@@ -26,7 +26,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearAxis"/> class. 
-        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
         /// </summary>
         /// <param name="pos">
         /// The pos. 
@@ -43,7 +42,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearAxis"/> class. 
-        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
         /// </summary>
         /// <param name="pos">
         /// The pos. 
@@ -65,7 +63,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearAxis"/> class. 
-        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
         /// </summary>
         /// <param name="pos">
         /// The pos. 
