@@ -129,7 +129,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Axis"/> class. 
-        /// Initializes a new instance of the <see cref="Axis"/> class. Initializes a new instance of the <see cref="Axis"/> class.
         /// </summary>
         /// <param name="pos">
         /// The position of the axis. 

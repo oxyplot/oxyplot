@@ -29,7 +29,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AngleAxis"/> class. 
-        /// Initializes a new instance of the <see cref="AngleAxis"/> class.
         /// </summary>
         /// <param name="minimum">
         /// The minimum. 

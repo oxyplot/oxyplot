@@ -22,7 +22,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScatterSeries"/> class. 
-        /// Initializes a new instance of the <see cref="ScatterSeries"/> class.
         /// </summary>
         /// <param name="title">
         /// The title. 

@@ -36,7 +36,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenVector"/> struct. 
-        /// Initializes a new instance of the <see cref="ScreenVector"/> struct.
         /// </summary>
         /// <param name="x">
         /// The x. 

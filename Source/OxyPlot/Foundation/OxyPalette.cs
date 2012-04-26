@@ -26,7 +26,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyPalette"/> class. 
-        /// Initializes a new instance of the <see cref="OxyPalette"/> class.
         /// </summary>
         /// <param name="colors">
         /// The colors. 
@@ -38,7 +37,6 @@ namespace OxyPlot
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyPalette"/> class. 
-        /// Initializes a new instance of the <see cref="OxyPalette"/> class.
         /// </summary>
         /// <param name="colors">
         /// The colors. 
