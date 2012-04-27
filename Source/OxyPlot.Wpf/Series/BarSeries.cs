@@ -35,6 +35,12 @@ namespace OxyPlot.Wpf
             "IsStacked", typeof(bool), typeof(BarSeries), new PropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
+        ///   The value field property.
+        /// </summary>
+        public static readonly DependencyProperty LabelFieldProperty = DependencyProperty.Register(
+            "LabelField", typeof(string), typeof(BarSeries), new PropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
         /// The label format string property.
         /// </summary>
         public static readonly DependencyProperty LabelFormatStringProperty =
@@ -137,6 +143,22 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(IsStackedProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets ValueField.
+        /// </summary>
+        public string LabelField
+        {
+            get
+            {
+                return (string)this.GetValue(LabelFieldProperty);
+            }
+
+            set
+            {
+                this.SetValue(LabelFieldProperty, value);
             }
         }
 
@@ -261,6 +283,7 @@ namespace OxyPlot.Wpf
                 s.StrokeThickness = this.StrokeThickness;
                 s.ValueField = this.ValueField;
                 s.LabelFormatString = this.LabelFormatString;
+                s.LabelField = this.LabelField;
             }
         }
 
