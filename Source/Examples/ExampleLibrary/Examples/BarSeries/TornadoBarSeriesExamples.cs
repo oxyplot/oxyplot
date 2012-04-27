@@ -26,10 +26,12 @@ namespace ExampleLibrary
                     StrokeColor = OxyColors.Black,
                     StrokeThickness = 1
                 };
-            s1.Values.Add(1);
-            s1.Values.Add(1);
-            s1.Values.Add(4);
-            s1.Values.Add(5);
+            s1.Items.Add(new BarItem { Label = "F/X rate", Value = 1});
+            s1.Items.Add(new BarItem { Label = "Inflation", Value = 1 });
+            s1.Items.Add(new BarItem { Label = "Price", Value = 4 });
+            s1.Items.Add(new BarItem { Label = "Conversion", Value = 5 });
+
+
             var s2 = new BarSeries
                 {
                     Title = "Low",
@@ -39,10 +41,11 @@ namespace ExampleLibrary
                     StrokeColor = OxyColors.Black,
                     StrokeThickness = 1
                 };
-            s2.Values.Add(-1);
-            s2.Values.Add(-3);
-            s2.Values.Add(-2);
-            s2.Values.Add(-3);
+            s2.Items.Add(new BarItem { Label = "F/X rate", Value = -1 });
+            s2.Items.Add(new BarItem { Label = "Inflation", Value = -3 });
+            s2.Items.Add(new BarItem { Label = "Price", Value = -2 });
+            s2.Items.Add(new BarItem { Label = "Conversion", Value = -3 });
+
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Left };
             categoryAxis.Labels.Add("F/X rate");
             categoryAxis.Labels.Add("Inflation");
@@ -62,10 +65,10 @@ namespace ExampleLibrary
             var model = new PlotModel("Tornado diagram 2") { LegendPlacement = LegendPlacement.Outside };
 
             var s1 = new TornadoBarSeries { Title = "TornadoBarSeries", BaseValue = 7 };
-            s1.Items.Add(new TornadoBarItem { Minimum = 6, Maximum = 8 });
-            s1.Items.Add(new TornadoBarItem { Minimum = 4, Maximum = 8 });
-            s1.Items.Add(new TornadoBarItem { Minimum = 5, Maximum = 11 });
-            s1.Items.Add(new TornadoBarItem { Minimum = 4, Maximum = 12 });
+            s1.Items.Add(new TornadoBarItem { Minimum = 6, Maximum = 8, Label = "F/X rate" });
+            s1.Items.Add(new TornadoBarItem { Minimum = 4, Maximum = 8, Label = "Inflation" });
+            s1.Items.Add(new TornadoBarItem { Minimum = 5, Maximum = 11, Label = "Price" });
+            s1.Items.Add(new TornadoBarItem { Minimum = 4, Maximum = 12, Label = "Conversion" });
 
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Left };
             categoryAxis.Labels.Add("F/X rate");

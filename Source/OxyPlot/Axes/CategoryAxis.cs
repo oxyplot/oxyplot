@@ -10,6 +10,7 @@ namespace OxyPlot
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
 
     /// <summary>
     /// Represents a category axes.
@@ -33,6 +34,7 @@ namespace OxyPlot
             this.MinimumPadding = 0;
             this.MaximumPadding = 0;
             this.MajorStep = 1;
+            this.CategoryWidth = 0.5;
         }
 
         /// <summary>
@@ -79,53 +81,61 @@ namespace OxyPlot
         /// </summary>
         public IList<string> Labels { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Category width as a fraction of the width of a category.
+        /// The default value is 0.5 (50%)
+        /// </summary>
+        public double CategoryWidth { get; set; }
+
         #endregion
 
         #region Properties
 
         /// <summary>
-        ///   Gets or sets the number of attached series.
+        ///   Gets or sets sum of the widths of the single bars per label.
         ///   This is used to find the bar width of BarSeries
         /// </summary>
-        internal int AttachedSeriesCount { get; set; }
+        internal double[] TotalWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximal width of all labels
+        /// </summary>
+        internal double MaxWidth { get; set; }
 
         /// <summary>
         ///   Gets or sets the current offset of the bars (not used for stacked bar series).
         /// </summary>
-        internal double BarOffset { get; set; }
+        internal double[] BarOffset { get; set; }
 
         /// <summary>
-        ///   Gets or sets the base value for positive bars. This is used by stacked BarSeries. 
-        ///   Each category will contain a PositiveBaseValue that helps the rendering to calculate the positions of the stacked bars.
+        ///   Gets or sets the offset of the bars  per StackIndex and Label (only used for stacked bar series).
         /// </summary>
-        internal double[] PositiveBaseValue { get; set; }
+        internal double[,] StackedBarOffset { get; set; }
 
         /// <summary>
-        ///   Gets or sets the base value for negative bars. This is used by stacked BarSeries. 
-        ///   Each category will contain a NegativeBaseValue that helps the rendering to calculate the positions of the stacked bars.
+        /// Gets or sets per StackIndex and Label the base value for positive values of stacked bar series. 
         /// </summary>
-        internal double[] NegativeBaseValue { get; set; }
+        internal double[,] PositiveBaseValues { get; set; }
 
         /// <summary>
-        ///   Gets or sets the positive base value in screen coordinate.
+        /// Gets or sets per StackIndex and Label the base value for negative values of stacked bar series. 
         /// </summary>
-        internal double[] PositiveBaseValueScreen { get; set; }
+        internal double[,] NegativeBaseValues { get; set; }
 
         /// <summary>
-        ///   Gets or sets the negative base value in screen coordinate.
+        /// Gets or sets the StackIndexMapping. The mapping indicates to which rank a specific stack index belongs.
         /// </summary>
-        internal double[] NegativeBaseValueScreen { get; set; }
+        internal Dictionary<int, int> StackIndexMapping { get; set; }
 
         /// <summary>
-        ///   Gets or sets the max value (aggregated when using stacked bar series).
+        ///   Gets or sets the max value per StackIndex and Label  (only used for stacked bar series).
         /// </summary>
-        internal double[] MaxValue { get; set; }
+        internal double[,] MaxValue { get; set; }
 
         /// <summary>
-        ///   Gets or sets the min value.
+        ///   Gets or sets the min value per StackIndex and Label  (only used for stacked bar series).
         /// </summary>
-        /// <value>The min value.</value>
-        internal double[] MinValue { get; set; }
+        internal double[,] MinValue { get; set; }
 
         #endregion
 
@@ -142,9 +152,29 @@ namespace OxyPlot
         /// </param>
         public static void Fill(double[] array, double value)
         {
-            for (int i = 0; i < array.Length; i++)
+            for (var i = 0; i < array.Length; i++)
             {
                 array[i] = value;
+            }
+        }
+
+        /// <summary>
+        /// Fills the specified array.
+        /// </summary>
+        /// <param name="array">
+        /// The array.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        public static void Fill(double[,] array, double value)
+        {
+            for (var i = 0; i < array.GetLength(0); i++)
+            {
+                for (var j = 0; j < array.GetLength(1); j++)
+                {
+                    array[i, j] = value;
+                }
             }
         }
 
@@ -264,6 +294,53 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Creates Labels list if no labels were set
+        /// </summary>
+        /// <param name="series">The list of series which are rendered</param>
+        internal void UpdateLabels(IEnumerable<Series> series)
+        {
+            if (this.ItemsSource != null)
+            {
+                this.Labels.Clear();
+                ReflectionHelper.FillList(this.ItemsSource, this.LabelField, this.Labels);
+            }
+
+            if (this.Labels.Count == 0)
+            {
+                foreach (var s in series)
+                {
+                    var labels = new List<string>();
+                    if (!s.IsUsing(this))
+                    {
+                        continue;
+                    }
+
+                    var bsb = s as BarSeriesBase;
+                    if (bsb != null)
+                    {
+                        labels.AddRange(bsb.Items.Select(item => item.Label));
+                    }
+
+                    var tbs = s as TornadoBarSeries;
+                    if (tbs != null)
+                    {
+                        labels.AddRange(tbs.Items.Select(item => item.Label));
+                    }
+
+                    var ibs = s as IntervalBarSeries;
+                    if (ibs != null)
+                    {
+                        labels.AddRange(ibs.Items.Select(item => item.Label));
+                    }
+
+                    labels = labels.Distinct().ToList();
+                    labels.Sort();
+                    this.Labels = labels;
+                }
+            }
+        }
+
+        /// <summary>
         /// Updates the axis with information from the plot series.
         ///   This is used by the category axis that need to know the number of series using the axis.
         /// </summary>
@@ -272,47 +349,114 @@ namespace OxyPlot
         /// </param>
         internal override void UpdateFromSeries(IEnumerable<Series> series)
         {
-            // count the series that are using this axis
-            this.AttachedSeriesCount = 0;
-            int maxItems = 0;
-            foreach (var s in series)
+            this.TotalWidth = new double[this.Labels.Count];
+            Fill(this.TotalWidth, 0);
+
+            var usedSeries = series.Where(s => s.IsUsing(this)).ToList();
+
+            // Add Width of Stacked bars to TotalWidth
+            var stackedBarSeries = usedSeries.OfType<BarSeriesBase>().Where(s => s.IsStacked).ToList();
+            var stackIndices = stackedBarSeries.Select(s => s.StackIndex).Distinct().ToList();
+            var stackRankBarWidth = new Dictionary<int, double>();
+            for (var j = 0; j < stackIndices.Count; j++)
             {
-                if (s.IsUsing(this))
+                var maxBarWidth = stackedBarSeries.Where(s => s.StackIndex == stackIndices[j]).Select(s => s.BarWidth).Concat(new[] { 0.0 }).Max();
+                for (var i = 0; i < this.Labels.Count; i++)
                 {
-                    this.AttachedSeriesCount++;
-                    var bsb = s as BarSeriesBase;
-                    if (bsb != null)
+                    if (stackedBarSeries.SelectMany(s => s.ValidItems).Any(item => item.Label == this.Labels[i]))
                     {
-                        maxItems = Math.Max(maxItems, bsb.Values.Count);
+                        this.TotalWidth[i] += maxBarWidth;
+                    }
+                }
+
+                stackRankBarWidth[j] = maxBarWidth;
+            }
+
+            // Add Width of unstacked bars to TotalWidth
+            var unstackedBarSeries = usedSeries.OfType<BarSeriesBase>().Where(s => !s.IsStacked).ToList();
+            foreach (var s in unstackedBarSeries)
+            {
+                for (var i = 0; i < this.Labels.Count; i++)
+                {
+                    var numberOfItems = s.ValidItems.Count(item => item.Label == this.Labels[i]);
+                    this.TotalWidth[i] += s.BarWidth * numberOfItems;
+                }
+            }
+
+            // Add Width of tornado bars to TotalWidth
+            var tbs = usedSeries.OfType<TornadoBarSeries>().ToList();
+            for (var i = 0; i < this.Labels.Count; i++)
+            {
+                var tbsOfLabel = tbs.Where(s => s.ValidItems.Any(item => item.Label == this.Labels[i])).ToList();
+                if (tbsOfLabel.Count == 0)
+                {
+                    continue;
+                }
+
+                var maxBarWidth = tbsOfLabel.Select(s => s.BarWidth).Max();
+                this.TotalWidth[i] += maxBarWidth;
+            }
+
+            // Add Width of interval bars to TotalWidth
+            var ibs = usedSeries.OfType<IntervalBarSeries>().ToList();
+            for (var i = 0; i < this.Labels.Count; i++)
+            {
+                var ibsOfLabel = ibs.Where(s => s.ValidItems.Any(item => item.Label == this.Labels[i])).ToList();
+                if (ibsOfLabel.Count == 0)
+                {
+                    continue;
+                }
+
+                var maxBarWidth = ibsOfLabel.Select(s => s.BarWidth).Max();
+                this.TotalWidth[i] += maxBarWidth;
+            }
+
+            this.MaxWidth = this.TotalWidth.Max();
+
+            // Calculate BarOffset and StackedBarOffset
+            this.BarOffset = new double[this.Labels.Count];
+            Fill(this.BarOffset, 0);
+            this.StackedBarOffset = new double[stackIndices.Count + 1, this.Labels.Count];
+            Fill(this.StackedBarOffset, 0);
+
+            var factor = 0.5 * this.CategoryWidth / this.MaxWidth;
+            for (var i = 0; i < this.Labels.Count; i++)
+            {
+                this.BarOffset[i] = 0.5 - (this.TotalWidth[i] * factor);
+            }
+
+            for (var j = 0; j <= stackIndices.Count; j++)
+            {
+                for (var i = 0; i < this.Labels.Count; i++)
+                {
+                    if (stackedBarSeries.SelectMany(s => s.ValidItems).All(item => item.Label != this.Labels[i]))
+                    {
+                        continue;
+                    }
+
+                    this.StackedBarOffset[j, i] = this.BarOffset[i];
+                    if (j < stackIndices.Count)
+                    {
+                        this.BarOffset[i] += stackRankBarWidth[j] * this.CategoryWidth / this.MaxWidth;
                     }
                 }
             }
 
-            this.BarOffset = 0;
-
-            if (this.ItemsSource != null)
+            stackIndices.Sort();
+            this.StackIndexMapping = new Dictionary<int, int>();
+            for (var i = 0; i < stackIndices.Count; i++)
             {
-                this.Labels.Clear();
-                ReflectionHelper.FillList(this.ItemsSource, this.LabelField, this.Labels);
+                this.StackIndexMapping.Add(stackIndices[i], i);
             }
 
-            // Add default labels if neccessary
-            while (this.Labels.Count < maxItems)
-            {
-                this.Labels.Add((this.Labels.Count + 1).ToString(CultureInfo.InvariantCulture));
-            }
+            this.PositiveBaseValues = new double[stackIndices.Count, this.Labels.Count];
+            Fill(this.PositiveBaseValues, double.NaN);
+            this.NegativeBaseValues = new double[stackIndices.Count, this.Labels.Count];
+            Fill(this.NegativeBaseValues, double.NaN);
 
-            this.PositiveBaseValue = new double[this.Labels.Count];
-            Fill(this.PositiveBaseValue, double.NaN);
-            this.NegativeBaseValue = new double[this.Labels.Count];
-            Fill(this.NegativeBaseValue, double.NaN);
-            this.PositiveBaseValueScreen = new double[this.Labels.Count];
-            Fill(this.PositiveBaseValueScreen, double.NaN);
-            this.NegativeBaseValueScreen = new double[this.Labels.Count];
-            Fill(this.NegativeBaseValueScreen, double.NaN);
-            this.MaxValue = new double[this.Labels.Count];
+            this.MaxValue = new double[stackIndices.Count, this.Labels.Count];
             Fill(this.MaxValue, double.NaN);
-            this.MinValue = new double[this.Labels.Count];
+            this.MinValue = new double[stackIndices.Count, this.Labels.Count];
             Fill(this.MinValue, double.NaN);
         }
 

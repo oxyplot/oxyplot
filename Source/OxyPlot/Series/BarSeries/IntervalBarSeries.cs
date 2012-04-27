@@ -55,6 +55,11 @@ namespace OxyPlot
         public OxyColor LabelColor { get; set; }
 
         /// <summary>
+        ///   Gets or sets the label field.
+        /// </summary>
+        public string LabelField { get; set; }
+
+        /// <summary>
         ///   Gets or sets the label margins.
         /// </summary>
         public double LabelMargin { get; set; }
@@ -101,6 +106,16 @@ namespace OxyPlot
         /// </summary>
         internal IList<OxyRect> ActualBarRectangles { get; set; }
 
+        /// <summary>
+        /// Gets or sets the valid items
+        /// </summary>
+        internal IList<IntervalBarItem> ValidItems { get; set; }
+
+        /// <summary>
+        /// Gets or sets the dictionary which stores the index-inversion for the valid items
+        /// </summary>
+        internal Dictionary<int, int> ValidItemsIndexInversion { get; set; }
+
         #endregion
 
         #region Public Methods
@@ -124,10 +139,11 @@ namespace OxyPlot
                 var r = this.ActualBarRectangles[i];
                 if (r.Contains(point))
                 {
-                    var item = this.GetItem(i);
-                    double value = (this.Items[i].Start + this.Items[i].End) / 2;
+                    var labelId = this.GetCategoryAxis().Labels.IndexOf(this.ValidItems[i].Label);
+                    var item = this.GetItem(this.ValidItemsIndexInversion[i]);
+                    double value = (this.ValidItems[i].Start + this.ValidItems[i].End) / 2;
                     ScreenPoint sp = point;
-                    var dp = new DataPoint(i, value);
+                    var dp = new DataPoint(labelId, value);
                     var text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, item, this.Items[i].Start, this.Items[i].End, this.Items[i].Title);
                     return new TrackerHitResult(this, dp, sp, item, i, text);
                 }
@@ -164,7 +180,7 @@ namespace OxyPlot
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.Items.Count == 0)
+            if (this.ValidItems.Count == 0)
             {
                 return;
             }
@@ -179,21 +195,23 @@ namespace OxyPlot
 
             var valueAxis = this.XAxis;
 
-            double dx = categoryAxis.BarOffset - (this.BarWidth * 0.5);
-
-            int i = 0;
-
             this.ActualBarRectangles = new List<OxyRect>();
 
-            foreach (var item in this.Items)
+            var actualBarWidth = this.BarWidth / categoryAxis.MaxWidth * categoryAxis.CategoryWidth;
+
+            for (var i = 0; i < this.ValidItems.Count; i++)
             {
-                if (!this.IsValidPoint(item.Start, valueAxis) || !this.IsValidPoint(item.End, valueAxis))
+                var item = this.ValidItems[i];
+                var label = item.Label;
+                if (!categoryAxis.Labels.Contains(label))
                 {
                     continue;
                 }
 
-                var p0 = this.Transform(item.Start, i + dx);
-                var p1 = this.Transform(item.End, i + dx + this.BarWidth);
+                var labelId = categoryAxis.Labels.IndexOf(label);
+
+                var p0 = this.Transform(item.Start, labelId - 0.5 + categoryAxis.BarOffset[labelId]);
+                var p1 = this.Transform(item.End, labelId - 0.5 + categoryAxis.BarOffset[labelId] + actualBarWidth);
 
                 var rectangle = OxyRect.Create(p0.X, p0.Y, p1.X, p1.Y);
 
@@ -224,8 +242,6 @@ namespace OxyPlot
                         HorizontalTextAlign.Center,
                         VerticalTextAlign.Middle);
                 }
-
-                i++;
             }
         }
 
@@ -256,6 +272,20 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
+        /// Check if the data series is using the specified axis.
+        /// </summary>
+        /// <param name="axis">
+        /// An axis which should be checked if used
+        /// </param>
+        /// <returns>
+        /// True if the axis is in use. 
+        /// </returns>
+        protected internal override bool IsUsing(Axis axis)
+        {
+            return this.XAxis == axis || this.YAxis == axis;
+        }
+
+        /// <summary>
         /// The set default values.
         /// </summary>
         /// <param name="model">
@@ -283,17 +313,37 @@ namespace OxyPlot
         /// </summary>
         protected internal override void UpdateData()
         {
-            if (this.ItemsSource == null)
+            if (this.ItemsSource != null)
             {
-                return;
+                this.Items.Clear();
+
+                var filler = new ListFiller<IntervalBarItem>();
+                filler.Add(this.LabelField, (item, value) => item.Label = Convert.ToString(value));
+                filler.Add(this.MinimumField, (item, value) => item.Start = Convert.ToDouble(value));
+                filler.Add(this.MaximumField, (item, value) => item.End = Convert.ToDouble(value));
+                filler.FillT(this.Items, this.ItemsSource);
             }
+        }
 
-            this.Items.Clear();
+        /// <summary>
+        /// Updates the valid items
+        /// </summary>
+        protected internal override void UpdateValidData()
+        {
+            this.ValidItems = new List<IntervalBarItem>();
+            this.ValidItemsIndexInversion = new Dictionary<int, int>();
+            var labels = this.GetCategoryAxis().Labels;
+            var valueAxis = this.GetValueAxis();
 
-            var filler = new ListFiller<IntervalBarItem>();
-            filler.Add(this.MinimumField, (item, value) => item.Start = Convert.ToDouble(value));
-            filler.Add(this.MaximumField, (item, value) => item.End = Convert.ToDouble(value));
-            filler.FillT(this.Items, this.ItemsSource);
+            for (var i = 0; i < this.Items.Count; i++)
+            {
+                var item = this.Items[i];
+                if (labels.Contains(item.Label) && valueAxis.IsValidValue(item.Start) && valueAxis.IsValidValue(item.End))
+                {
+                    this.ValidItemsIndexInversion.Add(this.ValidItems.Count, i);
+                    this.ValidItems.Add(item);
+                }
+            }
         }
 
         /// <summary>
@@ -303,7 +353,7 @@ namespace OxyPlot
         {
             base.UpdateMaxMin();
 
-            if (this.Items == null || this.Items.Count == 0)
+            if (this.ValidItems == null || this.ValidItems.Count == 0)
             {
                 return;
             }
@@ -311,7 +361,7 @@ namespace OxyPlot
             double minValue = double.MaxValue;
             double maxValue = double.MinValue;
 
-            foreach (var item in this.Items)
+            foreach (var item in this.ValidItems)
             {
                 minValue = Math.Min(minValue, item.Start);
                 minValue = Math.Min(minValue, item.End);
@@ -322,6 +372,31 @@ namespace OxyPlot
             this.MinX = minValue;
             this.MaxX = maxValue;
         }
+
+        /// <summary>
+        ///   Gets the category axis.
+        /// </summary>
+        /// <returns> The category axis. </returns>
+        private CategoryAxis GetCategoryAxis()
+        {
+            var categoryAxis = this.YAxis as CategoryAxis;
+            if (categoryAxis == null)
+            {
+                throw new InvalidOperationException("No category axis defined.");
+            }
+
+            return categoryAxis;
+        }
+
+        /// <summary>
+        ///   Gets the value axis.
+        /// </summary>
+        /// <returns> The value axis. </returns>
+        private Axis GetValueAxis()
+        {
+            return this.XAxis;
+        }
+
         #endregion
     }
 }

@@ -43,8 +43,13 @@ namespace ExampleLibrary
                         TickStyle = TickStyle.Outside,
                         StringFormat = "#,0"
                     });
+            var items = new List<BarItem>();
+            items.Add(new BarItem{Label = "North", Value = 3000});
+            items.Add(new BarItem { Label = "East", Value = 4500 });
+            items.Add(new BarItem { Label = "South", Value = 2100 });
+            items.Add(new BarItem { Label = "West", Value = 4800 });
             pm.Series.Add(
-                new ColumnSeries { FillColor = OxyColors.Black, Values = new List<double> { 3000, 4500, 2100, 4800 } });
+                new ColumnSeries { FillColor = OxyColors.Black, Items = items });
             return pm;
         }
 
@@ -125,7 +130,7 @@ namespace ExampleLibrary
                         EndPosition = 0
                     });
             pm.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 250, 50, 50) { AxislineStyle = LineStyle.Solid, TickStyle = TickStyle.Outside, MinimumPadding = 0, MaximumPadding = 0 });
-            pm.Series.Add(new BarSeries { FillColor = OxyColors.Black, ItemsSource = values, ValueField = "Value" });
+            pm.Series.Add(new BarSeries { FillColor = OxyColors.Black, ItemsSource = values, ValueField = "Value", LabelField = "Key"});
             return pm;
         }
 
@@ -143,7 +148,8 @@ namespace ExampleLibrary
                 new CategoryAxis
                     {
                         Labels = new List<string> { "West\n34%", "East\n30%", "North\n20%", "South\n16%" },
-                        TickStyle = TickStyle.None
+                        TickStyle = TickStyle.None,
+                        CategoryWidth = 1
                     });
             pm.Axes.Add(
                 new LinearAxis(AxisPosition.Left, 0, 0.35 + double.Epsilon, 0.05, 0.05)
@@ -152,6 +158,11 @@ namespace ExampleLibrary
                         TickStyle = TickStyle.Outside,
                         StringFormat = "P0"
                     });
+            var items = new List<BarItem>();
+            items.Add(new BarItem { Label = "West\n34%", Value = 0.34 });
+            items.Add(new BarItem { Label = "East\n30%", Value = 0.3 });
+            items.Add(new BarItem { Label = "North\n20%", Value = 0.2 });
+            items.Add(new BarItem { Label = "South\n16%", Value = 0.16 });
             pm.Series.Add(
                 new ColumnSeries
                     {
@@ -159,7 +170,7 @@ namespace ExampleLibrary
                         StrokeColor = OxyColors.DarkGray,
                         StrokeThickness = 1.0,
                         FillColor = OxyColors.Black,
-                        Values = new List<double> { 0.34, 0.3, 0.2, 0.16 }
+                        Items = items
                     });
             return pm;
         }
@@ -198,7 +209,8 @@ namespace ExampleLibrary
                         FillColor = OxyColors.Orange,
                         NegativeFillColor = OxyColors.Gray,
                         ItemsSource = values,
-                        ValueField = "Value"
+                        ValueField = "Value",
+                        LabelField = "Key"
                     });
             return pm;
         }
@@ -236,7 +248,7 @@ namespace ExampleLibrary
                         TickStyle = TickStyle.Outside,
                         StringFormat = "+0;-0;0"
                     });
-            pm.Series.Add(new ColumnSeries { FillColor = OxyColors.Orange, ItemsSource = values, ValueField = "Value" });
+            pm.Series.Add(new ColumnSeries { FillColor = OxyColors.Orange, ItemsSource = values, ValueField = "Value", LabelField = "Key"});
             return pm;
         }
 

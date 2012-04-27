@@ -12,9 +12,9 @@
                     <oxy:LinearAxis MinimumPadding="0" AbsoluteMinimum="0"/>
                 </oxy:Plot.Axes>
                 <oxy:Plot.Series>
-                    <oxy:BarSeries Title="2009" ItemsSource="{Binding Items}" ValueField="Value1"/>
-                    <oxy:BarSeries Title="2010" ItemsSource="{Binding Items}" ValueField="Value2"/>
-                    <oxy:BarSeries Title="2011" ItemsSource="{Binding Items}" ValueField="Value3"/>
+                    <oxy:BarSeries Title="2009" ItemsSource="{Binding Items}" ValueField="Value1" LabelField="Label"/>
+                    <oxy:BarSeries Title="2010" ItemsSource="{Binding Items}" ValueField="Value2" LabelField="Label"/>
+                    <oxy:BarSeries Title="2011" ItemsSource="{Binding Items}" ValueField="Value3" LabelField="Label"/>
                 </oxy:Plot.Series>
             </oxy:Plot>
         </TabItem>

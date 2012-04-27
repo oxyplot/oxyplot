@@ -123,10 +123,11 @@ namespace ExampleLibrary
                 LegendBorderThickness = 0
             };
             var s1 = new ColumnSeries { Title = "ColumnSeries 1", BaseValue = 0.1, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s1.Values.Add(25);
-            s1.Values.Add(37);
-            s1.Values.Add(18);
-            s1.Values.Add(40);
+            s1.Items.Add(new BarItem { Value = 25, Label = "Category A" });
+            s1.Items.Add(new BarItem { Value = 37, Label = "Category B" });
+            s1.Items.Add(new BarItem { Value = 18, Label = "Category C" });
+            s1.Items.Add(new BarItem { Value = 40, Label = "Category D" });
+          
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
             categoryAxis.Labels.Add("Category A");
             categoryAxis.Labels.Add("Category B");
@@ -148,15 +149,17 @@ namespace ExampleLibrary
                               LegendBorderThickness = 0
                           };
             var s1 = new BarSeries { Title = "BarSeries 1", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s1.Values.Add(25);
-            s1.Values.Add(137);
-            s1.Values.Add(18);
-            s1.Values.Add(40);
+            s1.Items.Add(new BarItem { Value = 25, Label = "Category A" });
+            s1.Items.Add(new BarItem { Value = 137, Label = "Category B" });
+            s1.Items.Add(new BarItem { Value = 18, Label = "Category C" });
+            s1.Items.Add(new BarItem { Value = 40, Label = "Category D" });
+
             var s2 = new BarSeries { Title = "BarSeries 2", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s2.Values.Add(12);
-            s2.Values.Add(14);
-            s2.Values.Add(120);
-            s2.Values.Add(26);
+            s2.Items.Add(new BarItem { Value = 12, Label = "Category A" });
+            s2.Items.Add(new BarItem { Value = 14, Label = "Category B" });
+            s2.Items.Add(new BarItem { Value = 120, Label = "Category C" });
+            s2.Items.Add(new BarItem { Value = 26, Label = "Category D" });
+           
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Left };
             categoryAxis.Labels.Add("Category A");
             categoryAxis.Labels.Add("Category B");
@@ -179,16 +182,19 @@ namespace ExampleLibrary
                 LegendOrientation = LegendOrientation.Horizontal,
                 LegendBorderThickness = 0
             };
+
             var s1 = new ColumnSeries { Title = "ColumnSeries 1", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s1.Values.Add(25);
-            s1.Values.Add(137);
-            s1.Values.Add(18);
-            s1.Values.Add(40);
+            s1.Items.Add(new BarItem { Value = 25, Label = "Category A" });
+            s1.Items.Add(new BarItem { Value = 137, Label = "Category B" });
+            s1.Items.Add(new BarItem { Value = 18, Label = "Category C" });
+            s1.Items.Add(new BarItem { Value = 40, Label = "Category D" });
+
             var s2 = new ColumnSeries { Title = "ColumnSeries 2", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s2.Values.Add(12);
-            s2.Values.Add(14);
-            s2.Values.Add(120);
-            s2.Values.Add(26);
+            s2.Items.Add(new BarItem { Value = 12, Label = "Category A" });
+            s2.Items.Add(new BarItem { Value = 14, Label = "Category B" });
+            s2.Items.Add(new BarItem { Value = 120, Label = "Category C" });
+            s2.Items.Add(new BarItem { Value = 26, Label = "Category D" });
+          
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
             categoryAxis.Labels.Add("Category A");
             categoryAxis.Labels.Add("Category B");
@@ -212,28 +218,28 @@ namespace ExampleLibrary
                 LegendBorderThickness = 0
             };
             var s1 = new BarSeries { Title = "BarSeries 1", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s1.Values.Add(25);
-            s1.Values.Add(137);
-            s1.Values.Add(18);
-            s1.Values.Add(40);
+            s1.Items.Add(new BarItem { Value = 25, Label = "Category A" });
+            s1.Items.Add(new BarItem { Value = 137, Label = "Category B" });
+            s1.Items.Add(new BarItem { Value = 18, Label = "Category C" });
+            s1.Items.Add(new BarItem { Value = 40, Label = "Category D" });
             var s2 = new BarSeries { Title = "BarSeries 2", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s2.Values.Add(-12);
-            s2.Values.Add(-14);
-            s2.Values.Add(-120);
-            s2.Values.Add(-26);
-            var s3 = new BarSeries { Title = "BarSeries 3", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s3.Values.Add(21);
-            s3.Values.Add(8);
-            s3.Values.Add(48);
-            s3.Values.Add(3);
-            var s4 = new BarSeries { Title = "BarSeries 4", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s4.Values.Add(-8);
-            s4.Values.Add(-21);
-            s4.Values.Add(-3);
-            s4.Values.Add(-48);
+            s2.Items.Add(new BarItem { Value = -12, Label = "Category A" });
+            s2.Items.Add(new BarItem { Value = -14, Label = "Category B" });
+            s2.Items.Add(new BarItem { Value = -120, Label = "Category C" });
+            s2.Items.Add(new BarItem { Value = -26, Label = "Category D" });
 
-            model.Series.Add(s3);
-            model.Series.Add(s4);
+            
+            var s3 = new BarSeries { Title = "BarSeries 3", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s3.Items.Add(new BarItem { Value = 21, Label = "Category A" });
+            s3.Items.Add(new BarItem { Value = 8, Label = "Category B" });
+            s3.Items.Add(new BarItem { Value = 48, Label = "Category C" });
+            s3.Items.Add(new BarItem { Value = 3, Label = "Category D" });
+            var s4 = new BarSeries { Title = "BarSeries 4", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+            s4.Items.Add(new BarItem { Value = -8, Label = "Category A" });
+            s4.Items.Add(new BarItem { Value = -21, Label = "Category B" });
+            s4.Items.Add(new BarItem { Value = -3, Label = "Category C" });
+            s4.Items.Add(new BarItem { Value = -48, Label = "Category D" });
+         
 
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Left };
             categoryAxis.Labels.Add("Category A");
@@ -246,6 +252,8 @@ namespace ExampleLibrary
             valueAxis.ExtraGridlineThickness = 1;
             model.Series.Add(s1);
             model.Series.Add(s2);
+            model.Series.Add(s3);
+            model.Series.Add(s4);
             model.Axes.Add(categoryAxis);
             model.Axes.Add(valueAxis);
             return model;
@@ -261,29 +269,27 @@ namespace ExampleLibrary
                 LegendBorderThickness = 0
             };
             var s1 = new ColumnSeries { Title = "ColumnSeries 1", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s1.Values.Add(25);
-            s1.Values.Add(137);
-            s1.Values.Add(18);
-            s1.Values.Add(40);
+            s1.Items.Add(new BarItem { Value = 25, Label = "Category A" });
+            s1.Items.Add(new BarItem { Value = 137, Label = "Category B" });
+            s1.Items.Add(new BarItem { Value = 18, Label = "Category C" });
+            s1.Items.Add(new BarItem { Value = 40, Label = "Category D" });
             var s2 = new ColumnSeries { Title = "ColumnSeries 2", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s2.Values.Add(-12);
-            s2.Values.Add(-14);
-            s2.Values.Add(-120);
-            s2.Values.Add(-26);
+            s2.Items.Add(new BarItem { Value = -12, Label = "Category A" });
+            s2.Items.Add(new BarItem { Value = -14, Label = "Category B" });
+            s2.Items.Add(new BarItem { Value = -120, Label = "Category C" });
+            s2.Items.Add(new BarItem { Value = -26, Label = "Category D" });
+
             var s3 = new ColumnSeries { Title = "ColumnSeries 3", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s3.Values.Add(21);
-            s3.Values.Add(8);
-            s3.Values.Add(48);
-            s3.Values.Add(3);
+            s3.Items.Add(new BarItem { Value = 21, Label = "Category A"});
+            s3.Items.Add(new BarItem { Value = 8, Label = "Category B"});
+            s3.Items.Add(new BarItem { Value = 48, Label = "Category C"});
+            s3.Items.Add(new BarItem { Value = 3, Label = "Category D"});
             var s4 = new ColumnSeries { Title = "ColumnSeries 4", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s4.Values.Add(-8);
-            s4.Values.Add(-21);
-            s4.Values.Add(-3);
-            s4.Values.Add(-48);
-
-            model.Series.Add(s3);
-            model.Series.Add(s4);
-
+            s4.Items.Add(new BarItem { Value = -8, Label = "Category A" });
+            s4.Items.Add(new BarItem { Value = -21, Label = "Category B" });
+            s4.Items.Add(new BarItem { Value = -3, Label = "Category C" });
+            s4.Items.Add(new BarItem { Value = -48, Label = "Category D" });
+         
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
             categoryAxis.Labels.Add("Category A");
             categoryAxis.Labels.Add("Category B");
@@ -295,6 +301,8 @@ namespace ExampleLibrary
             valueAxis.ExtraGridlineThickness = 1;
             model.Series.Add(s1);
             model.Series.Add(s2);
+            model.Series.Add(s3);
+            model.Series.Add(s4);
             model.Axes.Add(categoryAxis);
             model.Axes.Add(valueAxis);
             return model;
@@ -326,6 +334,7 @@ namespace ExampleLibrary
                 {
                     FillColor = OxyColor.FromArgb(255, 78, 154, 6),
                     ValueField = "Value1",
+                    LabelField = "Label",
                     Title = "2009",
                     ItemsSource = items
                 };
@@ -334,6 +343,7 @@ namespace ExampleLibrary
                 {
                     FillColor = OxyColor.FromArgb(255, 200, 141, 0),
                     ValueField = "Value2",
+                    LabelField = "Label",
                     Title = "2010",
                     ItemsSource = items
                 };
@@ -342,6 +352,7 @@ namespace ExampleLibrary
                 {
                     FillColor = OxyColor.FromArgb(255, 204, 0, 0),
                     ValueField = "Value3",
+                    LabelField = "Label",
                     Title = "2011",
                     ItemsSource = items
                 };
@@ -372,12 +383,82 @@ namespace ExampleLibrary
 
             var temp = new PlotModel();
 
-            temp.Series.Add(new ColumnSeries { BarWidth = 1, ItemsSource = bins, ValueField = "Value" });
+            temp.Series.Add(new ColumnSeries { BarWidth = 1, ItemsSource = bins, ValueField = "Value", LabelField = "Label" });
 
-            temp.Axes.Add(new CategoryAxis { ItemsSource = bins, LabelField = "Label" });
+            temp.Axes.Add(new CategoryAxis { ItemsSource = bins, LabelField = "Label", CategoryWidth  = 1});
             temp.Axes.Add(new LinearAxis { MinimumPadding = 0, AbsoluteMinimum = 0 });
 
             return temp;
+        }
+
+          [Example("Crazy Column Series")]
+        public static PlotModel CrazyColumnSeries()
+        {
+            var model = new PlotModel("Crazy Column Series")
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBorderThickness = 0
+            };
+            var s1 = new ColumnSeries { Title = "ColumnSeries 1", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1, StackIndex = 3};
+            s1.Items.Add(new BarItem { Value = 25, Label = "Category A" });
+            s1.Items.Add(new BarItem { Value = 137, Label = "Category B" });
+            s1.Items.Add(new BarItem { Value = 18, Label = "Category C" });
+            s1.Items.Add(new BarItem { Value = 40, Label = "Category D" });
+            var s2 = new ColumnSeries { Title = "ColumnSeries 2", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1, StackIndex = 3 };
+            s2.Items.Add(new BarItem { Value = -12, Label = "Category A" });
+            s2.Items.Add(new BarItem { Value = -14, Label = "Category B" });
+            s2.Items.Add(new BarItem { Value = -120, Label = "Category C" });
+            s2.Items.Add(new BarItem { Value = -26, Label = "Category D" });
+
+            var s3 = new ColumnSeries { Title = "ColumnSeries 3", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1, StackIndex = 5 };
+            s3.Items.Add(new BarItem { Value = 21, Label = "Category A" });
+            s3.Items.Add(new BarItem { Value = 8, Label = "Category B" });
+            s3.Items.Add(new BarItem { Value = 48, Label = "Category C" });
+            s3.Items.Add(new BarItem { Value = 3, Label = "Category D" });
+            var s4 = new ColumnSeries { Title = "ColumnSeries 4", IsStacked = true, StrokeColor = OxyColors.Black, StrokeThickness = 1, StackIndex = 5, BarWidth = 0.5, LabelFormatString = "{0:0}", LabelPlacement = LabelPlacement.Middle};
+            s4.Items.Add(new BarItem { Value = -8, Label = "Category A" });
+            s4.Items.Add(new BarItem { Value = -21, Label = "Category B" });
+            s4.Items.Add(new BarItem { Value = -3, Label = "Category C" });
+            s4.Items.Add(new BarItem { Value = -48, Label = "Category D" });
+            s4.Items.Add(new BarItem { Value = 8, Label = "Category A" });
+            s4.Items.Add(new BarItem { Value = 21, Label = "Category B" });
+            s4.Items.Add(new BarItem { Value = 3, Label = "Category C" });
+            s4.Items.Add(new BarItem { Value = 48, Label = "Category D" });
+
+            var s5 = new ColumnSeries { Title = "ColumnSeries 5", IsStacked = false, StrokeColor = OxyColors.Black, StrokeThickness = 1};
+            s5.Items.Add(new BarItem { Value = 17, Label = "Category A" });
+            s5.Items.Add(new BarItem { Value = 179, Label = "Category B" });
+            s5.Items.Add(new BarItem { Value = 45, Label = "Category C" });
+            s5.Items.Add(new BarItem { Value = 65, Label = "Category D" });
+            s5.Items.Add(new BarItem { Value = 97, Label = "Category A" });
+            s5.Items.Add(new BarItem { Value = 21, Label = "Category D" });
+
+            var s6 = new ColumnSeries { Title = "ColumnSeries 6", IsStacked = false, StrokeColor = OxyColors.Black, StrokeThickness = 1, BarWidth = 0.7, LabelFormatString = "{0:0}", LabelPlacement = LabelPlacement.Base};
+            s6.Items.Add(new BarItem { Value =  7, Label = "Category A" });
+            s6.Items.Add(new BarItem { Value = 54, Label = "Category B" });
+            s6.Items.Add(new BarItem { Value = 68, Label = "Category C" });
+            s6.Items.Add(new BarItem { Value = 12, Label = "Category D" });
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
+            categoryAxis.Labels.Add("Category A");
+            categoryAxis.Labels.Add("Category B");
+            categoryAxis.Labels.Add("Category C");
+            categoryAxis.Labels.Add("Category D");
+            var valueAxis = new LinearAxis(AxisPosition.Left) { MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0.0 } };
+            valueAxis.ExtraGridlineStyle = LineStyle.Solid;
+            valueAxis.ExtraGridlineColor = OxyColors.Black;
+            valueAxis.ExtraGridlineThickness = 1;
+            model.Series.Add(s3);
+            model.Series.Add(s4);
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+            model.Series.Add(s5);
+            model.Series.Add(s6);
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis);
+            return model;
         }
     }
 }
