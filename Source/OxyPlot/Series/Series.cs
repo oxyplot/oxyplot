@@ -155,7 +155,7 @@ namespace OxyPlot
         /// Check if the data series is using the specified axis.
         /// </summary>
         /// <param name="axis">
-        /// An axis. 
+        /// An axis which should be checked if used
         /// </param>
         /// <returns>
         /// True if the axis is in use. 
@@ -179,6 +179,11 @@ namespace OxyPlot
         /// Updates the data.
         /// </summary>
         protected internal abstract void UpdateData();
+
+        /// <summary>
+        /// Updates the valid data.
+        /// </summary>
+        protected internal abstract void UpdateValidData();
 
         /// <summary>
         /// Updates the maximum and minimum of the series.

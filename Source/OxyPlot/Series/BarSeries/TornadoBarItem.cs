@@ -23,6 +23,7 @@ namespace OxyPlot
             this.BaseValue = double.NaN;
             this.MinimumColor = null;
             this.MaximumColor = null;
+            this.Label = null;
         }
 
         #endregion
@@ -33,6 +34,11 @@ namespace OxyPlot
         ///   Gets or sets the base value.
         /// </summary>
         public double BaseValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Label of TornadoBarItem corresponding to the Labels in CategoryAxis.
+        /// </summary>
+        public string Label { get; set; }
 
         /// <summary>
         ///   Gets or sets the maximum.

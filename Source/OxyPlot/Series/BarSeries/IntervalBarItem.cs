@@ -24,6 +24,11 @@ namespace OxyPlot
         public double End { get; set; }
 
         /// <summary>
+        /// Gets or sets the Label of IntervalBarItem corresponding to the Labels in CategoryAxis.
+        /// </summary>
+        public string Label { get; set; }
+
+        /// <summary>
         ///   Gets or sets the start value.
         /// </summary>
         public double Start { get; set; }
