@@ -1178,6 +1178,9 @@ namespace OxyPlot
                 a.PlotModel = this;
             }
 
+            // Updates the default axes
+            this.EnsureDefaultAxes();
+
             // Update data of the series
             if (updateData)
             {
@@ -1187,12 +1190,24 @@ namespace OxyPlot
                 }
             }
 
-            // Updates the default axes
-            this.EnsureDefaultAxes();
-
             foreach (var a in this.Axes)
             {
                 a.PlotModel = this;
+            }
+
+            foreach (var c in this.Axes.OfType<CategoryAxis>())
+            {
+                c.UpdateLabels(VisibleSeries);    
+            }
+
+
+            // Update valid data of the series
+            if (updateData)
+            {
+                foreach (var s in this.VisibleSeries)
+                {
+                    s.UpdateValidData();
+                }
             }
 
             // Updates axes with information from the series
