@@ -17,6 +17,132 @@ namespace ExampleLibrary
     [Examples("Misc")]
     public static class MiscExamples
     {
+        [Example("Numeric ODE solvers (y'=y)")]
+        public static PlotModel NumericOdeSolvers1()
+        {
+            return NumericOdeSolvers("Numeric ODE solvers", "y'=y, y(0)=1", 0, 1, Math.Exp, (t, y) => y);
+        }
+
+        [Example("Numeric ODE solvers (y'=x)")]
+        public static PlotModel NumericOdeSolvers2()
+        {
+            return NumericOdeSolvers("Numeric ODE solvers", "y'=x, y(0)=0", 0, 0, t => 0.5 * t * t, (t, y) => t);
+        }
+
+        [Example("Numeric ODE solvers (y'=cos(x))")]
+        public static PlotModel NumericOdeSolvers3()
+        {
+            return NumericOdeSolvers("Numeric ODE solvers", "y'=cos(x), y(0)=0", 0, 0, Math.Sin, (t, y) => Math.Cos(t));
+        }
+
+        public static PlotModel NumericOdeSolvers(string title, string subtitle, double t0, double y0, Func<double, double> exact, Func<double, double, double> f)
+        {
+            var model = new PlotModel(title, subtitle) { LegendPosition = LegendPosition.BottomCenter, LegendPlacement = LegendPlacement.Outside, LegendOrientation = LegendOrientation.Horizontal };
+            model.Series.Add(new FunctionSeries(exact, 0, 4, 100) { Title = "Exact solution", StrokeThickness = 5 });
+
+            model.Series.Add(new LineSeries("Euler, h=0.25")
+                {
+                    MarkerType = MarkerType.Circle,
+                    MarkerFill = OxyColors.Black,
+                    Points = Euler(f, t0, y0, 4, 0.25)
+                });
+
+            //model.Series.Add(new LineSeries("Euler, h=1")
+            //    {
+            //        MarkerType = MarkerType.Circle,
+            //        MarkerFill = OxyColors.Black,
+            //        Points = Euler(f, t0, y0, 4, 1)
+            //    });
+
+            model.Series.Add(new LineSeries("Heun, h=0.25")
+            {
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColors.Black,
+                Points = Heun(f, t0, y0, 4, 0.25)
+            });
+
+            model.Series.Add(new LineSeries("Midpoint, h=0.25")
+            {
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColors.Black,
+                Points = Midpoint(f, t0, y0, 4, 0.25)
+            });
+
+            model.Series.Add(new LineSeries("RK4, h=0.25")
+            {
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColors.Black,
+                Points = RungeKutta4(f, t0, y0, 4, 0.25)
+            });
+
+            //model.Series.Add(new LineSeries("RK4, h=1")
+            //{
+            //    MarkerType = MarkerType.Circle,
+            //    MarkerFill = OxyColors.Black,
+            //    Points = RungeKutta4(f, t0, y0, 4, 1)
+            //});
+
+            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            return model;
+        }
+
+        private static IList<IDataPoint> Euler(Func<double, double, double> f, double t0, double y0, double t1, double h)
+        {
+            var points = new List<IDataPoint>();
+            double y = y0;
+            for (double t = t0; t < t1 + h / 2; t += h)
+            {
+                points.Add(new DataPoint(t, y));
+                y += h * f(t, y);
+            }
+
+            return points;
+        }
+
+        private static IList<IDataPoint> Heun(Func<double, double, double> f, double t0, double y0, double t1, double h)
+        {
+            var points = new List<IDataPoint>();
+            double y = y0;
+            for (double t = t0; t < t1 + h / 2; t += h)
+            {
+                points.Add(new DataPoint(t, y));
+                double ytilde = y + h * f(t, y);
+                y = y + h / 2 * (f(t, y) + f(t + h, ytilde));
+            }
+
+            return points;
+        }
+
+        private static IList<IDataPoint> Midpoint(Func<double, double, double> f, double t0, double y0, double t1, double h)
+        {
+            var points = new List<IDataPoint>();
+            double y = y0;
+            for (double t = t0; t < t1 + h / 2; t += h)
+            {
+                points.Add(new DataPoint(t, y));
+                y += h * f(t + h / 2, y + h / 2 * f(t, y));
+            }
+
+            return points;
+        }
+
+        private static IList<IDataPoint> RungeKutta4(Func<double, double, double> f, double t0, double y0, double t1, double h)
+        {
+            var points = new List<IDataPoint>();
+            double y = y0;
+            for (double t = t0; t < t1 + h / 2; t += h)
+            {
+                points.Add(new DataPoint(t, y));
+                double k1 = h * f(t, y);
+                double k2 = h * f(t + h / 2, y + k1 / 2);
+                double k3 = h * f(t + h / 2, y + k2 / 2);
+                double k4 = h * f(t + h, y + k3);
+                y += (k1 + 2 * k2 + 2 * k3 + k4) / 6;
+            }
+
+            return points;
+        }
+
         [Example("Train schedule")]
         public static PlotModel TrainSchedule()
         {
@@ -118,7 +244,7 @@ namespace ExampleLibrary
                         int hhmm = int.Parse(fields[i + 3]);
                         var span = new TimeSpan(0, hhmm / 100, (hhmm % 100), 0);
                         double t = TimeSpanAxis.ToDouble(span);
-                        
+
                         // Add the point to the line
                         series[i].Points.Add(new DataPoint(t, x));
 
