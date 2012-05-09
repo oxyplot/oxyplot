@@ -11,16 +11,16 @@ namespace ExampleLibrary
             var model = new PlotModel("IntervalBarSeries") { LegendPlacement = LegendPlacement.Outside };
 
             var s1 = new IntervalBarSeries { Title = "IntervalBarSeries 1" };
-            s1.Items.Add(new IntervalBarItem { Start = 6, End = 8, Label = "Activity A" });
-            s1.Items.Add(new IntervalBarItem { Start = 4, End = 8, Label = "Activity B" });
-            s1.Items.Add(new IntervalBarItem { Start = 5, End = 11, Label = "Activity C" });
-            s1.Items.Add(new IntervalBarItem { Start = 4, End = 12, Label = "Activity D" });
+            s1.Items.Add(new IntervalBarItem { Start = 6, End = 8 });
+            s1.Items.Add(new IntervalBarItem { Start = 4, End = 8 });
+            s1.Items.Add(new IntervalBarItem { Start = 5, End = 11 });
+            s1.Items.Add(new IntervalBarItem { Start = 4, End = 12 });
             model.Series.Add(s1);
             var s2 = new IntervalBarSeries { Title = "IntervalBarSeries 2" };
-            s2.Items.Add(new IntervalBarItem { Start = 8, End = 9, Label = "Activity A" });
-            s2.Items.Add(new IntervalBarItem { Start = 8, End = 10, Label = "Activity B" });
-            s2.Items.Add(new IntervalBarItem { Start = 11, End = 12, Label = "Activity C" });
-            s2.Items.Add(new IntervalBarItem { Start = 12, End = 12.5, Label = "Activity D" });
+            s2.Items.Add(new IntervalBarItem { Start = 8, End = 9 });
+            s2.Items.Add(new IntervalBarItem { Start = 8, End = 10 });
+            s2.Items.Add(new IntervalBarItem { Start = 11, End = 12 });
+            s2.Items.Add(new IntervalBarItem { Start = 12, End = 12.5 });
             model.Series.Add(s2);
 
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Left };

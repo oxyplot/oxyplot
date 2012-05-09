@@ -2,12 +2,16 @@
 // <copyright file="TornadoBarSeries.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   The TornadoBarSeries is used to create tornado plots.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// The TornadoBarSeries is used to create tornado plots.
@@ -15,12 +19,12 @@ namespace OxyPlot
     /// <remarks>
     /// See http://en.wikipedia.org/wiki/Tornado_diagram.
     /// </remarks>
-    public class TornadoBarSeries : XYAxisSeries
+    public class TornadoBarSeries : CategorizedSeries
     {
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="TornadoBarSeries" /> class.
+        /// Initializes a new instance of the <see cref="TornadoBarSeries"/> class.
         /// </summary>
         public TornadoBarSeries()
         {
@@ -31,7 +35,7 @@ namespace OxyPlot
 
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 1;
-            this.BarWidth = 0.5;
+            this.BarWidth = 1;
 
             this.TrackerFormatString = "{0}";
             this.LabelMargin = 4;
@@ -45,80 +49,94 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets the width of the bars (as a fraction of the available width). The default value is 0.5 (50%)
+        /// Gets or sets the width of the bars (as a fraction of the available width). The default value is 0.5 (50%)
         /// </summary>
-        /// <value> The width of the bars. </value>
+        /// <value>
+        /// The width of the bars. 
+        /// </value>
         public double BarWidth { get; set; }
 
         /// <summary>
-        ///   Gets or sets the base value.
+        /// Gets or sets the base value.
         /// </summary>
-        /// <value> The base value. </value>
+        /// <value>
+        /// The base value. 
+        /// </value>
         public double BaseValue { get; set; }
 
         /// <summary>
-        ///   Gets the tornado bar items.
+        /// Gets the tornado bar items.
         /// </summary>
-        /// <value> The items. </value>
+        /// <value>
+        /// The items. 
+        /// </value>
         public IList<TornadoBarItem> Items { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the label color.
+        /// Gets or sets the label color.
         /// </summary>
         public OxyColor LabelColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the label field.
+        /// Gets or sets the label field.
         /// </summary>
         public string LabelField { get; set; }
 
         /// <summary>
-        ///   Gets or sets the label margins.
+        /// Gets or sets the label margins.
         /// </summary>
         public double LabelMargin { get; set; }
 
         /// <summary>
-        ///   Gets or sets the maximum value field.
+        /// Gets or sets the maximum value field.
         /// </summary>
         public string MaximumField { get; set; }
 
         /// <summary>
-        ///   Gets or sets the default color of the interior of the Maximum bars.
+        /// Gets or sets the default color of the interior of the Maximum bars.
         /// </summary>
-        /// <value> The color. </value>
+        /// <value>
+        /// The color. 
+        /// </value>
         public OxyColor MaximumFillColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the format string for the maximum labels.
+        /// Gets or sets the format string for the maximum labels.
         /// </summary>
         public string MaximumLabelFormatString { get; set; }
 
         /// <summary>
-        ///   Gets or sets the minimum value field.
+        /// Gets or sets the minimum value field.
         /// </summary>
         public string MinimumField { get; set; }
 
         /// <summary>
-        ///   Gets or sets the default color of the interior of the Minimum bars.
+        /// Gets or sets the default color of the interior of the Minimum bars.
         /// </summary>
-        /// <value> The color. </value>
+        /// <value>
+        /// The color. 
+        /// </value>
         public OxyColor MinimumFillColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the format string for the minimum labels.
+        /// Gets or sets the format string for the minimum labels.
         /// </summary>
         public string MinimumLabelFormatString { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the border around the bars.
+        /// Gets or sets the color of the border around the bars.
         /// </summary>
-        /// <value> The color of the stroke. </value>
+        /// <value>
+        /// The color of the stroke. 
+        /// </value>
         public OxyColor StrokeColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the thickness of the bar border strokes.
+        /// Gets or sets the thickness of the bar border strokes.
         /// </summary>
-        /// <value> The stroke thickness. </value>
+        /// <value>
+        /// The stroke thickness. 
+        /// </value>
         public double StrokeThickness { get; set; }
 
         #endregion
@@ -126,12 +144,12 @@ namespace OxyPlot
         #region Properties
 
         /// <summary>
-        ///   Gets or sets the actual rectangles for the maximum bars.
+        /// Gets or sets the actual rectangles for the maximum bars.
         /// </summary>
         internal IList<OxyRect> ActualMaximumBarRectangles { get; set; }
 
         /// <summary>
-        ///   Gets or sets the actual rectangles for the minimum bars.
+        /// Gets or sets the actual rectangles for the minimum bars.
         /// </summary>
         internal IList<OxyRect> ActualMinimumBarRectangles { get; set; }
 
@@ -168,10 +186,10 @@ namespace OxyPlot
                 var r = this.ActualMinimumBarRectangles[i];
                 if (r.Contains(point))
                 {
-                    var labelId = this.GetCategoryAxis().Labels.IndexOf(this.ValidItems[i].Label);
+                    var item = (TornadoBarItem)this.GetItem(this.ValidItemsIndexInversion[i]);
+                    var categoryIndex = item.GetCategoryIndex(i);
                     var value = this.ValidItems[i].Minimum;
-                    var dp = new DataPoint(labelId, value);
-                    var item = this.GetItem(this.ValidItemsIndexInversion[i]);
+                    var dp = new DataPoint(categoryIndex, value);
                     var text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, item, value);
                     return new TrackerHitResult(this, dp, point, item, i, text);
                 }
@@ -179,10 +197,10 @@ namespace OxyPlot
                 r = this.ActualMaximumBarRectangles[i];
                 if (r.Contains(point))
                 {
-                    var labelId = this.GetCategoryAxis().Labels.IndexOf(this.ValidItems[i].Label);
+                    var item = (TornadoBarItem)this.GetItem(this.ValidItemsIndexInversion[i]);
+                    var categoryIndex = item.GetCategoryIndex(i);
                     var value = this.ValidItems[i].Maximum;
-                    var dp = new DataPoint(labelId, value);
-                    var item = this.GetItem(this.ValidItemsIndexInversion[i]);
+                    var dp = new DataPoint(categoryIndex, value);
                     var text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, item, value);
                     return new TrackerHitResult(this, dp, point, item, i, text);
                 }
@@ -219,6 +237,9 @@ namespace OxyPlot
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
+            this.ActualMinimumBarRectangles = new List<OxyRect>();
+            this.ActualMaximumBarRectangles = new List<OxyRect>();
+
             if (this.ValidItems.Count == 0)
             {
                 return;
@@ -226,28 +247,20 @@ namespace OxyPlot
 
             var clippingRect = this.GetClippingRect();
             var categoryAxis = this.GetCategoryAxis();
-
-            this.ActualMinimumBarRectangles = new List<OxyRect>();
-            this.ActualMaximumBarRectangles = new List<OxyRect>();
-
-            var actualBarWidth = this.BarWidth / categoryAxis.MaxWidth * categoryAxis.CategoryWidth;
+            var actualBarWidth = this.GetActualBarWidth();
 
             for (var i = 0; i < this.ValidItems.Count; i++)
             {
                 var item = this.ValidItems[i];
-                var label = item.Label;
-                if (!categoryAxis.Labels.Contains(label))
-                {
-                    continue;
-                }
 
-                var labelId = categoryAxis.Labels.IndexOf(label);
+                var categoryIndex = item.GetCategoryIndex(i);
 
                 var baseValue = double.IsNaN(item.BaseValue) ? this.BaseValue : item.BaseValue;
 
-                var p0 = this.Transform(item.Minimum, labelId - 0.5 + categoryAxis.BarOffset[labelId]);
-                var p1 = this.Transform(item.Maximum, labelId - 0.5 + categoryAxis.BarOffset[labelId] + actualBarWidth);
-                var p2 = this.Transform(baseValue, labelId - 0.5 + categoryAxis.BarOffset[labelId]);
+                var p0 = this.Transform(item.Minimum, categoryIndex - 0.5 + categoryAxis.BarOffset[categoryIndex]);
+                var p1 = this.Transform(
+                    item.Maximum, categoryIndex - 0.5 + categoryAxis.BarOffset[categoryIndex] + actualBarWidth);
+                var p2 = this.Transform(baseValue, categoryIndex - 0.5 + categoryAxis.BarOffset[categoryIndex]);
                 p2.X = (int)p2.X;
 
                 var minimumRectangle = OxyRect.Create(p0.X, p0.Y, p2.X, p1.Y);
@@ -257,53 +270,61 @@ namespace OxyPlot
                 this.ActualMaximumBarRectangles.Add(maximumRectangle);
 
                 rc.DrawClippedRectangleAsPolygon(
-                    minimumRectangle,
-                    clippingRect,
-                    item.MinimumColor ?? this.MinimumFillColor,
-                    this.StrokeColor,
+                    minimumRectangle, 
+                    clippingRect, 
+                    item.MinimumColor ?? this.MinimumFillColor, 
+                    this.StrokeColor, 
                     this.StrokeThickness);
                 rc.DrawClippedRectangleAsPolygon(
-                    maximumRectangle,
-                    clippingRect,
-                    item.MaximumColor ?? this.MaximumFillColor,
-                    this.StrokeColor,
+                    maximumRectangle, 
+                    clippingRect, 
+                    item.MaximumColor ?? this.MaximumFillColor, 
+                    this.StrokeColor, 
                     this.StrokeThickness);
 
                 if (this.MinimumLabelFormatString != null)
                 {
-                    var s = StringHelper.Format(this.ActualCulture, this.MinimumLabelFormatString, this.GetItem(this.ValidItemsIndexInversion[i]), item.Minimum);
-                    var pt = new ScreenPoint(minimumRectangle.Left - this.LabelMargin, (minimumRectangle.Top + minimumRectangle.Bottom) / 2);
-                    var alignment = HorizontalTextAlign.Right;
+                    var s = StringHelper.Format(
+                        this.ActualCulture, 
+                        this.MinimumLabelFormatString, 
+                        this.GetItem(this.ValidItemsIndexInversion[i]), 
+                        item.Minimum);
+                    var pt = new ScreenPoint(
+                        minimumRectangle.Left - this.LabelMargin, (minimumRectangle.Top + minimumRectangle.Bottom) / 2);
 
                     rc.DrawClippedText(
-                        clippingRect,
-                        pt,
-                        s,
-                        this.ActualTextColor,
-                        this.ActualFont,
-                        this.ActualFontSize,
-                        this.ActualFontWeight,
-                        0,
-                        alignment,
+                        clippingRect, 
+                        pt, 
+                        s, 
+                        this.ActualTextColor, 
+                        this.ActualFont, 
+                        this.ActualFontSize, 
+                        this.ActualFontWeight, 
+                        0, 
+                        HorizontalTextAlign.Right, 
                         VerticalTextAlign.Middle);
                 }
 
                 if (this.MaximumLabelFormatString != null)
                 {
-                    var s = StringHelper.Format(this.ActualCulture, this.MaximumLabelFormatString, this.GetItem(this.ValidItemsIndexInversion[i]), item.Maximum);
-                    var pt = new ScreenPoint(maximumRectangle.Right + this.LabelMargin, (maximumRectangle.Top + maximumRectangle.Bottom) / 2);
-                    var alignment = HorizontalTextAlign.Left;
+                    var s = StringHelper.Format(
+                        this.ActualCulture, 
+                        this.MaximumLabelFormatString, 
+                        this.GetItem(this.ValidItemsIndexInversion[i]), 
+                        item.Maximum);
+                    var pt = new ScreenPoint(
+                        maximumRectangle.Right + this.LabelMargin, (maximumRectangle.Top + maximumRectangle.Bottom) / 2);
 
                     rc.DrawClippedText(
-                        clippingRect,
-                        pt,
-                        s,
-                        this.ActualTextColor,
-                        this.ActualFont,
-                        this.ActualFontSize,
-                        this.ActualFontWeight,
-                        0,
-                        alignment,
+                        clippingRect, 
+                        pt, 
+                        s, 
+                        this.ActualTextColor, 
+                        this.ActualFont, 
+                        this.ActualFontSize, 
+                        this.ActualFontWeight, 
+                        0, 
+                        HorizontalTextAlign.Left, 
                         VerticalTextAlign.Middle);
                 }
             }
@@ -325,14 +346,14 @@ namespace OxyPlot
             double height = (legendBox.Bottom - legendBox.Top) * 0.8;
             double width = height;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), 0.5 * width, height),
-                this.MinimumFillColor,
-                this.StrokeColor,
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), 0.5 * width, height), 
+                this.MinimumFillColor, 
+                this.StrokeColor, 
                 this.StrokeThickness);
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid, ymid - (0.5 * height), 0.5 * width, height),
-                this.MaximumFillColor,
-                this.StrokeColor,
+                new OxyRect(xmid, ymid - (0.5 * height), 0.5 * width, height), 
+                this.MaximumFillColor, 
+                this.StrokeColor, 
                 this.StrokeThickness);
         }
 
@@ -341,10 +362,38 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
+        /// Gets or sets the width/height of the columns/bars (as a fraction of the available space).
+        /// </summary>
+        /// <returns>
+        /// The fractional width. 
+        /// </returns>
+        /// <value>
+        /// The width of the bars. 
+        /// </value>
+        /// <remarks>
+        /// The available space will be determined by the GapWidth of the CategoryAxis used by this series.
+        /// </remarks>
+        internal override double GetBarWidth()
+        {
+            return this.BarWidth;
+        }
+
+        /// <summary>
+        /// Gets the items of this series.
+        /// </summary>
+        /// <returns>
+        /// The items. 
+        /// </returns>
+        protected internal override IList<CategorizedItem> GetItems()
+        {
+            return this.Items.Cast<CategorizedItem>().ToList();
+        }
+
+        /// <summary>
         /// Check if the data series is using the specified axis.
         /// </summary>
         /// <param name="axis">
-        /// An axis which should be checked if used
+        /// An axis which should be checked if used 
         /// </param>
         /// <returns>
         /// True if the axis is in use. 
@@ -392,31 +441,9 @@ namespace OxyPlot
                 this.Items.Clear();
 
                 var filler = new ListFiller<TornadoBarItem>();
-                filler.Add(this.LabelField, (item, value) => item.Label = Convert.ToString(value));
                 filler.Add(this.MinimumField, (item, value) => item.Minimum = Convert.ToDouble(value));
                 filler.Add(this.MaximumField, (item, value) => item.Maximum = Convert.ToDouble(value));
                 filler.FillT(this.Items, this.ItemsSource);
-            }
-        }
-
-        /// <summary>
-        /// Updates the valid items
-        /// </summary>
-        protected internal override void UpdateValidData()
-        {
-            this.ValidItems = new List<TornadoBarItem>();
-            this.ValidItemsIndexInversion = new Dictionary<int, int>();
-            var labels = this.GetCategoryAxis().Labels;
-            var valueAxis = this.GetValueAxis();
-
-            for (var i = 0; i < this.Items.Count; i++)
-            {
-                var item = this.Items[i];
-                if (labels.Contains(item.Label) && valueAxis.IsValidValue(item.Minimum) && valueAxis.IsValidValue(item.Maximum))
-                {
-                    this.ValidItemsIndexInversion.Add(this.ValidItems.Count, i);
-                    this.ValidItems.Add(item);
-                }
             }
         }
 
@@ -446,12 +473,47 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Updates the valid items
+        /// </summary>
+        protected internal override void UpdateValidData()
+        {
+            this.ValidItems = new List<TornadoBarItem>();
+            this.ValidItemsIndexInversion = new Dictionary<int, int>();
+            var valueAxis = this.GetValueAxis();
+
+            for (var i = 0; i < this.Items.Count; i++)
+            {
+                var item = this.Items[i];
+                if (valueAxis.IsValidValue(item.Minimum) && valueAxis.IsValidValue(item.Maximum))
+                {
+                    this.ValidItemsIndexInversion.Add(this.ValidItems.Count, i);
+                    this.ValidItems.Add(item);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual width/height of the items of this series.
+        /// </summary>
+        /// <returns>
+        /// The width or height. 
+        /// </returns>
+        /// <remarks>
+        /// The actual width is also influenced by the GapWidth of the CategoryAxis used by this series.
+        /// </remarks>
+        protected override double GetActualBarWidth()
+        {
+            var categoryAxis = this.GetCategoryAxis();
+            return this.BarWidth / (1 + categoryAxis.GapWidth) / categoryAxis.MaxWidth;
+        }
+
+        /// <summary>
         /// Gets the category axis.
         /// </summary>
         /// <returns>
         /// The category axis. 
         /// </returns>
-        private CategoryAxis GetCategoryAxis()
+        protected override CategoryAxis GetCategoryAxis()
         {
             var categoryAxis = this.YAxis as CategoryAxis;
             if (categoryAxis == null)
@@ -460,6 +522,25 @@ namespace OxyPlot
             }
 
             return categoryAxis;
+        }
+
+        /// <summary>
+        /// Gets the item at the specified index.
+        /// </summary>
+        /// <param name="i">
+        /// The index of the item. 
+        /// </param>
+        /// <returns>
+        /// The item of the index. 
+        /// </returns>
+        protected override object GetItem(int i)
+        {
+            if (this.ItemsSource != null || this.Items == null || this.Items.Count == 0)
+            {
+                return base.GetItem(i);
+            }
+
+            return this.Items[i];
         }
 
         /// <summary>

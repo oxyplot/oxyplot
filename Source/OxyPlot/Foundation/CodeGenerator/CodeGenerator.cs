@@ -163,14 +163,10 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
-        /// The add.
+        /// Adds the specified object to the generated code.
         /// </summary>
-        /// <param name="obj">
-        /// The obj.
-        /// </param>
-        /// <returns>
-        /// The add.
-        /// </returns>
+        /// <param name="obj">The object.</param>
+        /// <returns>The variable name.</returns>
         private string Add(object obj)
         {
             Type type = obj.GetType();
@@ -368,6 +364,7 @@ namespace OxyPlot
         {
 #if !METRO
             Type type = instance.GetType();
+            var listsToAdd = new Dictionary<string, IList>();
             foreach (var pi in type.GetProperties())
             {
                 // check the [CodeGeneration] attribute
@@ -391,18 +388,7 @@ namespace OxyPlot
                 var list = value as IList;
                 if (list != null)
                 {
-                    Type listType = list.GetType();
-                    Type[] gargs = listType.GetGenericArguments();
-                    if (gargs.Length > 0)
-                    {
-                        bool isCodeGenerating = gargs[0].GetInterfaces().Any(x => x == typeof(ICodeGenerating));
-                        if (!isCodeGenerating)
-                        {
-                            continue;
-                        }
-                    }
-
-                    this.AddItems(name, list);
+                    listsToAdd.Add(name, list);
                     continue;
                 }
 
@@ -420,6 +406,25 @@ namespace OxyPlot
                 }
 
                 this.SetProperty(pi.PropertyType, name, value);
+            }
+
+            // Add the items of the lists
+            foreach (var kvp in listsToAdd)
+            {
+                var name = kvp.Key;
+                var list = kvp.Value;
+                Type listType = list.GetType();
+                Type[] gargs = listType.GetGenericArguments();
+                if (gargs.Length > 0)
+                {
+                    bool isCodeGenerating = gargs[0].GetInterfaces().Any(x => x == typeof(ICodeGenerating));
+                    if (!isCodeGenerating)
+                    {
+                        continue;
+                    }
+                }
+
+                this.AddItems(name, list);
             }
 
 #endif

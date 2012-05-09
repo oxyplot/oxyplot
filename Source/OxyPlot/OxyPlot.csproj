@@ -93,6 +93,12 @@
     <Compile Include="Manipulators\TrackerHitResult.cs" />
     <Compile Include="PlotModel\HitTestResult.cs" />
     <Compile Include="Series\BarSeries\BarItem.cs" />
+    <Compile Include="Series\BarSeries\BarItemBase.cs" />
+    <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
+    <Compile Include="Series\BarSeries\CategorizedItem.cs" />
+    <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
+    <Compile Include="Series\BarSeries\ColumnItem.cs" />
+    <Compile Include="Series\BarSeries\IStackableSeries.cs" />
     <Compile Include="Series\BoxPlotItem.cs" />
     <Compile Include="Series\BoxPlotSeries.cs" />
     <Compile Include="Series\IDataPointProvider.cs" />

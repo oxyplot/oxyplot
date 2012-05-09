@@ -1,30 +1,30 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BarItem.cs" company="OxyPlot">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ColumnItem.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
-//   Represents an item used in the BarSeries.
+//   Represents an item used in the ColumnSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents an item used in the BarSeries.
+    /// Represents an item used in the ColumnSeries.
     /// </summary>
-    public class BarItem : BarItemBase
+    public class ColumnItem : BarItemBase
     {
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BarItem"/> class.
+        /// Initializes a new instance of the <see cref="ColumnItem"/> class.
         /// </summary>
-        public BarItem()
+        public ColumnItem()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BarItem"/> class.
+        /// Initializes a new instance of the <see cref="ColumnItem"/> class.
         /// </summary>
         /// <param name="value">
         /// The value. 
@@ -35,7 +35,7 @@ namespace OxyPlot
         /// <param name="color">
         /// The color. 
         /// </param>
-        public BarItem(double value, int categoryIndex = -1, OxyColor color = null)
+        public ColumnItem(double value, int categoryIndex = -1, OxyColor color = null)
         {
             this.Value = value;
             this.CategoryIndex = categoryIndex;

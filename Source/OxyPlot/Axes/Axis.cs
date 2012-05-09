@@ -1399,11 +1399,14 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Updates the axis with information from the plot series. This is used by the category axis that need to know the number of series using the axis.
+        /// Updates the axis with information from the plot series.
         /// </summary>
         /// <param name="series">
         /// The series collection. 
         /// </param>
+        /// <remarks>
+        /// This is used by the category axis that need to know the number of series using the axis.
+        /// </remarks>
         internal virtual void UpdateFromSeries(IEnumerable<Series> series)
         {
         }

@@ -9,6 +9,8 @@ using System.Reflection;
 
 namespace ExampleLibrary
 {
+    using System;
+
     public static class Examples
     {
         public static List<ExampleInfo> GetList()
@@ -18,16 +20,32 @@ namespace ExampleLibrary
             {
                 var examplesAttributes = type.GetCustomAttributes(typeof(ExamplesAttribute), true);
                 if (examplesAttributes.Length == 0)
-                    continue;
-                var examplesAttribute = examplesAttributes[0] as ExamplesAttribute;
-
-                foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Static))
                 {
-                    var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true);
-                    if (exampleAttributes.Length == 0)
-                        continue;
-                    var exampleAttribute = exampleAttributes[0] as ExampleAttribute;
-                    list.Add(new ExampleInfo(examplesAttribute.Category, exampleAttribute.Title, method));
+                    continue;
+                }
+
+                var examplesAttribute = examplesAttributes[0] as ExamplesAttribute;
+                var types = new List<Type>();
+                var baseType = type;
+                while (baseType != null)
+                {
+                    Console.WriteLine(baseType);
+                    types.Add(baseType);
+                    baseType = baseType.BaseType;
+                }
+                foreach (var t in types)
+                {
+                    foreach (var method in t.GetMethods(BindingFlags.Public | BindingFlags.Static))
+                    {
+                        var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true);
+                        if (exampleAttributes.Length == 0)
+                        {
+                            continue;
+                        }
+
+                        var exampleAttribute = (ExampleAttribute)exampleAttributes[0];
+                        list.Add(new ExampleInfo(examplesAttribute.Category, exampleAttribute.Title, method));
+                    }
                 }
             };
             return list;

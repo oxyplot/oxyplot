@@ -211,6 +211,11 @@ namespace OxyPlot
             return new OxyRect(Math.Min(x0, x1), Math.Min(y0, y1), Math.Abs(x1 - x0), Math.Abs(y1 - y0));
         }
 
+        public static OxyRect Create(ScreenPoint p0, ScreenPoint p1)
+        {
+            return Create(p0.X, p0.Y, p1.X, p1.Y);
+        }
+
         /// <summary>
         /// Determines whether the specified point is inside the rectangle.
         /// </summary>
