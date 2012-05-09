@@ -13,6 +13,7 @@ namespace ExampleLibrary
     [Examples("ScatterSeries")]
     public class ScatterSeriesExamples : ExamplesBase
     {
+
         [Example("Random points")]
         public static PlotModel RandomScatter()
         {
@@ -80,7 +81,6 @@ namespace ExampleLibrary
             {
                 s1.Points.Add(new ScatterPoint(random.NextDouble(), random.NextDouble(), 4 + 10 * random.NextDouble()));
             }
-
             model.Series.Add(s1);
             return model;
         }
@@ -173,39 +173,11 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("ScatterSeries defined by Points collection")]
+        [Example("Scatter plot of DataPoints")]
         public static PlotModel DataPoints()
         {
             var model = new PlotModel("Scatter plot of DataPoints");
-            model.Series.Add(new ScatterSeries
-            {
-                Points = CreateRandomPoints(100)
-            });
-            return model;
-        }
-
-        [Example("ScatterSeries defined by ItemsSource")]
-        public static PlotModel FromItemsSource()
-        {
-            var model = new PlotModel("Scatter plot from ItemsSource");
-            model.Series.Add(new ScatterSeries
-            {
-                ItemsSource = CreateRandomPoints(100),
-                DataFieldX = "X",
-                DataFieldY = "Y"
-            });
-            return model;
-        }
-
-        [Example("ScatterSeries defined by Mapping")]
-        public static PlotModel FromMapping()
-        {
-            var model = new PlotModel("Scatter plot from Mapping");
-            model.Series.Add(new ScatterSeries
-            {
-                ItemsSource = CreateRandomPoints(100),
-                Mapping = item => new ScatterPoint(((IDataPoint)item).X, ((IDataPoint)item).Y)
-            });
+            model.Series.Add(CreateRandomScatterSeries2(100, null, MarkerType.Square));
             return model;
         }
 
@@ -294,7 +266,7 @@ namespace ExampleLibrary
 
         static readonly Random Randomizer = new Random();
 
-        private static ScatterSeries CreateRandomScatterSeries(int n, string title, MarkerType markerType)
+        private static Series CreateRandomScatterSeries(int n, string title, MarkerType markerType)
         {
             var s1 = new ScatterSeries { Title = title, MarkerType = markerType, MarkerStroke = OxyColors.Black, MarkerStrokeThickness = 1.0 };
             for (int i = 0; i < n; i++)
@@ -307,19 +279,17 @@ namespace ExampleLibrary
             return s1;
         }
 
-        private static IList<IDataPoint> CreateRandomPoints(int n)
+        private static Series CreateRandomScatterSeries2(int n, string title, MarkerType markerType)
         {
-            var points = new List<IDataPoint>();
+            var s1 = new ScatterSeries { Title = title, MarkerType = markerType, MarkerStroke = OxyColors.Black, MarkerStrokeThickness = 1.0 };
             for (int i = 0; i < n; i++)
             {
                 double x = Randomizer.NextDouble() * 10;
                 double y = Randomizer.NextDouble() * 10;
                 var p = new DataPoint(x, y);
-                points.Add(p);
+                s1.Points.Add(p);
             }
-
-            return points;
+            return s1;
         }
-
     }
 }

@@ -34,7 +34,7 @@ namespace OxyPlot
             this.MinimumPadding = 0;
             this.MaximumPadding = 0;
             this.MajorStep = 1;
-            this.CategoryWidth = 0.5;
+            this.GapWidth = 1;
         }
 
         /// <summary>
@@ -82,10 +82,13 @@ namespace OxyPlot
         public IList<string> Labels { get; set; }
 
         /// <summary>
-        /// Gets or sets the Category width as a fraction of the width of a category.
-        /// The default value is 0.5 (50%)
+        /// Gets or sets the gap width.
         /// </summary>
-        public double CategoryWidth { get; set; }
+        /// <remarks>
+        /// The default value is 1.0 (100%).
+        /// The gap width is given as a fraction of the total width/height of the items in a category.
+        /// </remarks>
+        public double GapWidth { get; set; }
 
         #endregion
 
@@ -95,7 +98,7 @@ namespace OxyPlot
         ///   Gets or sets sum of the widths of the single bars per label.
         ///   This is used to find the bar width of BarSeries
         /// </summary>
-        internal double[] TotalWidth { get; set; }
+        internal double[] TotalWidthPerCategory { get; set; }
 
         /// <summary>
         /// Gets or sets the maximal width of all labels
@@ -125,7 +128,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the StackIndexMapping. The mapping indicates to which rank a specific stack index belongs.
         /// </summary>
-        internal Dictionary<int, int> StackIndexMapping { get; set; }
+        internal Dictionary<string, int> StackIndexMapping { get; set; }
 
         /// <summary>
         ///   Gets or sets the max value per StackIndex and Label  (only used for stacked bar series).
@@ -309,127 +312,89 @@ namespace OxyPlot
             {
                 foreach (var s in series)
                 {
-                    var labels = new List<string>();
                     if (!s.IsUsing(this))
                     {
                         continue;
                     }
 
-                    var bsb = s as BarSeriesBase;
+                    var bsb = s as CategorizedSeries;
                     if (bsb != null)
                     {
-                        labels.AddRange(bsb.Items.Select(item => item.Label));
+                        int max = bsb.GetItems().Count;
+                        while (this.Labels.Count < max)
+                        {
+                            this.Labels.Add((this.Labels.Count + 1).ToString(CultureInfo.InvariantCulture));
+                        }
                     }
-
-                    var tbs = s as TornadoBarSeries;
-                    if (tbs != null)
-                    {
-                        labels.AddRange(tbs.Items.Select(item => item.Label));
-                    }
-
-                    var ibs = s as IntervalBarSeries;
-                    if (ibs != null)
-                    {
-                        labels.AddRange(ibs.Items.Select(item => item.Label));
-                    }
-
-                    labels = labels.Distinct().ToList();
-                    labels.Sort();
-                    this.Labels = labels;
                 }
             }
         }
 
         /// <summary>
         /// Updates the axis with information from the plot series.
-        ///   This is used by the category axis that need to know the number of series using the axis.
         /// </summary>
         /// <param name="series">
         /// The series collection.
         /// </param>
+        /// <remarks>
+        /// This is used by the category axis that need to know the number of series using the axis.
+        /// </remarks>
         internal override void UpdateFromSeries(IEnumerable<Series> series)
         {
-            this.TotalWidth = new double[this.Labels.Count];
-            Fill(this.TotalWidth, 0);
+            this.TotalWidthPerCategory = new double[this.Labels.Count];
 
             var usedSeries = series.Where(s => s.IsUsing(this)).ToList();
 
-            // Add Width of Stacked bars to TotalWidth
-            var stackedBarSeries = usedSeries.OfType<BarSeriesBase>().Where(s => s.IsStacked).ToList();
-            var stackIndices = stackedBarSeries.Select(s => s.StackIndex).Distinct().ToList();
+            // Add width of stacked series
+            var categorizedSeries = usedSeries.OfType<CategorizedSeries>().ToList();
+            var stackedSeries = categorizedSeries.OfType<IStackableSeries>().Where(s => s.IsStacked).ToList();
+            var stackIndices = stackedSeries.Select(s => s.StackGroup).Distinct().ToList();
             var stackRankBarWidth = new Dictionary<int, double>();
             for (var j = 0; j < stackIndices.Count; j++)
             {
-                var maxBarWidth = stackedBarSeries.Where(s => s.StackIndex == stackIndices[j]).Select(s => s.BarWidth).Concat(new[] { 0.0 }).Max();
+                var maxBarWidth = stackedSeries.Where(s => s.StackGroup == stackIndices[j]).Select(s => ((CategorizedSeries)s).GetBarWidth()).Concat(new[] { 0.0 }).Max();
                 for (var i = 0; i < this.Labels.Count; i++)
                 {
-                    if (stackedBarSeries.SelectMany(s => s.ValidItems).Any(item => item.Label == this.Labels[i]))
+                    int k = 0;
+                    if (stackedSeries.SelectMany(s => ((CategorizedSeries)s).GetItems()).Any(item => item.GetCategoryIndex(k++) == i))
                     {
-                        this.TotalWidth[i] += maxBarWidth;
+                        this.TotalWidthPerCategory[i] += maxBarWidth;
                     }
                 }
 
                 stackRankBarWidth[j] = maxBarWidth;
             }
 
-            // Add Width of unstacked bars to TotalWidth
-            var unstackedBarSeries = usedSeries.OfType<BarSeriesBase>().Where(s => !s.IsStacked).ToList();
+            // Add width of unstacked series
+            var unstackedBarSeries = categorizedSeries.Where(s => !(s is IStackableSeries) || !((IStackableSeries)s).IsStacked).ToList();
             foreach (var s in unstackedBarSeries)
             {
                 for (var i = 0; i < this.Labels.Count; i++)
                 {
-                    var numberOfItems = s.ValidItems.Count(item => item.Label == this.Labels[i]);
-                    this.TotalWidth[i] += s.BarWidth * numberOfItems;
+                    int j = 0;
+                    var numberOfItems = s.GetItems().Count(item => item.GetCategoryIndex(j++) == i);
+                    this.TotalWidthPerCategory[i] += s.GetBarWidth() * numberOfItems;
                 }
             }
 
-            // Add Width of tornado bars to TotalWidth
-            var tbs = usedSeries.OfType<TornadoBarSeries>().ToList();
-            for (var i = 0; i < this.Labels.Count; i++)
-            {
-                var tbsOfLabel = tbs.Where(s => s.ValidItems.Any(item => item.Label == this.Labels[i])).ToList();
-                if (tbsOfLabel.Count == 0)
-                {
-                    continue;
-                }
-
-                var maxBarWidth = tbsOfLabel.Select(s => s.BarWidth).Max();
-                this.TotalWidth[i] += maxBarWidth;
-            }
-
-            // Add Width of interval bars to TotalWidth
-            var ibs = usedSeries.OfType<IntervalBarSeries>().ToList();
-            for (var i = 0; i < this.Labels.Count; i++)
-            {
-                var ibsOfLabel = ibs.Where(s => s.ValidItems.Any(item => item.Label == this.Labels[i])).ToList();
-                if (ibsOfLabel.Count == 0)
-                {
-                    continue;
-                }
-
-                var maxBarWidth = ibsOfLabel.Select(s => s.BarWidth).Max();
-                this.TotalWidth[i] += maxBarWidth;
-            }
-
-            this.MaxWidth = this.TotalWidth.Max();
+            this.MaxWidth = this.TotalWidthPerCategory.Max();
 
             // Calculate BarOffset and StackedBarOffset
             this.BarOffset = new double[this.Labels.Count];
-            Fill(this.BarOffset, 0);
             this.StackedBarOffset = new double[stackIndices.Count + 1, this.Labels.Count];
-            Fill(this.StackedBarOffset, 0);
 
-            var factor = 0.5 * this.CategoryWidth / this.MaxWidth;
+            var factor = 0.5 / (1 + this.GapWidth) / this.MaxWidth;
             for (var i = 0; i < this.Labels.Count; i++)
             {
-                this.BarOffset[i] = 0.5 - (this.TotalWidth[i] * factor);
+                this.BarOffset[i] = 0.5 - (this.TotalWidthPerCategory[i] * factor);
             }
 
             for (var j = 0; j <= stackIndices.Count; j++)
             {
                 for (var i = 0; i < this.Labels.Count; i++)
                 {
-                    if (stackedBarSeries.SelectMany(s => s.ValidItems).All(item => item.Label != this.Labels[i]))
+                    int k = 0;
+                    if (stackedSeries.SelectMany(s => ((CategorizedSeries)s).GetItems()).All(item => item.GetCategoryIndex(k++) != i))
                     {
                         continue;
                     }
@@ -437,13 +402,13 @@ namespace OxyPlot
                     this.StackedBarOffset[j, i] = this.BarOffset[i];
                     if (j < stackIndices.Count)
                     {
-                        this.BarOffset[i] += stackRankBarWidth[j] * this.CategoryWidth / this.MaxWidth;
+                        this.BarOffset[i] += stackRankBarWidth[j] / (1 + this.GapWidth) / this.MaxWidth;
                     }
                 }
             }
 
             stackIndices.Sort();
-            this.StackIndexMapping = new Dictionary<int, int>();
+            this.StackIndexMapping = new Dictionary<string, int>();
             for (var i = 0; i < stackIndices.Count; i++)
             {
                 this.StackIndexMapping.Add(stackIndices[i], i);
@@ -461,5 +426,17 @@ namespace OxyPlot
         }
 
         #endregion
+
+        public double GetCategoryValue(int categoryIndex, int stackIndex, double actualBarWidth)
+        {
+            var offsetBegin = this.StackedBarOffset[stackIndex, categoryIndex];
+            var offsetEnd = this.StackedBarOffset[stackIndex + 1, categoryIndex];
+            return categoryIndex - 0.5 + (offsetEnd + offsetBegin - actualBarWidth) * 0.5;
+        }
+
+        public double GetCategoryValue(int categoryIndex)
+        {
+            return categoryIndex - 0.5 + this.BarOffset[categoryIndex];
+        }
     }
 }

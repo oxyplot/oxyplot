@@ -2,6 +2,9 @@
 // <copyright file="RectangleBarSeries.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   The RectangleBarSeries is used to create bars that has to/from values.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -17,7 +20,7 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="RectangleBarSeries" /> class.
+        /// Initializes a new instance of the <see cref="RectangleBarSeries"/> class.
         /// </summary>
         public RectangleBarSeries()
         {
@@ -29,6 +32,7 @@ namespace OxyPlot
             this.TrackerFormatString = "{0}";
 
             this.LabelFormatString = "{4}"; // title
+
             // this.LabelFormatString = "{0}-{1},{2}-{3}"; // X0-X1,Y0-Y1
         }
 
@@ -37,36 +41,42 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        ///   Gets the rectangle bar items.
+        /// Gets or sets the default color of the interior of the Maximum bars.
+        /// </summary>
+        /// <value>
+        /// The color. 
+        /// </value>
+        public OxyColor FillColor { get; set; }
+
+        /// <summary>
+        /// Gets the rectangle bar items.
         /// </summary>
         public IList<RectangleBarItem> Items { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the label color.
+        /// Gets or sets the label color.
         /// </summary>
         public OxyColor LabelColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the default color of the interior of the Maximum bars.
-        /// </summary>
-        /// <value> The color. </value>
-        public OxyColor FillColor { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the format string for the labels.
+        /// Gets or sets the format string for the labels.
         /// </summary>
         public string LabelFormatString { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the border around the bars.
+        /// Gets or sets the color of the border around the bars.
         /// </summary>
-        /// <value> The color of the stroke. </value>
+        /// <value>
+        /// The color of the stroke. 
+        /// </value>
         public OxyColor StrokeColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the thickness of the bar border strokes.
+        /// Gets or sets the thickness of the bar border strokes.
         /// </summary>
-        /// <value> The stroke thickness. </value>
+        /// <value>
+        /// The stroke thickness. 
+        /// </value>
         public double StrokeThickness { get; set; }
 
         #endregion
@@ -74,7 +84,7 @@ namespace OxyPlot
         #region Properties
 
         /// <summary>
-        ///   Gets or sets the actual rectangles for the maximum bars.
+        /// Gets or sets the actual rectangles for the maximum bars.
         /// </summary>
         internal IList<OxyRect> ActualBarRectangles { get; set; }
 
@@ -108,7 +118,7 @@ namespace OxyPlot
                     var text = StringHelper.Format(
                         this.ActualCulture, 
                         this.TrackerFormatString, 
-                        item,
+                        item, 
                         this.Items[i].X0, 
                         this.Items[i].X1, 
                         this.Items[i].Y0, 
@@ -162,8 +172,8 @@ namespace OxyPlot
 
             foreach (var item in this.Items)
             {
-                if (!this.IsValidPoint(item.X0, XAxis) || !this.IsValidPoint(item.X1, XAxis)
-                    || !this.IsValidPoint(item.Y0, YAxis) || !this.IsValidPoint(item.Y1, YAxis))
+                if (!this.IsValidPoint(item.X0, this.XAxis) || !this.IsValidPoint(item.X1, this.XAxis)
+                    || !this.IsValidPoint(item.Y0, this.YAxis) || !this.IsValidPoint(item.Y1, this.YAxis))
                 {
                     continue;
                 }
@@ -176,28 +186,37 @@ namespace OxyPlot
                 this.ActualBarRectangles.Add(rectangle);
 
                 rc.DrawClippedRectangleAsPolygon(
-                    rectangle,
-                    clippingRect,
-                    this.GetSelectableFillColor(item.Color ?? this.FillColor),
-                    this.StrokeColor,
+                    rectangle, 
+                    clippingRect, 
+                    this.GetSelectableFillColor(item.Color ?? this.FillColor), 
+                    this.StrokeColor, 
                     this.StrokeThickness);
 
                 if (this.LabelFormatString != null)
                 {
-                    var s = StringHelper.Format(this.ActualCulture, this.LabelFormatString, this.GetItem(i), item.X0, item.X1, item.Y0, item.Y1, item.Title);
+                    var s = StringHelper.Format(
+                        this.ActualCulture, 
+                        this.LabelFormatString, 
+                        this.GetItem(i), 
+                        item.X0, 
+                        item.X1, 
+                        item.Y0, 
+                        item.Y1, 
+                        item.Title);
 
-                    var pt = new ScreenPoint((rectangle.Left + rectangle.Right) / 2, (rectangle.Top + rectangle.Bottom) / 2);
+                    var pt = new ScreenPoint(
+                        (rectangle.Left + rectangle.Right) / 2, (rectangle.Top + rectangle.Bottom) / 2);
 
                     rc.DrawClippedText(
-                        clippingRect,
-                        pt,
-                        s,
-                        this.ActualTextColor,
-                        this.ActualFont,
-                        this.ActualFontSize,
-                        this.ActualFontWeight,
-                        0,
-                        HorizontalTextAlign.Center,
+                        clippingRect, 
+                        pt, 
+                        s, 
+                        this.ActualTextColor, 
+                        this.ActualFont, 
+                        this.ActualFontSize, 
+                        this.ActualFontWeight, 
+                        0, 
+                        HorizontalTextAlign.Center, 
                         VerticalTextAlign.Middle);
                 }
 
@@ -221,9 +240,9 @@ namespace OxyPlot
             double height = (legendBox.Bottom - legendBox.Top) * 0.8;
             double width = height;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
-                this.GetSelectableFillColor(this.FillColor),
-                this.StrokeColor,
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height), 
+                this.GetSelectableFillColor(this.FillColor), 
+                this.StrokeColor, 
                 this.StrokeThickness);
         }
 
@@ -258,11 +277,11 @@ namespace OxyPlot
             this.Items.Clear();
 
             // ReflectionHelper.FillList(
-            //    this.ItemsSource,
-            //    this.Items,
-            //    new[] { this.MinimumField, this.MaximumField },
-            //    (item, value) => item.Minimum = Convert.ToDouble(value),
-            //    (item, value) => item.Maximum = Convert.ToDouble(value));
+            // this.ItemsSource,
+            // this.Items,
+            // new[] { this.MinimumField, this.MaximumField },
+            // (item, value) => item.Minimum = Convert.ToDouble(value),
+            // (item, value) => item.Maximum = Convert.ToDouble(value));
             throw new NotImplementedException();
         }
 
@@ -296,6 +315,7 @@ namespace OxyPlot
             this.MinY = minValueY;
             this.MaxY = maxValueY;
         }
+
         #endregion
     }
 }

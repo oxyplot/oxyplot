@@ -2,34 +2,81 @@
 // <copyright file="BarSeries.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   The BarSeries is used to create clustered or stacked bar charts.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
-    #region
-
     using System;
 
-    #endregion
-
     /// <summary>
-    ///   The BarSeries is used to create clustered or stacked bar charts.
+    /// The BarSeries is used to create clustered or stacked bar charts.
     /// </summary>
-    /// <remarks>
-    ///   A bar chart or bar graph is a chart with rectangular horizontal bars with lengths proportional to the values that they represent. http://en.wikipedia.org/wiki/Bar_chart The BarSeries requires a CategoryAxis. The Values collection must contain the same number of elements as the number of categories in the CategoryAxis. You can define a ItemsSource and a ValueField, or add the Values manually. Use stacked bar charts with caution... http://lilt.ilstu.edu/gmklass/pos138/datadisplay/badchart.htm
-    /// </remarks>
-    public class BarSeries : BarSeriesBase
+    public class BarSeries : BarSeriesBase<BarItem>
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BarSeries"/> class.
+        /// </summary>
+        public BarSeries()
+        {
+            this.BarWidth = 1;
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets the width (height) of the bars.
+        /// </summary>
+        /// <value>
+        /// The width of the bars. 
+        /// </value>
+        public double BarWidth { get; set; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
-        ///   Draw the Bar label
+        /// Gets or sets the width of the columns/bars (as a fraction of the available space).
         /// </summary>
-        /// <param name="rc"> The render context </param>
-        /// <param name="clippingRect"> The clipping rectangle </param>
-        /// <param name="rect"> The OxyRectangle </param>
-        /// <param name="value"> The value of the label </param>
-        /// <param name="i"> The index of the bar item </param>
+        /// <returns>
+        /// The fractional width. 
+        /// </returns>
+        /// <value>
+        /// The width of the bars. 
+        /// </value>
+        /// <remarks>
+        /// The available space will be determined by the GapWidth of the CategoryAxis used by this series.
+        /// </remarks>
+        internal override double GetBarWidth()
+        {
+            return this.BarWidth;
+        }
+
+        /// <summary>
+        /// Draws the label.
+        /// </summary>
+        /// <param name="rc">
+        /// The rc. 
+        /// </param>
+        /// <param name="clippingRect">
+        /// The clipping rect. 
+        /// </param>
+        /// <param name="rect">
+        /// The rect. 
+        /// </param>
+        /// <param name="value">
+        /// The value. 
+        /// </param>
+        /// <param name="i">
+        /// The i. 
+        /// </param>
         protected override void DrawLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int i)
         {
             var s = StringHelper.Format(
@@ -57,22 +104,39 @@ namespace OxyPlot
             }
 
             rc.DrawClippedText(
-                clippingRect,
-                pt,
-                s,
-                this.ActualTextColor,
-                this.ActualFont,
-                this.ActualFontSize,
-                this.ActualFontWeight,
-                0,
-                ha,
+                clippingRect, 
+                pt, 
+                s, 
+                this.ActualTextColor, 
+                this.ActualFont, 
+                this.ActualFontSize, 
+                this.ActualFontWeight, 
+                0, 
+                ha, 
                 VerticalTextAlign.Middle);
         }
 
         /// <summary>
-        ///   Gets the category axis.
+        /// Gets the actual width/height of the items of this series.
         /// </summary>
-        /// <returns> The category axis. </returns>
+        /// <returns>
+        /// The width or height. 
+        /// </returns>
+        /// <remarks>
+        /// The actual width is also influenced by the GapWidth of the CategoryAxis used by this series.
+        /// </remarks>
+        protected override double GetActualBarWidth()
+        {
+            var categoryAxis = this.GetCategoryAxis();
+            return this.BarWidth / (1 + categoryAxis.GapWidth) / categoryAxis.MaxWidth;
+        }
+
+        /// <summary>
+        /// Gets the category axis.
+        /// </summary>
+        /// <returns>
+        /// The category axis. 
+        /// </returns>
         protected override CategoryAxis GetCategoryAxis()
         {
             if (!(this.YAxis is CategoryAxis))
@@ -85,30 +149,34 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Get the left-base and right-top point
+        /// Gets the rectangle for the specified values.
         /// </summary>
-        /// <param name="baseValue"> The base value of the bar </param>
-        /// <param name="topValue"> The top value of the bar </param>
-        /// <param name="beginValue"> The begin value of the bar </param>
-        /// <param name="endValue"> The end value of the bar </param>
-        /// <param name="p0"> The left-base point of the bar </param>
-        /// <param name="p1"> The right-top point of the bar </param>
-        protected override void GetPoints(
-            double baseValue,
-            double topValue,
-            double beginValue,
-            double endValue,
-            out ScreenPoint p0,
-            out ScreenPoint p1)
+        /// <param name="baseValue">
+        /// The base value of the bar 
+        /// </param>
+        /// <param name="topValue">
+        /// The top value of the bar 
+        /// </param>
+        /// <param name="beginValue">
+        /// The begin value of the bar 
+        /// </param>
+        /// <param name="endValue">
+        /// The end value of the bar 
+        /// </param>
+        /// <returns>
+        /// The rectangle. 
+        /// </returns>
+        protected override OxyRect GetRectangle(double baseValue, double topValue, double beginValue, double endValue)
         {
-            p0 = this.Transform(baseValue, beginValue);
-            p1 = this.Transform(topValue, endValue);
+            return OxyRect.Create(this.Transform(baseValue, beginValue), this.Transform(topValue, endValue));
         }
 
         /// <summary>
-        ///   Gets the value axis.
+        /// Gets the value axis.
         /// </summary>
-        /// <returns> The value axis. </returns>
+        /// <returns>
+        /// The value axis. 
+        /// </returns>
         protected override Axis GetValueAxis()
         {
             return this.XAxis;

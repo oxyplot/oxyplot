@@ -1,37 +1,34 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LabelPlacement.cs" company="OxyPlot">
+// <copyright file="IStackableSeries.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
-//   Placement of the labels.
+//   Specifies that the series can be stacked.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
     /// <summary>
-    /// Placement of the labels.
+    /// Specifies a series that can be stacked.
     /// </summary>
-    public enum LabelPlacement
+    public interface IStackableSeries
     {
-        /// <summary>
-        /// Placed outside the bar.
-        /// </summary>
-        Outside, 
+        #region Public Properties
 
         /// <summary>
-        /// Placed inside the bar.
+        /// Gets a value indicating whether this series is stacked.
         /// </summary>
-        Inside, 
+        bool IsStacked { get; }
 
         /// <summary>
-        /// Placed inside in the middle/center of the bar.
+        /// Gets the stack group.
         /// </summary>
-        Middle, 
+        /// <value>
+        /// The stack group. 
+        /// </value>
+        string StackGroup { get; }
 
-        /// <summary>
-        /// Placed inside at the base of the bar.
-        /// </summary>
-        Base
+        #endregion
     }
 }

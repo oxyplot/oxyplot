@@ -43,13 +43,12 @@ namespace ExampleLibrary
                         TickStyle = TickStyle.Outside,
                         StringFormat = "#,0"
                     });
-            var items = new List<BarItem>();
-            items.Add(new BarItem{Label = "North", Value = 3000});
-            items.Add(new BarItem { Label = "East", Value = 4500 });
-            items.Add(new BarItem { Label = "South", Value = 2100 });
-            items.Add(new BarItem { Label = "West", Value = 4800 });
-            pm.Series.Add(
-                new ColumnSeries { FillColor = OxyColors.Black, Items = items });
+            var series = new ColumnSeries { FillColor = OxyColors.Black };
+            series.Items.Add(new ColumnItem { Value = 3000 });
+            series.Items.Add(new ColumnItem { Value = 4500 });
+            series.Items.Add(new ColumnItem { Value = 2100 });
+            series.Items.Add(new ColumnItem { Value = 4800 });
+            pm.Series.Add(series);
             return pm;
         }
 
@@ -130,7 +129,7 @@ namespace ExampleLibrary
                         EndPosition = 0
                     });
             pm.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 250, 50, 50) { AxislineStyle = LineStyle.Solid, TickStyle = TickStyle.Outside, MinimumPadding = 0, MaximumPadding = 0 });
-            pm.Series.Add(new BarSeries { FillColor = OxyColors.Black, ItemsSource = values, ValueField = "Value", LabelField = "Key"});
+            pm.Series.Add(new BarSeries { FillColor = OxyColors.Black, ItemsSource = values, ValueField = "Value" });
             return pm;
         }
 
@@ -149,7 +148,7 @@ namespace ExampleLibrary
                     {
                         Labels = new List<string> { "West\n34%", "East\n30%", "North\n20%", "South\n16%" },
                         TickStyle = TickStyle.None,
-                        CategoryWidth = 1
+                        GapWidth = 0
                     });
             pm.Axes.Add(
                 new LinearAxis(AxisPosition.Left, 0, 0.35 + double.Epsilon, 0.05, 0.05)
@@ -158,20 +157,19 @@ namespace ExampleLibrary
                         TickStyle = TickStyle.Outside,
                         StringFormat = "P0"
                     });
-            var items = new List<BarItem>();
-            items.Add(new BarItem { Label = "West\n34%", Value = 0.34 });
-            items.Add(new BarItem { Label = "East\n30%", Value = 0.3 });
-            items.Add(new BarItem { Label = "North\n20%", Value = 0.2 });
-            items.Add(new BarItem { Label = "South\n16%", Value = 0.16 });
-            pm.Series.Add(
-                new ColumnSeries
+
+            var series = new ColumnSeries
                     {
-                        BarWidth = 1.0,
+                        ColumnWidth = 1.0,
                         StrokeColor = OxyColors.DarkGray,
                         StrokeThickness = 1.0,
                         FillColor = OxyColors.Black,
-                        Items = items
-                    });
+                    };
+            series.Items.Add(new ColumnItem { Value = 0.34 });
+            series.Items.Add(new ColumnItem { Value = 0.3 });
+            series.Items.Add(new ColumnItem { Value = 0.2 });
+            series.Items.Add(new ColumnItem { Value = 0.16 });
+            pm.Series.Add(series);
             return pm;
         }
 
@@ -210,7 +208,6 @@ namespace ExampleLibrary
                         NegativeFillColor = OxyColors.Gray,
                         ItemsSource = values,
                         ValueField = "Value",
-                        LabelField = "Key"
                     });
             return pm;
         }
@@ -248,7 +245,7 @@ namespace ExampleLibrary
                         TickStyle = TickStyle.Outside,
                         StringFormat = "+0;-0;0"
                     });
-            pm.Series.Add(new ColumnSeries { FillColor = OxyColors.Orange, ItemsSource = values, ValueField = "Value", LabelField = "Key"});
+            pm.Series.Add(new ColumnSeries { FillColor = OxyColors.Orange, ItemsSource = values, ValueField = "Value" });
             return pm;
         }
 

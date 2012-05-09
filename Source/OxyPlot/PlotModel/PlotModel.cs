@@ -1197,9 +1197,8 @@ namespace OxyPlot
 
             foreach (var c in this.Axes.OfType<CategoryAxis>())
             {
-                c.UpdateLabels(VisibleSeries);    
+                c.UpdateLabels(this.VisibleSeries);
             }
-
 
             // Update valid data of the series
             if (updateData)
@@ -1362,6 +1361,8 @@ namespace OxyPlot
             }
             else
             {
+                bool createdlinearxaxis = false;
+                bool createdlinearyaxis = false;
                 if (this.DefaultXAxis == null)
                 {
                     if (this.Series.Any(series => series is ColumnSeries))
@@ -1371,6 +1372,7 @@ namespace OxyPlot
                     else
                     {
                         this.DefaultXAxis = new LinearAxis { Position = AxisPosition.Bottom };
+                        createdlinearxaxis = true;
                     }
                 }
 
@@ -1382,8 +1384,19 @@ namespace OxyPlot
                     }
                     else
                     {
-                        this.DefaultYAxis = new LinearAxis { Position = AxisPosition.Left };
+                        this.DefaultYAxis = new LinearAxis { Position = AxisPosition.Left, MinimumPadding = 0 };
+                        createdlinearyaxis = true;
                     }
+                }
+
+                if (createdlinearxaxis && this.DefaultYAxis is CategoryAxis)
+                {
+                    this.DefaultXAxis.MinimumPadding = 0;
+                }
+
+                if (createdlinearyaxis && this.DefaultXAxis is CategoryAxis)
+                {
+                    this.DefaultYAxis.MinimumPadding = 0;
                 }
             }
 

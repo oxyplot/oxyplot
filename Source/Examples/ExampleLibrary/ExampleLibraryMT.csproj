@@ -46,7 +46,9 @@
     <Compile Include="Examples.cs" />
     <Compile Include="Attributes\ExamplesAttribute.cs" />
     <Compile Include="Examples\AnnotationExamples.cs" />
+    <Compile Include="Examples\BarSeries\BarAndColumnSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\BarSeriesExamples.cs" />
+    <Compile Include="Examples\BarSeries\ColumnSeriesExamples.cs" />
     <Compile Include="Examples\BoxPlotSeriesExamples.cs" />
     <Compile Include="Examples\CartesianAxesExamples.cs" />
     <Compile Include="Examples\CategoryAxisExamples.cs" />

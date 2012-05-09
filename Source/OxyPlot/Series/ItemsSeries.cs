@@ -74,7 +74,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="i"> The index of the item. </param>
         /// <returns> The item of the index. </returns>
-        protected object GetItem(int i)
+        protected virtual object GetItem(int i)
         {
             return GetItem(this.ItemsSource, i);
         }

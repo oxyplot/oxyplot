@@ -2,38 +2,34 @@
 // <copyright file="BarSeriesBase.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Base class for BarSeries and ColumnSeries.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
-    #region
-
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    #endregion
-
     /// <summary>
-    ///   Base class that provides common properties and methods for the BarSeries and ColumnSeries.
+    /// Base class for BarSeries and ColumnSeries.
     /// </summary>
-    public abstract class BarSeriesBase : XYAxisSeries
+    public abstract class BarSeriesBase : CategorizedSeries, IStackableSeries
     {
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="BarSeriesBase" /> class. Initializes a new instance of the <see
-        ///    cref="BarSeriesBase" /> class.
+        /// Initializes a new instance of the <see cref="BarSeriesBase"/> class.
         /// </summary>
         protected BarSeriesBase()
         {
-            this.Items = new List<BarItem>();
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
-            this.BarWidth = 1;
             this.TrackerFormatString = "{0}, {1}: {2}";
             this.LabelMargin = 2;
-            this.StackIndex = 0;
+            this.StackGroup = string.Empty;
         }
 
         #endregion
@@ -41,85 +37,80 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets the width of the bars (as a fraction of the available width).
+        /// Gets or sets the base value.
         /// </summary>
-        /// <value> The width of the bars. </value>
-        public double BarWidth { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the base value.
-        /// </summary>
-        /// <value> The base value. </value>
+        /// <value>
+        /// The base value. 
+        /// </value>
         public double BaseValue { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color field.
+        /// Gets or sets the color field.
         /// </summary>
         public string ColorField { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the interior of the bars.
+        /// Gets or sets the color of the interior of the bars.
         /// </summary>
-        /// <value> The color. </value>
+        /// <value>
+        /// The color. 
+        /// </value>
         public OxyColor FillColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this bar series is stacked.
+        /// Gets or sets a value indicating whether this bar series is stacked.
         /// </summary>
         public bool IsStacked { get; set; }
 
         /// <summary>
-        ///   Gets or sets the items.
+        /// Gets or sets the label format string.
         /// </summary>
-        /// <value> The values. </value>
-        public IList<BarItem> Items { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the label field.
-        /// </summary>
-        public string LabelField { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the label format string.
-        /// </summary>
-        /// <value> The label format string. </value>
+        /// <value>
+        /// The label format string. 
+        /// </value>
         public string LabelFormatString { get; set; }
 
         /// <summary>
-        ///   Gets or sets the label margins.
+        /// Gets or sets the label margins.
         /// </summary>
         public double LabelMargin { get; set; }
 
         /// <summary>
-        ///   Gets or sets label placements.
+        /// Gets or sets label placements.
         /// </summary>
         public LabelPlacement LabelPlacement { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the interior of the bars when the value is negative.
+        /// Gets or sets the color of the interior of the bars when the value is negative.
         /// </summary>
-        /// <value> The color. </value>
+        /// <value>
+        /// The color. 
+        /// </value>
         public OxyColor NegativeFillColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the stack index indication to which stack the series belongs. Default is 0. Hence, all stacked series belong to the same stack.
+        /// Gets or sets the stack index indication to which stack the series belongs. Default is 0. Hence, all stacked series belong to the same stack.
         /// </summary>
-        public int StackIndex { get; set; }
+        public string StackGroup { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the border around the bars.
+        /// Gets or sets the color of the border around the bars.
         /// </summary>
-        /// <value> The color of the stroke. </value>
+        /// <value>
+        /// The color of the stroke. 
+        /// </value>
         public OxyColor StrokeColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the thickness of the bar border strokes.
+        /// Gets or sets the thickness of the bar border strokes.
         /// </summary>
-        /// <value> The stroke thickness. </value>
+        /// <value>
+        /// The stroke thickness. 
+        /// </value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        ///   Gets or sets the value field.
+        /// Gets or sets the value field.
         /// </summary>
         public string ValueField { get; set; }
 
@@ -128,17 +119,17 @@ namespace OxyPlot
         #region Properties
 
         /// <summary>
-        ///   Gets or sets the valid items
+        /// Gets or sets the valid items
         /// </summary>
-        internal IList<BarItem> ValidItems { get; set; }
+        internal IList<BarItemBase> ValidItems { get; set; }
 
         /// <summary>
-        ///   Gets or sets the dictionary which stores the index-inversion for the valid items
+        /// Gets or sets the dictionary which stores the index-inversion for the valid items
         /// </summary>
         internal Dictionary<int, int> ValidItemsIndexInversion { get; set; }
 
         /// <summary>
-        ///   Gets or sets the actual rectangles for the bars.
+        /// Gets or sets the actual rectangles for the bars.
         /// </summary>
         protected IList<OxyRect> ActualBarRectangles { get; set; }
 
@@ -147,34 +138,44 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
-        ///   Gets the nearest point.
+        /// Gets the nearest point.
         /// </summary>
-        /// <param name="point"> The point. </param>
-        /// <param name="interpolate"> interpolate if set to <c>true</c> . </param>
-        /// <returns> A TrackerHitResult for the current hit. </returns>
+        /// <param name="point">
+        /// The point. 
+        /// </param>
+        /// <param name="interpolate">
+        /// interpolate if set to <c>true</c> . 
+        /// </param>
+        /// <returns>
+        /// A TrackerHitResult for the current hit. 
+        /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
+            if (this.ActualBarRectangles == null)
+            {
+                return null;
+            }
+
             var categoryAxis = this.GetCategoryAxis();
 
             var i = 0;
-            foreach (var r in this.ActualBarRectangles)
+            foreach (var rectangle in this.ActualBarRectangles)
             {
-                if (point.X >= r.Left && point.X <= r.Right && point.Y >= r.Top && point.Y <= r.Bottom)
+                if (rectangle.Contains(point))
                 {
-                    var labelId = categoryAxis.Labels.IndexOf(this.ValidItems[i].Label);
+                    var categoryIndex = this.ValidItems[i].GetCategoryIndex(i);
 
-                    var sp = point;
-                    var dp = new DataPoint(labelId, this.ValidItems[i].Value);
+                    var dp = new DataPoint(categoryIndex, this.ValidItems[i].Value);
                     var item = this.GetItem(this.ValidItemsIndexInversion[i]);
 
                     var text = StringHelper.Format(
-                        this.ActualCulture,
-                        this.TrackerFormatString,
-                        item,
-                        this.Title,
-                        categoryAxis.FormatValueForTracker(labelId),
+                        this.ActualCulture, 
+                        this.TrackerFormatString, 
+                        item, 
+                        this.Title, 
+                        categoryAxis.FormatValueForTracker(categoryIndex), 
                         this.ValidItems[i].Value);
-                    return new TrackerHitResult(this, dp, sp, item, i, text);
+                    return new TrackerHitResult(this, dp, point, item, i, text);
                 }
 
                 i++;
@@ -184,12 +185,18 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Renders the Series on the specified rendering context.
+        /// Renders the series on the specified rendering context.
         /// </summary>
-        /// <param name="rc"> The rendering context. </param>
-        /// <param name="model"> The model. </param>
+        /// <param name="rc">
+        /// The rendering context. 
+        /// </param>
+        /// <param name="model">
+        /// The model. 
+        /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
+            this.ActualBarRectangles = new List<OxyRect>();
+
             if (this.ValidItems.Count == 0)
             {
                 return;
@@ -198,15 +205,13 @@ namespace OxyPlot
             var clippingRect = this.GetClippingRect();
             var categoryAxis = this.GetCategoryAxis();
 
-            this.ActualBarRectangles = new List<OxyRect>();
-
-            var actualBarWidth = this.BarWidth * categoryAxis.CategoryWidth / categoryAxis.MaxWidth;
-            var stackRank = this.IsStacked ? categoryAxis.StackIndexMapping[this.StackIndex] : 0;
+            var actualBarWidth = this.GetActualBarWidth();
+            var stackIndex = this.IsStacked ? categoryAxis.StackIndexMapping[this.StackGroup] : 0;
             for (var i = 0; i < this.ValidItems.Count; i++)
             {
                 var item = this.ValidItems[i];
-                var label = item.Label;
-                var labelId = categoryAxis.Labels.IndexOf(label);
+                var categoryIndex = this.ValidItems[i].GetCategoryIndex(i);
+
                 var value = item.Value;
 
                 // Get base- and topValue
@@ -214,8 +219,8 @@ namespace OxyPlot
                 if (this.IsStacked)
                 {
                     baseValue = value < 0
-                                    ? categoryAxis.NegativeBaseValues[stackRank, labelId]
-                                    : categoryAxis.PositiveBaseValues[stackRank, labelId];
+                                    ? categoryAxis.NegativeBaseValues[stackIndex, categoryIndex]
+                                    : categoryAxis.PositiveBaseValues[stackIndex, categoryIndex];
                 }
 
                 if (double.IsNaN(baseValue))
@@ -226,38 +231,27 @@ namespace OxyPlot
                 var topValue = this.IsStacked ? baseValue + value : value;
 
                 // Calculate offset
-                double offset;
+                double categoryValue;
                 if (this.IsStacked)
                 {
-                    var offsetBegin = categoryAxis.StackedBarOffset[stackRank, labelId];
-                    var offsetEnd = categoryAxis.StackedBarOffset[stackRank + 1, labelId];
-                    offset = (offsetEnd + offsetBegin - actualBarWidth) * 0.5;
+                    categoryValue = categoryAxis.GetCategoryValue(categoryIndex, stackIndex, actualBarWidth);
                 }
                 else
                 {
-                    offset = categoryAxis.BarOffset[labelId];
+                    categoryValue = categoryIndex - 0.5 + categoryAxis.BarOffset[categoryIndex];
                 }
 
-                ScreenPoint p0, p1;
-                this.GetPoints(
-                    baseValue, topValue, labelId - 0.5 + offset, labelId - 0.5 + offset + actualBarWidth, out p0, out p1);
-
-                p0.X = (int)p0.X;
-                p0.Y = (int)p0.Y;
-                p1.X = (int)p1.X;
-                p1.Y = (int)p1.Y;
-
-                var rect = OxyRect.Create(p0.X, p0.Y, p1.X, p1.Y);
+                var rect = this.GetRectangle(baseValue, topValue, categoryValue, categoryValue + actualBarWidth);
 
                 if (this.IsStacked)
                 {
                     if (value < 0)
                     {
-                        categoryAxis.NegativeBaseValues[stackRank, labelId] = topValue;
+                        categoryAxis.NegativeBaseValues[stackIndex, categoryIndex] = topValue;
                     }
                     else
                     {
-                        categoryAxis.PositiveBaseValues[stackRank, labelId] = topValue;
+                        categoryAxis.PositiveBaseValues[stackIndex, categoryIndex] = topValue;
                     }
                 }
 
@@ -275,10 +269,10 @@ namespace OxyPlot
                 }
 
                 rc.DrawClippedRectangleAsPolygon(
-                    rect,
-                    clippingRect,
-                    this.GetSelectableFillColor(actualFillColor),
-                    this.StrokeColor,
+                    rect, 
+                    clippingRect, 
+                    this.GetSelectableFillColor(actualFillColor), 
+                    this.StrokeColor, 
                     this.StrokeThickness);
 
                 if (this.LabelFormatString != null)
@@ -288,16 +282,20 @@ namespace OxyPlot
 
                 if (!this.IsStacked)
                 {
-                    categoryAxis.BarOffset[labelId] += actualBarWidth;
+                    categoryAxis.BarOffset[categoryIndex] += actualBarWidth;
                 }
             }
         }
 
         /// <summary>
-        ///   Renders the legend symbol on the specified rendering context.
+        /// Renders the legend symbol on the specified rendering context.
         /// </summary>
-        /// <param name="rc"> The rendering context. </param>
-        /// <param name="legendBox"> The legend rectangle. </param>
+        /// <param name="rc">
+        /// The rendering context. 
+        /// </param>
+        /// <param name="legendBox">
+        /// The legend rectangle. 
+        /// </param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             var xmid = (legendBox.Left + legendBox.Right) / 2;
@@ -305,9 +303,9 @@ namespace OxyPlot
             var height = (legendBox.Bottom - legendBox.Top) * 0.8;
             var width = height;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
-                this.GetSelectableColor(this.FillColor),
-                this.StrokeColor,
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height), 
+                this.GetSelectableColor(this.FillColor), 
+                this.StrokeColor, 
                 this.StrokeThickness);
         }
 
@@ -316,19 +314,25 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
-        ///   Check if the data series is using the specified axis.
+        /// Check if the data series is using the specified axis.
         /// </summary>
-        /// <param name="axis"> An axis which should be checked if used </param>
-        /// <returns> True if the axis is in use. </returns>
+        /// <param name="axis">
+        /// An axis which should be checked if used 
+        /// </param>
+        /// <returns>
+        /// True if the axis is in use. 
+        /// </returns>
         protected internal override bool IsUsing(Axis axis)
         {
             return this.XAxis == axis || this.YAxis == axis;
         }
 
         /// <summary>
-        ///   The set default values.
+        /// The set default values.
         /// </summary>
-        /// <param name="model"> The model. </param>
+        /// <param name="model">
+        /// The model. 
+        /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
             if (this.FillColor == null)
@@ -338,7 +342,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   The update axis max min.
+        /// The update axis max min.
         /// </summary>
         protected internal override void UpdateAxisMaxMin()
         {
@@ -356,26 +360,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   The update data.
-        /// </summary>
-        protected internal override void UpdateData()
-        {
-            if (this.ItemsSource != null)
-            {
-                var dest = new List<BarItem>();
-
-                // Using reflection to add points
-                var filler = new ListFiller<BarItem>();
-                filler.Add(this.LabelField, (item, value) => item.Label = Convert.ToString(value));
-                filler.Add(this.ValueField, (item, value) => item.Value = Convert.ToDouble(value));
-                filler.Add(this.ColorField, (item, value) => item.Color = (OxyColor)value);
-                filler.Fill(dest, this.ItemsSource);
-                this.Items = dest;
-            }
-        }
-
-        /// <summary>
-        ///   Updates the maximum/minimum value on the value axis from the bar values.
+        /// Updates the maximum/minimum value on the value axis from the bar values.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
@@ -394,28 +379,30 @@ namespace OxyPlot
                 var labels = this.GetCategoryAxis().Labels;
                 for (var i = 0; i < labels.Count; i++)
                 {
-                    var label = labels[i];
+                    // var label = labels[i];
+                    int j = 0;
                     var values =
-                        this.ValidItems.Where(item => item.Label == label).Select(item => item.Value).Concat(
-                            new[] { 0d }).ToList();
+                        this.ValidItems.Where(item => item.GetCategoryIndex(j++) == i).Select(item => item.Value).Concat
+                            (new[] { 0d }).ToList();
                     var minTemp = values.Where(v => v <= 0).Sum();
                     var maxTemp = values.Where(v => v >= 0).Sum();
 
-                    var stackedMinValue = categoryAxis.MinValue[categoryAxis.StackIndexMapping[this.StackIndex], i];
+                    int stackIndex = categoryAxis.StackIndexMapping[this.StackGroup];
+                    var stackedMinValue = categoryAxis.MinValue[stackIndex, i];
                     if (!double.IsNaN(stackedMinValue))
                     {
                         minTemp += stackedMinValue;
                     }
 
-                    categoryAxis.MinValue[categoryAxis.StackIndexMapping[this.StackIndex], i] = minTemp;
+                    categoryAxis.MinValue[stackIndex, i] = minTemp;
 
-                    var stackedMaxValue = categoryAxis.MaxValue[categoryAxis.StackIndexMapping[this.StackIndex], i];
+                    var stackedMaxValue = categoryAxis.MaxValue[stackIndex, i];
                     if (!double.IsNaN(stackedMaxValue))
                     {
                         maxTemp += stackedMaxValue;
                     }
 
-                    categoryAxis.MaxValue[categoryAxis.StackIndexMapping[this.StackIndex], i] = maxTemp;
+                    categoryAxis.MaxValue[stackIndex, i] = maxTemp;
 
                     minValue = Math.Min(minValue, minTemp + this.BaseValue);
                     maxValue = Math.Max(maxValue, maxTemp + this.BaseValue);
@@ -424,8 +411,17 @@ namespace OxyPlot
             else
             {
                 var values = this.ValidItems.Select(item => item.Value).Concat(new[] { 0d }).ToList();
-                minValue = values.Min() + this.BaseValue;
-                maxValue = values.Max() + this.BaseValue;
+                minValue = values.Min();
+                maxValue = values.Max();
+                if (this.BaseValue < minValue)
+                {
+                    minValue = this.BaseValue;
+                }
+
+                if (this.BaseValue > maxValue)
+                {
+                    maxValue = this.BaseValue;
+                }
             }
 
             var valueAxis = this.GetValueAxis();
@@ -442,71 +438,92 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Updates the valid items
+        /// Updates the valid items
         /// </summary>
         protected internal override void UpdateValidData()
         {
-            this.ValidItems = new List<BarItem>();
+            this.ValidItems = new List<BarItemBase>();
             this.ValidItemsIndexInversion = new Dictionary<int, int>();
-            var labels = this.GetCategoryAxis().Labels;
+            var categories = this.GetCategoryAxis().Labels.Count;
             var valueAxis = this.GetValueAxis();
 
-            for (var i = 0; i < this.Items.Count; i++)
+            int i = 0;
+            foreach (var item in this.GetItems())
             {
-                var item = this.Items[i];
-                if (labels.Contains(item.Label) && valueAxis.IsValidValue(item.Value))
+                var barSeriesItem = item as BarItemBase;
+
+                if (barSeriesItem != null && item.GetCategoryIndex(i) < categories
+                    && valueAxis.IsValidValue(barSeriesItem.Value))
                 {
                     this.ValidItemsIndexInversion.Add(this.ValidItems.Count, i);
-                    this.ValidItems.Add(item);
+                    this.ValidItems.Add(barSeriesItem);
                 }
+
+                i++;
             }
         }
 
         /// <summary>
-        ///   Draw the Bar label
+        /// Draw the item label.
         /// </summary>
-        /// <param name="rc"> The render context </param>
-        /// <param name="clippingRect"> The clipping rectangle </param>
-        /// <param name="rect"> The OxyRectangle </param>
-        /// <param name="value"> The value of the label </param>
-        /// <param name="i"> The index of the bar item </param>
-        protected abstract void DrawLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int i);
+        /// <param name="rc">
+        /// The render context 
+        /// </param>
+        /// <param name="clippingRect">
+        /// The clipping rectangle 
+        /// </param>
+        /// <param name="rect">
+        /// The rectangle of the item. 
+        /// </param>
+        /// <param name="value">
+        /// The value of the label. 
+        /// </param>
+        /// <param name="index">
+        /// The index of the bar item. 
+        /// </param>
+        protected abstract void DrawLabel(
+            IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int index);
 
         /// <summary>
-        ///   Gets the category axis.
+        /// Gets the rectangle for the specified values.
         /// </summary>
-        /// <returns> The category axis. </returns>
-        protected abstract CategoryAxis GetCategoryAxis();
+        /// <param name="baseValue">
+        /// The base value of the bar 
+        /// </param>
+        /// <param name="topValue">
+        /// The top value of the bar 
+        /// </param>
+        /// <param name="beginValue">
+        /// The begin value of the bar 
+        /// </param>
+        /// <param name="endValue">
+        /// The end value of the bar 
+        /// </param>
+        /// <returns>
+        /// The rectangle. 
+        /// </returns>
+        protected abstract OxyRect GetRectangle(double baseValue, double topValue, double beginValue, double endValue);
 
         /// <summary>
-        ///   Get the left-base and right-top point
+        /// Gets the value axis.
         /// </summary>
-        /// <param name="baseValue"> The base value of the bar </param>
-        /// <param name="topValue"> The top value of the bar </param>
-        /// <param name="beginValue"> The begin value of the bar </param>
-        /// <param name="endValue"> The end value of the bar </param>
-        /// <param name="p0"> The left-base point of the bar </param>
-        /// <param name="p1"> The right-top point of the bar </param>
-        protected abstract void GetPoints(
-            double baseValue,
-            double topValue,
-            double beginValue,
-            double endValue,
-            out ScreenPoint p0,
-            out ScreenPoint p1);
-
-        /// <summary>
-        ///   Gets the value axis.
-        /// </summary>
-        /// <returns> The value axis. </returns>
+        /// <returns>
+        /// The value axis. 
+        /// </returns>
         protected abstract Axis GetValueAxis();
 
         /// <summary>
-        ///   Checks if the specified value is valid.
+        /// Checks if the specified value is valid.
         /// </summary>
-        /// <param name="v"> The value. </param>
-        /// <param name="yaxis"> The y axis. </param>
-        /// <returns> True if the value is valid. </returns>
+        /// <param name="v">
+        /// The value. 
+        /// </param>
+        /// <param name="yaxis">
+        /// The y axis. 
+        /// </param>
+        /// <returns>
+        /// True if the value is valid. 
+        /// </returns>
         protected virtual bool IsValidPoint(double v, Axis yaxis)
         {
             return !double.IsNaN(v) && !double.IsInfinity(v);
