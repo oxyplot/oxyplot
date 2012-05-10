@@ -3,7 +3,7 @@
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
-//   The ColumnSeries is used to create clustered or stacked column charts.
+//   Represents a series for clustered or stacked column charts.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// The ColumnSeries is used to create clustered or stacked column charts.
+    /// Represents a series for clustered or stacked column charts.
     /// </summary>
     public class ColumnSeries : BarSeriesBase<ColumnItem>
     {
@@ -57,63 +57,6 @@ namespace OxyPlot
         internal override double GetBarWidth()
         {
             return this.ColumnWidth;
-        }
-
-        /// <summary>
-        /// Draws the label.
-        /// </summary>
-        /// <param name="rc">
-        /// The rc. 
-        /// </param>
-        /// <param name="clippingRect">
-        /// The clipping rect. 
-        /// </param>
-        /// <param name="rect">
-        /// The rect. 
-        /// </param>
-        /// <param name="value">
-        /// The value. 
-        /// </param>
-        /// <param name="i">
-        /// The i. 
-        /// </param>
-        protected override void DrawLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int i)
-        {
-            var s = StringHelper.Format(
-                this.ActualCulture, this.LabelFormatString, this.GetItem(this.ValidItemsIndexInversion[i]), value);
-            ScreenPoint pt;
-            VerticalTextAlign va;
-            switch (this.LabelPlacement)
-            {
-                case LabelPlacement.Inside:
-                    pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top + this.LabelMargin);
-                    va = VerticalTextAlign.Top;
-                    break;
-                case LabelPlacement.Middle:
-                    pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Bottom + rect.Top) / 2);
-                    va = VerticalTextAlign.Middle;
-                    break;
-                case LabelPlacement.Base:
-                    pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Bottom - this.LabelMargin);
-                    va = VerticalTextAlign.Bottom;
-                    break;
-                default: // outside
-                    pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top - this.LabelMargin);
-                    va = VerticalTextAlign.Bottom;
-                    break;
-            }
-
-            rc.DrawClippedText(
-                clippingRect, 
-                pt, 
-                s, 
-                this.ActualTextColor, 
-                this.ActualFont, 
-                this.ActualFontSize, 
-                this.ActualFontWeight, 
-                0, 
-                HorizontalTextAlign.Center, 
-                va);
         }
 
         /// <summary>
@@ -180,6 +123,63 @@ namespace OxyPlot
         protected override Axis GetValueAxis()
         {
             return this.YAxis;
+        }
+
+        /// <summary>
+        /// Draws the label.
+        /// </summary>
+        /// <param name="rc">
+        /// The rc. 
+        /// </param>
+        /// <param name="clippingRect">
+        /// The clipping rect. 
+        /// </param>
+        /// <param name="rect">
+        /// The rect. 
+        /// </param>
+        /// <param name="value">
+        /// The value. 
+        /// </param>
+        /// <param name="i">
+        /// The i. 
+        /// </param>
+        protected override void RenderLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int i)
+        {
+            var s = StringHelper.Format(
+                this.ActualCulture, this.LabelFormatString, this.GetItem(this.ValidItemsIndexInversion[i]), value);
+            ScreenPoint pt;
+            VerticalTextAlign va;
+            switch (this.LabelPlacement)
+            {
+                case LabelPlacement.Inside:
+                    pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top + this.LabelMargin);
+                    va = VerticalTextAlign.Top;
+                    break;
+                case LabelPlacement.Middle:
+                    pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Bottom + rect.Top) / 2);
+                    va = VerticalTextAlign.Middle;
+                    break;
+                case LabelPlacement.Base:
+                    pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Bottom - this.LabelMargin);
+                    va = VerticalTextAlign.Bottom;
+                    break;
+                default: // outside
+                    pt = new ScreenPoint((rect.Left + rect.Right) / 2, rect.Top - this.LabelMargin);
+                    va = VerticalTextAlign.Bottom;
+                    break;
+            }
+
+            rc.DrawClippedText(
+                clippingRect, 
+                pt, 
+                s, 
+                this.ActualTextColor, 
+                this.ActualFont, 
+                this.ActualFontSize, 
+                this.ActualFontWeight, 
+                0, 
+                HorizontalTextAlign.Center, 
+                va);
         }
 
         #endregion

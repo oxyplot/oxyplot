@@ -31,6 +31,7 @@ namespace OxyPlot
             this.Stroke = OxyColors.Black;
             this.BoxWidth = 20;
             this.StrokeThickness = 1;
+            this.MedianThickness = 2;
             this.OutlierSize = 2;
             this.WhiskerWidth = 0.5;
         }
@@ -56,6 +57,12 @@ namespace OxyPlot
         /// </summary>
         /// <value> The items. </value>
         public IList<BoxPlotItem> Items { get; set; }
+
+        /// <summary>
+        /// Gets or sets the median thickness, relative to the StrokeThickness.
+        /// </summary>
+        /// <value>The median thickness.</value>
+        public double MedianThickness { get; set; }
 
         /// <summary>
         ///   Gets or sets the diameter of the outlier circles (specified in points).
@@ -306,7 +313,7 @@ namespace OxyPlot
                     clippingRect,
                     0,
                     strokeColor,
-                    this.StrokeThickness * 2,
+                    this.StrokeThickness * this.MedianThickness,
                     LineStyle.Solid,
                     OxyPenLineJoin.Miter,
                     true);
@@ -395,7 +402,7 @@ namespace OxyPlot
                         new ScreenPoint(xmid + halfBoxWidth, (yopen + yclose) * 0.5)
                     },
                 strokeColor,
-                strokeThickness,
+                strokeThickness * this.MedianThickness,
                 LineStyleHelper.GetDashArray(LineStyle.Solid),
                 OxyPenLineJoin.Miter,
                 true);

@@ -156,8 +156,6 @@ namespace OxyPlot
                 return null;
             }
 
-            var categoryAxis = this.GetCategoryAxis();
-
             var i = 0;
             foreach (var rectangle in this.ActualBarRectangles)
             {
@@ -167,14 +165,7 @@ namespace OxyPlot
 
                     var dp = new DataPoint(categoryIndex, this.ValidItems[i].Value);
                     var item = this.GetItem(this.ValidItemsIndexInversion[i]);
-
-                    var text = StringHelper.Format(
-                        this.ActualCulture, 
-                        this.TrackerFormatString, 
-                        item, 
-                        this.Title, 
-                        categoryAxis.FormatValueForTracker(categoryIndex), 
-                        this.ValidItems[i].Value);
+                    var text = this.GetTrackerText(item, categoryIndex);
                     return new TrackerHitResult(this, dp, point, item, i, text);
                 }
 
@@ -241,8 +232,6 @@ namespace OxyPlot
                     categoryValue = categoryIndex - 0.5 + categoryAxis.BarOffset[categoryIndex];
                 }
 
-                var rect = this.GetRectangle(baseValue, topValue, categoryValue, categoryValue + actualBarWidth);
-
                 if (this.IsStacked)
                 {
                     if (value < 0)
@@ -255,29 +244,14 @@ namespace OxyPlot
                     }
                 }
 
+                var rect = this.GetRectangle(baseValue, topValue, categoryValue, categoryValue + actualBarWidth);
                 this.ActualBarRectangles.Add(rect);
 
-                // Get Color
-                var actualFillColor = item.Color;
-                if (actualFillColor == null)
-                {
-                    actualFillColor = this.FillColor;
-                    if (value < 0 && this.NegativeFillColor != null)
-                    {
-                        actualFillColor = this.NegativeFillColor;
-                    }
-                }
-
-                rc.DrawClippedRectangleAsPolygon(
-                    rect, 
-                    clippingRect, 
-                    this.GetSelectableFillColor(actualFillColor), 
-                    this.StrokeColor, 
-                    this.StrokeThickness);
+                this.RenderItem(rc, clippingRect, topValue, categoryValue, actualBarWidth, item, rect);
 
                 if (this.LabelFormatString != null)
                 {
-                    this.DrawLabel(rc, clippingRect, rect, value, i);
+                    this.RenderLabel(rc, clippingRect, rect, value, i);
                 }
 
                 if (!this.IsStacked)
@@ -379,7 +353,6 @@ namespace OxyPlot
                 var labels = this.GetCategoryAxis().Labels;
                 for (var i = 0; i < labels.Count; i++)
                 {
-                    // var label = labels[i];
                     int j = 0;
                     var values =
                         this.ValidItems.Where(item => item.GetCategoryIndex(j++) == i).Select(item => item.Value).Concat
@@ -464,27 +437,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Draw the item label.
-        /// </summary>
-        /// <param name="rc">
-        /// The render context 
-        /// </param>
-        /// <param name="clippingRect">
-        /// The clipping rectangle 
-        /// </param>
-        /// <param name="rect">
-        /// The rectangle of the item. 
-        /// </param>
-        /// <param name="value">
-        /// The value of the label. 
-        /// </param>
-        /// <param name="index">
-        /// The index of the bar item. 
-        /// </param>
-        protected abstract void DrawLabel(
-            IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int index);
-
-        /// <summary>
         /// Gets the rectangle for the specified values.
         /// </summary>
         /// <param name="baseValue">
@@ -503,6 +455,38 @@ namespace OxyPlot
         /// The rectangle. 
         /// </returns>
         protected abstract OxyRect GetRectangle(double baseValue, double topValue, double beginValue, double endValue);
+
+        /// <summary>
+        /// Gets the tracker text for the specified item.
+        /// </summary>
+        /// <param name="item">
+        /// The item. 
+        /// </param>
+        /// <param name="categoryIndex">
+        /// Category index of the item. 
+        /// </param>
+        /// <returns>
+        /// The tracker text. 
+        /// </returns>
+        protected virtual string GetTrackerText(object item, int categoryIndex)
+        {
+            var barItem = item as BarItemBase;
+            if (barItem == null)
+            {
+                return null;
+            }
+
+            var categoryAxis = this.GetCategoryAxis();
+
+            var text = StringHelper.Format(
+                this.ActualCulture, 
+                this.TrackerFormatString, 
+                item, 
+                this.Title, 
+                categoryAxis.FormatValueForTracker(categoryIndex), 
+                barItem.Value);
+            return text;
+        }
 
         /// <summary>
         /// Gets the value axis.
@@ -528,6 +512,75 @@ namespace OxyPlot
         {
             return !double.IsNaN(v) && !double.IsInfinity(v);
         }
+
+        /// <summary>
+        /// Renders the bar/column item.
+        /// </summary>
+        /// <param name="rc">
+        /// The render context. 
+        /// </param>
+        /// <param name="clippingRect">
+        /// The clipping rectangle. 
+        /// </param>
+        /// <param name="topValue">
+        /// The end value of the bar. 
+        /// </param>
+        /// <param name="categoryValue">
+        /// The category value. 
+        /// </param>
+        /// <param name="actualBarWidth">
+        /// The actual width of the bar. 
+        /// </param>
+        /// <param name="item">
+        /// The item. 
+        /// </param>
+        /// <param name="rect">
+        /// The rectangle of the bar. 
+        /// </param>
+        protected virtual void RenderItem(
+            IRenderContext rc, 
+            OxyRect clippingRect, 
+            double topValue, 
+            double categoryValue, 
+            double actualBarWidth, 
+            BarItemBase item, 
+            OxyRect rect)
+        {
+            // Get the color of the item
+            var actualFillColor = item.Color;
+            if (actualFillColor == null)
+            {
+                actualFillColor = this.FillColor;
+                if (item.Value < 0 && this.NegativeFillColor != null)
+                {
+                    actualFillColor = this.NegativeFillColor;
+                }
+            }
+
+            rc.DrawClippedRectangleAsPolygon(
+                rect, clippingRect, this.GetSelectableFillColor(actualFillColor), this.StrokeColor, this.StrokeThickness);
+        }
+
+        /// <summary>
+        /// Renders the item label.
+        /// </summary>
+        /// <param name="rc">
+        /// The render context 
+        /// </param>
+        /// <param name="clippingRect">
+        /// The clipping rectangle 
+        /// </param>
+        /// <param name="rect">
+        /// The rectangle of the item. 
+        /// </param>
+        /// <param name="value">
+        /// The value of the label. 
+        /// </param>
+        /// <param name="index">
+        /// The index of the bar item. 
+        /// </param>
+        protected abstract void RenderLabel(
+            IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int index);
 
         #endregion
     }

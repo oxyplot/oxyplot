@@ -3,7 +3,7 @@
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
-//   Specifies that the series can be stacked.
+//   Specifies a series that can be stacked.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

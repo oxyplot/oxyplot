@@ -3,9 +3,10 @@
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
-//   The ErrorColumnSeries is used to create clustered or stacked column charts with an error value.
+//   Represents a series for clustered or stacked column charts with an error value.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
@@ -13,7 +14,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// The ErrorColumnSeries is used to create clustered or stacked column charts with an error value.
+    /// Represents a series for clustered or stacked column charts with an error value.
     /// </summary>
     public class ErrorColumnSeries : ColumnSeries
     {
@@ -24,206 +25,30 @@ namespace OxyPlot
         /// </summary>
         public ErrorColumnSeries()
         {
-            this.TrackerFormatString = "{0}, {1}: {2}, Error: {3}";
+            this.ErrorWidth = 0.4;
+            this.ErrorStrokeThickness = 1;
+            this.TrackerFormatString = "{0}, {1}: {2}, Error: {Error}";
         }
 
         #endregion
 
-        #region Public Methods
+        #region Public Properties
 
         /// <summary>
-        /// Renders the series on the specified rendering context.
+        /// Gets or sets the stroke thickness of the error line.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context. 
-        /// </param>
-        /// <param name="model">
-        /// The model. 
-        /// </param>
-        public override void Render(IRenderContext rc, PlotModel model)
-        {
-            this.ActualBarRectangles = new List<OxyRect>();
-
-            if (this.ValidItems.Count == 0)
-            {
-                return;
-            }
-
-            var clippingRect = this.GetClippingRect();
-            var categoryAxis = this.GetCategoryAxis();
-
-            var actualBarWidth = this.GetActualBarWidth();
-            var stackIndex = this.IsStacked ? categoryAxis.StackIndexMapping[this.StackGroup] : 0;
-            for (var i = 0; i < this.ValidItems.Count; i++)
-            {
-                var item = (ErrorColumnItem) this.ValidItems[i];
-                var categoryIndex = this.ValidItems[i].GetCategoryIndex(i);
-
-                var value = item.Value;
-
-                // Get base- and topValue
-                var baseValue = double.NaN;
-                if (this.IsStacked)
-                {
-                    baseValue = value < 0
-                                    ? categoryAxis.NegativeBaseValues[stackIndex, categoryIndex]
-                                    : categoryAxis.PositiveBaseValues[stackIndex, categoryIndex];
-                }
-
-                if (double.IsNaN(baseValue))
-                {
-                    baseValue = this.BaseValue;
-                }
-
-                var topValue = this.IsStacked ? baseValue + value : value;
-
-                // Calculate offset
-                double categoryValue;
-                if (this.IsStacked)
-                {
-                    categoryValue = categoryAxis.GetCategoryValue(categoryIndex, stackIndex, actualBarWidth);
-                }
-                else
-                {
-                    categoryValue = categoryIndex - 0.5 + categoryAxis.BarOffset[categoryIndex];
-                }
-
-                var rect = this.GetRectangle(baseValue, topValue, categoryValue, categoryValue + actualBarWidth);
-
-                if (this.IsStacked)
-                {
-                    if (value < 0)
-                    {
-                        categoryAxis.NegativeBaseValues[stackIndex, categoryIndex] = topValue;
-                    }
-                    else
-                    {
-                        categoryAxis.PositiveBaseValues[stackIndex, categoryIndex] = topValue;
-                    }
-                }
-
-                this.ActualBarRectangles.Add(rect);
-
-                // Get Color
-                var actualFillColor = item.Color;
-                if (actualFillColor == null)
-                {
-                    actualFillColor = this.FillColor;
-                    if (value < 0 && this.NegativeFillColor != null)
-                    {
-                        actualFillColor = this.NegativeFillColor;
-                    }
-                }
-
-                rc.DrawClippedRectangleAsPolygon(
-                    rect,
-                    clippingRect,
-                    this.GetSelectableFillColor(actualFillColor),
-                    this.StrokeColor,
-                    this.StrokeThickness);
-
-                // Draw Error
-                var lowerValue = topValue - item.ErrorValue;
-                var upperValue = topValue + item.ErrorValue;
-                var leftValue = categoryValue + (0.3 * actualBarWidth);
-                var middleValue = categoryValue + (0.5 * actualBarWidth);
-                var rightValue = categoryValue + (0.7 * actualBarWidth);
-
-                var lowerErrorPoint = this.Transform(middleValue, lowerValue);
-                var upperErrorPoint = this.Transform(middleValue, upperValue);
-                rc.DrawClippedLine(
-                    new List<ScreenPoint> { lowerErrorPoint, upperErrorPoint },
-                    clippingRect,
-                    0,
-                    StrokeColor,
-                    this.StrokeThickness,
-                    LineStyle.Solid,
-                    OxyPenLineJoin.Miter,
-                    true);
-
-                var lowerLeftErrorPoint = this.Transform(leftValue, lowerValue);
-                var lowerRightErrorPoint = this.Transform(rightValue, lowerValue);
-                rc.DrawClippedLine(
-                   new List<ScreenPoint> { lowerLeftErrorPoint, lowerRightErrorPoint },
-                   clippingRect,
-                   0,
-                   StrokeColor,
-                   this.StrokeThickness,
-                   LineStyle.Solid,
-                   OxyPenLineJoin.Miter,
-                   true);
-
-                var upperLeftErrorPoint = this.Transform(leftValue, upperValue);
-                var upperRightErrorPoint = this.Transform(rightValue, upperValue);
-                rc.DrawClippedLine(
-                   new List<ScreenPoint> { upperLeftErrorPoint, upperRightErrorPoint },
-                   clippingRect,
-                   0,
-                   StrokeColor,
-                   this.StrokeThickness,
-                   LineStyle.Solid,
-                   OxyPenLineJoin.Miter,
-                   true);
-
-                if (this.LabelFormatString != null)
-                {
-                    this.DrawLabel(rc, clippingRect, rect, value, i);
-                }
-
-                if (!this.IsStacked)
-                {
-                    categoryAxis.BarOffset[categoryIndex] += actualBarWidth;
-                }
-            }
-        }
+        /// <value>
+        /// The stroke thickness of the error line. 
+        /// </value>
+        public double ErrorStrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets the nearest point.
+        /// Gets or sets the width of the error end lines.
         /// </summary>
-        /// <param name="point">
-        /// The point. 
-        /// </param>
-        /// <param name="interpolate">
-        /// interpolate if set to <c>true</c> . 
-        /// </param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit. 
-        /// </returns>
-        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
-        {
-            if (this.ActualBarRectangles == null)
-            {
-                return null;
-            }
-
-            var categoryAxis = this.GetCategoryAxis();
-
-            var i = 0;
-            foreach (var rectangle in this.ActualBarRectangles)
-            {
-                if (rectangle.Contains(point))
-                {
-                    var categoryIndex = this.ValidItems[i].GetCategoryIndex(i);
-
-                    var dp = new DataPoint(categoryIndex, this.ValidItems[i].Value);
-                    var item = this.GetItem(this.ValidItemsIndexInversion[i]);
-
-                    var text = StringHelper.Format(
-                        this.ActualCulture,
-                        this.TrackerFormatString,
-                        item,
-                        this.Title,
-                        categoryAxis.FormatValueForTracker(categoryIndex),
-                        this.ValidItems[i].Value,
-                        ((ErrorColumnItem)this.ValidItems[i]).ErrorValue);
-                    return new TrackerHitResult(this, dp, point, item, i, text);
-                }
-
-                i++;
-            }
-
-            return null;
-        }
+        /// <value>
+        /// The width of the error end lines. 
+        /// </value>
+        public double ErrorWidth { get; set; }
 
         #endregion
 
@@ -236,6 +61,7 @@ namespace OxyPlot
         {
             base.UpdateMaxMin();
 
+            //// Todo: refactor (lots of duplicate code here)
             if (this.ValidItems == null || this.ValidItems.Count == 0)
             {
                 return;
@@ -249,12 +75,11 @@ namespace OxyPlot
                 var labels = this.GetCategoryAxis().Labels;
                 for (var i = 0; i < labels.Count; i++)
                 {
-                    // var label = labels[i];
                     int j = 0;
                     var items = this.ValidItems.Where(item => item.GetCategoryIndex(j++) == i).ToList();
                     var values = items.Select(item => item.Value).Concat(new[] { 0d }).ToList();
                     var minTemp = values.Where(v => v <= 0).Sum();
-                    var maxTemp = values.Where(v => v >= 0).Sum() + ((ErrorColumnItem)items.Last()).ErrorValue;
+                    var maxTemp = values.Where(v => v >= 0).Sum() + ((ErrorColumnItem)items.Last()).Error;
 
                     int stackIndex = categoryAxis.StackIndexMapping[this.StackGroup];
                     var stackedMinValue = categoryAxis.MinValue[stackIndex, i];
@@ -279,12 +104,12 @@ namespace OxyPlot
             }
             else
             {
-                var valuesMin = this.ValidItems.
-                    Select(item => item.Value - ((ErrorColumnItem)item).ErrorValue).
-                    Concat(new[] { 0d }).ToList();
-                var valuesMax = this.ValidItems.
-                    Select(item => item.Value + ((ErrorColumnItem)item).ErrorValue).
-                    Concat(new[] { 0d }).ToList();
+                var valuesMin =
+                    this.ValidItems.Select(item => item.Value - ((ErrorColumnItem)item).Error).Concat(new[] { 0d }).
+                        ToList();
+                var valuesMax =
+                    this.ValidItems.Select(item => item.Value + ((ErrorColumnItem)item).Error).Concat(new[] { 0d }).
+                        ToList();
                 minValue = valuesMin.Min();
                 maxValue = valuesMax.Max();
                 if (this.BaseValue < minValue)
@@ -309,6 +134,93 @@ namespace OxyPlot
                 this.MinX = minValue;
                 this.MaxX = maxValue;
             }
+        }
+
+        /// <summary>
+        /// Renders the bar/column item.
+        /// </summary>
+        /// <param name="rc">
+        /// The render context. 
+        /// </param>
+        /// <param name="clippingRect">
+        /// The clipping rectangle. 
+        /// </param>
+        /// <param name="topValue">
+        /// The end value of the bar. 
+        /// </param>
+        /// <param name="categoryValue">
+        /// The category value. 
+        /// </param>
+        /// <param name="actualBarWidth">
+        /// The actual width of the bar. 
+        /// </param>
+        /// <param name="item">
+        /// The item. 
+        /// </param>
+        /// <param name="rect">
+        /// The rectangle of the bar. 
+        /// </param>
+        protected override void RenderItem(
+            IRenderContext rc, 
+            OxyRect clippingRect, 
+            double topValue, 
+            double categoryValue, 
+            double actualBarWidth, 
+            BarItemBase item, 
+            OxyRect rect)
+        {
+            base.RenderItem(rc, clippingRect, topValue, categoryValue, actualBarWidth, item, rect);
+
+            var errorItem = item as ErrorColumnItem;
+            if (errorItem == null)
+            {
+                return;
+            }
+
+            // Render the error
+            var lowerValue = topValue - errorItem.Error;
+            var upperValue = topValue + errorItem.Error;
+            var left = 0.5 - this.ErrorWidth / 2;
+            var right = 0.5 + this.ErrorWidth / 2;
+            var leftValue = categoryValue + (left * actualBarWidth);
+            var middleValue = categoryValue + (0.5 * actualBarWidth);
+            var rightValue = categoryValue + (right * actualBarWidth);
+
+            var lowerErrorPoint = this.Transform(middleValue, lowerValue);
+            var upperErrorPoint = this.Transform(middleValue, upperValue);
+            rc.DrawClippedLine(
+                new List<ScreenPoint> { lowerErrorPoint, upperErrorPoint }, 
+                clippingRect, 
+                0, 
+                this.StrokeColor, 
+                this.ErrorStrokeThickness, 
+                LineStyle.Solid, 
+                OxyPenLineJoin.Miter, 
+                true);
+
+            var lowerLeftErrorPoint = this.Transform(leftValue, lowerValue);
+            var lowerRightErrorPoint = this.Transform(rightValue, lowerValue);
+            rc.DrawClippedLine(
+                new List<ScreenPoint> { lowerLeftErrorPoint, lowerRightErrorPoint }, 
+                clippingRect, 
+                0, 
+                this.StrokeColor, 
+                this.ErrorStrokeThickness, 
+                LineStyle.Solid, 
+                OxyPenLineJoin.Miter, 
+                true);
+
+            var upperLeftErrorPoint = this.Transform(leftValue, upperValue);
+            var upperRightErrorPoint = this.Transform(rightValue, upperValue);
+            rc.DrawClippedLine(
+                new List<ScreenPoint> { upperLeftErrorPoint, upperRightErrorPoint }, 
+                clippingRect, 
+                0, 
+                this.StrokeColor, 
+                this.ErrorStrokeThickness, 
+                LineStyle.Solid, 
+                OxyPenLineJoin.Miter, 
+                true);
         }
 
         #endregion

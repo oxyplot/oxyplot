@@ -3,7 +3,7 @@
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
-//   The IntervalBarSeries is used to create bars that has to/from values.
+//   Represents a series for bar charts defined by to/from values.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// The IntervalBarSeries is used to create bars that has to/from values.
+    /// Represents a series for bar charts defined by to/from values.
     /// </summary>
     public class IntervalBarSeries : CategorizedSeries, IStackableSeries
     {

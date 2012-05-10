@@ -3,7 +3,7 @@
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
-//   Base class that provides common properties and methods for the BarSeries and ColumnSeries.
+//   Generic base class that provides common properties and methods for the BarSeries and ColumnSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
