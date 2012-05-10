@@ -20,7 +20,7 @@ namespace ExampleLibrary
         public static PlotModel LineSeries1()
         {
             var model = new PlotModel("LineSeries, 100k points");
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !MONO
             var watch = new Stopwatch();
             model.Updating += (sender, args) => watch.Restart();
             model.Updated += (sender, args) => Trace.WriteLine("Updated in " + watch.ElapsedMilliseconds + " ms");
