@@ -461,7 +461,7 @@ namespace OxyPlot
             }
 
             // Get DataPoints from the items in ItemsSource 
-            // if they implement IDataPointProvider
+            // if they implement IScatterPointProvider
             // If DataFields are set, this is not used
             /*if (DataFieldX == null || DataFieldY == null)
             {
