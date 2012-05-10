@@ -3,7 +3,7 @@
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
-//   The TornadoBarSeries is used to create tornado plots.
+//   Represents a series that can be used to create tornado plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// The TornadoBarSeries is used to create tornado plots.
+    /// Represents a series that can be used to create tornado plots.
     /// </summary>
     /// <remarks>
     /// See http://en.wikipedia.org/wiki/Tornado_diagram.

@@ -115,7 +115,9 @@
     <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
     <Compile Include="Series\BarSeries\CategorizedItem.cs" />
     <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
+    <Compile Include="Series\BarSeries\ErrorColumnItem.cs" />
     <Compile Include="Series\BarSeries\ColumnItem.cs" />
+    <Compile Include="Series\BarSeries\ErrorColumnSeries.cs" />
     <Compile Include="Series\BarSeries\IStackableSeries.cs" />
     <Compile Include="Series\BoxPlotItem.cs" />
     <Compile Include="Series\BoxPlotSeries.cs" />

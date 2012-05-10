@@ -3,7 +3,7 @@
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
-//   The RectangleBarSeries is used to create bars that has to/from values.
+//   Represents a series for bar charts where the bars are defined by rectangles.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// The RectangleBarSeries is used to create bars that has to/from values.
+    /// Represents a series for bar charts where the bars are defined by rectangles.
     /// </summary>
     public class RectangleBarSeries : XYAxisSeries
     {

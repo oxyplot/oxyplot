@@ -53,7 +53,7 @@ namespace OxyPlot
         /// <returns>
         /// C# code. 
         /// </returns>
-        public string ToCode()
+        public virtual string ToCode()
         {
             if (this.Color != null)
             {

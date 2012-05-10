@@ -23,16 +23,16 @@ namespace ExampleLibrary
             };
 
             var s1 = new ErrorColumnSeries { Title = "Series 1", IsStacked = false, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s1.Items.Add(new ErrorColumnItem { Value = 25, ErrorValue = 2 });
-            s1.Items.Add(new ErrorColumnItem { Value = 137, ErrorValue = 25 });
-            s1.Items.Add(new ErrorColumnItem { Value = 18, ErrorValue = 4 });
-            s1.Items.Add(new ErrorColumnItem { Value = 40, ErrorValue = 29 });
+            s1.Items.Add(new ErrorColumnItem { Value = 25, Error = 2 });
+            s1.Items.Add(new ErrorColumnItem { Value = 137, Error = 25 });
+            s1.Items.Add(new ErrorColumnItem { Value = 18, Error = 4 });
+            s1.Items.Add(new ErrorColumnItem { Value = 40, Error = 29 });
 
             var s2 = new ErrorColumnSeries { Title = "Series 2", IsStacked = false, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
-            s2.Items.Add(new ErrorColumnItem { Value = 35, ErrorValue = 20 });
-            s2.Items.Add(new ErrorColumnItem { Value = 17, ErrorValue = 7 });
-            s2.Items.Add(new ErrorColumnItem { Value = 118, ErrorValue = 44 });
-            s2.Items.Add(new ErrorColumnItem { Value = 49, ErrorValue = 29 });
+            s2.Items.Add(new ErrorColumnItem { Value = 35, Error = 20 });
+            s2.Items.Add(new ErrorColumnItem { Value = 17, Error = 7 });
+            s2.Items.Add(new ErrorColumnItem { Value = 118, Error = 44 });
+            s2.Items.Add(new ErrorColumnItem { Value = 49, Error = 29 });
 
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
             categoryAxis.Labels.Add("Category A");
@@ -48,5 +48,14 @@ namespace ExampleLibrary
 
             return model;
         }
+
+        //[Example("ErrorColumnSeries (stacked)")]
+        //public static PlotModel GetErrorColumnSeriesStacked()
+        //{
+        //    var model = GetErrorColumnSeries();
+        //    foreach (ErrorColumnSeries s in model.Series)
+        //        s.IsStacked = true;
+        //    return model;
+        //}
     }
 }

@@ -3,7 +3,7 @@
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
-//   Represents an interval in an IntervalBarSeries.
+//   Represents an item in an IntervalBarSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
