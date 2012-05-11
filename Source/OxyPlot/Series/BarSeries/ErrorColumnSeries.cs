@@ -161,12 +161,12 @@ namespace OxyPlot
         /// The rectangle of the bar. 
         /// </param>
         protected override void RenderItem(
-            IRenderContext rc, 
-            OxyRect clippingRect, 
-            double topValue, 
-            double categoryValue, 
-            double actualBarWidth, 
-            BarItemBase item, 
+            IRenderContext rc,
+            OxyRect clippingRect,
+            double topValue,
+            double categoryValue,
+            double actualBarWidth,
+            BarItemBase item,
             OxyRect rect)
         {
             base.RenderItem(rc, clippingRect, topValue, categoryValue, actualBarWidth, item, rect);
@@ -189,38 +189,41 @@ namespace OxyPlot
             var lowerErrorPoint = this.Transform(middleValue, lowerValue);
             var upperErrorPoint = this.Transform(middleValue, upperValue);
             rc.DrawClippedLine(
-                new List<ScreenPoint> { lowerErrorPoint, upperErrorPoint }, 
-                clippingRect, 
-                0, 
-                this.StrokeColor, 
-                this.ErrorStrokeThickness, 
-                LineStyle.Solid, 
-                OxyPenLineJoin.Miter, 
+                new List<ScreenPoint> { lowerErrorPoint, upperErrorPoint },
+                clippingRect,
+                0,
+                this.StrokeColor,
+                this.ErrorStrokeThickness,
+                LineStyle.Solid,
+                OxyPenLineJoin.Miter,
                 true);
 
-            var lowerLeftErrorPoint = this.Transform(leftValue, lowerValue);
-            var lowerRightErrorPoint = this.Transform(rightValue, lowerValue);
-            rc.DrawClippedLine(
-                new List<ScreenPoint> { lowerLeftErrorPoint, lowerRightErrorPoint }, 
-                clippingRect, 
-                0, 
-                this.StrokeColor, 
-                this.ErrorStrokeThickness, 
-                LineStyle.Solid, 
-                OxyPenLineJoin.Miter, 
-                true);
+            if (this.ErrorWidth > 0)
+            {
+                var lowerLeftErrorPoint = this.Transform(leftValue, lowerValue);
+                var lowerRightErrorPoint = this.Transform(rightValue, lowerValue);
+                rc.DrawClippedLine(
+                    new List<ScreenPoint> { lowerLeftErrorPoint, lowerRightErrorPoint },
+                    clippingRect,
+                    0,
+                    this.StrokeColor,
+                    this.ErrorStrokeThickness,
+                    LineStyle.Solid,
+                    OxyPenLineJoin.Miter,
+                    true);
 
-            var upperLeftErrorPoint = this.Transform(leftValue, upperValue);
-            var upperRightErrorPoint = this.Transform(rightValue, upperValue);
-            rc.DrawClippedLine(
-                new List<ScreenPoint> { upperLeftErrorPoint, upperRightErrorPoint }, 
-                clippingRect, 
-                0, 
-                this.StrokeColor, 
-                this.ErrorStrokeThickness, 
-                LineStyle.Solid, 
-                OxyPenLineJoin.Miter, 
-                true);
+                var upperLeftErrorPoint = this.Transform(leftValue, upperValue);
+                var upperRightErrorPoint = this.Transform(rightValue, upperValue);
+                rc.DrawClippedLine(
+                    new List<ScreenPoint> { upperLeftErrorPoint, upperRightErrorPoint },
+                    clippingRect,
+                    0,
+                    this.StrokeColor,
+                    this.ErrorStrokeThickness,
+                    LineStyle.Solid,
+                    OxyPenLineJoin.Miter,
+                    true);
+            }
         }
 
         #endregion

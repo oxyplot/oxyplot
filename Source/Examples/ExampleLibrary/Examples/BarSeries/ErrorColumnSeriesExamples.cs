@@ -49,6 +49,19 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("ErrorColumnSeries (thick error lines)")]
+        public static PlotModel GetErrorColumnSeriesStacked()
+        {
+            var model = GetErrorColumnSeries();
+            foreach (ErrorColumnSeries s in model.Series)
+            {
+                s.ErrorWidth = 0;
+                s.ErrorStrokeThickness = 4;
+            }
+
+            return model;
+        }
+
         //[Example("ErrorColumnSeries (stacked)")]
         //public static PlotModel GetErrorColumnSeriesStacked()
         //{

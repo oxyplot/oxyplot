@@ -2,6 +2,9 @@
 // <copyright file="BoxPlotSeries.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Represents a series for box plots.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
@@ -17,23 +20,27 @@ namespace OxyPlot
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoxPlotSeries"/> class. 
+        /// Initializes a new instance of the <see cref="BoxPlotSeries"/> class.
         /// </summary>
         public BoxPlotSeries()
         {
             this.Items = new List<BoxPlotItem>();
             this.TrackerFormatString =
                 "X: {1:0.00}\nUpper Whisker: {2:0.00}\nThird Quartil: {3:0.00}\nMedian: {4:0.00}\nFirst Quartil: {5:0.00}\nLower Whisker: {6:0.00}";
-            this.OutlierTrackerFormatString =
-                "X: {1:0.00}\nY: {2:0.00}";
+            this.OutlierTrackerFormatString = "X: {1:0.00}\nY: {2:0.00}";
             this.Title = null;
             this.Fill = null;
             this.Stroke = OxyColors.Black;
-            this.BoxWidth = 20;
+            this.BoxWidth = 0.3;
             this.StrokeThickness = 1;
             this.MedianThickness = 2;
             this.OutlierSize = 2;
+            this.OutlierType = MarkerType.Circle;
+            this.MedianPointSize = 2;
             this.WhiskerWidth = 0.5;
+            this.LineStyle = LineStyle.Solid;
+            this.ShowMedianAsDot = false;
+            this.ShowBox = true;
         }
 
         #endregion
@@ -41,40 +48,66 @@ namespace OxyPlot
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets the width of the boxes (specified in x-axis units).
+        /// Gets or sets the width of the boxes (specified in x-axis units).
         /// </summary>
-        /// <value> The width of the boxes. </value>
+        /// <value>
+        /// The width of the boxes. 
+        /// </value>
         public double BoxWidth { get; set; }
 
         /// <summary>
-        ///   Gets or sets the fill color. If null, this color will be automatically set.
+        /// Gets or sets the fill color. If null, this color will be automatically set.
         /// </summary>
-        /// <value> The fill color. </value>
+        /// <value>
+        /// The fill color. 
+        /// </value>
         public OxyColor Fill { get; set; }
 
         /// <summary>
-        ///   Gets or sets the box plot items.
+        /// Gets or sets the box plot items.
         /// </summary>
-        /// <value> The items. </value>
+        /// <value>
+        /// The items. 
+        /// </value>
         public IList<BoxPlotItem> Items { get; set; }
+
+        /// <summary>
+        /// Gets or sets the line style.
+        /// </summary>
+        /// <value>
+        /// The line style. 
+        /// </value>
+        public LineStyle LineStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the median point.
+        /// </summary>
+        /// <remarks>
+        /// This proeprty is only used when MedianStyle = Dot.
+        /// </remarks>
+        public double MedianPointSize { get; set; }
 
         /// <summary>
         /// Gets or sets the median thickness, relative to the StrokeThickness.
         /// </summary>
-        /// <value>The median thickness.</value>
+        /// <value>
+        /// The median thickness. 
+        /// </value>
         public double MedianThickness { get; set; }
 
         /// <summary>
-        ///   Gets or sets the diameter of the outlier circles (specified in points).
+        /// Gets or sets the diameter of the outlier circles (specified in points).
         /// </summary>
-        /// <value> The size of the outlier. </value>
+        /// <value>
+        /// The size of the outlier. 
+        /// </value>
         public double OutlierSize { get; set; }
 
         /// <summary>
         /// Gets or sets the tracker format string for the outliers.
         /// </summary>
         /// <value>
-        /// The tracker format string for the outliers.
+        /// The tracker format string for the outliers. 
         /// </value>
         /// <remarks>
         /// Use {0} for series title, {1} for x- and {2} for y-value.
@@ -82,21 +115,45 @@ namespace OxyPlot
         public string OutlierTrackerFormatString { get; set; }
 
         /// <summary>
-        ///   Gets or sets the stroke.
+        /// Gets or sets the type of the outlier.
         /// </summary>
-        /// <value> The stroke. </value>
+        /// <value>
+        /// The type of the outlier. 
+        /// </value>
+        public MarkerType OutlierType { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to show the boxes.
+        /// </summary>
+        public bool ShowBox { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to show the median as a dot.
+        /// </summary>
+        public bool ShowMedianAsDot { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stroke.
+        /// </summary>
+        /// <value>
+        /// The stroke. 
+        /// </value>
         public OxyColor Stroke { get; set; }
 
         /// <summary>
-        ///   Gets or sets the stroke thickness.
+        /// Gets or sets the stroke thickness.
         /// </summary>
-        /// <value> The stroke thickness. </value>
+        /// <value>
+        /// The stroke thickness. 
+        /// </value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        ///   Gets or sets the width of the whiskers (relative to the BoxWidth).
+        /// Gets or sets the width of the whiskers (relative to the BoxWidth).
         /// </summary>
-        /// <value> The width of the whiskers. </value>
+        /// <value>
+        /// The width of the whiskers. 
+        /// </value>
         public double WhiskerWidth { get; set; }
 
         #endregion
@@ -131,11 +188,11 @@ namespace OxyPlot
                         result.Position = sp;
                         result.Item = item;
                         result.Text = StringHelper.Format(
-                            this.ActualCulture,
-                            this.OutlierTrackerFormatString,
-                            item,
-                            this.Title,
-                            result.DataPoint.X,
+                            this.ActualCulture, 
+                            this.OutlierTrackerFormatString, 
+                            item, 
+                            this.Title, 
+                            result.DataPoint.X, 
                             outlier);
                         minimumDistance = d;
                     }
@@ -150,15 +207,15 @@ namespace OxyPlot
                     result.Item = item;
 
                     result.Text = StringHelper.Format(
-                        this.ActualCulture,
-                        this.TrackerFormatString,
-                        item,
-                        this.Title,
-                        result.DataPoint.X,
-                        item.UpperWhisker,
-                        item.BoxTop,
-                        item.Median,
-                        item.BoxBottom,
+                        this.ActualCulture, 
+                        this.TrackerFormatString, 
+                        item, 
+                        this.Title, 
+                        result.DataPoint.X, 
+                        item.UpperWhisker, 
+                        item.BoxTop, 
+                        item.Median, 
+                        item.BoxBottom, 
                         item.LowerWhisker);
 
                     minimumDistance = 0;
@@ -176,15 +233,15 @@ namespace OxyPlot
                     result.Position = this.Transform(result.DataPoint);
                     result.Item = item;
                     result.Text = StringHelper.Format(
-                        this.ActualCulture,
-                        this.TrackerFormatString,
-                        item,
-                        this.Title,
-                        result.DataPoint.X,
-                        item.UpperWhisker,
-                        item.BoxTop,
-                        item.Median,
-                        item.BoxBottom,
+                        this.ActualCulture, 
+                        this.TrackerFormatString, 
+                        item, 
+                        this.Title, 
+                        result.DataPoint.X, 
+                        item.UpperWhisker, 
+                        item.BoxTop, 
+                        item.Median, 
+                        item.BoxBottom, 
                         item.LowerWhisker);
                     minimumDistance = d2;
                 }
@@ -255,80 +312,104 @@ namespace OxyPlot
                     outlierScreenPoints.Add(screenPoint);
                 }
 
-                // Draw the whiskers
                 var topWhiskerTop = this.Transform(item.X, item.UpperWhisker);
                 var topWhiskerBottom = this.Transform(item.X, item.BoxTop);
-                var topWhiskerLine1 = this.Transform(item.X - halfWhiskerWidth, item.UpperWhisker);
-                var topWhiskerLine2 = this.Transform(item.X + halfWhiskerWidth, item.UpperWhisker);
                 var bottomWhiskerTop = this.Transform(item.X, item.BoxBottom);
                 var bottomWhiskerBottom = this.Transform(item.X, item.LowerWhisker);
-                var bottomWhiskerLine1 = this.Transform(item.X - halfWhiskerWidth, item.LowerWhisker);
-                var bottomWhiskerLine2 = this.Transform(item.X + halfWhiskerWidth, item.LowerWhisker);
                 rc.DrawClippedLine(
-                    new[] { topWhiskerTop, topWhiskerBottom },
-                    clippingRect,
-                    0,
-                    strokeColor,
-                    this.StrokeThickness,
-                    LineStyle.Dash,
-                    OxyPenLineJoin.Miter,
+                    new[] { topWhiskerTop, topWhiskerBottom }, 
+                    clippingRect, 
+                    0, 
+                    strokeColor, 
+                    this.StrokeThickness, 
+                    this.LineStyle, 
+                    OxyPenLineJoin.Miter, 
                     true);
                 rc.DrawClippedLine(
-                    new[] { bottomWhiskerTop, bottomWhiskerBottom },
-                    clippingRect,
-                    0,
-                    strokeColor,
-                    this.StrokeThickness,
-                    LineStyle.Dash,
-                    OxyPenLineJoin.Miter,
-                    true);
-                rc.DrawClippedLine(
-                    new[] { topWhiskerLine1, topWhiskerLine2 },
-                    clippingRect,
-                    0,
-                    strokeColor,
-                    this.StrokeThickness,
-                    LineStyle.Solid,
-                    OxyPenLineJoin.Miter,
-                    true);
-                rc.DrawClippedLine(
-                    new[] { bottomWhiskerLine1, bottomWhiskerLine2 },
-                    clippingRect,
-                    0,
-                    strokeColor,
-                    this.StrokeThickness,
-                    LineStyle.Solid,
-                    OxyPenLineJoin.Miter,
+                    new[] { bottomWhiskerTop, bottomWhiskerBottom }, 
+                    clippingRect, 
+                    0, 
+                    strokeColor, 
+                    this.StrokeThickness, 
+                    this.LineStyle, 
+                    OxyPenLineJoin.Miter, 
                     true);
 
-                // Draw the box
-                var rect = this.GetBoxRect(item);
-                rc.DrawClippedRectangleAsPolygon(rect, clippingRect, fillColor, strokeColor, this.StrokeThickness);
+                // Draw the whiskers
+                if (this.WhiskerWidth > 0)
+                {
+                    var topWhiskerLine1 = this.Transform(item.X - halfWhiskerWidth, item.UpperWhisker);
+                    var topWhiskerLine2 = this.Transform(item.X + halfWhiskerWidth, item.UpperWhisker);
+                    var bottomWhiskerLine1 = this.Transform(item.X - halfWhiskerWidth, item.LowerWhisker);
+                    var bottomWhiskerLine2 = this.Transform(item.X + halfWhiskerWidth, item.LowerWhisker);
 
-                // Draw the median
-                var medianLeft = this.Transform(item.X - halfBoxWidth, item.Median);
-                var medianRight = this.Transform(item.X + halfBoxWidth, item.Median);
-                rc.DrawClippedLine(
-                    new[] { medianLeft, medianRight },
-                    clippingRect,
-                    0,
-                    strokeColor,
-                    this.StrokeThickness * this.MedianThickness,
-                    LineStyle.Solid,
-                    OxyPenLineJoin.Miter,
-                    true);
+                    rc.DrawClippedLine(
+                        new[] { topWhiskerLine1, topWhiskerLine2 }, 
+                        clippingRect, 
+                        0, 
+                        strokeColor, 
+                        this.StrokeThickness, 
+                        LineStyle.Solid, 
+                        OxyPenLineJoin.Miter, 
+                        true);
+                    rc.DrawClippedLine(
+                        new[] { bottomWhiskerLine1, bottomWhiskerLine2 }, 
+                        clippingRect, 
+                        0, 
+                        strokeColor, 
+                        this.StrokeThickness, 
+                        LineStyle.Solid, 
+                        OxyPenLineJoin.Miter, 
+                        true);
+                }
+
+                if (this.ShowBox)
+                {
+                    // Draw the box
+                    var rect = this.GetBoxRect(item);
+                    rc.DrawClippedRectangleAsPolygon(rect, clippingRect, fillColor, strokeColor, this.StrokeThickness);
+                }
+
+                if (!this.ShowMedianAsDot)
+                {
+                    // Draw the median line
+                    var medianLeft = this.Transform(item.X - halfBoxWidth, item.Median);
+                    var medianRight = this.Transform(item.X + halfBoxWidth, item.Median);
+                    rc.DrawClippedLine(
+                        new[] { medianLeft, medianRight }, 
+                        clippingRect, 
+                        0, 
+                        strokeColor, 
+                        this.StrokeThickness * this.MedianThickness, 
+                        LineStyle.Solid, 
+                        OxyPenLineJoin.Miter, 
+                        true);
+                }
+                else
+                {
+                    var mc = this.Transform(item.X, item.Median);
+                    if (clippingRect.Contains(mc))
+                    {
+                        var ellipseRect = new OxyRect(
+                            mc.X - this.MedianPointSize, 
+                            mc.Y - this.MedianPointSize, 
+                            this.MedianPointSize * 2, 
+                            this.MedianPointSize * 2);
+                        rc.DrawEllipse(ellipseRect, fillColor, null, 0);
+                    }
+                }
             }
 
             // Draw the outlier(s)
             var markerSizes = outlierScreenPoints.Select(o => this.OutlierSize).ToList();
             rc.DrawMarkers(
-                outlierScreenPoints,
-                clippingRect,
-                MarkerType.Circle,
-                null,
-                markerSizes,
-                fillColor,
-                strokeColor,
+                outlierScreenPoints, 
+                clippingRect, 
+                this.OutlierType, 
+                null, 
+                markerSizes, 
+                fillColor, 
+                strokeColor, 
                 this.StrokeThickness);
         }
 
@@ -344,8 +425,9 @@ namespace OxyPlot
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;
-            double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
-            double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
+            double ybottom = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
+            double ytop = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
+            double ymid = (ybottom + ytop) * 0.5;
 
             var halfBoxWidth = legendBox.Width * 0.24;
             var halfWhiskerWidth = halfBoxWidth * this.WhiskerWidth;
@@ -354,58 +436,80 @@ namespace OxyPlot
             var fillColor = this.GetSelectableFillColor(this.Fill);
 
             rc.DrawLine(
-                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
-                strokeColor,
-                strokeThickness,
-                LineStyleHelper.GetDashArray(LineStyle.Solid),
-                OxyPenLineJoin.Miter,
+                new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, ytop) }, 
+                strokeColor, 
+                strokeThickness, 
+                LineStyleHelper.GetDashArray(LineStyle.Solid), 
+                OxyPenLineJoin.Miter, 
                 true);
 
-            // top whisker
             rc.DrawLine(
-                new[]
-                    {
-                        new ScreenPoint(xmid - halfWhiskerWidth - 1, legendBox.Bottom), 
-                        new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Bottom)
-                    },
-                strokeColor,
-                strokeThickness,
-                LineStyleHelper.GetDashArray(LineStyle.Solid),
-                OxyPenLineJoin.Miter,
+                new[] { new ScreenPoint(xmid, ybottom), new ScreenPoint(xmid, legendBox.Bottom) }, 
+                strokeColor, 
+                strokeThickness, 
+                LineStyleHelper.GetDashArray(LineStyle.Solid), 
+                OxyPenLineJoin.Miter, 
                 true);
 
-            // bottom whisker
-            rc.DrawLine(
-                new[]
-                    {
-                        new ScreenPoint(xmid - halfWhiskerWidth - 1, legendBox.Top), 
-                        new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Top)
-                    },
-                strokeColor,
-                strokeThickness,
-                LineStyleHelper.GetDashArray(LineStyle.Solid),
-                OxyPenLineJoin.Miter,
-                true);
+            if (this.WhiskerWidth > 0)
+            {
+                // top whisker
+                rc.DrawLine(
+                    new[]
+                        {
+                            new ScreenPoint(xmid - halfWhiskerWidth - 1, legendBox.Bottom), 
+                            new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Bottom)
+                        }, 
+                    strokeColor, 
+                    strokeThickness, 
+                    LineStyleHelper.GetDashArray(LineStyle.Solid), 
+                    OxyPenLineJoin.Miter, 
+                    true);
 
-            // box
-            rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - halfBoxWidth, yclose, 2 * halfBoxWidth, yopen - yclose),
-                fillColor,
-                strokeColor,
-                strokeThickness);
+                // bottom whisker
+                rc.DrawLine(
+                    new[]
+                        {
+                            new ScreenPoint(xmid - halfWhiskerWidth - 1, legendBox.Top), 
+                            new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Top)
+                        }, 
+                    strokeColor, 
+                    strokeThickness, 
+                    LineStyleHelper.GetDashArray(LineStyle.Solid), 
+                    OxyPenLineJoin.Miter, 
+                    true);
+            }
+
+            if (this.ShowBox)
+            {
+                // box
+                rc.DrawRectangleAsPolygon(
+                    new OxyRect(xmid - halfBoxWidth, ytop, 2 * halfBoxWidth, ybottom - ytop), 
+                    fillColor, 
+                    strokeColor, 
+                    strokeThickness);
+            }
 
             // median
-            rc.DrawLine(
-                new[]
-                    {
-                        new ScreenPoint(xmid - halfBoxWidth, (yopen + yclose) * 0.5), 
-                        new ScreenPoint(xmid + halfBoxWidth, (yopen + yclose) * 0.5)
-                    },
-                strokeColor,
-                strokeThickness * this.MedianThickness,
-                LineStyleHelper.GetDashArray(LineStyle.Solid),
-                OxyPenLineJoin.Miter,
-                true);
+            if (!this.ShowMedianAsDot)
+            {
+                rc.DrawLine(
+                    new[] { new ScreenPoint(xmid - halfBoxWidth, ymid), new ScreenPoint(xmid + halfBoxWidth, ymid) }, 
+                    strokeColor, 
+                    strokeThickness * this.MedianThickness, 
+                    LineStyleHelper.GetDashArray(LineStyle.Solid), 
+                    OxyPenLineJoin.Miter, 
+                    true);
+            }
+            else
+            {
+                var ellipseRect = new OxyRect(
+                    xmid - this.MedianPointSize, 
+                    ymid - this.MedianPointSize, 
+                    this.MedianPointSize * 2, 
+                    this.MedianPointSize * 2);
+                rc.DrawEllipse(ellipseRect, fillColor, null);
+            }
         }
 
         #endregion
