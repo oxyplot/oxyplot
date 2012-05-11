@@ -20,10 +20,6 @@ namespace ExampleLibrary
             var s1 = new BoxPlotSeries
                 {
                     Title = "BoxPlotSeries",
-                    Fill = OxyColors.Wheat,
-                    Stroke = OxyColors.Blue,
-                    StrokeThickness = 2,
-                    OutlierSize = 2,
                     BoxWidth = 0.3
                 };
 
@@ -32,31 +28,32 @@ namespace ExampleLibrary
             {
                 double x = i;
                 var points = 5 + random.Next(15);
-                var yValues = new List<double>();
+                var values = new List<double>();
                 for (var j = 0; j < points; j++)
                 {
-                    yValues.Add(random.Next(0, 20));
+                    values.Add(random.Next(0, 20));
                 }
 
-                yValues.Sort();
-                var median = GetMedian(yValues);
-                int r = yValues.Count % 2;
-                double firstQuartil = GetMedian(yValues.Take((yValues.Count + r) / 2));
-                double thirdQuartil = GetMedian(yValues.Skip((yValues.Count - r) / 2));
+                values.Sort();
+                var median = GetMedian(values);
+                int r = values.Count % 2;
+                double firstQuartil = GetMedian(values.Take((values.Count + r) / 2));
+                double thirdQuartil = GetMedian(values.Skip((values.Count - r) / 2));
 
                 var iqr = thirdQuartil - firstQuartil;
                 var step = iqr * 1.5;
                 var upperWhisker = thirdQuartil + step;
-                upperWhisker = yValues.Where(v => v <= upperWhisker).Max();
+                upperWhisker = values.Where(v => v <= upperWhisker).Max();
                 var lowerWhisker = firstQuartil - step;
-                lowerWhisker = yValues.Where(v => v >= lowerWhisker).Min();
+                lowerWhisker = values.Where(v => v >= lowerWhisker).Min();
 
-                var outliers = yValues.Where(v => v > upperWhisker || v < lowerWhisker).ToList();
+                var outliers = values.Where(v => v > upperWhisker || v < lowerWhisker).ToList();
 
                 s1.Items.Add(new BoxPlotItem(x, lowerWhisker, firstQuartil, median, thirdQuartil, upperWhisker, outliers));
             }
 
             model.Series.Add(s1);
+            model.Axes.Add(new LinearAxis(AxisPosition.Left));
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0.1, MaximumPadding = 0.1 });
             return model;
         }
@@ -79,17 +76,49 @@ namespace ExampleLibrary
             return 0.5 * sortedInterval[count / 2] + 0.5 * sortedInterval[(count / 2) - 1];
         }
 
+        [Example("BoxPlot (minimal data/ink ratio)")]
+        public static PlotModel BoxPlot2()
+        {
+            var model = BoxPlot();
+            var s0 = model.Series[0] as BoxPlotSeries;
+            s0.ShowMedianAsDot = true;
+            s0.OutlierType = MarkerType.Cross;
+            s0.Fill = OxyColors.Black;
+            s0.ShowBox = false;
+            s0.WhiskerWidth = 0;
+            return model;
+        }
+
+        [Example("BoxPlot (dashed line)")]
+        public static PlotModel BoxPlot3()
+        {
+            var model = BoxPlot();
+            var s0 = model.Series[0] as BoxPlotSeries;
+            s0.LineStyle = LineStyle.Dash;
+            return model;
+        }
+
+        [Example("BoxPlot (different outlier type)")]
+        public static PlotModel BoxPlot4()
+        {
+            var model = BoxPlot();
+            var s0 = model.Series[0] as BoxPlotSeries;
+            s0.OutlierType = MarkerType.Cross;
+            return model;
+        }
+
         [Example("Michelson-Morley experiment")]
         public static PlotModel MichelsonMorleyExperiment()
         {
             //// http://www.gutenberg.org/files/11753/11753-h/11753-h.htm
             //// http://en.wikipedia.org/wiki/Michelson%E2%80%93Morley_experiment
             //// http://stat.ethz.ch/R-manual/R-devel/library/datasets/html/morley.html
-            
+
             var model = new PlotModel();
 
             var s1 = new BoxPlotSeries
             {
+                Title = "Results",
                 Stroke = OxyColors.Black,
                 StrokeThickness = 1,
                 OutlierSize = 2,
