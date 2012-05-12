@@ -23,6 +23,7 @@ using Plot = OxyPlot.Wpf.Plot;
 
 namespace ExportDemo
 {
+    using OxyPlot.OpenXml;
     using OxyPlot.Xps;
 
     using DataPointSeries = OxyPlot.DataPointSeries;
