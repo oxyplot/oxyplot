@@ -1041,11 +1041,11 @@ namespace OxyPlot.Wpf
         {
             return new OxyMouseEventArgs
                 {
-                    ChangedButton = ConvertChangedButton(e), 
-                    Position = e.GetPosition(this).ToScreenPoint(), 
-                    IsShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift), 
-                    IsControlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl), 
-                    IsAltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt), 
+                    ChangedButton = ConvertChangedButton(e),
+                    Position = e.GetPosition(this).ToScreenPoint(),
+                    IsShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift),
+                    IsControlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl),
+                    IsAltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt),
                 };
         }
 
@@ -1060,7 +1060,9 @@ namespace OxyPlot.Wpf
         /// </param>
         private void DoCopy(object sender, ExecutedRoutedEventArgs e)
         {
-            Clipboard.SetImage(this.ToBitmap());
+            var background = this.Background == Brushes.Transparent ? Brushes.White : this.Background;
+            var bitmap = PngExporter.ExportToBitmap(this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, background.ToOxyColor());
+            Clipboard.SetImage(bitmap);
         }
 
         /// <summary>
