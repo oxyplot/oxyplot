@@ -49,8 +49,9 @@ namespace OxyPlot.Wpf
             model.Render(rc);
 
             var sb = new StringBuilder();
-            using (var xw = XmlWriter.Create(new StringWriter(sb), new XmlWriterSettings { Indent = true }))
+            using (var sw = new StringWriter(sb))
             {
+                var xw = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true });
                 XamlWriter.Save(c, xw);
             }
 

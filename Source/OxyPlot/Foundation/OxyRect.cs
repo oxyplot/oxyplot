@@ -211,6 +211,12 @@ namespace OxyPlot
             return new OxyRect(Math.Min(x0, x1), Math.Min(y0, y1), Math.Abs(x1 - x0), Math.Abs(y1 - y0));
         }
 
+        /// <summary>
+        /// Creates a rectangle from the specified corner coordinates.
+        /// </summary>
+        /// <param name="p0">The first corner.</param>
+        /// <param name="p1">The second corner.</param>
+        /// <returns>A rectangle.</returns>
         public static OxyRect Create(ScreenPoint p0, ScreenPoint p1)
         {
             return Create(p0.X, p0.Y, p1.X, p1.Y);

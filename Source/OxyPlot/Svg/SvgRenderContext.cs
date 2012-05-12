@@ -23,6 +23,11 @@ namespace OxyPlot
         /// </summary>
         private readonly SvgWriter w;
 
+        /// <summary>
+        /// The disposed flag.
+        /// </summary>
+        private bool disposed;
+
         #endregion
 
         #region Constructors and Destructors
@@ -30,24 +35,18 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="SvgRenderContext"/> class.
         /// </summary>
-        /// <param name="s">
-        /// The s.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="isDocument">
-        /// The is document.
-        /// </param>
-        public SvgRenderContext(Stream s, double width, double height, bool isDocument)
+        /// <param name="s">The s.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="isDocument">Create an SVG document if set to <c>true</c>.</param>
+        /// <param name="textMeasurer">The text measurer.</param>
+        public SvgRenderContext(Stream s, double width, double height, bool isDocument, IRenderContext textMeasurer)
         {
             this.w = new SvgWriter(s, width, height, isDocument);
             this.Width = width;
             this.Height = height;
             this.PaintBackground = true;
+            this.TextMeasurer = textMeasurer;
         }
 
 #if !METRO
@@ -55,25 +54,29 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="SvgRenderContext"/> class.
         /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        public SvgRenderContext(string path, double width, double height)
+        /// <param name="path">The path.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="textMeasurer">The text measurer.</param>
+        public SvgRenderContext(string path, double width, double height, IRenderContext textMeasurer)
         {
             this.w = new SvgWriter(path, width, height);
             this.Width = width;
             this.Height = height;
+            this.TextMeasurer = textMeasurer;
         }
 
 #endif
 
         #endregion
+
+        /// <summary>
+        /// Gets or sets the text measurer.
+        /// </summary>
+        /// <value>
+        /// The text measurer.
+        /// </value>
+        public IRenderContext TextMeasurer { get; set; }
 
         #region Public Methods
 
@@ -98,7 +101,8 @@ namespace OxyPlot
         /// </summary>
         public void Dispose()
         {
-            this.w.Dispose();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -183,15 +187,15 @@ namespace OxyPlot
         /// <param name="valign">The valign.</param>
         /// <param name="maxSize">Size of the max.</param>
         public override void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor c, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalTextAlign halign, 
-            VerticalTextAlign valign, 
+            ScreenPoint p,
+            string text,
+            OxyColor c,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalTextAlign halign,
+            VerticalTextAlign valign,
             OxySize? maxSize)
         {
             if (string.IsNullOrEmpty(text))
@@ -250,11 +254,35 @@ namespace OxyPlot
                 return OxySize.Empty;
             }
 
-            // todo: should improve text measuring, currently using p/invoke on GDI32
-            // is it better to use winforms or wpf text measuring?
-            return Gdi32.MeasureString(fontFamily, (int)fontSize, (int)fontWeight, text);
+            if (this.TextMeasurer != null)
+            {
+                return this.TextMeasurer.MeasureText(text, fontFamily, fontSize, fontWeight);
+            }
+
+#if !SILVERLIGHT
+            return NativeMethods.MeasureString(fontFamily, (int)fontSize, (int)fontWeight, text);
+#else
+            return OxySize.Empty;
+#endif
         }
 
         #endregion
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.w.Dispose();
+                }
+            }
+
+            this.disposed = true;
+        }
     }
 }

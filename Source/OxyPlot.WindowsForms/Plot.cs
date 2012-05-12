@@ -44,6 +44,7 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         ///   The current model (holding a reference to this plot control).
         /// </summary>
+        [NonSerialized]
         private PlotModel currentModel;
 
         /// <summary>
@@ -59,6 +60,7 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         ///   The mouse manipulator.
         /// </summary>
+        [NonSerialized]
         private ManipulatorBase mouseManipulator;
 
         /// <summary>

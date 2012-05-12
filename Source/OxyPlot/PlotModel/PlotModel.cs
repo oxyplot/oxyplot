@@ -173,6 +173,7 @@ namespace OxyPlot
     /// <summary>
     /// The PlotModel represents all the content of the plot (titles, axes, series).
     /// </summary>
+    [Serializable]
     public partial class PlotModel
     {
         #region Constants and Fields
@@ -834,15 +835,13 @@ namespace OxyPlot
         {
             using (var ms = new MemoryStream())
             {
-                using (var trw = new TextReportWriter(ms))
-                {
-                    Report report = this.CreateReport();
-                    report.Write(trw);
-                    trw.Flush();
-                    ms.Position = 0;
-                    var r = new StreamReader(ms);
-                    return r.ReadToEnd();
-                }
+                var trw = new TextReportWriter(ms);
+                Report report = this.CreateReport();
+                report.Write(trw);
+                trw.Flush();
+                ms.Position = 0;
+                var r = new StreamReader(ms);
+                return r.ReadToEnd();
             }
         }
 
@@ -1075,18 +1074,13 @@ namespace OxyPlot
         /// <summary>
         /// Saves the plot to a svg file.
         /// </summary>
-        /// <param name="fileName">
-        /// Name of the file. 
-        /// </param>
-        /// <param name="width">
-        /// The width (points). 
-        /// </param>
-        /// <param name="height">
-        /// The height (points). 
-        /// </param>
-        public void SaveSvg(string fileName, double width, double height)
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="width">The width (points).</param>
+        /// <param name="height">The height (points).</param>
+        /// <param name="textMeasurer">The text measurer.</param>
+        public void SaveSvg(string fileName, double width, double height, IRenderContext textMeasurer = null)
         {
-            SvgExporter.Export(this, fileName, width, height);
+            SvgExporter.Export(this, fileName, width, height, textMeasurer);
         }
 
 #endif
@@ -1117,19 +1111,16 @@ namespace OxyPlot
         /// <summary>
         /// Create an svg model and return it as a string.
         /// </summary>
-        /// <param name="width">
-        /// The width (points). 
-        /// </param>
-        /// <param name="height">
-        /// The height (points). 
-        /// </param>
+        /// <param name="width">The width (points).</param>
+        /// <param name="height">The height (points).</param>
+        /// <param name="textMeasurer">The text measurer.</param>
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
         /// <returns>
-        /// The to svg. 
+        /// The to svg.
         /// </returns>
-        public string ToSvg(double width, double height, bool isDocument = false)
+        public string ToSvg(double width, double height, bool isDocument = false, IRenderContext textMeasurer = null)
         {
-            return SvgExporter.ExportToString(this, width, height, isDocument);
+            return SvgExporter.ExportToString(this, width, height, isDocument, textMeasurer);
         }
 
         /// <summary>
@@ -1384,7 +1375,7 @@ namespace OxyPlot
                     }
                     else
                     {
-                        this.DefaultYAxis = new LinearAxis { Position = AxisPosition.Left, MinimumPadding = 0 };
+                        this.DefaultYAxis = new LinearAxis { Position = AxisPosition.Left };
                         createdlinearyaxis = true;
                     }
                 }

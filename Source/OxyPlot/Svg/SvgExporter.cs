@@ -22,9 +22,10 @@ namespace OxyPlot
         /// <param name="fileName">Name of the file.</param>
         /// <param name="width">The width (points).</param>
         /// <param name="height">The height (points).</param>
-        public static void Export(PlotModel model, string fileName, double width, double height)
+        /// <param name="textMeasurer">The text measurer.</param>
+        public static void Export(PlotModel model, string fileName, double width, double height, IRenderContext textMeasurer = null)
         {
-            using (var svgrc = new SvgRenderContext(fileName, width, height))
+            using (var svgrc = new SvgRenderContext(fileName, width, height, textMeasurer))
             {
                 model.Update();
                 model.Render(svgrc);
@@ -37,14 +38,17 @@ namespace OxyPlot
         /// <param name="model">The model.</param>
         /// <param name="width">The width (points).</param>
         /// <param name="height">The height (points).</param>
+        /// <param name="textMeasurer">The text measurer.</param>
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
-        /// <returns>The plot as a svg string.</returns>
-        public static string ExportToString(PlotModel model, double width, double height, bool isDocument = false)
+        /// <returns>
+        /// The plot as a svg string.
+        /// </returns>
+        public static string ExportToString(PlotModel model, double width, double height, bool isDocument = false, IRenderContext textMeasurer = null)
         {
             string svg;
             using (var ms = new MemoryStream())
             {
-                var svgrc = new SvgRenderContext(ms, width, height, isDocument);
+                var svgrc = new SvgRenderContext(ms, width, height, isDocument, textMeasurer);
                 model.Update();
                 model.Render(svgrc);
                 svgrc.Complete();
@@ -53,7 +57,6 @@ namespace OxyPlot
                 ms.Position = 0;
                 var sr = new StreamReader(ms);
                 svg = sr.ReadToEnd();
-                svgrc.Close();
             }
 
             return svg;

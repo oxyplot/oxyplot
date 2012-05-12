@@ -2,9 +2,12 @@
 // <copyright file="WordDocumentReportWriter.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Word/OpenXML (.docx) report writer using OpenXML SDK 2.0.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.Pdf
+namespace OxyPlot.OpenXml
 {
     using System;
     using System.Drawing;
@@ -63,92 +66,102 @@ namespace OxyPlot.Pdf
         #region Constants and Fields
 
         /// <summary>
-        ///   The body.
-        /// </summary>
-        protected Body body;
-
-        /// <summary>
-        ///   The document.
-        /// </summary>
-        protected Document document;
-
-        /// <summary>
-        ///   The main part.
-        /// </summary>
-        protected MainDocumentPart mainPart;
-
-        /// <summary>
-        ///   The package.
-        /// </summary>
-        protected WordprocessingDocument package;
-
-        /// <summary>
-        ///   The body text id.
+        /// The body text id.
         /// </summary>
         private const string BodyTextID = "Normal";
 
         /// <summary>
-        ///   The body text name.
+        /// The body text name.
         /// </summary>
         private const string BodyTextName = "Normal";
 
         /// <summary>
-        ///   The figure text id.
+        /// The figure text id.
         /// </summary>
         private const string FigureTextID = "FigureText";
 
         /// <summary>
-        ///   The figure text name.
+        /// The figure text name.
         /// </summary>
         private const string FigureTextName = "Figure text";
 
         /// <summary>
-        ///   The header id.
+        /// The header id.
         /// </summary>
         private const string HeaderID = "Heading{0}";
 
         /// <summary>
-        ///   The header name.
+        /// The header name.
         /// </summary>
         private const string HeaderName = "Heading {0}";
 
         /// <summary>
-        ///   The table caption id.
+        /// The table caption id.
         /// </summary>
         private const string TableCaptionID = "TableCaption";
 
         /// <summary>
-        ///   The table caption name.
+        /// The table caption name.
         /// </summary>
         private const string TableCaptionName = "Table caption";
 
         /// <summary>
-        ///   The table header id.
+        /// The table header id.
         /// </summary>
         private const string TableHeaderID = "TableHeader";
 
         /// <summary>
-        ///   The table header name.
+        /// The table header name.
         /// </summary>
         private const string TableHeaderName = "Table header";
 
         /// <summary>
-        ///   The table text id.
+        /// The table text id.
         /// </summary>
         private const string TableTextID = "TableText";
 
         /// <summary>
-        ///   The table text name.
+        /// The table text name.
         /// </summary>
         private const string TableTextName = "Table text";
 
         /// <summary>
-        ///   The style part.
+        /// The style part.
         /// </summary>
         private readonly StyleDefinitionsPart stylePart;
 
         /// <summary>
-        ///   The style.
+        /// The body.
+        /// </summary>
+        private Body body;
+
+        /// <summary>
+        /// The disposed flag.
+        /// </summary>
+        private bool disposed;
+
+        /// <summary>
+        /// The document.
+        /// </summary>
+        private Document document;
+
+        /// <summary>
+        /// The is saved flag.
+        /// </summary>
+        private bool isSaved;
+
+        /// <summary>
+        /// The main part.
+        /// </summary>
+        private MainDocumentPart mainPart;
+
+        /// <summary>
+        /// The package.
+        /// </summary>
+        private WordprocessingDocument package;
+
+        /// <summary>
+        /// The style.
         /// </summary>
         private ReportStyle style;
 
@@ -160,7 +173,7 @@ namespace OxyPlot.Pdf
         /// Initializes a new instance of the <see cref="WordDocumentReportWriter"/> class.
         /// </summary>
         /// <param name="filePath">
-        /// The file path.
+        /// The file path. 
         /// </param>
         public WordDocumentReportWriter(string filePath)
         {
@@ -181,43 +194,45 @@ namespace OxyPlot.Pdf
         #region Public Properties
 
         /// <summary>
-        /// Gets the name of the file.
-        /// </summary>
-        /// <value>The name of the file.</value>
-        public string FileName { get; private set; }
-
-        /// <summary>
-        ///   Gets or sets Creator.
+        /// Gets or sets Creator.
         /// </summary>
         public string Creator { get; set; }
 
         /// <summary>
-        ///   Gets or sets Description.
+        /// Gets or sets Description.
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        ///   Gets or sets Keywords.
+        /// Gets the name of the file.
+        /// </summary>
+        /// <value>
+        /// The name of the file. 
+        /// </value>
+        public string FileName { get; private set; }
+
+        /// <summary>
+        /// Gets or sets Keywords.
         /// </summary>
         public string Keywords { get; set; }
 
         /// <summary>
-        ///   Gets or sets Revision.
+        /// Gets or sets Revision.
         /// </summary>
         public string Revision { get; set; }
 
         /// <summary>
-        ///   Gets or sets Subject.
+        /// Gets or sets Subject.
         /// </summary>
         public string Subject { get; set; }
 
         /// <summary>
-        ///   Gets or sets Title.
+        /// Gets or sets Title.
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        ///   Gets or sets Version.
+        /// Gets or sets Version.
         /// </summary>
         public string Version { get; set; }
 
@@ -226,9 +241,18 @@ namespace OxyPlot.Pdf
         #region Public Methods
 
         /// <summary>
-        /// The dispose.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Saves this document.
+        /// </summary>
+        public void Save()
         {
             this.SetPackageProperties(this.package);
             this.document.Append(this.body);
@@ -236,14 +260,14 @@ namespace OxyPlot.Pdf
 
             this.stylePart.Styles.Save();
             this.mainPart.Document.Save();
-            this.package.Close();
+            this.isSaved = true;
         }
 
         /// <summary>
         /// The write drawing.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The d. 
         /// </param>
         public void WriteDrawing(DrawingFigure d)
         {
@@ -254,7 +278,7 @@ namespace OxyPlot.Pdf
         /// The write equation.
         /// </summary>
         /// <param name="equation">
-        /// The equation.
+        /// The equation. 
         /// </param>
         public void WriteEquation(Equation equation)
         {
@@ -265,7 +289,7 @@ namespace OxyPlot.Pdf
         /// The write header.
         /// </summary>
         /// <param name="h">
-        /// The h.
+        /// The h. 
         /// </param>
         public void WriteHeader(Header h)
         {
@@ -276,7 +300,7 @@ namespace OxyPlot.Pdf
         /// The write image.
         /// </summary>
         /// <param name="i">
-        /// The i.
+        /// The i. 
         /// </param>
         public void WriteImage(Image i)
         {
@@ -290,38 +314,11 @@ namespace OxyPlot.Pdf
             this.body.Append(CreateParagraph(i.GetFullCaption(this.style), FigureTextID));
         }
 
-        private void AppendImage(string source, string name)
-        {
-            // http://msdn.microsoft.com/en-us/library/bb497430.aspx
-            string ext = Path.GetExtension(source).ToLower();
-            ImagePartType ipt = ImagePartType.Jpeg;
-            if (ext == ".png")
-            {
-                ipt = ImagePartType.Png;
-            }
-
-            var imagePart = this.mainPart.AddImagePart(ipt);
-            using (var stream = new FileStream(source, FileMode.Open))
-            {
-                imagePart.FeedData(stream);
-            }
-
-            using (var bmp = new Bitmap(source))
-            {
-                double width = bmp.Width / bmp.HorizontalResolution; // inches
-                double height = bmp.Height / bmp.VerticalResolution; // inches
-                double w = 15 / 2.54;
-                double h = height / width * w;
-                this.body.Append(
-                    this.CreateImageParagraph(this.mainPart.GetIdOfPart(imagePart), name, source, w, h));
-            }
-        }
-
         /// <summary>
         /// The write paragraph.
         /// </summary>
         /// <param name="pa">
-        /// The pa.
+        /// The pa. 
         /// </param>
         public void WriteParagraph(Paragraph pa)
         {
@@ -332,7 +329,7 @@ namespace OxyPlot.Pdf
         /// The write plot.
         /// </summary>
         /// <param name="plot">
-        /// The plot.
+        /// The plot. 
         /// </param>
         public void WritePlot(PlotFigure plot)
         {
@@ -347,7 +344,8 @@ namespace OxyPlot.Pdf
                 return;
             }
 
-            var source = string.Format("{0}_Plot{1}.png", Path.GetFileNameWithoutExtension(this.FileName), plot.FigureNumber);
+            var source = string.Format(
+                "{0}_Plot{1}.png", Path.GetFileNameWithoutExtension(this.FileName), plot.FigureNumber);
             var sourceFullPath = Path.Combine(directory, source);
 
             // write to a png
@@ -364,10 +362,10 @@ namespace OxyPlot.Pdf
         /// The write report.
         /// </summary>
         /// <param name="report">
-        /// The report.
+        /// The report. 
         /// </param>
         /// <param name="reportStyle">
-        /// The style.
+        /// The style. 
         /// </param>
         public void WriteReport(Report report, ReportStyle reportStyle)
         {
@@ -380,7 +378,7 @@ namespace OxyPlot.Pdf
         /// The write table.
         /// </summary>
         /// <param name="t">
-        /// The t.
+        /// The t. 
         /// </param>
         public void WriteTable(Table t)
         {
@@ -393,12 +391,12 @@ namespace OxyPlot.Pdf
             var tableWidth1 = new TableWidth { Width = "0", Type = TableWidthUnitValues.Auto };
             var tableLook1 = new TableLook
                 {
-                    Val = "04A0",
-                    FirstRow = true,
-                    LastRow = false,
-                    FirstColumn = true,
-                    LastColumn = false,
-                    NoHorizontalBand = false,
+                    Val = "04A0", 
+                    FirstRow = true, 
+                    LastRow = false, 
+                    FirstColumn = true, 
+                    LastColumn = false, 
+                    NoHorizontalBand = false, 
                     NoVerticalBand = true
                 };
 
@@ -436,33 +434,33 @@ namespace OxyPlot.Pdf
                     borders.Append(
                         new BottomBorder
                             {
-                                Val = BorderValues.Single,
-                                Size = (UInt32Value)4U,
-                                Space = (UInt32Value)0U,
+                                Val = BorderValues.Single, 
+                                Size = (UInt32Value)4U, 
+                                Space = (UInt32Value)0U, 
                                 Color = "auto"
                             });
                     borders.Append(
                         new TopBorder
                             {
-                                Val = BorderValues.Single,
-                                Size = (UInt32Value)4U,
-                                Space = (UInt32Value)0U,
+                                Val = BorderValues.Single, 
+                                Size = (UInt32Value)4U, 
+                                Space = (UInt32Value)0U, 
                                 Color = "auto"
                             });
                     borders.Append(
                         new LeftBorder
                             {
-                                Val = BorderValues.Single,
-                                Size = (UInt32Value)4U,
-                                Space = (UInt32Value)0U,
+                                Val = BorderValues.Single, 
+                                Size = (UInt32Value)4U, 
+                                Space = (UInt32Value)0U, 
                                 Color = "auto"
                             });
                     borders.Append(
                         new RightBorder
                             {
-                                Val = BorderValues.Single,
-                                Size = (UInt32Value)4U,
-                                Space = (UInt32Value)0U,
+                                Val = BorderValues.Single, 
+                                Size = (UInt32Value)4U, 
+                                Space = (UInt32Value)0U, 
                                 Color = "auto"
                             });
                     tcp.Append(borders);
@@ -487,10 +485,10 @@ namespace OxyPlot.Pdf
         /// The create paragraph.
         /// </summary>
         /// <param name="content">
-        /// The content.
+        /// The content. 
         /// </param>
         /// <param name="styleID">
-        /// The style id.
+        /// The style id. 
         /// </param>
         /// <returns>
         /// </returns>
@@ -515,35 +513,35 @@ namespace OxyPlot.Pdf
         /// The create style.
         /// </summary>
         /// <param name="ps">
-        /// The ps.
+        /// The ps. 
         /// </param>
         /// <param name="styleID">
-        /// The style id.
+        /// The style id. 
         /// </param>
         /// <param name="styleName">
-        /// The style name.
+        /// The style name. 
         /// </param>
         /// <param name="basedOnStyleID">
-        /// The based on style id.
+        /// The based on style id. 
         /// </param>
         /// <param name="nextStyleID">
-        /// The next style id.
+        /// The next style id. 
         /// </param>
         /// <param name="isDefault">
-        /// The is default.
+        /// The is default. 
         /// </param>
         /// <param name="isCustomStyle">
-        /// The is custom style.
+        /// The is custom style. 
         /// </param>
         /// <returns>
         /// </returns>
         private static Style CreateStyle(
-            ParagraphStyle ps,
-            string styleID,
-            string styleName,
-            string basedOnStyleID,
-            string nextStyleID,
-            bool isDefault = false,
+            ParagraphStyle ps, 
+            string styleID, 
+            string styleName, 
+            string basedOnStyleID, 
+            string nextStyleID, 
+            bool isDefault = false, 
             bool isCustomStyle = true)
         {
             // todo: add font to FontTable?
@@ -559,7 +557,7 @@ namespace OxyPlot.Pdf
             rPr.Append(
                 new FontSizeComplexScript
                     {
-                        Val = new StringValue((ps.FontSize * 2).ToString(CultureInfo.InvariantCulture))
+                       Val = new StringValue((ps.FontSize * 2).ToString(CultureInfo.InvariantCulture)) 
                     });
 
             if (ps.Bold)
@@ -575,14 +573,14 @@ namespace OxyPlot.Pdf
             var pPr = new StyleParagraphProperties();
             var spacingBetweenLines2 = new SpacingBetweenLines
                 {
-                    After = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingAfter * 20),
-                    Before = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingBefore * 20),
-                    Line = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LineSpacing * 240),
+                    After = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingAfter * 20), 
+                    Before = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingBefore * 20), 
+                    Line = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LineSpacing * 240), 
                     LineRule = LineSpacingRuleValues.Auto
                 };
             var indentation = new Indentation
                 {
-                    Left = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LeftIndentation * 20),
+                    Left = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LeftIndentation * 20), 
                     Right = string.Format(CultureInfo.InvariantCulture, "{0}", ps.RightIndentation * 20)
                 };
             var contextualSpacing1 = new ContextualSpacing();
@@ -601,9 +599,9 @@ namespace OxyPlot.Pdf
             // http://msdn.microsoft.com/en-us/library/documentformat.openxml.wordprocessing.style.aspx
             var style = new Style
                 {
-                    Default = new OnOffValue(isDefault),
-                    CustomStyle = new OnOffValue(isCustomStyle),
-                    StyleId = styleID,
+                    Default = new OnOffValue(isDefault), 
+                    CustomStyle = new OnOffValue(isCustomStyle), 
+                    StyleId = styleID, 
                     Type = StyleValues.Paragraph
                 };
 
@@ -632,10 +630,10 @@ namespace OxyPlot.Pdf
         /// The add styles.
         /// </summary>
         /// <param name="sdp">
-        /// The sdp.
+        /// The sdp. 
         /// </param>
         /// <param name="style">
-        /// The style.
+        /// The style. 
         /// </param>
         private void AddStyles(StyleDefinitionsPart sdp, ReportStyle style)
         {
@@ -646,12 +644,12 @@ namespace OxyPlot.Pdf
             {
                 sdp.Styles.Append(
                     CreateStyle(
-                        style.HeaderStyles[i],
-                        string.Format(HeaderID, i + 1),
-                        string.Format(HeaderName, i + 1),
-                        "Heading1",
-                        BodyTextID,
-                        false,
+                        style.HeaderStyles[i], 
+                        string.Format(HeaderID, i + 1), 
+                        string.Format(HeaderName, i + 1), 
+                        "Heading1", 
+                        BodyTextID, 
+                        false, 
                         false));
             }
 
@@ -660,6 +658,41 @@ namespace OxyPlot.Pdf
             sdp.Styles.Append(CreateStyle(style.TableCaptionStyle, TableCaptionID, TableCaptionName, null, null));
 
             sdp.Styles.Append(CreateStyle(style.FigureTextStyle, FigureTextID, FigureTextName, null, null));
+        }
+
+        /// <summary>
+        /// The append image.
+        /// </summary>
+        /// <param name="source">
+        /// The source. 
+        /// </param>
+        /// <param name="name">
+        /// The name. 
+        /// </param>
+        private void AppendImage(string source, string name)
+        {
+            // http://msdn.microsoft.com/en-us/library/bb497430.aspx
+            string ext = Path.GetExtension(source).ToLower();
+            ImagePartType ipt = ImagePartType.Jpeg;
+            if (ext == ".png")
+            {
+                ipt = ImagePartType.Png;
+            }
+
+            var imagePart = this.mainPart.AddImagePart(ipt);
+            using (var stream = new FileStream(source, FileMode.Open))
+            {
+                imagePart.FeedData(stream);
+            }
+
+            using (var bmp = new Bitmap(source))
+            {
+                double width = bmp.Width / bmp.HorizontalResolution; // inches
+                double height = bmp.Height / bmp.VerticalResolution; // inches
+                double w = 15 / 2.54;
+                double h = height / width * w;
+                this.body.Append(this.CreateImageParagraph(this.mainPart.GetIdOfPart(imagePart), name, source, w, h));
+            }
         }
 
         /// <summary>
@@ -692,19 +725,19 @@ namespace OxyPlot.Pdf
         /// The create image paragraph.
         /// </summary>
         /// <param name="relationshipId">
-        /// The relationship id.
+        /// The relationship id. 
         /// </param>
         /// <param name="name">
-        /// The name.
+        /// The name. 
         /// </param>
         /// <param name="description">
-        /// The description.
+        /// The description. 
         /// </param>
         /// <param name="width">
-        /// The width.
+        /// The width. 
         /// </param>
         /// <param name="height">
-        /// The height.
+        /// The height. 
         /// </param>
         /// <returns>
         /// </returns>
@@ -729,8 +762,7 @@ namespace OxyPlot.Pdf
             // The possible values for this attribute are defined by the ST_PositiveCoordinate simple type (§20.1.10.42).
             var paragraph1 = new DocumentFormat.OpenXml.Wordprocessing.Paragraph
                 {
-                    RsidParagraphAddition = "00D91137",
-                    RsidRunAdditionDefault = "00AC08EB"
+                   RsidParagraphAddition = "00D91137", RsidRunAdditionDefault = "00AC08EB" 
                 };
 
             var run1 = new Run();
@@ -744,10 +776,7 @@ namespace OxyPlot.Pdf
 
             var inline1 = new Inline
                 {
-                    DistanceFromTop = 0U,
-                    DistanceFromBottom = 0U,
-                    DistanceFromLeft = 0U,
-                    DistanceFromRight = 0U
+                   DistanceFromTop = 0U, DistanceFromBottom = 0U, DistanceFromLeft = 0U, DistanceFromRight = 0U 
                 };
             var extent1 = new Extent { Cx = 5753100L, Cy = 3600450L };
             extent1.Cx = (long)(width * 914400);
@@ -774,9 +803,7 @@ namespace OxyPlot.Pdf
             var nonVisualPictureProperties1 = new NonVisualPictureProperties();
             var nonVisualDrawingProperties1 = new NonVisualDrawingProperties
                 {
-                    Id = 0U,
-                    Name = name,
-                    Description = description
+                   Id = 0U, Name = name, Description = description 
                 };
 
             var nonVisualPictureDrawingProperties1 = new NonVisualPictureDrawingProperties();
@@ -864,10 +891,34 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources. 
+        /// </param>
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    if (!this.isSaved)
+                    {
+                        this.Save();
+                    }
+
+                    this.package.Close();
+                }
+            }
+
+            this.disposed = true;
+        }
+
+        /// <summary>
         /// The set package properties.
         /// </summary>
         /// <param name="p">
-        /// The p.
+        /// The p. 
         /// </param>
         private void SetPackageProperties(OpenXmlPackage p)
         {
