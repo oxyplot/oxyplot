@@ -23,6 +23,8 @@ using Plot = OxyPlot.Wpf.Plot;
 
 namespace ExportDemo
 {
+    using OxyPlot.Xps;
+
     using DataPointSeries = OxyPlot.DataPointSeries;
 
     [Export(typeof(IShell))]
@@ -83,51 +85,55 @@ namespace ExportDemo
         {
             string ext = Path.GetExtension(fileName);
             if (ext == null)
+            {
                 return;
+            }
+
             ext = ext.ToLower();
 
-            var r = CreateReport(fileName);
+            var r = this.CreateReport(fileName);
             var reportStyle = new ReportStyle();
 
             if (ext == ".txt")
             {
-                using (var hw = new TextReportWriter(fileName))
+                using (var w = new TextReportWriter(fileName))
                 {
-                    r.Write(hw);
+                    r.Write(w);
                 }
             }
 
             if (ext == ".html")
             {
-                using (var hw = new HtmlReportWriter(fileName))
+                using (var w = new HtmlReportWriter(fileName))
                 {
-                    hw.WriteReport(r, reportStyle);
+                    w.WriteReport(r, reportStyle);
                 }
             }
 
             if (ext == ".pdf")
-                using (var pw = new PdfReportWriter(fileName))
+            {
+                using (var w = new PdfReportWriter(fileName))
                 {
-                    pw.WriteReport(r, reportStyle);
+                    w.WriteReport(r, reportStyle);
                 }
+            }
 
             if (ext == ".rtf")
-                using (var pw = new RtfReportWriter(fileName))
+            {
+                using (var w = new RtfReportWriter(fileName))
                 {
-                    pw.WriteReport(r, reportStyle);
+                    w.WriteReport(r, reportStyle);
                 }
+            }
 
             if (ext == ".tex")
-                using (var pw = new LatexReportWriter(fileName, "Example report", "oxyplot"))
+            {
+                using (var w = new LatexReportWriter(fileName, "Example report", "oxyplot"))
                 {
-                    pw.WriteReport(r, reportStyle);
+                    w.WriteReport(r, reportStyle);
                 }
+            }
 
-            if (ext == ".txt")
-                using (var tw = new TextReportWriter(Path.ChangeExtension(fileName, ".txt")))
-                {
-                    tw.WriteReport(r, reportStyle);
-                }
             if (ext == ".xps")
             {
                 using (var w = new FlowDocumentReportWriter())
@@ -141,6 +147,7 @@ namespace ExportDemo
                 using (var w = new WordDocumentReportWriter(fileName))
                 {
                     w.WriteReport(r, reportStyle);
+                    w.Save();
                 }
             }
         }

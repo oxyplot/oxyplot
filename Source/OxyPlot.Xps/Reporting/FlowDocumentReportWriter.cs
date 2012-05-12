@@ -2,9 +2,12 @@
 // <copyright file="FlowDocumentReportWriter.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   XPS report writer using MigraDoc.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.Pdf
+namespace OxyPlot.Xps
 {
     using System;
     using System.IO;
@@ -37,16 +40,21 @@ namespace OxyPlot.Pdf
         #region Constants and Fields
 
         /// <summary>
-        ///   The doc.
+        /// The doc.
         /// </summary>
         private readonly FlowDocument doc;
+
+        /// <summary>
+        /// The disposed flag.
+        /// </summary>
+        private bool disposed;
 
         #endregion
 
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "FlowDocumentReportWriter" /> class.
+        /// Initializes a new instance of the <see cref="FlowDocumentReportWriter"/> class.
         /// </summary>
         public FlowDocumentReportWriter()
         {
@@ -58,7 +66,7 @@ namespace OxyPlot.Pdf
         #region Public Properties
 
         /// <summary>
-        ///   Gets FlowDocument.
+        /// Gets FlowDocument.
         /// </summary>
         public FlowDocument FlowDocument
         {
@@ -69,7 +77,7 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        ///   Gets or sets Style.
+        /// Gets or sets Style.
         /// </summary>
         public ReportStyle Style { get; set; }
 
@@ -78,10 +86,12 @@ namespace OxyPlot.Pdf
         #region Public Methods
 
         /// <summary>
-        /// The dispose.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -98,24 +108,18 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The save.
+        /// Saves the document.
         /// </summary>
-        /// <param name="filename">
-        /// The filename.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
+        /// <param name="filename">The filename.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
         public virtual void Save(string filename, double width = 816, double height = 1056)
         {
-            using (Package package = Package.Open(filename, FileMode.Create, FileAccess.ReadWrite))
+            using (var package = Package.Open(filename, FileMode.Create, FileAccess.ReadWrite))
             {
-                using (var doc = new XpsDocument(package))
+                using (var xpsdoc = new XpsDocument(package))
                 {
-                    XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(doc);
+                    XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsdoc);
                     writer.Write(this.CreateFixedDocument(new Size(width, height)));
                 }
             }
@@ -125,7 +129,7 @@ namespace OxyPlot.Pdf
         /// The write drawing.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The d. 
         /// </param>
         public void WriteDrawing(DrawingFigure d)
         {
@@ -135,7 +139,7 @@ namespace OxyPlot.Pdf
         /// The write equation.
         /// </summary>
         /// <param name="equation">
-        /// The equation.
+        /// The equation. 
         /// </param>
         public void WriteEquation(Equation equation)
         {
@@ -145,7 +149,7 @@ namespace OxyPlot.Pdf
         /// The write header.
         /// </summary>
         /// <param name="h">
-        /// The h.
+        /// The h. 
         /// </param>
         public void WriteHeader(Header h)
         {
@@ -159,7 +163,7 @@ namespace OxyPlot.Pdf
         /// The write image.
         /// </summary>
         /// <param name="i">
-        /// The i.
+        /// The i. 
         /// </param>
         public void WriteImage(Image i)
         {
@@ -170,8 +174,7 @@ namespace OxyPlot.Pdf
             bi.UriSource = new Uri(Path.GetFullPath(i.Source), UriKind.Absolute);
             bi.EndInit();
             img.Source = bi;
-            var c = new BlockUIContainer(img);
-            c.Child = img;
+            var c = new BlockUIContainer(img) { Child = img };
             this.doc.Blocks.Add(c);
         }
 
@@ -179,7 +182,7 @@ namespace OxyPlot.Pdf
         /// The write paragraph.
         /// </summary>
         /// <param name="pa">
-        /// The pa.
+        /// The pa. 
         /// </param>
         public void WriteParagraph(Paragraph pa)
         {
@@ -190,7 +193,7 @@ namespace OxyPlot.Pdf
         /// The write plot.
         /// </summary>
         /// <param name="plot">
-        /// The plot.
+        /// The plot. 
         /// </param>
         public void WritePlot(PlotFigure plot)
         {
@@ -200,10 +203,10 @@ namespace OxyPlot.Pdf
         /// The write report.
         /// </summary>
         /// <param name="report">
-        /// The report.
+        /// The report. 
         /// </param>
         /// <param name="reportStyle">
-        /// The style.
+        /// The style. 
         /// </param>
         public void WriteReport(Report report, ReportStyle reportStyle)
         {
@@ -215,7 +218,7 @@ namespace OxyPlot.Pdf
         /// The write table.
         /// </summary>
         /// <param name="t">
-        /// The t.
+        /// The t. 
         /// </param>
         public void WriteTable(Table t)
         {
@@ -277,10 +280,10 @@ namespace OxyPlot.Pdf
         /// The set style.
         /// </summary>
         /// <param name="run">
-        /// The run.
+        /// The run. 
         /// </param>
         /// <param name="s">
-        /// The s.
+        /// The s. 
         /// </param>
         private static void SetStyle(TextElement run, ParagraphStyle s)
         {
@@ -300,39 +303,41 @@ namespace OxyPlot.Pdf
         /// The add page body.
         /// </summary>
         /// <param name="sourceFlowDocPaginator">
-        /// The source flow doc paginator.
+        /// The source flow doc paginator. 
         /// </param>
         /// <param name="pageNo">
-        /// The page no.
+        /// The page no. 
         /// </param>
         /// <param name="pageCanvas">
-        /// The page canvas.
+        /// The page canvas. 
         /// </param>
         /// <param name="margins">
-        /// The margins.
+        /// The margins. 
         /// </param>
         private void AddPageBody(
             DocumentPaginator sourceFlowDocPaginator, int pageNo, Canvas pageCanvas, Thickness margins)
         {
-            var dpv = new DocumentPageView();
-            dpv.DocumentPaginator = sourceFlowDocPaginator;
-            dpv.PageNumber = pageNo;
-            Canvas.SetTop(dpv, margins.Top);
-            Canvas.SetLeft(dpv, margins.Left);
-            pageCanvas.Children.Add(dpv);
+            using (var dpv = new DocumentPageView())
+            {
+                dpv.DocumentPaginator = sourceFlowDocPaginator;
+                dpv.PageNumber = pageNo;
+                Canvas.SetTop(dpv, margins.Top);
+                Canvas.SetLeft(dpv, margins.Left);
+                pageCanvas.Children.Add(dpv);
+            }
         }
 
         /// <summary>
         /// The add page to document.
         /// </summary>
         /// <param name="fixedDocument">
-        /// The fixed document.
+        /// The fixed document. 
         /// </param>
         /// <param name="pageCanvas">
-        /// The page canvas.
+        /// The page canvas. 
         /// </param>
         /// <param name="pageSize">
-        /// The page size.
+        /// The page size. 
         /// </param>
         private void AddPageToDocument(FixedDocument fixedDocument, Canvas pageCanvas, Size pageSize)
         {
@@ -344,19 +349,12 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The build fixed document.
+        /// Builds the fixed document.
         /// </summary>
-        /// <param name="sourceFlowDocPaginator">
-        /// The source flow doc paginator.
-        /// </param>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        /// <param name="margins">
-        /// The margins.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="sourceFlowDocPaginator">The source flow doc paginator.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="margins">The margins.</param>
+        /// <returns>The document.</returns>
         private FixedDocument BuildFixedDocument(DocumentPaginator sourceFlowDocPaginator, Size size, Thickness margins)
         {
             var fixedDocument = new FixedDocument();
@@ -371,19 +369,16 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The create fixed document.
+        /// Creates the fixed document.
         /// </summary>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="size">The size.</param>
+        /// <returns>The document.</returns>
         private FixedDocument CreateFixedDocument(Size size)
         {
             IDocumentPaginatorSource dps = this.doc;
             DocumentPaginator sourceFlowDocPaginator = dps.DocumentPaginator;
             sourceFlowDocPaginator.PageSize = new Size(
-                size.Width - this.Style.Margins.Left - this.Style.Margins.Right, 
+                size.Width - this.Style.Margins.Left - this.Style.Margins.Right,
                 size.Height - this.Style.Margins.Top - this.Style.Margins.Bottom);
             if (!sourceFlowDocPaginator.IsPageCountValid)
             {
@@ -396,16 +391,11 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The create paragraph.
+        /// Creates a paragraph.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="style">
-        /// The style.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="text">The text.</param>
+        /// <param name="style">The style.</param>
+        /// <returns>A paragraph.</returns>
         private System.Windows.Documents.Paragraph CreateParagraph(string text, ParagraphStyle style)
         {
             var run = new Run { Text = text };
@@ -415,6 +405,25 @@ namespace OxyPlot.Pdf
             }
 
             return new System.Windows.Documents.Paragraph(run);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources. 
+        /// </param>
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    // nothing...
+                }
+            }
+
+            this.disposed = true;
         }
 
         #endregion

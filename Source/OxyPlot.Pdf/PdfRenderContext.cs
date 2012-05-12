@@ -2,6 +2,9 @@
 // <copyright file="PdfRenderContext.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   PDF Render context using PdfSharp (and SilverPDF for Silverlight)
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Pdf
@@ -21,29 +24,34 @@ namespace OxyPlot.Pdf
     /// <remarks>
     /// see http://pdfsharp.codeplex.com and http://silverpdf.codeplex.com
     /// </remarks>
-    internal class PdfRenderContext : RenderContextBase
+    internal class PdfRenderContext : RenderContextBase, IDisposable
     {
         #region Constants and Fields
 
         /// <summary>
-        ///   The fontsize factor.
+        /// The fontsize factor.
         /// </summary>
         private const double FontsizeFactor = 1.0;
 
         /// <summary>
-        ///   The pdf document.
+        /// The pdf document.
         /// </summary>
         private readonly PdfDocument doc;
 
         /// <summary>
-        ///   The PdfSharp graphics context.
+        /// The PdfSharp graphics context.
         /// </summary>
         private readonly XGraphics g;
 
         /// <summary>
-        ///   The pdf page.
+        /// The pdf page.
         /// </summary>
         private readonly PdfPage page;
+
+        /// <summary>
+        /// The disposed flag.
+        /// </summary>
+        private bool disposed;
 
         #endregion
 
@@ -53,10 +61,10 @@ namespace OxyPlot.Pdf
         /// Initializes a new instance of the <see cref="PdfRenderContext"/> class.
         /// </summary>
         /// <param name="width">
-        /// The width.
+        /// The width. 
         /// </param>
         /// <param name="height">
-        /// The height.
+        /// The height. 
         /// </param>
         public PdfRenderContext(double width, double height)
         {
@@ -71,22 +79,31 @@ namespace OxyPlot.Pdf
 
         #endregion
 
-        #region Public Methods
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         /// <summary>
         /// The draw ellipse.
         /// </summary>
         /// <param name="rect">
-        /// The rect.
+        /// The rect. 
         /// </param>
         /// <param name="fill">
-        /// The fill.
+        /// The fill. 
         /// </param>
         /// <param name="stroke">
-        /// The stroke.
+        /// The stroke. 
         /// </param>
         /// <param name="thickness">
-        /// The thickness.
+        /// The thickness. 
         /// </param>
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
@@ -106,29 +123,29 @@ namespace OxyPlot.Pdf
         /// The draw line.
         /// </summary>
         /// <param name="points">
-        /// The points.
+        /// The points. 
         /// </param>
         /// <param name="stroke">
-        /// The stroke.
+        /// The stroke. 
         /// </param>
         /// <param name="thickness">
-        /// The thickness.
+        /// The thickness. 
         /// </param>
         /// <param name="dashArray">
-        /// The dash array.
+        /// The dash array. 
         /// </param>
         /// <param name="lineJoin">
-        /// The line join.
+        /// The line join. 
         /// </param>
         /// <param name="aliased">
-        /// The aliased.
+        /// The aliased. 
         /// </param>
         public override void DrawLine(
-            IList<ScreenPoint> points,
-            OxyColor stroke,
-            double thickness,
-            double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            IList<ScreenPoint> points, 
+            OxyColor stroke, 
+            double thickness, 
+            double[] dashArray, 
+            OxyPenLineJoin lineJoin, 
             bool aliased)
         {
             if (stroke == null || thickness <= 0)
@@ -153,7 +170,7 @@ namespace OxyPlot.Pdf
                     pen.LineJoin = XLineJoin.Bevel;
                     break;
 
-                // The default LineJoin is Miter
+                    // The default LineJoin is Miter
             }
 
             this.g.DrawLines(pen, ToPoints(points));
@@ -163,33 +180,33 @@ namespace OxyPlot.Pdf
         /// The draw polygon.
         /// </summary>
         /// <param name="points">
-        /// The points.
+        /// The points. 
         /// </param>
         /// <param name="fill">
-        /// The fill.
+        /// The fill. 
         /// </param>
         /// <param name="stroke">
-        /// The stroke.
+        /// The stroke. 
         /// </param>
         /// <param name="thickness">
-        /// The thickness.
+        /// The thickness. 
         /// </param>
         /// <param name="dashArray">
-        /// The dash array.
+        /// The dash array. 
         /// </param>
         /// <param name="lineJoin">
-        /// The line join.
+        /// The line join. 
         /// </param>
         /// <param name="aliased">
-        /// The aliased.
+        /// The aliased. 
         /// </param>
         public override void DrawPolygon(
-            IList<ScreenPoint> points,
-            OxyColor fill,
-            OxyColor stroke,
-            double thickness,
-            double[] dashArray,
-            OxyPenLineJoin lineJoin,
+            IList<ScreenPoint> points, 
+            OxyColor fill, 
+            OxyColor stroke, 
+            double thickness, 
+            double[] dashArray, 
+            OxyPenLineJoin lineJoin, 
             bool aliased)
         {
             this.g.SmoothingMode = aliased ? XSmoothingMode.None : XSmoothingMode.HighQuality;
@@ -219,7 +236,7 @@ namespace OxyPlot.Pdf
                         pen.LineJoin = XLineJoin.Bevel;
                         break;
 
-                    // The default LineJoin is Miter
+                        // The default LineJoin is Miter
                 }
 
                 this.g.DrawPolygon(pen, pts);
@@ -230,16 +247,16 @@ namespace OxyPlot.Pdf
         /// The draw rectangle.
         /// </summary>
         /// <param name="rect">
-        /// The rect.
+        /// The rect. 
         /// </param>
         /// <param name="fill">
-        /// The fill.
+        /// The fill. 
         /// </param>
         /// <param name="stroke">
-        /// The stroke.
+        /// The stroke. 
         /// </param>
         /// <param name="thickness">
-        /// The thickness.
+        /// The thickness. 
         /// </param>
         public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
@@ -259,45 +276,45 @@ namespace OxyPlot.Pdf
         /// The draw text.
         /// </summary>
         /// <param name="p">
-        /// The p.
+        /// The p. 
         /// </param>
         /// <param name="text">
-        /// The text.
+        /// The text. 
         /// </param>
         /// <param name="fill">
-        /// The fill.
+        /// The fill. 
         /// </param>
         /// <param name="fontFamily">
-        /// The font family.
+        /// The font family. 
         /// </param>
         /// <param name="fontSize">
-        /// The font size.
+        /// The font size. 
         /// </param>
         /// <param name="fontWeight">
-        /// The font weight.
+        /// The font weight. 
         /// </param>
         /// <param name="rotate">
-        /// The rotate.
+        /// The rotate. 
         /// </param>
         /// <param name="halign">
-        /// The halign.
+        /// The halign. 
         /// </param>
         /// <param name="valign">
-        /// The valign.
+        /// The valign. 
         /// </param>
         /// <param name="maxSize">
-        /// The maximum size of the text.
+        /// The maximum size of the text. 
         /// </param>
         public override void DrawText(
-            ScreenPoint p,
-            string text,
-            OxyColor fill,
-            string fontFamily,
-            double fontSize,
-            double fontWeight,
-            double rotate,
-            HorizontalTextAlign halign,
-            VerticalTextAlign valign,
+            ScreenPoint p, 
+            string text, 
+            OxyColor fill, 
+            string fontFamily, 
+            double fontSize, 
+            double fontWeight, 
+            double rotate, 
+            HorizontalTextAlign halign, 
+            VerticalTextAlign valign, 
             OxySize? maxSize)
         {
             if (text == null)
@@ -374,19 +391,19 @@ namespace OxyPlot.Pdf
         /// The measure text.
         /// </summary>
         /// <param name="text">
-        /// The text.
+        /// The text. 
         /// </param>
         /// <param name="fontFamily">
-        /// The font family.
+        /// The font family. 
         /// </param>
         /// <param name="fontSize">
-        /// The font size.
+        /// The font size. 
         /// </param>
         /// <param name="fontWeight">
-        /// The font weight.
+        /// The font weight. 
         /// </param>
         /// <returns>
-        /// The text size.
+        /// The text size. 
         /// </returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
@@ -410,7 +427,7 @@ namespace OxyPlot.Pdf
         /// Save the document to a stream.
         /// </summary>
         /// <param name="s">
-        /// The stream.
+        /// The stream. 
         /// </param>
         public void Save(Stream s)
         {
@@ -425,10 +442,10 @@ namespace OxyPlot.Pdf
         /// Converts an OxyColor to a brush.
         /// </summary>
         /// <param name="fill">
-        /// The fill color.
+        /// The fill color. 
         /// </param>
         /// <returns>
-        /// The brush.
+        /// The brush. 
         /// </returns>
         private static XBrush ToBrush(OxyColor fill)
         {
@@ -444,10 +461,10 @@ namespace OxyPlot.Pdf
         /// Converts an OxyColor to an XColor.
         /// </summary>
         /// <param name="c">
-        /// The source color.
+        /// The source color. 
         /// </param>
         /// <returns>
-        /// The color.
+        /// The color. 
         /// </returns>
         private static XColor ToColor(OxyColor c)
         {
@@ -458,10 +475,10 @@ namespace OxyPlot.Pdf
         /// Converts a list of points.
         /// </summary>
         /// <param name="points">
-        /// The list of points.
+        /// The list of points. 
         /// </param>
         /// <returns>
-        /// The points.
+        /// The points. 
         /// </returns>
         private static XPoint[] ToPoints(IList<ScreenPoint> points)
         {
@@ -478,6 +495,28 @@ namespace OxyPlot.Pdf
             }
 
             return r;
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources. 
+        /// </param>
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    if (this.doc != null)
+                    {
+                        this.doc.Dispose();
+                    }
+                }
+            }
+
+            this.disposed = true;
         }
 
         #endregion

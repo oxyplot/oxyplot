@@ -97,36 +97,35 @@ namespace OxyPlot.Tests
 
             using (var input = File.OpenRead(path))
             {
-                using (var xvr = XmlReader.Create(input, settings))
+                var xvr = XmlReader.Create(input, settings);
+                while (xvr.Read())
                 {
-                    while (xvr.Read())
-                    {
-                        // do nothing
-                    }
-
-                    if (errors + warnings == 0)
-                    {
-                        return null;
-                    }
-
-                    return string.Format("Errors: {0}, Warnings: {1}", errors, warnings);
-
-                    /*
-                    catch (XmlSchemaException e)
-                    {
-                        Console.Error.WriteLine("Failed to read XML: {0}", e.Message);
-
-                    }
-                    catch (XmlException e)
-                    {
-                        Console.Error.WriteLine("XML Error: {0}", e.Message);
-
-                    }
-                    catch (IOException e)
-                    {
-                        Console.Error.WriteLine("IO error: {0}", e.Message);
-                    }*/
+                    // do nothing
                 }
+
+                if (errors + warnings == 0)
+                {
+                    return null;
+                }
+
+                return string.Format("Errors: {0}, Warnings: {1}", errors, warnings);
+
+                /*
+                catch (XmlSchemaException e)
+                {
+                    Console.Error.WriteLine("Failed to read XML: {0}", e.Message);
+
+                }
+                catch (XmlException e)
+                {
+                    Console.Error.WriteLine("XML Error: {0}", e.Message);
+
+                }
+                catch (IOException e)
+                {
+                    Console.Error.WriteLine("IO error: {0}", e.Message);
+                }*/
+
             }
         }
 

@@ -2,6 +2,9 @@
 // <copyright file="HtmlReportWriter.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Specifies the html element type to use when writing plots.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Reporting
@@ -16,17 +19,17 @@ namespace OxyPlot.Reporting
     public enum HtmlPlotElementType
     {
         /// <summary>
-        ///   Use the embed tag and reference an external svg file.
+        /// Use the embed tag and reference an external svg file.
         /// </summary>
-        Embed, 
+        Embed,
 
         /// <summary>
-        ///   Use the object tag and reference an external svg file.
+        /// Use the object tag and reference an external svg file.
         /// </summary>
-        Object, 
+        Object,
 
         /// <summary>
-        ///   Use the svg tag and include the plot inline.
+        /// Use the svg tag and include the plot inline.
         /// </summary>
         Svg
     }
@@ -39,22 +42,27 @@ namespace OxyPlot.Reporting
         #region Constants and Fields
 
         /// <summary>
-        ///   The directory of the output file.
+        /// The directory of the output file.
         /// </summary>
         private readonly string directory;
 
         /// <summary>
-        ///   The path of the output file.
+        /// The path of the output file.
         /// </summary>
         private readonly string outputFile;
 
         /// <summary>
-        ///   The figure counter.
+        /// The text measurer.
+        /// </summary>
+        private readonly IRenderContext textMeasurer;
+
+        /// <summary>
+        /// The figure counter.
         /// </summary>
         private int figureCounter;
 
         /// <summary>
-        ///   The style.
+        /// The style.
         /// </summary>
         private ReportStyle style;
 
@@ -65,16 +73,20 @@ namespace OxyPlot.Reporting
 #if !METRO
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class. 
+        /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class.
         /// </summary>
         /// <param name="path">
         /// The path. 
         /// </param>
-        public HtmlReportWriter(string path)
+        /// <param name="textMeasurer">
+        /// The text measurer. 
+        /// </param>
+        public HtmlReportWriter(string path, IRenderContext textMeasurer = null)
             : base(path)
         {
             this.directory = Path.GetDirectoryName(path);
             this.outputFile = path;
+            this.textMeasurer = textMeasurer;
             this.PlotElementType = HtmlPlotElementType.Embed;
             this.WriteHtmlElement();
         }
@@ -82,14 +94,18 @@ namespace OxyPlot.Reporting
 #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class. 
+        /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class.
         /// </summary>
         /// <param name="stream">
         /// The stream. 
         /// </param>
-        public HtmlReportWriter(Stream stream)
+        /// <param name="textMeasurer">
+        /// The text measurer. 
+        /// </param>
+        public HtmlReportWriter(Stream stream, IRenderContext textMeasurer = null)
             : base(stream)
         {
+            this.textMeasurer = textMeasurer;
             this.WriteHtmlElement();
             this.PlotElementType = HtmlPlotElementType.Svg;
         }
@@ -97,9 +113,11 @@ namespace OxyPlot.Reporting
         #endregion
 
         /// <summary>
-        ///   Gets or sets the type of the plot element.
+        /// Gets or sets the type of the plot element.
         /// </summary>
-        /// <value> The type of the plot element. </value>
+        /// <value>
+        /// The type of the plot element. 
+        /// </value>
         public HtmlPlotElementType PlotElementType { get; set; }
 
         #region Public Methods
@@ -222,14 +240,14 @@ namespace OxyPlot.Reporting
                 case HtmlPlotElementType.Object:
                     string source = string.Format(
                         "{0}_Plot{1}.svg", Path.GetFileNameWithoutExtension(this.outputFile), plot.FigureNumber);
-                    plot.PlotModel.SaveSvg(this.GetFullFileName(source), plot.Width, plot.Height);
+                    plot.PlotModel.SaveSvg(this.GetFullFileName(source), plot.Width, plot.Height, this.textMeasurer);
                     this.WriteStartElement(this.PlotElementType == HtmlPlotElementType.Embed ? "embed" : "object");
                     this.WriteAttributeString("src", source);
                     this.WriteAttributeString("type", "image/svg+xml");
                     this.WriteEndElement();
                     break;
                 case HtmlPlotElementType.Svg:
-                    this.WriteRaw(plot.PlotModel.ToSvg(plot.Width, plot.Height));
+                    this.WriteRaw(plot.PlotModel.ToSvg(plot.Width, plot.Height, false, this.textMeasurer));
                     break;
             }
 

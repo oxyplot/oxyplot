@@ -183,7 +183,7 @@
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\FunctionSeries.cs" />
     <Compile Include="Series\PieSlice.cs" />
-    <Compile Include="Svg\Gdi32.cs" />
+    <Compile Include="Svg\NativeMethods.cs" />
     <Compile Include="Svg\SvgRenderContext.cs" />
     <Compile Include="Svg\SvgWriter.cs" />
     <Compile Include="Foundation\OxyColor.cs" />

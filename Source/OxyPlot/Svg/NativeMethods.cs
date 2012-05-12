@@ -11,9 +11,9 @@ namespace OxyPlot
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// The gdi 32.
+    /// Interface to GDI32 native methods.
     /// </summary>
-    public class Gdi32
+    public class NativeMethods
     {
         #region Public Methods
 
@@ -27,7 +27,7 @@ namespace OxyPlot
         /// The delete dc.
         /// </returns>
         [DllImport("gdi32.dll")]
-        public static extern bool DeleteDC(IntPtr hdc);
+        internal static extern bool DeleteDC(IntPtr hdc);
 
         /// <summary>
         /// The delete object.
@@ -39,7 +39,7 @@ namespace OxyPlot
         /// The delete object.
         /// </returns>
         [DllImport("gdi32.dll")]
-        public static extern int DeleteObject(IntPtr hgdiobj);
+        internal static extern int DeleteObject(IntPtr hgdiobj);
 
         /// <summary>
         /// The get dc.
@@ -50,7 +50,7 @@ namespace OxyPlot
         /// <returns>
         /// </returns>
         [DllImport("user32.dll")]
-        public static extern IntPtr GetDC(IntPtr hWnd);
+        internal static extern IntPtr GetDC(IntPtr hWnd);
 
         /// <summary>
         /// The get text extent point 32.
@@ -70,8 +70,8 @@ namespace OxyPlot
         /// <returns>
         /// The get text extent point 32.
         /// </returns>
-        [DllImport("gdi32.dll")]
-        public static extern int GetTextExtentPoint32(IntPtr hdc, string str, int len, ref Size siz);
+        [DllImport("gdi32.dll", CharSet = CharSet.Unicode)]
+        internal static extern int GetTextExtentPoint32(IntPtr hdc, string str, int len, ref Size siz);
 
         /// <summary>
         /// The measure string.
@@ -124,7 +124,7 @@ namespace OxyPlot
         /// <returns>
         /// </returns>
         [DllImport("gdi32.dll")]
-        public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiObj);
+        internal static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiObj);
 
         #endregion
 
@@ -177,34 +177,29 @@ namespace OxyPlot
         /// </param>
         /// <returns>
         /// </returns>
-        [DllImport("gdi32.dll")]
+        [DllImport("gdi32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr CreateFont(
-            int nHeight, 
-            int nWidth, 
-            int nEscapement, 
-            int nOrientation, 
-            int fnWeight, 
-            uint fdwItalic, 
-            uint fdwUnderline, 
-            uint fdwStrikeOut, 
-            uint fdwCharSet, 
-            uint fdwOutputPrecision, 
-            uint fdwClipPrecision, 
-            uint fdwQuality, 
-            uint fdwPitchAndFamily, 
+            int nHeight,
+            int nWidth,
+            int nEscapement,
+            int nOrientation,
+            int fnWeight,
+            uint fdwItalic,
+            uint fdwUnderline,
+            uint fdwStrikeOut,
+            uint fdwCharSet,
+            uint fdwOutputPrecision,
+            uint fdwClipPrecision,
+            uint fdwQuality,
+            uint fdwPitchAndFamily,
             string lpszFace);
 
         /// <summary>
-        /// The get text extent.
+        /// Gets the text extent.
         /// </summary>
-        /// <param name="hdc">
-        /// The hdc.
-        /// </param>
-        /// <param name="str">
-        /// The str.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="hdc">The HDC.</param>
+        /// <param name="str">The STR.</param>
+        /// <returns></returns>
         private static OxySize GetTextExtent(IntPtr hdc, string str)
         {
             Size sz = default(Size);

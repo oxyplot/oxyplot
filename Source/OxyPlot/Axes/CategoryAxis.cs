@@ -2,11 +2,13 @@
 // <copyright file="CategoryAxis.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Represents a category axes.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
@@ -16,15 +18,14 @@ namespace OxyPlot
     /// Represents a category axes.
     /// </summary>
     /// <remarks>
-    /// The category axis is using the label collection indices as the coordinate.
-    ///   If you have 5 categories in the Labels collection, the categories will be placed at coordinates 0 to 4. The range of the axis will be from -0.5 to 4.5 (excl. padding).
+    /// The category axis is using the label collection indices as the coordinate. If you have 5 categories in the Labels collection, the categories will be placed at coordinates 0 to 4. The range of the axis will be from -0.5 to 4.5 (excl. padding).
     /// </remarks>
     public class CategoryAxis : LinearAxis
     {
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "CategoryAxis" /> class.
+        /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
         /// </summary>
         public CategoryAxis()
         {
@@ -40,8 +41,24 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
         /// </summary>
+        /// <param name="position">The position.</param>
         /// <param name="title">The title.</param>
         /// <param name="categories">The categories.</param>
+        public CategoryAxis(AxisPosition position, string title = null, params string[] categories)
+            : this(title, categories)
+        {
+            this.Position = position;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
+        /// </summary>
+        /// <param name="title">
+        /// The title. 
+        /// </param>
+        /// <param name="categories">
+        /// The categories. 
+        /// </param>
         public CategoryAxis(string title, params string[] categories)
             : this()
         {
@@ -54,51 +71,55 @@ namespace OxyPlot
                 }
             }
         }
+
         #endregion
 
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets a value indicating whether the ticks are centered.
-        ///   If this is false, ticks will be drawn between each category.
-        ///   If this is true, ticks will be drawn in the middle of each category.
+        /// Gets or sets the gap width.
+        /// </summary>
+        /// <remarks>
+        /// The default value is 1.0 (100%). The gap width is given as a fraction of the total width/height of the items in a category.
+        /// </remarks>
+        public double GapWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the ticks are centered. If this is false, ticks will be drawn between each category. If this is true, ticks will be drawn in the middle of each category.
         /// </summary>
         public bool IsTickCentered { get; set; }
 
         /// <summary>
-        ///   Gets or sets the items source (used to update the Labels collection).
+        /// Gets or sets the items source (used to update the Labels collection).
         /// </summary>
-        /// <value>The items source.</value>
+        /// <value>
+        /// The items source. 
+        /// </value>
         public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
-        ///   Gets or sets the data field for the labels.
+        /// Gets or sets the data field for the labels.
         /// </summary>
         public string LabelField { get; set; }
 
         /// <summary>
-        ///   Gets or sets the labels collection.
+        /// Gets or sets the labels collection.
         /// </summary>
         public IList<string> Labels { get; set; }
-
-        /// <summary>
-        /// Gets or sets the gap width.
-        /// </summary>
-        /// <remarks>
-        /// The default value is 1.0 (100%).
-        /// The gap width is given as a fraction of the total width/height of the items in a category.
-        /// </remarks>
-        public double GapWidth { get; set; }
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        ///   Gets or sets sum of the widths of the single bars per label.
-        ///   This is used to find the bar width of BarSeries
+        /// Gets or sets the current offset of the bars (not used for stacked bar series).
         /// </summary>
-        internal double[] TotalWidthPerCategory { get; set; }
+        internal double[] BarOffset { get; set; }
+
+        /// <summary>
+        /// Gets or sets the max value per StackIndex and Label (only used for stacked bar series).
+        /// </summary>
+        internal double[,] MaxValue { get; set; }
 
         /// <summary>
         /// Gets or sets the maximal width of all labels
@@ -106,24 +127,19 @@ namespace OxyPlot
         internal double MaxWidth { get; set; }
 
         /// <summary>
-        ///   Gets or sets the current offset of the bars (not used for stacked bar series).
+        /// Gets or sets the min value per StackIndex and Label (only used for stacked bar series).
         /// </summary>
-        internal double[] BarOffset { get; set; }
+        internal double[,] MinValue { get; set; }
 
         /// <summary>
-        ///   Gets or sets the offset of the bars  per StackIndex and Label (only used for stacked bar series).
-        /// </summary>
-        internal double[,] StackedBarOffset { get; set; }
-
-        /// <summary>
-        /// Gets or sets per StackIndex and Label the base value for positive values of stacked bar series. 
-        /// </summary>
-        internal double[,] PositiveBaseValues { get; set; }
-
-        /// <summary>
-        /// Gets or sets per StackIndex and Label the base value for negative values of stacked bar series. 
+        /// Gets or sets per StackIndex and Label the base value for negative values of stacked bar series.
         /// </summary>
         internal double[,] NegativeBaseValues { get; set; }
+
+        /// <summary>
+        /// Gets or sets per StackIndex and Label the base value for positive values of stacked bar series.
+        /// </summary>
+        internal double[,] PositiveBaseValues { get; set; }
 
         /// <summary>
         /// Gets or sets the StackIndexMapping. The mapping indicates to which rank a specific stack index belongs.
@@ -131,14 +147,14 @@ namespace OxyPlot
         internal Dictionary<string, int> StackIndexMapping { get; set; }
 
         /// <summary>
-        ///   Gets or sets the max value per StackIndex and Label  (only used for stacked bar series).
+        /// Gets or sets the offset of the bars per StackIndex and Label (only used for stacked bar series).
         /// </summary>
-        internal double[,] MaxValue { get; set; }
+        internal double[,] StackedBarOffset { get; set; }
 
         /// <summary>
-        ///   Gets or sets the min value per StackIndex and Label  (only used for stacked bar series).
+        /// Gets or sets sum of the widths of the single bars per label. This is used to find the bar width of BarSeries
         /// </summary>
-        internal double[,] MinValue { get; set; }
+        internal double[] TotalWidthPerCategory { get; set; }
 
         #endregion
 
@@ -148,10 +164,10 @@ namespace OxyPlot
         /// Fills the specified array.
         /// </summary>
         /// <param name="array">
-        /// The array.
+        /// The array. 
         /// </param>
         /// <param name="value">
-        /// The value.
+        /// The value. 
         /// </param>
         public static void Fill(double[] array, double value)
         {
@@ -165,10 +181,10 @@ namespace OxyPlot
         /// Fills the specified array.
         /// </summary>
         /// <param name="array">
-        /// The array.
+        /// The array. 
         /// </param>
         /// <param name="value">
-        /// The value.
+        /// The value. 
         /// </param>
         public static void Fill(double[,] array, double value)
         {
@@ -185,10 +201,10 @@ namespace OxyPlot
         /// Formats the value to be used on the axis.
         /// </summary>
         /// <param name="x">
-        /// The value.
+        /// The value. 
         /// </param>
         /// <returns>
-        /// The formatted value.
+        /// The formatted value. 
         /// </returns>
         public override string FormatValue(double x)
         {
@@ -205,10 +221,10 @@ namespace OxyPlot
         /// Formats the value to be used by the tracker.
         /// </summary>
         /// <param name="x">
-        /// The value.
+        /// The value. 
         /// </param>
         /// <returns>
-        /// The formatted value.
+        /// The formatted value. 
         /// </returns>
         public override string FormatValueForTracker(double x)
         {
@@ -216,16 +232,52 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Gets the category value.
+        /// </summary>
+        /// <param name="categoryIndex">
+        /// Index of the category. 
+        /// </param>
+        /// <param name="stackIndex">
+        /// Index of the stack. 
+        /// </param>
+        /// <param name="actualBarWidth">
+        /// Actual width of the bar. 
+        /// </param>
+        /// <returns>
+        /// The get category value.
+        /// </returns>
+        public double GetCategoryValue(int categoryIndex, int stackIndex, double actualBarWidth)
+        {
+            var offsetBegin = this.StackedBarOffset[stackIndex, categoryIndex];
+            var offsetEnd = this.StackedBarOffset[stackIndex + 1, categoryIndex];
+            return categoryIndex - 0.5 + ((offsetEnd + offsetBegin - actualBarWidth) * 0.5);
+        }
+
+        /// <summary>
+        /// Gets the category value.
+        /// </summary>
+        /// <param name="categoryIndex">
+        /// Index of the category. 
+        /// </param>
+        /// <returns>
+        /// The get category value.
+        /// </returns>
+        public double GetCategoryValue(int categoryIndex)
+        {
+            return categoryIndex - 0.5 + this.BarOffset[categoryIndex];
+        }
+
+        /// <summary>
         /// Gets the coordinates used to draw ticks and tick labels (numbers or category names).
         /// </summary>
         /// <param name="majorLabelValues">
-        /// The major label values.
+        /// The major label values. 
         /// </param>
         /// <param name="majorTickValues">
-        /// The major tick values.
+        /// The major tick values. 
         /// </param>
         /// <param name="minorTickValues">
-        /// The minor tick values.
+        /// The minor tick values. 
         /// </param>
         public override void GetTickValues(
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
@@ -238,10 +290,7 @@ namespace OxyPlot
                 // Subtract 0.5 from the label values to get the tick values.
                 // Add one extra tick at the end.
                 var mv = new List<double>(majorLabelValues.Count);
-                foreach (double v in majorLabelValues)
-                {
-                    mv.Add(v - 0.5);
-                }
+                mv.AddRange(majorLabelValues.Select(v => v - 0.5));
 
                 mv.Add(mv[mv.Count - 1] + 1);
                 majorTickValues = mv;
@@ -249,14 +298,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary.
-        ///   e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
+        /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary. e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
         /// <param name="x">
-        /// The coordinate.
+        /// The coordinate. 
         /// </param>
         /// <returns>
-        /// The value.
+        /// The value. 
         /// </returns>
         public override object GetValue(double x)
         {
@@ -268,10 +316,7 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
-        /// Updates the actual maximum and minimum values.
-        ///   If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
-        ///   If Maximum or Minimum have been set, these values will be used.
-        ///   Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
+        /// Updates the actual maximum and minimum values. If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used. If Maximum or Minimum have been set, these values will be used. Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
         /// </summary>
         internal override void UpdateActualMaxMin()
         {
@@ -297,44 +342,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Creates Labels list if no labels were set
-        /// </summary>
-        /// <param name="series">The list of series which are rendered</param>
-        internal void UpdateLabels(IEnumerable<Series> series)
-        {
-            if (this.ItemsSource != null)
-            {
-                this.Labels.Clear();
-                ReflectionHelper.FillList(this.ItemsSource, this.LabelField, this.Labels);
-            }
-
-            if (this.Labels.Count == 0)
-            {
-                foreach (var s in series)
-                {
-                    if (!s.IsUsing(this))
-                    {
-                        continue;
-                    }
-
-                    var bsb = s as CategorizedSeries;
-                    if (bsb != null)
-                    {
-                        int max = bsb.GetItems().Count;
-                        while (this.Labels.Count < max)
-                        {
-                            this.Labels.Add((this.Labels.Count + 1).ToString(CultureInfo.InvariantCulture));
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Updates the axis with information from the plot series.
         /// </summary>
         /// <param name="series">
-        /// The series collection.
+        /// The series collection. 
         /// </param>
         /// <remarks>
         /// This is used by the category axis that need to know the number of series using the axis.
@@ -352,11 +363,15 @@ namespace OxyPlot
             var stackRankBarWidth = new Dictionary<int, double>();
             for (var j = 0; j < stackIndices.Count; j++)
             {
-                var maxBarWidth = stackedSeries.Where(s => s.StackGroup == stackIndices[j]).Select(s => ((CategorizedSeries)s).GetBarWidth()).Concat(new[] { 0.0 }).Max();
+                var maxBarWidth =
+                    stackedSeries.Where(s => s.StackGroup == stackIndices[j]).Select(
+                        s => ((CategorizedSeries)s).GetBarWidth()).Concat(new[] { 0.0 }).Max();
                 for (var i = 0; i < this.Labels.Count; i++)
                 {
                     int k = 0;
-                    if (stackedSeries.SelectMany(s => ((CategorizedSeries)s).GetItems()).Any(item => item.GetCategoryIndex(k++) == i))
+                    if (
+                        stackedSeries.SelectMany(s => ((CategorizedSeries)s).GetItems()).Any(
+                            item => item.GetCategoryIndex(k++) == i))
                     {
                         this.TotalWidthPerCategory[i] += maxBarWidth;
                     }
@@ -366,7 +381,8 @@ namespace OxyPlot
             }
 
             // Add width of unstacked series
-            var unstackedBarSeries = categorizedSeries.Where(s => !(s is IStackableSeries) || !((IStackableSeries)s).IsStacked).ToList();
+            var unstackedBarSeries =
+                categorizedSeries.Where(s => !(s is IStackableSeries) || !((IStackableSeries)s).IsStacked).ToList();
             foreach (var s in unstackedBarSeries)
             {
                 for (var i = 0; i < this.Labels.Count; i++)
@@ -394,7 +410,9 @@ namespace OxyPlot
                 for (var i = 0; i < this.Labels.Count; i++)
                 {
                     int k = 0;
-                    if (stackedSeries.SelectMany(s => ((CategorizedSeries)s).GetItems()).All(item => item.GetCategoryIndex(k++) != i))
+                    if (
+                        stackedSeries.SelectMany(s => ((CategorizedSeries)s).GetItems()).All(
+                            item => item.GetCategoryIndex(k++) != i))
                     {
                         continue;
                     }
@@ -425,18 +443,42 @@ namespace OxyPlot
             Fill(this.MinValue, double.NaN);
         }
 
+        /// <summary>
+        /// Creates Labels list if no labels were set
+        /// </summary>
+        /// <param name="series">
+        /// The list of series which are rendered 
+        /// </param>
+        internal void UpdateLabels(IEnumerable<Series> series)
+        {
+            if (this.ItemsSource != null)
+            {
+                this.Labels.Clear();
+                ReflectionHelper.FillList(this.ItemsSource, this.LabelField, this.Labels);
+            }
+
+            if (this.Labels.Count == 0)
+            {
+                foreach (var s in series)
+                {
+                    if (!s.IsUsing(this))
+                    {
+                        continue;
+                    }
+
+                    var bsb = s as CategorizedSeries;
+                    if (bsb != null)
+                    {
+                        int max = bsb.GetItems().Count;
+                        while (this.Labels.Count < max)
+                        {
+                            this.Labels.Add((this.Labels.Count + 1).ToString(CultureInfo.InvariantCulture));
+                        }
+                    }
+                }
+            }
+        }
+
         #endregion
-
-        public double GetCategoryValue(int categoryIndex, int stackIndex, double actualBarWidth)
-        {
-            var offsetBegin = this.StackedBarOffset[stackIndex, categoryIndex];
-            var offsetEnd = this.StackedBarOffset[stackIndex + 1, categoryIndex];
-            return categoryIndex - 0.5 + (offsetEnd + offsetBegin - actualBarWidth) * 0.5;
-        }
-
-        public double GetCategoryValue(int categoryIndex)
-        {
-            return categoryIndex - 0.5 + this.BarOffset[categoryIndex];
-        }
     }
 }

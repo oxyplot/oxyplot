@@ -31,6 +31,11 @@ namespace OxyPlot
         /// </summary>
         private XmlWriter w;
 
+        /// <summary>
+        /// The disposed flag.
+        /// </summary>
+        private bool disposed;
+
         #endregion
 
         #region Constructors and Destructors
@@ -97,11 +102,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The dispose.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            this.Close();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -238,6 +244,22 @@ namespace OxyPlot
             this.w.WriteString(text);
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.Close();
+                }
+            }
+
+            this.disposed = true;
+        }
         #endregion
     }
 }

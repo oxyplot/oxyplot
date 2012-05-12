@@ -2,6 +2,9 @@
 // <copyright file="PdfReportWriter.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   PDF report writer using MigraDoc.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Pdf
@@ -15,7 +18,6 @@ namespace OxyPlot.Pdf
     using OxyPlot.Reporting;
 
     using Paragraph = MigraDoc.DocumentObjectModel.Paragraph;
-    using Table = OxyPlot.Reporting.Table;
 
     /// <summary>
     /// PDF report writer using MigraDoc.
@@ -25,12 +27,22 @@ namespace OxyPlot.Pdf
         #region Constants and Fields
 
         /// <summary>
-        ///   The current section.
+        /// The current section.
         /// </summary>
         private Section currentSection;
 
         /// <summary>
-        ///   The style.
+        /// The disposed flag.
+        /// </summary>
+        private bool disposed;
+
+        /// <summary>
+        /// Flag if the document has been closed.
+        /// </summary>
+        private bool isClosed;
+
+        /// <summary>
+        /// The style.
         /// </summary>
         private ReportStyle style;
 
@@ -42,7 +54,7 @@ namespace OxyPlot.Pdf
         /// Initializes a new instance of the <see cref="PdfReportWriter"/> class.
         /// </summary>
         /// <param name="filename">
-        /// The FileName.
+        /// The FileName. 
         /// </param>
         public PdfReportWriter(string filename)
         {
@@ -55,17 +67,17 @@ namespace OxyPlot.Pdf
         #region Properties
 
         /// <summary>
-        ///   Gets or sets the pdf document.
+        /// Gets or sets the pdf document.
         /// </summary>
         protected Document Document { get; set; }
 
         /// <summary>
-        ///   Gets or sets the file name.
+        /// Gets or sets the file name.
         /// </summary>
         protected string FileName { get; set; }
 
         /// <summary>
-        ///   Gets the current section.
+        /// Gets the current section.
         /// </summary>
         private Section CurrentSection
         {
@@ -77,16 +89,16 @@ namespace OxyPlot.Pdf
 
         #endregion
 
-        #region Public Methods
+        #region Public Methods and Operators
 
         /// <summary>
         /// Defines the styles used in the document.
         /// </summary>
         /// <param name="document">
-        /// The document.
+        /// The document. 
         /// </param>
         /// <param name="reportStyle">
-        /// The report Style.
+        /// The report Style. 
         /// </param>
         public static void DefineStyles(Document document, ReportStyle reportStyle)
         {
@@ -119,28 +131,35 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The close.
+        /// Closes this instance.
         /// </summary>
         public virtual void Close()
         {
+            if (this.isClosed)
+            {
+                return;
+            }
+
             var r = new PdfDocumentRenderer { Document = this.Document };
             r.RenderDocument();
             r.PdfDocument.Save(this.FileName);
+            this.isClosed = true;
         }
 
         /// <summary>
-        /// The dispose.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            this.Close();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
         /// The write drawing.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The d. 
         /// </param>
         public void WriteDrawing(DrawingFigure d)
         {
@@ -153,10 +172,10 @@ namespace OxyPlot.Pdf
         /// The write end figure.
         /// </summary>
         /// <param name="f">
-        /// The f.
+        /// The f. 
         /// </param>
         /// <param name="pa">
-        /// The pa.
+        /// The pa. 
         /// </param>
         public void WriteEndFigure(Figure f, Paragraph pa)
         {
@@ -168,7 +187,7 @@ namespace OxyPlot.Pdf
         /// The write equation.
         /// </summary>
         /// <param name="equation">
-        /// The equation.
+        /// The equation. 
         /// </param>
         public void WriteEquation(Equation equation)
         {
@@ -180,7 +199,7 @@ namespace OxyPlot.Pdf
         /// The write header.
         /// </summary>
         /// <param name="h">
-        /// The h.
+        /// The h. 
         /// </param>
         public void WriteHeader(Header h)
         {
@@ -201,7 +220,7 @@ namespace OxyPlot.Pdf
         /// The write image.
         /// </summary>
         /// <param name="i">
-        /// The i.
+        /// The i. 
         /// </param>
         public void WriteImage(Image i)
         {
@@ -219,7 +238,7 @@ namespace OxyPlot.Pdf
         /// The write paragraph.
         /// </summary>
         /// <param name="p">
-        /// The p.
+        /// The p. 
         /// </param>
         public void WriteParagraph(Reporting.Paragraph p)
         {
@@ -230,7 +249,7 @@ namespace OxyPlot.Pdf
         /// The write plot.
         /// </summary>
         /// <param name="plot">
-        /// The plot.
+        /// The plot. 
         /// </param>
         public void WritePlot(PlotFigure plot)
         {
@@ -261,8 +280,12 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the report.
         /// </summary>
-        /// <param name="report">The report.</param>
-        /// <param name="reportStyle">The report style.</param>
+        /// <param name="report">
+        /// The report. 
+        /// </param>
+        /// <param name="reportStyle">
+        /// The report style. 
+        /// </param>
         public void WriteReport(Report report, ReportStyle reportStyle)
         {
             this.style = reportStyle;
@@ -273,8 +296,12 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the start of a figure.
         /// </summary>
-        /// <param name="f">The figure.</param>
-        /// <returns>A paragraph</returns>
+        /// <param name="f">
+        /// The figure. 
+        /// </param>
+        /// <returns>
+        /// A paragraph 
+        /// </returns>
         public Paragraph WriteStartFigure(Figure f)
         {
             return this.CurrentSection.AddParagraph();
@@ -283,7 +310,9 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the table.
         /// </summary>
-        /// <param name="table">The table.</param>
+        /// <param name="table">
+        /// The table. 
+        /// </param>
         public void WriteTable(Table table)
         {
             if (table.Rows == null)
@@ -291,24 +320,23 @@ namespace OxyPlot.Pdf
                 return;
             }
 
-            var pdfTable = new MigraDoc.DocumentObjectModel.Tables.Table();
+            var pdfTable = new MigraDoc.DocumentObjectModel.Tables.Table
+                {
+                    Borders = { Width = 0.25, Left = { Width = 0.5 }, Right = { Width = 0.5 } },
+                    Rows = { LeftIndent = 0 }
+                };
             
-            // pdfTable.Style = "Table";
-            // pdfTable.Borders.Color = TableBorder;
-            pdfTable.Borders.Width = 0.25;
-            pdfTable.Borders.Left.Width = 0.5;
-            pdfTable.Borders.Right.Width = 0.5;
-            pdfTable.Rows.LeftIndent = 0;
+            //// pdfTable.Style = "Table";
+            //// pdfTable.Borders.Color = TableBorder;
 
             int columns = table.Columns.Count;
 
             for (int j = 0; j < columns; j++)
             {
                 var pdfColumn = pdfTable.AddColumn();
-                
+
                 // todo: the widths are not working
                 //// pdfColumn.Width = Unit.FromMillimeter(table.Columns[j].ActualWidth);
-                
                 pdfColumn.Format.Alignment = ConvertToParagraphAlignment(table.Columns[j].Alignment);
             }
 
@@ -342,10 +370,10 @@ namespace OxyPlot.Pdf
         /// Converts paragraph alignment.
         /// </summary>
         /// <param name="alignment">
-        /// The alignment.
+        /// The alignment. 
         /// </param>
         /// <returns>
-        /// The pdf alignment.
+        /// The pdf alignment. 
         /// </returns>
         private static ParagraphAlignment ConvertToParagraphAlignment(Alignment alignment)
         {
@@ -366,10 +394,10 @@ namespace OxyPlot.Pdf
         /// The set style.
         /// </summary>
         /// <param name="style">
-        /// The style.
+        /// The style. 
         /// </param>
         /// <param name="ps">
-        /// The ps.
+        /// The ps. 
         /// </param>
         private static void SetStyle(Style style, ParagraphStyle ps)
         {
@@ -390,14 +418,33 @@ namespace OxyPlot.Pdf
         /// Converts an OxyColor to a migra doc color.
         /// </summary>
         /// <param name="c">
-        /// The color.
+        /// The color. 
         /// </param>
         /// <returns>
-        /// The converted color.
+        /// The converted color. 
         /// </returns>
         private static Color ToMigraDocColor(OxyColor c)
         {
             return new Color(c.A, c.R, c.G, c.B);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources. 
+        /// </param>
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.Close();
+                }
+            }
+
+            this.disposed = true;
         }
 
         #endregion
