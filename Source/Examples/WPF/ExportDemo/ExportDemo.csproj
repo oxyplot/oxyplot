@@ -37,16 +37,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
-      <HintPath>..\..\..\packages\Caliburn.Micro.1.2.0\lib\Net40\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\..\..\packages\Caliburn.Micro.1.3.1\lib\net40\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyTools">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2012.2.1.55\lib\PropertyTools.dll</HintPath>
     </Reference>
     <Reference Include="PropertyTools.Wpf">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2011.7.1\lib\PropertyTools.Wpf.dll</HintPath>
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2012.2.1.55\lib\PropertyTools.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\..\..\packages\Caliburn.Micro.1.2.0\lib\Net40\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\..\..\packages\Caliburn.Micro.1.3.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
