@@ -320,23 +320,19 @@ namespace OxyPlot
         /// </summary>
         internal override void UpdateActualMaxMin()
         {
-            base.UpdateActualMaxMin();
-            this.ActualMinimum = -0.5;
+            // Update the DataMinimum/DataMaximum from the number of categories
+            this.Include(-0.5);
 
             if (this.Labels != null && this.Labels.Count > 0)
             {
-                this.ActualMaximum = (this.Labels.Count - 1) + 0.5;
+                this.Include((this.Labels.Count - 1) + 0.5);
             }
             else
             {
-                this.ActualMaximum = 0.5;
+                this.Include(0.5);
             }
 
-            if (this.Labels != null)
-            {
-                this.ActualMinimum -= this.MinimumPadding * this.Labels.Count;
-                this.ActualMaximum += this.MaximumPadding * this.Labels.Count;
-            }
+            base.UpdateActualMaxMin();
 
             this.MinorStep = 1;
         }
