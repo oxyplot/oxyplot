@@ -87,6 +87,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\CoupledAxesDemo\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Examples\CsvDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -191,6 +195,9 @@
     <Compile Include="Examples\ContourDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\CoupledAxesDemo\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\CsvDemo\CsvDocument.cs" />
     <Compile Include="Examples\CsvDemo\MainViewModel.cs" />
     <Compile Include="Examples\CsvDemo\MainWindow.xaml.cs">
@@ -274,6 +281,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\AxesDemo.png" />
+    <Resource Include="Images\CoupledAxesDemo.png" />
     <Resource Include="Images\UserControlDemo.png" />
     <Resource Include="Images\AreaDemo.png" />
     <Resource Include="Images\BarSeriesDemo.png" />

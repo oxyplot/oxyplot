@@ -1113,11 +1113,9 @@ namespace OxyPlot
         /// </summary>
         /// <param name="width">The width (points).</param>
         /// <param name="height">The height (points).</param>
-        /// <param name="textMeasurer">The text measurer.</param>
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
-        /// <returns>
-        /// The to svg.
-        /// </returns>
+        /// <param name="textMeasurer">The text measurer.</param>
+        /// <returns>The svg string.</returns>
         public string ToSvg(double width, double height, bool isDocument = false, IRenderContext textMeasurer = null)
         {
             return SvgExporter.ExportToString(this, width, height, isDocument, textMeasurer);
@@ -1455,7 +1453,7 @@ namespace OxyPlot
         {
             foreach (var a in this.Axes)
             {
-                a.ResetActualMaxMin();
+                a.ResetDataMaxMin();
             }
 
             if (isDataUpdated)
