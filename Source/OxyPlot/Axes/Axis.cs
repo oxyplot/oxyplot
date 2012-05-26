@@ -200,14 +200,36 @@ namespace OxyPlot
         public double ActualMajorStep { get; protected set; }
 
         /// <summary>
-        ///   Gets or sets the actual maximum value of the axis. If ViewMaximum is not NaN, this value will be defined by ViewMaximum. Otherwise, if Maximum is not NaN, this value will be defined by Maximum. Otherwise, this value will be defined by the maximum (+padding) of the data.
+        ///   Gets or sets the actual maximum value of the axis. 
         /// </summary>
+        /// <remarks>
+        /// If ViewMaximum is not NaN, this value will be defined by ViewMaximum. 
+        /// Otherwise, if Maximum is not NaN, this value will be defined by Maximum. 
+        /// Otherwise, this value will be defined by the maximum (+padding) of the data.
+        /// </remarks>
         public double ActualMaximum { get; protected set; }
 
         /// <summary>
-        ///   Gets or sets the actual minimum value of the axis. If ViewMinimum is not NaN, this value will be defined by ViewMinimum. Otherwise, if Minimum is not NaN, this value will be defined by Minimum. Otherwise this value will be defined by the minimum (+padding) of the data.
+        ///   Gets or sets the actual minimum value of the axis. 
         /// </summary>
+        /// <remarks>
+        /// If ViewMinimum is not NaN, this value will be defined by ViewMinimum. 
+        /// Otherwise, if Minimum is not NaN, this value will be defined by Minimum. 
+        /// Otherwise this value will be defined by the minimum (+padding) of the data.
+        /// </remarks>
         public double ActualMinimum { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the maximum value of the data displayed on this axis.
+        /// </summary>
+        /// <value>The data maximum.</value>
+        public double DataMaximum { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the minimum value of the data displayed on this axis.
+        /// </summary>
+        /// <value>The data minimum.</value>
+        public double DataMinimum { get; protected set; }
 
         /// <summary>
         ///   Gets or sets the actual minor step.
@@ -1109,6 +1131,7 @@ namespace OxyPlot
         {
             this.ViewMinimum = double.NaN;
             this.ViewMaximum = double.NaN;
+            this.UpdateActualMaxMin();
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Reset));
         }
 
@@ -1287,7 +1310,7 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
-        /// Modifies the range of the axis [ActualMinimum,ActualMaximum] to includes the specified value.
+        /// Modifies the data range of the axis [DataMinimum,DataMaximum] to includes the specified value.
         /// </summary>
         /// <param name="value">
         /// The value. 
@@ -1299,8 +1322,8 @@ namespace OxyPlot
                 return;
             }
 
-            this.ActualMinimum = double.IsNaN(this.ActualMinimum) ? value : Math.Min(this.ActualMinimum, value);
-            this.ActualMaximum = double.IsNaN(this.ActualMaximum) ? value : Math.Max(this.ActualMaximum, value);
+            this.DataMinimum = double.IsNaN(this.DataMinimum) ? value : Math.Min(this.DataMinimum, value);
+            this.DataMaximum = double.IsNaN(this.DataMaximum) ? value : Math.Max(this.DataMaximum, value);
         }
 
         /// <summary>
@@ -1332,11 +1355,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Resets the actual maximum and minimum. This method will not refresh the plot.
+        /// Resets the data maximum and minimum. 
         /// </summary>
-        internal virtual void ResetActualMaxMin()
+        internal virtual void ResetDataMaxMin()
         {
-            this.ActualMaximum = this.ActualMinimum = double.NaN;
+            this.DataMaximum = this.DataMinimum = double.NaN;
         }
 
         /// <summary>
@@ -1344,15 +1367,21 @@ namespace OxyPlot
         /// </summary>
         internal virtual void UpdateActualMaxMin()
         {
+            // Use the minimum/maximum of the data as default
+            this.ActualMaximum = this.DataMaximum;
+            this.ActualMinimum = this.DataMinimum;
+
             double range = this.ActualMaximum - this.ActualMinimum;
             double zeroRange = this.ActualMaximum > 0 ? this.ActualMaximum : 1;
 
             if (!double.IsNaN(this.ViewMaximum))
             {
+                // Override the ActualMaximum by the ViewMaximum value (from zoom/pan)
                 this.ActualMaximum = this.ViewMaximum;
             }
             else if (!double.IsNaN(this.Maximum))
             {
+                // Override the ActualMaximum by the Maximum value
                 this.ActualMaximum = this.Maximum;
             }
             else

@@ -25,9 +25,11 @@ namespace WpfExamples
                 {
                     new Example(typeof(AnnotationDemo.MainWindow), null, "Shows different types of annotations."),
                     new Example(typeof(AreaDemo.MainWindow), null, "Plotting with AreaSeries."),
+                    new Example(typeof(AxesDemo.MainWindow), null, "Demonstrates functionality of the axes."),
                     new Example(typeof(BarSeriesDemo.MainWindow), null, "Shows bar/column series."),
                     new Example(typeof(BindingDemo.MainWindow), null, "Demonstrates data binding."),
                     new Example(typeof(ContourDemo.MainWindow), null, "Plotting with contour series."),
+                    new Example(typeof(CoupledAxesDemo.MainWindow), null, "Shows how to keep two axes in sync."),
                     new Example(typeof(CsvDemo.MainWindow), null, "Plotting data from CSV files."),
                     new Example(typeof(CustomTrackerDemo.MainWindow), null, "Demonstrates a custom tracker."),
                     new Example(typeof(DateTimeDemo.MainWindow), null, "Plotting with DateTime axes."),
