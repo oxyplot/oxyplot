@@ -1101,6 +1101,11 @@ namespace OxyPlot
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan));
         }
 
+		public virtual AxisRendererBase CreateRenderer(IRenderContext rc, PlotModel model)
+		{
+			return new HorizontalAndVerticalAxisRenderer(rc, model);
+		}
+
         /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
@@ -1120,7 +1125,7 @@ namespace OxyPlot
                 return;
             }
 
-            var r = new HorizontalAndVerticalAxisRenderer(rc, model);
+            var r = CreateRenderer(rc, model);
             r.Render(this);
         }
 
