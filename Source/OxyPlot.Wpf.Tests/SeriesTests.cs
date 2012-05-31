@@ -16,6 +16,42 @@ namespace OxyPlot.Wpf.Tests
     public class SeriesTests
     {
         [Test]
+        public void PlotElement()
+        {
+            OxyAssert.PropertiesExist(typeof(OxyPlot.PlotElement), typeof(Series));
+        }
+
+        [Test]
+        public void SelectablePlotElement()
+        {
+            OxyAssert.PropertiesExist(typeof(OxyPlot.SelectablePlotElement), typeof(Series));
+        }
+
+        [Test]
+        public void Series()
+        {
+            OxyAssert.PropertiesExist(typeof(OxyPlot.Series), typeof(Series));
+        }
+
+        [Test]
+        public void ItemsSeries()
+        {
+            OxyAssert.PropertiesExist(typeof(OxyPlot.ItemsSeries), typeof(ItemsSeries));
+        }
+
+        [Test]
+        public void XYAxisSeries()
+        {
+            OxyAssert.PropertiesExist(typeof(OxyPlot.XYAxisSeries), typeof(XYAxisSeries));
+        }
+
+        [Test]
+        public void DataPointSeries()
+        {
+            OxyAssert.PropertiesExist(typeof(OxyPlot.DataPointSeries), typeof(DataPointSeries));
+        }
+
+        [Test]
         public void LineSeries()
         {
             var s1 = new OxyPlot.LineSeries();

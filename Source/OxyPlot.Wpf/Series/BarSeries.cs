@@ -20,7 +20,7 @@ namespace OxyPlot.Wpf
         ///   The bar width property.
         /// </summary>
         public static readonly DependencyProperty BarWidthProperty = DependencyProperty.Register(
-            "BarWidth", typeof(double), typeof(BarSeries), new PropertyMetadata(0.5, AppearanceChanged));
+            "BarWidth", typeof(double), typeof(BarSeries), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         ///   The fill color property.
