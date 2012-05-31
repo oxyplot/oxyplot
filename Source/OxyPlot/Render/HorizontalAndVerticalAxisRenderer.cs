@@ -254,22 +254,22 @@ namespace OxyPlot
                 {
                     case AxisPosition.Left:
                         pt = new ScreenPoint(axisPosition + a1 - axis.AxisTickToLabelDistance, transformedValue);
-                        GetRotatedAlignments(
+                        this.GetAxisLabelRotatedAlignments(
                             axis.Angle, HorizontalTextAlign.Right, VerticalTextAlign.Middle, out ha, out va);
                         break;
                     case AxisPosition.Right:
                         pt = new ScreenPoint(axisPosition + a1 + axis.AxisTickToLabelDistance, transformedValue);
-                        GetRotatedAlignments(
+                        this.GetAxisLabelRotatedAlignments(
                             axis.Angle, HorizontalTextAlign.Left, VerticalTextAlign.Middle, out ha, out va);
                         break;
                     case AxisPosition.Top:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 - axis.AxisTickToLabelDistance);
-                        GetRotatedAlignments(
+                        this.GetAxisLabelRotatedAlignments(
                             axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Bottom, out ha, out va);
                         break;
                     case AxisPosition.Bottom:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 + axis.AxisTickToLabelDistance);
-                        GetRotatedAlignments(
+                        this.GetAxisLabelRotatedAlignments(
                             axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Top, out ha, out va);
                         break;
                 }
@@ -352,7 +352,6 @@ namespace OxyPlot
                                   : Lerp(axis.ScreenMax.Y, axis.ScreenMin.Y, axis.TitlePosition);
 
                 double angle = -90;
-                var lpt = new ScreenPoint();
 
                 var halign = HorizontalTextAlign.Center;
                 var valign = VerticalTextAlign.Top;
@@ -374,28 +373,7 @@ namespace OxyPlot
                     maxSize = new OxySize(screenLength * axis.TitleClippingLength, double.MaxValue);
                 }
 
-                switch (axis.Position)
-                {
-                    case AxisPosition.Left:
-                        lpt = new ScreenPoint(titlePosition, ymid);
-                        break;
-                    case AxisPosition.Right:
-                        lpt = new ScreenPoint(titlePosition, ymid);
-                        valign = VerticalTextAlign.Bottom;
-                        break;
-                    case AxisPosition.Top:
-                        lpt = new ScreenPoint(ymid, titlePosition);
-                        halign = HorizontalTextAlign.Center;
-                        valign = VerticalTextAlign.Top;
-                        angle = 0;
-                        break;
-                    case AxisPosition.Bottom:
-                        lpt = new ScreenPoint(ymid, titlePosition);
-                        halign = HorizontalTextAlign.Center;
-                        valign = VerticalTextAlign.Bottom;
-                        angle = 0;
-                        break;
-                }
+                var lpt = this.CreateAxisTitleScreenPoint(axis, ymid, titlePosition, ref angle, ref halign, ref valign);
 
                 this.rc.SetToolTip(axis.ToolTip);
                 this.rc.DrawText(
@@ -434,7 +412,43 @@ namespace OxyPlot
             }
         }
 
-        #endregion
+    	protected virtual ScreenPoint CreateAxisTitleScreenPoint(
+    		Axis axis,
+    		double ymid,
+    		double titlePosition,
+    		ref double angle,
+    		ref HorizontalTextAlign halign,
+    		ref VerticalTextAlign valign)
+    	{
+    		ScreenPoint lpt;
+    		switch (axis.Position)
+    		{
+    			case AxisPosition.Left:
+    				lpt = new ScreenPoint(titlePosition, ymid);
+    				break;
+    			case AxisPosition.Right:
+    				lpt = new ScreenPoint(titlePosition, ymid);
+    				valign = VerticalTextAlign.Bottom;
+    				break;
+    			case AxisPosition.Top:
+    				lpt = new ScreenPoint(ymid, titlePosition);
+    				halign = HorizontalTextAlign.Center;
+    				valign = VerticalTextAlign.Top;
+    				angle = 0;
+    				break;
+    			case AxisPosition.Bottom:
+    				lpt = new ScreenPoint(ymid, titlePosition);
+    				halign = HorizontalTextAlign.Center;
+    				valign = VerticalTextAlign.Bottom;
+    				angle = 0;
+    				break;
+				default:
+					throw new ArgumentOutOfRangeException("axis");
+    		}
+    		return lpt;
+    	}
+
+    	#endregion
 
         #region Methods
 
@@ -456,7 +470,7 @@ namespace OxyPlot
         /// <param name="va">
         /// The rotated vertical alignment.
         /// </param>
-        private static void GetRotatedAlignments(
+        protected virtual void GetAxisLabelRotatedAlignments(
             double angle,
             HorizontalTextAlign defaultHorizontalAlignment,
             VerticalTextAlign defaultVerticalAlignment,
