@@ -16,6 +16,12 @@ namespace OxyPlot.Wpf.Tests
     public class AxesTests
     {
         [Test]
+        public void Axis()
+        {
+            OxyAssert.PropertiesExist(typeof(OxyPlot.Axis), typeof(Axis));
+        }
+
+        [Test]
         public void LinearAxis()
         {
             var s1 = new OxyPlot.LinearAxis();

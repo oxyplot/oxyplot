@@ -2,6 +2,9 @@
 // <copyright file="CategoryAxis.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   This is a WPF wrapper of OxyPlot.CategoryAxis.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Wpf
@@ -18,25 +21,31 @@ namespace OxyPlot.Wpf
         #region Constants and Fields
 
         /// <summary>
-        ///   The is tick centered property.
+        /// The gap width property.
+        /// </summary>
+        public static readonly DependencyProperty GapWidthProperty = DependencyProperty.Register(
+            "GapWidth", typeof(double), typeof(CategoryAxis), new UIPropertyMetadata(1.0));
+
+        /// <summary>
+        /// The is tick centered property.
         /// </summary>
         public static readonly DependencyProperty IsTickCenteredProperty = DependencyProperty.Register(
             "IsTickCentered", typeof(bool), typeof(CategoryAxis), new PropertyMetadata(false, DataChanged));
 
         /// <summary>
-        ///   The items source property.
+        /// The items source property.
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
             "ItemsSource", typeof(IEnumerable), typeof(CategoryAxis), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        ///   The label field property.
+        /// The label field property.
         /// </summary>
         public static readonly DependencyProperty LabelFieldProperty = DependencyProperty.Register(
             "LabelField", typeof(string), typeof(CategoryAxis), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        ///   The labels property.
+        /// The labels property.
         /// </summary>
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
             "Labels", typeof(IList<string>), typeof(CategoryAxis), new PropertyMetadata(new List<string>(), DataChanged));
@@ -46,7 +55,7 @@ namespace OxyPlot.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes static members of the <see cref = "CategoryAxis" /> class.
+        /// Initializes static members of the <see cref="CategoryAxis"/> class.
         /// </summary>
         static CategoryAxis()
         {
@@ -57,7 +66,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "CategoryAxis" /> class.
+        /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
         /// </summary>
         public CategoryAxis()
         {
@@ -69,7 +78,26 @@ namespace OxyPlot.Wpf
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets a value indicating whether IsTickCentered.
+        /// Gets or sets the gap width.
+        /// </summary>
+        /// <value>
+        /// The width of the gap. 
+        /// </value>
+        public double GapWidth
+        {
+            get
+            {
+                return (double)this.GetValue(GapWidthProperty);
+            }
+
+            set
+            {
+                this.SetValue(GapWidthProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether IsTickCentered.
         /// </summary>
         public bool IsTickCentered
         {
@@ -85,7 +113,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets ItemsSource.
+        /// Gets or sets ItemsSource.
         /// </summary>
         public IEnumerable ItemsSource
         {
@@ -101,7 +129,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets LabelField.
+        /// Gets or sets LabelField.
         /// </summary>
         public string LabelField
         {
@@ -117,7 +145,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets Labels.
+        /// Gets or sets Labels.
         /// </summary>
         public IList<string> Labels
         {
@@ -161,6 +189,7 @@ namespace OxyPlot.Wpf
             a.IsTickCentered = this.IsTickCentered;
             a.ItemsSource = this.ItemsSource;
             a.LabelField = this.LabelField;
+            a.GapWidth = this.GapWidth;
             if (this.Labels != null)
             {
                 a.Labels.Clear();
