@@ -7,4 +7,4 @@ del /S %dir%\oxyplot.xml
 del /S %dir%\oxyplot.wpf.xml
 del /S %dir%\oxyplot.silverlight.xml
 del /S %dir%\oxyplot.windowsforms.xml
-"C:\Program Files\7-Zip\7z.exe" a -r ..\Output\OxyPlot-Examples-%1.zip %dir%\*.* > CopyAllExamples.log
+"C:\Program Files\7-Zip\7z.exe" a -r ..\Output\OxyPlot-%1.zip ..\Output\*.* > ZipRelease.log
