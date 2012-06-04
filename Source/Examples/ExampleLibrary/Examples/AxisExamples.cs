@@ -781,5 +781,16 @@ namespace ExampleLibrary
         //    return model;
         //}
 
+        [Example("Angled axis numbers")]
+        public static PlotModel AngledAxisNumbers()
+        {
+            var model = new PlotModel("Angled axis numbers");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 1, "Bottom axis") { Angle = 45 });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 1, "Left axis") { Angle = 45 });
+            model.Axes.Add(new LinearAxis(AxisPosition.Top, -1, 1, "Top axis") { Angle = 45 });
+            model.Axes.Add(new LinearAxis(AxisPosition.Right, -1, 1, "Right axis") { Angle = 45 });
+            return model;
+        }
+
     }
 }
