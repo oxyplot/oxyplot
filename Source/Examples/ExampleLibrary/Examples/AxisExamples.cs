@@ -773,5 +773,13 @@ namespace ExampleLibrary
             return model;
         }
 
+        //[Example("Issue 9961: Round off error")]
+        //public static PlotModel Issue9961RoundoffError()
+        //{
+        //    var model = new PlotModel();
+        //    model.Axes.Add(new LinearAxis(AxisPosition.Left, -0.0182, 0.0012, 0.001, 0.0002));
+        //    return model;
+        //}
+
     }
 }
