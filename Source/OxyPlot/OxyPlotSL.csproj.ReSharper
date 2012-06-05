@@ -1,0 +1,16 @@
+<Configuration>
+  <NamespaceFolders>
+    <SkipFolder>EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA/d:Annotations</SkipFolder>
+    <SkipFolder>EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA/d:Axes</SkipFolder>
+    <SkipFolder>EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA/d:ClassDiagrams</SkipFolder>
+    <SkipFolder>EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA/d:Foundation/d:CodeGenerator</SkipFolder>
+    <SkipFolder>EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA/d:Foundation</SkipFolder>
+    <SkipFolder>EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA/d:PlotModel</SkipFolder>
+    <SkipFolder>EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA/d:Render</SkipFolder>
+    <SkipFolder>EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA/d:Reporting/d:Report</SkipFolder>
+    <SkipFolder>EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA/d:Reporting/d:ReportWriters</SkipFolder>
+    <SkipFolder>EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA/d:Reporting</SkipFolder>
+    <SkipFolder>EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA/d:Series</SkipFolder>
+    <SkipFolder>EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA/d:Svg</SkipFolder>
+  </NamespaceFolders>
+</Configuration>
