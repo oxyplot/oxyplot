@@ -64,6 +64,11 @@
     <Compile Include="Axes\LogarithmicAxis.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Converters\OxyColorConverter.cs" />
+    <Compile Include="Helpers\WeakEvents\RenderingEventListener.cs" />
+    <Compile Include="Helpers\WeakEvents\RenderingEventManager.cs" />
+    <Compile Include="Helpers\WeakEvents\WeakEventListenerT.cs" />
+    <Compile Include="Helpers\WeakEvents\WeakEventManagerBaseT.cs" />
+    <Compile Include="RenderingControl.cs" />
     <Compile Include="XamlExporter.cs" />
     <Compile Include="Helpers\InputBindingX.cs" />
     <Compile Include="Helpers\KeyGestureExtension.cs" />

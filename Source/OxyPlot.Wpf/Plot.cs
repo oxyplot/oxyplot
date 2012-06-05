@@ -30,7 +30,7 @@ namespace OxyPlot.Wpf
     /// </summary>
     [ContentProperty("Series")]
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
-    public partial class Plot : Control, IPlotControl
+    public partial class Plot : RenderingControl, IPlotControl
     {
         #region Constants and Fields
 
@@ -144,6 +144,11 @@ namespace OxyPlot.Wpf
         /// </summary>
         private ContentControl zoomControl;
 
+        /// <summary>
+        ///   The is rendering flag.
+        /// </summary>
+        private bool isRendering;
+
         #endregion
 
         #region Constructors and Destructors
@@ -177,7 +182,7 @@ namespace OxyPlot.Wpf
             this.DataContextChanged += this.OnDataContextChanged;
             this.SizeChanged += this.OnSizeChanged;
 
-            CompositionTarget.Rendering += this.CompositionTargetRendering;
+            //CompositionTarget.Rendering += this.CompositionTargetRendering;
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.DoCopy));
 
@@ -222,6 +227,34 @@ namespace OxyPlot.Wpf
             get
             {
                 return this.trackerDefinitions;
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether this instance is being rendered.
+        ///   When the visual is removed from the visual tree, this property should be set to false.
+        /// </summary>
+        public bool IsRendering
+        {
+            get
+            {
+                return this.isRendering;
+            }
+
+            set
+            {
+                if (value != this.isRendering)
+                {
+                    this.isRendering = value;
+                    if (this.isRendering)
+                    {
+                        this.SubscribeToRenderingEvent();
+                    }
+                    else
+                    {
+                        this.UnsubscribeRenderingEvent();
+                    }
+                }
             }
         }
 
@@ -637,6 +670,17 @@ namespace OxyPlot.Wpf
         #region Methods
 
         /// <summary>
+        /// Called when the parent of visual object is changed.
+        /// </summary>
+        /// <param name="oldParent">A value of type <see cref="T:System.Windows.DependencyObject"/> that represents the previous parent of the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object. If the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object did not have a previous parent, the value of the parameter is null.</param>
+        protected override void OnVisualParentChanged(DependencyObject oldParent)
+        {
+            base.OnVisualParentChanged(oldParent);
+            var parent = VisualTreeHelper.GetParent(this);
+            this.IsRendering = parent != null;
+        }
+
+        /// <summary>
         /// Called when the visual appearance is changed.
         /// </summary>
         protected virtual void OnAppearanceChanged()
@@ -993,10 +1037,10 @@ namespace OxyPlot.Wpf
         /// <param name="sender">
         /// The sender. 
         /// </param>
-        /// <param name="e">
-        /// The <see cref="System.EventArgs"/> instance containing the event data. 
+        /// <param name="eventArgs">
+        /// The <see cref="System.Windows.Media.RenderingEventArgs"/> instance containing the event data. 
         /// </param>
-        private void CompositionTargetRendering(object sender, EventArgs e)
+        protected override void OnCompositionTargetRendering(object sender, RenderingEventArgs eventArgs)
         {
             this.HandleStackedManipulationEvents();
 
