@@ -773,5 +773,24 @@ namespace ExampleLibrary
             return model;
         }
 
+        //[Example("Issue 9961: Round off error")]
+        //public static PlotModel Issue9961RoundoffError()
+        //{
+        //    var model = new PlotModel();
+        //    model.Axes.Add(new LinearAxis(AxisPosition.Left, -0.0182, 0.0012, 0.001, 0.0002));
+        //    return model;
+        //}
+
+        [Example("Angled axis numbers")]
+        public static PlotModel AngledAxisNumbers()
+        {
+            var model = new PlotModel("Angled axis numbers");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -1, 1, "Bottom axis") { Angle = 45 });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -1, 1, "Left axis") { Angle = 45 });
+            model.Axes.Add(new LinearAxis(AxisPosition.Top, -1, 1, "Top axis") { Angle = 45 });
+            model.Axes.Add(new LinearAxis(AxisPosition.Right, -1, 1, "Right axis") { Angle = 45 });
+            return model;
+        }
+
     }
 }
