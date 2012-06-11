@@ -41,8 +41,10 @@ namespace OxyPlot.Silverlight
 
         /// <summary>
         ///   Gets or sets the tracker key.
-        ///   The Plot will use this property to find the TrackerDefinition that matches the TrackerKey of the current series.
         /// </summary>
+        /// <remarks>
+        ///   The Plot will use this property to find the TrackerDefinition that matches the TrackerKey of the current series.
+        /// </remarks>
         public string TrackerKey
         {
             get
@@ -58,9 +60,11 @@ namespace OxyPlot.Silverlight
 
         /// <summary>
         ///   Gets or sets the tracker template.
+        /// </summary>
+        /// <remarks>
         ///   The tracker control will be added/removed from the Tracker overlay as neccessary.
         ///   The DataContext of the tracker will be set to a TrackerHitResult with the current tracker data.
-        /// </summary>
+        /// </remarks>
         public ControlTemplate TrackerTemplate
         {
             get
