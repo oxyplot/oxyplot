@@ -181,9 +181,10 @@ namespace OxyPlot.Wpf
             this.Loaded += this.OnLoaded;
             this.DataContextChanged += this.OnDataContextChanged;
             this.SizeChanged += this.OnSizeChanged;
-
-            //CompositionTarget.Rendering += this.CompositionTargetRendering;
-
+            
+            this.Loaded += this.PlotLoaded;
+            this.Unloaded += this.PlotUnloaded;
+            
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.DoCopy));
 
             // this.CommandBindings.Add(new CommandBinding(CopyCode, this.DoCopyCode));
@@ -232,8 +233,10 @@ namespace OxyPlot.Wpf
 
         /// <summary>
         ///   Gets or sets a value indicating whether this instance is being rendered.
-        ///   When the visual is removed from the visual tree, this property should be set to false.
         /// </summary>
+        /// <remarks>
+        ///   When the visual is removed from the visual tree, this property should be set to false.
+        /// </remarks>
         public bool IsRendering
         {
             get
@@ -670,6 +673,26 @@ namespace OxyPlot.Wpf
         #region Methods
 
         /// <summary>
+        /// Handles the Loaded event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        protected virtual void PlotLoaded(object sender, RoutedEventArgs e)
+        {
+            this.IsRendering = true;
+        }
+
+        /// <summary>
+        /// Handles the Unloaded event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        protected virtual void PlotUnloaded(object sender, RoutedEventArgs e)
+        {
+            this.IsRendering = false;
+        }
+
+        /// <summary>
         /// Called when the parent of visual object is changed.
         /// </summary>
         /// <param name="oldParent">A value of type <see cref="T:System.Windows.DependencyObject"/> that represents the previous parent of the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object. If the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object did not have a previous parent, the value of the parameter is null.</param>
@@ -683,7 +706,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called when the visual appearance is changed.
         /// </summary>
-        protected virtual void OnAppearanceChanged()
+        protected void OnAppearanceChanged()
         {
             this.InvalidatePlot();
         }
@@ -1032,14 +1055,10 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Compositions the target rendering.
+        /// Handles the CompositionTarget.Rendering event.
         /// </summary>
-        /// <param name="sender">
-        /// The sender. 
-        /// </param>
-        /// <param name="eventArgs">
-        /// The <see cref="System.Windows.Media.RenderingEventArgs"/> instance containing the event data. 
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="eventArgs">The <see cref="System.Windows.Media.RenderingEventArgs"/> instance containing the event data.</param>
         protected override void OnCompositionTargetRendering(object sender, RenderingEventArgs eventArgs)
         {
             this.HandleStackedManipulationEvents();
@@ -1059,13 +1078,13 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Creates the manipulation event args.
+        /// Creates the manipulation event arguments.
         /// </summary>
         /// <param name="e">
         /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data. 
         /// </param>
         /// <returns>
-        /// A manipulation event args object. 
+        /// A manipulation event arguments object. 
         /// </returns>
         private ManipulationEventArgs CreateManipulationEventArgs(MouseEventArgs e)
         {
