@@ -1593,7 +1593,7 @@ namespace OxyPlot
                 i++;
                 if (x >= min - eps && x <= max + eps)
                 {
-                    x = x.RemoveNoiseFromDoubleMath();
+                    x = x.RemoveNoise();
                     values.Add(x);
                 }
             }

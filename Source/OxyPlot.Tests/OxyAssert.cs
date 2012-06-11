@@ -44,7 +44,7 @@ namespace OxyPlot.Tests
             var baselineSvg = File.ReadAllText(baseline);
             var actualSvg = File.ReadAllText(path);
 
-            Assert.IsTrue(string.Equals(baselineSvg, actualSvg), "Actual svg is not equal to baseline.");
+            Assert.IsTrue(string.Equals(baselineSvg, actualSvg), "Actual svg is not equal to baseline (" + Path.GetFullPath(baseline) + ")");
         }
     }
 }
