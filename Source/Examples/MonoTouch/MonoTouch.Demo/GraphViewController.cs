@@ -15,11 +15,6 @@ namespace MonoTouch.Demo
 			this.exampleInfo = exampleInfo;
 		}
 		
-		public override void ViewWillAppear (bool animated)
-		{
-			base.ViewWillAppear (animated);
-		}
-		
 		public override void LoadView ()
 		{
 			NavigationItem.RightBarButtonItem= new UIBarButtonItem(UIBarButtonSystemItem.Compose, 
@@ -39,7 +34,12 @@ namespace MonoTouch.Demo
 					actionSheet.ShowInView (View);
 				});
 			
-			View = new GraphView(exampleInfo);
+			var scrollView = new GraphScrollView(exampleInfo, 
+			                 new RectangleF(new PointF(0, 0), 
+			               new SizeF(UIScreen.MainScreen.ApplicationFrame.Size.Width,
+			          UIScreen.MainScreen.ApplicationFrame.Height -
+			          UIScreen.MainScreen.ApplicationFrame.Top - 10)));
+			View = scrollView;
 		}
 		
 		private void Email(string exportType)
@@ -50,15 +50,15 @@ namespace MonoTouch.Demo
 			var title = exampleInfo.Title + "." + exportType;
 			NSData nsData = null;
 			string attachmentType = "text/plain";
-			var export = new Export(View, new SizeF(800,600));
+			var rect = new RectangleF(0,0,800,600);
 			switch(exportType)
 			{
 			case "png":
-				nsData =  export.ToPng();
+				nsData =  View.ToPng(rect);
 				attachmentType = "image/png";
 				break;
 			case "pdf":
-				nsData = export.ToPdf();
+				nsData = View.ToPdf(rect);
 				attachmentType = "text/x-pdf";
 				break;
 			}
