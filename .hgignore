@@ -26,6 +26,8 @@ syntax: glob
 *.sbr
 *.scc
 *.nupkg
+*.pidb
+*.userprefs
 
 [Bb]in
 [Dd]ebug*/

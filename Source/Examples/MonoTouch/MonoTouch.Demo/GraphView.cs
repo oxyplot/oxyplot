@@ -1,4 +1,6 @@
 using MonoTouch.UIKit;
+using System.Drawing;
+
 using OxyPlot;
 using OxyPlot.MonoTouch;
 using ExampleLibrary;
@@ -6,8 +8,9 @@ using ExampleLibrary;
 namespace MonoTouch.Demo
 {
 	public class GraphView : UIView
-	{
-		private readonly ExampleInfo exampleInfo;
+	{	
+		private ExampleInfo exampleInfo;
+		
 		public GraphView (ExampleInfo exampleInfo)
 		{
 			this.exampleInfo = exampleInfo;
@@ -15,16 +18,15 @@ namespace MonoTouch.Demo
 		
 		public override void Draw (System.Drawing.RectangleF rect)
 		{
-	        base.Draw (rect);
-			
 			var plot = exampleInfo.PlotModel;
 			
-			plot.PlotMargins = new OxyThickness(20);
+			plot.PlotMargins = new OxyThickness(5);
 			plot.Background = OxyColors.LightGray;
-			
 			plot.Update(true);
 			
-			var renderer = new MonoTouchRenderContext(UIGraphics.GetCurrentContext(), rect);
+			var context = UIGraphics.GetCurrentContext();
+			
+			var renderer = new MonoTouchRenderContext(context, rect);
 			plot.Render(renderer);
 		}
 	}
