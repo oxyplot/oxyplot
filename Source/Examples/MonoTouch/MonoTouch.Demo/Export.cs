@@ -4,28 +4,24 @@ using MonoTouch.UIKit;
 
 namespace MonoTouch.Demo
 {
-	public class Export
+	public static class Export
 	{
-		private UIView view;
-		private RectangleF rect;
-		
-		public Export (UIView view, SizeF size)
+		public static NSData ToPng(this UIView view, RectangleF rect)
 		{
-			this.view = view;
-			this.rect = new RectangleF(new PointF(0,0), size);
+			return view.GetImage(rect).AsPNG();
 		}
 		
-		public NSData ToPng()
+		public static UIImage GetImage(this UIView view, RectangleF rect)
 		{
 			UIGraphics.BeginImageContext(rect.Size);
 			view.Draw(rect);
 			var image = UIGraphics.GetImageFromCurrentImageContext();
 			UIGraphics.EndImageContext();
 			
-			return image.AsPNG();
+			return image;
 		}
 		
-		public NSData ToPdf()
+		public static NSData ToPdf(this UIView view, RectangleF rect)
 		{
 			var data = new NSMutableData();
 			UIGraphics.BeginPDFContext(data, rect, null);
