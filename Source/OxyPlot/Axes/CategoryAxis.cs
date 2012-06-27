@@ -291,8 +291,11 @@ namespace OxyPlot
                 // Add one extra tick at the end.
                 var mv = new List<double>(majorLabelValues.Count);
                 mv.AddRange(majorLabelValues.Select(v => v - 0.5));
+                if (mv.Count > 0)
+                {
+                    mv.Add(mv[mv.Count - 1] + 1);
+                }
 
-                mv.Add(mv[mv.Count - 1] + 1);
                 majorTickValues = mv;
             }
         }
