@@ -24,6 +24,11 @@ namespace OxyPlot
         /// </summary>
         private IList<HighLowItem> items;
 
+        /// <summary>
+        /// The default color.
+        /// </summary>
+        private OxyColor defaultColor;
+
         #endregion
 
         #region Constructors and Destructors
@@ -81,6 +86,15 @@ namespace OxyPlot
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
 
+        /// <summary>
+        /// Gets the actual color.
+        /// </summary>
+        /// <value>The actual color.</value>
+        public OxyColor ActualColor
+        {
+            get { return this.Color ?? this.defaultColor; }
+        }
+        
         /// <summary>
         ///   Gets or sets the dashes array. 
         ///   If this is not null it overrides the LineStyle property.
@@ -265,7 +279,7 @@ namespace OxyPlot
 
             if (this.XAxis == null || this.YAxis == null)
             {
-                Trace("Axis not defined.");
+                this.Trace("Axis not defined.");
                 return;
             }
 
@@ -287,7 +301,7 @@ namespace OxyPlot
                         new[] { low, high },
                         clippingRect,
                         0,
-                        this.GetSelectableColor(this.Color),
+                        this.GetSelectableColor(this.ActualColor),
                         this.StrokeThickness,
                         this.LineStyle,
                         this.LineJoin,
@@ -301,7 +315,7 @@ namespace OxyPlot
                             new[] { open, openTick },
                             clippingRect,
                             0,
-                            this.GetSelectableColor(this.Color),
+                            this.GetSelectableColor(this.ActualColor),
                             this.StrokeThickness,
                             this.LineStyle,
                             this.LineJoin,
@@ -317,7 +331,7 @@ namespace OxyPlot
                             new[] { close, closeTick },
                             clippingRect,
                             0,
-                            this.GetSelectableColor(this.Color),
+                            this.GetSelectableColor(this.ActualColor),
                             this.StrokeThickness,
                             this.LineStyle,
                             this.LineJoin,
@@ -342,7 +356,7 @@ namespace OxyPlot
             double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
             double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
             double[] dashArray = LineStyleHelper.GetDashArray(this.LineStyle);
-            var color = this.GetSelectableColor(this.Color);
+            var color = this.GetSelectableColor(this.ActualColor);
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
                 color,
@@ -381,7 +395,7 @@ namespace OxyPlot
             if (this.Color == null)
             {
                 this.LineStyle = model.GetDefaultLineStyle();
-                this.Color = model.GetDefaultColor();
+                this.defaultColor = model.GetDefaultColor();
             }
         }
 

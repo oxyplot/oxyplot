@@ -340,5 +340,24 @@ namespace ExampleLibrary
             model.Annotations.Add(pa);
             return model;
         }
+
+        [Example("Add Series")]
+        public static PlotModel AddSeriesByMouseDownEvent()
+        {
+            var model = new PlotModel("MouseDown", "Left click to add series.") { LegendSymbolLength = 40 };
+
+            model.MouseDown += (s, e) =>
+            {
+                if (e.ChangedButton == OxyMouseButton.Left)
+                {
+                    double a = model.Series.Count + 1;
+                    model.Series.Add(new FunctionSeries(x => Math.Sin(a * x), 0, 10, 1000));
+                    model.RefreshPlot(true);
+                    e.Handled = true;
+                }
+            };
+
+            return model;
+        }
     }
 }

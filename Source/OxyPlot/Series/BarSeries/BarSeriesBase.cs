@@ -18,6 +18,11 @@ namespace OxyPlot
     /// </summary>
     public abstract class BarSeriesBase : CategorizedSeries, IStackableSeries
     {
+        /// <summary>
+        /// The default fill color.
+        /// </summary>
+        private OxyColor defaultFillColor;
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -56,6 +61,15 @@ namespace OxyPlot
         /// The color. 
         /// </value>
         public OxyColor FillColor { get; set; }
+
+        /// <summary>
+        /// Gets the actual fill color.
+        /// </summary>
+        /// <value>The actual color.</value>
+        public OxyColor ActualFillColor
+        {
+            get { return this.FillColor ?? this.defaultFillColor; }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether this bar series is stacked.
@@ -278,7 +292,7 @@ namespace OxyPlot
             var width = height;
             rc.DrawRectangleAsPolygon(
                 new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height), 
-                this.GetSelectableColor(this.FillColor), 
+                this.GetSelectableColor(this.ActualFillColor), 
                 this.StrokeColor, 
                 this.StrokeThickness);
         }
@@ -311,7 +325,7 @@ namespace OxyPlot
         {
             if (this.FillColor == null)
             {
-                this.FillColor = model.GetDefaultColor();
+                this.defaultFillColor = model.GetDefaultColor();
             }
         }
 
@@ -355,8 +369,7 @@ namespace OxyPlot
                 {
                     int j = 0;
                     var values =
-                        this.ValidItems.Where(item => item.GetCategoryIndex(j++) == i).Select(item => item.Value).Concat
-                            (new[] { 0d }).ToList();
+                        this.ValidItems.Where(item => item.GetCategoryIndex(j++) == i).Select(item => item.Value).Concat(new[] { 0d }).ToList();
                     var minTemp = values.Where(v => v <= 0).Sum();
                     var maxTemp = values.Where(v => v >= 0).Sum();
 
@@ -550,7 +563,7 @@ namespace OxyPlot
             var actualFillColor = item.Color;
             if (actualFillColor == null)
             {
-                actualFillColor = this.FillColor;
+                actualFillColor = this.ActualFillColor;
                 if (item.Value < 0 && this.NegativeFillColor != null)
                 {
                     actualFillColor = this.NegativeFillColor;

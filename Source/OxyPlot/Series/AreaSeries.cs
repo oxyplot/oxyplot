@@ -184,7 +184,7 @@ namespace OxyPlot
                 pts0,
                 clippingRect,
                 minDistSquared,
-                this.GetSelectableColor(this.Color),
+                this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
                 this.LineStyle,
                 this.LineJoin,
@@ -193,7 +193,7 @@ namespace OxyPlot
                 pts1,
                 clippingRect,
                 minDistSquared,
-                this.GetSelectableColor(this.Color),
+                this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
                 this.LineStyle,
                 this.LineJoin,
@@ -251,7 +251,7 @@ namespace OxyPlot
             var pts = new List<ScreenPoint>();
             pts.AddRange(pts0);
             pts.AddRange(pts1);
-            var color = this.GetSelectableColor(this.Color);
+            var color = this.GetSelectableColor(this.ActualColor);
             rc.DrawLine(pts0, color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
             rc.DrawLine(pts1, color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
             rc.DrawPolygon(pts, this.GetSelectableFillColor(this.Fill), null);

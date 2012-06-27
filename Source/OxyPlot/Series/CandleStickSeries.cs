@@ -115,7 +115,7 @@ namespace OxyPlot
                             new[] { low, high },
                             clippingRect,
                             0,
-                            this.GetSelectableColor(this.Color),
+                            this.GetSelectableColor(this.ActualColor),
                             this.StrokeThickness,
                             this.LineStyle,
                             this.LineJoin,
@@ -132,7 +132,7 @@ namespace OxyPlot
                             new[] { high, min },
                             clippingRect,
                             0,
-                            this.GetSelectableColor(this.Color),
+                            this.GetSelectableColor(this.ActualColor),
                             this.StrokeThickness,
                             this.LineStyle,
                             this.LineJoin,
@@ -142,7 +142,7 @@ namespace OxyPlot
                             new[] { max, low },
                             clippingRect,
                             0,
-                            this.GetSelectableColor(this.Color),
+                            this.GetSelectableColor(this.ActualColor),
                             this.StrokeThickness,
                             this.LineStyle,
                             this.LineJoin,
@@ -153,7 +153,7 @@ namespace OxyPlot
                         closeRight.X += this.CandleWidth * 0.5;
                         var rect = new OxyRect(openLeft.X, min.Y, this.CandleWidth, max.Y - min.Y);
                         rc.DrawClippedRectangleAsPolygon(
-                            rect, clippingRect, v.Open > v.Close ? this.GetSelectableFillColor(this.Color) : null, this.GetSelectableColor(this.Color), this.StrokeThickness);
+                            rect, clippingRect, v.Open > v.Close ? this.GetSelectableFillColor(this.ActualColor) : null, this.GetSelectableColor(this.ActualColor), this.StrokeThickness);
                     }
                 }
             }
@@ -176,15 +176,15 @@ namespace OxyPlot
             double[] dashArray = LineStyleHelper.GetDashArray(this.LineStyle);
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
-                this.GetSelectableColor(this.Color),
+                this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
                 dashArray,
                 OxyPenLineJoin.Miter,
                 true);
             rc.DrawRectangleAsPolygon(
                 new OxyRect(xmid - (this.CandleWidth * 0.5), yclose, this.CandleWidth, yopen - yclose),
-                this.GetSelectableFillColor(this.Color),
-                this.GetSelectableColor(this.Color),
+                this.GetSelectableFillColor(this.ActualColor),
+                this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness);
         }
 

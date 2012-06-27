@@ -49,6 +49,15 @@ namespace OxyPlot
         public OxyColor Fill { get; set; }
 
         /// <summary>
+        /// Gets the actual fill color.
+        /// </summary>
+        /// <value>The actual color.</value>
+        public OxyColor ActualFillColor
+        {
+            get { return this.Fill ?? this.DefaultFillColor; }
+        }
+
+        /// <summary>
         ///   Gets or sets a value indicating whether IsExploded.
         /// </summary>
         public bool IsExploded { get; set; }
@@ -62,6 +71,12 @@ namespace OxyPlot
         ///   Gets or sets Value.
         /// </summary>
         public double Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default fill color.
+        /// </summary>
+        /// <value>The default fill color.</value>
+        internal OxyColor DefaultFillColor { get; set; }
 
         #endregion
     }

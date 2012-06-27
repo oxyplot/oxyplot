@@ -21,6 +21,16 @@ namespace OxyPlot
     /// </remarks>
     public class TornadoBarSeries : CategorizedSeries
     {
+        /// <summary>
+        /// The default fill color.
+        /// </summary>
+        private OxyColor defaultMaximumFillColor;
+
+        /// <summary>
+        /// The default minimum fill color.
+        /// </summary>
+        private OxyColor defaultMinimumFillColor;
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -93,12 +103,21 @@ namespace OxyPlot
         public string MaximumField { get; set; }
 
         /// <summary>
-        /// Gets or sets the default color of the interior of the Maximum bars.
+        /// Gets or sets the color of the interior of the Maximum bars.
         /// </summary>
         /// <value>
         /// The color. 
         /// </value>
         public OxyColor MaximumFillColor { get; set; }
+
+        /// <summary>
+        /// Gets the actual fill color.
+        /// </summary>
+        /// <value>The actual color.</value>
+        public OxyColor ActualMaximumFillColor
+        {
+            get { return this.MaximumFillColor ?? this.defaultMaximumFillColor; }
+        }
 
         /// <summary>
         /// Gets or sets the format string for the maximum labels.
@@ -117,6 +136,15 @@ namespace OxyPlot
         /// The color. 
         /// </value>
         public OxyColor MinimumFillColor { get; set; }
+
+        /// <summary>
+        /// Gets the actual minimum fill color.
+        /// </summary>
+        /// <value>The actual color.</value>
+        public OxyColor ActualMinimumFillColor
+        {
+            get { return this.MinimumFillColor ?? this.defaultMinimumFillColor; }
+        }
 
         /// <summary>
         /// Gets or sets the format string for the minimum labels.
@@ -272,13 +300,13 @@ namespace OxyPlot
                 rc.DrawClippedRectangleAsPolygon(
                     minimumRectangle, 
                     clippingRect, 
-                    item.MinimumColor ?? this.MinimumFillColor, 
+                    item.MinimumColor ?? this.ActualMinimumFillColor, 
                     this.StrokeColor, 
                     this.StrokeThickness);
                 rc.DrawClippedRectangleAsPolygon(
                     maximumRectangle, 
                     clippingRect, 
-                    item.MaximumColor ?? this.MaximumFillColor, 
+                    item.MaximumColor ?? this.ActualMaximumFillColor, 
                     this.StrokeColor, 
                     this.StrokeThickness);
 
@@ -347,12 +375,12 @@ namespace OxyPlot
             double width = height;
             rc.DrawRectangleAsPolygon(
                 new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), 0.5 * width, height), 
-                this.MinimumFillColor, 
+                this.ActualMinimumFillColor, 
                 this.StrokeColor, 
                 this.StrokeThickness);
             rc.DrawRectangleAsPolygon(
                 new OxyRect(xmid, ymid - (0.5 * height), 0.5 * width, height), 
-                this.MaximumFillColor, 
+                this.ActualMaximumFillColor, 
                 this.StrokeColor, 
                 this.StrokeThickness);
         }
@@ -413,12 +441,12 @@ namespace OxyPlot
         {
             if (this.MaximumFillColor == null)
             {
-                this.MaximumFillColor = model.GetDefaultColor();
+                this.defaultMaximumFillColor = model.GetDefaultColor();
             }
 
             if (this.MinimumFillColor == null)
             {
-                this.MinimumFillColor = model.GetDefaultColor();
+                this.defaultMinimumFillColor = model.GetDefaultColor();
             }
         }
 

@@ -306,7 +306,7 @@ namespace OxyPlot
                 var points = outerPoints;
                 points.AddRange(innerPoints);
 
-                rc.DrawPolygon(points, slice.Fill, this.Stroke, this.StrokeThickness, null, OxyPenLineJoin.Bevel);
+                rc.DrawPolygon(points, slice.ActualFillColor, this.Stroke, this.StrokeThickness, null, OxyPenLineJoin.Bevel);
 
                 // Render label outside the slice
                 if (this.OutsideLabelFormat != null)
@@ -432,7 +432,7 @@ namespace OxyPlot
             {
                 if (slice.Fill == null)
                 {
-                    slice.Fill = model.GetDefaultColor();
+                    slice.DefaultFillColor = model.GetDefaultColor();
                 }
             }
         }

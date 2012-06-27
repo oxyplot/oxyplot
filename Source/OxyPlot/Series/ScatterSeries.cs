@@ -18,6 +18,11 @@ namespace OxyPlot
     /// </remarks>
     public class ScatterSeries : DataPointSeries
     {
+        /// <summary>
+        /// The default fill color.
+        /// </summary>
+        private OxyColor defaultMarkerFillColor;
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -105,6 +110,15 @@ namespace OxyPlot
         public OxyColor MarkerFill { get; set; }
 
         /// <summary>
+        /// Gets the actual fill color.
+        /// </summary>
+        /// <value>The actual color.</value>
+        public OxyColor ActualMarkerFillColor
+        {
+            get { return this.MarkerFill ?? this.defaultMarkerFillColor; }
+        }
+
+        /// <summary>
         ///   Gets or sets the marker outline polygon. Set MarkerType to Custom to use this.
         /// </summary>
         /// <value> The marker outline. </value>
@@ -181,7 +195,7 @@ namespace OxyPlot
             var colorAxisTitle = (this.ColorAxis != null ? this.ColorAxis.Title : null) ?? "Z";
 
             var formatString = TrackerFormatString;
-            if (string.IsNullOrEmpty(TrackerFormatString))
+            if (string.IsNullOrEmpty(this.TrackerFormatString))
             {
                 // Create a default format string
                 formatString = "{1}: {2}\n{3}: {4}";
@@ -228,7 +242,7 @@ namespace OxyPlot
                         this.ActualCulture,
                         formatString,
                         item,
-                        Title,
+                        this.Title,
                         xaxisTitle,
                         xvalue,
                         yaxisTitle,
@@ -375,7 +389,7 @@ namespace OxyPlot
                     this.MarkerType,
                     this.MarkerOutline,
                     markerSizes,
-                    this.MarkerFill,
+                    this.ActualMarkerFillColor,
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
                     this.BinSize,
@@ -404,7 +418,7 @@ namespace OxyPlot
                 this.MarkerType,
                 this.MarkerOutline,
                 this.MarkerSize,
-                this.MarkerFill,
+                this.ActualMarkerFillColor,
                 this.MarkerStroke,
                 this.MarkerStrokeThickness);
         }
@@ -433,7 +447,7 @@ namespace OxyPlot
         {
             if (this.MarkerFill == null)
             {
-                this.MarkerFill = model.GetDefaultColor();
+                this.defaultMarkerFillColor = model.GetDefaultColor();
             }
         }
 

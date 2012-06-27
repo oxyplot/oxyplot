@@ -18,6 +18,11 @@ namespace OxyPlot
     /// </summary>
     public class IntervalBarSeries : CategorizedSeries, IStackableSeries
     {
+        /// <summary>
+        /// The default fill color.
+        /// </summary>
+        private OxyColor defaultFillColor;
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -58,6 +63,15 @@ namespace OxyPlot
         /// The color. 
         /// </value>
         public OxyColor FillColor { get; set; }
+
+        /// <summary>
+        /// Gets the actual fill color.
+        /// </summary>
+        /// <value>The actual color.</value>
+        public OxyColor ActualFillColor
+        {
+            get { return this.FillColor ?? this.defaultFillColor; }
+        }
 
         /// <summary>
         /// Gets a value indicating whether IsStacked.
@@ -250,7 +264,7 @@ namespace OxyPlot
                 rc.DrawClippedRectangleAsPolygon(
                     rectangle, 
                     clippingRect, 
-                    this.GetSelectableFillColor(item.Color ?? this.FillColor), 
+                    this.GetSelectableFillColor(item.Color ?? this.ActualFillColor), 
                     this.StrokeColor, 
                     this.StrokeThickness);
 
@@ -294,7 +308,7 @@ namespace OxyPlot
             double width = height;
             rc.DrawRectangleAsPolygon(
                 new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height), 
-                this.GetSelectableFillColor(this.FillColor), 
+                this.GetSelectableFillColor(this.ActualFillColor), 
                 this.StrokeColor, 
                 this.StrokeThickness);
         }
@@ -355,7 +369,7 @@ namespace OxyPlot
         {
             if (this.FillColor == null)
             {
-                this.FillColor = model.GetDefaultColor();
+                this.defaultFillColor = model.GetDefaultColor();
             }
         }
 
