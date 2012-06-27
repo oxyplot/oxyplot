@@ -348,6 +348,21 @@ namespace OxyPlot
         /// </remarks>
         internal override void UpdateFromSeries(IEnumerable<Series> series)
         {
+            if (this.Labels.Count == 0)
+            {
+                this.TotalWidthPerCategory = null;
+                this.MaxWidth = double.NaN;
+                this.BarOffset = null;
+                this.StackedBarOffset = null;
+                this.StackIndexMapping = null;
+                this.PositiveBaseValues = null;
+                this.NegativeBaseValues = null;
+                this.MaxValue = null;
+                this.MinValue = null;
+
+                return;
+            }
+
             this.TotalWidthPerCategory = new double[this.Labels.Count];
 
             var usedSeries = series.Where(s => s.IsUsing(this)).ToList();
