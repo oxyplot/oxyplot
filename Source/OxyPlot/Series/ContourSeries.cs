@@ -30,6 +30,11 @@ namespace OxyPlot
         /// </summary>
         private List<ContourSegment> segments;
 
+        /// <summary>
+        /// The default color.
+        /// </summary>
+        private OxyColor defaultColor;
+
         #endregion
 
         #region Constructors and Destructors
@@ -61,6 +66,15 @@ namespace OxyPlot
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
+
+        /// <summary>
+        /// Gets the actual color.
+        /// </summary>
+        /// <value>The actual color.</value>
+        public OxyColor ActualColor
+        {
+            get { return this.Color ?? this.defaultColor; }
+        }
 
         /// <summary>
         ///   Gets or sets the column coordinates.
@@ -253,7 +267,7 @@ namespace OxyPlot
 
             if (this.XAxis == null || this.YAxis == null)
             {
-                Trace("Axis not defined.");
+                this.Trace("Axis not defined.");
                 return;
             }
 
@@ -278,7 +292,7 @@ namespace OxyPlot
                         pts,
                         clippingRect,
                         4,
-                        this.GetSelectableColor(this.Color),
+                        this.GetSelectableColor(this.ActualColor),
                         this.StrokeThickness,
                         this.LineStyle,
                         OxyPenLineJoin.Miter,
@@ -318,7 +332,7 @@ namespace OxyPlot
             if (this.Color == null)
             {
                 this.LineStyle = model.GetDefaultLineStyle();
-                this.Color = model.GetDefaultColor();
+                this.defaultColor = model.GetDefaultColor();
             }
         }
 

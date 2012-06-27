@@ -157,7 +157,7 @@ namespace OxyPlot
                             lpts,
                             clippingRect,
                             minDistSquared,
-                            this.GetSelectableColor(this.Color),
+                            this.GetSelectableColor(this.ActualColor),
                             this.StrokeThickness,
                             this.LineStyle,
                             this.LineJoin,

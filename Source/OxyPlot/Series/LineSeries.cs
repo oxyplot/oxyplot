@@ -26,6 +26,11 @@ namespace OxyPlot
         /// </summary>
         private IList<IDataPoint> smoothedPoints;
 
+        /// <summary>
+        /// The default color.
+        /// </summary>
+        private OxyColor defaultColor;
+
         #endregion
 
         #region Constructors and Destructors
@@ -84,6 +89,18 @@ namespace OxyPlot
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
+
+        /// <summary>
+        /// Gets the actual color.
+        /// </summary>
+        /// <value>The actual color.</value>
+        protected OxyColor ActualColor
+        {
+            get
+            {
+                return this.Color ?? this.defaultColor;
+            }
+        }
 
         /// <summary>
         ///   Gets or sets the dashes array. 
@@ -204,7 +221,7 @@ namespace OxyPlot
             if (interpolate)
             {
                 // Cannot interpolate if there is no line
-                if (this.Color == null || this.StrokeThickness.IsZero())
+                if (this.ActualColor == null || this.StrokeThickness.IsZero())
                 {
                     return null;
                 }
@@ -296,7 +313,7 @@ namespace OxyPlot
             double xmid = (legendBox.Left + legendBox.Right) / 2;
             double ymid = (legendBox.Top + legendBox.Bottom) / 2;
             var pts = new[] { new ScreenPoint(legendBox.Left, ymid), new ScreenPoint(legendBox.Right, ymid) };
-            rc.DrawLine(pts, this.GetSelectableColor(this.Color), this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
+            rc.DrawLine(pts, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
                 midpt,
@@ -324,11 +341,14 @@ namespace OxyPlot
             // todo: should use ActualLineStyle and ActualColor?
             if (this.Color == null)
             {
+                // LineStyle will also be overridden
                 this.LineStyle = model.GetDefaultLineStyle();
-                this.Color = model.GetDefaultColor();
+                this.defaultColor = model.GetDefaultColor();
+
+                // And MarkerFill will be overridden if not set to null
                 if (this.MarkerFill == null)
                 {
-                    this.MarkerFill = this.Color;
+                    this.MarkerFill = this.defaultColor;
                 }
             }
         }
@@ -528,7 +548,7 @@ namespace OxyPlot
                 pointsToRender,
                 clippingRect,
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
-                this.GetSelectableColor(this.Color),
+                this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
                 this.LineStyle,
                 this.LineJoin,

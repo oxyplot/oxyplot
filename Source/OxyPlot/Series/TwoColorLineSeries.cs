@@ -13,6 +13,11 @@ namespace OxyPlot
     /// </summary>
     public class TwoColorLineSeries : LineSeries
     {
+        /// <summary>
+        /// The default second color.
+        /// </summary>
+        private OxyColor defaultColor2;
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -33,6 +38,15 @@ namespace OxyPlot
         ///   Gets or sets the color for the part of the line that is below the limit.
         /// </summary>
         public OxyColor Color2 { get; set; }
+
+        /// <summary>
+        /// Gets the actual second color.
+        /// </summary>
+        /// <value>The actual color.</value>
+        public OxyColor ActualColor2
+        {
+            get { return this.Color2 ?? this.defaultColor2; }
+        }
 
         /// <summary>
         ///   Gets or sets the limit.
@@ -64,7 +78,7 @@ namespace OxyPlot
             if (this.Color2 == null)
             {
                 this.LineStyle2 = model.GetDefaultLineStyle();
-                this.Color2 = model.GetDefaultColor();
+                this.defaultColor2 = model.GetDefaultColor();
             }
         }
 
@@ -101,8 +115,8 @@ namespace OxyPlot
             rc.DrawClippedLine(
                 pointsToRender, 
                 clippingRect, 
-                this.MinimumSegmentLength * this.MinimumSegmentLength, 
-                this.GetSelectableColor(this.Color), 
+                this.MinimumSegmentLength * this.MinimumSegmentLength,
+                this.GetSelectableColor(this.ActualColor), 
                 this.StrokeThickness, 
                 this.LineStyle, 
                 this.LineJoin, 
@@ -113,7 +127,7 @@ namespace OxyPlot
                 pointsToRender, 
                 clippingRect, 
                 this.MinimumSegmentLength * this.MinimumSegmentLength, 
-                this.GetSelectableColor(this.Color2), 
+                this.GetSelectableColor(this.ActualColor2), 
                 this.StrokeThickness, 
                 this.LineStyle2, 
                 this.LineJoin, 
