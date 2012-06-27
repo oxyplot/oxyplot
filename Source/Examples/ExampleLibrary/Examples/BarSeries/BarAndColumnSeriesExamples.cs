@@ -40,6 +40,54 @@ namespace ExampleLibrary
             return CreateSimpleModel(true, "Simple stacked model");
         }
 
+        [Example("Empty series")]
+        public static PlotModel EmptySeries()
+        {
+            var model = new PlotModel("Empty series");
+
+            var s1 = new TSeries { Title = "Series 1" };
+            var s2 = new TSeries { Title = "Series 2" };
+            var categoryAxis = new CategoryAxis { Position = CategoryAxisPosition() };
+            var valueAxis = new LinearAxis(ValueAxisPosition());
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis);
+            return model;
+        }
+
+        [Example("Empty category axis")]
+        public static PlotModel EmptyCategoryAxis()
+        {
+            var model = new PlotModel("Empty category axis");
+
+            var s1 = new TSeries { Title = "Series 1" };
+            s1.Items.Add(new TItem { Value = 25 });
+            s1.Items.Add(new TItem { Value = 137 });
+            s1.Items.Add(new TItem { Value = 18 });
+            s1.Items.Add(new TItem { Value = 40 });
+            var s2 = new TSeries { Title = "Series 2" };
+            s2.Items.Add(new TItem { Value = -12 });
+            s2.Items.Add(new TItem { Value = -14 });
+            s2.Items.Add(new TItem { Value = -120 });
+            s2.Items.Add(new TItem { Value = -26 });
+            var categoryAxis = new CategoryAxis { Position = CategoryAxisPosition() };
+            var valueAxis = new LinearAxis(ValueAxisPosition())
+            {
+                MinimumPadding = 0.06,
+                MaximumPadding = 0.06,
+                ExtraGridlines = new[] { 0.0 },
+                ExtraGridlineStyle = LineStyle.Solid,
+                ExtraGridlineColor = OxyColors.Black,
+                ExtraGridlineThickness = 1
+            };
+            model.Series.Add(s1);
+            model.Series.Add(s2);
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(valueAxis);
+            return model;
+        }
+
         [Example("With negative values")]
         public static PlotModel WithNegativeValue()
         {
@@ -190,10 +238,15 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category B");
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
-            var valueAxis = new LinearAxis(ValueAxisPosition()) { MinimumPadding = 0.06, MaximumPadding = 0.06, ExtraGridlines = new[] { 0.0 } };
-            valueAxis.ExtraGridlineStyle = LineStyle.Solid;
-            valueAxis.ExtraGridlineColor = OxyColors.Black;
-            valueAxis.ExtraGridlineThickness = 1;
+            var valueAxis = new LinearAxis(ValueAxisPosition())
+                {
+                    MinimumPadding = 0.06,
+                    MaximumPadding = 0.06,
+                    ExtraGridlines = new[] { 0.0 },
+                    ExtraGridlineStyle = LineStyle.Solid,
+                    ExtraGridlineColor = OxyColors.Black,
+                    ExtraGridlineThickness = 1
+                };
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Series.Add(s3);
