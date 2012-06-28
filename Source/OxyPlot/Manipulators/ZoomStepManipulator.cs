@@ -69,6 +69,13 @@ namespace OxyPlot
             }
 
             scale = 1 + scale;
+
+            // make sure the zoom factor is not negative
+            if (scale < 0.1)
+            {
+                scale = 0.1;
+            }
+
             if (this.XAxis != null)
             {
                 this.PlotControl.ZoomAt(this.XAxis, scale, current.X);
