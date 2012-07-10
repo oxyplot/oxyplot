@@ -45,7 +45,7 @@ namespace OxyPlot.Wpf
             "LineJoin", 
             typeof(OxyPenLineJoin), 
             typeof(LineSeries), 
-            new PropertyMetadata(OxyPenLineJoin.Miter, AppearanceChanged));
+            new PropertyMetadata(OxyPenLineJoin.Bevel, AppearanceChanged));
 
         /// <summary>
         /// The line legend position property.

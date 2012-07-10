@@ -42,6 +42,7 @@ namespace OxyPlot
         {
             this.MinimumSegmentLength = 2;
             this.StrokeThickness = 2;
+            this.LineJoin = OxyPenLineJoin.Bevel;
             this.MarkerSize = 3;
             this.MarkerStrokeThickness = 1;
             this.CanTrackerInterpolatePoints = true;
