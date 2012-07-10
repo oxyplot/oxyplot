@@ -32,6 +32,22 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("LineSeries, 100k points, round line joins")]
+        public static PlotModel LineSeries1Round()
+        {
+            var model = new PlotModel("LineSeries, 100k points, round line joins");
+#if !SILVERLIGHT && !MONO
+            var watch = new Stopwatch();
+            model.Updating += (sender, args) => watch.Restart();
+            model.Updated += (sender, args) => Trace.WriteLine("Updated in " + watch.ElapsedMilliseconds + " ms");
+#endif
+            var s1 = new LineSeries() { LineJoin = OxyPenLineJoin.Round };
+            AddPoints(s1.Points, 100000);
+            model.Series.Add(s1);
+
+            return model;
+        }
+
         [Example("LineSeries, 100k points, ItemsSource, List<IDataPoint>")]
         public static PlotModel LineSeries10()
         {
@@ -74,10 +90,44 @@ namespace ExampleLibrary
         }
 
         [Example("LineSeries, 100k points (by ItemsSource)")]
-        public static PlotModel LineSeries2()
+        public static PlotModel LineSeries1c()
         {
             var model = new PlotModel("LineSeries, 100k points (by ItemsSource)");
             model.Series.Add(new LineSeries { ItemsSource = GetPoints(100000) });
+            return model;
+        }
+
+        [Example("LineSeries 2, 3k points, miter line joins")]
+        public static PlotModel LineSeries2miter()
+        {
+            var model = new PlotModel("LineSeries, 3k points, miter line joins");
+            var s1 = new LineSeries() { LineJoin = OxyPenLineJoin.Miter, StrokeThickness = 8.0 };
+            for (int i = 0; i < 3000; i++)
+                s1.Points.Add(new DataPoint(i, i % 2));
+            model.Series.Add(s1);
+
+            return model;
+        }
+
+        [Example("LineSeries 2, 3k points, round line joins")]
+        public static PlotModel LineSeries2Round()
+        {
+            var model = new PlotModel("LineSeries, 3k points, round line joins");
+            var s1 = new LineSeries() { LineJoin = OxyPenLineJoin.Round, StrokeThickness = 8.0 };
+            for (int i = 0; i < 3000; i++)
+                s1.Points.Add(new DataPoint(i, i % 2));
+            model.Series.Add(s1);
+            return model;
+        }
+
+        [Example("LineSeries 2, 3k points, bevel line joins")]
+        public static PlotModel LineSeries2Bevel()
+        {
+            var model = new PlotModel("LineSeries, 3k points, bevel line joins");
+            var s1 = new LineSeries() { LineJoin = OxyPenLineJoin.Bevel, StrokeThickness = 8.0 };
+            for (int i = 0; i < 3000; i++)
+                s1.Points.Add(new DataPoint(i, i % 2));
+            model.Series.Add(s1);
             return model;
         }
 
