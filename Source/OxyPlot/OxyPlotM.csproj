@@ -41,6 +41,7 @@
     <Compile Include="Annotations\Annotation.cs" />
     <Compile Include="Annotations\AnnotationLayer.cs" />
     <Compile Include="Annotations\ArrowAnnotation.cs" />
+    <Compile Include="Annotations\RectangleAnnotation.cs" />
     <Compile Include="Annotations\TextAnnotation.cs" />
     <Compile Include="Annotations\PolygonAnnotation.cs" />
     <Compile Include="Annotations\LineAnnotation.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Foundation\CodeGenerator\CodeGeneratorStringExtensions.cs" />
     <Compile Include="Foundation\CodeGenerator\ICodeGenerating.cs" />
     <Compile Include="Foundation\ListFiller.cs" />
+    <Compile Include="Foundation\OxyColorExtensions.cs" />
     <Compile Include="Foundation\OxyPalette.cs" />
     <Compile Include="Foundation\OxyPalettes.cs" />
     <Compile Include="Foundation\ScreenVector.cs" />
@@ -93,7 +95,9 @@
     <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
     <Compile Include="Series\BarSeries\CategorizedItem.cs" />
     <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
+    <Compile Include="Series\BarSeries\ErrorColumnItem.cs" />
     <Compile Include="Series\BarSeries\ColumnItem.cs" />
+    <Compile Include="Series\BarSeries\ErrorColumnSeries.cs" />
     <Compile Include="Series\BarSeries\IStackableSeries.cs" />
     <Compile Include="Series\BoxPlotItem.cs" />
     <Compile Include="Series\BoxPlotSeries.cs" />
@@ -197,6 +201,7 @@
     <Compile Include="Foundation\XmlWriterBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagrams\Series.cd" />
     <None Include="ClassDiagrams\PlotModel.cd" />
     <None Include="ClassDiagrams\Reporting.cd" />
     <None Include="OxyPlot.snk" />

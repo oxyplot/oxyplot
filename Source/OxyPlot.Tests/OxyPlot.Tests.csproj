@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Axes\AxisTests.cs" />
+    <Compile Include="Foundation\OxyColorExtensionsTests.cs" />
     <Compile Include="Foundation\ListFillerTests.cs" />
     <Compile Include="OxyAssert.cs" />
     <Compile Include="TestModels.cs" />

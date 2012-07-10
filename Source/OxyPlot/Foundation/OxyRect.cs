@@ -184,6 +184,18 @@ namespace OxyPlot
             }
         }
 
+        /// <summary>
+        /// Gets the center of the rectangle.
+        /// </summary>
+        /// <value>The center.</value>
+        public ScreenPoint Center
+        {
+            get
+            {
+                return new ScreenPoint(this.left + this.width * 0.5, this.top + this.height * 0.5);
+            }
+        }
+
         #endregion
 
         #region Public Methods
