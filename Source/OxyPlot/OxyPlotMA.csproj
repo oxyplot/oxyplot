@@ -51,6 +51,7 @@
     <Compile Include="Annotations\Annotation.cs" />
     <Compile Include="Annotations\AnnotationLayer.cs" />
     <Compile Include="Annotations\ArrowAnnotation.cs" />
+    <Compile Include="Annotations\RectangleAnnotation.cs" />
     <Compile Include="Annotations\TextAnnotation.cs" />
     <Compile Include="Annotations\PolygonAnnotation.cs" />
     <Compile Include="Annotations\LineAnnotation.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Foundation\CodeGenerator\CodeGeneratorStringExtensions.cs" />
     <Compile Include="Foundation\CodeGenerator\ICodeGenerating.cs" />
     <Compile Include="Foundation\ListFiller.cs" />
+    <Compile Include="Foundation\OxyColorExtensions.cs" />
     <Compile Include="Foundation\OxyPalette.cs" />
     <Compile Include="Foundation\OxyPalettes.cs" />
     <Compile Include="Foundation\ScreenVector.cs" />
@@ -193,7 +195,7 @@
     <Compile Include="Series\PieSeries.cs" />
     <Compile Include="Series\FunctionSeries.cs" />
     <Compile Include="Series\PieSlice.cs" />
-    <Compile Include="Svg\Gdi32.cs" />
+    <Compile Include="Svg\NativeMethods.cs" />
     <Compile Include="Svg\SvgRenderContext.cs" />
     <Compile Include="Svg\SvgWriter.cs" />
     <Compile Include="Foundation\OxyColor.cs" />
@@ -208,6 +210,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
+    <None Include="ClassDiagrams\Series.cd" />
+    <None Include="ClassDiagrams\PlotModel.cd" />
+    <None Include="ClassDiagrams\Reporting.cd" />
     <None Include="OxyPlot.snk" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
