@@ -214,7 +214,13 @@ namespace OxyPlot
         {
             foreach (var item in list)
             {
-                this.AppendLine("{0}.Add({1});", name, item.ToCode());
+                var code = item.ToCode();
+                if (code == null)
+                {
+                    continue;
+                }
+
+                this.AppendLine("{0}.Add({1});", name, code);
             }
         }
 
