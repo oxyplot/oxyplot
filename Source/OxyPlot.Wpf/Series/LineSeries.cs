@@ -114,12 +114,6 @@ namespace OxyPlot.Wpf
                 "MinimumSegmentLength", typeof(double), typeof(LineSeries), new PropertyMetadata(2.0, AppearanceChanged));
 
         /// <summary>
-        /// The smooth property.
-        /// </summary>
-        public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
-            "Smooth", typeof(bool), typeof(LineSeries), new PropertyMetadata(false, AppearanceChanged));
-
-        /// <summary>
         /// The stroke thickness property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
@@ -366,22 +360,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to smooth the data.
-        /// </summary>
-        public bool Smooth
-        {
-            get
-            {
-                return (bool)this.GetValue(SmoothProperty);
-            }
-
-            set
-            {
-                this.SetValue(SmoothProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets StrokeThickness.
         /// </summary>
         public double StrokeThickness
@@ -434,7 +412,6 @@ namespace OxyPlot.Wpf
             s.MarkerStroke = this.MarkerStroke;
             s.MarkerType = this.MarkerType;
             s.MarkerStrokeThickness = this.MarkerStrokeThickness;
-            s.Smooth = this.Smooth;
             s.Dashes = this.Dashes;
             s.LineJoin = this.LineJoin;
             s.MarkerFill = this.MarkerFill.ToOxyColor();
