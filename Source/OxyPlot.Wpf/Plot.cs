@@ -719,6 +719,12 @@ namespace OxyPlot.Wpf
         /// </param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            base.OnKeyDown(e);
+            if (e.Handled)
+            {
+                return;
+            }
+
             bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
             bool alt = Keyboard.IsKeyDown(Key.LeftAlt);
 
@@ -788,17 +794,18 @@ namespace OxyPlot.Wpf
                 {
                     case Key.R:
                         Clipboard.SetText(this.ActualModel.CreateTextReport());
+                        e.Handled = true;
                         break;
                     case Key.C:
                         Clipboard.SetText(this.ActualModel.ToCode());
+                        e.Handled = true;
                         break;
                     case Key.X:
                         Clipboard.SetText(this.ToXaml());
+                        e.Handled = true;
                         break;
                 }
-            }
-
-            base.OnKeyDown(e);
+            }            
         }
 
         /// <summary>
@@ -810,6 +817,11 @@ namespace OxyPlot.Wpf
         protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
         {
             base.OnManipulationCompleted(e);
+            if (e.Handled)
+            {
+                return;
+            }
+
             var position = this.touchDownPoint + e.TotalManipulation.Translation;
             this.touchPan.Completed(new ManipulationEventArgs(position.ToScreenPoint()));
             e.Handled = true;
@@ -824,6 +836,11 @@ namespace OxyPlot.Wpf
         protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
         {
             base.OnManipulationDelta(e);
+            if (e.Handled)
+            {
+                return;
+            }
+
             lock (this.manipulationQueue)
             {
                 this.manipulationQueue.Push(e);
@@ -850,6 +867,11 @@ namespace OxyPlot.Wpf
         protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
         {
             base.OnManipulationStarted(e);
+            if (e.Handled)
+            {
+                return;
+            }
+
             this.touchPan = new PanManipulator(this);
             this.touchPan.Started(new ManipulationEventArgs(e.ManipulationOrigin.ToScreenPoint()));
             this.touchZoom = new ZoomManipulator(this);
@@ -868,6 +890,12 @@ namespace OxyPlot.Wpf
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
+
+            if (e.Handled)
+            {
+                return;
+            }
+
             if (this.mouseManipulator != null)
             {
                 return;
@@ -907,6 +935,11 @@ namespace OxyPlot.Wpf
         {
             base.OnMouseMove(e);
 
+            if (e.Handled)
+            {
+                return;
+            }
+
             if (this.ActualModel != null)
             {
                 var args = this.CreateMouseEventArgs(e);
@@ -933,6 +966,12 @@ namespace OxyPlot.Wpf
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
+
+            if (e.Handled)
+            {
+                return;
+            }
+
             this.ReleaseMouseCapture();
 
             if (this.ActualModel != null)
@@ -981,6 +1020,11 @@ namespace OxyPlot.Wpf
         {
             base.OnMouseWheel(e);
 
+            if (e.Handled)
+            {
+                return;
+            }
+
             if (!this.IsMouseWheelEnabled)
             {
                 return;
@@ -992,6 +1036,7 @@ namespace OxyPlot.Wpf
             //// bool isAltDown = Keyboard.IsKeyDown(Key.LeftAlt);
             var m = new ZoomStepManipulator(this, e.Delta * 0.001, isControlDown);
             m.Started(new ManipulationEventArgs(e.GetPosition(this).ToScreenPoint()));
+            e.Handled = true;
         }
 
         /// <summary>
