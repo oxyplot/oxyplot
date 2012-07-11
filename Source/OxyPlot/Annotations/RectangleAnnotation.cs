@@ -8,6 +8,7 @@ namespace OxyPlot
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System;
 
     /// <summary>
     /// Represents a rectangle annotation.
@@ -88,17 +89,15 @@ namespace OxyPlot
         {
             base.Render(rc, model);
 
-            double x0 = double.IsNaN(this.MinimumX) ? this.XAxis.ActualMinimum : this.MinimumX;
-            double x1 = double.IsNaN(this.MaximumX) ? this.XAxis.ActualMaximum : this.MaximumX;
-            double y0 = double.IsNaN(this.MinimumY) ? this.YAxis.ActualMinimum : this.MinimumY;
-            double y1 = double.IsNaN(this.MaximumY) ? this.YAxis.ActualMaximum : this.MaximumY;
+            double x0 = double.IsNaN(this.MinimumX) || (this.MinimumX == double.MinValue) ? this.XAxis.ActualMinimum : this.MinimumX;
+            double x1 = double.IsNaN(this.MaximumX) || (this.MaximumX == double.MaxValue) ? this.XAxis.ActualMaximum : this.MaximumX;
+            double y0 = double.IsNaN(this.MinimumY) || (this.MinimumY == double.MinValue) ? this.YAxis.ActualMinimum : this.MinimumY;
+            double y1 = double.IsNaN(this.MaximumY) || (this.MaximumY == double.MaxValue) ? this.YAxis.ActualMaximum : this.MaximumY;
 
             screenRectangle = OxyRect.Create(this.Transform(x0, y0), this.Transform(x1, y1));
 
             // clip to the area defined by the axes
             var clipping = this.GetClippingRect();
-
-            const double MinimumSegmentLength = 4;
 
             rc.DrawClippedRectangle(screenRectangle, clipping, this.Fill, null, 0);
 
