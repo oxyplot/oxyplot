@@ -46,10 +46,14 @@ namespace ExampleLibrary
             var model = new PlotModel("RectangleAnnotations");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 10));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, 87, 97) { MajorStep = 1, MinorStep = 1 });
+            //            model.Annotations.Add(new RectangleAnnotation() { MaximumY = 89.5, Fill = OxyColors.Black.ChangeAlpha(99) });
+            //            model.Annotations.Add(new RectangleAnnotation() { MinimumY = double.MinValue, MaximumY = 89.5, Fill = OxyColors.Black.ChangeAlpha(99) });
             model.Annotations.Add(new RectangleAnnotation() { MinimumY = 89.5, MaximumY = 90.8, Fill = OxyColors.Red.ChangeAlpha(99) });
             model.Annotations.Add(new RectangleAnnotation() { MinimumY = 90.8, MaximumY = 92.1, Fill = OxyColors.Orange.ChangeAlpha(99) });
             model.Annotations.Add(new RectangleAnnotation() { MinimumY = 92.1, MaximumY = 94.6, Fill = OxyColors.Yellow.ChangeAlpha(99) });
             model.Annotations.Add(new RectangleAnnotation() { MinimumY = 94.6, MaximumY = 96, Fill = OxyColors.Green.ChangeAlpha(99) });
+            //            model.Annotations.Add(new RectangleAnnotation() { MinimumY = 96, MaximumY = double.MaxValue, Fill = OxyColors.Black.ChangeAlpha(99) });
+            //            model.Annotations.Add(new RectangleAnnotation() { MinimumY = 96, Fill = OxyColors.Black.ChangeAlpha(99) });
             LineSeries series1;
             model.Series.Add(series1 = new LineSeries() { Color = OxyColors.Black, StrokeThickness = 6.0, LineJoin = OxyPenLineJoin.Round });
             series1.Points.Add(new DataPoint(0.5, 90.7));
@@ -68,11 +72,11 @@ namespace ExampleLibrary
         [Example("No clipping")]
         public static PlotModel LinearAxesMultipleAxes()
         {
-            var model = new PlotModel("ClipByAxis","This property controls if the annotation should be clipped by the current axes or by the full plot area.");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80) { StartPosition = 0, EndPosition = 0.45, TextColor=OxyColors.Red });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { StartPosition = 0, EndPosition = 0.45, TextColor=OxyColors.Green });
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80) { StartPosition = 0.55, EndPosition = 1, TextColor=OxyColors.Blue });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { StartPosition = 0.55, EndPosition = 1, TextColor=OxyColors.Orange });
+            var model = new PlotModel("ClipByAxis", "This property controls if the annotation should be clipped by the current axes or by the full plot area.");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80) { StartPosition = 0, EndPosition = 0.45, TextColor = OxyColors.Red });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { StartPosition = 0, EndPosition = 0.45, TextColor = OxyColors.Green });
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80) { StartPosition = 0.55, EndPosition = 1, TextColor = OxyColors.Blue });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { StartPosition = 0.55, EndPosition = 1, TextColor = OxyColors.Orange });
 
             model.Annotations.Add(new LineAnnotation { ClipByYAxis = true, Type = LineAnnotationType.Vertical, X = 0, Color = OxyColors.Green, Text = "Vertical, ClipByAxis = true" });
             model.Annotations.Add(new LineAnnotation { ClipByYAxis = false, Type = LineAnnotationType.Vertical, X = 20, Color = OxyColors.Green, Text = "Vertical, ClipByAxis = false" });
