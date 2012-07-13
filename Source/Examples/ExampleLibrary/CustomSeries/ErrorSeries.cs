@@ -50,6 +50,7 @@ namespace ExampleLibrary
         {
             base.Render(rc, model);
 
+            var points = this.Points;
             if (points.Count == 0)
             {
                 return;

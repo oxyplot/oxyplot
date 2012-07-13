@@ -88,10 +88,11 @@ namespace OxyPlot
 
             // http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
             double minimumDistance = double.MaxValue;
+            var points = this.Points;
 
-            for (int i = 0; i < this.points.Count; i++)
+            for (int i = 0; i < points.Count; i++)
             {
-                var p1 = this.points[i];
+                var p1 = points[i];
                 var basePoint = new DataPoint(p1.X, this.Base);
                 var sp1 = this.Transform(p1);
                 var sp2 = this.Transform(basePoint);
@@ -135,7 +136,7 @@ namespace OxyPlot
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.points.Count == 0)
+            if (this.Points.Count == 0)
             {
                 return;
             }
@@ -148,20 +149,20 @@ namespace OxyPlot
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
-            OxyRect clippingRect = this.GetClippingRect();
+            var clippingRect = this.GetClippingRect();
 
             // Transform all points to screen coordinates
             // Render the line when invalid points occur
             var markerPoints = new List<ScreenPoint>();
-            foreach (DataPoint point in this.points)
+            foreach (var point in this.Points)
             {
                 if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
                 {
                     continue;
                 }
 
-                ScreenPoint p0 = this.Transform(point.X, this.Base);
-                ScreenPoint p1 = this.Transform(point.X, point.Y);
+                var p0 = this.Transform(point.X, this.Base);
+                var p1 = this.Transform(point.X, point.Y);
 
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {

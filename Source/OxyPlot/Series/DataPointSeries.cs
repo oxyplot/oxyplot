@@ -21,7 +21,7 @@ namespace OxyPlot
         /// <summary>
         ///   The list of data points.
         /// </summary>
-        protected IList<IDataPoint> points = new List<IDataPoint>();
+        private IList<IDataPoint> points = new List<IDataPoint>();
 
         #endregion
 
@@ -128,7 +128,7 @@ namespace OxyPlot
                 return;
             }
 
-            this.AddDataPoints(this.points);
+            this.AddDataPoints(this.Points);
         }
 
         /// <summary>
