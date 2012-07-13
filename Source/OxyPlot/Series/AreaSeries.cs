@@ -94,7 +94,7 @@ namespace OxyPlot
         {
             if (interpolate)
             {
-                var r1 = this.GetNearestInterpolatedPointInternal(this.points, point);
+                var r1 = this.GetNearestInterpolatedPointInternal(this.Points, point);
                 if (r1 != null)
                 {
                     return r1;
@@ -108,7 +108,7 @@ namespace OxyPlot
             }
             else
             {
-                var result1 = this.GetNearestPointInternal(this.points, point);
+                var result1 = this.GetNearestPointInternal(this.Points, point);
                 var result2 = this.GetNearestPointInternal(this.points2, point);
 
                 if (result1 != null && result2 != null)
@@ -139,7 +139,7 @@ namespace OxyPlot
         /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            if (this.points.Count == 0)
+            if (this.Points.Count == 0)
             {
                 return;
             }
@@ -155,11 +155,12 @@ namespace OxyPlot
             var clippingRect = this.GetClippingRect();
 
             // Transform all points to screen coordinates
-            int n0 = this.points.Count;
+            var points = this.Points;
+            int n0 = points.Count;
             IList<ScreenPoint> pts0 = new ScreenPoint[n0];
             for (int i = 0; i < n0; i++)
             {
-                pts0[i] = this.XAxis.Transform(this.points[i].X, this.points[i].Y, this.YAxis);
+                pts0[i] = this.XAxis.Transform(points[i].X, points[i].Y, this.YAxis);
             }
 
             int n1 = this.points2.Count;

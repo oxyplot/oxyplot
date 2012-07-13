@@ -254,7 +254,7 @@ namespace OxyPlot
         {
             base.Render(rc, model);
 
-            if (this.points.Count == 0)
+            if (this.Points.Count == 0)
             {
                 return;
             }
@@ -270,7 +270,7 @@ namespace OxyPlot
 
             // Transform all points to screen coordinates
             // Render the line when invalid points occur
-            foreach (var point in this.points)
+            foreach (var point in this.Points)
             {
                 if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
                 {
@@ -292,7 +292,7 @@ namespace OxyPlot
                 this.RenderPointLabels(rc, clippingRect);
             }
 
-            if (this.LineLegendPosition != LineLegendPosition.None && this.points.Count > 0 && !string.IsNullOrEmpty(this.Title))
+            if (this.LineLegendPosition != LineLegendPosition.None && this.Points.Count > 0 && !string.IsNullOrEmpty(this.Title))
             {
                 // renders a legend on the line
                 this.RenderLegendOnLine(rc, clippingRect);
@@ -390,7 +390,7 @@ namespace OxyPlot
         protected void RenderPointLabels(IRenderContext rc, OxyRect clippingRect)
         {
             int index = -1;
-            foreach (var point in this.points)
+            foreach (var point in this.Points)
             {
                 index++;
 
@@ -461,13 +461,13 @@ namespace OxyPlot
             {
                 case LineLegendPosition.Start:
                     // start position
-                    point = this.points[0];
+                    point = this.Points[0];
                     ha = HorizontalTextAlign.Right;
                     dx = -4;
                     break;
                 default:
                     // end position
-                    point = this.points[this.points.Count - 1];
+                    point = this.Points[this.Points.Count - 1];
                     dx = 4;
                     break;
             }
@@ -562,7 +562,7 @@ namespace OxyPlot
         protected void ResetSmoothedPoints()
         {
             double tolerance = Math.Abs(Math.Max(this.MaxX - this.MinX, this.MaxY - this.MinY) / ToleranceDivisor);
-            this.smoothedPoints = CanonicalSplineHelper.CreateSpline(this.points, 0.5, null, false, tolerance);
+            this.smoothedPoints = CanonicalSplineHelper.CreateSpline(this.Points, 0.5, null, false, tolerance);
         }
 
         #endregion

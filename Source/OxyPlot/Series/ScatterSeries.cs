@@ -205,7 +205,7 @@ namespace OxyPlot
                 }
             }
 
-            foreach (var p in this.points)
+            foreach (var p in this.Points)
             {
                 if (this.XAxis == null || this.YAxis == null || p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum
                     || p.Y > this.YAxis.ActualMaximum)
@@ -293,14 +293,15 @@ namespace OxyPlot
         {
             base.Render(rc, model);
 
-            if (this.points.Count == 0)
+            if (this.Points.Count == 0)
             {
                 return;
             }
 
             OxyRect clippingRect = this.GetClippingRect();
 
-            int n = this.points.Count;
+            var points = this.Points;
+            int n = points.Count;
             var groupPoints = new Dictionary<int, IList<ScreenPoint>>();
             var groupSizes = new Dictionary<int, IList<double>>();
 
@@ -316,11 +317,11 @@ namespace OxyPlot
             // Transform all points to screen coordinates
             for (int i = 0; i < n; i++)
             {
-                var dp = new DataPoint(this.points[i].X, this.points[i].Y);
+                var dp = new DataPoint(points[i].X, points[i].Y);
                 double size = double.NaN;
                 double value = double.NaN;
 
-                var scatterPoint = this.points[i] as ScatterPoint;
+                var scatterPoint = points[i] as ScatterPoint;
                 if (scatterPoint != null)
                 {
                     size = scatterPoint.Size;
@@ -461,14 +462,15 @@ namespace OxyPlot
                 return;
             }
 
-            this.points.Clear();
+            var points = this.Points;
+            points.Clear();
 
             // Use the mapping to generate the points
             if (this.Mapping != null)
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    this.points.Add(this.Mapping(item));
+                    points.Add(this.Mapping(item));
                 }
 
                 return;
@@ -513,7 +515,7 @@ namespace OxyPlot
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            this.InternalUpdateMaxMinValue(this.points);
+            this.InternalUpdateMaxMinValue(this.Points);
         }
 
         /// <summary>
