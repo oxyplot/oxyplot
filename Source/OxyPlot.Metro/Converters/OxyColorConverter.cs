@@ -8,6 +8,7 @@ namespace OxyPlot.Metro
 {
     using System;
     using System.Globalization;
+    using Windows.UI;
     using Windows.UI.Xaml.Data;
     using Windows.UI.Xaml.Media;
 
@@ -37,17 +38,17 @@ namespace OxyPlot.Metro
         /// <returns>
         /// The convert.
         /// </returns>
-        public object Convert(object value, string targetType, object parameter, string language)
+        public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is OxyColor)
             {
                 var color = (OxyColor)value;
-                if (targetType == typeof(Color).FullName)
+                if (targetType == typeof(Color))
                 {
                     return color.ToColor();
                 }
 
-                if (targetType == typeof(Brush).FullName)
+                if (targetType == typeof(Brush))
                 {
                     return color.ToBrush();
                 }
@@ -74,9 +75,9 @@ namespace OxyPlot.Metro
         /// <returns>
         /// The convert back.
         /// </returns>
-        public object ConvertBack(object value, string targetType, object parameter, string language)
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            if (targetType == typeof(OxyColor).FullName)
+            if (targetType == typeof(OxyColor))
             {
                 if (value is Color)
                 {

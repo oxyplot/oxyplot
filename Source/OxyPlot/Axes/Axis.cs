@@ -1146,7 +1146,7 @@ namespace OxyPlot
             return string.Format(
                 CultureInfo.InvariantCulture,
                 "{0}({1}, {2}, {3}, {4})",
-                TypeHelper.GetTypeName(this.GetType()),
+                this.GetType().Name,
                 this.Position,
                 this.ActualMinimum,
                 this.ActualMaximum,

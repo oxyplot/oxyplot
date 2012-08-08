@@ -86,7 +86,6 @@
     <Compile Include="Foundation\IDataPoint.cs" />
     <Compile Include="Foundation\ReflectionHelper.cs" />
     <Compile Include="Foundation\ScreenPointHelper.cs" />
-    <Compile Include="Foundation\TypeHelper.cs" />
     <Compile Include="Manipulators\ZoomManipulator.cs" />
     <Compile Include="Manipulators\ZoomStepManipulator.cs" />
     <Compile Include="Manipulators\ResetManipulator.cs" />

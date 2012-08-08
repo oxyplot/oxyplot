@@ -24,8 +24,8 @@ namespace OxyPlot.Metro
         public static readonly DependencyProperty HorizontalLineVisibilityProperty =
             DependencyProperty.Register(
                 "HorizontalLineVisibility", 
-                typeof(Visibility).FullName, 
-                typeof(TrackerControl).FullName, 
+                typeof(Visibility), 
+                typeof(TrackerControl), 
                 new PropertyMetadata(Visibility.Visible));
 
         /// <summary>
@@ -34,27 +34,27 @@ namespace OxyPlot.Metro
         public static readonly DependencyProperty VerticalLineVisibilityProperty =
             DependencyProperty.Register(
                 "VerticalLineVisibility", 
-                typeof(Visibility).FullName, 
-                typeof(TrackerControl).FullName, 
+                typeof(Visibility), 
+                typeof(TrackerControl), 
                 new PropertyMetadata(Visibility.Visible));
 
         /// <summary>
         /// The line stroke property.
         /// </summary>
         public static readonly DependencyProperty LineStrokeProperty = DependencyProperty.Register(
-            "LineStroke", typeof(Brush).FullName, typeof(TrackerControl).FullName, new PropertyMetadata(null));
+            "LineStroke", typeof(Brush), typeof(TrackerControl), new PropertyMetadata(null));
 
         /// <summary>
         /// The line extents property.
         /// </summary>
         public static readonly DependencyProperty LineExtentsProperty = DependencyProperty.Register(
-            "LineExtents", typeof(OxyRect).FullName, typeof(TrackerControl).FullName, new PropertyMetadata(new OxyRect()));
+            "LineExtents", typeof(OxyRect), typeof(TrackerControl), new PropertyMetadata(new OxyRect()));
 
         /// <summary>
         /// The line dash array property.
         /// </summary>
         public static readonly DependencyProperty LineDashArrayProperty = DependencyProperty.Register(
-            "LineDashArray", typeof(DoubleCollection).FullName, typeof(TrackerControl).FullName, new PropertyMetadata(null));
+            "LineDashArray", typeof(DoubleCollection), typeof(TrackerControl), new PropertyMetadata(null));
 
 #if WPF
 
@@ -68,39 +68,39 @@ namespace OxyPlot.Metro
         /// <summary>
         /// The show arrow property.
         /// </summary>
-        public static readonly DependencyProperty ShowPointerProperty = DependencyProperty2.Register(
+        public static readonly DependencyProperty ShowPointerProperty = DependencyProperty.Register(
             "ShowPointer", typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
 
         /// <summary>
         /// The corner radius property.
         /// </summary>
-        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty2.Register(
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(double), typeof(TrackerControl), new PropertyMetadata(0.0));
 
         /// <summary>
         /// The distance property.
         /// </summary>
-        public static readonly DependencyProperty DistanceProperty = DependencyProperty2.Register(
+        public static readonly DependencyProperty DistanceProperty = DependencyProperty.Register(
             "Distance", typeof(double), typeof(TrackerControl), new PropertyMetadata(7.0));
 
         /// <summary>
         /// The can center horizontally property.
         /// </summary>
         public static readonly DependencyProperty CanCenterHorizontallyProperty =
-            DependencyProperty2.Register(
+            DependencyProperty.Register(
                 "CanCenterHorizontally", typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
 
         /// <summary>
         /// The can center vertically property.
         /// </summary>
         public static readonly DependencyProperty CanCenterVerticallyProperty =
-            DependencyProperty2.Register(
+            DependencyProperty.Register(
                 "CanCenterVertically", typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
 
         /// <summary>
         /// The position property.
         /// </summary>
-        public static readonly DependencyProperty PositionProperty = DependencyProperty2.Register(
+        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position", 
             typeof(ScreenPoint), 
             typeof(TrackerControl), 
@@ -379,7 +379,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:Windows.UI.Xaml.FrameworkElement.ApplyTemplate"/>.
         /// </summary>
-        protected override void OnApplyTemplateCore()
+        protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             this.path = this.GetTemplateChild(PartPath) as Path;

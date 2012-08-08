@@ -70,6 +70,7 @@ namespace OxyPlot.Reporting
             this.MaxLineLength = 60;
         }
 
+#if !METRO
         /// <summary>
         /// Initializes a new instance of the <see cref="WikiReportWriter"/> class.
         /// </summary>
@@ -81,7 +82,7 @@ namespace OxyPlot.Reporting
         {
             this.MaxLineLength = 60;
         }
-
+#endif
         #endregion
 
         #region Public Properties

@@ -51,7 +51,6 @@
     <Compile Include="Axes\DateTimeAxisTests.cs" />
     <Compile Include="Foundation\ConrecTests.cs" />
     <Compile Include="Foundation\CohenSutherlandClippingTests.cs" />
-    <Compile Include="Foundation\TypeHelperTests.cs" />
     <Compile Include="Foundation\SutherlandHodgmanClippingTests.cs" />
     <Compile Include="Foundation\ScreenPointHelperTests.cs" />
     <Compile Include="Foundation\ReflectionHelperTests.cs" />
