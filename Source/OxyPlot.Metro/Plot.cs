@@ -4,17 +4,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Windows.ApplicationModel.DataTransfer;
+
 namespace OxyPlot.Metro
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml;
-    using Windows.Data;
     using Windows.UI.Xaml.Input;
-    using Windows.UI.Xaml.Markup;
     using Windows.UI.Xaml.Media;
     using Windows.UI.Xaml.Media.Imaging;
     using Windows.Foundation;
@@ -34,13 +33,13 @@ namespace OxyPlot.Metro
         /// </summary>
         private const string PartGrid = "PART_Grid";
 
-      
+
         /// <summary>
         ///   The tracker definitions.
         /// </summary>
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
 
-       
+
         /// <summary>
         ///   The canvas.
         /// </summary>
@@ -115,16 +114,16 @@ namespace OxyPlot.Metro
             this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
             this.Loaded += this.OnLoaded;
             this.SizeChanged += this.OnSizeChanged;
-            CompositionTarget.Rendering += new Windows.UI.Xaml.EventHandler(CompositionTargetRendering);
+            CompositionTarget.Rendering += CompositionTargetRendering;
         }
 
-    
+
 
         #endregion
 
         #region Enums
 
-       
+
 
         #endregion
 
@@ -170,7 +169,7 @@ namespace OxyPlot.Metro
         /// <param name="yaxis">
         /// The y-axis.
         /// </param>
-        public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
+        public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis)
         {
             if (this.ActualModel != null)
             {
@@ -195,7 +194,7 @@ namespace OxyPlot.Metro
         /// <returns>
         /// The closest DataSeries
         /// </returns>
-        public ISeries GetSeriesFromPoint(ScreenPoint pt, double limit)
+        public Series GetSeriesFromPoint(ScreenPoint pt, double limit)
         {
             return this.ActualModel != null ? this.ActualModel.GetSeriesFromPoint(pt, limit) : null;
         }
@@ -234,10 +233,11 @@ namespace OxyPlot.Metro
                 this.updateData = this.updateData || updateData;
             }
         }
-        protected override void OnApplyTemplateCore()
+
+        protected override void OnApplyTemplate()
         {
-            base.OnApplyTemplateCore();
-       
+            base.OnApplyTemplate();
+
             this.grid = this.GetTemplateChild(PartGrid) as Grid;
             if (this.grid == null)
             {
@@ -267,7 +267,7 @@ namespace OxyPlot.Metro
         /// <param name="cpt">
         /// The current point (screen coordinates).
         /// </param>
-        public void Pan(IAxis axis, ScreenPoint ppt, ScreenPoint cpt)
+        public void Pan(Axis axis, ScreenPoint ppt, ScreenPoint cpt)
         {
             axis.Pan(ppt, cpt);
             this.InvalidatePlot(false);
@@ -291,7 +291,7 @@ namespace OxyPlot.Metro
         /// <param name="axis">
         /// The axis.
         /// </param>
-        public void Reset(IAxis axis)
+        public void Reset(Axis axis)
         {
             axis.Reset();
         }
@@ -301,7 +301,7 @@ namespace OxyPlot.Metro
         /// </summary>
         public void ResetAllAxes()
         {
-            foreach (IAxis a in this.ActualModel.Axes)
+            foreach (Axis a in this.ActualModel.Axes)
             {
                 a.Reset();
             }
@@ -339,7 +339,7 @@ namespace OxyPlot.Metro
         /// <param name="cursor">
         /// The cursor.
         /// </param>
-        public void SetCursor(OxyCursor cursor)
+        public void SetCursorType(CursorType cursor)
         {
             //switch (cursor)
             //{
@@ -471,7 +471,7 @@ namespace OxyPlot.Metro
         /// <param name="p2">
         /// The new maximum value.
         /// </param>
-        public void Zoom(IAxis axis, double p1, double p2)
+        public void Zoom(Axis axis, double p1, double p2)
         {
             axis.Zoom(p1, p2);
             this.RefreshPlot(false);
@@ -505,7 +505,7 @@ namespace OxyPlot.Metro
         /// <param name="x">
         /// The position to zoom at.
         /// </param>
-        public void ZoomAt(IAxis axis, double factor, double x = double.NaN)
+        public void ZoomAt(Axis axis, double factor, double x = double.NaN)
         {
             if (double.IsNaN(x))
             {
@@ -521,12 +521,12 @@ namespace OxyPlot.Metro
         #region Methods
 
         /// <summary>
-        /// Called before the <see cref="E:System.Windows.UIElement.KeyDown"/> event occurs.
+        /// Called before the <see cref="E:Windows.UI.Xaml.UIElement.KeyDown"/> event occurs.
         /// </summary>
         /// <param name="e">
         /// The data for the event.
         /// </param>
-        protected override void OnKeyDown(KeyEventArgs e)
+        protected override void OnKeyDown(KeyRoutedEventArgs e)
         {
             bool control = IsControlDown();
             bool alt = IsAltDown();
@@ -603,83 +603,95 @@ namespace OxyPlot.Metro
 
             if (control && alt && this.ActualModel != null)
             {
-#if !METRO
                 switch (e.Key)
                 {
                     case VirtualKey.R:
-                        Clipboard.SetText(this.ActualModel.CreateTextReport());
-                        break;
+                        {
+                            var pkg = new DataPackage();
+                            pkg.SetText(this.ActualModel.CreateTextReport());
+                            Clipboard.SetContent(pkg);
+                            break;
+                        }
                     case VirtualKey.C:
-                        Clipboard.SetText(this.ActualModel.ToCode());
-                        break;
+                        {
+                            var pkg = new DataPackage();
+                            pkg.SetText(this.ActualModel.ToCode());
+                            Clipboard.SetContent(pkg);
+                            break;
+                        }
                     case VirtualKey.X:
-                        Clipboard.SetText(this.ToXaml());
-                        break;
+                        {
+                            var pkg = new DataPackage();
+                            pkg.SetText(this.ToXaml());
+                            Clipboard.SetContent(pkg);
+                            break;
+                        }
                 }
-#endif
             }
 
             base.OnKeyDown(e);
         }
 
         /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted"/> event occurs.
+        /// Called when the <see cref="E:Windows.UI.Xaml.UIElement.ManipulationCompleted"/> event occurs.
         /// </summary>
         /// <param name="e">
         /// The data for the event.
         /// </param>
-        protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
+        protected override void OnManipulationCompleted(ManipulationCompletedRoutedEventArgs e)
         {
             base.OnManipulationCompleted(e);
-            var position = this.Add(this.touchDownPoint, e.TotalManipulation.Translation);
+            var position = this.Add(this.touchDownPoint, e.Cumulative.Translation);
             this.touchPan.Completed(new ManipulationEventArgs(position.ToScreenPoint()));
             e.Handled = true;
         }
 
         /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
+        /// Called when the <see cref="E:Windows.UI.Xaml.UIElement.ManipulationDelta"/> event occurs.
         /// </summary>
         /// <param name="e">
         /// The data for the event.
         /// </param>
-        protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
+        protected override void OnManipulationDelta(ManipulationDeltaRoutedEventArgs e)
         {
             base.OnManipulationDelta(e);
-            var position = this.Add(this.touchDownPoint, e.CumulativeManipulation.Translation);
+            var position = this.Add(this.touchDownPoint, e.Cumulative.Translation);
             this.touchPan.Delta(new ManipulationEventArgs(position.ToScreenPoint()));
-            this.touchZoom.Delta(
-                new ManipulationEventArgs(position.ToScreenPoint())
-                    {
-                       ScaleX = e.DeltaManipulation.Scale, ScaleY = e.DeltaManipulation.Scale 
-                    });
+            // todo: enabled pinch-zoom again!
+            //this.touchZoom.Delta(
+            //    new ManipulationEventArgs(position.ToScreenPoint())
+            //        {
+            //            ScaleX = e.DeltaManipulation.Scale,
+            //            ScaleY = e.DeltaManipulation.Scale
+            //        });
             e.Handled = true;
         }
 
         /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted"/> event occurs.
+        /// Called when the <see cref="E:Windows.UI.Xaml.UIElement.ManipulationStarted"/> event occurs.
         /// </summary>
         /// <param name="e">
         /// The data for the event.
         /// </param>
-        protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
+        protected override void OnManipulationStarted(ManipulationStartedRoutedEventArgs e)
         {
             base.OnManipulationStarted(e);
             this.touchPan = new PanManipulator(this);
-            this.touchPan.Started(new ManipulationEventArgs(e.ManipulationOrigin.ToScreenPoint()));
+            this.touchPan.Started(new ManipulationEventArgs(e.Position.ToScreenPoint()));
             this.touchZoom = new ZoomManipulator(this);
-            this.touchZoom.Started(new ManipulationEventArgs(e.ManipulationOrigin.ToScreenPoint()));
-            this.touchDownPoint = e.ManipulationOrigin;
+            this.touchZoom.Started(new ManipulationEventArgs(e.Position.ToScreenPoint()));
+            this.touchDownPoint = e.Position;
             e.Handled = true;
-      
+
         }
-        
+
         /// <summary>
         /// Raises the <see cref="E:MouseButtonUp"/> event.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.
+        /// The <see cref="Windows.UI.Xaml.Input.MouseButtonEventArgs"/> instance containing the event data.
         /// </param>
-        protected void OnMouseButtonUp(PointerEventArgs e)
+        protected void OnMouseButtonUp(PointerRoutedEventArgs e)
         {
             if (this.mouseManipulator != null)
             {
@@ -690,14 +702,14 @@ namespace OxyPlot.Metro
             this.mouseManipulator = null;
             this.ReleasePointerCapture(e.Pointer);
         }
-        
+
         /// <summary>
-        /// Called before the <see cref="E:System.Windows.UIElement.MouseLeftButtonDown"/> event occurs.
+        /// Called before the <see cref="E:Windows.UI.Xaml.UIElement.MouseLeftButtonDown"/> event occurs.
         /// </summary>
         /// <param name="e">
         /// The data for the event.
         /// </param>
-        protected override void OnPointerPressed(PointerEventArgs e)
+        protected override void OnPointerPressed(PointerRoutedEventArgs e)
         {
             base.OnPointerPressed(e);
             OnMouseButtonDown(e);
@@ -705,25 +717,25 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Called before the <see cref="E:System.Windows.UIElement.MouseLeftButtonUp"/> event occurs.
+        /// Called before the <see cref="E:Windows.UI.Xaml.UIElement.MouseLeftButtonUp"/> event occurs.
         /// </summary>
         /// <param name="e">
         /// The data for the event.
         /// </param>
-        protected override void OnPointerReleased(PointerEventArgs e)
+        protected override void OnPointerReleased(PointerRoutedEventArgs e)
         {
             base.OnPointerReleased(e);
             this.OnMouseButtonUp(e);
             e.Handled = true;
         }
-      
+
         /// <summary>
-        /// Called before the <see cref="E:System.Windows.UIElement.MouseMove"/> event occurs.
+        /// Called before the <see cref="E:Windows.UI.Xaml.UIElement.MouseMove"/> event occurs.
         /// </summary>
         /// <param name="e">
         /// The data for the event.
         /// </param>
-        protected override void OnPointerMoved(PointerEventArgs e)
+        protected override void OnPointerMoved(PointerRoutedEventArgs e)
         {
             base.OnPointerMoved(e);
             if (this.mouseManipulator != null)
@@ -732,16 +744,16 @@ namespace OxyPlot.Metro
             }
         }
 
-     
 
-        
+
+
         /// <summary>
-        /// Called before the <see cref="E:System.Windows.UIElement.MouseWheel"/> event occurs to provide handling for the event in a derived class without attaching a delegate.
+        /// Called before the <see cref="E:Windows.UI.Xaml.UIElement.MouseWheel"/> event occurs to provide handling for the event in a derived class without attaching a delegate.
         /// </summary>
         /// <param name="e">
-        /// A <see cref="T:System.Windows.Input.MouseWheelEventArgs"/> that contains the event data.
+        /// A <see cref="T:Windows.UI.Xaml.Input.MouseWheelEventArgs"/> that contains the event data.
         /// </param>
-        protected override void OnPointerWheelChanged(PointerEventArgs e)
+        protected override void OnPointerWheelChanged(PointerRoutedEventArgs e)
         {
             base.OnPointerWheelChanged(e);
 
@@ -763,7 +775,7 @@ namespace OxyPlot.Metro
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="Windows.UI.Xaml.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private static void DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -816,7 +828,7 @@ namespace OxyPlot.Metro
         /// The d.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="Windows.UI.Xaml.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -862,8 +874,7 @@ namespace OxyPlot.Metro
         /// <param name="e">
         /// The event arguments.
         /// </param>
-         void CompositionTargetRendering(object sender, object e)
- 
+        void CompositionTargetRendering(object sender, object e)
         {
             lock (this)
             {
@@ -885,12 +896,12 @@ namespace OxyPlot.Metro
         /// Creates the manipulation event args.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
+        /// The <see cref="Windows.UI.Xaml.Input.MouseEventArgs"/> instance containing the event data.
         /// </param>
         /// <returns>
         /// A manipulation event args object.
         /// </returns>
-        private ManipulationEventArgs CreateManipulationEventArgs(PointerEventArgs e)
+        private ManipulationEventArgs CreateManipulationEventArgs(PointerRoutedEventArgs e)
         {
             return new ManipulationEventArgs(e.GetCurrentPoint(this).Position.ToScreenPoint());
         }
@@ -909,7 +920,7 @@ namespace OxyPlot.Metro
         /// </param>
         /// <returns>
         /// </returns>
-        private ManipulatorBase GetManipulator(MouseButton button, int clickCount, PointerEventArgs e)
+        private ManipulatorBase GetManipulator(MouseButton button, int clickCount, PointerRoutedEventArgs e)
         {
             bool control = IsControlDown();
             bool shift = IsShiftDown();
@@ -959,7 +970,7 @@ namespace OxyPlot.Metro
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="Windows.UI.Xaml.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -973,7 +984,7 @@ namespace OxyPlot.Metro
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
+        /// The <see cref="Windows.UI.Xaml.RoutedEventArgs"/> instance containing the event data.
         /// </param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -995,18 +1006,18 @@ namespace OxyPlot.Metro
         /// The button.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.
+        /// The <see cref="Windows.UI.Xaml.Input.MouseButtonEventArgs"/> instance containing the event data.
         /// </param>
-        private void OnMouseButtonDown( PointerEventArgs e)
+        private void OnMouseButtonDown(PointerRoutedEventArgs e)
         {
             if (this.mouseManipulator != null)
             {
                 return;
             }
 
-            this.Focus();
+            this.Focus(FocusState.Pointer);
             this.CapturePointer(e.Pointer);
-          
+
 
             int clickCount = 1;
             //if (MouseButtonHelper.IsDoubleClick(this, e))
@@ -1030,7 +1041,7 @@ namespace OxyPlot.Metro
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.SizeChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="Windows.UI.Xaml.SizeChangedEventArgs"/> instance containing the event data.
         /// </param>
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -1048,7 +1059,7 @@ namespace OxyPlot.Metro
         /// </param>
         private void PanAll(double dx, double dy)
         {
-            foreach (IAxis a in this.ActualModel.Axes)
+            foreach (Axis a in this.ActualModel.Axes)
             {
                 a.Pan(a.IsHorizontal() ? dx : dy);
             }
@@ -1104,34 +1115,34 @@ namespace OxyPlot.Metro
         #endregion
     }
 
-     /// <summary>
-        /// The mouse button.
+    /// <summary>
+    /// The mouse button.
+    /// </summary>
+    public enum MouseButton
+    {
+        /// <summary>
+        ///   The left.
         /// </summary>
-        public enum MouseButton
-        {
-            /// <summary>
-            ///   The left.
-            /// </summary>
-            Left, 
+        Left,
 
-            /// <summary>
-            ///   The middle.
-            /// </summary>
-            Middle, 
+        /// <summary>
+        ///   The middle.
+        /// </summary>
+        Middle,
 
-            /// <summary>
-            ///   The right.
-            /// </summary>
-            Right, 
+        /// <summary>
+        ///   The right.
+        /// </summary>
+        Right,
 
-            /// <summary>
-            ///   The x button 1.
-            /// </summary>
-            XButton1, 
+        /// <summary>
+        ///   The x button 1.
+        /// </summary>
+        XButton1,
 
-            /// <summary>
-            ///   The x button 2.
-            /// </summary>
-            XButton2
-        }
+        /// <summary>
+        ///   The x button 2.
+        /// </summary>
+        XButton2
+    }
 }

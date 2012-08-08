@@ -796,19 +796,19 @@ namespace OxyPlot
             r.AddHeader(2, "=== Axes ===");
             foreach (Axis a in this.Axes)
             {
-                r.AddPropertyTable(TypeHelper.GetTypeName(a.GetType()), a);
+                r.AddPropertyTable(a.GetType().Name, a);
             }
 
             r.AddHeader(2, "=== Annotations ===");
             foreach (var a in this.Annotations)
             {
-                r.AddPropertyTable(TypeHelper.GetTypeName(a.GetType()), a);
+                r.AddPropertyTable(a.GetType().Name, a);
             }
 
             r.AddHeader(2, "=== Series ===");
             foreach (var s in this.Series)
             {
-                r.AddPropertyTable(TypeHelper.GetTypeName(s.GetType()), s);
+                r.AddPropertyTable(s.GetType().Name, s);
                 var ds = s as DataPointSeries;
                 if (ds != null)
                 {
@@ -1270,7 +1270,7 @@ namespace OxyPlot
         /// <param name="message">The message.</param>
         protected void Trace(string message)
         {
-#if !SILVERLIGHT && !MONO
+#if !SILVERLIGHT && !MONO && !METRO
             System.Diagnostics.Trace.WriteLine(string.Format("{0}: {1}", this.GetType().Name, message));
 #endif
         }

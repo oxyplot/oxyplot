@@ -1,0 +1,24 @@
+﻿<Application
+    x:Class="ExampleBrowser.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ExampleBrowser"
+    xmlns:localData="using:ExampleBrowser.Data">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+                <!-- 
+                    Styles that define common aspects of the platform look and feel
+                    Required by Visual Studio project and item templates
+                 -->
+                <ResourceDictionary Source="Common/StandardStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Application-specific resources -->
+
+            <x:String x:Key="AppName">OxyPlot Metro example browser</x:String>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -142,7 +142,7 @@ namespace OxyPlot
         /// </returns>
         public static string FormatConstructor(Type type, string format, params object[] values)
         {
-            return "new " + TypeHelper.GetTypeName(type) + "(" + FormatCode(format, values) + ")";
+            return string.Format("new {0}({1})", type.Name, FormatCode(format, values));
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace OxyPlot
             object defaultInstance = Activator.CreateInstance(type);
             string varName = this.GetNewVariableName(type);
             this.variables.Add(varName);
-            this.AppendLine("var {0} = new {1}();", varName, TypeHelper.GetTypeName(type));
+            this.AppendLine("var {0} = new {1}();", varName, type.Name);
             this.SetProperties(obj, varName, defaultInstance);
             return varName;
         }
@@ -313,7 +313,7 @@ namespace OxyPlot
         /// </returns>
         private string GetNewVariableName(Type type)
         {
-            string prefix = TypeHelper.GetTypeName(type);
+            string prefix = type.Name;
             prefix = char.ToLower(prefix[0]) + prefix.Substring(1);
             int i = 1;
             while (this.variables.Contains(prefix + i))
@@ -344,7 +344,7 @@ namespace OxyPlot
             var result = new StringBuilder();
             foreach (var c in title)
             {
-                string s = c.ToString(CultureInfo.InvariantCulture);
+                string s = c.ToString();
                 if (regex.Match(s).Success)
                 {
                     result.Append(s);

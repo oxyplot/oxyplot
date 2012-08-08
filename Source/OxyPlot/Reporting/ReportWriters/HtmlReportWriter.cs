@@ -41,6 +41,7 @@ namespace OxyPlot.Reporting
     {
         #region Constants and Fields
 
+#if !METRO
         /// <summary>
         /// The directory of the output file.
         /// </summary>
@@ -50,6 +51,7 @@ namespace OxyPlot.Reporting
         /// The path of the output file.
         /// </summary>
         private readonly string outputFile;
+#endif
 
         /// <summary>
         /// The text measurer.
@@ -238,6 +240,9 @@ namespace OxyPlot.Reporting
             {
                 case HtmlPlotElementType.Embed:
                 case HtmlPlotElementType.Object:
+#if METRO
+                    // Writing to file not supported
+#else
                     string source = string.Format(
                         "{0}_Plot{1}.svg", Path.GetFileNameWithoutExtension(this.outputFile), plot.FigureNumber);
                     plot.PlotModel.SaveSvg(this.GetFullFileName(source), plot.Width, plot.Height, this.textMeasurer);
@@ -245,6 +250,7 @@ namespace OxyPlot.Reporting
                     this.WriteAttributeString("src", source);
                     this.WriteAttributeString("type", "image/svg+xml");
                     this.WriteEndElement();
+#endif
                     break;
                 case HtmlPlotElementType.Svg:
                     this.WriteRaw(plot.PlotModel.ToSvg(plot.Width, plot.Height, false, this.textMeasurer));
@@ -444,7 +450,11 @@ namespace OxyPlot.Reporting
         /// </returns>
         private string GetFullFileName(string filename)
         {
+#if METRO
+            return filename;
+#else
             return Path.GetFullPath(Path.Combine(this.directory, filename));
+#endif
         }
 
         /// <summary>

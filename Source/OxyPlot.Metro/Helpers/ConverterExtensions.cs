@@ -8,6 +8,7 @@ namespace OxyPlot.Metro
 {
     using System;
     using Windows.Foundation;
+    using Windows.UI;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Media;
 

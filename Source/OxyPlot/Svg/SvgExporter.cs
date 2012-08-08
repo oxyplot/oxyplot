@@ -16,6 +16,24 @@ namespace OxyPlot
         #region Public Methods
 
         /// <summary>
+        /// Exports the specified model to a stream.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="width">The width (points).</param>
+        /// <param name="height">The height (points).</param>
+        /// <param name="textMeasurer">The text measurer.</param>
+        public static void Export(PlotModel model, Stream stream, double width, double height, IRenderContext textMeasurer = null)
+        {
+            using (var svgrc = new SvgRenderContext(stream, width, height, true, textMeasurer))
+            {
+                model.Update();
+                model.Render(svgrc);
+            }
+        }
+
+#if !METRO
+        /// <summary>
         /// Exports the specified model to a file.
         /// </summary>
         /// <param name="model">The model.</param>
@@ -31,6 +49,7 @@ namespace OxyPlot
                 model.Render(svgrc);
             }
         }
+#endif
 
         /// <summary>
         /// Exports to string.

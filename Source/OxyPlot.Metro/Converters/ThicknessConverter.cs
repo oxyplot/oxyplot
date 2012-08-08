@@ -38,12 +38,12 @@ namespace OxyPlot.Metro
         /// <returns>
         /// The convert.
         /// </returns>
-        public object Convert(object value, string targetType, object parameter, string language)
+        public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is Thickness)
             {
                 var t = (Thickness)value;
-                if (targetType == typeof(double).FullName)
+                if (targetType == typeof(double))
                 {
                     return Math.Max(Math.Max(t.Left, t.Right), Math.Max(t.Top, t.Bottom));
                 }
@@ -70,7 +70,7 @@ namespace OxyPlot.Metro
         /// <returns>
         /// The convert back.
         /// </returns>
-        public object ConvertBack(object value, string targetType, object parameter, string language)
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             return null;
         }

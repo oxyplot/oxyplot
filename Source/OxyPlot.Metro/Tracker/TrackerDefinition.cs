@@ -20,15 +20,14 @@ namespace OxyPlot.Metro
         /// <summary>
         /// The tracker key property.
         /// </summary>
-        public static readonly DependencyProperty TrackerKeyProperty = DependencyProperty2.Register(
+        public static readonly DependencyProperty TrackerKeyProperty = DependencyProperty.Register(
             "TrackerKey", typeof(string), typeof(TrackerDefinition), new PropertyMetadata(null));
 
         /// <summary>
         /// The tracker template property.
         /// </summary>
-        public static readonly DependencyProperty TrackerTemplateProperty =
-            DependencyProperty2.Register(
-                "TrackerTemplate", typeof(ControlTemplate), typeof(TrackerDefinition), new PropertyMetadata(null));
+        public static readonly DependencyProperty TrackerTemplateProperty = DependencyProperty.Register(
+            "TrackerTemplate", typeof(ControlTemplate), typeof(TrackerDefinition), new PropertyMetadata(null));
 
         #endregion
 

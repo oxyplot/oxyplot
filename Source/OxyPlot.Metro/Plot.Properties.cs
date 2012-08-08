@@ -10,15 +10,15 @@ namespace OxyPlot.Metro
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     
-    public static class DependencyProperty2
-    {
-        public static Windows.UI.Xaml.DependencyProperty Register(string name, Type propertyType, Type ownerType, PropertyMetadata typeMetadata)
-        {
-            string propertyTypeName = propertyType.FullName;
-            string ownerTypeName = ownerType.FullName;
-            return Windows.UI.Xaml.DependencyProperty.Register(name, propertyTypeName, ownerTypeName, typeMetadata);
-        }
-    }
+    //public static class DependencyProperty
+    //{
+    //    public static Windows.UI.Xaml.DependencyProperty Register(string name, Type propertyType, Type ownerType, PropertyMetadata typeMetadata)
+    //    {
+    //        string propertyTypeName = propertyType.FullName;
+    //        string ownerTypeName = ownerType.FullName;
+    //        return Windows.UI.Xaml.DependencyProperty.Register(name, propertyTypeName, ownerTypeName, typeMetadata);
+    //    }
+    //}
 
     /// <summary>
     /// The Metro Plot control.
@@ -31,46 +31,46 @@ namespace OxyPlot.Metro
         ///   The default tracker property.
         /// </summary>
         public static readonly DependencyProperty DefaultTrackerTemplateProperty =
-            DependencyProperty2.Register(
+            DependencyProperty.Register(
                 "DefaultTrackerTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
 
         /// <summary>
         ///   The handle right clicks property.
         /// </summary>
         public static readonly DependencyProperty HandleRightClicksProperty =
-            DependencyProperty2.Register("HandleRightClicks", typeof(bool), typeof(Plot), new PropertyMetadata(true));
+            DependencyProperty.Register("HandleRightClicks", typeof(bool), typeof(Plot), new PropertyMetadata(true));
 
         /// <summary>
         ///   The is mouse wheel enabled property.
         /// </summary>
         public static readonly DependencyProperty IsMouseWheelEnabledProperty =
-            DependencyProperty2.Register("IsMouseWheelEnabled", typeof(bool), typeof(Plot), new PropertyMetadata(true));
+            DependencyProperty.Register("IsMouseWheelEnabled", typeof(bool), typeof(Plot), new PropertyMetadata(true));
 
         /// <summary>
         ///   The keyboard pan horizontal step property.
         /// </summary>
         public static readonly DependencyProperty KeyboardPanHorizontalStepProperty =
-            DependencyProperty2.Register(
+            DependencyProperty.Register(
                 "KeyboardPanHorizontalStep", typeof(double), typeof(Plot), new PropertyMetadata(0.1));
 
         /// <summary>
         ///   The keyboard pan vertical step property.
         /// </summary>
         public static readonly DependencyProperty KeyboardPanVerticalStepProperty =
-            DependencyProperty2.Register(
+            DependencyProperty.Register(
                 "KeyboardPanVerticalStep", typeof(double), typeof(Plot), new PropertyMetadata(0.1));
 
         /// <summary>
         ///   The model property.
         /// </summary>
-        public static readonly DependencyProperty ModelProperty = DependencyProperty2.Register(
+        public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
             "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
 
         /// <summary>
         ///   The zoom rectangle template property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
-            DependencyProperty2.Register(
+            DependencyProperty.Register(
                 "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
 
         #endregion

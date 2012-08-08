@@ -9,6 +9,7 @@ namespace OxyPlot.Metro
     using System;
     using System.Collections.Generic;
     using Windows.Foundation;
+    using Windows.UI.Text;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Media;
@@ -492,7 +493,7 @@ namespace OxyPlot.Metro
             // tb.SetValue(TextOptions.TextHintingModeProperty, TextHintingMode.Animated);
             if (fontFamily != null)
             {
-                tb.FontFamily = new FontFamily() { Source = fontFamily };
+                tb.FontFamily = new FontFamily(fontFamily);
             }
 
             if (fontSize > 0)
@@ -567,7 +568,7 @@ namespace OxyPlot.Metro
 
             if (fontFamily != null)
             {
-                tb.FontFamily = new FontFamily() { Source = fontFamily };
+                tb.FontFamily = new FontFamily(fontFamily);
             }
 
             if (fontSize > 0)
@@ -615,7 +616,7 @@ namespace OxyPlot.Metro
         /// </returns>
         private static FontWeight GetFontWeight(double fontWeight)
         {
-            return fontWeight > FontWeights.Normal ? Windows.UI.Xaml.FontWeights.Bold : Windows.UI.Xaml.FontWeights.Normal;
+            return fontWeight > FontWeights.Normal ? Windows.UI.Text.FontWeights.Bold : Windows.UI.Text.FontWeights.Normal;
         }
 
         /// <summary>

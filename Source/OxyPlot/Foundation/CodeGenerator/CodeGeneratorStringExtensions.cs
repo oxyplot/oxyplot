@@ -73,7 +73,7 @@ namespace OxyPlot
         /// </returns>
         public static string ToCode(this Enum value)
         {
-            return string.Format("{0}.{1}", TypeHelper.GetTypeName(value.GetType()), value);
+            return string.Format("{0}.{1}", value.GetType().Name, value);
         }
 
         /// <summary>
