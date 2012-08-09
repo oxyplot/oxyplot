@@ -51,9 +51,10 @@
     <Compile Include="Tracker\TrackerDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Themes\Generic.xaml">
+    <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
-    </Resource>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v11.0\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
