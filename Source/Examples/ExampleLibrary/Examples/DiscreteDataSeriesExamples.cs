@@ -32,6 +32,41 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("StairStepSeries with thin vertical lines")]
+        public static PlotModel StairStepSeriesThinVertical()
+        {
+            var model = new PlotModel("StairStepSeries", "With thin vertical lines");
+            var s1 = new StairStepSeries("sin(x)")
+            {
+                Color = OxyColors.SkyBlue,
+                StrokeThickness = 3,
+                VerticalStrokeThickness = 0.4,
+                MarkerType = MarkerType.None
+            };
+            for (double x = 0; x < Math.PI * 2; x += 0.5)
+                s1.Points.Add(new DataPoint(x, Math.Sin(x)));
+            model.Series.Add(s1);
+
+            return model;
+        }
+
+        [Example("StairStepSeries with dashed vertical lines")]
+        public static PlotModel StairStepSeriesDashedVertical()
+        {
+            var model = new PlotModel("StairStepSeries", "With dashed vertical lines");
+            var s1 = new StairStepSeries("sin(x)")
+            {
+                Color = OxyColors.SkyBlue,
+                VerticalLineStyle = LineStyle.Dash,
+                MarkerType = MarkerType.None
+            };
+            for (double x = 0; x < Math.PI * 2; x += 0.5)
+                s1.Points.Add(new DataPoint(x, Math.Sin(x)));
+            model.Series.Add(s1);
+
+            return model;
+        }
+
         [Example("StemSeries")]
         public static PlotModel StemSeries()
         {

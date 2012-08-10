@@ -17,6 +17,22 @@ namespace OxyPlot
     /// </remarks>
     public class StairStepSeries : LineSeries
     {
+        /// <summary>
+        /// Gets or sets the stroke thickness of the vertical line segments.
+        /// </summary>
+        /// <remarks>
+        /// Speficy NaN to use the StrokeThickness for both horizontal and vertical segments.
+        /// Setting the vertical stroke thickness will have a small performance hit.
+        /// </remarks>
+        /// <value>The vertical stroke thickness.</value>
+        public double VerticalStrokeThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the line style of the vertical line segments.
+        /// </summary>
+        /// <value>The vertical line style.</value>
+        public LineStyle VerticalLineStyle { get; set; }
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -24,6 +40,8 @@ namespace OxyPlot
         /// </summary>
         public StairStepSeries()
         {
+            this.VerticalStrokeThickness = double.NaN;
+            this.VerticalLineStyle = this.LineStyle;
         }
 
         /// <summary>
@@ -35,6 +53,8 @@ namespace OxyPlot
         public StairStepSeries(string title)
             : base(title)
         {
+            this.VerticalStrokeThickness = double.NaN;
+            this.VerticalLineStyle = this.LineStyle;
             this.Title = title;
         }
 
@@ -53,6 +73,8 @@ namespace OxyPlot
         public StairStepSeries(OxyColor color, double strokeThickness = 1, string title = null)
             : base(color, strokeThickness, title)
         {
+            this.VerticalStrokeThickness = double.NaN;
+            this.VerticalLineStyle = this.LineStyle;
         }
 
         #endregion
@@ -153,15 +175,48 @@ namespace OxyPlot
                     // clip the line segments with the clipping rectangle
                     if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                     {
-                        rc.DrawClippedLine(
-                            lpts,
-                            clippingRect,
-                            minDistSquared,
-                            this.GetSelectableColor(this.ActualColor),
-                            this.StrokeThickness,
-                            this.LineStyle,
-                            this.LineJoin,
-                            false);
+                        var verticalStrokeThickness = double.IsNaN(this.VerticalStrokeThickness) ? StrokeThickness : VerticalStrokeThickness;
+                        if (verticalStrokeThickness != this.StrokeThickness || this.VerticalLineStyle != this.LineStyle)
+                        {
+                            var hlpts = new List<ScreenPoint>();
+                            var vlpts = new List<ScreenPoint>();
+                            for (int i = 0; i + 2 < lpts.Count; i += 2)
+                            {
+                                hlpts.Add(lpts[i]);
+                                hlpts.Add(lpts[i + 1]);
+                                vlpts.Add(lpts[i + 1]);
+                                vlpts.Add(lpts[i + 2]);
+                            }
+                            rc.DrawClippedLineSegments(
+                                hlpts,
+                                clippingRect,
+                                this.GetSelectableColor(this.ActualColor),
+                                this.StrokeThickness,
+                                this.LineStyle,
+                                this.LineJoin,
+                                false);
+                            rc.DrawClippedLineSegments(
+                                vlpts,
+                                clippingRect,
+                                this.GetSelectableColor(this.ActualColor),
+                                verticalStrokeThickness,
+                                this.VerticalLineStyle,
+                                this.LineJoin,
+                                false);
+
+                        }
+                        else
+                        {
+                            rc.DrawClippedLine(
+                                lpts,
+                                clippingRect,
+                                0,
+                                this.GetSelectableColor(this.ActualColor),
+                                this.StrokeThickness,
+                                this.LineStyle,
+                                this.LineJoin,
+                                false);
+                        }
                     }
 
                     if (this.MarkerType != MarkerType.None)
@@ -197,6 +252,7 @@ namespace OxyPlot
                 ScreenPoint transformedPoint = this.Transform(point);
                 if (!double.IsNaN(previousY))
                 {
+                    // Horizontal line from the previous point to the current x-coordinate
                     linePoints.Add(new ScreenPoint(transformedPoint.X, previousY));
                 }
 
