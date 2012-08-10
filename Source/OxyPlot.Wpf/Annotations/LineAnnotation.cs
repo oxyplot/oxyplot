@@ -26,9 +26,9 @@ namespace OxyPlot.Wpf
         ///   The equation type property.
         /// </summary>
         public static readonly DependencyProperty EquationTypeProperty = DependencyProperty.Register(
-            "Type", 
-            typeof(LineAnnotationType), 
-            typeof(LineAnnotation), 
+            "Type",
+            typeof(LineAnnotationType),
+            typeof(LineAnnotation),
             new PropertyMetadata(LineAnnotationType.LinearEquation));
 
         /// <summary>
@@ -336,7 +336,125 @@ namespace OxyPlot.Wpf
             a.Color = this.Color.ToOxyColor();
             a.StrokeThickness = this.StrokeThickness;
             a.LineStyle = this.LineStyle;
+            a.LineJoin = this.LineJoin;
+
+            a.ClipByXAxis = this.ClipByXAxis;
+            a.ClipByYAxis = this.ClipByYAxis;
+
+            a.TextPosition = this.TextPosition;
+            a.TextOrientation = this.TextOrientation;
+            a.TextMargin = this.TextMargin;
+            a.TextHorizontalAlignment = this.TextHorizontalAlignment;
+            a.TextVerticalAlignment = this.TextVerticalAlignment;
         }
+
+        /// <summary>
+        ///   Gets or sets the line join.
+        /// </summary>
+        /// <value>The line join.</value>
+        public OxyPenLineJoin LineJoin
+        {
+            get { return (OxyPenLineJoin)GetValue(LineJoinProperty); }
+            set { SetValue(LineJoinProperty, value); }
+        }
+
+        public static readonly DependencyProperty LineJoinProperty =
+            DependencyProperty.Register("LineJoin", typeof(OxyPenLineJoin), typeof(LineAnnotation), new UIPropertyMetadata(OxyPenLineJoin.Miter));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to clip the annotation line by the X axis range.
+        /// </summary>
+        /// <value><c>true</c> if clipping by the X axis is enabled; otherwise, <c>false</c>.</value>
+        public bool ClipByXAxis
+        {
+            get { return (bool)GetValue(ClipByXAxisProperty); }
+            set { SetValue(ClipByXAxisProperty, value); }
+        }
+
+        public static readonly DependencyProperty ClipByXAxisProperty =
+            DependencyProperty.Register("ClipByXAxis", typeof(bool), typeof(LineAnnotation), new UIPropertyMetadata(true));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to clip the annotation line by the Y axis range.
+        /// </summary>
+        /// <value><c>true</c> if clipping by the Y axis is enabled; otherwise, <c>false</c>.</value>
+        public bool ClipByYAxis
+        {
+            get { return (bool)GetValue(ClipByYAxisProperty); }
+            set { SetValue(ClipByYAxisProperty, value); }
+        }
+
+        public static readonly DependencyProperty ClipByYAxisProperty =
+            DependencyProperty.Register("ClipByYAxis", typeof(bool), typeof(LineAnnotation), new UIPropertyMetadata(true));
+
+        /// <summary>
+        /// Gets or sets the text position fraction.
+        /// </summary>
+        /// <value>The text position in the interval [0,1].</value>
+        /// <remarks>
+        /// Positions smaller than 0.25 are left aligned at the start of the line
+        /// Positions larger than 0.75 are right aligned at the end of the line
+        /// Other positions are center aligned at the specified position
+        /// </remarks>
+        public double TextPosition
+        {
+            get { return (double)GetValue(TextPositionProperty); }
+            set { SetValue(TextPositionProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextPositionProperty =
+            DependencyProperty.Register("TextPosition", typeof(double), typeof(LineAnnotation), new UIPropertyMetadata(1.0));
+
+        /// <summary>
+        /// Gets or sets the text orientation.
+        /// </summary>
+        /// <value>The text orientation.</value>
+        public AnnotationTextOrientation TextOrientation
+        {
+            get { return (AnnotationTextOrientation)GetValue(TextOrientationProperty); }
+            set { SetValue(TextOrientationProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextOrientationProperty =
+            DependencyProperty.Register("TextOrientation", typeof(AnnotationTextOrientation), typeof(LineAnnotation), new UIPropertyMetadata(AnnotationTextOrientation.AlongLine));
+
+        /// <summary>
+        /// Gets or sets the text margin (along the line).
+        /// </summary>
+        /// <value>The text margin.</value>
+        public double TextMargin
+        {
+            get { return (double)GetValue(TextMarginProperty); }
+            set { SetValue(TextMarginProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextMarginProperty =
+            DependencyProperty.Register("TextMargin", typeof(double), typeof(LineAnnotation), new UIPropertyMetadata(12.0));
+
+        /// <summary>
+        /// Gets or sets the text horizontal alignment.
+        /// </summary>
+        /// <value>The text horizontal alignment.</value>
+        public HorizontalTextAlign TextHorizontalAlignment
+        {
+            get { return (HorizontalTextAlign)GetValue(TextHorizontalAlignmentProperty); }
+            set { SetValue(TextHorizontalAlignmentProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextHorizontalAlignmentProperty =
+            DependencyProperty.Register("TextHorizontalAlignment", typeof(HorizontalTextAlign), typeof(LineAnnotation), new UIPropertyMetadata(HorizontalTextAlign.Right));
+
+        /// <summary>
+        /// Gets or sets the vertical alignment of text (above or below the line).
+        /// </summary>
+        public VerticalTextAlign TextVerticalAlignment
+        {
+            get { return (VerticalTextAlign)GetValue(TextVerticalAlignmentProperty); }
+            set { SetValue(TextVerticalAlignmentProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextVerticalAlignmentProperty =
+            DependencyProperty.Register("TextVerticalAlignment", typeof(VerticalTextAlign), typeof(LineAnnotation), new UIPropertyMetadata(VerticalTextAlign.Top));
 
         #endregion
     }

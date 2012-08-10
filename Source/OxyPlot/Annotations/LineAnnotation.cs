@@ -11,6 +11,11 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
+    /// Specify the orientation of the annotation text
+    /// </summary>
+    public enum AnnotationTextOrientation { Horizontal, Vertical, AlongLine }
+
+    /// <summary>
     /// Represents a line annotation.
     /// </summary>
     public class LineAnnotation : Annotation
@@ -40,6 +45,7 @@ namespace OxyPlot
             this.ClipByYAxis = true;
 
             this.TextPosition = 1;
+            this.TextOrientation = AnnotationTextOrientation.AlongLine;
             this.TextMargin = 12;
             this.TextHorizontalAlignment = HorizontalTextAlign.Right;
             this.TextVerticalAlignment = VerticalTextAlign.Top;
@@ -124,10 +130,22 @@ namespace OxyPlot
         public HorizontalTextAlign TextHorizontalAlignment { get; set; }
 
         /// <summary>
-        /// Gets or sets the text margin.
+        /// Gets or sets the text margin (along the line).
         /// </summary>
         /// <value>The text margin.</value>
         public double TextMargin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the text padding (in the direction of the text).
+        /// </summary>
+        /// <value>The text padding.</value>
+        public double TextPadding { get; set; }
+
+        /// <summary>
+        /// Gets or sets the text orientation.
+        /// </summary>
+        /// <value>The text orientation.</value>
+        public AnnotationTextOrientation TextOrientation { get; set; }
 
         /// <summary>
         /// Gets or sets the text position fraction.
@@ -328,19 +346,13 @@ namespace OxyPlot
             double angle;
             double margin = this.TextMargin;
 
-            if (this.TextHorizontalAlignment == HorizontalTextAlign.Left)
-            {
-                margin *= this.TextPosition < 0.5 ? 1 : 0;
-            }
-
             if (this.TextHorizontalAlignment == HorizontalTextAlign.Center)
             {
                 margin = 0;
             }
-
-            if (this.TextHorizontalAlignment == HorizontalTextAlign.Right)
+            else
             {
-                margin *= this.TextPosition > 0.5 ? -1 : 0;
+                margin *= this.TextPosition < 0.5 ? 1 : -1;
             }
 
             if (clippedPoints != null && GetPointAtRelativeDistance(clippedPoints, this.TextPosition, margin, out position, out angle))
@@ -354,6 +366,24 @@ namespace OxyPlot
                 {
                     angle -= 180;
                 }
+
+                switch (this.TextOrientation)
+                {
+                    case AnnotationTextOrientation.Horizontal:
+                        angle = 0;
+                        break;
+                    case AnnotationTextOrientation.Vertical:
+                        angle = -90;
+                        break;
+                }
+
+                // Apply 'padding' to the position
+                var angleInRadians = angle / 180 * Math.PI;
+                var f = 1;
+                if (this.TextHorizontalAlignment == HorizontalTextAlign.Right) f = -1;
+                if (this.TextHorizontalAlignment == HorizontalTextAlign.Center) f = 0;
+                position.X += f * this.TextPadding * Math.Cos(angleInRadians);
+                position.Y += f * this.TextPadding * Math.Sin(angleInRadians);
 
                 var cs = new CohenSutherlandClipping(clippingRectangle);
                 if (!string.IsNullOrEmpty(this.Text) && cs.IsInside(position))

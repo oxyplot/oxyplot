@@ -33,10 +33,24 @@ namespace ExampleLibrary
             var model = new PlotModel("Annotations on logarithmic axes");
             model.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, 1, 80));
             model.Axes.Add(new LogarithmicAxis(AxisPosition.Left, 1, 10));
-            model.Annotations.Add(new LineAnnotation() { Slope = 0.1, Intercept = 1, Text = "First" });
+            model.Annotations.Add(new LineAnnotation() { Slope = 0.1, Intercept = 1, Text = "First", TextMargin = 40 });
             model.Annotations.Add(new LineAnnotation() { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second" });
             model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical" });
             model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal" });
+            return model;
+        }
+
+        [Example("LineAnnotations with text orientation specified")]
+        public static PlotModel LinearAxesTextOrientation()
+        {
+            var model = new PlotModel("LineAnnotations", "with TextOrientation specified");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            model.Annotations.Add(new LineAnnotation() { Slope = 0.1, Intercept = 1, Text = "Horizontal", TextOrientation = AnnotationTextOrientation.Horizontal, TextVerticalAlignment = VerticalTextAlign.Bottom });
+            model.Annotations.Add(new LineAnnotation() { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Vertical", TextOrientation = AnnotationTextOrientation.Vertical });
+            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Horizontal (x=4)", TextPadding = 8, TextOrientation = AnnotationTextOrientation.Horizontal });
+            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Vertical, X = 45, MaximumY = 10, Color = OxyColors.Green, Text = "Horizontal (x=45)", TextHorizontalAlignment = HorizontalTextAlign.Left, TextPadding = 8, TextOrientation = AnnotationTextOrientation.Horizontal });
+            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal", TextPosition = 0.5, TextOrientation = AnnotationTextOrientation.Horizontal });
             return model;
         }
 
