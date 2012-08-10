@@ -185,7 +185,7 @@ namespace OxyPlot
         /// The draw clipped polygon.
         /// </summary>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         /// <param name="points">
         /// The points.
@@ -388,7 +388,7 @@ namespace OxyPlot
         /// Draws the line segments.
         /// </summary>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         /// <param name="points">
         /// The points.

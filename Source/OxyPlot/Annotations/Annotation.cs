@@ -85,7 +85,7 @@ namespace OxyPlot
         /// The render.
         /// </summary>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         /// <param name="model">
         /// The model.
