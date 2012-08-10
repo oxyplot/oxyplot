@@ -696,7 +696,21 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets LegendPadding.
+        /// Gets or sets the legend column spacing.
+        /// </summary>
+        /// <value>The legend column spacing.</value>
+        public double LegendColumnSpacing
+        {
+            get { return (double)GetValue(LegendColumnSpacingProperty); }
+            set { SetValue(LegendColumnSpacingProperty, value); }
+        }
+
+        public static readonly DependencyProperty LegendColumnSpacingProperty =
+            DependencyProperty.Register("LegendColumnSpacing", typeof(double), typeof(Plot), new UIPropertyMetadata(8.0));
+
+
+        /// <summary>
+        ///   Gets or sets the legend padding.
         /// </summary>
         public double LegendPadding
         {
@@ -1223,6 +1237,7 @@ namespace OxyPlot.Wpf
                 m.LegendSymbolLength = this.LegendSymbolLength;
                 m.LegendSymbolMargin = this.LegendSymbolMargin;
                 m.LegendPadding = this.LegendPadding;
+                m.LegendColumnSpacing = this.LegendColumnSpacing;
                 m.LegendItemSpacing = this.LegendItemSpacing;
                 m.LegendMargin = this.LegendMargin;
 

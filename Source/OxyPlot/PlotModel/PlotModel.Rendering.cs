@@ -31,10 +31,10 @@ namespace OxyPlot
             }
 
             this.ActualPlotMargins = this.PlotMargins;
+            this.EnsureLegendProperties();
 
             while (true)
             {
-                this.EnsureLegendProperties();
                 this.UpdatePlotArea(rc);
                 this.UpdateAxisTransforms();
                 this.UpdateIntervals();
@@ -76,7 +76,7 @@ namespace OxyPlot
         #region Methods
 
         /// <summary>
-        /// Calculates the max size of the specified axes.
+        /// Calculates the maximum size of the specified axes.
         /// </summary>
         /// <param name="rc">
         /// The render context.
@@ -85,7 +85,7 @@ namespace OxyPlot
         /// The axes of position tier.
         /// </param>
         /// <returns>
-        /// The max size.
+        /// The maximum size.
         /// </returns>
         private static double MaxSizeOfPositionTier(IRenderContext rc, IEnumerable<Axis> axesOfPositionTier)
         {
@@ -177,30 +177,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Makes the legend properties safe.
-        ///   If Legend is positioned left or right, force it to vertical orientation
-        /// </summary>
-        private void EnsureLegendProperties()
-        {
-            switch (this.LegendPosition)
-            {
-                case LegendPosition.LeftTop:
-                case LegendPosition.LeftMiddle:
-                case LegendPosition.LeftBottom:
-                case LegendPosition.RightTop:
-                case LegendPosition.RightMiddle:
-                case LegendPosition.RightBottom:
-                    if (this.LegendOrientation == LegendOrientation.Horizontal)
-                    {
-                        this.LegendOrientation = LegendOrientation.Vertical;
-                    }
-
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Measures the size of the Title and Subtitle.
+        /// Measures the size of the title and subtitle.
         /// </summary>
         /// <param name="rc">
         /// The rendering context.
@@ -219,10 +196,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The render annotations.
+        /// Renders the annotations.
         /// </summary>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         /// <param name="layer">
         /// The layer.
@@ -239,7 +216,7 @@ namespace OxyPlot
         /// Renders the axes.
         /// </summary>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         /// <param name="layer">
         /// The layer.
@@ -259,7 +236,7 @@ namespace OxyPlot
         /// Renders the series backgrounds.
         /// </summary>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         private void RenderBackgrounds(IRenderContext rc)
         {
@@ -291,12 +268,14 @@ namespace OxyPlot
         /// <summary>
         /// Renders the border around the plot area.
         /// </summary>
+        /// <remarks>
+        /// The border will only by rendered if there are axes in the plot.
+        /// </remarks>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         private void RenderBox(IRenderContext rc)
         {
-            // Render the border around the plot (only if there are axes)
             // The border is rendered by DrawBox to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
             if (this.Axes.Count > 0)
             {
@@ -308,7 +287,7 @@ namespace OxyPlot
         /// Renders the series.
         /// </summary>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         private void RenderSeries(IRenderContext rc)
         {
@@ -326,10 +305,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Renders the title.
+        /// Renders the title and subtitle.
         /// </summary>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         private void RenderTitle(IRenderContext rc)
         {
@@ -382,32 +361,46 @@ namespace OxyPlot
         /// </param>
         private void UpdatePlotArea(IRenderContext rc)
         {
-            var tmp = new OxyRect(
+            var plotArea = new OxyRect(
                 this.Padding.Left,
                 this.Padding.Top,
                 rc.Width - this.Padding.Left - this.Padding.Right,
                 rc.Height - this.Padding.Top - this.Padding.Bottom);
 
-            OxySize titleSize = this.MeasureTitles(rc);
+            var titleSize = this.MeasureTitles(rc);
 
             if (titleSize.Height > 0)
             {
                 double titleHeight = titleSize.Height + this.TitlePadding;
-                tmp.Height -= titleHeight;
-                tmp.Top += titleHeight;
+                plotArea.Height -= titleHeight;
+                plotArea.Top += titleHeight;
             }
 
-            tmp.Top += this.ActualPlotMargins.Top;
-            tmp.Height -= this.ActualPlotMargins.Top;
+            plotArea.Top += this.ActualPlotMargins.Top;
+            plotArea.Height -= this.ActualPlotMargins.Top;
 
-            tmp.Height -= this.ActualPlotMargins.Bottom;
+            plotArea.Height -= this.ActualPlotMargins.Bottom;
 
-            tmp.Left += this.ActualPlotMargins.Left;
-            tmp.Width -= this.ActualPlotMargins.Left;
+            plotArea.Left += this.ActualPlotMargins.Left;
+            plotArea.Width -= this.ActualPlotMargins.Left;
 
-            tmp.Width -= this.ActualPlotMargins.Right;
+            plotArea.Width -= this.ActualPlotMargins.Right;
 
-            OxySize legendSize = this.RenderLegends(rc, tmp, true);
+            // Find the available size for the legend box
+            double availableLegendWidth = plotArea.Width;
+            double availableLegendHeight = plotArea.Height;
+            if (this.LegendPlacement == LegendPlacement.Inside)
+            {
+                availableLegendWidth -= this.LegendMargin * 2;
+                availableLegendHeight -= this.LegendMargin * 2;
+            }
+            if (availableLegendWidth < 0) { availableLegendWidth = 0; }
+            if (availableLegendHeight < 0) { availableLegendHeight = 0; }
+
+            // Calculate the size of the legend box
+            var legendSize = this.MeasureLegends(rc, new OxySize(availableLegendWidth, availableLegendHeight));
+
+            // Adjust the plot area after the size of the legend box has been calculated
             if (this.IsLegendVisible && this.LegendPlacement == LegendPlacement.Outside)
             {
                 switch (this.LegendPosition)
@@ -415,44 +408,45 @@ namespace OxyPlot
                     case LegendPosition.LeftTop:
                     case LegendPosition.LeftMiddle:
                     case LegendPosition.LeftBottom:
-                        tmp.Left += legendSize.Width + this.LegendMargin;
-                        tmp.Width -= legendSize.Width + this.LegendMargin;
+                        plotArea.Left += legendSize.Width + this.LegendMargin;
+                        plotArea.Width -= legendSize.Width + this.LegendMargin;
                         break;
                     case LegendPosition.RightTop:
                     case LegendPosition.RightMiddle:
                     case LegendPosition.RightBottom:
-                        tmp.Width -= legendSize.Width + this.LegendMargin;
+                        plotArea.Width -= legendSize.Width + this.LegendMargin;
                         break;
                     case LegendPosition.TopLeft:
                     case LegendPosition.TopCenter:
                     case LegendPosition.TopRight:
-                        tmp.Top += legendSize.Height + this.LegendMargin;
-                        tmp.Height -= legendSize.Height + this.LegendMargin;
+                        plotArea.Top += legendSize.Height + this.LegendMargin;
+                        plotArea.Height -= legendSize.Height + this.LegendMargin;
                         break;
                     case LegendPosition.BottomLeft:
                     case LegendPosition.BottomCenter:
                     case LegendPosition.BottomRight:
-                        tmp.Height -= legendSize.Height + this.LegendMargin;
+                        plotArea.Height -= legendSize.Height + this.LegendMargin;
                         break;
                 }
             }
 
-            if (tmp.Height < 0)
+            // Ensure the plot area is valid
+            if (plotArea.Height < 0)
             {
-                tmp.Bottom = tmp.Top + 1;
+                plotArea.Bottom = plotArea.Top + 1;
             }
 
-            if (tmp.Width < 0)
+            if (plotArea.Width < 0)
             {
-                tmp.Right = tmp.Left + 1;
+                plotArea.Right = plotArea.Left + 1;
             }
 
-            this.PlotArea = tmp;
+            this.PlotArea = plotArea;
             this.PlotAndAxisArea = new OxyRect(
-                tmp.Left - this.ActualPlotMargins.Left,
-                tmp.Top - this.ActualPlotMargins.Top,
-                tmp.Width + this.ActualPlotMargins.Left + this.ActualPlotMargins.Right,
-                tmp.Height + this.ActualPlotMargins.Top + this.ActualPlotMargins.Bottom);
+                plotArea.Left - this.ActualPlotMargins.Left,
+                plotArea.Top - this.ActualPlotMargins.Top,
+                plotArea.Width + this.ActualPlotMargins.Left + this.ActualPlotMargins.Right,
+                plotArea.Height + this.ActualPlotMargins.Top + this.ActualPlotMargins.Bottom);
             this.TitleArea = new OxyRect(this.PlotArea.Left, this.Padding.Top, this.PlotArea.Width, titleSize.Height + (this.TitlePadding * 2));
             this.LegendArea = this.GetLegendRectangle(legendSize);
         }

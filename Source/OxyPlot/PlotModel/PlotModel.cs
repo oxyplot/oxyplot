@@ -237,6 +237,7 @@ namespace OxyPlot
             this.LegendSymbolLength = 16;
             this.LegendSymbolMargin = 4;
             this.LegendPadding = 8;
+            this.LegendColumnSpacing = 8;
             this.LegendItemSpacing = 24;
             this.LegendMargin = 8;
 
