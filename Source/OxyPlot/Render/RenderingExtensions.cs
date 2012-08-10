@@ -41,7 +41,7 @@ namespace OxyPlot
         ////          |
         ////    |-----|-----|
         ////      M3    M3
-       
+
         #region Constants and Fields
 
         /// <summary>
@@ -95,16 +95,16 @@ namespace OxyPlot
             int n = points.Count;
             if (n > 0)
             {
-                var s0 = points[0];
-                var last = points[0];
 
                 if (n == 1)
                 {
-                    pts.Add(s0);
+                    pts.Add(points[0]);
                 }
 
+                var last = points[0];
                 for (int i = 1; i < n; i++)
                 {
+                    var s0 = points[i - 1];
                     var s1 = points[i];
 
                     // Clipped version of this and next point.
@@ -164,21 +164,60 @@ namespace OxyPlot
                 // Check if the line contains a single point
                 if (pts.Count == 1)
                 {
-                    // Add a second point to make sure the line is being rendered
+                    // Add a second point to make sure the line is being rendered as a small dot
                     pts.Add(new ScreenPoint(pts[0].X + 1, pts[0].Y));
                     pts[0] = new ScreenPoint(pts[0].X - 1, pts[0].Y);
                 }
 
                 if (pts.Count > 0)
                 {
-                    rc.DrawLine(
-                        pts, stroke, strokeThickness, LineStyleHelper.GetDashArray(lineStyle), lineJoin, aliased);
+                    rc.DrawLine(pts, stroke, strokeThickness, LineStyleHelper.GetDashArray(lineStyle), lineJoin, aliased);
+
+                    // Execute the 'callback'.
                     if (pointsRendered != null)
                     {
                         pointsRendered(pts);
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Draws the clipped line segments.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="points">The points.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="lineStyle">The line style.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
+        public static void DrawClippedLineSegments(
+            this IRenderContext rc,
+            IList<ScreenPoint> points,
+            OxyRect clippingRectangle,
+            OxyColor stroke,
+            double strokeThickness,
+            LineStyle lineStyle,
+            OxyPenLineJoin lineJoin,
+            bool aliased)
+        {
+            var clipping = new CohenSutherlandClipping(clippingRectangle.Left, clippingRectangle.Right, clippingRectangle.Top, clippingRectangle.Bottom);
+
+            var clippedPoints = new List<ScreenPoint>(points.Count);
+            for (int i = 0; i + 1 < points.Count; i += 2)
+            {
+                var s0 = points[i];
+                var s1 = points[i + 1];
+                if (clipping.ClipLine(ref s0, ref s1))
+                {
+                    clippedPoints.Add(s0);
+                    clippedPoints.Add(s1);
+                }
+            }
+
+            rc.DrawLineSegments(clippedPoints, stroke, strokeThickness, LineStyleHelper.GetDashArray(lineStyle), lineJoin, aliased);
         }
 
         /// <summary>
@@ -327,7 +366,7 @@ namespace OxyPlot
             this IRenderContext rc,
             OxyRect clippingRectangle,
             ScreenPoint p,
-            string text, 
+            string text,
             OxyColor fill,
             string fontFamily = null,
             double fontSize = 10,
