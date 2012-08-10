@@ -68,7 +68,7 @@ namespace OxyPlot
         ///   Gets or sets the points.
         /// </summary>
         /// <value> The points. </value>
-        public IEnumerable<DataPoint> Points { get; set; }
+        public IList<DataPoint> Points { get; set; }
 
         /// <summary>
         ///   Gets or sets the stroke thickness.
