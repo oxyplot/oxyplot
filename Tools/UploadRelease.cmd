@@ -1,0 +1,1 @@
+CodeplexReleaseUploader.exe /UserName=%CODEPLEX_USERNAME% /Password=%CODEPLEX_PASSWORD% /Project=oxyplot "/Release=OxyPlot 2012" "/Description=Release assemblies and examples." "/Upload=..\Output\OxyPlot-%1.zip,OxyPlot-%1.zip" > UploadRelease.log
