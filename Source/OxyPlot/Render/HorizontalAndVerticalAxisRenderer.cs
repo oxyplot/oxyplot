@@ -21,7 +21,7 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="HorizontalAndVerticalAxisRenderer"/> class.
         /// </summary>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         /// <param name="plot">
         /// The plot.

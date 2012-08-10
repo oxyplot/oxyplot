@@ -83,7 +83,7 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="AxisRendererBase"/> class.
         /// </summary>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         /// <param name="plot">
         /// The plot.

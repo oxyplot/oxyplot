@@ -129,7 +129,7 @@ namespace OxyPlot
         /// Draws the label.
         /// </summary>
         /// <param name="rc">
-        /// The rc. 
+        /// The render context. 
         /// </param>
         /// <param name="clippingRect">
         /// The clipping rect. 

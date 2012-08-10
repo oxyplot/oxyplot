@@ -63,7 +63,7 @@ namespace OxyPlot
         ///   Both: A^{2}_{i,j}
         /// </example>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         /// <param name="pt">
         /// The pt.
@@ -160,7 +160,7 @@ namespace OxyPlot
         /// The measure math text.
         /// </summary>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         /// <param name="text">
         /// The text.
@@ -196,7 +196,7 @@ namespace OxyPlot
         /// The internal draw math text.
         /// </summary>
         /// <param name="rc">
-        /// The rc.
+        /// The render context.
         /// </param>
         /// <param name="x">
         /// The x.
