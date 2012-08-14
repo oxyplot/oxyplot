@@ -41,6 +41,7 @@ namespace ExampleLibrary
             this.Title = title;
             this.Method = method;
         }
+
         public override string ToString()
         {
             return Title;

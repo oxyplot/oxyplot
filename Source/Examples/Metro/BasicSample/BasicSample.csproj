@@ -101,13 +101,13 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\OxyPlot.Metro\OxyPlot.Metro.csproj">
+    <ProjectReference Include="..\..\..\OxyPlot.Metro\OxyPlot.Metro.csproj">
       <Project>{2fa3c4d5-1b43-4191-863c-f940daa6a1ee}</Project>
       <Name>OxyPlot.Metro</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OxyPlot\OxyPlotM.csproj">
-      <Project>{442b7161-a60a-473b-94e5-073559ecf851}</Project>
-      <Name>OxyPlotM</Name>
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlotPCL.csproj">
+      <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
+      <Name>OxyPlotPCL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

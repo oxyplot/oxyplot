@@ -8,7 +8,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:oxy="using:OxyPlot.Metro"  
     mc:Ignorable="d">
-
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <oxy:Plot Model="{Binding PlotModel}"/>    
     </Grid>
