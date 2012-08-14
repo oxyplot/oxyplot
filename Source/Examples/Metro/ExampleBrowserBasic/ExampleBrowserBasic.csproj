@@ -4,15 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8ABEDCE8-4FE5-4AA6-B950-FC1F463C67D8}</ProjectGuid>
+    <ProjectGuid>{F18CD317-7774-4AFF-8866-E5B42BF71D1E}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ExampleBrowser</RootNamespace>
-    <AssemblyName>ExampleBrowser</AssemblyName>
+    <RootNamespace>ExampleBrowserBasic</RootNamespace>
+    <AssemblyName>ExampleBrowserBasic</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>ExampleBrowser_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>ExampleBrowserBasic_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -102,48 +102,39 @@
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <ProjectReference Include="..\..\..\OxyPlot.Metro\OxyPlot.Metro.csproj">
-      <Project>{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}</Project>
+      <Project>{2fa3c4d5-1b43-4191-863c-f940daa6a1ee}</Project>
       <Name>OxyPlot.Metro</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlotPCL.csproj">
       <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
       <Name>OxyPlotPCL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ExampleLibrary\ExampleLibraryPCL.csproj">
+      <Project>{facb89e5-53a5-4748-9f5b-e0714ebb37b2}</Project>
+      <Name>ExampleLibraryPCL</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ItemsPage.xaml.cs">
-      <DependentUpon>ItemsPage.xaml</DependentUpon>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SplitPage.xaml.cs">
-      <DependentUpon>SplitPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="MainPageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataModel\SampleDataSource.cs" />
-    <Compile Include="Common\BindableBase.cs" />
-    <Compile Include="Common\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Common\BooleanNegationConverter.cs" />
-    <Compile Include="Common\LayoutAwarePage.cs" />
-    <Compile Include="Common\RichTextColumns.cs" />
-    <Compile Include="Common\SuspensionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="Common\ReadMe.txt" />
-    <None Include="ExampleBrowser_TemporaryKey.pfx" />
+    <None Include="ExampleBrowserBasic_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Logo.png" />
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
-    <Content Include="Assets\LightGray.png" />
-    <Content Include="Assets\MediumGray.png" />
-    <Content Include="Assets\DarkGray.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -154,11 +145,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ItemsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SplitPage.xaml">
+    <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -134,7 +134,7 @@ namespace OxyPlot
         protected void Trace(string message)
         {
 #if !SILVERLIGHT && !MONO && !METRO
-            System.Diagnostics.Trace.WriteLine(string.Format("{0}: {1}", this.GetType().Name, message));
+            System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", this.GetType().Name, message));
 #endif
         }
         #endregion

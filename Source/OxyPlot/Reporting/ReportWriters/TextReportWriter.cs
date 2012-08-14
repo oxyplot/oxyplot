@@ -55,7 +55,7 @@ namespace OxyPlot.Reporting
             this.MaxLineLength = 60;
         }
 
-#if !METRO
+#if !METRO 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextReportWriter"/> class.

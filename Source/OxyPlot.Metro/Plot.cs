@@ -608,7 +608,7 @@ namespace OxyPlot.Metro
                     case VirtualKey.R:
                         {
                             var pkg = new DataPackage();
-                            pkg.SetText(this.ActualModel.CreateTextReport());
+                        // TODO    pkg.SetText(this.ActualModel.CreateTextReport());
                             Clipboard.SetContent(pkg);
                             break;
                         }

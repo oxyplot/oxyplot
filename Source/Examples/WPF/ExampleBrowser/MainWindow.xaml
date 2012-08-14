@@ -1,6 +1,9 @@
 ﻿<Window x:Class="ExampleBrowser.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" Title="OxyPlot.WPF Example Browser" Height="720" Width="1280">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        Title="OxyPlot.WPF Example Browser"
+        Height="720" Width="1280">
     <Window.Resources>
         <SolidColorBrush x:Key="HotItemBackground" Color="#e6f3f7"/>
         <SolidColorBrush x:Key="SelectedItemBorder" Color="#6dbdd1"/>
