@@ -694,7 +694,7 @@ namespace OxyPlot
         private static void AddMarkerGeometry(
             ScreenPoint p,
             MarkerType type,
-            IList<ScreenPoint> outline,
+            IEnumerable<ScreenPoint> outline,
             double size,
             IList<OxyRect> ellipses,
             IList<OxyRect> rects,
@@ -703,9 +703,11 @@ namespace OxyPlot
         {
             if (type == MarkerType.Custom)
             {
-                Debug.Assert(outline != null, "MarkerOutline should be set if MarkerType=Custom.");
-                List<ScreenPoint> poly =
-                    outline.Select(o => new ScreenPoint(p.X + (o.x * size), p.Y + (o.y * size))).ToList();
+                if (outline == null)
+                {
+                    throw new ArgumentNullException("outline", "The outline should be set when MarkerType is 'Custom'.");
+                }
+                var poly = outline.Select(o => new ScreenPoint(p.X + (o.x * size), p.Y + (o.y * size))).ToList();
                 polygons.Add(poly);
                 return;
             }
