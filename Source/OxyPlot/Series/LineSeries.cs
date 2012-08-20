@@ -174,6 +174,9 @@ namespace OxyPlot
         ///   Gets or sets the type of the marker.
         /// </summary>
         /// <value>The type of the marker.</value>
+        /// <remarks>
+        /// If MarkerType.Custom is used, the MarkerOutline property must be specified.
+        /// </remarks>
         public MarkerType MarkerType { get; set; }
 
         /// <summary>

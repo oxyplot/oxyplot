@@ -83,7 +83,7 @@ namespace OxyPlot
         /// Gets or sets the size of the median point.
         /// </summary>
         /// <remarks>
-        /// This proeprty is only used when MedianStyle = Dot.
+        /// This property is only used when MedianStyle = Dot.
         /// </remarks>
         public double MedianPointSize { get; set; }
 
@@ -115,11 +115,14 @@ namespace OxyPlot
         public string OutlierTrackerFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets the type of the outlier.
+        /// Gets or sets the type of the outliers.
         /// </summary>
         /// <value>
-        /// The type of the outlier. 
+        /// The type of the outliers. 
         /// </value>
+        /// <remarks>
+        /// MarkerType.Custom is currently not supported.
+        /// </remarks>
         public MarkerType OutlierType { get; set; }
 
         /// <summary>
