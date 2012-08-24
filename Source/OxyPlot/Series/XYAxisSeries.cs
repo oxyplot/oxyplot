@@ -254,6 +254,11 @@ namespace OxyPlot
         /// </returns>
         protected TrackerHitResult GetNearestInterpolatedPointInternal(IList<IDataPoint> points, ScreenPoint point)
         {
+            if (points == null)
+            {
+                return null;
+            }
+
             var spn = default(ScreenPoint);
             var dpn = default(DataPoint);
             double index = -1;

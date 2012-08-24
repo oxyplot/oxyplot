@@ -236,7 +236,7 @@ namespace OxyPlot
                 }
             }
 
-            if (interpolate && this.Smooth)
+            if (interpolate && this.Smooth && this.SmoothedPoints != null)
             {
                 return this.GetNearestInterpolatedPointInternal(this.SmoothedPoints, point);
             }
@@ -342,7 +342,7 @@ namespace OxyPlot
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
-            // todo: should use ActualLineStyle and ActualColor?
+            // todo: should use ActualLineStyle
             if (this.Color == null)
             {
                 // LineStyle will also be overridden
