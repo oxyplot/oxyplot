@@ -51,7 +51,7 @@ namespace OxyPlot
             this.WriteHeader(width, height);
         }
 
-#if !METRO
+#if !METRO 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SvgWriter"/> class.

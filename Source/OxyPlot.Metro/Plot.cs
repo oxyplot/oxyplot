@@ -33,17 +33,25 @@ namespace OxyPlot.Metro
         /// </summary>
         private const string PartGrid = "PART_Grid";
 
+        /// <summary>
+        ///   The model lock.
+        /// </summary>
+        private readonly object modelLock = new object();
 
         /// <summary>
         ///   The tracker definitions.
         /// </summary>
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
-
-
+        
         /// <summary>
         ///   The canvas.
         /// </summary>
         private Canvas canvas;
+
+        /// <summary>
+        ///   The current model.
+        /// </summary>
+        private PlotModel currentModel;
 
         /// <summary>
         ///   The current tracker.
@@ -608,7 +616,7 @@ namespace OxyPlot.Metro
                     case VirtualKey.R:
                         {
                             var pkg = new DataPackage();
-                            pkg.SetText(this.ActualModel.CreateTextReport());
+                        // TODO    pkg.SetText(this.ActualModel.CreateTextReport());
                             Clipboard.SetContent(pkg);
                             break;
                         }
@@ -996,6 +1004,26 @@ namespace OxyPlot.Metro
         /// </summary>
         private void OnModelChanged()
         {
+            lock (this.modelLock)
+            {
+                if (this.currentModel != null)
+                {
+                    this.currentModel.AttachPlotControl(null);
+                }
+
+                if (this.Model != null)
+                {
+                    if (this.Model.PlotControl != null)
+                    {
+                        throw new InvalidOperationException(
+                            "This PlotModel is already in use by some other plot control.");
+                    }
+
+                    this.Model.AttachPlotControl(this);
+                    this.currentModel = this.Model;
+                }
+            }
+
             this.InvalidatePlot();
         }
 
