@@ -105,9 +105,9 @@
       <Project>{2FA3C4D5-1B43-4191-863C-F940DAA6A1EE}</Project>
       <Name>OxyPlot.Metro</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot\OxyPlotM.csproj">
-      <Project>{442b7161-a60a-473b-94e5-073559ecf851}</Project>
-      <Name>OxyPlotM</Name>
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlotPCL.csproj">
+      <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
+      <Name>OxyPlotPCL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

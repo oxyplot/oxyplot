@@ -4,40 +4,43 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace ExampleLibrary
 {
     using System;
+    using OxyPlot;
 
     public static class Examples
     {
         public static List<ExampleInfo> GetList()
         {
             var list = new List<ExampleInfo>();
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (var type in typeof(Examples).GetTypeInfo().Assembly.DefinedTypes)
             {
-                var examplesAttributes = type.GetCustomAttributes(typeof(ExamplesAttribute), true);
+                var examplesAttributes = type.GetCustomAttributes(typeof(ExamplesAttribute), true).ToArray();
                 if (examplesAttributes.Length == 0)
                 {
                     continue;
                 }
 
                 var examplesAttribute = examplesAttributes[0] as ExamplesAttribute;
-                var types = new List<Type>();
+                var types = new List<TypeInfo>();
                 var baseType = type;
                 while (baseType != null)
                 {
-                    Console.WriteLine(baseType);
+                    System.Diagnostics.Debug.WriteLine(baseType);
                     types.Add(baseType);
-                    baseType = baseType.BaseType;
+                    baseType = baseType.BaseType == null ? null : baseType.BaseType.GetTypeInfo();                                        
                 }
+
                 foreach (var t in types)
                 {
-                    foreach (var method in t.GetMethods(BindingFlags.Public | BindingFlags.Static))
+                    foreach (var method in t.DeclaredMethods)//.GetMethods(BindingFlags.Public | BindingFlags.Static))
                     {
-                        var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true);
+                        var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true).ToArray();
                         if (exampleAttributes.Length == 0)
                         {
                             continue;
