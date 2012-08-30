@@ -1,0 +1,12 @@
+<Configuration>
+  <NamespaceFolders>
+    <SkipFolder>698CCD8E-ADCC-4565-8517-5EDD36F07155/d:Annotations</SkipFolder>
+    <SkipFolder>698CCD8E-ADCC-4565-8517-5EDD36F07155/d:Axes</SkipFolder>
+    <SkipFolder>698CCD8E-ADCC-4565-8517-5EDD36F07155/d:Converters</SkipFolder>
+    <SkipFolder>698CCD8E-ADCC-4565-8517-5EDD36F07155/d:Helpers</SkipFolder>
+    <SkipFolder>698CCD8E-ADCC-4565-8517-5EDD36F07155/d:RenderContexts</SkipFolder>
+    <SkipFolder>698CCD8E-ADCC-4565-8517-5EDD36F07155/d:Series</SkipFolder>
+    <SkipFolder>698CCD8E-ADCC-4565-8517-5EDD36F07155/d:Themes</SkipFolder>
+    <SkipFolder>698CCD8E-ADCC-4565-8517-5EDD36F07155/d:Tracker</SkipFolder>
+  </NamespaceFolders>
+</Configuration>
