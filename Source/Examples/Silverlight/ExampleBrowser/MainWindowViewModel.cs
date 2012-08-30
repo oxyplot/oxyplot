@@ -66,6 +66,14 @@ namespace ExampleBrowser
             }
         }
 
+        public string Version
+        {
+            get
+            {
+                return typeof(PlotModel).Assembly.FullName.Split(',')[1];
+            }
+        }
+
         public Brush PlotBackground
         {
             get
