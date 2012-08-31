@@ -825,7 +825,7 @@ namespace OxyPlot
 
             return r;
         }
-
+        
         /// <summary>
         /// Creates a text report for the plot.
         /// </summary>
@@ -845,6 +845,7 @@ namespace OxyPlot
                 return r.ReadToEnd();
             }
         }
+//#endif
 
         /// <summary>
         /// Refreshes the plot.
@@ -1121,6 +1122,7 @@ namespace OxyPlot
         {
             return SvgExporter.ExportToString(this, width, height, isDocument, textMeasurer);
         }
+//#endif
 
         /// <summary>
         /// Gets all elements of the plot model.
@@ -1272,7 +1274,7 @@ namespace OxyPlot
         protected void Trace(string message)
         {
 #if !SILVERLIGHT && !MONO && !METRO
-            System.Diagnostics.Trace.WriteLine(string.Format("{0}: {1}", this.GetType().Name, message));
+            System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", this.GetType().Name, message));
 #endif
         }
 
