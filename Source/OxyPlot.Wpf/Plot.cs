@@ -793,7 +793,7 @@ namespace OxyPlot.Wpf
                 switch (e.Key)
                 {
                     case Key.R:
-                        Clipboard.SetText(this.ActualModel.CreateTextReport());
+                    // TODO    Clipboard.SetText(this.ActualModel.CreateTextReport());
                         e.Handled = true;
                         break;
                     case Key.C:

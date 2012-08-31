@@ -98,7 +98,7 @@ namespace OxyPlot.Reporting
 
             // todo
 #endif
-#if !SILVERLIGHT && !METRO
+#if !SILVERLIGHT && !METRO 
             foreach (PropertyDescriptor pd in TypeDescriptor.GetProperties(type))
             {
                 if (!pd.IsBrowsable)
