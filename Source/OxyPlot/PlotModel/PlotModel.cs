@@ -845,7 +845,6 @@ namespace OxyPlot
                 return r.ReadToEnd();
             }
         }
-//#endif
 
         /// <summary>
         /// Refreshes the plot.
@@ -1122,7 +1121,6 @@ namespace OxyPlot
         {
             return SvgExporter.ExportToString(this, width, height, isDocument, textMeasurer);
         }
-//#endif
 
         /// <summary>
         /// Gets all elements of the plot model.
