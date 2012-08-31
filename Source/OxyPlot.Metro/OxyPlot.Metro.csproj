@@ -26,10 +26,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Output\</OutputPath>
     <DefineConstants>TRACE;METRO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Output\OxyPlot.Metro.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Converters\OxyColorConverter.cs" />

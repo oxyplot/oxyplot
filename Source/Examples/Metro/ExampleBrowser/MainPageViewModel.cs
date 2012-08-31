@@ -10,8 +10,10 @@ using System.Linq;
 using ExampleLibrary;
 using OxyPlot;
 
-namespace ExampleBrowserBasic
+namespace ExampleBrowser
 {
+    using System.Reflection;
+
     using OxyPlot.Metro;
     using Windows.UI.Xaml.Data;
     using Windows.UI.Xaml.Media;
@@ -60,6 +62,14 @@ namespace ExampleBrowserBasic
             get
             {
                 return selectedExample != null && selectedExample.PlotModel.Background != null ? selectedExample.PlotModel.Background.ToBrush() : new SolidColorBrush() { Opacity = 0 }; // Brushes.Transparent;
+            }
+        }
+
+        public string Version
+        {
+            get
+            {
+                return typeof(PlotModel).GetTypeInfo().Assembly.FullName.Split(',')[1];
             }
         }
 
