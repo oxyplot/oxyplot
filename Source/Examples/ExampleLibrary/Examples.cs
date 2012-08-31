@@ -18,7 +18,13 @@ namespace ExampleLibrary
         public static List<ExampleInfo> GetList()
         {
             var list = new List<ExampleInfo>();
-            foreach (var type in typeof(Examples).GetTypeInfo().Assembly.DefinedTypes)
+#if METRO
+            var assemblyTypes = typeof(Examples).GetTypeInfo().Assembly.DefinedTypes;
+#else
+            var assemblyTypes = typeof(Examples).Assembly.GetTypes();
+#endif
+
+            foreach (var type in assemblyTypes)
             {
                 var examplesAttributes = type.GetCustomAttributes(typeof(ExamplesAttribute), true).ToArray();
                 if (examplesAttributes.Length == 0)
@@ -27,20 +33,35 @@ namespace ExampleLibrary
                 }
 
                 var examplesAttribute = examplesAttributes[0] as ExamplesAttribute;
+#if METRO
                 var types = new List<TypeInfo>();
+#else
+                var types = new List<Type>();
+#endif
                 var baseType = type;
                 while (baseType != null)
                 {
-                    System.Diagnostics.Debug.WriteLine(baseType);
                     types.Add(baseType);
-                    baseType = baseType.BaseType == null ? null : baseType.BaseType.GetTypeInfo();                                        
+#if METRO
+                    baseType = baseType.BaseType == null ? null : baseType.BaseType.GetTypeInfo();
+#else
+                    baseType = baseType.BaseType;
+#endif
                 }
 
                 foreach (var t in types)
                 {
+#if METRO
                     foreach (var method in t.DeclaredMethods)//.GetMethods(BindingFlags.Public | BindingFlags.Static))
+#else
+                    foreach (var method in t.GetMethods(BindingFlags.Public | BindingFlags.Static))                   
+#endif
                     {
+#if METRO
                         var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true).ToArray();
+#else
+                        var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true);
+#endif
                         if (exampleAttributes.Length == 0)
                         {
                             continue;
