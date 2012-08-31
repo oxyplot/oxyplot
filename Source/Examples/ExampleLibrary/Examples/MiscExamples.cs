@@ -173,8 +173,14 @@ namespace ExampleLibrary
             });
 
             // Read the train schedule from a .csv resource
+#if METRO
             var resources = typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceNames();
             using (var stream = typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream(resources[0]))
+#else
+            var resources = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resources[0]))
+#endif
+
             using (var reader = new StreamReader(stream))
             {
                 string header = reader.ReadLine();
