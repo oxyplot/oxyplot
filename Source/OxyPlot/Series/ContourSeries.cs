@@ -96,6 +96,16 @@ namespace OxyPlot
         public double[] ContourLevels { get; set; }
 
         /// <summary>
+        ///   Gets or sets the contour colors.
+        /// </summary>
+        /// <value>The contour colors.</value>
+        /// <remarks>
+        /// These colors will override the Color of the series.
+        /// If there are less colors than the number of contour levels, the colors will cycle.
+        /// </remarks>
+        public OxyColor[] ContourColors { get; set; }
+
+        /// <summary>
         ///   Gets or sets the data.
         /// </summary>
         /// <value>The data.</value>
@@ -157,13 +167,14 @@ namespace OxyPlot
                 return;
             }
 
+            double[] actualContourLevels = this.ContourLevels;
+
             this.segments = new List<ContourSegment>();
             Conrec.RendererDelegate renderer =
                 (startX, startY, endX, endY, contourLevel) =>
-                this.segments.Add(
-                    new ContourSegment(new DataPoint(startX, startY), new DataPoint(endX, endY), contourLevel));
-
-            double[] actualContourLevels = this.ContourLevels;
+                {
+                    this.segments.Add(new ContourSegment(new DataPoint(startX, startY), new DataPoint(endX, endY), contourLevel));
+                };
 
             if (actualContourLevels == null)
             {
@@ -194,6 +205,21 @@ namespace OxyPlot
             Conrec.Contour(this.Data, this.ColumnCoordinates, this.RowCoordinates, actualContourLevels, renderer);
 
             this.JoinContourSegments();
+
+            if (ContourColors != null && ContourColors.Length > 0)
+            {
+                foreach (var c in contours)
+                {
+                    // get the index of the contour's level
+                    var index = IndexOf(actualContourLevels, c.ContourLevel);
+                    if (index >= 0)
+                    {
+                        // clamp the index to the range of the ContourColors array
+                        index = index % ContourColors.Length;
+                        c.Color = this.ContourColors[index];
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -292,7 +318,7 @@ namespace OxyPlot
                         pts,
                         clippingRect,
                         4,
-                        this.GetSelectableColor(this.ActualColor),
+                        this.GetSelectableColor(contour.Color ?? this.ActualColor),
                         this.StrokeThickness,
                         this.LineStyle,
                         OxyPenLineJoin.Miter,
@@ -618,6 +644,22 @@ namespace OxyPlot
             }
         }
 
+        private static int IndexOf(IList<double> values, double value)
+        {
+            double min = double.MaxValue;
+            int index = -1;
+            for (int i = 0; i < values.Count; i++)
+            {
+                var d = Math.Abs(values[i] - value);
+                if (d < min)
+                {
+                    min = d;
+                    index = i;
+                }
+            }
+            return index;
+        }
+
         #endregion
 
         /// <summary>
@@ -632,6 +674,11 @@ namespace OxyPlot
             /// </summary>
             /// <value>The contour level.</value>
             internal readonly double ContourLevel;
+
+            /// <summary>
+            ///   Gets or sets the color of the contour.
+            /// </summary>
+            public OxyColor Color { get; set; }
 
             /// <summary>
             ///   Gets or sets the points.
