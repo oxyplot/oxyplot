@@ -12,11 +12,12 @@
     <RootNamespace>OxyPlot.Silverlight</RootNamespace>
     <AssemblyName>OxyPlot.Silverlight</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <!-- This property group is only here to support building this project using the 
        MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
@@ -34,17 +35,19 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Output\</OutputPath>
+    <OutputPath>..\..\Output\SL5\</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\OxyPlot.Silverlight.XML</DocumentationFile>
+    <DocumentationFile>..\..\Output\SL5\OxyPlot.Silverlight.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -76,13 +79,13 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlotSL.csproj">
-      <Project>{EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA}</Project>
-      <Name>OxyPlotSL</Name>
-    </ProjectReference>
+    <None Include="OxyPlot.Silverlight.snk" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="OxyPlot.Silverlight.snk" />
+    <ProjectReference Include="..\OxyPlot\OxyPlot_SL5.csproj">
+      <Project>{ef3baa47-86e8-4256-aea8-458e3ffcbbaa}</Project>
+      <Name>OxyPlot_SL5</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

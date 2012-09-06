@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OxyPlot.Tests</RootNamespace>
     <AssemblyName>OxyPlot.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.5.8.10295, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -64,16 +67,6 @@
     <Compile Include="Svg\SvgWriterTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj">
-      <Project>{A941B658-1237-482C-B0C7-378242D27647}</Project>
-      <Name>ExampleLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
-      <Project>{87F519B8-5A2F-48C6-AD53-C5F13A82EA6B}</Project>
-      <Name>OxyPlot</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="..\..\Schemas\svg\svg.xsd">
       <Link>Schemas\svg.xsd</Link>
       <SubType>Designer</SubType>
@@ -93,6 +86,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Series\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj">
+      <Project>{a941b658-1237-482c-b0c7-378242d27647}</Project>
+      <Name>ExampleLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
+      <Project>{87f519b8-5a2f-48c6-ad53-c5f13a82ea6b}</Project>
+      <Name>OxyPlot</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

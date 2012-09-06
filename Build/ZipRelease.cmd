@@ -1,4 +1,4 @@
-set dir=..\Output\Examples
+set dir=..\Output\NET45\Examples
 del /S /Q %dir%\*.pdb 
 del /S /Q %dir%\*.vshost.exe 
 del /S /Q %dir%\*.manifest 

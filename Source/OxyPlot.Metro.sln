@@ -5,9 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Metro", "OxyPlot.Me
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{47196F47-5523-4566-9EE3-E6F7A25FA5A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlotPCL", "OxyPlot\OxyPlotPCL.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot_PCL", "OxyPlot\OxyPlot_PCL.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibraryPCL", "Examples\ExampleLibrary\ExampleLibraryPCL.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary_PCL", "Examples\ExampleLibrary\ExampleLibrary_PCL.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Metro", "Metro", "{AFE82266-86FE-4C2D-8116-1538A7D4CB2D}"
 EndProject

@@ -12,7 +12,7 @@
     <RootNamespace>ExportDemo</RootNamespace>
     <AssemblyName>ExportDemo</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <SilverlightApplication>true</SilverlightApplication>
     <SupportedCultures>
@@ -31,6 +31,7 @@
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <LinkedServerProject>
     </LinkedServerProject>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <!-- This property group is only here to support building this project using the 
        MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
@@ -48,16 +49,18 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\Output\Examples\Silverlight\ExportDemo\</OutputPath>
+    <OutputPath>..\..\..\..\Output\SL5\Examples\Silverlight\ExportDemo\</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -91,17 +94,17 @@
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\OxyPlot.Pdf\OxyPlotSL.Pdf.csproj">
-      <Project>{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}</Project>
-      <Name>OxyPlotSL.Pdf</Name>
+    <ProjectReference Include="..\..\..\OxyPlot.Pdf\OxyPlot.Pdf_SL5.csproj">
+      <Project>{c84caeba-3326-41c8-81da-b1eb680d7fa1}</Project>
+      <Name>OxyPlot.Pdf_SL5</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot.Silverlight\OxyPlot.Silverlight.csproj">
       <Project>{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}</Project>
       <Name>OxyPlot.Silverlight</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot\OxyPlotSL.csproj">
-      <Project>{EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA}</Project>
-      <Name>OxyPlotSL</Name>
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot_SL5.csproj">
+      <Project>{ef3baa47-86e8-4256-aea8-458e3ffcbbaa}</Project>
+      <Name>OxyPlot_SL5</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
