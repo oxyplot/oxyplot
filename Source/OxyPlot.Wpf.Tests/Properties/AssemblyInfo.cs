@@ -5,8 +5,9 @@
 //-----------------------------------------------------------------------
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
+using NUnit.Framework;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -24,6 +25,9 @@ using System.Runtime.InteropServices;
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
+
+// http://www.nunit.org/index.php?p=requiresSTA&r=2.5
+[assembly: RequiresSTA]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("f321f6bd-7d3c-4659-a748-da21b9c67a01")]
