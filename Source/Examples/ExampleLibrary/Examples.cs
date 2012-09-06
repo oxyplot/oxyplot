@@ -18,7 +18,7 @@ namespace ExampleLibrary
         public static List<ExampleInfo> GetList()
         {
             var list = new List<ExampleInfo>();
-#if METRO
+#if PCL
             var assemblyTypes = typeof(Examples).GetTypeInfo().Assembly.DefinedTypes;
 #else
             var assemblyTypes = typeof(Examples).Assembly.GetTypes();
@@ -33,7 +33,7 @@ namespace ExampleLibrary
                 }
 
                 var examplesAttribute = examplesAttributes[0] as ExamplesAttribute;
-#if METRO
+#if PCL
                 var types = new List<TypeInfo>();
 #else
                 var types = new List<Type>();
@@ -42,7 +42,7 @@ namespace ExampleLibrary
                 while (baseType != null)
                 {
                     types.Add(baseType);
-#if METRO
+#if PCL
                     baseType = baseType.BaseType == null ? null : baseType.BaseType.GetTypeInfo();
 #else
                     baseType = baseType.BaseType;
@@ -51,13 +51,13 @@ namespace ExampleLibrary
 
                 foreach (var t in types)
                 {
-#if METRO
+#if PCL
                     foreach (var method in t.DeclaredMethods)//.GetMethods(BindingFlags.Public | BindingFlags.Static))
 #else
                     foreach (var method in t.GetMethods(BindingFlags.Public | BindingFlags.Static))                   
 #endif
                     {
-#if METRO
+#if PCL
                         var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true).ToArray();
 #else
                         var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true);
