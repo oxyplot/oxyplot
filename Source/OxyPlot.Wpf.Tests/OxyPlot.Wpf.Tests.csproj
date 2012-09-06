@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OxyPlot.Wpf.Tests</RootNamespace>
     <AssemblyName>OxyPlot.Wpf.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.5.8.10295, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -58,6 +61,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj">
+      <Project>{a941b658-1237-482c-b0c7-378242d27647}</Project>
+      <Name>ExampleLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OxyPlot.Tests\OxyPlot.Tests.csproj">
+      <Project>{e6218b88-69f5-4e3f-9abc-93ab82fd77ad}</Project>
+      <Name>OxyPlot.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
+      <Project>{698ccd8e-adcc-4565-8517-5edd36f07155}</Project>
+      <Name>OxyPlot.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
+      <Project>{87f519b8-5a2f-48c6-ad53-c5f13a82ea6b}</Project>
+      <Name>OxyPlot</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

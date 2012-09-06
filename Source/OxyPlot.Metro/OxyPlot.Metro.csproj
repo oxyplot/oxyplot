@@ -26,11 +26,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Output\</OutputPath>
+    <OutputPath>..\..\Output\WINRT\</OutputPath>
     <DefineConstants>TRACE;METRO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\OxyPlot.Metro.XML</DocumentationFile>
+    <DocumentationFile>..\..\Output\WINRT\OxyPlot.Metro.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Converters\OxyColorConverter.cs" />
@@ -51,9 +51,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlotPCL.csproj">
+    <ProjectReference Include="..\OxyPlot\OxyPlot_PCL.csproj">
       <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
-      <Name>OxyPlotPCL</Name>
+      <Name>OxyPlot_PCL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v11.0\Microsoft.Windows.UI.Xaml.CSharp.targets" />

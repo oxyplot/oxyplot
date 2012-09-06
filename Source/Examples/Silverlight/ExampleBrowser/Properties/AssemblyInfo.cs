@@ -5,7 +5,6 @@
 //-----------------------------------------------------------------------
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -16,7 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("OxyPlot")]
 [assembly: AssemblyProduct("ExampleBrowser")]
-[assembly: AssemblyCopyright("Copyright (C) OxyPlot 2011.")]
+[assembly: AssemblyCopyright("Copyright (C) OxyPlot 2012.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

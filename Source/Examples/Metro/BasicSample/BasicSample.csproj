@@ -89,7 +89,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\..\..\..\Output\Examples\Metro\BasicSample\</OutputPath>
+    <OutputPath>..\..\..\..\Output\WINRT\Examples\Metro\BasicSample\</OutputPath>
     <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
@@ -105,9 +105,9 @@
       <Project>{2fa3c4d5-1b43-4191-863c-f940daa6a1ee}</Project>
       <Name>OxyPlot.Metro</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot\OxyPlotPCL.csproj">
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot_PCL.csproj">
       <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
-      <Name>OxyPlotPCL</Name>
+      <Name>OxyPlot_PCL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

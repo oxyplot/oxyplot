@@ -4,29 +4,29 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
 namespace OxyPlot
 {
+    using System;
+    using System.Reflection;
+
     public static class MetroHelper
     {
         public static PropertyInfo GetProperty(this Type type, string name)
         {
             return type.GetTypeInfo().GetDeclaredProperty(name);
         }
+        
         public static FieldInfo[] GetFields(this Type type, BindingFlags flags) {
+            // return type.GetTypeInfo().GetFields();
             return null;
         }
+
         public static string ToShortDateString(this DateTime dt)
         {
             return dt.ToString("yyyy-MM-dd");
-        }              
-        
+        }                      
     }
+
     public enum BindingFlags { Public, Static }
 
     public static class Path {
@@ -34,6 +34,7 @@ namespace OxyPlot
             return path;
         }
     }
+    
     public static class Assembly
     {
         public static AssemblyName GetExecutingAssembly()
@@ -41,6 +42,7 @@ namespace OxyPlot
             return new AssemblyName();
         }
     }
+
     public class TypeDescriptor
     {
         public static PropertyInfo[] GetProperties(Type type)
