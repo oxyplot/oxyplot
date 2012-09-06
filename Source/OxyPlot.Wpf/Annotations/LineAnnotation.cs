@@ -358,6 +358,9 @@ namespace OxyPlot.Wpf
             set { SetValue(LineJoinProperty, value); }
         }
 
+        /// <summary>
+        ///   The line join property.
+        /// </summary>
         public static readonly DependencyProperty LineJoinProperty =
             DependencyProperty.Register("LineJoin", typeof(OxyPenLineJoin), typeof(LineAnnotation), new UIPropertyMetadata(OxyPenLineJoin.Miter));
 
@@ -371,6 +374,9 @@ namespace OxyPlot.Wpf
             set { SetValue(ClipByXAxisProperty, value); }
         }
 
+        /// <summary>
+        ///   The ClipByXAxis property.
+        /// </summary>
         public static readonly DependencyProperty ClipByXAxisProperty =
             DependencyProperty.Register("ClipByXAxis", typeof(bool), typeof(LineAnnotation), new UIPropertyMetadata(true));
 
@@ -384,6 +390,9 @@ namespace OxyPlot.Wpf
             set { SetValue(ClipByYAxisProperty, value); }
         }
 
+        /// <summary>
+        ///   The ClipByYAxis property.
+        /// </summary>
         public static readonly DependencyProperty ClipByYAxisProperty =
             DependencyProperty.Register("ClipByYAxis", typeof(bool), typeof(LineAnnotation), new UIPropertyMetadata(true));
 
@@ -402,6 +411,9 @@ namespace OxyPlot.Wpf
             set { SetValue(TextPositionProperty, value); }
         }
 
+        /// <summary>
+        ///   The TextPosition property.
+        /// </summary>
         public static readonly DependencyProperty TextPositionProperty =
             DependencyProperty.Register("TextPosition", typeof(double), typeof(LineAnnotation), new UIPropertyMetadata(1.0));
 
@@ -415,6 +427,9 @@ namespace OxyPlot.Wpf
             set { SetValue(TextOrientationProperty, value); }
         }
 
+        /// <summary>
+        ///   The TextOrientation property.
+        /// </summary>
         public static readonly DependencyProperty TextOrientationProperty =
             DependencyProperty.Register("TextOrientation", typeof(AnnotationTextOrientation), typeof(LineAnnotation), new UIPropertyMetadata(AnnotationTextOrientation.AlongLine));
 
@@ -428,6 +443,9 @@ namespace OxyPlot.Wpf
             set { SetValue(TextMarginProperty, value); }
         }
 
+        /// <summary>
+        ///   The TextMargin property.
+        /// </summary>
         public static readonly DependencyProperty TextMarginProperty =
             DependencyProperty.Register("TextMargin", typeof(double), typeof(LineAnnotation), new UIPropertyMetadata(12.0));
 
@@ -441,6 +459,9 @@ namespace OxyPlot.Wpf
             set { SetValue(TextHorizontalAlignmentProperty, value); }
         }
 
+        /// <summary>
+        ///   The TextHorizontalAlignment property.
+        /// </summary>
         public static readonly DependencyProperty TextHorizontalAlignmentProperty =
             DependencyProperty.Register("TextHorizontalAlignment", typeof(HorizontalTextAlign), typeof(LineAnnotation), new UIPropertyMetadata(HorizontalTextAlign.Right));
 
@@ -453,6 +474,9 @@ namespace OxyPlot.Wpf
             set { SetValue(TextVerticalAlignmentProperty, value); }
         }
 
+        /// <summary>
+        ///   The TextVerticalAlignment property.
+        /// </summary>
         public static readonly DependencyProperty TextVerticalAlignmentProperty =
             DependencyProperty.Register("TextVerticalAlignment", typeof(VerticalTextAlign), typeof(LineAnnotation), new UIPropertyMetadata(VerticalTextAlign.Top));
 

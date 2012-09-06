@@ -19,7 +19,7 @@ namespace OxyPlot
         /// Exports the specified model to a stream.
         /// </summary>
         /// <param name="model">The model.</param>
-        /// <param name="fileName">Name of the file.</param>
+        /// <param name="stream">The output stream.</param>
         /// <param name="width">The width (points).</param>
         /// <param name="height">The height (points).</param>
         /// <param name="textMeasurer">The text measurer.</param>

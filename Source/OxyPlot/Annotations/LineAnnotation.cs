@@ -13,7 +13,23 @@ namespace OxyPlot
     /// <summary>
     /// Specify the orientation of the annotation text
     /// </summary>
-    public enum AnnotationTextOrientation { Horizontal, Vertical, AlongLine }
+    public enum AnnotationTextOrientation
+    {
+        /// <summary>
+        /// Horizontal text.
+        /// </summary>
+        Horizontal, 
+        
+        /// <summary>
+        /// Vertical text.
+        /// </summary>
+        Vertical, 
+
+        /// <summary>
+        /// Oriented along the line.
+        /// </summary>
+        AlongLine
+    }
 
     /// <summary>
     /// Represents a line annotation.
