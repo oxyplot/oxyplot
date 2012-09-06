@@ -1,0 +1,6 @@
+<Configuration>
+  <NamespaceFolders>
+    <SkipFolder>E6218B88-69F5-4E3F-9ABC-93AB82FD77AD/d:Foundation</SkipFolder>
+    <SkipFolder>E6218B88-69F5-4E3F-9ABC-93AB82FD77AD/d:Svg</SkipFolder>
+  </NamespaceFolders>
+</Configuration>
