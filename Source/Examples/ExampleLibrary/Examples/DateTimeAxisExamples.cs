@@ -126,7 +126,7 @@ namespace ExampleLibrary
         public static PlotModel SunriseandsunsetinOslo()
         {
             int year = DateTime.Now.Year;
-#if SILVERLIGHT || METRO
+#if SILVERLIGHT || PCL
             var sunData = CreateSunData(year, 59.91, 10.75);
 #else
             var sunData = CreateSunData(year, 59.91, 10.75, TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time"));

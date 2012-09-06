@@ -173,7 +173,7 @@ namespace ExampleLibrary
             });
 
             // Read the train schedule from a .csv resource
-#if METRO
+#if PCL
             var resources = typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceNames();
             using (var stream = typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream(resources[0]))
 #else
