@@ -25,7 +25,7 @@ namespace ExampleLibrary
             var cs = new ContourSeries
                 {
                     ColumnCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05),
-                    RowCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05)
+                    RowCoordinates = ArrayHelper.CreateVector(-3.1, 3.1, 0.05)
                 };
             cs.Data = ArrayHelper.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
             model.Series.Add(cs);
@@ -44,8 +44,8 @@ namespace ExampleLibrary
             var cs = new ContourSeries
             {
                 ColumnCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05),
-                RowCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05),
-                ContourColors = new [] {OxyColors.SeaGreen, OxyColors.RoyalBlue, OxyColors.IndianRed }
+                RowCoordinates = ArrayHelper.CreateVector(-3.1, 3.1, 0.05),
+                ContourColors = new[] { OxyColors.SeaGreen, OxyColors.RoyalBlue, OxyColors.IndianRed }
             };
             cs.Data = ArrayHelper.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
             model.Series.Add(cs);
