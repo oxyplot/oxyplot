@@ -170,11 +170,8 @@ namespace OxyPlot
             double[] actualContourLevels = this.ContourLevels;
 
             this.segments = new List<ContourSegment>();
-            Conrec.RendererDelegate renderer =
-                (startX, startY, endX, endY, contourLevel) =>
-                {
-                    this.segments.Add(new ContourSegment(new DataPoint(startX, startY), new DataPoint(endX, endY), contourLevel));
-                };
+            Conrec.RendererDelegate renderer = (startX, startY, endX, endY, contourLevel) => 
+                this.segments.Add(new ContourSegment(new DataPoint(startX, startY), new DataPoint(endX, endY), contourLevel));
 
             if (actualContourLevels == null)
             {
@@ -182,7 +179,7 @@ namespace OxyPlot
                 double min = this.Data[0, 0];
                 for (int i = 0; i < this.Data.GetUpperBound(0); i++)
                 {
-                    for (int j = 0; j < this.Data.GetUpperBound(0); j++)
+                    for (int j = 0; j < this.Data.GetUpperBound(1); j++)
                     {
                         max = Math.Max(max, this.Data[i, j]);
                         min = Math.Min(min, this.Data[i, j]);
@@ -202,20 +199,20 @@ namespace OxyPlot
                 actualContourLevels = ArrayHelper.CreateVector(min, max, actualStep);
             }
 
-            Conrec.Contour(this.Data, this.ColumnCoordinates, this.RowCoordinates, actualContourLevels, renderer);
+            Conrec.Contour(this.Data, this.RowCoordinates, this.ColumnCoordinates, actualContourLevels, renderer);
 
             this.JoinContourSegments();
 
-            if (ContourColors != null && ContourColors.Length > 0)
+            if (this.ContourColors != null && this.ContourColors.Length > 0)
             {
-                foreach (var c in contours)
+                foreach (var c in this.contours)
                 {
                     // get the index of the contour's level
                     var index = IndexOf(actualContourLevels, c.ContourLevel);
                     if (index >= 0)
                     {
                         // clamp the index to the range of the ContourColors array
-                        index = index % ContourColors.Length;
+                        index = index % this.ContourColors.Length;
                         c.Color = this.ContourColors[index];
                     }
                 }
@@ -414,6 +411,29 @@ namespace OxyPlot
             double dx = p0.X - p1.X;
             double dy = p0.Y - p1.Y;
             return (dx * dx) + (dy * dy) < eps;
+        }
+
+        /// <summary>
+        /// Gets the index of item that is closest to the specified value.
+        /// </summary>
+        /// <param name="values">A list of values.</param>
+        /// <param name="value">A value.</param>
+        /// <returns>An index.</returns>
+        private static int IndexOf(IList<double> values, double value)
+        {
+            double min = double.MaxValue;
+            int index = -1;
+            for (int i = 0; i < values.Count; i++)
+            {
+                var d = Math.Abs(values[i] - value);
+                if (d < min)
+                {
+                    min = d;
+                    index = i;
+                }
+            }
+
+            return index;
         }
 
         /// <summary>
@@ -635,29 +655,13 @@ namespace OxyPlot
 
                 var bpts = new[]
                     {
-                        new ScreenPoint(x - size.Width * ux - size.Height * vx, y - size.Width * uy - size.Height * vy), 
-                        new ScreenPoint(x + size.Width * ux - size.Height * vx, y + size.Width * uy - size.Height * vy), 
-                        new ScreenPoint(x + size.Width * ux + size.Height * vx, y + size.Width * uy + size.Height * vy), 
-                        new ScreenPoint(x - size.Width * ux + size.Height * vx, y - size.Width * uy + size.Height * vy)
+                        new ScreenPoint(x - (size.Width * ux) - (size.Height * vx), y - (size.Width * uy) - (size.Height * vy)), 
+                        new ScreenPoint(x + (size.Width * ux) - (size.Height * vx), y + (size.Width * uy) - (size.Height * vy)), 
+                        new ScreenPoint(x + (size.Width * ux) + (size.Height * vx), y + (size.Width * uy) + (size.Height * vy)), 
+                        new ScreenPoint(x - (size.Width * ux) + (size.Height * vx), y - (size.Width * uy) + (size.Height * vy))
                     };
                 rc.DrawPolygon(bpts, this.LabelBackground, null);
             }
-        }
-
-        private static int IndexOf(IList<double> values, double value)
-        {
-            double min = double.MaxValue;
-            int index = -1;
-            for (int i = 0; i < values.Count; i++)
-            {
-                var d = Math.Abs(values[i] - value);
-                if (d < min)
-                {
-                    min = d;
-                    index = i;
-                }
-            }
-            return index;
         }
 
         #endregion
@@ -674,11 +678,6 @@ namespace OxyPlot
             /// </summary>
             /// <value>The contour level.</value>
             internal readonly double ContourLevel;
-
-            /// <summary>
-            ///   Gets or sets the color of the contour.
-            /// </summary>
-            public OxyColor Color { get; set; }
 
             /// <summary>
             ///   Gets or sets the points.
@@ -706,6 +705,11 @@ namespace OxyPlot
             }
 
             #endregion
+
+            /// <summary>
+            ///   Gets or sets the color of the contour.
+            /// </summary>
+            public OxyColor Color { get; set; }
         }
 
         /// <summary>
