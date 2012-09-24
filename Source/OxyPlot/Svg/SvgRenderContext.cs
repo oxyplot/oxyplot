@@ -259,7 +259,7 @@ namespace OxyPlot
                 return this.TextMeasurer.MeasureText(text, fontFamily, fontSize, fontWeight);
             }
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !METRO
             return NativeMethods.MeasureString(fontFamily, (int)fontSize, (int)fontWeight, text);
 #else
             return OxySize.Empty;
