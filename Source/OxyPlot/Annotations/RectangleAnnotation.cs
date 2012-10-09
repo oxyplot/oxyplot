@@ -89,21 +89,21 @@ namespace OxyPlot
         {
             base.Render(rc, model);
 
-            double x0 = double.IsNaN(this.MinimumX) || (this.MinimumX == double.MinValue) ? this.XAxis.ActualMinimum : this.MinimumX;
-            double x1 = double.IsNaN(this.MaximumX) || (this.MaximumX == double.MaxValue) ? this.XAxis.ActualMaximum : this.MaximumX;
-            double y0 = double.IsNaN(this.MinimumY) || (this.MinimumY == double.MinValue) ? this.YAxis.ActualMinimum : this.MinimumY;
-            double y1 = double.IsNaN(this.MaximumY) || (this.MaximumY == double.MaxValue) ? this.YAxis.ActualMaximum : this.MaximumY;
+            double x0 = double.IsNaN(this.MinimumX) || this.MinimumX.Equals(double.MinValue) ? this.XAxis.ActualMinimum : this.MinimumX;
+            double x1 = double.IsNaN(this.MaximumX) || this.MaximumX.Equals(double.MaxValue) ? this.XAxis.ActualMaximum : this.MaximumX;
+            double y0 = double.IsNaN(this.MinimumY) || this.MinimumY.Equals(double.MinValue) ? this.YAxis.ActualMinimum : this.MinimumY;
+            double y1 = double.IsNaN(this.MaximumY) || this.MaximumY.Equals(double.MaxValue) ? this.YAxis.ActualMaximum : this.MaximumY;
 
-            screenRectangle = OxyRect.Create(this.Transform(x0, y0), this.Transform(x1, y1));
+            this.screenRectangle = OxyRect.Create(this.Transform(x0, y0), this.Transform(x1, y1));
 
             // clip to the area defined by the axes
             var clipping = this.GetClippingRect();
 
-            rc.DrawClippedRectangle(screenRectangle, clipping, this.Fill, null, 0);
+            rc.DrawClippedRectangle(this.screenRectangle, clipping, this.Fill, null, 0);
 
             if (!string.IsNullOrEmpty(this.Text))
             {
-                var textPosition = screenRectangle.Center;
+                var textPosition = this.screenRectangle.Center;
                 rc.DrawClippedText(
                     clipping,
                     textPosition,
