@@ -353,11 +353,8 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
+  <UsingTask TaskName="PepitaGet.RestorePackagesTask" AssemblyFile="$(SolutionDir)..\Tools\Pepita\PepitaGet.dll" />
   <Target Name="BeforeBuild">
+    <PepitaGet.RestorePackagesTask />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
