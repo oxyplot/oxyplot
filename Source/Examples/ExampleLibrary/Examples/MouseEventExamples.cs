@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MouseEventExamples.cs" company="OxyPlot">
 //   http://oxyplot.codeplex.com, license: Ms-PL
 // </copyright>
@@ -355,6 +355,57 @@ namespace ExampleLibrary
                     model.RefreshPlot(true);
                     e.Handled = true;
                 }
+            };
+
+            return model;
+        }
+
+        [Example("Select range")]
+        public static PlotModel SelectRange()
+        {
+            var model = new PlotModel("Select range", "Left click and drag to select a range.");
+            model.Series.Add(new FunctionSeries(Math.Cos, 0, 40, 0.1));
+
+            RectangleAnnotation range = null;
+
+            double startx = double.NaN;
+
+            model.MouseDown += (s, e) =>
+            {
+                if (e.ChangedButton == OxyMouseButton.Left)
+                {
+                    if (range == null)
+                    {
+                        // Create and add the annotation to the plot
+                        range = new RectangleAnnotation { Fill = OxyColors.SkyBlue.ChangeAlpha(120) };
+                        model.Annotations.Add(range);
+                        model.RefreshPlot(true);
+                    }
+
+                    startx = range.InverseTransform(e.Position).X;
+                    range.MinimumX = startx;
+                    range.MaximumX = startx;
+                    model.RefreshPlot(true);
+                    e.Handled = true;
+                }
+            };
+            model.MouseMove += (s, e) =>
+                {
+                    if (e.ChangedButton == OxyMouseButton.Left && !double.IsNaN(startx))
+                    {
+                        var x = range.InverseTransform(e.Position).X;
+                        range.MinimumX = Math.Min(x, startx);
+                        range.MaximumX = Math.Max(x, startx);
+                        range.Text = string.Format("∫ cos(x) dx =  {0:0.00}", Math.Sin(range.MaximumX) - Math.Sin(range.MinimumX));
+                        model.Subtitle = string.Format("Integrating from {0:0.00} to {1:0.00}", range.MinimumX, range.MaximumX);
+                        model.RefreshPlot(true);
+                        e.Handled = true;
+                    }
+                };
+
+            model.MouseUp += (s, e) =>
+            {
+                startx = double.NaN;
             };
 
             return model;
