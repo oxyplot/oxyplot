@@ -498,6 +498,26 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Invisible vertical axis")]
+        public static PlotModel InvisibleVerticalAxis()
+        {
+            var model = new PlotModel("Invisible vertical axis");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left) { IsAxisVisible = false });
+            model.Series.Add(new FunctionSeries(x => Math.Sin(x) / x, -5, 5, 0.1));
+            return model;
+        }
+
+        [Example("Invisible horizontal axis")]
+        public static PlotModel InvisibleHorizontalAxis()
+        {
+            var model = new PlotModel("Invisible horizontal axis");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { IsAxisVisible = false });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Series.Add(new FunctionSeries(x => Math.Sin(x) * x * x, -5, 5, 0.1));
+            return model;
+        }
+
         [Example("Zooming disabled")]
         public static PlotModel ZoomingDisabled()
         {
