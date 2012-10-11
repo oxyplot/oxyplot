@@ -10,7 +10,6 @@ copy ..\Output\NET40\OxyPlot.Xps.??? ..\Packages\OxyPlot.Wpf\lib\NET40
 copy ..\Output\NET45\OxyPlot.??? ..\Packages\OxyPlot.Wpf\lib\NET45
 copy ..\Output\NET45\OxyPlot.Wpf.??? ..\Packages\OxyPlot.Wpf\lib\NET45
 copy ..\Output\NET45\OxyPlot.Xps.??? ..\Packages\OxyPlot.Wpf\lib\NET45
-
 copy ..\license.txt ..\Packages\OxyPlot.Wpf
 ..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory ..\Packages > pack.log
 
@@ -36,12 +35,12 @@ copy ..\Output\NET45\MigraDoc.* ..\Packages\OxyPlot.Pdf\lib\NET45
 
 REM === METRO ===
 mkdir ..\Packages\OxyPlot.Metro\lib
-mkdir ..\Packages\OxyPlot.Metro\lib\WINRT
-mkdir ..\Packages\OxyPlot.Metro\lib\WINRT\Themes
-copy ..\Output\WINRT\OxyPlot.??? ..\Packages\OxyPlot.Metro\lib\WINRT
-copy ..\Output\WINRT\OxyPlot.Metro.??? ..\Packages\OxyPlot.Metro\lib\WINRT
-copy ..\Output\WINRT\Themes\*.* ..\Packages\OxyPlot.Metro\lib\WINRT\Themes
-
+mkdir ..\Packages\OxyPlot.Metro\lib\NetCore45
+mkdir ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro
+mkdir ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro\Themes
+copy ..\Output\NetCore45\OxyPlot.??? ..\Packages\OxyPlot.Metro\lib\NetCore45
+copy ..\Output\NetCore45\OxyPlot.Metro.??? ..\Packages\OxyPlot.Metro\lib\NetCore45
+copy ..\Output\NetCore45\Themes\Generic.xaml ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro\Themes
 copy ..\license.txt ..\Packages\OxyPlot.Metro
 ..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.Metro\OxyPlot.Metro.nuspec -OutputDirectory ..\Packages >> pack.log
 
