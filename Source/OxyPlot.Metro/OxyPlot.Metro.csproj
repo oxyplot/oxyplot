@@ -26,11 +26,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Output\WINRT\</OutputPath>
+    <OutputPath>..\..\Output\NetCore45\</OutputPath>
     <DefineConstants>TRACE;METRO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\WINRT\OxyPlot.Metro.XML</DocumentationFile>
+    <DocumentationFile>..\..\Output\NetCore45\OxyPlot.Metro.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Converters\OxyColorConverter.cs" />
@@ -48,7 +48,6 @@
     <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
   </ItemGroup>
   <ItemGroup>

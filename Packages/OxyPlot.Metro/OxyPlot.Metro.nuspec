@@ -2,7 +2,7 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>OxyPlot.Metro</id>
-    <version>2012.4.1</version>
+    <version>2012.4.5</version>
     <authors>objo</authors>
     <licenseUrl>http://oxyplot.codeplex.com/license</licenseUrl>
     <projectUrl>http://oxyplot.codeplex.com/</projectUrl>
@@ -10,8 +10,12 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>OxyPlot is an open source .NET plotting library.</description>
     <tags>winrt metro plotting plot charting chart</tags>
-    <!--<dependencies>
-      <dependency id="SampleDependency" version="1.0" />
-    </dependencies>-->
   </metadata>
+  <files>
+    <file src="lib\NetCore45\OxyPlot.dll" target="lib\NetCore45\OxyPlot.dll"/>
+    <file src="lib\NetCore45\OxyPlot.XML" target="lib\NetCore45\OxyPlot.XML"/>
+    <file src="lib\NetCore45\OxyPlot.Metro.dll" target="lib\NetCore45\OxyPlot.Metro.dll"/>
+    <file src="lib\NetCore45\OxyPlot.Metro.XML" target="lib\NetCore45\OxyPlot.Metro.XML"/>
+    <file src="lib\NetCore45\OxyPlot.Metro\Themes\Generic.xaml" target="lib\NetCore45\OxyPlot.Metro\Themes\Generic.xaml"/>
+  </files>
 </package>
