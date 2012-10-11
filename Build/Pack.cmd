@@ -37,8 +37,10 @@ copy ..\Output\NET45\MigraDoc.* ..\Packages\OxyPlot.Pdf\lib\NET45
 REM === METRO ===
 mkdir ..\Packages\OxyPlot.Metro\lib
 mkdir ..\Packages\OxyPlot.Metro\lib\WINRT
+mkdir ..\Packages\OxyPlot.Metro\lib\WINRT\Themes
 copy ..\Output\WINRT\OxyPlot.??? ..\Packages\OxyPlot.Metro\lib\WINRT
 copy ..\Output\WINRT\OxyPlot.Metro.??? ..\Packages\OxyPlot.Metro\lib\WINRT
+copy ..\Output\WINRT\Themes\*.* ..\Packages\OxyPlot.Metro\lib\WINRT\Themes
 
 copy ..\license.txt ..\Packages\OxyPlot.Metro
 ..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.Metro\OxyPlot.Metro.nuspec -OutputDirectory ..\Packages >> pack.log
