@@ -40,6 +40,7 @@ namespace WpfExamples
                     new Example(typeof(RealtimeDemo.MainWindow), null, "Plotting a curve that updates automatically."),
                     new Example(typeof(RefreshDemo.MainWindow), null, "Demonstrates invalidating/refreshing the plot."),
                     new Example(typeof(ScatterDemo.MainWindow), null, "Plotting a barnsley fern with a scatter series."),
+                    new Example(typeof(TaskDemo.MainWindow), null, "Updating a LineSeries from a Task running on the UI thread synchronization context."),
                     new Example(typeof(UserControlDemo.MainWindow), null, "Demonstrates a Plot in a UserControl."),
                     new Example(typeof(UserControlDemo.MainWindow2), null, "Demonstrates a Plot in a UserControl in a DataTemplate."),
                     new Example(typeof(UserControlDemo.MainWindow3), null, "Demonstrates a Plot in a DataTemplate.")
