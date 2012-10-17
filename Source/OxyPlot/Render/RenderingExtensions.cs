@@ -485,7 +485,7 @@ namespace OxyPlot
         /// The marker points.
         /// </param>
         /// <param name="clippingRect">
-        /// The clipping rect.
+        /// The clipping rectangle.
         /// </param>
         /// <param name="markerType">
         /// Type of the marker.
@@ -495,6 +495,69 @@ namespace OxyPlot
         /// </param>
         /// <param name="markerSize">
         /// Size of the marker.
+        /// </param>
+        /// <param name="markerFill">
+        /// The marker fill.
+        /// </param>
+        /// <param name="markerStroke">
+        /// The marker stroke.
+        /// </param>
+        /// <param name="markerStrokeThickness">
+        /// The marker stroke thickness.
+        /// </param>
+        /// <param name="resolution">
+        /// The resolution.
+        /// </param>
+        /// <param name="binOffset">
+        /// The bin Offset.
+        /// </param>
+        public static void DrawMarkers(
+            this IRenderContext rc,
+            IList<ScreenPoint> markerPoints,
+            OxyRect clippingRect,
+            MarkerType markerType,
+            IList<ScreenPoint> markerOutline,
+            double markerSize,
+            OxyColor markerFill,
+            OxyColor markerStroke,
+            double markerStrokeThickness,
+            int resolution = 0,
+            ScreenPoint binOffset = new ScreenPoint())
+        {
+            DrawMarkers(
+                rc,
+                markerPoints,
+                clippingRect,
+                markerType,
+                markerOutline,
+                new[] { markerSize },
+                markerFill,
+                markerStroke,
+                markerStrokeThickness,
+                resolution,
+                binOffset);
+        }
+
+        /// <summary>
+        /// Draws a list of markers.
+        /// </summary>
+        /// <param name="rc">
+        /// The render context.
+        /// </param>
+        /// <param name="markerPoints">
+        /// The marker points.
+        /// </param>
+        /// <param name="clippingRect">
+        /// The clipping rectangle.
+        /// </param>
+        /// <param name="markerType">
+        /// Type of the marker.
+        /// </param>
+        /// <param name="markerOutline">
+        /// The marker outline.
+        /// </param>
+        /// <param name="markerSize">
+        /// Size of the markers.
         /// </param>
         /// <param name="markerFill">
         /// The marker fill.

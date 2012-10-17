@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Attributes\ExampleAttribute.cs" />
     <Compile Include="CustomSeries\ErrorItem.cs" />
+    <Compile Include="CustomSeries\LineSegmentSeries.cs" />
     <Compile Include="ExampleInfo.cs" />
     <Compile Include="Examples.cs" />
     <Compile Include="Attributes\ExamplesAttribute.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="Examples\BarSeries\BarAndColumnSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\BarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\ColumnSeriesExamples.cs" />
+    <Compile Include="Examples\BarSeries\ErrorColumnSeriesExamples.cs" />
     <Compile Include="Examples\BoxPlotSeriesExamples.cs" />
     <Compile Include="Examples\CartesianAxesExamples.cs" />
     <Compile Include="Examples\CategoryAxisExamples.cs" />

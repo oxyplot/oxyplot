@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Attributes\ExampleAttribute.cs" />
     <Compile Include="CustomSeries\ErrorItem.cs" />
+    <Compile Include="CustomSeries\LineSegmentSeries.cs" />
     <Compile Include="ExampleInfo.cs" />
     <Compile Include="Examples.cs" />
     <Compile Include="Attributes\ExamplesAttribute.cs" />
