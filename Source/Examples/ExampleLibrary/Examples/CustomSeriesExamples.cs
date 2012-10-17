@@ -35,5 +35,41 @@ namespace ExampleLibrary
             model.Series.Add(s1);
             return model;
         }
+
+        [Example("LineSegmentSeries")]
+        public static PlotModel LineSegmentSeries()
+        {
+            var model = new PlotModel("LineSegmentSeries");
+
+            var lss1 = new LineSegmentSeries { Title = "The first series" };
+
+            // First segment
+            lss1.Points.Add(new DataPoint(0, 3));
+            lss1.Points.Add(new DataPoint(2, 3.2));
+
+            // Second segment
+            lss1.Points.Add(new DataPoint(3, 3.1));
+            lss1.Points.Add(new DataPoint(7, 2.9));
+
+            model.Series.Add(lss1);
+
+            var lss2 = new LineSegmentSeries { Title = "The second series" };
+
+            // First segment
+            lss2.Points.Add(new DataPoint(1, -3));
+            lss2.Points.Add(new DataPoint(2, 10));
+
+            // Second segment
+            lss2.Points.Add(new DataPoint(0, 4.8));
+            lss2.Points.Add(new DataPoint(7, 2.3));
+
+            // A very short segment
+            lss2.Points.Add(new DataPoint(6, 4));
+            lss2.Points.Add(new DataPoint(6, 4 + 1e-8));
+
+            model.Series.Add(lss2);
+
+            return model;
+        }
     }
 }
