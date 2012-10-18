@@ -14,7 +14,7 @@ namespace OxyPlot
 {
     using System;
 
-#if SILVERLIGHT || METRO
+#if SILVERLIGHT || PCL
 
     /// <summary>
     /// Serialize attribute.

@@ -41,7 +41,7 @@ namespace OxyPlot.Reporting
     {
         #region Constants and Fields
 
-#if !METRO
+#if !PCL
         /// <summary>
         /// The directory of the output file.
         /// </summary>
@@ -72,7 +72,7 @@ namespace OxyPlot.Reporting
 
         #region Constructors and Destructors
 
-#if !METRO
+#if !PCL
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class.
@@ -240,7 +240,7 @@ namespace OxyPlot.Reporting
             {
                 case HtmlPlotElementType.Embed:
                 case HtmlPlotElementType.Object:
-#if METRO
+#if PCL
                     // Writing to file not supported
 #else
                     string source = string.Format(
@@ -450,7 +450,7 @@ namespace OxyPlot.Reporting
         /// </returns>
         private string GetFullFileName(string filename)
         {
-#if METRO
+#if PCL
             return filename;
 #else
             return Path.GetFullPath(Path.Combine(this.directory, filename));

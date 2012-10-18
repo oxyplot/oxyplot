@@ -94,11 +94,11 @@ namespace OxyPlot.Reporting
             }
 
 #endif
-#if METRO
+#if PCL
 
             // todo
 #endif
-#if !SILVERLIGHT && !METRO 
+#if !SILVERLIGHT && !PCL 
             foreach (PropertyDescriptor pd in TypeDescriptor.GetProperties(type))
             {
                 if (!pd.IsBrowsable)

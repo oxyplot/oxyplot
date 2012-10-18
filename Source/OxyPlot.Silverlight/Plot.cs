@@ -829,7 +829,7 @@ namespace OxyPlot.Silverlight
         /// <param name="e">
         /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
         /// </param>
-        private static void DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private static void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             ((Plot)sender).OnDataContextChanged();
         }
