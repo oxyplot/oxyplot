@@ -7,19 +7,15 @@
 namespace OxyPlot.Metro
 {
     using System;
-    using System.Globalization;
     using Windows.UI;
     using Windows.UI.Xaml.Data;
     using Windows.UI.Xaml.Media;
 
-    // [ValueConversion(typeof(OxyColor), typeof(Rect))]
     /// <summary>
-    /// The oxy color converter.
+    /// Converts from OxyPlot colors to Windows.UI.Color and vice versa.
     /// </summary>
     public class OxyColorConverter : IValueConverter
     {
-        #region Public Methods
-
         /// <summary>
         /// The convert.
         /// </summary>
@@ -32,11 +28,11 @@ namespace OxyPlot.Metro
         /// <param name="parameter">
         /// The parameter.
         /// </param>
-        /// <param name="culture">
-        /// The culture.
+        /// <param name="language">
+        /// The language.
         /// </param>
         /// <returns>
-        /// The convert.
+        /// The converted value.
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -58,22 +54,14 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// The convert back.
+        /// Converts back.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="targetType">
-        /// The target type.
-        /// </param>
-        /// <param name="parameter">
-        /// The parameter.
-        /// </param>
-        /// <param name="culture">
-        /// The culture.
-        /// </param>
+        /// <param name="value">The value.</param>
+        /// <param name="targetType">The target type.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="language">The language.</param>
         /// <returns>
-        /// The convert back.
+        /// The converted value.
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
@@ -95,9 +83,5 @@ namespace OxyPlot.Metro
 
             return null;
         }
-
-        #endregion
-
-       
     }
 }

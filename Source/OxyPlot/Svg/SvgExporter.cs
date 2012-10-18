@@ -32,7 +32,7 @@ namespace OxyPlot
             }
         }
 
-#if !METRO
+#if !PCL
         /// <summary>
         /// Exports the specified model to a file.
         /// </summary>

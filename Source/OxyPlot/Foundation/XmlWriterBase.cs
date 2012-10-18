@@ -18,7 +18,7 @@ namespace OxyPlot
     {
         #region Constants and Fields
 
-#if !METRO
+#if !PCL
 
         /// <summary>
         ///   The stream.
@@ -47,7 +47,7 @@ namespace OxyPlot
         {
         }
 
-#if !METRO
+#if !PCL
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlWriterBase"/> class.
@@ -83,7 +83,7 @@ namespace OxyPlot
         /// </summary>
         public virtual void Close()
         {
-#if !METRO
+#if !PCL
             if (this.w == null)
             {
                 return;

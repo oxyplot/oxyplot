@@ -368,7 +368,7 @@ namespace OxyPlot
         /// </param>
         private void SetProperties(object instance, string varName, object defaultValues)
         {
-#if !METRO
+#if !PCL
             var instanceType = instance.GetType();
             var listsToAdd = new Dictionary<string, IList>();
             foreach (var pi in instanceType.GetProperties())

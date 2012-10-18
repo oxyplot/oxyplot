@@ -49,7 +49,7 @@ namespace OxyPlot
             this.TextMeasurer = textMeasurer;
         }
 
-#if !METRO
+#if !PCL
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SvgRenderContext"/> class.
@@ -259,7 +259,7 @@ namespace OxyPlot
                 return this.TextMeasurer.MeasureText(text, fontFamily, fontSize, fontWeight);
             }
 
-#if !SILVERLIGHT && !METRO
+#if !SILVERLIGHT && !PCL
             return NativeMethods.MeasureString(fontFamily, (int)fontSize, (int)fontWeight, text);
 #else
             return OxySize.Empty;

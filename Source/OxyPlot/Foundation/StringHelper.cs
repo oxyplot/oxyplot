@@ -75,7 +75,7 @@ namespace OxyPlot
             return s;
         }
 
-#if !SILVERLIGHT && !METRO
+#if !SILVERLIGHT && !PCL
 
         /// <summary>
         /// Creates a valid file name.

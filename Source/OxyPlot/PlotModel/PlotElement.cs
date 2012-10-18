@@ -133,7 +133,7 @@ namespace OxyPlot
         /// <param name="message">The message.</param>
         protected void Trace(string message)
         {
-#if !SILVERLIGHT && !MONO && !METRO
+#if !SILVERLIGHT && !MONO && !PCL
             System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", this.GetType().Name, message));
 #endif
         }

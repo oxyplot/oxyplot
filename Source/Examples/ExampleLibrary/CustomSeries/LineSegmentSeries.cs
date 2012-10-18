@@ -6,7 +6,7 @@
 
 namespace ExampleLibrary
 {
-    using System.Diagnostics;
+    using System;
     using System.Linq;
     using OxyPlot;
 
@@ -27,8 +27,15 @@ namespace ExampleLibrary
                 return;
             }
 
-            Debug.Assert(Points.Count % 2 == 0, "The number of points should be even.");
-            Debug.Assert(this.XAxis != null && this.YAxis != null, "Axis has not been defined.");
+            if (Points.Count % 2 != 0)
+            {
+                throw new InvalidOperationException("The number of points should be even.");
+            }
+
+            if (this.XAxis == null || this.YAxis == null)
+            {
+                throw new InvalidOperationException("Axis has not been defined.");
+            }
 
             var clippingRect = GetClippingRect();
 

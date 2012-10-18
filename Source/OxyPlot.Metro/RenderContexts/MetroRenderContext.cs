@@ -449,33 +449,16 @@ namespace OxyPlot.Metro
         /// <summary>
         /// The draw text.
         /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="rotate">
-        /// The rotate.
-        /// </param>
-        /// <param name="halign">
-        /// The halign.
-        /// </param>
-        /// <param name="valign">
-        /// The valign.
-        /// </param>
+        /// <param name="p">The p.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="rotate">The rotate.</param>
+        /// <param name="halign">The horizontal alignment.</param>
+        /// <param name="valign">The vertical alignment.</param>
+        /// <param name="maxSize">The maximum size of the text.</param>
         public void DrawText(
             ScreenPoint p, 
             string text, 
@@ -583,6 +566,16 @@ namespace OxyPlot.Metro
             return new OxySize(tb.ActualWidth, tb.ActualHeight);
         }
 
+        /// <summary>
+        /// Sets the tool tip for the following items.
+        /// </summary>
+        /// <param name="text">The text in the tooltip.</param>
+        /// <params>
+        /// This is only used in the plot controls.
+        /// </params>
+        public void SetToolTip(string text)
+        {
+        }
         #endregion
 
         #region Methods
@@ -708,9 +701,6 @@ namespace OxyPlot.Metro
             }
 
             // shape.UseLayoutRounding = aliased;
-        }
-
-        public void SetToolTip(string text) {
         }
         #endregion
     }

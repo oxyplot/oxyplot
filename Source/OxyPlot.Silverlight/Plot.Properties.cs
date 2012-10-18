@@ -22,7 +22,7 @@ namespace OxyPlot.Silverlight
         /// </summary>
         public static readonly DependencyProperty DataContextWatcherProperty =
             DependencyProperty.Register(
-                "DataContextWatcher", typeof(object), typeof(Plot), new PropertyMetadata(DataContextChanged));
+                "DataContextWatcher", typeof(object), typeof(Plot), new PropertyMetadata(OnDataContextChanged));
 
         /// <summary>
         ///   The default tracker property.
