@@ -7,6 +7,7 @@
 namespace ExampleLibrary
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using OxyPlot;
 
@@ -15,6 +16,27 @@ namespace ExampleLibrary
     /// </summary>
     public class LineSegmentSeries : LineSeries
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineSegmentSeries" /> class.
+        /// </summary>
+        public LineSegmentSeries()
+        {
+            this.ShowVerticals = true;
+            this.Epsilon = 1e-8;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to show vertical lines where there is no gap in x-coordinate.
+        /// </summary>
+        /// <value><c>true</c> if verticals should be shown; otherwise, <c>false</c>.</value>
+        public bool ShowVerticals { get; set; }
+
+        /// <summary>
+        /// Gets or sets the x-coordinate gap tolerance.
+        /// </summary>
+        /// <value>The epsilon value.</value>
+        public double Epsilon { get; set; }
+
         /// <summary>
         /// Renders the series on the specified rendering context.
         /// </summary>
@@ -40,7 +62,8 @@ namespace ExampleLibrary
             var clippingRect = GetClippingRect();
 
             var screenPoints = Points.Select(this.Transform).ToList();
-
+            var verticalLines = new List<ScreenPoint>();
+            
             for (int i = 0; i < screenPoints.Count; i += 2)
             {
                 if (screenPoints[i].DistanceToSquared(screenPoints[i + 1]) < this.StrokeThickness)
@@ -48,10 +71,17 @@ namespace ExampleLibrary
                     screenPoints[i] = new ScreenPoint(screenPoints[i].X - (this.StrokeThickness * 0.5), screenPoints[i].Y);
                     screenPoints[i + 1] = new ScreenPoint(screenPoints[i].X + (this.StrokeThickness * 0.5), screenPoints[i].Y);
                 }
+
+                if (this.ShowVerticals && i > 0 && Math.Abs(screenPoints[i - 1].X - screenPoints[i].X) < this.Epsilon)
+                {
+                    verticalLines.Add(screenPoints[i - 1]);
+                    verticalLines.Add(screenPoints[i]);
+                }
             }
 
             rc.DrawClippedLineSegments(screenPoints, clippingRect, this.ActualColor, this.StrokeThickness, this.LineStyle, this.LineJoin, false);
-
+            rc.DrawClippedLineSegments(verticalLines, clippingRect, this.ActualColor, this.StrokeThickness / 3, LineStyle.Dash, this.LineJoin, false);
+            
             rc.DrawMarkers(screenPoints, clippingRect, this.MarkerType, null, this.MarkerSize, this.MarkerFill, this.MarkerStroke, this.MarkerStrokeThickness);
         }
 
