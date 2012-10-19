@@ -48,7 +48,7 @@ namespace ExampleLibrary
             lss1.Points.Add(new DataPoint(2, 3.2));
 
             // Second segment
-            lss1.Points.Add(new DataPoint(3, 3.1));
+            lss1.Points.Add(new DataPoint(2, 2.7));
             lss1.Points.Add(new DataPoint(7, 2.9));
 
             model.Series.Add(lss1);
