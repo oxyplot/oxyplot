@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Conrec.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,24 +36,22 @@ namespace OxyPlot
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Ported from C / Fortran code by Paul Borke. 
-    ///     See http://local.wasp.uwa.edu.au/~pbourke/papers/conrec for 
-    ///     full description of code and the original source.
-    ///   </para>
+    /// Ported from C / Fortran code by Paul Borke.
+    /// See http://local.wasp.uwa.edu.au/~pbourke/papers/conrec for
+    /// full description of code and the original source.
+    ///  </para>
     /// <para>
-    /// Contouring aids in visualizing three dimensional surfaces on a two dimensional 
-    ///     medium (on paper or in this case a computer graphics screen). Two most common 
-    ///     applications are displaying topological features of an area on a map or the air 
-    ///     pressure on a weather map. In all cases some parameter is plotted as a function 
-    ///     of two variables, the longitude and latitude or x and y axis. One problem with 
-    ///     computer contouring is the process is usually CPU intensive and the algorithms 
-    ///     often use advanced mathematical techniques making them susceptible to error.
-    ///   </para>
+    /// Contouring aids in visualizing three dimensional surfaces on a two dimensional
+    /// medium (on paper or in this case a computer graphics screen). Two most common
+    /// applications are displaying topological features of an area on a map or the air
+    /// pressure on a weather map. In all cases some parameter is plotted as a function
+    /// of two variables, the longitude and latitude or x and y axis. One problem with
+    /// computer contouring is the process is usually CPU intensive and the algorithms
+    /// often use advanced mathematical techniques making them susceptible to error.
+    ///  </para>
     /// </remarks>
     public static class Conrec
     {
-        #region Delegates
-
         /// <summary>
         /// Renderer delegate
         /// </summary>
@@ -74,18 +72,14 @@ namespace OxyPlot
         /// </param>
         public delegate void RendererDelegate(double x1, double y1, double x2, double y2, double z);
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Contour is a contouring subroutine for rectangularily spaced data
-        ///   It emits calls to a line drawing subroutine supplied by the user
-        ///   which draws a contour map corresponding to data on a randomly
-        ///   spaced rectangular grid. The coordinates emitted are in the same
-        ///   units given in the x() and y() arrays.
-        ///   Any number of contour levels may be specified but they must be
-        ///   in order of increasing value.
+        /// It emits calls to a line drawing subroutine supplied by the user
+        /// which draws a contour map corresponding to data on a randomly
+        /// spaced rectangular grid. The coordinates emitted are in the same
+        /// units given in the x() and y() arrays.
+        /// Any number of contour levels may be specified but they must be
+        /// in order of increasing value.
         /// </summary>
         /// <param name="d">
         /// Matrix of data to contour.
@@ -128,9 +122,9 @@ namespace OxyPlot
             // Note that castab is arranged differently from the FORTRAN code because
             // Fortran and C/C++ arrays are transposed of each other, in this case
             // it is more tricky as castab is in 3 dimension
-            int[,,] castab = 
+            int[,,] castab =
                             {
-                                 { { 0, 0, 8 }, { 0, 2, 5 }, { 7, 6, 9 } }, { { 0, 3, 4 }, { 1, 3, 1 }, { 4, 3, 0 } }, 
+                                 { { 0, 0, 8 }, { 0, 2, 5 }, { 7, 6, 9 } }, { { 0, 3, 4 }, { 1, 3, 1 }, { 4, 3, 0 } },
                                  { { 9, 6, 7 }, { 5, 2, 0 }, { 8, 0, 0 } }
                             };
 
@@ -200,15 +194,15 @@ namespace OxyPlot
                                 //// the same contour level, in which case only the side of the box
                                 //// is drawn.
                                 //// vertex 4 +-------------------+ vertex 3
-                                ////          | \               / |
-                                ////          |   \    m-3    /   |
-                                ////          |     \       /     |
-                                ////          |       \   /       |
-                                ////          |  m=2    X   m=2   |       the centre is vertex 0
-                                ////          |       /   \       |
-                                ////          |     /       \     |
-                                ////          |   /    m=1    \   |
-                                ////          | /               \ |
+                                //// | \               / |
+                                //// |   \    m-3    /   |
+                                //// |     \       /     |
+                                //// |       \   /       |
+                                //// |  m=2    X   m=2   |       the centre is vertex 0
+                                //// |       /   \       |
+                                //// |     /       \     |
+                                //// |   /    m=1    \   |
+                                //// | /               \ |
                                 //// vertex 1 +-------------------+ vertex 2
 
                                 // Scan each triangle in the box
@@ -297,6 +291,5 @@ namespace OxyPlot
             }
         }
 
-        #endregion
     }
 }

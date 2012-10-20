@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TextAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,10 +37,8 @@ namespace OxyPlot
     /// </summary>
     public class TextAnnotation : Annotation
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref="TextAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="TextAnnotation" /> class.
         /// </summary>
         public TextAnnotation()
         {
@@ -54,80 +52,72 @@ namespace OxyPlot
             this.Padding = new OxyThickness(4);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the fill color of the background rectangle.
+        /// Gets or sets the fill color of the background rectangle.
         /// </summary>
         /// <value> The background. </value>
         public OxyColor Background { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the text.
+        /// Gets or sets the color of the text.
         /// </summary>
         public OxyColor Color { get; set; }
 
         /// <summary>
-        ///   Gets or sets the horizontal alignment.
+        /// Gets or sets the horizontal alignment.
         /// </summary>
         /// <value> The horizontal alignment. </value>
         public HorizontalTextAlign HorizontalAlignment { get; set; }
 
         /// <summary>
-        ///   Gets or sets the position offset (screen coordinates).
+        /// Gets or sets the position offset (screen coordinates).
         /// </summary>
         /// <value> The offset. </value>
         public ScreenVector Offset { get; set; }
 
         /// <summary>
-        ///   Gets or sets the padding of the background rectangle.
+        /// Gets or sets the padding of the background rectangle.
         /// </summary>
         /// <value> The padding. </value>
         public OxyThickness Padding { get; set; }
 
         /// <summary>
-        ///   Gets or sets the position of the text.
+        /// Gets or sets the position of the text.
         /// </summary>
         public DataPoint Position { get; set; }
 
         /// <summary>
-        ///   Gets or sets the rotation angle (degrees).
+        /// Gets or sets the rotation angle (degrees).
         /// </summary>
         /// <value> The rotation. </value>
         public double Rotation { get; set; }
 
         /// <summary>
-        ///   Gets or sets the stroke color of the background rectangle.
+        /// Gets or sets the stroke color of the background rectangle.
         /// </summary>
         /// <value> The stroke color. </value>
         public OxyColor Stroke { get; set; }
 
         /// <summary>
-        ///   Gets or sets the stroke thickness of the background rectangle.
+        /// Gets or sets the stroke thickness of the background rectangle.
         /// </summary>
         /// <value> The stroke thickness. </value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        ///   Gets or sets the vertical alignment.
+        /// Gets or sets the vertical alignment.
         /// </summary>
         /// <value> The vertical alignment. </value>
         public VerticalTextAlign VerticalAlignment { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Renders the arrow annotation.
         /// </summary>
         /// <param name="rc">
-        /// The render context. 
+        /// The render context.
         /// </param>
         /// <param name="model">
-        /// The plot model. 
+        /// The plot model.
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
@@ -162,10 +152,6 @@ namespace OxyPlot
                 this.VerticalAlignment);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
@@ -183,22 +169,22 @@ namespace OxyPlot
         /// Gets the coordinates of the (rotated) background rectangle.
         /// </summary>
         /// <param name="position">
-        /// The position. 
+        /// The position.
         /// </param>
         /// <param name="size">
-        /// The size. 
+        /// The size.
         /// </param>
         /// <param name="padding">
-        /// The padding. 
+        /// The padding.
         /// </param>
         /// <param name="rotation">
-        /// The rotation. 
+        /// The rotation.
         /// </param>
         /// <param name="horizontalAlignment">
-        /// The horizontal alignment. 
+        /// The horizontal alignment.
         /// </param>
         /// <param name="verticalAlignment">
-        /// The vertical alignment. 
+        /// The vertical alignment.
         /// </param>
         /// <returns>
         /// The background rectangle coordinates.
@@ -255,6 +241,5 @@ namespace OxyPlot
             polygon[3] = position + u * (left - padding.Left) + v * (bottom + padding.Bottom);
             return polygon;
         }
-        #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RangeAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -108,7 +108,6 @@ namespace OxyPlot
         public double MinimumPadding { get; set; }
         public double MaximumPadding { get; set; }
 
-
         public TickStyle TickStyle { get; set; }
         public double MinorTickSize { get; set; }
         public double MajorTickSize { get; set; }
@@ -192,7 +191,6 @@ namespace OxyPlot
             return values;
         }
 
-        #region Transformations
         protected virtual double PreTransform(double x)
         {
             return x;
@@ -300,8 +298,6 @@ namespace OxyPlot
             Offset = dx / Scale + mid;
         }
 
-        #endregion
-
         public virtual void Pan(double dx)
         {
             Minimum = ActualMinimum + dx;
@@ -346,7 +342,6 @@ namespace OxyPlot
                 ActualMinorStep = MinorStep;
             else
                 ActualMinorStep = ActualMajorStep / 5;
-
 
             if (double.IsNaN(ActualMinorStep))
                 ActualMinorStep = 2;
@@ -394,11 +389,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns the actual interval to use to determine which values are 
+        /// Returns the actual interval to use to determine which values are
         /// displayed in the axis.
         /// </summary>
         /// <param name="availableSize">The available size.</param>
-        /// <returns>Actual interval to use to determine which values are 
+        /// <returns>Actual interval to use to determine which values are
         /// displayed in the axis.
         /// </returns>
         private double CalculateActualInterval2(double availableSize, double maxIntervalSize)
@@ -469,7 +464,6 @@ namespace OxyPlot
             else
                 ActualMaximum = Math.Max(ActualMaximum, p);
         }
-
 
     }
 }

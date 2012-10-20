@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyPen.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,8 +36,6 @@ namespace OxyPlot
     /// </summary>
     public class OxyPen
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyPen"/> class.
         /// </summary>
@@ -66,43 +64,35 @@ namespace OxyPlot
             this.LineJoin = lineJoin;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the color.
+        /// Gets or sets the color.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
 
         /// <summary>
-        ///   Gets or sets the dash array.
+        /// Gets or sets the dash array.
         /// </summary>
         /// <value>The dash array.</value>
         public double[] DashArray { get; set; }
 
         /// <summary>
-        ///   Gets or sets the line join.
+        /// Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
-        ///   Gets or sets the line style.
+        /// Gets or sets the line style.
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        ///   Gets or sets the thickness.
+        /// Gets or sets the thickness.
         /// </summary>
         /// <value>The thickness.</value>
         public double Thickness { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates the specified pen.
@@ -130,7 +120,7 @@ namespace OxyPlot
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
         public override int GetHashCode()
         {
@@ -144,6 +134,5 @@ namespace OxyPlot
             }
         }
 
-        #endregion
     }
 }

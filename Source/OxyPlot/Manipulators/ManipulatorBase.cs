@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ManipulatorBase.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -34,8 +34,6 @@ namespace OxyPlot
     /// </summary>
     public class ManipulatorBase
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ManipulatorBase"/> class.
         /// </summary>
@@ -47,39 +45,27 @@ namespace OxyPlot
             this.PlotControl = plotControl;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the first position of the manipulation.
+        /// Gets the first position of the manipulation.
         /// </summary>
         public ScreenPoint StartPosition { get; private set; }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets the plot control.
+        /// Gets the plot control.
         /// </summary>
         protected IPlotControl PlotControl { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the X axis.
+        /// Gets or sets the X axis.
         /// </summary>
         /// <value>The X axis.</value>
         protected Axis XAxis { get; set; }
 
         /// <summary>
-        ///   Gets or sets the Y axis.
+        /// Gets or sets the Y axis.
         /// </summary>
         /// <value>The Y axis.</value>
         protected Axis YAxis { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Occurs when a manipulation is complete.
@@ -132,10 +118,6 @@ namespace OxyPlot
             this.PlotControl.SetCursorType(this.GetCursorType());
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Transforms a point from screen coordinates to data coordinates.
         /// </summary>
@@ -163,6 +145,5 @@ namespace OxyPlot
             return new DataPoint();
         }
 
-        #endregion
     }
 }

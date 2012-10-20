@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SilverlightRenderContext.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -42,21 +42,15 @@ namespace OxyPlot.Silverlight
     /// </summary>
     public class SilverlightRenderContext : IRenderContext
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The brush cache.
+        /// The brush cache.
         /// </summary>
         private readonly Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
 
         /// <summary>
-        ///   The canvas.
+        /// The canvas.
         /// </summary>
         private readonly Canvas canvas;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SilverlightRenderContext"/> class.
@@ -71,21 +65,17 @@ namespace OxyPlot.Silverlight
             this.Height = canvas.ActualHeight;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the height.
+        /// Gets the height.
         /// </summary>
         /// <value>The height.</value>
         public double Height { get; private set; }
 
         /// <summary>
-        ///   Gets a value indicating whether to paint the background.
+        /// Gets a value indicating whether to paint the background.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if the background should be painted; otherwise, <c>false</c>.
+        ///  <c>true</c> if the background should be painted; otherwise, <c>false</c>.
         /// </value>
         public bool PaintBackground
         {
@@ -96,26 +86,18 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets the width.
+        /// Gets the width.
         /// </summary>
         /// <value>The width.</value>
         public double Width { get; private set; }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets or sets the current tooltip.
+        /// Gets or sets the current tooltip.
         /// </summary>
         /// <value>
-        ///   The current tooltip.
+        /// The current tooltip.
         /// </value>
         private string CurrentToolTip { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The draw ellipse.
@@ -183,8 +165,8 @@ namespace OxyPlot.Silverlight
                 gg.Children.Add(
                     new EllipseGeometry
                         {
-                            Center = new Point(rect.Left + rect.Width / 2, rect.Top + rect.Height / 2), 
-                            RadiusX = rect.Width / 2, 
+                            Center = new Point(rect.Left + rect.Width / 2, rect.Top + rect.Height / 2),
+                            RadiusX = rect.Width / 2,
                             RadiusY = rect.Height / 2
                         });
             }
@@ -215,11 +197,11 @@ namespace OxyPlot.Silverlight
         /// The aliased.
         /// </param>
         public void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var e = new Polyline();
@@ -258,11 +240,11 @@ namespace OxyPlot.Silverlight
         /// The aliased.
         /// </param>
         public void DrawLineSegments(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var path = new Path();
@@ -316,12 +298,12 @@ namespace OxyPlot.Silverlight
         /// The aliased.
         /// </param>
         public void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var po = new Polygon();
@@ -368,12 +350,12 @@ namespace OxyPlot.Silverlight
         /// The aliased.
         /// </param>
         public void DrawPolygons(
-            IList<IList<ScreenPoint>> polygons, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<IList<ScreenPoint>> polygons,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var path = new Path();
@@ -446,7 +428,7 @@ namespace OxyPlot.Silverlight
 
         /// <summary>
         /// Draws a collection of rectangles, where all have the same stroke and fill.
-        ///   This performs better than calling DrawRectangle multiple times.
+        /// This performs better than calling DrawRectangle multiple times.
         /// </summary>
         /// <param name="rectangles">
         /// The rectangles.
@@ -513,15 +495,15 @@ namespace OxyPlot.Silverlight
         /// The maximum size of the text.
         /// </param>
         public void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalTextAlign halign, 
-            VerticalTextAlign valign, 
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalTextAlign halign,
+            VerticalTextAlign valign,
             OxySize? maxSize)
         {
             var tb = new TextBlock { Text = text, Foreground = new SolidColorBrush(fill.ToColor()) };
@@ -641,16 +623,12 @@ namespace OxyPlot.Silverlight
         /// The text in the tooltip.
         /// </param>
         /// <params>
-        ///   This is only used in the plot controls.
+        /// This is only used in the plot controls.
         /// </params>
         public void SetToolTip(string text)
         {
             this.CurrentToolTip = text;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The create dash array collection.
@@ -751,11 +729,11 @@ namespace OxyPlot.Silverlight
         /// The aliased.
         /// </param>
         private void SetStroke(
-            Shape shape, 
-            OxyColor stroke, 
-            double thickness, 
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, 
-            double[] dashArray = null, 
+            Shape shape,
+            OxyColor stroke,
+            double thickness,
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            double[] dashArray = null,
             bool aliased = false)
         {
             if (stroke != null && thickness > 0)
@@ -789,6 +767,5 @@ namespace OxyPlot.Silverlight
             // shape.UseLayoutRounding = aliased;
         }
 
-        #endregion
     }
 }

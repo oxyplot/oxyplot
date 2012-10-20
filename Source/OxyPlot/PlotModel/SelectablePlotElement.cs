@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SelectablePlotElement.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,19 +37,13 @@ namespace OxyPlot
     [Serializable]
     public abstract class SelectablePlotElement : PlotElement
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The is selected.
+        /// The is selected.
         /// </summary>
         private bool isSelected;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectablePlotElement"/> class. 
+        /// Initializes a new instance of the <see cref="SelectablePlotElement"/> class.
         /// </summary>
         protected SelectablePlotElement()
         {
@@ -57,18 +51,10 @@ namespace OxyPlot
             this.IsSelected = false;
         }
 
-        #endregion
-
-        #region Public Events
-
         /// <summary>
-        ///   Occurs when the IsSelected property is changed.
+        /// Occurs when the IsSelected property is changed.
         /// </summary>
         public event EventHandler Selected;
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets the index of the selected item (or -1 if all items are selected).
@@ -79,7 +65,7 @@ namespace OxyPlot
         public int SelectedIndex { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this plot element is selected.
+        /// Gets or sets a value indicating whether this plot element is selected.
         /// </summary>
         public bool IsSelected
         {
@@ -101,16 +87,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this plot element can be selected.
+        /// Gets or sets a value indicating whether this plot element can be selected.
         /// </summary>
         public bool Selectable { get; set; }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets the actual selection color.
+        /// Gets the actual selection color.
         /// </summary>
         /// <value> The actual selection color. </value>
         protected OxyColor ActualSelectedColor
@@ -125,10 +107,6 @@ namespace OxyPlot
                 return PlotModel.DefaultSelectionColor;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets the selection color it the element is selected, or the specified color if it is not.
@@ -166,10 +144,6 @@ namespace OxyPlot
             return this.GetSelectableColor(originalColor, index);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Raises the Selected event.
         /// </summary>
@@ -182,6 +156,5 @@ namespace OxyPlot
             }
         }
 
-        #endregion
     }
 }

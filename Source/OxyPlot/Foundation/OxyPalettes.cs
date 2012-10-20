@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyPalettes.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -34,10 +34,8 @@ namespace OxyPlot
     /// </summary>
     public static class OxyPalettes
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes static members of the <see cref="OxyPalettes"/> class. 
+        /// Initializes static members of the <see cref="OxyPalettes"/> class.
         /// </summary>
         static OxyPalettes()
         {
@@ -46,37 +44,29 @@ namespace OxyPlot
             Hue64 = Hue(64);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the blue white red (31) palette.
+        /// Gets the blue white red (31) palette.
         /// </summary>
         public static OxyPalette BlueWhiteRed31 { get; private set; }
 
         /// <summary>
-        ///   Gets the hot (64) palette.
+        /// Gets the hot (64) palette.
         /// </summary>
         public static OxyPalette Hot64 { get; private set; }
 
         /// <summary>
-        ///   Gets the hue64 palette.
+        /// Gets the hue64 palette.
         /// </summary>
         public static OxyPalette Hue64 { get; private set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates a black/white/red palette with the specified number of colors.
         /// </summary>
         /// <param name="numberOfColors">
-        /// The number of colors to create for the palette. 
+        /// The number of colors to create for the palette.
         /// </param>
         /// <returns>
-        /// A palette. 
+        /// A palette.
         /// </returns>
         public static OxyPalette BlackWhiteRed(int numberOfColors)
         {
@@ -87,10 +77,10 @@ namespace OxyPlot
         /// Creates a blue/white/red palette with the specified number of colors.
         /// </summary>
         /// <param name="numberOfColors">
-        /// The number of colors to create for the palette. 
+        /// The number of colors to create for the palette.
         /// </param>
         /// <returns>
-        /// A palette. 
+        /// A palette.
         /// </returns>
         public static OxyPalette BlueWhiteRed(int numberOfColors)
         {
@@ -101,10 +91,10 @@ namespace OxyPlot
         /// Creates a 'cool' palette with the specified number of colors.
         /// </summary>
         /// <param name="numberOfColors">
-        /// The number of colors to create for the palette. 
+        /// The number of colors to create for the palette.
         /// </param>
         /// <returns>
-        /// A palette. 
+        /// A palette.
         /// </returns>
         public static OxyPalette Cool(int numberOfColors)
         {
@@ -115,10 +105,10 @@ namespace OxyPlot
         /// Creates a gray-scale palette with the specified number of colors.
         /// </summary>
         /// <param name="numberOfColors">
-        /// The number of colors to create for the palette. 
+        /// The number of colors to create for the palette.
         /// </param>
         /// <returns>
-        /// A palette. 
+        /// A palette.
         /// </returns>
         public static OxyPalette Gray(int numberOfColors)
         {
@@ -129,19 +119,19 @@ namespace OxyPlot
         /// Creates a 'hot' palette with the specified number of colors.
         /// </summary>
         /// <param name="numberOfColors">
-        /// The number of colors to create for the palette. 
+        /// The number of colors to create for the palette.
         /// </param>
         /// <returns>
-        /// A palette. 
+        /// A palette.
         /// </returns>
         public static OxyPalette Hot(int numberOfColors)
         {
             return OxyPalette.Interpolate(
-                numberOfColors, 
-                OxyColors.Black, 
-                OxyColor.FromRGB(127, 0, 0), 
-                OxyColor.FromRGB(255, 127, 0), 
-                OxyColor.FromRGB(255, 255, 127), 
+                numberOfColors,
+                OxyColors.Black,
+                OxyColor.FromRGB(127, 0, 0),
+                OxyColor.FromRGB(255, 127, 0),
+                OxyColor.FromRGB(255, 255, 127),
                 OxyColors.White);
         }
 
@@ -149,10 +139,10 @@ namespace OxyPlot
         /// Creates a palette from the hue component of the HSV color model.
         /// </summary>
         /// <param name="numberOfColors">
-        /// The number of colors. 
+        /// The number of colors.
         /// </param>
         /// <returns>
-        /// The palette. 
+        /// The palette.
         /// </returns>
         /// <remarks>
         /// This palette is particularly appropriate for displaying periodic functions.
@@ -160,13 +150,13 @@ namespace OxyPlot
         public static OxyPalette Hue(int numberOfColors)
         {
             return OxyPalette.Interpolate(
-                numberOfColors, 
-                OxyColors.Red, 
-                OxyColors.Yellow, 
-                OxyColors.Green, 
-                OxyColors.Cyan, 
-                OxyColors.Blue, 
-                OxyColors.Magenta, 
+                numberOfColors,
+                OxyColors.Red,
+                OxyColors.Yellow,
+                OxyColors.Green,
+                OxyColors.Cyan,
+                OxyColors.Blue,
+                OxyColors.Magenta,
                 OxyColors.Red);
         }
 
@@ -174,10 +164,10 @@ namespace OxyPlot
         /// Creates a 'jet' palette with the specified number of colors.
         /// </summary>
         /// <param name="numberOfColors">
-        /// The number of colors to create for the palette. 
+        /// The number of colors to create for the palette.
         /// </param>
         /// <returns>
-        /// A palette. 
+        /// A palette.
         /// </returns>
         /// <remarks>
         /// See http://www.mathworks.se/help/techdoc/ref/colormap.html.
@@ -185,11 +175,11 @@ namespace OxyPlot
         public static OxyPalette Jet(int numberOfColors)
         {
             return OxyPalette.Interpolate(
-                numberOfColors, 
-                OxyColors.DarkBlue, 
-                OxyColors.Cyan, 
-                OxyColors.Yellow, 
-                OxyColors.Orange, 
+                numberOfColors,
+                OxyColors.DarkBlue,
+                OxyColors.Cyan,
+                OxyColors.Yellow,
+                OxyColors.Orange,
                 OxyColors.DarkRed);
         }
 
@@ -197,24 +187,23 @@ namespace OxyPlot
         /// Creates a rainbow palette with the specified number of colors.
         /// </summary>
         /// <param name="numberOfColors">
-        /// The number of colors to create for the palette. 
+        /// The number of colors to create for the palette.
         /// </param>
         /// <returns>
-        /// A palette. 
+        /// A palette.
         /// </returns>
         public static OxyPalette Rainbow(int numberOfColors)
         {
             return OxyPalette.Interpolate(
-                numberOfColors, 
-                OxyColors.Violet, 
-                OxyColors.Indigo, 
-                OxyColors.Blue, 
-                OxyColors.Green, 
-                OxyColors.Yellow, 
-                OxyColors.Orange, 
+                numberOfColors,
+                OxyColors.Violet,
+                OxyColors.Indigo,
+                OxyColors.Blue,
+                OxyColors.Green,
+                OxyColors.Yellow,
+                OxyColors.Orange,
                 OxyColors.Red);
         }
 
-        #endregion
     }
 }

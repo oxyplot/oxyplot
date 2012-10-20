@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -42,66 +42,60 @@ namespace OxyPlot.WindowsForms
     [Serializable]
     public class Plot : Control, IPlotControl
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The category for the properties of this control.
+        /// The category for the properties of this control.
         /// </summary>
         private const string OxyPlotCategory = "OxyPlot";
 
         /// <summary>
-        ///   The invalidate lock.
+        /// The invalidate lock.
         /// </summary>
         private readonly object invalidateLock = new object();
 
         /// <summary>
-        ///   The model lock.
+        /// The model lock.
         /// </summary>
         private readonly object modelLock = new object();
 
         /// <summary>
-        ///   The rendering lock.
+        /// The rendering lock.
         /// </summary>
         private readonly object renderingLock = new object();
 
         /// <summary>
-        ///   The current model (holding a reference to this plot control).
+        /// The current model (holding a reference to this plot control).
         /// </summary>
         [NonSerialized]
         private PlotModel currentModel;
 
         /// <summary>
-        ///   The is model invalidated.
+        /// The is model invalidated.
         /// </summary>
         private bool isModelInvalidated;
 
         /// <summary>
-        ///   The model.
+        /// The model.
         /// </summary>
         private PlotModel model;
 
         /// <summary>
-        ///   The mouse manipulator.
+        /// The mouse manipulator.
         /// </summary>
         [NonSerialized]
         private ManipulatorBase mouseManipulator;
 
         /// <summary>
-        ///   The update data flag.
+        /// The update data flag.
         /// </summary>
         private bool updateDataFlag = true;
 
         /// <summary>
-        ///   The zoom rectangle.
+        /// The zoom rectangle.
         /// </summary>
         private Rectangle zoomRectangle;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="Plot"/> class. 
+        /// Initializes a new instance of the <see cref="Plot"/> class.
         /// </summary>
         public Plot()
         {
@@ -116,12 +110,8 @@ namespace OxyPlot.WindowsForms
             this.ZoomVerticalCursor = Cursors.SizeNS;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the actual model.
+        /// Gets the actual model.
         /// </summary>
         /// <value> The actual model. </value>
         public PlotModel ActualModel
@@ -133,21 +123,21 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        ///   Gets or sets the keyboard pan horizontal step.
+        /// Gets or sets the keyboard pan horizontal step.
         /// </summary>
         /// <value> The keyboard pan horizontal step. </value>
         [Category(OxyPlotCategory)]
         public double KeyboardPanHorizontalStep { get; set; }
 
         /// <summary>
-        ///   Gets or sets the keyboard pan vertical step.
+        /// Gets or sets the keyboard pan vertical step.
         /// </summary>
         /// <value> The keyboard pan vertical step. </value>
         [Category(OxyPlotCategory)]
         public double KeyboardPanVerticalStep { get; set; }
 
         /// <summary>
-        ///   Gets or sets the model.
+        /// Gets or sets the model.
         /// </summary>
         [Browsable(false)]
         [DefaultValue(null)]
@@ -170,44 +160,40 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        ///   Gets or sets the pan cursor.
+        /// Gets or sets the pan cursor.
         /// </summary>
         [Category(OxyPlotCategory)]
         public Cursor PanCursor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the horizontal zoom cursor.
+        /// Gets or sets the horizontal zoom cursor.
         /// </summary>
         [Category(OxyPlotCategory)]
         public Cursor ZoomHorizontalCursor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the rectangle zoom cursor.
+        /// Gets or sets the rectangle zoom cursor.
         /// </summary>
         [Category(OxyPlotCategory)]
         public Cursor ZoomRectangleCursor { get; set; }
 
         /// <summary>
-        ///   Gets or sets vertical zoom cursor.
+        /// Gets or sets vertical zoom cursor.
         /// </summary>
         [Category(OxyPlotCategory)]
         public Cursor ZoomVerticalCursor { get; set; }
-
-        #endregion
-
-        #region Public Methods and Operators
 
         /// <summary>
         /// Get the axes from a point.
         /// </summary>
         /// <param name="pt">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <param name="xaxis">
-        /// The xaxis. 
+        /// The xaxis.
         /// </param>
         /// <param name="yaxis">
-        /// The yaxis. 
+        /// The yaxis.
         /// </param>
         public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis)
         {
@@ -225,13 +211,13 @@ namespace OxyPlot.WindowsForms
         /// Get the series from a point.
         /// </summary>
         /// <param name="pt">
-        /// The ppint. 
+        /// The ppint.
         /// </param>
         /// <param name="limit">
-        /// The limit. 
+        /// The limit.
         /// </param>
         /// <returns>
-        /// The series. 
+        /// The series.
         /// </returns>
         public Series GetSeriesFromPoint(ScreenPoint pt, double limit)
         {
@@ -263,7 +249,7 @@ namespace OxyPlot.WindowsForms
         /// The invalidate plot.
         /// </summary>
         /// <param name="updateData">
-        /// The update data. 
+        /// The update data.
         /// </param>
         public void InvalidatePlot(bool updateData)
         {
@@ -308,13 +294,13 @@ namespace OxyPlot.WindowsForms
         /// The pan.
         /// </summary>
         /// <param name="axis">
-        /// The axis. 
+        /// The axis.
         /// </param>
         /// <param name="x0">
-        /// The x 0. 
+        /// The x 0.
         /// </param>
         /// <param name="x1">
-        /// The x 1. 
+        /// The x 1.
         /// </param>
         public void Pan(Axis axis, ScreenPoint x0, ScreenPoint x1)
         {
@@ -326,10 +312,10 @@ namespace OxyPlot.WindowsForms
         /// Pans all axes.
         /// </summary>
         /// <param name="deltax">
-        /// The deltax. 
+        /// The deltax.
         /// </param>
         /// <param name="deltay">
-        /// The deltay. 
+        /// The deltay.
         /// </param>
         public void PanAll(double deltax, double deltay)
         {
@@ -345,7 +331,7 @@ namespace OxyPlot.WindowsForms
         /// The refresh plot.
         /// </summary>
         /// <param name="updateData">
-        /// The update data. 
+        /// The update data.
         /// </param>
         public void RefreshPlot(bool updateData)
         {
@@ -362,7 +348,7 @@ namespace OxyPlot.WindowsForms
         /// The reset.
         /// </summary>
         /// <param name="axis">
-        /// The axis. 
+        /// The axis.
         /// </param>
         public void Reset(Axis axis)
         {
@@ -374,7 +360,7 @@ namespace OxyPlot.WindowsForms
         /// Sets the cursor type.
         /// </summary>
         /// <param name="cursorType">
-        /// The cursor type. 
+        /// The cursor type.
         /// </param>
         public void SetCursorType(CursorType cursorType)
         {
@@ -402,7 +388,7 @@ namespace OxyPlot.WindowsForms
         /// The show tracker.
         /// </summary>
         /// <param name="data">
-        /// The data. 
+        /// The data.
         /// </param>
         public void ShowTracker(TrackerHitResult data)
         {
@@ -413,7 +399,7 @@ namespace OxyPlot.WindowsForms
         /// The show zoom rectangle.
         /// </summary>
         /// <param name="r">
-        /// The r. 
+        /// The r.
         /// </param>
         public void ShowZoomRectangle(OxyRect r)
         {
@@ -425,13 +411,13 @@ namespace OxyPlot.WindowsForms
         /// The zoom.
         /// </summary>
         /// <param name="axis">
-        /// The axis. 
+        /// The axis.
         /// </param>
         /// <param name="p1">
-        /// The p 1. 
+        /// The p 1.
         /// </param>
         /// <param name="p2">
-        /// The p 2. 
+        /// The p 2.
         /// </param>
         public void Zoom(Axis axis, double p1, double p2)
         {
@@ -456,7 +442,7 @@ namespace OxyPlot.WindowsForms
         /// Zooms all axes.
         /// </summary>
         /// <param name="delta">
-        /// The delta. 
+        /// The delta.
         /// </param>
         public void ZoomAllAxes(double delta)
         {
@@ -472,13 +458,13 @@ namespace OxyPlot.WindowsForms
         /// The zoom at.
         /// </summary>
         /// <param name="axis">
-        /// The axis. 
+        /// The axis.
         /// </param>
         /// <param name="factor">
-        /// The factor. 
+        /// The factor.
         /// </param>
         /// <param name="x">
-        /// The x. 
+        /// The x.
         /// </param>
         public void ZoomAt(Axis axis, double factor, double x = double.NaN)
         {
@@ -492,15 +478,11 @@ namespace OxyPlot.WindowsForms
             this.InvalidatePlot(false);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The on mouse down.
         /// </summary>
         /// <param name="e">
-        /// The e. 
+        /// The e.
         /// </param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
@@ -536,7 +518,7 @@ namespace OxyPlot.WindowsForms
         /// The on mouse move.
         /// </summary>
         /// <param name="e">
-        /// The e. 
+        /// The e.
         /// </param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -562,7 +544,7 @@ namespace OxyPlot.WindowsForms
         /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
         /// </summary>
         /// <param name="e">
-        /// A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data. 
+        /// A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnMouseUp(MouseEventArgs e)
         {
@@ -591,7 +573,7 @@ namespace OxyPlot.WindowsForms
         /// Raises the <see cref="E:System.Windows.Forms.Control.MouseWheel"/> event.
         /// </summary>
         /// <param name="e">
-        /// A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data. 
+        /// A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnMouseWheel(MouseEventArgs e)
         {
@@ -605,7 +587,7 @@ namespace OxyPlot.WindowsForms
         /// Raises the <see cref="E:System.Windows.Forms.Control.Paint"/> event.
         /// </summary>
         /// <param name="e">
-        /// A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data. 
+        /// A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -663,7 +645,7 @@ namespace OxyPlot.WindowsForms
         /// Raises the <see cref="E:System.Windows.Forms.Control.PreviewKeyDown"/> event.
         /// </summary>
         /// <param name="e">
-        /// A <see cref="T:System.Windows.Forms.PreviewKeyDownEventArgs"/> that contains the event data. 
+        /// A <see cref="T:System.Windows.Forms.PreviewKeyDownEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnPreviewKeyDown(PreviewKeyDownEventArgs e)
         {
@@ -756,7 +738,7 @@ namespace OxyPlot.WindowsForms
         /// Raises the <see cref="E:System.Windows.Forms.Control.Resize"/> event.
         /// </summary>
         /// <param name="e">
-        /// An <see cref="T:System.EventArgs"/> that contains the event data. 
+        /// An <see cref="T:System.EventArgs"/> that contains the event data.
         /// </param>
         protected override void OnResize(EventArgs e)
         {
@@ -768,10 +750,10 @@ namespace OxyPlot.WindowsForms
         /// Converts the changed button.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.
         /// </param>
         /// <returns>
-        /// The mouse button. 
+        /// The mouse button.
         /// </returns>
         private static OxyMouseButton ConvertChangedButton(MouseEventArgs e)
         {
@@ -796,10 +778,10 @@ namespace OxyPlot.WindowsForms
         /// Creates the mouse event arguments.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.
         /// </param>
         /// <returns>
-        /// Mouse event arguments. 
+        /// Mouse event arguments.
         /// </returns>
         private OxyMouseEventArgs CreateMouseEventArgs(MouseEventArgs e)
         {
@@ -817,10 +799,10 @@ namespace OxyPlot.WindowsForms
         /// Creates the manipulation event args.
         /// </summary>
         /// <param name="e">
-        /// The MouseEventArgs instance containing the event data. 
+        /// The MouseEventArgs instance containing the event data.
         /// </param>
         /// <returns>
-        /// A manipulation event args object. 
+        /// A manipulation event args object.
         /// </returns>
         private ManipulationEventArgs CreateManipulationEventArgs(MouseEventArgs e)
         {
@@ -831,10 +813,10 @@ namespace OxyPlot.WindowsForms
         /// Gets the manipulator for the current mouse button and modifier keys.
         /// </summary>
         /// <param name="e">
-        /// The event args. 
+        /// The event args.
         /// </param>
         /// <returns>
-        /// A manipulator or null if no gesture was recognized. 
+        /// A manipulator or null if no gesture was recognized.
         /// </returns>
         private ManipulatorBase GetManipulator(MouseEventArgs e)
         {
@@ -885,7 +867,7 @@ namespace OxyPlot.WindowsForms
         /// The set clipboard text.
         /// </summary>
         /// <param name="text">
-        /// The text. 
+        /// The text.
         /// </param>
         private void SetClipboardText(string text)
         {
@@ -902,6 +884,5 @@ namespace OxyPlot.WindowsForms
             }
         }
 
-        #endregion
     }
 }

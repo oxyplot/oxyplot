@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ScreenVector.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,34 +37,28 @@ namespace OxyPlot
     /// </summary>
     public struct ScreenVector
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The x.
+        /// The x.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
             Justification = "Reviewed. Suppression is OK here.")]
         internal double x;
 
         /// <summary>
-        ///   The y.
+        /// The y.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
             Justification = "Reviewed. Suppression is OK here.")]
         internal double y;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScreenVector"/> struct. 
+        /// Initializes a new instance of the <see cref="ScreenVector"/> struct.
         /// </summary>
         /// <param name="x">
-        /// The x. 
+        /// The x.
         /// </param>
         /// <param name="y">
-        /// The y. 
+        /// The y.
         /// </param>
         public ScreenVector(double x, double y)
         {
@@ -72,12 +66,8 @@ namespace OxyPlot
             this.y = y;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the length.
+        /// Gets the length.
         /// </summary>
         public double Length
         {
@@ -88,7 +78,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets the length squared.
+        /// Gets the length squared.
         /// </summary>
         public double LengthSquared
         {
@@ -99,7 +89,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the X.
+        /// Gets or sets the X.
         /// </summary>
         /// <value> The X. </value>
         public double X
@@ -116,7 +106,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the Y.
+        /// Gets or sets the Y.
         /// </summary>
         /// <value> The Y. </value>
         public double Y
@@ -131,10 +121,6 @@ namespace OxyPlot
                 this.y = value;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Normalizes this vector.
@@ -153,19 +139,15 @@ namespace OxyPlot
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance. 
+        /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
             return this.x + " " + this.y;
         }
 
-        #endregion
-
-        #region Operators
-
         /// <summary>
-        ///   Implements the operator *.
+        /// Implements the operator *.
         /// </summary>
         /// <param name="v"> The v. </param>
         /// <param name="d"> The d. </param>
@@ -175,6 +157,5 @@ namespace OxyPlot
             return new ScreenVector(v.x * d, v.y * d);
         }
 
-        #endregion
     }
 }

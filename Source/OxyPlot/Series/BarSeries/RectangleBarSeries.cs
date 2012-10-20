@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RectangleBarSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -42,8 +42,6 @@ namespace OxyPlot
         /// </summary>
         private OxyColor defaultFillColor;
 
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RectangleBarSeries"/> class.
         /// </summary>
@@ -61,15 +59,11 @@ namespace OxyPlot
             // this.LabelFormatString = "{0}-{1},{2}-{3}"; // X0-X1,Y0-Y1
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets the default color of the interior of the Maximum bars.
         /// </summary>
         /// <value>
-        /// The color. 
+        /// The color.
         /// </value>
         public OxyColor FillColor { get; set; }
 
@@ -101,7 +95,7 @@ namespace OxyPlot
         /// Gets or sets the color of the border around the bars.
         /// </summary>
         /// <value>
-        /// The color of the stroke. 
+        /// The color of the stroke.
         /// </value>
         public OxyColor StrokeColor { get; set; }
 
@@ -109,34 +103,26 @@ namespace OxyPlot
         /// Gets or sets the thickness of the bar border strokes.
         /// </summary>
         /// <value>
-        /// The stroke thickness. 
+        /// The stroke thickness.
         /// </value>
         public double StrokeThickness { get; set; }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the actual rectangles for the maximum bars.
         /// </summary>
         internal IList<OxyRect> ActualBarRectangles { get; set; }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Gets the point in the dataset that is nearest the specified point.
         /// </summary>
         /// <param name="point">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <param name="interpolate">
-        /// The interpolate. 
+        /// The interpolate.
         /// </param>
         /// <returns>
-        /// A TrackerHitResult for the current hit. 
+        /// A TrackerHitResult for the current hit.
         /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
@@ -150,13 +136,13 @@ namespace OxyPlot
                     var dp = new DataPoint(i, value);
                     var item = this.GetItem(i);
                     var text = StringHelper.Format(
-                        this.ActualCulture, 
-                        this.TrackerFormatString, 
-                        item, 
-                        this.Items[i].X0, 
-                        this.Items[i].X1, 
-                        this.Items[i].Y0, 
-                        this.Items[i].Y1, 
+                        this.ActualCulture,
+                        this.TrackerFormatString,
+                        item,
+                        this.Items[i].X0,
+                        this.Items[i].X1,
+                        this.Items[i].Y0,
+                        this.Items[i].Y1,
                         this.Items[i].Title);
                     return new TrackerHitResult(this, dp, sp, item, i, text);
                 }
@@ -169,13 +155,13 @@ namespace OxyPlot
         /// Checks if the specified value is valid.
         /// </summary>
         /// <param name="v">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <param name="yaxis">
-        /// The y axis. 
+        /// The y axis.
         /// </param>
         /// <returns>
-        /// True if the value is valid. 
+        /// True if the value is valid.
         /// </returns>
         public virtual bool IsValidPoint(double v, Axis yaxis)
         {
@@ -186,10 +172,10 @@ namespace OxyPlot
         /// Renders the Series on the specified rendering context.
         /// </summary>
         /// <param name="rc">
-        /// The rendering context. 
+        /// The rendering context.
         /// </param>
         /// <param name="model">
-        /// The model. 
+        /// The model.
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
@@ -220,37 +206,37 @@ namespace OxyPlot
                 this.ActualBarRectangles.Add(rectangle);
 
                 rc.DrawClippedRectangleAsPolygon(
-                    rectangle, 
-                    clippingRect, 
-                    this.GetSelectableFillColor(item.Color ?? this.ActualFillColor), 
-                    this.StrokeColor, 
+                    rectangle,
+                    clippingRect,
+                    this.GetSelectableFillColor(item.Color ?? this.ActualFillColor),
+                    this.StrokeColor,
                     this.StrokeThickness);
 
                 if (this.LabelFormatString != null)
                 {
                     var s = StringHelper.Format(
-                        this.ActualCulture, 
-                        this.LabelFormatString, 
-                        this.GetItem(i), 
-                        item.X0, 
-                        item.X1, 
-                        item.Y0, 
-                        item.Y1, 
+                        this.ActualCulture,
+                        this.LabelFormatString,
+                        this.GetItem(i),
+                        item.X0,
+                        item.X1,
+                        item.Y0,
+                        item.Y1,
                         item.Title);
 
                     var pt = new ScreenPoint(
                         (rectangle.Left + rectangle.Right) / 2, (rectangle.Top + rectangle.Bottom) / 2);
 
                     rc.DrawClippedText(
-                        clippingRect, 
-                        pt, 
-                        s, 
-                        this.ActualTextColor, 
-                        this.ActualFont, 
-                        this.ActualFontSize, 
-                        this.ActualFontWeight, 
-                        0, 
-                        HorizontalTextAlign.Center, 
+                        clippingRect,
+                        pt,
+                        s,
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.ActualFontSize,
+                        this.ActualFontWeight,
+                        0,
+                        HorizontalTextAlign.Center,
                         VerticalTextAlign.Middle);
                 }
 
@@ -262,10 +248,10 @@ namespace OxyPlot
         /// Renders the legend symbol on the specified rendering context.
         /// </summary>
         /// <param name="rc">
-        /// The rendering context. 
+        /// The rendering context.
         /// </param>
         /// <param name="legendBox">
-        /// The legend rectangle. 
+        /// The legend rectangle.
         /// </param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
@@ -274,21 +260,17 @@ namespace OxyPlot
             double height = (legendBox.Bottom - legendBox.Top) * 0.8;
             double width = height;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height), 
-                this.GetSelectableFillColor(this.ActualFillColor), 
-                this.StrokeColor, 
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
+                this.GetSelectableFillColor(this.ActualFillColor),
+                this.StrokeColor,
                 this.StrokeThickness);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The set default values.
         /// </summary>
         /// <param name="model">
-        /// The model. 
+        /// The model.
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
@@ -350,6 +332,5 @@ namespace OxyPlot
             this.MaxY = maxValueY;
         }
 
-        #endregion
     }
 }

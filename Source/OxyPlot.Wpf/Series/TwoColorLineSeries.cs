@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TwoColorLineSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,47 +37,37 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class TwoColorLineSeries : LineSeries
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The color 2 property.
+        /// The color 2 property.
         /// </summary>
         public static readonly DependencyProperty Color2Property = DependencyProperty.Register(
             "Color2", typeof(Color), typeof(TwoColorLineSeries), new UIPropertyMetadata(Colors.Blue, AppearanceChanged));
 
         /// <summary>
-        ///   The limit property.
+        /// The limit property.
         /// </summary>
         public static readonly DependencyProperty LimitProperty = DependencyProperty.Register(
             "Limit", typeof(double), typeof(TwoColorLineSeries), new UIPropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
-        ///   The line style 2 property.
+        /// The line style 2 property.
         /// </summary>
         public static readonly DependencyProperty LineStyle2Property = DependencyProperty.Register(
-            "LineStyle2", 
-            typeof(LineStyle), 
-            typeof(TwoColorLineSeries), 
+            "LineStyle2",
+            typeof(LineStyle),
+            typeof(TwoColorLineSeries),
             new UIPropertyMetadata(LineStyle.Solid, AppearanceChanged));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TwoColorLineSeries" /> class.
+        /// Initializes a new instance of the <see cref = "TwoColorLineSeries" /> class.
         /// </summary>
         public TwoColorLineSeries()
         {
             this.InternalSeries = new OxyPlot.TwoColorLineSeries();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets Color2.
+        /// Gets or sets Color2.
         /// </summary>
         public Color Color2
         {
@@ -93,7 +83,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets Limit.
+        /// Gets or sets Limit.
         /// </summary>
         public double Limit
         {
@@ -109,7 +99,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets LineStyle2.
+        /// Gets or sets LineStyle2.
         /// </summary>
         public LineStyle LineStyle2
         {
@@ -123,10 +113,6 @@ namespace OxyPlot.Wpf
                 this.SetValue(LineStyle2Property, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The synchronize properties.
@@ -142,6 +128,5 @@ namespace OxyPlot.Wpf
             s.Color2 = this.Color2.ToOxyColor();
         }
 
-        #endregion
     }
 }

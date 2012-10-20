@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Series.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -39,42 +39,36 @@ namespace OxyPlot.Wpf
     /// </summary>
     public abstract class Series : ItemsControl
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The color property.
+        /// The color property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color?), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        ///   The title property.
+        /// The title property.
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        ///   The tracker format string property.
+        /// The tracker format string property.
         /// </summary>
         public static readonly DependencyProperty TrackerFormatStringProperty =
             DependencyProperty.Register(
-                "TrackerFormatString", 
-                typeof(string), 
-                typeof(XYAxisSeries), 
+                "TrackerFormatString",
+                typeof(string),
+                typeof(XYAxisSeries),
                 new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        ///   The tracker key property.
+        /// The tracker key property.
         /// </summary>
         public static readonly DependencyProperty TrackerKeyProperty = DependencyProperty.Register(
             "TrackerKey", typeof(string), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes static members of the <see cref="Series"/> class. 
+        /// Initializes static members of the <see cref="Series"/> class.
         /// </summary>
         static Series()
         {
@@ -82,12 +76,8 @@ namespace OxyPlot.Wpf
                 typeof(Series), new PropertyMetadata(Visibility.Visible, AppearanceChanged));
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets Color.
+        /// Gets or sets Color.
         /// </summary>
         public Color? Color
         {
@@ -103,7 +93,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets Title.
+        /// Gets or sets Title.
         /// </summary>
         public string Title
         {
@@ -119,7 +109,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets TrackerFormatString.
+        /// Gets or sets TrackerFormatString.
         /// </summary>
         public string TrackerFormatString
         {
@@ -135,7 +125,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets TrackerKey.
+        /// Gets or sets TrackerKey.
         /// </summary>
         public string TrackerKey
         {
@@ -150,10 +140,6 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         /// <summary>
         /// Creates the model.
         /// </summary>
@@ -162,18 +148,14 @@ namespace OxyPlot.Wpf
         /// </returns>
         public abstract OxyPlot.Series CreateModel();
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The appearance changed.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         /// <param name="e">
-        /// The e. 
+        /// The e.
         /// </param>
         protected static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -184,10 +166,10 @@ namespace OxyPlot.Wpf
         /// The data changed.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         /// <param name="e">
-        /// The e. 
+        /// The e.
         /// </param>
         protected static void DataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -212,10 +194,10 @@ namespace OxyPlot.Wpf
         /// The on items source changed.
         /// </summary>
         /// <param name="oldValue">
-        /// The old value. 
+        /// The old value.
         /// </param>
         /// <param name="newValue">
-        /// The new value. 
+        /// The new value.
         /// </param>
         protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
@@ -239,7 +221,7 @@ namespace OxyPlot.Wpf
         /// The synchronize properties.
         /// </summary>
         /// <param name="s">
-        /// The series. 
+        /// The series.
         /// </param>
         protected virtual void SynchronizeProperties(OxyPlot.Series s)
         {
@@ -253,6 +235,5 @@ namespace OxyPlot.Wpf
             s.TextColor = this.Foreground.ToOxyColor();
         }
 
-        #endregion
     }
 }

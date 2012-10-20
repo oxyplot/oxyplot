@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DataPointSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -39,19 +39,13 @@ namespace OxyPlot
     /// </summary>
     public abstract class DataPointSeries : XYAxisSeries
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The list of data points.
+        /// The list of data points.
         /// </summary>
         private IList<IDataPoint> points = new List<IDataPoint>();
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DataPointSeries" /> class.
+        /// Initializes a new instance of the <see cref = "DataPointSeries" /> class.
         /// </summary>
         protected DataPointSeries()
         {
@@ -59,36 +53,32 @@ namespace OxyPlot
             this.DataFieldY = null;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether the tracker can interpolate points.
+        /// Gets or sets a value indicating whether the tracker can interpolate points.
         /// </summary>
         public bool CanTrackerInterpolatePoints { get; set; }
 
         /// <summary>
-        ///   Gets or sets the data field X.
+        /// Gets or sets the data field X.
         /// </summary>
         /// <value>The data field X.</value>
         public string DataFieldX { get; set; }
 
         /// <summary>
-        ///   Gets or sets the data field Y.
+        /// Gets or sets the data field Y.
         /// </summary>
         /// <value>The data field Y.</value>
         public string DataFieldY { get; set; }
 
         /// <summary>
-        ///   Gets or sets the mapping delegate.
-        ///   Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
+        /// Gets or sets the mapping delegate.
+        /// Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
         /// </summary>
         /// <value>The mapping.</value>
         public Func<object, IDataPoint> Mapping { get; set; }
 
         /// <summary>
-        ///   Gets or sets the points list.
+        /// Gets or sets the points list.
         /// </summary>
         /// <value>The points list.</value>
         public IList<IDataPoint> Points
@@ -105,14 +95,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this <see cref = "DataPointSeries" /> is smooth.
+        /// Gets or sets a value indicating whether this <see cref = "DataPointSeries" /> is smooth.
         /// </summary>
         /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
         public bool Smooth { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
@@ -136,10 +122,6 @@ namespace OxyPlot
 
             return this.GetNearestPointInternal(this.Points, point);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The update data.
@@ -184,7 +166,7 @@ namespace OxyPlot
                 return;
             }
 
-            // Get DataPoints from the items in ItemsSource 
+            // Get DataPoints from the items in ItemsSource
             // if they implement IDataPointProvider
             // If DataFields are set, this is not used
             if (this.DataFieldX == null || this.DataFieldY == null)
@@ -324,6 +306,5 @@ namespace OxyPlot
             this.MaxX = maxx;
             this.MaxY = maxy;
         }
-        #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColorAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,11 +36,8 @@ namespace OxyPlot
     /// </summary>
     public class ColorAxis : Axis
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorAxis"/> class. 
-        ///   Initializes a new instance of the <see cref="ColorAxis"/> class.
+        /// Initializes a new instance of the <see cref="ColorAxis"/> class.
         /// </summary>
         public ColorAxis()
         {
@@ -49,40 +46,32 @@ namespace OxyPlot
             this.IsZoomEnabled = false;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the color of values above the maximum value.
+        /// Gets or sets the color of values above the maximum value.
         /// </summary>
         /// <value> The color of the high values. </value>
         public OxyColor HighColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of values below the minimum value.
+        /// Gets or sets the color of values below the minimum value.
         /// </summary>
         /// <value> The color of the low values. </value>
         public OxyColor LowColor { get; set; }
 
         /// <summary>
-        ///   Gets or sets the palette.
+        /// Gets or sets the palette.
         /// </summary>
         /// <value> The palette. </value>
         public OxyPalette Palette { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets the color.
         /// </summary>
         /// <param name="paletteIndex">
-        /// The color map index (less than NumberOfEntries). 
+        /// The color map index (less than NumberOfEntries).
         /// </param>
         /// <returns>
-        /// The color. 
+        /// The color.
         /// </returns>
         public OxyColor GetColor(int paletteIndex)
         {
@@ -103,10 +92,10 @@ namespace OxyPlot
         /// Gets the color for the specified value.
         /// </summary>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <returns>
-        /// The color. 
+        /// The color.
         /// </returns>
         public OxyColor GetColor(double value)
         {
@@ -117,10 +106,10 @@ namespace OxyPlot
         /// Gets the palette index of the specified value.
         /// </summary>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <returns>
-        /// The palette index. 
+        /// The palette index.
         /// </returns>
         /// <remarks>
         /// If the value is less than minimum, -1 is returned. If the value is greater than maximum, -2 is returned.
@@ -158,7 +147,7 @@ namespace OxyPlot
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> . 
+        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> .
         /// </returns>
         public override bool IsXyAxis()
         {
@@ -169,13 +158,13 @@ namespace OxyPlot
         /// Renders the axis on the specified render context.
         /// </summary>
         /// <param name="rc">
-        /// The render context. 
+        /// The render context.
         /// </param>
         /// <param name="model">
-        /// The model. 
+        /// The model.
         /// </param>
         /// <param name="axisLayer">
-        /// The rendering order. 
+        /// The rendering order.
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer)
         {
@@ -216,8 +205,8 @@ namespace OxyPlot
                     rc.DrawRectangle(
                         this.IsHorizontal()
                             ? new OxyRect(ymin, top, ymax - ymin, height)
-                            : new OxyRect(left, ymin, width, ymax - ymin), 
-                        color, 
+                            : new OxyRect(left, ymin, width, ymax - ymin),
+                        color,
                         null);
                 };
 
@@ -250,18 +239,14 @@ namespace OxyPlot
             base.Render(rc, model, axisLayer);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Gets the high value of the specified palette index.
         /// </summary>
         /// <param name="paletteIndex">
-        /// Index of the palette. 
+        /// Index of the palette.
         /// </param>
         /// <returns>
-        /// The value. 
+        /// The value.
         /// </returns>
         protected double GetHighValue(int paletteIndex)
         {
@@ -272,10 +257,10 @@ namespace OxyPlot
         /// Gets the low value of the specified palette index.
         /// </summary>
         /// <param name="paletteIndex">
-        /// Index of the palette. 
+        /// Index of the palette.
         /// </param>
         /// <returns>
-        /// The value. 
+        /// The value.
         /// </returns>
         protected double GetLowValue(int paletteIndex)
         {
@@ -283,6 +268,5 @@ namespace OxyPlot
                    + this.ActualMinimum;
         }
 
-        #endregion
     }
 }

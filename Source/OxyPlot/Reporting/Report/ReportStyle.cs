@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ReportStyle.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -34,8 +34,6 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class ReportStyle
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportStyle"/> class.
         /// </summary>
@@ -49,8 +47,8 @@ namespace OxyPlot.Reporting
         /// The table text font family.
         /// </param>
         public ReportStyle(
-            string titleFontFamily = "Arial", 
-            string bodyTextFontFamily = "Verdana", 
+            string titleFontFamily = "Arial",
+            string bodyTextFontFamily = "Verdana",
             string tableTextFontFamily = "Courier New")
         {
             this.DefaultStyle = new ParagraphStyle { FontFamily = bodyTextFontFamily, FontSize = 11, SpacingAfter = 10 };
@@ -58,7 +56,7 @@ namespace OxyPlot.Reporting
             this.HeaderStyles = new ParagraphStyle[5];
             this.HeaderStyles[0] = new ParagraphStyle
                 {
-                   BasedOn = this.DefaultStyle, FontFamily = titleFontFamily, SpacingBefore = 12, SpacingAfter = 3 
+                   BasedOn = this.DefaultStyle, FontFamily = titleFontFamily, SpacingBefore = 12, SpacingAfter = 3
                 };
             for (int i = 1; i < this.HeaderStyles.Length; i++)
             {
@@ -84,16 +82,16 @@ namespace OxyPlot.Reporting
 
             this.TableTextStyle = new ParagraphStyle
                 {
-                    BasedOn = this.DefaultStyle, 
-                    FontFamily = tableTextFontFamily, 
-                    SpacingAfter = 0, 
-                    LeftIndentation = 3, 
+                    BasedOn = this.DefaultStyle,
+                    FontFamily = tableTextFontFamily,
+                    SpacingAfter = 0,
+                    LeftIndentation = 3,
                     RightIndentation = 3
                 };
             this.TableHeaderStyle = new ParagraphStyle { BasedOn = this.TableTextStyle, Bold = true };
             this.TableCaptionStyle = new ParagraphStyle
                 {
-                   BasedOn = this.DefaultStyle, Italic = true, SpacingBefore = 10, SpacingAfter = 3 
+                   BasedOn = this.DefaultStyle, Italic = true, SpacingBefore = 10, SpacingAfter = 3
                 };
 
             this.Margins = new OxyThickness(25);
@@ -102,62 +100,57 @@ namespace OxyPlot.Reporting
             this.TableCaptionFormatString = "Table {0}. {1}";
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets BodyTextStyle.
+        /// Gets or sets BodyTextStyle.
         /// </summary>
         public ParagraphStyle BodyTextStyle { get; set; }
 
         /// <summary>
-        ///   Gets or sets DefaultStyle.
+        /// Gets or sets DefaultStyle.
         /// </summary>
         public ParagraphStyle DefaultStyle { get; set; }
 
         /// <summary>
-        ///   Gets or sets FigureTextFormatString.
+        /// Gets or sets FigureTextFormatString.
         /// </summary>
         public string FigureTextFormatString { get; set; }
 
         /// <summary>
-        ///   Gets or sets FigureTextStyle.
+        /// Gets or sets FigureTextStyle.
         /// </summary>
         public ParagraphStyle FigureTextStyle { get; set; }
 
         /// <summary>
-        ///   Gets or sets HeaderStyles.
+        /// Gets or sets HeaderStyles.
         /// </summary>
         public ParagraphStyle[] HeaderStyles { get; set; }
 
         /// <summary>
-        ///   Gets or sets the page margins (mm).
+        /// Gets or sets the page margins (mm).
         /// </summary>
         public OxyThickness Margins { get; set; }
 
         // todo: should the FormatStrings be in the Report class?
 
         /// <summary>
-        ///   Gets or sets TableCaptionFormatString.
+        /// Gets or sets TableCaptionFormatString.
         /// </summary>
         public string TableCaptionFormatString { get; set; }
 
         /// <summary>
-        ///   Gets or sets TableCaptionStyle.
+        /// Gets or sets TableCaptionStyle.
         /// </summary>
         public ParagraphStyle TableCaptionStyle { get; set; }
 
         /// <summary>
-        ///   Gets or sets TableHeaderStyle.
+        /// Gets or sets TableHeaderStyle.
         /// </summary>
         public ParagraphStyle TableHeaderStyle { get; set; }
 
         /// <summary>
-        ///   Gets or sets TableTextStyle.
+        /// Gets or sets TableTextStyle.
         /// </summary>
         public ParagraphStyle TableTextStyle { get; set; }
 
-        #endregion
     }
 }

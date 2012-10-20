@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LinearAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -34,11 +34,8 @@ namespace OxyPlot
     /// </summary>
     public class LinearAxis : Axis
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis"/> class. 
-        ///   Initializes a new instance of the <see cref="LinearAxis"/> class.
+        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
         /// </summary>
         public LinearAxis()
         {
@@ -48,13 +45,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis"/> class. 
+        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
         /// </summary>
         /// <param name="pos">
-        /// The pos. 
+        /// The pos.
         /// </param>
         /// <param name="title">
-        /// The title. 
+        /// The title.
         /// </param>
         public LinearAxis(AxisPosition pos, string title)
             : this()
@@ -64,19 +61,19 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis"/> class. 
+        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
         /// </summary>
         /// <param name="pos">
-        /// The pos. 
+        /// The pos.
         /// </param>
         /// <param name="minimum">
-        /// The minimum. 
+        /// The minimum.
         /// </param>
         /// <param name="maximum">
-        /// The maximum. 
+        /// The maximum.
         /// </param>
         /// <param name="title">
-        /// The title. 
+        /// The title.
         /// </param>
         public LinearAxis(
             AxisPosition pos, double minimum = double.NaN, double maximum = double.NaN, string title = null)
@@ -85,25 +82,25 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis"/> class. 
+        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
         /// </summary>
         /// <param name="pos">
-        /// The pos. 
+        /// The pos.
         /// </param>
         /// <param name="minimum">
-        /// The minimum. 
+        /// The minimum.
         /// </param>
         /// <param name="maximum">
-        /// The maximum. 
+        /// The maximum.
         /// </param>
         /// <param name="majorStep">
-        /// The major step. 
+        /// The major step.
         /// </param>
         /// <param name="minorStep">
-        /// The minor step. 
+        /// The minor step.
         /// </param>
         /// <param name="title">
-        /// The title. 
+        /// The title.
         /// </param>
         public LinearAxis(
             AxisPosition pos, double minimum, double maximum, double majorStep, double minorStep, string title = null)
@@ -115,39 +112,31 @@ namespace OxyPlot
             this.MinorStep = minorStep;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether to format numbers as fractions.
+        /// Gets or sets a value indicating whether to format numbers as fractions.
         /// </summary>
         public bool FormatAsFractions { get; set; }
 
         /// <summary>
-        ///   Gets or sets the fraction unit. Remember to set FormatAsFractions to true.
+        /// Gets or sets the fraction unit. Remember to set FormatAsFractions to true.
         /// </summary>
         /// <value> The fraction unit. </value>
         public double FractionUnit { get; set; }
 
         /// <summary>
-        ///   Gets or sets the fraction unit symbol. Use FractionUnit = Math.PI and FractionUnitSymbol = "π" if you want the axis to show "π/2,π,3π/2,2π" etc. Use FractionUnit = 1 and FractionUnitSymbol = "L" if you want the axis to show "0,L/2,L" etc. Remember to set FormatAsFractions to true.
+        /// Gets or sets the fraction unit symbol. Use FractionUnit = Math.PI and FractionUnitSymbol = "π" if you want the axis to show "π/2,π,3π/2,2π" etc. Use FractionUnit = 1 and FractionUnitSymbol = "L" if you want the axis to show "0,L/2,L" etc. Remember to set FormatAsFractions to true.
         /// </summary>
         /// <value> The fraction unit symbol. </value>
         public string FractionUnitSymbol { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Formats the value to be used on the axis.
         /// </summary>
         /// <param name="x">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <returns>
-        /// The formatted value. 
+        /// The formatted value.
         /// </returns>
         public override string FormatValue(double x)
         {
@@ -164,13 +153,12 @@ namespace OxyPlot
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> . 
+        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> .
         /// </returns>
         public override bool IsXyAxis()
         {
             return true;
         }
 
-        #endregion
     }
 }

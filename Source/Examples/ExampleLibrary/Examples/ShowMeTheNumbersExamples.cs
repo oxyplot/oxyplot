@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ShowMeTheNumbersExamples.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -40,8 +40,6 @@ namespace ExampleLibrary
     [Examples("Examples from the book 'Show Me the Numbers'")]
     public class ShowMeTheNumbersExamples : ExamplesBase
     {
-        #region Public Methods
-
         /// <summary>
         /// The graph 1.
         /// </summary>
@@ -131,13 +129,13 @@ namespace ExampleLibrary
             pm.PlotAreaBorderThickness = 0;
             pm.PlotMargins = new OxyThickness(100, 40, 20, 40);
             var values = new Dictionary<string, double> {
-                    { "Manufacturing", 240 }, 
-                    { "Sales", 160 }, 
-                    { "Engineering", 50 }, 
-                    { "Operations", 45 }, 
-                    { "Finance", 40 }, 
-                    { "Info Systems", 39 }, 
-                    { "Legal", 25 }, 
+                    { "Manufacturing", 240 },
+                    { "Sales", 160 },
+                    { "Engineering", 50 },
+                    { "Operations", 45 },
+                    { "Finance", 40 },
+                    { "Info Systems", 39 },
+                    { "Legal", 25 },
                     { "Marketing", 10 }
                 };
             pm.Axes.Add(
@@ -284,25 +282,25 @@ namespace ExampleLibrary
                 {
                     PlotAreaBorderThickness = 0
                 };
-            var values = new[] 
+            var values = new[]
             {
-                    new DataPoint(62, 39000), 
-                    new DataPoint(66, 44000), 
-                    new DataPoint(64, 50000), 
-                    new DataPoint(66, 49500), 
-                    new DataPoint(67, 52000), 
-                    new DataPoint(68, 50000), 
-                    new DataPoint(66, 56000), 
-                    new DataPoint(67, 56000), 
-                    new DataPoint(72, 56000), 
-                    new DataPoint(68, 58000), 
-                    new DataPoint(69, 62000), 
-                    new DataPoint(71, 63000), 
-                    new DataPoint(65, 64000), 
-                    new DataPoint(68, 71000), 
-                    new DataPoint(72, 72000), 
-                    new DataPoint(74, 69000), 
-                    new DataPoint(74, 79000), 
+                    new DataPoint(62, 39000),
+                    new DataPoint(66, 44000),
+                    new DataPoint(64, 50000),
+                    new DataPoint(66, 49500),
+                    new DataPoint(67, 52000),
+                    new DataPoint(68, 50000),
+                    new DataPoint(66, 56000),
+                    new DataPoint(67, 56000),
+                    new DataPoint(72, 56000),
+                    new DataPoint(68, 58000),
+                    new DataPoint(69, 62000),
+                    new DataPoint(71, 63000),
+                    new DataPoint(65, 64000),
+                    new DataPoint(68, 71000),
+                    new DataPoint(72, 72000),
+                    new DataPoint(74, 69000),
+                    new DataPoint(74, 79000),
                     new DataPoint(77, 81000)
                 };
             pm.Axes.Add(
@@ -331,6 +329,5 @@ namespace ExampleLibrary
             return pm;
         }
 
-        #endregion
     }
 }

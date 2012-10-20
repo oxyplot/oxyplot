@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LatexReportWriter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,8 +38,6 @@ namespace OxyPlot.Pdf
     /// </summary>
     public class LatexReportWriter : StreamWriter, IReportWriter
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The title.
         /// </summary>
@@ -70,27 +68,23 @@ namespace OxyPlot.Pdf
         /// </summary>
         private string indent = string.Empty;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LatexReportWriter"/> class.
         /// </summary>
         /// <param name="s">
-        /// The s. 
+        /// The s.
         /// </param>
         /// <param name="title">
-        /// The title. 
+        /// The title.
         /// </param>
         /// <param name="author">
-        /// The author. 
+        /// The author.
         /// </param>
         /// <param name="fontsize">
-        /// The fontsize. 
+        /// The fontsize.
         /// </param>
         /// <param name="documentType">
-        /// The document type. 
+        /// The document type.
         /// </param>
         public LatexReportWriter(
             Stream s, string title, string author, string fontsize = "12pt", string documentType = "report")
@@ -108,19 +102,19 @@ namespace OxyPlot.Pdf
         /// Initializes a new instance of the <see cref="LatexReportWriter"/> class.
         /// </summary>
         /// <param name="path">
-        /// The path. 
+        /// The path.
         /// </param>
         /// <param name="title">
-        /// The title. 
+        /// The title.
         /// </param>
         /// <param name="author">
-        /// The author. 
+        /// The author.
         /// </param>
         /// <param name="fontsize">
-        /// The fontsize. 
+        /// The fontsize.
         /// </param>
         /// <param name="documentType">
-        /// The document type. 
+        /// The document type.
         /// </param>
         public LatexReportWriter(
             string path, string title, string author, string fontsize = "12pt", string documentType = "report")
@@ -133,10 +127,6 @@ namespace OxyPlot.Pdf
         }
 
 #endif
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Begins the document.
@@ -179,7 +169,7 @@ namespace OxyPlot.Pdf
         /// Writes the drawing.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         public void WriteDrawing(DrawingFigure d)
         {
@@ -189,7 +179,7 @@ namespace OxyPlot.Pdf
         /// Writes the equation.
         /// </summary>
         /// <param name="equation">
-        /// The equation. 
+        /// The equation.
         /// </param>
         public void WriteEquation(Equation equation)
         {
@@ -208,7 +198,7 @@ namespace OxyPlot.Pdf
         /// Writes the header.
         /// </summary>
         /// <param name="h">
-        /// The h. 
+        /// The h.
         /// </param>
         public void WriteHeader(Header h)
         {
@@ -245,7 +235,7 @@ namespace OxyPlot.Pdf
         /// Writes the image.
         /// </summary>
         /// <param name="i">
-        /// The i. 
+        /// The i.
         /// </param>
         public void WriteImage(Image i)
         {
@@ -280,7 +270,7 @@ namespace OxyPlot.Pdf
         /// Writes the paragraph.
         /// </summary>
         /// <param name="p">
-        /// The p. 
+        /// The p.
         /// </param>
         public void WriteParagraph(Paragraph p)
         {
@@ -296,22 +286,22 @@ namespace OxyPlot.Pdf
         /// Writes the plot.
         /// </summary>
         /// <param name="plot">
-        /// The plot. 
+        /// The plot.
         /// </param>
         public void WritePlot(PlotFigure plot)
         {
             // string path = "plot" + plotNumber + ".pdf";
-            // PdfExporter.Export(Model, pdfPlotFileName, 800, 500);                   
+            // PdfExporter.Export(Model, pdfPlotFileName, 800, 500);
         }
 
         /// <summary>
         /// Writes the report.
         /// </summary>
         /// <param name="report">
-        /// The report. 
+        /// The report.
         /// </param>
         /// <param name="reportStyle">
-        /// The style. 
+        /// The style.
         /// </param>
         public void WriteReport(Report report, ReportStyle reportStyle)
         {
@@ -322,7 +312,7 @@ namespace OxyPlot.Pdf
         /// Writes the table.
         /// </summary>
         /// <param name="t">
-        /// The t. 
+        /// The t.
         /// </param>
         public void WriteTable(Table t)
         {
@@ -372,15 +362,11 @@ namespace OxyPlot.Pdf
             this.WriteLine();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Releases the unmanaged resources used by the <see cref="T:System.IO.StreamWriter"/> and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing">
-        /// true to release both managed and unmanaged resources; false to release only unmanaged resources. 
+        /// true to release both managed and unmanaged resources; false to release only unmanaged resources.
         /// </param>
         /// <exception cref="T:System.Text.EncoderFallbackException">
         /// The current encoding does not support displaying half of a Unicode surrogate pair.
@@ -399,10 +385,10 @@ namespace OxyPlot.Pdf
         /// Encodes text.
         /// </summary>
         /// <param name="t">
-        /// The text to encode. 
+        /// The text to encode.
         /// </param>
         /// <returns>
-        /// The encoded text. 
+        /// The encoded text.
         /// </returns>
         private static string LatexEncodeText(string t)
         {
@@ -437,7 +423,7 @@ namespace OxyPlot.Pdf
         /// Writes the indented line.
         /// </summary>
         /// <param name="s">
-        /// The s. 
+        /// The s.
         /// </param>
         private void WriteIndentedLine(string s)
         {
@@ -445,6 +431,5 @@ namespace OxyPlot.Pdf
             WriteLine(s);
         }
 
-        #endregion
     }
 }

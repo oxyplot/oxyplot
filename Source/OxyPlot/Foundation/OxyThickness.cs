@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyThickness.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,31 +36,25 @@ namespace OxyPlot
     /// </summary>
     public struct OxyThickness : ICodeGenerating
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The bottom.
+        /// The bottom.
         /// </summary>
         private double bottom;
 
         /// <summary>
-        ///   The left.
+        /// The left.
         /// </summary>
         private double left;
 
         /// <summary>
-        ///   The right.
+        /// The right.
         /// </summary>
         private double right;
 
         /// <summary>
-        ///   The top.
+        /// The top.
         /// </summary>
         private double top;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyThickness"/> struct.
@@ -96,15 +90,11 @@ namespace OxyPlot
             this.bottom = bottom;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the bottom thickness.
+        /// Gets or sets the bottom thickness.
         /// </summary>
         /// <value>
-        ///   The bottom thickness.
+        /// The bottom thickness.
         /// </value>
         public double Bottom
         {
@@ -120,7 +110,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets the height.
+        /// Gets the height.
         /// </summary>
         public double Height
         {
@@ -131,10 +121,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the left thickness.
+        /// Gets or sets the left thickness.
         /// </summary>
         /// <value>
-        ///   The left thickness.
+        /// The left thickness.
         /// </value>
         public double Left
         {
@@ -150,10 +140,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the right thickness.
+        /// Gets or sets the right thickness.
         /// </summary>
         /// <value>
-        ///   The right thickness.
+        /// The right thickness.
         /// </value>
         public double Right
         {
@@ -169,10 +159,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the top thickness.
+        /// Gets or sets the top thickness.
         /// </summary>
         /// <value>
-        ///   The top thickness.
+        /// The top thickness.
         /// </value>
         public double Top
         {
@@ -188,7 +178,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets the width.
+        /// Gets the width.
         /// </summary>
         public double Width
         {
@@ -197,10 +187,6 @@ namespace OxyPlot
                 return this.Right - this.Left;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Returns C# code that generates this instance.
@@ -211,11 +197,11 @@ namespace OxyPlot
         public string ToCode()
         {
             return string.Format(
-                CultureInfo.InvariantCulture, 
-                "new OxyThickness({0},{1},{2},{3})", 
-                this.Left, 
-                this.Top, 
-                this.Right, 
+                CultureInfo.InvariantCulture,
+                "new OxyThickness({0},{1},{2},{3})",
+                this.Left,
+                this.Top,
+                this.Right,
                 this.Bottom);
         }
 
@@ -231,6 +217,5 @@ namespace OxyPlot
                 CultureInfo.InvariantCulture, "({0}, {1}, {2}, {3})", this.left, this.top, this.right, this.bottom);
         }
 
-        #endregion
     }
 }

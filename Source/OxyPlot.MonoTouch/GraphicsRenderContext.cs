@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GraphicsRenderContext.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,7 +36,7 @@ namespace OxyPlot.MonoGame
     using System.Linq;
 
     using OxyPlot;
-	
+
 	using Microsoft.Xna.Framework;
 	using Microsoft.Xna.Framework.Content;
 	using Microsoft.Xna.Framework.Graphics;
@@ -48,23 +48,17 @@ namespace OxyPlot.MonoGame
     /// </summary>
     internal class GraphicsRenderContext : RenderContextBase
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The fontsize factor.
+        /// The fontsize factor.
         /// </summary>
         private const float FontsizeFactor = 0.8f;
 
         /// <summary>
-        ///   The GDI+ drawing surface.
+        /// The GDI+ drawing surface.
         /// </summary>
         private readonly GraphicsDeviceManager graphics;
-		
+
 		private MonoGameRenderContext g;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphicsRenderContext"/> class.
@@ -86,10 +80,6 @@ namespace OxyPlot.MonoGame
             this.graphics = graphics;
 			g = new MonoGameRenderContext();
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The draw ellipse.
@@ -122,7 +112,7 @@ namespace OxyPlot.MonoGame
             var pen = new Pen(this.ToColor(stroke), (float)thickness);
             this.g.DrawEllipse(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
         }
-		
+
 		private Texture ToBrush(OxyColor fill)
         {
             if (fill != null)
@@ -155,11 +145,11 @@ namespace OxyPlot.MonoGame
         /// The aliased.
         /// </param>
         public override void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             if (stroke == null || thickness <= 0)
@@ -215,12 +205,12 @@ namespace OxyPlot.MonoGame
         /// The aliased.
         /// </param>
         public override void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             this.g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
@@ -322,15 +312,15 @@ namespace OxyPlot.MonoGame
         /// The maximum size of the text.
         /// </param>
         public override void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalTextAlign halign, 
-            VerticalTextAlign valign, 
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalTextAlign halign,
+            VerticalTextAlign valign,
             OxySize? maxSize)
         {
             FontStyle fs = FontStyle.Regular;
@@ -426,10 +416,6 @@ namespace OxyPlot.MonoGame
             return new OxySize(size.Width, size.Height);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The to color.
         /// </summary>
@@ -492,6 +478,5 @@ namespace OxyPlot.MonoGame
             return r;
         }
 
-        #endregion
     }
 }

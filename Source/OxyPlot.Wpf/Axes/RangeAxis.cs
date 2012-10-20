@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RangeAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -57,8 +57,6 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty PositionAtZeroCrossingProperty =
             DependencyProperty.Register("PositionAtZeroCrossing", typeof(bool), typeof(RangeAxis), new UIPropertyMetadata(false));
 
-
-
         public double Angle
         {
             get { return (double)GetValue(AngleProperty); }
@@ -67,7 +65,6 @@ namespace OxyPlot.Wpf
 
         public static readonly DependencyProperty AngleProperty =
             DependencyProperty.Register("Angle", typeof(double), typeof(RangeAxis), new UIPropertyMetadata(0.0));
-
 
         public TickStyle TickStyle
         {
@@ -96,7 +93,6 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty MajorGridlineThicknessProperty =
             DependencyProperty.Register("MajorGridlineThickness", typeof(double), typeof(RangeAxis), new UIPropertyMetadata(1.0));
 
-
         public LineStyle MinorGridlineStyle
         {
             get { return (LineStyle)GetValue(MinorGridlineStyleProperty); }
@@ -123,7 +119,6 @@ namespace OxyPlot.Wpf
 
         public static readonly DependencyProperty PositionProperty =
             DependencyProperty.Register("Position", typeof(AxisPosition), typeof(RangeAxis), new UIPropertyMetadata(AxisPosition.Left));
-
 
         public double Minimum
         {

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyRect.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,31 +38,25 @@ namespace OxyPlot
     /// </summary>
     public struct OxyRect
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The height.
+        /// The height.
         /// </summary>
         private double height;
 
         /// <summary>
-        ///   The left.
+        /// The left.
         /// </summary>
         private double left;
 
         /// <summary>
-        ///   The top.
+        /// The top.
         /// </summary>
         private double top;
 
         /// <summary>
-        ///   The width.
+        /// The width.
         /// </summary>
         private double width;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyRect"/> struct.
@@ -89,15 +83,11 @@ namespace OxyPlot
             Debug.Assert(height >= 0, "Height should be larger than 0.");
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the bottom.
+        /// Gets or sets the bottom.
         /// </summary>
         /// <value>
-        ///   The bottom.
+        /// The bottom.
         /// </value>
         public double Bottom
         {
@@ -113,10 +103,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the height.
+        /// Gets or sets the height.
         /// </summary>
         /// <value>
-        ///   The height.
+        /// The height.
         /// </value>
         public double Height
         {
@@ -132,10 +122,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the left.
+        /// Gets or sets the left.
         /// </summary>
         /// <value>
-        ///   The left.
+        /// The left.
         /// </value>
         public double Left
         {
@@ -151,10 +141,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the right.
+        /// Gets or sets the right.
         /// </summary>
         /// <value>
-        ///   The right.
+        /// The right.
         /// </value>
         public double Right
         {
@@ -170,10 +160,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the top.
+        /// Gets or sets the top.
         /// </summary>
         /// <value>
-        ///   The top.
+        /// The top.
         /// </value>
         public double Top
         {
@@ -189,10 +179,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the width.
+        /// Gets or sets the width.
         /// </summary>
         /// <value>
-        ///   The width.
+        /// The width.
         /// </value>
         public double Width
         {
@@ -218,10 +208,6 @@ namespace OxyPlot
                 return new ScreenPoint(this.left + this.width * 0.5, this.top + this.height * 0.5);
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates a rectangle from the specified corner coordinates.
@@ -298,6 +284,5 @@ namespace OxyPlot
                 CultureInfo.InvariantCulture, "({0}, {1}, {2}, {3})", this.left, this.top, this.width, this.height);
         }
 
-        #endregion
     }
 }

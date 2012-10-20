@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FlowDocumentReportWriter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -57,8 +57,6 @@ namespace OxyPlot.Xps
     /// </summary>
     public class FlowDocumentReportWriter : IDisposable, IReportWriter
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The doc.
         /// </summary>
@@ -69,10 +67,6 @@ namespace OxyPlot.Xps
         /// </summary>
         private bool disposed;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FlowDocumentReportWriter"/> class.
         /// </summary>
@@ -80,10 +74,6 @@ namespace OxyPlot.Xps
         {
             this.doc = new FlowDocument();
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets FlowDocument.
@@ -100,10 +90,6 @@ namespace OxyPlot.Xps
         /// Gets or sets Style.
         /// </summary>
         public ReportStyle Style { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -149,7 +135,7 @@ namespace OxyPlot.Xps
         /// The write drawing.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         public void WriteDrawing(DrawingFigure d)
         {
@@ -159,7 +145,7 @@ namespace OxyPlot.Xps
         /// The write equation.
         /// </summary>
         /// <param name="equation">
-        /// The equation. 
+        /// The equation.
         /// </param>
         public void WriteEquation(Equation equation)
         {
@@ -169,7 +155,7 @@ namespace OxyPlot.Xps
         /// The write header.
         /// </summary>
         /// <param name="h">
-        /// The h. 
+        /// The h.
         /// </param>
         public void WriteHeader(Header h)
         {
@@ -183,7 +169,7 @@ namespace OxyPlot.Xps
         /// The write image.
         /// </summary>
         /// <param name="i">
-        /// The i. 
+        /// The i.
         /// </param>
         public void WriteImage(Image i)
         {
@@ -202,7 +188,7 @@ namespace OxyPlot.Xps
         /// The write paragraph.
         /// </summary>
         /// <param name="pa">
-        /// The pa. 
+        /// The pa.
         /// </param>
         public void WriteParagraph(Paragraph pa)
         {
@@ -213,7 +199,7 @@ namespace OxyPlot.Xps
         /// The write plot.
         /// </summary>
         /// <param name="plot">
-        /// The plot. 
+        /// The plot.
         /// </param>
         public void WritePlot(PlotFigure plot)
         {
@@ -223,10 +209,10 @@ namespace OxyPlot.Xps
         /// The write report.
         /// </summary>
         /// <param name="report">
-        /// The report. 
+        /// The report.
         /// </param>
         /// <param name="reportStyle">
-        /// The style. 
+        /// The style.
         /// </param>
         public void WriteReport(Report report, ReportStyle reportStyle)
         {
@@ -238,7 +224,7 @@ namespace OxyPlot.Xps
         /// The write table.
         /// </summary>
         /// <param name="t">
-        /// The t. 
+        /// The t.
         /// </param>
         public void WriteTable(Table t)
         {
@@ -292,18 +278,14 @@ namespace OxyPlot.Xps
             this.doc.Blocks.Add(p);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The set style.
         /// </summary>
         /// <param name="run">
-        /// The run. 
+        /// The run.
         /// </param>
         /// <param name="s">
-        /// The s. 
+        /// The s.
         /// </param>
         private static void SetStyle(TextElement run, ParagraphStyle s)
         {
@@ -323,16 +305,16 @@ namespace OxyPlot.Xps
         /// The add page body.
         /// </summary>
         /// <param name="sourceFlowDocPaginator">
-        /// The source flow doc paginator. 
+        /// The source flow doc paginator.
         /// </param>
         /// <param name="pageNo">
-        /// The page no. 
+        /// The page no.
         /// </param>
         /// <param name="pageCanvas">
-        /// The page canvas. 
+        /// The page canvas.
         /// </param>
         /// <param name="margins">
-        /// The margins. 
+        /// The margins.
         /// </param>
         private void AddPageBody(
             DocumentPaginator sourceFlowDocPaginator, int pageNo, Canvas pageCanvas, Thickness margins)
@@ -351,13 +333,13 @@ namespace OxyPlot.Xps
         /// The add page to document.
         /// </summary>
         /// <param name="fixedDocument">
-        /// The fixed document. 
+        /// The fixed document.
         /// </param>
         /// <param name="pageCanvas">
-        /// The page canvas. 
+        /// The page canvas.
         /// </param>
         /// <param name="pageSize">
-        /// The page size. 
+        /// The page size.
         /// </param>
         private void AddPageToDocument(FixedDocument fixedDocument, Canvas pageCanvas, Size pageSize)
         {
@@ -431,7 +413,7 @@ namespace OxyPlot.Xps
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources. 
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
         /// </param>
         private void Dispose(bool disposing)
         {
@@ -446,6 +428,5 @@ namespace OxyPlot.Xps
             this.disposed = true;
         }
 
-        #endregion
     }
 }

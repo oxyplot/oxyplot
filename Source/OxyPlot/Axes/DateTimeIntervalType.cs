@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeIntervalType.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -35,53 +35,53 @@ namespace OxyPlot
     public enum DateTimeIntervalType
     {
         /// <summary>
-        ///   Automatically determine interval.
+        /// Automatically determine interval.
         /// </summary>
         Auto = 0,
 
         /// <summary>
         /// Manual definition of intervals.
         /// </summary>
-        Manual = 1, 
+        Manual = 1,
 
         /// <summary>
-        ///   Interval type is milliseconds.
+        /// Interval type is milliseconds.
         /// </summary>
-        Milliseconds = 2, 
+        Milliseconds = 2,
 
         /// <summary>
-        ///   Interval type is seconds.
+        /// Interval type is seconds.
         /// </summary>
-        Seconds = 3, 
+        Seconds = 3,
 
         /// <summary>
-        ///   Interval type is minutes.
+        /// Interval type is minutes.
         /// </summary>
-        Minutes = 4, 
+        Minutes = 4,
 
         /// <summary>
-        ///   Interval type is hours.
+        /// Interval type is hours.
         /// </summary>
-        Hours = 5, 
+        Hours = 5,
 
         /// <summary>
-        ///   Interval type is days.
+        /// Interval type is days.
         /// </summary>
-        Days = 6, 
+        Days = 6,
 
         /// <summary>
-        ///   Interval type is weeks.
+        /// Interval type is weeks.
         /// </summary>
-        Weeks = 7, 
+        Weeks = 7,
 
         /// <summary>
-        ///   Interval type is months.
+        /// Interval type is months.
         /// </summary>
-        Months = 8, 
+        Months = 8,
 
         /// <summary>
-        ///   Interval type is years.
+        /// Interval type is years.
         /// </summary>
-        Years = 9, 
+        Years = 9,
     }
 }

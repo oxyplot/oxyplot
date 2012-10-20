@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IntervalBarItem.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -34,8 +34,6 @@ namespace OxyPlot
     /// </summary>
     public class IntervalBarItem : CategorizedItem, ICodeGenerating
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="IntervalBarItem"/> class.
         /// </summary>
@@ -47,16 +45,16 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="IntervalBarItem"/> class.
         /// </summary>
         /// <param name="start">
-        /// The start. 
+        /// The start.
         /// </param>
         /// <param name="end">
-        /// The end. 
+        /// The end.
         /// </param>
         /// <param name="title">
-        /// The title. 
+        /// The title.
         /// </param>
         /// <param name="color">
-        /// The color. 
+        /// The color.
         /// </param>
         public IntervalBarItem(double start, double end, string title = null, OxyColor color = null)
         {
@@ -65,10 +63,6 @@ namespace OxyPlot
             this.Title = title;
             this.Color = color;
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets the color.
@@ -90,15 +84,11 @@ namespace OxyPlot
         /// </summary>
         public string Title { get; set; }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Returns c# code that generates this instance.
         /// </summary>
         /// <returns>
-        /// C# code. 
+        /// C# code.
         /// </returns>
         public string ToCode()
         {
@@ -116,6 +106,5 @@ namespace OxyPlot
             return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1}", this.Start, this.End);
         }
 
-        #endregion
     }
 }

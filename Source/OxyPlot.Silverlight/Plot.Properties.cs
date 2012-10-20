@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.Properties.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,94 +38,88 @@ namespace OxyPlot.Silverlight
     /// </summary>
     public partial class Plot
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The data context watcher property.
+        /// The data context watcher property.
         /// </summary>
         public static readonly DependencyProperty DataContextWatcherProperty =
             DependencyProperty.Register(
                 "DataContextWatcher", typeof(object), typeof(Plot), new PropertyMetadata(OnDataContextChanged));
 
         /// <summary>
-        ///   The default tracker property.
+        /// The default tracker property.
         /// </summary>
         public static readonly DependencyProperty DefaultTrackerTemplateProperty =
             DependencyProperty.Register(
                 "DefaultTrackerTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
 
         /// <summary>
-        ///   The handle right clicks property.
+        /// The handle right clicks property.
         /// </summary>
         public static readonly DependencyProperty HandleRightClicksProperty =
             DependencyProperty.Register("HandleRightClicks", typeof(bool), typeof(Plot), new PropertyMetadata(true));
 
         /// <summary>
-        ///   The is mouse wheel enabled property.
+        /// The is mouse wheel enabled property.
         /// </summary>
         public static readonly DependencyProperty IsMouseWheelEnabledProperty =
             DependencyProperty.Register("IsMouseWheelEnabled", typeof(bool), typeof(Plot), new PropertyMetadata(true));
 
         /// <summary>
-        ///   The keyboard pan horizontal step property.
+        /// The keyboard pan horizontal step property.
         /// </summary>
         public static readonly DependencyProperty KeyboardPanHorizontalStepProperty =
             DependencyProperty.Register(
                 "KeyboardPanHorizontalStep", typeof(double), typeof(Plot), new PropertyMetadata(0.1));
 
         /// <summary>
-        ///   The keyboard pan vertical step property.
+        /// The keyboard pan vertical step property.
         /// </summary>
         public static readonly DependencyProperty KeyboardPanVerticalStepProperty =
             DependencyProperty.Register(
                 "KeyboardPanVerticalStep", typeof(double), typeof(Plot), new PropertyMetadata(0.1));
 
         /// <summary>
-        ///   The model property.
+        /// The model property.
         /// </summary>
         public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
             "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
 
         /// <summary>
-        ///   The pan cursor property.
+        /// The pan cursor property.
         /// </summary>
         public static readonly DependencyProperty PanCursorProperty = DependencyProperty.Register(
             "PanCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.Hand));
 
         /// <summary>
-        ///   The zoom horizontal cursor property.
+        /// The zoom horizontal cursor property.
         /// </summary>
         public static readonly DependencyProperty ZoomHorizontalCursorProperty =
             DependencyProperty.Register(
                 "ZoomHorizontalCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeWE));
 
         /// <summary>
-        ///   The zoom rectangle cursor property.
+        /// The zoom rectangle cursor property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleCursorProperty =
             DependencyProperty.Register(
                 "ZoomRectangleCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeNWSE));
 
         /// <summary>
-        ///   The zoom rectangle template property.
+        /// The zoom rectangle template property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
             DependencyProperty.Register(
                 "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
 
         /// <summary>
-        ///   The zoom vertical cursor property.
+        /// The zoom vertical cursor property.
         /// </summary>
         public static readonly DependencyProperty ZoomVerticalCursorProperty =
             DependencyProperty.Register(
                 "ZoomVerticalCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeNS));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the default tracker template.
+        /// Gets or sets the default tracker template.
         /// </summary>
         public ControlTemplate DefaultTrackerTemplate
         {
@@ -141,7 +135,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to handle right clicks.
+        /// Gets or sets a value indicating whether to handle right clicks.
         /// </summary>
         public bool HandleRightClicks
         {
@@ -157,7 +151,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether IsMouseWheelEnabled.
+        /// Gets or sets a value indicating whether IsMouseWheelEnabled.
         /// </summary>
         public bool IsMouseWheelEnabled
         {
@@ -173,7 +167,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets or sets the keyboard pan horizontal step (fraction of plot area width).
+        /// Gets or sets the keyboard pan horizontal step (fraction of plot area width).
         /// </summary>
         /// <value> The keyboard pan horizontal step. </value>
         public double KeyboardPanHorizontalStep
@@ -190,7 +184,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets or sets the keyboard pan vertical step size (fraction of plot area height).
+        /// Gets or sets the keyboard pan vertical step size (fraction of plot area height).
         /// </summary>
         /// <value> The keyboard pan vertical step. </value>
         public double KeyboardPanVerticalStep
@@ -207,7 +201,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets or sets the model.
+        /// Gets or sets the model.
         /// </summary>
         /// <value> The model. </value>
         public PlotModel Model
@@ -224,7 +218,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets or sets the pan cursor.
+        /// Gets or sets the pan cursor.
         /// </summary>
         /// <value> The pan cursor. </value>
         public Cursor PanCursor
@@ -241,7 +235,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets or sets the horizontal zoom cursor.
+        /// Gets or sets the horizontal zoom cursor.
         /// </summary>
         /// <value> The zoom horizontal cursor. </value>
         public Cursor ZoomHorizontalCursor
@@ -258,7 +252,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets or sets the rectangle zoom cursor.
+        /// Gets or sets the rectangle zoom cursor.
         /// </summary>
         /// <value> The zoom rectangle cursor. </value>
         public Cursor ZoomRectangleCursor
@@ -275,7 +269,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets or sets the zoom rectangle template.
+        /// Gets or sets the zoom rectangle template.
         /// </summary>
         /// <value> The zoom rectangle template. </value>
         public ControlTemplate ZoomRectangleTemplate
@@ -292,7 +286,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets or sets the vertical zoom cursor.
+        /// Gets or sets the vertical zoom cursor.
         /// </summary>
         /// <value> The zoom vertical cursor. </value>
         public Cursor ZoomVerticalCursor
@@ -308,6 +302,5 @@ namespace OxyPlot.Silverlight
             }
         }
 
-        #endregion
     }
 }

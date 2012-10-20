@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineStyle.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -35,57 +35,57 @@ namespace OxyPlot
     public enum LineStyle
     {
         /// <summary>
-        ///   The solid line style.
+        /// The solid line style.
         /// </summary>
-        Solid, 
+        Solid,
 
         /// <summary>
-        ///   The dash line style.
+        /// The dash line style.
         /// </summary>
-        Dash, 
+        Dash,
 
         /// <summary>
-        ///   The dot line style.
+        /// The dot line style.
         /// </summary>
-        Dot, 
+        Dot,
 
         /// <summary>
-        ///   The dash dot line style.
+        /// The dash dot line style.
         /// </summary>
-        DashDot, 
+        DashDot,
 
         /// <summary>
-        ///   The dash dash dot line style.
+        /// The dash dash dot line style.
         /// </summary>
-        DashDashDot, 
+        DashDashDot,
 
         /// <summary>
-        ///   The dash dot dot line style.
+        /// The dash dot dot line style.
         /// </summary>
-        DashDotDot, 
+        DashDotDot,
 
         /// <summary>
-        ///   The dash dash dot dot line style.
+        /// The dash dash dot dot line style.
         /// </summary>
-        DashDashDotDot, 
+        DashDashDotDot,
 
         /// <summary>
-        ///   The long dash line style.
+        /// The long dash line style.
         /// </summary>
-        LongDash, 
+        LongDash,
 
         /// <summary>
-        ///   The long dash dot line style.
+        /// The long dash dot line style.
         /// </summary>
-        LongDashDot, 
+        LongDashDot,
 
         /// <summary>
-        ///   The long dash dot dot line style.
+        /// The long dash dot dot line style.
         /// </summary>
-        LongDashDotDot, 
+        LongDashDotDot,
 
         /// <summary>
-        ///   The hidden line style.
+        /// The hidden line style.
         /// </summary>
         None
     }

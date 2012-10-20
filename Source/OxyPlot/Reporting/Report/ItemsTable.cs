@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsTable.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -39,8 +39,6 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class ItemsTable : Table
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemsTable"/> class.
         /// </summary>
@@ -54,35 +52,27 @@ namespace OxyPlot.Reporting
             this.Alignment = Alignment.Center;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets Alignment.
+        /// Gets or sets Alignment.
         /// </summary>
         public Alignment Alignment { get; set; }
 
         /// <summary>
-        ///   Gets or sets Fields.
+        /// Gets or sets Fields.
         /// </summary>
         public IList<ItemsTableField> Fields { get; set; }
 
         /// <summary>
-        ///   Gets or sets the items.
-        ///   The table will be filled when this property is set.
+        /// Gets or sets the items.
+        /// The table will be filled when this property is set.
         /// </summary>
         /// <value>The items.</value>
         public IEnumerable Items { get; set; }
 
         /// <summary>
-        ///   Gets a value indicating whether ItemsInRows.
+        /// Gets a value indicating whether ItemsInRows.
         /// </summary>
         public bool ItemsInRows { get; private set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The has header.
@@ -225,10 +215,6 @@ namespace OxyPlot.Reporting
             w.WriteTable(this);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The transpose.
         /// </summary>
@@ -253,6 +239,5 @@ namespace OxyPlot.Reporting
             return result;
         }
 
-        #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainViewModel.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -40,16 +40,10 @@ namespace ContourDemo
     /// </summary>
     public class MainViewModel : INotifyPropertyChanged
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The selected example.
         /// </summary>
         private Example selectedExample;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
@@ -61,18 +55,10 @@ namespace ContourDemo
             this.SelectedExample = this.Examples[0];
         }
 
-        #endregion
-
-        #region Public Events
-
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets the examples.
@@ -104,10 +90,6 @@ namespace ContourDemo
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Raises the property changed event.
         /// </summary>
@@ -138,16 +120,16 @@ namespace ContourDemo
 
             this.Examples.Add(
                 new Example(
-                    "Conrec example 1", 
-                    -1.5, 
-                    1.5, 
-                    0.1, 
-                    -1.5, 
-                    1.5, 
-                    0.1, 
-                    0, 
-                    2.25, 
-                    0.25, 
+                    "Conrec example 1",
+                    -1.5,
+                    1.5,
+                    0.1,
+                    -1.5,
+                    1.5,
+                    0.1,
+                    0,
+                    2.25,
+                    0.25,
                     (x, y) =>
                     1.0
                     / ((x * x + (y - 0.842) * (y + 0.842)).Squared() + (x * (y - 0.842) + x * (y - 0.842)).Squared())));
@@ -156,48 +138,48 @@ namespace ContourDemo
             double c = 0;
             this.Examples.Add(
                 new Example(
-                    "Conrec example 2", 
-                    -2 * Math.PI, 
-                    2 * Math.PI, 
-                    0.25, 
-                    -2 * Math.PI, 
-                    2 * Math.PI, 
-                    0.25, 
-                    -1, 
-                    1, 
-                    0.02, 
+                    "Conrec example 2",
+                    -2 * Math.PI,
+                    2 * Math.PI,
+                    0.25,
+                    -2 * Math.PI,
+                    2 * Math.PI,
+                    0.25,
+                    -1,
+                    1,
+                    0.02,
                     (x, y) =>
                     Math.Sin(Math.Sqrt(x * x + y * y)) + y != 0 ? 1.0 / Math.Sqrt((x - c) * (x - c) + y * y) : 0));
 
             this.Examples.Add(
                 new Example(
-                    "sin(x)*cos(y)", 
-                    -Math.PI, 
-                    Math.PI, 
-                    0.1, 
-                    -Math.PI, 
-                    Math.PI, 
-                    0.1, 
-                    -1, 
-                    1, 
-                    0.1, 
+                    "sin(x)*cos(y)",
+                    -Math.PI,
+                    Math.PI,
+                    0.1,
+                    -Math.PI,
+                    Math.PI,
+                    0.1,
+                    -1,
+                    1,
+                    0.1,
                     (x, y) => Math.Sin(x) * Math.Cos(y)));
 
             this.Examples.Add(new Example("x*y", -1, 1, 0.1, -1, 1, 0.1, -1, 1, 0.1, (x, y) => x * y));
             this.Examples.Add(new Example("x^{2}+y^{2}", -1, 1, 0.1, -1, 1, 0.1, -1, 1, 0.1, (x, y) => x * x + y * y));
             this.Examples.Add(
                 new Example(
-                    "atan2(y,x)", 
-                    -1, 
-                    1, 
-                    0.1, 
-                    -1, 
-                    1, 
-                    0.1, 
-                    -180, 
-                    180, 
-                    10, 
-                    (x, y) => Math.Atan2(y, x) * 180 / Math.PI, 
+                    "atan2(y,x)",
+                    -1,
+                    1,
+                    0.1,
+                    -1,
+                    1,
+                    0.1,
+                    -180,
+                    180,
+                    10,
+                    (x, y) => Math.Atan2(y, x) * 180 / Math.PI,
                     "0°"));
 
             this.Examples.Add(new Example("y/x", -1, 1, 0.1, -1, 1, 0.1, -1, 1, 0.1, (x, y) => y / x, "0%"));
@@ -205,33 +187,29 @@ namespace ContourDemo
             // http://en.wikipedia.org/wiki/Sinc_function
             this.Examples.Add(
                 new Example(
-                    "sinc(r+0.1)", 
-                    -8, 
-                    8, 
-                    0.2, 
-                    -8, 
-                    8, 
-                    0.2, 
-                    -0.2, 
-                    1, 
-                    0.1, 
+                    "sinc(r+0.1)",
+                    -8,
+                    8,
+                    0.2,
+                    -8,
+                    8,
+                    0.2,
+                    -0.2,
+                    1,
+                    0.1,
                     (x, y) =>
                         {
                             double r = Math.Sqrt(x * x + y * y);
                             return Math.Sin(r + 0.1) / (r + 0.1);
-                        }, 
+                        },
                     "0.0"));
         }
-
-        #endregion
 
         /// <summary>
         /// Represents an example.
         /// </summary>
         public class Example
         {
-            #region Constants and Fields
-
             /// <summary>
             /// The d.
             /// </summary>
@@ -251,10 +229,6 @@ namespace ContourDemo
             /// The z.
             /// </summary>
             private readonly double[] Z;
-
-            #endregion
-
-            #region Constructors and Destructors
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Example"/> class.
@@ -296,17 +270,17 @@ namespace ContourDemo
             /// The format string.
             /// </param>
             public Example(
-                string title, 
-                double minx, 
-                double maxx, 
-                double dx, 
-                double miny, 
-                double maxy, 
-                double dy, 
-                double minz, 
-                double maxz, 
-                double dz, 
-                Func<double, double, double> f, 
+                string title,
+                double minx,
+                double maxx,
+                double dx,
+                double miny,
+                double maxy,
+                double dy,
+                double minz,
+                double maxz,
+                double dz,
+                Func<double, double, double> f,
                 string formatString = null)
             {
                 this.Title = title;
@@ -316,10 +290,6 @@ namespace ContourDemo
                 this.D = ArrayHelper.Evaluate(f, this.X, this.Y);
                 this.FormatString = formatString;
             }
-
-            #endregion
-
-            #region Public Properties
 
             /// <summary>
             /// Gets or sets the format string.
@@ -338,10 +308,10 @@ namespace ContourDemo
                     var m = new PlotModel(this.Title);
                     var cs = new ContourSeries
                         {
-                            ColumnCoordinates = this.X, 
-                            RowCoordinates = this.Y, 
-                            Data = this.D, 
-                            ContourLevels = this.Z, 
+                            ColumnCoordinates = this.X,
+                            RowCoordinates = this.Y,
+                            Data = this.D,
+                            ContourLevels = this.Z,
                             LabelFormatString = this.FormatString
                         };
                     cs.CalculateContours();
@@ -356,10 +326,6 @@ namespace ContourDemo
             /// <value>The title.</value>
             public string Title { get; set; }
 
-            #endregion
-
-            #region Public Methods
-
             /// <summary>
             /// Returns a <see cref="System.String"/> that represents this instance.
             /// </summary>
@@ -371,7 +337,6 @@ namespace ContourDemo
                 return this.Title;
             }
 
-            #endregion
         }
     }
 }

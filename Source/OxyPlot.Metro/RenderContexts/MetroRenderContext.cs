@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MetroRenderContext.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -44,8 +44,6 @@ namespace OxyPlot.Metro
     /// </summary>
     public class MetroRenderContext : IRenderContext
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The brush cache.
         /// </summary>
@@ -55,10 +53,6 @@ namespace OxyPlot.Metro
         /// The canvas.
         /// </summary>
         private readonly Canvas canvas;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MetroRenderContext"/> class.
@@ -72,10 +66,6 @@ namespace OxyPlot.Metro
             this.Width = canvas.ActualWidth;
             this.Height = canvas.ActualHeight;
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets the height.
@@ -102,10 +92,6 @@ namespace OxyPlot.Metro
         /// </summary>
         /// <value>The width.</value>
         public double Width { get; private set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The draw ellipse.
@@ -173,8 +159,8 @@ namespace OxyPlot.Metro
                 gg.Children.Add(
                     new EllipseGeometry
                         {
-                            Center = new Point(rect.Left + rect.Width / 2, rect.Top + rect.Height / 2), 
-                            RadiusX = rect.Width / 2, 
+                            Center = new Point(rect.Left + rect.Width / 2, rect.Top + rect.Height / 2),
+                            RadiusX = rect.Width / 2,
                             RadiusY = rect.Height / 2
                         });
             }
@@ -205,11 +191,11 @@ namespace OxyPlot.Metro
         /// The aliased.
         /// </param>
         public void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var e = new Polyline();
@@ -248,11 +234,11 @@ namespace OxyPlot.Metro
         /// The aliased.
         /// </param>
         public void DrawLineSegments(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var path = new Path();
@@ -306,12 +292,12 @@ namespace OxyPlot.Metro
         /// The aliased.
         /// </param>
         public void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var po = new Polygon();
@@ -358,12 +344,12 @@ namespace OxyPlot.Metro
         /// The aliased.
         /// </param>
         public void DrawPolygons(
-            IList<IList<ScreenPoint>> polygons, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<IList<ScreenPoint>> polygons,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var path = new Path();
@@ -483,14 +469,14 @@ namespace OxyPlot.Metro
         /// <param name="valign">The vertical alignment.</param>
         /// <param name="maxSize">The maximum size of the text.</param>
         public void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalTextAlign halign, 
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalTextAlign halign,
             VerticalTextAlign valign,
             OxySize? maxSize)
         {
@@ -599,10 +585,6 @@ namespace OxyPlot.Metro
         public void SetToolTip(string text)
         {
         }
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The create dash array collection.
         /// </summary>
@@ -688,11 +670,11 @@ namespace OxyPlot.Metro
         /// The aliased.
         /// </param>
         private void SetStroke(
-            Shape shape, 
-            OxyColor stroke, 
-            double thickness, 
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, 
-            double[] dashArray = null, 
+            Shape shape,
+            OxyColor stroke,
+            double thickness,
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            double[] dashArray = null,
             bool aliased = false)
         {
             if (stroke != null && thickness > 0)
@@ -725,6 +707,5 @@ namespace OxyPlot.Metro
 
             // shape.UseLayoutRounding = aliased;
         }
-        #endregion
     }
 }

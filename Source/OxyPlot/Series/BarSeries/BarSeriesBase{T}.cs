@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BarSeriesBase{T}.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,13 +37,11 @@ namespace OxyPlot
     /// Generic base class that provides common properties and methods for the BarSeries and ColumnSeries.
     /// </summary>
     /// <typeparam name="T">
-    /// The type of the items. 
+    /// The type of the items.
     /// </typeparam>
     public abstract class BarSeriesBase<T> : BarSeriesBase
         where T : BarItemBase, new()
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BarSeriesBase{T}"/> class. Initializes a new instance of the <see cref="BarSeriesBase&lt;T&gt;"/> class.
         /// </summary>
@@ -52,27 +50,19 @@ namespace OxyPlot
             this.Items = new List<T>();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets the items.
         /// </summary>
         /// <value>
-        /// The items. 
+        /// The items.
         /// </value>
         public IList<T> Items { get; private set; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Gets the items of this series.
         /// </summary>
         /// <returns>
-        /// The items. 
+        /// The items.
         /// </returns>
         protected internal override IList<CategorizedItem> GetItems()
         {
@@ -103,10 +93,10 @@ namespace OxyPlot
         /// Gets the item at the specified index.
         /// </summary>
         /// <param name="i">
-        /// The index of the item. 
+        /// The index of the item.
         /// </param>
         /// <returns>
-        /// The item of the index. 
+        /// The item of the index.
         /// </returns>
         protected override object GetItem(int i)
         {
@@ -118,6 +108,5 @@ namespace OxyPlot
             return this.Items[i];
         }
 
-        #endregion
     }
 }

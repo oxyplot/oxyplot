@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StemSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,14 +36,12 @@ namespace OxyPlot
     /// </summary>
     /// <remarks>
     /// http://en.wikipedia.org/wiki/Stemplot
-    ///   http://www.mathworks.com/help/techdoc/ref/stem.html
+    /// http://www.mathworks.com/help/techdoc/ref/stem.html
     /// </remarks>
     public class StemSeries : LineSeries
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "StemSeries" /> class.
+        /// Initializes a new instance of the <see cref = "StemSeries" /> class.
         /// </summary>
         public StemSeries()
         {
@@ -79,18 +77,10 @@ namespace OxyPlot
         {
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets Base.
+        /// Gets or sets Base.
         /// </summary>
         public double Base { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
@@ -217,6 +207,5 @@ namespace OxyPlot
             }
         }
 
-        #endregion
     }
 }

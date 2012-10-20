@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PropertyTable.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,12 +38,10 @@ namespace OxyPlot.Reporting
     /// </summary>
     /// <remarks>
     /// The PropertyTable autogenerates columns or rows based on reflecting the Items type.
-    ///   Only [Browsable] properties are included.
+    /// Only [Browsable] properties are included.
     /// </remarks>
     public class PropertyTable : ItemsTable
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyTable"/> class.
         /// </summary>
@@ -60,10 +58,6 @@ namespace OxyPlot.Reporting
             this.UpdateFields(items);
             this.Items = items;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The get item type.
@@ -121,7 +115,7 @@ namespace OxyPlot.Reporting
 
             // todo
 #endif
-#if !SILVERLIGHT && !PCL 
+#if !SILVERLIGHT && !PCL
             foreach (PropertyDescriptor pd in TypeDescriptor.GetProperties(type))
             {
                 if (!pd.IsBrowsable)
@@ -136,6 +130,5 @@ namespace OxyPlot.Reporting
 #endif
         }
 
-        #endregion
     }
 }

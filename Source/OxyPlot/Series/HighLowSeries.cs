@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HighLowSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -40,10 +40,8 @@ namespace OxyPlot
     /// </remarks>
     public class HighLowSeries : XYAxisSeries
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   High/low items
+        /// High/low items
         /// </summary>
         private IList<HighLowItem> items;
 
@@ -52,12 +50,8 @@ namespace OxyPlot
         /// </summary>
         private OxyColor defaultColor;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "HighLowSeries" /> class.
+        /// Initializes a new instance of the <see cref = "HighLowSeries" /> class.
         /// </summary>
         public HighLowSeries()
         {
@@ -99,12 +93,8 @@ namespace OxyPlot
             this.Title = title;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the color of the curve.
+        /// Gets or sets the color of the curve.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
@@ -117,41 +107,41 @@ namespace OxyPlot
         {
             get { return this.Color ?? this.defaultColor; }
         }
-        
+
         /// <summary>
-        ///   Gets or sets the dashes array. 
-        ///   If this is not null it overrides the LineStyle property.
+        /// Gets or sets the dashes array.
+        /// If this is not null it overrides the LineStyle property.
         /// </summary>
         /// <value>The dashes.</value>
         public double[] Dashes { get; set; }
 
         /// <summary>
-        ///   Gets or sets the data field for the Close value.
+        /// Gets or sets the data field for the Close value.
         /// </summary>
         public string DataFieldClose { get; set; }
 
         /// <summary>
-        ///   Gets or sets the data field for the High value.
+        /// Gets or sets the data field for the High value.
         /// </summary>
         public string DataFieldHigh { get; set; }
 
         /// <summary>
-        ///   Gets or sets the data field for the Low value.
+        /// Gets or sets the data field for the Low value.
         /// </summary>
         public string DataFieldLow { get; set; }
 
         /// <summary>
-        ///   Gets or sets the data field for the Open value.
+        /// Gets or sets the data field for the Open value.
         /// </summary>
         public string DataFieldOpen { get; set; }
 
         /// <summary>
-        ///   Gets or sets the x data field (time).
+        /// Gets or sets the x data field (time).
         /// </summary>
         public string DataFieldX { get; set; }
 
         /// <summary>
-        ///   Gets or sets the points.
+        /// Gets or sets the points.
         /// </summary>
         /// <value>The points.</value>
         public IList<HighLowItem> Items
@@ -168,39 +158,35 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the line join.
+        /// Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
-        ///   Gets or sets the line style.
+        /// Gets or sets the line style.
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        ///   Gets or sets the mapping deleagte.
-        ///   Example: series1.Mapping = item => new HighLowItem(((MyType)item).Time,((MyType)item).Value);
+        /// Gets or sets the mapping deleagte.
+        /// Example: series1.Mapping = item => new HighLowItem(((MyType)item).Time,((MyType)item).Value);
         /// </summary>
         /// <value>The mapping.</value>
         public Func<object, HighLowItem> Mapping { get; set; }
 
         /// <summary>
-        ///   Gets or sets the thickness of the curve.
+        /// Gets or sets the thickness of the curve.
         /// </summary>
         /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        ///   Gets or sets the length of the open/close ticks (screen coordinates).
+        /// Gets or sets the length of the open/close ticks (screen coordinates).
         /// </summary>
         /// <value>The length of the open/close ticks.</value>
         public double TickLength { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
@@ -274,7 +260,7 @@ namespace OxyPlot
         /// <param name="xaxis">The x axis.</param>
         /// <param name="yaxis">The y axis.</param>
         /// <returns>
-        ///   <c>true</c> if [is valid point] [the specified pt]; otherwise, <c>false</c>.
+        ///  <c>true</c> if [is valid point] [the specified pt]; otherwise, <c>false</c>.
         /// </returns>
         public virtual bool IsValidItem(HighLowItem pt, Axis xaxis, Axis yaxis)
         {
@@ -403,10 +389,6 @@ namespace OxyPlot
                 true);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Sets the default values.
         /// </summary>
@@ -515,6 +497,5 @@ namespace OxyPlot
             this.MaxY = maxy;
         }
 
-        #endregion
     }
 }

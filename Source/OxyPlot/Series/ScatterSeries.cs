@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ScatterSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -46,19 +46,17 @@ namespace OxyPlot
         /// </summary>
         private OxyColor defaultMarkerFillColor;
 
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterSeries"/> class. 
+        /// Initializes a new instance of the <see cref="ScatterSeries"/> class.
         /// </summary>
         /// <param name="title">
-        /// The title. 
+        /// The title.
         /// </param>
         /// <param name="markerFill">
-        /// The marker fill color. 
+        /// The marker fill color.
         /// </param>
         /// <param name="markerSize">
-        /// Size of the markers (If ScatterPoint.Size is set, this value will be overriden). 
+        /// Size of the markers (If ScatterPoint.Size is set, this value will be overriden).
         /// </param>
         public ScatterSeries(string title, OxyColor markerFill = null, double markerSize = 5)
             : this()
@@ -69,8 +67,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterSeries"/> class. 
-        ///   Initializes a new instance of the <see cref="ScatterSeries"/> class.
+        /// Initializes a new instance of the <see cref="ScatterSeries"/> class.
         /// </summary>
         public ScatterSeries()
         {
@@ -84,50 +81,46 @@ namespace OxyPlot
             this.MarkerStrokeThickness = 1.0;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the screen resolution. If this number is greater than 1, bins of that size is created for both x and y directions. Only one point will be drawn in each bin.
+        /// Gets or sets the screen resolution. If this number is greater than 1, bins of that size is created for both x and y directions. Only one point will be drawn in each bin.
         /// </summary>
         public int BinSize { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color map.
+        /// Gets or sets the color map.
         /// </summary>
         /// <value> The color map. </value>
         /// <remarks>
-        ///   This is used to map scatter point values to colors.
+        /// This is used to map scatter point values to colors.
         /// </remarks>
         public ColorAxis ColorAxis { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color axis key.
+        /// Gets or sets the color axis key.
         /// </summary>
         /// <value> The color axis key. </value>
         public string ColorAxisKey { get; set; }
 
         /// <summary>
-        ///   Gets or sets the data field for the size.
+        /// Gets or sets the data field for the size.
         /// </summary>
         /// <value> The size data field. </value>
         public string DataFieldSize { get; set; }
 
         /// <summary>
-        ///   Gets or sets the tag data field.
+        /// Gets or sets the tag data field.
         /// </summary>
         /// <value> The tag data field. </value>
         public string DataFieldTag { get; set; }
 
         /// <summary>
-        ///   Gets or sets the value data field.
+        /// Gets or sets the value data field.
         /// </summary>
         /// <value> The value data field. </value>
         public string DataFieldValue { get; set; }
 
         /// <summary>
-        ///   Gets or sets the marker fill color. If null, this color will be automatically set.
+        /// Gets or sets the marker fill color. If null, this color will be automatically set.
         /// </summary>
         /// <value> The marker fill color. </value>
         public OxyColor MarkerFill { get; set; }
@@ -142,31 +135,31 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the marker outline polygon. Set MarkerType to Custom to use this.
+        /// Gets or sets the marker outline polygon. Set MarkerType to Custom to use this.
         /// </summary>
         /// <value> The marker outline. </value>
         public ScreenPoint[] MarkerOutline { get; set; }
 
         /// <summary>
-        ///   Gets or sets the size of the marker (same size for all items).
+        /// Gets or sets the size of the marker (same size for all items).
         /// </summary>
         /// <value> The size of the markers. </value>
         public double MarkerSize { get; set; }
 
         /// <summary>
-        ///   Gets or sets the marker stroke.
+        /// Gets or sets the marker stroke.
         /// </summary>
         /// <value> The marker stroke. </value>
         public OxyColor MarkerStroke { get; set; }
 
         /// <summary>
-        ///   Gets or sets the marker stroke thickness.
+        /// Gets or sets the marker stroke thickness.
         /// </summary>
         /// <value> The marker stroke thickness. </value>
         public double MarkerStrokeThickness { get; set; }
 
         /// <summary>
-        ///   Gets or sets the type of the marker.
+        /// Gets or sets the type of the marker.
         /// </summary>
         /// <value> The type of the marker. </value>
         /// <remarks>
@@ -175,30 +168,26 @@ namespace OxyPlot
         public MarkerType MarkerType { get; set; }
 
         /// <summary>
-        ///   Gets the max value of the points.
+        /// Gets the max value of the points.
         /// </summary>
         public double MaxValue { get; private set; }
 
         /// <summary>
-        ///   Gets the min value of the points.
+        /// Gets the min value of the points.
         /// </summary>
         public double MinValue { get; private set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets the nearest point.
         /// </summary>
         /// <param name="point">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <param name="interpolate">
-        /// interpolate if set to <c>true</c> . 
+        /// interpolate if set to <c>true</c> .
         /// </param>
         /// <returns>
-        /// A TrackerHitResult for the current hit. 
+        /// A TrackerHitResult for the current hit.
         /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
@@ -289,16 +278,16 @@ namespace OxyPlot
         /// Determines whether the specified point is valid.
         /// </summary>
         /// <param name="pt">
-        /// The pointt. 
+        /// The pointt.
         /// </param>
         /// <param name="xaxis">
-        /// The x axis. 
+        /// The x axis.
         /// </param>
         /// <param name="yaxis">
-        /// The y axis. 
+        /// The y axis.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the point is valid; otherwise, <c>false</c> . 
+        /// <c>true</c> if the point is valid; otherwise, <c>false</c> .
         /// </returns>
         public virtual bool IsValidPoint(ScatterPoint pt, Axis xaxis, Axis yaxis)
         {
@@ -310,10 +299,10 @@ namespace OxyPlot
         /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">
-        /// The rendering context. 
+        /// The rendering context.
         /// </param>
         /// <param name="model">
-        /// The owner plot model. 
+        /// The owner plot model.
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
@@ -428,10 +417,10 @@ namespace OxyPlot
         /// Renders the legend symbol for the line series on the specified rendering context.
         /// </summary>
         /// <param name="rc">
-        /// The rendering context. 
+        /// The rendering context.
         /// </param>
         /// <param name="legendBox">
-        /// The bounding rectangle of the legend box. 
+        /// The bounding rectangle of the legend box.
         /// </param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
@@ -450,10 +439,6 @@ namespace OxyPlot
                 this.MarkerStrokeThickness);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Ensures that the axes of the series is defined.
         /// </summary>
@@ -468,7 +453,7 @@ namespace OxyPlot
         /// Sets the default values.
         /// </summary>
         /// <param name="model">
-        /// The model. 
+        /// The model.
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
@@ -502,7 +487,7 @@ namespace OxyPlot
                 return;
             }
 
-            // Get DataPoints from the items in ItemsSource 
+            // Get DataPoints from the items in ItemsSource
             // if they implement IScatterPointProvider
             // If DataFields are set, this is not used
             /*if (DataFieldX == null || DataFieldY == null)
@@ -548,25 +533,25 @@ namespace OxyPlot
         /// The add scatter points.
         /// </summary>
         /// <param name="dest">
-        /// The dest. 
+        /// The dest.
         /// </param>
         /// <param name="itemsSource">
-        /// The items source. 
+        /// The items source.
         /// </param>
         /// <param name="dataFieldX">
-        /// The data field x. 
+        /// The data field x.
         /// </param>
         /// <param name="dataFieldY">
-        /// The data field y. 
+        /// The data field y.
         /// </param>
         /// <param name="dataFieldSize">
-        /// The data field size. 
+        /// The data field size.
         /// </param>
         /// <param name="dataFieldValue">
-        /// The data field value. 
+        /// The data field value.
         /// </param>
         /// <param name="dataFieldTag">
-        /// The data field tag. 
+        /// The data field tag.
         /// </param>
         protected void AddScatterPoints(
             IList<ScatterPoint> dest,
@@ -590,7 +575,7 @@ namespace OxyPlot
         /// Updates the Max/Min limits from the values in the specified point list.
         /// </summary>
         /// <param name="pts">
-        /// The points. 
+        /// The points.
         /// </param>
         protected void InternalUpdateMaxMinValue(IList<IDataPoint> pts)
         {
@@ -632,6 +617,5 @@ namespace OxyPlot
             }
         }
 
-        #endregion
     }
 }

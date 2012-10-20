@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AxisRenderer.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -29,7 +29,7 @@ using System.Collections.Generic;
 
 namespace OxyPlot
 {
-    public class AxisRenderer 
+    public class AxisRenderer
     {
         private const double AXIS_LEGEND_DIST = 4; // distance from axis number to axis legend
         private const double TICK_DIST = 8; // distance from axis tick to number
@@ -139,7 +139,6 @@ namespace OxyPlot
 
                 // RenderGridline(x, y + y0, x, y + y1, majorTickPen);
 
-
                 //var pt = new ScreenPoint(x, istop ? y + y1 - TICK_DIST : y + y1 + TICK_DIST);
                 //string text = axis.FormatValue(xValue);
                 //double h = rc.MeasureText(text, axis.FontFamily, axis.FontSize, axis.FontWeight).Height;
@@ -201,7 +200,6 @@ namespace OxyPlot
                 }
                 // RenderGridline(x, y + y0, x, y + y1, majorTickPen);
 
-
                 //var pt = new ScreenPoint(x, istop ? y + y1 - TICK_DIST : y + y1 + TICK_DIST);
                 //string text = axis.FormatValue(xValue);
                 //double h = rc.MeasureText(text, axis.FontFamily, axis.FontSize, axis.FontWeight).Height;
@@ -226,7 +224,6 @@ namespace OxyPlot
                                 new ScreenPoint(x1, y1)
                             }, pen.Color, pen.Thickness, pen.DashArray, aliased);
         }
-
 
         private void GetVerticalTickPositions(Axis axis, TickStyle glt, double ticksize,
                                               out double y0, out double y1)

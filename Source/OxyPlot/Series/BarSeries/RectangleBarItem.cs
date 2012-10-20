@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RectangleBarItem.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -34,8 +34,6 @@ namespace OxyPlot
     /// </summary>
     public class RectangleBarItem : ICodeGenerating
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RectangleBarItem"/> class.
         /// </summary>
@@ -47,22 +45,22 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="RectangleBarItem"/> class.
         /// </summary>
         /// <param name="x0">
-        /// The x0. 
+        /// The x0.
         /// </param>
         /// <param name="y0">
-        /// The y0. 
+        /// The y0.
         /// </param>
         /// <param name="x1">
-        /// The x1. 
+        /// The x1.
         /// </param>
         /// <param name="y1">
-        /// The y1. 
+        /// The y1.
         /// </param>
         /// <param name="title">
-        /// The title. 
+        /// The title.
         /// </param>
         /// <param name="color">
-        /// The color. 
+        /// The color.
         /// </param>
         public RectangleBarItem(double x0, double y0, double x1, double y1, string title = null, OxyColor color = null)
         {
@@ -73,10 +71,6 @@ namespace OxyPlot
             this.Title = title;
             this.Color = color;
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets the color.
@@ -108,28 +102,24 @@ namespace OxyPlot
         /// </summary>
         public double Y1 { get; set; }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Returns c# code that generates this instance.
         /// </summary>
         /// <returns>
-        /// C# code. 
+        /// C# code.
         /// </returns>
         public string ToCode()
         {
             if (this.Color != null)
             {
                 return CodeGenerator.FormatConstructor(
-                    this.GetType(), 
-                    "{0},{1},{2},{3},{4},{5}", 
-                    this.X0, 
-                    this.Y0, 
-                    this.X1, 
-                    this.Y1, 
-                    this.Title, 
+                    this.GetType(),
+                    "{0},{1},{2},{3},{4},{5}",
+                    this.X0,
+                    this.Y0,
+                    this.X1,
+                    this.Y1,
+                    this.Title,
                     this.Color.ToCode());
             }
 
@@ -143,6 +133,5 @@ namespace OxyPlot
                 this.GetType(), "{0},{1},{2},{3}", this.X0, this.Y0, this.X1, this.Y1);
         }
 
-        #endregion
     }
 }

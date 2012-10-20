@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ScreenPoint.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -40,39 +40,33 @@ namespace OxyPlot
     /// </remarks>
     public struct ScreenPoint
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The undefined.
+        /// The undefined.
         /// </summary>
         public static readonly ScreenPoint Undefined = new ScreenPoint(double.NaN, double.NaN);
 
         /// <summary>
-        ///   The x.
+        /// The x.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
             Justification = "Reviewed. Suppression is OK here.")]
         internal double x;
 
         /// <summary>
-        ///   The y.
+        /// The y.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
             Justification = "Reviewed. Suppression is OK here.")]
         internal double y;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScreenPoint"/> struct. 
+        /// Initializes a new instance of the <see cref="ScreenPoint"/> struct.
         /// </summary>
         /// <param name="x">
-        /// The x. 
+        /// The x.
         /// </param>
         /// <param name="y">
-        /// The y. 
+        /// The y.
         /// </param>
         public ScreenPoint(double x, double y)
         {
@@ -80,12 +74,8 @@ namespace OxyPlot
             this.y = y;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the X.
+        /// Gets or sets the X.
         /// </summary>
         /// <value> The X. </value>
         public double X
@@ -102,7 +92,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the Y.
+        /// Gets or sets the Y.
         /// </summary>
         /// <value> The Y. </value>
         public double Y
@@ -118,18 +108,14 @@ namespace OxyPlot
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Determines whether the specified point is undefined.
         /// </summary>
         /// <param name="point">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified point is undefined; otherwise, <c>false</c> . 
+        /// <c>true</c> if the specified point is undefined; otherwise, <c>false</c> .
         /// </returns>
         public static bool IsUndefined(ScreenPoint point)
         {
@@ -140,10 +126,10 @@ namespace OxyPlot
         /// Gets the distances to the specified point.
         /// </summary>
         /// <param name="point">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <returns>
-        /// The distance. 
+        /// The distance.
         /// </returns>
         public double DistanceTo(ScreenPoint point)
         {
@@ -156,10 +142,10 @@ namespace OxyPlot
         /// Gets the squared distance to the specified point.
         /// </summary>
         /// <param name="point">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <returns>
-        /// The squared distance. 
+        /// The squared distance.
         /// </returns>
         public double DistanceToSquared(ScreenPoint point)
         {
@@ -172,19 +158,15 @@ namespace OxyPlot
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance. 
+        /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
             return this.x + " " + this.y;
         }
 
-        #endregion
-
-        #region Operators
-
         /// <summary>
-        ///   Implements the operator +.
+        /// Implements the operator +.
         /// </summary>
         /// <param name="p1"> The p1. </param>
         /// <param name="p2"> The p2. </param>
@@ -195,7 +177,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Implements the operator +.
+        /// Implements the operator +.
         /// </summary>
         /// <param name="p1"> The p1. </param>
         /// <param name="p2"> The p2. </param>
@@ -206,7 +188,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Implements the operator -.
+        /// Implements the operator -.
         /// </summary>
         /// <param name="p1"> The p1. </param>
         /// <param name="p2"> The p2. </param>
@@ -217,7 +199,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Implements the operator -.
+        /// Implements the operator -.
         /// </summary>
         /// <param name="p1"> The p1. </param>
         /// <param name="p2"> The p2. </param>
@@ -227,6 +209,5 @@ namespace OxyPlot
             return new ScreenPoint(p1.x - p2.x, p1.y - p2.y);
         }
 
-        #endregion
     }
 }

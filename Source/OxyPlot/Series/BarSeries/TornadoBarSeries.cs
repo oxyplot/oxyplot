@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TornadoBarSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -51,8 +51,6 @@ namespace OxyPlot
         /// </summary>
         private OxyColor defaultMinimumFillColor;
 
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TornadoBarSeries"/> class.
         /// </summary>
@@ -74,15 +72,11 @@ namespace OxyPlot
             this.MaximumLabelFormatString = "{0}";
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets the width of the bars (as a fraction of the available width). The default value is 0.5 (50%)
         /// </summary>
         /// <value>
-        /// The width of the bars. 
+        /// The width of the bars.
         /// </value>
         public double BarWidth { get; set; }
 
@@ -90,7 +84,7 @@ namespace OxyPlot
         /// Gets or sets the base value.
         /// </summary>
         /// <value>
-        /// The base value. 
+        /// The base value.
         /// </value>
         public double BaseValue { get; set; }
 
@@ -98,7 +92,7 @@ namespace OxyPlot
         /// Gets the tornado bar items.
         /// </summary>
         /// <value>
-        /// The items. 
+        /// The items.
         /// </value>
         public IList<TornadoBarItem> Items { get; private set; }
 
@@ -126,7 +120,7 @@ namespace OxyPlot
         /// Gets or sets the color of the interior of the Maximum bars.
         /// </summary>
         /// <value>
-        /// The color. 
+        /// The color.
         /// </value>
         public OxyColor MaximumFillColor { get; set; }
 
@@ -153,7 +147,7 @@ namespace OxyPlot
         /// Gets or sets the default color of the interior of the Minimum bars.
         /// </summary>
         /// <value>
-        /// The color. 
+        /// The color.
         /// </value>
         public OxyColor MinimumFillColor { get; set; }
 
@@ -175,7 +169,7 @@ namespace OxyPlot
         /// Gets or sets the color of the border around the bars.
         /// </summary>
         /// <value>
-        /// The color of the stroke. 
+        /// The color of the stroke.
         /// </value>
         public OxyColor StrokeColor { get; set; }
 
@@ -183,13 +177,9 @@ namespace OxyPlot
         /// Gets or sets the thickness of the bar border strokes.
         /// </summary>
         /// <value>
-        /// The stroke thickness. 
+        /// The stroke thickness.
         /// </value>
         public double StrokeThickness { get; set; }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the actual rectangles for the maximum bars.
@@ -211,21 +201,17 @@ namespace OxyPlot
         /// </summary>
         internal Dictionary<int, int> ValidItemsIndexInversion { get; set; }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Gets the point in the dataset that is nearest the specified point.
         /// </summary>
         /// <param name="point">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <param name="interpolate">
-        /// The interpolate. 
+        /// The interpolate.
         /// </param>
         /// <returns>
-        /// A TrackerHitResult for the current hit. 
+        /// A TrackerHitResult for the current hit.
         /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
@@ -261,13 +247,13 @@ namespace OxyPlot
         /// Checks if the specified value is valid.
         /// </summary>
         /// <param name="v">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <param name="yaxis">
-        /// The y axis. 
+        /// The y axis.
         /// </param>
         /// <returns>
-        /// True if the value is valid. 
+        /// True if the value is valid.
         /// </returns>
         public virtual bool IsValidPoint(double v, Axis yaxis)
         {
@@ -278,10 +264,10 @@ namespace OxyPlot
         /// Renders the Series on the specified rendering context.
         /// </summary>
         /// <param name="rc">
-        /// The rendering context. 
+        /// The rendering context.
         /// </param>
         /// <param name="model">
-        /// The model. 
+        /// The model.
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
@@ -318,61 +304,61 @@ namespace OxyPlot
                 this.ActualMaximumBarRectangles.Add(maximumRectangle);
 
                 rc.DrawClippedRectangleAsPolygon(
-                    minimumRectangle, 
-                    clippingRect, 
-                    item.MinimumColor ?? this.ActualMinimumFillColor, 
-                    this.StrokeColor, 
+                    minimumRectangle,
+                    clippingRect,
+                    item.MinimumColor ?? this.ActualMinimumFillColor,
+                    this.StrokeColor,
                     this.StrokeThickness);
                 rc.DrawClippedRectangleAsPolygon(
-                    maximumRectangle, 
-                    clippingRect, 
-                    item.MaximumColor ?? this.ActualMaximumFillColor, 
-                    this.StrokeColor, 
+                    maximumRectangle,
+                    clippingRect,
+                    item.MaximumColor ?? this.ActualMaximumFillColor,
+                    this.StrokeColor,
                     this.StrokeThickness);
 
                 if (this.MinimumLabelFormatString != null)
                 {
                     var s = StringHelper.Format(
-                        this.ActualCulture, 
-                        this.MinimumLabelFormatString, 
-                        this.GetItem(this.ValidItemsIndexInversion[i]), 
+                        this.ActualCulture,
+                        this.MinimumLabelFormatString,
+                        this.GetItem(this.ValidItemsIndexInversion[i]),
                         item.Minimum);
                     var pt = new ScreenPoint(
                         minimumRectangle.Left - this.LabelMargin, (minimumRectangle.Top + minimumRectangle.Bottom) / 2);
 
                     rc.DrawClippedText(
-                        clippingRect, 
-                        pt, 
-                        s, 
-                        this.ActualTextColor, 
-                        this.ActualFont, 
-                        this.ActualFontSize, 
-                        this.ActualFontWeight, 
-                        0, 
-                        HorizontalTextAlign.Right, 
+                        clippingRect,
+                        pt,
+                        s,
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.ActualFontSize,
+                        this.ActualFontWeight,
+                        0,
+                        HorizontalTextAlign.Right,
                         VerticalTextAlign.Middle);
                 }
 
                 if (this.MaximumLabelFormatString != null)
                 {
                     var s = StringHelper.Format(
-                        this.ActualCulture, 
-                        this.MaximumLabelFormatString, 
-                        this.GetItem(this.ValidItemsIndexInversion[i]), 
+                        this.ActualCulture,
+                        this.MaximumLabelFormatString,
+                        this.GetItem(this.ValidItemsIndexInversion[i]),
                         item.Maximum);
                     var pt = new ScreenPoint(
                         maximumRectangle.Right + this.LabelMargin, (maximumRectangle.Top + maximumRectangle.Bottom) / 2);
 
                     rc.DrawClippedText(
-                        clippingRect, 
-                        pt, 
-                        s, 
-                        this.ActualTextColor, 
-                        this.ActualFont, 
-                        this.ActualFontSize, 
-                        this.ActualFontWeight, 
-                        0, 
-                        HorizontalTextAlign.Left, 
+                        clippingRect,
+                        pt,
+                        s,
+                        this.ActualTextColor,
+                        this.ActualFont,
+                        this.ActualFontSize,
+                        this.ActualFontWeight,
+                        0,
+                        HorizontalTextAlign.Left,
                         VerticalTextAlign.Middle);
                 }
             }
@@ -382,10 +368,10 @@ namespace OxyPlot
         /// Renders the legend symbol on the specified rendering context.
         /// </summary>
         /// <param name="rc">
-        /// The rendering context. 
+        /// The rendering context.
         /// </param>
         /// <param name="legendBox">
-        /// The legend rectangle. 
+        /// The legend rectangle.
         /// </param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
@@ -394,29 +380,25 @@ namespace OxyPlot
             double height = (legendBox.Bottom - legendBox.Top) * 0.8;
             double width = height;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), 0.5 * width, height), 
-                this.ActualMinimumFillColor, 
-                this.StrokeColor, 
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), 0.5 * width, height),
+                this.ActualMinimumFillColor,
+                this.StrokeColor,
                 this.StrokeThickness);
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid, ymid - (0.5 * height), 0.5 * width, height), 
-                this.ActualMaximumFillColor, 
-                this.StrokeColor, 
+                new OxyRect(xmid, ymid - (0.5 * height), 0.5 * width, height),
+                this.ActualMaximumFillColor,
+                this.StrokeColor,
                 this.StrokeThickness);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Gets or sets the width/height of the columns/bars (as a fraction of the available space).
         /// </summary>
         /// <returns>
-        /// The fractional width. 
+        /// The fractional width.
         /// </returns>
         /// <value>
-        /// The width of the bars. 
+        /// The width of the bars.
         /// </value>
         /// <remarks>
         /// The available space will be determined by the GapWidth of the CategoryAxis used by this series.
@@ -430,7 +412,7 @@ namespace OxyPlot
         /// Gets the items of this series.
         /// </summary>
         /// <returns>
-        /// The items. 
+        /// The items.
         /// </returns>
         protected internal override IList<CategorizedItem> GetItems()
         {
@@ -441,10 +423,10 @@ namespace OxyPlot
         /// Check if the data series is using the specified axis.
         /// </summary>
         /// <param name="axis">
-        /// An axis which should be checked if used 
+        /// An axis which should be checked if used
         /// </param>
         /// <returns>
-        /// True if the axis is in use. 
+        /// True if the axis is in use.
         /// </returns>
         protected internal override bool IsUsing(Axis axis)
         {
@@ -455,7 +437,7 @@ namespace OxyPlot
         /// The set default values.
         /// </summary>
         /// <param name="model">
-        /// The model. 
+        /// The model.
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
@@ -544,7 +526,7 @@ namespace OxyPlot
         /// Gets the actual width/height of the items of this series.
         /// </summary>
         /// <returns>
-        /// The width or height. 
+        /// The width or height.
         /// </returns>
         /// <remarks>
         /// The actual width is also influenced by the GapWidth of the CategoryAxis used by this series.
@@ -559,7 +541,7 @@ namespace OxyPlot
         /// Gets the category axis.
         /// </summary>
         /// <returns>
-        /// The category axis. 
+        /// The category axis.
         /// </returns>
         protected override CategoryAxis GetCategoryAxis()
         {
@@ -576,10 +558,10 @@ namespace OxyPlot
         /// Gets the item at the specified index.
         /// </summary>
         /// <param name="i">
-        /// The index of the item. 
+        /// The index of the item.
         /// </param>
         /// <returns>
-        /// The item of the index. 
+        /// The item of the index.
         /// </returns>
         protected override object GetItem(int i)
         {
@@ -595,13 +577,12 @@ namespace OxyPlot
         /// Gets the value axis.
         /// </summary>
         /// <returns>
-        /// The value axis. 
+        /// The value axis.
         /// </returns>
         private Axis GetValueAxis()
         {
             return this.XAxis;
         }
 
-        #endregion
     }
 }

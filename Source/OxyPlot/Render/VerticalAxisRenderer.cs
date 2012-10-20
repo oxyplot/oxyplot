@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="VerticalAxisRenderer.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -234,7 +234,7 @@ namespace OxyPlot
 
             if (!String.IsNullOrWhiteSpace(axis.Title))
             {
-                // Axis legend 
+                // Axis legend
                 double ymid = axis.Transform((axis.ActualMinimum + axis.ActualMaximum) / 2);
                 double angle = -90;
                 var lpt = new ScreenPoint();
@@ -276,8 +276,6 @@ namespace OxyPlot
                             angle, halign, valign);
             }
         }
-
-      
 
         /// <summary>
         /// Gets the rotated alignments given the specified angle.

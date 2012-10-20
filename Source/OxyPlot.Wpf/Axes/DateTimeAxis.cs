@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,76 +38,66 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class DateTimeAxis : Axis
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The calendar week rule property.
+        /// The calendar week rule property.
         /// </summary>
         public static readonly DependencyProperty CalendarWeekRuleProperty =
             DependencyProperty.Register(
-                "CalendarWeekRule", 
-                typeof(CalendarWeekRule), 
-                typeof(DateTimeAxis), 
+                "CalendarWeekRule",
+                typeof(CalendarWeekRule),
+                typeof(DateTimeAxis),
                 new PropertyMetadata(CalendarWeekRule.FirstFourDayWeek, DataChanged));
 
         /// <summary>
-        ///   The first date time property.
+        /// The first date time property.
         /// </summary>
         public static readonly DependencyProperty FirstDateTimeProperty = DependencyProperty.Register(
             "FirstDateTime", typeof(DateTime), typeof(DateTimeAxis), new PropertyMetadata(DateTime.MinValue));
 
         /// <summary>
-        ///   The first day of week property.
+        /// The first day of week property.
         /// </summary>
         public static readonly DependencyProperty FirstDayOfWeekProperty = DependencyProperty.Register(
-            "FirstDayOfWeek", 
-            typeof(DayOfWeek), 
-            typeof(DateTimeAxis), 
+            "FirstDayOfWeek",
+            typeof(DayOfWeek),
+            typeof(DateTimeAxis),
             new PropertyMetadata(DayOfWeek.Monday, DataChanged));
 
         /// <summary>
-        ///   The interval type property.
+        /// The interval type property.
         /// </summary>
         public static readonly DependencyProperty IntervalTypeProperty = DependencyProperty.Register(
-            "IntervalType", 
-            typeof(DateTimeIntervalType), 
-            typeof(DateTimeAxis), 
+            "IntervalType",
+            typeof(DateTimeIntervalType),
+            typeof(DateTimeAxis),
             new PropertyMetadata(DateTimeIntervalType.Auto));
 
         /// <summary>
-        ///   The last date time property.
+        /// The last date time property.
         /// </summary>
         public static readonly DependencyProperty LastDateTimeProperty = DependencyProperty.Register(
             "LastDateTime", typeof(DateTime), typeof(DateTimeAxis), new PropertyMetadata(DateTime.MaxValue));
 
         /// <summary>
-        ///   The minor interval type property.
+        /// The minor interval type property.
         /// </summary>
         public static readonly DependencyProperty MinorIntervalTypeProperty =
             DependencyProperty.Register(
-                "MinorIntervalType", 
-                typeof(DateTimeIntervalType), 
-                typeof(DateTimeAxis), 
+                "MinorIntervalType",
+                typeof(DateTimeIntervalType),
+                typeof(DateTimeAxis),
                 new PropertyMetadata(DateTimeIntervalType.Auto, DataChanged));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DateTimeAxis" /> class.
+        /// Initializes a new instance of the <see cref = "DateTimeAxis" /> class.
         /// </summary>
         public DateTimeAxis()
         {
             this.internalAxis = new OxyPlot.DateTimeAxis();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets CalendarWeekRule.
+        /// Gets or sets CalendarWeekRule.
         /// </summary>
         public CalendarWeekRule CalendarWeekRule
         {
@@ -123,7 +113,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets FirstDateTime.
+        /// Gets or sets FirstDateTime.
         /// </summary>
         public DateTime FirstDateTime
         {
@@ -139,7 +129,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets FirstDayOfWeek.
+        /// Gets or sets FirstDayOfWeek.
         /// </summary>
         public DayOfWeek FirstDayOfWeek
         {
@@ -155,7 +145,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets IntervalType.
+        /// Gets or sets IntervalType.
         /// </summary>
         public DateTimeIntervalType IntervalType
         {
@@ -171,7 +161,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets LastDateTime.
+        /// Gets or sets LastDateTime.
         /// </summary>
         public DateTime LastDateTime
         {
@@ -187,7 +177,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets MinorIntervalType.
+        /// Gets or sets MinorIntervalType.
         /// </summary>
         public DateTimeIntervalType MinorIntervalType
         {
@@ -202,10 +192,6 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// The create model.
         /// </summary>
@@ -216,10 +202,6 @@ namespace OxyPlot.Wpf
             this.SynchronizeProperties();
             return this.internalAxis;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The synchronize properties.
@@ -245,6 +227,5 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
     }
 }

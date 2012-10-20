@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MarkerType.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -35,47 +35,47 @@ namespace OxyPlot
     public enum MarkerType
     {
         /// <summary>
-        ///   The none.
+        /// The none.
         /// </summary>
-        None, 
+        None,
 
         /// <summary>
-        ///   The circle.
+        /// The circle.
         /// </summary>
-        Circle, 
+        Circle,
 
         /// <summary>
-        ///   The square.
+        /// The square.
         /// </summary>
-        Square, 
+        Square,
 
         /// <summary>
-        ///   The diamond.
+        /// The diamond.
         /// </summary>
-        Diamond, 
+        Diamond,
 
         /// <summary>
-        ///   The triangle.
+        /// The triangle.
         /// </summary>
-        Triangle, 
+        Triangle,
 
         /// <summary>
-        ///   The cross.
+        /// The cross.
         /// </summary>
-        Cross, 
+        Cross,
 
         /// <summary>
-        ///   The plus.
+        /// The plus.
         /// </summary>
-        Plus, 
+        Plus,
 
         /// <summary>
-        ///   The star.
+        /// The star.
         /// </summary>
-        Star, 
+        Star,
 
         /// <summary>
-        ///   The custom.
+        /// The custom.
         /// </summary>
         Custom
     }

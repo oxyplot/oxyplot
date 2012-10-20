@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Axis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,16 +38,14 @@ namespace OxyPlot.Wpf
     /// </summary>
     public abstract class Axis : FrameworkElement
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The absolute maximum property.
         /// </summary>
         public static readonly DependencyProperty AbsoluteMaximumProperty =
             DependencyProperty.Register(
-                "AbsoluteMaximum", 
-                typeof(double), 
-                typeof(Axis), 
+                "AbsoluteMaximum",
+                typeof(double),
+                typeof(Axis),
                 new PropertyMetadata(double.MaxValue, AppearanceChanged));
 
         /// <summary>
@@ -55,9 +53,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty AbsoluteMinimumProperty =
             DependencyProperty.Register(
-                "AbsoluteMinimum", 
-                typeof(double), 
-                typeof(Axis), 
+                "AbsoluteMinimum",
+                typeof(double),
+                typeof(Axis),
                 new PropertyMetadata(double.MinValue, AppearanceChanged));
 
         /// <summary>
@@ -121,9 +119,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty ExtraGridlineStyleProperty =
             DependencyProperty.Register(
-                "ExtraGridlineStyle", 
-                typeof(LineStyle), 
-                typeof(Axis), 
+                "ExtraGridlineStyle",
+                typeof(LineStyle),
+                typeof(Axis),
                 new PropertyMetadata(LineStyle.Solid, AppearanceChanged));
 
         /// <summary>
@@ -216,9 +214,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MajorGridlineColorProperty =
             DependencyProperty.Register(
-                "MajorGridlineColor", 
-                typeof(Color), 
-                typeof(Axis), 
+                "MajorGridlineColor",
+                typeof(Color),
+                typeof(Axis),
                 new PropertyMetadata(Color.FromArgb(0x40, 0, 0, 0), AppearanceChanged));
 
         /// <summary>
@@ -226,9 +224,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MajorGridlineStyleProperty =
             DependencyProperty.Register(
-                "MajorGridlineStyle", 
-                typeof(LineStyle), 
-                typeof(Axis), 
+                "MajorGridlineStyle",
+                typeof(LineStyle),
+                typeof(Axis),
                 new PropertyMetadata(LineStyle.None, AppearanceChanged));
 
         /// <summary>
@@ -285,9 +283,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MinorGridlineColorProperty =
             DependencyProperty.Register(
-                "MinorGridlineColor", 
-                typeof(Color), 
-                typeof(Axis), 
+                "MinorGridlineColor",
+                typeof(Color),
+                typeof(Axis),
                 new PropertyMetadata(Color.FromArgb(0x20, 0, 0, 0), AppearanceChanged));
 
         /// <summary>
@@ -295,9 +293,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MinorGridlineStyleProperty =
             DependencyProperty.Register(
-                "MinorGridlineStyle", 
-                typeof(LineStyle), 
-                typeof(Axis), 
+                "MinorGridlineStyle",
+                typeof(LineStyle),
+                typeof(Axis),
                 new PropertyMetadata(LineStyle.None, AppearanceChanged));
 
         /// <summary>
@@ -437,10 +435,6 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected OxyPlot.Axis internalAxis;
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets AbsoluteMaximum.
         /// </summary>
@@ -525,7 +519,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the color of the axisline.
         /// </summary>
         /// <value>
-        /// The color of the axisline. 
+        /// The color of the axisline.
         /// </value>
         public Color AxislineColor
         {
@@ -544,7 +538,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the axis line style.
         /// </summary>
         /// <value>
-        /// The axisline style. 
+        /// The axisline style.
         /// </value>
         public LineStyle AxislineStyle
         {
@@ -563,7 +557,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the axis line thickness.
         /// </summary>
         /// <value>
-        /// The axisline thickness. 
+        /// The axisline thickness.
         /// </value>
         public double AxislineThickness
         {
@@ -582,7 +576,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets a value indicating whether [clip title].
         /// </summary>
         /// <value>
-        /// <c>true</c> if [clip title]; otherwise, <c>false</c> . 
+        /// <c>true</c> if [clip title]; otherwise, <c>false</c> .
         /// </value>
         public bool ClipTitle
         {
@@ -681,7 +675,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the filter function.
         /// </summary>
         /// <value>
-        /// The filter function. 
+        /// The filter function.
         /// </value>
         public Func<double, bool> FilterFunction
         {
@@ -1263,7 +1257,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the length of the title clipping.
         /// </summary>
         /// <value>
-        /// The length of the title clipping. 
+        /// The length of the title clipping.
         /// </value>
         public double TitleClippingLength
         {
@@ -1282,7 +1276,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the color of the title.
         /// </summary>
         /// <value>
-        /// The color of the title. 
+        /// The color of the title.
         /// </value>
         public Color TitleColor
         {
@@ -1301,7 +1295,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the title font.
         /// </summary>
         /// <value>
-        /// The title font. 
+        /// The title font.
         /// </value>
         public string TitleFont
         {
@@ -1320,7 +1314,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the size of the title font.
         /// </summary>
         /// <value>
-        /// The size of the title font. 
+        /// The size of the title font.
         /// </value>
         public double TitleFontSize
         {
@@ -1339,7 +1333,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the title font weight.
         /// </summary>
         /// <value>
-        /// The title font weight. 
+        /// The title font weight.
         /// </value>
         public FontWeight TitleFontWeight
         {
@@ -1418,10 +1412,6 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// The create model.
         /// </summary>
@@ -1429,18 +1419,14 @@ namespace OxyPlot.Wpf
         /// </returns>
         public abstract OxyPlot.Axis CreateModel();
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The visual appearance changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event args. 
+        /// The event args.
         /// </param>
         protected static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -1451,10 +1437,10 @@ namespace OxyPlot.Wpf
         /// The data changed.
         /// </summary>
         /// <param name="d">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event args. 
+        /// The event args.
         /// </param>
         protected static void DataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -1474,7 +1460,7 @@ namespace OxyPlot.Wpf
         /// The on property changed handler.
         /// </summary>
         /// <param name="e">
-        /// The event args. 
+        /// The event args.
         /// </param>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -1573,6 +1559,5 @@ namespace OxyPlot.Wpf
             a.UseSuperExponentialFormat = this.UseSuperExponentialFormat;
         }
 
-        #endregion
     }
 }

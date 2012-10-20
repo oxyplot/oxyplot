@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CodeGenerator.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -41,15 +41,13 @@ namespace OxyPlot
     /// Generates c# code for the specified PlotModel.
     /// </summary>
     /// <remarks>
-    /// This is useful for creating examples or unit tests. Press Ctrl+Alt+C in a plot to copy code to the clipboard. 
-    /// Usage: 
-    /// var cg = new CodeGenerator(myPlotModel); 
+    /// This is useful for creating examples or unit tests. Press Ctrl+Alt+C in a plot to copy code to the clipboard.
+    /// Usage:
+    /// var cg = new CodeGenerator(myPlotModel);
     /// Clipboard.SetText(cg.ToCode());
     /// </remarks>
     public class CodeGenerator
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The sb.
         /// </summary>
@@ -70,15 +68,11 @@ namespace OxyPlot
         /// </summary>
         private int indents;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CodeGenerator"/> class.
         /// </summary>
         /// <param name="model">
-        /// The model. 
+        /// The model.
         /// </param>
         public CodeGenerator(PlotModel model)
         {
@@ -100,10 +94,6 @@ namespace OxyPlot
             this.AppendLine("}");
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets or sets Indents.
         /// </summary>
@@ -121,21 +111,17 @@ namespace OxyPlot
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Formats the code.
         /// </summary>
         /// <param name="format">
-        /// The format. 
+        /// The format.
         /// </param>
         /// <param name="values">
-        /// The values. 
+        /// The values.
         /// </param>
         /// <returns>
-        /// The format code. 
+        /// The format code.
         /// </returns>
         public static string FormatCode(string format, params object[] values)
         {
@@ -152,16 +138,16 @@ namespace OxyPlot
         /// Formats a constructor.
         /// </summary>
         /// <param name="type">
-        /// The type. 
+        /// The type.
         /// </param>
         /// <param name="format">
-        /// The format of the constructor arguments. 
+        /// The format of the constructor arguments.
         /// </param>
         /// <param name="values">
-        /// The argument values. 
+        /// The argument values.
         /// </param>
         /// <returns>
-        /// The format constructor. 
+        /// The format constructor.
         /// </returns>
         public static string FormatConstructor(Type type, string format, params object[] values)
         {
@@ -172,25 +158,21 @@ namespace OxyPlot
         /// Returns the c# code for this model.
         /// </summary>
         /// <returns>
-        /// C# code. 
+        /// C# code.
         /// </returns>
         public string ToCode()
         {
             return this.sb.ToString();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Adds the specified object to the generated code.
         /// </summary>
         /// <param name="obj">
-        /// The object. 
+        /// The object.
         /// </param>
         /// <returns>
-        /// The variable name. 
+        /// The variable name.
         /// </returns>
         private string Add(object obj)
         {
@@ -207,13 +189,13 @@ namespace OxyPlot
         /// Adds the children.
         /// </summary>
         /// <param name="name">
-        /// The name. 
+        /// The name.
         /// </param>
         /// <param name="collectionName">
-        /// Name of the collection. 
+        /// Name of the collection.
         /// </param>
         /// <param name="children">
-        /// The children. 
+        /// The children.
         /// </param>
         private void AddChildren(string name, string collectionName, IEnumerable children)
         {
@@ -228,10 +210,10 @@ namespace OxyPlot
         /// Adds the items.
         /// </summary>
         /// <param name="name">
-        /// The name. 
+        /// The name.
         /// </param>
         /// <param name="list">
-        /// The list. 
+        /// The list.
         /// </param>
         private void AddItems(string name, IList list)
         {
@@ -251,10 +233,10 @@ namespace OxyPlot
         /// Appends the line.
         /// </summary>
         /// <param name="format">
-        /// The format string. 
+        /// The format string.
         /// </param>
         /// <param name="args">
-        /// The args. 
+        /// The args.
         /// </param>
         private void AppendLine(string format, params object[] args)
         {
@@ -272,13 +254,13 @@ namespace OxyPlot
         /// Determines if the two specifed lists are equal.
         /// </summary>
         /// <param name="list1">
-        /// The first list. 
+        /// The first list.
         /// </param>
         /// <param name="list2">
-        /// The second list. 
+        /// The second list.
         /// </param>
         /// <returns>
-        /// True if all items are equal. 
+        /// True if all items are equal.
         /// </returns>
         private bool AreListsEqual(IList list1, IList list2)
         {
@@ -307,13 +289,13 @@ namespace OxyPlot
         /// Get the first attribute of the specified type.
         /// </summary>
         /// <param name="pi">
-        /// The property info. 
+        /// The property info.
         /// </param>
         /// <typeparam name="T">
-        /// The type. 
+        /// The type.
         /// </typeparam>
         /// <returns>
-        /// The attribute, or null if no attribute was found. 
+        /// The attribute, or null if no attribute was found.
         /// </returns>
         private T GetFirstAttribute<T>(PropertyInfo pi) where T : Attribute
         {
@@ -329,10 +311,10 @@ namespace OxyPlot
         /// Gets a new variable name of the specified type.
         /// </summary>
         /// <param name="type">
-        /// The type. 
+        /// The type.
         /// </param>
         /// <returns>
-        /// The variable name. 
+        /// The variable name.
         /// </returns>
         private string GetNewVariableName(Type type)
         {
@@ -351,10 +333,10 @@ namespace OxyPlot
         /// Makes a valid variable name of a string. Invalid characters will simply be removed.
         /// </summary>
         /// <param name="title">
-        /// The title. 
+        /// The title.
         /// </param>
         /// <returns>
-        /// A valid variable name. 
+        /// A valid variable name.
         /// </returns>
         private string MakeValidVariableName(string title)
         {
@@ -381,13 +363,13 @@ namespace OxyPlot
         /// The set properties.
         /// </summary>
         /// <param name="instance">
-        /// The instance. 
+        /// The instance.
         /// </param>
         /// <param name="varName">
-        /// The var name. 
+        /// The var name.
         /// </param>
         /// <param name="defaultValues">
-        /// The default values. 
+        /// The default values.
         /// </param>
         private void SetProperties(object instance, string varName, object defaultValues)
         {
@@ -452,10 +434,10 @@ namespace OxyPlot
         /// Sets the property.
         /// </summary>
         /// <param name="name">
-        /// The property name. 
+        /// The property name.
         /// </param>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         private void SetProperty(string name, object value)
         {
@@ -466,6 +448,5 @@ namespace OxyPlot
             }
         }
 
-        #endregion
     }
 }

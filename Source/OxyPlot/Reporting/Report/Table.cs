@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Table.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,10 +37,8 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class TableColumn
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TableColumn" /> class.
+        /// Initializes a new instance of the <see cref = "TableColumn" /> class.
         /// </summary>
         public TableColumn()
         {
@@ -48,35 +46,30 @@ namespace OxyPlot.Reporting
             this.Alignment = Alignment.Center;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the actual width (mm).
+        /// Gets or sets the actual width (mm).
         /// </summary>
         /// <value>The actual width.</value>
         public double ActualWidth { get; internal set; }
 
         /// <summary>
-        ///   Gets or sets Alignment.
+        /// Gets or sets Alignment.
         /// </summary>
         public Alignment Alignment { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether IsHeader.
+        /// Gets or sets a value indicating whether IsHeader.
         /// </summary>
         public bool IsHeader { get; set; }
 
         /// <summary>
-        ///   Gets or sets the width.
-        ///   NaN: auto width.
-        ///   Negative numbers: weights
+        /// Gets or sets the width.
+        /// NaN: auto width.
+        /// Negative numbers: weights
         /// </summary>
         /// <value>The width.</value>
         public double Width { get; set; }
 
-        #endregion
     }
 
     /// <summary>
@@ -84,31 +77,24 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class TableRow
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TableRow" /> class.
+        /// Initializes a new instance of the <see cref = "TableRow" /> class.
         /// </summary>
         public TableRow()
         {
             this.Cells = new List<TableCell>();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets Cells.
+        /// Gets Cells.
         /// </summary>
         public IList<TableCell> Cells { get; private set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether IsHeader.
+        /// Gets or sets a value indicating whether IsHeader.
         /// </summary>
         public bool IsHeader { get; set; }
 
-        #endregion
     }
 
     /// <summary>
@@ -119,14 +105,11 @@ namespace OxyPlot.Reporting
         // public Alignment Alignment { get; set; }
         // public int RowSpan { get; set; }
         // public int ColumnSpan { get; set; }
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets Content.
+        /// Gets or sets Content.
         /// </summary>
         public string Content { get; set; }
 
-        #endregion
     }
 
     /// <summary>
@@ -134,10 +117,8 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class Table : ReportItem
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "Table" /> class.
+        /// Initializes a new instance of the <see cref = "Table" /> class.
         /// </summary>
         public Table()
         {
@@ -146,46 +127,38 @@ namespace OxyPlot.Reporting
             this.Width = double.NaN;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the actual width of the table (mm).
+        /// Gets or sets the actual width of the table (mm).
         /// </summary>
         /// <value>The actual width.</value>
         public double ActualWidth { get; private set; }
 
         /// <summary>
-        ///   Gets or sets Caption.
+        /// Gets or sets Caption.
         /// </summary>
         public string Caption { get; set; }
 
         /// <summary>
-        ///   Gets Columns.
+        /// Gets Columns.
         /// </summary>
         public IList<TableColumn> Columns { get; private set; }
 
         /// <summary>
-        ///   Gets Rows.
+        /// Gets Rows.
         /// </summary>
         public IList<TableRow> Rows { get; private set; }
 
         /// <summary>
-        ///   Gets or sets TableNumber.
+        /// Gets or sets TableNumber.
         /// </summary>
         public int TableNumber { get; set; }
 
         /// <summary>
-        ///   Gets or sets the width of the table (mm).
-        ///   NaN: auto width.
-        ///   0..-1: fraction of page width.
+        /// Gets or sets the width of the table (mm).
+        /// NaN: auto width.
+        /// 0..-1: fraction of page width.
         /// </summary>
         public double Width { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The get full caption.
@@ -220,10 +193,6 @@ namespace OxyPlot.Reporting
         {
             // todo
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The update widths.
@@ -279,6 +248,5 @@ namespace OxyPlot.Reporting
             }
         }
 
-        #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotSeriesBase.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -39,8 +39,6 @@ namespace OxyPlot.Wpf
     /// </summary>
     public abstract class PlotSeriesBase : ItemsControl, ISeries
     {
-        #region Constants and Fields
-
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color?), typeof(PlotSeriesBase), new UIPropertyMetadata(null, VisualChanged));
 
@@ -62,10 +60,6 @@ namespace OxyPlot.Wpf
 
         public static readonly DependencyProperty YAxisKeyProperty = DependencyProperty.Register(
             "YAxisKey", typeof(string), typeof(PlotSeriesBase), new UIPropertyMetadata(null, VisualChanged));
-
-        #endregion
-
-        #region Public Properties
 
         public Color? Color
         {
@@ -139,10 +133,6 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         public abstract OxyPlot.ISeries CreateModel();
 
         protected virtual void SynchronizeProperties(OxyPlot.ISeries series)
@@ -157,10 +147,6 @@ namespace OxyPlot.Wpf
             s.XAxisKey = this.XAxisKey;
             s.YAxisKey = this.YAxisKey;
         }
-
-        #endregion
-
-        #region Methods
 
         protected static void DataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -197,6 +183,5 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
     }
 }

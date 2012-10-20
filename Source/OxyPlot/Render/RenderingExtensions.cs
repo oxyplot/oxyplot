@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RenderingExtensions.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -40,51 +40,45 @@ namespace OxyPlot
     public static class RenderingExtensions
     {
         //// Length constants used to draw triangles and stars
-        ////                     ___
+        //// ___
         //// /\                   |
         //// /  \                 |
         //// /    \               | M2
         //// /      \             |
         //// /        \           |
         //// /     +    \        ---
-        //// /            \       | 
+        //// /            \       |
         //// /              \     | M1
         //// /________________\  _|_
         //// |--------|-------|
-        ////      1       1
-        //// 
-        ////          |           
-        ////    \     |     /     ---
-        ////      \   |   /        | M3
-        ////        \ | /          |
+        //// 1       1
+        ////
+        //// |
+        //// \     |     /     ---
+        //// \   |   /        | M3
+        //// \ | /          |
         //// ---------+--------   ---
-        ////        / | \          | M3
-        ////      /   |   \        |
-        ////    /     |     \     ---
-        ////          |
-        ////    |-----|-----|
-        ////      M3    M3
-
-        #region Constants and Fields
+        //// / | \          | M3
+        //// /   |   \        |
+        //// /     |     \     ---
+        //// |
+        //// |-----|-----|
+        //// M3    M3
 
         /// <summary>
-        ///   The m 1.
+        /// The m 1.
         /// </summary>
         private static readonly double M1 = Math.Tan(Math.PI / 6);
 
         /// <summary>
-        ///   The m 2.
+        /// The m 2.
         /// </summary>
         private static readonly double M2 = Math.Sqrt(1 + (M1 * M1));
 
         /// <summary>
-        ///   The m 3.
+        /// The m 3.
         /// </summary>
         private static readonly double M3 = Math.Tan(Math.PI / 4);
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Draws the clipped line.
@@ -679,7 +673,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Draws the rectangle as an aliased polygon.
-        ///   (makes sure pixel alignment is the same as for lines)
+        /// (makes sure pixel alignment is the same as for lines)
         /// </summary>
         /// <param name="rc">
         /// The render context.
@@ -708,7 +702,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Draws the rectangle as an aliased polygon.
-        ///   (makes sure pixel alignment is the same as for lines)
+        /// (makes sure pixel alignment is the same as for lines)
         /// </summary>
         /// <param name="rc">
         /// The render context.
@@ -745,10 +739,6 @@ namespace OxyPlot
             rc.DrawPolygon(new[] { sp2, sp3 }, null, stroke, thickness.Bottom, null, OxyPenLineJoin.Miter, true);
             rc.DrawPolygon(new[] { sp3, sp0 }, null, stroke, thickness.Left, null, OxyPenLineJoin.Miter, true);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The add marker geometry.
@@ -817,7 +807,7 @@ namespace OxyPlot
                         polygons.Add(
                             new[]
                                 {
-                                    new ScreenPoint(p.x, p.y - M2 * size), new ScreenPoint(p.x + M2 * size, p.y), 
+                                    new ScreenPoint(p.x, p.y - M2 * size), new ScreenPoint(p.x + M2 * size, p.y),
                                     new ScreenPoint(p.x, p.y + M2 * size), new ScreenPoint(p.x - M2 * size, p.y)
                                 });
                         break;
@@ -828,7 +818,7 @@ namespace OxyPlot
                         polygons.Add(
                             new[]
                                 {
-                                    new ScreenPoint(p.x - size, p.y + M1 * size), 
+                                    new ScreenPoint(p.x - size, p.y + M1 * size),
                                     new ScreenPoint(p.x + size, p.y + M1 * size), new ScreenPoint(p.x, p.y - M2 * size)
                                 });
                         break;
@@ -923,6 +913,5 @@ namespace OxyPlot
             return rect;
         }
 
-        #endregion
     }
 }
