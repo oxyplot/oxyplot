@@ -29,7 +29,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Metro
 {
-
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
 
@@ -47,13 +46,16 @@ namespace OxyPlot.Metro
         /// <summary>
         /// The tracker template property.
         /// </summary>
-        public static readonly DependencyProperty TrackerTemplateProperty = DependencyProperty.Register(
-            "TrackerTemplate", typeof(ControlTemplate), typeof(TrackerDefinition), new PropertyMetadata(null));
+        public static readonly DependencyProperty TrackerTemplateProperty =
+            DependencyProperty.Register(
+                "TrackerTemplate", typeof(ControlTemplate), typeof(TrackerDefinition), new PropertyMetadata(null));
 
         /// <summary>
         /// Gets or sets the tracker key.
-        /// The Plot will use this property to find the TrackerDefinition that matches the TrackerKey of the current series.
         /// </summary>
+        /// <remarks>
+        /// The Plot will use this property to find the TrackerDefinition that matches the TrackerKey of the current series.
+        /// </remarks>
         public string TrackerKey
         {
             get
@@ -69,9 +71,11 @@ namespace OxyPlot.Metro
 
         /// <summary>
         /// Gets or sets the tracker template.
-        /// The tracker control will be added/removed from the Tracker overlay as neccessary.
-        /// The DataContext of the tracker will be set to a TrackerHitResult with the current tracker data.
         /// </summary>
+        /// <remarks>
+        /// The tracker control will be added/removed from the Tracker overlay as necessary.
+        /// The DataContext of the tracker will be set to a TrackerHitResult with the current tracker data.
+        /// </remarks>
         public ControlTemplate TrackerTemplate
         {
             get

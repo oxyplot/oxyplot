@@ -42,6 +42,7 @@ Tools/    # Add manually
 _ReSharper*/
 _TeamCity*/
 packages/
+AppPackages/
 *.dotCover
 
 [Tt]est[Rr]esult*

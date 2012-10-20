@@ -29,19 +29,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Metro
 {
-    using System;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
 
-    //public static class DependencyProperty
-    //{
-    //    public static Windows.UI.Xaml.DependencyProperty Register(string name, Type propertyType, Type ownerType, PropertyMetadata typeMetadata)
-    //    {
-    //        string propertyTypeName = propertyType.FullName;
-    //        string ownerTypeName = ownerType.FullName;
-    //        return Windows.UI.Xaml.DependencyProperty.Register(name, propertyTypeName, ownerTypeName, typeMetadata);
-    //    }
-    //}
+    // public static class DependencyProperty
+    // {
+    // public static Windows.UI.Xaml.DependencyProperty Register(string name, Type propertyType, Type ownerType, PropertyMetadata typeMetadata)
+    // {
+    // string propertyTypeName = propertyType.FullName;
+    // string ownerTypeName = ownerType.FullName;
+    // return Windows.UI.Xaml.DependencyProperty.Register(name, propertyTypeName, ownerTypeName, typeMetadata);
+    // }
+    // }
 
     /// <summary>
     /// The Metro Plot control.

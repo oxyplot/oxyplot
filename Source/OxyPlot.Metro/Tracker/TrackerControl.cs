@@ -30,6 +30,7 @@
 namespace OxyPlot.Metro
 {
     using System;
+
     using Windows.Foundation;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
@@ -82,7 +83,7 @@ namespace OxyPlot.Metro
 #if WPF
 
     // <summary>
-    /// The border edge mode property.
+    // The border edge mode property.
     /// </summary>
         public static readonly DependencyProperty BorderEdgeModeProperty = DependencyProperty.Register(
             "BorderEdgeMode", typeof(EdgeMode), typeof(TrackerControl));
@@ -182,7 +183,7 @@ namespace OxyPlot.Metro
 #if WPF
 
     // <summary>
-    /// Initializes static members of the <see cref="TrackerControl"/> class.
+    // Initializes static members of the <see cref="TrackerControl"/> class.
     /// </summary>
         static TrackerControl()
         {
@@ -207,7 +208,7 @@ namespace OxyPlot.Metro
 #if WPF
 
     // <summary>
-    /// Gets or sets BorderEdgeMode.
+    // Gets or sets BorderEdgeMode.
     /// </summary>
         public EdgeMode BorderEdgeMode
         {
@@ -400,8 +401,9 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:Windows.UI.Xaml.FrameworkElement.ApplyTemplate"/>.
+        /// Invoked whenever application code or internal processes (such as a rebuilding layout pass) call ApplyTemplate. In simplest terms, this means the method is called just before a UI element displays in your app. Override this method to influence the default post-template logic of a class.
         /// </summary>
+        /// <exception cref="System.InvalidOperationException"></exception>
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -452,10 +454,10 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called when the position is changed.
         /// </summary>
-        /// <param name="dependencyPropertyChangedEventArgs">
+        /// <param name="e">
         /// The dependency property changed event args.
         /// </param>
-        private void OnPositionChanged(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private void OnPositionChanged(DependencyPropertyChangedEventArgs e)
         {
             this.UpdatePositionAndBorder();
         }
@@ -494,17 +496,17 @@ namespace OxyPlot.Metro
             double contentHeight = this.content.DesiredSize.Height;
 
             // Minimum allowed margins around the tracker
-            const double marginLimit = 10;
+            const double MarginLimit = 10;
 
-            HorizontalAlignment ha = HorizontalAlignment.Center;
+            var ha = HorizontalAlignment.Center;
             if (this.CanCenterHorizontally)
             {
-                if (this.Position.X - contentWidth / 2 < marginLimit)
+                if (this.Position.X - (contentWidth / 2) < MarginLimit)
                 {
                     ha = HorizontalAlignment.Left;
                 }
 
-                if (this.Position.X + contentWidth / 2 > canvasWidth - marginLimit)
+                if (this.Position.X + (contentWidth / 2) > canvasWidth - MarginLimit)
                 {
                     ha = HorizontalAlignment.Right;
                 }
@@ -514,10 +516,10 @@ namespace OxyPlot.Metro
                 ha = this.Position.X < canvasWidth / 2 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
             }
 
-            VerticalAlignment va = VerticalAlignment.Center;
+            var va = VerticalAlignment.Center;
             if (this.CanCenterVertically)
             {
-                if (this.Position.Y - contentHeight / 2 < marginLimit)
+                if (this.Position.Y - (contentHeight / 2) < MarginLimit)
                 {
                     va = VerticalAlignment.Top;
                 }
@@ -525,18 +527,18 @@ namespace OxyPlot.Metro
                 if (ha == HorizontalAlignment.Center)
                 {
                     va = VerticalAlignment.Bottom;
-                    if (this.Position.Y - contentHeight < marginLimit)
+                    if (this.Position.Y - contentHeight < MarginLimit)
                     {
                         va = VerticalAlignment.Top;
                     }
                 }
 
-                if (va == VerticalAlignment.Center && this.Position.Y + contentHeight / 2 > canvasHeight - marginLimit)
+                if (va == VerticalAlignment.Center && this.Position.Y + (contentHeight / 2) > canvasHeight - MarginLimit)
                 {
                     va = VerticalAlignment.Bottom;
                 }
 
-                if (va == VerticalAlignment.Top && this.Position.Y + contentHeight > canvasHeight - marginLimit)
+                if (va == VerticalAlignment.Top && this.Position.Y + contentHeight > canvasHeight - MarginLimit)
                 {
                     va = VerticalAlignment.Bottom;
                 }
@@ -633,12 +635,14 @@ namespace OxyPlot.Metro
             double m = this.Distance;
             var rect = new Rect(
                 ha == HorizontalAlignment.Left ? m : 0, va == VerticalAlignment.Top ? m : 0, width, height);
-            margin = new Thickness() {
-                Left=ha == HorizontalAlignment.Left ? m : 0,
-                Top=va == VerticalAlignment.Top ? m : 0,
-                Right=ha == HorizontalAlignment.Right ? m : 0,
-                Bottom=va == VerticalAlignment.Bottom ? m : 0};
-            return new RectangleGeometry { Rect = rect/*, RadiusX = this.CornerRadius, RadiusY = this.CornerRadius*/ };
+            margin = new Thickness
+                {
+                    Left = ha == HorizontalAlignment.Left ? m : 0,
+                    Top = va == VerticalAlignment.Top ? m : 0,
+                    Right = ha == HorizontalAlignment.Right ? m : 0,
+                    Bottom = va == VerticalAlignment.Bottom ? m : 0
+                };
+            return new RectangleGeometry { Rect = rect /*, RadiusX = this.CornerRadius, RadiusY = this.CornerRadius*/ };
         }
 
         /// <summary>
@@ -676,11 +680,11 @@ namespace OxyPlot.Metro
                 double x2 = (x0 + x1) / 2;
                 double y0 = 0;
                 double y1 = height;
-                margin = new Thickness() { Bottom = m };
+                margin = new Thickness { Bottom = m };
                 points = new[]
                     {
-                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y1), new Point(x2 + m / 2, y1),
-                        new Point(x2, y1 + m), new Point(x2 - m / 2, y1), new Point(x0, y1)
+                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y1), new Point(x2 + (m / 2), y1),
+                        new Point(x2, y1 + m), new Point(x2 - (m / 2), y1), new Point(x0, y1)
                     };
             }
 
@@ -691,10 +695,10 @@ namespace OxyPlot.Metro
                 double x2 = (x0 + x1) / 2;
                 double y0 = m;
                 double y1 = m + height;
-                margin = new Thickness() { Top = m };
+                margin = new Thickness { Top = m };
                 points = new[]
                     {
-                        new Point(x0, y0), new Point(x2 - m / 2, y0), new Point(x2, 0), new Point(x2 + m / 2, y0),
+                        new Point(x0, y0), new Point(x2 - (m / 2), y0), new Point(x2, 0), new Point(x2 + (m / 2), y0),
                         new Point(x1, y0), new Point(x1, y1), new Point(x0, y1)
                     };
             }
@@ -706,11 +710,11 @@ namespace OxyPlot.Metro
                 double y0 = 0;
                 double y1 = height;
                 double y2 = (y0 + y1) / 2;
-                margin = new Thickness() {Left=m};
+                margin = new Thickness { Left = m };
                 points = new[]
                     {
-                        new Point(0, y2), new Point(x0, y2 - m / 2), new Point(x0, y0), new Point(x1, y0),
-                        new Point(x1, y1), new Point(x0, y1), new Point(x0, y2 + m / 2)
+                        new Point(0, y2), new Point(x0, y2 - (m / 2)), new Point(x0, y0), new Point(x1, y0),
+                        new Point(x1, y1), new Point(x0, y1), new Point(x0, y2 + (m / 2))
                     };
             }
 
@@ -721,11 +725,11 @@ namespace OxyPlot.Metro
                 double y0 = 0;
                 double y1 = height;
                 double y2 = (y0 + y1) / 2;
-                margin = new Thickness(){Right=m};
+                margin = new Thickness { Right = m };
                 points = new[]
                     {
-                        new Point(x1 + m, y2), new Point(x1, y2 + m / 2), new Point(x1, y1), new Point(x0, y1),
-                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y2 - m / 2)
+                        new Point(x1 + m, y2), new Point(x1, y2 + (m / 2)), new Point(x1, y1), new Point(x0, y1),
+                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y2 - (m / 2))
                     };
             }
 
@@ -736,7 +740,7 @@ namespace OxyPlot.Metro
                 double x1 = m + width;
                 double y0 = m;
                 double y1 = m + height;
-                margin = new Thickness() { Left = m, Top = m };
+                margin = new Thickness { Left = m, Top = m };
                 points = new[]
                     {
                         new Point(0, 0), new Point(m * 2, y0), new Point(x1, y0), new Point(x1, y1), new Point(x0, y1),
@@ -751,7 +755,7 @@ namespace OxyPlot.Metro
                 double x1 = width;
                 double y0 = m;
                 double y1 = m + height;
-                margin = new Thickness(){Top=m,Right=m};
+                margin = new Thickness { Top = m, Right = m };
                 points = new[]
                     {
                         new Point(x1 + m, 0), new Point(x1, y0 + m), new Point(x1, y1), new Point(x0, y1),
@@ -766,7 +770,7 @@ namespace OxyPlot.Metro
                 double x1 = m + width;
                 double y0 = 0;
                 double y1 = height;
-                margin = new Thickness(){Left=m,Bottom=m};
+                margin = new Thickness { Left = m, Bottom = m };
                 points = new[]
                     {
                         new Point(0, y1 + m), new Point(x0, y1 - m), new Point(x0, y0), new Point(x1, y0),
@@ -781,7 +785,7 @@ namespace OxyPlot.Metro
                 double x1 = width;
                 double y0 = 0;
                 double y1 = height;
-                margin = new Thickness(){Right=m,Bottom=m};
+                margin = new Thickness { Right = m, Bottom = m };
                 points = new[]
                     {
                         new Point(x1 + m, y1 + m), new Point(x1 - m, y1), new Point(x0, y1), new Point(x0, y0),
@@ -794,13 +798,13 @@ namespace OxyPlot.Metro
                 return null;
             }
 
-            var pc = new PointCollection();
-            foreach (Point p in points)
+            var pointCollection = new PointCollection();
+            foreach (var point in points)
             {
-                pc.Add(p);
+                pointCollection.Add(point);
             }
 
-            var segments = new PathSegmentCollection { new PolyLineSegment { Points = pc } };
+            var segments = new PathSegmentCollection { new PolyLineSegment { Points = pointCollection } };
             var pf = new PathFigure { StartPoint = points[0], Segments = segments, IsClosed = true };
             return new PathGeometry { Figures = new PathFigureCollection { pf } };
         }

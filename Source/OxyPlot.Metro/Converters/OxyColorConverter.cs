@@ -30,6 +30,7 @@
 namespace OxyPlot.Metro
 {
     using System;
+
     using Windows.UI;
     using Windows.UI.Xaml.Data;
     using Windows.UI.Xaml.Media;
@@ -79,10 +80,18 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts back.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="targetType">The target type.</param>
-        /// <param name="parameter">The parameter.</param>
-        /// <param name="language">The language.</param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="targetType">
+        /// The target type.
+        /// </param>
+        /// <param name="parameter">
+        /// The parameter.
+        /// </param>
+        /// <param name="language">
+        /// The language.
+        /// </param>
         /// <returns>
         /// The converted value.
         /// </returns>
@@ -106,5 +115,6 @@ namespace OxyPlot.Metro
 
             return null;
         }
+
     }
 }

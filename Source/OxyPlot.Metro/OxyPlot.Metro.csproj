@@ -33,8 +33,12 @@
     <DocumentationFile>..\..\Output\NetCore45\OxyPlot.Metro.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
+    <Compile Include="MouseButton.cs" />
     <Compile Include="Plot.Properties.cs" />
     <Compile Include="Helpers\ConverterExtensions.cs" />
     <Compile Include="Helpers\MouseButtonHelper.cs" />
