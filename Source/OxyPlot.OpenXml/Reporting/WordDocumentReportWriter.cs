@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="WordDocumentReportWriter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -83,8 +83,6 @@ namespace OxyPlot.OpenXml
     {
         // http://www.codeproject.com/KB/office/OpenXML-SDK-HelloWorld.aspx
         // http://msdn.microsoft.com/en-us/library/documentformat.openxml.wordprocessing.aspx
-        #region Constants and Fields
-
         /// <summary>
         /// The body text id.
         /// </summary>
@@ -185,15 +183,11 @@ namespace OxyPlot.OpenXml
         /// </summary>
         private ReportStyle style;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WordDocumentReportWriter"/> class.
         /// </summary>
         /// <param name="filePath">
-        /// The file path. 
+        /// The file path.
         /// </param>
         public WordDocumentReportWriter(string filePath)
         {
@@ -209,10 +203,6 @@ namespace OxyPlot.OpenXml
             this.body = new Body();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets Creator.
         /// </summary>
@@ -227,7 +217,7 @@ namespace OxyPlot.OpenXml
         /// Gets the name of the file.
         /// </summary>
         /// <value>
-        /// The name of the file. 
+        /// The name of the file.
         /// </value>
         public string FileName { get; private set; }
 
@@ -256,10 +246,6 @@ namespace OxyPlot.OpenXml
         /// </summary>
         public string Version { get; set; }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -287,7 +273,7 @@ namespace OxyPlot.OpenXml
         /// The write drawing.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         public void WriteDrawing(DrawingFigure d)
         {
@@ -298,7 +284,7 @@ namespace OxyPlot.OpenXml
         /// The write equation.
         /// </summary>
         /// <param name="equation">
-        /// The equation. 
+        /// The equation.
         /// </param>
         public void WriteEquation(Equation equation)
         {
@@ -309,7 +295,7 @@ namespace OxyPlot.OpenXml
         /// The write header.
         /// </summary>
         /// <param name="h">
-        /// The h. 
+        /// The h.
         /// </param>
         public void WriteHeader(Header h)
         {
@@ -320,7 +306,7 @@ namespace OxyPlot.OpenXml
         /// The write image.
         /// </summary>
         /// <param name="i">
-        /// The i. 
+        /// The i.
         /// </param>
         public void WriteImage(Image i)
         {
@@ -338,7 +324,7 @@ namespace OxyPlot.OpenXml
         /// The write paragraph.
         /// </summary>
         /// <param name="pa">
-        /// The pa. 
+        /// The pa.
         /// </param>
         public void WriteParagraph(Paragraph pa)
         {
@@ -349,7 +335,7 @@ namespace OxyPlot.OpenXml
         /// The write plot.
         /// </summary>
         /// <param name="plot">
-        /// The plot. 
+        /// The plot.
         /// </param>
         public void WritePlot(PlotFigure plot)
         {
@@ -382,10 +368,10 @@ namespace OxyPlot.OpenXml
         /// The write report.
         /// </summary>
         /// <param name="report">
-        /// The report. 
+        /// The report.
         /// </param>
         /// <param name="reportStyle">
-        /// The style. 
+        /// The style.
         /// </param>
         public void WriteReport(Report report, ReportStyle reportStyle)
         {
@@ -398,7 +384,7 @@ namespace OxyPlot.OpenXml
         /// The write table.
         /// </summary>
         /// <param name="t">
-        /// The t. 
+        /// The t.
         /// </param>
         public void WriteTable(Table t)
         {
@@ -411,12 +397,12 @@ namespace OxyPlot.OpenXml
             var tableWidth1 = new TableWidth { Width = "0", Type = TableWidthUnitValues.Auto };
             var tableLook1 = new TableLook
                 {
-                    Val = "04A0", 
-                    FirstRow = true, 
-                    LastRow = false, 
-                    FirstColumn = true, 
-                    LastColumn = false, 
-                    NoHorizontalBand = false, 
+                    Val = "04A0",
+                    FirstRow = true,
+                    LastRow = false,
+                    FirstColumn = true,
+                    LastColumn = false,
+                    NoHorizontalBand = false,
                     NoVerticalBand = true
                 };
 
@@ -454,33 +440,33 @@ namespace OxyPlot.OpenXml
                     borders.Append(
                         new BottomBorder
                             {
-                                Val = BorderValues.Single, 
-                                Size = (UInt32Value)4U, 
-                                Space = (UInt32Value)0U, 
+                                Val = BorderValues.Single,
+                                Size = (UInt32Value)4U,
+                                Space = (UInt32Value)0U,
                                 Color = "auto"
                             });
                     borders.Append(
                         new TopBorder
                             {
-                                Val = BorderValues.Single, 
-                                Size = (UInt32Value)4U, 
-                                Space = (UInt32Value)0U, 
+                                Val = BorderValues.Single,
+                                Size = (UInt32Value)4U,
+                                Space = (UInt32Value)0U,
                                 Color = "auto"
                             });
                     borders.Append(
                         new LeftBorder
                             {
-                                Val = BorderValues.Single, 
-                                Size = (UInt32Value)4U, 
-                                Space = (UInt32Value)0U, 
+                                Val = BorderValues.Single,
+                                Size = (UInt32Value)4U,
+                                Space = (UInt32Value)0U,
                                 Color = "auto"
                             });
                     borders.Append(
                         new RightBorder
                             {
-                                Val = BorderValues.Single, 
-                                Size = (UInt32Value)4U, 
-                                Space = (UInt32Value)0U, 
+                                Val = BorderValues.Single,
+                                Size = (UInt32Value)4U,
+                                Space = (UInt32Value)0U,
                                 Color = "auto"
                             });
                     tcp.Append(borders);
@@ -497,18 +483,14 @@ namespace OxyPlot.OpenXml
             this.body.Append(table);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The create paragraph.
         /// </summary>
         /// <param name="content">
-        /// The content. 
+        /// The content.
         /// </param>
         /// <param name="styleID">
-        /// The style id. 
+        /// The style id.
         /// </param>
         /// <returns>
         /// </returns>
@@ -533,35 +515,35 @@ namespace OxyPlot.OpenXml
         /// The create style.
         /// </summary>
         /// <param name="ps">
-        /// The ps. 
+        /// The ps.
         /// </param>
         /// <param name="styleID">
-        /// The style id. 
+        /// The style id.
         /// </param>
         /// <param name="styleName">
-        /// The style name. 
+        /// The style name.
         /// </param>
         /// <param name="basedOnStyleID">
-        /// The based on style id. 
+        /// The based on style id.
         /// </param>
         /// <param name="nextStyleID">
-        /// The next style id. 
+        /// The next style id.
         /// </param>
         /// <param name="isDefault">
-        /// The is default. 
+        /// The is default.
         /// </param>
         /// <param name="isCustomStyle">
-        /// The is custom style. 
+        /// The is custom style.
         /// </param>
         /// <returns>
         /// </returns>
         private static Style CreateStyle(
-            ParagraphStyle ps, 
-            string styleID, 
-            string styleName, 
-            string basedOnStyleID, 
-            string nextStyleID, 
-            bool isDefault = false, 
+            ParagraphStyle ps,
+            string styleID,
+            string styleName,
+            string basedOnStyleID,
+            string nextStyleID,
+            bool isDefault = false,
             bool isCustomStyle = true)
         {
             // todo: add font to FontTable?
@@ -577,7 +559,7 @@ namespace OxyPlot.OpenXml
             rPr.Append(
                 new FontSizeComplexScript
                     {
-                       Val = new StringValue((ps.FontSize * 2).ToString(CultureInfo.InvariantCulture)) 
+                       Val = new StringValue((ps.FontSize * 2).ToString(CultureInfo.InvariantCulture))
                     });
 
             if (ps.Bold)
@@ -593,14 +575,14 @@ namespace OxyPlot.OpenXml
             var pPr = new StyleParagraphProperties();
             var spacingBetweenLines2 = new SpacingBetweenLines
                 {
-                    After = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingAfter * 20), 
-                    Before = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingBefore * 20), 
-                    Line = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LineSpacing * 240), 
+                    After = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingAfter * 20),
+                    Before = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingBefore * 20),
+                    Line = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LineSpacing * 240),
                     LineRule = LineSpacingRuleValues.Auto
                 };
             var indentation = new Indentation
                 {
-                    Left = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LeftIndentation * 20), 
+                    Left = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LeftIndentation * 20),
                     Right = string.Format(CultureInfo.InvariantCulture, "{0}", ps.RightIndentation * 20)
                 };
             var contextualSpacing1 = new ContextualSpacing();
@@ -619,9 +601,9 @@ namespace OxyPlot.OpenXml
             // http://msdn.microsoft.com/en-us/library/documentformat.openxml.wordprocessing.style.aspx
             var style = new Style
                 {
-                    Default = new OnOffValue(isDefault), 
-                    CustomStyle = new OnOffValue(isCustomStyle), 
-                    StyleId = styleID, 
+                    Default = new OnOffValue(isDefault),
+                    CustomStyle = new OnOffValue(isCustomStyle),
+                    StyleId = styleID,
                     Type = StyleValues.Paragraph
                 };
 
@@ -650,10 +632,10 @@ namespace OxyPlot.OpenXml
         /// The add styles.
         /// </summary>
         /// <param name="sdp">
-        /// The sdp. 
+        /// The sdp.
         /// </param>
         /// <param name="style">
-        /// The style. 
+        /// The style.
         /// </param>
         private void AddStyles(StyleDefinitionsPart sdp, ReportStyle style)
         {
@@ -664,12 +646,12 @@ namespace OxyPlot.OpenXml
             {
                 sdp.Styles.Append(
                     CreateStyle(
-                        style.HeaderStyles[i], 
-                        string.Format(HeaderID, i + 1), 
-                        string.Format(HeaderName, i + 1), 
-                        "Heading1", 
-                        BodyTextID, 
-                        false, 
+                        style.HeaderStyles[i],
+                        string.Format(HeaderID, i + 1),
+                        string.Format(HeaderName, i + 1),
+                        "Heading1",
+                        BodyTextID,
+                        false,
                         false));
             }
 
@@ -684,10 +666,10 @@ namespace OxyPlot.OpenXml
         /// The append image.
         /// </summary>
         /// <param name="source">
-        /// The source. 
+        /// The source.
         /// </param>
         /// <param name="name">
-        /// The name. 
+        /// The name.
         /// </param>
         private void AppendImage(string source, string name)
         {
@@ -745,19 +727,19 @@ namespace OxyPlot.OpenXml
         /// The create image paragraph.
         /// </summary>
         /// <param name="relationshipId">
-        /// The relationship id. 
+        /// The relationship id.
         /// </param>
         /// <param name="name">
-        /// The name. 
+        /// The name.
         /// </param>
         /// <param name="description">
-        /// The description. 
+        /// The description.
         /// </param>
         /// <param name="width">
-        /// The width. 
+        /// The width.
         /// </param>
         /// <param name="height">
-        /// The height. 
+        /// The height.
         /// </param>
         /// <returns>
         /// </returns>
@@ -782,7 +764,7 @@ namespace OxyPlot.OpenXml
             // The possible values for this attribute are defined by the ST_PositiveCoordinate simple type (§20.1.10.42).
             var paragraph1 = new DocumentFormat.OpenXml.Wordprocessing.Paragraph
                 {
-                   RsidParagraphAddition = "00D91137", RsidRunAdditionDefault = "00AC08EB" 
+                   RsidParagraphAddition = "00D91137", RsidRunAdditionDefault = "00AC08EB"
                 };
 
             var run1 = new Run();
@@ -796,7 +778,7 @@ namespace OxyPlot.OpenXml
 
             var inline1 = new Inline
                 {
-                   DistanceFromTop = 0U, DistanceFromBottom = 0U, DistanceFromLeft = 0U, DistanceFromRight = 0U 
+                   DistanceFromTop = 0U, DistanceFromBottom = 0U, DistanceFromLeft = 0U, DistanceFromRight = 0U
                 };
             var extent1 = new Extent { Cx = 5753100L, Cy = 3600450L };
             extent1.Cx = (long)(width * 914400);
@@ -823,7 +805,7 @@ namespace OxyPlot.OpenXml
             var nonVisualPictureProperties1 = new NonVisualPictureProperties();
             var nonVisualDrawingProperties1 = new NonVisualDrawingProperties
                 {
-                   Id = 0U, Name = name, Description = description 
+                   Id = 0U, Name = name, Description = description
                 };
 
             var nonVisualPictureDrawingProperties1 = new NonVisualPictureDrawingProperties();
@@ -914,7 +896,7 @@ namespace OxyPlot.OpenXml
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources. 
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
         /// </param>
         private void Dispose(bool disposing)
         {
@@ -938,7 +920,7 @@ namespace OxyPlot.OpenXml
         /// The set package properties.
         /// </summary>
         /// <param name="p">
-        /// The p. 
+        /// The p.
         /// </param>
         private void SetPackageProperties(OpenXmlPackage p)
         {
@@ -955,6 +937,5 @@ namespace OxyPlot.OpenXml
             p.PackageProperties.LastModifiedBy = this.Creator;
         }
 
-        #endregion
     }
 }

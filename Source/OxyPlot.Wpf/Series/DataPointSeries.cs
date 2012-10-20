@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DataPointSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,16 +38,14 @@ namespace OxyPlot.Wpf
     /// </summary>
     public abstract class DataPointSeries : ItemsSeries
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The can tracker interpolate points property.
         /// </summary>
         public static readonly DependencyProperty CanTrackerInterpolatePointsProperty =
             DependencyProperty.Register(
-                "CanTrackerInterpolatePoints", 
-                typeof(bool), 
-                typeof(DataPointSeries), 
+                "CanTrackerInterpolatePoints",
+                typeof(bool),
+                typeof(DataPointSeries),
                 new PropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
@@ -73,10 +71,6 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
             "Smooth", typeof(bool), typeof(DataPointSeries), new UIPropertyMetadata(false));
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets a value indicating whether the tracker can interpolate points.
@@ -130,7 +124,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the mapping.
         /// </summary>
         /// <value>
-        /// The mapping. 
+        /// The mapping.
         /// </value>
         public Func<object, IDataPoint> Mapping
         {
@@ -149,7 +143,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets a value indicating whether this <see cref="DataPointSeries"/> is smooth.
         /// </summary>
         /// <value>
-        /// <c>true</c> if smooth; otherwise, <c>false</c> . 
+        /// <c>true</c> if smooth; otherwise, <c>false</c> .
         /// </value>
         public bool Smooth
         {
@@ -164,18 +158,14 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The on items source changed.
         /// </summary>
         /// <param name="oldValue">
-        /// The old value. 
+        /// The old value.
         /// </param>
         /// <param name="newValue">
-        /// The new value. 
+        /// The new value.
         /// </param>
         protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
@@ -187,7 +177,7 @@ namespace OxyPlot.Wpf
         /// The synchronize properties.
         /// </summary>
         /// <param name="series">
-        /// The series. 
+        /// The series.
         /// </param>
         protected override void SynchronizeProperties(OxyPlot.Series series)
         {
@@ -201,6 +191,5 @@ namespace OxyPlot.Wpf
             s.Mapping = this.Mapping;
         }
 
-        #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ShapesRenderContext.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -46,7 +46,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Measurement by TextBlock.
         /// </summary>
-        TextBlock, 
+        TextBlock,
 
         /// <summary>
         /// Measurement by glyph typeface.
@@ -59,8 +59,6 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class ShapesRenderContext : IRenderContext
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The maximum number of figures per geometry.
         /// </summary>
@@ -76,15 +74,11 @@ namespace OxyPlot.Wpf
         /// </summary>
         private readonly Canvas canvas;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapesRenderContext"/> class.
         /// </summary>
         /// <param name="canvas">
-        /// The canvas. 
+        /// The canvas.
         /// </param>
         public ShapesRenderContext(Canvas canvas)
         {
@@ -95,15 +89,11 @@ namespace OxyPlot.Wpf
             this.UseStreamGeometry = true;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets the height.
         /// </summary>
         /// <value>
-        /// The height. 
+        /// The height.
         /// </value>
         public double Height { get; private set; }
 
@@ -111,7 +101,7 @@ namespace OxyPlot.Wpf
         /// Gets a value indicating whether to paint the background.
         /// </summary>
         /// <value>
-        /// <c>true</c> if the background should be painted; otherwise, <c>false</c> . 
+        /// <c>true</c> if the background should be painted; otherwise, <c>false</c> .
         /// </value>
         public bool PaintBackground
         {
@@ -125,7 +115,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the text measurement method.
         /// </summary>
         /// <value>
-        /// The text measurement method. 
+        /// The text measurement method.
         /// </value>
         public TextMeasurementMethod TextMeasurementMethod { get; set; }
 
@@ -133,7 +123,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets a value indicating whether to use stream geometry for lines and polygons rendering.
         /// </summary>
         /// <value>
-        /// <c>true</c> if stream geometry should be used; otherwise, <c>false</c> . 
+        /// <c>true</c> if stream geometry should be used; otherwise, <c>false</c> .
         /// </value>
         /// <remarks>
         /// The XamlWriter does not serialize StreamGeometry, so set this to false if you want to export to XAML. Using stream geometry seems to be slightly faster than using path geometry.
@@ -144,40 +134,32 @@ namespace OxyPlot.Wpf
         /// Gets the width.
         /// </summary>
         /// <value>
-        /// The width. 
+        /// The width.
         /// </value>
         public double Width { get; private set; }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the current tooltip.
         /// </summary>
         /// <value>
-        /// The current tooltip. 
+        /// The current tooltip.
         /// </value>
         private string CurrentToolTip { get; set; }
-
-        #endregion
-
-        #region Public Methods and Operators
 
         /// <summary>
         /// The draw ellipse.
         /// </summary>
         /// <param name="rect">
-        /// The rect. 
+        /// The rect.
         /// </param>
         /// <param name="fill">
-        /// The fill. 
+        /// The fill.
         /// </param>
         /// <param name="stroke">
-        /// The stroke. 
+        /// The stroke.
         /// </param>
         /// <param name="thickness">
-        /// The thickness. 
+        /// The thickness.
         /// </param>
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
@@ -199,16 +181,16 @@ namespace OxyPlot.Wpf
         /// The draw ellipses.
         /// </summary>
         /// <param name="rectangles">
-        /// The rectangles. 
+        /// The rectangles.
         /// </param>
         /// <param name="fill">
-        /// The fill. 
+        /// The fill.
         /// </param>
         /// <param name="stroke">
-        /// The stroke. 
+        /// The stroke.
         /// </param>
         /// <param name="thickness">
-        /// The thickness. 
+        /// The thickness.
         /// </param>
         public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
@@ -233,29 +215,29 @@ namespace OxyPlot.Wpf
         /// The draw line.
         /// </summary>
         /// <param name="points">
-        /// The points. 
+        /// The points.
         /// </param>
         /// <param name="stroke">
-        /// The stroke. 
+        /// The stroke.
         /// </param>
         /// <param name="thickness">
-        /// The thickness. 
+        /// The thickness.
         /// </param>
         /// <param name="dashArray">
-        /// The dash array. 
+        /// The dash array.
         /// </param>
         /// <param name="lineJoin">
-        /// The line join. 
+        /// The line join.
         /// </param>
         /// <param name="aliased">
-        /// The aliased. 
+        /// The aliased.
         /// </param>
         public void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var e = new Polyline();
@@ -276,29 +258,29 @@ namespace OxyPlot.Wpf
         /// The draw line segments.
         /// </summary>
         /// <param name="points">
-        /// The points. 
+        /// The points.
         /// </param>
         /// <param name="stroke">
-        /// The stroke. 
+        /// The stroke.
         /// </param>
         /// <param name="thickness">
-        /// The thickness. 
+        /// The thickness.
         /// </param>
         /// <param name="dashArray">
-        /// The dash array. 
+        /// The dash array.
         /// </param>
         /// <param name="lineJoin">
-        /// The line join. 
+        /// The line join.
         /// </param>
         /// <param name="aliased">
-        /// The aliased. 
+        /// The aliased.
         /// </param>
         public void DrawLineSegments(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             if (this.UseStreamGeometry)
@@ -348,33 +330,33 @@ namespace OxyPlot.Wpf
         /// Draws the polygon from the specified points. The polygon can have stroke and/or fill.
         /// </summary>
         /// <param name="points">
-        /// The points. 
+        /// The points.
         /// </param>
         /// <param name="fill">
-        /// The fill color. 
+        /// The fill color.
         /// </param>
         /// <param name="stroke">
-        /// The stroke color. 
+        /// The stroke color.
         /// </param>
         /// <param name="thickness">
-        /// The stroke thickness. 
+        /// The stroke thickness.
         /// </param>
         /// <param name="dashArray">
-        /// The dash array. 
+        /// The dash array.
         /// </param>
         /// <param name="lineJoin">
-        /// The line join type. 
+        /// The line join type.
         /// </param>
         /// <param name="aliased">
-        /// if set to <c>true</c> the shape will be aliased. 
+        /// if set to <c>true</c> the shape will be aliased.
         /// </param>
         public void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var e = new Polygon();
@@ -400,33 +382,33 @@ namespace OxyPlot.Wpf
         /// The draw polygons.
         /// </summary>
         /// <param name="polygons">
-        /// The polygons. 
+        /// The polygons.
         /// </param>
         /// <param name="fill">
-        /// The fill. 
+        /// The fill.
         /// </param>
         /// <param name="stroke">
-        /// The stroke. 
+        /// The stroke.
         /// </param>
         /// <param name="thickness">
-        /// The thickness. 
+        /// The thickness.
         /// </param>
         /// <param name="dashArray">
-        /// The dash array. 
+        /// The dash array.
         /// </param>
         /// <param name="lineJoin">
-        /// The line join. 
+        /// The line join.
         /// </param>
         /// <param name="aliased">
-        /// The aliased. 
+        /// The aliased.
         /// </param>
         public void DrawPolygons(
-            IList<IList<ScreenPoint>> polygons, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<IList<ScreenPoint>> polygons,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             var usg = this.UseStreamGeometry;
@@ -472,7 +454,7 @@ namespace OxyPlot.Wpf
                         {
                             figure = new PathFigure
                                 {
-                                   StartPoint = p.ToPoint(aliased), IsFilled = fill != null, IsClosed = true 
+                                   StartPoint = p.ToPoint(aliased), IsFilled = fill != null, IsClosed = true
                                 };
                             pathGeometry.Figures.Add(figure);
                         }
@@ -534,16 +516,16 @@ namespace OxyPlot.Wpf
         /// Draws the rectangle.
         /// </summary>
         /// <param name="rect">
-        /// The rect. 
+        /// The rect.
         /// </param>
         /// <param name="fill">
-        /// The fill. 
+        /// The fill.
         /// </param>
         /// <param name="stroke">
-        /// The stroke. 
+        /// The stroke.
         /// </param>
         /// <param name="thickness">
-        /// The thickness. 
+        /// The thickness.
         /// </param>
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
@@ -566,16 +548,16 @@ namespace OxyPlot.Wpf
         /// The draw rectangles.
         /// </summary>
         /// <param name="rectangles">
-        /// The rectangles. 
+        /// The rectangles.
         /// </param>
         /// <param name="fill">
-        /// The fill. 
+        /// The fill.
         /// </param>
         /// <param name="stroke">
-        /// The stroke. 
+        /// The stroke.
         /// </param>
         /// <param name="thickness">
-        /// The thickness. 
+        /// The thickness.
         /// </param>
         public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
@@ -632,45 +614,45 @@ namespace OxyPlot.Wpf
         /// The draw text.
         /// </summary>
         /// <param name="p">
-        /// The p. 
+        /// The p.
         /// </param>
         /// <param name="text">
-        /// The text. 
+        /// The text.
         /// </param>
         /// <param name="fill">
-        /// The fill. 
+        /// The fill.
         /// </param>
         /// <param name="fontFamily">
-        /// The font family. 
+        /// The font family.
         /// </param>
         /// <param name="fontSize">
-        /// The font size. 
+        /// The font size.
         /// </param>
         /// <param name="fontWeight">
-        /// The font weight. 
+        /// The font weight.
         /// </param>
         /// <param name="rotate">
-        /// The rotate. 
+        /// The rotate.
         /// </param>
         /// <param name="halign">
-        /// The halign. 
+        /// The halign.
         /// </param>
         /// <param name="valign">
-        /// The valign. 
+        /// The valign.
         /// </param>
         /// <param name="maxSize">
-        /// The maximum size of the text. 
+        /// The maximum size of the text.
         /// </param>
         public void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalTextAlign halign, 
-            VerticalTextAlign valign, 
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalTextAlign halign,
+            VerticalTextAlign valign,
             OxySize? maxSize)
         {
             var tb = new TextBlock { Text = text, Foreground = this.GetCachedBrush(fill) };
@@ -752,19 +734,19 @@ namespace OxyPlot.Wpf
         /// Measure the size of the specified text.
         /// </summary>
         /// <param name="text">
-        /// The text. 
+        /// The text.
         /// </param>
         /// <param name="fontFamily">
-        /// The font family. 
+        /// The font family.
         /// </param>
         /// <param name="fontSize">
-        /// The font size. 
+        /// The font size.
         /// </param>
         /// <param name="fontWeight">
-        /// The font weight. 
+        /// The font weight.
         /// </param>
         /// <returns>
-        /// The size of the text. 
+        /// The size of the text.
         /// </returns>
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
@@ -804,7 +786,7 @@ namespace OxyPlot.Wpf
         /// Sets the tool tip for the following items.
         /// </summary>
         /// <param name="text">
-        /// The text in the tooltip. 
+        /// The text in the tooltip.
         /// </param>
         /// <params>This is only used in the plot controls.</params>
         public void SetToolTip(string text)
@@ -812,27 +794,23 @@ namespace OxyPlot.Wpf
             this.CurrentToolTip = text;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Measures the size of the specified text by a faster method (using GlyphTypefaces).
         /// </summary>
         /// <param name="text">
-        /// The text. 
+        /// The text.
         /// </param>
         /// <param name="fontFamily">
-        /// The font family. 
+        /// The font family.
         /// </param>
         /// <param name="fontSize">
-        /// The font size. 
+        /// The font size.
         /// </param>
         /// <param name="fontWeight">
-        /// The font weight. 
+        /// The font weight.
         /// </param>
         /// <returns>
-        /// The size of the text. 
+        /// The size of the text.
         /// </returns>
         protected OxySize MeasureTextByGlyphTypeface(string text, string fontFamily, double fontSize, double fontWeight)
         {
@@ -857,10 +835,10 @@ namespace OxyPlot.Wpf
         /// Gets the font weight.
         /// </summary>
         /// <param name="fontWeight">
-        /// The font weight value. 
+        /// The font weight value.
         /// </param>
         /// <returns>
-        /// The font weight. 
+        /// The font weight.
         /// </returns>
         private static FontWeight GetFontWeight(double fontWeight)
         {
@@ -871,16 +849,16 @@ namespace OxyPlot.Wpf
         /// Fast text size calculation
         /// </summary>
         /// <param name="glyphTypeface">
-        /// The glyph typeface. 
+        /// The glyph typeface.
         /// </param>
         /// <param name="sizeInEm">
-        /// The em size. 
+        /// The em size.
         /// </param>
         /// <param name="s">
-        /// The text. 
+        /// The text.
         /// </param>
         /// <returns>
-        /// The text size. 
+        /// The text size.
         /// </returns>
         private static OxySize MeasureTextSize(GlyphTypeface glyphTypeface, double sizeInEm, string s)
         {
@@ -922,7 +900,7 @@ namespace OxyPlot.Wpf
         /// The add.
         /// </summary>
         /// <param name="e">
-        /// The e. 
+        /// The e.
         /// </param>
         private void Add(FrameworkElement e)
         {
@@ -933,7 +911,7 @@ namespace OxyPlot.Wpf
         /// The apply tooltip.
         /// </summary>
         /// <param name="element">
-        /// The element. 
+        /// The element.
         /// </param>
         private void ApplyTooltip(FrameworkElement element)
         {
@@ -947,29 +925,29 @@ namespace OxyPlot.Wpf
         /// Draws the line segments by stream geometry.
         /// </summary>
         /// <param name="points">
-        /// The points. 
+        /// The points.
         /// </param>
         /// <param name="stroke">
-        /// The stroke. 
+        /// The stroke.
         /// </param>
         /// <param name="thickness">
-        /// The thickness. 
+        /// The thickness.
         /// </param>
         /// <param name="dashArray">
-        /// The dash array. 
+        /// The dash array.
         /// </param>
         /// <param name="lineJoin">
-        /// The line join. 
+        /// The line join.
         /// </param>
         /// <param name="aliased">
-        /// Draw aliased line if set to <c>true</c> . 
+        /// Draw aliased line if set to <c>true</c> .
         /// </param>
         private void DrawLineSegmentsByStreamGeometry(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             StreamGeometry streamGeometry = null;
@@ -1017,10 +995,10 @@ namespace OxyPlot.Wpf
         /// Gets the cached brush.
         /// </summary>
         /// <param name="color">
-        /// The color. 
+        /// The color.
         /// </param>
         /// <returns>
-        /// The brush. 
+        /// The brush.
         /// </returns>
         private Brush GetCachedBrush(OxyColor color)
         {
@@ -1044,29 +1022,29 @@ namespace OxyPlot.Wpf
         /// The set stroke.
         /// </summary>
         /// <param name="shape">
-        /// The shape. 
+        /// The shape.
         /// </param>
         /// <param name="stroke">
-        /// The stroke. 
+        /// The stroke.
         /// </param>
         /// <param name="thickness">
-        /// The thickness. 
+        /// The thickness.
         /// </param>
         /// <param name="lineJoin">
-        /// The line join. 
+        /// The line join.
         /// </param>
         /// <param name="dashArray">
-        /// The dash array. 
+        /// The dash array.
         /// </param>
         /// <param name="aliased">
-        /// The aliased. 
+        /// The aliased.
         /// </param>
         private void SetStroke(
-            Shape shape, 
-            OxyColor stroke, 
-            double thickness, 
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, 
-            IEnumerable<double> dashArray = null, 
+            Shape shape,
+            OxyColor stroke,
+            double thickness,
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            IEnumerable<double> dashArray = null,
             bool aliased = false)
         {
             if (stroke != null && thickness > 0)
@@ -1104,6 +1082,5 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
     }
 }

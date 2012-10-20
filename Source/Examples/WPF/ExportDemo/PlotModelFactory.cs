@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotModelFactory.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -130,7 +130,6 @@ namespace ExportDemo
             return model;
         }
 
-
         private static DataPoint[] Fractalise(DataPoint[] data, DataPoint[] detail)
         {
             var result = new DataPoint[(data.Length - 1) * detail.Length + 1];
@@ -148,17 +147,17 @@ namespace ExportDemo
 
         private static readonly DataPoint[] KochDetail = new[]
                                                              {
-                                                                 new DataPoint(0, 0), 
-                                                                 new DataPoint(1.0 / 3, 0), 
+                                                                 new DataPoint(0, 0),
+                                                                 new DataPoint(1.0 / 3, 0),
                                                                  new DataPoint(0.5, Math.Sqrt(3.0 / 4.0) / 3),
-                                                                 new DataPoint(2.0 / 3, 0) 
+                                                                 new DataPoint(2.0 / 3, 0)
                                                              };
 
         private static PlotModel CreateKochCurve(int n)
         {
             var data = new[]
                            {
-                               new DataPoint(1, 0), 
+                               new DataPoint(1, 0),
                                new DataPoint(0, 0)};
             for (int i = 0; i < n; i++)
                 data = Fractalise(data, KochDetail);
@@ -175,7 +174,7 @@ namespace ExportDemo
         {
             var data = new[]
                            {
-                               new DataPoint(-1, 0), 
+                               new DataPoint(-1, 0),
                                new DataPoint(1, 0),
                                new DataPoint(0, Math.Sqrt(3)), new DataPoint(-1, 0) };
             for (int i = 0; i < n; i++)
@@ -479,8 +478,6 @@ namespace ExportDemo
 
             return plot;
         }
-
-
 
     }
 }

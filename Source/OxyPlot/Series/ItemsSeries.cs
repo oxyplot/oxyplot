@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -29,46 +29,36 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
 {
-    #region
-
     using System.Collections;
     using System.Linq;
 
-    #endregion
-
     /// <summary>
-    ///   Abstract base class for series that can contain items.
+    /// Abstract base class for series that can contain items.
     /// </summary>
     public abstract class ItemsSeries : Series
     {
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the items source.
+        /// Gets or sets the items source.
         /// </summary>
         /// <value> The items source. </value>
         [CodeGeneration(false)]
         public IEnumerable ItemsSource { get; set; }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
-        ///   Updates the valid items
+        /// Updates the valid items
         /// </summary>
         protected internal override void UpdateValidData()
         {
         }
 
         /// <summary>
-        ///   Gets the item for the specified index.
+        /// Gets the item for the specified index.
         /// </summary>
         /// <param name="itemsSource"> The items source. </param>
         /// <param name="index"> The index. </param>
         /// <returns> The get item. </returns>
         /// <remarks>
-        ///   Returns null if ItemsSource is not set, or the index is outside the boundaries.
+        /// Returns null if ItemsSource is not set, or the index is outside the boundaries.
         /// </remarks>
         protected static object GetItem(IEnumerable itemsSource, int index)
         {
@@ -93,7 +83,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets the item at the specified index.
+        /// Gets the item at the specified index.
         /// </summary>
         /// <param name="i"> The index of the item. </param>
         /// <returns> The item of the index. </returns>
@@ -102,6 +92,5 @@ namespace OxyPlot
             return GetItem(this.ItemsSource, i);
         }
 
-        #endregion
     }
 }

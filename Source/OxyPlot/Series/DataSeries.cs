@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DataSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,12 +38,12 @@ using System.Reflection;
 namespace OxyPlot
 {
     /// <summary>
-    ///   DataPointProvider interface.
+    /// DataPointProvider interface.
     /// </summary>
     public interface IDataPointProvider
     {
         /// <summary>
-        ///   Gets the data point.
+        /// Gets the data point.
         /// </summary>
         /// <returns></returns>
         DataPoint GetDataPoint();
@@ -62,32 +62,32 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the items source.
+        /// Gets or sets the items source.
         /// </summary>
         /// <value>The items source.</value>
         public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
-        ///   Gets or sets the data field X.
+        /// Gets or sets the data field X.
         /// </summary>
         /// <value>The data field X.</value>
         public string DataFieldX { get; set; }
 
         /// <summary>
-        ///   Gets or sets the data field Y.
+        /// Gets or sets the data field Y.
         /// </summary>
         /// <value>The data field Y.</value>
         public string DataFieldY { get; set; }
 
         /// <summary>
-        ///   Gets or sets the mapping deleagte.
-        ///   Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
+        /// Gets or sets the mapping deleagte.
+        /// Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
         /// </summary>
         /// <value>The mapping.</value>
         public Func<object, DataPoint> Mapping { get; set; }
 
         /// <summary>
-        ///   Gets or sets the points.
+        /// Gets or sets the points.
         /// </summary>
         /// <value>The points.</value>
         [Browsable(false)]
@@ -98,12 +98,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this <see cref = "DataSeries" /> is smooth.
+        /// Gets or sets a value indicating whether this <see cref = "DataSeries" /> is smooth.
         /// </summary>
         /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
         public bool Smooth { get; set; }
-
-        #region ISeries Members
 
         public override void UpdateData()
         {
@@ -123,7 +121,7 @@ namespace OxyPlot
                 }
             }
 
-            // Get DataPoints from the items in ItemsSource 
+            // Get DataPoints from the items in ItemsSource
             // if they implement IDataPointProvider
             // If DataFields are set, this is not used
             if (DataFieldX == null || DataFieldY == null)
@@ -172,7 +170,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Updates the max/min from the datapoints.
+        /// Updates the max/min from the datapoints.
         /// </summary>
         public override void UpdateMaxMin()
         {
@@ -181,7 +179,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets the point in the dataset that is nearest the specified point.
+        /// Gets the point in the dataset that is nearest the specified point.
         /// </summary>
         /// <param name = "point">The point.</param>
         /// <param name = "dpn">The nearest point (data coordinates).</param>
@@ -212,7 +210,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets the point on the curve that is nearest the specified point.
+        /// Gets the point on the curve that is nearest the specified point.
         /// </summary>
         /// <param name = "point">The point.</param>
         /// <param name = "dpn">The nearest point (data coordinates).</param>
@@ -276,8 +274,6 @@ namespace OxyPlot
             return minimumDistance < double.MaxValue;
         }
 
-        #endregion
-
         protected void AddDataPoints(ICollection<DataPoint> points, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
         {
             PropertyInfo pix = null;
@@ -307,12 +303,10 @@ namespace OxyPlot
                 var x = ToDouble(pix.GetValue(o, null));
                 var y = ToDouble(piy.GetValue(o, null));
 
-
                 var pp = new DataPoint(x, y);
                 points.Add(pp);
             }
         }
-
 
         /// <summary>
         /// Updates the Max/Min limits from the specified point list.
@@ -352,7 +346,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets the value from the specified X.
+        /// Gets the value from the specified X.
         /// </summary>
         /// <param name = "x">The x.</param>
         /// <returns></returns>
@@ -390,7 +384,7 @@ namespace OxyPlot
         {
             return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X)
                    && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
-                   && (xAxis!=null && xAxis.IsValidValue(pt.X)) 
+                   && (xAxis!=null && xAxis.IsValidValue(pt.X))
                    && (yAxis!=null && yAxis.IsValidValue(pt.Y));
         }
     }

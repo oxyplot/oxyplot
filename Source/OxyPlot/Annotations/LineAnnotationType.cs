@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineAnnotationType.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -35,27 +35,27 @@ namespace OxyPlot
     public enum LineAnnotationType
     {
         /// <summary>
-        ///   Horizontal line given by the Y property
+        /// Horizontal line given by the Y property
         /// </summary>
-        Horizontal, 
+        Horizontal,
 
         /// <summary>
-        ///   Vertical line given by the X property
+        /// Vertical line given by the X property
         /// </summary>
-        Vertical, 
+        Vertical,
 
         /// <summary>
-        ///   Linear equation y=mx+b given by the Slope and Intercept properties
+        /// Linear equation y=mx+b given by the Slope and Intercept properties
         /// </summary>
-        LinearEquation, 
+        LinearEquation,
 
         /// <summary>
-        ///   Curve equation x=f(y) given by the Equation property
+        /// Curve equation x=f(y) given by the Equation property
         /// </summary>
-        EquationX, 
+        EquationX,
 
         /// <summary>
-        ///   Curve equation y=f(x) given by the Equation property
+        /// Curve equation y=f(x) given by the Equation property
         /// </summary>
         EquationY
     }

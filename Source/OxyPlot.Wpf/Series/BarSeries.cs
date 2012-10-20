@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BarSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,22 +37,20 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class BarSeries : ItemsSeries
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The bar width property.
+        /// The bar width property.
         /// </summary>
         public static readonly DependencyProperty BarWidthProperty = DependencyProperty.Register(
             "BarWidth", typeof(double), typeof(BarSeries), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        ///   The fill color property.
+        /// The fill color property.
         /// </summary>
         public static readonly DependencyProperty FillColorProperty = DependencyProperty.Register(
             "FillColor", typeof(Color?), typeof(BarSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        ///   The is stacked property.
+        /// The is stacked property.
         /// </summary>
         public static readonly DependencyProperty IsStackedProperty = DependencyProperty.Register(
             "IsStacked", typeof(bool), typeof(BarSeries), new PropertyMetadata(false, AppearanceChanged));
@@ -65,37 +63,33 @@ namespace OxyPlot.Wpf
                 "LabelFormatString", typeof(string), typeof(BarSeries), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The negative fill color property.
+        /// The negative fill color property.
         /// </summary>
         public static readonly DependencyProperty NegativeFillColorProperty =
             DependencyProperty.Register(
                 "NegativeFillColor", typeof(Color?), typeof(BarSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        ///   The stroke color property.
+        /// The stroke color property.
         /// </summary>
         public static readonly DependencyProperty StrokeColorProperty = DependencyProperty.Register(
             "StrokeColor", typeof(Color), typeof(BarSeries), new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
-        ///   The stroke thickness property.
+        /// The stroke thickness property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
                 "StrokeThickness", typeof(double), typeof(BarSeries), new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
-        ///   The value field property.
+        /// The value field property.
         /// </summary>
         public static readonly DependencyProperty ValueFieldProperty = DependencyProperty.Register(
             "ValueField", typeof(string), typeof(BarSeries), new PropertyMetadata(null, AppearanceChanged));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes static members of the <see cref="BarSeries"/> class. 
+        /// Initializes static members of the <see cref="BarSeries"/> class.
         /// </summary>
         static BarSeries()
         {
@@ -104,19 +98,15 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BarSeries"/> class. 
+        /// Initializes a new instance of the <see cref="BarSeries"/> class.
         /// </summary>
         public BarSeries()
         {
             this.InternalSeries = new OxyPlot.BarSeries();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets BarWidth.
+        /// Gets or sets BarWidth.
         /// </summary>
         public double BarWidth
         {
@@ -132,7 +122,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets FillColor.
+        /// Gets or sets FillColor.
         /// </summary>
         public Color? FillColor
         {
@@ -148,7 +138,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether IsStacked.
+        /// Gets or sets a value indicating whether IsStacked.
         /// </summary>
         public bool IsStacked
         {
@@ -164,7 +154,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the label format string.
+        /// Gets or sets the label format string.
         /// </summary>
         /// <value> The label format string. </value>
         public string LabelFormatString
@@ -181,7 +171,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets NegativeFillColor.
+        /// Gets or sets NegativeFillColor.
         /// </summary>
         public Color? NegativeFillColor
         {
@@ -197,7 +187,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets StrokeColor.
+        /// Gets or sets StrokeColor.
         /// </summary>
         public Color StrokeColor
         {
@@ -213,7 +203,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets StrokeThickness.
+        /// Gets or sets StrokeThickness.
         /// </summary>
         public double StrokeThickness
         {
@@ -229,7 +219,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets ValueField.
+        /// Gets or sets ValueField.
         /// </summary>
         public string ValueField
         {
@@ -244,10 +234,6 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Creates the model.
         /// </summary>
@@ -260,15 +246,11 @@ namespace OxyPlot.Wpf
             return this.InternalSeries;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The synchronize properties.
         /// </summary>
         /// <param name="series">
-        /// The series. 
+        /// The series.
         /// </param>
         protected override void SynchronizeProperties(OxyPlot.Series series)
         {
@@ -287,6 +269,5 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
     }
 }

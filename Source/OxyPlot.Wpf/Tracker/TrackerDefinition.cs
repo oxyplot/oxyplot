@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TrackerDefinition.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -43,30 +43,24 @@ namespace OxyPlot.Silverlight
     /// </summary>
     public class TrackerDefinition : DependencyObject
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The tracker key property.
+        /// The tracker key property.
         /// </summary>
         public static readonly DependencyProperty TrackerKeyProperty = DependencyProperty.Register(
             "TrackerKey", typeof(string), typeof(TrackerDefinition), new PropertyMetadata(null));
 
         /// <summary>
-        ///   The tracker template property.
+        /// The tracker template property.
         /// </summary>
         public static readonly DependencyProperty TrackerTemplateProperty =
             DependencyProperty.Register(
                 "TrackerTemplate", typeof(ControlTemplate), typeof(TrackerDefinition), new PropertyMetadata(null));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the tracker key.
+        /// Gets or sets the tracker key.
         /// </summary>
         /// <remarks>
-        ///   The Plot will use this property to find the TrackerDefinition that matches the TrackerKey of the current series.
+        /// The Plot will use this property to find the TrackerDefinition that matches the TrackerKey of the current series.
         /// </remarks>
         public string TrackerKey
         {
@@ -82,11 +76,11 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets or sets the tracker template.
+        /// Gets or sets the tracker template.
         /// </summary>
         /// <remarks>
-        ///   The tracker control will be added/removed from the Tracker overlay as neccessary.
-        ///   The DataContext of the tracker will be set to a TrackerHitResult with the current tracker data.
+        /// The tracker control will be added/removed from the Tracker overlay as neccessary.
+        /// The DataContext of the tracker will be set to a TrackerHitResult with the current tracker data.
         /// </remarks>
         public ControlTemplate TrackerTemplate
         {
@@ -101,6 +95,5 @@ namespace OxyPlot.Silverlight
             }
         }
 
-        #endregion
     }
 }

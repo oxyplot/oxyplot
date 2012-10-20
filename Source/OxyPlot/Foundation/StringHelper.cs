@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StringHelper.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -50,28 +50,28 @@ namespace OxyPlot
         /// Replaces the format items in the specified string.
         /// </summary>
         /// <param name="provider">
-        /// The culture specific format provider. 
+        /// The culture specific format provider.
         /// </param>
         /// <param name="formatString">
-        /// The format string. 
+        /// The format string.
         /// </param>
         /// <param name="item">
-        /// The item. 
+        /// The item.
         /// </param>
         /// <param name="values">
-        /// The values. 
+        /// The values.
         /// </param>
         /// <remarks>
         /// The formatString and values works as in string.Format. In addition, you can format properties of the item object by using the syntax {PropertyName:Formatstring}. E.g. if you have a "Value" property in your item's class, use "{Value:0.00}" to output the value with two digits. Note that this formatting is using reflection and does not have the same performance as string.Format.
         /// </remarks>
         /// <returns>
-        /// The formatted string. 
+        /// The formatted string.
         /// </returns>
         public static string Format(IFormatProvider provider, string formatString, object item, params object[] values)
         {
             // Replace items on the format {Property[:Formatstring]}
             var s = FormattingExpression.Replace(
-                formatString, 
+                formatString,
                 delegate(Match match)
                     {
                         var property = match.Groups["Property"].Value;
@@ -104,13 +104,13 @@ namespace OxyPlot
         /// Creates a valid file name.
         /// </summary>
         /// <param name="title">
-        /// The title. 
+        /// The title.
         /// </param>
         /// <param name="extension">
-        /// The extension. 
+        /// The extension.
         /// </param>
         /// <returns>
-        /// A file name. 
+        /// A file name.
         /// </returns>
         public static string CreateValidFileName(string title, string extension)
         {
@@ -140,19 +140,19 @@ namespace OxyPlot
         /// Creates a string from a collection of items.
         /// </summary>
         /// <param name="provider">
-        /// The provider. 
+        /// The provider.
         /// </param>
         /// <param name="items">
-        /// The items. 
+        /// The items.
         /// </param>
         /// <param name="formatstring">
-        /// The format string to apply to each item. 
+        /// The format string to apply to each item.
         /// </param>
         /// <param name="separator">
-        /// The separator. 
+        /// The separator.
         /// </param>
         /// <returns>
-        /// The collection as a string. 
+        /// The collection as a string.
         /// </returns>
         public static object CreateList(
             IFormatProvider provider, IEnumerable items, string formatstring, string separator = ", ")

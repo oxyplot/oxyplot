@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -41,12 +41,12 @@ namespace OxyPlot
         /// <summary>
         /// Horizontal text.
         /// </summary>
-        Horizontal, 
-        
+        Horizontal,
+
         /// <summary>
         /// Vertical text.
         /// </summary>
-        Vertical, 
+        Vertical,
 
         /// <summary>
         /// Oriented along the line.
@@ -64,10 +64,8 @@ namespace OxyPlot
         /// </summary>
         private IList<ScreenPoint> screenPoints;
 
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "LineAnnotation" /> class.
+        /// Initializes a new instance of the <see cref = "LineAnnotation" /> class.
         /// </summary>
         public LineAnnotation()
         {
@@ -90,17 +88,13 @@ namespace OxyPlot
             this.TextVerticalAlignment = VerticalTextAlign.Top;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the color of the line.
+        /// Gets or sets the color of the line.
         /// </summary>
         public OxyColor Color { get; set; }
 
         /// <summary>
-        ///   Gets or sets the y=f(x) equation when Type is Equation.
+        /// Gets or sets the y=f(x) equation when Type is Equation.
         /// </summary>
         public Func<double, double> Equation { get; set; }
 
@@ -109,40 +103,40 @@ namespace OxyPlot
         /// </summary>
         /// <value>The intercept value.</value>
         /// <remarks>
-        /// Linear equation y-intercept (the b in y=mx+b). 
+        /// Linear equation y-intercept (the b in y=mx+b).
         /// http://en.wikipedia.org/wiki/Linear_equation
         /// </remarks>
         public double Intercept { get; set; }
 
         /// <summary>
-        ///   Gets or sets the line join.
+        /// Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
-        ///   Gets or sets the line style.
+        /// Gets or sets the line style.
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        ///   Gets or sets the maximum X coordinate for the line.
+        /// Gets or sets the maximum X coordinate for the line.
         /// </summary>
         public double MaximumX { get; set; }
 
         /// <summary>
-        ///   Gets or sets the maximum Y coordinate for the line.
+        /// Gets or sets the maximum Y coordinate for the line.
         /// </summary>
         public double MaximumY { get; set; }
 
         /// <summary>
-        ///   Gets or sets the minimum X coordinate for the line.
+        /// Gets or sets the minimum X coordinate for the line.
         /// </summary>
         public double MinimumX { get; set; }
 
         /// <summary>
-        ///   Gets or sets the minimum Y coordinate for the line.
+        /// Gets or sets the minimum Y coordinate for the line.
         /// </summary>
         public double MinimumY { get; set; }
 
@@ -228,10 +222,6 @@ namespace OxyPlot
         /// </summary>
         /// <value><c>true</c> if clipping by the Y axis is enabled; otherwise, <c>false</c>.</value>
         public bool ClipByYAxis { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Renders the line annotation.
@@ -442,9 +432,6 @@ namespace OxyPlot
             }
         }
 
-        #endregion
-
-        #region Methods
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
@@ -526,6 +513,5 @@ namespace OxyPlot
             angle = 0;
             return false;
         }
-        #endregion
     }
 }

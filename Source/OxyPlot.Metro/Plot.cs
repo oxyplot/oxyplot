@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -49,94 +49,88 @@ namespace OxyPlot.Metro
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
     public partial class Plot : Control, IPlotControl
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The Grid PART constant.
+        /// The Grid PART constant.
         /// </summary>
         private const string PartGrid = "PART_Grid";
 
         /// <summary>
-        ///   The model lock.
+        /// The model lock.
         /// </summary>
         private readonly object modelLock = new object();
 
         /// <summary>
-        ///   The tracker definitions.
+        /// The tracker definitions.
         /// </summary>
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
-        
+
         /// <summary>
-        ///   The canvas.
+        /// The canvas.
         /// </summary>
         private Canvas canvas;
 
         /// <summary>
-        ///   The current model.
+        /// The current model.
         /// </summary>
         private PlotModel currentModel;
 
         /// <summary>
-        ///   The current tracker.
+        /// The current tracker.
         /// </summary>
         private FrameworkElement currentTracker;
 
         /// <summary>
-        ///   The grid.
+        /// The grid.
         /// </summary>
         private Grid grid;
 
         /// <summary>
-        ///   The internal model.
+        /// The internal model.
         /// </summary>
         private PlotModel internalModel;
 
         /// <summary>
-        ///   The is plot invalidated.
+        /// The is plot invalidated.
         /// </summary>
         private bool isPlotInvalidated;
 
         /// <summary>
-        ///   The mouse manipulator.
+        /// The mouse manipulator.
         /// </summary>
         private ManipulatorBase mouseManipulator;
 
         /// <summary>
-        ///   The overlays.
+        /// The overlays.
         /// </summary>
         private Canvas overlays;
 
         /// <summary>
-        ///   The touch down point.
+        /// The touch down point.
         /// </summary>
         private Point touchDownPoint;
 
         /// <summary>
-        ///   The touch pan manipulator.
+        /// The touch pan manipulator.
         /// </summary>
         private PanManipulator touchPan;
 
         /// <summary>
-        ///   The touch zoom manipulator.
+        /// The touch zoom manipulator.
         /// </summary>
         private ZoomManipulator touchZoom;
 
         /// <summary>
-        ///   Data has been updated.
+        /// Data has been updated.
         /// </summary>
         private bool updateData;
 
         /// <summary>
-        ///   The zoom control.
+        /// The zoom control.
         /// </summary>
         private ContentControl zoomControl;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "Plot" /> class.
+        /// Initializes a new instance of the <see cref = "Plot" /> class.
         /// </summary>
         public Plot()
         {
@@ -148,20 +142,8 @@ namespace OxyPlot.Metro
             CompositionTarget.Rendering += CompositionTargetRendering;
         }
 
-
-
-        #endregion
-
-        #region Enums
-
-
-
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the actual model.
+        /// Gets the actual model.
         /// </summary>
         /// <value>The actual model.</value>
         public PlotModel ActualModel
@@ -173,7 +155,7 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        ///   Gets the tracker definitions.
+        /// Gets the tracker definitions.
         /// </summary>
         /// <value>The tracker definitions.</value>
         public ObservableCollection<TrackerDefinition> TrackerDefinitions
@@ -183,10 +165,6 @@ namespace OxyPlot.Metro
                 return this.trackerDefinitions;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets the axes from a point.
@@ -315,7 +293,7 @@ namespace OxyPlot.Metro
         /// </param>
         public void RefreshPlot(bool updateData)
         {
-            // don't block ui thread 
+            // don't block ui thread
             this.InvalidatePlot(updateData);
         }
 
@@ -550,10 +528,6 @@ namespace OxyPlot.Metro
             axis.ZoomAt(factor, x);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Called before the <see cref="E:Windows.UI.Xaml.UIElement.KeyDown"/> event occurs.
         /// </summary>
@@ -777,9 +751,6 @@ namespace OxyPlot.Metro
                 this.mouseManipulator.Delta(this.CreateManipulationEventArgs(e));
             }
         }
-
-
-
 
         /// <summary>
         /// Called before the <see cref="E:Windows.UI.Xaml.UIElement.MouseWheel"/> event occurs to provide handling for the event in a derived class without attaching a delegate.
@@ -1072,7 +1043,6 @@ namespace OxyPlot.Metro
             this.Focus(FocusState.Pointer);
             this.CapturePointer(e.Pointer);
 
-
             int clickCount = 1;
             //if (MouseButtonHelper.IsDoubleClick(this, e))
             //{
@@ -1166,7 +1136,6 @@ namespace OxyPlot.Metro
             }
         }
 
-        #endregion
     }
 
     /// <summary>
@@ -1175,27 +1144,27 @@ namespace OxyPlot.Metro
     public enum MouseButton
     {
         /// <summary>
-        ///   The left.
+        /// The left.
         /// </summary>
         Left,
 
         /// <summary>
-        ///   The middle.
+        /// The middle.
         /// </summary>
         Middle,
 
         /// <summary>
-        ///   The right.
+        /// The right.
         /// </summary>
         Right,
 
         /// <summary>
-        ///   The x button 1.
+        /// The x button 1.
         /// </summary>
         XButton1,
 
         /// <summary>
-        ///   The x button 2.
+        /// The x button 2.
         /// </summary>
         XButton2
     }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AxisRendererBase.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,71 +36,65 @@ namespace OxyPlot
     /// </summary>
     public abstract class AxisRendererBase
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The plot.
+        /// The plot.
         /// </summary>
         protected readonly PlotModel Plot;
 
         /// <summary>
-        ///   The render context.
+        /// The render context.
         /// </summary>
         protected readonly IRenderContext rc;
 
         /// <summary>
-        ///   The axis lines pen.
+        /// The axis lines pen.
         /// </summary>
         protected OxyPen AxislinePen;
 
         /// <summary>
-        ///   The extra grid lines pen.
+        /// The extra grid lines pen.
         /// </summary>
         protected OxyPen ExtraPen;
 
         /// <summary>
-        ///   The major label values.
+        /// The major label values.
         /// </summary>
         protected IList<double> MajorLabelValues;
 
         /// <summary>
-        ///   The major grid lines pen.
+        /// The major grid lines pen.
         /// </summary>
         protected OxyPen MajorPen;
 
         /// <summary>
-        ///   The major tick pen.
+        /// The major tick pen.
         /// </summary>
         protected OxyPen MajorTickPen;
 
         /// <summary>
-        ///   The major tick values.
+        /// The major tick values.
         /// </summary>
         protected IList<double> MajorTickValues;
 
         /// <summary>
-        ///   The minor grid lines pen.
+        /// The minor grid lines pen.
         /// </summary>
         protected OxyPen MinorPen;
 
         /// <summary>
-        ///   The minor tick pen.
+        /// The minor tick pen.
         /// </summary>
         protected OxyPen MinorTickPen;
 
         /// <summary>
-        ///   The minor tick values.
+        /// The minor tick values.
         /// </summary>
         protected IList<double> MinorTickValues;
 
         /// <summary>
-        ///   The zero grid line pen.
+        /// The zero grid line pen.
         /// </summary>
         protected OxyPen ZeroPen;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AxisRendererBase"/> class.
@@ -116,10 +110,6 @@ namespace OxyPlot
             this.Plot = plot;
             this.rc = rc;
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The render.
@@ -137,10 +127,6 @@ namespace OxyPlot
             axis.GetTickValues(out this.MajorLabelValues, out this.MajorTickValues, out this.MinorTickValues);
             this.CreatePens(axis);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The create pens.
@@ -209,7 +195,7 @@ namespace OxyPlot
         /// <param name="min">The minium value of the range.</param>
         /// <param name="max">The maximum value of the range.</param>
         /// <returns>
-        ///   <c>true</c> if the specified value is within the range; otherwise, <c>false</c>.
+        ///  <c>true</c> if the specified value is within the range; otherwise, <c>false</c>.
         /// </returns>
         protected bool IsWithin(double d, double min, double max)
         {
@@ -226,6 +212,5 @@ namespace OxyPlot
             return true;
         }
 
-        #endregion
     }
 }

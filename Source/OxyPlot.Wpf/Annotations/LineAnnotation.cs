@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,16 +37,14 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class LineAnnotation : Annotation
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The color property.
+        /// The color property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color), typeof(LineAnnotation), new PropertyMetadata(Colors.Blue));
 
         /// <summary>
-        ///   The equation type property.
+        /// The equation type property.
         /// </summary>
         public static readonly DependencyProperty EquationTypeProperty = DependencyProperty.Register(
             "Type",
@@ -55,84 +53,76 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(LineAnnotationType.LinearEquation));
 
         /// <summary>
-        ///   The intercept property.
+        /// The intercept property.
         /// </summary>
         public static readonly DependencyProperty InterceptProperty = DependencyProperty.Register(
             "Intercept", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0));
 
         /// <summary>
-        ///   The line style property.
+        /// The line style property.
         /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
             "LineStyle", typeof(LineStyle), typeof(LineAnnotation), new PropertyMetadata(LineStyle.Dash));
 
         /// <summary>
-        ///   The maximum x property.
+        /// The maximum x property.
         /// </summary>
         public static readonly DependencyProperty MaximumXProperty = DependencyProperty.Register(
             "MaximumX", typeof(double), typeof(LineAnnotation), new PropertyMetadata(double.MaxValue));
 
         /// <summary>
-        ///   The maximum y property.
+        /// The maximum y property.
         /// </summary>
         public static readonly DependencyProperty MaximumYProperty = DependencyProperty.Register(
             "MaximumY", typeof(double), typeof(LineAnnotation), new PropertyMetadata(double.MaxValue));
 
         /// <summary>
-        ///   The minimum x property.
+        /// The minimum x property.
         /// </summary>
         public static readonly DependencyProperty MinimumXProperty = DependencyProperty.Register(
             "MinimumX", typeof(double), typeof(LineAnnotation), new PropertyMetadata(double.MinValue));
 
         /// <summary>
-        ///   The minimum y property.
+        /// The minimum y property.
         /// </summary>
         public static readonly DependencyProperty MinimumYProperty = DependencyProperty.Register(
             "MinimumY", typeof(double), typeof(LineAnnotation), new PropertyMetadata(double.MinValue));
 
         /// <summary>
-        ///   The slope property.
+        /// The slope property.
         /// </summary>
         public static readonly DependencyProperty SlopeProperty = DependencyProperty.Register(
             "Slope", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0));
 
         /// <summary>
-        ///   The stroke thickness property.
+        /// The stroke thickness property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
                 "StrokeThickness", typeof(double), typeof(LineAnnotation), new PropertyMetadata(1.0));
 
         /// <summary>
-        ///   The x property.
+        /// The x property.
         /// </summary>
         public static readonly DependencyProperty XProperty = DependencyProperty.Register(
             "X", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0));
 
         /// <summary>
-        ///   The y property.
+        /// The y property.
         /// </summary>
         public static readonly DependencyProperty YProperty = DependencyProperty.Register(
             "Y", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "LineAnnotation" /> class.
+        /// Initializes a new instance of the <see cref = "LineAnnotation" /> class.
         /// </summary>
         public LineAnnotation()
         {
             this.internalAnnotation = new OxyPlot.LineAnnotation();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets Color.
+        /// Gets or sets Color.
         /// </summary>
         public Color Color
         {
@@ -148,7 +138,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets Intercept.
+        /// Gets or sets Intercept.
         /// </summary>
         public double Intercept
         {
@@ -164,7 +154,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets LineStyle.
+        /// Gets or sets LineStyle.
         /// </summary>
         public LineStyle LineStyle
         {
@@ -180,7 +170,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets MaximumX.
+        /// Gets or sets MaximumX.
         /// </summary>
         public double MaximumX
         {
@@ -196,7 +186,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets MaximumY.
+        /// Gets or sets MaximumY.
         /// </summary>
         public double MaximumY
         {
@@ -212,7 +202,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets MinimumX.
+        /// Gets or sets MinimumX.
         /// </summary>
         public double MinimumX
         {
@@ -228,7 +218,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets MinimumY.
+        /// Gets or sets MinimumY.
         /// </summary>
         public double MinimumY
         {
@@ -244,7 +234,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets Slope.
+        /// Gets or sets Slope.
         /// </summary>
         public double Slope
         {
@@ -260,7 +250,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets StrokeThickness.
+        /// Gets or sets StrokeThickness.
         /// </summary>
         public double StrokeThickness
         {
@@ -276,7 +266,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets Type.
+        /// Gets or sets Type.
         /// </summary>
         public LineAnnotationType Type
         {
@@ -292,7 +282,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets X.
+        /// Gets or sets X.
         /// </summary>
         public double X
         {
@@ -308,7 +298,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets Y.
+        /// Gets or sets Y.
         /// </summary>
         public double Y
         {
@@ -322,10 +312,6 @@ namespace OxyPlot.Wpf
                 this.SetValue(YProperty, value);
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The create model.
@@ -372,7 +358,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the line join.
+        /// Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
         public OxyPenLineJoin LineJoin
@@ -382,7 +368,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   The line join property.
+        /// The line join property.
         /// </summary>
         public static readonly DependencyProperty LineJoinProperty =
             DependencyProperty.Register("LineJoin", typeof(OxyPenLineJoin), typeof(LineAnnotation), new UIPropertyMetadata(OxyPenLineJoin.Miter));
@@ -398,7 +384,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   The ClipByXAxis property.
+        /// The ClipByXAxis property.
         /// </summary>
         public static readonly DependencyProperty ClipByXAxisProperty =
             DependencyProperty.Register("ClipByXAxis", typeof(bool), typeof(LineAnnotation), new UIPropertyMetadata(true));
@@ -414,7 +400,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   The ClipByYAxis property.
+        /// The ClipByYAxis property.
         /// </summary>
         public static readonly DependencyProperty ClipByYAxisProperty =
             DependencyProperty.Register("ClipByYAxis", typeof(bool), typeof(LineAnnotation), new UIPropertyMetadata(true));
@@ -435,7 +421,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   The TextPosition property.
+        /// The TextPosition property.
         /// </summary>
         public static readonly DependencyProperty TextPositionProperty =
             DependencyProperty.Register("TextPosition", typeof(double), typeof(LineAnnotation), new UIPropertyMetadata(1.0));
@@ -451,7 +437,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   The TextOrientation property.
+        /// The TextOrientation property.
         /// </summary>
         public static readonly DependencyProperty TextOrientationProperty =
             DependencyProperty.Register("TextOrientation", typeof(AnnotationTextOrientation), typeof(LineAnnotation), new UIPropertyMetadata(AnnotationTextOrientation.AlongLine));
@@ -467,7 +453,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   The TextMargin property.
+        /// The TextMargin property.
         /// </summary>
         public static readonly DependencyProperty TextMarginProperty =
             DependencyProperty.Register("TextMargin", typeof(double), typeof(LineAnnotation), new UIPropertyMetadata(12.0));
@@ -483,7 +469,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   The TextHorizontalAlignment property.
+        /// The TextHorizontalAlignment property.
         /// </summary>
         public static readonly DependencyProperty TextHorizontalAlignmentProperty =
             DependencyProperty.Register("TextHorizontalAlignment", typeof(HorizontalTextAlign), typeof(LineAnnotation), new UIPropertyMetadata(HorizontalTextAlign.Right));
@@ -498,11 +484,10 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   The TextVerticalAlignment property.
+        /// The TextVerticalAlignment property.
         /// </summary>
         public static readonly DependencyProperty TextVerticalAlignmentProperty =
             DependencyProperty.Register("TextVerticalAlignment", typeof(VerticalTextAlign), typeof(LineAnnotation), new UIPropertyMetadata(VerticalTextAlign.Top));
 
-        #endregion
     }
 }

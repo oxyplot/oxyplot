@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotModel.MouseEvents.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,49 +37,39 @@ namespace OxyPlot
     /// </summary>
     public partial class PlotModel
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The mouse hit tolerance.
+        /// The mouse hit tolerance.
         /// </summary>
         private const double MouseHitTolerance = 10;
 
         /// <summary>
-        ///   The current mouse events element.
+        /// The current mouse events element.
         /// </summary>
         private UIPlotElement currentMouseEventElement;
 
-        #endregion
-
-        #region Public Events
-
         /// <summary>
-        ///   Occurs when a mouse button is pressed down on the model.
+        /// Occurs when a mouse button is pressed down on the model.
         /// </summary>
         public event EventHandler<OxyMouseEventArgs> MouseDown;
 
         /// <summary>
-        ///   Occurs when the mouse is moved on the plot element (only occurs after MouseDown).
+        /// Occurs when the mouse is moved on the plot element (only occurs after MouseDown).
         /// </summary>
         public event EventHandler<OxyMouseEventArgs> MouseMove;
 
         /// <summary>
-        ///   Occurs when the mouse button is released on the plot element.
+        /// Occurs when the mouse button is released on the plot element.
         /// </summary>
         public event EventHandler<OxyMouseEventArgs> MouseUp;
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Handles the mouse down event.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data. 
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
         public void HandleMouseDown(object sender, OxyMouseEventArgs e)
         {
@@ -119,10 +109,10 @@ namespace OxyPlot
         /// Handles the mouse move event.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data. 
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
         public void HandleMouseMove(object sender, OxyMouseEventArgs e)
         {
@@ -141,10 +131,10 @@ namespace OxyPlot
         /// Handles the mouse up event.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data. 
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
         public void HandleMouseUp(object sender, OxyMouseEventArgs e)
         {
@@ -160,18 +150,14 @@ namespace OxyPlot
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Raises the <see cref="MouseDown"/> event.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data. 
+        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
         protected virtual void OnMouseDown(object sender, OxyMouseEventArgs e)
         {
@@ -185,10 +171,10 @@ namespace OxyPlot
         /// Raises the <see cref="MouseMove"/> event.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data. 
+        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
         protected virtual void OnMouseMove(object sender, OxyMouseEventArgs e)
         {
@@ -202,10 +188,10 @@ namespace OxyPlot
         /// Raises the <see cref="MouseUp"/> event.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data. 
+        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
         protected virtual void OnMouseUp(object sender, OxyMouseEventArgs e)
         {
@@ -215,6 +201,5 @@ namespace OxyPlot
             }
         }
 
-        #endregion
     }
 }

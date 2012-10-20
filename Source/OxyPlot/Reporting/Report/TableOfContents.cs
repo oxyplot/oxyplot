@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TableOfContents.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,8 +36,6 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class TableOfContents : ItemsTable
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TableOfContents"/> class.
         /// </summary>
@@ -53,23 +51,15 @@ namespace OxyPlot.Reporting
             this.Items = this.Contents;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets Base.
+        /// Gets or sets Base.
         /// </summary>
         public ReportItem Base { get; set; }
 
         /// <summary>
-        ///   Gets or sets Contents.
+        /// Gets or sets Contents.
         /// </summary>
         public List<ContentItem> Contents { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The update.
@@ -81,10 +71,6 @@ namespace OxyPlot.Reporting
             this.Search(this.Base, hh);
             base.Update();
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The search.
@@ -110,26 +96,21 @@ namespace OxyPlot.Reporting
             }
         }
 
-        #endregion
-
         /// <summary>
         /// The content item.
         /// </summary>
         public class ContentItem
         {
-            #region Public Properties
-
             /// <summary>
-            ///   Gets or sets Chapter.
+            /// Gets or sets Chapter.
             /// </summary>
             public string Chapter { get; set; }
 
             /// <summary>
-            ///   Gets or sets Title.
+            /// Gets or sets Title.
             /// </summary>
             public string Title { get; set; }
 
-            #endregion
         }
     }
 }

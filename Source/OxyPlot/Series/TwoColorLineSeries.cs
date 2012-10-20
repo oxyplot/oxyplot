@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TwoColorLineSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -41,10 +41,8 @@ namespace OxyPlot
         /// </summary>
         private OxyColor defaultColor2;
 
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TwoColorLineSeries" /> class.
+        /// Initializes a new instance of the <see cref = "TwoColorLineSeries" /> class.
         /// </summary>
         public TwoColorLineSeries()
         {
@@ -53,12 +51,8 @@ namespace OxyPlot
             this.LineStyle2 = LineStyle.Solid;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the color for the part of the line that is below the limit.
+        /// Gets or sets the color for the part of the line that is below the limit.
         /// </summary>
         public OxyColor Color2 { get; set; }
 
@@ -72,23 +66,19 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the limit.
+        /// Gets or sets the limit.
         /// </summary>
         /// <remarks>
-        ///   The parts of the line that is below this limit will be rendered with Color2.
-        ///   The parts of the line that is above the limit will be rendered with Color.
+        /// The parts of the line that is below this limit will be rendered with Color2.
+        /// The parts of the line that is above the limit will be rendered with Color.
         /// </remarks>
         public double Limit { get; set; }
 
         /// <summary>
-        ///   Gets or sets the line style for the part of the line that is below the limit.
+        /// Gets or sets the line style for the part of the line that is below the limit.
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle2 { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The set default values.
@@ -136,27 +126,26 @@ namespace OxyPlot
 
             clippingRect.Bottom = y;
             rc.DrawClippedLine(
-                pointsToRender, 
-                clippingRect, 
+                pointsToRender,
+                clippingRect,
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
-                this.GetSelectableColor(this.ActualColor), 
-                this.StrokeThickness, 
-                this.LineStyle, 
-                this.LineJoin, 
+                this.GetSelectableColor(this.ActualColor),
+                this.StrokeThickness,
+                this.LineStyle,
+                this.LineJoin,
                 false);
             clippingRect.Top = y;
             clippingRect.Height = bottom - y;
             rc.DrawClippedLine(
-                pointsToRender, 
-                clippingRect, 
-                this.MinimumSegmentLength * this.MinimumSegmentLength, 
-                this.GetSelectableColor(this.ActualColor2), 
-                this.StrokeThickness, 
-                this.LineStyle2, 
-                this.LineJoin, 
+                pointsToRender,
+                clippingRect,
+                this.MinimumSegmentLength * this.MinimumSegmentLength,
+                this.GetSelectableColor(this.ActualColor2),
+                this.StrokeThickness,
+                this.LineStyle2,
+                this.LineJoin,
                 false);
         }
 
-        #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CategoryAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,8 +38,6 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class CategoryAxis : LinearAxis
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The gap width property.
         /// </summary>
@@ -70,10 +68,6 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
             "Labels", typeof(IList<string>), typeof(CategoryAxis), new PropertyMetadata(new List<string>(), DataChanged));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes static members of the <see cref="CategoryAxis"/> class.
         /// </summary>
@@ -93,15 +87,11 @@ namespace OxyPlot.Wpf
             this.internalAxis = new OxyPlot.CategoryAxis();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets the gap width.
         /// </summary>
         /// <value>
-        /// The width of the gap. 
+        /// The width of the gap.
         /// </value>
         public double GapWidth
         {
@@ -180,10 +170,6 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// The create model.
         /// </summary>
@@ -194,10 +180,6 @@ namespace OxyPlot.Wpf
             this.SynchronizeProperties();
             return this.internalAxis;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The synchronize properties.
@@ -220,6 +202,5 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
     }
 }

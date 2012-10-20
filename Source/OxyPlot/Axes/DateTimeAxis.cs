@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -40,37 +40,31 @@ namespace OxyPlot
     /// </summary>
     /// <remarks>
     /// The actual numeric values on the axis are days since 1900/01/01.
-    ///   Use the static ToDouble and ToDateTime to convert numeric values to DateTimes.
-    ///   The StringFormat value can be used to force formatting of the axis values
-    ///   "yyyy-MM-dd" shows date
-    ///   "w" or "ww" shows week number
-    ///   "h:mm" shows hours and minutes
+    /// Use the static ToDouble and ToDateTime to convert numeric values to DateTimes.
+    /// The StringFormat value can be used to force formatting of the axis values
+    /// "yyyy-MM-dd" shows date
+    /// "w" or "ww" shows week number
+    /// "h:mm" shows hours and minutes
     /// </remarks>
     public class DateTimeAxis : LinearAxis
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The time origin.
+        /// The time origin.
         /// </summary>
         private static DateTime timeOrigin = new DateTime(1900, 1, 1); // Same date values as Excel
 
         /// <summary>
-        ///   The actual interval type.
+        /// The actual interval type.
         /// </summary>
         private DateTimeIntervalType actualIntervalType;
 
         /// <summary>
-        ///   The actual minor interval type.
+        /// The actual minor interval type.
         /// </summary>
         private DateTimeIntervalType actualMinorIntervalType;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DateTimeAxis" /> class.
+        /// Initializes a new instance of the <see cref = "DateTimeAxis" /> class.
         /// </summary>
         public DateTimeAxis()
         {
@@ -143,33 +137,25 @@ namespace OxyPlot
             this.Maximum = ToDouble(lastDateTime);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets CalendarWeekRule.
+        /// Gets or sets CalendarWeekRule.
         /// </summary>
         public CalendarWeekRule CalendarWeekRule { get; set; }
 
         /// <summary>
-        ///   Gets or sets FirstDayOfWeek.
+        /// Gets or sets FirstDayOfWeek.
         /// </summary>
         public DayOfWeek FirstDayOfWeek { get; set; }
 
         /// <summary>
-        ///   Gets or sets IntervalType.
+        /// Gets or sets IntervalType.
         /// </summary>
         public DateTimeIntervalType IntervalType { get; set; }
 
         /// <summary>
-        ///   Gets or sets MinorIntervalType.
+        /// Gets or sets MinorIntervalType.
         /// </summary>
         public DateTimeIntervalType MinorIntervalType { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The create data point.
@@ -306,7 +292,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary.
-        ///   e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
+        /// e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
         /// <param name="x">
         /// The coordinate.
@@ -318,10 +304,6 @@ namespace OxyPlot
         {
             return ToDateTime(x);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The update intervals.
@@ -418,7 +400,7 @@ namespace OxyPlot
 
             var goodIntervals = new[]
                 {
-                    1.0 / 24 / 60, 1.0 / 24 / 30, 1.0 / 24 / 12, 1.0 / 24 / 6, 1.0 / 24 / 2, 1.0 / 24, 1.0 / 6, 1.0 / 4, 
+                    1.0 / 24 / 60, 1.0 / 24 / 30, 1.0 / 24 / 12, 1.0 / 24 / 6, 1.0 / 24 / 2, 1.0 / 24, 1.0 / 6, 1.0 / 4,
                     1.0 / 2, 1, 2, 7, 14, 30.5, 30.5 * 2, 30.5 * 3, 30.5 * 4, 30.5 * 6, 365.25
                 };
             double interval = goodIntervals[0];
@@ -632,6 +614,5 @@ namespace OxyPlot
             return this.ActualCulture.Calendar.GetWeekOfYear(date, this.CalendarWeekRule, this.FirstDayOfWeek);
         }
 
-        #endregion
     }
 }

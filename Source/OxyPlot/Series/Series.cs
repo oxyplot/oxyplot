@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Series.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -41,25 +41,19 @@ namespace OxyPlot
     [Serializable]
     public abstract class Series : UIPlotElement, ITrackableSeries
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref="Series" /> class.
+        /// Initializes a new instance of the <see cref="Series" /> class.
         /// </summary>
         protected Series()
         {
             this.IsVisible = true;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the actual culture.
+        /// Gets the actual culture.
         /// </summary>
         /// <remarks>
-        ///   The culture is defined in the parent PlotModel.
+        /// The culture is defined in the parent PlotModel.
         /// </remarks>
         public CultureInfo ActualCulture
         {
@@ -70,35 +64,31 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the background color of the series. The background area is defined by the x and y axes.
+        /// Gets or sets the background color of the series. The background area is defined by the x and y axes.
         /// </summary>
         /// <value> The background color. </value>
         public OxyColor Background { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this series is visible.
+        /// Gets or sets a value indicating whether this series is visible.
         /// </summary>
         public bool IsVisible { get; set; }
 
         /// <summary>
-        ///   Gets or sets the title of the Series.
+        /// Gets or sets the title of the Series.
         /// </summary>
         /// <value> The title. </value>
         public string Title { get; set; }
 
         /// <summary>
-        ///   Gets or sets a format string used for the tracker.
+        /// Gets or sets a format string used for the tracker.
         /// </summary>
         public string TrackerFormatString { get; set; }
 
         /// <summary>
-        ///   Gets or sets the key for the tracker to use on this series.
+        /// Gets or sets the key for the tracker to use on this series.
         /// </summary>
         public string TrackerKey { get; set; }
-
-        #endregion
-
-        #region Public Methods and Operators
 
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
@@ -114,10 +104,10 @@ namespace OxyPlot
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">
-        /// The rendering context. 
+        /// The rendering context.
         /// </param>
         /// <param name="model">
-        /// The model. 
+        /// The model.
         /// </param>
         public abstract void Render(IRenderContext rc, PlotModel model);
 
@@ -125,10 +115,10 @@ namespace OxyPlot
         /// Renders the legend symbol on the specified render context.
         /// </summary>
         /// <param name="rc">
-        /// The rendering context. 
+        /// The rendering context.
         /// </param>
         /// <param name="legendBox">
-        /// The legend rectangle. 
+        /// The legend rectangle.
         /// </param>
         public abstract void RenderLegend(IRenderContext rc, OxyRect legendBox);
 
@@ -157,15 +147,11 @@ namespace OxyPlot
             return null;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Check if this data series requires X/Y axes. (e.g. Pie series do not require axes)
         /// </summary>
         /// <returns>
-        /// True if no axes are required. 
+        /// True if no axes are required.
         /// </returns>
         protected internal abstract bool AreAxesRequired();
 
@@ -181,7 +167,7 @@ namespace OxyPlot
         /// An axis which should be checked if used
         /// </param>
         /// <returns>
-        /// True if the axis is in use. 
+        /// True if the axis is in use.
         /// </returns>
         protected internal abstract bool IsUsing(Axis axis);
 
@@ -189,7 +175,7 @@ namespace OxyPlot
         /// Sets default values (colors, line style etc) from the plotmodel.
         /// </summary>
         /// <param name="model">
-        /// A plot model. 
+        /// A plot model.
         /// </param>
         protected internal abstract void SetDefaultValues(PlotModel model);
 
@@ -213,6 +199,5 @@ namespace OxyPlot
         /// </summary>
         protected internal abstract void UpdateMaxMin();
 
-        #endregion
     }
 }

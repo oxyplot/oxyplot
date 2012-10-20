@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,15 +37,13 @@ namespace OxyPlot
     /// </summary>
     public class LineSeries : DataPointSeries
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The divisor value used to calculate tolerance for line smoothing.
+        /// The divisor value used to calculate tolerance for line smoothing.
         /// </summary>
         private const double ToleranceDivisor = 200;
 
         /// <summary>
-        ///   The smoothed points.
+        /// The smoothed points.
         /// </summary>
         private IList<IDataPoint> smoothedPoints;
 
@@ -54,12 +52,8 @@ namespace OxyPlot
         /// </summary>
         private OxyColor defaultColor;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "LineSeries" /> class.
+        /// Initializes a new instance of the <see cref = "LineSeries" /> class.
         /// </summary>
         public LineSeries()
         {
@@ -104,12 +98,8 @@ namespace OxyPlot
             this.Title = title;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the color of the curve.
+        /// Gets or sets the color of the curve.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
@@ -127,31 +117,31 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the dashes array. 
-        ///   If this is not null it overrides the LineStyle property.
+        /// Gets or sets the dashes array.
+        /// If this is not null it overrides the LineStyle property.
         /// </summary>
         /// <value>The dashes.</value>
         public double[] Dashes { get; set; }
 
         /// <summary>
-        ///   Gets or sets the label format string.
+        /// Gets or sets the label format string.
         /// </summary>
         /// <value> The label format string. </value>
         public string LabelFormatString { get; set; }
 
         /// <summary>
-        ///   Gets or sets the label margins.
+        /// Gets or sets the label margins.
         /// </summary>
         public double LabelMargin { get; set; }
 
         /// <summary>
-        ///   Gets or sets the line join.
+        /// Gets or sets the line join.
         /// </summary>
         /// <value>The line join.</value>
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
-        ///   Gets or sets the line style.
+        /// Gets or sets the line style.
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
@@ -163,38 +153,38 @@ namespace OxyPlot
         public LineLegendPosition LineLegendPosition { get; set; }
 
         /// <summary>
-        ///   Gets or sets the marker fill color.
+        /// Gets or sets the marker fill color.
         /// </summary>
         /// <value>The marker fill.</value>
         public OxyColor MarkerFill { get; set; }
 
         /// <summary>
-        ///   Gets or sets the marker outline polygon.
-        ///   If this property is set, the MarkerType will not be used.
+        /// Gets or sets the marker outline polygon.
+        /// If this property is set, the MarkerType will not be used.
         /// </summary>
         /// <value>The marker outline.</value>
         public ScreenPoint[] MarkerOutline { get; set; }
 
         /// <summary>
-        ///   Gets or sets the size of the marker.
+        /// Gets or sets the size of the marker.
         /// </summary>
         /// <value>The size of the marker.</value>
         public double MarkerSize { get; set; }
 
         /// <summary>
-        ///   Gets or sets the marker stroke.
+        /// Gets or sets the marker stroke.
         /// </summary>
         /// <value>The marker stroke.</value>
         public OxyColor MarkerStroke { get; set; }
 
         /// <summary>
-        ///   Gets or sets the marker stroke thickness.
+        /// Gets or sets the marker stroke thickness.
         /// </summary>
         /// <value>The marker stroke thickness.</value>
         public double MarkerStrokeThickness { get; set; }
 
         /// <summary>
-        ///   Gets or sets the type of the marker.
+        /// Gets or sets the type of the marker.
         /// </summary>
         /// <value>The type of the marker.</value>
         /// <remarks>
@@ -203,24 +193,21 @@ namespace OxyPlot
         public MarkerType MarkerType { get; set; }
 
         /// <summary>
-        ///   Gets or sets the minimum length of the segment.
-        ///   Increasing this number will increase performance, 
-        ///   but make the curve less accurate.
+        /// Gets or sets the minimum length of the segment.
+        /// Increasing this number will increase performance,
+        /// but make the curve less accurate.
         /// </summary>
         /// <value>The minimum length of the segment.</value>
         public double MinimumSegmentLength { get; set; }
 
         /// <summary>
-        ///   Gets or sets the thickness of the curve.
+        /// Gets or sets the thickness of the curve.
         /// </summary>
         /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
 
-        #endregion
-
-        #region Properties
         /// <summary>
-        ///   Gets the smoothed points.
+        /// Gets the smoothed points.
         /// </summary>
         /// <value>The smoothed points.</value>
         protected IList<IDataPoint> SmoothedPoints
@@ -230,10 +217,6 @@ namespace OxyPlot
                 return this.smoothedPoints;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
@@ -326,8 +309,8 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Renders the legend symbol for the line series on the 
-        ///   specified rendering context.
+        /// Renders the legend symbol for the line series on the
+        /// specified rendering context.
         /// </summary>
         /// <param name="rc">
         /// The rendering context.
@@ -352,10 +335,6 @@ namespace OxyPlot
                 this.MarkerStroke,
                 this.MarkerStrokeThickness);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The set default values.
@@ -591,6 +570,5 @@ namespace OxyPlot
             this.smoothedPoints = CanonicalSplineHelper.CreateSpline(this.Points, 0.5, null, false, tolerance);
         }
 
-        #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CohenSutherlandClipping.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -35,56 +35,50 @@ namespace OxyPlot
     public class CohenSutherlandClipping
     {
         // http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland
-        #region Constants and Fields
-
         /// <summary>
-        ///   The bottom code.
+        /// The bottom code.
         /// </summary>
         private const int Bottom = 4; // 0100
 
         /// <summary>
-        ///   The inside code.
+        /// The inside code.
         /// </summary>
         private const int Inside = 0; // 0000
 
         /// <summary>
-        ///   The left code.
+        /// The left code.
         /// </summary>
         private const int Left = 1; // 0001
 
         /// <summary>
-        ///   The right code.
+        /// The right code.
         /// </summary>
         private const int Right = 2; // 0010
 
         /// <summary>
-        ///   The top code.
+        /// The top code.
         /// </summary>
         private const int Top = 8; // 1000
 
         /// <summary>
-        ///   The x maximum.
+        /// The x maximum.
         /// </summary>
         private readonly double xmax;
 
         /// <summary>
-        ///   The x minimum.
+        /// The x minimum.
         /// </summary>
         private readonly double xmin;
 
         /// <summary>
-        ///   The y maximum.
+        /// The y maximum.
         /// </summary>
         private readonly double ymax;
 
         /// <summary>
-        ///   The y minimum.
+        /// The y minimum.
         /// </summary>
         private readonly double ymin;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CohenSutherlandClipping"/> class.
@@ -123,16 +117,12 @@ namespace OxyPlot
             this.ymax = ymax;
         }
 
-        #endregion
-
         // Compute the bit code for a point (x, y) using the clip rectangle
         // bounded diagonally by (xmin, ymin), and (xmax, ymax)
-        #region Public Methods
-
         /// <summary>
         /// Cohen–Sutherland clipping algorithm clips a line from
-        ///   P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with 
-        ///   diagonal from (xmin, ymin) to (xmax, ymax).
+        /// P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with
+        /// diagonal from (xmin, ymin) to (xmax, ymax).
         /// </summary>
         /// <param name="x0">X coordinate of the first point.</param>
         /// <param name="y0">Y coordinate of the first point.</param>
@@ -218,8 +208,8 @@ namespace OxyPlot
 
         /// <summary>
         /// Cohen–Sutherland clipping algorithm clips a line from
-        ///   P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with 
-        ///   diagonal from (xmin, ymin) to (xmax, ymax).
+        /// P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with
+        /// diagonal from (xmin, ymin) to (xmax, ymax).
         /// </summary>
         /// <param name="s0">
         /// The s 0.
@@ -241,7 +231,7 @@ namespace OxyPlot
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// <returns>
-        ///   <c>true</c> if the specified point is inside; otherwise, <c>false</c>.
+        ///  <c>true</c> if the specified point is inside; otherwise, <c>false</c>.
         /// </returns>
         public bool IsInside(double x, double y)
         {
@@ -253,16 +243,12 @@ namespace OxyPlot
         /// </summary>
         /// <param name="s">The point.</param>
         /// <returns>
-        ///   <c>true</c> if the specified point is inside; otherwise, <c>false</c>.
+        ///  <c>true</c> if the specified point is inside; otherwise, <c>false</c>.
         /// </returns>
         public bool IsInside(ScreenPoint s)
         {
             return this.ComputeOutCode(s.X, s.Y) == Inside;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Computes the out code.
@@ -305,6 +291,5 @@ namespace OxyPlot
             return code;
         }
 
-        #endregion
     }
 }

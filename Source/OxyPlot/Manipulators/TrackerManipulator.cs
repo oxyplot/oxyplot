@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TrackerManipulator.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -34,16 +34,10 @@ namespace OxyPlot
     /// </summary>
     public class TrackerManipulator : ManipulatorBase
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The current series.
+        /// The current series.
         /// </summary>
         private ITrackableSeries currentSeries;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackerManipulator"/> class.
@@ -58,23 +52,15 @@ namespace OxyPlot
             this.PointsOnly = false;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether to show tracker on points only (not interpolating).
+        /// Gets or sets a value indicating whether to show tracker on points only (not interpolating).
         /// </summary>
         public bool PointsOnly { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to snap to the nearest point.
+        /// Gets or sets a value indicating whether to snap to the nearest point.
         /// </summary>
         public bool Snap { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Occurs when a manipulation is complete.
@@ -146,10 +132,6 @@ namespace OxyPlot
             this.Delta(e);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Gets the nearest tracker hit.
         /// </summary>
@@ -198,6 +180,5 @@ namespace OxyPlot
             return null;
         }
 
-        #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Sun.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -120,14 +120,14 @@ namespace DateTimeDemo
 
             //    9. adjust back to UTC
             double UT = T - lngHour;
-            
+
             //    10. convert UT value to local time zone of latitude/longitude
 
-            var utctime = date.Date.AddHours(UT);            
+            var utctime = date.Date.AddHours(UT);
             var localtime = TimeZoneInfo.ConvertTimeFromUtc(utctime, tzi);
             UT = (localtime-date).TotalHours;
             UT = FixValue(UT, 0, 24);
-            return date.AddHours(UT);            
+            return date.AddHours(UT);
         }
     }
 
@@ -148,7 +148,7 @@ namespace DateTimeDemo
           civil        = 96 degrees
           nautical     = 102 degrees
           astronomical = 108 degrees
-	
+
         NOTE: longitude is positive for East and negative for West
             NOTE: the algorithm assumes the use of a calculator with the
             trig functions in "degree" (rather than "radian") mode. Most
@@ -157,7 +157,6 @@ namespace DateTimeDemo
             the equation RA = atan(0.91764 * tan(L)) would be coded as RA
             = (180/pi)*atan(0.91764 * tan((pi/180)*L)) to give a degree
             answer with a degree input for L.
-
 
     1. first calculate the day of the year
 
@@ -169,23 +168,23 @@ namespace DateTimeDemo
     2. convert the longitude to hour value and calculate an approximate time
 
         lngHour = longitude / 15
-	
+
         if rising time is desired:
           t = N + ((6 - lngHour) / 24)
         if setting time is desired:
           t = N + ((18 - lngHour) / 24)
 
     3. calculate the Sun's mean anomaly
-	
+
         M = (0.9856 * t) - 3.289
 
     4. calculate the Sun's true longitude
-	
+
         L = M + (1.916 * sin(M)) + (0.020 * sin(2 * M)) + 282.634
         NOTE: L potentially needs to be adjusted into the range [0,360) by adding/subtracting 360
 
     5a. calculate the Sun's right ascension
-	
+
         RA = atan(0.91764 * tan(L))
         NOTE: RA potentially needs to be adjusted into the range [0,360) by adding/subtracting 360
 
@@ -205,34 +204,34 @@ namespace DateTimeDemo
         cosDec = cos(asin(sinDec))
 
     7a. calculate the Sun's local hour angle
-	
+
         cosH = (cos(zenith) - (sinDec * sin(latitude))) / (cosDec * cos(latitude))
-	
-        if (cosH >  1) 
+
+        if (cosH >  1)
           the sun never rises on this location (on the specified date)
         if (cosH < -1)
           the sun never sets on this location (on the specified date)
 
     7b. finish calculating H and convert into hours
-	
+
         if if rising time is desired:
           H = 360 - acos(cosH)
         if setting time is desired:
           H = acos(cosH)
-	
+
         H = H / 15
 
     8. calculate local mean time of rising/setting
-	
+
         T = H + RA - (0.06571 * t) - 6.622
 
     9. adjust back to UTC
-	
+
         UT = T - lngHour
         NOTE: UT potentially needs to be adjusted into the range [0,24) by adding/subtracting 24
 
     10. convert UT value to local time zone of latitude/longitude
-	
+
         localT = UT + localOffset
 
          */

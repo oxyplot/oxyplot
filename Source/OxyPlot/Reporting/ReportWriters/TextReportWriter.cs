@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TextReportWriter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -40,31 +40,25 @@ namespace OxyPlot.Reporting
     /// </remarks>
     public class TextReportWriter : StreamWriter, IReportWriter
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The table cell separator.
+        /// The table cell separator.
         /// </summary>
         private const string TableCellSeparator = " | ";
 
         /// <summary>
-        ///   The table row end.
+        /// The table row end.
         /// </summary>
         private const string TableRowEnd = " |";
 
         /// <summary>
-        ///   The table row start.
+        /// The table row start.
         /// </summary>
         private const string TableRowStart = "| ";
 
         /// <summary>
-        ///   The table counter.
+        /// The table counter.
         /// </summary>
         private int tableCounter;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextReportWriter"/> class.
@@ -78,7 +72,7 @@ namespace OxyPlot.Reporting
             this.MaxLineLength = 60;
         }
 
-#if !PCL 
+#if !PCL
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextReportWriter"/> class.
@@ -94,18 +88,10 @@ namespace OxyPlot.Reporting
 
 #endif
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets MaxLineLength.
+        /// Gets or sets MaxLineLength.
         /// </summary>
         public int MaxLineLength { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The write drawing.
@@ -244,10 +230,6 @@ namespace OxyPlot.Reporting
             this.WriteLine();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The get cell text.
         /// </summary>
@@ -319,6 +301,5 @@ namespace OxyPlot.Reporting
             return null;
         }
 
-        #endregion
     }
 }

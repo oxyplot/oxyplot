@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineSegmentSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -86,7 +86,7 @@ namespace ExampleLibrary
 
             var screenPoints = Points.Select(this.Transform).ToList();
             var verticalLines = new List<ScreenPoint>();
-            
+
             for (int i = 0; i < screenPoints.Count; i += 2)
             {
                 if (screenPoints[i].DistanceToSquared(screenPoints[i + 1]) < this.StrokeThickness)
@@ -104,7 +104,7 @@ namespace ExampleLibrary
 
             rc.DrawClippedLineSegments(screenPoints, clippingRect, this.ActualColor, this.StrokeThickness, this.LineStyle, this.LineJoin, false);
             rc.DrawClippedLineSegments(verticalLines, clippingRect, this.ActualColor, this.StrokeThickness / 3, LineStyle.Dash, this.LineJoin, false);
-            
+
             rc.DrawMarkers(screenPoints, clippingRect, this.MarkerType, null, this.MarkerSize, this.MarkerFill, this.MarkerStroke, this.MarkerStrokeThickness);
         }
 

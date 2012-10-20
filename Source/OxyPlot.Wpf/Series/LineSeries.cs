@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,8 +37,6 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class LineSeries : DataPointSeries
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The dashes property.
         /// </summary>
@@ -62,9 +60,9 @@ namespace OxyPlot.Wpf
         /// The line join property.
         /// </summary>
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
-            "LineJoin", 
-            typeof(OxyPenLineJoin), 
-            typeof(LineSeries), 
+            "LineJoin",
+            typeof(OxyPenLineJoin),
+            typeof(LineSeries),
             new PropertyMetadata(OxyPenLineJoin.Bevel, AppearanceChanged));
 
         /// <summary>
@@ -72,9 +70,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LineLegendPositionProperty =
             DependencyProperty.Register(
-                "LineLegendPosition", 
-                typeof(LineLegendPosition), 
-                typeof(LineSeries), 
+                "LineLegendPosition",
+                typeof(LineLegendPosition),
+                typeof(LineSeries),
                 new UIPropertyMetadata(LineLegendPosition.None));
 
         /// <summary>
@@ -112,18 +110,18 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeThicknessProperty =
             DependencyProperty.Register(
-                "MarkerStrokeThickness", 
-                typeof(double), 
-                typeof(LineSeries), 
+                "MarkerStrokeThickness",
+                typeof(double),
+                typeof(LineSeries),
                 new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
         /// The marker type property.
         /// </summary>
         public static readonly DependencyProperty MarkerTypeProperty = DependencyProperty.Register(
-            "MarkerType", 
-            typeof(MarkerType), 
-            typeof(LineSeries), 
+            "MarkerType",
+            typeof(MarkerType),
+            typeof(LineSeries),
             new PropertyMetadata(MarkerType.None, AppearanceChanged));
 
         /// <summary>
@@ -139,10 +137,6 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
                 "StrokeThickness", typeof(double), typeof(LineSeries), new PropertyMetadata(2.0, AppearanceChanged));
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes static members of the <see cref="LineSeries"/> class.
@@ -160,10 +154,6 @@ namespace OxyPlot.Wpf
         {
             this.InternalSeries = new OxyPlot.LineSeries();
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets Dashes.
@@ -185,7 +175,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the label format string.
         /// </summary>
         /// <value>
-        /// The label format string. 
+        /// The label format string.
         /// </value>
         public string LabelFormatString
         {
@@ -204,7 +194,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the label margin.
         /// </summary>
         /// <value>
-        /// The label margin. 
+        /// The label margin.
         /// </value>
         public double LabelMargin
         {
@@ -395,15 +385,11 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// The create model.
         /// </summary>
         /// <returns>
-        /// The series. 
+        /// The series.
         /// </returns>
         public override OxyPlot.Series CreateModel()
         {
@@ -411,15 +397,11 @@ namespace OxyPlot.Wpf
             return this.InternalSeries;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The synchronize properties.
         /// </summary>
         /// <param name="series">
-        /// The series. 
+        /// The series.
         /// </param>
         protected override void SynchronizeProperties(OxyPlot.Series series)
         {
@@ -442,6 +424,5 @@ namespace OxyPlot.Wpf
             s.LineLegendPosition = this.LineLegendPosition;
         }
 
-        #endregion
     }
 }

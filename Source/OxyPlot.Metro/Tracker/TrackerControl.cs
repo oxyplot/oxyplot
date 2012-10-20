@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TrackerControl.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -46,9 +46,9 @@ namespace OxyPlot.Metro
         /// </summary>
         public static readonly DependencyProperty HorizontalLineVisibilityProperty =
             DependencyProperty.Register(
-                "HorizontalLineVisibility", 
-                typeof(Visibility), 
-                typeof(TrackerControl), 
+                "HorizontalLineVisibility",
+                typeof(Visibility),
+                typeof(TrackerControl),
                 new PropertyMetadata(Visibility.Visible));
 
         /// <summary>
@@ -56,9 +56,9 @@ namespace OxyPlot.Metro
         /// </summary>
         public static readonly DependencyProperty VerticalLineVisibilityProperty =
             DependencyProperty.Register(
-                "VerticalLineVisibility", 
-                typeof(Visibility), 
-                typeof(TrackerControl), 
+                "VerticalLineVisibility",
+                typeof(Visibility),
+                typeof(TrackerControl),
                 new PropertyMetadata(Visibility.Visible));
 
         /// <summary>
@@ -124,9 +124,9 @@ namespace OxyPlot.Metro
         /// The position property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            "Position", 
-            typeof(ScreenPoint), 
-            typeof(TrackerControl), 
+            "Position",
+            typeof(ScreenPoint),
+            typeof(TrackerControl),
             new PropertyMetadata(new ScreenPoint(), PositionChanged));
 
         /// <summary>
@@ -415,7 +415,7 @@ namespace OxyPlot.Metro
             {
                 throw new InvalidOperationException(
                     string.Format(
-                        "The TrackerControl template must contain a content container with name +'{0}'", 
+                        "The TrackerControl template must contain a content container with name +'{0}'",
                         PartContentcontainer));
             }
 
@@ -561,7 +561,7 @@ namespace OxyPlot.Metro
 
             this.contentContainer.RenderTransform = new TranslateTransform
                 {
-                   X = dx * contentSize.Width, Y = dy * contentSize.Height 
+                   X = dx * contentSize.Width, Y = dy * contentSize.Height
                 };
 
 #if WPF
@@ -634,9 +634,9 @@ namespace OxyPlot.Metro
             var rect = new Rect(
                 ha == HorizontalAlignment.Left ? m : 0, va == VerticalAlignment.Top ? m : 0, width, height);
             margin = new Thickness() {
-                Left=ha == HorizontalAlignment.Left ? m : 0, 
-                Top=va == VerticalAlignment.Top ? m : 0, 
-                Right=ha == HorizontalAlignment.Right ? m : 0, 
+                Left=ha == HorizontalAlignment.Left ? m : 0,
+                Top=va == VerticalAlignment.Top ? m : 0,
+                Right=ha == HorizontalAlignment.Right ? m : 0,
                 Bottom=va == VerticalAlignment.Bottom ? m : 0};
             return new RectangleGeometry { Rect = rect/*, RadiusX = this.CornerRadius, RadiusY = this.CornerRadius*/ };
         }
@@ -679,7 +679,7 @@ namespace OxyPlot.Metro
                 margin = new Thickness() { Bottom = m };
                 points = new[]
                     {
-                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y1), new Point(x2 + m / 2, y1), 
+                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y1), new Point(x2 + m / 2, y1),
                         new Point(x2, y1 + m), new Point(x2 - m / 2, y1), new Point(x0, y1)
                     };
             }
@@ -694,7 +694,7 @@ namespace OxyPlot.Metro
                 margin = new Thickness() { Top = m };
                 points = new[]
                     {
-                        new Point(x0, y0), new Point(x2 - m / 2, y0), new Point(x2, 0), new Point(x2 + m / 2, y0), 
+                        new Point(x0, y0), new Point(x2 - m / 2, y0), new Point(x2, 0), new Point(x2 + m / 2, y0),
                         new Point(x1, y0), new Point(x1, y1), new Point(x0, y1)
                     };
             }
@@ -709,7 +709,7 @@ namespace OxyPlot.Metro
                 margin = new Thickness() {Left=m};
                 points = new[]
                     {
-                        new Point(0, y2), new Point(x0, y2 - m / 2), new Point(x0, y0), new Point(x1, y0), 
+                        new Point(0, y2), new Point(x0, y2 - m / 2), new Point(x0, y0), new Point(x1, y0),
                         new Point(x1, y1), new Point(x0, y1), new Point(x0, y2 + m / 2)
                     };
             }
@@ -724,7 +724,7 @@ namespace OxyPlot.Metro
                 margin = new Thickness(){Right=m};
                 points = new[]
                     {
-                        new Point(x1 + m, y2), new Point(x1, y2 + m / 2), new Point(x1, y1), new Point(x0, y1), 
+                        new Point(x1 + m, y2), new Point(x1, y2 + m / 2), new Point(x1, y1), new Point(x0, y1),
                         new Point(x0, y0), new Point(x1, y0), new Point(x1, y2 - m / 2)
                     };
             }
@@ -739,7 +739,7 @@ namespace OxyPlot.Metro
                 margin = new Thickness() { Left = m, Top = m };
                 points = new[]
                     {
-                        new Point(0, 0), new Point(m * 2, y0), new Point(x1, y0), new Point(x1, y1), new Point(x0, y1), 
+                        new Point(0, 0), new Point(m * 2, y0), new Point(x1, y0), new Point(x1, y1), new Point(x0, y1),
                         new Point(x0, m * 2)
                     };
             }
@@ -754,7 +754,7 @@ namespace OxyPlot.Metro
                 margin = new Thickness(){Top=m,Right=m};
                 points = new[]
                     {
-                        new Point(x1 + m, 0), new Point(x1, y0 + m), new Point(x1, y1), new Point(x0, y1), 
+                        new Point(x1 + m, 0), new Point(x1, y0 + m), new Point(x1, y1), new Point(x0, y1),
                         new Point(x0, y0), new Point(x1 - m, y0)
                     };
             }
@@ -769,7 +769,7 @@ namespace OxyPlot.Metro
                 margin = new Thickness(){Left=m,Bottom=m};
                 points = new[]
                     {
-                        new Point(0, y1 + m), new Point(x0, y1 - m), new Point(x0, y0), new Point(x1, y0), 
+                        new Point(0, y1 + m), new Point(x0, y1 - m), new Point(x0, y0), new Point(x1, y0),
                         new Point(x1, y1), new Point(x0 + m, y1)
                     };
             }
@@ -784,7 +784,7 @@ namespace OxyPlot.Metro
                 margin = new Thickness(){Right=m,Bottom=m};
                 points = new[]
                     {
-                        new Point(x1 + m, y1 + m), new Point(x1 - m, y1), new Point(x0, y1), new Point(x0, y0), 
+                        new Point(x1 + m, y1 + m), new Point(x1 - m, y1), new Point(x0, y1), new Point(x0, y0),
                         new Point(x1, y0), new Point(x1, y1 - m)
                     };
             }

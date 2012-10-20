@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TimeSpanAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,16 +37,14 @@ namespace OxyPlot
     /// </summary>
     /// <remarks>
     /// The values should be in seconds.
-    ///   The StringFormat value can be used to force formatting of the axis values
-    ///   "h:mm" shows hours and minutes
-    ///   "m:ss" shows minutes and seconds
+    /// The StringFormat value can be used to force formatting of the axis values
+    /// "h:mm" shows hours and minutes
+    /// "m:ss" shows minutes and seconds
     /// </remarks>
     public class TimeSpanAxis : LinearAxis
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TimeSpanAxis" /> class.
+        /// Initializes a new instance of the <see cref = "TimeSpanAxis" /> class.
         /// </summary>
         public TimeSpanAxis()
         {
@@ -98,10 +96,6 @@ namespace OxyPlot
         {
             this.StringFormat = format;
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Converts a time span to a double.
@@ -167,10 +161,6 @@ namespace OxyPlot
             return TimeSpan.FromSeconds(x);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Calculates the actual interval.
         /// </summary>
@@ -204,6 +194,5 @@ namespace OxyPlot
             }
         }
 
-        #endregion
     }
 }

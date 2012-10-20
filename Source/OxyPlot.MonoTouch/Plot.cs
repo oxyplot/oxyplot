@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -41,39 +41,33 @@ namespace OxyPlot.MonoTouch
     [Serializable]
     public class Plot : IPlotControl
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The is model invalidated.
+        /// The is model invalidated.
         /// </summary>
         private bool isModelInvalidated;
 
         /// <summary>
-        ///   The model.
+        /// The model.
         /// </summary>
         private PlotModel model;
 
         /// <summary>
-        ///   The mouse manipulator.
+        /// The mouse manipulator.
         /// </summary>
         private ManipulatorBase mouseManipulator;
 
         /// <summary>
-        ///   The update data.
+        /// The update data.
         /// </summary>
         private bool updateData = true;
 
         /// <summary>
-        ///   The zoom rectangle.
+        /// The zoom rectangle.
         /// </summary>
         private Rectangle zoomRectangle;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "Plot" /> class.
+        /// Initializes a new instance of the <see cref = "Plot" /> class.
         /// </summary>
         public Plot()
         {
@@ -81,12 +75,8 @@ namespace OxyPlot.MonoTouch
             this.Model = new PlotModel();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the actual model.
+        /// Gets the actual model.
         /// </summary>
         /// <value>The actual model.</value>
         public PlotModel ActualModel
@@ -98,7 +88,7 @@ namespace OxyPlot.MonoTouch
         }
 
         /// <summary>
-        ///   Gets or sets Model.
+        /// Gets or sets Model.
         /// </summary>
         [Browsable(false)]
         [DefaultValue(null)]
@@ -115,10 +105,6 @@ namespace OxyPlot.MonoTouch
                 this.InvalidatePlot(true);
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Get the axes from a point.
@@ -344,10 +330,6 @@ namespace OxyPlot.MonoTouch
             axis.ZoomAt(factor, x);
             this.InvalidatePlot(false);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The on key down.
@@ -598,6 +580,5 @@ namespace OxyPlot.MonoTouch
             }
         }
 
-        #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CategorizedSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,16 +36,14 @@ namespace OxyPlot
     /// </summary>
     public abstract class CategorizedSeries : XYAxisSeries
     {
-        #region Methods
-
         /// <summary>
         /// Gets or sets the width/height of the columns/bars (as a fraction of the available space).
         /// </summary>
         /// <returns>
-        /// The fractional width. 
+        /// The fractional width.
         /// </returns>
         /// <value>
-        /// The width of the bars. 
+        /// The width of the bars.
         /// </value>
         /// <remarks>
         /// The available space will be determined by the GapWidth of the CategoryAxis used by this series.
@@ -56,7 +54,7 @@ namespace OxyPlot
         /// Gets the items of this series.
         /// </summary>
         /// <returns>
-        /// The items. 
+        /// The items.
         /// </returns>
         protected internal abstract IList<CategorizedItem> GetItems();
 
@@ -64,7 +62,7 @@ namespace OxyPlot
         /// Gets the actual bar width/height of the items in this series.
         /// </summary>
         /// <returns>
-        /// The width or height. 
+        /// The width or height.
         /// </returns>
         /// <remarks>
         /// The actual width is also influenced by the GapWidth of the CategoryAxis used by this series.
@@ -75,10 +73,9 @@ namespace OxyPlot
         /// Gets the category axis.
         /// </summary>
         /// <returns>
-        /// The category axis. 
+        /// The category axis.
         /// </returns>
         protected abstract CategoryAxis GetCategoryAxis();
 
-        #endregion
     }
 }

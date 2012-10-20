@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ReportItem.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,33 +38,23 @@ namespace OxyPlot.Reporting
     /// </summary>
     public abstract class ReportItem
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ReportItem" /> class.
+        /// Initializes a new instance of the <see cref = "ReportItem" /> class.
         /// </summary>
         protected ReportItem()
         {
             this.Children = new Collection<ReportItem>();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the children.
+        /// Gets the children.
         /// </summary>
         public Collection<ReportItem> Children { get; private set; }
 
         /// <summary>
-        ///   Gets the report.
+        /// Gets the report.
         /// </summary>
         public Report Report { get; internal set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Adds a report item to the report.
@@ -242,10 +232,6 @@ namespace OxyPlot.Reporting
         {
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The update figure numbers.
         /// </summary>
@@ -296,17 +282,13 @@ namespace OxyPlot.Reporting
             }
         }
 
-        #endregion
-
         /// <summary>
         /// The figure counter.
         /// </summary>
         private class FigureCounter
         {
-            #region Constructors and Destructors
-
             /// <summary>
-            ///   Initializes a new instance of the <see cref = "FigureCounter" /> class.
+            /// Initializes a new instance of the <see cref = "FigureCounter" /> class.
             /// </summary>
             public FigureCounter()
             {
@@ -314,21 +296,16 @@ namespace OxyPlot.Reporting
                 this.TableNumber = 1;
             }
 
-            #endregion
-
-            #region Public Properties
-
             /// <summary>
-            ///   Gets or sets FigureNumber.
+            /// Gets or sets FigureNumber.
             /// </summary>
             public int FigureNumber { get; set; }
 
             /// <summary>
-            ///   Gets or sets TableNumber.
+            /// Gets or sets TableNumber.
             /// </summary>
             public int TableNumber { get; set; }
 
-            #endregion
         }
     }
 }

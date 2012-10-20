@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsTableField.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,17 +38,17 @@ namespace OxyPlot.Reporting
     public enum Alignment
     {
         /// <summary>
-        ///   The left.
+        /// The left.
         /// </summary>
-        Left, 
+        Left,
 
         /// <summary>
-        ///   The right.
+        /// The right.
         /// </summary>
-        Right, 
+        Right,
 
         /// <summary>
-        ///   The center.
+        /// The center.
         /// </summary>
         Center
     }
@@ -58,8 +58,6 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class ItemsTableField
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemsTableField"/> class.
         /// </summary>
@@ -84,38 +82,30 @@ namespace OxyPlot.Reporting
             this.Alignment = alignment;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets Alignment.
+        /// Gets or sets Alignment.
         /// </summary>
         public Alignment Alignment { get; set; }
 
         /// <summary>
-        ///   Gets or sets Header.
+        /// Gets or sets Header.
         /// </summary>
         public string Header { get; set; }
 
         /// <summary>
-        ///   Gets or sets Path.
+        /// Gets or sets Path.
         /// </summary>
         public string Path { get; set; }
 
         /// <summary>
-        ///   Gets or sets StringFormat.
+        /// Gets or sets StringFormat.
         /// </summary>
         public string StringFormat { get; set; }
 
         /// <summary>
-        ///   Gets or sets Width.
+        /// Gets or sets Width.
         /// </summary>
         public double Width { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets the text.
@@ -142,6 +132,5 @@ namespace OxyPlot.Reporting
             return o != null ? o.ToString() : null;
         }
 
-        #endregion
     }
 }

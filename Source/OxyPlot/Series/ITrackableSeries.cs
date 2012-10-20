@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ITrackableSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -35,26 +35,20 @@ namespace OxyPlot
     /// <remarks>
     /// The plot control will show a tracker with the current value when moving the mouse over the data.
     /// </remarks>
-    public interface ITrackableSeries 
+    public interface ITrackableSeries
     {
-        #region Public Properties
-
         /// <summary>
-        ///   Gets a format string used for the tracker.
+        /// Gets a format string used for the tracker.
         /// </summary>
         /// <remarks>
-        ///   The fields that can be used in the format string depends on the series.
+        /// The fields that can be used in the format string depends on the series.
         /// </remarks>
         string TrackerFormatString { get; }
 
         /// <summary>
-        ///   Gets the tracker key.
+        /// Gets the tracker key.
         /// </summary>
         string TrackerKey { get; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
@@ -70,6 +64,5 @@ namespace OxyPlot
         /// </returns>
         TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
 
-        #endregion
     }
 }

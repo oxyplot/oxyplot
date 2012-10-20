@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ErrorColumnSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,8 +38,6 @@ namespace OxyPlot
     /// </summary>
     public class ErrorColumnSeries : ColumnSeries
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ErrorColumnSeries"/> class.
         /// </summary>
@@ -50,15 +48,11 @@ namespace OxyPlot
             this.TrackerFormatString = "{0}, {1}: {2}, Error: {Error}";
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets the stroke thickness of the error line.
         /// </summary>
         /// <value>
-        /// The stroke thickness of the error line. 
+        /// The stroke thickness of the error line.
         /// </value>
         public double ErrorStrokeThickness { get; set; }
 
@@ -66,13 +60,9 @@ namespace OxyPlot
         /// Gets or sets the width of the error end lines.
         /// </summary>
         /// <value>
-        /// The width of the error end lines. 
+        /// The width of the error end lines.
         /// </value>
         public double ErrorWidth { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Updates the maximum/minimum value on the value axis from the bar values.
@@ -160,25 +150,25 @@ namespace OxyPlot
         /// Renders the bar/column item.
         /// </summary>
         /// <param name="rc">
-        /// The render context. 
+        /// The render context.
         /// </param>
         /// <param name="clippingRect">
-        /// The clipping rectangle. 
+        /// The clipping rectangle.
         /// </param>
         /// <param name="topValue">
-        /// The end value of the bar. 
+        /// The end value of the bar.
         /// </param>
         /// <param name="categoryValue">
-        /// The category value. 
+        /// The category value.
         /// </param>
         /// <param name="actualBarWidth">
-        /// The actual width of the bar. 
+        /// The actual width of the bar.
         /// </param>
         /// <param name="item">
-        /// The item. 
+        /// The item.
         /// </param>
         /// <param name="rect">
-        /// The rectangle of the bar. 
+        /// The rectangle of the bar.
         /// </param>
         protected override void RenderItem(
             IRenderContext rc,
@@ -246,6 +236,5 @@ namespace OxyPlot
             }
         }
 
-        #endregion
     }
 }

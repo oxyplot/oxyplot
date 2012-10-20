@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CategoryAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -42,8 +42,6 @@ namespace OxyPlot
     /// </remarks>
     public class CategoryAxis : LinearAxis
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
         /// </summary>
@@ -74,10 +72,10 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
         /// </summary>
         /// <param name="title">
-        /// The title. 
+        /// The title.
         /// </param>
         /// <param name="categories">
-        /// The categories. 
+        /// The categories.
         /// </param>
         public CategoryAxis(string title, params string[] categories)
             : this()
@@ -91,10 +89,6 @@ namespace OxyPlot
                 }
             }
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets the gap width.
@@ -113,7 +107,7 @@ namespace OxyPlot
         /// Gets or sets the items source (used to update the Labels collection).
         /// </summary>
         /// <value>
-        /// The items source. 
+        /// The items source.
         /// </value>
         public IEnumerable ItemsSource { get; set; }
 
@@ -126,10 +120,6 @@ namespace OxyPlot
         /// Gets or sets the labels collection.
         /// </summary>
         public IList<string> Labels { get; set; }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the current offset of the bars (not used for stacked bar series).
@@ -176,18 +166,14 @@ namespace OxyPlot
         /// </summary>
         internal double[] TotalWidthPerCategory { get; set; }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Fills the specified array.
         /// </summary>
         /// <param name="array">
-        /// The array. 
+        /// The array.
         /// </param>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         public static void Fill(double[] array, double value)
         {
@@ -201,10 +187,10 @@ namespace OxyPlot
         /// Fills the specified array.
         /// </summary>
         /// <param name="array">
-        /// The array. 
+        /// The array.
         /// </param>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         public static void Fill(double[,] array, double value)
         {
@@ -221,10 +207,10 @@ namespace OxyPlot
         /// Formats the value to be used on the axis.
         /// </summary>
         /// <param name="x">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <returns>
-        /// The formatted value. 
+        /// The formatted value.
         /// </returns>
         public override string FormatValue(double x)
         {
@@ -241,10 +227,10 @@ namespace OxyPlot
         /// Formats the value to be used by the tracker.
         /// </summary>
         /// <param name="x">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <returns>
-        /// The formatted value. 
+        /// The formatted value.
         /// </returns>
         public override string FormatValueForTracker(double x)
         {
@@ -255,13 +241,13 @@ namespace OxyPlot
         /// Gets the category value.
         /// </summary>
         /// <param name="categoryIndex">
-        /// Index of the category. 
+        /// Index of the category.
         /// </param>
         /// <param name="stackIndex">
-        /// Index of the stack. 
+        /// Index of the stack.
         /// </param>
         /// <param name="actualBarWidth">
-        /// Actual width of the bar. 
+        /// Actual width of the bar.
         /// </param>
         /// <returns>
         /// The get category value.
@@ -277,7 +263,7 @@ namespace OxyPlot
         /// Gets the category value.
         /// </summary>
         /// <param name="categoryIndex">
-        /// Index of the category. 
+        /// Index of the category.
         /// </param>
         /// <returns>
         /// The get category value.
@@ -291,13 +277,13 @@ namespace OxyPlot
         /// Gets the coordinates used to draw ticks and tick labels (numbers or category names).
         /// </summary>
         /// <param name="majorLabelValues">
-        /// The major label values. 
+        /// The major label values.
         /// </param>
         /// <param name="majorTickValues">
-        /// The major tick values. 
+        /// The major tick values.
         /// </param>
         /// <param name="minorTickValues">
-        /// The minor tick values. 
+        /// The minor tick values.
         /// </param>
         public override void GetTickValues(
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
@@ -324,19 +310,15 @@ namespace OxyPlot
         /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary. e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
         /// <param name="x">
-        /// The coordinate. 
+        /// The coordinate.
         /// </param>
         /// <returns>
-        /// The value. 
+        /// The value.
         /// </returns>
         public override object GetValue(double x)
         {
             return this.FormatValue(x);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Updates the actual maximum and minimum values. If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used. If Maximum or Minimum have been set, these values will be used. Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
@@ -364,7 +346,7 @@ namespace OxyPlot
         /// Updates the axis with information from the plot series.
         /// </summary>
         /// <param name="series">
-        /// The series collection. 
+        /// The series collection.
         /// </param>
         /// <remarks>
         /// This is used by the category axis that need to know the number of series using the axis.
@@ -481,7 +463,7 @@ namespace OxyPlot
         /// Creates Labels list if no labels were set
         /// </summary>
         /// <param name="series">
-        /// The list of series which are rendered 
+        /// The list of series which are rendered
         /// </param>
         internal void UpdateLabels(IEnumerable<Series> series)
         {
@@ -513,6 +495,5 @@ namespace OxyPlot
             }
         }
 
-        #endregion
     }
 }

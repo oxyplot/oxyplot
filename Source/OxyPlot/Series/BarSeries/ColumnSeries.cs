@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColumnSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,8 +36,6 @@ namespace OxyPlot
     /// </summary>
     public class ColumnSeries : BarSeriesBase<ColumnItem>
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ColumnSeries"/> class.
         /// </summary>
@@ -46,30 +44,22 @@ namespace OxyPlot
             this.ColumnWidth = 1;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets the width of the column.
         /// </summary>
         /// <value>
-        /// The width of the column. 
+        /// The width of the column.
         /// </value>
         public double ColumnWidth { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Gets or sets the width/height of the columns/bars (as a fraction of the available space).
         /// </summary>
         /// <returns>
-        /// The fractional width. 
+        /// The fractional width.
         /// </returns>
         /// <value>
-        /// The width of the bars. 
+        /// The width of the bars.
         /// </value>
         /// <remarks>
         /// The available space will be determined by the GapWidth of the CategoryAxis used by this series.
@@ -83,7 +73,7 @@ namespace OxyPlot
         /// Gets the actual width/height of the items of this series.
         /// </summary>
         /// <returns>
-        /// The width or height. 
+        /// The width or height.
         /// </returns>
         /// <remarks>
         /// The actual width is also influenced by the GapWidth of the CategoryAxis used by this series.
@@ -98,7 +88,7 @@ namespace OxyPlot
         /// Gets the category axis.
         /// </summary>
         /// <returns>
-        /// The category axis. 
+        /// The category axis.
         /// </returns>
         protected override CategoryAxis GetCategoryAxis()
         {
@@ -115,19 +105,19 @@ namespace OxyPlot
         /// Gets the rectangle for the specified values.
         /// </summary>
         /// <param name="baseValue">
-        /// The base value of the bar 
+        /// The base value of the bar
         /// </param>
         /// <param name="topValue">
-        /// The top value of the bar 
+        /// The top value of the bar
         /// </param>
         /// <param name="beginValue">
-        /// The begin value of the bar 
+        /// The begin value of the bar
         /// </param>
         /// <param name="endValue">
-        /// The end value of the bar 
+        /// The end value of the bar
         /// </param>
         /// <returns>
-        /// The rectangle. 
+        /// The rectangle.
         /// </returns>
         protected override OxyRect GetRectangle(double baseValue, double topValue, double beginValue, double endValue)
         {
@@ -138,7 +128,7 @@ namespace OxyPlot
         /// Gets the value axis.
         /// </summary>
         /// <returns>
-        /// The value axis. 
+        /// The value axis.
         /// </returns>
         protected override Axis GetValueAxis()
         {
@@ -149,19 +139,19 @@ namespace OxyPlot
         /// Draws the label.
         /// </summary>
         /// <param name="rc">
-        /// The render context. 
+        /// The render context.
         /// </param>
         /// <param name="clippingRect">
-        /// The clipping rect. 
+        /// The clipping rect.
         /// </param>
         /// <param name="rect">
-        /// The rect. 
+        /// The rect.
         /// </param>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <param name="i">
-        /// The i. 
+        /// The i.
         /// </param>
         protected override void RenderLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int i)
         {
@@ -190,18 +180,17 @@ namespace OxyPlot
             }
 
             rc.DrawClippedText(
-                clippingRect, 
-                pt, 
-                s, 
-                this.ActualTextColor, 
-                this.ActualFont, 
-                this.ActualFontSize, 
-                this.ActualFontWeight, 
-                0, 
-                HorizontalTextAlign.Center, 
+                clippingRect,
+                pt,
+                s,
+                this.ActualTextColor,
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
+                0,
+                HorizontalTextAlign.Center,
                 va);
         }
 
-        #endregion
     }
 }

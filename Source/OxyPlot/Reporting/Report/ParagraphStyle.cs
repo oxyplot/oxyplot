@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ParagraphStyle.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -34,84 +34,78 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class ParagraphStyle
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The default font.
+        /// The default font.
         /// </summary>
         private const string DefaultFont = "Arial";
 
         /// <summary>
-        ///   The default font size.
+        /// The default font size.
         /// </summary>
         private const double DefaultFontSize = 11;
 
         /// <summary>
-        ///   The bold.
+        /// The bold.
         /// </summary>
         private bool? bold;
 
         /// <summary>
-        ///   The font family.
+        /// The font family.
         /// </summary>
         private string fontFamily;
 
         /// <summary>
-        ///   The font size.
+        /// The font size.
         /// </summary>
         private double? fontSize;
 
         /// <summary>
-        ///   The italic.
+        /// The italic.
         /// </summary>
         private bool? italic;
 
         /// <summary>
-        ///   The left indentation.
+        /// The left indentation.
         /// </summary>
         private double? leftIndentation;
 
         /// <summary>
-        ///   The line spacing.
+        /// The line spacing.
         /// </summary>
         private double? lineSpacing;
 
         /// <summary>
-        ///   The page break before.
+        /// The page break before.
         /// </summary>
         private bool? pageBreakBefore;
 
         /// <summary>
-        ///   The right indentation.
+        /// The right indentation.
         /// </summary>
         private double? rightIndentation;
 
         /// <summary>
-        ///   The spacing after.
+        /// The spacing after.
         /// </summary>
         private double? spacingAfter;
 
         /// <summary>
-        ///   The spacing before.
+        /// The spacing before.
         /// </summary>
         private double? spacingBefore;
 
         /// <summary>
-        ///   The text color.
+        /// The text color.
         /// </summary>
         private OxyColor textColor;
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets BasedOn.
+        /// Gets or sets BasedOn.
         /// </summary>
         public ParagraphStyle BasedOn { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether Bold.
+        /// Gets or sets a value indicating whether Bold.
         /// </summary>
         public bool Bold
         {
@@ -137,7 +131,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        ///   Gets or sets FontFamily.
+        /// Gets or sets FontFamily.
         /// </summary>
         public string FontFamily
         {
@@ -163,7 +157,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        ///   Gets or sets FontSize.
+        /// Gets or sets FontSize.
         /// </summary>
         public double FontSize
         {
@@ -189,7 +183,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether Italic.
+        /// Gets or sets a value indicating whether Italic.
         /// </summary>
         public bool Italic
         {
@@ -215,7 +209,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        ///   Gets or sets LeftIndentation.
+        /// Gets or sets LeftIndentation.
         /// </summary>
         public double LeftIndentation
         {
@@ -241,7 +235,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        ///   Gets or sets LineSpacing.
+        /// Gets or sets LineSpacing.
         /// </summary>
         public double LineSpacing
         {
@@ -267,7 +261,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether PageBreakBefore.
+        /// Gets or sets a value indicating whether PageBreakBefore.
         /// </summary>
         public bool PageBreakBefore
         {
@@ -293,7 +287,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        ///   Gets or sets RightIndentation.
+        /// Gets or sets RightIndentation.
         /// </summary>
         public double RightIndentation
         {
@@ -319,7 +313,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        ///   Gets or sets SpacingAfter.
+        /// Gets or sets SpacingAfter.
         /// </summary>
         public double SpacingAfter
         {
@@ -345,7 +339,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        ///   Gets or sets SpacingBefore.
+        /// Gets or sets SpacingBefore.
         /// </summary>
         public double SpacingBefore
         {
@@ -371,7 +365,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        ///   Gets or sets TextColor.
+        /// Gets or sets TextColor.
         /// </summary>
         public OxyColor TextColor
         {
@@ -395,8 +389,6 @@ namespace OxyPlot.Reporting
                 this.textColor = value;
             }
         }
-
-        #endregion
 
         // margin
         // padding

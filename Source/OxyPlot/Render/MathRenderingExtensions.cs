@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MathRenderingExtensions.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,10 +36,8 @@ namespace OxyPlot
     /// </summary>
     public static class MathRenderingExtensions
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "MathRenderingExtensions" /> class.
+        /// Initializes static members of the <see cref = "MathRenderingExtensions" /> class.
         /// </summary>
         static MathRenderingExtensions()
         {
@@ -49,41 +47,33 @@ namespace OxyPlot
             SuperSize = 0.62;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets or sets the subscript alignment.
+        /// Gets or sets the subscript alignment.
         /// </summary>
         private static double SubAlignment { get; set; }
 
         /// <summary>
-        ///   Gets or sets the subscript size.
+        /// Gets or sets the subscript size.
         /// </summary>
         private static double SubSize { get; set; }
 
         /// <summary>
-        ///   Gets or sets the superscript alignment.
+        /// Gets or sets the superscript alignment.
         /// </summary>
         private static double SuperAlignment { get; set; }
 
         /// <summary>
-        ///   Gets or sets the superscript size.
+        /// Gets or sets the superscript size.
         /// </summary>
         private static double SuperSize { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Draws text containing sub- and superscript.
         /// </summary>
         /// <example>
         /// Subscript: H_{2}O
-        ///   Superscript: E=mc^{2}
-        ///   Both: A^{2}_{i,j}
+        /// Superscript: E=mc^{2}
+        /// Both: A^{2}_{i,j}
         /// </example>
         /// <param name="rc">
         /// The render context.
@@ -122,16 +112,16 @@ namespace OxyPlot
         /// The size of the text.
         /// </returns>
         public static OxySize DrawMathText(
-            this IRenderContext rc, 
-            ScreenPoint pt, 
-            string text, 
-            OxyColor textColor, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double angle, 
-            HorizontalTextAlign ha, 
-            VerticalTextAlign va, 
+            this IRenderContext rc,
+            ScreenPoint pt,
+            string text,
+            OxyColor textColor,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double angle,
+            HorizontalTextAlign ha,
+            VerticalTextAlign va,
             bool measure)
         {
             if (string.IsNullOrEmpty(text))
@@ -211,10 +201,6 @@ namespace OxyPlot
             return rc.MeasureText(text, fontFamily, fontSize, fontWeight);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The internal draw math text.
         /// </summary>
@@ -249,14 +235,14 @@ namespace OxyPlot
         /// The size of the text.
         /// </returns>
         private static OxySize InternalDrawMathText(
-            IRenderContext rc, 
-            double x, 
-            double y, 
-            string s, 
-            OxyColor textColor, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
+            IRenderContext rc,
+            double x,
+            double y,
+            string s,
+            OxyColor textColor,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
             bool measureOnly)
         {
             int i = 0;
@@ -343,6 +329,5 @@ namespace OxyPlot
             return new OxySize(maximumX - x, maxHeight);
         }
 
-        #endregion
     }
 }

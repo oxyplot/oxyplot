@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RenderContextBase.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,29 +36,23 @@ namespace OxyPlot
     /// </summary>
     public abstract class RenderContextBase : IRenderContext
     {
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the height of the rendering area.
+        /// Gets or sets the height of the rendering area.
         /// </summary>
         public double Height { get; protected set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to paint the background.
+        /// Gets or sets a value indicating whether to paint the background.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if the background should be painted; otherwise, <c>false</c>.
+        ///  <c>true</c> if the background should be painted; otherwise, <c>false</c>.
         /// </value>
         public bool PaintBackground { get; protected set; }
 
         /// <summary>
-        ///   Gets or sets the width of the rendering area.
+        /// Gets or sets the width of the rendering area.
         /// </summary>
         public double Width { get; protected set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Draws an ellipse.
@@ -79,7 +73,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Draws the collection of ellipses, where all have the same stroke and fill.
-        ///   This performs better than calling DrawEllipse multiple times.
+        /// This performs better than calling DrawEllipse multiple times.
         /// </summary>
         /// <param name="rectangles">
         /// The rectangles.
@@ -123,16 +117,16 @@ namespace OxyPlot
         /// if set to <c>true</c> the shape will be aliased.
         /// </param>
         public abstract void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased);
 
         /// <summary>
         /// Draws the multiple line segments defined by points (0,1) (2,3) (4,5) etc.
-        ///   This should have better performance than calling DrawLine for each segment.
+        /// This should have better performance than calling DrawLine for each segment.
         /// </summary>
         /// <param name="points">
         /// The points.
@@ -153,11 +147,11 @@ namespace OxyPlot
         /// if set to <c>true</c> the shape will be aliased.
         /// </param>
         public virtual void DrawLineSegments(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             for (int i = 0; i + 1 < points.Count; i += 2)
@@ -191,17 +185,17 @@ namespace OxyPlot
         /// if set to <c>true</c> the shape will be aliased.
         /// </param>
         public abstract void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased);
 
         /// <summary>
         /// Draws a collection of polygons, where all polygons have the same stroke and fill.
-        ///   This performs better than calling DrawPolygon multiple times.
+        /// This performs better than calling DrawPolygon multiple times.
         /// </summary>
         /// <param name="polygons">
         /// The polygons.
@@ -225,12 +219,12 @@ namespace OxyPlot
         /// if set to <c>true</c> the shape will be aliased.
         /// </param>
         public virtual void DrawPolygons(
-            IList<IList<ScreenPoint>> polygons, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<IList<ScreenPoint>> polygons,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             foreach (var polygon in polygons)
@@ -258,7 +252,7 @@ namespace OxyPlot
 
         /// <summary>
         /// Draws a collection of rectangles, where all have the same stroke and fill.
-        ///   This performs better than calling DrawRectangle multiple times.
+        /// This performs better than calling DrawRectangle multiple times.
         /// </summary>
         /// <param name="rectangles">
         /// The rectangles.
@@ -314,15 +308,15 @@ namespace OxyPlot
         /// The maximum size of the text.
         /// </param>
         public abstract void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalTextAlign halign, 
-            VerticalTextAlign valign, 
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalTextAlign halign,
+            VerticalTextAlign valign,
             OxySize? maxSize);
 
         /// <summary>
@@ -352,12 +346,11 @@ namespace OxyPlot
         /// The text in the tooltip.
         /// </param>
         /// <params>
-        ///   This is only used in the plot controls.
+        /// This is only used in the plot controls.
         /// </params>
         public virtual void SetToolTip(string text)
         {
         }
 
-        #endregion
     }
 }

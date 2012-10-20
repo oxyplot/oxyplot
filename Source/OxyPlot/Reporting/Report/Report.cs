@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Report.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,10 +36,8 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class Report : ReportItem
     {
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the actual culture.
+        /// Gets the actual culture.
         /// </summary>
         public CultureInfo ActualCulture
         {
@@ -50,31 +48,27 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        ///   Gets or sets Author.
+        /// Gets or sets Author.
         /// </summary>
         public string Author { get; set; }
 
         /// <summary>
-        ///   Gets or sets the culture.
+        /// Gets or sets the culture.
         /// </summary>
         /// <value>
-        ///   The culture.
+        /// The culture.
         /// </value>
         public CultureInfo Culture { get; set; }
 
         /// <summary>
-        ///   Gets or sets SubTitle.
+        /// Gets or sets SubTitle.
         /// </summary>
         public string SubTitle { get; set; }
 
         /// <summary>
-        ///   Gets or sets Title.
+        /// Gets or sets Title.
         /// </summary>
         public string Title { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The write.
@@ -89,6 +83,5 @@ namespace OxyPlot.Reporting
             base.Write(w);
         }
 
-        #endregion
     }
 }

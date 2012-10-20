@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -47,10 +47,8 @@ namespace OxyPlot.Silverlight
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
     public partial class Plot : Control, IPlotControl
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The Grid PART constant.
+        /// The Grid PART constant.
         /// </summary>
         private const string PartGrid = "PART_Grid";
 
@@ -75,12 +73,12 @@ namespace OxyPlot.Silverlight
         private readonly object updateModelAndVisualsLock = new object();
 
         /// <summary>
-        ///   The tracker definitions.
+        /// The tracker definitions.
         /// </summary>
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
 
         /// <summary>
-        ///   The canvas.
+        /// The canvas.
         /// </summary>
         private Canvas canvas;
 
@@ -90,66 +88,62 @@ namespace OxyPlot.Silverlight
         private PlotModel currentModel;
 
         /// <summary>
-        ///   The current tracker.
+        /// The current tracker.
         /// </summary>
         private FrameworkElement currentTracker;
 
         /// <summary>
-        ///   The grid.
+        /// The grid.
         /// </summary>
         private Grid grid;
 
         /// <summary>
-        ///   The internal model.
+        /// The internal model.
         /// </summary>
         private PlotModel internalModel;
 
         /// <summary>
-        ///   Flag to update data when the plot has been invalidated.
+        /// Flag to update data when the plot has been invalidated.
         /// </summary>
         private bool invalidateUpdatesData;
 
         /// <summary>
-        ///   The is plot invalidated.
+        /// The is plot invalidated.
         /// </summary>
         private bool isPlotInvalidated;
 
         /// <summary>
-        ///   The mouse manipulator.
+        /// The mouse manipulator.
         /// </summary>
         private ManipulatorBase mouseManipulator;
 
         /// <summary>
-        ///   The overlays.
+        /// The overlays.
         /// </summary>
         private Canvas overlays;
 
         /// <summary>
-        ///   The touch down point.
+        /// The touch down point.
         /// </summary>
         private Point touchDownPoint;
 
         /// <summary>
-        ///   The touch pan manipulator.
+        /// The touch pan manipulator.
         /// </summary>
         private PanManipulator touchPan;
 
         /// <summary>
-        ///   The touch zoom manipulator.
+        /// The touch zoom manipulator.
         /// </summary>
         private ZoomManipulator touchZoom;
 
         /// <summary>
-        ///   The zoom control.
+        /// The zoom control.
         /// </summary>
         private ContentControl zoomControl;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref="Plot" /> class.
+        /// Initializes a new instance of the <see cref="Plot" /> class.
         /// </summary>
         public Plot()
         {
@@ -164,12 +158,8 @@ namespace OxyPlot.Silverlight
             this.SetBinding(DataContextWatcherProperty, new Binding());
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the actual model.
+        /// Gets the actual model.
         /// </summary>
         /// <value> The actual model. </value>
         public PlotModel ActualModel
@@ -181,7 +171,7 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        ///   Gets the tracker definitions.
+        /// Gets the tracker definitions.
         /// </summary>
         /// <value> The tracker definitions. </value>
         public ObservableCollection<TrackerDefinition> TrackerDefinitions
@@ -192,21 +182,17 @@ namespace OxyPlot.Silverlight
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Gets the axes from a point.
         /// </summary>
         /// <param name="pt">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <param name="xaxis">
-        /// The x-axis. 
+        /// The x-axis.
         /// </param>
         /// <param name="yaxis">
-        /// The y-axis. 
+        /// The y-axis.
         /// </param>
         public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis)
         {
@@ -225,13 +211,13 @@ namespace OxyPlot.Silverlight
         /// Gets the series that is nearest the specified point (in screen coordinates).
         /// </summary>
         /// <param name="pt">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <param name="limit">
-        /// The maximum distance, if this is exceeded the method will return null. 
+        /// The maximum distance, if this is exceeded the method will return null.
         /// </param>
         /// <returns>
-        /// The closest DataSeries 
+        /// The closest DataSeries
         /// </returns>
         public Series GetSeriesFromPoint(ScreenPoint pt, double limit)
         {
@@ -262,7 +248,7 @@ namespace OxyPlot.Silverlight
         /// Invalidate the plot (not blocking the UI thread)
         /// </summary>
         /// <param name="updateData">
-        /// The update Data. 
+        /// The update Data.
         /// </param>
         public void InvalidatePlot(bool updateData = true)
         {
@@ -300,13 +286,13 @@ namespace OxyPlot.Silverlight
         /// Pans the specified axis.
         /// </summary>
         /// <param name="axis">
-        /// The axis. 
+        /// The axis.
         /// </param>
         /// <param name="ppt">
-        /// The previous point (screen coordinates). 
+        /// The previous point (screen coordinates).
         /// </param>
         /// <param name="cpt">
-        /// The current point (screen coordinates). 
+        /// The current point (screen coordinates).
         /// </param>
         public void Pan(Axis axis, ScreenPoint ppt, ScreenPoint cpt)
         {
@@ -318,7 +304,7 @@ namespace OxyPlot.Silverlight
         /// Refresh the plot immediately (not blocking UI thread)
         /// </summary>
         /// <param name="updateData">
-        /// if set to <c>true</c> , the data collections will be updated. 
+        /// if set to <c>true</c> , the data collections will be updated.
         /// </param>
         public void RefreshPlot(bool updateData)
         {
@@ -330,7 +316,7 @@ namespace OxyPlot.Silverlight
         /// Resets the specified axis.
         /// </summary>
         /// <param name="axis">
-        /// The axis. 
+        /// The axis.
         /// </param>
         public void Reset(Axis axis)
         {
@@ -354,7 +340,7 @@ namespace OxyPlot.Silverlight
         /// Saves the plot as a bitmap.
         /// </summary>
         /// <param name="fileName">
-        /// Name of the file. 
+        /// Name of the file.
         /// </param>
         public void SaveBitmap(string fileName)
         {
@@ -378,7 +364,7 @@ namespace OxyPlot.Silverlight
         /// Sets the cursor type.
         /// </summary>
         /// <param name="cursorType">
-        /// The cursor type. 
+        /// The cursor type.
         /// </param>
         public void SetCursorType(CursorType cursorType)
         {
@@ -406,7 +392,7 @@ namespace OxyPlot.Silverlight
         /// Shows the tracker.
         /// </summary>
         /// <param name="trackerHitResult">
-        /// The tracker data. 
+        /// The tracker data.
         /// </param>
         public void ShowTracker(TrackerHitResult trackerHitResult)
         {
@@ -450,7 +436,7 @@ namespace OxyPlot.Silverlight
         /// Shows the zoom rectangle.
         /// </summary>
         /// <param name="r">
-        /// The rectangle. 
+        /// The rectangle.
         /// </param>
         public void ShowZoomRectangle(OxyRect r)
         {
@@ -466,7 +452,7 @@ namespace OxyPlot.Silverlight
         /// Renders the plot to a bitmap.
         /// </summary>
         /// <returns>
-        /// A bitmap. 
+        /// A bitmap.
         /// </returns>
         public WriteableBitmap ToBitmap()
         {
@@ -482,7 +468,7 @@ namespace OxyPlot.Silverlight
         /// Renders the plot to xaml.
         /// </summary>
         /// <returns>
-        /// The to xaml. 
+        /// The to xaml.
         /// </returns>
         public string ToXaml()
         {
@@ -504,13 +490,13 @@ namespace OxyPlot.Silverlight
         /// Zooms the specified axis to the specified values.
         /// </summary>
         /// <param name="axis">
-        /// The axis. 
+        /// The axis.
         /// </param>
         /// <param name="p1">
-        /// The new minimum value. 
+        /// The new minimum value.
         /// </param>
         /// <param name="p2">
-        /// The new maximum value. 
+        /// The new maximum value.
         /// </param>
         public void Zoom(Axis axis, double p1, double p2)
         {
@@ -522,7 +508,7 @@ namespace OxyPlot.Silverlight
         /// Zooms all axes.
         /// </summary>
         /// <param name="delta">
-        /// The delta. 
+        /// The delta.
         /// </param>
         public void ZoomAllAxes(double delta)
         {
@@ -538,13 +524,13 @@ namespace OxyPlot.Silverlight
         /// Zooms at the specified position.
         /// </summary>
         /// <param name="axis">
-        /// The axis. 
+        /// The axis.
         /// </param>
         /// <param name="factor">
-        /// The zoom factor. 
+        /// The zoom factor.
         /// </param>
         /// <param name="x">
-        /// The position to zoom at. 
+        /// The position to zoom at.
         /// </param>
         public void ZoomAt(Axis axis, double factor, double x = double.NaN)
         {
@@ -557,15 +543,11 @@ namespace OxyPlot.Silverlight
             axis.ZoomAt(factor, x);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Called before the <see cref="E:System.Windows.UIElement.KeyDown"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event. 
+        /// The data for the event.
         /// </param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -663,7 +645,7 @@ namespace OxyPlot.Silverlight
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event. 
+        /// The data for the event.
         /// </param>
         protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
         {
@@ -677,7 +659,7 @@ namespace OxyPlot.Silverlight
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event. 
+        /// The data for the event.
         /// </param>
         protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
         {
@@ -697,7 +679,7 @@ namespace OxyPlot.Silverlight
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event. 
+        /// The data for the event.
         /// </param>
         protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
         {
@@ -742,7 +724,7 @@ namespace OxyPlot.Silverlight
         /// Called before the <see cref="E:System.Windows.UIElement.MouseLeftButtonDown"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event. 
+        /// The data for the event.
         /// </param>
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
@@ -755,7 +737,7 @@ namespace OxyPlot.Silverlight
         /// Called before the <see cref="E:System.Windows.UIElement.MouseLeftButtonUp"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event. 
+        /// The data for the event.
         /// </param>
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
@@ -768,7 +750,7 @@ namespace OxyPlot.Silverlight
         /// Called before the <see cref="E:System.Windows.UIElement.MouseMove"/> event occurs.
         /// </summary>
         /// <param name="e">
-        /// The data for the event. 
+        /// The data for the event.
         /// </param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -794,7 +776,7 @@ namespace OxyPlot.Silverlight
         /// Raises the <see cref="E:System.Windows.UIElement.MouseRightButtonDown"/> event.
         /// </summary>
         /// <param name="e">
-        /// A <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. 
+        /// A <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
         {
@@ -810,7 +792,7 @@ namespace OxyPlot.Silverlight
         /// Raises the <see cref="E:System.Windows.UIElement.MouseRightButtonUp"/> event.
         /// </summary>
         /// <param name="e">
-        /// A <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. 
+        /// A <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
         {
@@ -826,7 +808,7 @@ namespace OxyPlot.Silverlight
         /// Called before the <see cref="E:System.Windows.UIElement.MouseWheel"/> event occurs to provide handling for the event in a derived class without attaching a delegate.
         /// </summary>
         /// <param name="e">
-        /// A <see cref="T:System.Windows.Input.MouseWheelEventArgs"/> that contains the event data. 
+        /// A <see cref="T:System.Windows.Input.MouseWheelEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
@@ -847,10 +829,10 @@ namespace OxyPlot.Silverlight
         /// Called when the DataContext is changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private static void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -861,7 +843,7 @@ namespace OxyPlot.Silverlight
         /// Determines whether the alt key is down.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if alt is down; otherwise, <c>false</c> . 
+        /// <c>true</c> if alt is down; otherwise, <c>false</c> .
         /// </returns>
         private static bool IsAltDown()
         {
@@ -873,7 +855,7 @@ namespace OxyPlot.Silverlight
         /// Determines whether the control key is down.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if control is down; otherwise, <c>false</c> . 
+        /// <c>true</c> if control is down; otherwise, <c>false</c> .
         /// </returns>
         private static bool IsControlDown()
         {
@@ -885,7 +867,7 @@ namespace OxyPlot.Silverlight
         /// Determines whether the shift key is down.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if shift is down; otherwise, <c>false</c> . 
+        /// <c>true</c> if shift is down; otherwise, <c>false</c> .
         /// </returns>
         private static bool IsShiftDown()
         {
@@ -897,10 +879,10 @@ namespace OxyPlot.Silverlight
         /// Called when the Model is changed.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -911,7 +893,7 @@ namespace OxyPlot.Silverlight
         /// Sets the clipboard text.
         /// </summary>
         /// <param name="text">
-        /// The text. 
+        /// The text.
         /// </param>
         private static void TrySetClipboardText(string text)
         {
@@ -949,13 +931,13 @@ namespace OxyPlot.Silverlight
         /// Adds the coordinates of two points.
         /// </summary>
         /// <param name="p1">
-        /// The first point. 
+        /// The first point.
         /// </param>
         /// <param name="p2">
-        /// The second point. 
+        /// The second point.
         /// </param>
         /// <returns>
-        /// The sum point. 
+        /// The sum point.
         /// </returns>
         private Point Add(Point p1, Point p2)
         {
@@ -966,10 +948,10 @@ namespace OxyPlot.Silverlight
         /// Called when the composition target rendering event occurs.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
@@ -991,10 +973,10 @@ namespace OxyPlot.Silverlight
         /// Creates the manipulation event args.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
         /// </param>
         /// <returns>
-        /// A manipulation event args object. 
+        /// A manipulation event args object.
         /// </returns>
         private ManipulationEventArgs CreateManipulationEventArgs(MouseEventArgs e)
         {
@@ -1065,10 +1047,10 @@ namespace OxyPlot.Silverlight
         /// Called when the control is loaded.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
         /// </param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -1107,10 +1089,10 @@ namespace OxyPlot.Silverlight
         /// Called when a mouse button is pressed down.
         /// </summary>
         /// <param name="button">
-        /// The button. 
+        /// The button.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.
         /// </param>
         private void OnMouseButtonDown(OxyMouseButton button, MouseButtonEventArgs e)
         {
@@ -1150,10 +1132,10 @@ namespace OxyPlot.Silverlight
         /// Called when the size of the control is changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.SizeChangedEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.SizeChangedEventArgs"/> instance containing the event data.
         /// </param>
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -1164,10 +1146,10 @@ namespace OxyPlot.Silverlight
         /// Pans all axes.
         /// </summary>
         /// <param name="dx">
-        /// The dx. 
+        /// The dx.
         /// </param>
         /// <param name="dy">
-        /// The dy. 
+        /// The dy.
         /// </param>
         private void PanAll(double dx, double dy)
         {
@@ -1190,7 +1172,7 @@ namespace OxyPlot.Silverlight
         /// Updates the model.
         /// </summary>
         /// <param name="updateData">
-        /// The update Data. 
+        /// The update Data.
         /// </param>
         private void UpdateModel(bool updateData = true)
         {
@@ -1206,7 +1188,7 @@ namespace OxyPlot.Silverlight
         /// Updates the model. If Model==null, an internal model will be created. The ActualModel.UpdateModel will be called (updates all series data).
         /// </summary>
         /// <param name="updateData">
-        /// if set to <c>true</c> , all data collections will be updated. 
+        /// if set to <c>true</c> , all data collections will be updated.
         /// </param>
         private void UpdateModelAndVisuals(bool updateData = true)
         {
@@ -1239,6 +1221,5 @@ namespace OxyPlot.Silverlight
             }
         }
 
-        #endregion
     }
 }

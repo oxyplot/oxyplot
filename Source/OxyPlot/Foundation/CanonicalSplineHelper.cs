@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CanonicalSplineHelper.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -40,8 +40,6 @@ namespace OxyPlot
     {
         // CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
         // www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html
-        #region Methods
-
         /// <summary>
         /// Creates a spline of data points.
         /// </summary>
@@ -69,7 +67,7 @@ namespace OxyPlot
             var screenPoints = points.Select(p => new ScreenPoint(p.X, p.Y)).ToList();
             var interpolatedScreenPoints = CreateSpline(screenPoints, tension, tensions, isClosed, tolerance);
             var interpolatedDataPoints = new List<IDataPoint>(interpolatedScreenPoints.Count);
-            
+
             foreach (var s in interpolatedScreenPoints)
             {
                 interpolatedDataPoints.Add(new DataPoint(s.X, s.Y));
@@ -144,25 +142,25 @@ namespace OxyPlot
                     if (i == 0)
                     {
                         Segment(
-                            result, 
-                            isClosed ? points[n - 1] : points[0], 
-                            points[0], 
-                            points[1], 
-                            points[2], 
-                            t1, 
-                            t2, 
+                            result,
+                            isClosed ? points[n - 1] : points[0],
+                            points[0],
+                            points[1],
+                            points[2],
+                            t1,
+                            t2,
                             tolerance);
                     }
                     else if (i == n - 2)
                     {
                         Segment(
-                            result, 
-                            points[i - 1], 
-                            points[i], 
-                            points[i + 1], 
-                            isClosed ? points[0] : points[i + 1], 
-                            t1, 
-                            t2, 
+                            result,
+                            points[i - 1],
+                            points[i],
+                            points[i + 1],
+                            isClosed ? points[0] : points[i + 1],
+                            t1,
+                            t2,
                             tolerance);
                     }
                     else if (i == n - 1)
@@ -210,16 +208,16 @@ namespace OxyPlot
         /// The tolerance.
         /// </param>
         private static void Segment(
-            IList<ScreenPoint> points, 
-            ScreenPoint pt0, 
-            ScreenPoint pt1, 
-            ScreenPoint pt2, 
-            ScreenPoint pt3, 
-            double t1, 
-            double t2, 
+            IList<ScreenPoint> points,
+            ScreenPoint pt0,
+            ScreenPoint pt1,
+            ScreenPoint pt2,
+            ScreenPoint pt3,
+            double t1,
+            double t2,
             double tolerance)
         {
-            // See Petzold, "Programming Microsoft Windows with C#", pages 645-646 or 
+            // See Petzold, "Programming Microsoft Windows with C#", pages 645-646 or
             // Petzold, "Programming Microsoft Windows with Microsoft Visual Basic .NET", pages 638-639
             // for derivation of the following formulas:
             double sx1 = t1 * (pt2.X - pt0.X);
@@ -244,12 +242,11 @@ namespace OxyPlot
             {
                 double t = (double)i / (num - 1);
                 var pt = new ScreenPoint(
-                    ax * t * t * t + bx * t * t + cx * t + dx, 
+                    ax * t * t * t + bx * t * t + cx * t + dx,
                     ay * t * t * t + by * t * t + cy * t + dy);
                 points.Add(pt);
             }
         }
 
-        #endregion
     }
 }

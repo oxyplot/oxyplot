@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotSeriesBase.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -40,59 +40,53 @@ namespace OxyPlot
     /// </summary>
     public abstract class PlotSeriesBase : ItemsSeries
     {
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the maximum x-coordinate of the dataset.
+        /// Gets or sets the maximum x-coordinate of the dataset.
         /// </summary>
         /// <value>The maximum x-coordinate.</value>
         public double MaxX { get; protected set; }
 
         /// <summary>
-        ///   Gets or sets the maximum y-coordinate of the dataset.
+        /// Gets or sets the maximum y-coordinate of the dataset.
         /// </summary>
         /// <value>The maximum y-coordinate.</value>
         public double MaxY { get; protected set; }
 
         /// <summary>
-        ///   Gets or sets the minimum x-coordinate of the dataset.
+        /// Gets or sets the minimum x-coordinate of the dataset.
         /// </summary>
         /// <value>The minimum x-coordinate.</value>
         public double MinX { get; protected set; }
 
         /// <summary>
-        ///   Gets or sets the minimum y-coordinate of the dataset.
+        /// Gets or sets the minimum y-coordinate of the dataset.
         /// </summary>
         /// <value>The minimum y-coordinate.</value>
         public double MinY { get; protected set; }
 
         /// <summary>
-        ///   Gets or sets the x-axis.
+        /// Gets or sets the x-axis.
         /// </summary>
         /// <value>The x-axis.</value>
         public IAxis XAxis { get; set; }
 
         /// <summary>
-        ///   Gets or sets the x-axis key.
+        /// Gets or sets the x-axis key.
         /// </summary>
         /// <value>The x-axis key.</value>
         public string XAxisKey { get; set; }
 
         /// <summary>
-        ///   Gets or sets the y-axis.
+        /// Gets or sets the y-axis.
         /// </summary>
         /// <value>The y-axis.</value>
         public IAxis YAxis { get; set; }
 
         /// <summary>
-        ///   Gets or sets the y-axis key.
+        /// Gets or sets the y-axis key.
         /// </summary>
         /// <value>The y-axis key.</value>
         public string YAxisKey { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Check if this data series requires X/Y axes.
@@ -143,7 +137,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Renders the Series on the specified rendering context.
+        /// Renders the Series on the specified rendering context.
         /// </summary>
         /// <param name = "rc">The rendering context.</param>
         /// <param name = "model">The model.</param>
@@ -152,7 +146,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Renders the legend symbol on the specified rendering context.
+        /// Renders the legend symbol on the specified rendering context.
         /// </summary>
         /// <param name = "rc">The rendering context.</param>
         /// <param name = "legendBox">The legend rectangle.</param>
@@ -169,16 +163,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Updates the max/minimum values.
+        /// Updates the max/minimum values.
         /// </summary>
         public override void UpdateMaxMin()
         {
             this.MinX = this.MinY = this.MaxX = this.MaxY = double.NaN;
         }
-
-        #endregion
-
-        #region Methods
 
         protected OxyRect GetClippingRect()
         {
@@ -191,7 +181,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets the point on the curve that is nearest the specified point.
+        /// Gets the point on the curve that is nearest the specified point.
         /// </summary>
         /// <param name = "point">The point.</param>
         /// <param name = "dpn">The nearest point (data coordinates).</param>
@@ -308,6 +298,5 @@ namespace OxyPlot
             return Convert.ToDouble(value);
         }
 
-        #endregion
     }
 }

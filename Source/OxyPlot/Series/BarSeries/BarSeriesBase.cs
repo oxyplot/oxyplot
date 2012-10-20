@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BarSeriesBase.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -43,8 +43,6 @@ namespace OxyPlot
         /// </summary>
         private OxyColor defaultFillColor;
 
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BarSeriesBase"/> class.
         /// </summary>
@@ -57,15 +55,11 @@ namespace OxyPlot
             this.StackGroup = string.Empty;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets the base value.
         /// </summary>
         /// <value>
-        /// The base value. 
+        /// The base value.
         /// </value>
         public double BaseValue { get; set; }
 
@@ -78,7 +72,7 @@ namespace OxyPlot
         /// Gets or sets the color of the interior of the bars.
         /// </summary>
         /// <value>
-        /// The color. 
+        /// The color.
         /// </value>
         public OxyColor FillColor { get; set; }
 
@@ -100,7 +94,7 @@ namespace OxyPlot
         /// Gets or sets the label format string.
         /// </summary>
         /// <value>
-        /// The label format string. 
+        /// The label format string.
         /// </value>
         public string LabelFormatString { get; set; }
 
@@ -118,7 +112,7 @@ namespace OxyPlot
         /// Gets or sets the color of the interior of the bars when the value is negative.
         /// </summary>
         /// <value>
-        /// The color. 
+        /// The color.
         /// </value>
         public OxyColor NegativeFillColor { get; set; }
 
@@ -131,7 +125,7 @@ namespace OxyPlot
         /// Gets or sets the color of the border around the bars.
         /// </summary>
         /// <value>
-        /// The color of the stroke. 
+        /// The color of the stroke.
         /// </value>
         public OxyColor StrokeColor { get; set; }
 
@@ -139,7 +133,7 @@ namespace OxyPlot
         /// Gets or sets the thickness of the bar border strokes.
         /// </summary>
         /// <value>
-        /// The stroke thickness. 
+        /// The stroke thickness.
         /// </value>
         public double StrokeThickness { get; set; }
 
@@ -147,10 +141,6 @@ namespace OxyPlot
         /// Gets or sets the value field.
         /// </summary>
         public string ValueField { get; set; }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the valid items
@@ -167,21 +157,17 @@ namespace OxyPlot
         /// </summary>
         protected IList<OxyRect> ActualBarRectangles { get; set; }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Gets the nearest point.
         /// </summary>
         /// <param name="point">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <param name="interpolate">
-        /// interpolate if set to <c>true</c> . 
+        /// interpolate if set to <c>true</c> .
         /// </param>
         /// <returns>
-        /// A TrackerHitResult for the current hit. 
+        /// A TrackerHitResult for the current hit.
         /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
@@ -213,10 +199,10 @@ namespace OxyPlot
         /// Renders the series on the specified rendering context.
         /// </summary>
         /// <param name="rc">
-        /// The rendering context. 
+        /// The rendering context.
         /// </param>
         /// <param name="model">
-        /// The model. 
+        /// The model.
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
@@ -299,10 +285,10 @@ namespace OxyPlot
         /// Renders the legend symbol on the specified rendering context.
         /// </summary>
         /// <param name="rc">
-        /// The rendering context. 
+        /// The rendering context.
         /// </param>
         /// <param name="legendBox">
-        /// The legend rectangle. 
+        /// The legend rectangle.
         /// </param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
@@ -311,24 +297,20 @@ namespace OxyPlot
             var height = (legendBox.Bottom - legendBox.Top) * 0.8;
             var width = height;
             rc.DrawRectangleAsPolygon(
-                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height), 
-                this.GetSelectableColor(this.ActualFillColor), 
-                this.StrokeColor, 
+                new OxyRect(xmid - (0.5 * width), ymid - (0.5 * height), width, height),
+                this.GetSelectableColor(this.ActualFillColor),
+                this.StrokeColor,
                 this.StrokeThickness);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Check if the data series is using the specified axis.
         /// </summary>
         /// <param name="axis">
-        /// An axis which should be checked if used 
+        /// An axis which should be checked if used
         /// </param>
         /// <returns>
-        /// True if the axis is in use. 
+        /// True if the axis is in use.
         /// </returns>
         protected internal override bool IsUsing(Axis axis)
         {
@@ -339,7 +321,7 @@ namespace OxyPlot
         /// The set default values.
         /// </summary>
         /// <param name="model">
-        /// The model. 
+        /// The model.
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
@@ -473,19 +455,19 @@ namespace OxyPlot
         /// Gets the rectangle for the specified values.
         /// </summary>
         /// <param name="baseValue">
-        /// The base value of the bar 
+        /// The base value of the bar
         /// </param>
         /// <param name="topValue">
-        /// The top value of the bar 
+        /// The top value of the bar
         /// </param>
         /// <param name="beginValue">
-        /// The begin value of the bar 
+        /// The begin value of the bar
         /// </param>
         /// <param name="endValue">
-        /// The end value of the bar 
+        /// The end value of the bar
         /// </param>
         /// <returns>
-        /// The rectangle. 
+        /// The rectangle.
         /// </returns>
         protected abstract OxyRect GetRectangle(double baseValue, double topValue, double beginValue, double endValue);
 
@@ -493,13 +475,13 @@ namespace OxyPlot
         /// Gets the tracker text for the specified item.
         /// </summary>
         /// <param name="item">
-        /// The item. 
+        /// The item.
         /// </param>
         /// <param name="categoryIndex">
-        /// Category index of the item. 
+        /// Category index of the item.
         /// </param>
         /// <returns>
-        /// The tracker text. 
+        /// The tracker text.
         /// </returns>
         protected virtual string GetTrackerText(object item, int categoryIndex)
         {
@@ -512,11 +494,11 @@ namespace OxyPlot
             var categoryAxis = this.GetCategoryAxis();
 
             var text = StringHelper.Format(
-                this.ActualCulture, 
-                this.TrackerFormatString, 
-                item, 
-                this.Title, 
-                categoryAxis.FormatValueForTracker(categoryIndex), 
+                this.ActualCulture,
+                this.TrackerFormatString,
+                item,
+                this.Title,
+                categoryAxis.FormatValueForTracker(categoryIndex),
                 barItem.Value);
             return text;
         }
@@ -525,7 +507,7 @@ namespace OxyPlot
         /// Gets the value axis.
         /// </summary>
         /// <returns>
-        /// The value axis. 
+        /// The value axis.
         /// </returns>
         protected abstract Axis GetValueAxis();
 
@@ -533,13 +515,13 @@ namespace OxyPlot
         /// Checks if the specified value is valid.
         /// </summary>
         /// <param name="v">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <param name="yaxis">
-        /// The y axis. 
+        /// The y axis.
         /// </param>
         /// <returns>
-        /// True if the value is valid. 
+        /// True if the value is valid.
         /// </returns>
         protected virtual bool IsValidPoint(double v, Axis yaxis)
         {
@@ -550,33 +532,33 @@ namespace OxyPlot
         /// Renders the bar/column item.
         /// </summary>
         /// <param name="rc">
-        /// The render context. 
+        /// The render context.
         /// </param>
         /// <param name="clippingRect">
-        /// The clipping rectangle. 
+        /// The clipping rectangle.
         /// </param>
         /// <param name="topValue">
-        /// The end value of the bar. 
+        /// The end value of the bar.
         /// </param>
         /// <param name="categoryValue">
-        /// The category value. 
+        /// The category value.
         /// </param>
         /// <param name="actualBarWidth">
-        /// The actual width of the bar. 
+        /// The actual width of the bar.
         /// </param>
         /// <param name="item">
-        /// The item. 
+        /// The item.
         /// </param>
         /// <param name="rect">
-        /// The rectangle of the bar. 
+        /// The rectangle of the bar.
         /// </param>
         protected virtual void RenderItem(
-            IRenderContext rc, 
-            OxyRect clippingRect, 
-            double topValue, 
-            double categoryValue, 
-            double actualBarWidth, 
-            BarItemBase item, 
+            IRenderContext rc,
+            OxyRect clippingRect,
+            double topValue,
+            double categoryValue,
+            double actualBarWidth,
+            BarItemBase item,
             OxyRect rect)
         {
             // Get the color of the item
@@ -598,23 +580,22 @@ namespace OxyPlot
         /// Renders the item label.
         /// </summary>
         /// <param name="rc">
-        /// The render context 
+        /// The render context
         /// </param>
         /// <param name="clippingRect">
-        /// The clipping rectangle 
+        /// The clipping rectangle
         /// </param>
         /// <param name="rect">
-        /// The rectangle of the item. 
+        /// The rectangle of the item.
         /// </param>
         /// <param name="value">
-        /// The value of the label. 
+        /// The value of the label.
         /// </param>
         /// <param name="index">
-        /// The index of the bar item. 
+        /// The index of the bar item.
         /// </param>
         protected abstract void RenderLabel(
             IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int index);
 
-        #endregion
     }
 }

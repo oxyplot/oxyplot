@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ArrowAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -34,24 +34,18 @@ namespace OxyPlot
     /// </summary>
     public class ArrowAnnotation : Annotation
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The end point in screen coordinates.
+        /// The end point in screen coordinates.
         /// </summary>
         private ScreenPoint endPoint;
 
         /// <summary>
-        ///   The start point in screen coordinates.
+        /// The start point in screen coordinates.
         /// </summary>
         private ScreenPoint startPoint;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ArrowAnnotation"/> class. 
+        /// Initializes a new instance of the <see cref="ArrowAnnotation"/> class.
         /// </summary>
         public ArrowAnnotation()
         {
@@ -63,84 +57,76 @@ namespace OxyPlot
             this.LineJoin = OxyPenLineJoin.Miter;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the arrow direction.
+        /// Gets or sets the arrow direction.
         /// </summary>
         /// <remarks>
-        ///   Setting this property overrides the StartPoint property.
+        /// Setting this property overrides the StartPoint property.
         /// </remarks>
         public ScreenVector ArrowDirection { get; set; }
 
         /// <summary>
-        ///   Gets or sets the color of the arrow.
+        /// Gets or sets the color of the arrow.
         /// </summary>
         public OxyColor Color { get; set; }
 
         /// <summary>
-        ///   Gets or sets the end point.
+        /// Gets or sets the end point.
         /// </summary>
         public DataPoint EndPoint { get; set; }
 
         /// <summary>
-        ///   Gets or sets the length of the head (relative to thickness).
+        /// Gets or sets the length of the head (relative to thickness).
         /// </summary>
         /// <value> The length of the head. </value>
         public double HeadLength { get; set; }
 
         /// <summary>
-        ///   Gets or sets the width of the head (relative to thickness).
+        /// Gets or sets the width of the head (relative to thickness).
         /// </summary>
         /// <value> The width of the head. </value>
         public double HeadWidth { get; set; }
 
         /// <summary>
-        ///   Gets or sets the line join type.
+        /// Gets or sets the line join type.
         /// </summary>
         /// <value> The line join type. </value>
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
-        ///   Gets or sets the line style.
+        /// Gets or sets the line style.
         /// </summary>
         /// <value> The line style. </value>
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        ///   Gets or sets StartPoint.
+        /// Gets or sets StartPoint.
         /// </summary>
         /// <remarks>
-        ///   This property is overridden by the ArrowDirection property, if set.
+        /// This property is overridden by the ArrowDirection property, if set.
         /// </remarks>
         public DataPoint StartPoint { get; set; }
 
         /// <summary>
-        ///   Gets or sets the stroke thickness.
+        /// Gets or sets the stroke thickness.
         /// </summary>
         /// <value> The stroke thickness. </value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        ///   Gets or sets the 'veeness' of the head (relative to thickness).
+        /// Gets or sets the 'veeness' of the head (relative to thickness).
         /// </summary>
         /// <value> The 'veeness'. </value>
         public double Veeness { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Renders the arrow annotation.
         /// </summary>
         /// <param name="rc">
-        /// The render context. 
+        /// The render context.
         /// </param>
         /// <param name="model">
-        /// The plot model. 
+        /// The plot model.
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
@@ -170,20 +156,20 @@ namespace OxyPlot
             const double MinimumSegmentLength = 4;
 
             rc.DrawClippedLine(
-                new[] { this.startPoint, p4 }, 
-                clippingRect, 
-                MinimumSegmentLength * MinimumSegmentLength, 
-                this.GetSelectableColor(this.Color), 
-                this.StrokeThickness, 
-                this.LineStyle, 
-                this.LineJoin, 
+                new[] { this.startPoint, p4 },
+                clippingRect,
+                MinimumSegmentLength * MinimumSegmentLength,
+                this.GetSelectableColor(this.Color),
+                this.StrokeThickness,
+                this.LineStyle,
+                this.LineJoin,
                 false);
 
             rc.DrawClippedPolygon(
-                new[] { p3, this.endPoint, p2, p4 }, 
-                clippingRect, 
-                MinimumSegmentLength * MinimumSegmentLength, 
-                this.GetSelectableColor(this.Color), 
+                new[] { p3, this.endPoint, p2, p4 },
+                clippingRect,
+                MinimumSegmentLength * MinimumSegmentLength,
+                this.GetSelectableColor(this.Color),
                 null);
 
             var ha = d.X < 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
@@ -191,33 +177,29 @@ namespace OxyPlot
 
             var textPoint = this.startPoint;
             rc.DrawClippedText(
-                clippingRect, 
-                textPoint, 
-                this.Text, 
-                this.ActualTextColor, 
-                this.ActualFont, 
-                this.ActualFontSize, 
-                this.ActualFontWeight, 
-                0, 
-                ha, 
+                clippingRect,
+                textPoint,
+                this.Text,
+                this.ActualTextColor,
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
+                0,
+                ha,
                 va);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
         /// <param name="point">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <param name="tolerance">
-        /// The tolerance. 
+        /// The tolerance.
         /// </param>
         /// <returns>
-        /// A hit test result. 
+        /// A hit test result.
         /// </returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
@@ -240,6 +222,5 @@ namespace OxyPlot
             return null;
         }
 
-        #endregion
     }
 }

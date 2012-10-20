@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Annotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,13 +38,11 @@ namespace OxyPlot
     [Serializable]
     public abstract class Annotation : UIPlotElement
     {
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the actual culture.
+        /// Gets the actual culture.
         /// </summary>
         /// <remarks>
-        ///   The culture is defined in the parent PlotModel.
+        /// The culture is defined in the parent PlotModel.
         /// </remarks>
         public CultureInfo ActualCulture
         {
@@ -55,7 +53,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///   Gets or sets the layer.
+        /// Gets or sets the layer.
         /// </summary>
         public AnnotationLayer Layer { get; set; }
 
@@ -68,32 +66,28 @@ namespace OxyPlot
         public string Text { get; set; }
 
         /// <summary>
-        ///   Gets or sets the X axis.
+        /// Gets or sets the X axis.
         /// </summary>
         /// <value>The X axis.</value>
         public Axis XAxis { get; set; }
 
         /// <summary>
-        ///   Gets or sets the X axis key.
+        /// Gets or sets the X axis key.
         /// </summary>
         /// <value>The X axis key.</value>
         public string XAxisKey { get; set; }
 
         /// <summary>
-        ///   Gets or sets the Y axis.
+        /// Gets or sets the Y axis.
         /// </summary>
         /// <value>The Y axis.</value>
         public Axis YAxis { get; set; }
 
         /// <summary>
-        ///   Gets or sets the Y axis key.
+        /// Gets or sets the Y axis key.
         /// </summary>
         /// <value>The Y axis key.</value>
         public string YAxisKey { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Ensures that the annotation axes are set.
@@ -121,13 +115,13 @@ namespace OxyPlot
         /// Transforms the specified coordinates to a screen point.
         /// </summary>
         /// <param name="x">
-        /// The x coordinate. 
+        /// The x coordinate.
         /// </param>
         /// <param name="y">
-        /// The y coordinate. 
+        /// The y coordinate.
         /// </param>
         /// <returns>
-        /// A screen point. 
+        /// A screen point.
         /// </returns>
         public ScreenPoint Transform(double x, double y)
         {
@@ -138,10 +132,10 @@ namespace OxyPlot
         /// Transforms the specified data point to a screen point.
         /// </summary>
         /// <param name="p">
-        /// The point. 
+        /// The point.
         /// </param>
         /// <returns>
-        /// A screen point. 
+        /// A screen point.
         /// </returns>
         public ScreenPoint Transform(IDataPoint p)
         {
@@ -173,6 +167,5 @@ namespace OxyPlot
 
             return new OxyRect(minX, minY, maxX - minX, maxY - minY);
         }
-        #endregion
     }
 }

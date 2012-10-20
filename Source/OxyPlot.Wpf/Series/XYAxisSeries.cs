@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="XYAxisSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,26 +37,20 @@ namespace OxyPlot.Wpf
     /// </summary>
     public abstract class XYAxisSeries : Series
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The x axis key property.
+        /// The x axis key property.
         /// </summary>
         public static readonly DependencyProperty XAxisKeyProperty = DependencyProperty.Register(
             "XAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        ///   The y axis key property.
+        /// The y axis key property.
         /// </summary>
         public static readonly DependencyProperty YAxisKeyProperty = DependencyProperty.Register(
             "YAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the x-axis key.
+        /// Gets or sets the x-axis key.
         /// </summary>
         public string XAxisKey
         {
@@ -72,7 +66,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the y axis key.
+        /// Gets or sets the y axis key.
         /// </summary>
         public string YAxisKey
         {
@@ -88,13 +82,9 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the internal series.
+        /// Gets or sets the internal series.
         /// </summary>
         protected OxyPlot.Series InternalSeries { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The on items source changed.
@@ -125,6 +115,5 @@ namespace OxyPlot.Wpf
             s.YAxisKey = this.YAxisKey;
         }
 
-        #endregion
     }
 }

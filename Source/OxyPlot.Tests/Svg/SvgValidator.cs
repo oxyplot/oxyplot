@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SvgValidator.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,16 +38,14 @@ namespace OxyPlot.Tests
     /// </summary>
     public static class SvgValidator
     {
-        #region Public Methods
-
         /// <summary>
         /// Determines whether the specified file is a valid svg file.
         /// </summary>
         /// <param name="path">
-        /// The path to the file. 
+        /// The path to the file.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified file is valid; otherwise, <c>false</c> . 
+        /// <c>true</c> if the specified file is valid; otherwise, <c>false</c> .
         /// </returns>
         public static bool IsValid(string path)
         {
@@ -58,10 +56,10 @@ namespace OxyPlot.Tests
         /// Validates the specified svg file.
         /// </summary>
         /// <param name="path">
-        /// The path. 
+        /// The path.
         /// </param>
         /// <returns>
-        /// A validation result string. 
+        /// A validation result string.
         /// </returns>
         public static string Validate(string path)
         {
@@ -73,21 +71,17 @@ namespace OxyPlot.Tests
             return Validate(path, sc);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Validates the specified XML file against a XSL schema.
         /// </summary>
         /// <param name="path">
-        /// The path. 
+        /// The path.
         /// </param>
         /// <param name="sc">
-        /// The schema. 
+        /// The schema.
         /// </param>
         /// <returns>
-        /// Number of errors and warnings, or null if the number of errors and warnings is zero. 
+        /// Number of errors and warnings, or null if the number of errors and warnings is zero.
         /// </returns>
         private static string Validate(string path, XmlSchemaSet sc)
         {
@@ -152,6 +146,5 @@ namespace OxyPlot.Tests
             }
         }
 
-        #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LogarithmicAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -36,28 +36,22 @@ namespace OxyPlot.Wpf
     /// </summary>
     public class LogarithmicAxis : Axis
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   Gets or sets the logarithmic base (normally 10).
-        ///   http://en.wikipedia.org/wiki/Logarithm
+        /// Gets or sets the logarithmic base (normally 10).
+        /// http://en.wikipedia.org/wiki/Logarithm
         /// </summary>
         /// <value>The logarithmic base.</value>
         public static readonly DependencyProperty BaseProperty = DependencyProperty.Register(
             "Base", typeof(double), typeof(LogarithmicAxis), new PropertyMetadata(10.0, DataChanged));
 
         /// <summary>
-        ///   The power padding property.
+        /// The power padding property.
         /// </summary>
         public static readonly DependencyProperty PowerPaddingProperty = DependencyProperty.Register(
             "PowerPadding", typeof(bool), typeof(LogarithmicAxis), new PropertyMetadata(true, DataChanged));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "LogarithmicAxis" /> class.
+        /// Initializes a new instance of the <see cref = "LogarithmicAxis" /> class.
         /// </summary>
         public LogarithmicAxis()
         {
@@ -65,12 +59,8 @@ namespace OxyPlot.Wpf
             this.FilterMinValue = 0;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets Base.
+        /// Gets or sets Base.
         /// </summary>
         public double Base
         {
@@ -86,7 +76,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether the ActualMaximum and ActualMinimum values should be padded to the nearest power of the Base.
+        /// Gets or sets a value indicating whether the ActualMaximum and ActualMinimum values should be padded to the nearest power of the Base.
         /// </summary>
         public bool PowerPadding
         {
@@ -101,10 +91,6 @@ namespace OxyPlot.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// The create model.
         /// </summary>
@@ -115,10 +101,6 @@ namespace OxyPlot.Wpf
             this.SynchronizeProperties();
             return this.internalAxis;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The synchronize properties.
@@ -131,6 +113,5 @@ namespace OxyPlot.Wpf
             a.PowerPadding = this.PowerPadding;
         }
 
-        #endregion
     }
 }

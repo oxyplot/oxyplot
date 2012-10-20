@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HtmlReportWriter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -59,8 +59,6 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class HtmlReportWriter : XmlWriterBase, IReportWriter
     {
-        #region Constants and Fields
-
 #if !PCL
         /// <summary>
         /// The directory of the output file.
@@ -88,20 +86,16 @@ namespace OxyPlot.Reporting
         /// </summary>
         private ReportStyle style;
 
-        #endregion
-
-        #region Constructors and Destructors
-
 #if !PCL
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class.
         /// </summary>
         /// <param name="path">
-        /// The path. 
+        /// The path.
         /// </param>
         /// <param name="textMeasurer">
-        /// The text measurer. 
+        /// The text measurer.
         /// </param>
         public HtmlReportWriter(string path, IRenderContext textMeasurer = null)
             : base(path)
@@ -119,10 +113,10 @@ namespace OxyPlot.Reporting
         /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class.
         /// </summary>
         /// <param name="stream">
-        /// The stream. 
+        /// The stream.
         /// </param>
         /// <param name="textMeasurer">
-        /// The text measurer. 
+        /// The text measurer.
         /// </param>
         public HtmlReportWriter(Stream stream, IRenderContext textMeasurer = null)
             : base(stream)
@@ -132,17 +126,13 @@ namespace OxyPlot.Reporting
             this.PlotElementType = HtmlPlotElementType.Svg;
         }
 
-        #endregion
-
         /// <summary>
         /// Gets or sets the type of the plot element.
         /// </summary>
         /// <value>
-        /// The type of the plot element. 
+        /// The type of the plot element.
         /// </value>
         public HtmlPlotElementType PlotElementType { get; set; }
-
-        #region Public Methods
 
         /// <summary>
         /// Closes this instance.
@@ -158,10 +148,10 @@ namespace OxyPlot.Reporting
         /// Writes the class ID.
         /// </summary>
         /// <param name="className">
-        /// The class. 
+        /// The class.
         /// </param>
         /// <param name="id">
-        /// The id. 
+        /// The id.
         /// </param>
         public void WriteClassId(string className, string id = null)
         {
@@ -180,7 +170,7 @@ namespace OxyPlot.Reporting
         /// Writes the drawing.
         /// </summary>
         /// <param name="d">
-        /// The drawing. 
+        /// The drawing.
         /// </param>
         public void WriteDrawing(DrawingFigure d)
         {
@@ -193,7 +183,7 @@ namespace OxyPlot.Reporting
         /// Writes the equation.
         /// </summary>
         /// <param name="equation">
-        /// The equation. 
+        /// The equation.
         /// </param>
         public void WriteEquation(Equation equation)
         {
@@ -204,7 +194,7 @@ namespace OxyPlot.Reporting
         /// Writes the header.
         /// </summary>
         /// <param name="h">
-        /// The header. 
+        /// The header.
         /// </param>
         public void WriteHeader(Header h)
         {
@@ -222,7 +212,7 @@ namespace OxyPlot.Reporting
         /// Writes the image.
         /// </summary>
         /// <param name="i">
-        /// The image. 
+        /// The image.
         /// </param>
         public void WriteImage(Image i)
         {
@@ -240,7 +230,7 @@ namespace OxyPlot.Reporting
         /// Writes the paragraph.
         /// </summary>
         /// <param name="p">
-        /// The paragraph. 
+        /// The paragraph.
         /// </param>
         public void WriteParagraph(Paragraph p)
         {
@@ -251,7 +241,7 @@ namespace OxyPlot.Reporting
         /// Writes the plot.
         /// </summary>
         /// <param name="plot">
-        /// The plot. 
+        /// The plot.
         /// </param>
         public void WritePlot(PlotFigure plot)
         {
@@ -284,10 +274,10 @@ namespace OxyPlot.Reporting
         /// The write report.
         /// </summary>
         /// <param name="report">
-        /// The report. 
+        /// The report.
         /// </param>
         /// <param name="reportStyle">
-        /// The style. 
+        /// The style.
         /// </param>
         public void WriteReport(Report report, ReportStyle reportStyle)
         {
@@ -300,7 +290,7 @@ namespace OxyPlot.Reporting
         /// Writes the items.
         /// </summary>
         /// <param name="t">
-        /// The table. 
+        /// The table.
         /// </param>
         public void WriteRows(Table t)
         {
@@ -353,7 +343,7 @@ namespace OxyPlot.Reporting
         /// Writes the table.
         /// </summary>
         /// <param name="t">
-        /// The t. 
+        /// The t.
         /// </param>
         public void WriteTable(Table t)
         {
@@ -378,18 +368,14 @@ namespace OxyPlot.Reporting
             this.WriteEndElement(); // table
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Creates the css section.
         /// </summary>
         /// <param name="style">
-        /// The style. 
+        /// The style.
         /// </param>
         /// <returns>
-        /// The css. 
+        /// The css.
         /// </returns>
         private static string CreateCss(ReportStyle style)
         {
@@ -423,10 +409,10 @@ namespace OxyPlot.Reporting
         /// Gets the alignment string.
         /// </summary>
         /// <param name="a">
-        /// The alignment type. 
+        /// The alignment type.
         /// </param>
         /// <returns>
-        /// An alignment string. 
+        /// An alignment string.
         /// </returns>
         private static string GetAlignmentString(Alignment a)
         {
@@ -437,10 +423,10 @@ namespace OxyPlot.Reporting
         /// Converts a paragraphes style to css.
         /// </summary>
         /// <param name="s">
-        /// The style. 
+        /// The style.
         /// </param>
         /// <returns>
-        /// A css string. 
+        /// A css string.
         /// </returns>
         private static string ParagraphStyleToCss(ParagraphStyle s)
         {
@@ -463,10 +449,10 @@ namespace OxyPlot.Reporting
         /// Gets the full name of the specified file.
         /// </summary>
         /// <param name="filename">
-        /// The filename (relative to the output file). 
+        /// The filename (relative to the output file).
         /// </param>
         /// <returns>
-        /// A full path to the file. 
+        /// A full path to the file.
         /// </returns>
         private string GetFullFileName(string filename)
         {
@@ -489,10 +475,10 @@ namespace OxyPlot.Reporting
         /// Writes the div.
         /// </summary>
         /// <param name="divstyle">
-        /// The style of the div. 
+        /// The style of the div.
         /// </param>
         /// <param name="content">
-        /// The content. 
+        /// The content.
         /// </param>
         private void WriteDiv(string divstyle, string content)
         {
@@ -506,7 +492,7 @@ namespace OxyPlot.Reporting
         /// Writes the end figure.
         /// </summary>
         /// <param name="text">
-        /// The figure text. 
+        /// The figure text.
         /// </param>
         private void WriteEndFigure(string text)
         {
@@ -518,13 +504,13 @@ namespace OxyPlot.Reporting
         /// Writes the HTML header.
         /// </summary>
         /// <param name="title">
-        /// The title. 
+        /// The title.
         /// </param>
         /// <param name="cssPath">
-        /// The CSS path. 
+        /// The CSS path.
         /// </param>
         /// <param name="cssStyle">
-        /// The style. 
+        /// The style.
         /// </param>
         private void WriteHtmlHeader(string title, string cssPath, string cssStyle)
         {
@@ -566,6 +552,5 @@ namespace OxyPlot.Reporting
             this.WriteClassId("figure");
         }
 
-        #endregion
     }
 }

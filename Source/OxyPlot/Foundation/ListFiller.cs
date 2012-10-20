@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ListFiller.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,42 +38,32 @@ namespace OxyPlot
     /// Fills a list by specified properties of another list.
     /// </summary>
     /// <typeparam name="T">
-    /// The target list item type. 
+    /// The target list item type.
     /// </typeparam>
     public class ListFiller<T>
         where T : class, new()
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The properties.
         /// </summary>
         private Dictionary<string, Action<T, object>> properties;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListFiller{T}"/> class. 
+        /// Initializes a new instance of the <see cref="ListFiller{T}"/> class.
         /// </summary>
         public ListFiller()
         {
             this.properties = new Dictionary<string, Action<T, object>>();
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Adds a setter for the specified property.
         /// </summary>
         /// <param name="propertyName">
-        /// Name of the property. 
+        /// Name of the property.
         /// </param>
         /// <param name="setter">
-        /// The setter. 
+        /// The setter.
         /// </param>
         public void Add(string propertyName, Action<T, object> setter)
         {
@@ -99,10 +89,10 @@ namespace OxyPlot
         /// Fills the specified target list.
         /// </summary>
         /// <param name="target">
-        /// The target. 
+        /// The target.
         /// </param>
         /// <param name="source">
-        /// The source list. 
+        /// The source list.
         /// </param>
         public void Fill(IList target, IEnumerable source)
         {
@@ -152,6 +142,5 @@ namespace OxyPlot
             }
         }
 
-        #endregion
     }
 }
