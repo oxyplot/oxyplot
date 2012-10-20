@@ -38,8 +38,6 @@ namespace OxyPlot
     /// </summary>
     public partial class PlotModel
     {
-        #region Methods
-
         /// <summary>
         /// Makes the LegendOrientation property safe.
         /// </summary>
@@ -197,7 +195,7 @@ namespace OxyPlot
         /// The series.
         /// </param>
         /// <param name="rect">
-        /// The rect.
+        /// The position and size of the legend.
         /// </param>
         private void RenderLegend(IRenderContext rc, Series s, OxyRect rect)
         {
@@ -291,7 +289,7 @@ namespace OxyPlot
         /// </param>
         private void RenderLegends(IRenderContext rc, OxyRect rect)
         {
-            this.RenderOrMeasureLegends(rc, rect, false);
+            this.RenderOrMeasureLegends(rc, rect);
         }
 
         /// <summary>
@@ -301,7 +299,7 @@ namespace OxyPlot
         /// The render context.
         /// </param>
         /// <param name="rect">
-        /// The rect.
+        /// Provides the available size if measuring, otherwise it provides the position and size of the legend.
         /// </param>
         /// <param name="measureOnly">
         /// Specify if the size of the legend box should be measured only (not rendered).
@@ -360,6 +358,9 @@ namespace OxyPlot
             double y = top;
 
             double lineHeight = 0;
+            
+            // tolerance for floating-point number comparisons
+            const double Epsilon = 1e-3;
 
             // the maximum item with in the column being rendered (only used for vertical orientation)
             double maxItemWidth = 0;
@@ -376,8 +377,8 @@ namespace OxyPlot
                         var r = new OxyRect(sr.Value.Left, sr.Value.Top, maxItemWidth, sr.Value.Height);
                         this.RenderLegend(rc, sr.Key, r);
                     }
-                    seriesToRender.Clear();
 
+                    seriesToRender.Clear();
                 };
 
             foreach (var s in items)
@@ -401,7 +402,7 @@ namespace OxyPlot
                     }
 
                     // Check if the item is too large to fit within the available width
-                    if (x + itemWidth > availableWidth - this.LegendPadding)
+                    if (x + itemWidth > availableWidth - this.LegendPadding + Epsilon)
                     {
                         // new line
                         x = this.LegendPadding;
@@ -428,7 +429,7 @@ namespace OxyPlot
                 }
                 else
                 {
-                    if (y + itemHeight > availableHeight - this.LegendPadding)
+                    if (y + itemHeight > availableHeight - this.LegendPadding + Epsilon)
                     {
                         renderVerticalItems();
 
@@ -441,7 +442,6 @@ namespace OxyPlot
                     {
                         var r = new OxyRect(rect.Left + x, rect.Top + y, itemWidth, itemHeight);
                         seriesToRender.Add(s, r);
-                        // this.RenderLegend(rc, s, r);
                     }
 
                     y += itemHeight;
@@ -474,7 +474,5 @@ namespace OxyPlot
 
             return size;
         }
-
-        #endregion
     }
 }
