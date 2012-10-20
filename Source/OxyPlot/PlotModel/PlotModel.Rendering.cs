@@ -1,9 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotModel.Rendering.cs" company="OxyPlot">
-//   http://oxyplot.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Partial PlotModel class - this file contains rendering methods.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace OxyPlot
 {
     using System;
@@ -15,8 +38,6 @@ namespace OxyPlot
     /// </summary>
     public partial class PlotModel
     {
-        #region Public Methods
-
         /// <summary>
         /// Renders the plot with the specified rendering context.
         /// </summary>
@@ -70,10 +91,6 @@ namespace OxyPlot
                 this.RenderLegends(rc, this.LegendArea);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Calculates the maximum size of the specified axes.
@@ -394,8 +411,16 @@ namespace OxyPlot
                 availableLegendWidth -= this.LegendMargin * 2;
                 availableLegendHeight -= this.LegendMargin * 2;
             }
-            if (availableLegendWidth < 0) { availableLegendWidth = 0; }
-            if (availableLegendHeight < 0) { availableLegendHeight = 0; }
+
+            if (availableLegendWidth < 0)
+            {
+                availableLegendWidth = 0;
+            }
+
+            if (availableLegendHeight < 0)
+            {
+                availableLegendHeight = 0;
+            }
 
             // Calculate the size of the legend box
             var legendSize = this.MeasureLegends(rc, new OxySize(availableLegendWidth, availableLegendHeight));
@@ -450,7 +475,5 @@ namespace OxyPlot
             this.TitleArea = new OxyRect(this.PlotArea.Left, this.Padding.Top, this.PlotArea.Width, titleSize.Height + (this.TitlePadding * 2));
             this.LegendArea = this.GetLegendRectangle(legendSize);
         }
-
-        #endregion
     }
 }
