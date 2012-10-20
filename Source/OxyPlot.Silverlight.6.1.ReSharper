@@ -457,7 +457,7 @@
       </Naming2>
     </Xaml>
     <FileHeader Region="license"><![CDATA[OxyPlot:   http://oxyplot.codeplex.com
-License:   Ms-PL
+License:   MIT
 ]]></FileHeader>
     <GenerateMemberBody />
     <Naming2>
