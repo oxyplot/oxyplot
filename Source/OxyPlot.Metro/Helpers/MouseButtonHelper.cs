@@ -25,89 +25,88 @@
 // </copyright>
 // <summary>
 //   Mouse button helper
-//   from http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Metro
 {
     using System;
+
     using Windows.Foundation;
-    using Windows.UI.Xaml.Input;
-#if !METRO
 
     /// <summary>
     /// Mouse button helper
-    /// from http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx
     /// </summary>
+    /// <remarks>
+    /// from http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx
+    /// </remarks>
     internal static class MouseButtonHelper
     {
         /// <summary>
-        /// The k_ double click speed.
+        /// The double click speed.
         /// </summary>
-        private const long k_DoubleClickSpeed = 500;
+        private const long DoubleClickSpeed = 500;
 
         /// <summary>
-        /// The k_ max move distance.
+        /// The max move distance.
         /// </summary>
-        private const double k_MaxMoveDistance = 10;
+        private const double MaxMoveDistance = 10;
 
         /// <summary>
-        /// The _ last click ticks.
+        /// The last click ticks.
         /// </summary>
-        private static long _LastClickTicks;
+        private static long lastClickTicks;
 
         /// <summary>
-        /// The _ last position.
+        /// The last position.
         /// </summary>
-        private static Point _LastPosition;
+        private static Point lastPosition;
 
         /// <summary>
-        /// The _ last sender.
+        /// The last sender.
         /// </summary>
-        private static WeakReference _LastSender;
+        private static WeakReference lastSender;
 
         /// <summary>
-        /// The is double click.
+        /// Determines whether the last click is a double click.
         /// </summary>
         /// <param name="sender">
         /// The sender.
         /// </param>
-        /// <param name="e">
-        /// The e.
+        /// <param name="position">
+        /// The position.
         /// </param>
         /// <returns>
-        /// The is double click.
+        /// True if the click was a double click.
         /// </returns>
-        internal static bool IsDoubleClick(object sender, MouseButtonEventArgs e)
+        internal static bool IsDoubleClick(object sender, Point position)
         {
-
-            Point position = e.GetPosition(null);
             long clickTicks = DateTime.Now.Ticks;
-            long elapsedTicks = clickTicks - _LastClickTicks;
+            long elapsedTicks = clickTicks - lastClickTicks;
             long elapsedTime = elapsedTicks / TimeSpan.TicksPerMillisecond;
-            bool quickClick = elapsedTime <= k_DoubleClickSpeed;
-            bool senderMatch = _LastSender != null && sender.Equals(_LastSender.Target);
+            bool quickClick = elapsedTime <= DoubleClickSpeed;
+            bool senderMatch = lastSender != null && sender.Equals(lastSender.Target);
 
-            if (senderMatch && quickClick && position.Distance(_LastPosition) <= k_MaxMoveDistance)
+            if (senderMatch && quickClick && position.Distance(lastPosition) <= MaxMoveDistance)
             {
                 // Double click!
-                _LastClickTicks = 0;
-                _LastSender = null;
+                lastClickTicks = 0;
+                lastSender = null;
                 return true;
             }
 
             // Not a double click
-            _LastClickTicks = clickTicks;
-            _LastPosition = position;
+            lastClickTicks = clickTicks;
+            lastPosition = position;
             if (!quickClick)
             {
-                _LastSender = new WeakReference(sender);
+                lastSender = new WeakReference(sender);
             }
 
             return false;
         }
+
         /// <summary>
-        /// The distance.
+        /// Calculates the distance.
         /// </summary>
         /// <param name="pointA">
         /// The point a.
@@ -122,9 +121,8 @@ namespace OxyPlot.Metro
         {
             double x = pointA.X - pointB.X;
             double y = pointA.Y - pointB.Y;
-            return Math.Sqrt(x * x + y * y);
+            return Math.Sqrt((x * x) + (y * y));
         }
 
     }
-#endif
 }

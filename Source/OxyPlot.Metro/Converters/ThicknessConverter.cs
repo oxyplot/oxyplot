@@ -30,7 +30,7 @@
 namespace OxyPlot.Metro
 {
     using System;
-    using System.Globalization;
+
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Data;
 
@@ -46,11 +46,21 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts the specified value.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="targetType">Type of the target.</param>
-        /// <param name="parameter">The parameter.</param>
-        /// <param name="language">The language.</param>
-        /// <returns>The maximum value of the thickness.</returns>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="targetType">
+        /// Type of the target.
+        /// </param>
+        /// <param name="parameter">
+        /// The parameter.
+        /// </param>
+        /// <param name="language">
+        /// The language.
+        /// </param>
+        /// <returns>
+        /// The maximum value of the thickness.
+        /// </returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is Thickness)
@@ -68,11 +78,21 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts back.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="targetType">Type of the target.</param>
-        /// <param name="parameter">The parameter.</param>
-        /// <param name="language">The language.</param>
-        /// <returns>Not implemented.</returns>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="targetType">
+        /// Type of the target.
+        /// </param>
+        /// <param name="parameter">
+        /// The parameter.
+        /// </param>
+        /// <param name="language">
+        /// The language.
+        /// </param>
+        /// <returns>
+        /// Not implemented.
+        /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             return null;

@@ -30,6 +30,7 @@
 namespace OxyPlot.Metro
 {
     using System;
+
     using Windows.Foundation;
     using Windows.UI;
     using Windows.UI.Xaml;
@@ -84,8 +85,7 @@ namespace OxyPlot.Metro
         /// </returns>
         public static Color ToColor(this OxyColor c)
         {
-            return new Color() { A = c.A, R = c.R, G = c.G, B = c.B };
-
+            return new Color { A = c.A, R = c.R, G = c.G, B = c.B };
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Converts a Brush to an OxyColor.
+        /// Converts a SolidColorBrush to an OxyColor.
         /// </summary>
         /// <param name="brush">
         /// The brush.
@@ -193,7 +193,7 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Converts an OxyRect to a Rect.
+        /// Converts an OxyRect to a <see cref="Rect"/>.
         /// </summary>
         /// <param name="r">
         /// The rectangle.
@@ -202,7 +202,7 @@ namespace OxyPlot.Metro
         /// use pixel alignment if set to <c>true</c>.
         /// </param>
         /// <returns>
-        /// A rect.
+        /// The converted rectangle.
         /// </returns>
         public static Rect ToRect(this OxyRect r, bool aliased)
         {
@@ -256,6 +256,5 @@ namespace OxyPlot.Metro
 
             return pts;
         }
-
     }
 }

@@ -29,15 +29,13 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Metro
 {
-    using System;
     using System.Collections.Generic;
+
     using Windows.Foundation;
     using Windows.UI.Text;
-    using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Media;
     using Windows.UI.Xaml.Shapes;
-    using FontWeights = OxyPlot.FontWeights;
 
     /// <summary>
     /// Rendering Metro shapes to a Canvas
@@ -68,7 +66,7 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Gets the height.
+        /// Gets the height of the canvas.
         /// </summary>
         /// <value>The height.</value>
         public double Height { get; private set; }
@@ -88,16 +86,16 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Gets the width.
+        /// Gets the width of the canvas.
         /// </summary>
         /// <value>The width.</value>
         public double Width { get; private set; }
 
         /// <summary>
-        /// The draw ellipse.
+        /// Draws an ellipse.
         /// </summary>
         /// <param name="rect">
-        /// The rect.
+        /// The rectangle defining the ellipse.
         /// </param>
         /// <param name="fill">
         /// The fill.
@@ -113,13 +111,13 @@ namespace OxyPlot.Metro
             var el = new Ellipse();
             if (stroke != null)
             {
-                el.Stroke = new SolidColorBrush(stroke.ToColor());
+                el.Stroke = stroke.ToBrush();
                 el.StrokeThickness = thickness;
             }
 
             if (fill != null)
             {
-                el.Fill = new SolidColorBrush(fill.ToColor());
+                el.Fill = fill.ToBrush();
             }
 
             el.Width = rect.Width;
@@ -159,7 +157,7 @@ namespace OxyPlot.Metro
                 gg.Children.Add(
                     new EllipseGeometry
                         {
-                            Center = new Point(rect.Left + rect.Width / 2, rect.Top + rect.Height / 2),
+                            Center = new Point(rect.Left + (rect.Width / 2), rect.Top + (rect.Height / 2)),
                             RadiusX = rect.Width / 2,
                             RadiusY = rect.Height / 2
                         });
@@ -388,7 +386,7 @@ namespace OxyPlot.Metro
         /// Draws a rectangle.
         /// </summary>
         /// <param name="rect">
-        /// The rect.
+        /// The rectangle.
         /// </param>
         /// <param name="fill">
         /// The fill.
@@ -404,13 +402,13 @@ namespace OxyPlot.Metro
             var el = new Rectangle();
             if (stroke != null)
             {
-                el.Stroke = new SolidColorBrush(stroke.ToColor());
+                el.Stroke = stroke.ToBrush();
                 el.StrokeThickness = thickness;
             }
 
             if (fill != null)
             {
-                el.Fill = new SolidColorBrush(fill.ToColor());
+                el.Fill = fill.ToBrush();
             }
 
             el.Width = rect.Width;
@@ -458,16 +456,36 @@ namespace OxyPlot.Metro
         /// <summary>
         /// The draw text.
         /// </summary>
-        /// <param name="p">The p.</param>
-        /// <param name="text">The text.</param>
-        /// <param name="fill">The fill.</param>
-        /// <param name="fontFamily">The font family.</param>
-        /// <param name="fontSize">The font size.</param>
-        /// <param name="fontWeight">The font weight.</param>
-        /// <param name="rotate">The rotate.</param>
-        /// <param name="halign">The horizontal alignment.</param>
-        /// <param name="valign">The vertical alignment.</param>
-        /// <param name="maxSize">The maximum size of the text.</param>
+        /// <param name="p">
+        /// The p.
+        /// </param>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <param name="fill">
+        /// The fill.
+        /// </param>
+        /// <param name="fontFamily">
+        /// The font family.
+        /// </param>
+        /// <param name="fontSize">
+        /// The font size.
+        /// </param>
+        /// <param name="fontWeight">
+        /// The font weight.
+        /// </param>
+        /// <param name="rotate">
+        /// The rotate.
+        /// </param>
+        /// <param name="halign">
+        /// The horizontal alignment.
+        /// </param>
+        /// <param name="valign">
+        /// The vertical alignment.
+        /// </param>
+        /// <param name="maxSize">
+        /// The maximum size of the text.
+        /// </param>
         public void DrawText(
             ScreenPoint p,
             string text,
@@ -480,7 +498,7 @@ namespace OxyPlot.Metro
             VerticalTextAlign valign,
             OxySize? maxSize)
         {
-            var tb = new TextBlock { Text = text, Foreground = new SolidColorBrush(fill.ToColor()) };
+            var tb = new TextBlock { Text = text, Foreground = fill.ToBrush() };
 
             // tb.SetValue(TextOptions.TextHintingModeProperty, TextHintingMode.Animated);
             if (fontFamily != null)
@@ -521,7 +539,7 @@ namespace OxyPlot.Metro
 
             var transform = new TransformGroup();
             transform.Children.Add(new TranslateTransform { X = (int)dx, Y = (int)dy });
-            if (rotate != 0)
+            if (!rotate.Equals(0.0))
             {
                 transform.Children.Add(new RotateTransform { Angle = rotate });
             }
@@ -533,7 +551,7 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// The measure text.
+        /// Measures the text.
         /// </summary>
         /// <param name="text">
         /// The text.
@@ -542,12 +560,13 @@ namespace OxyPlot.Metro
         /// The font family.
         /// </param>
         /// <param name="fontSize">
-        /// The font size.
+        /// Size of the font.
         /// </param>
         /// <param name="fontWeight">
         /// The font weight.
         /// </param>
         /// <returns>
+        /// The text size.
         /// </returns>
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
@@ -578,20 +597,24 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Sets the tool tip for the following items.
         /// </summary>
-        /// <param name="text">The text in the tooltip.</param>
+        /// <param name="text">
+        /// The text in the tooltip.
+        /// </param>
         /// <params>
         /// This is only used in the plot controls.
         /// </params>
         public void SetToolTip(string text)
         {
         }
+
         /// <summary>
-        /// The create dash array collection.
+        /// Creates the dash array collection.
         /// </summary>
         /// <param name="dashArray">
         /// The dash array.
         /// </param>
         /// <returns>
+        /// The dash collection.
         /// </returns>
         private static DoubleCollection CreateDashArrayCollection(IList<double> dashArray)
         {
@@ -605,20 +628,21 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// The get font weight.
+        /// Converts a font weight value to a FontWeight.
         /// </summary>
         /// <param name="fontWeight">
-        /// The font weight.
+        /// The font weight value.
         /// </param>
         /// <returns>
+        /// The font weight.
         /// </returns>
         private static FontWeight GetFontWeight(double fontWeight)
         {
-            return fontWeight > FontWeights.Normal ? Windows.UI.Text.FontWeights.Bold : Windows.UI.Text.FontWeights.Normal;
+            return fontWeight > OxyPlot.FontWeights.Normal ? FontWeights.Bold : FontWeights.Normal;
         }
 
         /// <summary>
-        /// The add.
+        /// Adds the specified shape to the canvas.
         /// </summary>
         /// <param name="shape">
         /// The shape.
@@ -629,19 +653,20 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// The get cached brush.
+        /// Gets a brush from the cache or creates a new one.
         /// </summary>
         /// <param name="stroke">
         /// The stroke.
         /// </param>
         /// <returns>
+        /// The brush.
         /// </returns>
         private Brush GetCachedBrush(OxyColor stroke)
         {
             Brush brush;
             if (!this.brushCache.TryGetValue(stroke, out brush))
             {
-                brush = new SolidColorBrush(stroke.ToColor());
+                brush = stroke.ToBrush();
                 this.brushCache.Add(stroke, brush);
             }
 
@@ -649,7 +674,7 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// The set stroke.
+        /// Sets the stroke properties of the specified shape.
         /// </summary>
         /// <param name="shape">
         /// The shape.
@@ -693,7 +718,7 @@ namespace OxyPlot.Metro
                         // The default StrokeLineJoin is Miter
                 }
 
-                if (thickness != 1)
+                if (!thickness.Equals(1.0))
                 {
                     // default values is 1
                     shape.StrokeThickness = thickness;
@@ -707,5 +732,6 @@ namespace OxyPlot.Metro
 
             // shape.UseLayoutRounding = aliased;
         }
+
     }
 }
