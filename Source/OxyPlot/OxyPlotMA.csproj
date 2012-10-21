@@ -74,6 +74,7 @@
     <Compile Include="Foundation\CodeGenerator\CodeGenerator.cs" />
     <Compile Include="Foundation\CodeGenerator\CodeGeneratorStringExtensions.cs" />
     <Compile Include="Foundation\CodeGenerator\ICodeGenerating.cs" />
+    <Compile Include="Foundation\DataPointConverter.cs" />
     <Compile Include="Foundation\ListFiller.cs" />
     <Compile Include="Foundation\OxyColorExtensions.cs" />
     <Compile Include="Foundation\OxyPalette.cs" />

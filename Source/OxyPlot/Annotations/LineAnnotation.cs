@@ -409,8 +409,17 @@ namespace OxyPlot
                 // Apply 'padding' to the position
                 var angleInRadians = angle / 180 * Math.PI;
                 var f = 1;
-                if (this.TextHorizontalAlignment == HorizontalTextAlign.Right) f = -1;
-                if (this.TextHorizontalAlignment == HorizontalTextAlign.Center) f = 0;
+
+                if (this.TextHorizontalAlignment == HorizontalTextAlign.Right)
+                {
+                    f = -1;
+                }
+
+                if (this.TextHorizontalAlignment == HorizontalTextAlign.Center)
+                {
+                    f = 0;
+                }
+
                 position.X += f * this.TextPadding * Math.Cos(angleInRadians);
                 position.Y += f * this.TextPadding * Math.Sin(angleInRadians);
 

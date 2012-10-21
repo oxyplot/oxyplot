@@ -34,6 +34,9 @@ namespace OxyPlot
     /// <summary>
     /// DataPoint value type.
     /// </summary>
+#if !PCL
+    [System.ComponentModel.TypeConverter(typeof(DataPointConverter))]
+#endif
     public struct DataPoint : IDataPoint
     {
         /// <summary>

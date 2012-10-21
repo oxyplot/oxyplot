@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ConverterExtensions.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -108,6 +108,28 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Converts a HorizontalAlignment to a VerticalTextAlign.
+        /// </summary>
+        /// <param name="alignment">
+        /// The alignment.
+        /// </param>
+        /// <returns>
+        /// A VerticalTextAlign.
+        /// </returns>
+        public static VerticalTextAlign ToVerticalTextAlign(this VerticalAlignment alignment)
+        {
+            switch (alignment)
+            {
+                case VerticalAlignment.Center:
+                    return VerticalTextAlign.Middle;
+                case VerticalAlignment.Top:
+                    return VerticalTextAlign.Top;
+                default:
+                    return VerticalTextAlign.Bottom;
+            }
+        }
+
+        /// <summary>
         /// Converts a Color to an OxyColor.
         /// </summary>
         /// <param name="color">
@@ -136,13 +158,13 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Converts a Brush to an OxyColor.
+        /// Converts a <see cref="Brush"/> to an <see cref="OxyColor"/>.
         /// </summary>
         /// <param name="brush">
         /// The brush.
         /// </param>
         /// <returns>
-        /// An oxycolor.
+        /// An <see cref="OxyColor"/>.
         /// </returns>
         public static OxyColor ToOxyColor(this Brush brush)
         {
@@ -151,13 +173,13 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Converts a Thickness to an OxyThickness.
+        /// Converts a Thickness to an <see cref="OxyThickness"/>.
         /// </summary>
         /// <param name="t">
         /// The thickness.
         /// </param>
         /// <returns>
-        /// An OxyPlot thickness.
+        /// An <see cref="OxyThickness"/>.
         /// </returns>
         public static OxyThickness ToOxyThickness(this Thickness t)
         {
@@ -165,7 +187,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Converts a ScreenPoint to a Point.
+        /// Converts a <see cref="ScreenPoint"/> to a <see cref="Point"/>.
         /// </summary>
         /// <param name="pt">
         /// The screen point.
@@ -174,7 +196,7 @@ namespace OxyPlot.Wpf
         /// use pixel alignment conversion if set to <c>true</c>.
         /// </param>
         /// <returns>
-        /// A point.
+        /// A <see cref="Point"/>.
         /// </returns>
         public static Point ToPoint(this ScreenPoint pt, bool aliased)
         {
@@ -190,7 +212,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Converts an OxyRect to a Rect.
+        /// Converts an <see cref="OxyRect"/> to a <see cref="Rect"/>.
         /// </summary>
         /// <param name="r">
         /// The rectangle.
@@ -199,7 +221,7 @@ namespace OxyPlot.Wpf
         /// use pixel alignment if set to <c>true</c>.
         /// </param>
         /// <returns>
-        /// A rect.
+        /// A <see cref="Rect"/>.
         /// </returns>
         public static Rect ToRect(this OxyRect r, bool aliased)
         {
@@ -216,13 +238,13 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Converts a point to a ScreenPoint.
+        /// Converts a <see cref="Point"/> to a <see cref="ScreenPoint"/>.
         /// </summary>
         /// <param name="pt">
         /// The point.
         /// </param>
         /// <returns>
-        /// A screen point.
+        /// A <see cref="ScreenPoint"/>.
         /// </returns>
         public static ScreenPoint ToScreenPoint(this Point pt)
         {
@@ -254,5 +276,18 @@ namespace OxyPlot.Wpf
             return pts;
         }
 
+        /// <summary>
+        /// Converts the specified vector to a ScreenVector.
+        /// </summary>
+        /// <param name="vector">
+        /// The vector.
+        /// </param>
+        /// <returns>
+        /// A <see cref="ScreenVector"/>.
+        /// </returns>
+        public static ScreenVector ToScreenVector(this Vector vector)
+        {
+            return new ScreenVector(vector.X, vector.Y);
+        }
     }
 }

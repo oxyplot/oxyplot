@@ -42,7 +42,7 @@ namespace OxyPlot
         /// </summary>
         public TextAnnotation()
         {
-            this.Color = OxyColors.Blue;
+            this.TextColor = OxyColors.Blue;
             this.Stroke = OxyColors.Black;
             this.Background = null;
             this.StrokeThickness = 1;
@@ -57,11 +57,6 @@ namespace OxyPlot
         /// </summary>
         /// <value> The background. </value>
         public OxyColor Background { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color of the text.
-        /// </summary>
-        public OxyColor Color { get; set; }
 
         /// <summary>
         /// Gets or sets the horizontal alignment.
