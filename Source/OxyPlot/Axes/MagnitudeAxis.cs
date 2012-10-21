@@ -179,7 +179,7 @@ namespace OxyPlot
             double r = (x - this.Offset) * this.scale;
             double theta = (y - angleAxis.Offset) * angleAxis.Scale;
 
-            return new ScreenPoint(this.MidPoint.x + (r * Math.Cos(theta)), this.MidPoint.y + (r * Math.Sin(theta)));
+            return new ScreenPoint(this.MidPoint.x + (r * Math.Cos(theta)), this.MidPoint.y - (r * Math.Sin(theta)));
         }
 
         /// <summary>
