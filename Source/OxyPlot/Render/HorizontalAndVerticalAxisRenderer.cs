@@ -55,12 +55,11 @@ namespace OxyPlot
         /// <summary>
         /// The render.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        public override void Render(Axis axis)
+        /// <param name="axis">The axis.</param>
+        /// <param name="pass">The render pass.</param>
+        public override void Render(Axis axis, int pass)
         {
-            base.Render(axis);
+            base.Render(axis, pass);
 
             double totalShift = axis.PositionTierMinShift;
             double tierSize = axis.PositionTierSize - this.Plot.AxisTierDistance;
@@ -117,214 +116,94 @@ namespace OxyPlot
 
             double eps = axis.ActualMinorStep * 1e-3;
 
-            this.GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
-
-            foreach (double value in this.MinorTickValues)
+            if (pass == 0)
             {
-                if (value < actualMinimum - eps || value > actualMaximum + eps)
+                this.GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
+
+                foreach (double value in this.MinorTickValues)
                 {
-                    continue;
+                    if (value < actualMinimum - eps || value > actualMaximum + eps)
+                    {
+                        continue;
+                    }
+
+                    if (this.MajorTickValues.Contains(value))
+                    {
+                        continue;
+                    }
+
+                    if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
+                    {
+                        continue;
+                    }
+
+                    double transformedValue = axis.Transform(value);
+
+                    if (isHorizontal)
+                    {
+                        SnapTo(plotAreaLeft, ref transformedValue);
+                        SnapTo(plotAreaRight, ref transformedValue);
+                    }
+                    else
+                    {
+                        SnapTo(plotAreaTop, ref transformedValue);
+                        SnapTo(plotAreaBottom, ref transformedValue);
+                    }
+
+                    // Draw the minor grid line
+                    if (this.MinorPen != null)
+                    {
+                        if (isHorizontal)
+                        {
+                            minorSegments.Add(new ScreenPoint(transformedValue, plotAreaTop));
+                            minorSegments.Add(new ScreenPoint(transformedValue, plotAreaBottom));
+                        }
+                        else
+                        {
+                            if (transformedValue < plotAreaTop || transformedValue > plotAreaBottom)
+                            {
+                            }
+
+                            minorSegments.Add(new ScreenPoint(plotAreaLeft, transformedValue));
+                            minorSegments.Add(new ScreenPoint(plotAreaRight, transformedValue));
+                        }
+                    }
+
+                    // Draw the minor tick
+                    if (axis.TickStyle != TickStyle.None)
+                    {
+                        if (isHorizontal)
+                        {
+                            minorTickSegments.Add(new ScreenPoint(transformedValue, axisPosition + a0));
+                            minorTickSegments.Add(new ScreenPoint(transformedValue, axisPosition + a1));
+                        }
+                        else
+                        {
+                            minorTickSegments.Add(new ScreenPoint(axisPosition + a0, transformedValue));
+                            minorTickSegments.Add(new ScreenPoint(axisPosition + a1, transformedValue));
+                        }
+                    }
                 }
 
-                if (this.MajorTickValues.Contains(value))
-                {
-                    continue;
-                }
-
-                if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
-                {
-                    continue;
-                }
-
-                double transformedValue = axis.Transform(value);
-
-                if (isHorizontal)
-                {
-                    SnapTo(plotAreaLeft, ref transformedValue);
-                    SnapTo(plotAreaRight, ref transformedValue);
-                }
-                else
-                {
-                    SnapTo(plotAreaTop, ref transformedValue);
-                    SnapTo(plotAreaBottom, ref transformedValue);
-                }
-
-                // Draw the minor grid line
+                // Draw all the line segments);
                 if (this.MinorPen != null)
                 {
-                    if (isHorizontal)
-                    {
-                        minorSegments.Add(new ScreenPoint(transformedValue, plotAreaTop));
-                        minorSegments.Add(new ScreenPoint(transformedValue, plotAreaBottom));
-                    }
-                    else
-                    {
-                        if (transformedValue < plotAreaTop || transformedValue > plotAreaBottom)
-                        {
-                        }
-
-                        minorSegments.Add(new ScreenPoint(plotAreaLeft, transformedValue));
-                        minorSegments.Add(new ScreenPoint(plotAreaRight, transformedValue));
-                    }
-                }
-
-                // Draw the minor tick
-                if (axis.TickStyle != TickStyle.None)
-                {
-                    if (isHorizontal)
-                    {
-                        minorTickSegments.Add(new ScreenPoint(transformedValue, axisPosition + a0));
-                        minorTickSegments.Add(new ScreenPoint(transformedValue, axisPosition + a1));
-                    }
-                    else
-                    {
-                        minorTickSegments.Add(new ScreenPoint(axisPosition + a0, transformedValue));
-                        minorTickSegments.Add(new ScreenPoint(axisPosition + a1, transformedValue));
-                    }
+                    this.rc.DrawLineSegments(minorSegments, this.MinorPen);
                 }
             }
 
-            this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
-
-            foreach (double value in this.MajorTickValues)
+            if (pass == 1)
             {
-                if (value < actualMinimum - eps || value > actualMaximum + eps)
-                {
-                    continue;
-                }
+                this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
 
-                if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
+                foreach (double value in this.MajorTickValues)
                 {
-                    continue;
-                }
-
-                double transformedValue = axis.Transform(value);
-                if (isHorizontal)
-                {
-                    SnapTo(plotAreaLeft, ref transformedValue);
-                    SnapTo(plotAreaRight, ref transformedValue);
-                }
-                else
-                {
-                    SnapTo(plotAreaTop, ref transformedValue);
-                    SnapTo(plotAreaBottom, ref transformedValue);
-                }
-
-                if (this.MajorPen != null)
-                {
-                    if (isHorizontal)
+                    if (value < actualMinimum - eps || value > actualMaximum + eps)
                     {
-                        majorSegments.Add(new ScreenPoint(transformedValue, plotAreaTop));
-                        majorSegments.Add(new ScreenPoint(transformedValue, plotAreaBottom));
+                        continue;
                     }
-                    else
-                    {
-                        majorSegments.Add(new ScreenPoint(plotAreaLeft, transformedValue));
-                        majorSegments.Add(new ScreenPoint(plotAreaRight, transformedValue));
-                    }
-                }
 
-                if (axis.TickStyle != TickStyle.None)
-                {
-                    if (isHorizontal)
-                    {
-                        majorTickSegments.Add(new ScreenPoint(transformedValue, axisPosition + a0));
-                        majorTickSegments.Add(new ScreenPoint(transformedValue, axisPosition + a1));
-                    }
-                    else
-                    {
-                        majorTickSegments.Add(new ScreenPoint(axisPosition + a0, transformedValue));
-                        majorTickSegments.Add(new ScreenPoint(axisPosition + a1, transformedValue));
-                    }
-                }
-            }
-
-            // Render the axis labels (numbers or category names)
-            foreach (double value in this.MajorLabelValues)
-            {
-                if (value < actualMinimum - eps || value > actualMaximum + eps)
-                {
-                    continue;
-                }
-
-                if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
-                {
-                    continue;
-                }
-
-                double transformedValue = axis.Transform(value);
-                if (isHorizontal)
-                {
-                    SnapTo(plotAreaLeft, ref transformedValue);
-                    SnapTo(plotAreaRight, ref transformedValue);
-                }
-                else
-                {
-                    SnapTo(plotAreaTop, ref transformedValue);
-                    SnapTo(plotAreaBottom, ref transformedValue);
-                }
-
-                var pt = new ScreenPoint();
-                var ha = HorizontalTextAlign.Right;
-                var va = VerticalTextAlign.Middle;
-                switch (axis.Position)
-                {
-                    case AxisPosition.Left:
-                        pt = new ScreenPoint(axisPosition + a1 - axis.AxisTickToLabelDistance, transformedValue);
-                        GetRotatedAlignments(
-                            axis.Angle, HorizontalTextAlign.Right, VerticalTextAlign.Middle, out ha, out va);
-                        break;
-                    case AxisPosition.Right:
-                        pt = new ScreenPoint(axisPosition + a1 + axis.AxisTickToLabelDistance, transformedValue);
-                        GetRotatedAlignments(
-                            axis.Angle, HorizontalTextAlign.Left, VerticalTextAlign.Middle, out ha, out va);
-                        break;
-                    case AxisPosition.Top:
-                        pt = new ScreenPoint(transformedValue, axisPosition + a1 - axis.AxisTickToLabelDistance);
-                        GetRotatedAlignments(
-                            axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Bottom, out ha, out va);
-                        break;
-                    case AxisPosition.Bottom:
-                        pt = new ScreenPoint(transformedValue, axisPosition + a1 + axis.AxisTickToLabelDistance);
-                        GetRotatedAlignments(
-                            axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Top, out ha, out va);
-                        break;
-                }
-
-                string text = axis.FormatValue(value);
-                this.rc.DrawMathText(
-                    pt,
-                    text,
-                    axis.ActualTextColor,
-                    axis.ActualFont,
-                    axis.ActualFontSize,
-                    axis.ActualFontWeight,
-                    axis.Angle,
-                    ha,
-                    va,
-                    false);
-            }
-
-            // Draw the zero crossing line
-            if (axis.PositionAtZeroCrossing && this.ZeroPen != null)
-            {
-                double t0 = axis.Transform(0);
-                if (isHorizontal)
-                {
-                    this.rc.DrawLine(t0, plotAreaTop, t0, plotAreaBottom, this.ZeroPen);
-                }
-                else
-                {
-                    this.rc.DrawLine(plotAreaLeft, t0, plotAreaRight, t0, this.ZeroPen);
-                }
-            }
-
-            // Draw extra grid lines
-            if (axis.ExtraGridlines != null && this.ExtraPen != null)
-            {
-                foreach (double value in axis.ExtraGridlines)
-                {
-                    if (!this.IsWithin(value, actualMinimum, actualMaximum))
+                    if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
                     {
                         continue;
                     }
@@ -332,122 +211,250 @@ namespace OxyPlot
                     double transformedValue = axis.Transform(value);
                     if (isHorizontal)
                     {
-                        this.rc.DrawLine(transformedValue, plotAreaTop, transformedValue, plotAreaBottom, this.ExtraPen);
+                        SnapTo(plotAreaLeft, ref transformedValue);
+                        SnapTo(plotAreaRight, ref transformedValue);
                     }
                     else
                     {
-                        this.rc.DrawLine(plotAreaLeft, transformedValue, plotAreaRight, transformedValue, this.ExtraPen);
+                        SnapTo(plotAreaTop, ref transformedValue);
+                        SnapTo(plotAreaBottom, ref transformedValue);
+                    }
+
+                    if (this.MajorPen != null)
+                    {
+                        if (isHorizontal)
+                        {
+                            majorSegments.Add(new ScreenPoint(transformedValue, plotAreaTop));
+                            majorSegments.Add(new ScreenPoint(transformedValue, plotAreaBottom));
+                        }
+                        else
+                        {
+                            majorSegments.Add(new ScreenPoint(plotAreaLeft, transformedValue));
+                            majorSegments.Add(new ScreenPoint(plotAreaRight, transformedValue));
+                        }
+                    }
+
+                    if (axis.TickStyle != TickStyle.None)
+                    {
+                        if (isHorizontal)
+                        {
+                            majorTickSegments.Add(new ScreenPoint(transformedValue, axisPosition + a0));
+                            majorTickSegments.Add(new ScreenPoint(transformedValue, axisPosition + a1));
+                        }
+                        else
+                        {
+                            majorTickSegments.Add(new ScreenPoint(axisPosition + a0, transformedValue));
+                            majorTickSegments.Add(new ScreenPoint(axisPosition + a1, transformedValue));
+                        }
                     }
                 }
-            }
 
-            // Draw the axis line (across the tick marks)
-            if (isHorizontal)
-            {
-                this.rc.DrawLine(
-                    axis.Transform(actualMinimum),
-                    axisPosition,
-                    axis.Transform(actualMaximum),
-                    axisPosition,
-                    this.AxislinePen);
-            }
-            else
-            {
-                this.rc.DrawLine(
-                    axisPosition,
-                    axis.Transform(actualMinimum),
-                    axisPosition,
-                    axis.Transform(actualMaximum),
-                    this.AxislinePen);
-            }
-
-            // Draw the axis title
-            if (!string.IsNullOrEmpty(axis.ActualTitle))
-            {
-                double ymid = isHorizontal
-                                  ? Lerp(axis.ScreenMin.X, axis.ScreenMax.X, axis.TitlePosition)
-                                  : Lerp(axis.ScreenMax.Y, axis.ScreenMin.Y, axis.TitlePosition);
-
-                double angle = -90;
-                var lpt = new ScreenPoint();
-
-                var halign = HorizontalTextAlign.Center;
-                var valign = VerticalTextAlign.Top;
-
-                if (axis.PositionAtZeroCrossing)
+                // Render the axis labels (numbers or category names)
+                foreach (double value in this.MajorLabelValues)
                 {
-                    ymid = perpendicularAxis.Transform(perpendicularAxis.ActualMaximum);
+                    if (value < actualMinimum - eps || value > actualMaximum + eps)
+                    {
+                        continue;
+                    }
+
+                    if (axis.PositionAtZeroCrossing && Math.Abs(value) < eps)
+                    {
+                        continue;
+                    }
+
+                    double transformedValue = axis.Transform(value);
+                    if (isHorizontal)
+                    {
+                        SnapTo(plotAreaLeft, ref transformedValue);
+                        SnapTo(plotAreaRight, ref transformedValue);
+                    }
+                    else
+                    {
+                        SnapTo(plotAreaTop, ref transformedValue);
+                        SnapTo(plotAreaBottom, ref transformedValue);
+                    }
+
+                    var pt = new ScreenPoint();
+                    var ha = HorizontalTextAlign.Right;
+                    var va = VerticalTextAlign.Middle;
+                    switch (axis.Position)
+                    {
+                        case AxisPosition.Left:
+                            pt = new ScreenPoint(axisPosition + a1 - axis.AxisTickToLabelDistance, transformedValue);
+                            GetRotatedAlignments(
+                                axis.Angle, HorizontalTextAlign.Right, VerticalTextAlign.Middle, out ha, out va);
+                            break;
+                        case AxisPosition.Right:
+                            pt = new ScreenPoint(axisPosition + a1 + axis.AxisTickToLabelDistance, transformedValue);
+                            GetRotatedAlignments(
+                                axis.Angle, HorizontalTextAlign.Left, VerticalTextAlign.Middle, out ha, out va);
+                            break;
+                        case AxisPosition.Top:
+                            pt = new ScreenPoint(transformedValue, axisPosition + a1 - axis.AxisTickToLabelDistance);
+                            GetRotatedAlignments(
+                                axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Bottom, out ha, out va);
+                            break;
+                        case AxisPosition.Bottom:
+                            pt = new ScreenPoint(transformedValue, axisPosition + a1 + axis.AxisTickToLabelDistance);
+                            GetRotatedAlignments(
+                                axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Top, out ha, out va);
+                            break;
+                    }
+
+                    string text = axis.FormatValue(value);
+                    this.rc.DrawMathText(
+                        pt,
+                        text,
+                        axis.ActualTextColor,
+                        axis.ActualFont,
+                        axis.ActualFontSize,
+                        axis.ActualFontWeight,
+                        axis.Angle,
+                        ha,
+                        va,
+                        false);
                 }
 
-                OxySize? maxSize = null;
-
-                if (axis.ClipTitle)
+                // Draw the zero crossing line
+                if (axis.PositionAtZeroCrossing && this.ZeroPen != null)
                 {
-                    // Calculate the title clipping dimensions
-                    double screenLength = isHorizontal
-                                              ? Math.Abs(axis.ScreenMax.X - axis.ScreenMin.X)
-                                              : Math.Abs(axis.ScreenMax.Y - axis.ScreenMin.Y);
-
-                    maxSize = new OxySize(screenLength * axis.TitleClippingLength, double.MaxValue);
+                    double t0 = axis.Transform(0);
+                    if (isHorizontal)
+                    {
+                        this.rc.DrawLine(t0, plotAreaTop, t0, plotAreaBottom, this.ZeroPen);
+                    }
+                    else
+                    {
+                        this.rc.DrawLine(plotAreaLeft, t0, plotAreaRight, t0, this.ZeroPen);
+                    }
                 }
 
-                switch (axis.Position)
+                // Draw extra grid lines
+                if (axis.ExtraGridlines != null && this.ExtraPen != null)
                 {
-                    case AxisPosition.Left:
-                        lpt = new ScreenPoint(titlePosition, ymid);
-                        break;
-                    case AxisPosition.Right:
-                        lpt = new ScreenPoint(titlePosition, ymid);
-                        valign = VerticalTextAlign.Bottom;
-                        break;
-                    case AxisPosition.Top:
-                        lpt = new ScreenPoint(ymid, titlePosition);
-                        halign = HorizontalTextAlign.Center;
-                        valign = VerticalTextAlign.Top;
-                        angle = 0;
-                        break;
-                    case AxisPosition.Bottom:
-                        lpt = new ScreenPoint(ymid, titlePosition);
-                        halign = HorizontalTextAlign.Center;
-                        valign = VerticalTextAlign.Bottom;
-                        angle = 0;
-                        break;
+                    foreach (double value in axis.ExtraGridlines)
+                    {
+                        if (!this.IsWithin(value, actualMinimum, actualMaximum))
+                        {
+                            continue;
+                        }
+
+                        double transformedValue = axis.Transform(value);
+                        if (isHorizontal)
+                        {
+                            this.rc.DrawLine(
+                                transformedValue, plotAreaTop, transformedValue, plotAreaBottom, this.ExtraPen);
+                        }
+                        else
+                        {
+                            this.rc.DrawLine(
+                                plotAreaLeft, transformedValue, plotAreaRight, transformedValue, this.ExtraPen);
+                        }
+                    }
                 }
 
-                this.rc.SetToolTip(axis.ToolTip);
-                this.rc.DrawText(
-                    lpt,
-                    axis.ActualTitle,
-                    axis.ActualTitleColor,
-                    axis.ActualTitleFont,
-                    axis.ActualTitleFontSize,
-                    axis.ActualTitleFontWeight,
-                    angle,
-                    halign,
-                    valign,
-                    maxSize);
-                this.rc.SetToolTip(null);
-            }
+                // Draw the axis line (across the tick marks)
+                if (isHorizontal)
+                {
+                    this.rc.DrawLine(
+                        axis.Transform(actualMinimum),
+                        axisPosition,
+                        axis.Transform(actualMaximum),
+                        axisPosition,
+                        this.AxislinePen);
+                }
+                else
+                {
+                    this.rc.DrawLine(
+                        axisPosition,
+                        axis.Transform(actualMinimum),
+                        axisPosition,
+                        axis.Transform(actualMaximum),
+                        this.AxislinePen);
+                }
 
-            // Draw all the line segments);
-            if (this.MinorPen != null)
-            {
-                this.rc.DrawLineSegments(minorSegments, this.MinorPen);
-            }
+                // Draw the axis title
+                if (!string.IsNullOrEmpty(axis.ActualTitle))
+                {
+                    double ymid = isHorizontal
+                                      ? Lerp(axis.ScreenMin.X, axis.ScreenMax.X, axis.TitlePosition)
+                                      : Lerp(axis.ScreenMax.Y, axis.ScreenMin.Y, axis.TitlePosition);
 
-            if (this.MajorPen != null)
-            {
-                this.rc.DrawLineSegments(majorSegments, this.MajorPen);
-            }
+                    double angle = -90;
+                    var lpt = new ScreenPoint();
 
-            if (this.MinorTickPen != null)
-            {
-                this.rc.DrawLineSegments(minorTickSegments, this.MinorTickPen);
-            }
+                    var halign = HorizontalTextAlign.Center;
+                    var valign = VerticalTextAlign.Top;
 
-            if (this.MajorTickPen != null)
-            {
-                this.rc.DrawLineSegments(majorTickSegments, this.MajorTickPen);
+                    if (axis.PositionAtZeroCrossing)
+                    {
+                        ymid = perpendicularAxis.Transform(perpendicularAxis.ActualMaximum);
+                    }
+
+                    OxySize? maxSize = null;
+
+                    if (axis.ClipTitle)
+                    {
+                        // Calculate the title clipping dimensions
+                        double screenLength = isHorizontal
+                                                  ? Math.Abs(axis.ScreenMax.X - axis.ScreenMin.X)
+                                                  : Math.Abs(axis.ScreenMax.Y - axis.ScreenMin.Y);
+
+                        maxSize = new OxySize(screenLength * axis.TitleClippingLength, double.MaxValue);
+                    }
+
+                    switch (axis.Position)
+                    {
+                        case AxisPosition.Left:
+                            lpt = new ScreenPoint(titlePosition, ymid);
+                            break;
+                        case AxisPosition.Right:
+                            lpt = new ScreenPoint(titlePosition, ymid);
+                            valign = VerticalTextAlign.Bottom;
+                            break;
+                        case AxisPosition.Top:
+                            lpt = new ScreenPoint(ymid, titlePosition);
+                            halign = HorizontalTextAlign.Center;
+                            valign = VerticalTextAlign.Top;
+                            angle = 0;
+                            break;
+                        case AxisPosition.Bottom:
+                            lpt = new ScreenPoint(ymid, titlePosition);
+                            halign = HorizontalTextAlign.Center;
+                            valign = VerticalTextAlign.Bottom;
+                            angle = 0;
+                            break;
+                    }
+
+                    this.rc.SetToolTip(axis.ToolTip);
+                    this.rc.DrawText(
+                        lpt,
+                        axis.ActualTitle,
+                        axis.ActualTitleColor,
+                        axis.ActualTitleFont,
+                        axis.ActualTitleFontSize,
+                        axis.ActualTitleFontWeight,
+                        angle,
+                        halign,
+                        valign,
+                        maxSize);
+                    this.rc.SetToolTip(null);
+                }
+
+                if (this.MajorPen != null)
+                {
+                    this.rc.DrawLineSegments(majorSegments, this.MajorPen);
+                }
+
+                if (this.MinorTickPen != null)
+                {
+                    this.rc.DrawLineSegments(minorTickSegments, this.MinorTickPen);
+                }
+
+                if (this.MajorTickPen != null)
+                {
+                    this.rc.DrawLineSegments(majorTickSegments, this.MajorTickPen);
+                }
             }
         }
 
@@ -547,6 +554,5 @@ namespace OxyPlot
                 v = value;
             }
         }
-
     }
 }

@@ -832,5 +832,31 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("GridLines: Issue 9990")]
+        public static PlotModel GridLinesBothDifferentColors()
+        {
+            var plotModel1 = new PlotModel { Title = "Don't stare at this plot too long...", Subtitle = "Minor gridlines should be below major gridlines (issue 9990)" };
+            var leftAxis = new LinearAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MajorGridlineColor = OxyColors.Black,
+                MajorGridlineThickness = 6,
+                MinorGridlineStyle = LineStyle.Solid,
+                MinorGridlineColor = OxyColors.Blue,
+                MinorGridlineThickness = 6,
+            };
+            plotModel1.Axes.Add(leftAxis);
+            var bottomAxis = new LinearAxis(AxisPosition.Bottom)
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MajorGridlineColor = OxyColors.Black,
+                MajorGridlineThickness = 6,
+                MinorGridlineStyle = LineStyle.Solid,
+                MinorGridlineColor = OxyColors.Blue,
+                MinorGridlineThickness = 6,
+            };
+            plotModel1.Axes.Add(bottomAxis);
+            return plotModel1;
+        }
     }
 }

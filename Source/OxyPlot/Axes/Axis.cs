@@ -317,7 +317,7 @@ namespace OxyPlot
         public OxyColor ExtraGridlineColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the extra gridlines linestyle.
+        /// Gets or sets the extra gridlines line style.
         /// </summary>
         public LineStyle ExtraGridlineStyle { get; set; }
 
@@ -381,7 +381,7 @@ namespace OxyPlot
         public bool IsZoomEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets the key of the axis. This can be used to find an axis if you have defined mutiple axes in a plot.
+        /// Gets or sets the key of the axis. This can be used to find an axis if you have defined multiple axes in a plot.
         /// </summary>
         public string Key { get; set; }
 
@@ -733,8 +733,8 @@ namespace OxyPlot
         /// Transform the specified screen point to data coordinates.
         /// </summary>
         /// <param name="p">The point.</param>
-        /// <param name="xaxis">The xaxis.</param>
-        /// <param name="yaxis">The yaxis.</param>
+        /// <param name="xaxis">The x axis.</param>
+        /// <param name="yaxis">The y axis.</param>
         /// <returns>The data point.</returns>
         public static DataPoint InverseTransform(ScreenPoint p, Axis xaxis, Axis yaxis)
         {
@@ -868,7 +868,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary. e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
+        /// Gets the value from an axis coordinate, converts from double to the correct data type if necessary. e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
         /// <param name="x">
         /// The coordinate.
@@ -1104,16 +1104,11 @@ namespace OxyPlot
         /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="axisLayer">
-        /// The rendering order.
-        /// </param>
-        public virtual void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer)
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="axisLayer">The rendering order.</param>
+        /// <param name="pass">The pass.</param>
+        public virtual void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
         {
             if (this.Layer != axisLayer)
             {
@@ -1121,11 +1116,11 @@ namespace OxyPlot
             }
 
             var r = new HorizontalAndVerticalAxisRenderer(rc, model);
-            r.Render(this);
+            r.Render(this, pass);
         }
 
         /// <summary>
-        /// Resets the user's modification (zooming/panning) to minmum and maximum of this axis.
+        /// Resets the user's modification (zooming/panning) to minimum and maximum of this axis.
         /// </summary>
         public virtual void Reset()
         {
@@ -1323,7 +1318,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// "Post-inversetransform" the value. This is used in logarithmic axis.
+        /// "Post-inversetransform" of the value. This is used in logarithmic axis.
         /// </summary>
         /// <param name="x">
         /// The x.
@@ -1757,6 +1752,5 @@ namespace OxyPlot
                 handler(this, args);
             }
         }
-
     }
 }

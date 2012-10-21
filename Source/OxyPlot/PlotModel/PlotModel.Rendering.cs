@@ -240,11 +240,14 @@ namespace OxyPlot
         /// </param>
         private void RenderAxes(IRenderContext rc, AxisLayer layer)
         {
-            foreach (var a in this.Axes)
+            for (int i = 0; i < 2; i++)
             {
-                if (a.IsAxisVisible)
+                foreach (var a in this.Axes)
                 {
-                    a.Render(rc, this, layer);
+                    if (a.IsAxisVisible)
+                    {
+                        a.Render(rc, this, layer, i);
+                    }
                 }
             }
         }

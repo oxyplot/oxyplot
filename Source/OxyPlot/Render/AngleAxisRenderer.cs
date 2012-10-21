@@ -53,12 +53,12 @@ namespace OxyPlot
         /// <summary>
         /// The render.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        public override void Render(Axis axis)
+        /// <param name="axis">The axis.</param>
+        /// <param name="pass">The render pass.</param>
+        /// <exception cref="System.InvalidOperationException">Magnitude axis not defined.</exception>
+        public override void Render(Axis axis, int pass)
         {
-            base.Render(axis);
+            base.Render(axis, pass);
 
             var magnitudeAxis = this.Plot.DefaultMagnitudeAxis;
 

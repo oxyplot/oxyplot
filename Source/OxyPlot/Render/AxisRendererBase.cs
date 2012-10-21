@@ -114,10 +114,9 @@ namespace OxyPlot
         /// <summary>
         /// The render.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        public virtual void Render(Axis axis)
+        /// <param name="axis">The axis.</param>
+        /// <param name="pass">The render pass.</param>
+        public virtual void Render(Axis axis, int pass)
         {
             if (axis == null)
             {

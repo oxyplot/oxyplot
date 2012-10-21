@@ -122,16 +122,11 @@ namespace OxyPlot
         /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="axisLayer">
-        /// The rendering order.
-        /// </param>
-        public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer)
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="axisLayer">The rendering order.</param>
+        /// <param name="pass"></param>
+        public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
         {
             if (this.Layer != axisLayer)
             {
@@ -139,7 +134,7 @@ namespace OxyPlot
             }
 
             var r = new AngleAxisRenderer(rc, model);
-            r.Render(this);
+            r.Render(this, pass);
         }
 
         /// <summary>
@@ -177,7 +172,7 @@ namespace OxyPlot
 
             this.ScreenMin = new ScreenPoint(x0, y1);
             this.ScreenMax = new ScreenPoint(x1, y0);
-            
+
             double startAngle = this.StartAngle / 180 * Math.PI;
             double endAngle = this.EndAngle / 180 * Math.PI;
 
