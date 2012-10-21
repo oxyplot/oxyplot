@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Series.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -56,9 +56,9 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty TrackerFormatStringProperty =
             DependencyProperty.Register(
-                "TrackerFormatString",
-                typeof(string),
-                typeof(XYAxisSeries),
+                "TrackerFormatString", 
+                typeof(string), 
+                typeof(XYAxisSeries), 
                 new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
@@ -91,6 +91,11 @@ namespace OxyPlot.Wpf
                 this.SetValue(ColorProperty, value);
             }
         }
+
+        /// <summary>
+        /// Gets or sets the internal series.
+        /// </summary>
+        public OxyPlot.Series InternalSeries { get; protected set; }
 
         /// <summary>
         /// Gets or sets Title.
@@ -234,6 +239,5 @@ namespace OxyPlot.Wpf
             s.Font = this.FontFamily.ToString();
             s.TextColor = this.Foreground.ToOxyColor();
         }
-
     }
 }

@@ -93,7 +93,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public DateTimeAxis()
         {
-            this.internalAxis = new OxyPlot.DateTimeAxis();
+            this.InternalAxis = new OxyPlot.DateTimeAxis();
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace OxyPlot.Wpf
         public override OxyPlot.Axis CreateModel()
         {
             this.SynchronizeProperties();
-            return this.internalAxis;
+            return this.InternalAxis;
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.internalAxis as OxyPlot.DateTimeAxis;
+            var a = this.InternalAxis as OxyPlot.DateTimeAxis;
 
             a.IntervalType = this.IntervalType;
             a.MinorIntervalType = this.MinorIntervalType;
