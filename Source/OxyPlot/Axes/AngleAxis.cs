@@ -45,6 +45,8 @@ namespace OxyPlot
             this.IsZoomEnabled = false;
             this.MajorGridlineStyle = LineStyle.Solid;
             this.MinorGridlineStyle = LineStyle.Solid;
+            this.StartAngle = 0;
+            this.EndAngle = 360;
         }
 
         /// <summary>
@@ -78,7 +80,19 @@ namespace OxyPlot
             this.MajorStep = majorStep;
             this.MinorStep = minorStep;
             this.Title = title;
+            this.StartAngle = 0;
+            this.EndAngle = 360;
         }
+
+        /// <summary>
+        /// Gets or sets the start angle (degrees).
+        /// </summary>
+        public double StartAngle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the end angle (degrees).
+        /// </summary>
+        public double EndAngle { get; set; }
 
         /// <summary>
         /// Inverse transform the specified screen point.
@@ -163,9 +177,12 @@ namespace OxyPlot
 
             this.ScreenMin = new ScreenPoint(x0, y1);
             this.ScreenMax = new ScreenPoint(x1, y0);
+            
+            double startAngle = this.StartAngle / 180 * Math.PI;
+            double endAngle = this.EndAngle / 180 * Math.PI;
 
-            this.Scale = 2 * Math.PI / (this.ActualMaximum - this.ActualMinimum);
-            this.Offset = this.ActualMinimum;
+            this.Scale = (endAngle - startAngle) / (this.ActualMaximum - this.ActualMinimum);
+            this.Offset = this.ActualMinimum - (startAngle / this.Scale);
         }
 
     }

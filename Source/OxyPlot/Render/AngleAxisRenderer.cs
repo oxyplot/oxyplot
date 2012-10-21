@@ -60,7 +60,7 @@ namespace OxyPlot
         {
             base.Render(axis);
 
-            MagnitudeAxis magnitudeAxis = this.Plot.DefaultMagnitudeAxis;
+            var magnitudeAxis = this.Plot.DefaultMagnitudeAxis;
 
             if (axis.RelatedAxis != null)
             {
@@ -76,48 +76,44 @@ namespace OxyPlot
 
             if (axis.ShowMinorTicks)
             {
-                // GetVerticalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out y0, out y1);
-
-                foreach (double xValue in this.MinorTickValues)
+                foreach (double value in this.MinorTickValues)
                 {
-                    if (xValue < axis.ActualMinimum - eps || xValue > axis.ActualMaximum + eps)
+                    if (value < axis.ActualMinimum - eps || value > axis.ActualMaximum + eps)
                     {
                         continue;
                     }
 
-                    if (this.MajorTickValues.Contains(xValue))
+                    if (this.MajorTickValues.Contains(value))
                     {
                         continue;
                     }
 
-                    ScreenPoint pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, xValue, axis);
+                    var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, value, axis);
 
                     if (this.MinorPen != null)
                     {
-                        this.rc.DrawLine(
-                            magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, pt.x, pt.y, this.MinorPen, false);
+                        this.rc.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, pt.x, pt.y, this.MinorPen, false);
                     }
-
-                    // RenderGridline(x, y + y0, x, y + y1, minorTickPen);
                 }
             }
 
-            // GetVerticalTickPositions(axis, axis.TickStyle, axis.MajorTickSize, out y0, out y1);
+            var angleAxis = (AngleAxis)axis;
+            bool isFullCircle = Math.Abs(Math.Abs(angleAxis.EndAngle - angleAxis.StartAngle) - 360) < 1e-6;
 
-            foreach (double xValue in this.MajorTickValues)
+            foreach (double value in this.MajorTickValues)
             {
                 // skip the last value (overlapping with the first)
-                if (xValue > axis.ActualMaximum - eps)
+                if (isFullCircle && value > axis.ActualMaximum - eps)
                 {
                     continue;
                 }
 
-                if (xValue < axis.ActualMinimum - eps || xValue > axis.ActualMaximum + eps)
+                if (value < axis.ActualMinimum - eps || value > axis.ActualMaximum + eps)
                 {
                     continue;
                 }
 
-                ScreenPoint pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, xValue, axis);
+                ScreenPoint pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, value, axis);
                 if (this.MajorPen != null)
                 {
                     this.rc.DrawLine(
@@ -128,12 +124,12 @@ namespace OxyPlot
             foreach (double value in this.MajorLabelValues)
             {
                 // skip the last value (overlapping with the first)
-                if (value > axis.ActualMaximum - eps)
+                if (isFullCircle && value > axis.ActualMaximum - eps)
                 {
                     continue;
                 }
 
-                ScreenPoint pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, value, axis);
+                var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, value, axis);
                 double angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
 
                 // add some margin
@@ -145,8 +141,8 @@ namespace OxyPlot
 
                 string text = axis.FormatValue(value);
 
-                HorizontalTextAlign ha = HorizontalTextAlign.Left;
-                VerticalTextAlign va = VerticalTextAlign.Middle;
+                var ha = HorizontalTextAlign.Left;
+                var va = VerticalTextAlign.Middle;
 
                 if (Math.Abs(Math.Abs(angle) - 90) < 10)
                 {
@@ -164,6 +160,5 @@ namespace OxyPlot
                     pt, text, axis.ActualTextColor, axis.ActualFont, axis.ActualFontSize, axis.ActualFontWeight, angle, ha, va, false);
             }
         }
-
     }
 }

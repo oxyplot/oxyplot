@@ -58,5 +58,63 @@ namespace ExampleLibrary
             model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
             return model;
         }
+
+        [Example("Spiral2")]
+        public static PlotModel ArchimedeanSpiral2()
+        {
+            var model = ArchimedeanSpiral();
+            model.Title += "(reversed angle axis)";
+            var angleAxis = (AngleAxis)model.Axes[0];
+            angleAxis.StartAngle = 360;
+            angleAxis.EndAngle = 0;
+            return model;
+        }
+
+        [Example("Angle axis with offset angle")]
+        public static PlotModel OffsetAngles()
+        {
+            var model = new PlotModel("Offset angle axis", "")
+            {
+                PlotType = PlotType.Polar,
+                PlotAreaBorderThickness = 0,
+                PlotMargins = new OxyThickness(60, 20, 4, 40)
+            };
+            model.Axes.Add(
+                new AngleAxis(0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
+                {
+                    StartAngle = 30,
+                    EndAngle = 390,
+                    StringFormat = "0.00"
+                });
+            model.Axes.Add(new MagnitudeAxis());
+            model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
+            return model;
+        }
+
+        [Example("Semi-circle")]
+        public static PlotModel SemiCircle()
+        {
+            var model = new PlotModel("Semi-circle polar plot", "")
+            {
+                PlotType = PlotType.Polar,
+                PlotAreaBorderThickness = 0,
+                PlotMargins = new OxyThickness(60, 20, 4, 40)
+            };
+            model.Axes.Add(
+                new AngleAxis(0, 180, 45, 15)
+                {
+                    StartAngle = 0,
+                    EndAngle = 180,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Solid
+                });
+            model.Axes.Add(new MagnitudeAxis(0, 1)
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
+            model.Series.Add(new FunctionSeries(t => Math.Sin(t / 180 * Math.PI), t => t, 0, 180, 0.01));
+            return model;
+        }
     }
 }
