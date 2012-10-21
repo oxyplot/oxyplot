@@ -29,10 +29,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System;
-
     /// <summary>
     /// Represents a rectangle annotation.
     /// </summary>
@@ -44,7 +40,7 @@ namespace OxyPlot
         private OxyRect screenRectangle;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PolygonAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="RectangleAnnotation"/> class.
         /// </summary>
         public RectangleAnnotation()
         {
@@ -141,13 +137,12 @@ namespace OxyPlot
         /// </returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
-            if (screenRectangle.Contains(point))
+            if (this.screenRectangle.Contains(point))
             {
                 return new HitTestResult(point);
             }
 
             return null;
         }
-
     }
 }

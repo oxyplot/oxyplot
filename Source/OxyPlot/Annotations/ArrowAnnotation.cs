@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ArrowAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -37,12 +37,12 @@ namespace OxyPlot
         /// <summary>
         /// The end point in screen coordinates.
         /// </summary>
-        private ScreenPoint endPoint;
+        private ScreenPoint screenEndPoint;
 
         /// <summary>
         /// The start point in screen coordinates.
         /// </summary>
-        private ScreenPoint startPoint;
+        private ScreenPoint screenStartPoint;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ArrowAnnotation"/> class.
@@ -76,13 +76,13 @@ namespace OxyPlot
         public DataPoint EndPoint { get; set; }
 
         /// <summary>
-        /// Gets or sets the length of the head (relative to thickness).
+        /// Gets or sets the length of the head (relative to the stroke thickness).
         /// </summary>
         /// <value> The length of the head. </value>
         public double HeadLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the width of the head (relative to thickness).
+        /// Gets or sets the width of the head (relative to the stroke thickness).
         /// </summary>
         /// <value> The width of the head. </value>
         public double HeadWidth { get; set; }
@@ -100,7 +100,7 @@ namespace OxyPlot
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets StartPoint.
+        /// Gets or sets the start point.
         /// </summary>
         /// <remarks>
         /// This property is overridden by the ArrowDirection property, if set.
@@ -114,7 +114,7 @@ namespace OxyPlot
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the 'veeness' of the head (relative to thickness).
+        /// Gets or sets the 'veeness' of the arrow head (relative to thickness).
         /// </summary>
         /// <value> The 'veeness'. </value>
         public double Veeness { get; set; }
@@ -132,22 +132,22 @@ namespace OxyPlot
         {
             base.Render(rc, model);
 
-            this.endPoint = this.Transform(this.EndPoint);
+            this.screenEndPoint = this.Transform(this.EndPoint);
 
             if (!this.ArrowDirection.x.IsZero() || !this.ArrowDirection.y.IsZero())
             {
-                this.startPoint = this.endPoint - this.ArrowDirection;
+                this.screenStartPoint = this.screenEndPoint - this.ArrowDirection;
             }
             else
             {
-                this.startPoint = this.Transform(this.StartPoint);
+                this.screenStartPoint = this.Transform(this.StartPoint);
             }
 
-            var d = this.endPoint - this.startPoint;
+            var d = this.screenEndPoint - this.screenStartPoint;
             d.Normalize();
             var n = new ScreenVector(d.Y, -d.X);
 
-            var p1 = this.endPoint - (d * this.HeadLength * this.StrokeThickness);
+            var p1 = this.screenEndPoint - (d * this.HeadLength * this.StrokeThickness);
             var p2 = p1 + (n * this.HeadWidth * this.StrokeThickness);
             var p3 = p1 - (n * this.HeadWidth * this.StrokeThickness);
             var p4 = p1 + (d * this.Veeness * this.StrokeThickness);
@@ -156,36 +156,36 @@ namespace OxyPlot
             const double MinimumSegmentLength = 4;
 
             rc.DrawClippedLine(
-                new[] { this.startPoint, p4 },
-                clippingRect,
-                MinimumSegmentLength * MinimumSegmentLength,
-                this.GetSelectableColor(this.Color),
-                this.StrokeThickness,
-                this.LineStyle,
-                this.LineJoin,
+                new[] { this.screenStartPoint, p4 }, 
+                clippingRect, 
+                MinimumSegmentLength * MinimumSegmentLength, 
+                this.GetSelectableColor(this.Color), 
+                this.StrokeThickness, 
+                this.LineStyle, 
+                this.LineJoin, 
                 false);
 
             rc.DrawClippedPolygon(
-                new[] { p3, this.endPoint, p2, p4 },
-                clippingRect,
-                MinimumSegmentLength * MinimumSegmentLength,
-                this.GetSelectableColor(this.Color),
+                new[] { p3, this.screenEndPoint, p2, p4 }, 
+                clippingRect, 
+                MinimumSegmentLength * MinimumSegmentLength, 
+                this.GetSelectableColor(this.Color), 
                 null);
 
             var ha = d.X < 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
             var va = d.Y < 0 ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
 
-            var textPoint = this.startPoint;
+            var textPoint = this.screenStartPoint;
             rc.DrawClippedText(
-                clippingRect,
-                textPoint,
-                this.Text,
-                this.ActualTextColor,
-                this.ActualFont,
-                this.ActualFontSize,
-                this.ActualFontWeight,
-                0,
-                ha,
+                clippingRect, 
+                textPoint, 
+                this.Text, 
+                this.ActualTextColor, 
+                this.ActualFont, 
+                this.ActualFontSize, 
+                this.ActualFontWeight, 
+                0, 
+                ha, 
                 va);
         }
 
@@ -203,17 +203,17 @@ namespace OxyPlot
         /// </returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
-            if ((point - this.startPoint).Length < tolerance)
+            if ((point - this.screenStartPoint).Length < tolerance)
             {
-                return new HitTestResult(this.startPoint, null, 1);
+                return new HitTestResult(this.screenStartPoint, null, 1);
             }
 
-            if ((point - this.endPoint).Length < tolerance)
+            if ((point - this.screenEndPoint).Length < tolerance)
             {
-                return new HitTestResult(this.endPoint, null, 2);
+                return new HitTestResult(this.screenEndPoint, null, 2);
             }
 
-            var p = ScreenPointHelper.FindPointOnLine(point, this.startPoint, this.endPoint);
+            var p = ScreenPointHelper.FindPointOnLine(point, this.screenStartPoint, this.screenEndPoint);
             if ((p - point).Length < tolerance)
             {
                 return new HitTestResult(p);
@@ -221,6 +221,5 @@ namespace OxyPlot
 
             return null;
         }
-
     }
 }

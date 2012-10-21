@@ -12,7 +12,8 @@
     <AssemblyName>OxyPlot</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -70,6 +71,7 @@
     <Compile Include="Foundation\CodeGenerator\CodeGenerator.cs" />
     <Compile Include="Foundation\CodeGenerator\CodeGeneratorStringExtensions.cs" />
     <Compile Include="Foundation\CodeGenerator\ICodeGenerating.cs" />
+    <Compile Include="Foundation\DataPointConverter.cs" />
     <Compile Include="Foundation\ListFiller.cs" />
     <Compile Include="Foundation\OxyColorExtensions.cs" />
     <Compile Include="Foundation\OxyPalette.cs" />
