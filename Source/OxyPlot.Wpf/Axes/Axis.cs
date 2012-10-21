@@ -431,9 +431,9 @@ namespace OxyPlot.Wpf
                 "UseSuperExponentialFormat", typeof(bool), typeof(Axis), new PropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
-        /// Internal axis
+        /// Gets or sets the internal axis.
         /// </summary>
-        protected OxyPlot.Axis internalAxis;
+        public OxyPlot.Axis InternalAxis { get; protected set; }
 
         /// <summary>
         /// Gets or sets AbsoluteMaximum.
@@ -516,10 +516,10 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the color of the axisline.
+        /// Gets or sets the color of the axis line.
         /// </summary>
         /// <value>
-        /// The color of the axisline.
+        /// The color of the axis line.
         /// </value>
         public Color AxislineColor
         {
@@ -1496,7 +1496,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected virtual void SynchronizeProperties()
         {
-            var a = this.internalAxis;
+            var a = this.InternalAxis;
             a.AbsoluteMaximum = this.AbsoluteMaximum;
             a.AbsoluteMinimum = this.AbsoluteMinimum;
             a.Angle = this.Angle;

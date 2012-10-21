@@ -84,7 +84,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public CategoryAxis()
         {
-            this.internalAxis = new OxyPlot.CategoryAxis();
+            this.InternalAxis = new OxyPlot.CategoryAxis();
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace OxyPlot.Wpf
         public override OxyPlot.Axis CreateModel()
         {
             this.SynchronizeProperties();
-            return this.internalAxis;
+            return this.InternalAxis;
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.internalAxis as OxyPlot.CategoryAxis;
+            var a = this.InternalAxis as OxyPlot.CategoryAxis;
             a.IsTickCentered = this.IsTickCentered;
             a.ItemsSource = this.ItemsSource;
             a.LabelField = this.LabelField;
