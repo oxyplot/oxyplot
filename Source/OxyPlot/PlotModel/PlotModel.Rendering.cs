@@ -244,7 +244,7 @@ namespace OxyPlot
             {
                 foreach (var a in this.Axes)
                 {
-                    if (a.IsAxisVisible)
+                    if (a.IsAxisVisible && a.Layer == layer)
                     {
                         a.Render(rc, this, layer, i);
                     }
