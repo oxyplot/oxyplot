@@ -184,22 +184,22 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the actual rectangles for the maximum bars.
         /// </summary>
-        internal IList<OxyRect> ActualMaximumBarRectangles { get; set; }
+		protected internal IList<OxyRect> ActualMaximumBarRectangles { get; set; }
 
         /// <summary>
         /// Gets or sets the actual rectangles for the minimum bars.
         /// </summary>
-        internal IList<OxyRect> ActualMinimumBarRectangles { get; set; }
+		protected internal IList<OxyRect> ActualMinimumBarRectangles { get; set; }
 
         /// <summary>
         /// Gets or sets the valid items
         /// </summary>
-        internal IList<TornadoBarItem> ValidItems { get; set; }
+		protected internal IList<TornadoBarItem> ValidItems { get; set; }
 
         /// <summary>
         /// Gets or sets the dictionary which stores the index-inversion for the valid items
         /// </summary>
-        internal Dictionary<int, int> ValidItemsIndexInversion { get; set; }
+        protected internal Dictionary<int, int> ValidItemsIndexInversion { get; set; }
 
         /// <summary>
         /// Gets the point in the dataset that is nearest the specified point.
