@@ -310,7 +310,7 @@ namespace OxyPlot.Wpf
                 count++;
 
                 // Must limit the number of figures, otherwise drawing errors...
-                if (count > MaxFiguresPerGeometry)
+                if (count > MaxFiguresPerGeometry || dashArray != null)
                 {
                     path.Data = pathGeometry;
                     this.Add(path);
@@ -454,7 +454,9 @@ namespace OxyPlot.Wpf
                         {
                             figure = new PathFigure
                                 {
-                                   StartPoint = p.ToPoint(aliased), IsFilled = fill != null, IsClosed = true
+                                    StartPoint = p.ToPoint(aliased),
+                                    IsFilled = fill != null,
+                                    IsClosed = true
                                 };
                             pathGeometry.Figures.Add(figure);
                         }
@@ -969,7 +971,7 @@ namespace OxyPlot.Wpf
                 count++;
 
                 // Must limit the number of figures, otherwise drawing errors...
-                if (count > MaxFiguresPerGeometry)
+                if (count > MaxFiguresPerGeometry || dashArray != null)
                 {
                     streamGeometryContext.Close();
                     var path = new Path();
@@ -1060,7 +1062,7 @@ namespace OxyPlot.Wpf
                         shape.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
 
-                        // The default StrokeLineJoin is Miter
+                    // The default StrokeLineJoin is Miter
                 }
 
                 if (Math.Abs(thickness - 1) > double.Epsilon)
