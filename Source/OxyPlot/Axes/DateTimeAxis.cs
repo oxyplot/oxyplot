@@ -291,7 +291,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary.
+        /// Gets the value from an axis coordinate, converts from double to the correct data type if necessary.
         /// e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
         /// <param name="x">
@@ -396,25 +396,25 @@ namespace OxyPlot
         /// </returns>
         protected override double CalculateActualInterval(double availableSize, double maxIntervalSize)
         {
-			const double YEAR = 365.25;
-			const double MONTH = 30.5;
-			const double WEEK = 7;
-			const double DAY = 1.0;
-			const double HOUR = DAY / 24;
-			const double MINUTE = HOUR / 60;
-			const double SECOND = MINUTE / 60;
+            const double Year = 365.25;
+            const double Month = 30.5;
+            const double Week = 7;
+            const double Day = 1.0;
+            const double Hour = Day / 24;
+            const double Minute = Hour / 60;
+            const double Second = Minute / 60;
 
             double range = Math.Abs(this.ActualMinimum - this.ActualMaximum);
 
             var goodIntervals = new[]
                 {
-					SECOND, 2 * SECOND, 5 * SECOND, 10 * SECOND, 30 * SECOND,
-					MINUTE, 2 * MINUTE, 5 * MINUTE, 10 * MINUTE, 30 * MINUTE, 
-					HOUR, 4 * HOUR, 8 * HOUR, 12 * HOUR, 
-					DAY, 2 * DAY, 5 * DAY,
-					WEEK, 2 * WEEK, 
-					MONTH, 2 * MONTH, 3 * MONTH, 4 * MONTH, 6 * MONTH, 
-					YEAR
+                    Second, 2 * Second, 5 * Second, 10 * Second, 30 * Second,
+                    Minute, 2 * Minute, 5 * Minute, 10 * Minute, 30 * Minute, 
+                    Hour, 4 * Hour, 8 * Hour, 12 * Hour, 
+                    Day, 2 * Day, 5 * Day,
+                    Week, 2 * Week, 
+                    Month, 2 * Month, 3 * Month, 4 * Month, 6 * Month, 
+                    Year
                 };
 
             double interval = goodIntervals[0];
@@ -621,12 +621,11 @@ namespace OxyPlot
         /// The date.
         /// </param>
         /// <returns>
-        /// The week number fr the current culture.
+        /// The week number for the current culture.
         /// </returns>
         private int GetWeek(DateTime date)
         {
             return this.ActualCulture.Calendar.GetWeekOfYear(date, this.CalendarWeekRule, this.FirstDayOfWeek);
         }
-
     }
 }

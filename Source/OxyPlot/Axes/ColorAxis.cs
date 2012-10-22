@@ -160,13 +160,14 @@ namespace OxyPlot
         /// <param name="rc">The render context.</param>
         /// <param name="model">The model.</param>
         /// <param name="axisLayer">The rendering order.</param>
-        /// <param name="pass"></param>
+        /// <param name="pass">The render pass.</param>
         public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
         {
             if (this.Position == AxisPosition.None)
             {
                 return;
             }
+
             if (pass == 0)
             {
                 double left = model.PlotArea.Left;
@@ -232,6 +233,7 @@ namespace OxyPlot
                     drawColorRect(yhigh, yhigh - highLowLength, this.HighColor);
                 }
             }
+
             base.Render(rc, model, axisLayer, pass);
         }
 
@@ -263,6 +265,5 @@ namespace OxyPlot
             return ((double)paletteIndex / this.Palette.Colors.Count * (this.ActualMaximum - this.ActualMinimum))
                    + this.ActualMinimum;
         }
-
     }
 }
