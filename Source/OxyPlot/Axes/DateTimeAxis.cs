@@ -396,13 +396,27 @@ namespace OxyPlot
         /// </returns>
         protected override double CalculateActualInterval(double availableSize, double maxIntervalSize)
         {
+			const double YEAR = 365.25;
+			const double MONTH = 30.5;
+			const double WEEK = 7;
+			const double DAY = 1.0;
+			const double HOUR = DAY / 24;
+			const double MINUTE = HOUR / 60;
+			const double SECOND = MINUTE / 60;
+
             double range = Math.Abs(this.ActualMinimum - this.ActualMaximum);
 
             var goodIntervals = new[]
                 {
-                    1.0 / 24 / 60, 1.0 / 24 / 30, 1.0 / 24 / 12, 1.0 / 24 / 6, 1.0 / 24 / 2, 1.0 / 24, 1.0 / 6, 1.0 / 4,
-                    1.0 / 2, 1, 2, 7, 14, 30.5, 30.5 * 2, 30.5 * 3, 30.5 * 4, 30.5 * 6, 365.25
+					SECOND, 2 * SECOND, 5 * SECOND, 10 * SECOND, 30 * SECOND,
+					MINUTE, 2 * MINUTE, 5 * MINUTE, 10 * MINUTE, 30 * MINUTE, 
+					HOUR, 4 * HOUR, 8 * HOUR, 12 * HOUR, 
+					DAY, 2 * DAY, 5 * DAY,
+					WEEK, 2 * WEEK, 
+					MONTH, 2 * MONTH, 3 * MONTH, 4 * MONTH, 6 * MONTH, 
+					YEAR
                 };
+
             double interval = goodIntervals[0];
 
             int maxNumberOfIntervals = Math.Max((int)(availableSize / maxIntervalSize), 2);

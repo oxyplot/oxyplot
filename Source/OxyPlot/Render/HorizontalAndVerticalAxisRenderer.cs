@@ -403,28 +403,7 @@ namespace OxyPlot
                         maxSize = new OxySize(screenLength * axis.TitleClippingLength, double.MaxValue);
                     }
 
-                    switch (axis.Position)
-                    {
-                        case AxisPosition.Left:
-                            lpt = new ScreenPoint(titlePosition, ymid);
-                            break;
-                        case AxisPosition.Right:
-                            lpt = new ScreenPoint(titlePosition, ymid);
-                            valign = VerticalTextAlign.Bottom;
-                            break;
-                        case AxisPosition.Top:
-                            lpt = new ScreenPoint(ymid, titlePosition);
-                            halign = HorizontalTextAlign.Center;
-                            valign = VerticalTextAlign.Top;
-                            angle = 0;
-                            break;
-                        case AxisPosition.Bottom:
-                            lpt = new ScreenPoint(ymid, titlePosition);
-                            halign = HorizontalTextAlign.Center;
-                            valign = VerticalTextAlign.Bottom;
-                            angle = 0;
-                            break;
-                    }
+                var lpt = this.CreateAxisTitleScreenPoint(axis, ymid, titlePosition, ref angle, ref halign, ref valign);
 
                     this.rc.SetToolTip(axis.ToolTip);
                     this.rc.DrawText(
@@ -456,6 +435,39 @@ namespace OxyPlot
                     this.rc.DrawLineSegments(majorTickSegments, this.MajorTickPen);
                 }
             }
+
+    	protected virtual ScreenPoint CreateAxisTitleScreenPoint(
+    		Axis axis,
+    		double ymid,
+    		double titlePosition,
+    		ref double angle,
+    		ref HorizontalTextAlign halign,
+    		ref VerticalTextAlign valign)
+    	{
+    		ScreenPoint lpt;
+    		switch (axis.Position)
+    		{
+    			case AxisPosition.Left:
+    				lpt = new ScreenPoint(titlePosition, ymid);
+    				break;
+    			case AxisPosition.Right:
+    				lpt = new ScreenPoint(titlePosition, ymid);
+    				valign = VerticalTextAlign.Bottom;
+    				break;
+    			case AxisPosition.Top:
+    				lpt = new ScreenPoint(ymid, titlePosition);
+    				halign = HorizontalTextAlign.Center;
+    				valign = VerticalTextAlign.Top;
+    				angle = 0;
+    				break;
+    			case AxisPosition.Bottom:
+    				lpt = new ScreenPoint(ymid, titlePosition);
+    				halign = HorizontalTextAlign.Center;
+    				valign = VerticalTextAlign.Bottom;
+    				angle = 0;
+    				break;
+				default:
+					throw new ArgumentOutOfRangeException("axis");
         }
 
         /// <summary>
