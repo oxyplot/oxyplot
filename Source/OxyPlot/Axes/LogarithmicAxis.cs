@@ -345,13 +345,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Applies the 'post inverse transform' to the value.
+        /// Applies a transformation after the inverse transform of the value. This is used in logarithmic axis.
         /// </summary>
-        /// <param name="x">
-        /// The x.
-        /// </param>
+        /// <param name="x">The value to transform.</param>
         /// <returns>
-        /// The transform value.
+        /// The transformed value.
         /// </returns>
         internal override double PostInverseTransform(double x)
         {
@@ -359,14 +357,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// "Pretransform" the value.
-        /// This is used in logarithmic axis.
+        /// Applies a transformation before the transform the value. This is used in logarithmic axis.
         /// </summary>
-        /// <param name="x">
-        /// The x.
-        /// </param>
+        /// <param name="x">The value to transform.</param>
         /// <returns>
-        /// The pretransformed value.
+        /// The transformed value.
         /// </returns>
         internal override double PreTransform(double x)
         {

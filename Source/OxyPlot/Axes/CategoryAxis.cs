@@ -307,7 +307,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the value from an axis coordinate, converts from double to the correct data type if neccessary. e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
+        /// Gets the value from an axis coordinate, converts from double to the correct data type if necessary. e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
         /// <param name="x">
         /// The coordinate.

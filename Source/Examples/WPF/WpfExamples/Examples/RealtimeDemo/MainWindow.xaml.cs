@@ -52,7 +52,7 @@ namespace RealtimeDemo
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
             vm.Update();
-            // todo: should not be neccessary to refresh
+            // todo: should not be necessary to refresh
             plot1.RefreshPlot(true);
         }
     }

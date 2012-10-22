@@ -79,7 +79,7 @@ namespace OxyPlot.Silverlight
         /// Gets or sets the tracker template.
         /// </summary>
         /// <remarks>
-        /// The tracker control will be added/removed from the Tracker overlay as neccessary.
+        /// The tracker control will be added/removed from the Tracker overlay as necessary.
         /// The DataContext of the tracker will be set to a TrackerHitResult with the current tracker data.
         /// </remarks>
         public ControlTemplate TrackerTemplate
