@@ -1101,11 +1101,6 @@ namespace OxyPlot
             this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Pan));
         }
 
-		public virtual AxisRendererBase CreateRenderer(IRenderContext rc, PlotModel model)
-		{
-			return new HorizontalAndVerticalAxisRenderer(rc, model);
-		}
-
         /// <summary>
         /// Renders the axis on the specified render context.
         /// </summary>
@@ -1115,12 +1110,7 @@ namespace OxyPlot
         /// <param name="pass">The pass.</param>
         public virtual void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
         {
-            if (this.Layer != axisLayer)
-            {
-                return;
-            }
-
-            var r = this.CreateRenderer(rc, model);
+            var r = new HorizontalAndVerticalAxisRenderer(rc, model);
             r.Render(this, pass);
         }
 
@@ -1323,13 +1313,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// "Post-inversetransform" of the value. This is used in logarithmic axis.
+        /// Applies a transformation after the inverse transform of the value. This is used in logarithmic axis.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The value to transform.
         /// </param>
         /// <returns>
-        /// The 'post-inversetransformed' value
+        /// The transformed value.
         /// </returns>
         internal virtual double PostInverseTransform(double x)
         {
@@ -1337,13 +1327,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// "Pre-transform" the value. This is used in logarithmic axis.
+        /// Applies a transformation before the transform the value. This is used in logarithmic axis.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The value to transform.
         /// </param>
         /// <returns>
-        /// The pre-transformed value.
+        /// The transformed value.
         /// </returns>
         internal virtual double PreTransform(double x)
         {
