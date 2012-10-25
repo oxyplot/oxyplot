@@ -24,32 +24,18 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using OxyPlot;
-
 namespace ExampleLibrary
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+
+    using OxyPlot;
 
     [Examples("Legends")]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public static class LegendExamples
     {
-        private static PlotModel CreateModel(int n = 20)
-        {
-            var model = new PlotModel("LineSeries");
-            model.LegendBackground = OxyColor.FromAColor(200, OxyColors.White);
-            model.LegendBorder = OxyColors.Black;
-            for (int i = 1; i <= n; i++)
-            {
-                var s = new LineSeries("Series " + i);
-                model.Series.Add(s);
-                for (double x = 0; x < 2 * Math.PI; x += 0.1)
-                    s.Points.Add(new DataPoint(x, Math.Sin(x * i) / i + i));
-            }
-            return model;
-
-        }
-
         [Example("Legend at right top inside")]
         public static PlotModel LegendRightTopInside()
         {
@@ -109,6 +95,50 @@ namespace ExampleLibrary
             var model = CreateModel();
             model.DefaultColors = new List<OxyColor> { OxyColors.Black, OxyColors.Gray };
             model.LegendSymbolLength = 32;
+            return model;
+        }
+
+        [Example("Clipped legends")]
+        public static PlotModel ClippedLegends()
+        {
+            var model = CreateModel(1);
+            model.Series[0].Title = "1234567890 abcdefghijklmnopqrstuvwxyzæøå ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ 1234567890 abcdefghijklmnopqrstuvwxyzæøå ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
+            model.LegendPlacement = LegendPlacement.Inside;
+            model.LegendPosition = LegendPosition.RightTop;
+            return model;
+        }
+
+        [Example("Clipped legends RightTop outside with MaxWidth")]
+        public static PlotModel ClippedLegendsOutside()
+        {
+            var model = ClippedLegends();
+            model.LegendPlacement = LegendPlacement.Outside;
+            model.LegendMaxWidth = 200;
+            return model;
+        }
+
+        [Example("Clipped legends TopRight outside")]
+        public static PlotModel ClippedLegendsRight()
+        {
+            var model = ClippedLegends();
+            model.LegendPlacement = LegendPlacement.Outside;
+            model.LegendPosition = LegendPosition.TopRight;
+            return model;
+        }
+
+        private static PlotModel CreateModel(int n = 20)
+        {
+            var model = new PlotModel("LineSeries") { LegendBackground = OxyColor.FromAColor(200, OxyColors.White), LegendBorder = OxyColors.Black };
+            for (int i = 1; i <= n; i++)
+            {
+                var s = new LineSeries("Series " + i);
+                model.Series.Add(s);
+                for (double x = 0; x < 2 * Math.PI; x += 0.1)
+                {
+                    s.Points.Add(new DataPoint(x, (Math.Sin(x * i) / i) + i));
+                }
+            }
+
             return model;
         }
     }
