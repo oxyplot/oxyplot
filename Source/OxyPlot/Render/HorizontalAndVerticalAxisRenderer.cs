@@ -461,8 +461,7 @@ namespace OxyPlot
                     axis.ActualFontWeight, 
                     axis.Angle, 
                     ha, 
-                    va, 
-                    false);
+                    va);
             }
 
             // Draw the zero crossing line

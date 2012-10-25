@@ -250,8 +250,11 @@ namespace OxyPlot
                 x += this.LegendSymbolLength + this.LegendSymbolMargin;
             }
 
-            OxySize textSize = rc.DrawMathText(
-                new ScreenPoint(x, rect.Top),
+            double y = rect.Top;
+            var maxsize = new OxySize(rect.Right - x, rect.Bottom - y);
+
+            var textSize = rc.DrawMathText(
+                new ScreenPoint(x, y),
                 s.Title,
                 this.LegendTextColor ?? this.TextColor,
                 this.LegendFont ?? this.DefaultFont,
@@ -260,6 +263,7 @@ namespace OxyPlot
                 0,
                 this.LegendItemAlignment,
                 VerticalTextAlign.Top,
+                maxsize,
                 true);
             double x0 = x;
             switch (this.LegendItemAlignment)
@@ -370,6 +374,7 @@ namespace OxyPlot
                         0,
                         HorizontalTextAlign.Left,
                         VerticalTextAlign.Top,
+                        null,
                         true);
                 }
 
@@ -393,12 +398,27 @@ namespace OxyPlot
             // When orientation is vertical and alignment is center or right, the items cannot be rendered before
             // the max item width has been calculated. Render the items for each column, and at the end.
             var seriesToRender = new Dictionary<Series, OxyRect>();
-            Action renderVerticalItems = () =>
+            Action renderItems = () =>
                 {
                     foreach (var sr in seriesToRender)
                     {
-                        var r = new OxyRect(sr.Value.Left, sr.Value.Top, maxItemWidth, sr.Value.Height);
-                        this.RenderLegend(rc, sr.Key, r);
+                        var itemRect = sr.Value;
+                        var itemSeries = sr.Key;
+
+                        double rwidth = itemRect.Width;
+                        if (itemRect.Left + rwidth + this.LegendPadding > rect.Left + availableWidth)
+                        {
+                            rwidth = rect.Left + availableWidth - itemRect.Left - this.LegendPadding;
+                        }
+
+                        double rheight = itemRect.Height;
+                        if (rect.Top + rheight + this.LegendPadding > rect.Top + availableHeight)
+                        {
+                            rheight = rect.Top + availableHeight - rect.Top - this.LegendPadding;
+                        }
+
+                        var r = new OxyRect(itemRect.Left, itemRect.Top, rwidth, rheight);
+                        this.RenderLegend(rc, itemSeries, r);
                     }
 
                     seriesToRender.Clear();
@@ -438,8 +458,7 @@ namespace OxyPlot
 
                     if (!measureOnly)
                     {
-                        var r = new OxyRect(rect.Left + x, rect.Top + y, itemWidth, itemHeight);
-                        this.RenderLegend(rc, s, r);
+                        seriesToRender.Add(s, new OxyRect(rect.Left + x, rect.Top + y, itemWidth, itemHeight));
                     }
 
                     x += itemWidth;
@@ -454,7 +473,7 @@ namespace OxyPlot
                 {
                     if (y + itemHeight > availableHeight - this.LegendPadding + Epsilon)
                     {
-                        renderVerticalItems();
+                        renderItems();
 
                         y = top;
                         x += maxItemWidth + this.LegendColumnSpacing;
@@ -463,8 +482,7 @@ namespace OxyPlot
 
                     if (!measureOnly)
                     {
-                        var r = new OxyRect(rect.Left + x, rect.Top + y, itemWidth, itemHeight);
-                        seriesToRender.Add(s, r);
+                        seriesToRender.Add(s, new OxyRect(rect.Left + x, rect.Top + y, itemWidth, itemHeight));
                     }
 
                     y += itemHeight;
@@ -480,10 +498,7 @@ namespace OxyPlot
                 }
             }
 
-            if (this.LegendOrientation == LegendOrientation.Vertical)
-            {
-                renderVerticalItems();
-            }
+            renderItems();
 
             if (size.Width > 0)
             {
@@ -493,6 +508,21 @@ namespace OxyPlot
             if (size.Height > 0)
             {
                 size.Height += this.LegendPadding;
+            }
+
+            if (size.Width > availableWidth)
+            {
+                size.Width = availableWidth;
+            }
+
+            if (size.Height > availableHeight)
+            {
+                size.Height = availableHeight;
+            }
+
+            if (!double.IsNaN(LegendMaxWidth) && size.Width > this.LegendMaxWidth)
+            {
+                size.Width = this.LegendMaxWidth;
             }
 
             return size;

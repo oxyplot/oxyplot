@@ -70,47 +70,24 @@ namespace OxyPlot
         /// <summary>
         /// Draws text containing sub- and superscript.
         /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="pt">The pt.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="textColor">Color of the text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The angle.</param>
+        /// <param name="ha">The ha.</param>
+        /// <param name="va">The va.</param>
+        /// <param name="maxsize">The maximum size of the text.</param>
+        /// <param name="measure">if set to <c>true</c> measure the size of the text.</param>
+        /// <returns>The size of the text.</returns>
         /// <example>
         /// Subscript: H_{2}O
         /// Superscript: E=mc^{2}
         /// Both: A^{2}_{i,j}
         /// </example>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="pt">
-        /// The pt.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="textColor">
-        /// Color of the text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// Size of the font.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="angle">
-        /// The angle.
-        /// </param>
-        /// <param name="ha">
-        /// The ha.
-        /// </param>
-        /// <param name="va">
-        /// The va.
-        /// </param>
-        /// <param name="measure">
-        /// if set to <c>true</c> measure the size of the text.
-        /// </param>
-        /// <returns>
-        /// The size of the text.
-        /// </returns>
         public static OxySize DrawMathText(
             this IRenderContext rc,
             ScreenPoint pt,
@@ -122,7 +99,8 @@ namespace OxyPlot
             double angle,
             HorizontalTextAlign ha,
             VerticalTextAlign va,
-            bool measure)
+            OxySize? maxsize = null,
+            bool measure = false)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -160,7 +138,7 @@ namespace OxyPlot
                 return measure ? size : OxySize.Empty;
             }
 
-            rc.DrawText(pt, text, textColor, fontFamily, fontSize, fontWeight, angle, ha, va);
+            rc.DrawText(pt, text, textColor, fontFamily, fontSize, fontWeight, angle, ha, va, maxsize);
             if (measure)
             {
                 return rc.MeasureText(text, fontFamily, fontSize, fontWeight);

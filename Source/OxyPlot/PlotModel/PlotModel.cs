@@ -262,6 +262,7 @@ namespace OxyPlot
             this.LegendBorder = null;
             this.LegendBorderThickness = 1;
 
+            this.LegendMaxWidth = double.NaN;
             this.LegendPlacement = LegendPlacement.Inside;
             this.LegendPosition = LegendPosition.RightTop;
             this.LegendOrientation = LegendOrientation.Vertical;
@@ -477,6 +478,12 @@ namespace OxyPlot
         /// </summary>
         /// <value> The legend margin. </value>
         public double LegendMargin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the max width of the legend.
+        /// </summary>
+        /// <value>The max width of the legend.</value>
+        public double LegendMaxWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the legend orientation.
