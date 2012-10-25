@@ -165,6 +165,12 @@ namespace OxyPlot.Wpf
             "LegendMargin", typeof(double), typeof(Plot), new PropertyMetadata(8.0, AppearanceChanged));
 
         /// <summary>
+        /// The legend max width property
+        /// </summary>
+        public static readonly DependencyProperty LegendMaxWidthProperty =
+            DependencyProperty.Register("LegendMaxWidth", typeof(double), typeof(Plot), new UIPropertyMetadata(double.NaN));
+
+        /// <summary>
         /// The legend orientation property.
         /// </summary>
         public static readonly DependencyProperty LegendOrientationProperty =
@@ -683,6 +689,23 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(LegendItemSpacingProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the max width of the legends.
+        /// </summary>
+        /// <value>The max width of the legends.</value>
+        public double LegendMaxWidth
+        {
+            get
+            {
+                return (double)GetValue(LegendMaxWidthProperty);
+            }
+
+            set
+            {
+                SetValue(LegendMaxWidthProperty, value);
             }
         }
 
@@ -1255,6 +1278,7 @@ namespace OxyPlot.Wpf
                 m.LegendColumnSpacing = this.LegendColumnSpacing;
                 m.LegendItemSpacing = this.LegendItemSpacing;
                 m.LegendMargin = this.LegendMargin;
+                m.LegendMaxWidth = this.LegendMaxWidth;
 
                 m.LegendBackground = this.LegendBackground.ToOxyColor();
                 m.LegendBorder = this.LegendBorder.ToOxyColor();
