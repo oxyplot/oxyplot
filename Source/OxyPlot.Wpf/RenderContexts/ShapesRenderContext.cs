@@ -684,12 +684,12 @@ namespace OxyPlot.Wpf
                 {
                     if (size.Width > maxSize.Value.Width)
                     {
-                        size.Width = maxSize.Value.Width;
+                        size.Width = Math.Max(maxSize.Value.Width, 0);
                     }
 
                     if (size.Height > maxSize.Value.Height)
                     {
-                        size.Height = maxSize.Value.Height;
+                        size.Height = Math.Max(maxSize.Value.Height, 0);
                     }
 
                     tb.Width = size.Width;
