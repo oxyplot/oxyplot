@@ -68,20 +68,20 @@ namespace OxyPlot
         private static double SuperSize { get; set; }
 
         /// <summary>
-        /// Draws text containing sub- and superscript.
+        /// Draws or measures text containing sub- and superscript.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="pt">The pt.</param>
+        /// <param name="pt">The point.</param>
         /// <param name="text">The text.</param>
         /// <param name="textColor">Color of the text.</param>
         /// <param name="fontFamily">The font family.</param>
-        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontSize">The font size.</param>
         /// <param name="fontWeight">The font weight.</param>
         /// <param name="angle">The angle.</param>
-        /// <param name="ha">The ha.</param>
-        /// <param name="va">The va.</param>
+        /// <param name="ha">The horizontal alignment.</param>
+        /// <param name="va">The vertical alignment.</param>
         /// <param name="maxsize">The maximum size of the text.</param>
-        /// <param name="measure">if set to <c>true</c> measure the size of the text.</param>
+        /// <param name="measure">Measure the size of the text if set to <c>true</c>.</param>
         /// <returns>The size of the text.</returns>
         /// <example>
         /// Subscript: H_{2}O
@@ -99,20 +99,21 @@ namespace OxyPlot
             double angle,
             HorizontalTextAlign ha,
             VerticalTextAlign va,
-            OxySize? maxsize = null,
-            bool measure = false)
+            OxySize? maxsize,
+            bool measure)
         {
             if (string.IsNullOrEmpty(text))
             {
                 return OxySize.Empty;
             }
 
-            if (angle == 0 && (text.Contains("^{") || text.Contains("_{")))
+            if (angle.Equals(0) && (text.Contains("^{") || text.Contains("_{")))
             {
                 double x = pt.X;
                 double y = pt.Y;
 
-                OxySize size = InternalDrawMathText(rc, x, y, text, textColor, fontFamily, fontSize, fontWeight, true);
+                // Measure
+                var size = InternalDrawMathText(rc, x, y, text, textColor, fontFamily, fontSize, fontWeight, true);
 
                 switch (ha)
                 {
@@ -145,6 +146,41 @@ namespace OxyPlot
             }
 
             return OxySize.Empty;
+        }
+
+        /// <summary>
+        /// Draws text containing sub- and superscript.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="pt">The point.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="textColor">Color of the text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="angle">The angle.</param>
+        /// <param name="ha">The horizontal alignment.</param>
+        /// <param name="va">The vertical alignment.</param>
+        /// <param name="maxsize">The maximum size of the text.</param>
+        /// <example>
+        /// Subscript: H_{2}O
+        /// Superscript: E=mc^{2}
+        /// Both: A^{2}_{i,j}
+        /// </example>
+        public static void DrawMathText(
+            this IRenderContext rc,
+            ScreenPoint pt,
+            string text,
+            OxyColor textColor,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double angle,
+            HorizontalTextAlign ha,
+            VerticalTextAlign va,
+            OxySize? maxsize = null)
+        {
+            DrawMathText(rc, pt, text, textColor, fontFamily, fontSize, fontWeight, angle, ha, va, maxsize, false);
         }
 
         /// <summary>
