@@ -41,7 +41,7 @@ Tools/    # Add manually
 
 _ReSharper*/
 _TeamCity*/
-packages/
+[Pp]ackages/
 AppPackages/
 *.dotCover
 
