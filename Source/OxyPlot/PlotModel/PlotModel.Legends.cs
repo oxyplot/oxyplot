@@ -251,7 +251,7 @@ namespace OxyPlot
             }
 
             double y = rect.Top;
-            var maxsize = new OxySize(rect.Right - x, rect.Bottom - y);
+            var maxsize = new OxySize(Math.Max(rect.Right - x, 0), Math.Max(rect.Bottom - y, 0));
 
             var textSize = rc.DrawMathText(
                 new ScreenPoint(x, y),
@@ -417,7 +417,7 @@ namespace OxyPlot
                             rheight = rect.Top + availableHeight - rect.Top - this.LegendPadding;
                         }
 
-                        var r = new OxyRect(itemRect.Left, itemRect.Top, rwidth, rheight);
+                        var r = new OxyRect(itemRect.Left, itemRect.Top, Math.Max(rwidth, 0), Math.Max(rheight, 0));
                         this.RenderLegend(rc, itemSeries, r);
                     }
 
