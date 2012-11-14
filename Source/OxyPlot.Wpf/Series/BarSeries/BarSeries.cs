@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="XYAxisSeries.cs" company="OxyPlot">
+// <copyright file="BarSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -23,89 +23,63 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   Abstract base class for series that use X and Y axes.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Wpf
 {
-    using System.Collections;
     using System.Windows;
 
     /// <summary>
-    /// Abstract base class for series that use X and Y axes.
+    ///     This is a WPF wrapper of OxyPlot.BarSeries
     /// </summary>
-    public abstract class XYAxisSeries : ItemsSeries
+    public class BarSeries : BarSeriesBase<BarItem>
     {
         /// <summary>
-        /// The x axis key property.
+        ///     The bar width property.
         /// </summary>
-        public static readonly DependencyProperty XAxisKeyProperty = DependencyProperty.Register(
-            "XAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
+        public static readonly DependencyProperty BarWidthProperty = DependencyProperty.Register(
+            "BarWidth", typeof(double), typeof(BarSeries), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The y axis key property.
+        ///     Initializes static members of the <see cref="BarSeries" /> class.
         /// </summary>
-        public static readonly DependencyProperty YAxisKeyProperty = DependencyProperty.Register(
-            "YAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
+        static BarSeries()
+        {
+            TrackerFormatStringProperty.OverrideMetadata(typeof(BarSeries), new PropertyMetadata("{0} {1}: {2}", AppearanceChanged));
+        }
 
         /// <summary>
-        /// Gets or sets the x-axis key.
+        ///     Initializes a new instance of the <see cref="BarSeries" /> class.
         /// </summary>
-        public string XAxisKey
+        public BarSeries()
+        {
+            this.InternalSeries = new OxyPlot.BarSeries();
+        }
+
+        /// <summary>
+        ///     Gets or sets the bar width.
+        /// </summary>
+        public double BarWidth
         {
             get
             {
-                return (string)this.GetValue(XAxisKeyProperty);
+                return (double)this.GetValue(BarWidthProperty);
             }
 
             set
             {
-                this.SetValue(XAxisKeyProperty, value);
+                this.SetValue(BarWidthProperty, value);
             }
         }
 
         /// <summary>
-        /// Gets or sets the y axis key.
-        /// </summary>
-        public string YAxisKey
-        {
-            get
-            {
-                return (string)this.GetValue(YAxisKeyProperty);
-            }
-
-            set
-            {
-                this.SetValue(YAxisKeyProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// The on items source changed.
-        /// </summary>
-        /// <param name="oldValue">
-        /// The old value.
-        /// </param>
-        /// <param name="newValue">
-        /// The new value.
-        /// </param>
-        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
-        {
-            base.OnItemsSourceChanged(oldValue, newValue);
-            this.OnDataChanged();
-        }
-
-        /// <summary>
-        /// Synchronizes the properties.
+        ///     Synchronizes the properties.
         /// </summary>
         /// <param name="series">The series.</param>
         protected override void SynchronizeProperties(OxyPlot.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = (OxyPlot.XYAxisSeries)series;
-            s.XAxisKey = this.XAxisKey;
-            s.YAxisKey = this.YAxisKey;
+            var s = (OxyPlot.BarSeries)series;
+            s.BarWidth = this.BarWidth;
         }
     }
 }

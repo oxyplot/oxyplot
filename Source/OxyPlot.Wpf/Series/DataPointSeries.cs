@@ -36,7 +36,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Base class for data series
     /// </summary>
-    public abstract class DataPointSeries : ItemsSeries
+    public abstract class DataPointSeries : XYAxisSeries
     {
         /// <summary>
         /// The can tracker interpolate points property.

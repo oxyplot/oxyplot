@@ -126,6 +126,7 @@ namespace OxyPlot
             this.TitleClippingLength = 0.9;
             this.TitleColor = null;
             this.TitleFontSize = double.NaN;
+            this.TitleFontWeight = FontWeights.Normal;
             this.ClipTitle = true;
 
             this.Angle = 0;

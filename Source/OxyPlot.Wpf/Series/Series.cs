@@ -72,8 +72,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         static Series()
         {
-            VisibilityProperty.OverrideMetadata(
-                typeof(Series), new PropertyMetadata(Visibility.Visible, AppearanceChanged));
+            VisibilityProperty.OverrideMetadata(typeof(Series), new PropertyMetadata(Visibility.Visible, AppearanceChanged));
         }
 
         /// <summary>
@@ -223,7 +222,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The synchronize properties.
+        /// Synchronizes the properties.
         /// </summary>
         /// <param name="s">
         /// The series.

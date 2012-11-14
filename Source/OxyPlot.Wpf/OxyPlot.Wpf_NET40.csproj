@@ -75,12 +75,16 @@
     <Compile Include="Helpers\WeakEvents\WeakEventListenerT.cs" />
     <Compile Include="Helpers\WeakEvents\WeakEventManagerBaseT.cs" />
     <Compile Include="RenderingControl.cs" />
+    <Compile Include="Series\BarSeries\ColumnSeries.cs" />
+    <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
+    <Compile Include="Series\BarSeries\BarSeriesBase.cs" />
+    <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
     <Compile Include="XamlExporter.cs" />
     <Compile Include="Helpers\InputBindingX.cs" />
     <Compile Include="Helpers\KeyGestureExtension.cs" />
     <Compile Include="Plot.Properties.cs" />
     <Compile Include="PngExporter.cs" />
-    <Compile Include="Series\BarSeries.cs" />
+    <Compile Include="Series\BarSeries\BarSeries.cs" />
     <Compile Include="Series\TwoColorLineSeries.cs" />
     <Compile Include="Series\XYAxisSeries.cs" />
     <Compile Include="Series\ItemsSeries.cs" />
