@@ -31,7 +31,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using OxyPlot;
 
-namespace BarSeriesDemo
+namespace ColumnSeriesDemo
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -51,16 +51,16 @@ namespace BarSeriesDemo
                             };
 
             // Create the plot model
-            var tmp = new PlotModel("Bar series") { LegendPlacement = LegendPlacement.Outside, LegendPosition = LegendPosition.RightTop, LegendOrientation = LegendOrientation.Vertical };
+            var tmp = new PlotModel("Column series") { LegendPlacement = LegendPlacement.Outside, LegendPosition = LegendPosition.RightTop, LegendOrientation = LegendOrientation.Vertical };
 
             // Add the axes, note that MinimumPadding and AbsoluteMinimum should be set on the value axis.
-            tmp.Axes.Add(new CategoryAxis(AxisPosition.Left) { ItemsSource = this.Items, LabelField = "Label" });
-            tmp.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MinimumPadding = 0, AbsoluteMinimum = 0 });
+            tmp.Axes.Add(new CategoryAxis { ItemsSource = this.Items, LabelField = "Label" });
+            tmp.Axes.Add(new LinearAxis(AxisPosition.Left) { MinimumPadding = 0, AbsoluteMinimum = 0 });
 
             // Add the series, note that the the BarSeries are using the same ItemsSource as the CategoryAxis.
-            tmp.Series.Add(new BarSeries { Title = "2009", ItemsSource = this.Items, ValueField = "Value1" });
-            tmp.Series.Add(new BarSeries { Title = "2010", ItemsSource = this.Items, ValueField = "Value2" });
-            tmp.Series.Add(new BarSeries { Title = "2011", ItemsSource = this.Items, ValueField = "Value3" });
+            tmp.Series.Add(new ColumnSeries { Title = "2009", ItemsSource = this.Items, ValueField = "Value1" });
+            tmp.Series.Add(new ColumnSeries { Title = "2010", ItemsSource = this.Items, ValueField = "Value2" });
+            tmp.Series.Add(new ColumnSeries { Title = "2011", ItemsSource = this.Items, ValueField = "Value3" });
 
             this.Model1 = tmp;
 

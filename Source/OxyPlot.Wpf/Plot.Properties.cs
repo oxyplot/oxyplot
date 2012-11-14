@@ -29,6 +29,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Wpf
 {
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Globalization;
     using System.Windows;
@@ -441,7 +442,7 @@ namespace OxyPlot.Wpf
         /// Gets the axes.
         /// </summary>
         /// <value> The axes. </value>
-        public ObservableCollection<Axis> Axes
+        public Collection<Axis> Axes
         {
             get
             {
@@ -1018,7 +1019,7 @@ namespace OxyPlot.Wpf
         /// Gets the series.
         /// </summary>
         /// <value> The series. </value>
-        public ObservableCollection<Series> Series
+        public Collection<Series> Series
         {
             get
             {

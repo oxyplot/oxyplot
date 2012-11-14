@@ -377,7 +377,7 @@ namespace OxyPlot.Wpf
         /// The title color property.
         /// </summary>
         public static readonly DependencyProperty TitleColorProperty = DependencyProperty.Register(
-            "TitleColor", typeof(Color), typeof(Axis), new UIPropertyMetadata(Colors.Black));
+            "TitleColor", typeof(Color?), typeof(Axis), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The title font property.
@@ -1158,7 +1158,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether ShowMinorTicks.
+        /// Gets or sets a value indicating whether to show minor ticks.
         /// </summary>
         public bool ShowMinorTicks
         {
@@ -1174,7 +1174,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets StartPosition.
+        /// Gets or sets the start position.
         /// </summary>
         public double StartPosition
         {
@@ -1190,7 +1190,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets StringFormat.
+        /// Gets or sets the string format.
         /// </summary>
         public string StringFormat
         {
@@ -1206,7 +1206,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TickStyle.
+        /// Gets or sets the tick style.
         /// </summary>
         public TickStyle TickStyle
         {
@@ -1222,7 +1222,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TicklineColor.
+        /// Gets or sets the tick line color.
         /// </summary>
         public Color TicklineColor
         {
@@ -1238,7 +1238,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Title.
+        /// Gets or sets the title.
         /// </summary>
         public string Title
         {
@@ -1278,11 +1278,11 @@ namespace OxyPlot.Wpf
         /// <value>
         /// The color of the title.
         /// </value>
-        public Color TitleColor
+        public Color? TitleColor
         {
             get
             {
-                return (Color)this.GetValue(TitleColorProperty);
+                return (Color?)this.GetValue(TitleColorProperty);
             }
 
             set
@@ -1413,10 +1413,9 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The create model.
+        /// Creates the model.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns>An axis object.</returns>
         public abstract OxyPlot.Axis CreateModel();
 
         /// <summary>
@@ -1558,6 +1557,5 @@ namespace OxyPlot.Wpf
             a.Unit = this.Unit;
             a.UseSuperExponentialFormat = this.UseSuperExponentialFormat;
         }
-
     }
 }

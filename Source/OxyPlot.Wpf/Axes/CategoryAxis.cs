@@ -73,10 +73,10 @@ namespace OxyPlot.Wpf
         /// </summary>
         static CategoryAxis()
         {
-            PositionProperty.OverrideMetadata(
-                typeof(CategoryAxis), new PropertyMetadata(AxisPosition.Bottom, DataChanged));
+            PositionProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(AxisPosition.Bottom, DataChanged));
             MinimumPaddingProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(0.0, DataChanged));
             MaximumPaddingProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(0.0, DataChanged));
+            MajorStepProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(1.0, DataChanged));
         }
 
         /// <summary>
@@ -187,12 +187,12 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.InternalAxis as OxyPlot.CategoryAxis;
+            var a = (OxyPlot.CategoryAxis)this.InternalAxis;
             a.IsTickCentered = this.IsTickCentered;
             a.ItemsSource = this.ItemsSource;
             a.LabelField = this.LabelField;
             a.GapWidth = this.GapWidth;
-            if (this.Labels != null)
+            if (this.Labels != null && this.ItemsSource == null)
             {
                 a.Labels.Clear();
                 foreach (string label in this.Labels)

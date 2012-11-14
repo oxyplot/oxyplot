@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="XYAxisSeries.cs" company="OxyPlot">
+// <copyright file="ColumnSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -23,89 +23,65 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   Abstract base class for series that use X and Y axes.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Wpf
 {
-    using System.Collections;
     using System.Windows;
 
     /// <summary>
-    /// Abstract base class for series that use X and Y axes.
+    ///     This is a WPF wrapper of OxyPlot.BarSeries
     /// </summary>
-    public abstract class XYAxisSeries : ItemsSeries
+    public class ColumnSeries : BarSeriesBase<ColumnItem>
     {
         /// <summary>
-        /// The x axis key property.
+        ///     The bar width property.
         /// </summary>
-        public static readonly DependencyProperty XAxisKeyProperty = DependencyProperty.Register(
-            "XAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
+        public static readonly DependencyProperty ColumnWidthProperty = DependencyProperty.Register(
+            "ColumnWidth", typeof(double), typeof(ColumnSeries), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The y axis key property.
+        ///     Initializes static members of the <see cref="ColumnSeries" /> class.
         /// </summary>
-        public static readonly DependencyProperty YAxisKeyProperty = DependencyProperty.Register(
-            "YAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
+        static ColumnSeries()
+        {
+            TrackerFormatStringProperty.OverrideMetadata(typeof(ColumnSeries), new PropertyMetadata("{0} {1}: {2}", AppearanceChanged));
+        }
 
         /// <summary>
-        /// Gets or sets the x-axis key.
+        ///     Initializes a new instance of the <see cref="ColumnSeries" /> class.
         /// </summary>
-        public string XAxisKey
+        public ColumnSeries()
+        {
+            this.InternalSeries = new OxyPlot.ColumnSeries();
+        }
+
+        /// <summary>
+        ///     Gets or sets ColumnWidth.
+        /// </summary>
+        public double ColumnWidth
         {
             get
             {
-                return (string)this.GetValue(XAxisKeyProperty);
+                return (double)this.GetValue(ColumnWidthProperty);
             }
 
             set
             {
-                this.SetValue(XAxisKeyProperty, value);
+                this.SetValue(ColumnWidthProperty, value);
             }
         }
 
         /// <summary>
-        /// Gets or sets the y axis key.
+        ///     The synchronize properties.
         /// </summary>
-        public string YAxisKey
-        {
-            get
-            {
-                return (string)this.GetValue(YAxisKeyProperty);
-            }
-
-            set
-            {
-                this.SetValue(YAxisKeyProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// The on items source changed.
-        /// </summary>
-        /// <param name="oldValue">
-        /// The old value.
+        /// <param name="series">
+        ///     The series.
         /// </param>
-        /// <param name="newValue">
-        /// The new value.
-        /// </param>
-        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
-        {
-            base.OnItemsSourceChanged(oldValue, newValue);
-            this.OnDataChanged();
-        }
-
-        /// <summary>
-        /// Synchronizes the properties.
-        /// </summary>
-        /// <param name="series">The series.</param>
         protected override void SynchronizeProperties(OxyPlot.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = (OxyPlot.XYAxisSeries)series;
-            s.XAxisKey = this.XAxisKey;
-            s.YAxisKey = this.YAxisKey;
+            var s = (OxyPlot.ColumnSeries)series;
+            s.ColumnWidth = this.ColumnWidth;
         }
     }
 }
