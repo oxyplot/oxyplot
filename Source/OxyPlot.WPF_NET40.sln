@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary_NET40", "Exa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser_NET40", "Examples\WPF\ExampleBrowser\ExampleBrowser_NET40.csproj", "{4BB6F831-E215-488E-8ED8-F73C98C4B23F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfExamples_NET40", "Examples\WPF\WpfExamples\WpfExamples_NET40.csproj", "{B86739B8-5DE9-406F-9418-0751BF7C166F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,16 @@ Global
 		{4BB6F831-E215-488E-8ED8-F73C98C4B23F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{4BB6F831-E215-488E-8ED8-F73C98C4B23F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4BB6F831-E215-488E-8ED8-F73C98C4B23F}.Release|x86.ActiveCfg = Release|Any CPU
+		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Debug|x86.ActiveCfg = Debug|x86
+		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Debug|x86.Build.0 = Debug|x86
+		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Release|Any CPU.ActiveCfg = Release|x86
+		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Release|Mixed Platforms.Build.0 = Release|x86
+		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Release|x86.ActiveCfg = Release|x86
+		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,5 +116,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A941B658-1237-482C-B0C7-378242D27647} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{4BB6F831-E215-488E-8ED8-F73C98C4B23F} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
+		{B86739B8-5DE9-406F-9418-0751BF7C166F} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 	EndGlobalSection
 EndGlobal

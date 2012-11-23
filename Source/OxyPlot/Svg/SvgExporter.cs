@@ -101,6 +101,5 @@ namespace OxyPlot
 
             return svg;
         }
-
     }
 }

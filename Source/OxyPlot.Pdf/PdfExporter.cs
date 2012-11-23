@@ -83,6 +83,5 @@ namespace OxyPlot.Pdf
                 svgrc.Save(s);
             }
         }
-
     }
 }

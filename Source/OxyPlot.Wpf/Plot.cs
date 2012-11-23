@@ -192,7 +192,6 @@ namespace OxyPlot.Wpf
             this.axes.CollectionChanged += this.OnAxesChanged;
             this.annotations.CollectionChanged += this.OnAnnotationsChanged;
 
-            this.Loaded += this.OnLoaded;
             this.DataContextChanged += this.OnDataContextChanged;
             this.SizeChanged += this.OnSizeChanged;
 
@@ -682,6 +681,7 @@ namespace OxyPlot.Wpf
         protected virtual void PlotLoaded(object sender, RoutedEventArgs e)
         {
             this.IsRendering = true;
+            this.OnModelChanged();
         }
 
         /// <summary>
@@ -692,6 +692,12 @@ namespace OxyPlot.Wpf
         protected virtual void PlotUnloaded(object sender, RoutedEventArgs e)
         {
             this.IsRendering = false;
+
+            if (this.currentModel != null)
+            {
+                this.currentModel.AttachPlotControl(null);
+                this.currentModel = null;
+            }
         }
 
         /// <summary>
@@ -1303,20 +1309,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Called when the control is loaded.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
-        /// </param>
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            this.OnModelChanged();
-        }
-
-        /// <summary>
         /// Called when the model is changed.
         /// </summary>
         private void OnModelChanged()
@@ -1336,8 +1328,11 @@ namespace OxyPlot.Wpf
                             "This PlotModel is already in use by some other plot control.");
                     }
 
-                    this.Model.AttachPlotControl(this);
-                    this.currentModel = this.Model;
+                    if (this.IsLoaded)
+                    {
+                        this.currentModel = this.Model;
+                        this.currentModel.AttachPlotControl(this);
+                    }
                 }
             }
 
