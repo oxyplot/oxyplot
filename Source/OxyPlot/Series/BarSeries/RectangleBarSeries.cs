@@ -60,7 +60,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the default color of the interior of the Maximum bars.
+        /// Gets or sets the default color of the interior of the rectangles.
         /// </summary>
         /// <value>
         /// The color.
@@ -92,7 +92,7 @@ namespace OxyPlot
         public string LabelFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the border around the bars.
+        /// Gets or sets the color of the border around the rectangles.
         /// </summary>
         /// <value>
         /// The color of the stroke.
@@ -100,7 +100,7 @@ namespace OxyPlot
         public OxyColor StrokeColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the thickness of the bar border strokes.
+        /// Gets or sets the thickness of the border around the rectangles.
         /// </summary>
         /// <value>
         /// The stroke thickness.
@@ -108,7 +108,7 @@ namespace OxyPlot
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the actual rectangles for the maximum bars.
+        /// Gets or sets the actual rectangles for the rectangles.
         /// </summary>
         internal IList<OxyRect> ActualBarRectangles { get; set; }
 
@@ -119,13 +119,18 @@ namespace OxyPlot
         /// The point.
         /// </param>
         /// <param name="interpolate">
-        /// The interpolate.
+        /// Specifies whether to interpolate or not.
         /// </param>
         /// <returns>
-        /// A TrackerHitResult for the current hit.
+        /// A <see cref="TrackerHitResult"/> for the current hit.
         /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
+            if (this.ActualBarRectangles == null)
+            {
+                return null;
+            }
+
             for (int i = 0; i < this.ActualBarRectangles.Count; i++)
             {
                 var r = this.ActualBarRectangles[i];
@@ -157,13 +162,10 @@ namespace OxyPlot
         /// <param name="v">
         /// The value.
         /// </param>
-        /// <param name="yaxis">
-        /// The y axis.
-        /// </param>
         /// <returns>
         /// True if the value is valid.
         /// </returns>
-        public virtual bool IsValidPoint(double v, Axis yaxis)
+        protected virtual bool IsValid(double v)
         {
             return !double.IsNaN(v) && !double.IsInfinity(v);
         }
@@ -192,8 +194,8 @@ namespace OxyPlot
 
             foreach (var item in this.Items)
             {
-                if (!this.IsValidPoint(item.X0, this.XAxis) || !this.IsValidPoint(item.X1, this.XAxis)
-                    || !this.IsValidPoint(item.Y0, this.YAxis) || !this.IsValidPoint(item.Y1, this.YAxis))
+                if (!this.IsValid(item.X0) || !this.IsValid(item.X1)
+                    || !this.IsValid(item.Y0) || !this.IsValid(item.Y1))
                 {
                     continue;
                 }
@@ -267,7 +269,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The set default values.
+        /// Sets the default values.
         /// </summary>
         /// <param name="model">
         /// The model.
@@ -331,6 +333,5 @@ namespace OxyPlot
             this.MinY = minValueY;
             this.MaxY = maxValueY;
         }
-
     }
 }
