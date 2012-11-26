@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Attributes\ExampleAttribute.cs" />
     <Compile Include="CustomSeries\ErrorItem.cs" />
+    <Compile Include="CustomSeries\FlagSeries.cs" />
     <Compile Include="CustomSeries\LineSegmentSeries.cs" />
     <Compile Include="ExampleInfo.cs" />
     <Compile Include="Examples.cs" />

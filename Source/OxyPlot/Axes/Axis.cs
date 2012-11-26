@@ -1302,7 +1302,7 @@ namespace OxyPlot
         /// <param name="value">
         /// The value.
         /// </param>
-        internal virtual void Include(double value)
+        public virtual void Include(double value)
         {
             if (!this.IsValidValue(value))
             {

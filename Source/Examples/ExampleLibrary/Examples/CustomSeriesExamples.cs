@@ -91,5 +91,25 @@ namespace ExampleLibrary
 
             return model;
         }
+
+        [Example("FlagSeries")]
+        public static PlotModel FlagSeries()
+        {
+            var model = new PlotModel("FlagSeries");
+
+            var s1 = new FlagSeries { Title = "Incidents", Color = OxyColors.Red };
+            s1.Values.Add(2);
+            s1.Values.Add(3);
+            s1.Values.Add(5);
+            s1.Values.Add(7);
+            s1.Values.Add(11);
+            s1.Values.Add(13);
+            s1.Values.Add(17);
+            s1.Values.Add(19);
+
+            model.Series.Add(s1);
+            return model;
+        }
+
     }
 }
