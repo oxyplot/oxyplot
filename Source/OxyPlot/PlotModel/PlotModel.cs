@@ -715,31 +715,31 @@ namespace OxyPlot
         /// Gets the default angle axis.
         /// </summary>
         /// <value> The default angle axis. </value>
-        internal AngleAxis DefaultAngleAxis { get; private set; }
+        public AngleAxis DefaultAngleAxis { get; private set; }
 
         /// <summary>
         /// Gets the default magnitude axis.
         /// </summary>
         /// <value> The default magnitude axis. </value>
-        internal MagnitudeAxis DefaultMagnitudeAxis { get; private set; }
+        public MagnitudeAxis DefaultMagnitudeAxis { get; private set; }
 
         /// <summary>
         /// Gets the default X axis.
         /// </summary>
         /// <value> The default X axis. </value>
-        internal Axis DefaultXAxis { get; private set; }
+        public Axis DefaultXAxis { get; private set; }
 
         /// <summary>
         /// Gets the default Y axis.
         /// </summary>
         /// <value> The default Y axis. </value>
-        internal Axis DefaultYAxis { get; private set; }
+        public Axis DefaultYAxis { get; private set; }
 
         /// <summary>
         /// Gets the default color axis.
         /// </summary>
         /// <value> The default color axis. </value>
-        internal ColorAxis DefaultColorAxis { get; private set; }
+        public ColorAxis DefaultColorAxis { get; private set; }
 
         /// <summary>
         /// Gets the actual title font.
@@ -1237,7 +1237,7 @@ namespace OxyPlot
         /// <param name="key">The key.</param>
         /// <param name="defaultAxis">The default axis.</param>
         /// <returns>The axis, or the defaultAxis if the key is not found.</returns>
-        internal Axis GetAxisOrDefault(string key, Axis defaultAxis)
+        public Axis GetAxisOrDefault(string key, Axis defaultAxis)
         {
             if (key != null)
             {
