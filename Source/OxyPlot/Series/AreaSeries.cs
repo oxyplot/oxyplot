@@ -196,7 +196,7 @@ namespace OxyPlot
                 minDistSquared,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
-                this.LineStyle,
+                this.ActualLineStyle,
                 this.LineJoin,
                 false);
             rc.DrawClippedLine(
@@ -205,7 +205,7 @@ namespace OxyPlot
                 minDistSquared,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
-                this.LineStyle,
+                this.ActualLineStyle,
                 this.LineJoin,
                 false);
 
@@ -262,8 +262,8 @@ namespace OxyPlot
             pts.AddRange(pts0);
             pts.AddRange(pts1);
             var color = this.GetSelectableColor(this.ActualColor);
-            rc.DrawLine(pts0, color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
-            rc.DrawLine(pts1, color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
+            rc.DrawLine(pts0, color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.ActualLineStyle));
+            rc.DrawLine(pts1, color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.ActualLineStyle));
             rc.DrawPolygon(pts, this.GetSelectableFillColor(this.Fill), null);
         }
 

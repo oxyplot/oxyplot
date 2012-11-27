@@ -189,11 +189,13 @@ namespace OxyPlot
 
             Action<IList<ScreenPoint>, IList<ScreenPoint>> renderPoints = (lpts, mpts) =>
                 {
+                    var lineStyle = this.ActualLineStyle;
+
                     // clip the line segments with the clipping rectangle
-                    if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+                    if (this.StrokeThickness > 0 && lineStyle != LineStyle.None)
                     {
                         var verticalStrokeThickness = double.IsNaN(this.VerticalStrokeThickness) ? StrokeThickness : VerticalStrokeThickness;
-                        if (verticalStrokeThickness != this.StrokeThickness || this.VerticalLineStyle != this.LineStyle)
+                        if (!verticalStrokeThickness.Equals(this.StrokeThickness) || this.VerticalLineStyle != lineStyle)
                         {
                             var hlpts = new List<ScreenPoint>();
                             var vlpts = new List<ScreenPoint>();
@@ -204,12 +206,13 @@ namespace OxyPlot
                                 vlpts.Add(lpts[i + 1]);
                                 vlpts.Add(lpts[i + 2]);
                             }
+
                             rc.DrawClippedLineSegments(
                                 hlpts,
                                 clippingRect,
                                 this.GetSelectableColor(this.ActualColor),
                                 this.StrokeThickness,
-                                this.LineStyle,
+                                lineStyle,
                                 this.LineJoin,
                                 false);
                             rc.DrawClippedLineSegments(
@@ -220,7 +223,6 @@ namespace OxyPlot
                                 this.VerticalLineStyle,
                                 this.LineJoin,
                                 false);
-
                         }
                         else
                         {
@@ -230,7 +232,7 @@ namespace OxyPlot
                                 0,
                                 this.GetSelectableColor(this.ActualColor),
                                 this.StrokeThickness,
-                                this.LineStyle,
+                                lineStyle,
                                 this.LineJoin,
                                 false);
                         }

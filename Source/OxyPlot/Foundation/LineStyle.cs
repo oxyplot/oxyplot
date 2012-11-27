@@ -87,6 +87,11 @@ namespace OxyPlot
         /// <summary>
         /// The hidden line style.
         /// </summary>
-        None
+        None,
+
+        /// <summary>
+        /// The undefined style.
+        /// </summary>
+        Undefined
     }
 }

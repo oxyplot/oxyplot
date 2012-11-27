@@ -81,6 +81,18 @@ namespace OxyPlot
         public LineStyle LineStyle2 { get; set; }
 
         /// <summary>
+        /// Gets the actual line style for the part of the line that is below the limit.
+        /// </summary>
+        /// <value>The line style.</value>
+        public LineStyle ActualLineStyle2
+        {
+            get
+            {
+                return this.LineStyle2 != LineStyle.Undefined ? this.LineStyle2 : LineStyle.Solid;
+            }
+        }
+
+        /// <summary>
         /// The set default values.
         /// </summary>
         /// <param name="model">
@@ -131,7 +143,7 @@ namespace OxyPlot
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
-                this.LineStyle,
+                this.ActualLineStyle,
                 this.LineJoin,
                 false);
             clippingRect.Top = y;
@@ -142,7 +154,7 @@ namespace OxyPlot
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableColor(this.ActualColor2),
                 this.StrokeThickness,
-                this.LineStyle2,
+                this.ActualLineStyle2,
                 this.LineJoin,
                 false);
         }
