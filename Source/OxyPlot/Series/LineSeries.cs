@@ -60,6 +60,7 @@ namespace OxyPlot
             this.MinimumSegmentLength = 2;
             this.StrokeThickness = 2;
             this.LineJoin = OxyPenLineJoin.Bevel;
+            this.LineStyle = LineStyle.Undefined;
             this.MarkerSize = 3;
             this.MarkerStrokeThickness = 1;
             this.CanTrackerInterpolatePoints = true;
@@ -113,6 +114,20 @@ namespace OxyPlot
             get
             {
                 return this.Color ?? this.defaultColor;
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual line style.
+        /// </summary>
+        /// <value>
+        /// The actual line style.
+        /// </value>
+        protected LineStyle ActualLineStyle
+        {
+            get
+            {
+                return this.LineStyle != LineStyle.Undefined ? this.LineStyle : LineStyle.Solid;
             }
         }
 
@@ -323,7 +338,7 @@ namespace OxyPlot
             double xmid = (legendBox.Left + legendBox.Right) / 2;
             double ymid = (legendBox.Top + legendBox.Bottom) / 2;
             var pts = new[] { new ScreenPoint(legendBox.Left, ymid), new ScreenPoint(legendBox.Right, ymid) };
-            rc.DrawLine(pts, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, LineStyleHelper.GetDashArray(this.LineStyle));
+            rc.DrawLine(pts, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, LineStyleHelper.GetDashArray(this.ActualLineStyle));
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
                 midpt,
@@ -347,8 +362,11 @@ namespace OxyPlot
             // todo: should use ActualLineStyle
             if (this.Color == null)
             {
-                // LineStyle will also be overridden
-                this.LineStyle = model.GetDefaultLineStyle();
+                if (this.LineStyle == LineStyle.Undefined)
+                {
+                    this.LineStyle = model.GetDefaultLineStyle();
+                }
+
                 this.defaultColor = model.GetDefaultColor();
 
                 // And MarkerFill will be overridden if not set to null
@@ -517,7 +535,7 @@ namespace OxyPlot
             }
 
             // clip the line segments with the clipping rectangle
-            if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+            if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
             {
                 this.RenderSmoothedLine(rc, clippingRect, screenPoints);
             }
@@ -556,7 +574,7 @@ namespace OxyPlot
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
-                this.LineStyle,
+                this.ActualLineStyle,
                 this.LineJoin,
                 false);
         }

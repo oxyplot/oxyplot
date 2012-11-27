@@ -177,7 +177,7 @@ namespace OxyPlot
                 var p0 = this.Transform(point.X, this.Base);
                 var p1 = this.Transform(point.X, point.Y);
 
-                if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
+                if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
                 {
                     rc.DrawClippedLine(
                         new[] { p0, p1 },
@@ -185,7 +185,7 @@ namespace OxyPlot
                         minDistSquared,
                         this.GetSelectableColor(this.ActualColor),
                         this.StrokeThickness,
-                        this.LineStyle,
+                        this.ActualLineStyle,
                         this.LineJoin,
                         false);
                 }

@@ -79,7 +79,7 @@ namespace OxyPlot.Wpf
         /// The line style property.
         /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
-            "LineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(LineStyle.Solid, AppearanceChanged));
+            "LineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(LineStyle.Undefined, AppearanceChanged));
 
         /// <summary>
         /// The marker fill property.
