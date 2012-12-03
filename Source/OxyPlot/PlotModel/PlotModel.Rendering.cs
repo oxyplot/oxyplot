@@ -46,49 +46,52 @@ namespace OxyPlot
         /// </param>
         public void Render(IRenderContext rc)
         {
-            if (rc.Width <= 0 || rc.Height <= 0)
+            lock (this.syncRoot)
             {
-                return;
-            }
-
-            this.ActualPlotMargins = this.PlotMargins;
-            this.EnsureLegendProperties();
-
-            while (true)
-            {
-                this.UpdatePlotArea(rc);
-                this.UpdateAxisTransforms();
-                this.UpdateIntervals();
-                if (!this.AutoAdjustPlotMargins)
+                if (rc.Width <= 0 || rc.Height <= 0)
                 {
-                    break;
+                    return;
                 }
 
-                if (!this.AdjustPlotMargins(rc))
+                this.ActualPlotMargins = this.PlotMargins;
+                this.EnsureLegendProperties();
+
+                while (true)
                 {
-                    break;
+                    this.UpdatePlotArea(rc);
+                    this.UpdateAxisTransforms();
+                    this.UpdateIntervals();
+                    if (!this.AutoAdjustPlotMargins)
+                    {
+                        break;
+                    }
+
+                    if (!this.AdjustPlotMargins(rc))
+                    {
+                        break;
+                    }
                 }
-            }
 
-            if (this.PlotType == PlotType.Cartesian)
-            {
-                this.EnforceCartesianTransforms();
-                this.UpdateIntervals();
-            }
+                if (this.PlotType == PlotType.Cartesian)
+                {
+                    this.EnforceCartesianTransforms();
+                    this.UpdateIntervals();
+                }
 
-            this.RenderBackgrounds(rc);
-            this.RenderAnnotations(rc, AnnotationLayer.BelowAxes);
-            this.RenderAxes(rc, AxisLayer.BelowSeries);
-            this.RenderAnnotations(rc, AnnotationLayer.BelowSeries);
-            this.RenderSeries(rc);
-            this.RenderAnnotations(rc, AnnotationLayer.AboveSeries);
-            this.RenderTitle(rc);
-            this.RenderBox(rc);
-            this.RenderAxes(rc, AxisLayer.AboveSeries);
+                this.RenderBackgrounds(rc);
+                this.RenderAnnotations(rc, AnnotationLayer.BelowAxes);
+                this.RenderAxes(rc, AxisLayer.BelowSeries);
+                this.RenderAnnotations(rc, AnnotationLayer.BelowSeries);
+                this.RenderSeries(rc);
+                this.RenderAnnotations(rc, AnnotationLayer.AboveSeries);
+                this.RenderTitle(rc);
+                this.RenderBox(rc);
+                this.RenderAxes(rc, AxisLayer.AboveSeries);
 
-            if (this.IsLegendVisible)
-            {
-                this.RenderLegends(rc, this.LegendArea);
+                if (this.IsLegendVisible)
+                {
+                    this.RenderLegends(rc, this.LegendArea);
+                }
             }
         }
 

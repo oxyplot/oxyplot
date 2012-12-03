@@ -305,6 +305,17 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// The synchronization root object.
+        /// </summary>
+        private object syncRoot = new object();
+
+        /// <summary>
+        /// Gets an object that can be used to synchronize access to the PlotModel.
+        /// </summary>
+        /// <value>The sync root.</value>
+        public object SyncRoot { get { return this.syncRoot; } }
+
+        /// <summary>
         /// Occurs when the plot has been updated.
         /// </summary>
         public event EventHandler Updated;
@@ -862,7 +873,7 @@ namespace OxyPlot
         {
             if (this.PlotControl == null)
             {
-                throw new InvalidOperationException("RefreshPlot: The plot model is not connected to a plot control.");
+                return;
             }
 
             this.PlotControl.RefreshPlot(updateData);
@@ -876,7 +887,7 @@ namespace OxyPlot
         {
             if (this.PlotControl == null)
             {
-                throw new InvalidOperationException("InvalidatePlot: The plot model is not connected to a plot control.");
+                return;
             }
 
             this.PlotControl.InvalidatePlot(updateData);
@@ -1163,60 +1174,63 @@ namespace OxyPlot
         /// </param>
         public void Update(bool updateData = true)
         {
-            this.OnUpdating();
-
-            // update the owner PlotModel
-            foreach (var s in this.VisibleSeries)
+            lock (this.syncRoot)
             {
-                s.PlotModel = this;
-            }
+                this.OnUpdating();
 
-            foreach (var a in this.Annotations)
-            {
-                a.PlotModel = this;
-            }
-
-            // Updates the default axes
-            this.EnsureDefaultAxes();
-
-            // Update data of the series
-            if (updateData)
-            {
+                // update the owner PlotModel
                 foreach (var s in this.VisibleSeries)
                 {
-                    s.UpdateData();
+                    s.PlotModel = this;
                 }
-            }
 
-            foreach (var a in this.Axes)
-            {
-                a.PlotModel = this;
-            }
-
-            foreach (var c in this.Axes.OfType<CategoryAxis>())
-            {
-                c.UpdateLabels(this.VisibleSeries);
-            }
-
-            // Update valid data of the series
-            if (updateData)
-            {
-                foreach (var s in this.VisibleSeries)
+                foreach (var a in this.Annotations)
                 {
-                    s.UpdateValidData();
+                    a.PlotModel = this;
                 }
-            }
 
-            // Updates axes with information from the series
-            // This is used by the category axis that need to know the number of series using the axis.
-            foreach (var a in this.Axes)
-            {
-                a.UpdateFromSeries(this.VisibleSeries);
-            }
+                // Updates the default axes
+                this.EnsureDefaultAxes();
 
-            // Update the max and min of the axes
-            this.UpdateMaxMin(updateData);
-            this.OnUpdated();
+                // Update data of the series
+                if (updateData)
+                {
+                    foreach (var s in this.VisibleSeries)
+                    {
+                        s.UpdateData();
+                    }
+                }
+
+                foreach (var a in this.Axes)
+                {
+                    a.PlotModel = this;
+                }
+
+                foreach (var c in this.Axes.OfType<CategoryAxis>())
+                {
+                    c.UpdateLabels(this.VisibleSeries);
+                }
+
+                // Update valid data of the series
+                if (updateData)
+                {
+                    foreach (var s in this.VisibleSeries)
+                    {
+                        s.UpdateValidData();
+                    }
+                }
+
+                // Updates axes with information from the series
+                // This is used by the category axis that need to know the number of series using the axis.
+                foreach (var a in this.Axes)
+                {
+                    a.UpdateFromSeries(this.VisibleSeries);
+                }
+
+                // Update the max and min of the axes
+                this.UpdateMaxMin(updateData);
+                this.OnUpdated();
+            }
         }
 
         /// <summary>
