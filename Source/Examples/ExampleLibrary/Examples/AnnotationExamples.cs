@@ -39,10 +39,10 @@ namespace ExampleLibrary
             var model = new PlotModel("LineAnnotations on linear axes");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
-            model.Annotations.Add(new LineAnnotation() { Slope = 0.1, Intercept = 1, Text = "First" });
-            model.Annotations.Add(new LineAnnotation() { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second" });
-            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical" });
-            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal" });
+            model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "First" });
+            model.Annotations.Add(new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second" });
+            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical" });
+            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal" });
             return model;
         }
 
@@ -52,10 +52,10 @@ namespace ExampleLibrary
             var model = new PlotModel("Annotations on logarithmic axes");
             model.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, 1, 80));
             model.Axes.Add(new LogarithmicAxis(AxisPosition.Left, 1, 10));
-            model.Annotations.Add(new LineAnnotation() { Slope = 0.1, Intercept = 1, Text = "First", TextMargin = 40 });
-            model.Annotations.Add(new LineAnnotation() { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second" });
-            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical" });
-            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal" });
+            model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "First", TextMargin = 40 });
+            model.Annotations.Add(new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second" });
+            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical" });
+            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal" });
             return model;
         }
 
@@ -65,30 +65,71 @@ namespace ExampleLibrary
             var model = new PlotModel("LineAnnotations", "with TextOrientation specified");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
-            model.Annotations.Add(new LineAnnotation() { Slope = 0.1, Intercept = 1, Text = "Horizontal", TextOrientation = AnnotationTextOrientation.Horizontal, TextVerticalAlignment = VerticalTextAlign.Bottom });
-            model.Annotations.Add(new LineAnnotation() { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Vertical", TextOrientation = AnnotationTextOrientation.Vertical });
-            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Horizontal (x=4)", TextPadding = 8, TextOrientation = AnnotationTextOrientation.Horizontal });
-            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Vertical, X = 45, MaximumY = 10, Color = OxyColors.Green, Text = "Horizontal (x=45)", TextHorizontalAlignment = HorizontalTextAlign.Left, TextPadding = 8, TextOrientation = AnnotationTextOrientation.Horizontal });
-            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal", TextPosition = 0.5, TextOrientation = AnnotationTextOrientation.Horizontal });
+            model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "Horizontal", TextOrientation = AnnotationTextOrientation.Horizontal, TextVerticalAlignment = VerticalTextAlign.Bottom });
+            model.Annotations.Add(new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Vertical", TextOrientation = AnnotationTextOrientation.Vertical });
+            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Horizontal (x=4)", TextPadding = 8, TextOrientation = AnnotationTextOrientation.Horizontal });
+            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 45, MaximumY = 10, Color = OxyColors.Green, Text = "Horizontal (x=45)", TextHorizontalAlignment = HorizontalTextAlign.Left, TextPadding = 8, TextOrientation = AnnotationTextOrientation.Horizontal });
+            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal", TextPosition = 0.5, TextOrientation = AnnotationTextOrientation.Horizontal });
+            return model;
+        }
+
+        [Example("RectangleAnnotations")]
+        public static PlotModel RectangleAnnotation()
+        {
+            var model = new PlotModel("RectangleAnnotations - vertical limit");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Annotations.Add(new RectangleAnnotation { MinimumX = 20, MaximumX = 70, MinimumY = 10, MaximumY = 40, TextRotation = 10, Text = "RectangleAnnotation", Fill = OxyColors.Black.ChangeAlpha(99) });
+            return model;
+        }
+
+        [Example("RectangleAnnotations - vertical limit")]
+        public static PlotModel RectangleAnnotationVerticalLimit()
+        {
+            var model = new PlotModel("RectangleAnnotations - vertical limit");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Annotations.Add(new RectangleAnnotation { MaximumY = 89.5, Text = "Valid area", Fill = OxyColors.Black.ChangeAlpha(99) });
             return model;
         }
 
         [Example("RectangleAnnotations - horizontal bands")]
-        public static PlotModel RectangleAnnotations()
+        public static PlotModel RectangleAnnotationsHorizontals()
         {
-            var model = new PlotModel("RectangleAnnotations");
+            var model = new PlotModel("RectangleAnnotation - horizontal bands");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 10));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, 87, 97) { MajorStep = 1, MinorStep = 1 });
-            //            model.Annotations.Add(new RectangleAnnotation() { MaximumY = 89.5, Fill = OxyColors.Black.ChangeAlpha(99) });
-            //            model.Annotations.Add(new RectangleAnnotation() { MinimumY = double.MinValue, MaximumY = 89.5, Fill = OxyColors.Black.ChangeAlpha(99) });
-            model.Annotations.Add(new RectangleAnnotation() { MinimumY = 89.5, MaximumY = 90.8, Fill = OxyColors.Red.ChangeAlpha(99) });
-            model.Annotations.Add(new RectangleAnnotation() { MinimumY = 90.8, MaximumY = 92.1, Fill = OxyColors.Orange.ChangeAlpha(99) });
-            model.Annotations.Add(new RectangleAnnotation() { MinimumY = 92.1, MaximumY = 94.6, Fill = OxyColors.Yellow.ChangeAlpha(99) });
-            model.Annotations.Add(new RectangleAnnotation() { MinimumY = 94.6, MaximumY = 96, Fill = OxyColors.Green.ChangeAlpha(99) });
-            //            model.Annotations.Add(new RectangleAnnotation() { MinimumY = 96, MaximumY = double.MaxValue, Fill = OxyColors.Black.ChangeAlpha(99) });
-            //            model.Annotations.Add(new RectangleAnnotation() { MinimumY = 96, Fill = OxyColors.Black.ChangeAlpha(99) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumY = 89.5, MaximumY = 90.8, Text = "Invalid", Fill = OxyColors.Red.ChangeAlpha(99) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumY = 90.8, MaximumY = 92.1, Fill = OxyColors.Orange.ChangeAlpha(99) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumY = 92.1, MaximumY = 94.6, Fill = OxyColors.Yellow.ChangeAlpha(99) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumY = 94.6, MaximumY = 96, Text = "Ok", Fill = OxyColors.Green.ChangeAlpha(99) });
             LineSeries series1;
-            model.Series.Add(series1 = new LineSeries() { Color = OxyColors.Black, StrokeThickness = 6.0, LineJoin = OxyPenLineJoin.Round });
+            model.Series.Add(series1 = new LineSeries { Color = OxyColors.Black, StrokeThickness = 6.0, LineJoin = OxyPenLineJoin.Round });
+            series1.Points.Add(new DataPoint(0.5, 90.7));
+            series1.Points.Add(new DataPoint(1.5, 91.2));
+            series1.Points.Add(new DataPoint(2.5, 91));
+            series1.Points.Add(new DataPoint(3.5, 89.5));
+            series1.Points.Add(new DataPoint(4.5, 92.5));
+            series1.Points.Add(new DataPoint(5.5, 93.1));
+            series1.Points.Add(new DataPoint(6.5, 94.5));
+            series1.Points.Add(new DataPoint(7.5, 95.5));
+            series1.Points.Add(new DataPoint(8.5, 95.7));
+            series1.Points.Add(new DataPoint(9.5, 96.0));
+            return model;
+        }
+
+        [Example("RectangleAnnotations - vertical bands")]
+        public static PlotModel RectangleAnnotationsVerticals()
+        {
+            var model = new PlotModel("RectangleAnnotation - vertical bands");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 10));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, 87, 97) { MajorStep = 1, MinorStep = 1 });
+            model.Annotations.Add(new RectangleAnnotation { MinimumX = 2.5, MaximumX = 2.8, TextRotation = 90, Text = "Red", Fill = OxyColors.Red.ChangeAlpha(99) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumX = 2.8, MaximumX = 6.1, TextRotation = 90, Text = "Orange", Fill = OxyColors.Orange.ChangeAlpha(99) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumX = 6.1, MaximumX = 7.6, TextRotation = 90, Text = "Yellow", Fill = OxyColors.Yellow.ChangeAlpha(99) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumX = 7.6, MaximumX = 9.7, TextRotation = 270, Text = "Green", Fill = OxyColors.Green.ChangeAlpha(99) });
+            LineSeries series1;
+            model.Series.Add(series1 = new LineSeries { Color = OxyColors.Black, StrokeThickness = 6.0, LineJoin = OxyPenLineJoin.Round });
             series1.Points.Add(new DataPoint(0.5, 90.7));
             series1.Points.Add(new DataPoint(1.5, 91.2));
             series1.Points.Add(new DataPoint(2.5, 91));
@@ -207,10 +248,10 @@ namespace ExampleLibrary
             var model = new PlotModel("Annotations on reversed axes");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80) { StartPosition = 1, EndPosition = 0 });
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { StartPosition = 1, EndPosition = 0 });
-            model.Annotations.Add(new LineAnnotation() { Slope = 0.1, Intercept = 1, Text = "First", TextHorizontalAlignment = HorizontalTextAlign.Left });
-            model.Annotations.Add(new LineAnnotation() { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second", TextHorizontalAlignment = HorizontalTextAlign.Left, TextVerticalAlignment = VerticalTextAlign.Bottom });
-            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical", TextHorizontalAlignment = HorizontalTextAlign.Right });
-            model.Annotations.Add(new LineAnnotation() { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal", TextHorizontalAlignment = HorizontalTextAlign.Left });
+            model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "First", TextHorizontalAlignment = HorizontalTextAlign.Left });
+            model.Annotations.Add(new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second", TextHorizontalAlignment = HorizontalTextAlign.Left, TextVerticalAlignment = VerticalTextAlign.Bottom });
+            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical", TextHorizontalAlignment = HorizontalTextAlign.Right });
+            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal", TextHorizontalAlignment = HorizontalTextAlign.Left });
             return model;
         }
     }

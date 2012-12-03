@@ -49,6 +49,7 @@ namespace OxyPlot
             this.MaximumX = double.NaN;
             this.MinimumY = double.NaN;
             this.MaximumY = double.NaN;
+            this.TextRotation = 0;
         }
 
         /// <summary>
@@ -80,6 +81,12 @@ namespace OxyPlot
         /// </summary>
         /// <value>The maximum Y.</value>
         public double MaximumY { get; set; }
+
+        /// <summary>
+        /// Gets or sets the text rotation (degrees).
+        /// </summary>
+        /// <value>The text rotation in degrees.</value>
+        public double TextRotation { get; set; }
 
         /// <summary>
         /// Renders the polygon annotation.
@@ -117,7 +124,7 @@ namespace OxyPlot
                     this.ActualFont,
                     this.ActualFontSize,
                     this.ActualFontWeight,
-                    0,
+                    this.TextRotation,
                     HorizontalTextAlign.Center,
                     VerticalTextAlign.Middle);
             }

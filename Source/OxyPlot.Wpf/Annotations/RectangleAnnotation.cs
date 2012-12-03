@@ -27,48 +27,58 @@
 //   This is a WPF wrapper of OxyPlot.RectangleAnnotation
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Wpf
 {
     using System.Windows;
     using System.Windows.Media;
 
     /// <summary>
-    /// This is a WPF wrapper of OxyPlot.RectangleAnnotation
+    ///     This is a WPF wrapper of OxyPlot.RectangleAnnotation
     /// </summary>
     public class RectangleAnnotation : Annotation
     {
         /// <summary>
-        /// The Fill property.
+        ///     The Fill property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-            "Fill", typeof(Color), typeof(RectangleAnnotation), new PropertyMetadata(Colors.LightBlue, AppearanceChanged));
+            "Fill",
+            typeof(Color),
+            typeof(RectangleAnnotation),
+            new PropertyMetadata(Colors.LightBlue, AppearanceChanged));
 
         /// <summary>
-        /// The MaximumX property.
+        ///     The MaximumX property.
         /// </summary>
         public static readonly DependencyProperty MaximumXProperty = DependencyProperty.Register(
             "MaximumX", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MaxValue, DataChanged));
 
         /// <summary>
-        /// The MaximumY property.
+        ///     The MaximumY property.
         /// </summary>
         public static readonly DependencyProperty MaximumYProperty = DependencyProperty.Register(
             "MaximumY", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MaxValue, DataChanged));
 
         /// <summary>
-        /// The MinimumX property.
+        ///     The MinimumX property.
         /// </summary>
         public static readonly DependencyProperty MinimumXProperty = DependencyProperty.Register(
             "MinimumX", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
-        /// The MinimumY property.
+        ///     The MinimumY property.
         /// </summary>
         public static readonly DependencyProperty MinimumYProperty = DependencyProperty.Register(
             "MinimumY", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "RectangleAnnotation" /> class.
+        ///     The text rotation property
+        /// </summary>
+        public static readonly DependencyProperty TextRotationProperty = DependencyProperty.Register(
+            "TextRotation", typeof(double), typeof(RectangleAnnotation), new UIPropertyMetadata(0.0));
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RectangleAnnotation" /> class.
         /// </summary>
         public RectangleAnnotation()
         {
@@ -76,7 +86,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the fill color.
+        ///     Gets or sets the fill color.
         /// </summary>
         public Color Fill
         {
@@ -92,7 +102,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the Maximum X.
+        ///     Gets or sets the Maximum X.
         /// </summary>
         public double MaximumX
         {
@@ -108,7 +118,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the Maximum Y.
+        ///     Gets or sets the Maximum Y.
         /// </summary>
         public double MaximumY
         {
@@ -124,7 +134,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the Minimum X.
+        ///     Gets or sets the Minimum X.
         /// </summary>
         public double MinimumX
         {
@@ -140,7 +150,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the Minimum Y.
+        ///     Gets or sets the Minimum Y.
         /// </summary>
         public double MinimumY
         {
@@ -156,10 +166,26 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Creates the internal annotation object.
+        ///     Gets or sets the text rotation (degrees).
+        /// </summary>
+        /// <value>The text rotation in degrees.</value>
+        public double TextRotation
+        {
+            get
+            {
+                return (double)this.GetValue(TextRotationProperty);
+            }
+            set
+            {
+                this.SetValue(TextRotationProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///     Creates the internal annotation object.
         /// </summary>
         /// <returns>
-        /// The annotation.
+        ///     The annotation.
         /// </returns>
         public override OxyPlot.Annotation CreateModel()
         {
@@ -168,7 +194,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Synchronizes the properties.
+        ///     Synchronizes the properties.
         /// </summary>
         public override void SynchronizeProperties()
         {
@@ -181,6 +207,7 @@ namespace OxyPlot.Wpf
             a.MaximumX = this.MaximumX;
             a.MinimumY = this.MinimumY;
             a.MaximumY = this.MaximumY;
+            a.TextRotation = this.TextRotation;
         }
     }
 }
