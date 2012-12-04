@@ -52,6 +52,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AnnotationsTests.cs" />
     <Compile Include="OxyAssert.cs" />
     <Compile Include="AxesTests.cs" />

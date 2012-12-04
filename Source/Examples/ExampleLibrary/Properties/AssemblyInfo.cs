@@ -1,5 +1,10 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AssemblyInfo.cs" company="OxyPlot">
+//   http://oxyplot.codeplex.com, license: MIT
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 using System.Reflection;
 
-[assembly: AssemblyTitle("ExampleLibrary")]
-[assembly: AssemblyDescription("OxyPlot example library")]
-[assembly: AssemblyProduct("OxyPlot")]
+[assembly: AssemblyTitle("OxyPlot example library")]
+[assembly: AssemblyDescription("Example library")]
