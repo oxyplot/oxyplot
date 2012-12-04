@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
 
-[assembly: AssemblyTitle("ExampleBrowser")]
+[assembly: AssemblyTitle("OxyPlot Metro Example Browser")]
 [assembly: AssemblyDescription("OxyPlot example browser")]
-[assembly: AssemblyProduct("OxyPlot")]

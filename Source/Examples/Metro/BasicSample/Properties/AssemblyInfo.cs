@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
 
-[assembly: AssemblyTitle("BasicSample")]
+[assembly: AssemblyTitle("OxyPlot Metro BasicSample")]
 [assembly: AssemblyDescription("OxyPlot basic Windows Store app sample")]
-[assembly: AssemblyProduct("OxyPlot")]
