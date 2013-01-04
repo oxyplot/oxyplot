@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Axes\AxisTests.cs" />
     <Compile Include="Foundation\OxyColorExtensionsTests.cs" />
     <Compile Include="Foundation\ListFillerTests.cs" />

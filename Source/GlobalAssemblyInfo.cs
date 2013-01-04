@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="GlobalAssemblyInfo.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
@@ -29,12 +29,13 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
+[assembly: AssemblyProduct("OxyPlot")]
 [assembly: AssemblyCompany("OxyPlot")]
-[assembly: AssemblyCopyright("Copyright (c) 2012 Oystein Bjorke")]
+[assembly: AssemblyCopyright("Copyright (C) OxyPlot 2012.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("2012.4.1.0")]
-[assembly: AssemblyFileVersion("2012.4.1.0")]
+[assembly: AssemblyVersion("2012.5.1.1")]
+[assembly: AssemblyFileVersion("2012.5.1.1")]
