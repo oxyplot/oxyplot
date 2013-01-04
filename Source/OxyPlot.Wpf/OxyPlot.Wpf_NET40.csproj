@@ -54,6 +54,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Annotations\Annotation.cs" />
     <Compile Include="Annotations\ArrowAnnotation.cs" />
     <Compile Include="Annotations\PolygonAnnotation.cs" />
