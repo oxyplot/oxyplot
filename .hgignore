@@ -44,6 +44,7 @@ _TeamCity*/
 [Pp]ackages/
 AppPackages/
 *.dotCover
+*.ncrunchsolution
 
 [Tt]est[Rr]esult*
 [Bb]uild[Ll]og.*
