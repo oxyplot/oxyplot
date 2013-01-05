@@ -58,8 +58,8 @@ namespace OxyPlot
         {
             this.Items = new List<TornadoBarItem>();
 
-            this.MaximumFillColor = OxyColor.FromRGB(216, 82, 85);
-            this.MinimumFillColor = OxyColor.FromRGB(84, 138, 209);
+            this.MaximumFillColor = OxyColor.FromRgb(216, 82, 85);
+            this.MinimumFillColor = OxyColor.FromRgb(84, 138, 209);
 
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 1;

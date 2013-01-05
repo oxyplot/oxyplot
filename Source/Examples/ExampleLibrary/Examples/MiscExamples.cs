@@ -321,7 +321,7 @@ namespace ExampleLibrary
         public static PlotModel LaLineaAreaSeries()
         {
             // http://en.wikipedia.org/wiki/La_Linea_(TV_series)
-            var model = new PlotModel("La Linea") { PlotType = PlotType.Cartesian, Background = OxyColor.FromRGB(84, 98, 207) };
+            var model = new PlotModel("La Linea") { PlotType = PlotType.Cartesian, Background = OxyColor.FromRgb(84, 98, 207) };
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -500, 1000));
             var series1 = new AreaSeries { Fill = OxyColors.White, StrokeThickness = 0 };
             series1.Points.Append(GetLineaPoints());
@@ -333,7 +333,7 @@ namespace ExampleLibrary
         public static PlotModel LaLinea()
         {
             // http://en.wikipedia.org/wiki/La_Linea_(TV_series)
-            var model = new PlotModel("La Linea") { PlotType = PlotType.Cartesian, Background = OxyColor.FromRGB(84, 98, 207) };
+            var model = new PlotModel("La Linea") { PlotType = PlotType.Cartesian, Background = OxyColor.FromRgb(84, 98, 207) };
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -500, 1000));
             var series1 = new LineSeries { Color = OxyColors.White, StrokeThickness = 1.5 };
             series1.Points.Append(GetLineaPoints());
