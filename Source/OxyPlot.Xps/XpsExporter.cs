@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="XpsExporter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -23,11 +23,8 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   Exports or prints a PlotModel using xps.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot.Wpf
+namespace OxyPlot.Xps
 {
     using System.IO;
     using System.IO.Packaging;
@@ -36,20 +33,23 @@ namespace OxyPlot.Wpf
     using System.Windows.Controls;
     using System.Windows.Xps.Packaging;
 
+    using OxyPlot.Wpf;
+
     /// <summary>
-    /// Exports or prints a PlotModel using xps.
+    ///     Exports or prints a PlotModel to an xps file.
     /// </summary>
     public static class XpsExporter
     {
         /// <summary>
-        /// Exports the specified plot model to an xps file.
+        ///     Exports the specified plot model to an xps file.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="fileName">The file name.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="background">The background color.</param>
-        public static void Export(PlotModel model, string fileName, double width, double height, OxyColor background = null)
+        public static void Export(
+            PlotModel model, string fileName, double width, double height, OxyColor background = null)
         {
             using (var xpsPackage = Package.Open(fileName, FileMode.Create, FileAccess.ReadWrite))
             {
@@ -72,7 +72,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Prints the specified plot model.
+        ///     Prints the specified plot model.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="width">The width (using the actual media width if not specified).</param>
@@ -106,6 +106,5 @@ namespace OxyPlot.Wpf
                 xpsDocumentWriter.Write(canvas);
             }
         }
-
     }
 }

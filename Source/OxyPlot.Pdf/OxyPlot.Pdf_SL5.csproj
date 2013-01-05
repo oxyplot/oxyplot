@@ -61,6 +61,7 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="PdfExporter.cs" />
     <Compile Include="PdfRenderContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

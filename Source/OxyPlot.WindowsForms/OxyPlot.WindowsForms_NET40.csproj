@@ -50,6 +50,7 @@
     </Compile>
     <Compile Include="Helpers\ConverterExtensions.cs" />
     <Compile Include="GraphicsRenderContext.cs" />
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Plot.cs">
       <SubType>Component</SubType>
     </Compile>
