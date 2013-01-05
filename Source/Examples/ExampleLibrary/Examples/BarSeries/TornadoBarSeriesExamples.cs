@@ -41,7 +41,7 @@ namespace ExampleLibrary
                 {
                     Title = "High",
                     IsStacked = true,
-                    FillColor = OxyColor.FromRGB(216, 82, 85),
+                    FillColor = OxyColor.FromRgb(216, 82, 85),
                     BaseValue = 7,
                     StrokeColor = OxyColors.Black,
                     StrokeThickness = 1
@@ -55,7 +55,7 @@ namespace ExampleLibrary
                 {
                     Title = "Low",
                     IsStacked = true,
-                    FillColor = OxyColor.FromRGB(84, 138, 209),
+                    FillColor = OxyColor.FromRgb(84, 138, 209),
                     BaseValue = 7,
                     StrokeColor = OxyColors.Black,
                     StrokeThickness = 1

@@ -272,10 +272,10 @@ namespace OxyPlot
 
             this.DefaultColors = new List<OxyColor>
             {
-                    OxyColor.FromRGB(0x4E, 0x9A, 0x06),
-                    OxyColor.FromRGB(0xC8, 0x8D, 0x00),
-                    OxyColor.FromRGB(0xCC, 0x00, 0x00),
-                    OxyColor.FromRGB(0x20, 0x4A, 0x87),
+                    OxyColor.FromRgb(0x4E, 0x9A, 0x06),
+                    OxyColor.FromRgb(0xC8, 0x8D, 0x00),
+                    OxyColor.FromRgb(0xCC, 0x00, 0x00),
+                    OxyColor.FromRgb(0x20, 0x4A, 0x87),
                     OxyColors.Red,
                     OxyColors.Orange,
                     OxyColors.Yellow,

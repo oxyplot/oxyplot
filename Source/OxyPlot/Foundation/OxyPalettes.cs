@@ -129,9 +129,9 @@ namespace OxyPlot
             return OxyPalette.Interpolate(
                 numberOfColors,
                 OxyColors.Black,
-                OxyColor.FromRGB(127, 0, 0),
-                OxyColor.FromRGB(255, 127, 0),
-                OxyColor.FromRGB(255, 255, 127),
+                OxyColor.FromRgb(127, 0, 0),
+                OxyColor.FromRgb(255, 127, 0),
+                OxyColor.FromRgb(255, 255, 127),
                 OxyColors.White);
         }
 

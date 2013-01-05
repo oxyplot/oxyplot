@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OxyColorExtensionsTests.cs" company="OxyPlot">
+// <copyright file="NamespaceDoc.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,23 +24,16 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot.Tests
+
+namespace OxyPlot.Reporting
 {
-    using System.Diagnostics.CodeAnalysis;
+    using System.Runtime.CompilerServices;
 
-    using NUnit.Framework;
-
-    // ReSharper disable InconsistentNaming
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    [TestFixture]
-    public class OxyColorExtensionsTests
+    /// <summary>
+    ///     The OxyPlot.Reporting namespace contains classes related to reports.
+    /// </summary>
+    [CompilerGenerated]
+    internal class NamespaceDoc
     {
-        [Test]
-        public void ChangeAlpha()
-        {
-            var c = OxyColors.Red.ChangeAlpha(100);
-            Assert.AreEqual(100,c.A);
-            Assert.AreEqual(255,c.R);
-        }
     }
 }

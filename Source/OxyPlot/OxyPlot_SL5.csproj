@@ -95,7 +95,7 @@
     <Compile Include="Foundation\CodeGenerator\ICodeGenerating.cs" />
     <Compile Include="Foundation\DataPointConverter.cs" />
     <Compile Include="Foundation\ListFiller.cs" />
-    <Compile Include="Foundation\OxyColorExtensions.cs" />
+    <Compile Include="Foundation\OxyColorConverter.cs" />
     <Compile Include="Foundation\OxyPalette.cs" />
     <Compile Include="Foundation\OxyPalettes.cs" />
     <Compile Include="Foundation\ScreenVector.cs" />
@@ -116,7 +116,9 @@
     <Compile Include="Manipulators\CursorType.cs" />
     <Compile Include="Manipulators\PanManipulator.cs" />
     <Compile Include="Manipulators\TrackerHitResult.cs" />
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="PlotModel\HitTestResult.cs" />
+    <Compile Include="Reporting\NamespaceDoc.cs" />
     <Compile Include="Series\BarSeries\BarItem.cs" />
     <Compile Include="Series\BarSeries\BarItemBase.cs" />
     <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
