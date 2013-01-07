@@ -39,7 +39,9 @@ namespace OxyPlot
     /// Describes a color in terms of alpha, red, green, and blue channels.
     /// </summary>
     [Serializable]
+#if !PCL
     [TypeConverter(typeof(OxyColorConverter))]
+#endif
     public class OxyColor : ICodeGenerating
     {
         /// <summary>
