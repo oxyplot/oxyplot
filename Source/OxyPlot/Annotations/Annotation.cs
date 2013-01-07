@@ -99,14 +99,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The render.
+        /// Renders the annotation on the specified context.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The model.</param>
         public virtual void Render(IRenderContext rc, PlotModel model)
         {
         }

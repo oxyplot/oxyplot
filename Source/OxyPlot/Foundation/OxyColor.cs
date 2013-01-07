@@ -157,10 +157,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Create a OxyColor from the specified HSV.
+        /// Creates a OxyColor from the specified HSV array.
         /// </summary>
         /// <param name="hsv">
-        /// The HSV values.
+        /// The HSV value array.
         /// </param>
         /// <returns>
         /// A OxyColor.
