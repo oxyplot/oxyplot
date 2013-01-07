@@ -110,7 +110,6 @@ namespace OxyPlot.Reporting
             /// Gets or sets Title.
             /// </summary>
             public string Title { get; set; }
-
         }
     }
 }

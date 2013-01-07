@@ -52,10 +52,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The render.
+        /// Renders the specified axis.
         /// </summary>
         /// <param name="axis">The axis.</param>
-        /// <param name="pass">The render pass.</param>
+        /// <param name="pass">The pass.</param>
         /// <exception cref="System.NullReferenceException">Angle axis should not be null.</exception>
         public override void Render(Axis axis, int pass)
         {

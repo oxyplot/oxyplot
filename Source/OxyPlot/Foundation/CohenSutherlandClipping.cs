@@ -32,9 +32,11 @@ namespace OxyPlot
     /// <summary>
     /// Line clipping algorithm.
     /// </summary>
+    /// <remarks>
+    /// See http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland
+    /// </remarks>
     public class CohenSutherlandClipping
     {
-        // http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland
         /// <summary>
         /// The bottom code.
         /// </summary>
@@ -84,7 +86,7 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="CohenSutherlandClipping"/> class.
         /// </summary>
         /// <param name="rect">
-        /// The rect.
+        /// The clipping rectangle.
         /// </param>
         public CohenSutherlandClipping(OxyRect rect)
         {
@@ -117,8 +119,6 @@ namespace OxyPlot
             this.ymax = ymax;
         }
 
-        // Compute the bit code for a point (x, y) using the clip rectangle
-        // bounded diagonally by (xmin, ymin), and (xmax, ymax)
         /// <summary>
         /// Cohen–Sutherland clipping algorithm clips a line from
         /// P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with
@@ -262,6 +262,10 @@ namespace OxyPlot
         /// <returns>
         /// The out code.
         /// </returns>
+        /// <remarks>
+        /// Compute the bit code for a point (x, y) using the clip rectangle
+        /// bounded diagonally by (xmin, ymin), and (xmax, ymax)
+        /// </remarks>
         private int ComputeOutCode(double x, double y)
         {
             int code = Inside; // initialized as being inside of clip window
@@ -290,6 +294,5 @@ namespace OxyPlot
 
             return code;
         }
-
     }
 }

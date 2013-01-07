@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a angular axis for polar plots.
+//   Represents an angular axis for polar plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
@@ -32,7 +32,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Represents a angular axis for polar plots.
+    /// Represents an angular axis for polar plots.
     /// </summary>
     public class AngleAxis : LinearAxis
     {

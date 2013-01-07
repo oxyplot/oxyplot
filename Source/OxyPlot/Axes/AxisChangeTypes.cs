@@ -30,22 +30,22 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Change types of the Axis.AxisChanged event.
+    /// Specifies change types for the Axis.AxisChanged event.
     /// </summary>
     public enum AxisChangeTypes
     {
         /// <summary>
-        /// The zoom.
+        /// The axis was zoomed by the user.
         /// </summary>
         Zoom,
 
         /// <summary>
-        /// The pan.
+        /// The axis was panned by the user.
         /// </summary>
         Pan,
 
         /// <summary>
-        /// The reset.
+        /// The axis zoom/pan was reset by the user.
         /// </summary>
         Reset
     }

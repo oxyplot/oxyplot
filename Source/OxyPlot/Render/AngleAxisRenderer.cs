@@ -51,7 +51,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The render.
+        /// Renders the specified axis.
         /// </summary>
         /// <param name="axis">The axis.</param>
         /// <param name="pass">The render pass.</param>
