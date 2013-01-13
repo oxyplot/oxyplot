@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Pen line join.
+    /// Specifies how to join line segments.
     /// </summary>
     public enum OxyPenLineJoin
     {

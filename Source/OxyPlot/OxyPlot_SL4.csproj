@@ -114,6 +114,7 @@
     <Compile Include="Manipulators\CursorType.cs" />
     <Compile Include="Manipulators\PanManipulator.cs" />
     <Compile Include="Manipulators\TrackerHitResult.cs" />
+    <Compile Include="LibraryDoc.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="PlotModel\HitTestResult.cs" />
     <Compile Include="Reporting\NamespaceDoc.cs" />
@@ -128,7 +129,7 @@
     <Compile Include="Series\BarSeries\IStackableSeries.cs" />
     <Compile Include="Series\BoxPlotItem.cs" />
     <Compile Include="Series\BoxPlotSeries.cs" />
-    <Compile Include="Series\IDataPointProvider.cs" />
+    <Compile Include="Foundation\IDataPointProvider.cs" />
     <Compile Include="Series\LineLegendPosition.cs" />
     <Compile Include="Svg\SvgExporter.cs" />
     <Compile Include="PlotModel\PlotModel.MouseEvents.cs" />
@@ -153,12 +154,12 @@
     <Compile Include="Render\HorizontalTextAlign.cs" />
     <Compile Include="Render\MagnitudeAxisRenderer.cs" />
     <Compile Include="Render\MathRenderingExtensions.cs" />
-    <Compile Include="Render\OxyPenLineJoin.cs" />
+    <Compile Include="Foundation\OxyPenLineJoin.cs" />
     <Compile Include="Render\RenderContextBase.cs" />
     <Compile Include="Render\RenderingExtensions.cs" />
     <Compile Include="Render\HorizontalAndVerticalAxisRenderer.cs" />
     <Compile Include="Render\IRenderContext.cs" />
-    <Compile Include="Render\VerticalTextAlign.cs" />
+    <Compile Include="Foundation\VerticalTextAlign.cs" />
     <Compile Include="Reporting\ReportWriters\WikiReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\HtmlReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\IReportWriter.cs" />
