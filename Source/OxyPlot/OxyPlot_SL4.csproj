@@ -151,7 +151,7 @@
     <Compile Include="Render\AxisRendererBase.cs" />
     <Compile Include="Foundation\CohenSutherlandClipping.cs" />
     <Compile Include="Render\AngleAxisRenderer.cs" />
-    <Compile Include="Render\HorizontalTextAlign.cs" />
+    <Compile Include="Foundation\HorizontalTextAlign.cs" />
     <Compile Include="Render\MagnitudeAxisRenderer.cs" />
     <Compile Include="Render\MathRenderingExtensions.cs" />
     <Compile Include="Foundation\OxyPenLineJoin.cs" />
