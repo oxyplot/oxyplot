@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents a DateTime axis.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
@@ -51,7 +52,10 @@ namespace OxyPlot
         /// <summary>
         /// The time origin.
         /// </summary>
-        private static DateTime timeOrigin = new DateTime(1900, 1, 1); // Same date values as Excel
+        /// <remarks>
+        /// Same date values as Excel
+        /// </remarks>
+        private static DateTime timeOrigin = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         /// <summary>
         /// The actual interval type.
@@ -124,6 +128,7 @@ namespace OxyPlot
         /// <param name="intervalType">
         /// The interval type.
         /// </param>
+        [Obsolete]
         public DateTimeAxis(
             DateTime firstDateTime,
             DateTime lastDateTime,
@@ -131,6 +136,28 @@ namespace OxyPlot
             string title = null,
             string format = null,
             DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
+            : this(pos, title, format, intervalType)
+        {
+            this.Minimum = ToDouble(firstDateTime);
+            this.Maximum = ToDouble(lastDateTime);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimeAxis" /> class.
+        /// </summary>
+        /// <param name="pos">The position of the axis.</param>
+        /// <param name="firstDateTime">The first date/time on the axis.</param>
+        /// <param name="lastDateTime">The last date/time on the axis.</param>
+        /// <param name="title">The axis title.</param>
+        /// <param name="format">The string format for the axis values.</param>
+        /// <param name="intervalType">The interval type.</param>
+        public DateTimeAxis(
+        AxisPosition pos,
+        DateTime firstDateTime,
+        DateTime lastDateTime,
+        string title = null,
+        string format = null,
+        DateTimeIntervalType intervalType = DateTimeIntervalType.Auto)
             : this(pos, title, format, intervalType)
         {
             this.Minimum = ToDouble(firstDateTime);
@@ -158,13 +185,24 @@ namespace OxyPlot
         public DateTimeIntervalType MinorIntervalType { get; set; }
 
         /// <summary>
-        /// The create data point.
+        /// Gets or sets the time zone (used when formatting date/time values).
+        /// </summary>
+        /// <remarks>
+        /// No date/time conversion will be performed if this property is null.
+        /// </remarks>
+        /// <value>
+        /// The time zone info.
+        /// </value>
+        public TimeZoneInfo TimeZone { get; set; }
+
+        /// <summary>
+        /// Creates a data point.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The x value.
         /// </param>
         /// <param name="y">
-        /// The y.
+        /// The y value.
         /// </param>
         /// <returns>
         /// A data point.
@@ -175,13 +213,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The create data point.
+        /// Creates a data point.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The x value.
         /// </param>
         /// <param name="y">
-        /// The y.
+        /// The y value. 
         /// </param>
         /// <returns>
         /// A data point.
@@ -192,13 +230,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The create data point.
+        /// Creates a data point.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The x value.
         /// </param>
         /// <param name="y">
-        /// The y.
+        /// The y value.
         /// </param>
         /// <returns>
         /// A data point.
@@ -209,10 +247,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Converts a double precision value to a DateTime.
+        /// Converts a numeric representation of the date (number of days after the time origin) to a DateTime structure.
         /// </summary>
         /// <param name="value">
-        /// The value.
+        /// The number of days after the time origin.
         /// </param>
         /// <returns>
         /// A date/time structure.
@@ -228,17 +266,17 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Converts a DateTime to a double.
+        /// Converts a DateTime to days after the time origin.
         /// </summary>
         /// <param name="value">
-        /// The date/time.
+        /// The date/time structure.
         /// </param>
         /// <returns>
-        /// The to double.
+        /// The number of days after the time origin.
         /// </returns>
         public static double ToDouble(DateTime value)
         {
-            TimeSpan span = value - timeOrigin;
+            var span = value - timeOrigin;
             return span.TotalDays + 1;
         }
 
@@ -254,7 +292,13 @@ namespace OxyPlot
         public override string FormatValue(double x)
         {
             // convert the double value to a DateTime
-            DateTime time = ToDateTime(x);
+            var time = ToDateTime(x);
+
+            // If a time zone is specified, convert the time
+            if (this.TimeZone != null)
+            {
+                time = TimeZoneInfo.ConvertTime(time, this.TimeZone);
+            }
 
             string fmt = this.ActualStringFormat;
             if (fmt == null)
@@ -269,7 +313,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The get tick values.
+        /// Gets the tick values.
         /// </summary>
         /// <param name="majorLabelValues">
         /// The major label values.
@@ -302,11 +346,18 @@ namespace OxyPlot
         /// </returns>
         public override object GetValue(double x)
         {
-            return ToDateTime(x);
+            var time = ToDateTime(x);
+
+            if (this.TimeZone != null)
+            {
+                time = TimeZoneInfo.ConvertTime(time, this.TimeZone);
+            }
+
+            return time;
         }
 
         /// <summary>
-        /// The update intervals.
+        /// Updates the intervals.
         /// </summary>
         /// <param name="plotArea">
         /// The plot area.
@@ -407,15 +458,12 @@ namespace OxyPlot
             double range = Math.Abs(this.ActualMinimum - this.ActualMaximum);
 
             var goodIntervals = new[]
-                {
-                    Second, 2 * Second, 5 * Second, 10 * Second, 30 * Second,
-                    Minute, 2 * Minute, 5 * Minute, 10 * Minute, 30 * Minute, 
-                    Hour, 4 * Hour, 8 * Hour, 12 * Hour, 
-                    Day, 2 * Day, 5 * Day,
-                    Week, 2 * Week, 
-                    Month, 2 * Month, 3 * Month, 4 * Month, 6 * Month, 
-                    Year
-                };
+                                    {
+                                        Second, 2 * Second, 5 * Second, 10 * Second, 30 * Second, Minute, 2 * Minute, 
+                                        5 * Minute, 10 * Minute, 30 * Minute, Hour, 4 * Hour, 8 * Hour, 12 * Hour, Day, 
+                                        2 * Day, 5 * Day, Week, 2 * Week, Month, 2 * Month, 3 * Month, 4 * Month, 
+                                        6 * Month, Year
+                                    };
 
             double interval = goodIntervals[0];
 
@@ -583,7 +631,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The create date time tick values.
+        /// Creates date/time tick values.
         /// </summary>
         /// <param name="min">
         /// The min.

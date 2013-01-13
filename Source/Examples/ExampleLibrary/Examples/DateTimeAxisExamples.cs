@@ -31,6 +31,7 @@ using OxyPlot;
 namespace ExampleLibrary
 {
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Globalization;
 
     [Examples("DateTimeAxis")]
@@ -48,7 +49,7 @@ namespace ExampleLibrary
             var tmp = new PlotModel("Test");
             tmp.Axes.Add(new LinearAxis(AxisPosition.Left) { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, TickStyle = TickStyle.Outside });
             DateTime dt = new DateTime(2010, 1, 1);
-            tmp.Axes.Add(new DateTimeAxis(dt, dt.AddDays(1), AxisPosition.Bottom, null, null, DateTimeIntervalType.Hours)
+            tmp.Axes.Add(new DateTimeAxis(AxisPosition.Bottom, dt, dt.AddDays(1), null, null, DateTimeIntervalType.Hours)
             {
                 MajorGridlineStyle = LineStyle.Solid,
                 Angle = 90,
@@ -68,6 +69,37 @@ namespace ExampleLibrary
             ls.ItemsSource = ii;
             tmp.Series.Add(ls);
             return tmp;
+        }
+
+        [Example("TimeZone adjustments")]
+        public static PlotModel DaylightSavingsBreak()
+        {
+            var m = new PlotModel();
+
+            var xa = new DateTimeAxis(AxisPosition.Bottom);
+#if SILVERLIGHT || PCL
+            // TimeZone not available in PCL...
+#else
+            xa.TimeZone = TimeZoneInfo.FindSystemTimeZoneById(
+                "W. Europe Standard Time");
+#endif
+            m.Axes.Add(xa);
+            m.Axes.Add(new LinearAxis(AxisPosition.Left));
+            var ls = new LineSeries { MarkerType = MarkerType.Circle };
+            m.Series.Add(ls);
+
+            // set the origin of the curve to 2013-03-31 00:00:00 (UTC)
+            var o = new DateTime(2013, 3, 31, 0, 0, 0, DateTimeKind.Utc);
+
+            // add points at 10min intervals
+            // at 2am the clocks are turned forward 1 hour (W. Europe Standard Time)
+            for (int i = 0; i < 400; i += 10)
+            {
+                var time = o.AddMinutes(i);
+                ls.Points.Add(DateTimeAxis.CreateDataPoint(time, i));
+            }
+
+            return m;
         }
 
         public class Item
