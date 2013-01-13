@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataPointProvider.cs" company="OxyPlot">
+// <copyright file="HorizontalTextAlign.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,23 +24,29 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides functionality to create data points for items in an <see cref="ItemsSeries"/>.
+//   Horizontal text alignment.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides functionality to create data points for items in an <see cref="ItemsSeries"/>.
+    /// Specifies the horizontal text alignment.
     /// </summary>
-    public interface IDataPointProvider
+    public enum HorizontalTextAlign
     {
         /// <summary>
-        /// Gets the data point.
+        /// Aligned to the left.
         /// </summary>
-        /// <returns>
-        /// The data point.
-        /// </returns>
-        DataPoint GetDataPoint();
+        Left = -1,
 
+        /// <summary>
+        /// Aligned in the center.
+        /// </summary>
+        Center = 0,
+
+        /// <summary>
+        /// Aligned to the right.
+        /// </summary>
+        Right = 1
     }
 }

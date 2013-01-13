@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="VerticalTextAlign.cs" company="OxyPlot">
+// <copyright file="IDataPointProvider.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,29 +24,22 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Vertical text alignment.
+//   Provides functionality to create data points for items in an <see cref="ItemsSeries"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
 {
     /// <summary>
-    /// Vertical text alignment.
+    /// Provides functionality to create data points.
     /// </summary>
-    public enum VerticalTextAlign
+    public interface IDataPointProvider
     {
         /// <summary>
-        /// Top alignment.
+        /// Gets the data point.
         /// </summary>
-        Top = -1,
-
-        /// <summary>
-        /// Middle alignment.
-        /// </summary>
-        Middle = 0,
-
-        /// <summary>
-        /// Bottom alignment.
-        /// </summary>
-        Bottom = 1
+        /// <returns>
+        /// The data point.
+        /// </returns>
+        DataPoint GetDataPoint();
     }
 }

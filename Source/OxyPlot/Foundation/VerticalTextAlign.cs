@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HorizontalTextAlign.cs" company="OxyPlot">
+// <copyright file="VerticalTextAlign.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,29 +24,29 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Horizontal text alignment.
+//   Vertical text alignment.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
 {
     /// <summary>
-    /// Horizontal text alignment.
+    /// Specifies the vertical text alignment.
     /// </summary>
-    public enum HorizontalTextAlign
+    public enum VerticalTextAlign
     {
         /// <summary>
-        /// Left alignment.
+        /// Aligned at the top.
         /// </summary>
-        Left = -1,
+        Top = -1,
 
         /// <summary>
-        /// Center alignment.
+        /// Aligned in the middle.
         /// </summary>
-        Center = 0,
+        Middle = 0,
 
         /// <summary>
-        /// Right alignment.
+        /// Aligned at the bottom.
         /// </summary>
-        Right = 1
+        Bottom = 1
     }
 }
