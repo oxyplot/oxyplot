@@ -30,27 +30,27 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Tick styles.
+    /// Specifies the style of axis ticks.
     /// </summary>
     public enum TickStyle
     {
         /// <summary>
-        /// Crossing the axis line.
+        /// The ticks are rendered crossing the axis line.
         /// </summary>
         Crossing,
 
         /// <summary>
-        /// Inside of the plot area.
+        /// The ticks are rendered inside of the plot area.
         /// </summary>
         Inside,
 
         /// <summary>
-        /// Outside the plot area.
+        /// The ticks are rendered Outside the plot area.
         /// </summary>
         Outside,
 
         /// <summary>
-        /// No tick.
+        /// The ticks are not rendered.
         /// </summary>
         None
     }

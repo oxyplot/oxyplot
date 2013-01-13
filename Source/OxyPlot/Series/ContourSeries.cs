@@ -34,7 +34,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Represents a series for contour plots.
+    /// Represents a series that renders contours.
     /// </summary>
     /// <remarks>
     /// See http://en.wikipedia.org/wiki/Contour_line and http://www.mathworks.se/help/techdoc/ref/contour.html.

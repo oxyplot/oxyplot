@@ -35,12 +35,12 @@ namespace OxyPlot
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// The svg render context.
+    /// Provides a render context for scalable vector graphics output.
     /// </summary>
     public class SvgRenderContext : RenderContextBase, IDisposable
     {
         /// <summary>
-        /// The svg writer.
+        /// The writer.
         /// </summary>
         private readonly SvgWriter w;
 

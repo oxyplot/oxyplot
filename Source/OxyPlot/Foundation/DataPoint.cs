@@ -32,8 +32,11 @@ namespace OxyPlot
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// DataPoint value type.
+    /// Represents a point in the data coordinate system.
     /// </summary>
+    /// <remarks>
+    /// <see cref="DataPoint"/>s are transformed to <see cref="ScreenPoint"/>s.
+    /// </remarks>
 #if !PCL
     [System.ComponentModel.TypeConverter(typeof(DataPointConverter))]
 #endif

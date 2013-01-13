@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The reset manipulator.
+    /// Provides a plot control manipulator for reset functionality.
     /// </summary>
     public class ResetManipulator : ManipulatorBase
     {

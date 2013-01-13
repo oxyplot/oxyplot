@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Converts from LineStyle to stroke dash array.
+    /// Provides functionality to convert from LineStyle to a stroke dash array.
     /// </summary>
     public static class LineStyleHelper
     {
@@ -43,7 +43,7 @@ namespace OxyPlot
         /// <returns>
         /// A dash array.
         /// </returns>
-        public static double[] GetDashArray(LineStyle style)
+        public static double[] GetDashArray(this LineStyle style)
         {
             switch (style)
             {

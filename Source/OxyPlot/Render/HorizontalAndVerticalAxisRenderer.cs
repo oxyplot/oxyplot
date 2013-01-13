@@ -30,7 +30,7 @@ namespace OxyPlot
     using System.Diagnostics;
 
     /// <summary>
-    /// Rendering helper class for horizontal and vertical axes (both linear and logarithmic)
+    /// Preovides functionality to render horizontal and vertical axes.
     /// </summary>
     public class HorizontalAndVerticalAxisRenderer : AxisRendererBase
     {

@@ -24,13 +24,13 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a <see cref="UIPlotElement"/> hit test result.
+//   Represents a hit test result.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents a <see cref="UIPlotElement"/> hit test result.
+    /// Represents a hit test result.
     /// </summary>
     public class HitTestResult
     {

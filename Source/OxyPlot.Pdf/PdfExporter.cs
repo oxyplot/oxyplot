@@ -32,7 +32,7 @@ namespace OxyPlot.Pdf
     using System.IO;
 
     /// <summary>
-    /// Exporting PlotModels to PDF.
+    /// Provides functionality to export plots to portable document format.
     /// </summary>
     public static class PdfExporter
     {

@@ -33,12 +33,12 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Generates fraction strings from double values.
+    /// Provides functionality to generate fraction strings from double values.
     /// </summary>
     /// <remarks>
     /// Examples: "3/4", "PI/2"
     /// </remarks>
-    public class FractionHelper
+    public static class FractionHelper
     {
         /// <summary>
         /// Converts a double to a fraction string.
@@ -100,7 +100,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The gcd.
+        /// Finds the greates common divisor.
         /// </summary>
         /// <param name="a">
         /// The a.
@@ -122,7 +122,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The gcf.
+        /// Finds the greatest common factor.
         /// </summary>
         /// <param name="x">
         /// The x.
@@ -151,6 +151,5 @@ namespace OxyPlot
             }
             while (true);
         }
-
     }
 }

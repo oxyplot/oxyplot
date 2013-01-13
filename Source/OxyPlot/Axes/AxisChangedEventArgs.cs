@@ -32,7 +32,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// EventArgs for the Axis.AxisChanged event.
+    /// Provides additional data for the <see cref="Axis.AxisChanged"/> event.
     /// </summary>
     public class AxisChangedEventArgs : EventArgs
     {

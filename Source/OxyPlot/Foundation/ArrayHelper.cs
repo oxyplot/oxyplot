@@ -32,7 +32,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Array helper methods.
+    /// Provides utility methods for vector generation.
     /// </summary>
     public static class ArrayHelper
     {

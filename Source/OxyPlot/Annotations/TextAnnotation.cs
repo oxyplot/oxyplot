@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a text object annotation.
+    /// Represents a text annotation.
     /// </summary>
     public class TextAnnotation : Annotation
     {

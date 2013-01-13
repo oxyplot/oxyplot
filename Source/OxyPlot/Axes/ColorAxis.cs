@@ -32,7 +32,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// The color axis.
+    /// Represents a color axis.
     /// </summary>
     public class ColorAxis : Axis
     {

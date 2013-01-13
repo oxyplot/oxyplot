@@ -35,7 +35,7 @@ namespace OxyPlot
     using System.Reflection;
 
     /// <summary>
-    /// Base class for series that contain a collection of IDataPoints.
+    /// Provides an abstract base class for series that contain a collection of <see cref="IDataPoint"/>s.
     /// </summary>
     public abstract class DataPointSeries : XYAxisSeries
     {

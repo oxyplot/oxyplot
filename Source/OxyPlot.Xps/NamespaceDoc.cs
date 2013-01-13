@@ -28,7 +28,7 @@
 namespace OxyPlot.Xps
 {
     /// <summary>
-    /// The OxyPlot.Xps namespace contains classes providing output to .xps files.
+    /// The OxyPlot.Xps namespace contains functionality to export plots and reports to .xps files.
     /// </summary>
     [System.Runtime.CompilerServices.CompilerGenerated]
     internal class NamespaceDoc

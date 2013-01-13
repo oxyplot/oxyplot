@@ -32,7 +32,7 @@ namespace OxyPlot
     using System.IO;
 
     /// <summary>
-    /// Exports plot models to svg.
+    /// Exports plots to scalable vector graphics.
     /// </summary>
     public static class SvgExporter
     {

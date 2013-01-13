@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The manipulator base.
+    /// Provides an absract base class for plot control manipulators.
     /// </summary>
     public class ManipulatorBase
     {

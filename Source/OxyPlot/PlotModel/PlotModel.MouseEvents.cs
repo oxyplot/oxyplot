@@ -32,9 +32,6 @@ namespace OxyPlot
     using System;
     using System.Linq;
 
-    /// <summary>
-    /// Partial PlotModel class - this file contains mouse events and handlers.
-    /// </summary>
     public partial class PlotModel
     {
         /// <summary>

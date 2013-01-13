@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Time axis.
+    /// Represents an axis presenting <see cref="System.TimeSpan"/> values.
     /// </summary>
     /// <remarks>
     /// The values should be in seconds.
@@ -193,6 +193,5 @@ namespace OxyPlot
                 interval = nextInterval;
             }
         }
-
     }
 }

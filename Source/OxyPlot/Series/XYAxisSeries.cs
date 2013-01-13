@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Abstract base class for series that contains an X-axis and Y-axis.
+    /// Provides an abstract base class for series that are related to an X-axis and a Y-axis.
     /// </summary>
     public abstract class XYAxisSeries : ItemsSeries
     {

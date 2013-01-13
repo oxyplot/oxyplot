@@ -34,7 +34,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Specify the orientation of the annotation text
+    /// Specifes the orientation of the annotation text
     /// </summary>
     public enum AnnotationTextOrientation
     {

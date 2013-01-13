@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The zoom manipulator.
+    /// Provides a plot control manipulator for zoom functionality.
     /// </summary>
     public class ZoomManipulator : ManipulatorBase
     {

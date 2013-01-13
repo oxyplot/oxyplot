@@ -36,7 +36,7 @@ namespace OxyPlot
     using System.Text;
 
     /// <summary>
-    /// Scalable Vector Graphics writer.
+    /// Represents a writer that provides easy generation of Scalable Vector Graphics files.
     /// </summary>
     public class SvgWriter : XmlWriterBase
     {

@@ -37,7 +37,7 @@ namespace OxyPlot
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// Provides support for string formatting.
+    /// Provides extended string formatting functionality.
     /// </summary>
     public static class StringHelper
     {

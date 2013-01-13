@@ -204,6 +204,5 @@ namespace OxyPlot
                 OxyColors.Orange,
                 OxyColors.Red);
         }
-
     }
 }

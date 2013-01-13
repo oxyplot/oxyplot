@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides functionality to generate c# code of an object.
+    /// Provides functionality to generate C# code of an object.
     /// </summary>
     public interface ICodeGenerating
     {
@@ -41,6 +41,5 @@ namespace OxyPlot
         /// C# code.
         /// </returns>
         string ToCode();
-
     }
 }

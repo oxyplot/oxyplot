@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The pan manipulator.
+    /// Provides a plot control manipulator for panning functionality.
     /// </summary>
     public class PanManipulator : ManipulatorBase
     {

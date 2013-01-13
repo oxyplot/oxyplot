@@ -35,7 +35,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Abstract base class for axes.
+    /// Provides an abstract base class for axes.
     /// </summary>
     [Serializable]
     public abstract class Axis : PlotElement

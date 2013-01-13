@@ -32,7 +32,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents an area series that fills the polygon defined by one or two sets of points.
+    /// Represents an area series that fills the polygon defined by two sets of points or one set of points and a constant.
     /// </summary>
     public class AreaSeries : LineSeries
     {

@@ -32,7 +32,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Render context interface.
+    /// Defines rendering functionality.
     /// </summary>
     public interface IRenderContext
     {

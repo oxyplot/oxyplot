@@ -32,7 +32,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// The axis renderer base.
+    /// Provides an abstract base class for axis renderers.
     /// </summary>
     public abstract class AxisRendererBase
     {

@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The annotation layer.
+    /// Specifies the layer for an <see cref="Annotation"/>.
     /// </summary>
     public enum AnnotationLayer
     {

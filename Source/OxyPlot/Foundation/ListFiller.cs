@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ListFiller.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -23,9 +23,6 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   Fills a list by specified properties of another list.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
 {
@@ -35,21 +32,24 @@ namespace OxyPlot
     using System.Reflection;
 
     /// <summary>
-    /// Fills a list by specified properties of another list.
+    ///     Provides functionality to fill a list by specified properties of another list.
     /// </summary>
+    /// <remarks>
+    ///     This class uses reflection.
+    /// </remarks>
     /// <typeparam name="T">
-    /// The target list item type.
+    ///     The target list item type.
     /// </typeparam>
     public class ListFiller<T>
         where T : class, new()
     {
         /// <summary>
-        /// The properties.
+        ///     The properties.
         /// </summary>
-        private Dictionary<string, Action<T, object>> properties;
+        private readonly Dictionary<string, Action<T, object>> properties;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListFiller{T}"/> class.
+        ///     Initializes a new instance of the <see cref="ListFiller{T}" /> class.
         /// </summary>
         public ListFiller()
         {
@@ -57,13 +57,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Adds a setter for the specified property.
+        ///     Adds a setter for the specified property.
         /// </summary>
         /// <param name="propertyName">
-        /// Name of the property.
+        ///     Name of the property.
         /// </param>
         /// <param name="setter">
-        /// The setter.
+        ///     The setter.
         /// </param>
         public void Add(string propertyName, Action<T, object> setter)
         {
@@ -76,7 +76,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Fills the specified target list.
+        ///     Fills the specified target list.
         /// </summary>
         /// <param name="target">The target.</param>
         /// <param name="source">The source.</param>
@@ -86,13 +86,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Fills the specified target list.
+        ///     Fills the specified target list.
         /// </summary>
         /// <param name="target">
-        /// The target.
+        ///     The target.
         /// </param>
         /// <param name="source">
-        /// The source list.
+        ///     The source list.
         /// </param>
         public void Fill(IList target, IEnumerable source)
         {
@@ -140,7 +140,6 @@ namespace OxyPlot
 
                 target.Add(item);
             }
-        }
-
+        }       
     }
 }

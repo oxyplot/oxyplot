@@ -32,7 +32,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// The zoom manipulator.
+    /// Provides a plot control manipulator for zoom by rectangle functionality.
     /// </summary>
     public class ZoomRectangleManipulator : ManipulatorBase
     {

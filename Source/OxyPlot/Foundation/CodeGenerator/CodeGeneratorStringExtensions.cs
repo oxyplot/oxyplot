@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// The code generator string extensions.
+    /// Provides extension methods for code generation.
     /// </summary>
     public static class CodeGeneratorStringExtensions
     {
@@ -123,12 +123,12 @@ namespace OxyPlot
                 return "double.NegativeInfinity";
             }
 
-            if (value == double.MinValue)
+            if (value.Equals(double.MinValue))
             {
                 return "double.MinValue";
             }
 
-            if (value == double.MaxValue)
+            if (value.Equals(double.MaxValue))
             {
                 return "double.MaxValue";
             }
@@ -184,6 +184,5 @@ namespace OxyPlot
 
             return null;
         }
-
     }
 }

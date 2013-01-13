@@ -36,7 +36,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Represents a DateTime axis.
+    /// Represents a axis presenting <see cref="System.DateTime"/> values.
     /// </summary>
     /// <remarks>
     /// The actual numeric values on the axis are days since 1900/01/01.

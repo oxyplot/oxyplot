@@ -33,32 +33,6 @@ namespace OxyPlot
     using System.Collections.Generic;
     using System.Linq;
 
-    //// LegendPosition (LegendPlacement=Outside)
-    ////
-    //// +               +-----------------------------------+                 +
-    //// |              Title                |
-    //// |            Subtitle               |
-    //// +-----------------------------------+
-    //// |TopLeft       TopCenter    TopRight|
-    //// +-----------------------------------+
-    //// |              Top axis             |
-    //// +----------+----+-----------------------------------+-----+-----------+
-    //// |LeftTop   |    |                                   |     |RightTop   |
-    //// |          |    |                                   |     |           |
-    //// |          |Left|                                   |Right|           |
-    //// |LeftMiddle|axis|              PlotArea             |axis |RightMiddle|
-    //// |          |    |                                   |     |           |
-    //// |          |    |                                   |     |           |
-    //// |LeftBottom|    |                                   |     |RightBottom|
-    //// +----------+----+-----------------------------------+-----+-----------+
-    //// |             Bottom axis           |
-    //// +-----------------------------------+
-    //// |BottomLeft BottomCenter BottomRight|
-    //// +               +-----------------------------------+                 +
-
-    /// <summary>
-    /// Partial PlotModel class - this file contains methods related to the series legends.
-    /// </summary>
     public partial class PlotModel
     {
         /// <summary>
