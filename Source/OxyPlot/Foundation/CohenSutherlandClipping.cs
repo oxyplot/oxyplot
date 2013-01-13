@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Line clipping algorithm.
+    /// Provides a line clipping algorithm.
     /// </summary>
     /// <remarks>
     /// See http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland

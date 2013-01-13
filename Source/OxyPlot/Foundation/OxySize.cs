@@ -32,7 +32,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Implements a structure that is used to describe the Size of an object.
+    /// Implements a structure that is used to describe the size of an object.
     /// </summary>
     public struct OxySize
     {

@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Abstract base class for all series.
+    /// Provides an abstract base class for plot series.
     /// </summary>
     /// <remarks>
     /// This class contains internal methods that should be called only from the PlotModel.

@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Specifies change types for the Axis.AxisChanged event.
+    /// Specifies change types for the <see cref="Axis.AxisChanged"/> event.
     /// </summary>
     public enum AxisChangeTypes
     {

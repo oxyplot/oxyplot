@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Interface for Series that can be 'tracked'
+    /// Provides functionality to return data for a tracker control.
     /// </summary>
     /// <remarks>
     /// The plot control will show a tracker with the current value when moving the mouse over the data.
@@ -63,6 +63,5 @@ namespace OxyPlot
         /// A TrackerHitResult for the current hit.
         /// </returns>
         TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
-
     }
 }

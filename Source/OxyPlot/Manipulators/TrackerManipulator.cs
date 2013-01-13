@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The tracker manipulator.
+    /// Provides a plot control manipulator for tracker functionality.
     /// </summary>
     public class TrackerManipulator : ManipulatorBase
     {

@@ -34,7 +34,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Converts colors from one data type to another. Access this class through the TypeDescriptor.
+    /// Converts between <see cref="OxyColor"/> and <see cref="System.String"/>. Access this class through the TypeDescriptor.
     /// </summary>
     public class OxyColorConverter : TypeConverter
     {

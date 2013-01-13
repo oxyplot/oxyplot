@@ -30,7 +30,6 @@
 namespace OxyPlot
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Represents a vector defined in the screen coordinate system.
@@ -38,27 +37,23 @@ namespace OxyPlot
     public struct ScreenVector
     {
         /// <summary>
-        /// The x.
+        /// The x-coordinate.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
-            Justification = "Reviewed. Suppression is OK here.")]
         internal double x;
 
         /// <summary>
-        /// The y.
+        /// The y-coordinate.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
-            Justification = "Reviewed. Suppression is OK here.")]
         internal double y;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScreenVector"/> struct.
+        /// Initializes a new instance of the <see cref="ScreenVector"/> structure.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The x-coordinate.
         /// </param>
         /// <param name="y">
-        /// The y.
+        /// The y-coordinate.
         /// </param>
         public ScreenVector(double x, double y)
         {
@@ -89,9 +84,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the X.
+        /// Gets or sets the x-coordinate.
         /// </summary>
-        /// <value> The X. </value>
+        /// <value> The x-coordinate. </value>
         public double X
         {
             get
@@ -106,9 +101,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the Y.
+        /// Gets or sets the y-coordinate.
         /// </summary>
-        /// <value> The Y. </value>
+        /// <value> The y-coordinate. </value>
         public double Y
         {
             get
@@ -149,13 +144,12 @@ namespace OxyPlot
         /// <summary>
         /// Implements the operator *.
         /// </summary>
-        /// <param name="v"> The v. </param>
-        /// <param name="d"> The d. </param>
+        /// <param name="v"> The vector. </param>
+        /// <param name="d"> The multiplication factor. </param>
         /// <returns> The result of the operator. </returns>
         public static ScreenVector operator *(ScreenVector v, double d)
         {
             return new ScreenVector(v.x * d, v.y * d);
         }
-
     }
 }

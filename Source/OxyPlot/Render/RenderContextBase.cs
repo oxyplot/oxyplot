@@ -32,7 +32,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// The abstract render context base class.
+    /// Provides an abstract base class for rendering contexts.
     /// </summary>
     public abstract class RenderContextBase : IRenderContext
     {

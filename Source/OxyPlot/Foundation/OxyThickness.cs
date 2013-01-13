@@ -32,7 +32,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Describes the thickness of a frame around a rectangle. Four Double values describe the Left, Top, Right, and Bottom sides of the rectangle, respectively.
+    /// Describes the thickness of a frame around a rectangle. Four <see cref="System.Double"/> values describe the left, top, right, and bottom sides of the rectangle, respectively.
     /// </summary>
     public struct OxyThickness : ICodeGenerating
     {

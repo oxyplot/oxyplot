@@ -39,7 +39,7 @@ namespace OxyPlot.Pdf
     using PdfSharp.Pdf;
 
     /// <summary>
-    /// PDF Render context using PdfSharp (and SilverPDF for Silverlight)
+    /// Provides a render context for portable document format using PdfSharp (and SilverPDF for Silverlight)
     /// </summary>
     /// <remarks>
     /// see http://pdfsharp.codeplex.com and http://silverpdf.codeplex.com

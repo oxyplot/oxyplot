@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The line annotation type.
+    /// Specifies the definition of the line in a <see cref="LineAnnotation"/>.
     /// </summary>
     public enum LineAnnotationType
     {

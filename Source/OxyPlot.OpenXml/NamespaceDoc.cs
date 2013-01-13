@@ -28,7 +28,7 @@
 namespace OxyPlot.OpenXml
 {
     /// <summary>
-    /// The OxyPlot.OpenXml namespace contains classes providing output to OpenXml (Word) documents.
+    /// The OxyPlot.OpenXml namespace contains functionality to generate OpenXml (Word) documents from the OxyPlot.Reporting report model.
     /// </summary>
     [System.Runtime.CompilerServices.CompilerGenerated]
     internal class NamespaceDoc

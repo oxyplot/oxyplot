@@ -32,7 +32,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Provides various algorithms for polygons and lines of ScreenPoint.
+    /// Provides algorithms for polygons and lines of <see cref="ScreenPoint"/>.
     /// </summary>
     public static class ScreenPointHelper
     {
@@ -230,6 +230,5 @@ namespace OxyPlot
             cy /= 6 * a;
             return new ScreenPoint(cx, cy);
         }
-
     }
 }

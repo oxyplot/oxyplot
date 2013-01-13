@@ -30,43 +30,38 @@
 namespace OxyPlot
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Describes a point defined in the screen coordinate system.
+    /// Represents a point defined in the screen coordinate system.
     /// </summary>
     /// <remarks>
-    /// The rendering methods transforms DataPoints to ScreenPoints.
+    /// The rendering methods transforms <see cref="DataPoint"/>s to <see cref="ScreenPoint"/>s.
     /// </remarks>
     public struct ScreenPoint
     {
         /// <summary>
-        /// The undefined.
+        /// The undefined point.
         /// </summary>
         public static readonly ScreenPoint Undefined = new ScreenPoint(double.NaN, double.NaN);
 
         /// <summary>
-        /// The x.
+        /// The x-coordinate.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
-            Justification = "Reviewed. Suppression is OK here.")]
         internal double x;
 
         /// <summary>
-        /// The y.
+        /// The y-coordinate.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
-            Justification = "Reviewed. Suppression is OK here.")]
         internal double y;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenPoint"/> struct.
         /// </summary>
         /// <param name="x">
-        /// The x.
+        /// The x-coordinate.
         /// </param>
         /// <param name="y">
-        /// The y.
+        /// The y-coordinate.
         /// </param>
         public ScreenPoint(double x, double y)
         {
@@ -75,9 +70,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the X.
+        /// Gets or sets the x-coordinate.
         /// </summary>
-        /// <value> The X. </value>
+        /// <value> The x-coordinate. </value>
         public double X
         {
             get
@@ -92,9 +87,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the Y.
+        /// Gets or sets the y-coordinate.
         /// </summary>
-        /// <value> The Y. </value>
+        /// <value> The y-coordinate. </value>
         public double Y
         {
             get
@@ -119,11 +114,11 @@ namespace OxyPlot
         /// </returns>
         public static bool IsUndefined(ScreenPoint point)
         {
-            return point.X == Undefined.X && point.Y == Undefined.Y;
+            return double.IsNaN(point.X) && double.IsNaN(point.Y);
         }
 
         /// <summary>
-        /// Gets the distances to the specified point.
+        /// Gets the distance to the specified point.
         /// </summary>
         /// <param name="point">
         /// The point.
@@ -166,48 +161,38 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Implements the operator +.
+        /// Translates a <see cref="ScreenPoint"/> by a <see cref="ScreenVector"/>.
         /// </summary>
-        /// <param name="p1"> The p1. </param>
-        /// <param name="p2"> The p2. </param>
-        /// <returns> The result of the operator. </returns>
-        public static ScreenVector operator +(ScreenPoint p1, ScreenPoint p2)
-        {
-            return new ScreenVector(p1.x + p2.x, p1.y + p2.y);
-        }
-
-        /// <summary>
-        /// Implements the operator +.
-        /// </summary>
-        /// <param name="p1"> The p1. </param>
-        /// <param name="p2"> The p2. </param>
-        /// <returns> The result of the operator. </returns>
+        /// <param name="p1"> The point. </param>
+        /// <param name="p2"> The vector. </param>
+        /// <returns> The translated point. </returns>
         public static ScreenPoint operator +(ScreenPoint p1, ScreenVector p2)
         {
             return new ScreenPoint(p1.x + p2.x, p1.y + p2.y);
         }
 
         /// <summary>
-        /// Implements the operator -.
+        /// Subtracts a <see cref="ScreenPoint"/> from a <see cref="ScreenPoint"/>
+        /// and returns the result as a <see cref="ScreenVector"/>.
         /// </summary>
-        /// <param name="p1"> The p1. </param>
-        /// <param name="p2"> The p2. </param>
-        /// <returns> The result of the operator. </returns>
+        /// <param name="p1"> The point on which to perform the subtraction. </param>
+        /// <param name="p2"> The point to subtract from p1. </param>
+        /// <returns> A <see cref="ScreenVector"/> structure that represents the difference between p1 and p2. </returns>
         public static ScreenVector operator -(ScreenPoint p1, ScreenPoint p2)
         {
             return new ScreenVector(p1.x - p2.x, p1.y - p2.y);
         }
 
         /// <summary>
-        /// Implements the operator -.
+        /// Subtracts a <see cref="ScreenVector"/> from a <see cref="ScreenPoint"/> 
+        /// and returns the result as a <see cref="ScreenPoint"/>.
         /// </summary>
-        /// <param name="p1"> The p1. </param>
-        /// <param name="p2"> The p2. </param>
-        /// <returns> The result of the operator. </returns>
-        public static ScreenPoint operator -(ScreenPoint p1, ScreenVector p2)
+        /// <param name="point"> The point on which to perform the subtraction. </param>
+        /// <param name="vector"> The vector to subtract from p1. </param>
+        /// <returns> A <see cref="ScreenPoint"/> that represents point translated by the negative vector. </returns>
+        public static ScreenPoint operator -(ScreenPoint point, ScreenVector vector)
         {
-            return new ScreenPoint(p1.x - p2.x, p1.y - p2.y);
+            return new ScreenPoint(point.x - vector.x, point.y - vector.y);
         }
-
     }
 }

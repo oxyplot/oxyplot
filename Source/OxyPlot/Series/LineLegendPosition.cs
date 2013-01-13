@@ -30,22 +30,22 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Specifies the position of legends rendered on a line series.
+    /// Specifies the position of legends rendered on a <see cref="LineSeries"/>.
     /// </summary>
     public enum LineLegendPosition
     {
         /// <summary>
-        /// No legend on the line.
+        /// Do not render legend on the line.
         /// </summary>
         None,
 
         /// <summary>
-        /// Legend at the start of the line.
+        /// Render legend at the start of the line.
         /// </summary>
         Start,
 
         /// <summary>
-        /// Legend at the end of the line.
+        /// Render legend at the end of the line.
         /// </summary>
         End
     }

@@ -32,7 +32,7 @@ namespace OxyPlot
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Represents a point in a ScatterSeries.
+    /// Represents a point in a <see cref="ScatterSeries"/>.
     /// </summary>
     public class ScatterPoint : IDataPoint
     {

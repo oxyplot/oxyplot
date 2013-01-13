@@ -32,7 +32,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Abstract base class for all plottable elements (Axes, Annotations, Series).
+    /// Provides an abstract base class for elements contained in a <see cref="PlotModel"/>.
     /// </summary>
     [Serializable]
     public abstract class PlotElement

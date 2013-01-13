@@ -32,7 +32,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Represents event arguments for 3D mouse events events.
+    /// Provides data for the mouse events.
     /// </summary>
     public class OxyMouseEventArgs : EventArgs
     {

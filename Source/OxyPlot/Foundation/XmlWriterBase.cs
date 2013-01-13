@@ -35,7 +35,7 @@ namespace OxyPlot
     using System.Xml;
 
     /// <summary>
-    /// Abstract base class for exporters that write xml.
+    /// Provides an abstract base class for exporters that write xml.
     /// </summary>
     public abstract class XmlWriterBase : IDisposable
     {
@@ -60,7 +60,7 @@ namespace OxyPlot
         /// <summary>
         /// Initializes a new instance of the <see cref = "XmlWriterBase" /> class.
         /// </summary>
-        public XmlWriterBase()
+        protected XmlWriterBase()
         {
         }
 

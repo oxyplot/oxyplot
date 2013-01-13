@@ -34,7 +34,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// The DataPoint converter.
+    /// Converts a <see cref="DataPoint"/> object from one data type to another.
     /// </summary>
     public class DataPointConverter : TypeConverter
     {

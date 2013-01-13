@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Axis layer position.
+    /// Specifies the layer position of an <see cref="Axis"/>.
     /// </summary>
     public enum AxisLayer
     {

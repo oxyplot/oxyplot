@@ -32,7 +32,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Creates contours from a triangular mesh.
+    /// Provides functionality to create contours from a triangular mesh.
     /// </summary>
     /// <remarks>
     /// <para>

@@ -34,7 +34,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Interpolates a list of points using a canonical spline.
+    /// Provides functionality to interpolate a list of points by a canonical spline.
     /// </summary>
     internal static class CanonicalSplineHelper
     {

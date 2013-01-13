@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Represent a slice of a PieSeries.
+    /// Represent a slice of a <see cref="PieSeries"/>.
     /// </summary>
     public class PieSlice
     {

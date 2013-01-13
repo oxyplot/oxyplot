@@ -77,7 +77,7 @@ namespace OxyPlot.OpenXml
     using Transform2D = DocumentFormat.OpenXml.Drawing.Transform2D;
 
     /// <summary>
-    /// Word/OpenXML (.docx) report writer using OpenXML SDK 2.0.
+    /// Provides a report writer for Word/OpenXML (.docx) output using OpenXML SDK 2.0.
     /// </summary>
     public class WordDocumentReportWriter : IDisposable, IReportWriter
     {

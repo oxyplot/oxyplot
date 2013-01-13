@@ -32,7 +32,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// The angle axis renderer.
+    /// Provides functionality to render <see cref="AngleAxis"/>.
     /// </summary>
     public class AngleAxisRenderer : AxisRendererBase
     {

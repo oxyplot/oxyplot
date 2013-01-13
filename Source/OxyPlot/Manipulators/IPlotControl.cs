@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Interface for Plot controls.
+    /// Defines functionality in the Plot controls.
     /// </summary>
     public interface IPlotControl
     {

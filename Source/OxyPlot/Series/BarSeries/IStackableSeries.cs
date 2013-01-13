@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Specifies a series that can be stacked.
+    /// Defines properties for stacked series.
     /// </summary>
     public interface IStackableSeries
     {
@@ -46,6 +46,5 @@ namespace OxyPlot
         /// The stack group.
         /// </value>
         string StackGroup { get; }
-
     }
 }

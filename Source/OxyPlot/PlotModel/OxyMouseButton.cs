@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The mouse buttons.
+    /// Specifies constants that define which mouse button was pressed.
     /// </summary>
     public enum OxyMouseButton
     {

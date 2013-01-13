@@ -30,17 +30,17 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Static font weights.
+    /// Provides a set of static predefined font weight values.
     /// </summary>
     public static class FontWeights
     {
         /// <summary>
-        /// The bold.
+        /// Specifies a bold font weight.
         /// </summary>
         public const double Bold = 700;
 
         /// <summary>
-        /// The normal.
+        /// Specifies a normal font weight.
         /// </summary>
         public const double Normal = 400;
 

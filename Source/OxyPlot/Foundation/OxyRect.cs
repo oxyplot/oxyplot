@@ -39,39 +39,39 @@ namespace OxyPlot
     public struct OxyRect
     {
         /// <summary>
-        /// The height.
+        /// The height of the rectangle.
         /// </summary>
         private double height;
 
         /// <summary>
-        /// The left.
+        /// The x-coordinate location of the left side of the rectangle.
         /// </summary>
         private double left;
 
         /// <summary>
-        /// The top.
+        /// The y-coordinate location of the top side of the rectangle.
         /// </summary>
         private double top;
 
         /// <summary>
-        /// The width.
+        /// The width of the rectangle.
         /// </summary>
         private double width;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyRect"/> struct.
+        /// Initializes a new instance of the <see cref="OxyRect"/> structure that has the specified x-coordinate, y-coordinate, width, and height.
         /// </summary>
         /// <param name="left">
-        /// The left.
+        /// The x-coordinate location of the left side of the rectangle.
         /// </param>
         /// <param name="top">
-        /// The top.
+        /// The y-coordinate location of the top side of the rectangle.
         /// </param>
         /// <param name="width">
-        /// The width.
+        /// The width of the rectangle.
         /// </param>
         /// <param name="height">
-        /// The height.
+        /// The height of the rectangle.
         /// </param>
         public OxyRect(double left, double top, double width, double height)
         {
@@ -84,7 +84,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the bottom.
+        /// Gets or sets the y-axis value of the bottom of the rectangle.
         /// </summary>
         /// <value>
         /// The bottom.
@@ -103,7 +103,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the height.
+        /// Gets or sets the height of the rectangle.
         /// </summary>
         /// <value>
         /// The height.
@@ -122,7 +122,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the left.
+        /// Gets or sets the x-axis value of the left side of the rectangle.
         /// </summary>
         /// <value>
         /// The left.
@@ -141,7 +141,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the right.
+        /// Gets or sets the x-axis value of the right side of the rectangle.
         /// </summary>
         /// <value>
         /// The right.
@@ -160,7 +160,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the top.
+        /// Gets or sets the y-axis position of the top of the rectangle.
         /// </summary>
         /// <value>
         /// The top.
@@ -179,7 +179,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the width.
+        /// Gets or sets the width of the rectangle.
         /// </summary>
         /// <value>
         /// The width.
@@ -198,14 +198,14 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the center of the rectangle.
+        /// Gets the center point of the rectangle.
         /// </summary>
         /// <value>The center.</value>
         public ScreenPoint Center
         {
             get
             {
-                return new ScreenPoint(this.left + this.width * 0.5, this.top + this.height * 0.5);
+                return new ScreenPoint(this.left + (this.width * 0.5), this.top + (this.height * 0.5));
             }
         }
 
@@ -283,6 +283,5 @@ namespace OxyPlot
             return string.Format(
                 CultureInfo.InvariantCulture, "({0}, {1}, {2}, {3})", this.left, this.top, this.width, this.height);
         }
-
     }
 }

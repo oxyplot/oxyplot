@@ -30,52 +30,61 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Enumeration of marker types.
+    /// Specifies the marker type.
     /// </summary>
     public enum MarkerType
     {
         /// <summary>
-        /// The none.
+        /// Do not render markers.
         /// </summary>
         None,
 
         /// <summary>
-        /// The circle.
+        /// Render markers as circles.
         /// </summary>
         Circle,
 
         /// <summary>
-        /// The square.
+        /// Render markers as squares.
         /// </summary>
         Square,
 
         /// <summary>
-        /// The diamond.
+        /// Render markers as diamonds.
         /// </summary>
         Diamond,
 
         /// <summary>
-        /// The triangle.
+        /// Render markers as triangles.
         /// </summary>
         Triangle,
 
         /// <summary>
-        /// The cross.
+        /// Render markers as crosses (note: this marker type requires the stroke color to be set).
         /// </summary>
+        /// <remarks>
+        /// This marker type requires the stroke color to be set.
+        /// </remarks>
         Cross,
 
         /// <summary>
-        /// The plus.
+        /// Renders markers as plus signs (note: this marker type requires the stroke color to be set).
         /// </summary>
+        /// <remarks>
+        /// This marker type requires the stroke color to be set.
+        /// </remarks>
         Plus,
 
         /// <summary>
-        /// The star.
+        /// Renders markers as stars (note: this marker type requires the stroke color to be set).
         /// </summary>
+        /// <remarks>
+        /// This marker type requires the stroke color to be set.
+        /// </remarks>
         Star,
 
         /// <summary>
-        /// The custom.
+        /// Render markers by a custom shape (defined by outline).
         /// </summary>
         Custom
     }

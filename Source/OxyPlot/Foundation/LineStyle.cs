@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Enumeration of line styles.
+    /// Specifies the style of a line.
     /// </summary>
     public enum LineStyle
     {
@@ -90,7 +90,7 @@ namespace OxyPlot
         None,
 
         /// <summary>
-        /// The undefined style.
+        /// The undefined line style.
         /// </summary>
         Undefined
     }

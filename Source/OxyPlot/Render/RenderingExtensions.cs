@@ -31,11 +31,10 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     /// <summary>
-    /// The rendering extensions.
+    /// Provides extension methods for <see cref="IRenderContext"/>.
     /// </summary>
     public static class RenderingExtensions
     {

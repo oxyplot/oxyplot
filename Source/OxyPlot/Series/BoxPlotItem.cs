@@ -32,7 +32,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents an item in a BoxPlotSeries.
+    /// Represents an item in a <see cref="BoxPlotSeries"/>.
     /// </summary>
     public struct BoxPlotItem
     {

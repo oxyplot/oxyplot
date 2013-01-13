@@ -30,20 +30,20 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// DataPoint interface.
+    /// Provides functionality to get a x- and y- coordinates.
     /// </summary>
     public interface IDataPoint : ICodeGenerating
     {
         /// <summary>
-        /// Gets or sets the X.
+        /// Gets or sets the x-coordinate.
         /// </summary>
-        /// <value>The X.</value>
+        /// <value>The x-coordinate.</value>
         double X { get; set; }
 
         /// <summary>
-        /// Gets or sets the Y.
+        /// Gets or sets the y-coordinate.
         /// </summary>
-        /// <value>The Y.</value>
+        /// <value>The y-coordinate.</value>
         double Y { get; set; }
 
     }

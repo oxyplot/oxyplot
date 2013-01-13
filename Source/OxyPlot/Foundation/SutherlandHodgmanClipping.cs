@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Polygon clipping by the sutherland-hodgman algortihm.
+    /// Provides polygon clipping by the Sutherland-Hodgman algortihm.
     /// </summary>
     public static class SutherlandHodgmanClipping
     {

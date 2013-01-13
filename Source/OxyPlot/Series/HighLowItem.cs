@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents an item in a HighLowSeries.
+    /// Represents an item in a <see cref="HighLowSeries"/>.
     /// </summary>
     public class HighLowItem
     {

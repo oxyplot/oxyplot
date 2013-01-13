@@ -41,160 +41,164 @@ namespace OxyPlot
     using OxyPlot.Reporting;
 
     /// <summary>
-    /// Plot coordinate system type
+    /// Specifies the coordinate system type.
     /// </summary>
     public enum PlotType
     {
         /// <summary>
         /// XY coordinate system - two perpendicular axes
         /// </summary>
-        // ReSharper disable InconsistentNaming
         XY,
-        // ReSharper restore InconsistentNaming
 
         /// <summary>
-        /// Cartesian coordinate system - perpendicular axes with the same scaling http://en.wikipedia.org/wiki/Cartesian_coordinate_system
+        /// Cartesian coordinate system - perpendicular axes with the same scaling.
         /// </summary>
+        /// <remarks>
+        /// See http://en.wikipedia.org/wiki/Cartesian_coordinate_system
+        /// </remarks>
         Cartesian,
 
         /// <summary>
-        /// Polar coordinate system - with radial and angular axes http://en.wikipedia.org/wiki/Polar_coordinate_system
+        /// Polar coordinate system - with radial and angular axes 
         /// </summary>
+        /// <remarks>
+        /// See http://en.wikipedia.org/wiki/Polar_coordinate_system
+        /// </remarks>
         Polar
     }
 
     /// <summary>
-    /// Legend placement enumeration.
+    /// Specifies the placement of the legend box.
     /// </summary>
     public enum LegendPlacement
     {
         /// <summary>
-        /// The inside.
+        /// Place the legends inside the plot area.
         /// </summary>
         Inside,
 
         /// <summary>
-        /// The outside.
+        /// Place the legends outside the plot area.
         /// </summary>
         Outside
     }
 
     /// <summary>
-    /// Legend position enumeration.
+    /// Specifies the position of the legend box.
     /// </summary>
     public enum LegendPosition
     {
         /// <summary>
-        /// The top left.
+        /// Place the legend box in the top-left corner.
         /// </summary>
         TopLeft,
 
         /// <summary>
-        /// The top center.
+        /// Place the legend box centered at the top.
         /// </summary>
         TopCenter,
 
         /// <summary>
-        /// The top right.
+        ///  Place the legend box in the top-right corner.
         /// </summary>
         TopRight,
 
         /// <summary>
-        /// The bottom left.
+        ///  Place the legend box in the bottom-left corner.
         /// </summary>
         BottomLeft,
 
         /// <summary>
-        /// The bottom center.
+        /// Place the legend box centered at the bottom.
         /// </summary>
         BottomCenter,
 
         /// <summary>
-        /// The bottom right.
+        ///  Place the legend box in the bottom-right corner.
         /// </summary>
         BottomRight,
 
         /// <summary>
-        /// The left top.
+        /// Place the legend box in the left-top corner.
         /// </summary>
         LeftTop,
 
         /// <summary>
-        /// The left middle.
+        /// Place the legend box centered at the left.
         /// </summary>
         LeftMiddle,
 
         /// <summary>
-        /// The left bottom.
+        /// Place the legend box in the left-bottom corner.
         /// </summary>
         LeftBottom,
 
         /// <summary>
-        /// The right top.
+        /// Place the legend box in the right-top corner.
         /// </summary>
         RightTop,
 
         /// <summary>
-        /// The right middle.
+        /// Place the legend box centered at the right.
         /// </summary>
         RightMiddle,
 
         /// <summary>
-        /// The right bottom.
+        /// Place the legend box in the right-bottom corner.
         /// </summary>
         RightBottom
     }
 
     /// <summary>
-    /// Legend orientation enumeration.
+    /// Specifies the orientation of the items in the legend box.
     /// </summary>
     public enum LegendOrientation
     {
         /// <summary>
-        /// The horizontal.
+        /// Orient the items horizontally.
         /// </summary>
         Horizontal,
 
         /// <summary>
-        /// The vertical.
+        /// Orient the items vertically.
         /// </summary>
         Vertical
     }
 
     /// <summary>
-    /// Legend item order enumeration.
+    /// Specifies the item order of the legends.
     /// </summary>
     public enum LegendItemOrder
     {
         /// <summary>
-        /// The normal.
+        /// Render the items in the normal order.
         /// </summary>
         Normal,
 
         /// <summary>
-        /// The reverse.
+        /// Render the items in the reverse order.
         /// </summary>
         Reverse
     }
 
     /// <summary>
-    /// Legend symbol placement enumeration.
+    /// Specifies the placement of the legend symbols.
     /// </summary>
     public enum LegendSymbolPlacement
     {
         /// <summary>
-        /// The left.
+        /// Render symbols to the left of the labels.
         /// </summary>
         Left,
 
         /// <summary>
-        /// The right.
+        /// Render symbols to the right of the labels.
         /// </summary>
         Right
     }
 
     /// <summary>
-    /// The PlotModel represents all the content of the plot (titles, axes, series).
+    /// Represents a plot (including axes, series and annotations).
     /// </summary>
     [Serializable]
     public partial class PlotModel

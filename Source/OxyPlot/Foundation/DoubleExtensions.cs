@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Extension methods for double values.
+    /// Provides extension methods for the <see cref="Double"/> type.
     /// </summary>
     public static class DoubleExtensions
     {

@@ -34,7 +34,7 @@ namespace OxyPlot
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// Interface to GDI32 native methods.
+    /// Provides access to native graphics methods.
     /// </summary>
     public class NativeMethods
     {

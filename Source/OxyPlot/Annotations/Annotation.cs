@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Annotation base class.
+    /// Provides an abstract base class for annotations.
     /// </summary>
     [Serializable]
     public abstract class Annotation : UIPlotElement

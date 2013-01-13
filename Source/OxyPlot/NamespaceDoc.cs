@@ -28,8 +28,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The OxyPlot namespace contains platform independent foundation classes for the library.
-    /// The contents of the plot models are also defined here.
+    /// The OxyPlot namespace contains the platform independent classes of the library.
     /// </summary>
     [System.Runtime.CompilerServices.CompilerGenerated]
     internal class NamespaceDoc

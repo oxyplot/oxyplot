@@ -32,7 +32,7 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// The math rendering extensions.
+    /// Provides functionality to render mathematic expressions (TeX syntax).
     /// </summary>
     public static class MathRenderingExtensions
     {

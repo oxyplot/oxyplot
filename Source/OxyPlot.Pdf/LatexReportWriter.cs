@@ -34,7 +34,7 @@ namespace OxyPlot.Pdf
     using OxyPlot.Reporting;
 
     /// <summary>
-    /// LaTeX2e writer.
+    /// Provides a report writer for LaTeX2e.
     /// </summary>
     public class LatexReportWriter : StreamWriter, IReportWriter
     {

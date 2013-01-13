@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// The magnitude axis renderer.
+    /// Provides functionality to render <see cref="MagnitudeAxis"/>.
     /// </summary>
     public class MagnitudeAxisRenderer : AxisRendererBase
     {

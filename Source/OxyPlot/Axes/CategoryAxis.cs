@@ -35,7 +35,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Represents a category axes.
+    /// Represents a category axis.
     /// </summary>
     /// <remarks>
     /// The category axis is using the label collection indices as the coordinate. If you have 5 categories in the Labels collection, the categories will be placed at coordinates 0 to 4. The range of the axis will be from -0.5 to 4.5 (excl. padding).

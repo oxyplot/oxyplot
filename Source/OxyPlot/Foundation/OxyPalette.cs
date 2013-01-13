@@ -98,6 +98,5 @@ namespace OxyPlot
 
             return new OxyPalette(palette);
         }
-
     }
 }

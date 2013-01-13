@@ -38,7 +38,7 @@ namespace OxyPlot
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// Generates c# code for the specified PlotModel.
+    /// Provides functionality to generate C# code for the specified <see cref="PlotModel"/>.
     /// </summary>
     /// <remarks>
     /// This is useful for creating examples or unit tests. Press Ctrl+Alt+C in a plot to copy code to the clipboard.

@@ -36,7 +36,7 @@ namespace OxyPlot
     using System.Reflection;
 
     /// <summary>
-    /// Provides reflection based support methods.
+    /// Provides utility methods reflection based support methods.
     /// </summary>
     public static class ReflectionHelper
     {
@@ -77,6 +77,5 @@ namespace OxyPlot
                 list.Add(value);
             }
         }
-
     }
 }

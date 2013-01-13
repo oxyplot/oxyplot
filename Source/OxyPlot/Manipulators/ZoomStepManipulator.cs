@@ -30,7 +30,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The step manipulator.
+    /// Provides a plot control manipulator for stepwise zoom functionality.
     /// </summary>
     public class ZoomStepManipulator : ManipulatorBase
     {

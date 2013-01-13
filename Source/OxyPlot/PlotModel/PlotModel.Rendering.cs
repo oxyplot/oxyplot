@@ -33,9 +33,6 @@ namespace OxyPlot
     using System.Collections.Generic;
     using System.Linq;
 
-    /// <summary>
-    /// Partial PlotModel class - this file contains rendering methods.
-    /// </summary>
     public partial class PlotModel
     {
         /// <summary>

@@ -40,7 +40,7 @@ namespace OxyPlot.Pdf
     using Paragraph = MigraDoc.DocumentObjectModel.Paragraph;
 
     /// <summary>
-    /// PDF report writer using MigraDoc.
+    /// Provides a report writer for portable document format using MigraDoc.
     /// </summary>
     public class PdfReportWriter : IDisposable, IReportWriter
     {
