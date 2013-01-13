@@ -2,8 +2,10 @@
   <GlobalSettings>
     <CollectionProperty Name="RecognizedWords">
       <Value>pdf</Value>
+      <Value>svg</Value>
       <Value>wpf</Value>
       <Value>xps</Value>
+      <Value>XY</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Analyzers>
