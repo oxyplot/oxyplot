@@ -24,13 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Globalization;
-using System.IO;
-using OxyPlot;
 
 namespace CsvDemo
 {
+    using System.Globalization;
+    using System.IO;
+    using OxyPlot;
+    using WpfExamples;
+
     public class MainViewModel : Observable
     {
         private PlotModel model;

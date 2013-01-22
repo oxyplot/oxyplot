@@ -34,6 +34,7 @@ namespace BindingDemo
         public Collection<Measurement> Measurements { get; private set; }
 
         public string Subtitle { get; set; }
+
         public MainViewModel()
         {
             Measurements = new Collection<Measurement>();

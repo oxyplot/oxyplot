@@ -29,7 +29,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace CsvDemo
+namespace WpfExamples
 {
     public class Observable : INotifyPropertyChanged
     {
