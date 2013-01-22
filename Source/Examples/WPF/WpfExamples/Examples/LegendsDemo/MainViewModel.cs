@@ -24,14 +24,15 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.ComponentModel;
-using OxyPlot;
-using PropertyTools.Wpf;
 
 namespace LegendsDemo
 {
+    using System;
+    using System.ComponentModel;
+
+    using OxyPlot;
     using PropertyTools.DataAnnotations;
+    using WpfExamples;
 
     public class MainViewModel : Observable
     {

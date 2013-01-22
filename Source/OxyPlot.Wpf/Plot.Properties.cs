@@ -55,7 +55,7 @@ namespace OxyPlot.Wpf
         /// The culture property.
         /// </summary>
         public static readonly DependencyProperty CultureProperty = DependencyProperty.Register(
-            "Culture", typeof(CultureInfo), typeof(Plot), new UIPropertyMetadata(null));
+            "Culture", typeof(CultureInfo), typeof(Plot), new UIPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The default tracker property.
@@ -169,7 +169,7 @@ namespace OxyPlot.Wpf
         /// The legend max width property
         /// </summary>
         public static readonly DependencyProperty LegendMaxWidthProperty =
-            DependencyProperty.Register("LegendMaxWidth", typeof(double), typeof(Plot), new UIPropertyMetadata(double.NaN));
+            DependencyProperty.Register("LegendMaxWidth", typeof(double), typeof(Plot), new UIPropertyMetadata(double.NaN, AppearanceChanged));
 
         /// <summary>
         /// The legend orientation property.
@@ -185,7 +185,7 @@ namespace OxyPlot.Wpf
         /// The legend column spacing property.
         /// </summary>
         public static readonly DependencyProperty LegendColumnSpacingProperty =
-            DependencyProperty.Register("LegendColumnSpacing", typeof(double), typeof(Plot), new UIPropertyMetadata(8.0));
+            DependencyProperty.Register("LegendColumnSpacing", typeof(double), typeof(Plot), new UIPropertyMetadata(8.0, AppearanceChanged));
 
         /// <summary>
         /// The legend padding property.
@@ -1248,7 +1248,7 @@ namespace OxyPlot.Wpf
         {
             if (this.internalModel != null)
             {
-                PlotModel m = this.internalModel;
+                var m = this.internalModel;
                 m.Title = this.Title;
                 m.Subtitle = this.Subtitle;
                 m.PlotType = this.PlotType;

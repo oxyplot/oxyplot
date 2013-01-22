@@ -51,6 +51,7 @@ namespace WpfExamples
                     new Example(typeof(AxesDemo.MainWindow), null, "Demonstrates functionality of the axes."),
                     new Example(typeof(BarSeriesDemo.MainWindow), null, "Shows bar series."),
                     new Example(typeof(BindingDemo.MainWindow), null, "Demonstrates data binding."),
+                    new Example(typeof(ColorBindingDemo.MainWindow), null, "Binds fore and background colors."),
                     new Example(typeof(ColumnSeriesDemo.MainWindow), null, "Shows column series."),
                     new Example(typeof(ContourDemo.MainWindow), null, "Plotting with contour series."),
                     new Example(typeof(CoupledAxesDemo.MainWindow), null, "Shows how to keep two axes in sync."),
