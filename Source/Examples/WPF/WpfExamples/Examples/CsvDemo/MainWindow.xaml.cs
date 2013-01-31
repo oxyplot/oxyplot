@@ -94,7 +94,8 @@ namespace CsvDemo
                         plot1.SaveBitmap(dlg.FileName);
                         break;
                     case ".svg":
-                        vm.Model.SaveSvg(dlg.FileName, plot1.ActualWidth, plot1.ActualHeight);
+                        var svg = vm.Model.ToSvg(plot1.ActualWidth, plot1.ActualHeight);
+                        File.WriteAllText(dlg.FileName, svg);
                         break;
                     case ".pdf":
                         PdfExporter.Export(vm.Model, dlg.FileName, plot1.ActualWidth, plot1.ActualHeight);

@@ -40,7 +40,7 @@ namespace ExampleLibrary
         public static PlotModel LineSeries1()
         {
             var model = new PlotModel("LineSeries, 100k points");
-#if !SILVERLIGHT && !MONO
+#if !SILVERLIGHT && !MONO && !PCL
             var watch = new Stopwatch();
             model.Updating += (sender, args) => watch.Restart();
             model.Updated += (sender, args) => Debug.WriteLine("Updated in " + watch.ElapsedMilliseconds + " ms");
@@ -56,7 +56,7 @@ namespace ExampleLibrary
         public static PlotModel LineSeries1Round()
         {
             var model = new PlotModel("LineSeries, 100k points, round line joins");
-#if !SILVERLIGHT && !MONO
+#if !SILVERLIGHT && !MONO && !PCL
             var watch = new Stopwatch();
             model.Updating += (sender, args) => watch.Restart();
             model.Updated += (sender, args) => Debug.WriteLine("Updated in " + watch.ElapsedMilliseconds + " ms");

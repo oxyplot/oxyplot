@@ -115,60 +115,63 @@ namespace ExportDemo
             var r = this.CreateReport(fileName);
             var reportStyle = new ReportStyle();
 
-            if (ext == ".txt")
+            using (var s = File.OpenWrite(fileName))
             {
-                using (var w = new TextReportWriter(fileName))
+                if (ext == ".txt")
                 {
-                    r.Write(w);
+                    using (var w = new TextReportWriter(s))
+                    {
+                        r.Write(w);
+                    }
                 }
-            }
 
-            if (ext == ".html")
-            {
-                using (var w = new HtmlReportWriter(fileName))
+                if (ext == ".html")
                 {
-                    w.WriteReport(r, reportStyle);
+                    using (var w = new HtmlReportWriter(s))
+                    {
+                        w.WriteReport(r, reportStyle);
+                    }
                 }
-            }
 
-            if (ext == ".pdf")
-            {
-                using (var w = new PdfReportWriter(fileName))
+                if (ext == ".pdf")
                 {
-                    w.WriteReport(r, reportStyle);
+                    using (var w = new PdfReportWriter(fileName))
+                    {
+                        w.WriteReport(r, reportStyle);
+                    }
                 }
-            }
 
-            if (ext == ".rtf")
-            {
-                using (var w = new RtfReportWriter(fileName))
+                if (ext == ".rtf")
                 {
-                    w.WriteReport(r, reportStyle);
+                    using (var w = new RtfReportWriter(fileName))
+                    {
+                        w.WriteReport(r, reportStyle);
+                    }
                 }
-            }
 
-            if (ext == ".tex")
-            {
-                using (var w = new LatexReportWriter(fileName, "Example report", "oxyplot"))
+                if (ext == ".tex")
                 {
-                    w.WriteReport(r, reportStyle);
+                    using (var w = new LatexReportWriter(fileName, "Example report", "oxyplot"))
+                    {
+                        w.WriteReport(r, reportStyle);
+                    }
                 }
-            }
 
-            if (ext == ".xps")
-            {
-                using (var w = new FlowDocumentReportWriter())
+                if (ext == ".xps")
                 {
-                    w.WriteReport(r, reportStyle);
-                    w.Save(fileName);
+                    using (var w = new FlowDocumentReportWriter())
+                    {
+                        w.WriteReport(r, reportStyle);
+                        w.Save(fileName);
+                    }
                 }
-            }
-            if (ext == ".docx")
-            {
-                using (var w = new WordDocumentReportWriter(fileName))
+                if (ext == ".docx")
                 {
-                    w.WriteReport(r, reportStyle);
-                    w.Save();
+                    using (var w = new WordDocumentReportWriter(fileName))
+                    {
+                        w.WriteReport(r, reportStyle);
+                        w.Save();
+                    }
                 }
             }
         }
@@ -274,7 +277,8 @@ namespace ExportDemo
             var path = GetFilename(".svg files|*.svg", ".svg");
             if (path != null)
             {
-                Model.SaveSvg(path, Plot.ActualWidth, Plot.ActualHeight);
+                var svg = Model.ToSvg(Plot.ActualWidth, Plot.ActualHeight);
+                File.WriteAllText(path, svg);
                 OpenContainingFolder(path);
             }
         }

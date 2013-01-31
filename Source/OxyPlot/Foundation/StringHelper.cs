@@ -31,8 +31,6 @@ namespace OxyPlot
 {
     using System;
     using System.Collections;
-    using System.Globalization;
-    using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
 
@@ -98,8 +96,6 @@ namespace OxyPlot
             return s;
         }
 
-#if !SILVERLIGHT && !PCL
-
         /// <summary>
         /// Creates a valid file name.
         /// </summary>
@@ -115,14 +111,15 @@ namespace OxyPlot
         public static string CreateValidFileName(string title, string extension)
         {
             string validFileName = title.Trim();
-            foreach (char invalChar in Path.GetInvalidFileNameChars())
+            var invalidFileNameChars = "\"<>|\b\0\t".ToCharArray();
+            foreach (char invalChar in invalidFileNameChars)
             {
-                validFileName = validFileName.Replace(invalChar.ToString(CultureInfo.InvariantCulture), string.Empty);
+                validFileName = validFileName.Replace(invalChar.ToString(), string.Empty);
             }
 
-            foreach (char invalChar in Path.GetInvalidPathChars())
+            foreach (char invalChar in invalidFileNameChars)
             {
-                validFileName = validFileName.Replace(invalChar.ToString(CultureInfo.InvariantCulture), string.Empty);
+                validFileName = validFileName.Replace(invalChar.ToString(), string.Empty);
             }
 
             if (validFileName.Length > 160)
@@ -133,8 +130,6 @@ namespace OxyPlot
 
             return validFileName + extension;
         }
-
-#endif
 
         /// <summary>
         /// Creates a string from a collection of items.

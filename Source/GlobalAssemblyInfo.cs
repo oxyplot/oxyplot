@@ -26,7 +26,6 @@
 //-----------------------------------------------------------------------
 
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("OxyPlot")]
@@ -34,8 +33,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright (C) OxyPlot 2012.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
-[assembly: ComVisible(false)]
 
 [assembly: AssemblyVersion("2013.1.1.1")]
 [assembly: AssemblyFileVersion("2013.1.1.1")]

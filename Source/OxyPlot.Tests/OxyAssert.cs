@@ -51,7 +51,10 @@ namespace OxyPlot.Tests
             // string name = new System.Diagnostics.StackFrame(1).GetMethod().Name;
             string path = name + ".svg";
             string baseline = @"baseline\" + path;
-            SvgExporter.Export(plot, path, 800, 500);
+            using (var s = File.OpenWrite(path))
+            {
+                SvgExporter.Export(plot, s, 800, 500);
+            }
 
             if (!Directory.Exists("baseline"))
             {

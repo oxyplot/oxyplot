@@ -86,9 +86,9 @@
     <None Include="OxyPlot.Silverlight.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot_SL5.csproj">
-      <Project>{ef3baa47-86e8-4256-aea8-458e3ffcbbaa}</Project>
-      <Name>OxyPlot_SL5</Name>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
+      <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
+      <Name>OxyPlot</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />

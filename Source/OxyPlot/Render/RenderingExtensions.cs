@@ -614,7 +614,7 @@ namespace OxyPlot
             var polygons = new List<IList<ScreenPoint>>(n);
             var lines = new List<ScreenPoint>(n);
 
-            var hashset = new HashSet<uint>();
+            var hashset = new Dictionary<uint, bool>();
 
             int i = 0;
 
@@ -630,13 +630,13 @@ namespace OxyPlot
                     var x = (int)((p.X - binOffset.X) / resolution);
                     var y = (int)((p.Y - binOffset.Y) / resolution);
                     uint hash = (uint)(x << 16) + (uint)y;
-                    if (hashset.Contains(hash))
+                    if (hashset.ContainsKey(hash))
                     {
                         i++;
                         continue;
                     }
 
-                    hashset.Add(hash);
+                    hashset.Add(hash, true);
                 }
 
                 bool outside = p.x < minx || p.x > maxx || p.y < miny || p.y > maxy;

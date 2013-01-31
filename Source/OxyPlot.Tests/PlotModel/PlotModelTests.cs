@@ -28,6 +28,7 @@ namespace OxyPlot.Tests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
 
     using ExampleLibrary;
 
@@ -64,7 +65,8 @@ namespace OxyPlot.Tests
             var plotModel = TestModels.CreateTestModel1();
 
             const string FileName = "PlotModelTests_Test1.svg";
-            plotModel.SaveSvg(FileName, 800, 500);
+            var svg = plotModel.ToSvg(800, 500);
+            File.WriteAllText(FileName, svg);
             SvgAssert.IsValidFile(FileName);
         }
 

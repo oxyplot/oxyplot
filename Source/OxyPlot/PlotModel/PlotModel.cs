@@ -200,7 +200,6 @@ namespace OxyPlot
     /// <summary>
     /// Represents a plot (including axes, series and annotations).
     /// </summary>
-    [Serializable]
     public partial class PlotModel
     {
         /// <summary>

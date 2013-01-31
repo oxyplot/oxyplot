@@ -34,7 +34,6 @@ namespace OxyPlot
     /// <summary>
     /// Provides an abstract base class for plot elements that support selection.
     /// </summary>
-    [Serializable]
     public abstract class SelectablePlotElement : PlotElement
     {
         /// <summary>

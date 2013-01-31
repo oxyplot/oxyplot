@@ -196,7 +196,7 @@ namespace ExampleLibrary
             });
 
             // Read the train schedule from a .csv resource
-#if PCL
+#if PCL45
             var resources = typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceNames();
             using (var stream = typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream(resources[0]))
 #else
@@ -243,7 +243,7 @@ namespace ExampleLibrary
 
                     var fields = line.Split(';');
                     double x = double.Parse(fields[1], CultureInfo.InvariantCulture);
-                    if (!string.IsNullOrWhiteSpace(fields[0]))
+                    if (!string.IsNullOrEmpty(fields[0]))
                     {
                         // Add a horizontal annotation line for the station
                         model.Annotations.Add(
@@ -264,7 +264,7 @@ namespace ExampleLibrary
 
                     for (int i = 0; i < series.Length; i++)
                     {
-                        if (string.IsNullOrWhiteSpace(fields[i + 3]))
+                        if (string.IsNullOrEmpty(fields[i + 3]))
                         {
                             continue;
                         }

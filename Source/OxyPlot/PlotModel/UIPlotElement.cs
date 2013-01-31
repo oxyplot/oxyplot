@@ -34,7 +34,6 @@ namespace OxyPlot
     /// <summary>
     /// Provides an abstract base class for plot elements that handle mouse events.
     /// </summary>
-    [Serializable]
     public abstract class UIPlotElement : SelectablePlotElement
     {
         /// <summary>

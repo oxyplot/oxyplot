@@ -1,5 +1,12 @@
 set EnableNuGetPackageRestore=true
 
+REM === CORE ===
+mkdir ..\Packages\OxyPlot.Core\lib
+mkdir "..\Packages\OxyPlot.Core\lib\portable-net4+sl4+wp71+win8"
+copy ..\Output\PCL\OxyPlot.??? "..\Packages\OxyPlot.Core\lib\portable-net4+sl4+wp71+win8"
+copy ..\license.txt ..\Packages\OxyPlot.Core
+..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.Core\OxyPlot.Core.nuspec -OutputDirectory ..\Packages > pack.log
+
 REM === WPF ===
 mkdir ..\Packages\OxyPlot.Wpf\lib
 mkdir ..\Packages\OxyPlot.Wpf\lib\NET40
@@ -11,7 +18,7 @@ copy ..\Output\NET45\OxyPlot.??? ..\Packages\OxyPlot.Wpf\lib\NET45
 copy ..\Output\NET45\OxyPlot.Wpf.??? ..\Packages\OxyPlot.Wpf\lib\NET45
 copy ..\Output\NET45\OxyPlot.Xps.??? ..\Packages\OxyPlot.Wpf\lib\NET45
 copy ..\license.txt ..\Packages\OxyPlot.Wpf
-..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory ..\Packages > pack.log
+..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory ..\Packages >> pack.log
 
 REM === OpenXml ===
 mkdir ..\Packages\OxyPlot.OpenXml\lib
