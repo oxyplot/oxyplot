@@ -143,15 +143,5 @@ namespace OxyPlot.Tests
         {
             Assert.AreEqual(1.0 / 3, OxyColor.HueDifference(OxyColors.Red, OxyColors.Blue), 1e-6);
         }
-
-        [Test]
-        public void Convert()
-        {
-            var converter = TypeDescriptor.GetConverter(typeof(OxyColor));
-            Assert.IsTrue(converter.CanConvertFrom(typeof(string)));
-            Assert.IsTrue(converter.CanConvertTo(typeof(string)));
-            Assert.AreEqual(OxyColors.Red, converter.ConvertFrom("#FFFF0000"));
-            Assert.AreEqual("#ffff0000", converter.ConvertTo(OxyColors.Red, typeof(string)));
-        }
     }
 }

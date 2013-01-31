@@ -111,7 +111,7 @@ namespace OxyPlot
         public static string CreateValidFileName(string title, string extension)
         {
             string validFileName = title.Trim();
-            var invalidFileNameChars = "\"<>|\b\0\t".ToCharArray();
+            var invalidFileNameChars = "/?<>\\:*|\0\t\r\n".ToCharArray();
             foreach (char invalChar in invalidFileNameChars)
             {
                 validFileName = validFileName.Replace(invalChar.ToString(), string.Empty);
