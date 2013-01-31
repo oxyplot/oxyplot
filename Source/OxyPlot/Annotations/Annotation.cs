@@ -35,7 +35,6 @@ namespace OxyPlot
     /// <summary>
     /// Provides an abstract base class for annotations.
     /// </summary>
-    [Serializable]
     public abstract class Annotation : UIPlotElement
     {
         /// <summary>

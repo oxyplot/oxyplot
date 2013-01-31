@@ -34,7 +34,6 @@ namespace OxyPlot
     /// <summary>
     /// Provides an abstract base class for elements contained in a <see cref="PlotModel"/>.
     /// </summary>
-    [Serializable]
     public abstract class PlotElement
     {
         /// <summary>

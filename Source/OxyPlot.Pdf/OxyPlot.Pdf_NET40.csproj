@@ -74,9 +74,9 @@
     <None Include="OxyPlot.Pdf.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot_NET40.csproj">
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
       <Project>{87f519b8-5a2f-48c6-ad53-c5f13a82ea6b}</Project>
-      <Name>OxyPlot_NET40</Name>
+      <Name>OxyPlot</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

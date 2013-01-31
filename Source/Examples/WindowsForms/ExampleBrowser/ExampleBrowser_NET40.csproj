@@ -79,13 +79,13 @@
       <Project>{8bc521ad-81cf-4e6c-8898-be67527e7064}</Project>
       <Name>OxyPlot.WindowsForms_NET40</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot_NET40.csproj">
-      <Project>{87f519b8-5a2f-48c6-ad53-c5f13a82ea6b}</Project>
-      <Name>OxyPlot_NET40</Name>
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
+      <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
+      <Name>OxyPlot</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ExampleLibrary\ExampleLibrary_NET40.csproj">
-      <Project>{a941b658-1237-482c-b0c7-378242d27647}</Project>
-      <Name>ExampleLibrary_NET40</Name>
+    <ProjectReference Include="..\..\ExampleLibrary\ExampleLibrary.csproj">
+      <Project>{facb89e5-53a5-4748-9f5b-e0714ebb37b2}</Project>
+      <Name>ExampleLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

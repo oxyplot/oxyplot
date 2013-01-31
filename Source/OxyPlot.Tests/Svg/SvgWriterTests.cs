@@ -28,6 +28,7 @@ namespace OxyPlot.Tests
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
 
     using NUnit.Framework;
 
@@ -40,14 +41,17 @@ namespace OxyPlot.Tests
         public void WriteEllipse()
         {
             const string FileName = "SvgWriterTests_WriteEllipse.svg";
-            using (var w = new SvgWriter(FileName, 200, 200))
+            using (var s = File.OpenWrite(FileName))
             {
-                w.WriteEllipse(
-                    10,
-                    10,
-                    100,
-                    60,
-                    w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                using (var w = new SvgWriter(s, 200, 200))
+                {
+                    w.WriteEllipse(
+                        10,
+                        10,
+                        100,
+                        60,
+                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                }
             }
 
             SvgAssert.IsValidFile(FileName);
@@ -57,12 +61,15 @@ namespace OxyPlot.Tests
         public void WriteLine()
         {
             const string FileName = "SvgWriterTests_WriteLine.svg";
-            using (var w = new SvgWriter(FileName, 200, 200))
+            using (var s = File.OpenWrite(FileName))
             {
-                w.WriteLine(
-                    new ScreenPoint(10, 10),
-                    new ScreenPoint(150, 80),
-                    w.CreateStyle(null, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                using (var w = new SvgWriter(s, 200, 200))
+                {
+                    w.WriteLine(
+                        new ScreenPoint(10, 10),
+                        new ScreenPoint(150, 80),
+                        w.CreateStyle(null, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                }
             }
 
             SvgAssert.IsValidFile(FileName);
@@ -72,9 +79,14 @@ namespace OxyPlot.Tests
         public void WritePolygon()
         {
             const string FileName = "SvgWriterTests_WritePolygon.svg";
-            using (var w = new SvgWriter(FileName, 200, 200))
+            using (var s = File.OpenWrite(FileName))
             {
-                w.WritePolygon(CreatePointList(), w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                using (var w = new SvgWriter(s, 200, 200))
+                {
+                    w.WritePolygon(
+                        CreatePointList(),
+                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                }
             }
 
             SvgAssert.IsValidFile(FileName);
@@ -84,9 +96,14 @@ namespace OxyPlot.Tests
         public void WritePolyline()
         {
             const string FileName = "SvgWriterTests_WritePolyLine.svg";
-            using (var w = new SvgWriter(FileName, 200, 200))
+            using (var s = File.OpenWrite(FileName))
             {
-                w.WritePolyline(CreatePointList(), w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                using (var w = new SvgWriter(s, 200, 200))
+                {
+                    w.WritePolyline(
+                        CreatePointList(),
+                        w.CreateStyle(OxyColors.Blue, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                }
             }
 
             SvgAssert.IsValidFile(FileName);
@@ -96,9 +113,18 @@ namespace OxyPlot.Tests
         public void WriteRectangle()
         {
             const string FileName = "SvgWriterTests_WriteRectangle.svg";
-            using (var w = new SvgWriter(FileName, 200, 200))
+            using (var s = File.OpenWrite(FileName))
             {
-                w.WriteRectangle(10, 20, 150, 80, w.CreateStyle(OxyColors.Green, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                using (var w = new SvgWriter(s, 200, 200))
+                {
+                    w.WriteRectangle(
+                        10,
+                        20,
+                        150,
+                        80,
+                        w.CreateStyle(
+                            OxyColors.Green, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                }
             }
 
             SvgAssert.IsValidFile(FileName);
@@ -108,9 +134,12 @@ namespace OxyPlot.Tests
         public void WriteText()
         {
             const string FileName = "SvgWriterTests_WriteText.svg";
-            using (var w = new SvgWriter(FileName, 200, 200))
+            using (var s = File.OpenWrite(FileName))
             {
-                w.WriteText(new ScreenPoint(10, 10), "Hello world!", OxyColors.Black);
+                using (var w = new SvgWriter(s, 200, 200))
+                {
+                    w.WriteText(new ScreenPoint(10, 10), "Hello world!", OxyColors.Black);
+                }
             }
 
             SvgAssert.IsValidFile(FileName);

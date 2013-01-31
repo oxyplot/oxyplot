@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Silverlight", "OxyPlot.Silverlight\OxyPlot.Silverlight.csproj", "{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}"
@@ -15,11 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightDemo", "Examples
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportDemo", "Examples\Silverlight\ExportDemo\ExportDemo.csproj", "{5C307156-E173-425B-8FC7-4B5CB63C7980}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary_SL5", "Examples\ExampleLibrary\ExampleLibrary_SL5.csproj", "{A2E856EB-3F45-4ACE-90FB-5440D4577DE1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot_SL5", "OxyPlot\OxyPlot_SL5.csproj", "{EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf_SL5", "OxyPlot.Pdf\OxyPlot.Pdf_SL5.csproj", "{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "OxyPlot\OxyPlot.csproj", "{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,18 +51,18 @@ Global
 		{5C307156-E173-425B-8FC7-4B5CB63C7980}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C307156-E173-425B-8FC7-4B5CB63C7980}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C307156-E173-425B-8FC7-4B5CB63C7980}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A2E856EB-3F45-4ACE-90FB-5440D4577DE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A2E856EB-3F45-4ACE-90FB-5440D4577DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A2E856EB-3F45-4ACE-90FB-5440D4577DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2E856EB-3F45-4ACE-90FB-5440D4577DE1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C84CAEBA-3326-41C8-81DA-B1EB680D7FA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +73,6 @@ Global
 		{BD75B688-D4A3-405F-BC08-E371993A6273} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 		{ECAEB12F-7177-41FF-98D4-2EA7F5F110F0} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 		{5C307156-E173-425B-8FC7-4B5CB63C7980} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
-		{A2E856EB-3F45-4ACE-90FB-5440D4577DE1} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
+		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 	EndGlobalSection
 EndGlobal

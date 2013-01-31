@@ -217,7 +217,7 @@ namespace OxyPlot.Reporting
         public void WriteImage(Image i)
         {
             // this requires the image to be located in the same folder as the html
-            string localFileName = Path.GetFileName(i.Source);
+            string localFileName = i.Source;
             this.WriteStartFigure();
             this.WriteStartElement("img");
             this.WriteAttributeString("src", localFileName);

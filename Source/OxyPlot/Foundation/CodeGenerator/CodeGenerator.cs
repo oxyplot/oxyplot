@@ -56,7 +56,7 @@ namespace OxyPlot
         /// <summary>
         /// The variables.
         /// </summary>
-        private readonly HashSet<string> variables;
+        private readonly Dictionary<string, bool> variables;
 
         /// <summary>
         /// The indent string.
@@ -76,7 +76,7 @@ namespace OxyPlot
         /// </param>
         public CodeGenerator(PlotModel model)
         {
-            this.variables = new HashSet<string>();
+            this.variables = new Dictionary<string, bool>();
             this.sb = new StringBuilder();
             this.Indents = 8;
             var title = model.Title ?? "Untitled";
@@ -179,7 +179,7 @@ namespace OxyPlot
             Type type = obj.GetType();
             object defaultInstance = Activator.CreateInstance(type);
             string varName = this.GetNewVariableName(type);
-            this.variables.Add(varName);
+            this.variables.Add(varName, true);
             this.AppendLine("var {0} = new {1}();", varName, type.Name);
             this.SetProperties(obj, varName, defaultInstance);
             return varName;
@@ -321,7 +321,7 @@ namespace OxyPlot
             string prefix = type.Name;
             prefix = char.ToLower(prefix[0]) + prefix.Substring(1);
             int i = 1;
-            while (this.variables.Contains(prefix + i))
+            while (this.variables.ContainsKey(prefix + i))
             {
                 i++;
             }

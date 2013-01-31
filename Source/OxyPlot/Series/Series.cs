@@ -38,7 +38,6 @@ namespace OxyPlot
     /// <remarks>
     /// This class contains internal methods that should be called only from the PlotModel.
     /// </remarks>
-    [Serializable]
     public abstract class Series : UIPlotElement, ITrackableSeries
     {
         /// <summary>

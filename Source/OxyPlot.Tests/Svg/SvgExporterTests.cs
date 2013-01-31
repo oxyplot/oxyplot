@@ -62,7 +62,11 @@ namespace OxyPlot.Tests
             var plotModel = new PlotModel("Test plot");
             const string FileName = "SvgExporterTests_Plot1.svg";
             plotModel.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 8, 200, "Math.Sin"));
-            SvgExporter.Export(plotModel, FileName, 800, 500);
+            using (var s = File.OpenWrite(FileName))
+            {
+                SvgExporter.Export(plotModel, s, 800, 500);
+            }
+
             SvgAssert.IsValidFile(FileName);
         }
 
@@ -78,7 +82,11 @@ namespace OxyPlot.Tests
             foreach (var example in Examples.GetList())
             {
                 var path = Path.Combine(DestinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".svg"));
-                SvgExporter.Export(example.PlotModel, path, 800, 500);
+                using (var s = File.OpenWrite(path))
+                {
+                    SvgExporter.Export(example.PlotModel, s, 800, 500);
+                }
+
                 Assert.IsTrue(File.Exists(path));
             }
         }

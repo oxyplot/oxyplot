@@ -303,7 +303,7 @@ namespace OxyPlot
             string fmt = this.ActualStringFormat;
             if (fmt == null)
             {
-                return time.ToShortDateString();
+                return time.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
             }
 
             int week = this.GetWeek(time);
