@@ -11,10 +11,8 @@ REM === WPF ===
 mkdir ..\Packages\OxyPlot.Wpf\lib
 mkdir ..\Packages\OxyPlot.Wpf\lib\NET40
 mkdir ..\Packages\OxyPlot.Wpf\lib\NET45
-copy ..\Output\NET40\OxyPlot.??? ..\Packages\OxyPlot.Wpf\lib\NET40
 copy ..\Output\NET40\OxyPlot.Wpf.??? ..\Packages\OxyPlot.Wpf\lib\NET40
 copy ..\Output\NET40\OxyPlot.Xps.??? ..\Packages\OxyPlot.Wpf\lib\NET40
-copy ..\Output\NET45\OxyPlot.??? ..\Packages\OxyPlot.Wpf\lib\NET45
 copy ..\Output\NET45\OxyPlot.Wpf.??? ..\Packages\OxyPlot.Wpf\lib\NET45
 copy ..\Output\NET45\OxyPlot.Xps.??? ..\Packages\OxyPlot.Wpf\lib\NET45
 copy ..\license.txt ..\Packages\OxyPlot.Wpf
@@ -40,12 +38,11 @@ copy ..\Output\NET45\PdfSharp.* ..\Packages\OxyPlot.Pdf\lib\NET45
 copy ..\Output\NET45\MigraDoc.* ..\Packages\OxyPlot.Pdf\lib\NET45
 ..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -OutputDirectory ..\Packages >> pack.log
 
-REM === METRO ===
+REM === METRO (Windows Store Apps) ===
 mkdir ..\Packages\OxyPlot.Metro\lib
 mkdir ..\Packages\OxyPlot.Metro\lib\NetCore45
 mkdir ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro
 mkdir ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro\Themes
-copy ..\Output\NetCore45\OxyPlot.??? ..\Packages\OxyPlot.Metro\lib\NetCore45
 copy ..\Output\NetCore45\OxyPlot.Metro.??? ..\Packages\OxyPlot.Metro\lib\NetCore45
 copy ..\Output\NetCore45\Themes\Generic.xaml ..\Packages\OxyPlot.Metro\lib\NetCore45\OxyPlot.Metro\Themes
 copy ..\license.txt ..\Packages\OxyPlot.Metro
@@ -55,9 +52,7 @@ REM === SILVERLIGHT ===
 mkdir ..\Packages\OxyPlot.Silverlight\lib
 mkdir ..\Packages\OxyPlot.Silverlight\lib\SL4
 mkdir ..\Packages\OxyPlot.Silverlight\lib\SL5
-copy ..\Output\SL4\OxyPlot.??? ..\Packages\OxyPlot.Silverlight\lib\SL4
 copy ..\Output\SL4\OxyPlot.Silverlight.??? ..\Packages\OxyPlot.Silverlight\lib\SL4
-copy ..\Output\SL5\OxyPlot.??? ..\Packages\OxyPlot.Silverlight\lib\SL5
 copy ..\Output\SL5\OxyPlot.Silverlight.??? ..\Packages\OxyPlot.Silverlight\lib\SL5
 copy ..\license.txt ..\Packages\OxyPlot.Silverlight
 ..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.Silverlight\OxyPlot.Silverlight.nuspec -OutputDirectory ..\Packages >> pack.log
@@ -66,9 +61,7 @@ REM === WINFORMS ===
 mkdir ..\Packages\OxyPlot.WindowsForms\lib
 mkdir ..\Packages\OxyPlot.WindowsForms\lib\NET40
 mkdir ..\Packages\OxyPlot.WindowsForms\lib\NET45
-copy ..\Output\NET40\OxyPlot.??? ..\Packages\OxyPlot.WindowsForms\lib\NET40
 copy ..\Output\NET40\OxyPlot.WindowsForms.??? ..\Packages\OxyPlot.WindowsForms\lib\NET40
-copy ..\Output\NET45\OxyPlot.??? ..\Packages\OxyPlot.WindowsForms\lib\NET45
 copy ..\Output\NET45\OxyPlot.WindowsForms.??? ..\Packages\OxyPlot.WindowsForms\lib\NET45
 copy ..\license.txt ..\Packages\OxyPlot.WindowsForms
 ..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -OutputDirectory ..\Packages >> pack.log
