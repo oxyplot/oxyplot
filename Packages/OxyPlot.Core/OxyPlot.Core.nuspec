@@ -8,10 +8,7 @@
     <projectUrl>http://oxyplot.codeplex.com/</projectUrl>
     <iconUrl>http://www.objo.net/codeplex/icons/oxyplot.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>OxyPlot is an open source .NET plotting library. This is the core package.</description>
+    <description>OxyPlot is an open source .NET plotting library. This core package is included in the other OxyPlot packages.</description>
     <tags>plotting plot charting chart</tags>
-    <!--<dependencies>
-      <dependency id="SampleDependency" version="1.0" />
-    </dependencies>-->
   </metadata>
 </package>
