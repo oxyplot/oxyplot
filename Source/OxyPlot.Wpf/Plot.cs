@@ -168,6 +168,11 @@ namespace OxyPlot.Wpf
         private bool isRendering;
 
         /// <summary>
+        /// The render context
+        /// </summary>
+        private ShapesRenderContext renderContext;
+
+        /// <summary>
         /// Initializes static members of the <see cref="Plot"/> class.
         /// </summary>
         static Plot()
@@ -363,6 +368,7 @@ namespace OxyPlot.Wpf
             this.canvas = new Canvas();
             this.grid.Children.Add(this.canvas);
             this.canvas.UpdateLayout();
+            this.renderContext = new ShapesRenderContext();
 
             this.overlays = new Canvas();
             this.grid.Children.Add(this.overlays);
@@ -500,8 +506,7 @@ namespace OxyPlot.Wpf
         /// </param>
         public void SaveXaml(string fileName)
         {
-            XamlExporter.Export(
-                this.ActualModel, fileName, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
+            XamlExporter.Export(this.ActualModel, fileName, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
         }
 
         /// <summary>
@@ -1502,8 +1507,9 @@ namespace OxyPlot.Wpf
                 }
 
 #endif
-                var wrc = new ShapesRenderContext(this.canvas);
-                this.ActualModel.Render(wrc);
+                this.renderContext.Initialize(this.canvas);
+
+                this.ActualModel.Render(this.renderContext);
 
 #if !DONT_DISCONNECT_CANVAS
 

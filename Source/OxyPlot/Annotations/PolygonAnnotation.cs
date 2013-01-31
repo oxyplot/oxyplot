@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PolygonAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -35,7 +35,7 @@ namespace OxyPlot
     /// <summary>
     /// Represents a polygon annotation.
     /// </summary>
-    public class PolygonAnnotation : Annotation
+    public class PolygonAnnotation : TextualAnnotation
     {
         /// <summary>
         /// The polygon points transformed to screen coordinates.
@@ -119,13 +119,13 @@ namespace OxyPlot
             const double MinimumSegmentLength = 4;
 
             rc.DrawClippedPolygon(
-                this.screenPoints,
-                clipping,
-                MinimumSegmentLength * MinimumSegmentLength,
-                this.GetSelectableFillColor(this.Fill),
-                this.GetSelectableColor(this.Color),
-                this.StrokeThickness,
-                this.LineStyle,
+                this.screenPoints, 
+                clipping, 
+                MinimumSegmentLength * MinimumSegmentLength, 
+                this.GetSelectableFillColor(this.Fill), 
+                this.GetSelectableColor(this.Color), 
+                this.StrokeThickness, 
+                this.LineStyle, 
                 this.LineJoin);
 
             if (!string.IsNullOrEmpty(this.Text))
@@ -133,15 +133,15 @@ namespace OxyPlot
                 var textPosition = ScreenPointHelper.GetCentroid(this.screenPoints);
 
                 rc.DrawClippedText(
-                    clipping,
-                    textPosition,
-                    this.Text,
-                    this.ActualTextColor,
-                    this.ActualFont,
-                    this.ActualFontSize,
-                    this.ActualFontWeight,
-                    0,
-                    HorizontalTextAlign.Center,
+                    clipping, 
+                    textPosition, 
+                    this.Text, 
+                    this.ActualTextColor, 
+                    this.ActualFont, 
+                    this.ActualFontSize, 
+                    this.ActualFontWeight, 
+                    0, 
+                    HorizontalTextAlign.Center, 
                     VerticalTextAlign.Middle);
             }
         }
@@ -160,13 +160,7 @@ namespace OxyPlot
         /// </returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
-            if (ScreenPointHelper.IsPointInPolygon(point, this.screenPoints))
-            {
-                return new HitTestResult(point);
-            }
-
-            return null;
+            return ScreenPointHelper.IsPointInPolygon(point, this.screenPoints) ? new HitTestResult(point) : null;
         }
-
     }
 }

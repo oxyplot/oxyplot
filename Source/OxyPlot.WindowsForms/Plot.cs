@@ -95,10 +95,17 @@ namespace OxyPlot.WindowsForms
         private Rectangle zoomRectangle;
 
         /// <summary>
+        /// The render context.
+        /// </summary>
+        private GraphicsRenderContext rc;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Plot"/> class.
         /// </summary>
         public Plot()
         {
+            this.rc = new GraphicsRenderContext();
+
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             this.DoubleBuffered = true;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
@@ -610,7 +617,7 @@ namespace OxyPlot.WindowsForms
 
                 lock (this.renderingLock)
                 {
-                    var rc = new GraphicsRenderContext(e.Graphics, this.Width, this.Height); // e.ClipRectangle
+                    rc.Initialize(e.Graphics, this.Width, this.Height);
                     if (this.model != null)
                     {
                         this.model.Render(rc);

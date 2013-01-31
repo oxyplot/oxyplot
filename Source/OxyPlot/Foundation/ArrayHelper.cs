@@ -102,18 +102,18 @@ namespace OxyPlot
         /// The y values.
         /// </param>
         /// <returns>
-        /// Array of evaluations.
+        /// Array of evaluations. The value of f(x_i,y_j) will be placed at index [i, j].
         /// </returns>
         public static double[,] Evaluate(Func<double, double, double> f, double[] x, double[] y)
         {
-            int m = y.Length;
-            int n = x.Length;
+            int m = x.Length;
+            int n = y.Length;
             var result = new double[m, n];
             for (int i = 0; i < m; i++)
             {
                 for (int j = 0; j < n; j++)
                 {
-                    result[i, j] = f(x[j], y[i]);
+                    result[i, j] = f(x[i], y[j]);
                 }
             }
 

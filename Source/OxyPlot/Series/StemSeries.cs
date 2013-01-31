@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StemSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -35,8 +35,8 @@ namespace OxyPlot
     /// Represents a series that plots discrete data in a stem plot.
     /// </summary>
     /// <remarks>
-    /// http://en.wikipedia.org/wiki/Stemplot
-    /// http://www.mathworks.com/help/techdoc/ref/stem.html
+    /// See <a href="http://en.wikipedia.org/wiki/Stemplot">Stem plot</a> and
+    /// <a href="http://www.mathworks.com/help/techdoc/ref/stem.html">stem</a>.
     /// </remarks>
     public class StemSeries : LineSeries
     {
@@ -85,8 +85,12 @@ namespace OxyPlot
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
         /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <param name="interpolate">
+        /// Interpolate the series if this flag is set to <c>true</c>.
+        /// </param>
         /// <returns>
         /// A TrackerHitResult for the current hit.
         /// </returns>
@@ -99,7 +103,7 @@ namespace OxyPlot
 
             TrackerHitResult result = null;
 
-            // http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
+            // http://paulbourke.net/geometry/pointlineplane/
             double minimumDistance = double.MaxValue;
             var points = this.Points;
 
@@ -127,10 +131,7 @@ namespace OxyPlot
                 if (distance < minimumDistance)
                 {
                     result = new TrackerHitResult(
-                        this,
-                        new DataPoint(p1.X, p1.Y),
-                        new ScreenPoint(sp1.x, sp1.y),
-                        this.GetItem(i));
+                        this, new DataPoint(p1.X, p1.Y), new ScreenPoint(sp1.x, sp1.y), this.GetItem(i));
                     minimumDistance = distance;
                 }
             }
@@ -156,7 +157,7 @@ namespace OxyPlot
 
             if (this.XAxis == null || this.YAxis == null)
             {
-                Trace("Axis not defined.");
+                this.Trace("Axis not defined.");
                 return;
             }
 
@@ -180,13 +181,13 @@ namespace OxyPlot
                 if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
                 {
                     rc.DrawClippedLine(
-                        new[] { p0, p1 },
-                        clippingRect,
-                        minDistSquared,
-                        this.GetSelectableColor(this.ActualColor),
-                        this.StrokeThickness,
-                        this.ActualLineStyle,
-                        this.LineJoin,
+                        new[] { p0, p1 }, 
+                        clippingRect, 
+                        minDistSquared, 
+                        this.GetSelectableColor(this.ActualColor), 
+                        this.StrokeThickness, 
+                        this.ActualLineStyle, 
+                        this.LineJoin, 
                         false);
                 }
 
@@ -196,16 +197,15 @@ namespace OxyPlot
             if (this.MarkerType != MarkerType.None)
             {
                 rc.DrawMarkers(
-                    markerPoints,
-                    clippingRect,
-                    this.MarkerType,
-                    this.MarkerOutline,
-                    new[] { this.MarkerSize },
-                    this.MarkerFill,
-                    this.MarkerStroke,
+                    markerPoints, 
+                    clippingRect, 
+                    this.MarkerType, 
+                    this.MarkerOutline, 
+                    new[] { this.MarkerSize }, 
+                    this.MarkerFill, 
+                    this.MarkerStroke, 
                     this.MarkerStrokeThickness);
             }
         }
-
     }
 }

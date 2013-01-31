@@ -40,6 +40,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Attributes\ExampleAttribute.cs" />
     <Compile Include="CustomSeries\ErrorItem.cs" />
     <Compile Include="CustomSeries\FlagSeries.cs" />
@@ -61,6 +64,7 @@
     <Compile Include="Examples\BarSeries\IntervalBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\RectangleBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\TornadoBarSeriesExamples.cs" />
+    <Compile Include="Examples\HeatMapSeriesExamples.cs" />
     <Compile Include="Examples\MiscExamples.cs" />
     <Compile Include="Examples\MouseEventExamples.cs" />
     <Compile Include="Examples\ExamplesBase.cs" />
@@ -91,6 +95,12 @@
       <Project>{08A91765-2C9D-4D2B-B56D-FAE62AB204CC}</Project>
       <Name>OxyPlotMA</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Bergensbanen.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\OxyPlot.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

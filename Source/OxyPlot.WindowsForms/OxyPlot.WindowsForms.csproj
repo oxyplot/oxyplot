@@ -60,13 +60,13 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="OxyPlot.WindowsForms.snk" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
       <Project>{87F519B8-5A2F-48C6-AD53-C5F13A82EA6B}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="OxyPlot.WindowsForms.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

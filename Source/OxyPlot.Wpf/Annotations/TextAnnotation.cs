@@ -35,7 +35,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.TextAnnotation
     /// </summary>
-    public class TextAnnotation : Annotation
+    public class TextAnnotation : TextualAnnotation
     {
         /// <summary>
         /// The Background property.

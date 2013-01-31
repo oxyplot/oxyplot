@@ -32,7 +32,7 @@ namespace OxyPlot
     /// <summary>
     /// Represents an arrow annotation.
     /// </summary>
-    public class ArrowAnnotation : Annotation
+    public class ArrowAnnotation : TextualAnnotation
     {
         /// <summary>
         /// The end point in screen coordinates.
@@ -76,13 +76,13 @@ namespace OxyPlot
         public DataPoint EndPoint { get; set; }
 
         /// <summary>
-        /// Gets or sets the length of the head (relative to the stroke thickness).
+        /// Gets or sets the length of the head (relative to the stroke thickness) (the default value is 10).
         /// </summary>
         /// <value> The length of the head. </value>
         public double HeadLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the width of the head (relative to the stroke thickness).
+        /// Gets or sets the width of the head (relative to the stroke thickness) (the default value is 3).
         /// </summary>
         /// <value> The width of the head. </value>
         public double HeadWidth { get; set; }
@@ -108,13 +108,13 @@ namespace OxyPlot
         public DataPoint StartPoint { get; set; }
 
         /// <summary>
-        /// Gets or sets the stroke thickness.
+        /// Gets or sets the stroke thickness (the default value is 2).
         /// </summary>
         /// <value> The stroke thickness. </value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the 'veeness' of the arrow head (relative to thickness).
+        /// Gets or sets the 'veeness' of the arrow head (relative to thickness) (the default value is 0).
         /// </summary>
         /// <value> The 'veeness'. </value>
         public double Veeness { get; set; }

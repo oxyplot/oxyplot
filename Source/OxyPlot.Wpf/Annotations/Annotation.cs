@@ -40,16 +40,10 @@ namespace OxyPlot.Wpf
         /// The layer property.
         /// </summary>
         public static readonly DependencyProperty LayerProperty = DependencyProperty.Register(
-            "Layer", 
-            typeof(AnnotationLayer), 
-            typeof(Annotation), 
+            "Layer",
+            typeof(AnnotationLayer),
+            typeof(Annotation),
             new PropertyMetadata(AnnotationLayer.AboveSeries, AppearanceChanged));
-
-        /// <summary>
-        /// The text property.
-        /// </summary>
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-            "Text", typeof(string), typeof(Annotation), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// Gets or sets the layer.
@@ -64,22 +58,6 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(LayerProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the text.
-        /// </summary>
-        public string Text
-        {
-            get
-            {
-                return (string)this.GetValue(TextProperty);
-            }
-
-            set
-            {
-                this.SetValue(TextProperty, value);
             }
         }
 
@@ -102,7 +80,6 @@ namespace OxyPlot.Wpf
         public virtual void SynchronizeProperties()
         {
             var a = this.InternalAnnotation;
-            a.Text = this.Text;
             a.Layer = this.Layer;
         }
 

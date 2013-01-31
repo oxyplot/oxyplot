@@ -37,7 +37,10 @@ namespace OxyPlot
     /// <remarks>
     /// <see cref="DataPoint"/>s are transformed to <see cref="ScreenPoint"/>s.
     /// </remarks>
-    public struct DataPoint : IDataPoint
+#if !PCL
+    [System.ComponentModel.TypeConverter(typeof(DataPointConverter))]
+#endif
+    public struct DataPoint : IDataPoint, ICodeGenerating
     {
         /// <summary>
         /// The undefined.
@@ -45,14 +48,14 @@ namespace OxyPlot
         public static readonly DataPoint Undefined = new DataPoint(double.NaN, double.NaN);
 
         /// <summary>
-        /// The x.
+        /// The x-coordinate.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
             Justification = "Reviewed. Suppression is OK here.")]
         internal double x;
 
         /// <summary>
-        /// The y.
+        /// The y-coordinate.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
             Justification = "Reviewed. Suppression is OK here.")]
@@ -132,6 +135,5 @@ namespace OxyPlot
         {
             return this.x + " " + this.y;
         }
-
     }
 }

@@ -64,6 +64,7 @@
     <Compile Include="Annotations\RectangleAnnotation.cs" />
     <Compile Include="Annotations\TextAnnotation.cs" />
     <Compile Include="Annotations\LineAnnotation.cs" />
+    <Compile Include="Annotations\TextualAnnotation.cs" />
     <Compile Include="Axes\AngleAxis.cs" />
     <Compile Include="Axes\Axis.cs" />
     <Compile Include="Axes\CategoryAxis.cs" />

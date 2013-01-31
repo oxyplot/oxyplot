@@ -216,6 +216,5 @@ namespace OxyPlot
             return string.Format(
                 CultureInfo.InvariantCulture, "({0}, {1}, {2}, {3})", this.left, this.top, this.right, this.bottom);
         }
-
     }
 }

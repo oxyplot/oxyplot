@@ -36,7 +36,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     ///     This is a WPF wrapper of OxyPlot.RectangleAnnotation
     /// </summary>
-    public class RectangleAnnotation : Annotation
+    public class RectangleAnnotation : TextualAnnotation
     {
         /// <summary>
         ///     The Fill property.
@@ -175,6 +175,7 @@ namespace OxyPlot.Wpf
             {
                 return (double)this.GetValue(TextRotationProperty);
             }
+
             set
             {
                 this.SetValue(TextRotationProperty, value);

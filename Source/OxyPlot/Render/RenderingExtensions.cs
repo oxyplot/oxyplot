@@ -237,7 +237,107 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The draw clipped polygon.
+        /// Draws the specified image.
+        /// </summary>
+        /// <param name="rc">The rc.</param>
+        /// <param name="image">The image.</param>
+        /// <param name="x">The destX position.</param>
+        /// <param name="y">The destY position.</param>
+        /// <param name="w">The width.</param>
+        /// <param name="h">The height.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="interpolate">Interpolate the image if set to <c>true</c>.</param>
+        public static void DrawImage(
+            this IRenderContext rc,
+            OxyImage image,
+            double x,
+            double y,
+            double w,
+            double h,
+            double opacity, 
+            bool interpolate)
+        {
+            var info = rc.GetImageInfo(image);
+            rc.DrawImage(image, 0, 0, info.Width, info.Height, x, y, w, h, opacity, interpolate);
+        }
+
+        /// <summary>
+        /// Draws the clipped image.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="source">The source.</param>
+        /// <param name="x">The destX position.</param>
+        /// <param name="y">The destY position.</param>
+        /// <param name="w">The width.</param>
+        /// <param name="h">The height.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
+        public static void DrawClippedImage(this IRenderContext rc,
+            OxyRect clippingRect,
+            OxyImage source,
+            double x,
+            double y,
+            double w,
+            double h,
+            double opacity, 
+            bool interpolate)
+        {
+            if (x > clippingRect.Right || x + w < clippingRect.Left || y > clippingRect.Bottom || y + h < clippingRect.Top)
+            {
+                return;
+            }
+
+            if (rc.SetClip(clippingRect))
+            {
+                // The render context supports clipping, then we can draw the whole image
+                rc.DrawImage(source, x, y, w, h, opacity, interpolate);
+                rc.ResetClip();
+                return;
+            }
+
+            // The render context does not support clipping, we must calculate the rectangle
+            var info = rc.GetImageInfo(source);
+            if (info == null)
+            {
+                return;
+            }
+
+            // Fint the positions of the clipping rectangle normalized to image coordinates (0,1)
+            var i0 = (clippingRect.Left - x) / w;
+            var i1 = (clippingRect.Right - x) / w;
+            var j0 = (clippingRect.Top - y) / h;
+            var j1 = (clippingRect.Bottom - y) / h;
+
+            // Find the origin of the clipped source rectangle
+            var srcx = i0 < 0 ? 0u : i0 * info.Width;
+            var srcy = j0 < 0 ? 0u : j0 * info.Height;
+            srcx = (int)Math.Ceiling(srcx);
+            srcy = (int)Math.Ceiling(srcy);
+
+            // Find the size of the clipped source rectangle
+            var srcw = i1 > 1 ? info.Width - srcx : (i1 * info.Width) - srcx;
+            var srch = j1 > 1 ? info.Height - srcy : (j1 * info.Height) - srcy;
+            srcw = (int)srcw;
+            srch = (int)srch;
+
+            if ((int)srcw <= 0 || (int)srch <= 0)
+            {
+                return;
+            }
+
+            // The clipped destination rectangle
+            var destx = i0 < 0 ? x : x + (srcx / info.Width * w);
+            var desty = j0 < 0 ? y : y + (srcy / info.Height * h);
+            var destw = w * srcw / info.Width;
+            var desth = h * srch / info.Height;
+
+            rc.DrawImage(source, (uint)srcx, (uint)srcy, (uint)srcw, (uint)srch, destx, desty, destw, desth, opacity, interpolate);
+        }
+
+
+        /// <summary>
+        /// Draws the polygon within the specified clipping rectangle.
         /// </summary>
         /// <param name="rc">
         /// The render context.
@@ -392,6 +492,14 @@ namespace OxyPlot
             VerticalTextAlign verticalAlignment = VerticalTextAlign.Top,
             OxySize? maxSize = null)
         {
+            if (rc.SetClip(clippingRectangle))
+            {
+                rc.DrawText(p, text, fill, fontFamily, fontSize, fontWeight, rotate, horizontalAlignment, verticalAlignment, maxSize);
+                rc.ResetClip();
+                return;
+            }
+
+            // fall back simply check position
             if (clippingRectangle.Contains(p.X, p.Y))
             {
                 rc.DrawText(p, text, fill, fontFamily, fontSize, fontWeight, rotate, horizontalAlignment, verticalAlignment, maxSize);

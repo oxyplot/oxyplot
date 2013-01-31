@@ -71,8 +71,6 @@ namespace ExampleLibrary
         /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            base.Render(rc, model);
-
             var points = this.Points;
             if (points.Count == 0)
             {

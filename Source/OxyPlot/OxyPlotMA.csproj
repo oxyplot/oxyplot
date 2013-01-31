@@ -54,11 +54,16 @@
     <Compile Include="Annotations\Annotation.cs" />
     <Compile Include="Annotations\AnnotationLayer.cs" />
     <Compile Include="Annotations\ArrowAnnotation.cs" />
+    <Compile Include="Annotations\ImageAnnotation.cs" />
+    <Compile Include="Annotations\TileMapAnnotation.cs" />
+    <Compile Include="Foundation\PlotLength.cs" />
+    <Compile Include="Foundation\PlotUnitType.cs" />
     <Compile Include="Annotations\RectangleAnnotation.cs" />
     <Compile Include="Annotations\TextAnnotation.cs" />
     <Compile Include="Annotations\PolygonAnnotation.cs" />
     <Compile Include="Annotations\LineAnnotation.cs" />
     <Compile Include="Annotations\LineAnnotationType.cs" />
+    <Compile Include="Annotations\TextualAnnotation.cs" />
     <Compile Include="Axes\AngleAxis.cs" />
     <Compile Include="Axes\Axis.cs" />
     <Compile Include="Axes\AxisChangedEventArgs.cs" />
@@ -103,6 +108,7 @@
     <Compile Include="LibraryDoc.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="PlotModel\HitTestResult.cs" />
+    <Compile Include="Foundation\OxyImage.cs" />
     <Compile Include="Reporting\NamespaceDoc.cs" />
     <Compile Include="Series\BarSeries\BarItem.cs" />
     <Compile Include="Series\BarSeries\BarItemBase.cs" />
@@ -116,6 +122,7 @@
     <Compile Include="Series\BoxPlotItem.cs" />
     <Compile Include="Series\BoxPlotSeries.cs" />
     <Compile Include="Foundation\IDataPointProvider.cs" />
+    <Compile Include="Series\HeatMapSeries.cs" />
     <Compile Include="Series\LineLegendPosition.cs" />
     <Compile Include="Svg\SvgExporter.cs" />
     <Compile Include="PlotModel\PlotModel.MouseEvents.cs" />

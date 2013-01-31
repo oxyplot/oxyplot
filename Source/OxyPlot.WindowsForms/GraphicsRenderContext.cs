@@ -33,6 +33,8 @@ namespace OxyPlot.WindowsForms
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Drawing2D;
+    using System.Drawing.Imaging;
+    using System.IO;
     using System.Linq;
 
     using OxyPlot;
@@ -50,25 +52,26 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// The GDI+ drawing surface.
         /// </summary>
-        private readonly Graphics g;
+        private Graphics g;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphicsRenderContext"/> class.
         /// </summary>
-        /// <param name="graphics">
-        /// The graphics.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        public GraphicsRenderContext(Graphics graphics, double width, double height)
+        public GraphicsRenderContext()
+        {
+            this.PaintBackground = true;
+        }
+
+        /// <summary>
+        /// Initializes the specified graphics.
+        /// </summary>
+        /// <param name="graphics">The graphics surface.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        public void Initialize(Graphics graphics, double width, double height)
         {
             this.Width = width;
             this.Height = height;
-            this.PaintBackground = true;
             this.g = graphics;
         }
 
@@ -158,7 +161,7 @@ namespace OxyPlot.WindowsForms
                         pen.LineJoin = LineJoin.Bevel;
                         break;
 
-                        // The default LineJoin is Miter
+                    // The default LineJoin is Miter
                 }
 
                 this.g.DrawLines(pen, this.ToPoints(points));
@@ -230,7 +233,7 @@ namespace OxyPlot.WindowsForms
                             pen.LineJoin = LineJoin.Bevel;
                             break;
 
-                            // The default LineJoin is Miter
+                        // The default LineJoin is Miter
                     }
 
                     this.g.DrawPolygon(pen, pts);
@@ -492,5 +495,98 @@ namespace OxyPlot.WindowsForms
             return r;
         }
 
+        public override void CleanUp()
+        {
+            var imagesToRelease = imageCache.Keys.Where(i => !imagesInUse.Contains(i));
+            foreach (var i in imagesToRelease)
+            {
+                var image = this.GetImage(i);
+                image.Dispose();
+                imageCache.Remove(i);
+            }
+
+            imagesInUse.Clear();
+        }
+
+        public override OxyImageInfo GetImageInfo(OxyImage source)
+        {
+            var image = this.GetImage(source);
+            return image == null ? null : new OxyImageInfo { Width = (uint)image.Width, Height = (uint)image.Height, DpiX = image.HorizontalResolution, DpiY = image.VerticalResolution };
+        }
+
+        public override void DrawImage(OxyImage source, uint srcX, uint srcY, uint srcWidth, uint srcHeight, double x, double y, double w, double h, double opacity, bool interpolate)
+        {
+            var image = this.GetImage(source);
+            if (image != null)
+            {
+                ImageAttributes ia = null;
+                if (opacity < 1)
+                {
+                    var cm = new ColorMatrix
+                                 {
+                                     Matrix00 = 1f,
+                                     Matrix11 = 1f,
+                                     Matrix22 = 1f,
+                                     Matrix33 = 1f,
+                                     Matrix44 = (float)opacity
+                                 };
+
+                    ia = new ImageAttributes();
+                    ia.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                }
+
+                g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
+                g.DrawImage(image, new Rectangle((int)x, (int)y, (int)w, (int)h), srcX, srcY, srcWidth, srcHeight, GraphicsUnit.Pixel, ia);
+            }
+        }
+
+        private HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+
+        private Dictionary<OxyImage, Image> imageCache = new Dictionary<OxyImage, Image>();
+
+
+        private Image GetImage(OxyImage source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            if (!this.imagesInUse.Contains(source))
+            {
+                this.imagesInUse.Add(source);
+            }
+
+            Image src;
+            if (this.imageCache.TryGetValue(source, out src))
+            {
+                return src;
+            }
+
+            if (source != null)
+            {
+                Image btm;
+                using (var ms = new MemoryStream(source.GetData()))
+                {
+                    btm = Image.FromStream(ms);
+                }
+
+                this.imageCache.Add(source, btm);
+                return btm;
+            }
+
+            return null;
+        }
+
+        public override bool SetClip(OxyRect rect)
+        {
+            this.g.SetClip(rect.ToRect(false));
+            return true;
+        }
+
+        public override void ResetClip()
+        {
+            this.g.ResetClip();
+        }
     }
 }
