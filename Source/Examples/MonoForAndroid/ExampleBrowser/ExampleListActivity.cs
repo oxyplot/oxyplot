@@ -46,7 +46,7 @@ namespace ExampleBrowser
             var plots = examples.Where(e => e.Category == category).Select(e => e.Title).OrderBy(s => s).ToList();
             ListAdapter = new ArrayAdapter<string>(this, Resource.Layout.ListItem, plots);
             ListView.TextFilterEnabled = true;
-            ListView.ItemClick += delegate(object sender, ItemEventArgs args)
+            ListView.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
                 // When clicked, show a toast with the TextView text
                 Toast.MakeText(Application, ((TextView)args.View).Text, ToastLength.Short).Show();

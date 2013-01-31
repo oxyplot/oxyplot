@@ -45,7 +45,7 @@ namespace ExampleBrowser
             var categories = examples.Select(e => e.Category).Distinct().OrderBy(s => s).ToList();
             ListAdapter = new ArrayAdapter<string>(this, Resource.Layout.ListItem, categories);
             ListView.TextFilterEnabled = true;
-            ListView.ItemClick += delegate(object sender, ItemEventArgs args)
+            ListView.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
                 var category = categories[args.Position];
                 var second = new Intent(this, typeof(ExampleListActivity));
