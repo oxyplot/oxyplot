@@ -1473,13 +1473,13 @@ namespace OxyPlot
         /// </param>
         private void UpdateMaxMin(bool isDataUpdated)
         {
-            foreach (var a in this.Axes)
-            {
-                a.ResetDataMaxMin();
-            }
-
             if (isDataUpdated)
             {
+                foreach (var a in this.Axes)
+                {
+                    a.ResetDataMaxMin();
+                }
+
                 // data has been updated, so we need to calculate the max/min of the series again
                 foreach (var s in this.VisibleSeries)
                 {

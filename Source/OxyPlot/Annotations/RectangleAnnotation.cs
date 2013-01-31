@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RectangleAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -32,7 +32,7 @@ namespace OxyPlot
     /// <summary>
     /// Represents a rectangle annotation.
     /// </summary>
-    public class RectangleAnnotation : Annotation
+    public class RectangleAnnotation : TextualAnnotation
     {
         /// <summary>
         /// The rectangle transformed to screen coordinates.
@@ -101,10 +101,18 @@ namespace OxyPlot
         {
             base.Render(rc, model);
 
-            double x0 = double.IsNaN(this.MinimumX) || this.MinimumX.Equals(double.MinValue) ? this.XAxis.ActualMinimum : this.MinimumX;
-            double x1 = double.IsNaN(this.MaximumX) || this.MaximumX.Equals(double.MaxValue) ? this.XAxis.ActualMaximum : this.MaximumX;
-            double y0 = double.IsNaN(this.MinimumY) || this.MinimumY.Equals(double.MinValue) ? this.YAxis.ActualMinimum : this.MinimumY;
-            double y1 = double.IsNaN(this.MaximumY) || this.MaximumY.Equals(double.MaxValue) ? this.YAxis.ActualMaximum : this.MaximumY;
+            double x0 = double.IsNaN(this.MinimumX) || this.MinimumX.Equals(double.MinValue)
+                            ? this.XAxis.ActualMinimum
+                            : this.MinimumX;
+            double x1 = double.IsNaN(this.MaximumX) || this.MaximumX.Equals(double.MaxValue)
+                            ? this.XAxis.ActualMaximum
+                            : this.MaximumX;
+            double y0 = double.IsNaN(this.MinimumY) || this.MinimumY.Equals(double.MinValue)
+                            ? this.YAxis.ActualMinimum
+                            : this.MinimumY;
+            double y1 = double.IsNaN(this.MaximumY) || this.MaximumY.Equals(double.MaxValue)
+                            ? this.YAxis.ActualMaximum
+                            : this.MaximumY;
 
             this.screenRectangle = OxyRect.Create(this.Transform(x0, y0), this.Transform(x1, y1));
 
@@ -117,15 +125,15 @@ namespace OxyPlot
             {
                 var textPosition = this.screenRectangle.Center;
                 rc.DrawClippedText(
-                    clipping,
-                    textPosition,
-                    this.Text,
-                    this.ActualTextColor,
-                    this.ActualFont,
-                    this.ActualFontSize,
-                    this.ActualFontWeight,
-                    this.TextRotation,
-                    HorizontalTextAlign.Center,
+                    clipping, 
+                    textPosition, 
+                    this.Text, 
+                    this.ActualTextColor, 
+                    this.ActualFont, 
+                    this.ActualFontSize, 
+                    this.ActualFontWeight, 
+                    this.TextRotation, 
+                    HorizontalTextAlign.Center, 
                     VerticalTextAlign.Middle);
             }
         }

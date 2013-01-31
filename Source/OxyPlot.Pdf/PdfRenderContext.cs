@@ -180,7 +180,7 @@ namespace OxyPlot.Pdf
                     pen.LineJoin = XLineJoin.Bevel;
                     break;
 
-                    // The default LineJoin is Miter
+                // The default LineJoin is Miter
             }
 
             this.g.DrawLines(pen, ToPoints(points));
@@ -246,7 +246,7 @@ namespace OxyPlot.Pdf
                         pen.LineJoin = XLineJoin.Bevel;
                         break;
 
-                        // The default LineJoin is Miter
+                    // The default LineJoin is Miter
                 }
 
                 this.g.DrawPolygon(pen, pts);
@@ -525,5 +525,143 @@ namespace OxyPlot.Pdf
             this.disposed = true;
         }
 
+        /// <summary>
+        /// Cleans up.
+        /// </summary>
+        public override void CleanUp()
+        {
+            var imagesToRelease = imageCache.Keys.Where(i => !imagesInUse.Contains(i));
+            foreach (var i in imagesToRelease)
+            {
+                var image = this.GetImage(i);
+                image.Dispose();
+                imageCache.Remove(i);
+            }
+
+            imagesInUse.Clear();
+        }
+
+        /// <summary>
+        /// Gets the image info.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public override OxyImageInfo GetImageInfo(OxyImage source)
+        {
+            var image = this.GetImage(source);
+            return image == null ? null : new OxyImageInfo { Width = (uint)image.PixelWidth, Height = (uint)image.PixelHeight, DpiX = image.HorizontalResolution, DpiY = image.VerticalResolution };
+        }
+
+        /// <summary>
+        /// Draws the image.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="srcX">The SRC X.</param>
+        /// <param name="srcY">The SRC Y.</param>
+        /// <param name="srcWidth">Width of the SRC.</param>
+        /// <param name="srcHeight">Height of the SRC.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="w">The w.</param>
+        /// <param name="h">The h.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="interpolate">if set to <c>true</c> [interpolate].</param>
+        public override void DrawImage(OxyImage source, uint srcX, uint srcY, uint srcWidth, uint srcHeight, double x, double y, double w, double h, double opacity, bool interpolate)
+        {
+            var image = this.GetImage(source);
+            if (image != null)
+            {
+                // opacity not suported?
+                // g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
+                g.DrawImage(image, new XRect(x, y, w, h), new XRect(srcX, srcY, srcWidth, srcHeight), XGraphicsUnit.Presentation);
+            }
+        }
+
+        /// <summary>
+        /// The images in use
+        /// </summary>
+        private HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+
+        /// <summary>
+        /// The image cache
+        /// </summary>
+        private Dictionary<OxyImage, XImage> imageCache = new Dictionary<OxyImage, XImage>();
+
+
+        /// <summary>
+        /// Gets the image.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        private XImage GetImage(OxyImage source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            if (!this.imagesInUse.Contains(source))
+            {
+                this.imagesInUse.Add(source);
+            }
+
+            XImage src;
+            if (this.imageCache.TryGetValue(source, out src))
+            {
+                return src;
+            }
+#if !SILVERLIGHT
+            if (source != null)
+            {
+                XImage btm;
+                using (var ms = new MemoryStream(source.GetData()))
+                {
+                    var im = System.Drawing.Image.FromStream(ms);
+                    btm = XImage.FromGdiPlusImage(im);
+                }
+
+                this.imageCache.Add(source, btm);
+                return btm;
+            }
+#endif
+
+            return null;
+        }
+
+        /// <summary>
+        /// Sets the clip.
+        /// </summary>
+        /// <param name="rect">The rect.</param>
+        /// <returns></returns>
+        public override bool SetClip(OxyRect rect)
+        {
+            this.g.Save();
+            this.g.IntersectClip(rect.ToXRect());
+            return true;
+        }
+
+        /// <summary>
+        /// Resets the clip.
+        /// </summary>
+        public override void ResetClip()
+        {
+            this.g.Restore();
+        }
+    }
+
+    /// <summary>
+    /// Provides extension methods for OxyPlot to PdfSharp type conversion.
+    /// </summary>
+    public static class PdfSharpExtensions
+    {
+        /// <summary>
+        /// Converts an <see cref="OxyRect"/> to an <see cref="XRect"/>.
+        /// </summary>
+        /// <param name="r">The rectangle.</param>
+        /// <returns>The <see cref="XRect"/></returns>
+        public static XRect ToXRect(this OxyRect r)
+        {
+            return new XRect((int)Math.Round(r.Left), (int)Math.Round(r.Top), (int)Math.Round(r.Width), (int)Math.Round(r.Height));
+        }
     }
 }

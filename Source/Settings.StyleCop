@@ -6,6 +6,8 @@
       <Value>wpf</Value>
       <Value>xps</Value>
       <Value>XY</Value>
+      <Value>Conrec</Value>
+      <Value>veeness</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Analyzers>

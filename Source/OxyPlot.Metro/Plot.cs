@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -120,6 +120,11 @@ namespace OxyPlot.Metro
         private Canvas overlays;
 
         /// <summary>
+        /// The render context
+        /// </summary>
+        private MetroRenderContext renderContext;
+
+        /// <summary>
         /// The touch down point.
         /// </summary>
         private Point touchDownPoint;
@@ -158,18 +163,6 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Gets the actual model.
-        /// </summary>
-        /// <value>The actual model.</value>
-        public PlotModel ActualModel
-        {
-            get
-            {
-                return this.Model ?? this.internalModel;
-            }
-        }
-
-        /// <summary>
         /// Gets the tracker definitions.
         /// </summary>
         /// <value>The tracker definitions.</value>
@@ -178,6 +171,18 @@ namespace OxyPlot.Metro
             get
             {
                 return this.trackerDefinitions;
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual model.
+        /// </summary>
+        /// <value>The actual model.</value>
+        public PlotModel ActualModel
+        {
+            get
+            {
+                return this.Model ?? this.internalModel;
             }
         }
 
@@ -300,19 +305,6 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Resets all axes.
-        /// </summary>
-        public void ResetAllAxes()
-        {
-            foreach (Axis a in this.ActualModel.Axes)
-            {
-                a.Reset();
-            }
-
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
         /// Sets the cursor.
         /// </summary>
         /// <param name="cursor">
@@ -404,22 +396,6 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Renders the plot to a bitmap.
-        /// </summary>
-        /// <returns>
-        /// A bitmap.
-        /// </returns>
-        public WriteableBitmap ToBitmap()
-        {
-            throw new NotImplementedException();
-
-            // var bmp = new RenderTargetBitmap(
-            // (int)this.ActualWidth, (int)this.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-            // bmp.Render(this);
-            // return bmp;
-        }
-
-        /// <summary>
         /// Zooms the specified axis to the specified values.
         /// </summary>
         /// <param name="axis">
@@ -434,22 +410,6 @@ namespace OxyPlot.Metro
         public void Zoom(Axis axis, double p1, double p2)
         {
             axis.Zoom(p1, p2);
-            this.RefreshPlot(false);
-        }
-
-        /// <summary>
-        /// Zooms all axes.
-        /// </summary>
-        /// <param name="delta">
-        /// The delta.
-        /// </param>
-        public void ZoomAllAxes(double delta)
-        {
-            foreach (var a in this.ActualModel.Axes)
-            {
-                this.ZoomAt(a, delta);
-            }
-
             this.RefreshPlot(false);
         }
 
@@ -477,6 +437,51 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
+        /// Resets all axes.
+        /// </summary>
+        public void ResetAllAxes()
+        {
+            foreach (Axis a in this.ActualModel.Axes)
+            {
+                a.Reset();
+            }
+
+            this.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Renders the plot to a bitmap.
+        /// </summary>
+        /// <returns>
+        /// A bitmap.
+        /// </returns>
+        public WriteableBitmap ToBitmap()
+        {
+            throw new NotImplementedException();
+
+            // var bmp = new RenderTargetBitmap(
+            // (int)this.ActualWidth, (int)this.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            // bmp.Render(this);
+            // return bmp;
+        }
+
+        /// <summary>
+        /// Zooms all axes.
+        /// </summary>
+        /// <param name="delta">
+        /// The delta.
+        /// </param>
+        public void ZoomAllAxes(double delta)
+        {
+            foreach (var a in this.ActualModel.Axes)
+            {
+                this.ZoomAt(a, delta);
+            }
+
+            this.RefreshPlot(false);
+        }
+
+        /// <summary>
         /// Invoked whenever application code or internal processes (such as a rebuilding layout pass) call ApplyTemplate. In simplest terms, this means the method is called just before a UI element displays in your app. Override this method to influence the default post-template logic of a class.
         /// </summary>
         protected override void OnApplyTemplate()
@@ -492,6 +497,8 @@ namespace OxyPlot.Metro
             this.canvas = new Canvas();
             this.grid.Children.Add(this.canvas);
             this.canvas.UpdateLayout();
+
+            this.renderContext = new MetroRenderContext(this.canvas);
 
             this.overlays = new Canvas();
             this.grid.Children.Add(this.overlays);
@@ -1097,10 +1104,9 @@ namespace OxyPlot.Metro
             {
                 this.SynchronizeProperties();
 
-                var wrc = new MetroRenderContext(this.canvas);
-                this.ActualModel.Render(wrc);
+                this.renderContext.Initialize();
+                this.ActualModel.Render(this.renderContext);
             }
         }
-
     }
 }

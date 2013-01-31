@@ -35,7 +35,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.ArrowAnnotation
     /// </summary>
-    public class ArrowAnnotation : Annotation
+    public class ArrowAnnotation : TextualAnnotation
     {
         /// <summary>
         /// The ArrowDirection property.

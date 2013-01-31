@@ -296,7 +296,7 @@ namespace OxyPlot
         /// The font weight.
         /// </param>
         /// <param name="rotate">
-        /// The rotatation angle.
+        /// The rotation angle.
         /// </param>
         /// <param name="halign">
         /// The horizontal alignment.
@@ -352,5 +352,74 @@ namespace OxyPlot
         {
         }
 
+        /// <summary>
+        /// Cleans up resources not in use.
+        /// </summary>
+        /// <remarks>
+        /// This method is called at the end of each rendering.
+        /// </remarks>
+        public virtual void CleanUp()
+        {
+        }
+
+        /// <summary>
+        /// Gets the size of the specified image.
+        /// </summary>
+        /// <param name="source">The image source.</param>
+        /// <returns>
+        /// The image info.
+        /// </returns>
+        public virtual OxyImageInfo GetImageInfo(OxyImage source)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Draws the image.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="srcX">The SRC X.</param>
+        /// <param name="srcY">The SRC Y.</param>
+        /// <param name="srcWidth">Width of the SRC.</param>
+        /// <param name="srcHeight">Height of the SRC.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="w">The w.</param>
+        /// <param name="h">The h.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
+        public virtual void DrawImage(
+            OxyImage source,
+            uint srcX,
+            uint srcY,
+            uint srcWidth,
+            uint srcHeight,
+            double x,
+            double y,
+            double w,
+            double h,
+            double opacity, 
+            bool interpolate)
+        {
+        }
+
+        /// <summary>
+        /// Sets the clip rectangle.
+        /// </summary>
+        /// <param name="rect">The clip rectangle.</param>
+        /// <returns>
+        /// True if the clip rectangle was set.
+        /// </returns>
+        public virtual bool SetClip(OxyRect rect)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Resets the clip rectangle.
+        /// </summary>
+        public virtual void ResetClip()
+        {
+        }
     }
 }

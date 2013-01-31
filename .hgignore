@@ -29,6 +29,8 @@ syntax: glob
 *.pidb
 *.userprefs
 
+*.orig
+
 [Bb]in
 [Dd]ebug*/
 [Oo]bj/

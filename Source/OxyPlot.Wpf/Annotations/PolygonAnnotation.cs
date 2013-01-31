@@ -36,7 +36,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.PolygonAnnotation
     /// </summary>
-    public class PolygonAnnotation : Annotation
+    public class PolygonAnnotation : TextualAnnotation
     {
         /// <summary>
         /// The color property.

@@ -29,6 +29,7 @@ using OxyPlot;
 namespace ExampleLibrary
 {
     using System;
+    using System.Reflection;
 
     [Examples("Annotations")]
     public static class AnnotationExamples
@@ -252,6 +253,168 @@ namespace ExampleLibrary
             model.Annotations.Add(new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second", TextHorizontalAlignment = HorizontalTextAlign.Left, TextVerticalAlignment = VerticalTextAlign.Bottom });
             model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical", TextHorizontalAlignment = HorizontalTextAlign.Right });
             model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal", TextHorizontalAlignment = HorizontalTextAlign.Left });
+            return model;
+        }
+
+        [Example("ImageAnnotations")]
+        public static PlotModel ImageAnnotations()
+        {
+            var model = new PlotModel("ImageAnnotations");
+            model.PlotMargins = new OxyThickness(60, 4, 4, 60);
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+
+            OxyImage image;
+            Assembly assembly;
+#if PCL45
+            assembly = typeof(AnnotationExamples).GetTypeInfo().Assembly;
+#else
+            assembly = Assembly.GetExecutingAssembly();
+#endif
+            using (var stream = assembly.GetManifestResourceStream("ExampleLibrary.Resources.OxyPlot.png"))
+            {
+                image = new OxyImage(stream);
+            }
+
+            // Centered in plot area, filling width
+            model.Annotations.Add(new ImageAnnotation
+            {
+                ImageSource = image,
+                Opacity = 0.2,
+                Interpolate = false,
+                X = new PlotLength(0.5, PlotLengthUnit.RelativeToPlotArea),
+                Y = new PlotLength(0.5, PlotLengthUnit.RelativeToPlotArea),
+                Width = new PlotLength(1, PlotLengthUnit.RelativeToPlotArea),
+                HorizontalAlignment = HorizontalTextAlign.Center,
+                VerticalAlignment = VerticalTextAlign.Middle
+            });
+
+            // Relative to plot area, inside top/right corner, 120pt wide
+            model.Annotations.Add(new ImageAnnotation
+            {
+                ImageSource = image,
+                X = new PlotLength(1, PlotLengthUnit.RelativeToPlotArea),
+                Y = new PlotLength(0, PlotLengthUnit.RelativeToPlotArea),
+                Width = new PlotLength(120, PlotLengthUnit.ScreenUnits),
+                HorizontalAlignment = HorizontalTextAlign.Right,
+                VerticalAlignment = VerticalTextAlign.Top
+            });
+
+            // Relative to plot area, above top/left corner, 20pt high
+            model.Annotations.Add(new ImageAnnotation
+            {
+                ImageSource = image,
+                X = new PlotLength(0, PlotLengthUnit.RelativeToPlotArea),
+                Y = new PlotLength(0, PlotLengthUnit.RelativeToPlotArea),
+                OffsetY = new PlotLength(-5, PlotLengthUnit.ScreenUnits),
+                Height = new PlotLength(20, PlotLengthUnit.ScreenUnits),
+                HorizontalAlignment = HorizontalTextAlign.Left,
+                VerticalAlignment = VerticalTextAlign.Bottom
+            });
+
+            // At the point (50,50), 200pt wide
+            model.Annotations.Add(new ImageAnnotation
+            {
+                ImageSource = image,
+                X = new PlotLength(50, PlotLengthUnit.Data),
+                Y = new PlotLength(50, PlotLengthUnit.Data),
+                Width = new PlotLength(200, PlotLengthUnit.ScreenUnits),
+                HorizontalAlignment = HorizontalTextAlign.Left,
+                VerticalAlignment = VerticalTextAlign.Top
+            });
+
+            // At the point (50,20), 50 x units wide
+            model.Annotations.Add(new ImageAnnotation
+            {
+                ImageSource = image,
+                X = new PlotLength(50, PlotLengthUnit.Data),
+                Y = new PlotLength(20, PlotLengthUnit.Data),
+                Width = new PlotLength(50, PlotLengthUnit.Data),
+                HorizontalAlignment = HorizontalTextAlign.Center,
+                VerticalAlignment = VerticalTextAlign.Top
+            });
+
+            // Relative to the viewport, centered at the bottom, with offset (could also use bottom vertical alignment)
+            model.Annotations.Add(new ImageAnnotation
+            {
+                ImageSource = image,
+                X = new PlotLength(0.5, PlotLengthUnit.RelativeToViewport),
+                Y = new PlotLength(1, PlotLengthUnit.RelativeToViewport),
+                OffsetY = new PlotLength(-35, PlotLengthUnit.ScreenUnits),
+                Height = new PlotLength(30, PlotLengthUnit.ScreenUnits),
+                HorizontalAlignment = HorizontalTextAlign.Center,
+                VerticalAlignment = VerticalTextAlign.Top
+            });
+
+            // Changing opacity
+            for (int y = 0; y < 10; y++)
+            {
+                model.Annotations.Add(
+                    new ImageAnnotation
+                        {
+                            ImageSource = image,
+                            Opacity = (y + 1) / 10.0,
+                            X = new PlotLength(10, PlotLengthUnit.Data),
+                            Y = new PlotLength(y * 2, PlotLengthUnit.Data),
+                            Width = new PlotLength(100, PlotLengthUnit.ScreenUnits),
+                            HorizontalAlignment = HorizontalTextAlign.Center,
+                            VerticalAlignment = VerticalTextAlign.Bottom
+                        });
+            }
+
+            return model;
+        }
+
+#if !SILVERLIGHT
+        [Example("TileMapAnnotation")]
+        public static PlotModel TileMapAnnotation()
+        {
+            var model = new PlotModel("TileMapAnnotation");
+
+            // TODO: scale ratio between the two axes should be fixed (or depending on latitude...)
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 10.4, 10.6, "Longitude"));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, 59.88, 59.96, "Latitude"));
+
+            // Add the tile map annotation
+            model.Annotations.Add(
+                new TileMapAnnotation
+                    {
+                        Url = "http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=toporaster2&zoom={Z}&x={X}&y={Y}",
+                        CopyrightNotice = "Kartgrunnlag: Statens kartverk, Geovekst og kommuner.",
+                        MinZoomLevel = 5,
+                        MaxZoomLevel = 19
+                    });
+
+            model.Annotations.Add(new ArrowAnnotation
+                {
+                    EndPoint = new DataPoint(10.563, 59.888),
+                    ArrowDirection = new ScreenVector(-40, -60),
+                    StrokeThickness = 3,
+                    FontSize = 20,
+                    FontWeight = FontWeights.Bold,
+                    TextColor = OxyColors.Magenta.ChangeAlpha(160),
+                    Color = OxyColors.Magenta.ChangeAlpha(100)
+                });
+
+            return model;
+        }
+#endif
+
+        [Example("TileMapAnnotation (OpenStreetMap)")]
+        public static PlotModel TileMapAnnotation2()
+        {
+            var model = new PlotModel("TileMapAnnotation");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 10.4, 10.6, "Longitude"));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, 59.88, 59.96, "Latitude"));
+
+            // Add the tile map annotation
+            model.Annotations.Add(
+                new TileMapAnnotation
+                {
+                    Url = "http://tile.openstreetmap.org/{Z}/{X}/{Y}.png",
+                    CopyrightNotice = "OpenStreet map."
+                });
+
             return model;
         }
     }

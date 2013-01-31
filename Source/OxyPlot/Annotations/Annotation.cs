@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Annotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -57,14 +57,6 @@ namespace OxyPlot
         public AnnotationLayer Layer { get; set; }
 
         /// <summary>
-        /// Gets or sets the annotation text.
-        /// </summary>
-        /// <value>
-        /// The text.
-        /// </value>
-        public string Text { get; set; }
-
-        /// <summary>
         /// Gets or sets the X axis.
         /// </summary>
         /// <value>The X axis.</value>
@@ -93,17 +85,34 @@ namespace OxyPlot
         /// </summary>
         public void EnsureAxes()
         {
-            this.XAxis = PlotModel.GetAxisOrDefault(this.XAxisKey, PlotModel.DefaultXAxis);
-            this.YAxis = PlotModel.GetAxisOrDefault(this.YAxisKey, PlotModel.DefaultYAxis);
+            this.XAxis = this.PlotModel.GetAxisOrDefault(this.XAxisKey, this.PlotModel.DefaultXAxis);
+            this.YAxis = this.PlotModel.GetAxisOrDefault(this.YAxisKey, this.PlotModel.DefaultYAxis);
         }
 
         /// <summary>
         /// Renders the annotation on the specified context.
         /// </summary>
-        /// <param name="rc">The render context.</param>
-        /// <param name="model">The model.</param>
+        /// <param name="rc">
+        /// The render context.
+        /// </param>
+        /// <param name="model">
+        /// The model.
+        /// </param>
         public virtual void Render(IRenderContext rc, PlotModel model)
         {
+        }
+
+        /// <summary>
+        /// Tests if the plot element is hit by the specified point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>
+        /// A hit test result.
+        /// </returns>
+        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
+        {
+            return null;
         }
 
         /// <summary>
@@ -140,8 +149,12 @@ namespace OxyPlot
         /// <summary>
         /// Transforms the specified screen position to a data point.
         /// </summary>
-        /// <param name="position">The position.</param>
-        /// <returns>A data point</returns>
+        /// <param name="position">
+        /// The position.
+        /// </param>
+        /// <returns>
+        /// A data point
+        /// </returns>
         public DataPoint InverseTransform(ScreenPoint position)
         {
             return Axis.InverseTransform(position, this.XAxis, this.YAxis);

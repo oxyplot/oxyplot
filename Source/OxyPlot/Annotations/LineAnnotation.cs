@@ -57,7 +57,7 @@ namespace OxyPlot
     /// <summary>
     /// Represents a line annotation.
     /// </summary>
-    public class LineAnnotation : Annotation
+    public class LineAnnotation : TextualAnnotation
     {
         /// <summary>
         /// The points of the line, transformed to screen coordinates.

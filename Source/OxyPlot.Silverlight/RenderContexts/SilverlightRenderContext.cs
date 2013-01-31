@@ -30,9 +30,11 @@
 namespace OxyPlot.Silverlight
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
+    using System.Windows.Media.Imaging;
     using System.Windows.Shapes;
 
     using FontWeights = OxyPlot.FontWeights;
@@ -570,7 +572,19 @@ namespace OxyPlot.Silverlight
             transform.Children.Add(new TranslateTransform { X = (int)p.X, Y = (int)p.Y });
             tb.RenderTransform = transform;
             this.ApplyTooltip(tb);
-            this.canvas.Children.Add(tb);
+
+            if (this.clip.HasValue)
+            {
+                // add a clipping container that is not rotated
+                var c = new Canvas();
+                c.Children.Add(tb);
+                this.ApplyClip(c, 0, 0);
+                this.Add(c);
+            }
+            else
+            {
+                this.Add(tb);
+            }
         }
 
         /// <summary>
@@ -663,14 +677,14 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// The add.
+        /// Adds the specified element to the canvas.
         /// </summary>
-        /// <param name="shape">
-        /// The shape.
+        /// <param name="element">
+        /// The element.
         /// </param>
-        private void Add(Shape shape)
+        private void Add(UIElement element)
         {
-            this.canvas.Children.Add(shape);
+            this.canvas.Children.Add(element);
         }
 
         /// <summary>
@@ -749,7 +763,7 @@ namespace OxyPlot.Silverlight
                         shape.StrokeLineJoin = PenLineJoin.Bevel;
                         break;
 
-                        // The default StrokeLineJoin is Miter
+                    // The default StrokeLineJoin is Miter
                 }
 
                 if (thickness != 1)
@@ -767,5 +781,185 @@ namespace OxyPlot.Silverlight
             // shape.UseLayoutRounding = aliased;
         }
 
+        /// <summary>
+        /// Gets the size of the specified image.
+        /// </summary>
+        /// <param name="source">The image source.</param>
+        /// <returns>
+        /// An <see cref="OxyImageInfo" /> structure.
+        /// </returns>
+        public OxyImageInfo GetImageInfo(OxyImage source)
+        {
+            var bmp = this.GetImageSource(source);
+            if (bmp == null)
+            {
+                return null;
+            }
+
+            return new OxyImageInfo { Width = (uint)bmp.PixelWidth, Height = (uint)bmp.PixelHeight, DpiX = 96, DpiY = 96 };
+        }
+
+        /// <summary>
+        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcY">The y-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcWidth">Width of the portion of the source image to draw.</param>
+        /// <param name="srcHeight">Height of the portion of the source image to draw.</param>
+        /// <param name="destX">The x-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destY">The y-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destWidth">The width of the drawn image.</param>
+        /// <param name="destHeight">The height of the drawn image.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
+        public void DrawImage(
+            OxyImage source,
+            uint srcX,
+            uint srcY,
+            uint srcWidth,
+            uint srcHeight,
+            double destX,
+            double destY,
+            double destWidth,
+            double destHeight,
+            double opacity,
+            bool interpolate)
+        {
+            if (destWidth <= 0 || destHeight <= 0 || srcWidth <= 0 || srcHeight <= 0)
+            {
+                return;
+            }
+
+            var image = new Image();
+            var bmp = this.GetImageSource(source);
+
+            if (srcX == 0 && srcY == 0 && srcWidth == bmp.PixelWidth && srcHeight == bmp.PixelHeight)
+            {
+                // do not crop
+            }
+            else
+            {
+                // TODO: cropped image not available in Silverlight??
+                // bmp = new CroppedBitmap(bmp, new Int32Rect((int)srcX, (int)srcY, (int)srcWidth, (int)srcHeight));
+                return;
+            }
+
+            this.ApplyClip(image, destX, destY);
+
+            image.Opacity = opacity;
+            image.Width = destWidth;
+            image.Height = destHeight;
+            image.Stretch = Stretch.Fill;
+
+            // TODO: not available in Silverlight??
+            // RenderOptions.SetBitmapScalingMode(image, interpolate ? BitmapScalingMode.HighQuality : BitmapScalingMode.NearestNeighbor);
+            //Canvas.SetLeft(image, x);
+            //Canvas.SetTop(image, y);
+            image.RenderTransform = new TranslateTransform { X = destX, Y = destY };
+            image.Source = bmp;
+            this.ApplyTooltip(image);
+            this.Add(image);
+        }
+
+        /// <summary>
+        /// Applies the clip rectangle.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="x">The x offset of the element.</param>
+        /// <param name="y">The y offset of the element.</param>
+        private void ApplyClip(UIElement image, double x, double y)
+        {
+            if (clip.HasValue)
+            {
+                image.Clip = new RectangleGeometry() { Rect = new Rect(clip.Value.X - x, clip.Value.Y - y, clip.Value.Width, clip.Value.Height) };
+            }
+        }
+
+        /// <summary>
+        /// The clip rectangle.
+        /// </summary>
+        private Rect? clip;
+
+        /// <summary>
+        /// Sets the clip.
+        /// </summary>
+        /// <param name="clippingRect">The clipping rect.</param>
+        /// <returns></returns>
+        public bool SetClip(OxyRect clippingRect)
+        {
+            clip = clippingRect.ToRect(false);
+            return true;
+        }
+
+        /// <summary>
+        /// Resets the clip rectangle.
+        /// </summary>
+        public void ResetClip()
+        {
+            clip = null;
+        }
+
+        /// <summary>
+        /// Cleans up resources not in use.
+        /// </summary>
+        /// <remarks>
+        /// This method is called at the end of each rendering.
+        /// </remarks>
+        public void CleanUp()
+        {
+            // Find the images in the cache that has not been used since last call to this method
+            var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i));
+
+            // Remove the images from the cache
+            foreach (var i in imagesToRelease)
+            {
+                this.imageCache.Remove(i);
+            }
+
+            this.imagesInUse.Clear();
+        }
+
+        /// <summary>
+        /// The images in use
+        /// </summary>
+        private HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+
+        /// <summary>
+        /// The image cache
+        /// </summary>
+        private Dictionary<OxyImage, BitmapSource> imageCache = new Dictionary<OxyImage, BitmapSource>();
+
+        /// <summary>
+        /// Gets the bitmap source.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <returns>The bitmap source.</returns>
+        private BitmapSource GetImageSource(OxyImage image)
+        {
+            if (image == null)
+            {
+                return null;
+            }
+
+            if (!this.imagesInUse.Contains(image))
+            {
+                this.imagesInUse.Add(image);
+            }
+
+            BitmapSource src;
+            if (this.imageCache.TryGetValue(image, out src))
+            {
+                return src;
+            }
+
+            using (var ms = new System.IO.MemoryStream(image.GetData()))
+            {
+                var bitmapImage = new BitmapImage();
+                bitmapImage.SetSource(ms);
+                this.imageCache.Add(image, bitmapImage);
+                return bitmapImage;
+            }
+        }
     }
 }

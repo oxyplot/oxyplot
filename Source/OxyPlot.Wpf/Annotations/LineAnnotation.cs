@@ -35,7 +35,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.LineAnnotation
     /// </summary>
-    public class LineAnnotation : Annotation
+    public class LineAnnotation : TextualAnnotation
     {
         /// <summary>
         /// The ClipByXAxis property.

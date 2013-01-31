@@ -39,7 +39,7 @@ namespace OxyPlot
     /// <remarks>
     /// See http://en.wikipedia.org/wiki/Contour_line and http://www.mathworks.se/help/techdoc/ref/contour.html.
     /// </remarks>
-    public class ContourSeries : DataPointSeries
+    public class ContourSeries : XYAxisSeries
     {
         /// <summary>
         /// The contour collection.
@@ -285,8 +285,6 @@ namespace OxyPlot
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            base.Render(rc, model);
-
             if (this.contours == null)
             {
                 this.CalculateContours();

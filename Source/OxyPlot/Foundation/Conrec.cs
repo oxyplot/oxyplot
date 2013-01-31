@@ -36,8 +36,8 @@ namespace OxyPlot
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Ported from C / Fortran code by Paul Borke.
-    /// See http://local.wasp.uwa.edu.au/~pbourke/papers/conrec for
+    /// Ported from C / Fortran code by Paul Bourke.
+    /// See <a href="http://paulbourke.net/papers/conrec/">Conrec</a> for
     /// full description of code and the original source.
     ///  </para>
     /// <para>
@@ -290,6 +290,5 @@ namespace OxyPlot
                 }
             }
         }
-
     }
 }

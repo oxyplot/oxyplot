@@ -51,6 +51,7 @@
     <Reference Include="silverPDF">
       <HintPath>..\..\Components\silverPDF.dll</HintPath>
     </Reference>
+    <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
   </ItemGroup>

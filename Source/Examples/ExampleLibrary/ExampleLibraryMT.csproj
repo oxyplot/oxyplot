@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Attributes\ExampleAttribute.cs" />
     <Compile Include="CustomSeries\ErrorItem.cs" />
     <Compile Include="CustomSeries\FlagSeries.cs" />
@@ -61,6 +64,7 @@
     <Compile Include="Examples\BarSeries\IntervalBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\RectangleBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\TornadoBarSeriesExamples.cs" />
+    <Compile Include="Examples\HeatMapSeriesExamples.cs" />
     <Compile Include="Examples\MiscExamples.cs" />
     <Compile Include="Examples\MouseEventExamples.cs" />
     <Compile Include="Examples\ExamplesBase.cs" />
@@ -87,7 +91,16 @@
     <Compile Include="Examples\ScatterSeriesExamples.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\OxyPlot\OxyPlotMT.csproj">
+      <Project>{A9B53EF9-88CE-4934-8C8F-236ECEEA676D}</Project>
+      <Name>OxyPlotMT</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Resources\Bergensbanen.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\OxyPlot.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -97,10 +110,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <ProjectReference Include="..\..\OxyPlot\OxyPlotMT.csproj">
-      <Project>{A9B53EF9-88CE-4934-8C8F-236ECEEA676D}</Project>
-      <Name>OxyPlotMT</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

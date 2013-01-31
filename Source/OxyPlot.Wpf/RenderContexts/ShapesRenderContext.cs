@@ -31,12 +31,16 @@ namespace OxyPlot.Wpf
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
+    using System.Windows.Media.Imaging;
     using System.Windows.Shapes;
 
     using FontWeights = OxyPlot.FontWeights;
+    using Path = System.Windows.Shapes.Path;
 
     /// <summary>
     /// The text measurement methods.
@@ -60,6 +64,21 @@ namespace OxyPlot.Wpf
     public class ShapesRenderContext : IRenderContext
     {
         /// <summary>
+        /// The clip rectangle.
+        /// </summary>
+        private Rect? clip;
+
+        /// <summary>
+        /// The images in use
+        /// </summary>
+        private HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+
+        /// <summary>
+        /// The image cache
+        /// </summary>
+        private Dictionary<OxyImage, BitmapSource> imageCache = new Dictionary<OxyImage, BitmapSource>();
+
+        /// <summary>
         /// The maximum number of figures per geometry.
         /// </summary>
         private const int MaxFiguresPerGeometry = 16;
@@ -72,21 +91,25 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The canvas.
         /// </summary>
-        private readonly Canvas canvas;
+        private Canvas canvas;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapesRenderContext"/> class.
         /// </summary>
-        /// <param name="canvas">
-        /// The canvas.
-        /// </param>
-        public ShapesRenderContext(Canvas canvas)
+        public ShapesRenderContext()
         {
-            this.canvas = canvas;
-            this.Width = canvas.ActualWidth;
-            this.Height = canvas.ActualHeight;
             this.TextMeasurementMethod = TextMeasurementMethod.TextBlock;
             this.UseStreamGeometry = true;
+        }
+
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
+        public void Initialize(Canvas canvas)
+        {
+            this.canvas = canvas;
+            this.Width = this.canvas.ActualWidth;
+            this.Height = this.canvas.ActualHeight;
         }
 
         /// <summary>
@@ -147,20 +170,12 @@ namespace OxyPlot.Wpf
         private string CurrentToolTip { get; set; }
 
         /// <summary>
-        /// The draw ellipse.
+        /// Draws an ellipse.
         /// </summary>
-        /// <param name="rect">
-        /// The rect.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The thickness.</param>
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var e = new Ellipse();
@@ -518,7 +533,7 @@ namespace OxyPlot.Wpf
         /// Draws the rectangle.
         /// </summary>
         /// <param name="rect">
-        /// The rect.
+        /// The rectangle.
         /// </param>
         /// <param name="fill">
         /// The fill.
@@ -547,20 +562,13 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The draw rectangles.
+        /// Draws a collection of rectangles, where all have the same stroke and fill.
+        /// This performs better than calling DrawRectangle multiple times.
         /// </summary>
-        /// <param name="rectangles">
-        /// The rectangles.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rectangles">The rectangles.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = new Path();
@@ -578,73 +586,21 @@ namespace OxyPlot.Wpf
 
             path.Data = gg;
             this.Add(path);
-
-            /*
-            Path path = null;
-            GeometryGroup gg = null;
-            int count = 0;
-            foreach (var rect in rectangles)
-            {
-                if (path == null)
-                {
-                    path = new Path();
-                    SetStroke(path, stroke, thickness, OxyPenLineJoin.Miter, null, true);
-                    if (fill != null)
-                        path.Fill = GetCachedBrush(fill);
-
-                    gg = new GeometryGroup();
-                    gg.FillRule = FillRule.Nonzero;
-                }
-                gg.Children.Add(new RectangleGeometry(rect.ToRect()));
-                count++;
-                if (count == MaxGeometriesPerPath)
-                {
-                    path.Data = gg;
-                    Add(path);
-                    path = null;
-                    count = 0;
-                }
-            }
-            if (path != null)
-            {
-                path.Data = gg;
-                Add(path);
-            }*/
         }
 
         /// <summary>
-        /// The draw text.
+        /// Draws the text.
         /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="rotate">
-        /// The rotate.
-        /// </param>
-        /// <param name="halign">
-        /// The halign.
-        /// </param>
-        /// <param name="valign">
-        /// The valign.
-        /// </param>
-        /// <param name="maxSize">
-        /// The maximum size of the text.
-        /// </param>
+        /// <param name="p">The position.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="rotate">The rotation angle.</param>
+        /// <param name="halign">The horizontal alignment.</param>
+        /// <param name="valign">The vertical alignment.</param>
+        /// <param name="maxSize">The maximum size of the text.</param>
         public void DrawText(
             ScreenPoint p,
             string text,
@@ -726,29 +682,32 @@ namespace OxyPlot.Wpf
 
             transform.Children.Add(new TranslateTransform(p.X, p.Y));
             tb.RenderTransform = transform;
-
             tb.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
             this.ApplyTooltip(tb);
-            this.Add(tb);
+
+            if (this.clip.HasValue)
+            {
+                // add a clipping container that is not rotated
+                var c = new Canvas();
+                c.Children.Add(tb);
+                this.ApplyClip(c, 0, 0);
+                this.Add(c);
+            }
+            else
+            {
+                this.Add(tb);
+            }
         }
 
         /// <summary>
-        /// Measure the size of the specified text.
+        /// Measures the text.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
         /// <returns>
-        /// The size of the text.
+        /// The text size.
         /// </returns>
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
@@ -794,6 +753,126 @@ namespace OxyPlot.Wpf
         public void SetToolTip(string text)
         {
             this.CurrentToolTip = text;
+        }
+
+        /// <summary>
+        /// Gets the size of the specified image.
+        /// </summary>
+        /// <param name="source">The image source.</param>
+        /// <returns>
+        /// An <see cref="OxyImageInfo" /> structure.
+        /// </returns>
+        public OxyImageInfo GetImageInfo(OxyImage source)
+        {
+            var bmp = this.GetImageSource(source);
+            if (bmp == null)
+            {
+                return null;
+            }
+
+            return new OxyImageInfo { Width = (uint)bmp.PixelWidth, Height = (uint)bmp.PixelHeight, DpiX = bmp.DpiX, DpiY = bmp.DpiY };
+        }
+
+        /// <summary>
+        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcY">The y-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcWidth">Width of the portion of the source image to draw.</param>
+        /// <param name="srcHeight">Height of the portion of the source image to draw.</param>
+        /// <param name="destX">The x-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destY">The y-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destWidth">The width of the drawn image.</param>
+        /// <param name="destHeight">The height of the drawn image.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
+        public void DrawImage(
+            OxyImage source,
+            uint srcX,
+            uint srcY,
+            uint srcWidth,
+            uint srcHeight,
+            double destX,
+            double destY,
+            double destWidth,
+            double destHeight,
+            double opacity,
+            bool interpolate)
+        {
+            if (destWidth <= 0 || destHeight <= 0 || srcWidth <= 0 || srcHeight <= 0)
+            {
+                return;
+            }
+
+            var image = new Image();
+            var bitmapChain = this.GetImageSource(source);
+
+            if (srcX == 0 && srcY == 0 && srcWidth == bitmapChain.PixelWidth && srcHeight == bitmapChain.PixelHeight)
+            {
+                // do not crop
+            }
+            else
+            {
+                bitmapChain = new CroppedBitmap(bitmapChain, new Int32Rect((int)srcX, (int)srcY, (int)srcWidth, (int)srcHeight));
+            }
+
+            // Apply clip rectangle, if set
+            this.ApplyClip(image, destX, destY);
+
+            image.Opacity = opacity;
+            image.Width = destWidth;
+            image.Height = destHeight;
+            image.Stretch = Stretch.Fill;
+            RenderOptions.SetBitmapScalingMode(image, interpolate ? BitmapScalingMode.HighQuality : BitmapScalingMode.NearestNeighbor);
+
+            // Set the position of the image
+            Canvas.SetLeft(image, destX);
+            Canvas.SetTop(image, destY);
+            //// alternative: image.RenderTransform = new TranslateTransform(destX, destY);
+
+            image.Source = bitmapChain;
+            this.ApplyTooltip(image);
+            this.Add(image);
+        }
+
+        /// <summary>
+        /// Sets the clip rectangle.
+        /// </summary>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <returns>True if the clip rectangle was set.</returns>
+        public bool SetClip(OxyRect clippingRect)
+        {
+            this.clip = clippingRect.ToRect(false);
+            return true;
+        }
+
+        /// <summary>
+        /// Resets the clip rectangle.
+        /// </summary>
+        public void ResetClip()
+        {
+            this.clip = null;
+        }
+
+        /// <summary>
+        /// Cleans up resources not in use.
+        /// </summary>
+        /// <remarks>
+        /// This method is called at the end of each rendering.
+        /// </remarks>
+        public void CleanUp()
+        {
+            // Find the images in the cache that has not been used since last call to this method
+            var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i));
+
+            // Remove the images from the cache
+            foreach (var i in imagesToRelease)
+            {
+                this.imageCache.Remove(i);
+            }
+
+            this.imagesInUse.Clear();
         }
 
         /// <summary>
@@ -854,7 +933,7 @@ namespace OxyPlot.Wpf
         /// The glyph typeface.
         /// </param>
         /// <param name="sizeInEm">
-        /// The em size.
+        /// The size.
         /// </param>
         /// <param name="s">
         /// The text.
@@ -1084,5 +1163,54 @@ namespace OxyPlot.Wpf
             }
         }
 
+        /// <summary>
+        /// Applies the clip rectangle.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="x">The x offset of the element.</param>
+        /// <param name="y">The y offset of the element.</param>
+        private void ApplyClip(UIElement image, double x, double y)
+        {
+            if (this.clip.HasValue)
+            {
+                image.Clip = new RectangleGeometry(new Rect(this.clip.Value.X - x, this.clip.Value.Y - y, this.clip.Value.Width, this.clip.Value.Height));
+            }
+        }
+
+        /// <summary>
+        /// Gets the bitmap source.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <returns>The bitmap source.</returns>
+        private BitmapSource GetImageSource(OxyImage image)
+        {
+            if (image == null)
+            {
+                return null;
+            }
+
+            if (!this.imagesInUse.Contains(image))
+            {
+                this.imagesInUse.Add(image);
+            }
+
+            BitmapSource src;
+            if (this.imageCache.TryGetValue(image, out src))
+            {
+                return src;
+            }
+
+            using (var ms = new MemoryStream(image.GetData()))
+            {
+                var btm = new BitmapImage();
+                btm.BeginInit();
+                btm.StreamSource = ms;
+                btm.CacheOption = BitmapCacheOption.OnLoad;
+                btm.EndInit();
+                btm.Freeze();
+                this.imageCache.Add(image, btm);
+                return btm;
+            }
+        }
     }
 }

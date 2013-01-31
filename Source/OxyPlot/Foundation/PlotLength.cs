@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PngExporter.cs" company="OxyPlot">
+// <copyright file="PlotLength.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,58 +24,68 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The png exporter.
+//   Represents lengths in the plot.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot.WindowsForms
+
+namespace OxyPlot
 {
-    using System.Drawing;
-    using System.Drawing.Imaging;
-
-    using OxyPlot.WindowsForms;
-
     /// <summary>
-    /// The png exporter.
+    /// Represents lengths in the plot. 
     /// </summary>
-    public static class PngExporter
+    public struct PlotLength
     {
         /// <summary>
-        /// The export.
+        /// The unit type
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="fileName">
-        /// The file name.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="background">
-        /// The background.
-        /// </param>
-        public static void Export(PlotModel model, string fileName, int width, int height, Brush background = null)
-        {
-            using (var bm = new Bitmap(width, height))
-            {
-                using (Graphics g = Graphics.FromImage(bm))
-                {
-                    if (background != null)
-                    {
-                        g.FillRectangle(background, 0, 0, width, height);
-                    }
+        private readonly PlotLengthUnit unit;
 
-                    var rc = new GraphicsRenderContext();
-                    rc.Initialize(g, width, height);
-                    model.Update();
-                    model.Render(rc);
-                    bm.Save(fileName, ImageFormat.Png);
-                }
+        /// <summary>
+        /// The value
+        /// </summary>
+        private readonly double value;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlotLength"/> struct.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="unit">
+        /// The unit.
+        /// </param>
+        public PlotLength(double value, PlotLengthUnit unit)
+        {
+            this.value = value;
+            this.unit = unit;
+        }
+
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
+        /// <value>
+        /// The value.
+        /// </value>
+        public double Value
+        {
+            get
+            {
+                return this.value;
             }
         }
 
+        /// <summary>
+        /// Gets the type of the unit.
+        /// </summary>
+        /// <value>
+        /// The type of the unit.
+        /// </value>
+        public PlotLengthUnit Unit
+        {
+            get
+            {
+                return this.unit;
+            }
+        }
     }
 }

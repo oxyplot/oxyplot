@@ -91,7 +91,8 @@ namespace OxyPlot.Wpf
             canvas.Measure(new Size(width, height));
             canvas.Arrange(new Rect(0, 0, width, height));
 
-            var rc = new ShapesRenderContext(canvas);
+            var rc = new ShapesRenderContext();
+            rc.Initialize(canvas);
             model.Update();
             model.Render(rc);
 

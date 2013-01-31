@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TextAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -35,7 +35,7 @@ namespace OxyPlot
     /// <summary>
     /// Represents a text annotation.
     /// </summary>
-    public class TextAnnotation : Annotation
+    public class TextAnnotation : TextualAnnotation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextAnnotation" /> class.
@@ -106,7 +106,7 @@ namespace OxyPlot
         public VerticalTextAlign VerticalAlignment { get; set; }
 
         /// <summary>
-        /// Renders the arrow annotation.
+        /// Renders the text annotation.
         /// </summary>
         /// <param name="rc">
         /// The render context.
@@ -124,8 +124,7 @@ namespace OxyPlot
 
             var clippingRect = this.GetClippingRect();
 
-            var textSize = rc.MeasureText(
-                this.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
+            var textSize = rc.MeasureText(this.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
 
             const double MinDistSquared = 4;
 
@@ -150,8 +149,12 @@ namespace OxyPlot
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="tolerance">The tolerance.</param>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <param name="tolerance">
+        /// The tolerance.
+        /// </param>
         /// <returns>
         /// A hit test result.
         /// </returns>
@@ -230,10 +233,10 @@ namespace OxyPlot
             var u = new ScreenVector(cost, sint);
             var v = new ScreenVector(-sint, cost);
             var polygon = new ScreenPoint[4];
-            polygon[0] = position + u * (left - padding.Left) + v * (top - padding.Top);
-            polygon[1] = position + u * (right + padding.Right) + v * (top - padding.Top);
-            polygon[2] = position + u * (right + padding.Right) + v * (bottom + padding.Bottom);
-            polygon[3] = position + u * (left - padding.Left) + v * (bottom + padding.Bottom);
+            polygon[0] = position + (u * (left - padding.Left)) + (v * (top - padding.Top));
+            polygon[1] = position + (u * (right + padding.Right)) + (v * (top - padding.Top));
+            polygon[2] = position + (u * (right + padding.Right)) + (v * (bottom + padding.Bottom));
+            polygon[3] = position + (u * (left - padding.Left)) + (v * (bottom + padding.Bottom));
             return polygon;
         }
     }

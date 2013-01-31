@@ -30,6 +30,7 @@
 namespace OxyPlot
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a color axis.
@@ -75,17 +76,17 @@ namespace OxyPlot
         /// </returns>
         public OxyColor GetColor(int paletteIndex)
         {
-            if (paletteIndex == -1)
+            if (paletteIndex == 0)
             {
                 return this.LowColor;
             }
 
-            if (paletteIndex == -2)
+            if (paletteIndex == this.Palette.Colors.Count + 1)
             {
                 return this.HighColor;
             }
 
-            return this.Palette.Colors[paletteIndex];
+            return this.Palette.Colors[paletteIndex - 1];
         }
 
         /// <summary>
@@ -103,6 +104,21 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Gets the colors.
+        /// </summary>
+        /// <returns>The colors.</returns>
+        public IEnumerable<OxyColor> GetColors()
+        {
+            yield return this.LowColor;
+            foreach (var color in this.Palette.Colors)
+            {
+                yield return color;
+            }
+
+            yield return this.HighColor;
+        }
+
+        /// <summary>
         /// Gets the palette index of the specified value.
         /// </summary>
         /// <param name="value">
@@ -112,32 +128,30 @@ namespace OxyPlot
         /// The palette index.
         /// </returns>
         /// <remarks>
-        /// If the value is less than minimum, -1 is returned. If the value is greater than maximum, -2 is returned.
+        /// If the value is less than minimum, 0 is returned. If the value is greater than maximum, Palette.Colors.Count+1 is returned.
         /// </remarks>
         public int GetPaletteIndex(double value)
         {
             if (this.LowColor != null && value < this.Minimum)
             {
-                return -1;
+                return 0;
             }
 
             if (this.HighColor != null && value > this.Maximum)
             {
-                return -2;
+                return this.Palette.Colors.Count + 1;
             }
 
-            int index =
-                (int)
-                ((value - this.ActualMinimum) / (this.ActualMaximum - this.ActualMinimum) * this.Palette.Colors.Count);
+            int index = 1 + (int)((value - this.ActualMinimum) / (this.ActualMaximum - this.ActualMinimum) * this.Palette.Colors.Count);
 
-            if (index < 0)
+            if (index < 1)
             {
-                index = 0;
+                index = 1;
             }
 
-            if (index >= this.Palette.Colors.Count)
+            if (index > this.Palette.Colors.Count)
             {
-                index = this.Palette.Colors.Count - 1;
+                index = this.Palette.Colors.Count;
             }
 
             return index;

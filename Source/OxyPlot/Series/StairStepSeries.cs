@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StairStepSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a series for stairstep graphs.
+//   Represents a series for stair step graphs.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
@@ -33,29 +33,10 @@ namespace OxyPlot
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a series for stairstep graphs.
+    /// Represents a series for stair step graphs.
     /// </summary>
-    /// <remarks>
-    /// See http://www.mathworks.com/help/techdoc/ref/stairs.html
-    /// </remarks>
     public class StairStepSeries : LineSeries
     {
-        /// <summary>
-        /// Gets or sets the stroke thickness of the vertical line segments.
-        /// </summary>
-        /// <remarks>
-        /// Speficy NaN to use the StrokeThickness for both horizontal and vertical segments.
-        /// Setting the vertical stroke thickness will have a small performance hit.
-        /// </remarks>
-        /// <value>The vertical stroke thickness.</value>
-        public double VerticalStrokeThickness { get; set; }
-
-        /// <summary>
-        /// Gets or sets the line style of the vertical line segments.
-        /// </summary>
-        /// <value>The vertical line style.</value>
-        public LineStyle VerticalLineStyle { get; set; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref = "StairStepSeries" /> class.
         /// </summary>
@@ -99,16 +80,38 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Gets or sets the stroke thickness of the vertical line segments.
+        /// </summary>
+        /// <remarks>
+        /// Set the value to NaN to use the StrokeThickness property for both horizontal and vertical segments.
+        /// Using the VerticalStrokeThickness property will have a small performance hit.
+        /// </remarks>
+        /// <value>The vertical stroke thickness.</value>
+        public double VerticalStrokeThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the line style of the vertical line segments.
+        /// </summary>
+        /// <value>The vertical line style.</value>
+        public LineStyle VerticalLineStyle { get; set; }
+
+        /// <summary>
         /// Gets the nearest point.
         /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
-        /// <returns>A TrackerHitResult for the current hit.</returns>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <param name="interpolate">
+        /// interpolate if set to <c>true</c> .
+        /// </param>
+        /// <returns>
+        /// A TrackerHitResult for the current hit.
+        /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             TrackerHitResult result = null;
 
-            // http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
+            // http://paulbourke.net/geometry/pointlineplane/
             double minimumDistance = double.MaxValue;
 
             for (int i = 0; i + 1 < this.Points.Count; i++)
@@ -153,7 +156,8 @@ namespace OxyPlot
                 {
                     double px = p1.X + (u * (p2.X - p1.X));
                     double py = p1.Y;
-                    result = new TrackerHitResult(this, new DataPoint(px, py), new ScreenPoint(sx, sy), this.GetItem(i), i);
+                    result = new TrackerHitResult(
+                        this, new DataPoint(px, py), new ScreenPoint(sx, sy), this.GetItem(i), i);
                     minimumDistance = distance;
                 }
             }
@@ -179,11 +183,9 @@ namespace OxyPlot
 
             if (this.XAxis == null || this.YAxis == null)
             {
-                Trace("Axis not defined.");
+                this.Trace("Axis not defined.");
                 return;
             }
-
-            double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
             var clippingRect = this.GetClippingRect();
 
@@ -194,7 +196,9 @@ namespace OxyPlot
                     // clip the line segments with the clipping rectangle
                     if (this.StrokeThickness > 0 && lineStyle != LineStyle.None)
                     {
-                        var verticalStrokeThickness = double.IsNaN(this.VerticalStrokeThickness) ? StrokeThickness : VerticalStrokeThickness;
+                        var verticalStrokeThickness = double.IsNaN(this.VerticalStrokeThickness)
+                                                          ? this.StrokeThickness
+                                                          : this.VerticalStrokeThickness;
                         if (!verticalStrokeThickness.Equals(this.StrokeThickness) || this.VerticalLineStyle != lineStyle)
                         {
                             var hlpts = new List<ScreenPoint>();
@@ -208,32 +212,32 @@ namespace OxyPlot
                             }
 
                             rc.DrawClippedLineSegments(
-                                hlpts,
-                                clippingRect,
-                                this.GetSelectableColor(this.ActualColor),
-                                this.StrokeThickness,
-                                lineStyle,
-                                this.LineJoin,
+                                hlpts, 
+                                clippingRect, 
+                                this.GetSelectableColor(this.ActualColor), 
+                                this.StrokeThickness, 
+                                lineStyle, 
+                                this.LineJoin, 
                                 false);
                             rc.DrawClippedLineSegments(
-                                vlpts,
-                                clippingRect,
-                                this.GetSelectableColor(this.ActualColor),
-                                verticalStrokeThickness,
-                                this.VerticalLineStyle,
-                                this.LineJoin,
+                                vlpts, 
+                                clippingRect, 
+                                this.GetSelectableColor(this.ActualColor), 
+                                verticalStrokeThickness, 
+                                this.VerticalLineStyle, 
+                                this.LineJoin, 
                                 false);
                         }
                         else
                         {
                             rc.DrawClippedLine(
-                                lpts,
-                                clippingRect,
-                                0,
-                                this.GetSelectableColor(this.ActualColor),
-                                this.StrokeThickness,
-                                lineStyle,
-                                this.LineJoin,
+                                lpts, 
+                                clippingRect, 
+                                0, 
+                                this.GetSelectableColor(this.ActualColor), 
+                                this.StrokeThickness, 
+                                lineStyle, 
+                                this.LineJoin, 
                                 false);
                         }
                     }
@@ -241,13 +245,13 @@ namespace OxyPlot
                     if (this.MarkerType != MarkerType.None)
                     {
                         rc.DrawMarkers(
-                            mpts,
-                            clippingRect,
-                            this.MarkerType,
-                            this.MarkerOutline,
-                            new[] { this.MarkerSize },
-                            this.MarkerFill,
-                            this.MarkerStroke,
+                            mpts, 
+                            clippingRect, 
+                            this.MarkerType, 
+                            this.MarkerOutline, 
+                            new[] { this.MarkerSize }, 
+                            this.MarkerFill, 
+                            this.MarkerStroke, 
                             this.MarkerStrokeThickness);
                     }
                 };
@@ -282,6 +286,5 @@ namespace OxyPlot
 
             renderPoints(linePoints, markerPoints);
         }
-
     }
 }

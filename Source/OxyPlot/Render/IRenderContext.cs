@@ -270,7 +270,7 @@ namespace OxyPlot
         /// The font weight.
         /// </param>
         /// <param name="rotate">
-        /// The rotatation angle.
+        /// The rotation angle.
         /// </param>
         /// <param name="halign">
         /// The horizontal alignment.
@@ -324,5 +324,85 @@ namespace OxyPlot
         /// </param>
         void SetToolTip(string text);
 
+        /// <summary>
+        /// Cleans up resources not in use.
+        /// </summary>
+        /// <remarks>
+        /// This method is called at the end of each rendering.
+        /// </remarks>
+        void CleanUp();
+
+        /// <summary>
+        /// Gets the size of the specified image.
+        /// </summary>
+        /// <param name="source">The image source.</param>
+        /// <returns>The image info.</returns>
+        OxyImageInfo GetImageInfo(OxyImage source);
+
+        /// <summary>
+        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcY">The y-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcWidth">Width of the portion of the source image to draw.</param>
+        /// <param name="srcHeight">Height of the portion of the source image to draw.</param>
+        /// <param name="destX">The x-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destY">The y-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destWidth">The width of the drawn image.</param>
+        /// <param name="destHeight">The height of the drawn image.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
+        void DrawImage(OxyImage source, uint srcX, uint srcY, uint srcWidth, uint srcHeight, double destX, double destY, double destWidth, double destHeight, double opacity, bool interpolate);
+
+        /// <summary>
+        /// Sets the clip rectangle.
+        /// </summary>
+        /// <param name="rect">The clip rectangle.</param>
+        /// <returns>True if the clip rectangle was set.</returns>
+        bool SetClip(OxyRect rect);
+
+        /// <summary>
+        /// Resets the clip rectangle.
+        /// </summary>
+        void ResetClip();
+    }
+
+    /// <summary>
+    /// Provides information about the size of an image.
+    /// </summary>
+    public class OxyImageInfo
+    {
+        /// <summary>
+        /// Gets or sets the width in pixels.
+        /// </summary>
+        /// <value>
+        /// The width.
+        /// </value>
+        public uint Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets the height in pixels.
+        /// </summary>
+        /// <value>
+        /// The height.
+        /// </value>
+        public uint Height { get; set; }
+
+        /// <summary>
+        /// Gets or sets the horizontal resolution in dpi.
+        /// </summary>
+        /// <value>
+        /// The dpi X.
+        /// </value>
+        public double DpiX { get; set; }
+
+        /// <summary>
+        /// Gets or sets the vertical resolution in dpi.
+        /// </summary>
+        /// <value>
+        /// The dpi Y.
+        /// </value>
+        public double DpiY { get; set; }
     }
 }

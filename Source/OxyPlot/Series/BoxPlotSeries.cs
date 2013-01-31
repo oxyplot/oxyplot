@@ -301,8 +301,6 @@ namespace OxyPlot
         /// </param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
-            base.Render(rc, model);
-
             if (this.Items.Count == 0)
             {
                 return;
