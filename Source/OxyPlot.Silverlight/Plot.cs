@@ -37,7 +37,6 @@ namespace OxyPlot.Silverlight
     using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Markup;
-    using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
     /// <summary>
@@ -53,19 +52,9 @@ namespace OxyPlot.Silverlight
         private const string PartGrid = "PART_Grid";
 
         /// <summary>
-        /// The invalidate lock.
-        /// </summary>
-        private readonly object invalidateLock = new object();
-
-        /// <summary>
         /// The model lock.
         /// </summary>
         private readonly object modelLock = new object();
-
-        /// <summary>
-        /// The rendering lock.
-        /// </summary>
-        private readonly object renderingLock = new object();
 
         /// <summary>
         /// The update model and visuals lock.
@@ -103,14 +92,9 @@ namespace OxyPlot.Silverlight
         private PlotModel internalModel;
 
         /// <summary>
-        /// Flag to update data when the plot has been invalidated.
+        /// Invalidation flag (0: no update, 1: update visual elements only, 2:update data).
         /// </summary>
-        private bool invalidateUpdatesData;
-
-        /// <summary>
-        /// The is plot invalidated.
-        /// </summary>
-        private bool isPlotInvalidated;
+        private int isPlotInvalidated;
 
         /// <summary>
         /// The mouse manipulator.
@@ -152,7 +136,6 @@ namespace OxyPlot.Silverlight
             this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
             this.Loaded += this.OnLoaded;
             this.SizeChanged += this.OnSizeChanged;
-            CompositionTarget.Rendering += this.CompositionTargetRendering;
 
             // http://nuggets.hammond-turner.org.uk/2009/01/quickie-simulating-datacontextchanged.html
             this.SetBinding(DataContextWatcherProperty, new Binding());
@@ -252,11 +235,16 @@ namespace OxyPlot.Silverlight
         /// </param>
         public void InvalidatePlot(bool updateData = true)
         {
-            lock (this.invalidateLock)
+            if (updateData)
             {
-                this.isPlotInvalidated = true;
-                this.invalidateUpdatesData = this.invalidateUpdatesData || updateData;
+                this.isPlotInvalidated = 2;
             }
+            else
+            {
+                System.Threading.Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0);
+            }
+
+            this.Invoke(this.InvalidateArrange);
         }
 
         /// <summary>
@@ -308,7 +296,6 @@ namespace OxyPlot.Silverlight
         /// </param>
         public void RefreshPlot(bool updateData)
         {
-            // don't block ui thread on silverlight
             this.InvalidatePlot(updateData);
         }
 
@@ -826,6 +813,33 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
+        /// Provides the behavior for the Arrange pass of Silverlight layout. Classes can override this method to define their own Arrange pass behavior.
+        /// </summary>
+        /// <param name="finalSize">The final area within the parent that this object should use to arrange itself and its children.</param>
+        /// <returns>
+        /// The actual size that is used after the element is arranged in layout.
+        /// </returns>
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (this.ActualWidth > 0 && this.ActualHeight > 0)
+            {
+                if (System.Threading.Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 1) == 1)
+                {
+                    this.UpdateModelAndVisuals(false);
+                }
+                else
+                {
+                    if (System.Threading.Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 2) == 2)
+                    {
+                        this.UpdateModelAndVisuals(true);
+                    }
+                }
+            }
+
+            return base.ArrangeOverride(finalSize);
+        }
+
+        /// <summary>
         /// Called when the DataContext is changed.
         /// </summary>
         /// <param name="sender">
@@ -942,31 +956,6 @@ namespace OxyPlot.Silverlight
         private Point Add(Point p1, Point p2)
         {
             return new Point(p1.X + p2.X, p1.Y + p2.Y);
-        }
-
-        /// <summary>
-        /// Called when the composition target rendering event occurs.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private void CompositionTargetRendering(object sender, EventArgs e)
-        {
-            lock (this.renderingLock)
-            {
-                if (this.isPlotInvalidated)
-                {
-                    this.isPlotInvalidated = false;
-                    if (this.ActualWidth > 0 && this.ActualHeight > 0)
-                    {
-                        this.UpdateModelAndVisuals(this.invalidateUpdatesData);
-                        this.invalidateUpdatesData = false;
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -1146,10 +1135,10 @@ namespace OxyPlot.Silverlight
         /// Pans all axes.
         /// </summary>
         /// <param name="dx">
-        /// The dx.
+        /// The horizontal translation.
         /// </param>
         /// <param name="dy">
-        /// The dy.
+        /// The vertical translation.
         /// </param>
         private void PanAll(double dx, double dy)
         {
@@ -1190,7 +1179,7 @@ namespace OxyPlot.Silverlight
         /// <param name="updateData">
         /// if set to <c>true</c> , all data collections will be updated.
         /// </param>
-        private void UpdateModelAndVisuals(bool updateData = true)
+        private void UpdateModelAndVisuals(bool updateData)
         {
             lock (this.updateModelAndVisualsLock)
             {
@@ -1221,5 +1210,20 @@ namespace OxyPlot.Silverlight
             }
         }
 
+        /// <summary>
+        /// Invokes the specified action on the dispatcher, if necessary.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        private void Invoke(Action action)
+        {
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.BeginInvoke(action);
+            }
+            else
+            {
+                action();
+            }
+        }
     }
 }
