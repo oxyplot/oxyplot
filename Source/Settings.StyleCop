@@ -1,13 +1,15 @@
 <StyleCopSettings Version="105">
   <GlobalSettings>
     <CollectionProperty Name="RecognizedWords">
+      <Value>Conrec</Value>
       <Value>pdf</Value>
+      <Value>png</Value>
       <Value>svg</Value>
+      <Value>veeness</Value>
       <Value>wpf</Value>
+      <Value>xaml</Value>
       <Value>xps</Value>
       <Value>XY</Value>
-      <Value>Conrec</Value>
-      <Value>veeness</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Analyzers>

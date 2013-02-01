@@ -58,11 +58,6 @@ namespace OxyPlot.Wpf
         private const string PartGrid = "PART_Grid";
 
         /// <summary>
-        /// The invalidate lock.
-        /// </summary>
-        private readonly object invalidateLock = new object();
-
-        /// <summary>
         /// The stack of manipulation events. This is used to try to avoid latency of the ManipulationDelta events.
         /// </summary>
         private readonly Stack<ManipulationDeltaEventArgs> manipulationQueue = new Stack<ManipulationDeltaEventArgs>();
@@ -71,11 +66,6 @@ namespace OxyPlot.Wpf
         /// The model lock.
         /// </summary>
         private readonly object modelLock = new object();
-
-        /// <summary>
-        /// The rendering lock.
-        /// </summary>
-        private readonly object renderingLock = new object();
 
         /// <summary>
         /// The tracker definitions.
@@ -113,14 +103,9 @@ namespace OxyPlot.Wpf
         private PlotModel internalModel;
 
         /// <summary>
-        /// Flag to update data when the plot has been invalidated.
+        /// Invalidation flag (0: no update, 1: update visual elements only, 2:update data).
         /// </summary>
-        private bool invalidateUpdatesData;
-
-        /// <summary>
-        /// The is plot invalidated.
-        /// </summary>
-        private bool isPlotInvalidated;
+        private int isPlotInvalidated;
 
         /// <summary>
         /// The last cumulative manipulation scale.
@@ -345,11 +330,16 @@ namespace OxyPlot.Wpf
         /// </param>
         public void InvalidatePlot(bool updateData = true)
         {
-            lock (this.invalidateLock)
+            if (updateData)
             {
-                this.isPlotInvalidated = true;
-                this.invalidateUpdatesData = this.invalidateUpdatesData || updateData;
+                this.isPlotInvalidated = 2;
             }
+            else
+            {
+                System.Threading.Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0);
+            }
+
+            this.Invoke(this.InvalidateArrange);
         }
 
         /// <summary>
@@ -426,15 +416,7 @@ namespace OxyPlot.Wpf
         /// </param>
         public void RefreshPlot(bool updateData)
         {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.Invoke(
-                    DispatcherPriority.Normal, new Action(() => this.UpdateModelAndVisuals(updateData)));
-            }
-            else
-            {
-                this.UpdateModelAndVisuals(updateData);
-            }
+            this.InvalidatePlot(updateData);
         }
 
         /// <summary>
@@ -560,7 +542,7 @@ namespace OxyPlot.Wpf
 
                 var tracker = new ContentControl { Template = trackerTemplate };
 
-                if (tracker != this.currentTracker)
+                if (!ReferenceEquals(tracker, this.currentTracker))
                 {
                     this.HideTracker();
                     if (trackerTemplate != null)
@@ -1053,6 +1035,33 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Called to arrange and size the content of a <see cref="T:System.Windows.Controls.Control" /> object.
+        /// </summary>
+        /// <param name="arrangeBounds">The computed size that is used to arrange the content.</param>
+        /// <returns>
+        /// The size of the control.
+        /// </returns>
+        protected override Size ArrangeOverride(Size arrangeBounds)
+        {
+            if (this.ActualWidth > 0 && this.ActualHeight > 0)
+            {
+                if (System.Threading.Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 1) == 1)
+                {
+                    this.UpdateModelAndVisuals(false);
+                }
+                else
+                {
+                    if (System.Threading.Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 2) == 2)
+                    {
+                        this.UpdateModelAndVisuals(true);
+                    }
+                }
+            }
+
+            return base.ArrangeOverride(arrangeBounds);
+        }
+
+        /// <summary>
         /// Called when the visual appearance is changed.
         /// </summary>
         /// <param name="d">
@@ -1119,20 +1128,8 @@ namespace OxyPlot.Wpf
         /// <param name="eventArgs">The <see cref="System.Windows.Media.RenderingEventArgs"/> instance containing the event data.</param>
         protected override void OnCompositionTargetRendering(object sender, RenderingEventArgs eventArgs)
         {
+            // TODO: get rid of this?
             this.HandleStackedManipulationEvents();
-
-            lock (this.renderingLock)
-            {
-                if (this.isPlotInvalidated)
-                {
-                    this.isPlotInvalidated = false;
-                    if (this.ActualWidth > 0 && this.ActualHeight > 0)
-                    {
-                        this.UpdateModelAndVisuals(this.invalidateUpdatesData);
-                        this.invalidateUpdatesData = false;
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -1181,7 +1178,7 @@ namespace OxyPlot.Wpf
         /// </param>
         private void DoCopy(object sender, ExecutedRoutedEventArgs e)
         {
-            var background = this.Background == Brushes.Transparent ? Brushes.White : this.Background;
+            var background = ReferenceEquals(this.Background, Brushes.Transparent) ? Brushes.White : this.Background;
             var bitmap = PngExporter.ExportToBitmap(this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, background.ToOxyColor());
             Clipboard.SetImage(bitmap);
         }
@@ -1472,7 +1469,7 @@ namespace OxyPlot.Wpf
         /// <param name="updateData">
         /// if set to <c>true</c> , all data collections will be updated.
         /// </param>
-        private void UpdateModelAndVisuals(bool updateData = true)
+        private void UpdateModelAndVisuals(bool updateData)
         {
             lock (this.updateModelAndVisualsLock)
             {
@@ -1522,5 +1519,20 @@ namespace OxyPlot.Wpf
             }
         }
 
+        /// <summary>
+        /// Invokes the specified action on the dispatcher, if necessary.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        private void Invoke(Action action)
+        {
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(DispatcherPriority.Normal, action);
+            }
+            else
+            {
+                action();
+            }
+        }
     }
 }
