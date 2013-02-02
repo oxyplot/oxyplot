@@ -67,7 +67,7 @@ namespace OxyPlot.Series
         /// Gets the x-axis.
         /// </summary>
         /// <value> The x-axis. </value>
-        public Axes.Axis XAxis { get; private set; }
+        public Axis XAxis { get; private set; }
 
         /// <summary>
         /// Gets or sets the x-axis key.
@@ -79,7 +79,7 @@ namespace OxyPlot.Series
         /// Gets the y-axis.
         /// </summary>
         /// <value> The y-axis. </value>
-        public Axes.Axis YAxis { get; private set; }
+        public Axis YAxis { get; private set; }
 
         /// <summary>
         /// Gets or sets the y-axis key.
@@ -191,7 +191,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Sets default values from the plotmodel.
+        /// Sets default values from the plot model.
         /// </summary>
         /// <param name="model">
         /// The plot model.
@@ -363,7 +363,7 @@ namespace OxyPlot.Series
         /// Determines whether the specified point is valid.
         /// </summary>
         /// <param name="pt">
-        /// The pointt.
+        /// The point.
         /// </param>
         /// <param name="xaxis">
         /// The x axis.
@@ -404,5 +404,20 @@ namespace OxyPlot.Series
             return Convert.ToDouble(value);
         }
 
+        /// <summary>
+        /// Verifies that both axes are defined.
+        /// </summary>
+        protected void VerifyAxes()
+        {
+            if (this.XAxis == null)
+            {
+                throw new InvalidOperationException("XAxis not defined.");
+            }
+
+            if (this.YAxis == null)
+            {
+                throw new InvalidOperationException("YAxis not defined.");
+            }
+        }
     }
 }

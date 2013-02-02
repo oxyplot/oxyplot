@@ -155,11 +155,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            if (this.XAxis == null || this.YAxis == null)
-            {
-                this.Trace("Axis not defined.");
-                return;
-            }
+            this.VerifyAxes();
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 

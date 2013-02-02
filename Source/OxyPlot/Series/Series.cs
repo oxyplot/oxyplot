@@ -29,13 +29,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Series
 {
-    using System;
     using System.Globalization;
 
-    using OxyPlot.Annotations;
     using OxyPlot.Axes;
-    using OxyPlot.Series;
-
+    
     /// <summary>
     /// Provides an abstract base class for plot series.
     /// </summary>
@@ -175,7 +172,7 @@ namespace OxyPlot.Series
         protected internal abstract bool IsUsing(Axis axis);
 
         /// <summary>
-        /// Sets default values (colors, line style etc) from the plotmodel.
+        /// Sets default values (colors, line style etc) from the plot model.
         /// </summary>
         /// <param name="model">
         /// A plot model.
