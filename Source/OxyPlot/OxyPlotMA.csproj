@@ -57,7 +57,7 @@
     <Compile Include="Annotations\ImageAnnotation.cs" />
     <Compile Include="Annotations\TileMapAnnotation.cs" />
     <Compile Include="Foundation\PlotLength.cs" />
-    <Compile Include="Foundation\PlotUnitType.cs" />
+    <Compile Include="Foundation\PlotLengthUnit.cs" />
     <Compile Include="Annotations\RectangleAnnotation.cs" />
     <Compile Include="Annotations\TextAnnotation.cs" />
     <Compile Include="Annotations\PolygonAnnotation.cs" />
@@ -88,6 +88,7 @@
     <Compile Include="Foundation\OxyPalette.cs" />
     <Compile Include="Foundation\OxyPalettes.cs" />
     <Compile Include="Foundation\ScreenVector.cs" />
+    <Compile Include="Foundation\StreamExtensions.cs" />
     <Compile Include="Foundation\StringHelper.cs" />
     <Compile Include="Foundation\DoubleExtensions.cs" />
     <Compile Include="Foundation\FractionHelper.cs" />

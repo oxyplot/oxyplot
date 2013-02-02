@@ -92,7 +92,6 @@ namespace OxyPlot.MonoForAndroid
         }
 
         private readonly object renderingLock = new object();
-        private readonly object modelLock = new object();
 
         protected override void OnDraw(Canvas canvas)
         {
@@ -118,9 +117,22 @@ namespace OxyPlot.MonoForAndroid
                 if (this.model != null)
                 {
                     var rc = new CanvasRenderContext(canvas);
-                    this.model.Render(rc);
+                    using (var bounds = new Rect())
+                    {
+                        canvas.GetClipBounds(bounds);
+
+                        // Render the background
+                        if (this.model.Background != null)
+                        {
+                            // TODO: can we set this.Background instead?
+                            rc.DrawRectangle(new OxyRect(bounds.Left, bounds.Top, bounds.Width(), bounds.Height()), this.model.Background, null, 0);
+                        }
+                        
+                        this.model.Render(rc, bounds.Right - bounds.Left, bounds.Bottom - bounds.Top);
+                    }
                 }
             }
+
             /*
             canvas.DrawColor(Color.White);
 

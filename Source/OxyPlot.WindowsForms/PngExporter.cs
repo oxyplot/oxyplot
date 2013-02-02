@@ -69,9 +69,9 @@ namespace OxyPlot.WindowsForms
                     }
 
                     var rc = new GraphicsRenderContext();
-                    rc.Initialize(g, width, height);
+                    rc.SetGraphicsTarget(g);
                     model.Update();
-                    model.Render(rc);
+                    model.Render(rc, width, height);
                     bm.Save(fileName, ImageFormat.Png);
                 }
             }

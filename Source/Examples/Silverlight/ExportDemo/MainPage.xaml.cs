@@ -38,8 +38,11 @@ using System.Windows.Shapes;
 
 namespace ExportDemo
 {
+    using System.Reflection;
+
     using OxyPlot;
     using OxyPlot.Pdf;
+    using OxyPlot.Silverlight;
 
     public partial class MainPage : UserControl
     {
@@ -48,6 +51,14 @@ namespace ExportDemo
             InitializeComponent();
             var tmp = new PlotModel("Export demo");
             tmp.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 2, 100, "sin(x)"));
+
+            //var assembly = Assembly.GetExecutingAssembly();
+            //using (var stream = assembly.GetManifestResourceStream("ExportDemo.OxyPlot.png"))
+            //{
+            //    var image = new OxyImage(stream);
+            //    tmp.Annotations.Add(new ImageAnnotation(image, 1, 0, HorizontalTextAlign.Right, VerticalTextAlign.Bottom));
+            //}
+
             PlotModel = tmp;
 
             DataContext = this;
@@ -63,6 +74,19 @@ namespace ExportDemo
                 using (var s = d.OpenFile())
                 {
                     PdfExporter.Export(Plot1.ActualModel, s, Plot1.ActualWidth, Plot1.ActualHeight);
+                }
+            }
+        }
+
+        private void SaveSvg_Click(object sender, RoutedEventArgs e)
+        {
+            var d = new SaveFileDialog { Filter = "Svg files (*.svg)|*.svg", DefaultExt = ".svg" };
+            if (d.ShowDialog().Value)
+            {
+                using (var s = d.OpenFile())
+                {
+                    var rc = new SilverlightRenderContext(new Canvas());
+                    SvgExporter.Export(Plot1.ActualModel, s, Plot1.ActualWidth, Plot1.ActualHeight, true, rc);
                 }
             }
         }

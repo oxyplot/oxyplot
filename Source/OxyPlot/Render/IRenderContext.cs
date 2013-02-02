@@ -37,22 +37,6 @@ namespace OxyPlot
     public interface IRenderContext
     {
         /// <summary>
-        /// Gets the height of the rendering area.
-        /// </summary>
-        double Height { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether to paint the background.
-        /// </summary>
-        /// <value><c>true</c> if the background should be painted; otherwise, <c>false</c>.</value>
-        bool PaintBackground { get; }
-
-        /// <summary>
-        /// Gets the width of the rendering area.
-        /// </summary>
-        double Width { get; }
-
-        /// <summary>
         /// Draws an ellipse.
         /// </summary>
         /// <param name="rect">

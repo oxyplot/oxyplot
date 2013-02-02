@@ -582,6 +582,16 @@ namespace OxyPlot
         public OxyThickness Padding { get; set; }
 
         /// <summary>
+        /// Gets the total width of the plot (in device units).
+        /// </summary>
+        public double Width { get; private set; }
+
+        /// <summary>
+        /// Gets the total height of the plot (in device units).
+        /// </summary>
+        public double Height { get; private set; }
+
+        /// <summary>
         /// Gets the area including both the plot and the axes. Outside legends are rendered outside this rectangle.
         /// </summary>
         /// <value> The plot and axis area. </value>

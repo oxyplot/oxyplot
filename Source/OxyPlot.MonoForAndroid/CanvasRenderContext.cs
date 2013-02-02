@@ -47,24 +47,7 @@ namespace OxyPlot.MonoForAndroid
         public CanvasRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
-            this.PaintBackground = true;
-            using (var bounds = new Rect())
-            {
-                this.canvas.GetClipBounds(bounds);
-                this.Width = bounds.Right - bounds.Left;
-                this.Height = bounds.Bottom - bounds.Top;
-            }
         }
-
-        /// <summary>
-        /// Gets the height of the rendering area.
-        /// </summary>
-        /// <value></value>
-        public double Height { get; set; }
-
-        public bool PaintBackground { get; set; }
-
-        public double Width { get; set; }
 
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness = 1)
         {
@@ -278,8 +261,91 @@ namespace OxyPlot.MonoForAndroid
             }
         }
 
+        /// <summary>
+        /// Sets the tool tip for the following items.
+        /// </summary>
+        /// <param name="text">The text in the tooltip.</param>
+        /// <params>
+        /// This is only used in the plot controls.
+        /// </params>
         public void SetToolTip(string text)
         {
+            // TODO
+        }
+
+        /// <summary>
+        /// Cleans up resources not in use.
+        /// </summary>
+        /// <remarks>
+        /// This method is called at the end of each rendering.
+        /// </remarks>
+        public void CleanUp()
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Gets the size of the specified image.
+        /// </summary>
+        /// <param name="source">The image source.</param>
+        /// <returns>
+        /// The image info.
+        /// </returns>
+        public OxyImageInfo GetImageInfo(OxyImage source)
+        {
+            // TODO
+            return null;
+        }
+
+        /// <summary>
+        /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcY">The y-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcWidth">Width of the portion of the source image to draw.</param>
+        /// <param name="srcHeight">Height of the portion of the source image to draw.</param>
+        /// <param name="destX">The x-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destY">The y-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destWidth">The width of the drawn image.</param>
+        /// <param name="destHeight">The height of the drawn image.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
+        public void DrawImage(
+            OxyImage source,
+            uint srcX,
+            uint srcY,
+            uint srcWidth,
+            uint srcHeight,
+            double destX,
+            double destY,
+            double destWidth,
+            double destHeight,
+            double opacity,
+            bool interpolate)
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Sets the clip rectangle.
+        /// </summary>
+        /// <param name="rect">The clip rectangle.</param>
+        /// <returns>
+        /// True if the clip rectangle was set.
+        /// </returns>
+        public bool SetClip(OxyRect rect)
+        {
+            // TODO
+            return false;
+        }
+
+        /// <summary>
+        /// Resets the clip rectangle.
+        /// </summary>
+        public void ResetClip()
+        {
+            // TODO
         }
     }
 }

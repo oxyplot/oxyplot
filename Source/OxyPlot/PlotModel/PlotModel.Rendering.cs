@@ -38,17 +38,20 @@ namespace OxyPlot
         /// <summary>
         /// Renders the plot with the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        public void Render(IRenderContext rc)
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        public void Render(IRenderContext rc, double width, double height)
         {
             lock (this.syncRoot)
             {
-                if (rc.Width <= 0 || rc.Height <= 0)
+                if (width <= 0 || height <= 0)
                 {
                     return;
                 }
+                
+                this.Width = width;
+                this.Height = height;
 
                 this.ActualPlotMargins = this.PlotMargins;
                 this.EnsureLegendProperties();
@@ -260,14 +263,8 @@ namespace OxyPlot
         /// </param>
         private void RenderBackgrounds(IRenderContext rc)
         {
-            // Render the background of the plot
-            if (this.Background != null && rc.PaintBackground)
-            {
-                rc.DrawRectangle(new OxyRect(0, 0, rc.Width, rc.Height), this.Background, null, 0);
-            }
-
             // Render the main background of the plot area (only if there are axes)
-            // The border is rendered by DrawBox to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
+            // The border is rendered by DrawRectangleAsPolygon to ensure that it is pixel aligned with the tick marks.
             if (this.Axes.Count > 0 && this.PlotAreaBackground != null)
             {
                 rc.DrawRectangleAsPolygon(this.PlotArea, this.PlotAreaBackground, null, 0);
@@ -382,8 +379,8 @@ namespace OxyPlot
             var plotArea = new OxyRect(
                 this.Padding.Left,
                 this.Padding.Top,
-                rc.Width - this.Padding.Left - this.Padding.Right,
-                rc.Height - this.Padding.Top - this.Padding.Bottom);
+                this.Width - this.Padding.Left - this.Padding.Right,
+                this.Height - this.Padding.Top - this.Padding.Bottom);
 
             var titleSize = this.MeasureTitles(rc);
 

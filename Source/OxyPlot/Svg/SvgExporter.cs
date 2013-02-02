@@ -43,13 +43,16 @@ namespace OxyPlot
         /// <param name="stream">The output stream.</param>
         /// <param name="width">The width (points).</param>
         /// <param name="height">The height (points).</param>
+        /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
         /// <param name="textMeasurer">The text measurer.</param>
-        public static void Export(PlotModel model, Stream stream, double width, double height, IRenderContext textMeasurer = null)
+        public static void Export(PlotModel model, Stream stream, double width, double height, bool isDocument = false, IRenderContext textMeasurer = null)
         {
-            using (var svgrc = new SvgRenderContext(stream, width, height, true, textMeasurer))
+            using (var rc = new SvgRenderContext(stream, width, height, true, textMeasurer, model.Background))
             {
                 model.Update();
-                model.Render(svgrc);
+                model.Render(rc, width, height);
+                rc.Complete();
+                rc.Flush();
             }
         }
 
@@ -67,7 +70,7 @@ namespace OxyPlot
             using (var svgrc = new SvgRenderContext(fileName, width, height, textMeasurer))
             {
                 model.Update();
-                model.Render(svgrc);
+                model.Render(svgrc, width, height);
             }
         }
 #endif
@@ -78,8 +81,8 @@ namespace OxyPlot
         /// <param name="model">The model.</param>
         /// <param name="width">The width (points).</param>
         /// <param name="height">The height (points).</param>
-        /// <param name="textMeasurer">The text measurer.</param>
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
+        /// <param name="textMeasurer">The text measurer.</param>
         /// <returns>
         /// The plot as a svg string.
         /// </returns>
@@ -88,11 +91,7 @@ namespace OxyPlot
             string svg;
             using (var ms = new MemoryStream())
             {
-                var svgrc = new SvgRenderContext(ms, width, height, isDocument, textMeasurer);
-                model.Update();
-                model.Render(svgrc);
-                svgrc.Complete();
-                svgrc.Flush();
+                Export(model, ms, width, height, isDocument, textMeasurer);
                 ms.Flush();
                 ms.Position = 0;
                 var sr = new StreamReader(ms);

@@ -65,10 +65,9 @@ namespace OxyPlot.Wpf
             g.Arrange(new Rect(0, 0, width, height));
             g.UpdateLayout();
 
-            var rc = new ShapesRenderContext { UseStreamGeometry = false };
-            rc.Initialize(c);
+            var rc = new ShapesRenderContext(c) { UseStreamGeometry = false };
             model.Update();
-            model.Render(rc);
+            model.Render(rc, width, height);
 
             var sb = new StringBuilder();
             using (var sw = new StringWriter(sb))
