@@ -99,7 +99,7 @@ namespace ExportDemo
             {
                 using (var s = d.OpenFile())
                 {
-                    // PngExporter.Export(Plot1.ActualModel, s, Plot1.ActualWidth, Plot1.ActualHeight);
+                    PngExporter.Export(Plot1.ActualModel, s, Plot1.ActualWidth, Plot1.ActualHeight);
                 }
             }
         }

@@ -12,7 +12,7 @@
     <RootNamespace>ExportDemo</RootNamespace>
     <AssemblyName>ExportDemo</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <SilverlightApplication>true</SilverlightApplication>
     <SupportedCultures>
@@ -54,7 +54,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\Output\SL5\Examples\Silverlight\ExportDemo\</OutputPath>
+    <OutputPath>..\..\..\..\Output\SL4\Examples\Silverlight\ExportDemo\</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
@@ -114,13 +114,13 @@
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\OxyPlot.Pdf\OxyPlot.Pdf_SL5.csproj">
+    <ProjectReference Include="..\..\..\OxyPlot.Pdf\OxyPlot.Pdf_SL4.csproj">
       <Project>{c84caeba-3326-41c8-81da-b1eb680d7fa1}</Project>
-      <Name>OxyPlot.Pdf_SL5</Name>
+      <Name>OxyPlot.Pdf_SL4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot.Silverlight\OxyPlot.Silverlight.csproj">
-      <Project>{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}</Project>
-      <Name>OxyPlot.Silverlight</Name>
+    <ProjectReference Include="..\..\..\OxyPlot.Silverlight\OxyPlot.Silverlight_SL4.csproj">
+      <Project>{2eb36333-58c3-47fd-b01f-c1c3faf1888a}</Project>
+      <Name>OxyPlot.Silverlight_SL4</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
       <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
