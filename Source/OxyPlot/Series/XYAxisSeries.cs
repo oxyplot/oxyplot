@@ -27,10 +27,12 @@
 //   Abstract base class for series that contains an X-axis and Y-axis.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
+
+    using OxyPlot.Axes;
 
     /// <summary>
     /// Provides an abstract base class for series that are related to an X-axis and a Y-axis.
@@ -65,7 +67,7 @@ namespace OxyPlot
         /// Gets the x-axis.
         /// </summary>
         /// <value> The x-axis. </value>
-        public Axis XAxis { get; private set; }
+        public Axes.Axis XAxis { get; private set; }
 
         /// <summary>
         /// Gets or sets the x-axis key.
@@ -77,7 +79,7 @@ namespace OxyPlot
         /// Gets the y-axis.
         /// </summary>
         /// <value> The y-axis. </value>
-        public Axis YAxis { get; private set; }
+        public Axes.Axis YAxis { get; private set; }
 
         /// <summary>
         /// Gets or sets the y-axis key.

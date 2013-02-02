@@ -27,7 +27,7 @@
 //   Represents an item used in the ErrorColumnSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     /// <summary>
     /// Represents an item used in the ErrorColumnSeries.

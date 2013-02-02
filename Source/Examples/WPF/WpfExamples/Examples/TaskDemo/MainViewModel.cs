@@ -34,6 +34,7 @@ namespace TaskDemo
     using System.Threading.Tasks;
 
     using OxyPlot;
+    using OxyPlot.Series;
 
     public class MainViewModel
     {

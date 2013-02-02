@@ -27,10 +27,14 @@
 //   Abstract base class for all series.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
     using System.Globalization;
+
+    using OxyPlot.Annotations;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     /// <summary>
     /// Provides an abstract base class for plot series.

@@ -31,6 +31,9 @@ using OxyPlot;
 
 namespace SparklineDemo
 {
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     public partial class MainPage
     {
         public List<Trend> Trends { get; set; }

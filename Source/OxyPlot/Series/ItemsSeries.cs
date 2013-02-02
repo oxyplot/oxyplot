@@ -27,7 +27,7 @@
 //   Abstract base class for series that can contain items.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System.Collections;
     using System.Linq;

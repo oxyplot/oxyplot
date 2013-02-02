@@ -76,9 +76,9 @@ namespace ExampleBrowser
             this.plot1.KeyboardPanHorizontalStep = 0.1D;
             this.plot1.KeyboardPanVerticalStep = 0.1D;
             this.plot1.Location = new System.Drawing.Point(0, 0);
-            plotModel1.Annotations = ((System.Collections.ObjectModel.Collection<OxyPlot.Annotation>)(resources.GetObject("plotModel1.Annotations")));
+            plotModel1.Annotations = ((System.Collections.ObjectModel.Collection<OxyPlot.Annotations.Annotation>)(resources.GetObject("plotModel1.Annotations")));
             plotModel1.AutoAdjustPlotMargins = true;
-            plotModel1.Axes = ((System.Collections.ObjectModel.Collection<OxyPlot.Axis>)(resources.GetObject("plotModel1.Axes")));
+            plotModel1.Axes = ((System.Collections.ObjectModel.Collection<OxyPlot.Axes.Axis>)(resources.GetObject("plotModel1.Axes")));
             plotModel1.AxisTierDistance = 4D;
             plotModel1.Background = null;
             plotModel1.Culture = null;
@@ -114,7 +114,7 @@ namespace ExampleBrowser
             plotModel1.PlotAreaBorderColor = ((OxyPlot.OxyColor)(resources.GetObject("plotModel1.PlotAreaBorderColor")));
             plotModel1.PlotAreaBorderThickness = 1D;
             plotModel1.PlotType = OxyPlot.PlotType.XY;
-            plotModel1.Series = ((System.Collections.ObjectModel.Collection<OxyPlot.Series>)(resources.GetObject("plotModel1.Series")));
+            plotModel1.Series = ((System.Collections.ObjectModel.Collection<OxyPlot.Series.Series>)(resources.GetObject("plotModel1.Series")));
             plotModel1.Subtitle = null;
             plotModel1.SubtitleColor = null;
             plotModel1.SubtitleFont = null;

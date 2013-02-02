@@ -33,6 +33,10 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using OxyPlot.Annotations;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     [Examples("ScatterSeries")]
     public class ScatterSeriesExamples : ExamplesBase
     {

@@ -27,7 +27,7 @@
 //   Represents a point in a ScatterSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System.Diagnostics.CodeAnalysis;
 

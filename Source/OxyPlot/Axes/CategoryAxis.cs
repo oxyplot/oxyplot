@@ -27,12 +27,14 @@
 //   Represents a category axes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+
+    using OxyPlot.Series;
 
     /// <summary>
     /// Represents a category axis.

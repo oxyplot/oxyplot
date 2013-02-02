@@ -30,6 +30,9 @@ namespace CsvDemo
     using System.Globalization;
     using System.IO;
     using OxyPlot;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     using WpfExamples;
 
     public class MainViewModel : Observable

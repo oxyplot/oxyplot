@@ -27,7 +27,7 @@
 //   Specifies a series that can be stacked.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     /// <summary>
     /// Defines properties for stacked series.

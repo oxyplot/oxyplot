@@ -94,7 +94,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the internal series.
         /// </summary>
-        public OxyPlot.Series InternalSeries { get; protected set; }
+        public OxyPlot.Series.Series InternalSeries { get; protected set; }
 
         /// <summary>
         /// Gets or sets Title.
@@ -150,7 +150,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// A series.
         /// </returns>
-        public abstract OxyPlot.Series CreateModel();
+        public abstract OxyPlot.Series.Series CreateModel();
 
         /// <summary>
         /// The appearance changed.
@@ -227,7 +227,7 @@ namespace OxyPlot.Wpf
         /// <param name="s">
         /// The series.
         /// </param>
-        protected virtual void SynchronizeProperties(OxyPlot.Series s)
+        protected virtual void SynchronizeProperties(OxyPlot.Series.Series s)
         {
             s.Background = this.Background.ToOxyColor();
             s.Title = this.Title;

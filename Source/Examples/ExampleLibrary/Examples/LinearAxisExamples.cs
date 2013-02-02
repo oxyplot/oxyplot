@@ -29,6 +29,8 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using OxyPlot.Axes;
+
     [Examples("LinearAxis")]
     public static class LinearAxisExamples
     {

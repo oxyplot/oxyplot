@@ -27,7 +27,7 @@
 //   Represents a polygon annotation.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Annotations
 {
     using System.Collections.Generic;
     using System.Linq;

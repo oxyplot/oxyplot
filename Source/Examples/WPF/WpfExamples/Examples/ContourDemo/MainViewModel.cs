@@ -34,6 +34,7 @@ namespace ContourDemo
     using System.ComponentModel;
 
     using OxyPlot;
+    using OxyPlot.Series;
 
     /// <summary>
     /// The main view model.

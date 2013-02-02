@@ -28,6 +28,8 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using OxyPlot.Series;
+
     [Examples("PieSeries")]
     public static class PieSeriesExamples
     {

@@ -36,6 +36,9 @@ namespace OxyPlot.WindowsForms
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     /// <summary>
     /// Represents a control that displays a plot.
     /// </summary>
@@ -197,10 +200,10 @@ namespace OxyPlot.WindowsForms
         /// The point.
         /// </param>
         /// <param name="xaxis">
-        /// The xaxis.
+        /// The x axis.
         /// </param>
         /// <param name="yaxis">
-        /// The yaxis.
+        /// The y axis.
         /// </param>
         public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis)
         {
@@ -218,7 +221,7 @@ namespace OxyPlot.WindowsForms
         /// Get the series from a point.
         /// </summary>
         /// <param name="pt">
-        /// The ppint.
+        /// The point (screen coordinates).
         /// </param>
         /// <param name="limit">
         /// The limit.
@@ -319,10 +322,10 @@ namespace OxyPlot.WindowsForms
         /// Pans all axes.
         /// </summary>
         /// <param name="deltax">
-        /// The deltax.
+        /// The horizontal delta.
         /// </param>
         /// <param name="deltay">
-        /// The deltay.
+        /// The vertical delta.
         /// </param>
         public void PanAll(double deltax, double deltay)
         {
@@ -890,6 +893,5 @@ namespace OxyPlot.WindowsForms
                 MessageBox.Show(this, ee.Message, "OxyPlot");
             }
         }
-
     }
 }

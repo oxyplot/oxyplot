@@ -30,6 +30,8 @@ namespace ExampleLibrary
     using System.Collections.ObjectModel;
 
     using OxyPlot;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     public class BarAndColumnSeriesExamples<TSeries, TItem>
         where TSeries : BarSeriesBase<TItem>, new()

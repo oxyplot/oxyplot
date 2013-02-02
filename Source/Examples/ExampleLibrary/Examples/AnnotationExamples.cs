@@ -31,6 +31,10 @@ namespace ExampleLibrary
     using System;
     using System.Reflection;
 
+    using OxyPlot.Annotations;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     [Examples("Annotations")]
     public static class AnnotationExamples
     {

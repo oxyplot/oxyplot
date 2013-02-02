@@ -26,7 +26,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace ExampleLibrary
 {
-    using OxyPlot;
+    using OxyPlot.Series;
 
     [Examples("ColumnSeries")]
     public class ColumnSeriesExamples : BarAndColumnSeriesExamples<ColumnSeries, ColumnItem>

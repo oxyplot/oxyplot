@@ -27,10 +27,12 @@
 //   Annotation base class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Annotations
 {
     using System;
     using System.Globalization;
+
+    using OxyPlot.Axes;
 
     /// <summary>
     /// Provides an abstract base class for annotations.

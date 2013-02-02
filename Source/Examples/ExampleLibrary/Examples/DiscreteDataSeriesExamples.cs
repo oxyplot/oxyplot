@@ -29,6 +29,8 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using OxyPlot.Series;
+
     [Examples("Discrete Data Series")]
     public static class DiscreteDataSeriesExamples
     {

@@ -39,6 +39,9 @@ namespace OxyPlot.Silverlight
     using System.Windows.Markup;
     using System.Windows.Media.Imaging;
 
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     /// <summary>
     /// The Silverlight Plot control.
     /// </summary>

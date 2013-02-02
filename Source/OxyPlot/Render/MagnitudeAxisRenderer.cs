@@ -32,6 +32,8 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
 
+    using OxyPlot.Axes;
+
     /// <summary>
     /// Provides functionality to render <see cref="MagnitudeAxis"/>.
     /// </summary>

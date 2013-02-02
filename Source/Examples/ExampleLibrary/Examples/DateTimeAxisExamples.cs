@@ -34,6 +34,9 @@ namespace ExampleLibrary
     using System.Diagnostics;
     using System.Globalization;
 
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     [Examples("DateTimeAxis")]
     public static class DateTimeAxisExamples
     {

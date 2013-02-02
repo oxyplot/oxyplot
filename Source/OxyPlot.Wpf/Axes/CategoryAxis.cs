@@ -73,7 +73,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         static CategoryAxis()
         {
-            PositionProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(AxisPosition.Bottom, DataChanged));
+            PositionProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(Axes.AxisPosition.Bottom, DataChanged));
             MinimumPaddingProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(0.0, DataChanged));
             MaximumPaddingProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(0.0, DataChanged));
             MajorStepProperty.OverrideMetadata(typeof(CategoryAxis), new PropertyMetadata(1.0, DataChanged));
@@ -84,7 +84,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public CategoryAxis()
         {
-            this.InternalAxis = new OxyPlot.CategoryAxis();
+            this.InternalAxis = new OxyPlot.Axes.CategoryAxis();
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <returns>
         /// </returns>
-        public override OxyPlot.Axis CreateModel()
+        public override OxyPlot.Axes.Axis CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAxis;
@@ -187,7 +187,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = (OxyPlot.CategoryAxis)this.InternalAxis;
+            var a = (OxyPlot.Axes.CategoryAxis)this.InternalAxis;
             a.IsTickCentered = this.IsTickCentered;
             a.ItemsSource = this.ItemsSource;
             a.LabelField = this.LabelField;

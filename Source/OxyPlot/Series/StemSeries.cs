@@ -27,7 +27,7 @@
 //   Represents a series that plots discrete data in a stem plot.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System.Collections.Generic;
 

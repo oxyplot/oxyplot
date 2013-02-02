@@ -27,7 +27,7 @@
 //   Represents an arrow annotation.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Annotations
 {
     /// <summary>
     /// Represents an arrow annotation.

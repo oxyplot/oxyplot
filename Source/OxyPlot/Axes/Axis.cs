@@ -27,12 +27,14 @@
 //   Abstract base class for axes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
+
+    using OxyPlot.Series;
 
     /// <summary>
     /// Provides an abstract base class for axes.

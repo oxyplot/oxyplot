@@ -207,7 +207,7 @@ namespace OxyPlot.Wpf
         /// The layer property.
         /// </summary>
         public static readonly DependencyProperty LayerProperty = DependencyProperty.Register(
-            "Layer", typeof(AxisLayer), typeof(Axis), new PropertyMetadata(AxisLayer.BelowSeries));
+            "Layer", typeof(Axes.AxisLayer), typeof(Axis), new PropertyMetadata(Axes.AxisLayer.BelowSeries));
 
         /// <summary>
         /// The major gridline color property.
@@ -328,7 +328,7 @@ namespace OxyPlot.Wpf
         /// The position property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            "Position", typeof(AxisPosition), typeof(Axis), new PropertyMetadata(AxisPosition.Left, AppearanceChanged));
+            "Position", typeof(Axes.AxisPosition), typeof(Axis), new PropertyMetadata(Axes.AxisPosition.Left, AppearanceChanged));
 
         /// <summary>
         /// The positionTier property
@@ -358,7 +358,7 @@ namespace OxyPlot.Wpf
         /// The tick style property.
         /// </summary>
         public static readonly DependencyProperty TickStyleProperty = DependencyProperty.Register(
-            "TickStyle", typeof(TickStyle), typeof(Axis), new PropertyMetadata(TickStyle.Outside, AppearanceChanged));
+            "TickStyle", typeof(Axes.TickStyle), typeof(Axis), new PropertyMetadata(Axes.TickStyle.Outside, AppearanceChanged));
 
         /// <summary>
         /// The tickline color property.
@@ -433,7 +433,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the internal axis.
         /// </summary>
-        public OxyPlot.Axis InternalAxis { get; protected set; }
+        public OxyPlot.Axes.Axis InternalAxis { get; protected set; }
 
         /// <summary>
         /// Gets or sets AbsoluteMaximum.
@@ -853,11 +853,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets Layer.
         /// </summary>
-        public AxisLayer Layer
+        public Axes.AxisLayer Layer
         {
             get
             {
-                return (AxisLayer)this.GetValue(LayerProperty);
+                return (Axes.AxisLayer)this.GetValue(LayerProperty);
             }
 
             set
@@ -1109,11 +1109,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets Position.
         /// </summary>
-        public AxisPosition Position
+        public Axes.AxisPosition Position
         {
             get
             {
-                return (AxisPosition)this.GetValue(PositionProperty);
+                return (Axes.AxisPosition)this.GetValue(PositionProperty);
             }
 
             set
@@ -1208,11 +1208,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the tick style.
         /// </summary>
-        public TickStyle TickStyle
+        public Axes.TickStyle TickStyle
         {
             get
             {
-                return (TickStyle)this.GetValue(TickStyleProperty);
+                return (Axes.TickStyle)this.GetValue(TickStyleProperty);
             }
 
             set
@@ -1416,7 +1416,7 @@ namespace OxyPlot.Wpf
         /// Creates the model.
         /// </summary>
         /// <returns>An axis object.</returns>
-        public abstract OxyPlot.Axis CreateModel();
+        public abstract OxyPlot.Axes.Axis CreateModel();
 
         /// <summary>
         /// The visual appearance changed.

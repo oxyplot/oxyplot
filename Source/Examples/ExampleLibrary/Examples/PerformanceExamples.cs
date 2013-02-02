@@ -32,6 +32,8 @@ namespace ExampleLibrary
     using System.Linq;
 
     using OxyPlot;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     [Examples("Performance")]
     public class PerformanceExamples : ExamplesBase

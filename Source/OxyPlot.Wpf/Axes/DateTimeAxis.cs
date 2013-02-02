@@ -33,6 +33,8 @@ namespace OxyPlot.Wpf
     using System.Globalization;
     using System.Windows;
 
+    using OxyPlot.Axes;
+
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.DateTimeAxis.
     /// </summary>
@@ -93,7 +95,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public DateTimeAxis()
         {
-            this.InternalAxis = new OxyPlot.DateTimeAxis();
+            this.InternalAxis = new OxyPlot.Axes.DateTimeAxis();
         }
 
         /// <summary>
@@ -197,7 +199,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <returns>
         /// </returns>
-        public override OxyPlot.Axis CreateModel()
+        public override OxyPlot.Axes.Axis CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAxis;
@@ -209,7 +211,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.InternalAxis as OxyPlot.DateTimeAxis;
+            var a = this.InternalAxis as OxyPlot.Axes.DateTimeAxis;
 
             a.IntervalType = this.IntervalType;
             a.MinorIntervalType = this.MinorIntervalType;
@@ -218,12 +220,12 @@ namespace OxyPlot.Wpf
 
             if (this.FirstDateTime > DateTime.MinValue)
             {
-                a.Minimum = OxyPlot.DateTimeAxis.ToDouble(this.FirstDateTime);
+                a.Minimum = OxyPlot.Axes.DateTimeAxis.ToDouble(this.FirstDateTime);
             }
 
             if (this.LastDateTime < DateTime.MaxValue)
             {
-                a.Maximum = OxyPlot.DateTimeAxis.ToDouble(this.LastDateTime);
+                a.Maximum = OxyPlot.Axes.DateTimeAxis.ToDouble(this.LastDateTime);
             }
         }
 

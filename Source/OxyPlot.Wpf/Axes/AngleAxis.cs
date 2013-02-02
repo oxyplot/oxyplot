@@ -50,7 +50,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public AngleAxis()
         {
-            this.InternalAxis = new OxyPlot.AngleAxis();
+            this.InternalAxis = new OxyPlot.Axes.AngleAxis();
             this.MajorGridlineStyle = LineStyle.Solid;
             this.MinorGridlineStyle = LineStyle.Solid;
         }

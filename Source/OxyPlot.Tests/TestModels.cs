@@ -31,6 +31,8 @@ namespace OxyPlot.Tests
 {
     using System;
 
+    using OxyPlot.Series;
+
     /// <summary>
     /// Provides methods to create test models.
     /// </summary>

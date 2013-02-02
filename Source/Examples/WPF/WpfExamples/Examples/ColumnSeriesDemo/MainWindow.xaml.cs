@@ -33,6 +33,9 @@ using OxyPlot;
 
 namespace ColumnSeriesDemo
 {
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

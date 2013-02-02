@@ -27,7 +27,7 @@
 //   Base class for series that contain a collection of IDataPoints.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
     using System.Collections;

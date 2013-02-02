@@ -28,6 +28,9 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     [Examples("TornadoBarSeries")]
     public static class TornadoBarSeriesExamples
     {

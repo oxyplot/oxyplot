@@ -27,7 +27,7 @@
 //   Tick styles.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     /// <summary>
     /// Specifies the style of axis ticks.

@@ -29,6 +29,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
 {
+    using OxyPlot.Annotations;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     /// <summary>
     /// Defines functionality in the Plot controls.
     /// </summary>
@@ -66,7 +70,7 @@ namespace OxyPlot
         /// <returns>
         /// The series.
         /// </returns>
-        Series GetSeriesFromPoint(ScreenPoint pt, double limit = 100);
+        Series.Series GetSeriesFromPoint(ScreenPoint pt, double limit = 100);
 
         /// <summary>
         /// Hides the tracker.

@@ -29,6 +29,8 @@ namespace ExampleLibrary
     using System;
 
     using OxyPlot;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     [Examples("Cartesian axes")]
     public class CartesianAxesExamples : ExamplesBase

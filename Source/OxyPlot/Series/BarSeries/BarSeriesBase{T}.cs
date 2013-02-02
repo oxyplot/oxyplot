@@ -27,7 +27,7 @@
 //   Generic base class that provides common properties and methods for the BarSeries and ColumnSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
     using System.Collections;

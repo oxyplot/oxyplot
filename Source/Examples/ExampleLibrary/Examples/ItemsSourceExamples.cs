@@ -28,6 +28,8 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using OxyPlot.Series;
+
     [Examples("ItemsSource")]
     public class ItemsSourceExamples : ExamplesBase
     {

@@ -27,10 +27,12 @@
 //   Represents a series for high-low plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
+
+    using OxyPlot.Axes;
 
     /// <summary>
     /// Represents a series for high-low plots.

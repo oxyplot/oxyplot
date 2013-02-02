@@ -42,6 +42,7 @@ namespace ExportDemo
 
     using OxyPlot;
     using OxyPlot.Pdf;
+    using OxyPlot.Series;
     using OxyPlot.Silverlight;
 
     public partial class MainPage : UserControl

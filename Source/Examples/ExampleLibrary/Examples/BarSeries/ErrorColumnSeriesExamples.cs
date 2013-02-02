@@ -27,6 +27,8 @@
 namespace ExampleLibrary
 {
     using OxyPlot;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     [Examples("ErrorColumnSeries")]
     public class ErrorColumnSeriesExamples

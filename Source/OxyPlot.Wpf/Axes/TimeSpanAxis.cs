@@ -39,7 +39,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public TimeSpanAxis()
         {
-            this.InternalAxis = new OxyPlot.TimeSpanAxis();
+            this.InternalAxis = new OxyPlot.Axes.TimeSpanAxis();
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <returns>
         /// </returns>
-        public override OxyPlot.Axis CreateModel()
+        public override OxyPlot.Axes.Axis CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAxis;
@@ -59,7 +59,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.InternalAxis as OxyPlot.TimeSpanAxis;
+            var a = this.InternalAxis as OxyPlot.Axes.TimeSpanAxis;
         }
 
     }

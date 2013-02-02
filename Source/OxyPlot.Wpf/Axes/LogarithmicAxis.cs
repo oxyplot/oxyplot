@@ -55,7 +55,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public LogarithmicAxis()
         {
-            this.InternalAxis = new OxyPlot.LogarithmicAxis();
+            this.InternalAxis = new OxyPlot.Axes.LogarithmicAxis();
             this.FilterMinValue = 0;
         }
 
@@ -96,7 +96,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <returns>
         /// </returns>
-        public override OxyPlot.Axis CreateModel()
+        public override OxyPlot.Axes.Axis CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAxis;
@@ -108,7 +108,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.InternalAxis as OxyPlot.LogarithmicAxis;
+            var a = this.InternalAxis as OxyPlot.Axes.LogarithmicAxis;
             a.Base = this.Base;
             a.PowerPadding = this.PowerPadding;
         }

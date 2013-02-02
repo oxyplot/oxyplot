@@ -61,7 +61,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public LinearAxis()
         {
-            this.InternalAxis = new OxyPlot.LinearAxis();
+            this.InternalAxis = new OxyPlot.Axes.LinearAxis();
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <returns>
         /// </returns>
-        public override OxyPlot.Axis CreateModel()
+        public override OxyPlot.Axes.Axis CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAxis;
@@ -129,7 +129,7 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.InternalAxis as OxyPlot.LinearAxis;
+            var a = this.InternalAxis as OxyPlot.Axes.LinearAxis;
             a.FormatAsFractions = this.FormatAsFractions;
             a.FractionUnit = this.FractionUnit;
             a.FractionUnitSymbol = this.FractionUnitSymbol;

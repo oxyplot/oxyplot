@@ -28,6 +28,8 @@ using OxyPlot;
 
 namespace SimpleDemo
 {
+    using OxyPlot.Series;
+
     public class MainViewModel : Observable
     {
         private PlotModel model;

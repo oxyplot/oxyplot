@@ -27,7 +27,7 @@
 //   Represents a rectangle annotation.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Annotations
 {
     /// <summary>
     /// Represents a rectangle annotation.

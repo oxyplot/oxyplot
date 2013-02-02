@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents a WPF control that displays an OxyPlot plot.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Wpf
 {
     using System;
@@ -34,6 +35,7 @@ namespace OxyPlot.Wpf
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Linq;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -42,6 +44,8 @@ namespace OxyPlot.Wpf
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using System.Windows.Threading;
+
+    using OxyPlot.Series;
 
     using CursorType = OxyPlot.CursorType;
 
@@ -108,6 +112,11 @@ namespace OxyPlot.Wpf
         private int isPlotInvalidated;
 
         /// <summary>
+        /// The is rendering flag.
+        /// </summary>
+        private bool isRendering;
+
+        /// <summary>
         /// The last cumulative manipulation scale.
         /// </summary>
         private Vector lastManipulationScale;
@@ -128,6 +137,11 @@ namespace OxyPlot.Wpf
         private Canvas overlays;
 
         /// <summary>
+        /// The render context
+        /// </summary>
+        private ShapesRenderContext renderContext;
+
+        /// <summary>
         /// The touch down point.
         /// </summary>
         private Point touchDownPoint;
@@ -146,16 +160,6 @@ namespace OxyPlot.Wpf
         /// The zoom control.
         /// </summary>
         private ContentControl zoomControl;
-
-        /// <summary>
-        /// The is rendering flag.
-        /// </summary>
-        private bool isRendering;
-
-        /// <summary>
-        /// The render context
-        /// </summary>
-        private ShapesRenderContext renderContext;
 
         /// <summary>
         /// Initializes static members of the <see cref="Plot"/> class.
@@ -195,18 +199,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets the actual model.
-        /// </summary>
-        /// <value> The actual model. </value>
-        public PlotModel ActualModel
-        {
-            get
-            {
-                return this.Model ?? this.internalModel;
-            }
-        }
-
-        /// <summary>
         /// Gets the annotations.
         /// </summary>
         /// <value> The annotations. </value>
@@ -215,18 +207,6 @@ namespace OxyPlot.Wpf
             get
             {
                 return this.annotations;
-            }
-        }
-
-        /// <summary>
-        /// Gets the tracker definitions.
-        /// </summary>
-        /// <value> The tracker definitions. </value>
-        public ObservableCollection<TrackerDefinition> TrackerDefinitions
-        {
-            get
-            {
-                return this.trackerDefinitions;
             }
         }
 
@@ -261,6 +241,30 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets the tracker definitions.
+        /// </summary>
+        /// <value> The tracker definitions. </value>
+        public ObservableCollection<TrackerDefinition> TrackerDefinitions
+        {
+            get
+            {
+                return this.trackerDefinitions;
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual model.
+        /// </summary>
+        /// <value> The actual model. </value>
+        public PlotModel ActualModel
+        {
+            get
+            {
+                return this.Model ?? this.internalModel;
+            }
+        }
+
+        /// <summary>
         /// Gets the axes from a point.
         /// </summary>
         /// <param name="pt">
@@ -272,7 +276,7 @@ namespace OxyPlot.Wpf
         /// <param name="yaxis">
         /// The y-axis.
         /// </param>
-        public void GetAxesFromPoint(ScreenPoint pt, out OxyPlot.Axis xaxis, out OxyPlot.Axis yaxis)
+        public void GetAxesFromPoint(ScreenPoint pt, out Axes.Axis xaxis, out Axes.Axis yaxis)
         {
             if (this.ActualModel != null)
             {
@@ -297,7 +301,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// The closest DataSeries
         /// </returns>
-        public OxyPlot.Series GetSeriesFromPoint(ScreenPoint pt, double limit)
+        public OxyPlot.Series.Series GetSeriesFromPoint(ScreenPoint pt, double limit)
         {
             return this.ActualModel != null ? this.ActualModel.GetSeriesFromPoint(pt, limit) : null;
         }
@@ -336,42 +340,10 @@ namespace OxyPlot.Wpf
             }
             else
             {
-                System.Threading.Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0);
+                Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0);
             }
 
             this.Invoke(this.InvalidateArrange);
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> .
-        /// </summary>
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            this.grid = this.GetTemplateChild(PartGrid) as Grid;
-
-            if (this.grid == null)
-            {
-                return;
-            }
-
-            this.canvas = new Canvas();
-            this.grid.Children.Add(this.canvas);
-            this.canvas.UpdateLayout();
-            this.renderContext = new ShapesRenderContext(this.canvas);
-
-            this.overlays = new Canvas();
-            this.grid.Children.Add(this.overlays);
-
-            this.zoomControl = new ContentControl();
-            this.overlays.Children.Add(this.zoomControl);
-
-            this.CommandBindings.Add(new CommandBinding(ResetAxesCommand, this.ResetAxesHandler));
-
-            var resetAxesInputBinding = new InputBindingX { Command = ResetAxesCommand };
-            BindingOperations.SetBinding(
-                resetAxesInputBinding, InputBindingX.GeztureProperty, new Binding("ResetAxesGesture") { Source = this });
-            this.InputBindings.Add(resetAxesInputBinding);
         }
 
         /// <summary>
@@ -386,25 +358,9 @@ namespace OxyPlot.Wpf
         /// <param name="cpt">
         /// The current point (screen coordinates).
         /// </param>
-        public void Pan(OxyPlot.Axis axis, ScreenPoint ppt, ScreenPoint cpt)
+        public void Pan(Axes.Axis axis, ScreenPoint ppt, ScreenPoint cpt)
         {
             axis.Pan(ppt, cpt);
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
-        /// Pans all axes.
-        /// </summary>
-        /// <param name="delta">
-        /// The delta.
-        /// </param>
-        public void PanAll(Vector delta)
-        {
-            foreach (OxyPlot.Axis a in this.ActualModel.Axes)
-            {
-                a.Pan(a.IsHorizontal() ? delta.X : delta.Y);
-            }
-
             this.InvalidatePlot(false);
         }
 
@@ -425,70 +381,9 @@ namespace OxyPlot.Wpf
         /// <param name="axis">
         /// The axis.
         /// </param>
-        public void Reset(OxyPlot.Axis axis)
+        public void Reset(Axes.Axis axis)
         {
             axis.Reset();
-        }
-
-        /// <summary>
-        /// Reset all axes.
-        /// </summary>
-        public void ResetAllAxes()
-        {
-            foreach (OxyPlot.Axis a in this.ActualModel.Axes)
-            {
-                a.Reset();
-            }
-
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
-        /// Saves the plot as a bitmap.
-        /// </summary>
-        /// <param name="fileName">
-        /// Name of the file.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="background">
-        /// The background.
-        /// </param>
-        public void SaveBitmap(string fileName, int width = 0, int height = 0, OxyColor background = null)
-        {
-            // var tmp = this.Model;
-            // this.Model = null;
-            if (width == 0)
-            {
-                width = (int)this.ActualWidth;
-            }
-
-            if (height == 0)
-            {
-                height = (int)this.ActualHeight;
-            }
-
-            if (background == null)
-            {
-                background = this.Background.ToOxyColor();
-            }
-
-            PngExporter.Export(this.ActualModel, fileName, width, height, background);
-        }
-
-        /// <summary>
-        /// Saves the plot as xaml.
-        /// </summary>
-        /// <param name="fileName">
-        /// Name of the file.
-        /// </param>
-        public void SaveXaml(string fileName)
-        {
-            XamlExporter.Export(this.ActualModel, fileName, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
         }
 
         /// <summary>
@@ -580,6 +475,157 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Zooms the specified axis to the specified values.
+        /// </summary>
+        /// <param name="axis">
+        /// The axis.
+        /// </param>
+        /// <param name="p1">
+        /// The new minimum value.
+        /// </param>
+        /// <param name="p2">
+        /// The new maximum value.
+        /// </param>
+        public void Zoom(Axes.Axis axis, double p1, double p2)
+        {
+            axis.Zoom(p1, p2);
+            this.RefreshPlot(false);
+        }
+
+        /// <summary>
+        /// Zooms at the specified position.
+        /// </summary>
+        /// <param name="axis">
+        /// The axis.
+        /// </param>
+        /// <param name="factor">
+        /// The zoom factor.
+        /// </param>
+        /// <param name="x">
+        /// The position to zoom at.
+        /// </param>
+        public void ZoomAt(Axes.Axis axis, double factor, double x = double.NaN)
+        {
+            if (double.IsNaN(x))
+            {
+                double sx = (axis.Transform(axis.ActualMaximum) + axis.Transform(axis.ActualMinimum)) * 0.5;
+                x = axis.InverseTransform(sx);
+            }
+
+            axis.ZoomAt(factor, x);
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> .
+        /// </summary>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            this.grid = this.GetTemplateChild(PartGrid) as Grid;
+
+            if (this.grid == null)
+            {
+                return;
+            }
+
+            this.canvas = new Canvas();
+            this.grid.Children.Add(this.canvas);
+            this.canvas.UpdateLayout();
+            this.renderContext = new ShapesRenderContext(this.canvas);
+
+            this.overlays = new Canvas();
+            this.grid.Children.Add(this.overlays);
+
+            this.zoomControl = new ContentControl();
+            this.overlays.Children.Add(this.zoomControl);
+
+            this.CommandBindings.Add(new CommandBinding(ResetAxesCommand, this.ResetAxesHandler));
+
+            var resetAxesInputBinding = new InputBindingX { Command = ResetAxesCommand };
+            BindingOperations.SetBinding(
+                resetAxesInputBinding, InputBindingX.GeztureProperty, new Binding("ResetAxesGesture") { Source = this });
+            this.InputBindings.Add(resetAxesInputBinding);
+        }
+
+        /// <summary>
+        /// Pans all axes.
+        /// </summary>
+        /// <param name="delta">
+        /// The delta.
+        /// </param>
+        public void PanAll(Vector delta)
+        {
+            foreach (Axes.Axis a in this.ActualModel.Axes)
+            {
+                a.Pan(a.IsHorizontal() ? delta.X : delta.Y);
+            }
+
+            this.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Reset all axes.
+        /// </summary>
+        public void ResetAllAxes()
+        {
+            foreach (Axes.Axis a in this.ActualModel.Axes)
+            {
+                a.Reset();
+            }
+
+            this.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Saves the plot as a bitmap.
+        /// </summary>
+        /// <param name="fileName">
+        /// Name of the file.
+        /// </param>
+        /// <param name="width">
+        /// The width.
+        /// </param>
+        /// <param name="height">
+        /// The height.
+        /// </param>
+        /// <param name="background">
+        /// The background.
+        /// </param>
+        public void SaveBitmap(string fileName, int width = 0, int height = 0, OxyColor background = null)
+        {
+            // var tmp = this.Model;
+            // this.Model = null;
+            if (width == 0)
+            {
+                width = (int)this.ActualWidth;
+            }
+
+            if (height == 0)
+            {
+                height = (int)this.ActualHeight;
+            }
+
+            if (background == null)
+            {
+                background = this.Background.ToOxyColor();
+            }
+
+            PngExporter.Export(this.ActualModel, fileName, width, height, background);
+        }
+
+        /// <summary>
+        /// Saves the plot as xaml.
+        /// </summary>
+        /// <param name="fileName">
+        /// Name of the file.
+        /// </param>
+        public void SaveXaml(string fileName)
+        {
+            XamlExporter.Export(
+                this.ActualModel, fileName, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
+        }
+
+        /// <summary>
         /// Renders the plot to a bitmap.
         /// </summary>
         /// <returns>
@@ -604,24 +650,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Zooms the specified axis to the specified values.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="p1">
-        /// The new minimum value.
-        /// </param>
-        /// <param name="p2">
-        /// The new maximum value.
-        /// </param>
-        public void Zoom(OxyPlot.Axis axis, double p1, double p2)
-        {
-            axis.Zoom(p1, p2);
-            this.RefreshPlot(false);
-        }
-
-        /// <summary>
         /// Zooms all axes.
         /// </summary>
         /// <param name="delta">
@@ -638,64 +666,30 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Zooms at the specified position.
+        /// Called to arrange and size the content of a <see cref="T:System.Windows.Controls.Control" /> object.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="factor">
-        /// The zoom factor.
-        /// </param>
-        /// <param name="x">
-        /// The position to zoom at.
-        /// </param>
-        public void ZoomAt(OxyPlot.Axis axis, double factor, double x = double.NaN)
+        /// <param name="arrangeBounds">The computed size that is used to arrange the content.</param>
+        /// <returns>
+        /// The size of the control.
+        /// </returns>
+        protected override Size ArrangeOverride(Size arrangeBounds)
         {
-            if (double.IsNaN(x))
+            if (this.ActualWidth > 0 && this.ActualHeight > 0)
             {
-                double sx = (axis.Transform(axis.ActualMaximum) + axis.Transform(axis.ActualMinimum)) * 0.5;
-                x = axis.InverseTransform(sx);
+                if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 1) == 1)
+                {
+                    this.UpdateModelAndVisuals(false);
+                }
+                else
+                {
+                    if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 2) == 2)
+                    {
+                        this.UpdateModelAndVisuals(true);
+                    }
+                }
             }
 
-            axis.ZoomAt(factor, x);
-        }
-
-        /// <summary>
-        /// Handles the Loaded event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
-        protected virtual void PlotLoaded(object sender, RoutedEventArgs e)
-        {
-            this.IsRendering = true;
-            this.OnModelChanged();
-        }
-
-        /// <summary>
-        /// Handles the Unloaded event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
-        protected virtual void PlotUnloaded(object sender, RoutedEventArgs e)
-        {
-            this.IsRendering = false;
-
-            if (this.currentModel != null)
-            {
-                this.currentModel.AttachPlotControl(null);
-                this.currentModel = null;
-            }
-        }
-
-        /// <summary>
-        /// Called when the parent of visual object is changed.
-        /// </summary>
-        /// <param name="oldParent">A value of type <see cref="T:System.Windows.DependencyObject"/> that represents the previous parent of the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object. If the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object did not have a previous parent, the value of the parameter is null.</param>
-        protected override void OnVisualParentChanged(DependencyObject oldParent)
-        {
-            base.OnVisualParentChanged(oldParent);
-            var parent = VisualTreeHelper.GetParent(this);
-            this.IsRendering = parent != null;
+            return base.ArrangeOverride(arrangeBounds);
         }
 
         /// <summary>
@@ -704,6 +698,17 @@ namespace OxyPlot.Wpf
         protected void OnAppearanceChanged()
         {
             this.InvalidatePlot();
+        }
+
+        /// <summary>
+        /// Handles the CompositionTarget.Rendering event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="eventArgs">The <see cref="System.Windows.Media.RenderingEventArgs"/> instance containing the event data.</param>
+        protected override void OnCompositionTargetRendering(object sender, RenderingEventArgs eventArgs)
+        {
+            // TODO: get rid of this?
+            this.HandleStackedManipulationEvents();
         }
 
         /// <summary>
@@ -1035,30 +1040,41 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Called to arrange and size the content of a <see cref="T:System.Windows.Controls.Control" /> object.
+        /// Called when the parent of visual object is changed.
         /// </summary>
-        /// <param name="arrangeBounds">The computed size that is used to arrange the content.</param>
-        /// <returns>
-        /// The size of the control.
-        /// </returns>
-        protected override Size ArrangeOverride(Size arrangeBounds)
+        /// <param name="oldParent">A value of type <see cref="T:System.Windows.DependencyObject"/> that represents the previous parent of the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object. If the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object did not have a previous parent, the value of the parameter is null.</param>
+        protected override void OnVisualParentChanged(DependencyObject oldParent)
         {
-            if (this.ActualWidth > 0 && this.ActualHeight > 0)
-            {
-                if (System.Threading.Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 1) == 1)
-                {
-                    this.UpdateModelAndVisuals(false);
-                }
-                else
-                {
-                    if (System.Threading.Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 2) == 2)
-                    {
-                        this.UpdateModelAndVisuals(true);
-                    }
-                }
-            }
+            base.OnVisualParentChanged(oldParent);
+            var parent = VisualTreeHelper.GetParent(this);
+            this.IsRendering = parent != null;
+        }
 
-            return base.ArrangeOverride(arrangeBounds);
+        /// <summary>
+        /// Handles the Loaded event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        protected virtual void PlotLoaded(object sender, RoutedEventArgs e)
+        {
+            this.IsRendering = true;
+            this.OnModelChanged();
+        }
+
+        /// <summary>
+        /// Handles the Unloaded event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        protected virtual void PlotUnloaded(object sender, RoutedEventArgs e)
+        {
+            this.IsRendering = false;
+
+            if (this.currentModel != null)
+            {
+                this.currentModel.AttachPlotControl(null);
+                this.currentModel = null;
+            }
         }
 
         /// <summary>
@@ -1122,17 +1138,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Handles the CompositionTarget.Rendering event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="eventArgs">The <see cref="System.Windows.Media.RenderingEventArgs"/> instance containing the event data.</param>
-        protected override void OnCompositionTargetRendering(object sender, RenderingEventArgs eventArgs)
-        {
-            // TODO: get rid of this?
-            this.HandleStackedManipulationEvents();
-        }
-
-        /// <summary>
         /// Creates the manipulation event arguments.
         /// </summary>
         /// <param name="e">
@@ -1159,11 +1164,11 @@ namespace OxyPlot.Wpf
         {
             return new OxyMouseEventArgs
                 {
-                    ChangedButton = ConvertChangedButton(e),
-                    Position = e.GetPosition(this).ToScreenPoint(),
-                    IsShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift),
-                    IsControlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl),
-                    IsAltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt),
+                    ChangedButton = ConvertChangedButton(e), 
+                    Position = e.GetPosition(this).ToScreenPoint(), 
+                    IsShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift), 
+                    IsControlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl), 
+                    IsAltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt), 
                 };
         }
 
@@ -1179,7 +1184,8 @@ namespace OxyPlot.Wpf
         private void DoCopy(object sender, ExecutedRoutedEventArgs e)
         {
             var background = ReferenceEquals(this.Background, Brushes.Transparent) ? Brushes.White : this.Background;
-            var bitmap = PngExporter.ExportToBitmap(this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, background.ToOxyColor());
+            var bitmap = PngExporter.ExportToBitmap(
+                this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, background.ToOxyColor());
             Clipboard.SetImage(bitmap);
         }
 
@@ -1266,6 +1272,22 @@ namespace OxyPlot.Wpf
                 new ManipulationEventArgs(position.ToScreenPoint()) { ScaleX = scaleX, ScaleY = scaleY });
 
             this.lastManipulationScale = e.CumulativeManipulation.Scale;
+        }
+
+        /// <summary>
+        /// Invokes the specified action on the dispatcher, if necessary.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        private void Invoke(Action action)
+        {
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.Invoke(DispatcherPriority.Normal, action);
+            }
+            else
+            {
+                action();
+            }
         }
 
         /// <summary>
@@ -1513,23 +1535,8 @@ namespace OxyPlot.Wpf
                 {
                     this.grid.Children.Insert(idx, this.canvas);
                 }
-#endif
-            }
-        }
 
-        /// <summary>
-        /// Invokes the specified action on the dispatcher, if necessary.
-        /// </summary>
-        /// <param name="action">The action.</param>
-        private void Invoke(Action action)
-        {
-            if (!this.Dispatcher.CheckAccess())
-            {
-                this.Dispatcher.Invoke(DispatcherPriority.Normal, action);
-            }
-            else
-            {
-                action();
+#endif
             }
         }
     }

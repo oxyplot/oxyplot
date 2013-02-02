@@ -31,6 +31,7 @@ namespace ExampleLibrary
     using System.Diagnostics.CodeAnalysis;
 
     using OxyPlot;
+    using OxyPlot.Series;
 
     [Examples("Legends")]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]

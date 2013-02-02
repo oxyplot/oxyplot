@@ -33,6 +33,8 @@ namespace OxyPlot
     using System.Collections.Generic;
     using System.Linq;
 
+    using OxyPlot.Series;
+
     public partial class PlotModel
     {
         /// <summary>
@@ -194,7 +196,7 @@ namespace OxyPlot
         /// <param name="rect">
         /// The position and size of the legend.
         /// </param>
-        private void RenderLegend(IRenderContext rc, Series s, OxyRect rect)
+        private void RenderLegend(IRenderContext rc, Series.Series s, OxyRect rect)
         {
             double x = rect.Left;
             switch (this.LegendItemAlignment)
@@ -371,7 +373,7 @@ namespace OxyPlot
 
             // When orientation is vertical and alignment is center or right, the items cannot be rendered before
             // the max item width has been calculated. Render the items for each column, and at the end.
-            var seriesToRender = new Dictionary<Series, OxyRect>();
+            var seriesToRender = new Dictionary<Series.Series, OxyRect>();
             Action renderItems = () =>
                 {
                     foreach (var sr in seriesToRender)

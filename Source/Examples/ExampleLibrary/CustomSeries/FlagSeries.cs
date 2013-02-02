@@ -4,6 +4,8 @@
     using System.Linq;
 
     using OxyPlot;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     /// <summary>
     ///     Renders a 'flag' above the x-axis at the specified positions (in the Values list).

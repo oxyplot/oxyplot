@@ -72,7 +72,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public AreaSeries()
         {
-            this.InternalSeries = new OxyPlot.AreaSeries();
+            this.InternalSeries = new OxyPlot.Series.AreaSeries();
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <returns>
         /// </returns>
-        public override OxyPlot.Series CreateModel()
+        public override OxyPlot.Series.Series CreateModel()
         {
             this.SynchronizeProperties(this.InternalSeries);
             return this.InternalSeries;
@@ -172,10 +172,10 @@ namespace OxyPlot.Wpf
         /// <param name="series">
         /// The series.
         /// </param>
-        protected override void SynchronizeProperties(OxyPlot.Series series)
+        protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = series as OxyPlot.AreaSeries;
+            var s = series as OxyPlot.Series.AreaSeries;
             s.DataFieldX2 = this.DataFieldX2;
             s.DataFieldY2 = this.DataFieldY2;
             s.ConstantY2 = this.ConstantY2;

@@ -27,7 +27,7 @@
 //   The color axis.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;

@@ -43,6 +43,7 @@ using System.Windows.Shapes;
 namespace MemoryTest
 {
     using OxyPlot;
+    using OxyPlot.Series;
 
     /// <summary>
     /// Interaction logic for Window2.xaml

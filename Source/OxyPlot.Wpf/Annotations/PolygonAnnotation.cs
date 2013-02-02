@@ -80,7 +80,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public PolygonAnnotation()
         {
-            this.InternalAnnotation = new OxyPlot.PolygonAnnotation();
+            this.InternalAnnotation = new OxyPlot.Annotations.PolygonAnnotation();
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// The annotation.
         /// </returns>
-        public override OxyPlot.Annotation CreateModel()
+        public override OxyPlot.Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAnnotation;
@@ -198,7 +198,7 @@ namespace OxyPlot.Wpf
         public override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = (OxyPlot.PolygonAnnotation)this.InternalAnnotation;
+            var a = (OxyPlot.Annotations.PolygonAnnotation)this.InternalAnnotation;
             a.Points = this.Points;
 
             a.Fill = this.Fill.ToOxyColor();

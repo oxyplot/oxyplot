@@ -27,11 +27,13 @@
 //   Base class for BarSeries and ColumnSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using OxyPlot.Axes;
 
     /// <summary>
     /// Base class for BarSeries and ColumnSeries.

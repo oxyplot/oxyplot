@@ -27,7 +27,7 @@
 //   Specifies the position of legends rendered on a line series.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     /// <summary>
     /// Specifies the position of legends rendered on a <see cref="LineSeries"/>.

@@ -29,6 +29,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
 {
+    using OxyPlot.Axes;
+
     /// <summary>
     /// Provides an absract base class for plot control manipulators.
     /// </summary>

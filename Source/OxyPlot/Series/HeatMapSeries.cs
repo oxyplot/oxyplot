@@ -28,11 +28,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using OxyPlot.Axes;
 
     /// <summary>
     /// The heat map series.

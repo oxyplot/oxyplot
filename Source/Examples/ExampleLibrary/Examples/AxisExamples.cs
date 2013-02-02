@@ -32,6 +32,9 @@ namespace ExampleLibrary
     using System.Collections.Generic;
     using System.Globalization;
 
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     [Examples("Axis examples")]
     public class AxisExamples : ExamplesBase
     {

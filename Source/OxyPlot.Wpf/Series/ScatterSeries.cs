@@ -128,7 +128,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public ScatterSeries()
         {
-            this.InternalSeries = new OxyPlot.ScatterSeries();
+            this.InternalSeries = new OxyPlot.Series.ScatterSeries();
         }
 
         /// <summary>
@@ -353,7 +353,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// The series.
         /// </returns>
-        public override OxyPlot.Series CreateModel()
+        public override OxyPlot.Series.Series CreateModel()
         {
             this.SynchronizeProperties(this.InternalSeries);
             return this.InternalSeries;
@@ -365,10 +365,10 @@ namespace OxyPlot.Wpf
         /// <param name="series">
         /// The series.
         /// </param>
-        protected override void SynchronizeProperties(OxyPlot.Series series)
+        protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = series as OxyPlot.ScatterSeries;
+            var s = series as OxyPlot.Series.ScatterSeries;
             if (s != null)
             {
                 s.MarkerFill = this.MarkerFill.ToOxyColor();

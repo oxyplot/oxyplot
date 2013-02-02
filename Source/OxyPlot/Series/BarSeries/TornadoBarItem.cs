@@ -27,7 +27,7 @@
 //   Represents an item for the TornadoBarSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     /// <summary>
     /// Represents an item for the TornadoBarSeries.

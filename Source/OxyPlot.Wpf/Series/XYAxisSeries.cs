@@ -100,10 +100,10 @@ namespace OxyPlot.Wpf
         /// Synchronizes the properties.
         /// </summary>
         /// <param name="series">The series.</param>
-        protected override void SynchronizeProperties(OxyPlot.Series series)
+        protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = (OxyPlot.XYAxisSeries)series;
+            var s = (OxyPlot.Series.XYAxisSeries)series;
             s.XAxisKey = this.XAxisKey;
             s.YAxisKey = this.YAxisKey;
         }

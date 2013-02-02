@@ -27,7 +27,7 @@
 //   Represents an item in a BoxPlotSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System.Collections.Generic;
 

@@ -31,6 +31,8 @@ namespace OxyPlot
 {
     using System.Collections.Generic;
 
+    using OxyPlot.Axes;
+
     /// <summary>
     /// Provides an abstract base class for axis renderers.
     /// </summary>
