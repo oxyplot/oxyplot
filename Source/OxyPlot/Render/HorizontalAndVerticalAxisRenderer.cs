@@ -299,7 +299,7 @@ namespace OxyPlot
             var lpt = this.GetAxisTitlePositionAndAlignment(axis, titlePosition, ref angle, ref halign, ref valign);
 
             this.rc.SetToolTip(axis.ToolTip);
-            this.rc.DrawText(
+            this.rc.DrawMathText(
                 lpt, 
                 axis.ActualTitle, 
                 axis.ActualTitleColor, 

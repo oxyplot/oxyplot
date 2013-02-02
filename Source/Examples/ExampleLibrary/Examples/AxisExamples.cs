@@ -82,6 +82,7 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis2);
             return plotModel1;
         }
+
         [Example("TickStyle: Outside")]
         public static PlotModel TickStyleOutside()
         {
@@ -506,9 +507,24 @@ namespace ExampleLibrary
         [Example("AbsoluteMinimum and AbsoluteMaximum")]
         public static PlotModel AbsoluteMinimumAndMaximum()
         {
-            var model = new PlotModel("AbsoluteMinimum=-17, AbsoluteMaximum=63", "Zooming and panning is limited to these values.");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { Minimum = 0, Maximum = 50, AbsoluteMinimum = -17, AbsoluteMaximum = 63 });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { Minimum = 0, Maximum = 50, AbsoluteMinimum = -17, AbsoluteMaximum = 63 });
+            var model = new PlotModel(
+                "AbsoluteMinimum=-17, AbsoluteMaximum=63", "Zooming and panning is limited to these values.");
+            model.Axes.Add(
+                new LinearAxis(AxisPosition.Bottom)
+                    {
+                        Minimum = 0,
+                        Maximum = 50,
+                        AbsoluteMinimum = -17,
+                        AbsoluteMaximum = 63
+                    });
+            model.Axes.Add(
+                new LinearAxis(AxisPosition.Left)
+                    {
+                        Minimum = 0,
+                        Maximum = 50,
+                        AbsoluteMinimum = -17,
+                        AbsoluteMaximum = 63
+                    });
             return model;
         }
 
@@ -575,8 +591,21 @@ namespace ExampleLibrary
             var c = OxyColors.DarkBlue;
             model.PlotType = PlotType.Cartesian;
             model.Axes.Add(
-                new LinearAxis(AxisPosition.Bottom, "X") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, "Y") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+                new LinearAxis(AxisPosition.Bottom, "X")
+                    {
+                        MajorGridlineStyle = LineStyle.Solid,
+                        MinorGridlineStyle = LineStyle.Solid,
+                        MajorGridlineColor = OxyColor.FromAColor(40, c),
+                        MinorGridlineColor = OxyColor.FromAColor(20, c)
+                    });
+            model.Axes.Add(
+                new LinearAxis(AxisPosition.Left, "Y")
+                    {
+                        MajorGridlineStyle = LineStyle.Solid,
+                        MinorGridlineStyle = LineStyle.Solid,
+                        MajorGridlineColor = OxyColor.FromAColor(40, c),
+                        MinorGridlineColor = OxyColor.FromAColor(20, c)
+                    });
             return model;
         }
 
@@ -585,8 +614,26 @@ namespace ExampleLibrary
         {
             var model = new PlotModel("Log-Log Paper");
             var c = OxyColors.DarkBlue;
-            model.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X") { Minimum = 0.1, Maximum = 1000, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
-            model.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y") { Minimum = 0.1, Maximum = 1000, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
+            model.Axes.Add(
+                new LogarithmicAxis(AxisPosition.Bottom, "X")
+                    {
+                        Minimum = 0.1,
+                        Maximum = 1000,
+                        MajorGridlineStyle = LineStyle.Solid,
+                        MinorGridlineStyle = LineStyle.Solid,
+                        MajorGridlineColor = OxyColor.FromAColor(40, c),
+                        MinorGridlineColor = OxyColor.FromAColor(20, c)
+                    });
+            model.Axes.Add(
+                new LogarithmicAxis(AxisPosition.Left, "Y")
+                    {
+                        Minimum = 0.1,
+                        Maximum = 1000,
+                        MajorGridlineStyle = LineStyle.Solid,
+                        MinorGridlineStyle = LineStyle.Solid,
+                        MajorGridlineColor = OxyColor.FromAColor(40, c),
+                        MinorGridlineColor = OxyColor.FromAColor(20, c)
+                    });
             return model;
         }
 
@@ -600,8 +647,28 @@ namespace ExampleLibrary
             var c = OxyColors.White;
             model.PlotType = PlotType.Cartesian;
             model.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 2, 1000, "f(x)=sin(x)"));
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, "x") { MajorStep = Math.PI / 2, FormatAsFractions = true, FractionUnit = Math.PI, FractionUnitSymbol = "π", MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c), TicklineColor = OxyColors.White });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, "f(x)") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c), TicklineColor = OxyColors.White });
+            model.Axes.Add(
+                new LinearAxis(AxisPosition.Bottom, "x")
+                    {
+                        MajorStep = Math.PI / 2,
+                        FormatAsFractions = true,
+                        FractionUnit = Math.PI,
+                        FractionUnitSymbol = "π",
+                        MajorGridlineStyle = LineStyle.Solid,
+                        MinorGridlineStyle = LineStyle.Solid,
+                        MajorGridlineColor = OxyColor.FromAColor(40, c),
+                        MinorGridlineColor = OxyColor.FromAColor(20, c),
+                        TicklineColor = OxyColors.White
+                    });
+            model.Axes.Add(
+                new LinearAxis(AxisPosition.Left, "f(x)")
+                    {
+                        MajorGridlineStyle = LineStyle.Solid,
+                        MinorGridlineStyle = LineStyle.Solid,
+                        MajorGridlineColor = OxyColor.FromAColor(40, c),
+                        MinorGridlineColor = OxyColor.FromAColor(20, c),
+                        TicklineColor = OxyColors.White
+                    });
             return model;
         }
 
@@ -692,7 +759,8 @@ namespace ExampleLibrary
         [Example("Long axis titles (clipped at 90%)")]
         public static PlotModel LongAxisTitlesClipped90()
         {
-            var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
+            var longTitle =
+                "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
             var tooltip = "The tooltip is " + longTitle;
             var plotModel1 = new PlotModel("Long axis titles (clipped at 90%)");
             plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left, longTitle) { ToolTip = tooltip });
@@ -703,18 +771,22 @@ namespace ExampleLibrary
         [Example("Long axis titles (clipped at 100%)")]
         public static PlotModel LongAxisTitlesClipped100()
         {
-            var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
+            var longTitle =
+                "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
             var tooltip = "The tooltip is " + longTitle;
             var plotModel1 = new PlotModel("Long axis titles (clipped at 100%)");
-            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left, longTitle) { ToolTip = tooltip, TitleClippingLength = 1.0 });
-            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Bottom, longTitle) { ToolTip = tooltip, TitleClippingLength = 1.0 });
+            plotModel1.Axes.Add(
+                new LinearAxis(AxisPosition.Left, longTitle) { ToolTip = tooltip, TitleClippingLength = 1.0 });
+            plotModel1.Axes.Add(
+                new LinearAxis(AxisPosition.Bottom, longTitle) { ToolTip = tooltip, TitleClippingLength = 1.0 });
             return plotModel1;
         }
 
         [Example("Long axis titles (not clipped)")]
         public static PlotModel LongAxisTitlesNotClipped()
         {
-            var longTitle = "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
+            var longTitle =
+                "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
             var tooltip = "The tooltip is " + longTitle;
             var plotModel1 = new PlotModel("Long axis titles (not clipped)");
             plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left, longTitle) { ToolTip = tooltip, ClipTitle = false });
@@ -737,7 +809,13 @@ namespace ExampleLibrary
                     Title = "PositionTier=1"
                 };
             plotModel1.Axes.Add(linearAxis2);
-            var linearAxis3 = new LinearAxis { Maximum = 1, Minimum = -1, Position = AxisPosition.Right, Title = "PositionTier=0" };
+            var linearAxis3 = new LinearAxis
+                {
+                    Maximum = 1,
+                    Minimum = -1,
+                    Position = AxisPosition.Right,
+                    Title = "PositionTier=0"
+                };
             plotModel1.Axes.Add(linearAxis3);
             var linearAxis4 = new LinearAxis
                 {
@@ -749,7 +827,13 @@ namespace ExampleLibrary
                     Title = "PositionTier=1"
                 };
             plotModel1.Axes.Add(linearAxis4);
-            var linearAxis5 = new LinearAxis { Maximum = 1, Minimum = -1, Position = AxisPosition.Top, Title = "PositionTier=0" };
+            var linearAxis5 = new LinearAxis
+                {
+                    Maximum = 1,
+                    Minimum = -1,
+                    Position = AxisPosition.Top,
+                    Title = "PositionTier=0"
+                };
             plotModel1.Axes.Add(linearAxis5);
             var linearAxis6 = new LinearAxis
                 {
@@ -771,7 +855,13 @@ namespace ExampleLibrary
                     Title = "PositionTier=2"
                 };
             plotModel1.Axes.Add(linearAxis7);
-            var linearAxis8 = new LinearAxis { Maximum = 1, Minimum = -1, Position = AxisPosition.Bottom, Title = "PositionTier=0" };
+            var linearAxis8 = new LinearAxis
+                {
+                    Maximum = 1,
+                    Minimum = -1,
+                    Position = AxisPosition.Bottom,
+                    Title = "PositionTier=0"
+                };
             plotModel1.Axes.Add(linearAxis8);
             var linearAxis9 = new LinearAxis
                 {
@@ -833,33 +923,6 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis(AxisPosition.Top, -1, 1, "Top axis") { Angle = 45 });
             model.Axes.Add(new LinearAxis(AxisPosition.Right, -1, 1, "Right axis") { Angle = 45 });
             return model;
-        }
-
-        [Example("GridLines: Issue 9990")]
-        public static PlotModel GridLinesBothDifferentColors()
-        {
-            var plotModel1 = new PlotModel { Title = "Don't stare at this plot too long...", Subtitle = "Minor gridlines should be below major gridlines (issue 9990)" };
-            var leftAxis = new LinearAxis
-            {
-                MajorGridlineStyle = LineStyle.Solid,
-                MajorGridlineColor = OxyColors.Black,
-                MajorGridlineThickness = 6,
-                MinorGridlineStyle = LineStyle.Solid,
-                MinorGridlineColor = OxyColors.Blue,
-                MinorGridlineThickness = 6,
-            };
-            plotModel1.Axes.Add(leftAxis);
-            var bottomAxis = new LinearAxis(AxisPosition.Bottom)
-            {
-                MajorGridlineStyle = LineStyle.Solid,
-                MajorGridlineColor = OxyColors.Black,
-                MajorGridlineThickness = 6,
-                MinorGridlineStyle = LineStyle.Solid,
-                MinorGridlineColor = OxyColors.Blue,
-                MinorGridlineThickness = 6,
-            };
-            plotModel1.Axes.Add(bottomAxis);
-            return plotModel1;
         }
     }
 }
