@@ -13,7 +13,7 @@
         <StackPanel Orientation="Horizontal" Margin="8">
             <Button Content="Save PDF" Click="SavePdf_Click"/>
             <Button Content="Save SVG" Margin="8 0 0 0" Click="SaveSvg_Click"/>
-            <Button Content="Save PNG" IsEnabled="False" Margin="8 0 0 0" Click="SavePng_Click"/>
+            <Button Content="Save PNG" Margin="8 0 0 0" Click="SavePng_Click"/>
         </StackPanel>
         <oxy:Plot x:Name="Plot1" Grid.Row="1" Model="{Binding PlotModel}">
         </oxy:Plot>

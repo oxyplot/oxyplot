@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "OxyPlot\OxyPlot.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportDemo_SL4", "Examples\Silverlight\ExportDemo\ExportDemo_SL4.csproj", "{5C307156-E173-425B-8FC7-4B5CB63C7980}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C307156-E173-425B-8FC7-4B5CB63C7980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C307156-E173-425B-8FC7-4B5CB63C7980}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C307156-E173-425B-8FC7-4B5CB63C7980}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C307156-E173-425B-8FC7-4B5CB63C7980}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,5 +52,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{15B1DC32-92C8-4301-A16D-9C47EE8356A2} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
+		{5C307156-E173-425B-8FC7-4B5CB63C7980} = {FF6A1A27-F5EC-4AF2-B4CA-6AFE661F2140}
 	EndGlobalSection
 EndGlobal
