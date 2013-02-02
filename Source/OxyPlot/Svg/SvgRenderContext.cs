@@ -50,24 +50,25 @@ namespace OxyPlot
         private bool disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SvgRenderContext"/> class.
+        /// Initializes a new instance of the <see cref="SvgRenderContext" /> class.
         /// </summary>
         /// <param name="s">The s.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="isDocument">Create an SVG document if set to <c>true</c>.</param>
         /// <param name="textMeasurer">The text measurer.</param>
-        public SvgRenderContext(Stream s, double width, double height, bool isDocument, IRenderContext textMeasurer)
+        /// <param name="background">The background.</param>
+        public SvgRenderContext(Stream s, double width, double height, bool isDocument, IRenderContext textMeasurer, OxyColor background)
         {
             this.w = new SvgWriter(s, width, height, isDocument);
-            this.Width = width;
-            this.Height = height;
-            this.PaintBackground = true;
             this.TextMeasurer = textMeasurer;
+            if (background != null)
+            {
+                this.w.WriteRectangle(0, 0, width, height, this.w.CreateStyle(background, null, 0));
+            }
         }
 
 #if !PCL
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SvgRenderContext"/> class.
         /// </summary>
@@ -78,8 +79,6 @@ namespace OxyPlot
         public SvgRenderContext(string path, double width, double height, IRenderContext textMeasurer)
         {
             this.w = new SvgWriter(path, width, height);
-            this.Width = width;
-            this.Height = height;
             this.TextMeasurer = textMeasurer;
         }
 

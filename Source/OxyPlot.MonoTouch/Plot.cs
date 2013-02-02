@@ -65,6 +65,7 @@ namespace OxyPlot.MonoTouch
         /// The zoom rectangle.
         /// </summary>
         private Rectangle zoomRectangle;
+        private GraphicsRenderContext rc;
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "Plot" /> class.
@@ -73,6 +74,7 @@ namespace OxyPlot.MonoTouch
         {
             this.DoubleBuffered = true;
             this.Model = new PlotModel();
+            this.rc = new GraphicsRenderContext(); // e.ClipRectangle
         }
 
         /// <summary>
@@ -463,7 +465,7 @@ namespace OxyPlot.MonoTouch
                 }
             }
 
-            var rc = new GraphicsRenderContext(e.Graphics, this.Width, this.Height); // e.ClipRectangle
+            rc.SetTarget(e.Graphics);
             if (this.model != null)
             {
                 this.model.Render(rc);

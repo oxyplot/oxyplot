@@ -52,6 +52,16 @@ namespace OxyPlot.Metro
     public class MetroRenderContext : IRenderContext
     {
         /// <summary>
+        /// The brush cache.
+        /// </summary>
+        private readonly Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
+
+        /// <summary>
+        /// The canvas.
+        /// </summary>
+        private readonly Canvas canvas;
+
+        /// <summary>
         /// The clip rectangle.
         /// </summary>
         private Rect? clip;
@@ -65,56 +75,15 @@ namespace OxyPlot.Metro
         /// The image cache
         /// </summary>
         private Dictionary<OxyImage, BitmapSource> imageCache = new Dictionary<OxyImage, BitmapSource>();
-
+        
         /// <summary>
-        /// The brush cache.
+        /// Initializes a new instance of the <see cref="MetroRenderContext" /> class.
         /// </summary>
-        private readonly Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
-
-        /// <summary>
-        /// The canvas.
-        /// </summary>
-        private readonly Canvas canvas;
-
+        /// <param name="canvas">The canvas.</param>
         public MetroRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MetroRenderContext"/> class.
-        /// </summary>
-        public void Initialize()
-        {
-            this.Width = this.canvas.ActualWidth;
-            this.Height = this.canvas.ActualHeight;
-        }
-
-        /// <summary>
-        /// Gets the height of the canvas.
-        /// </summary>
-        /// <value>The height.</value>
-        public double Height { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether to paint the background.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the background should be painted; otherwise, <c>false</c>.
-        /// </value>
-        public bool PaintBackground
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Gets the width of the canvas.
-        /// </summary>
-        /// <value>The width.</value>
-        public double Width { get; private set; }
 
         /// <summary>
         /// Draws an ellipse.

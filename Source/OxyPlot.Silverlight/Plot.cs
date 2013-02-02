@@ -1206,7 +1206,7 @@ namespace OxyPlot.Silverlight
                 this.SynchronizeProperties();
 
                 var wrc = new SilverlightRenderContext(this.canvas);
-                this.ActualModel.Render(wrc);
+                this.ActualModel.Render(wrc, this.canvas.ActualWidth, this.canvas.ActualHeight);
             }
         }
 

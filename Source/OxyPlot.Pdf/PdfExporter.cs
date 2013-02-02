@@ -76,11 +76,11 @@ namespace OxyPlot.Pdf
         /// </param>
         public static void Export(PlotModel model, Stream s, double width, double height)
         {
-            using (var svgrc = new PdfRenderContext(width, height))
+            using (var rc = new PdfRenderContext(width, height, model.Background))
             {
                 model.Update();
-                model.Render(svgrc);
-                svgrc.Save(s);
+                model.Render(rc, width, height);
+                rc.Save(s);
             }
         }
     }

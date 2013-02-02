@@ -72,23 +72,21 @@ namespace OxyPlot.Pdf
         private bool disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PdfRenderContext"/> class.
+        /// Initializes a new instance of the <see cref="PdfRenderContext" /> class.
         /// </summary>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        public PdfRenderContext(double width, double height)
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="background">The background color.</param>
+        public PdfRenderContext(double width, double height, OxyColor background)
         {
-            this.Width = width;
-            this.Height = height;
-            this.PaintBackground = true;
             this.doc = new PdfDocument();
             this.page = new PdfPage { Width = new XUnit(width), Height = new XUnit(height) };
             this.doc.AddPage(this.page);
             this.g = XGraphics.FromPdfPage(this.page);
+            if (background != null)
+            {
+                this.g.DrawRectangle(ToBrush(background), 0, 0, width, height);
+            }
         }
 
         /// <summary>
@@ -610,22 +608,25 @@ namespace OxyPlot.Pdf
             {
                 return src;
             }
-#if !SILVERLIGHT
-            if (source != null)
-            {
-                XImage btm;
-                using (var ms = new MemoryStream(source.GetData()))
-                {
-                    var im = System.Drawing.Image.FromStream(ms);
-                    btm = XImage.FromGdiPlusImage(im);
-                }
 
-                this.imageCache.Add(source, btm);
-                return btm;
+#if !SILVERLIGHT
+            XImage bitmap;
+            using (var ms = new MemoryStream(source.GetData()))
+            {
+                var im = System.Drawing.Image.FromStream(ms);
+                bitmap = XImage.FromGdiPlusImage(im);
+            }
+
+            this.imageCache.Add(source, bitmap);
+            return bitmap;
+#else
+            using (var ms = new MemoryStream(source.GetData()))
+            {
+                var bitmap = XImage.FromStream(ms);
+                this.imageCache.Add(source, bitmap);
+                return bitmap;
             }
 #endif
-
-            return null;
         }
 
         /// <summary>

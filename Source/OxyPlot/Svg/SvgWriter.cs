@@ -155,7 +155,7 @@ namespace OxyPlot
             OxyColor fill,
             OxyColor stroke,
             double thickness,
-            double[] dashArray,
+            double[] dashArray = null,
             OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
             // http://oreilly.com/catalog/svgess/chapter/ch03.html

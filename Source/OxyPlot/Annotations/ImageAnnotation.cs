@@ -367,7 +367,7 @@ namespace OxyPlot
                     sx = model.PlotArea.Left + (model.PlotArea.Width * x.Value);
                     break;
                 case PlotLengthUnit.RelativeToViewport:
-                    sx = rc.Width * x.Value;
+                    sx = model.Width * x.Value;
                     break;
                 default:
                     sx = x.Value;
@@ -380,7 +380,7 @@ namespace OxyPlot
                     sy = model.PlotArea.Top + (model.PlotArea.Height * y.Value);
                     break;
                 case PlotLengthUnit.RelativeToViewport:
-                    sy = rc.Height * y.Value;
+                    sy = model.Height * y.Value;
                     break;
                 default:
                     sy = y.Value;
@@ -422,7 +422,7 @@ namespace OxyPlot
                     sx = model.PlotArea.Width * x.Value;
                     break;
                 case PlotLengthUnit.RelativeToViewport:
-                    sx = rc.Width * x.Value;
+                    sx = model.Width * x.Value;
                     break;
                 default:
                     sx = x.Value;
@@ -438,7 +438,7 @@ namespace OxyPlot
                     sy = model.PlotArea.Height * y.Value;
                     break;
                 case PlotLengthUnit.RelativeToViewport:
-                    sy = rc.Height * y.Value;
+                    sy = model.Height * y.Value;
                     break;
                 default:
                     sy = y.Value;

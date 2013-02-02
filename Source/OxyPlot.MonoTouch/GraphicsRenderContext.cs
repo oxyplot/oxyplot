@@ -32,7 +32,6 @@ namespace OxyPlot.MonoGame
     using System;
     using System.Collections.Generic;
     using System.Drawing;
-    //using System.Drawing.Drawing2D;
     using System.Linq;
 
     using OxyPlot;
@@ -72,13 +71,14 @@ namespace OxyPlot.MonoGame
         /// <param name="height">
         /// The height.
         /// </param>
-        public GraphicsRenderContext(GraphicsDeviceManager graphics, double width, double height)
+        public GraphicsRenderContext()
         {
-            this.Width = width;
-            this.Height = height;
-            this.PaintBackground = true;
+			this.g = new MonoGameRenderContext();
+        }
+
+        public void SetTarget(GraphicsDeviceManager graphics)
+        {
             this.graphics = graphics;
-			g = new MonoGameRenderContext();
         }
 
         /// <summary>
@@ -477,6 +477,5 @@ namespace OxyPlot.MonoGame
 
             return r;
         }
-
-    }
+   }
 }

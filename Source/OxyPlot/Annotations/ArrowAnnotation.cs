@@ -156,37 +156,40 @@ namespace OxyPlot
             const double MinimumSegmentLength = 4;
 
             rc.DrawClippedLine(
-                new[] { this.screenStartPoint, p4 }, 
-                clippingRect, 
-                MinimumSegmentLength * MinimumSegmentLength, 
-                this.GetSelectableColor(this.Color), 
-                this.StrokeThickness, 
-                this.LineStyle, 
-                this.LineJoin, 
+                new[] { this.screenStartPoint, p4 },
+                clippingRect,
+                MinimumSegmentLength * MinimumSegmentLength,
+                this.GetSelectableColor(this.Color),
+                this.StrokeThickness,
+                this.LineStyle,
+                this.LineJoin,
                 false);
 
             rc.DrawClippedPolygon(
-                new[] { p3, this.screenEndPoint, p2, p4 }, 
-                clippingRect, 
-                MinimumSegmentLength * MinimumSegmentLength, 
-                this.GetSelectableColor(this.Color), 
+                new[] { p3, this.screenEndPoint, p2, p4 },
+                clippingRect,
+                MinimumSegmentLength * MinimumSegmentLength,
+                this.GetSelectableColor(this.Color),
                 null);
 
-            var ha = d.X < 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
-            var va = d.Y < 0 ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
+            if (!string.IsNullOrEmpty(this.Text))
+            {
+                var ha = d.X < 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
+                var va = d.Y < 0 ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
 
-            var textPoint = this.screenStartPoint;
-            rc.DrawClippedText(
-                clippingRect, 
-                textPoint, 
-                this.Text, 
-                this.ActualTextColor, 
-                this.ActualFont, 
-                this.ActualFontSize, 
-                this.ActualFontWeight, 
-                0, 
-                ha, 
-                va);
+                var textPoint = this.screenStartPoint;
+                rc.DrawClippedText(
+                    clippingRect,
+                    textPoint,
+                    this.Text,
+                    this.ActualTextColor,
+                    this.ActualFont,
+                    this.ActualFontSize,
+                    this.ActualFontWeight,
+                    0,
+                    ha,
+                    va);
+            }
         }
 
         /// <summary>

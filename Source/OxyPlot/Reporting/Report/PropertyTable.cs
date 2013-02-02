@@ -88,7 +88,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The update fields.
+        /// Updates the fields.
         /// </summary>
         /// <param name="items">
         /// The items.
@@ -103,32 +103,12 @@ namespace OxyPlot.Reporting
 
             this.Columns.Clear();
 
-#if SILVERLIGHT
             foreach (var pi in type.GetProperties())
             {
+                // TODO: support Browsable and Displayname attributes
                 var header = pi.Name;
                 this.Fields.Add(new ItemsTableField(header, pi.Name, null, Alignment.Left));
             }
-
-#endif
-#if PCL
-
-            // todo
-#endif
-#if !SILVERLIGHT && !PCL
-            foreach (PropertyDescriptor pd in TypeDescriptor.GetProperties(type))
-            {
-                if (!pd.IsBrowsable)
-                {
-                    continue;
-                }
-
-                string header = pd.DisplayName ?? pd.Name;
-                this.Fields.Add(new ItemsTableField(header, pd.Name));
-            }
-
-#endif
         }
-
     }
 }

@@ -358,7 +358,7 @@ namespace OxyPlot.Wpf
             this.canvas = new Canvas();
             this.grid.Children.Add(this.canvas);
             this.canvas.UpdateLayout();
-            this.renderContext = new ShapesRenderContext();
+            this.renderContext = new ShapesRenderContext(this.canvas);
 
             this.overlays = new Canvas();
             this.grid.Children.Add(this.overlays);
@@ -1504,9 +1504,7 @@ namespace OxyPlot.Wpf
                 }
 
 #endif
-                this.renderContext.Initialize(this.canvas);
-
-                this.ActualModel.Render(this.renderContext);
+                this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
 
 #if !DONT_DISCONNECT_CANVAS
 

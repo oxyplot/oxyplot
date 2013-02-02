@@ -42,10 +42,6 @@ namespace OxyPlot.MonoTouch
 		public MonoTouchRenderContext (CGContext context, System.Drawing.RectangleF rect)
 		{
 			gctx = context;
-
-			Height = rect.Height;
-			Width = rect.Width;
-			PaintBackground = true;
 		}
 
 		private UIColor ToColor(OxyColor c)

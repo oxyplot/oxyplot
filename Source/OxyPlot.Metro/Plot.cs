@@ -1103,9 +1103,7 @@ namespace OxyPlot.Metro
             if (this.ActualModel != null)
             {
                 this.SynchronizeProperties();
-
-                this.renderContext.Initialize();
-                this.ActualModel.Render(this.renderContext);
+                this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
             }
         }
     }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ShellViewModel.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -23,82 +23,225 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Defines the ShellViewModel type.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Windows.Media.Imaging;
-using Caliburn.Micro;
-using Microsoft.Win32;
-using OxyPlot;
-using OxyPlot.Pdf;
-using OxyPlot.Reporting;
-using OxyPlot.Wpf;
-using PropertyTools.Wpf;
-using Plot = OxyPlot.Wpf.Plot;
 
 namespace ExportDemo
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media.Imaging;
+
+    using Caliburn.Micro;
+
+    using Microsoft.Win32;
+
+    using OxyPlot;
     using OxyPlot.OpenXml;
+    using OxyPlot.Pdf;
+    using OxyPlot.Reporting;
+    using OxyPlot.Wpf;
     using OxyPlot.Xps;
+
+    using PropertyTools.Wpf;
 
     using DataPointSeries = OxyPlot.DataPointSeries;
 
     [Export(typeof(IShell))]
     public class ShellViewModel : PropertyChangedBase, IShell
     {
-        private PlotModel model;
-
-        public Plot Plot { get; private set; }
-        public Window Owner { get; private set; }
-
-        public void Attach(Window owner, Plot plot)
-        {
-            Owner = owner;
-            Plot = plot;
-        }
+        #region Constants and Fields
 
         private ModelType currentModel;
 
-        public ModelType CurrentModel
-        {
-            get { return currentModel; }
-            set
-            {
-                currentModel = value;
-                Model = PlotModelFactory.Create(currentModel);
-            }
-        }
+        private PlotModel model;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public ShellViewModel()
         {
-            CurrentModel = ModelType.SineWave;
+            this.CurrentModel = ModelType.SineWave;
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public ModelType CurrentModel
+        {
+            get
+            {
+                return this.currentModel;
+            }
+
+            set
+            {
+                this.currentModel = value;
+                this.Model = PlotModelFactory.Create(this.currentModel);
+            }
         }
 
         public PlotModel Model
         {
-            get { return model; }
+            get
+            {
+                return this.model;
+            }
+
             set
             {
-                if (model != value)
+                if (this.model != value)
                 {
-                    model = value;
-                    NotifyOfPropertyChange(() => Model);
-                    NotifyOfPropertyChange(() => TotalNumberOfPoints);
+                    this.model = value;
+                    this.NotifyOfPropertyChange(() => this.Model);
+                    this.NotifyOfPropertyChange(() => this.TotalNumberOfPoints);
                 }
             }
         }
+
+        public Window Owner { get; private set; }
+
+        public Plot Plot { get; private set; }
 
         public int TotalNumberOfPoints
         {
             get
             {
-                if (Model == null) return 0;
-                return Model.Series.Sum(ls => ((DataPointSeries)ls).Points.Count);
+                if (this.Model == null)
+                {
+                    return 0;
+                }
+
+                return this.Model.Series.Sum(ls => ((DataPointSeries)ls).Points.Count);
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public void Attach(Window owner, Plot plot)
+        {
+            this.Owner = owner;
+            this.Plot = plot;
+        }
+
+        public void CopyBitmap()
+        {
+            var bitmap = PngExporter.ExportToBitmap(
+                this.Model, (int)this.Plot.ActualWidth, (int)this.Plot.ActualHeight, this.Model.Background);
+            Clipboard.SetImage(bitmap);
+        }
+
+        public void CopySvg()
+        {
+            Clipboard.SetText(this.Model.ToSvg(this.Plot.ActualWidth, this.Plot.ActualHeight, true));
+        }
+
+        public void CopyXaml()
+        {
+            var xaml = XamlExporter.ExportToString(
+                this.Model, this.Plot.ActualWidth, this.Plot.ActualHeight, this.Model.Background);
+            Clipboard.SetText(xaml);
+        }
+
+        public void Exit()
+        {
+            this.Owner.Close();
+        }
+
+        public void HelpAbout()
+        {
+            var dlg = new AboutDialog(this.Owner)
+                {
+                    Title = "About OxyPlot ExportDemo",
+                    Image = new BitmapImage(new Uri(@"pack://application:,,,/ExportDemo;component/Images/oxyplot.png"))
+                };
+            dlg.Show();
+        }
+
+        public void HelpDocumentation()
+        {
+            Process.Start("http://oxyplot.codeplex.com/documentation");
+        }
+
+        public void HelpHome()
+        {
+            Process.Start("http://oxyplot.codeplex.com");
+        }
+
+        public void Print()
+        {
+            XpsExporter.Print(this.Model, this.Plot.ActualWidth, this.Plot.ActualHeight);
+        }
+
+        public void SaveDocxReport()
+        {
+            var path = this.GetFilename("Word document (.docx)|*.docx", ".docx");
+            if (path != null)
+            {
+                this.SaveReport(path);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SaveHtmlReport()
+        {
+            var path = this.GetFilename(".html files|*.html", ".html");
+            if (path != null)
+            {
+                this.SaveReport(path);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SaveLatexReport()
+        {
+            var path = this.GetFilename(".tex files|*.tex", ".tex");
+            if (path != null)
+            {
+                this.SaveReport(path);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SavePdf()
+        {
+            var path = this.GetFilename(".pdf files|*.pdf", ".pdf");
+            if (path != null)
+            {
+                PdfExporter.Export(this.Model, path, this.Plot.ActualWidth, this.Plot.ActualHeight);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SavePdfReport()
+        {
+            var path = this.GetFilename(".pdf files|*.pdf", ".pdf");
+            if (path != null)
+            {
+                this.SaveReport(path);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SavePng()
+        {
+            var path = this.GetFilename(".png files|*.png", ".png");
+            if (path != null)
+            {
+                this.Plot.SaveBitmap(path);
+                OpenContainingFolder(path);
             }
         }
 
@@ -115,65 +258,150 @@ namespace ExportDemo
             var r = this.CreateReport(fileName);
             var reportStyle = new ReportStyle();
 
-            using (var s = File.OpenWrite(fileName))
+            switch (ext)
             {
-                if (ext == ".txt")
-                {
-                    using (var w = new TextReportWriter(s))
+                case ".txt":
+                    using (var s = File.OpenWrite(fileName))
                     {
-                        r.Write(w);
+                        using (var w = new TextReportWriter(s))
+                        {
+                            r.Write(w);
+                        }
                     }
-                }
 
-                if (ext == ".html")
-                {
-                    using (var w = new HtmlReportWriter(s))
+                    break;
+
+                case ".html":
+                    using (var s = File.OpenWrite(fileName))
                     {
-                        w.WriteReport(r, reportStyle);
+                        using (var w = new HtmlReportWriter(s))
+                        {
+                            w.WriteReport(r, reportStyle);
+                        }
                     }
-                }
 
-                if (ext == ".pdf")
-                {
+                    break;
+
+                case ".pdf":
                     using (var w = new PdfReportWriter(fileName))
                     {
                         w.WriteReport(r, reportStyle);
                     }
-                }
 
-                if (ext == ".rtf")
-                {
+                    break;
+
+                case ".rtf":
                     using (var w = new RtfReportWriter(fileName))
                     {
                         w.WriteReport(r, reportStyle);
                     }
-                }
 
-                if (ext == ".tex")
-                {
+                    break;
+
+                case ".tex":
                     using (var w = new LatexReportWriter(fileName, "Example report", "oxyplot"))
                     {
                         w.WriteReport(r, reportStyle);
                     }
-                }
 
-                if (ext == ".xps")
-                {
+                    break;
+
+                case ".xps":
                     using (var w = new FlowDocumentReportWriter())
                     {
                         w.WriteReport(r, reportStyle);
                         w.Save(fileName);
                     }
-                }
-                if (ext == ".docx")
-                {
+
+                    break;
+                case ".docx":
                     using (var w = new WordDocumentReportWriter(fileName))
                     {
                         w.WriteReport(r, reportStyle);
                         w.Save();
                     }
-                }
+
+                    break;
             }
+        }
+
+        public void SaveRtfReport()
+        {
+            var path = this.GetFilename(".rtf files|*.rtf", ".rtf");
+            if (path != null)
+            {
+                this.SaveReport(path);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SaveSvg()
+        {
+            var path = this.GetFilename(".svg files|*.svg", ".svg");
+            if (path != null)
+            {
+                // Using a WPF render context to measure the text
+                var textMeasurer = new ShapesRenderContext(new Canvas());
+                using (var s = File.OpenWrite(path))
+                {
+                    SvgExporter.Export(this.Model, s, this.Plot.ActualWidth, this.Plot.ActualHeight, true, textMeasurer);
+                }
+
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SaveTextReport()
+        {
+            var path = this.GetFilename("Text files (*.txt)|*.txt", ".txt");
+            if (path != null)
+            {
+                this.SaveReport(path);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SaveXaml()
+        {
+            var path = this.GetFilename(".xaml files|*.xaml", ".xaml");
+            if (path != null)
+            {
+                XamlExporter.Export(
+                    this.Model, path, this.Plot.ActualWidth, this.Plot.ActualHeight, this.Model.Background);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SaveXps()
+        {
+            var path = this.GetFilename(".xps files|*.xps", ".xps");
+            if (path != null)
+            {
+                XpsExporter.Export(
+                    this.Model, path, this.Plot.ActualWidth, this.Plot.ActualHeight, this.Model.Background);
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SaveXpsReport()
+        {
+            var path = this.GetFilename(".xps files|*.xps", ".xps");
+            if (path != null)
+            {
+                this.SaveReport(path);
+                OpenContainingFolder(path);
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static void OpenContainingFolder(string fileName)
+        {
+            // var folder = Path.GetDirectoryName(fileName);
+            var psi = new ProcessStartInfo("Explorer.exe", "/select," + fileName);
+            Process.Start(psi);
         }
 
         private Report CreateReport(string fileName)
@@ -187,8 +415,9 @@ namespace ExportDemo
             var main = new ReportSection();
 
             r.AddHeader(1, "Example report from OxyPlot");
-            //r.AddHeader(2, "Content");
-            //r.AddTableOfContents(main);
+
+            // r.AddHeader(2, "Content");
+            // r.AddTableOfContents(main);
             r.Add(main);
 
             main.AddHeader(2, "Introduction");
@@ -202,7 +431,7 @@ namespace ExportDemo
 
             main.AddHeader(2, "Plot");
             main.AddParagraph("This plot was rendered to a file and included in the report as a plot.");
-            main.AddPlot(Model, "Plot", 800, 500);
+            main.AddPlot(this.Model, "Plot", 800, 500);
 
             main.AddHeader(2, "Drawing");
             main.AddParagraph("Not yet implemented.");
@@ -241,9 +470,8 @@ namespace ExportDemo
                                 }
                                 break;
                         }*/
-
             main.AddHeader(2, "Image");
-            main.AddParagraph("The plot is rendered to a .png file and included in the report as an image.");
+            main.AddParagraph("The plot is rendered to a .png file and included in the report as an image. Zoom in to see the difference.");
 
             string pngPlotFileName = fileNameWithoutExtension + "_Plot2.png";
             PngExporter.Export(this.Model, pngPlotFileName, 800, 500);
@@ -251,7 +479,7 @@ namespace ExportDemo
 
             main.AddHeader(2, "Data");
             int i = 1;
-            foreach (DataPointSeries s in Model.Series)
+            foreach (DataPointSeries s in this.Model.Series)
             {
                 main.AddHeader(3, "Data series " + (i++));
                 var pt = main.AddPropertyTable("Properties of the " + s.GetType().Name, new[] { s });
@@ -259,194 +487,25 @@ namespace ExportDemo
                 pt.Fields[1].Width = 100;
 
                 var fields = new List<ItemsTableField>
-                                 {
-                                     new ItemsTableField("X", "X") { Width=60, StringFormat="0.00"},
-                                     new ItemsTableField("Y", "Y") { Width=60, StringFormat="0.00"}
-                                 };
+                    {
+                        new ItemsTableField("X", "X") { Width = 60, StringFormat = "0.00" }, 
+                        new ItemsTableField("Y", "Y") { Width = 60, StringFormat = "0.00" }
+                    };
                 main.Add(new ItemsTable { Caption = "Data", Fields = fields, Items = s.Points });
             }
 
-            //main.AddHeader(3, "Equations");
-            //main.AddEquation(@"E = m \cdot c^2");
-            //main.AddEquation(@"\oint \vec{B} \cdot d\vec{S} = 0");
+            // main.AddHeader(3, "Equations");
+            // main.AddEquation(@"E = m \cdot c^2");
+            // main.AddEquation(@"\oint \vec{B} \cdot d\vec{S} = 0");
             return r;
-        }
-
-        public void SaveSvg()
-        {
-            var path = GetFilename(".svg files|*.svg", ".svg");
-            if (path != null)
-            {
-                var svg = Model.ToSvg(Plot.ActualWidth, Plot.ActualHeight);
-                File.WriteAllText(path, svg);
-                OpenContainingFolder(path);
-            }
-        }
-
-        public void SavePng()
-        {
-            var path = GetFilename(".png files|*.png", ".png");
-            if (path != null)
-            {
-                Plot.SaveBitmap(path);
-                OpenContainingFolder(path);
-            }
-        }
-
-        private static void OpenContainingFolder(string fileName)
-        {
-            // var folder = Path.GetDirectoryName(fileName);
-            var psi = new ProcessStartInfo("Explorer.exe", "/select," + fileName);
-            Process.Start(psi);
-        }
-
-        public void SavePdf()
-        {
-            var path = GetFilename(".pdf files|*.pdf", ".pdf");
-            if (path != null)
-            {
-                PdfExporter.Export(Model, path, Plot.ActualWidth, Plot.ActualHeight);
-                OpenContainingFolder(path);
-            }
-        }
-
-        public void SaveRtfReport()
-        {
-            var path = GetFilename(".rtf files|*.rtf", ".rtf");
-            if (path != null)
-            {
-                SaveReport(path);
-                OpenContainingFolder(path);
-            }
-        }
-
-        public void SaveTextReport()
-        {
-            var path = GetFilename("Text files (*.txt)|*.txt", ".txt");
-            if (path != null)
-            {
-                SaveReport(path);
-                OpenContainingFolder(path);
-            }
-        }
-
-        public void SaveHtmlReport()
-        {
-            var path = GetFilename(".html files|*.html", ".html");
-            if (path != null)
-            {
-                SaveReport(path);
-                OpenContainingFolder(path);
-            }
-        }
-
-        public void SaveLatexReport()
-        {
-            var path = GetFilename(".tex files|*.tex", ".tex");
-            if (path != null)
-            {
-                SaveReport(path);
-                OpenContainingFolder(path);
-            }
-        }
-
-        public void SaveXaml()
-        {
-            var path = GetFilename(".xaml files|*.xaml", ".xaml");
-            if (path != null)
-            {
-                Plot.SaveXaml(path);
-                OpenContainingFolder(path);
-            }
-        }
-
-        public void SaveXps()
-        {
-            var path = GetFilename(".xps files|*.xps", ".xps");
-            if (path != null)
-            {
-                XpsExporter.Export(Plot.Model, path, Plot.ActualWidth, Plot.ActualHeight);
-                OpenContainingFolder(path);
-            }
-        }
-
-        public void Print()
-        {
-            XpsExporter.Print(model, Plot.ActualWidth, Plot.ActualHeight);
-        }
-
-        public void CopySvg()
-        {
-            Clipboard.SetText(Model.ToSvg(Plot.ActualWidth, Plot.ActualHeight, true));
-        }
-
-        public void CopyBitmap()
-        {
-            Clipboard.SetImage(Plot.ToBitmap());
-        }
-
-        public void CopyXaml()
-        {
-            Clipboard.SetText(Plot.ToXaml());
-        }
-
-        public void SavePdfReport()
-        {
-            var path = GetFilename(".pdf files|*.pdf", ".pdf");
-            if (path != null)
-            {
-                SaveReport(path);
-                OpenContainingFolder(path);
-            }
-        }
-
-        public void SaveXpsReport()
-        {
-            var path = GetFilename(".xps files|*.xps", ".xps");
-            if (path != null)
-            {
-                SaveReport(path);
-                OpenContainingFolder(path);
-            }
-        }
-
-        public void SaveDocxReport()
-        {
-            var path = GetFilename("Word document (.docx)|*.docx", ".docx");
-            if (path != null)
-            {
-                SaveReport(path);
-                OpenContainingFolder(path);
-            }
         }
 
         private string GetFilename(string filter, string defaultExt)
         {
-            // todo: this should probably move out of the viewmodel
             var dlg = new SaveFileDialog { Filter = filter, DefaultExt = defaultExt };
-            return dlg.ShowDialog(Owner).Value ? dlg.FileName : null;
+            return dlg.ShowDialog(this.Owner).Value ? dlg.FileName : null;
         }
 
-        public void Exit()
-        {
-            Owner.Close();
-        }
-
-        public void HelpHome()
-        {
-            Process.Start("http://oxyplot.codeplex.com");
-        }
-
-        public void HelpDocumentation()
-        {
-            Process.Start("http://oxyplot.codeplex.com/documentation");
-        }
-        public void HelpAbout()
-        {
-            var dlg = new AboutDialog(Owner);
-            dlg.Title = "About OxyPlot ExportDemo";
-            dlg.Image = new BitmapImage(new Uri(@"pack://application:,,,/ExportDemo;component/Images/oxyplot.png"));
-            dlg.Show();
-        }
+        #endregion
     }
 }

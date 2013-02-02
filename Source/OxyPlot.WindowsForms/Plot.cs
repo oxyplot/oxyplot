@@ -617,10 +617,10 @@ namespace OxyPlot.WindowsForms
 
                 lock (this.renderingLock)
                 {
-                    rc.Initialize(e.Graphics, this.Width, this.Height);
+                    this.rc.SetGraphicsTarget(e.Graphics);
                     if (this.model != null)
                     {
-                        this.model.Render(rc);
+                        this.model.Render(this.rc, this.Width, this.Height);
                     }
 
                     if (this.zoomRectangle != Rectangle.Empty)

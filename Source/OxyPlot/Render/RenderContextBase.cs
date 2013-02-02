@@ -37,24 +37,6 @@ namespace OxyPlot
     public abstract class RenderContextBase : IRenderContext
     {
         /// <summary>
-        /// Gets or sets the height of the rendering area.
-        /// </summary>
-        public double Height { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to paint the background.
-        /// </summary>
-        /// <value>
-        ///  <c>true</c> if the background should be painted; otherwise, <c>false</c>.
-        /// </value>
-        public bool PaintBackground { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the width of the rendering area.
-        /// </summary>
-        public double Width { get; protected set; }
-
-        /// <summary>
         /// Draws an ellipse.
         /// </summary>
         /// <param name="rect">

@@ -91,47 +91,16 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The canvas.
         /// </summary>
-        private Canvas canvas;
+        private readonly Canvas canvas;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapesRenderContext"/> class.
         /// </summary>
-        public ShapesRenderContext()
-        {
-            this.TextMeasurementMethod = TextMeasurementMethod.TextBlock;
-            this.UseStreamGeometry = true;
-        }
-
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        public void Initialize(Canvas canvas)
+        public ShapesRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
-            this.Width = this.canvas.ActualWidth;
-            this.Height = this.canvas.ActualHeight;
-        }
-
-        /// <summary>
-        /// Gets the height.
-        /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
-        public double Height { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether to paint the background.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the background should be painted; otherwise, <c>false</c> .
-        /// </value>
-        public bool PaintBackground
-        {
-            get
-            {
-                return false;
-            }
+            this.TextMeasurementMethod = TextMeasurementMethod.TextBlock;
+            this.UseStreamGeometry = true;
         }
 
         /// <summary>
@@ -152,14 +121,6 @@ namespace OxyPlot.Wpf
         /// The XamlWriter does not serialize StreamGeometry, so set this to false if you want to export to XAML. Using stream geometry seems to be slightly faster than using path geometry.
         /// </remarks>
         public bool UseStreamGeometry { get; set; }
-
-        /// <summary>
-        /// Gets the width.
-        /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
-        public double Width { get; private set; }
 
         /// <summary>
         /// Gets or sets the current tooltip.

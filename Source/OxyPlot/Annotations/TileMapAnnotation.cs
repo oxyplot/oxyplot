@@ -147,7 +147,7 @@ namespace OxyPlot
             var lat1 = this.YAxis.ActualMaximum;
 
             // the desired number of tiles horizontally
-            double tilesx = rc.Width / this.TileSize;
+            double tilesx = model.Width / this.TileSize;
 
             // calculate the desired zoom level
             var n = tilesx / (((lon1 + 180) / 360) - ((lon0 + 180) / 360));

@@ -45,7 +45,7 @@ namespace OxyPlot.WindowsForms
     internal class GraphicsRenderContext : RenderContextBase
     {
         /// <summary>
-        /// The fontsize factor.
+        /// The font size factor.
         /// </summary>
         private const float FontsizeFactor = 0.8f;
 
@@ -59,37 +59,24 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         public GraphicsRenderContext()
         {
-            this.PaintBackground = true;
         }
 
         /// <summary>
-        /// Initializes the specified graphics.
+        /// Sets the graphics target.
         /// </summary>
         /// <param name="graphics">The graphics surface.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        public void Initialize(Graphics graphics, double width, double height)
+        public void SetGraphicsTarget(Graphics graphics)
         {
-            this.Width = width;
-            this.Height = height;
             this.g = graphics;
         }
 
         /// <summary>
-        /// The draw ellipse.
+        /// Draws the ellipse.
         /// </summary>
-        /// <param name="rect">
-        /// The rect.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rect.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             if (fill != null)
@@ -110,26 +97,14 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// The draw line.
+        /// Draws the line.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
         public override void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -169,29 +144,15 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// The draw polygon.
+        /// Draws the polygon.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
         public override void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
@@ -536,7 +497,11 @@ namespace OxyPlot.WindowsForms
                 }
 
                 g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
-                g.DrawImage(image, new Rectangle((int)x, (int)y, (int)w, (int)h), srcX, srcY, srcWidth, srcHeight, GraphicsUnit.Pixel, ia);
+                int sx = (int)Math.Round(x);
+                int sy = (int)Math.Round(y);
+                int sw = (int)Math.Round(x + w) - sx;
+                int sh = (int)Math.Round(y + h) - sy;
+                g.DrawImage(image, new Rectangle(sx, sy, sw, sh), srcX, srcY, srcWidth, srcHeight, GraphicsUnit.Pixel, ia);
             }
         }
 
