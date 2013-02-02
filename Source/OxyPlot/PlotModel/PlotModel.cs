@@ -1103,22 +1103,6 @@ namespace OxyPlot
             return null;
         }
 
-#if !PCL
-
-        /// <summary>
-        /// Saves the plot to a svg file.
-        /// </summary>
-        /// <param name="fileName">Name of the file.</param>
-        /// <param name="width">The width (points).</param>
-        /// <param name="height">The height (points).</param>
-        /// <param name="textMeasurer">The text measurer.</param>
-        public void SaveSvg(string fileName, double width, double height, IRenderContext textMeasurer = null)
-        {
-            SvgExporter.Export(this, fileName, width, height, textMeasurer);
-        }
-
-#endif
-
         /// <summary>
         /// Generates C# code of the model.
         /// </summary>
@@ -1299,17 +1283,6 @@ namespace OxyPlot
                 var args = new EventArgs();
                 handler(this, args);
             }
-        }
-
-        /// <summary>
-        /// Traces the specified message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        protected void Trace(string message)
-        {
-#if !SILVERLIGHT && !MONO && !PCL
-            System.Diagnostics.Debug.WriteLine(string.Format("{0}: {1}", this.GetType().Name, message));
-#endif
         }
 
         /// <summary>
@@ -1508,29 +1481,5 @@ namespace OxyPlot
                 a.UpdateActualMaxMin();
             }
         }
-
-#if SERIALIZATION_ENABLED
-        /// <summary>
-        /// Xml serialize the plotmodel to a stream.
-        /// </summary>
-        /// <param name="s">The stream.</param>
-        public void XmlSerialize(Stream s)
-        {
-            var serializer = new System.Xml.Serialization.XmlSerializer(typeof(PlotModel));
-            serializer.Serialize(s, this);
-        }
-
-        /// <summary>
-        /// Xml serialize the plotmodel to a file.
-        /// </summary>
-        /// <param name="filename">The filename.</param>
-        public void XmlSerialize(string filename)
-        {
-            using (var s = File.OpenWrite(filename))
-            {
-                this.XmlSerialize(s);
-            }
-        }
-#endif
     }
 }

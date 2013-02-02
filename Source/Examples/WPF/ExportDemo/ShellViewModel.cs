@@ -297,9 +297,12 @@ namespace ExportDemo
                     break;
 
                 case ".tex":
-                    using (var w = new LatexReportWriter(fileName, "Example report", "oxyplot"))
+                    using (var s = File.OpenWrite(fileName))
                     {
-                        w.WriteReport(r, reportStyle);
+                        using (var w = new LatexReportWriter(s, "Example report", "oxyplot"))
+                        {
+                            w.WriteReport(r, reportStyle);
+                        }
                     }
 
                     break;

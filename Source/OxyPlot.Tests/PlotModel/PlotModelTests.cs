@@ -73,15 +73,6 @@ namespace OxyPlot.Tests
             SvgAssert.IsValidFile(FileName);
         }
 
-#if SERIALIZATION_ENABLED
-        [Test]
-        public void XmlSerialize_PlotModel_ValidXml()
-        {
-            // var plotModel = TestModels.CreateTestModel1();
-            // plot.XmlSerialize("test.xml");
-        }
-#endif
-
         [Test]
         public void B11_Backgrounds()
         {

@@ -60,6 +60,11 @@ namespace OxyPlot
         /// <param name="background">The background.</param>
         public SvgRenderContext(Stream s, double width, double height, bool isDocument, IRenderContext textMeasurer, OxyColor background)
         {
+            if (textMeasurer == null)
+            {
+                throw new ArgumentNullException("textMeasurer", "A text measuring render context must be provided.");
+            }
+
             this.w = new SvgWriter(s, width, height, isDocument);
             this.TextMeasurer = textMeasurer;
             if (background != null)
@@ -67,22 +72,6 @@ namespace OxyPlot
                 this.w.WriteRectangle(0, 0, width, height, this.w.CreateStyle(background, null, 0));
             }
         }
-
-#if !PCL
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SvgRenderContext"/> class.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="textMeasurer">The text measurer.</param>
-        public SvgRenderContext(string path, double width, double height, IRenderContext textMeasurer)
-        {
-            this.w = new SvgWriter(path, width, height);
-            this.TextMeasurer = textMeasurer;
-        }
-
-#endif
 
         /// <summary>
         /// Gets or sets the text measurer.
@@ -127,7 +116,7 @@ namespace OxyPlot
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             this.w.WriteEllipse(
-                rect.Left, rect.Top, rect.Width, rect.Height, this.w.CreateStyle(fill, stroke, thickness, null));
+                rect.Left, rect.Top, rect.Width, rect.Height, this.w.CreateStyle(fill, stroke, thickness));
         }
 
         /// <summary>
@@ -182,7 +171,7 @@ namespace OxyPlot
         public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             this.w.WriteRectangle(
-                rect.Left, rect.Top, rect.Width, rect.Height, this.w.CreateStyle(fill, stroke, thickness, null));
+                rect.Left, rect.Top, rect.Width, rect.Height, this.w.CreateStyle(fill, stroke, thickness));
         }
 
         /// <summary>
@@ -195,8 +184,8 @@ namespace OxyPlot
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
         /// <param name="rotate">The rotate.</param>
-        /// <param name="halign">The halign.</param>
-        /// <param name="valign">The valign.</param>
+        /// <param name="halign">The horizontal alignment.</param>
+        /// <param name="valign">The vertical alignment.</param>
         /// <param name="maxSize">Size of the max.</param>
         public override void DrawText(
             ScreenPoint p,
@@ -266,16 +255,7 @@ namespace OxyPlot
                 return OxySize.Empty;
             }
 
-            if (this.TextMeasurer != null)
-            {
-                return this.TextMeasurer.MeasureText(text, fontFamily, fontSize, fontWeight);
-            }
-
-#if !SILVERLIGHT && !PCL
-            return NativeMethods.MeasureString(fontFamily, (int)fontSize, (int)fontWeight, text);
-#else
-            return OxySize.Empty;
-#endif
+            return this.TextMeasurer.MeasureText(text, fontFamily, fontSize, fontWeight);
         }
 
         /// <summary>

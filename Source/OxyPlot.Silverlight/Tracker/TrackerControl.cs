@@ -27,13 +27,7 @@
 //   The tracker control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-#if WPF
-namespace OxyPlot.Wpf
-#endif
-#if SILVERLIGHT
-
 namespace OxyPlot.Silverlight
-#endif
 {
     using System;
     using System.Windows;
@@ -83,15 +77,6 @@ namespace OxyPlot.Silverlight
         /// </summary>
         public static readonly DependencyProperty LineDashArrayProperty = DependencyProperty.Register(
             "LineDashArray", typeof(DoubleCollection), typeof(TrackerControl), new PropertyMetadata(null));
-
-#if WPF
-
-    // <summary>
-    // The border edge mode property.
-    // </summary>
-        public static readonly DependencyProperty BorderEdgeModeProperty = DependencyProperty.Register(
-            "BorderEdgeMode", typeof(EdgeMode), typeof(TrackerControl));
-#endif
 
         /// <summary>
         /// The show arrow property.
@@ -184,21 +169,6 @@ namespace OxyPlot.Silverlight
         /// </summary>
         private Line verticalLine;
 
-#if WPF
-
-    // <summary>
-    // Initializes static members of the <see cref="TrackerControl"/> class.
-    // </summary>
-        static TrackerControl()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(TrackerControl), new FrameworkPropertyMetadata(typeof(TrackerControl)));
-        }
-
-#endif
-
-#if SILVERLIGHT
-
         /// <summary>
         /// Initializes a new instance of the <see cref = "TrackerControl" /> class.
         /// </summary>
@@ -206,27 +176,6 @@ namespace OxyPlot.Silverlight
         {
             this.DefaultStyleKey = typeof(TrackerControl);
         }
-
-#endif
-
-#if WPF
-
-    // <summary>
-    // Gets or sets BorderEdgeMode.
-    // </summary>
-        public EdgeMode BorderEdgeMode
-        {
-            get
-            {
-                return (EdgeMode)this.GetValue(BorderEdgeModeProperty);
-            }
-
-            set
-            {
-                this.SetValue(BorderEdgeModeProperty, value);
-            }
-        }
-#endif
 
         /// <summary>
         /// Gets or sets HorizontalLineVisibility.
@@ -569,12 +518,7 @@ namespace OxyPlot.Silverlight
                    X = dx * contentSize.Width, Y = dy * contentSize.Height
                 };
 
-#if WPF
-			ScreenPoint pos = this.Position;
-#endif
-#if SILVERLIGHT
-            Point pos = this.Position.ToPoint(true);
-#endif
+            var pos = this.Position.ToPoint(true);
 
             if (this.horizontalLine != null)
             {

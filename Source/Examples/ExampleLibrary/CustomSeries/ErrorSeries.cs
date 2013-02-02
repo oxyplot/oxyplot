@@ -78,11 +78,7 @@ namespace ExampleLibrary
                 return;
             }
 
-            if (this.XAxis == null || this.YAxis == null)
-            {
-                Trace("Axis not defined.");
-                return;
-            }
+            this.VerifyAxes();
 
             var clippingRect = GetClippingRect();
 

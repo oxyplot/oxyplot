@@ -28,7 +28,6 @@ namespace ExampleLibrary
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     using OxyPlot;
@@ -42,11 +41,6 @@ namespace ExampleLibrary
         public static PlotModel LineSeries1()
         {
             var model = new PlotModel("LineSeries, 100k points");
-#if !SILVERLIGHT && !MONO && !PCL
-            var watch = new Stopwatch();
-            model.Updating += (sender, args) => watch.Restart();
-            model.Updated += (sender, args) => Debug.WriteLine("Updated in " + watch.ElapsedMilliseconds + " ms");
-#endif
             var s1 = new LineSeries();
             AddPoints(s1.Points, 100000);
             model.Series.Add(s1);
@@ -58,15 +52,9 @@ namespace ExampleLibrary
         public static PlotModel LineSeries1Round()
         {
             var model = new PlotModel("LineSeries, 100k points, round line joins");
-#if !SILVERLIGHT && !MONO && !PCL
-            var watch = new Stopwatch();
-            model.Updating += (sender, args) => watch.Restart();
-            model.Updated += (sender, args) => Debug.WriteLine("Updated in " + watch.ElapsedMilliseconds + " ms");
-#endif
-            var s1 = new LineSeries() { LineJoin = OxyPenLineJoin.Round };
+            var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Round };
             AddPoints(s1.Points, 100000);
             model.Series.Add(s1);
-
             return model;
         }
 

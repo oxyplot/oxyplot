@@ -37,9 +37,6 @@ namespace OxyPlot
     /// <remarks>
     /// <see cref="DataPoint"/>s are transformed to <see cref="ScreenPoint"/>s.
     /// </remarks>
-#if !PCL
-    [System.ComponentModel.TypeConverter(typeof(DataPointConverter))]
-#endif
     public struct DataPoint : IDataPoint, ICodeGenerating
     {
         /// <summary>

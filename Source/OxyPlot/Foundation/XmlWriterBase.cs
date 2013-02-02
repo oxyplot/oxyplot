@@ -39,14 +39,6 @@ namespace OxyPlot
     /// </summary>
     public abstract class XmlWriterBase : IDisposable
     {
-#if !PCL
-
-        /// <summary>
-        /// The stream.
-        /// </summary>
-        private Stream s;
-#endif
-
         /// <summary>
         /// The xml writer.
         /// </summary>
@@ -64,22 +56,6 @@ namespace OxyPlot
         {
         }
 
-#if !PCL
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlWriterBase"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        protected XmlWriterBase(string path)
-        {
-            this.s = File.OpenWrite(path);
-            this.w = XmlWriter.Create(this.s, new XmlWriterSettings { Indent = true, Encoding = Encoding.UTF8 });
-        }
-
-#endif
-
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlWriterBase"/> class.
         /// </summary>
@@ -96,22 +72,6 @@ namespace OxyPlot
         /// </summary>
         public virtual void Close()
         {
-#if !PCL
-            if (this.w == null)
-            {
-                return;
-            }
-
-            this.w.Close();
-            this.w = null;
-
-            if (this.s != null)
-            {
-                this.s.Close();
-                this.s = null;
-            }
-
-#endif
         }
 
         /// <summary>

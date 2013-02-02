@@ -59,18 +59,6 @@ namespace OxyPlot.Reporting
     /// </summary>
     public class HtmlReportWriter : XmlWriterBase, IReportWriter
     {
-#if !PCL
-        /// <summary>
-        /// The directory of the output file.
-        /// </summary>
-        private readonly string directory;
-
-        /// <summary>
-        /// The path of the output file.
-        /// </summary>
-        private readonly string outputFile;
-#endif
-
         /// <summary>
         /// The text measurer.
         /// </summary>
@@ -85,29 +73,6 @@ namespace OxyPlot.Reporting
         /// The style.
         /// </summary>
         private ReportStyle style;
-
-#if !PCL
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <param name="textMeasurer">
-        /// The text measurer.
-        /// </param>
-        public HtmlReportWriter(string path, IRenderContext textMeasurer = null)
-            : base(path)
-        {
-            this.directory = Path.GetDirectoryName(path);
-            this.outputFile = path;
-            this.textMeasurer = textMeasurer;
-            this.PlotElementType = HtmlPlotElementType.Embed;
-            this.WriteHtmlElement();
-        }
-
-#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlReportWriter"/> class.
@@ -250,17 +215,15 @@ namespace OxyPlot.Reporting
             {
                 case HtmlPlotElementType.Embed:
                 case HtmlPlotElementType.Object:
-#if PCL
-                    // Writing to file not supported
-#else
-                    string source = string.Format(
-                        "{0}_Plot{1}.svg", Path.GetFileNameWithoutExtension(this.outputFile), plot.FigureNumber);
-                    plot.PlotModel.SaveSvg(this.GetFullFileName(source), plot.Width, plot.Height, this.textMeasurer);
-                    this.WriteStartElement(this.PlotElementType == HtmlPlotElementType.Embed ? "embed" : "object");
-                    this.WriteAttributeString("src", source);
-                    this.WriteAttributeString("type", "image/svg+xml");
-                    this.WriteEndElement();
-#endif
+                    // TODO: need a Func<string,Stream> to provide streams for the plot files?
+
+                    //string source = string.Format(
+                    //    "{0}_Plot{1}.svg", Path.GetFileNameWithoutExtension(this.outputFile), plot.FigureNumber);
+                    //plot.PlotModel.SaveSvg(this.GetFullFileName(source), plot.Width, plot.Height, this.textMeasurer);
+                    //this.WriteStartElement(this.PlotElementType == HtmlPlotElementType.Embed ? "embed" : "object");
+                    //this.WriteAttributeString("src", source);
+                    //this.WriteAttributeString("type", "image/svg+xml");
+                    //this.WriteEndElement();
                     break;
                 case HtmlPlotElementType.Svg:
                     this.WriteRaw(plot.PlotModel.ToSvg(plot.Width, plot.Height, false, this.textMeasurer));
@@ -443,24 +406,6 @@ namespace OxyPlot.Reporting
             }
 
             return css.ToString();
-        }
-
-        /// <summary>
-        /// Gets the full name of the specified file.
-        /// </summary>
-        /// <param name="filename">
-        /// The filename (relative to the output file).
-        /// </param>
-        /// <returns>
-        /// A full path to the file.
-        /// </returns>
-        private string GetFullFileName(string filename)
-        {
-#if PCL
-            return filename;
-#else
-            return Path.GetFullPath(Path.Combine(this.directory, filename));
-#endif
         }
 
         /// <summary>

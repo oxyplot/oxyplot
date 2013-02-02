@@ -27,13 +27,8 @@
 //   The tracker definition.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-#if WPF
 
 namespace OxyPlot.Wpf
-#endif
-#if SILVERLIGHT
-namespace OxyPlot.Silverlight
-#endif
 {
     using System.Windows;
     using System.Windows.Controls;
@@ -94,6 +89,5 @@ namespace OxyPlot.Silverlight
                 this.SetValue(TrackerTemplateProperty, value);
             }
         }
-
     }
 }

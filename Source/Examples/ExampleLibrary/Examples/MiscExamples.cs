@@ -179,10 +179,15 @@ namespace ExampleLibrary
             //// http://mbostock.github.com/protovis/ex/marey-train-schedule.jpg
             //// http://c82.net/posts.php?id=66
 
-            var model = new PlotModel("Train schedule", "Bergensbanen (Oslo-Bergen, Norway)") { IsLegendVisible = false, PlotAreaBorderThickness = 0 };
+            var model = new PlotModel("Train schedule", "Bergensbanen (Oslo-Bergen, Norway)")
+                {
+                    IsLegendVisible = false,
+                    PlotAreaBorderThickness = 0,
+                    PlotMargins = new OxyThickness(60, 4, 4, 40)
+                };
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -20, 540, "Distance from Oslo S")
             {
-                IsAxisVisible = false,
+                IsAxisVisible = true,
                 StringFormat = "0"
             });
             model.Axes.Add(new TimeSpanAxis(AxisPosition.Bottom, 0, TimeSpanAxis.ToDouble(TimeSpan.FromHours(24)))
@@ -194,127 +199,122 @@ namespace ExampleLibrary
                 TickStyle = TickStyle.None,
                 MajorGridlineStyle = LineStyle.Solid,
                 MajorGridlineColor = OxyColors.LightGray,
-                MinorGridlineStyle = LineStyle.Dot,
-                MinorGridlineColor = OxyColors.LightGray
+                MinorGridlineStyle = LineStyle.Solid,
+                MinorGridlineColor = OxyColor.FromArgb(255, 240, 240, 240)
             });
 
             // Read the train schedule from a .csv resource
-#if PCL45
-            var resources = typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceNames();
-            using (var stream = typeof(MiscExamples).GetTypeInfo().Assembly.GetManifestResourceStream("ExampleLibrary.Resources.Bergensbanen.csv"))
-#else
-            var resources = Assembly.GetExecutingAssembly().GetManifestResourceNames();
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources.Bergensbanen.csv"))
-#endif
-
-            using (var reader = new StreamReader(stream))
             {
-                string header = reader.ReadLine();
-                var headerFields = header.Split(';');
-                int lines = headerFields.Length - 3;
-                var stations = new LineSeries()
+                using (var reader = new StreamReader(stream))
                 {
-                    StrokeThickness = 0,
-                    MarkerType = MarkerType.Circle,
-                    MarkerFill = OxyColor.FromAColor(200, OxyColors.Black),
-                    MarkerSize = 4,
-                };
+                    string header = reader.ReadLine();
+                    var headerFields = header.Split(';');
+                    int lines = headerFields.Length - 3;
+                    var stations = new LineSeries()
+                        {
+                            StrokeThickness = 0,
+                            MarkerType = MarkerType.Circle,
+                            MarkerFill = OxyColor.FromAColor(200, OxyColors.Black),
+                            MarkerSize = 4,
+                        };
 
-                // Add the line series for each train line
-                var series = new LineSeries[lines];
-                for (int i = 0; i < series.Length; i++)
-                {
-                    series[i] = new LineSeries(headerFields[3 + i])
-                    {
-                        Color = OxyColor.FromAColor(180, OxyColors.Black),
-                        StrokeThickness = 2,
-                        TrackerFormatString = "Train {0}\nTime: {2}\nDistance from Oslo S: {4:0.0} km",
-                    };
-                    model.Series.Add(series[i]);
-                }
-
-                // Parse the train schedule
-                while (!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine();
-
-                    // skip comments
-                    if (line == null || line.StartsWith("//"))
-                    {
-                        continue;
-                    }
-
-                    var fields = line.Split(';');
-                    double x = double.Parse(fields[1], CultureInfo.InvariantCulture);
-                    if (!string.IsNullOrEmpty(fields[0]))
-                    {
-                        // Add a horizontal annotation line for the station
-                        model.Annotations.Add(
-                            new LineAnnotation
-                                {
-                                    Type = LineAnnotationType.Horizontal,
-                                    Y = x,
-                                    Layer = AnnotationLayer.BelowSeries,
-                                    LineStyle = LineStyle.Solid,
-                                    Color = OxyColors.LightGray,
-                                    Text = fields[0] + "  ",
-                                    TextVerticalAlignment = VerticalTextAlign.Middle,
-                                    TextPosition = 0,
-                                    TextMargin = 4,
-                                    TextHorizontalAlignment = HorizontalTextAlign.Right
-                                });
-                    }
-
+                    // Add the line series for each train line
+                    var series = new LineSeries[lines];
                     for (int i = 0; i < series.Length; i++)
                     {
-                        if (string.IsNullOrEmpty(fields[i + 3]))
+                        series[i] = new LineSeries(headerFields[3 + i])
+                            {
+                                Color = OxyColor.FromAColor(180, OxyColors.Black),
+                                StrokeThickness = 2,
+                                TrackerFormatString = "Train {0}\nTime: {2}\nDistance from Oslo S: {4:0.0} km",
+                            };
+                        model.Series.Add(series[i]);
+                    }
+
+                    // Parse the train schedule
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+
+                        // skip comments
+                        if (line == null || line.StartsWith("//"))
                         {
                             continue;
                         }
 
-                        // Convert time from hhmm to a time span
-                        int hhmm = int.Parse(fields[i + 3]);
-                        var span = new TimeSpan(0, hhmm / 100, (hhmm % 100), 0);
-                        double t = TimeSpanAxis.ToDouble(span);
-
-                        // Add the point to the line
-                        series[i].Points.Add(new DataPoint(t, x));
-
-                        // Add the point for the station
-                        stations.Points.Add(new DataPoint(t, x));
-                    }
-                }
-
-                // add points and NaN (to make a line break) when passing midnight
-                double tmidnight = TimeSpanAxis.ToDouble(TimeSpan.FromHours(24));
-                foreach (LineSeries s in model.Series)
-                {
-                    for (int i = 0; i + 1 < s.Points.Count; i++)
-                    {
-                        if (Math.Abs(s.Points[i].X - s.Points[i + 1].X) > tmidnight / 2)
+                        var fields = line.Split(';');
+                        double x = double.Parse(fields[1], CultureInfo.InvariantCulture);
+                        if (!string.IsNullOrEmpty(fields[0]))
                         {
-                            double x0 = s.Points[i].X;
-                            if (x0 > tmidnight / 2)
+                            // Add a horizontal annotation line for the station
+                            model.Annotations.Add(
+                                new LineAnnotation
+                                    {
+                                        Type = LineAnnotationType.Horizontal,
+                                        Y = x,
+                                        Layer = AnnotationLayer.BelowSeries,
+                                        LineStyle = LineStyle.Solid,
+                                        Color = OxyColors.LightGray,
+                                        Text = fields[0] + "  ",
+                                        TextVerticalAlignment = VerticalTextAlign.Bottom,
+                                        TextPosition = 0,
+                                        TextMargin = 4,
+                                        TextHorizontalAlignment = HorizontalTextAlign.Left
+                                    });
+                        }
+
+                        for (int i = 0; i < series.Length; i++)
+                        {
+                            if (string.IsNullOrEmpty(fields[i + 3]))
                             {
-                                x0 -= tmidnight;
+                                continue;
                             }
 
-                            double x1 = s.Points[i + 1].X;
-                            if (x1 > tmidnight / 2)
-                            {
-                                x1 -= tmidnight;
-                            }
+                            // Convert time from hhmm to a time span
+                            int hhmm = int.Parse(fields[i + 3]);
+                            var span = new TimeSpan(0, hhmm / 100, (hhmm % 100), 0);
+                            double t = TimeSpanAxis.ToDouble(span);
 
-                            double y = s.Points[i].Y + (s.Points[i + 1].Y - s.Points[i].Y) / (x1 - x0) * (0 - x0);
-                            s.Points.Insert(i + 1, new DataPoint(x0 < x1 ? 0 : tmidnight, y));
-                            s.Points.Insert(i + 1, new DataPoint(double.NaN, y));
-                            s.Points.Insert(i + 1, new DataPoint(x0 < x1 ? tmidnight : 0, y));
-                            i += 3;
+                            // Add the point to the line
+                            series[i].Points.Add(new DataPoint(t, x));
+
+                            // Add the point for the station
+                            stations.Points.Add(new DataPoint(t, x));
                         }
                     }
-                }
 
-                model.Series.Add(stations);
+                    // add points and NaN (to make a line break) when passing midnight
+                    double tmidnight = TimeSpanAxis.ToDouble(TimeSpan.FromHours(24));
+                    foreach (LineSeries s in model.Series)
+                    {
+                        for (int i = 0; i + 1 < s.Points.Count; i++)
+                        {
+                            if (Math.Abs(s.Points[i].X - s.Points[i + 1].X) > tmidnight / 2)
+                            {
+                                double x0 = s.Points[i].X;
+                                if (x0 > tmidnight / 2)
+                                {
+                                    x0 -= tmidnight;
+                                }
+
+                                double x1 = s.Points[i + 1].X;
+                                if (x1 > tmidnight / 2)
+                                {
+                                    x1 -= tmidnight;
+                                }
+
+                                double y = s.Points[i].Y + (s.Points[i + 1].Y - s.Points[i].Y) / (x1 - x0) * (0 - x0);
+                                s.Points.Insert(i + 1, new DataPoint(x0 < x1 ? 0 : tmidnight, y));
+                                s.Points.Insert(i + 1, new DataPoint(double.NaN, y));
+                                s.Points.Insert(i + 1, new DataPoint(x0 < x1 ? tmidnight : 0, y));
+                                i += 3;
+                            }
+                        }
+                    }
+
+                    model.Series.Add(stations);
+                }
             }
 
             return model;
