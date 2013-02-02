@@ -30,6 +30,9 @@ namespace ExampleLibrary
 {
     using System;
 
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     [Examples("HeatMapSeries")]
     public class HeatMapSeriesExamples : ExamplesBase
     {

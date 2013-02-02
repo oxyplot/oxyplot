@@ -27,7 +27,7 @@
 //   Axis layer position.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     /// <summary>
     /// Specifies the layer position of an <see cref="Axis"/>.

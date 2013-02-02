@@ -29,6 +29,9 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     [Examples("Polar Plots")]
     public static class PolarPlotExamples
     {

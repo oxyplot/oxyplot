@@ -27,7 +27,7 @@
 //   Represents a text object annotation.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Annotations
 {
     /// <summary>
     /// Represents a text annotation.

@@ -27,6 +27,8 @@
 namespace ExampleLibrary
 {
     using OxyPlot;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     [Examples("AreaSeries")]
     public static class AreaSeriesExamples

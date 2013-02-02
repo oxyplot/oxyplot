@@ -31,6 +31,9 @@ using OxyPlot;
 
 namespace RealtimeDemo
 {
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     public enum SimulationType
     {
         Waves,

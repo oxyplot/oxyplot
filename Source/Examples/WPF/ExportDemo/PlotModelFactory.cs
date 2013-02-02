@@ -30,6 +30,9 @@ using OxyPlot;
 
 namespace ExportDemo
 {
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     public enum ModelType
     {
         SineWave,

@@ -27,7 +27,7 @@
 //   Represents a two-color line series.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System.Collections.Generic;
 

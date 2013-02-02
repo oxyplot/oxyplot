@@ -27,7 +27,7 @@
 //   Represents a series for candlestick charts.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
 

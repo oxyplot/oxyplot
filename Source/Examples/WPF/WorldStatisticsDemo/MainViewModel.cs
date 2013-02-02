@@ -33,6 +33,9 @@ using OxyPlot;
 
 namespace WorldStatisticsDemo
 {
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     /// <summary>
     /// www.gapminder.org
     /// </summary>

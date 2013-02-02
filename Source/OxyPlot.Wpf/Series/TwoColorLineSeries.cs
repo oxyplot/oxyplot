@@ -63,7 +63,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public TwoColorLineSeries()
         {
-            this.InternalSeries = new OxyPlot.TwoColorLineSeries();
+            this.InternalSeries = new OxyPlot.Series.TwoColorLineSeries();
         }
 
         /// <summary>
@@ -120,10 +120,10 @@ namespace OxyPlot.Wpf
         /// <param name="series">
         /// The series.
         /// </param>
-        protected override void SynchronizeProperties(OxyPlot.Series series)
+        protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = series as OxyPlot.TwoColorLineSeries;
+            var s = series as OxyPlot.Series.TwoColorLineSeries;
             s.Limit = this.Limit;
             s.Color2 = this.Color2.ToOxyColor();
         }

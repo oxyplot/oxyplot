@@ -27,7 +27,7 @@
 //   EventArgs for the Axis.AxisChanged event.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     using System;
 

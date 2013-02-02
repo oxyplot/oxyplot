@@ -28,6 +28,8 @@ namespace OxyPlot.Wpf
 {
     using System.Windows;
 
+    using OxyPlot.Series;
+
     /// <summary>
     ///     This is a WPF wrapper of OxyPlot.BarSeries
     /// </summary>
@@ -52,7 +54,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public BarSeries()
         {
-            this.InternalSeries = new OxyPlot.BarSeries();
+            this.InternalSeries = new OxyPlot.Series.BarSeries();
         }
 
         /// <summary>
@@ -75,10 +77,10 @@ namespace OxyPlot.Wpf
         ///     Synchronizes the properties.
         /// </summary>
         /// <param name="series">The series.</param>
-        protected override void SynchronizeProperties(OxyPlot.Series series)
+        protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = (OxyPlot.BarSeries)series;
+            var s = (OxyPlot.Series.BarSeries)series;
             s.BarWidth = this.BarWidth;
         }
     }

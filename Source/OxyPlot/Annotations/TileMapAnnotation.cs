@@ -28,7 +28,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot
+namespace OxyPlot.Annotations
 {
     using System;
     using System.Collections.Generic;

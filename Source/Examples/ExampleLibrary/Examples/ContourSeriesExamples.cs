@@ -30,6 +30,8 @@ namespace ExampleLibrary
 {
     using System;
 
+    using OxyPlot.Series;
+
     [Examples("ContourSeries")]
     public class ContourSeriesExamples : ExamplesBase
     {

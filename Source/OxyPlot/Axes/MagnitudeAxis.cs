@@ -27,7 +27,7 @@
 //   Represents a magnitude axis for polar plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     using System;
 

@@ -35,6 +35,7 @@ namespace RefreshDemo
     using System.Windows.Media;
 
     using OxyPlot;
+    using OxyPlot.Series;
 
     /// <summary>
     /// Interaction logic for Window3.xaml

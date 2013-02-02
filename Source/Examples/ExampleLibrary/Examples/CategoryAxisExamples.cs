@@ -29,6 +29,7 @@ namespace ExampleLibrary
     using System.Collections.Generic;
 
     using OxyPlot;
+    using OxyPlot.Axes;
 
     [Examples("CategoryAxis")]
     public static class CategoryAxisExamples

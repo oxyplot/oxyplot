@@ -27,7 +27,7 @@
 //   Represents a line series.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;

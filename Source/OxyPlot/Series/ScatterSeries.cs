@@ -27,11 +27,13 @@
 //   Represents a series for scatter plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+
+    using OxyPlot.Axes;
 
     /// <summary>
     /// Represents a series for scatter plots.

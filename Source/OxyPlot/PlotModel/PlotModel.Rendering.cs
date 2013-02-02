@@ -33,6 +33,10 @@ namespace OxyPlot
     using System.Collections.Generic;
     using System.Linq;
 
+    using OxyPlot.Annotations;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     public partial class PlotModel
     {
         /// <summary>

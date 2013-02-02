@@ -33,6 +33,8 @@ namespace ExampleLibrary
     using System.Collections.ObjectModel;
 
     using OxyPlot;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     /// <summary>
     /// Examples from the book "Show Me the Numbers" by Stephen Few

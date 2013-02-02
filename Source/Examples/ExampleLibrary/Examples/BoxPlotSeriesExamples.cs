@@ -35,6 +35,9 @@ using System.Text;
 namespace ExampleLibrary
 {
     using OxyPlot;
+    using OxyPlot.Annotations;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     [Examples("BoxPlotSeries")]
     public class BoxPlotSeriesExamples

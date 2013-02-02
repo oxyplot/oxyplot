@@ -27,10 +27,12 @@
 //   Represents a series for box plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System.Collections.Generic;
     using System.Linq;
+
+    using OxyPlot.Axes;
 
     /// <summary>
     /// Represents a series for box plots.

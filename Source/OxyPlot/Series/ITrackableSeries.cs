@@ -27,7 +27,7 @@
 //   Interface for Series that can be 'tracked'
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     /// <summary>
     /// Provides functionality to return data for a tracker control.

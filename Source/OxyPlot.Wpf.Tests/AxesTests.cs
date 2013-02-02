@@ -38,13 +38,13 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         public void Axis()
         {
-            OxyAssert.PropertiesExist(typeof(OxyPlot.Axis), typeof(Axis));
+            OxyAssert.PropertiesExist(typeof(OxyPlot.Axes.Axis), typeof(Axis));
         }
 
         [Test]
         public void LinearAxis()
         {
-            var s1 = new OxyPlot.LinearAxis();
+            var s1 = new OxyPlot.Axes.LinearAxis();
             var s2 = new LinearAxis();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
@@ -52,7 +52,7 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         public void LogarithmicAxis()
         {
-            var s1 = new OxyPlot.LogarithmicAxis();
+            var s1 = new OxyPlot.Axes.LogarithmicAxis();
             var s2 = new LogarithmicAxis();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
@@ -60,7 +60,7 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         public void DateTimeAxis()
         {
-            var s1 = new OxyPlot.DateTimeAxis();
+            var s1 = new OxyPlot.Axes.DateTimeAxis();
             var s2 = new DateTimeAxis();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
@@ -68,7 +68,7 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         public void TimeSpanAxis()
         {
-            var s1 = new OxyPlot.TimeSpanAxis();
+            var s1 = new OxyPlot.Axes.TimeSpanAxis();
             var s2 = new TimeSpanAxis();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
@@ -76,7 +76,7 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         public void CategoryAxis()
         {
-            var s1 = new OxyPlot.CategoryAxis();
+            var s1 = new OxyPlot.Axes.CategoryAxis();
             var s2 = new CategoryAxis();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
@@ -84,7 +84,7 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         public void AngleAxis()
         {
-            var s1 = new OxyPlot.AngleAxis();
+            var s1 = new OxyPlot.Axes.AngleAxis();
             var s2 = new AngleAxis();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
@@ -92,7 +92,7 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         public void MagnitudeAxis()
         {
-            var s1 = new OxyPlot.MagnitudeAxis();
+            var s1 = new OxyPlot.Axes.MagnitudeAxis();
             var s2 = new MagnitudeAxis();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }

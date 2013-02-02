@@ -31,6 +31,9 @@ namespace ExampleLibrary
 {
     using System.Collections.Generic;
 
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     [Examples("LineSeries")]
     public class LineSeriesExamples : ExamplesBase
     {

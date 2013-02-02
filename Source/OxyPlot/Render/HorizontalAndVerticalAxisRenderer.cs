@@ -29,6 +29,8 @@ namespace OxyPlot
     using System.Collections.Generic;
     using System.Diagnostics;
 
+    using OxyPlot.Axes;
+
     /// <summary>
     /// Preovides functionality to render horizontal and vertical axes.
     /// </summary>

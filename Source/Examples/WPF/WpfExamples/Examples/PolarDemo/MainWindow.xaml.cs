@@ -34,6 +34,8 @@ namespace PolarDemo
     using System.Windows;
 
     using OxyPlot;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

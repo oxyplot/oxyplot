@@ -38,7 +38,7 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         public void LineAnnotation()
         {
-            var s1 = new OxyPlot.LineAnnotation();
+            var s1 = new LineAnnotation();
             var s2 = new LineAnnotation();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }

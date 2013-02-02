@@ -36,6 +36,7 @@ namespace RefreshDemo
     using System.Threading;
 
     using OxyPlot;
+    using OxyPlot.Series;
 
     /// <summary>
     /// Interaction logic for Window4.xaml

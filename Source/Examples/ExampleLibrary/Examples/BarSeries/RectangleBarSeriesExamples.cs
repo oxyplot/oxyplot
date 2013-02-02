@@ -27,6 +27,7 @@
 namespace ExampleLibrary
 {
     using OxyPlot;
+    using OxyPlot.Series;
 
     [Examples("RectangleBarSeries")]
     public static class RectangleBarSeriesExamples

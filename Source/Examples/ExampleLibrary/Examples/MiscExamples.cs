@@ -36,6 +36,9 @@ namespace ExampleLibrary
     using System.Reflection;
 
     using OxyPlot;
+    using OxyPlot.Annotations;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     [Examples("Misc")]
     public static class MiscExamples

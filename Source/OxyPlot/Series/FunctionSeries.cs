@@ -27,7 +27,7 @@
 //   Represents a line series that generates its dataset from a function.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
 

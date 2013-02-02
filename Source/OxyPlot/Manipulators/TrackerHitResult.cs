@@ -29,6 +29,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
 {
+    using OxyPlot.Series;
+
     /// <summary>
     /// Provides a data container for a tracker hit result.
     /// </summary>
@@ -52,7 +54,7 @@ namespace OxyPlot
         /// <param name="item">The item.</param>
         /// <param name="index">The index.</param>
         /// <param name="text">The text.</param>
-        public TrackerHitResult(Series series, IDataPoint dp, ScreenPoint sp, object item = null, double index = -1, string text = null)
+        public TrackerHitResult(OxyPlot.Series.Series series, IDataPoint dp, ScreenPoint sp, object item = null, double index = -1, string text = null)
         {
             this.DataPoint = dp;
             this.Position = sp;
@@ -102,7 +104,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the series that is being tracked.
         /// </summary>
-        public Series Series { get; set; }
+        public Series.Series Series { get; set; }
 
         /// <summary>
         /// Gets or sets the text shown in the tracker.
@@ -112,12 +114,12 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the X axis.
         /// </summary>
-        public Axis XAxis { get; set; }
+        public Axes.Axis XAxis { get; set; }
 
         /// <summary>
         /// Gets or sets the Y axis.
         /// </summary>
-        public Axis YAxis { get; set; }
+        public Axes.Axis YAxis { get; set; }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

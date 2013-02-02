@@ -27,7 +27,7 @@
 //   Represents an axis with linear scale.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     /// <summary>
     /// Represents an axis with linear scale.

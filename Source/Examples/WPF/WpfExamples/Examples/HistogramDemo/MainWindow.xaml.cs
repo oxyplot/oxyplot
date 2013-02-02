@@ -38,6 +38,9 @@ using OxyPlot;
 
 namespace HistogramDemo
 {
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

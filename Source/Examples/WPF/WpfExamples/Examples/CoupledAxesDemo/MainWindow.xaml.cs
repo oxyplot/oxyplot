@@ -43,6 +43,8 @@ using System.Windows.Shapes;
 namespace CoupledAxesDemo
 {
     using OxyPlot;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

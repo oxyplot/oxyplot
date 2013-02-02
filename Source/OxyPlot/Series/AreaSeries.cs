@@ -27,7 +27,7 @@
 //   Represents an area series that fills the polygon defined by one or two sets of points.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System.Collections.Generic;
 

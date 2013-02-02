@@ -28,7 +28,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot
+namespace OxyPlot.Annotations
 {
     /// <summary>
     /// Provides an abstract base class for annotations that contains text.

@@ -29,6 +29,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
 {
+    using OxyPlot.Series;
+
     /// <summary>
     /// Provides a plot control manipulator for tracker functionality.
     /// </summary>

@@ -32,6 +32,8 @@ using OxyPlot;
 
 namespace ScatterDemo
 {
+    using OxyPlot.Series;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

@@ -82,7 +82,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public RectangleAnnotation()
         {
-            this.InternalAnnotation = new OxyPlot.RectangleAnnotation();
+            this.InternalAnnotation = new OxyPlot.Annotations.RectangleAnnotation();
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         ///     The annotation.
         /// </returns>
-        public override OxyPlot.Annotation CreateModel()
+        public override OxyPlot.Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAnnotation;
@@ -200,7 +200,7 @@ namespace OxyPlot.Wpf
         public override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = (OxyPlot.RectangleAnnotation)this.InternalAnnotation;
+            var a = (OxyPlot.Annotations.RectangleAnnotation)this.InternalAnnotation;
 
             a.Fill = this.Fill.ToOxyColor();
 

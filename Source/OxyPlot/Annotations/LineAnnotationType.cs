@@ -27,7 +27,7 @@
 //   The line annotation type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Annotations
 {
     /// <summary>
     /// Specifies the definition of the line in a <see cref="LineAnnotation"/>.

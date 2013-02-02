@@ -30,6 +30,10 @@ namespace ExampleLibrary
 {
     using System;
 
+    using OxyPlot.Annotations;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     [Examples("Mouse Events")]
     public class MouseEventExamples : ExamplesBase
     {

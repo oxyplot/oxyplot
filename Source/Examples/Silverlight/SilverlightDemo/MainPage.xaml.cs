@@ -24,17 +24,22 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Windows.Controls;
-using OxyPlot;
 
 namespace SilverlightDemo
 {
+    using System;
+    using System.Windows.Controls;
+
+    using OxyPlot;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     public partial class MainPage : UserControl
     {
         public MainPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+
             var tmp = new PlotModel("Silverlight demo");
             tmp.Axes.Add(new LinearAxis(AxisPosition.Left) { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
             tmp.Axes.Add(new LinearAxis(AxisPosition.Bottom) { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });

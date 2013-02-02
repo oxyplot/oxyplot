@@ -31,6 +31,8 @@ namespace LegendsDemo
     using System.ComponentModel;
 
     using OxyPlot;
+    using OxyPlot.Series;
+
     using PropertyTools.DataAnnotations;
     using WpfExamples;
 

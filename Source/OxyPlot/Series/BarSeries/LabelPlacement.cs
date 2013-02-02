@@ -27,7 +27,7 @@
 //   Placement of the labels.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     /// <summary>
     /// Placement of the labels.

@@ -32,6 +32,8 @@ namespace OxyPlot.Wpf
     using System.Windows;
     using System.Windows.Media;
 
+    using OxyPlot.Annotations;
+
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.LineAnnotation
     /// </summary>
@@ -184,7 +186,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public LineAnnotation()
         {
-            this.InternalAnnotation = new OxyPlot.LineAnnotation();
+            this.InternalAnnotation = new OxyPlot.Annotations.LineAnnotation();
         }
 
         /// <summary>
@@ -525,7 +527,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// The annotation.
         /// </returns>
-        public override OxyPlot.Annotation CreateModel()
+        public override OxyPlot.Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAnnotation;
@@ -537,7 +539,7 @@ namespace OxyPlot.Wpf
         public override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = (OxyPlot.LineAnnotation)this.InternalAnnotation;
+            var a = (OxyPlot.Annotations.LineAnnotation)this.InternalAnnotation;
             a.Type = this.Type;
             a.Slope = this.Slope;
             a.Intercept = this.Intercept;

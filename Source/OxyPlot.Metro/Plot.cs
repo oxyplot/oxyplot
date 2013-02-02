@@ -33,6 +33,9 @@ namespace OxyPlot.Metro
     using System.Collections.ObjectModel;
     using System.Linq;
 
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     using Windows.ApplicationModel.DataTransfer;
     using Windows.Foundation;
     using Windows.System;
@@ -815,20 +818,6 @@ namespace OxyPlot.Metro
         private static void ModelChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             ((Plot)sender).OnModelChanged();
-        }
-
-        /// <summary>
-        /// Called when the visual appearance of the plot is changed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private static void VisualChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            ((Plot)sender).UpdateVisuals();
         }
 
         /// <summary>

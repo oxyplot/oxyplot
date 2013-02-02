@@ -27,7 +27,7 @@
 //   Represents a rectangle item in a RectangleBarSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     /// <summary>
     /// Represents a rectangle item in a RectangleBarSeries.

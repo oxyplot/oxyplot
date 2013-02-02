@@ -27,7 +27,7 @@
 //   Represents an item in a CategorizedSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     /// <summary>
     /// Represents an item in a CategorizedSeries.

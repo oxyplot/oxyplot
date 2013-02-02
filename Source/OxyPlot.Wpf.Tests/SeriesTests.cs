@@ -50,31 +50,31 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         public void Series()
         {
-            OxyAssert.PropertiesExist(typeof(OxyPlot.Series), typeof(Series));
+            OxyAssert.PropertiesExist(typeof(OxyPlot.Series.Series), typeof(Series));
         }
 
         [Test]
         public void ItemsSeries()
         {
-            OxyAssert.PropertiesExist(typeof(OxyPlot.ItemsSeries), typeof(ItemsSeries));
+            OxyAssert.PropertiesExist(typeof(OxyPlot.Series.ItemsSeries), typeof(ItemsSeries));
         }
 
         [Test]
         public void XYAxisSeries()
         {
-            OxyAssert.PropertiesExist(typeof(OxyPlot.XYAxisSeries), typeof(XYAxisSeries));
+            OxyAssert.PropertiesExist(typeof(OxyPlot.Series.XYAxisSeries), typeof(XYAxisSeries));
         }
 
         [Test]
         public void DataPointSeries()
         {
-            OxyAssert.PropertiesExist(typeof(OxyPlot.DataPointSeries), typeof(DataPointSeries));
+            OxyAssert.PropertiesExist(typeof(OxyPlot.Series.DataPointSeries), typeof(DataPointSeries));
         }
 
         [Test]
         public void LineSeries()
         {
-            var s1 = new OxyPlot.LineSeries();
+            var s1 = new OxyPlot.Series.LineSeries();
             var s2 = new LineSeries();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
@@ -82,7 +82,7 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         public void AreaSeries()
         {
-            var s1 = new OxyPlot.AreaSeries();
+            var s1 = new OxyPlot.Series.AreaSeries();
             var s2 = new AreaSeries();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
@@ -90,7 +90,7 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         public void BarSeries()
         {
-            var s1 = new OxyPlot.BarSeries();
+            var s1 = new OxyPlot.Series.BarSeries();
             var s2 = new BarSeries();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
@@ -98,7 +98,7 @@ namespace OxyPlot.Wpf.Tests
         [Test]
         public void ScatterSeries()
         {
-            var s1 = new OxyPlot.ScatterSeries();
+            var s1 = new OxyPlot.Series.ScatterSeries();
             var s2 = new ScatterSeries();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }

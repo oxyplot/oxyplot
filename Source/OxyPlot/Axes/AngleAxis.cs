@@ -27,7 +27,7 @@
 //   Represents an angular axis for polar plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     using System;
 

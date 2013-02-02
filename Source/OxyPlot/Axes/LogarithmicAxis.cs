@@ -27,7 +27,7 @@
 //   Represents an axis with logarithmic scale.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;

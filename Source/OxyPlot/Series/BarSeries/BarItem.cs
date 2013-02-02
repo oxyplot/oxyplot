@@ -27,7 +27,7 @@
 //   Represents an item used in the BarSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     /// <summary>
     /// Represents an item used in the BarSeries.

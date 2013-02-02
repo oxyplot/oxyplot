@@ -27,7 +27,7 @@
 //   Represents an item used in the ColumnSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     /// <summary>
     /// Represents an item used in the ColumnSeries.

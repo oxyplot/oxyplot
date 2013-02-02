@@ -34,7 +34,10 @@ namespace OxyPlot.MonoTouch
     using System.Drawing;
 
     using OxyPlot;
-
+    using OxyPlot.Annotations;
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+    
     /// <summary>
     /// Represents a control that displays a plot.
     /// </summary>

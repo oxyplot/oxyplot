@@ -27,7 +27,7 @@
 //   Defines the date time interval for DateTimeAxis.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     /// <summary>
     /// Specifies the date time interval for <see cref="DateTimeAxis"/>.

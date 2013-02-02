@@ -24,11 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using System;
+
+    using OxyPlot;
+    using OxyPlot.Series;
+
     [Examples("Tracker")]
     public static class TrackerExamples
     {

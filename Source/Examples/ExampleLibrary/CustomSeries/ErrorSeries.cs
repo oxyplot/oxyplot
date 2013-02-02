@@ -33,6 +33,7 @@ namespace ExampleLibrary
     using System.Collections.Generic;
 
     using OxyPlot;
+    using OxyPlot.Series;
 
     /// <summary>
     /// Represents an error series.

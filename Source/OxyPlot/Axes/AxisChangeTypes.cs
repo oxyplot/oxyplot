@@ -27,7 +27,7 @@
 //   Change types of the Axis.AxisChanged event.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     /// <summary>
     /// Specifies change types for the <see cref="Axis.AxisChanged"/> event.

@@ -27,7 +27,7 @@
 //   Represents a series for bar charts where the bars are defined by rectangles.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;

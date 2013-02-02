@@ -53,8 +53,6 @@ namespace ExportDemo
 
     using PropertyTools.Wpf;
 
-    using DataPointSeries = OxyPlot.DataPointSeries;
-
     [Export(typeof(IShell))]
     public class ShellViewModel : PropertyChangedBase, IShell
     {
@@ -122,7 +120,7 @@ namespace ExportDemo
                     return 0;
                 }
 
-                return this.Model.Series.Sum(ls => ((DataPointSeries)ls).Points.Count);
+                return this.Model.Series.Sum(ls => ((OxyPlot.Series.DataPointSeries)ls).Points.Count);
             }
         }
 
@@ -479,7 +477,7 @@ namespace ExportDemo
 
             main.AddHeader(2, "Data");
             int i = 1;
-            foreach (DataPointSeries s in this.Model.Series)
+            foreach (OxyPlot.Series.DataPointSeries s in this.Model.Series)
             {
                 main.AddHeader(3, "Data series " + (i++));
                 var pt = main.AddPropertyTable("Properties of the " + s.GetType().Name, new[] { s });

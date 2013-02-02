@@ -31,6 +31,8 @@ namespace OxyPlot.Tests
 
     using NUnit.Framework;
 
+    using OxyPlot.Axes;
+
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]

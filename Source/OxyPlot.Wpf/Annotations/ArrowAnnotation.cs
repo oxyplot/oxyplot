@@ -103,7 +103,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public ArrowAnnotation()
         {
-            this.InternalAnnotation = new OxyPlot.ArrowAnnotation();
+            this.InternalAnnotation = new OxyPlot.Annotations.ArrowAnnotation();
         }
 
         /// <summary>
@@ -278,7 +278,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// The annotation.
         /// </returns>
-        public override OxyPlot.Annotation CreateModel()
+        public override OxyPlot.Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAnnotation;
@@ -290,7 +290,7 @@ namespace OxyPlot.Wpf
         public override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = (OxyPlot.ArrowAnnotation)this.InternalAnnotation;
+            var a = (OxyPlot.Annotations.ArrowAnnotation)this.InternalAnnotation;
 
             a.StartPoint = this.StartPoint;
             a.EndPoint = this.EndPoint;

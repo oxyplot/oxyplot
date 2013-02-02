@@ -29,6 +29,9 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     [Examples("Financial Series")]
     public static class FinancialSeriesExamples
     {

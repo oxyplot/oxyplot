@@ -57,10 +57,10 @@ namespace OxyPlot.Wpf
         /// <param name="series">
         /// The series.
         /// </param>
-        protected override void SynchronizeProperties(OxyPlot.Series series)
+        protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = (OxyPlot.ItemsSeries)series;
+            var s = (OxyPlot.Series.ItemsSeries)series;
             s.ItemsSource = this.ItemsSource;
         }
     }

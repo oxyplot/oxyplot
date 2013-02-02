@@ -27,7 +27,7 @@
 //   The annotation layer.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Annotations
 {
     /// <summary>
     /// Specifies the layer for an <see cref="Annotation"/>.

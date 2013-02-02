@@ -27,7 +27,7 @@
 //   Represent a slice of a PieSeries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     /// <summary>
     /// Represent a slice of a <see cref="PieSeries"/>.

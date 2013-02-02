@@ -29,6 +29,9 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     [Examples("LogarithmicAxis")]
     public static class LogarithmicAxisExamples
     {

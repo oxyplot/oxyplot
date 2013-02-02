@@ -27,11 +27,13 @@
 //   Specify the orientation of the annotation text
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Annotations
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using OxyPlot.Axes;
 
     /// <summary>
     /// Specifes the orientation of the annotation text

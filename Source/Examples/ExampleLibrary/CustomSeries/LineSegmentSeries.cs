@@ -33,6 +33,7 @@ namespace ExampleLibrary
     using System.Collections.Generic;
     using System.Linq;
     using OxyPlot;
+    using OxyPlot.Series;
 
     /// <summary>
     /// Represents a line series where the points collection define line segments.

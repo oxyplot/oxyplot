@@ -27,7 +27,7 @@
 //   Represents a series for clustered or stacked column charts with an error value.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;

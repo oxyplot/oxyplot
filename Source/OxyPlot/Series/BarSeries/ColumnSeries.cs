@@ -27,9 +27,11 @@
 //   Represents a series for clustered or stacked column charts.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
+
+    using OxyPlot.Axes;
 
     /// <summary>
     /// Represents a series for clustered or stacked column charts.

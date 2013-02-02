@@ -27,7 +27,7 @@
 //   Represents a series for stair step graphs.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+namespace OxyPlot.Series
 {
     using System;
     using System.Collections.Generic;
