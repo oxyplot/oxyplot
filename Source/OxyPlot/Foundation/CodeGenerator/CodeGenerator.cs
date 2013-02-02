@@ -373,7 +373,6 @@ namespace OxyPlot
         /// </param>
         private void SetProperties(object instance, string varName, object defaultValues)
         {
-#if !PCL
             var instanceType = instance.GetType();
             var listsToAdd = new Dictionary<string, IList>();
             foreach (var pi in instanceType.GetProperties())
@@ -426,8 +425,6 @@ namespace OxyPlot
                 var list = kvp.Value;
                 this.AddItems(name, list);
             }
-
-#endif
         }
 
         /// <summary>
@@ -447,6 +444,5 @@ namespace OxyPlot
                 this.AppendLine("{0} = {1};", name, code);
             }
         }
-
     }
 }
