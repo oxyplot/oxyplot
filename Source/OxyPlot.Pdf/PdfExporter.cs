@@ -53,7 +53,7 @@ namespace OxyPlot.Pdf
         /// </param>
         public static void Export(PlotModel model, string path, double width, double height)
         {
-            using (FileStream s = File.OpenWrite(path))
+            using (FileStream s = File.Create(path))
             {
                 Export(model, s, width, height);
             }

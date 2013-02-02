@@ -41,7 +41,7 @@ namespace OxyPlot.Tests
         public void WriteEllipse()
         {
             const string FileName = "SvgWriterTests_WriteEllipse.svg";
-            using (var s = File.OpenWrite(FileName))
+            using (var s = File.Create(FileName))
             {
                 using (var w = new SvgWriter(s, 200, 200))
                 {
@@ -61,7 +61,7 @@ namespace OxyPlot.Tests
         public void WriteLine()
         {
             const string FileName = "SvgWriterTests_WriteLine.svg";
-            using (var s = File.OpenWrite(FileName))
+            using (var s = File.Create(FileName))
             {
                 using (var w = new SvgWriter(s, 200, 200))
                 {
@@ -79,7 +79,7 @@ namespace OxyPlot.Tests
         public void WritePolygon()
         {
             const string FileName = "SvgWriterTests_WritePolygon.svg";
-            using (var s = File.OpenWrite(FileName))
+            using (var s = File.Create(FileName))
             {
                 using (var w = new SvgWriter(s, 200, 200))
                 {
@@ -96,7 +96,7 @@ namespace OxyPlot.Tests
         public void WritePolyline()
         {
             const string FileName = "SvgWriterTests_WritePolyLine.svg";
-            using (var s = File.OpenWrite(FileName))
+            using (var s = File.Create(FileName))
             {
                 using (var w = new SvgWriter(s, 200, 200))
                 {
@@ -113,7 +113,7 @@ namespace OxyPlot.Tests
         public void WriteRectangle()
         {
             const string FileName = "SvgWriterTests_WriteRectangle.svg";
-            using (var s = File.OpenWrite(FileName))
+            using (var s = File.Create(FileName))
             {
                 using (var w = new SvgWriter(s, 200, 200))
                 {
@@ -134,7 +134,7 @@ namespace OxyPlot.Tests
         public void WriteText()
         {
             const string FileName = "SvgWriterTests_WriteText.svg";
-            using (var s = File.OpenWrite(FileName))
+            using (var s = File.Create(FileName))
             {
                 using (var w = new SvgWriter(s, 200, 200))
                 {
