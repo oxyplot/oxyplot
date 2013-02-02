@@ -295,13 +295,9 @@ namespace OxyPlot.Series
                 return;
             }
 
-            if (this.XAxis == null || this.YAxis == null)
-            {
-                this.Trace("Axis not defined.");
-                return;
-            }
+            this.VerifyAxes();
 
-            OxyRect clippingRect = this.GetClippingRect();
+            var clippingRect = this.GetClippingRect();
 
             var contourLabels = new List<ContourLabel>();
 

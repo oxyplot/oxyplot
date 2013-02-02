@@ -29,6 +29,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Series
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -153,11 +154,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            if (this.XAxis == null || this.YAxis == null)
-            {
-                Trace("Axis not defined.");
-                return;
-            }
+            base.VerifyAxes();
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
