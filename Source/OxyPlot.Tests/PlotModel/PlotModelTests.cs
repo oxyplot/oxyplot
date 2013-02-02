@@ -35,7 +35,10 @@ namespace OxyPlot.Tests
     using NUnit.Framework;
 
     using OxyPlot.Axes;
-    using OxyPlot.Series;
+    using OxyPlot.Wpf;
+
+    using LineSeries = OxyPlot.Series.LineSeries;
+    using LinearAxis = OxyPlot.Axes.LinearAxis;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -56,9 +59,10 @@ namespace OxyPlot.Tests
         {
             var plotModel = TestModels.CreateTestModel1();
 
-            var svg1 = plotModel.ToSvg(800, 500, true);
+            var rc = new ShapesRenderContext(null);
+            var svg1 = plotModel.ToSvg(800, 500, true, rc);
             SvgAssert.IsValidDocument(svg1);
-            var svg2 = plotModel.ToSvg(800, 500);
+            var svg2 = plotModel.ToSvg(800, 500, false, rc);
             SvgAssert.IsValidElement(svg2);
         }
 
@@ -68,7 +72,8 @@ namespace OxyPlot.Tests
             var plotModel = TestModels.CreateTestModel1();
 
             const string FileName = "PlotModelTests_Test1.svg";
-            var svg = plotModel.ToSvg(800, 500);
+            var rc = new ShapesRenderContext(null);
+            var svg = plotModel.ToSvg(800, 500, false, rc);
             File.WriteAllText(FileName, svg);
             SvgAssert.IsValidFile(FileName);
         }

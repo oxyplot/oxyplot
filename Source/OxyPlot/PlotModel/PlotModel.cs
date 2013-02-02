@@ -1134,7 +1134,7 @@ namespace OxyPlot
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
         /// <param name="textMeasurer">The text measurer.</param>
         /// <returns>The svg string.</returns>
-        public string ToSvg(double width, double height, bool isDocument = false, IRenderContext textMeasurer = null)
+        public string ToSvg(double width, double height, bool isDocument, IRenderContext textMeasurer)
         {
             return SvgExporter.ExportToString(this, width, height, isDocument, textMeasurer);
         }

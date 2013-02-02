@@ -36,6 +36,8 @@ using OxyPlot.Pdf;
 
 namespace CsvDemo
 {
+    using OxyPlot.Wpf;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -94,7 +96,8 @@ namespace CsvDemo
                         plot1.SaveBitmap(dlg.FileName);
                         break;
                     case ".svg":
-                        var svg = vm.Model.ToSvg(plot1.ActualWidth, plot1.ActualHeight);
+                        var rc = new ShapesRenderContext(null);
+                        var svg = vm.Model.ToSvg(plot1.ActualWidth, plot1.ActualHeight, false, rc);
                         File.WriteAllText(dlg.FileName, svg);
                         break;
                     case ".pdf":
@@ -129,7 +132,8 @@ namespace CsvDemo
 
         private void CopySvg_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(vm.Model.ToSvg(plot1.ActualWidth, plot1.ActualHeight, true));
+            var rc = new ShapesRenderContext(null);
+            Clipboard.SetText(vm.Model.ToSvg(plot1.ActualWidth, plot1.ActualHeight, true,rc));
         }
 
         private void CopyBitmap_Click(object sender, RoutedEventArgs e)

@@ -34,6 +34,7 @@ namespace OxyPlot.Tests
     using NUnit.Framework;
 
     using OxyPlot.Series;
+    using OxyPlot.Wpf;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -45,7 +46,8 @@ namespace OxyPlot.Tests
         {
             var plotModel = new PlotModel("Test plot");
             plotModel.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 8, 200, "Math.Sin"));
-            var svg = SvgExporter.ExportToString(plotModel, 800, 500, true);
+            var rc = new ShapesRenderContext(null);
+            var svg = SvgExporter.ExportToString(plotModel, 800, 500, true, rc);
             SvgAssert.IsValidDocument(svg);
         }
 
@@ -54,7 +56,8 @@ namespace OxyPlot.Tests
         {
             var plotModel = new PlotModel("Test plot");
             plotModel.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 8, 200, "Math.Sin"));
-            var svg = SvgExporter.ExportToString(plotModel, 800, 500);
+            var rc = new ShapesRenderContext(null);
+            var svg = SvgExporter.ExportToString(plotModel, 800, 500, false, rc);
             SvgAssert.IsValidElement(svg);
         }
 
@@ -64,9 +67,10 @@ namespace OxyPlot.Tests
             var plotModel = new PlotModel("Test plot");
             const string FileName = "SvgExporterTests_Plot1.svg";
             plotModel.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 8, 200, "Math.Sin"));
-            using (var s = File.OpenWrite(FileName))
+            using (var s = File.Create(FileName))
             {
-                SvgExporter.Export(plotModel, s, 800, 500);
+                var rc = new ShapesRenderContext(null);
+                SvgExporter.Export(plotModel, s, 800, 500, true, rc);
             }
 
             SvgAssert.IsValidFile(FileName);
@@ -84,9 +88,10 @@ namespace OxyPlot.Tests
             foreach (var example in Examples.GetList())
             {
                 var path = Path.Combine(DestinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".svg"));
-                using (var s = File.OpenWrite(path))
+                using (var s = File.Create(path))
                 {
-                    SvgExporter.Export(example.PlotModel, s, 800, 500);
+                    var rc = new ShapesRenderContext(null);
+                    SvgExporter.Export(example.PlotModel, s, 800, 500, true, rc);
                 }
 
                 Assert.IsTrue(File.Exists(path));

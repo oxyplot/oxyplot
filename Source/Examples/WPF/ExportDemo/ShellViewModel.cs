@@ -143,7 +143,8 @@ namespace ExportDemo
 
         public void CopySvg()
         {
-            Clipboard.SetText(this.Model.ToSvg(this.Plot.ActualWidth, this.Plot.ActualHeight, true));
+            var rc = new ShapesRenderContext(null);
+            Clipboard.SetText(this.Model.ToSvg(this.Plot.ActualWidth, this.Plot.ActualHeight, true, rc));
         }
 
         public void CopyXaml()
@@ -259,7 +260,7 @@ namespace ExportDemo
             switch (ext)
             {
                 case ".txt":
-                    using (var s = File.OpenWrite(fileName))
+                    using (var s = File.Create(fileName))
                     {
                         using (var w = new TextReportWriter(s))
                         {
@@ -270,7 +271,7 @@ namespace ExportDemo
                     break;
 
                 case ".html":
-                    using (var s = File.OpenWrite(fileName))
+                    using (var s = File.Create(fileName))
                     {
                         using (var w = new HtmlReportWriter(s))
                         {
@@ -297,7 +298,7 @@ namespace ExportDemo
                     break;
 
                 case ".tex":
-                    using (var s = File.OpenWrite(fileName))
+                    using (var s = File.Create(fileName))
                     {
                         using (var w = new LatexReportWriter(s, "Example report", "oxyplot"))
                         {
@@ -343,7 +344,7 @@ namespace ExportDemo
             {
                 // Using a WPF render context to measure the text
                 var textMeasurer = new ShapesRenderContext(new Canvas());
-                using (var s = File.OpenWrite(path))
+                using (var s = File.Create(path))
                 {
                     SvgExporter.Export(this.Model, s, this.Plot.ActualWidth, this.Plot.ActualHeight, true, textMeasurer);
                 }
