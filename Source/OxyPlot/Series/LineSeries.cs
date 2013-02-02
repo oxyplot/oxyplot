@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents a line series.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
     using System;
@@ -43,14 +44,14 @@ namespace OxyPlot.Series
         private const double ToleranceDivisor = 200;
 
         /// <summary>
-        /// The smoothed points.
-        /// </summary>
-        private IList<IDataPoint> smoothedPoints;
-
-        /// <summary>
         /// The default color.
         /// </summary>
         private OxyColor defaultColor;
+
+        /// <summary>
+        /// The smoothed points.
+        /// </summary>
+        private IList<IDataPoint> smoothedPoints;
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "LineSeries" /> class.
@@ -96,6 +97,7 @@ namespace OxyPlot.Series
         {
             this.Color = color;
             this.StrokeThickness = strokeThickness;
+            this.BrokenLineThickness = 0;
             this.Title = title;
         }
 
@@ -106,30 +108,22 @@ namespace OxyPlot.Series
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets the actual color.
+        /// Gets or sets the color of the broken line segments.
         /// </summary>
-        /// <value>The actual color.</value>
-        protected OxyColor ActualColor
-        {
-            get
-            {
-                return this.Color ?? this.defaultColor;
-            }
-        }
+        /// <remarks>
+        /// Add <c>DataPoint.Undefined</c> in the Points collection to create breaks in the line.
+        /// </remarks>
+        public OxyColor BrokenLineColor { get; set; }
 
         /// <summary>
-        /// Gets the actual line style.
+        /// Gets or sets the broken line style.
         /// </summary>
-        /// <value>
-        /// The actual line style.
-        /// </value>
-        protected LineStyle ActualLineStyle
-        {
-            get
-            {
-                return this.LineStyle != LineStyle.Undefined ? this.LineStyle : LineStyle.Solid;
-            }
-        }
+        public LineStyle BrokenLineStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the broken line thickness.
+        /// </summary>
+        public double BrokenLineThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the dashes array.
@@ -222,6 +216,32 @@ namespace OxyPlot.Series
         public double StrokeThickness { get; set; }
 
         /// <summary>
+        /// Gets the actual color.
+        /// </summary>
+        /// <value>The actual color.</value>
+        protected OxyColor ActualColor
+        {
+            get
+            {
+                return this.Color ?? this.defaultColor;
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual line style.
+        /// </summary>
+        /// <value>
+        /// The actual line style.
+        /// </value>
+        protected LineStyle ActualLineStyle
+        {
+            get
+            {
+                return this.LineStyle != LineStyle.Undefined ? this.LineStyle : LineStyle.Solid;
+            }
+        }
+        
+        /// <summary>
         /// Gets the smoothed points.
         /// </summary>
         /// <value>The smoothed points.</value>
@@ -283,12 +303,17 @@ namespace OxyPlot.Series
 
             if (this.XAxis == null || this.YAxis == null)
             {
-                Trace("Axis not defined.");
+                this.Trace("Axis not defined.");
                 return;
             }
 
             var clippingRect = this.GetClippingRect();
             var transformedPoints = new List<ScreenPoint>();
+            var lineBreakSegments = new List<ScreenPoint>();
+
+            ScreenPoint lastValidPoint = default(ScreenPoint);
+            bool isBroken = false;
+            var renderBrokenLineSegments = this.BrokenLineThickness > 0 && this.BrokenLineStyle != LineStyle.None;
 
             // Transform all points to screen coordinates
             // Render the line when invalid points occur
@@ -298,15 +323,41 @@ namespace OxyPlot.Series
                 {
                     this.RenderPoints(rc, clippingRect, transformedPoints);
                     transformedPoints.Clear();
+                    isBroken = true;
                     continue;
                 }
 
                 var pt = this.XAxis.Transform(point.X, point.Y, this.YAxis);
                 transformedPoints.Add(pt);
+
+                if (renderBrokenLineSegments)
+                {
+                    if (isBroken)
+                    {
+                        lineBreakSegments.Add(lastValidPoint);
+                        lineBreakSegments.Add(pt);
+                        isBroken = false;
+                    }
+
+                    lastValidPoint = pt;
+                }
             }
 
             // Render the remaining points
             this.RenderPoints(rc, clippingRect, transformedPoints);
+
+            if (renderBrokenLineSegments)
+            {
+                // Render line breaks
+                rc.DrawClippedLineSegments(
+                    lineBreakSegments, 
+                    clippingRect, 
+                    this.BrokenLineColor, 
+                    this.BrokenLineThickness, 
+                    this.BrokenLineStyle, 
+                    this.LineJoin, 
+                    false);
+            }
 
             if (this.LabelFormatString != null)
             {
@@ -314,7 +365,8 @@ namespace OxyPlot.Series
                 this.RenderPointLabels(rc, clippingRect);
             }
 
-            if (this.LineLegendPosition != LineLegendPosition.None && this.Points.Count > 0 && !string.IsNullOrEmpty(this.Title))
+            if (this.LineLegendPosition != LineLegendPosition.None && this.Points.Count > 0
+                && !string.IsNullOrEmpty(this.Title))
             {
                 // renders a legend on the line
                 this.RenderLegendOnLine(rc, clippingRect);
@@ -336,16 +388,20 @@ namespace OxyPlot.Series
             double xmid = (legendBox.Left + legendBox.Right) / 2;
             double ymid = (legendBox.Top + legendBox.Bottom) / 2;
             var pts = new[] { new ScreenPoint(legendBox.Left, ymid), new ScreenPoint(legendBox.Right, ymid) };
-            rc.DrawLine(pts, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, LineStyleHelper.GetDashArray(this.ActualLineStyle));
+            rc.DrawLine(
+                pts, 
+                this.GetSelectableColor(this.ActualColor), 
+                this.StrokeThickness, 
+                this.ActualLineStyle.GetDashArray());
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
-                midpt,
-                legendBox,
-                this.MarkerType,
-                this.MarkerOutline,
-                this.MarkerSize,
-                this.MarkerFill,
-                this.MarkerStroke,
+                midpt, 
+                legendBox, 
+                this.MarkerType, 
+                this.MarkerOutline, 
+                this.MarkerSize, 
+                this.MarkerFill, 
+                this.MarkerStroke, 
                 this.MarkerStrokeThickness);
         }
 
@@ -407,7 +463,7 @@ namespace OxyPlot.Series
         /// Renders the point labels.
         /// </summary>
         /// <param name="rc">The render context.</param>
-        /// <param name="clippingRect">The clipping rect.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
         protected void RenderPointLabels(IRenderContext rc, OxyRect clippingRect)
         {
             int index = -1;
@@ -454,15 +510,15 @@ namespace OxyPlot.Series
 #endif
 
                 rc.DrawClippedText(
-                    clippingRect,
-                    pt,
-                    s,
-                    this.ActualTextColor,
-                    this.ActualFont,
-                    this.ActualFontSize,
-                    this.ActualFontWeight,
-                    0,
-                    HorizontalTextAlign.Center,
+                    clippingRect, 
+                    pt, 
+                    s, 
+                    this.ActualTextColor, 
+                    this.ActualFont, 
+                    this.ActualFontSize, 
+                    this.ActualFontWeight, 
+                    0, 
+                    HorizontalTextAlign.Center, 
                     VerticalTextAlign.Bottom);
             }
         }
@@ -481,12 +537,14 @@ namespace OxyPlot.Series
             switch (this.LineLegendPosition)
             {
                 case LineLegendPosition.Start:
+
                     // start position
                     point = this.Points[0];
                     ha = HorizontalTextAlign.Right;
                     dx = -4;
                     break;
                 default:
+
                     // end position
                     point = this.Points[this.Points.Count - 1];
                     dx = 4;
@@ -498,15 +556,15 @@ namespace OxyPlot.Series
 
             // Render the legend
             rc.DrawClippedText(
-                clippingRect,
-                pt,
-                this.Title,
-                this.ActualTextColor,
-                this.ActualFont,
-                this.ActualFontSize,
-                this.ActualFontWeight,
-                0,
-                ha,
+                clippingRect, 
+                pt, 
+                this.Title, 
+                this.ActualTextColor, 
+                this.ActualFont, 
+                this.ActualFontSize, 
+                this.ActualFontWeight, 
+                0, 
+                ha, 
                 VerticalTextAlign.Middle);
         }
 
@@ -517,7 +575,7 @@ namespace OxyPlot.Series
         /// The render context.
         /// </param>
         /// <param name="clippingRect">
-        /// The clipping rect.
+        /// The clipping rectangle.
         /// </param>
         /// <param name="pointsToRender">
         /// The points to render.
@@ -541,13 +599,13 @@ namespace OxyPlot.Series
             if (this.MarkerType != MarkerType.None)
             {
                 rc.DrawMarkers(
-                    pointsToRender,
-                    clippingRect,
-                    this.MarkerType,
-                    this.MarkerOutline,
-                    new[] { this.MarkerSize },
-                    this.MarkerFill,
-                    this.MarkerStroke,
+                    pointsToRender, 
+                    clippingRect, 
+                    this.MarkerType, 
+                    this.MarkerOutline, 
+                    new[] { this.MarkerSize }, 
+                    this.MarkerFill, 
+                    this.MarkerStroke, 
                     this.MarkerStrokeThickness);
             }
         }
@@ -559,21 +617,22 @@ namespace OxyPlot.Series
         /// The render context.
         /// </param>
         /// <param name="clippingRect">
-        /// The clipping rect.
+        /// The clipping rectangle.
         /// </param>
         /// <param name="pointsToRender">
         /// The points to render.
         /// </param>
-        protected virtual void RenderSmoothedLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
+        protected virtual void RenderSmoothedLine(
+            IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
             rc.DrawClippedLine(
-                pointsToRender,
-                clippingRect,
-                this.MinimumSegmentLength * this.MinimumSegmentLength,
-                this.GetSelectableColor(this.ActualColor),
-                this.StrokeThickness,
-                this.ActualLineStyle,
-                this.LineJoin,
+                pointsToRender, 
+                clippingRect, 
+                this.MinimumSegmentLength * this.MinimumSegmentLength, 
+                this.GetSelectableColor(this.ActualColor), 
+                this.StrokeThickness, 
+                this.ActualLineStyle, 
+                this.LineJoin, 
                 false);
         }
 
@@ -585,6 +644,5 @@ namespace OxyPlot.Series
             double tolerance = Math.Abs(Math.Max(this.MaxX - this.MinX, this.MaxY - this.MinY) / ToleranceDivisor);
             this.smoothedPoints = CanonicalSplineHelper.CreateSpline(this.Points, 0.5, null, false, tolerance);
         }
-
     }
 }
