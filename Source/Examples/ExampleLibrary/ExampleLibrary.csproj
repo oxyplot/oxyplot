@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}</ProjectGuid>
+    <ProjectGuid>{A941B658-1237-482C-B0C7-378242D27647}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ExampleLibrary</RootNamespace>
@@ -53,6 +53,7 @@
     <Compile Include="Examples\CategoryAxisExamples.cs" />
     <Compile Include="Examples\AxisExamples.cs" />
     <Compile Include="Examples\AreaSeriesExamples.cs" />
+    <Compile Include="Examples\ClosedIssues.cs" />
     <Compile Include="Examples\ContourSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\IntervalBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\RectangleBarSeriesExamples.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Examples\ExamplesBase.cs" />
     <Compile Include="Examples\ItemsSourceExamples.cs" />
     <Compile Include="Examples\FunctionSeriesExamples.cs" />
+    <Compile Include="Examples\OpenIssues.cs" />
     <Compile Include="Examples\PerformanceExamples.cs" />
     <Compile Include="Examples\ShowMeTheNumbersExamples.cs" />
     <Compile Include="Examples\DiscreteDataSeriesExamples.cs" />
