@@ -263,18 +263,12 @@ namespace ExampleLibrary
         [Example("ImageAnnotations")]
         public static PlotModel ImageAnnotations()
         {
-            var model = new PlotModel("ImageAnnotations");
-            model.PlotMargins = new OxyThickness(60, 4, 4, 60);
+            var model = new PlotModel("ImageAnnotations") { PlotMargins = new OxyThickness(60, 4, 4, 60) };
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
             model.Axes.Add(new LinearAxis(AxisPosition.Left));
 
             OxyImage image;
-            Assembly assembly;
-#if PCL45
-            assembly = typeof(AnnotationExamples).GetTypeInfo().Assembly;
-#else
-            assembly = Assembly.GetExecutingAssembly();
-#endif
+            var assembly = Assembly.GetExecutingAssembly();
             using (var stream = assembly.GetManifestResourceStream("ExampleLibrary.Resources.OxyPlot.png"))
             {
                 image = new OxyImage(stream);
@@ -369,8 +363,7 @@ namespace ExampleLibrary
             return model;
         }
 
-#if !SILVERLIGHT
-        [Example("TileMapAnnotation")]
+        [Example("TileMapAnnotation (does not work on Silverlight)")]
         public static PlotModel TileMapAnnotation()
         {
             var model = new PlotModel("TileMapAnnotation");
@@ -402,9 +395,8 @@ namespace ExampleLibrary
 
             return model;
         }
-#endif
 
-        [Example("TileMapAnnotation (OpenStreetMap)")]
+        [Example("TileMapAnnotation using OpenStreetMap (does not work on Silverlight)")]
         public static PlotModel TileMapAnnotation2()
         {
             var model = new PlotModel("TileMapAnnotation");

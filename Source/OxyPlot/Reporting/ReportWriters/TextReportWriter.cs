@@ -72,22 +72,6 @@ namespace OxyPlot.Reporting
             this.MaxLineLength = 60;
         }
 
-#if !PCL
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextReportWriter"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        public TextReportWriter(string path)
-            : base(path)
-        {
-            this.MaxLineLength = 60;
-        }
-
-#endif
-
         /// <summary>
         /// Gets or sets MaxLineLength.
         /// </summary>

@@ -33,7 +33,7 @@ namespace ExampleLibrary
     using OxyPlot;
     using OxyPlot.Axes;
 
-    [Examples(" Issues (closed)")]
+    [Examples("Z9 Issues (closed)")]
     public class ClosedIssues : ExamplesBase
     {
         [Example("#9990: Major grid lines in front of minor")]

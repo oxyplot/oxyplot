@@ -66,15 +66,9 @@ namespace TaskDemo
             // this instance is created on the UI thread
             var context = SynchronizationContext.Current;
 
-#if !NET40
             // Start the point calculation worker task
-            Task.Run(() => this.Work(this.tokenSource.Token, MaxPoints), this.tokenSource.Token);
-
-            // Start the plot update worker task
-            Task.Run(() => this.Update(context, this.tokenSource.Token), this.tokenSource.Token);
-#else
-// todo...
-#endif
+            Task.Factory.StartNew(() => this.Work(this.tokenSource.Token, MaxPoints), this.tokenSource.Token);
+            Task.Factory.StartNew(() => this.Update(context, this.tokenSource.Token), this.tokenSource.Token);
         }
 
         private const int MaxPoints = 20000;

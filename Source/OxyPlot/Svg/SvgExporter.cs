@@ -56,25 +56,6 @@ namespace OxyPlot
             }
         }
 
-#if !PCL
-        /// <summary>
-        /// Exports the specified model to a file.
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="fileName">Name of the file.</param>
-        /// <param name="width">The width (points).</param>
-        /// <param name="height">The height (points).</param>
-        /// <param name="textMeasurer">The text measurer.</param>
-        public static void Export(PlotModel model, string fileName, double width, double height, IRenderContext textMeasurer = null)
-        {
-            using (var svgrc = new SvgRenderContext(fileName, width, height, textMeasurer))
-            {
-                model.Update();
-                model.Render(svgrc, width, height);
-            }
-        }
-#endif
-
         /// <summary>
         /// Exports to string.
         /// </summary>

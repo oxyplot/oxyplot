@@ -80,7 +80,7 @@ namespace ExampleLibrary
             var m = new PlotModel();
 
             var xa = new DateTimeAxis(AxisPosition.Bottom);
-#if SILVERLIGHT || PCL
+#if PCL
             // TimeZone not available in PCL...
 #else
             xa.TimeZone = TimeZoneInfo.FindSystemTimeZoneById(
@@ -179,17 +179,12 @@ namespace ExampleLibrary
         public static PlotModel SunriseandsunsetinOslo()
         {
             int year = DateTime.Now.Year;
-#if SILVERLIGHT || PCL
+#if PCL
             var sunData = CreateSunData(year, 59.91, 10.75);
 #else
             var sunData = CreateSunData(year, 59.91, 10.75, TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time"));
 #endif
-            var plotModel1 = new PlotModel();
-            plotModel1.Title = "Sunrise and sunset in Oslo";
-
-#if SILVERLIGHT
-            plotModel1.Subtitle = "UTC time";
-#endif
+            var plotModel1 = new PlotModel("Sunrise and sunset in Oslo", "UTC time");
 
             var dateTimeAxis1 = new DateTimeAxis
                 {

@@ -38,11 +38,7 @@ namespace ExampleLibrary
         public static List<ExampleInfo> GetList()
         {
             var list = new List<ExampleInfo>();
-#if PCL45
-            var assemblyTypes = typeof(Examples).GetTypeInfo().Assembly.DefinedTypes;
-#else
             var assemblyTypes = typeof(Examples).Assembly.GetTypes();
-#endif
 
             foreach (var type in assemblyTypes)
             {
@@ -53,45 +49,32 @@ namespace ExampleLibrary
                 }
 
                 var examplesAttribute = examplesAttributes[0] as ExamplesAttribute;
-#if PCL45
-                var types = new List<TypeInfo>();
-#else
                 var types = new List<Type>();
-#endif
                 var baseType = type;
                 while (baseType != null)
                 {
                     types.Add(baseType);
-#if PCL45
-                    baseType = baseType.BaseType == null ? null : baseType.BaseType.GetTypeInfo();
-#else
                     baseType = baseType.BaseType;
-#endif
                 }
 
                 foreach (var t in types)
                 {
-#if PCL45
-                    foreach (var method in t.DeclaredMethods)//.GetMethods(BindingFlags.Public | BindingFlags.Static))
-#else
                     foreach (var method in t.GetMethods(BindingFlags.Public | BindingFlags.Static))
-#endif
                     {
-#if PCL45
-                        var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true).ToArray();
-#else
                         var exampleAttributes = method.GetCustomAttributes(typeof(ExampleAttribute), true);
-#endif
                         if (exampleAttributes.Length == 0)
                         {
                             continue;
                         }
 
                         var exampleAttribute = (ExampleAttribute)exampleAttributes[0];
-                        list.Add(new ExampleInfo(examplesAttribute.Category, exampleAttribute.Title, method));
+                        if (examplesAttribute != null)
+                        {
+                            list.Add(new ExampleInfo(examplesAttribute.Category, exampleAttribute.Title, method));
+                        }
                     }
                 }
-            };
+            }
 
             return list;
         }

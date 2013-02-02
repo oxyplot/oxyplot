@@ -68,30 +68,6 @@ namespace OxyPlot
             this.WriteHeader(width, height);
         }
 
-#if !PCL
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SvgWriter"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        public SvgWriter(string path, double width, double height)
-            : base(path)
-        {
-            this.IsDocument = true;
-            this.NumberFormat = "0.####";
-            this.WriteHeader(width, height);
-        }
-
-#endif
-
         /// <summary>
         /// Gets or sets a value indicating whether this writer should produce a stand-alone document.
         /// </summary>

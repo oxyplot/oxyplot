@@ -36,7 +36,7 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples(" Issues (open)")]
+    [Examples("Z0 Issues (open)")]
     public class OpenIssues : ExamplesBase
     {
         [Example("#10018: Sub/superscript in vertical axis title")]

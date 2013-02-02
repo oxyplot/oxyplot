@@ -81,13 +81,12 @@ namespace OxyPlot.Pdf
         /// The author.
         /// </param>
         /// <param name="fontsize">
-        /// The fontsize.
+        /// The font size.
         /// </param>
         /// <param name="documentType">
         /// The document type.
         /// </param>
-        public LatexReportWriter(
-            Stream s, string title, string author, string fontsize = "12pt", string documentType = "report")
+        public LatexReportWriter(Stream s, string title, string author, string fontsize = "12pt", string documentType = "report")
             : base(s)
         {
             this.title = title;
@@ -95,38 +94,6 @@ namespace OxyPlot.Pdf
             this.fontsize = fontsize;
             this.documentType = documentType;
         }
-
-#if !METRO
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LatexReportWriter"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
-        /// <param name="author">
-        /// The author.
-        /// </param>
-        /// <param name="fontsize">
-        /// The fontsize.
-        /// </param>
-        /// <param name="documentType">
-        /// The document type.
-        /// </param>
-        public LatexReportWriter(
-            string path, string title, string author, string fontsize = "12pt", string documentType = "report")
-            : base(path)
-        {
-            this.title = title;
-            this.author = author;
-            this.fontsize = fontsize;
-            this.documentType = documentType;
-        }
-
-#endif
 
         /// <summary>
         /// Begins the document.

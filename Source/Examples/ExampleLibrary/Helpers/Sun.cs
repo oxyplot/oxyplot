@@ -124,7 +124,7 @@ namespace ExampleLibrary
             //    10. convert UT value to local time zone of latitude/longitude
 
             var utctime = date.Date.AddHours(UT);
-#if SILVERLIGHT || PCL
+#if PCL
             var localtime = utctime;
 #else
             var localtime = TimeZoneInfo.ConvertTimeFromUtc(utctime, tzi);
