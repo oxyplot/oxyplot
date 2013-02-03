@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Annotations\Annotation.cs" />
     <Compile Include="Annotations\ArrowAnnotation.cs" />
+    <Compile Include="Annotations\EllipseAnnotation.cs" />
     <Compile Include="Annotations\PolygonAnnotation.cs" />
     <Compile Include="Annotations\RectangleAnnotation.cs" />
     <Compile Include="Annotations\TextAnnotation.cs" />

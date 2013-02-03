@@ -38,31 +38,32 @@ namespace OxyPlot
     /// </summary>
     public static class RenderingExtensions
     {
-        //// Length constants used to draw triangles and stars
-        //// ___
-        //// /\                   |
-        //// /  \                 |
-        //// /    \               | M2
-        //// /      \             |
-        //// /        \           |
-        //// /     +    \        ---
-        //// /            \       |
-        //// /              \     | M1
-        //// /________________\  _|_
-        //// |--------|-------|
-        //// 1       1
-        ////
-        //// |
-        //// \     |     /     ---
-        //// \   |   /        | M3
-        //// \ | /          |
-        //// ---------+--------   ---
-        //// / | \          | M3
-        //// /   |   \        |
-        //// /     |     \     ---
-        //// |
-        //// |-----|-----|
-        //// M3    M3
+        /* Length constants used to draw triangles and stars
+                             ___
+         /\                   |
+         /  \                 |
+         /    \               | M2
+         /      \             |
+         /        \           |
+         /     +    \        ---
+         /            \       |
+         /              \     | M1
+         /________________\  _|_
+         |--------|-------|
+              1       1
+        
+                  |
+            \     |     /     ---
+              \   |   /        | M3
+                \ | /          |
+         ---------+--------   ---
+                / | \          | M3
+              /   |   \        |
+            /     |     \     ---
+                  |
+            |-----|-----|
+               M3    M3
+        */
 
         /// <summary>
         /// The m 1.
@@ -104,8 +105,7 @@ namespace OxyPlot
             bool aliased,
             Action<IList<ScreenPoint>> pointsRendered = null)
         {
-            var clipping = new CohenSutherlandClipping(
-                clippingRectangle.Left, clippingRectangle.Right, clippingRectangle.Top, clippingRectangle.Bottom);
+            var clipping = new CohenSutherlandClipping(clippingRectangle.Left, clippingRectangle.Right, clippingRectangle.Top, clippingRectangle.Bottom);
 
             var pts = new List<ScreenPoint>();
             int n = points.Count;
@@ -156,11 +156,12 @@ namespace OxyPlot
                         if (pts.Count > 0)
                         {
                             rc.DrawLine(
-                                pts, stroke, strokeThickness, LineStyleHelper.GetDashArray(lineStyle), lineJoin, aliased);
+                                pts, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
                             if (pointsRendered != null)
                             {
                                 pointsRendered(pts);
                             }
+
                             pts = new List<ScreenPoint>();
                         }
                     }
@@ -187,7 +188,7 @@ namespace OxyPlot
 
                 if (pts.Count > 0)
                 {
-                    rc.DrawLine(pts, stroke, strokeThickness, LineStyleHelper.GetDashArray(lineStyle), lineJoin, aliased);
+                    rc.DrawLine(pts, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
 
                     // Execute the 'callback'.
                     if (pointsRendered != null)
@@ -219,6 +220,13 @@ namespace OxyPlot
             OxyPenLineJoin lineJoin,
             bool aliased)
         {
+            if (rc.SetClip(clippingRectangle))
+            {
+                rc.DrawLineSegments(points, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
+                rc.ResetClip();
+                return;
+            }
+
             var clipping = new CohenSutherlandClipping(clippingRectangle.Left, clippingRectangle.Right, clippingRectangle.Top, clippingRectangle.Bottom);
 
             var clippedPoints = new List<ScreenPoint>(points.Count);
@@ -233,7 +241,7 @@ namespace OxyPlot
                 }
             }
 
-            rc.DrawLineSegments(clippedPoints, stroke, strokeThickness, LineStyleHelper.GetDashArray(lineStyle), lineJoin, aliased);
+            rc.DrawLineSegments(clippedPoints, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
         }
 
         /// <summary>
@@ -254,7 +262,7 @@ namespace OxyPlot
             double y,
             double w,
             double h,
-            double opacity, 
+            double opacity,
             bool interpolate)
         {
             var info = rc.GetImageInfo(image);
@@ -280,7 +288,7 @@ namespace OxyPlot
             double y,
             double w,
             double h,
-            double opacity, 
+            double opacity,
             bool interpolate)
         {
             if (x > clippingRect.Right || x + w < clippingRect.Left || y > clippingRect.Bottom || y + h < clippingRect.Top)
@@ -349,7 +357,7 @@ namespace OxyPlot
         /// The clipping rectangle.
         /// </param>
         /// <param name="minDistSquared">
-        /// The min dist squared.
+        /// The squared minimum distance between points.
         /// </param>
         /// <param name="fill">
         /// The fill.
@@ -381,10 +389,17 @@ namespace OxyPlot
             OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
             bool aliased = false)
         {
+            if (rc.SetClip(clippingRectangle))
+            {
+                rc.DrawPolygon(points, fill, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
+                rc.ResetClip();
+                return;
+            }
+
             var clippedPoints = SutherlandHodgmanClipping.ClipPolygon(clippingRectangle, points);
 
             rc.DrawPolygon(
-                clippedPoints, fill, stroke, strokeThickness, LineStyleHelper.GetDashArray(lineStyle), lineJoin, aliased);
+                clippedPoints, fill, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
         }
 
         /// <summary>
@@ -416,7 +431,14 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness)
         {
-            OxyRect? clippedRect = ClipRect(rect, clippingRectangle);
+            if (rc.SetClip(clippingRectangle))
+            {
+                rc.DrawRectangle(rect, fill, stroke, thickness);
+                rc.ResetClip();
+                return;
+            }
+
+            var clippedRect = ClipRect(rect, clippingRectangle);
             if (clippedRect == null)
             {
                 return;
@@ -454,13 +476,59 @@ namespace OxyPlot
             OxyColor stroke,
             double thickness)
         {
-            OxyRect? clippedRect = ClipRect(rect, clippingRectangle);
+            if (rc.SetClip(clippingRectangle))
+            {
+                rc.DrawRectangleAsPolygon(rect, fill, stroke, thickness);
+                rc.ResetClip();
+                return;
+            }
+
+            var clippedRect = ClipRect(rect, clippingRectangle);
             if (clippedRect == null)
             {
                 return;
             }
 
             rc.DrawRectangleAsPolygon(clippedRect.Value, fill, stroke, thickness);
+        }
+
+        /// <summary>
+        /// Draws a clipped ellipse.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        public static void DrawClippedEllipse(
+            this IRenderContext rc,
+            OxyRect clippingRectangle,
+            OxyRect rect,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness)
+        {
+            if (rc.SetClip(clippingRectangle))
+            {
+                rc.DrawEllipse(rect, fill, stroke, thickness);
+                rc.ResetClip();
+                return;
+            }
+
+            int n = 100;
+            var points = new ScreenPoint[n];
+            double cx = (rect.Left + rect.Right) / 2;
+            double cy = (rect.Top + rect.Bottom) / 2;
+            double rx = (rect.Right - rect.Left) / 2;
+            double ry = (rect.Bottom - rect.Top) / 2;
+            for (int i = 0; i < n; i++)
+            {
+                double a = Math.PI * 2 * i / (n - 1);
+                points[i] = new ScreenPoint(cx + (rx * Math.Cos(a)), cy + (ry * Math.Sin(a)));
+            }
+
+            rc.DrawClippedPolygon(points, clippingRectangle, 4, fill, stroke, thickness);
         }
 
         /// <summary>

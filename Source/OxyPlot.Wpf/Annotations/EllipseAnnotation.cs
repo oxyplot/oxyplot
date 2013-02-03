@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RectangleAnnotation.cs" company="OxyPlot">
+// <copyright file="EllipseAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   This is a WPF wrapper of OxyPlot.RectangleAnnotation
+//   This is a WPF wrapper of OxyPlot.EllipseAnnotation
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,9 +34,9 @@ namespace OxyPlot.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    ///     This is a WPF wrapper of OxyPlot.RectangleAnnotation
+    ///     This is a WPF wrapper of OxyPlot.EllipseAnnotation
     /// </summary>
-    public class RectangleAnnotation : TextualAnnotation
+    public class EllipseAnnotation : TextualAnnotation
     {
         /// <summary>
         ///     The Fill property.
@@ -44,7 +44,7 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill",
             typeof(Color),
-            typeof(RectangleAnnotation),
+            typeof(EllipseAnnotation),
             new PropertyMetadata(Colors.LightBlue, AppearanceChanged));
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke",
             typeof(Color),
-            typeof(RectangleAnnotation),
+            typeof(EllipseAnnotation),
             new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
@@ -62,45 +62,33 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness",
             typeof(double),
-            typeof(RectangleAnnotation),
+            typeof(EllipseAnnotation),
             new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
-        ///     The MaximumX property.
+        ///     The X property.
         /// </summary>
-        public static readonly DependencyProperty MaximumXProperty = DependencyProperty.Register(
-            "MaximumX", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MaxValue, DataChanged));
+        public static readonly DependencyProperty XProperty = DependencyProperty.Register(
+            "X", typeof(double), typeof(EllipseAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
-        ///     The MaximumY property.
+        ///     The Y property.
         /// </summary>
-        public static readonly DependencyProperty MaximumYProperty = DependencyProperty.Register(
-            "MaximumY", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MaxValue, DataChanged));
-
-        /// <summary>
-        ///     The MinimumX property.
-        /// </summary>
-        public static readonly DependencyProperty MinimumXProperty = DependencyProperty.Register(
-            "MinimumX", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
-
-        /// <summary>
-        ///     The MinimumY property.
-        /// </summary>
-        public static readonly DependencyProperty MinimumYProperty = DependencyProperty.Register(
-            "MinimumY", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
+        public static readonly DependencyProperty YProperty = DependencyProperty.Register(
+            "Y", typeof(double), typeof(EllipseAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
         ///     The text rotation property
         /// </summary>
         public static readonly DependencyProperty TextRotationProperty = DependencyProperty.Register(
-            "TextRotation", typeof(double), typeof(RectangleAnnotation), new UIPropertyMetadata(0.0));
+            "TextRotation", typeof(double), typeof(EllipseAnnotation), new UIPropertyMetadata(0.0));
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RectangleAnnotation" /> class.
+        ///     Initializes a new instance of the <see cref="EllipseAnnotation" /> class.
         /// </summary>
-        public RectangleAnnotation()
+        public EllipseAnnotation()
         {
-            this.InternalAnnotation = new Annotations.RectangleAnnotation();
+            this.InternalAnnotation = new Annotations.EllipseAnnotation();
         }
 
         /// <summary>
@@ -152,66 +140,34 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the Maximum X.
+        ///     Gets or sets the  X.
         /// </summary>
-        public double MaximumX
+        public double X
         {
             get
             {
-                return (double)this.GetValue(MaximumXProperty);
+                return (double)this.GetValue(XProperty);
             }
 
             set
             {
-                this.SetValue(MaximumXProperty, value);
+                this.SetValue(XProperty, value);
             }
         }
 
         /// <summary>
-        ///     Gets or sets the Maximum Y.
+        ///     Gets or sets the  Y.
         /// </summary>
-        public double MaximumY
+        public double Y
         {
             get
             {
-                return (double)this.GetValue(MaximumYProperty);
+                return (double)this.GetValue(YProperty);
             }
 
             set
             {
-                this.SetValue(MaximumYProperty, value);
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the Minimum X.
-        /// </summary>
-        public double MinimumX
-        {
-            get
-            {
-                return (double)this.GetValue(MinimumXProperty);
-            }
-
-            set
-            {
-                this.SetValue(MinimumXProperty, value);
-            }
-        }
-
-        /// <summary>
-        ///     Gets or sets the Minimum Y.
-        /// </summary>
-        public double MinimumY
-        {
-            get
-            {
-                return (double)this.GetValue(MinimumYProperty);
-            }
-
-            set
-            {
-                this.SetValue(MinimumYProperty, value);
+                this.SetValue(YProperty, value);
             }
         }
 
@@ -250,16 +206,16 @@ namespace OxyPlot.Wpf
         public override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = (Annotations.RectangleAnnotation)this.InternalAnnotation;
+            var a = (Annotations.EllipseAnnotation)this.InternalAnnotation;
 
             a.Fill = this.Fill.ToOxyColor();
             a.Stroke = this.Stroke.ToOxyColor();
             a.StrokeThickness = this.StrokeThickness;
 
-            a.MinimumX = this.MinimumX;
-            a.MaximumX = this.MaximumX;
-            a.MinimumY = this.MinimumY;
-            a.MaximumY = this.MaximumY;
+            a.X = this.X;
+            a.Width = this.Width;
+            a.Y = this.Y;
+            a.Height = this.Height;
             a.TextRotation = this.TextRotation;
         }
     }

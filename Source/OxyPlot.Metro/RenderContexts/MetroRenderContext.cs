@@ -75,7 +75,7 @@ namespace OxyPlot.Metro
         /// The image cache
         /// </summary>
         private Dictionary<OxyImage, BitmapSource> imageCache = new Dictionary<OxyImage, BitmapSource>();
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MetroRenderContext" /> class.
         /// </summary>
@@ -118,7 +118,7 @@ namespace OxyPlot.Metro
             el.Height = rect.Height;
             Canvas.SetLeft(el, rect.Left);
             Canvas.SetTop(el, rect.Top);
-            this.canvas.Children.Add(el);
+            this.Add(el, rect.Left, rect.Top);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace OxyPlot.Metro
 
             e.Points = pc;
 
-            this.canvas.Children.Add(e);
+            this.Add(e);
         }
 
         /// <summary>
@@ -308,7 +308,7 @@ namespace OxyPlot.Metro
 
             po.Points = pc;
 
-            this.canvas.Children.Add(po);
+            this.Add(po);
         }
 
         /// <summary>
@@ -409,7 +409,7 @@ namespace OxyPlot.Metro
             el.Height = rect.Height;
             Canvas.SetLeft(el, rect.Left);
             Canvas.SetTop(el, rect.Top);
-            this.canvas.Children.Add(el);
+            this.Add(el, rect.Left, rect.Top);
         }
 
         /// <summary>
@@ -546,7 +546,6 @@ namespace OxyPlot.Metro
                 // add a clipping container that is not rotated
                 var c = new Canvas();
                 c.Children.Add(tb);
-                this.ApplyClip(c, 0, 0);
                 this.Add(c);
             }
             else
@@ -613,6 +612,125 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
+        /// Gets the size of the specified image.
+        /// </summary>
+        /// <param name="source">The image source.</param>
+        /// <returns>
+        /// An <see cref="OxyImageInfo" /> structure.
+        /// </returns>
+        public OxyImageInfo GetImageInfo(OxyImage source)
+        {
+            var bmp = this.GetImageSource(source);
+            if (bmp == null)
+            {
+                return null;
+            }
+
+            return new OxyImageInfo { Width = (uint)bmp.PixelWidth, Height = (uint)bmp.PixelHeight, DpiX = 96, DpiY = 96 };
+        }
+
+        /// <summary>
+        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcY">The y-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcWidth">Width of the portion of the source image to draw.</param>
+        /// <param name="srcHeight">Height of the portion of the source image to draw.</param>
+        /// <param name="destX">The x-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destY">The y-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destWidth">The width of the drawn image.</param>
+        /// <param name="destHeight">The height of the drawn image.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
+        public void DrawImage(
+            OxyImage source,
+            uint srcX,
+            uint srcY,
+            uint srcWidth,
+            uint srcHeight,
+            double destX,
+            double destY,
+            double destWidth,
+            double destHeight,
+            double opacity,
+            bool interpolate)
+        {
+            if (destWidth <= 0 || destHeight <= 0 || srcWidth <= 0 || srcHeight <= 0)
+            {
+                return;
+            }
+
+            var image = new Image();
+            var bitmapChain = this.GetImageSource(source);
+
+            if (srcX == 0 && srcY == 0 && srcWidth == bitmapChain.PixelWidth && srcHeight == bitmapChain.PixelHeight)
+            {
+                // do not crop
+            }
+            else
+            {
+                throw new NotSupportedException("Use DrawClippedImage, CroppedBitmap is not supported here.");
+            }
+
+            image.Opacity = opacity;
+            image.Width = destWidth;
+            image.Height = destHeight;
+            image.Stretch = Stretch.Fill;
+
+            ////  RenderOptions.SetBitmapScalingMode(image, interpolate ? BitmapScalingMode.HighQuality : BitmapScalingMode.NearestNeighbor);
+
+            // Set the position of the image
+            Canvas.SetLeft(image, destX);
+            Canvas.SetTop(image, destY);
+
+            //// alternative: image.RenderTransform = new TranslateTransform(destX, destY);
+            //// TODO: check performance?
+
+            image.Source = bitmapChain;
+            this.Add(image, destX, destY);
+        }
+
+        /// <summary>
+        /// Sets the clip rectangle.
+        /// </summary>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <returns>True if the clip rectangle was set.</returns>
+        public bool SetClip(OxyRect clippingRect)
+        {
+            this.clip = clippingRect.ToRect(false);
+            return true;
+        }
+
+        /// <summary>
+        /// Resets the clip rectangle.
+        /// </summary>
+        public void ResetClip()
+        {
+            this.clip = null;
+        }
+
+        /// <summary>
+        /// Cleans up resources not in use.
+        /// </summary>
+        /// <remarks>
+        /// This method is called at the end of each rendering.
+        /// </remarks>
+        public void CleanUp()
+        {
+            // Find the images in the cache that has not been used since last call to this method
+            var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i));
+
+            // Remove the images from the cache
+            foreach (var i in imagesToRelease)
+            {
+                this.imageCache.Remove(i);
+            }
+
+            this.imagesInUse.Clear();
+        }
+
+        /// <summary>
         /// Creates the dash array collection.
         /// </summary>
         /// <param name="dashArray">
@@ -649,12 +767,17 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Adds the specified shape to the canvas.
         /// </summary>
-        /// <param name="shape">
-        /// The shape.
-        /// </param>
-        private void Add(UIElement shape)
+        /// <param name="element">The element.</param>
+        /// <param name="clipOffsetX">The clip offset X.</param>
+        /// <param name="clipOffsetY">The clip offset Y.</param>
+        private void Add(UIElement element, double clipOffsetX = 0, double clipOffsetY = 0)
         {
-            this.canvas.Children.Add(shape);
+            if (this.clip.HasValue)
+            {
+                this.ApplyClip(element, clipOffsetX, clipOffsetY);
+            }
+
+            this.canvas.Children.Add(element);
         }
 
         /// <summary>
@@ -736,126 +859,6 @@ namespace OxyPlot.Metro
             }
 
             // shape.UseLayoutRounding = aliased;
-        }
-
-        /// <summary>
-        /// Gets the size of the specified image.
-        /// </summary>
-        /// <param name="source">The image source.</param>
-        /// <returns>
-        /// An <see cref="OxyImageInfo" /> structure.
-        /// </returns>
-        public OxyImageInfo GetImageInfo(OxyImage source)
-        {
-            var bmp = this.GetImageSource(source);
-            if (bmp == null)
-            {
-                return null;
-            }
-
-            return new OxyImageInfo { Width = (uint)bmp.PixelWidth, Height = (uint)bmp.PixelHeight, DpiX = 96, DpiY = 96 };
-        }
-
-        /// <summary>
-        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
-        /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
-        /// <param name="srcY">The y-coordinate of the upper-left corner of the portion of the source image to draw.</param>
-        /// <param name="srcWidth">Width of the portion of the source image to draw.</param>
-        /// <param name="srcHeight">Height of the portion of the source image to draw.</param>
-        /// <param name="destX">The x-coordinate of the upper-left corner of drawn image.</param>
-        /// <param name="destY">The y-coordinate of the upper-left corner of drawn image.</param>
-        /// <param name="destWidth">The width of the drawn image.</param>
-        /// <param name="destHeight">The height of the drawn image.</param>
-        /// <param name="opacity">The opacity.</param>
-        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
-        public void DrawImage(
-            OxyImage source,
-            uint srcX,
-            uint srcY,
-            uint srcWidth,
-            uint srcHeight,
-            double destX,
-            double destY,
-            double destWidth,
-            double destHeight,
-            double opacity,
-            bool interpolate)
-        {
-            if (destWidth <= 0 || destHeight <= 0 || srcWidth <= 0 || srcHeight <= 0)
-            {
-                return;
-            }
-
-            var image = new Image();
-            var bitmapChain = this.GetImageSource(source);
-
-            if (srcX == 0 && srcY == 0 && srcWidth == bitmapChain.PixelWidth && srcHeight == bitmapChain.PixelHeight)
-            {
-                // do not crop
-            }
-            else
-            {
-                throw new NotSupportedException("Use DrawClippedImage, CroppedBitmap is not supported here.");
-            }
-
-            // Apply clip rectangle, if set
-            this.ApplyClip(image, destX, destY);
-
-            image.Opacity = opacity;
-            image.Width = destWidth;
-            image.Height = destHeight;
-            image.Stretch = Stretch.Fill;
-            //  RenderOptions.SetBitmapScalingMode(image, interpolate ? BitmapScalingMode.HighQuality : BitmapScalingMode.NearestNeighbor);
-
-            // Set the position of the image
-            Canvas.SetLeft(image, destX);
-            Canvas.SetTop(image, destY);
-            //// alternative: image.RenderTransform = new TranslateTransform(destX, destY);
-
-            image.Source = bitmapChain;
-            //this.ApplyTooltip(image);
-            this.Add(image);
-        }
-
-        /// <summary>
-        /// Sets the clip rectangle.
-        /// </summary>
-        /// <param name="clippingRect">The clipping rectangle.</param>
-        /// <returns>True if the clip rectangle was set.</returns>
-        public bool SetClip(OxyRect clippingRect)
-        {
-            this.clip = clippingRect.ToRect(false);
-            return true;
-        }
-
-        /// <summary>
-        /// Resets the clip rectangle.
-        /// </summary>
-        public void ResetClip()
-        {
-            this.clip = null;
-        }
-
-        /// <summary>
-        /// Cleans up resources not in use.
-        /// </summary>
-        /// <remarks>
-        /// This method is called at the end of each rendering.
-        /// </remarks>
-        public void CleanUp()
-        {
-            // Find the images in the cache that has not been used since last call to this method
-            var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i));
-
-            // Remove the images from the cache
-            foreach (var i in imagesToRelease)
-            {
-                this.imageCache.Remove(i);
-            }
-
-            this.imagesInUse.Clear();
         }
 
         /// <summary>
