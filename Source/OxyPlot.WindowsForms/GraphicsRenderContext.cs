@@ -92,6 +92,7 @@ namespace OxyPlot.WindowsForms
 
             using (var pen = new Pen(this.ToColor(stroke), (float)thickness))
             {
+                this.g.SmoothingMode = SmoothingMode.HighQuality;
                 this.g.DrawEllipse(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
             }
         }

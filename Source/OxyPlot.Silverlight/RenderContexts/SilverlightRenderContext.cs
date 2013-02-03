@@ -134,7 +134,7 @@ namespace OxyPlot.Silverlight
             el.Height = rect.Height;
             Canvas.SetLeft(el, rect.Left);
             Canvas.SetTop(el, rect.Top);
-            this.canvas.Children.Add(el);
+            this.Add(el, rect.Left, rect.Top);
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace OxyPlot.Silverlight
 
             e.Points = pc;
 
-            this.canvas.Children.Add(e);
+            this.Add(e);
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace OxyPlot.Silverlight
 
             po.Points = pc;
 
-            this.canvas.Children.Add(po);
+            this.Add(po);
         }
 
         /// <summary>
@@ -425,7 +425,7 @@ namespace OxyPlot.Silverlight
             el.Height = rect.Height;
             Canvas.SetLeft(el, rect.Left);
             Canvas.SetTop(el, rect.Top);
-            this.canvas.Children.Add(el);
+            this.Add(el, rect.Left, rect.Top);
         }
 
         /// <summary>
@@ -578,7 +578,6 @@ namespace OxyPlot.Silverlight
                 // add a clipping container that is not rotated
                 var c = new Canvas();
                 c.Children.Add(tb);
-                this.ApplyClip(c, 0, 0);
                 this.Add(c);
             }
             else
@@ -679,11 +678,16 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Adds the specified element to the canvas.
         /// </summary>
-        /// <param name="element">
-        /// The element.
-        /// </param>
-        private void Add(UIElement element)
+        /// <param name="element">The element.</param>
+        /// <param name="clipOffsetX">The clip offset X.</param>
+        /// <param name="clipOffsetY">The clip offset Y.</param>
+        private void Add(UIElement element, double clipOffsetX = 0, double clipOffsetY = 0)
         {
+            if (this.clip.HasValue)
+            {
+                this.ApplyClip(element, clipOffsetX, clipOffsetY);
+            }
+
             this.canvas.Children.Add(element);
         }
 
@@ -693,7 +697,7 @@ namespace OxyPlot.Silverlight
         /// <param name="element">
         /// The element.
         /// </param>
-        private void ApplyTooltip(FrameworkElement element)
+        private void ApplyTooltip(DependencyObject element)
         {
             if (!string.IsNullOrEmpty(this.CurrentToolTip))
             {
@@ -702,12 +706,13 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// The get cached brush.
+        /// Gets the cached brush.
         /// </summary>
         /// <param name="stroke">
         /// The stroke.
         /// </param>
         /// <returns>
+        /// The brush.
         /// </returns>
         private Brush GetCachedBrush(OxyColor stroke)
         {
@@ -845,8 +850,6 @@ namespace OxyPlot.Silverlight
                 return;
             }
 
-            this.ApplyClip(image, destX, destY);
-
             image.Opacity = opacity;
             image.Width = destWidth;
             image.Height = destHeight;
@@ -859,7 +862,7 @@ namespace OxyPlot.Silverlight
             image.RenderTransform = new TranslateTransform { X = destX, Y = destY };
             image.Source = bmp;
             this.ApplyTooltip(image);
-            this.Add(image);
+            this.Add(image, destX, destY);
         }
 
         /// <summary>
@@ -870,10 +873,7 @@ namespace OxyPlot.Silverlight
         /// <param name="y">The y offset of the element.</param>
         private void ApplyClip(UIElement image, double x, double y)
         {
-            if (clip.HasValue)
-            {
-                image.Clip = new RectangleGeometry() { Rect = new Rect(clip.Value.X - x, clip.Value.Y - y, clip.Value.Width, clip.Value.Height) };
-            }
+            image.Clip = new RectangleGeometry() { Rect = new Rect(this.clip.Value.X - x, this.clip.Value.Y - y, this.clip.Value.Width, this.clip.Value.Height) };
         }
 
         /// <summary>

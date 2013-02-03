@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RectangleAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -30,9 +30,9 @@
 namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// Represents a rectangle annotation.
+    /// Represents an ellipse annotation.
     /// </summary>
-    public class RectangleAnnotation : TextualAnnotation
+    public class EllipseAnnotation : TextualAnnotation
     {
         /// <summary>
         /// The rectangle transformed to screen coordinates.
@@ -40,16 +40,11 @@ namespace OxyPlot.Annotations
         private OxyRect screenRectangle;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="EllipseAnnotation"/> class.
         /// </summary>
-        public RectangleAnnotation()
+        public EllipseAnnotation()
         {
             this.Fill = OxyColors.LightBlue;
-            this.MinimumX = double.NaN;
-            this.MaximumX = double.NaN;
-            this.MinimumY = double.NaN;
-            this.MaximumY = double.NaN;
-            this.TextRotation = 0;
         }
 
         /// <summary>
@@ -69,28 +64,24 @@ namespace OxyPlot.Annotations
         public double StrokeThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum X.
+        /// Gets or sets the x-coordinate of the center.
         /// </summary>
-        /// <value>The minimum X.</value>
-        public double MinimumX { get; set; }
+        public double X { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum X.
+        /// Gets or sets the y-coordinate of the center.
         /// </summary>
-        /// <value>The maximum X.</value>
-        public double MaximumX { get; set; }
+        public double Y { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum Y.
+        /// Gets or sets the width of the ellipse.
         /// </summary>
-        /// <value>The minimum Y.</value>
-        public double MinimumY { get; set; }
+        public double Width { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum Y.
+        /// Gets or sets the height of the ellipse.
         /// </summary>
-        /// <value>The maximum Y.</value>
-        public double MaximumY { get; set; }
+        public double Height { get; set; }
 
         /// <summary>
         /// Gets or sets the text rotation (degrees).
@@ -111,39 +102,26 @@ namespace OxyPlot.Annotations
         {
             base.Render(rc, model);
 
-            double x0 = double.IsNaN(this.MinimumX) || this.MinimumX.Equals(double.MinValue)
-                            ? this.XAxis.ActualMinimum
-                            : this.MinimumX;
-            double x1 = double.IsNaN(this.MaximumX) || this.MaximumX.Equals(double.MaxValue)
-                            ? this.XAxis.ActualMaximum
-                            : this.MaximumX;
-            double y0 = double.IsNaN(this.MinimumY) || this.MinimumY.Equals(double.MinValue)
-                            ? this.YAxis.ActualMinimum
-                            : this.MinimumY;
-            double y1 = double.IsNaN(this.MaximumY) || this.MaximumY.Equals(double.MaxValue)
-                            ? this.YAxis.ActualMaximum
-                            : this.MaximumY;
-
-            this.screenRectangle = OxyRect.Create(this.Transform(x0, y0), this.Transform(x1, y1));
+            this.screenRectangle = OxyRect.Create(this.Transform(this.X - (Width / 2), Y - (Height / 2)), this.Transform(X + (Width / 2), Y + (Height / 2)));
 
             // clip to the area defined by the axes
             var clipping = this.GetClippingRect();
 
-            rc.DrawClippedRectangle(this.screenRectangle, clipping, this.Fill, this.Stroke, this.StrokeThickness);
+            rc.DrawClippedEllipse(clipping, this.screenRectangle, this.Fill, this.Stroke, this.StrokeThickness);
 
             if (!string.IsNullOrEmpty(this.Text))
             {
                 var textPosition = this.screenRectangle.Center;
                 rc.DrawClippedText(
-                    clipping, 
-                    textPosition, 
-                    this.Text, 
-                    this.ActualTextColor, 
-                    this.ActualFont, 
-                    this.ActualFontSize, 
-                    this.ActualFontWeight, 
-                    this.TextRotation, 
-                    HorizontalAlignment.Center, 
+                    clipping,
+                    textPosition,
+                    this.Text,
+                    this.ActualTextColor,
+                    this.ActualFont,
+                    this.ActualFontSize,
+                    this.ActualFontWeight,
+                    this.TextRotation,
+                    HorizontalAlignment.Center,
                     VerticalAlignment.Middle);
             }
         }

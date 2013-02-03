@@ -152,7 +152,8 @@ namespace OxyPlot.Wpf
             e.Height = rect.Height;
             Canvas.SetLeft(e, rect.Left);
             Canvas.SetTop(e, rect.Top);
-            this.Add(e);
+
+            this.Add(e, rect.Left, rect.Top);
         }
 
         /// <summary>
@@ -186,6 +187,7 @@ namespace OxyPlot.Wpf
             }
 
             path.Data = gg;
+
             this.Add(path);
         }
 
@@ -352,7 +354,6 @@ namespace OxyPlot.Wpf
             }
 
             e.Points = pc;
-
             this.Add(e);
         }
 
@@ -521,7 +522,8 @@ namespace OxyPlot.Wpf
             e.Height = rect.Height;
             Canvas.SetLeft(e, rect.Left);
             Canvas.SetTop(e, rect.Top);
-            this.Add(e);
+
+            this.Add(e, rect.Left, rect.Top);
         }
 
         /// <summary>
@@ -653,7 +655,6 @@ namespace OxyPlot.Wpf
                 // add a clipping container that is not rotated
                 var c = new Canvas();
                 c.Children.Add(tb);
-                this.ApplyClip(c, 0, 0);
                 this.Add(c);
             }
             else
@@ -780,9 +781,6 @@ namespace OxyPlot.Wpf
                 bitmapChain = new CroppedBitmap(bitmapChain, new Int32Rect((int)srcX, (int)srcY, (int)srcWidth, (int)srcHeight));
             }
 
-            // Apply clip rectangle, if set
-            this.ApplyClip(image, destX, destY);
-
             image.Opacity = opacity;
             image.Width = destWidth;
             image.Height = destHeight;
@@ -796,7 +794,7 @@ namespace OxyPlot.Wpf
 
             image.Source = bitmapChain;
             this.ApplyTooltip(image);
-            this.Add(image);
+            this.Add(image, destX, destY);
         }
 
         /// <summary>
@@ -943,11 +941,16 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The add.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void Add(FrameworkElement e)
+        /// <param name="e">The e.</param>
+        /// <param name="clipOffsetX">The clip offset X.</param>
+        /// <param name="clipOffsetY">The clip offset Y.</param>
+        private void Add(FrameworkElement e, double clipOffsetX = 0, double clipOffsetY = 0)
         {
+            if (this.clip != null)
+            {
+                this.ApplyClip(e, clipOffsetX, clipOffsetY);
+            }
+
             this.canvas.Children.Add(e);
         }
 

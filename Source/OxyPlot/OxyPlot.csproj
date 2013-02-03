@@ -46,6 +46,7 @@
     <Compile Include="Annotations\Annotation.cs" />
     <Compile Include="Annotations\AnnotationLayer.cs" />
     <Compile Include="Annotations\ArrowAnnotation.cs" />
+    <Compile Include="Annotations\EllipseAnnotation.cs" />
     <Compile Include="Annotations\ImageAnnotation.cs" />
     <Compile Include="Annotations\TileMapAnnotation.cs" />
     <Compile Include="Foundation\PlotLength.cs" />

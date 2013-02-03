@@ -78,13 +78,27 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("RectangleAnnotations")]
+        [Example("RectangleAnnotation")]
         public static PlotModel RectangleAnnotation()
         {
-            var model = new PlotModel("RectangleAnnotations - vertical limit");
+            var model = new PlotModel("RectangleAnnotation");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
             model.Axes.Add(new LinearAxis(AxisPosition.Left));
-            model.Annotations.Add(new RectangleAnnotation { MinimumX = 20, MaximumX = 70, MinimumY = 10, MaximumY = 40, TextRotation = 10, Text = "RectangleAnnotation", Fill = OxyColors.Black.ChangeAlpha(99) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumX = 20, MaximumX = 70, MinimumY = 10, MaximumY = 40, TextRotation = 10, Text = "RectangleAnnotation", Fill = OxyColors.Blue.ChangeAlpha(99), Stroke = OxyColors.Black, StrokeThickness = 2 });
+            return model;
+        }
+
+        [Example("EllipseAnnotations")]
+        public static PlotModel EllipseAnnotations()
+        {
+            var model = new PlotModel("EllipseAnnotations");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+            model.Annotations.Add(new EllipseAnnotation { X = 20, Y = 60, Width = 20, Height = 15, Text = "EllipseAnnotation", TextRotation = 10, Fill = OxyColors.Green.ChangeAlpha(99), Stroke = OxyColors.Black, StrokeThickness = 2 });
+
+            model.Annotations.Add(new EllipseAnnotation { X = 20, Y = 20, Width = 20, Height = 20, Fill = OxyColors.Green.ChangeAlpha(99), Stroke = OxyColors.Black, StrokeThickness = 2 });
+            model.Annotations.Add(new EllipseAnnotation { X = 30, Y = 20, Width = 20, Height = 20, Fill = OxyColors.Red.ChangeAlpha(99), Stroke = OxyColors.Black, StrokeThickness = 2 });
+            model.Annotations.Add(new EllipseAnnotation { X = 25, Y = 30, Width = 20, Height = 20, Fill = OxyColors.Blue.ChangeAlpha(99), Stroke = OxyColors.Black, StrokeThickness = 2 });
             return model;
         }
 
@@ -363,40 +377,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("TileMapAnnotation (does not work on Silverlight)")]
-        public static PlotModel TileMapAnnotation()
-        {
-            var model = new PlotModel("TileMapAnnotation");
-
-            // TODO: scale ratio between the two axes should be fixed (or depending on latitude...)
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 10.4, 10.6, "Longitude"));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, 59.88, 59.96, "Latitude"));
-
-            // Add the tile map annotation
-            model.Annotations.Add(
-                new TileMapAnnotation
-                    {
-                        Url = "http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=toporaster2&zoom={Z}&x={X}&y={Y}",
-                        CopyrightNotice = "Kartgrunnlag: Statens kartverk, Geovekst og kommuner.",
-                        MinZoomLevel = 5,
-                        MaxZoomLevel = 19
-                    });
-
-            model.Annotations.Add(new ArrowAnnotation
-                {
-                    EndPoint = new DataPoint(10.563, 59.888),
-                    ArrowDirection = new ScreenVector(-40, -60),
-                    StrokeThickness = 3,
-                    FontSize = 20,
-                    FontWeight = FontWeights.Bold,
-                    TextColor = OxyColors.Magenta.ChangeAlpha(160),
-                    Color = OxyColors.Magenta.ChangeAlpha(100)
-                });
-
-            return model;
-        }
-
-        [Example("TileMapAnnotation using OpenStreetMap (does not work on Silverlight)")]
+        [Example("TileMapAnnotation using OpenStreetMap")]
         public static PlotModel TileMapAnnotation2()
         {
             var model = new PlotModel("TileMapAnnotation");
@@ -410,6 +391,39 @@ namespace ExampleLibrary
                     Url = "http://tile.openstreetmap.org/{Z}/{X}/{Y}.png",
                     CopyrightNotice = "OpenStreet map."
                 });
+
+            return model;
+        }
+
+        [Example("TileMapAnnotation (restricted Silverlight client access)")]
+        public static PlotModel TileMapAnnotation()
+        {
+            var model = new PlotModel("TileMapAnnotation");
+
+            // TODO: scale ratio between the two axes should be fixed (or depending on latitude...)
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 10.4, 10.6, "Longitude"));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, 59.88, 59.96, "Latitude"));
+
+            // Add the tile map annotation
+            model.Annotations.Add(
+                new TileMapAnnotation
+                {
+                    Url = "http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=toporaster2&zoom={Z}&x={X}&y={Y}",
+                    CopyrightNotice = "Kartgrunnlag: Statens kartverk, Geovekst og kommuner.",
+                    MinZoomLevel = 5,
+                    MaxZoomLevel = 19
+                });
+
+            model.Annotations.Add(new ArrowAnnotation
+            {
+                EndPoint = new DataPoint(10.563, 59.888),
+                ArrowDirection = new ScreenVector(-40, -60),
+                StrokeThickness = 3,
+                FontSize = 20,
+                FontWeight = FontWeights.Bold,
+                TextColor = OxyColors.Magenta.ChangeAlpha(160),
+                Color = OxyColors.Magenta.ChangeAlpha(100)
+            });
 
             return model;
         }
