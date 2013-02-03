@@ -30,12 +30,18 @@ REM === Pdf ===
 mkdir ..\Packages\OxyPlot.Pdf\lib
 mkdir ..\Packages\OxyPlot.Pdf\lib\NET40
 mkdir ..\Packages\OxyPlot.Pdf\lib\NET45
+mkdir ..\Packages\OxyPlot.Pdf\lib\SL4
+mkdir ..\Packages\OxyPlot.Pdf\lib\SL5
 copy ..\Output\NET40\OxyPlot.Pdf.??? ..\Packages\OxyPlot.Pdf\lib\NET40
 copy ..\Output\NET40\PdfSharp.* ..\Packages\OxyPlot.Pdf\lib\NET40
 copy ..\Output\NET40\MigraDoc.* ..\Packages\OxyPlot.Pdf\lib\NET40
 copy ..\Output\NET45\OxyPlot.Pdf.??? ..\Packages\OxyPlot.Pdf\lib\NET45
 copy ..\Output\NET45\PdfSharp.* ..\Packages\OxyPlot.Pdf\lib\NET45
 copy ..\Output\NET45\MigraDoc.* ..\Packages\OxyPlot.Pdf\lib\NET45
+copy ..\Output\SL4\OxyPlot.Pdf.??? ..\Packages\OxyPlot.Pdf\lib\SL4
+copy ..\Output\SL4\silverPDF.* ..\Packages\OxyPlot.Pdf\lib\SL4
+copy ..\Output\SL4\OxyPlot.Pdf.??? ..\Packages\OxyPlot.Pdf\lib\SL5
+copy ..\Output\SL4\silverPDF.* ..\Packages\OxyPlot.Pdf\lib\SL5
 ..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.Pdf\OxyPlot.Pdf.nuspec -OutputDirectory ..\Packages >> pack.log
 
 REM === METRO (Windows Store Apps) ===
