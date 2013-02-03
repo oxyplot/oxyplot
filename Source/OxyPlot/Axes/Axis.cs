@@ -1737,7 +1737,7 @@ namespace OxyPlot.Axes
         /// Raises the AxisChanged event.
         /// </summary>
         /// <param name="args">
-        /// The <see cref="OxyPlot.AxisChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="OxyPlot.Axes.AxisChangedEventArgs"/> instance containing the event data.
         /// </param>
         protected virtual void OnAxisChanged(AxisChangedEventArgs args)
         {
