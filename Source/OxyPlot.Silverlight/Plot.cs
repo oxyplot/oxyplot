@@ -70,6 +70,11 @@ namespace OxyPlot.Silverlight
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
 
         /// <summary>
+        /// The render context
+        /// </summary>
+        private SilverlightRenderContext renderContext;
+
+        /// <summary>
         /// The canvas.
         /// </summary>
         private Canvas canvas;
@@ -265,6 +270,7 @@ namespace OxyPlot.Silverlight
             this.canvas = new Canvas();
             this.grid.Children.Add(this.canvas);
             this.canvas.UpdateLayout();
+            this.renderContext = new SilverlightRenderContext(this.canvas);
 
             this.overlays = new Canvas();
             this.grid.Children.Add(this.overlays);
@@ -1196,7 +1202,7 @@ namespace OxyPlot.Silverlight
         /// </summary>
         private void UpdateVisuals()
         {
-            if (this.canvas == null)
+            if (this.canvas == null || this.renderContext == null)
             {
                 return;
             }
@@ -1207,9 +1213,7 @@ namespace OxyPlot.Silverlight
             if (this.ActualModel != null)
             {
                 this.SynchronizeProperties();
-
-                var wrc = new SilverlightRenderContext(this.canvas);
-                this.ActualModel.Render(wrc, this.canvas.ActualWidth, this.canvas.ActualHeight);
+                this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
             }
         }
 

@@ -1164,11 +1164,11 @@ namespace OxyPlot.Wpf
         {
             return new OxyMouseEventArgs
                 {
-                    ChangedButton = ConvertChangedButton(e), 
-                    Position = e.GetPosition(this).ToScreenPoint(), 
-                    IsShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift), 
-                    IsControlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl), 
-                    IsAltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt), 
+                    ChangedButton = ConvertChangedButton(e),
+                    Position = e.GetPosition(this).ToScreenPoint(),
+                    IsShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift),
+                    IsControlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl),
+                    IsAltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt),
                 };
         }
 
@@ -1505,7 +1505,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         private void UpdateVisuals()
         {
-            if (this.canvas == null)
+            if (this.canvas == null || this.renderContext == null)
             {
                 return;
             }
@@ -1517,27 +1517,30 @@ namespace OxyPlot.Wpf
             {
                 this.SynchronizeProperties();
 
-                // disconnecting the canvas while updating
-#if !DONT_DISCONNECT_CANVAS
-                int idx = this.grid.Children.IndexOf(this.canvas);
-                if (idx != -1)
+                if (this.DisconnectCanvasWhileUpdating)
                 {
-                    this.grid.Children.RemoveAt(idx);
+                    // TODO: profile... not sure if this makes any difference                    
+                    int idx = this.grid.Children.IndexOf(this.canvas);
+                    if (idx != -1)
+                    {
+                        this.grid.Children.RemoveAt(idx);
+                    }
+
+                    this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
+
+                    // reinsert the canvas again
+                    if (idx != -1)
+                    {
+                        this.grid.Children.Insert(idx, this.canvas);
+                    }
                 }
-
-#endif
-                this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
-
-#if !DONT_DISCONNECT_CANVAS
-
-                // reinsert the canvas again
-                if (idx != -1)
+                else
                 {
-                    this.grid.Children.Insert(idx, this.canvas);
+                    this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
                 }
-
-#endif
             }
         }
+
+        public bool DisconnectCanvasWhileUpdating { get; set; }
     }
 }

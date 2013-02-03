@@ -100,14 +100,14 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// The render context.
         /// </summary>
-        private GraphicsRenderContext rc;
+        private GraphicsRenderContext renderContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plot"/> class.
         /// </summary>
         public Plot()
         {
-            this.rc = new GraphicsRenderContext();
+            this.renderContext = new GraphicsRenderContext();
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             this.DoubleBuffered = true;
@@ -620,10 +620,10 @@ namespace OxyPlot.WindowsForms
 
                 lock (this.renderingLock)
                 {
-                    this.rc.SetGraphicsTarget(e.Graphics);
+                    this.renderContext.SetGraphicsTarget(e.Graphics);
                     if (this.model != null)
                     {
-                        this.model.Render(this.rc, this.Width, this.Height);
+                        this.model.Render(this.renderContext, this.Width, this.Height);
                     }
 
                     if (this.zoomRectangle != Rectangle.Empty)

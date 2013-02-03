@@ -43,10 +43,17 @@ namespace OxyPlot.MonoForAndroid
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasRenderContext"/> class.
         /// </summary>
-        /// <param name="canvas">The canvas.</param>
-        public CanvasRenderContext(Canvas canvas)
+        public CanvasRenderContext()
         {
-            this.canvas = canvas;
+        }
+
+        /// <summary>
+        /// Sets the target.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        public void SetTarget(Canvas canvas)
+        {
+            this.canvas = canvas;            
         }
 
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness = 1)

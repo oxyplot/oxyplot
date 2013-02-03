@@ -78,17 +78,20 @@ namespace OxyPlot.MonoForAndroid
         public PlotView(Context context, IAttributeSet attrs) :
             base(context, attrs)
         {
-            Initialize();
+            this.Initialize();
         }
 
         public PlotView(Context context, IAttributeSet attrs, int defStyle) :
             base(context, attrs, defStyle)
         {
-            Initialize();
+            this.Initialize();
         }
+
+        private CanvasRenderContext rc;
 
         private void Initialize()
         {
+            this.rc = new CanvasRenderContext();
         }
 
         private readonly object renderingLock = new object();
@@ -116,7 +119,7 @@ namespace OxyPlot.MonoForAndroid
             {
                 if (this.model != null)
                 {
-                    var rc = new CanvasRenderContext(canvas);
+                    this.rc.SetTarget(canvas);
                     using (var bounds = new Rect())
                     {
                         canvas.GetClipBounds(bounds);

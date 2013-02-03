@@ -1081,7 +1081,7 @@ namespace OxyPlot.Metro
         /// </summary>
         private void UpdateVisuals()
         {
-            if (this.canvas == null)
+            if (this.canvas == null || this.renderContext == null)
             {
                 return;
             }
