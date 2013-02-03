@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4BB6F831-E215-488E-8ED8-F73C98C4B23F}</ProjectGuid>
+    <ProjectGuid>{9B8816E0-026F-4255-9EA9-9997E33AE377}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ExampleBrowser</RootNamespace>

@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{639E0B40-A307-4D4A-BB78-BE0019D8D7C1}</ProjectGuid>
+    <ProjectGuid>{87B7C658-12D9-4BD2-8FBB-9E4F2A670FB3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OxyPlot.Xps</RootNamespace>
