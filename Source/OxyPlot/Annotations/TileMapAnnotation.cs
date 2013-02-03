@@ -310,39 +310,7 @@ namespace OxyPlot.Annotations
             }
 
             string uri = this.queue.Dequeue();
-#if SILVERLIGHT
-
-            // TODO: PCL code doesn't work with silverlight yet...
-
-            var client = new System.Net.WebClient();
-            client.OpenReadCompleted += (s, r) =>
-                {
-                    Interlocked.Decrement(ref this.numberOfDownloads);
-
-                    try
-                    {
-                        if (r.Cancelled || r.Result == null)
-                        {
-                            return;
-                        }
-
-                        this.DownloadCompleted(uri, r.Result);
-
-                    }
-                    catch (Exception e)
-                    {
-                        var ie = e;
-                        while (ie != null)
-                        {
-                            System.Diagnostics.Debug.WriteLine(ie.Message);
-                            ie = ie.InnerException;
-                        }
-                    }
-                };
-            client.OpenReadAsync(new Uri(uri, UriKind.Absolute));
-#else
-            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
-            request.Accept = "*/*";
+            var request = (HttpWebRequest)WebRequest.Create(uri);
             request.Method = "GET";
             Interlocked.Increment(ref this.numberOfDownloads);
             request.BeginGetResponse(
@@ -351,10 +319,12 @@ namespace OxyPlot.Annotations
                     Interlocked.Decrement(ref this.numberOfDownloads);
                     try
                     {
-                        // System.Diagnostics.Debug.WriteLine(uri);
-                        var response = request.EndGetResponse(r);
-                        var stream = response.GetResponseStream();
-                        this.DownloadCompleted(uri, stream);
+                        if (request.HaveResponse)
+                        {
+                            var response = request.EndGetResponse(r);
+                            var stream = response.GetResponseStream();
+                            this.DownloadCompleted(uri, stream);
+                        }
                     }
                     catch (Exception e)
                     {
@@ -367,7 +337,6 @@ namespace OxyPlot.Annotations
                     }
                 },
                 request);
-#endif
         }
 
         /// <summary>
