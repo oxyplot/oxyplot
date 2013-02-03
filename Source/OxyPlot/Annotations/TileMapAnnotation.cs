@@ -214,8 +214,8 @@ namespace OxyPlot.Annotations
                 12,
                 500,
                 0,
-                HorizontalTextAlign.Right,
-                VerticalTextAlign.Bottom);
+                HorizontalAlignment.Right,
+                VerticalAlignment.Bottom);
         }
 
         /// <summary>

@@ -202,7 +202,7 @@ namespace OxyPlot.MonoForAndroid
             }
         }
 
-        public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily = null, double fontSize = 10, double fontWeight = 500, double rotate = 0, HorizontalTextAlign halign = HorizontalTextAlign.Left, VerticalTextAlign valign = VerticalTextAlign.Top, OxySize? maxSize = new OxySize?())
+        public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily = null, double fontSize = 10, double fontWeight = 500, double rotate = 0, OxyPlot.HorizontalAlignment halign = HorizontalAlignment.Left, VerticalAlignment valign = VerticalAlignment.Top, OxySize? maxSize = new OxySize?())
         {
             using (var paint = new Paint())
             {
@@ -213,23 +213,23 @@ namespace OxyPlot.MonoForAndroid
                 paint.GetTextBounds(text, 0, text.Length, bounds);
 
                 float dx = 0;
-                if (halign == HorizontalTextAlign.Center)
+                if (halign == HorizontalAlignment.Center)
                 {
                     dx = -bounds.Width() / 2;
                 }
 
-                if (halign == HorizontalTextAlign.Right)
+                if (halign == HorizontalAlignment.Right)
                 {
                     dx = -bounds.Width();
                 }
 
                 float dy = 0;
-                if (valign == VerticalTextAlign.Middle)
+                if (valign == VerticalAlignment.Middle)
                 {
                     dy = +bounds.Height() / 2;
                 }
 
-                if (valign == VerticalTextAlign.Top)
+                if (valign == VerticalAlignment.Top)
                 {
                     dy = bounds.Height();
                 }

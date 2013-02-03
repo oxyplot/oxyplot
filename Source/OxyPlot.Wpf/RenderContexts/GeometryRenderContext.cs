@@ -220,7 +220,7 @@ namespace OxyPlot.Wpf
         }
 
         public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
-                             double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
+                             double fontWeight, double rotate, HorizontalAlignment halign, VerticalTextAlign valign)
         {
             var tb = new TextBlock
                          {
@@ -237,9 +237,9 @@ namespace OxyPlot.Wpf
             tb.Measure(new Size(1000, 1000));
 
             double dx = 0;
-            if (halign == HorizontalTextAlign.Center)
+            if (halign == HorizontalAlignment.Center)
                 dx = -tb.DesiredSize.Width / 2;
-            if (halign == HorizontalTextAlign.Right)
+            if (halign == HorizontalAlignment.Right)
                 dx = -tb.DesiredSize.Width;
 
             double dy = 0;

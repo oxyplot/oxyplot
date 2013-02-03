@@ -150,8 +150,8 @@
                     this.FontSize,
                     FontWeights.Normal,
                     0,
-                    HorizontalTextAlign.Center,
-                    VerticalTextAlign.Bottom);
+                    HorizontalAlignment.Center,
+                    VerticalAlignment.Bottom);
             }
         }
 
@@ -170,8 +170,8 @@
                 this.FontSize,
                 FontWeights.Normal,
                 0,
-                HorizontalTextAlign.Center,
-                VerticalTextAlign.Middle);
+                HorizontalAlignment.Center,
+                VerticalAlignment.Middle);
         }
 
         /// <summary>

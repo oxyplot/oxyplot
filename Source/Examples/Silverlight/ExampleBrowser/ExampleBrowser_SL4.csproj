@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{15B1DC32-92C8-4301-A16D-9C47EE8356A2}</ProjectGuid>
+    <ProjectGuid>{564E1DBA-3B0C-441D-9ACA-73B0A54D07AB}</ProjectGuid>
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -43,7 +43,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>Bin\Debug</OutputPath>
+    <OutputPath>Bin\Debug\SL4\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\SL4\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
@@ -55,6 +56,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\..\Output\SL4\Examples\Silverlight\ExampleBrowser\</OutputPath>
+    <IntermediateOutputPath>obj\Release\SL4\</IntermediateOutputPath>
     <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
@@ -100,7 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.Silverlight\OxyPlot.Silverlight_SL4.csproj">
-      <Project>{2eb36333-58c3-47fd-b01f-c1c3faf1888a}</Project>
+      <Project>{388db184-b394-4f9d-8937-aae920caad70}</Project>
       <Name>OxyPlot.Silverlight_SL4</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">

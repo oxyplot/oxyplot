@@ -148,7 +148,7 @@
     <Resource Include="cinclus.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\trunk\Source\OxyPlot.Silverlight\OxyPlot.Silverlight.csproj">
+    <ProjectReference Include="..\..\..\OxyPlot.Silverlight\OxyPlot.Silverlight.csproj">
       <Project>{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}</Project>
       <Name>OxyPlot.Silverlight</Name>
     </ProjectReference>

@@ -34,6 +34,9 @@ namespace OxyPlot.Wpf
 
     using OxyPlot.Annotations;
 
+    using HorizontalAlignment = OxyPlot.HorizontalAlignment;
+    using VerticalAlignment = OxyPlot.VerticalAlignment;
+
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.LineAnnotation
     /// </summary>
@@ -133,9 +136,9 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty TextHorizontalAlignmentProperty =
             DependencyProperty.Register(
                 "TextHorizontalAlignment",
-                typeof(HorizontalTextAlign),
+                typeof(HorizontalAlignment),
                 typeof(LineAnnotation),
-                new UIPropertyMetadata(HorizontalTextAlign.Right, AppearanceChanged));
+                new UIPropertyMetadata(OxyPlot.HorizontalAlignment.Right, AppearanceChanged));
 
         /// <summary>
         /// The TextMargin property.
@@ -165,9 +168,9 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty TextVerticalAlignmentProperty =
             DependencyProperty.Register(
                 "TextVerticalAlignment",
-                typeof(VerticalTextAlign),
+                typeof(VerticalAlignment),
                 typeof(LineAnnotation),
-                new UIPropertyMetadata(VerticalTextAlign.Top, AppearanceChanged));
+                new UIPropertyMetadata(OxyPlot.VerticalAlignment.Top, AppearanceChanged));
 
         /// <summary>
         /// The x property.
@@ -388,11 +391,11 @@ namespace OxyPlot.Wpf
         /// Gets or sets the text horizontal alignment.
         /// </summary>
         /// <value>The text horizontal alignment.</value>
-        public HorizontalTextAlign TextHorizontalAlignment
+        public HorizontalAlignment TextHorizontalAlignment
         {
             get
             {
-                return (HorizontalTextAlign)this.GetValue(TextHorizontalAlignmentProperty);
+                return (HorizontalAlignment)this.GetValue(TextHorizontalAlignmentProperty);
             }
 
             set
@@ -460,11 +463,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the vertical alignment of text (above or below the line).
         /// </summary>
-        public VerticalTextAlign TextVerticalAlignment
+        public VerticalAlignment TextVerticalAlignment
         {
             get
             {
-                return (VerticalTextAlign)this.GetValue(TextVerticalAlignmentProperty);
+                return (VerticalAlignment)this.GetValue(TextVerticalAlignmentProperty);
             }
 
             set

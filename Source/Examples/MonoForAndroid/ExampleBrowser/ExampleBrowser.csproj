@@ -72,7 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.MonoForAndroid\OxyPlot.MonoForAndroid.csproj">
-      <Project>{E965BA32-9561-4E2A-ADB0-19487B25A939}</Project>
+      <Project>{e965ba32-9561-4e2a-adb0-19487b25a939}</Project>
       <Name>OxyPlot.MonoForAndroid</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlotMA.csproj">
@@ -80,7 +80,7 @@
       <Name>OxyPlotMA</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ExampleLibrary\ExampleLibraryMA.csproj">
-      <Project>{F4C226B3-0DAB-474C-9466-5EACAFA9B64A}</Project>
+      <Project>{f4c226b3-0dab-474c-9466-5eacafa9b64a}</Project>
       <Name>ExampleLibraryMA</Name>
     </ProjectReference>
   </ItemGroup>

@@ -238,8 +238,8 @@ namespace OxyPlot.Series
                         this.ActualFontSize,
                         this.ActualFontWeight,
                         0,
-                        HorizontalTextAlign.Center,
-                        VerticalTextAlign.Middle);
+                        HorizontalAlignment.Center,
+                        VerticalAlignment.Middle);
                 }
 
                 i++;

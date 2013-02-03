@@ -40,7 +40,9 @@ namespace OxyPlot.Wpf
     using System.Windows.Shapes;
 
     using FontWeights = OxyPlot.FontWeights;
+    using HorizontalAlignment = OxyPlot.HorizontalAlignment;
     using Path = System.Windows.Shapes.Path;
+    using VerticalAlignment = OxyPlot.VerticalAlignment;
 
     /// <summary>
     /// The text measurement methods.
@@ -570,8 +572,8 @@ namespace OxyPlot.Wpf
             double fontSize,
             double fontWeight,
             double rotate,
-            HorizontalTextAlign halign,
-            VerticalTextAlign valign,
+            HorizontalAlignment halign,
+            VerticalAlignment valign,
             OxySize? maxSize)
         {
             var tb = new TextBlock { Text = text, Foreground = this.GetCachedBrush(fill) };
@@ -593,7 +595,7 @@ namespace OxyPlot.Wpf
             double dx = 0;
             double dy = 0;
 
-            if (maxSize != null || halign != HorizontalTextAlign.Left || valign != VerticalTextAlign.Top)
+            if (maxSize != null || halign != HorizontalAlignment.Left || valign != VerticalAlignment.Top)
             {
                 tb.Measure(new Size(1000, 1000));
                 var size = tb.DesiredSize;
@@ -613,22 +615,22 @@ namespace OxyPlot.Wpf
                     tb.Height = size.Height;
                 }
 
-                if (halign == HorizontalTextAlign.Center)
+                if (halign == HorizontalAlignment.Center)
                 {
                     dx = -size.Width / 2;
                 }
 
-                if (halign == HorizontalTextAlign.Right)
+                if (halign == HorizontalAlignment.Right)
                 {
                     dx = -size.Width;
                 }
 
-                if (valign == VerticalTextAlign.Middle)
+                if (valign == VerticalAlignment.Middle)
                 {
                     dy = -size.Height / 2;
                 }
 
-                if (valign == VerticalTextAlign.Bottom)
+                if (valign == VerticalAlignment.Bottom)
                 {
                     dy = -size.Height;
                 }

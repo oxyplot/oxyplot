@@ -159,25 +159,25 @@ namespace OxyPlot.Series
         {
             var s = StringHelper.Format(
                 this.ActualCulture, this.LabelFormatString, this.GetItem(this.ValidItemsIndexInversion[i]), value);
-            HorizontalTextAlign ha;
+            HorizontalAlignment ha;
             ScreenPoint pt;
             switch (this.LabelPlacement)
             {
                 case LabelPlacement.Inside:
                     pt = new ScreenPoint(rect.Right - this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                    ha = HorizontalTextAlign.Right;
+                    ha = HorizontalAlignment.Right;
                     break;
                 case LabelPlacement.Middle:
                     pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Top + rect.Bottom) / 2);
-                    ha = HorizontalTextAlign.Center;
+                    ha = HorizontalAlignment.Center;
                     break;
                 case LabelPlacement.Base:
                     pt = new ScreenPoint(rect.Left + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                    ha = HorizontalTextAlign.Left;
+                    ha = HorizontalAlignment.Left;
                     break;
                 default: // Outside
                     pt = new ScreenPoint(rect.Right + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                    ha = HorizontalTextAlign.Left;
+                    ha = HorizontalAlignment.Left;
                     break;
             }
 
@@ -191,7 +191,7 @@ namespace OxyPlot.Series
                 this.ActualFontWeight,
                 0,
                 ha,
-                VerticalTextAlign.Middle);
+                VerticalAlignment.Middle);
         }
 
     }

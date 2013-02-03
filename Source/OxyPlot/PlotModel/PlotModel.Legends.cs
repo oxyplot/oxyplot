@@ -201,7 +201,7 @@ namespace OxyPlot
             double x = rect.Left;
             switch (this.LegendItemAlignment)
             {
-                case HorizontalTextAlign.Center:
+                case HorizontalAlignment.Center:
                     x = (rect.Left + rect.Right) / 2;
                     if (this.LegendSymbolPlacement == LegendSymbolPlacement.Left)
                     {
@@ -213,7 +213,7 @@ namespace OxyPlot
                     }
 
                     break;
-                case HorizontalTextAlign.Right:
+                case HorizontalAlignment.Right:
                     x = rect.Right;
 
                     // if (LegendSymbolPlacement == LegendSymbolPlacement.Right)
@@ -238,16 +238,16 @@ namespace OxyPlot
                 this.LegendFontWeight,
                 0,
                 this.LegendItemAlignment,
-                VerticalTextAlign.Top,
+                VerticalAlignment.Top,
                 maxsize,
                 true);
             double x0 = x;
             switch (this.LegendItemAlignment)
             {
-                case HorizontalTextAlign.Center:
+                case HorizontalAlignment.Center:
                     x0 = x - (textSize.Width * 0.5);
                     break;
-                case HorizontalTextAlign.Right:
+                case HorizontalAlignment.Right:
                     x0 = x - textSize.Width;
                     break;
             }
@@ -348,8 +348,8 @@ namespace OxyPlot
                         this.LegendTitleFontSize,
                         this.LegendTitleFontWeight,
                         0,
-                        HorizontalTextAlign.Left,
-                        VerticalTextAlign.Top,
+                        HorizontalAlignment.Left,
+                        VerticalAlignment.Top,
                         null,
                         true);
                 }

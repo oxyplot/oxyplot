@@ -86,8 +86,8 @@ namespace OxyPlot.Annotations
             this.TextPosition = 1;
             this.TextOrientation = AnnotationTextOrientation.AlongLine;
             this.TextMargin = 12;
-            this.TextHorizontalAlignment = HorizontalTextAlign.Right;
-            this.TextVerticalAlignment = VerticalTextAlign.Top;
+            this.TextHorizontalAlignment = HorizontalAlignment.Right;
+            this.TextVerticalAlignment = VerticalAlignment.Top;
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the text horizontal alignment.
         /// </summary>
         /// <value>The text horizontal alignment.</value>
-        public HorizontalTextAlign TextHorizontalAlignment { get; set; }
+        public HorizontalAlignment TextHorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the text margin (along the line).
@@ -196,7 +196,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the vertical alignment of text (above or below the line).
         /// </summary>
-        public VerticalTextAlign TextVerticalAlignment { get; set; }
+        public VerticalAlignment TextVerticalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the type of line equation.
@@ -377,7 +377,7 @@ namespace OxyPlot.Annotations
             double angle;
             double margin = this.TextMargin;
 
-            if (this.TextHorizontalAlignment == HorizontalTextAlign.Center)
+            if (this.TextHorizontalAlignment == HorizontalAlignment.Center)
             {
                 margin = 0;
             }
@@ -412,12 +412,12 @@ namespace OxyPlot.Annotations
                 var angleInRadians = angle / 180 * Math.PI;
                 var f = 1;
 
-                if (this.TextHorizontalAlignment == HorizontalTextAlign.Right)
+                if (this.TextHorizontalAlignment == HorizontalAlignment.Right)
                 {
                     f = -1;
                 }
 
-                if (this.TextHorizontalAlignment == HorizontalTextAlign.Center)
+                if (this.TextHorizontalAlignment == HorizontalAlignment.Center)
                 {
                     f = 0;
                 }

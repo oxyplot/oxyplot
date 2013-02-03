@@ -174,8 +174,8 @@ namespace OxyPlot.Annotations
 
             if (!string.IsNullOrEmpty(this.Text))
             {
-                var ha = d.X < 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right;
-                var va = d.Y < 0 ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
+                var ha = d.X < 0 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+                var va = d.Y < 0 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
 
                 var textPoint = this.screenStartPoint;
                 rc.DrawClippedText(

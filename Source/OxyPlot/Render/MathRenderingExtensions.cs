@@ -97,8 +97,8 @@ namespace OxyPlot
             double fontSize,
             double fontWeight,
             double angle,
-            HorizontalTextAlign ha,
-            VerticalTextAlign va,
+            HorizontalAlignment ha,
+            VerticalAlignment va,
             OxySize? maxsize,
             bool measure)
         {
@@ -117,20 +117,20 @@ namespace OxyPlot
 
                 switch (ha)
                 {
-                    case HorizontalTextAlign.Right:
+                    case HorizontalAlignment.Right:
                         x -= size.Width;
                         break;
-                    case HorizontalTextAlign.Center:
+                    case HorizontalAlignment.Center:
                         x -= size.Width * 0.5;
                         break;
                 }
 
                 switch (va)
                 {
-                    case VerticalTextAlign.Bottom:
+                    case VerticalAlignment.Bottom:
                         y -= size.Height;
                         break;
-                    case VerticalTextAlign.Middle:
+                    case VerticalAlignment.Middle:
                         y -= size.Height * 0.5;
                         break;
                 }
@@ -176,8 +176,8 @@ namespace OxyPlot
             double fontSize,
             double fontWeight,
             double angle,
-            HorizontalTextAlign ha,
-            VerticalTextAlign va,
+            HorizontalAlignment ha,
+            VerticalAlignment va,
             OxySize? maxsize = null)
         {
             DrawMathText(rc, pt, text, textColor, fontFamily, fontSize, fontWeight, angle, ha, va, maxsize, false);

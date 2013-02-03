@@ -134,8 +134,8 @@ namespace OxyPlot
             Axis axis, 
             double titlePosition, 
             ref double angle, 
-            ref HorizontalTextAlign halign, 
-            ref VerticalTextAlign valign)
+            ref HorizontalAlignment halign, 
+            ref VerticalAlignment valign)
         {
             double middle = axis.IsHorizontal()
                                 ? Lerp(axis.ScreenMin.X, axis.ScreenMax.X, axis.TitlePosition)
@@ -152,16 +152,16 @@ namespace OxyPlot
                 case AxisPosition.Left:
                     return new ScreenPoint(titlePosition, middle);
                 case AxisPosition.Right:
-                    valign = VerticalTextAlign.Bottom;
+                    valign = VerticalAlignment.Bottom;
                     return new ScreenPoint(titlePosition, middle);
                 case AxisPosition.Top:
-                    halign = HorizontalTextAlign.Center;
-                    valign = VerticalTextAlign.Top;
+                    halign = HorizontalAlignment.Center;
+                    valign = VerticalAlignment.Top;
                     angle = 0;
                     return new ScreenPoint(middle, titlePosition);
                 case AxisPosition.Bottom:
-                    halign = HorizontalTextAlign.Center;
-                    valign = VerticalTextAlign.Bottom;
+                    halign = HorizontalAlignment.Center;
+                    valign = VerticalAlignment.Bottom;
                     angle = 0;
                     return new ScreenPoint(middle, titlePosition);
                 default:
@@ -189,10 +189,10 @@ namespace OxyPlot
         /// </param>
         protected virtual void GetRotatedAlignments(
             double angle, 
-            HorizontalTextAlign defaultHorizontalAlignment, 
-            VerticalTextAlign defaultVerticalAlignment, 
-            out HorizontalTextAlign ha, 
-            out VerticalTextAlign va)
+            HorizontalAlignment defaultHorizontalAlignment, 
+            VerticalAlignment defaultVerticalAlignment, 
+            out HorizontalAlignment ha, 
+            out VerticalAlignment va)
         {
             ha = defaultHorizontalAlignment;
             va = defaultVerticalAlignment;
@@ -206,22 +206,22 @@ namespace OxyPlot
 
             if (angle > 135 || angle < -135)
             {
-                ha = (HorizontalTextAlign)(-(int)defaultHorizontalAlignment);
-                va = (VerticalTextAlign)(-(int)defaultVerticalAlignment);
+                ha = (HorizontalAlignment)(-(int)defaultHorizontalAlignment);
+                va = (VerticalAlignment)(-(int)defaultVerticalAlignment);
                 return;
             }
 
             if (angle > 45)
             {
-                ha = (HorizontalTextAlign)((int)defaultVerticalAlignment);
-                va = (VerticalTextAlign)(-(int)defaultHorizontalAlignment);
+                ha = (HorizontalAlignment)((int)defaultVerticalAlignment);
+                va = (VerticalAlignment)(-(int)defaultHorizontalAlignment);
                 return;
             }
 
             if (angle < -45)
             {
-                ha = (HorizontalTextAlign)(-(int)defaultVerticalAlignment);
-                va = (VerticalTextAlign)((int)defaultHorizontalAlignment);
+                ha = (HorizontalAlignment)(-(int)defaultVerticalAlignment);
+                va = (VerticalAlignment)((int)defaultHorizontalAlignment);
             }
         }
 
@@ -293,8 +293,8 @@ namespace OxyPlot
 
             double angle = -90;
 
-            var halign = HorizontalTextAlign.Center;
-            var valign = VerticalTextAlign.Top;
+            var halign = HorizontalAlignment.Center;
+            var valign = VerticalAlignment.Top;
 
             var lpt = this.GetAxisTitlePositionAndAlignment(axis, titlePosition, ref angle, ref halign, ref valign);
 
@@ -423,29 +423,29 @@ namespace OxyPlot
                 }
 
                 var pt = new ScreenPoint();
-                var ha = HorizontalTextAlign.Right;
-                var va = VerticalTextAlign.Middle;
+                var ha = HorizontalAlignment.Right;
+                var va = VerticalAlignment.Middle;
                 switch (axis.Position)
                 {
                     case AxisPosition.Left:
                         pt = new ScreenPoint(axisPosition + a1 - axis.AxisTickToLabelDistance, transformedValue);
                         this.GetRotatedAlignments(
-                            axis.Angle, HorizontalTextAlign.Right, VerticalTextAlign.Middle, out ha, out va);
+                            axis.Angle, HorizontalAlignment.Right, VerticalAlignment.Middle, out ha, out va);
                         break;
                     case AxisPosition.Right:
                         pt = new ScreenPoint(axisPosition + a1 + axis.AxisTickToLabelDistance, transformedValue);
                         this.GetRotatedAlignments(
-                            axis.Angle, HorizontalTextAlign.Left, VerticalTextAlign.Middle, out ha, out va);
+                            axis.Angle, HorizontalAlignment.Left, VerticalAlignment.Middle, out ha, out va);
                         break;
                     case AxisPosition.Top:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 - axis.AxisTickToLabelDistance);
                         this.GetRotatedAlignments(
-                            axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Bottom, out ha, out va);
+                            axis.Angle, HorizontalAlignment.Center, VerticalAlignment.Bottom, out ha, out va);
                         break;
                     case AxisPosition.Bottom:
                         pt = new ScreenPoint(transformedValue, axisPosition + a1 + axis.AxisTickToLabelDistance);
                         this.GetRotatedAlignments(
-                            axis.Angle, HorizontalTextAlign.Center, VerticalTextAlign.Top, out ha, out va);
+                            axis.Angle, HorizontalAlignment.Center, VerticalAlignment.Top, out ha, out va);
                         break;
                 }
 

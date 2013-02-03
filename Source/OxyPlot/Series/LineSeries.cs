@@ -488,19 +488,19 @@ namespace OxyPlot.Series
                     {
                         case LabelPlacement.Inside:
                             pt = new ScreenPoint(rect.Right - this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                            ha = HorizontalTextAlign.Right;
+                            ha = HorizontalAlignment.Right;
                             break;
                         case LabelPlacement.Middle:
                             pt = new ScreenPoint((rect.Left + rect.Right) / 2, (rect.Top + rect.Bottom) / 2);
-                            ha = HorizontalTextAlign.Center;
+                            ha = HorizontalAlignment.Center;
                             break;
                         case LabelPlacement.Base:
                             pt = new ScreenPoint(rect.Left + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                            ha = HorizontalTextAlign.Left;
+                            ha = HorizontalAlignment.Left;
                             break;
                         default: // Outside
                             pt = new ScreenPoint(rect.Right + this.LabelMargin, (rect.Top + rect.Bottom) / 2);
-                            ha = HorizontalTextAlign.Left;
+                            ha = HorizontalAlignment.Left;
                             break;
                     }
 #endif
@@ -514,8 +514,8 @@ namespace OxyPlot.Series
                     this.ActualFontSize, 
                     this.ActualFontWeight, 
                     0, 
-                    HorizontalTextAlign.Center, 
-                    VerticalTextAlign.Bottom);
+                    HorizontalAlignment.Center, 
+                    VerticalAlignment.Bottom);
             }
         }
 
@@ -528,7 +528,7 @@ namespace OxyPlot.Series
         {
             // Find the position
             IDataPoint point;
-            var ha = HorizontalTextAlign.Left;
+            var ha = HorizontalAlignment.Left;
             double dx;
             switch (this.LineLegendPosition)
             {
@@ -536,7 +536,7 @@ namespace OxyPlot.Series
 
                     // start position
                     point = this.Points[0];
-                    ha = HorizontalTextAlign.Right;
+                    ha = HorizontalAlignment.Right;
                     dx = -4;
                     break;
                 default:
@@ -561,7 +561,7 @@ namespace OxyPlot.Series
                 this.ActualFontWeight, 
                 0, 
                 ha, 
-                VerticalTextAlign.Middle);
+                VerticalAlignment.Middle);
         }
 
         /// <summary>

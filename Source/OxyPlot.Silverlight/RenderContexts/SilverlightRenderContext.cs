@@ -504,8 +504,8 @@ namespace OxyPlot.Silverlight
             double fontSize,
             double fontWeight,
             double rotate,
-            HorizontalTextAlign halign,
-            VerticalTextAlign valign,
+            OxyPlot.HorizontalAlignment halign,
+            OxyPlot.VerticalAlignment valign,
             OxySize? maxSize)
         {
             var tb = new TextBlock { Text = text, Foreground = new SolidColorBrush(fill.ToColor()) };
@@ -541,23 +541,23 @@ namespace OxyPlot.Silverlight
             }
 
             double dx = 0;
-            if (halign == HorizontalTextAlign.Center)
+            if (halign == OxyPlot.HorizontalAlignment.Center)
             {
                 dx = -size.Width / 2;
             }
 
-            if (halign == HorizontalTextAlign.Right)
+            if (halign == OxyPlot.HorizontalAlignment.Right)
             {
                 dx = -size.Width;
             }
 
             double dy = 0;
-            if (valign == VerticalTextAlign.Middle)
+            if (valign == OxyPlot.VerticalAlignment.Middle)
             {
                 dy = -size.Height / 2;
             }
 
-            if (valign == VerticalTextAlign.Bottom)
+            if (valign == OxyPlot.VerticalAlignment.Bottom)
             {
                 dy = -size.Height;
             }

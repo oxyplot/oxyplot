@@ -170,7 +170,7 @@ namespace OxyPlot.Wpf
         }
 
         public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize,
-                             double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign)
+                             double fontWeight, double rotate, HorizontalAlignment halign, VerticalTextAlign valign)
         {
             if (text == null)
                 return;
@@ -186,9 +186,9 @@ namespace OxyPlot.Wpf
             double h = ft.Height;
 
             double dx = 0;
-            if (halign == HorizontalTextAlign.Center)
+            if (halign == HorizontalAlignment.Center)
                 dx = -w/2;
-            if (halign == HorizontalTextAlign.Right)
+            if (halign == HorizontalAlignment.Right)
                 dx = -w;
 
             double dy = 0;

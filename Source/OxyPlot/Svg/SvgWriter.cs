@@ -345,8 +345,8 @@ namespace OxyPlot
             double fontSize = 10,
             double fontWeight = FontWeights.Normal,
             double rotate = 0,
-            HorizontalTextAlign halign = HorizontalTextAlign.Left,
-            VerticalTextAlign valign = VerticalTextAlign.Top)
+            HorizontalAlignment halign = HorizontalAlignment.Left,
+            VerticalAlignment valign = VerticalAlignment.Top)
         {
             // http://www.w3.org/TR/SVG/text.html
             this.WriteStartElement("text");
@@ -354,12 +354,12 @@ namespace OxyPlot
             // WriteAttributeString("x", position.X);
             // WriteAttributeString("y", position.Y);
             string baselineAlignment = "hanging";
-            if (valign == VerticalTextAlign.Middle)
+            if (valign == VerticalAlignment.Middle)
             {
                 baselineAlignment = "middle";
             }
 
-            if (valign == VerticalTextAlign.Bottom)
+            if (valign == VerticalAlignment.Bottom)
             {
                 baselineAlignment = "baseline";
             }
@@ -367,12 +367,12 @@ namespace OxyPlot
             this.WriteAttributeString("dominant-baseline", baselineAlignment);
 
             string textAnchor = "start";
-            if (halign == HorizontalTextAlign.Center)
+            if (halign == HorizontalAlignment.Center)
             {
                 textAnchor = "middle";
             }
 
-            if (halign == HorizontalTextAlign.Right)
+            if (halign == HorizontalAlignment.Right)
             {
                 textAnchor = "end";
             }

@@ -136,7 +136,7 @@ namespace OxyPlot
                 // rc.DrawText(pt, text, axis.LabelColor ?? plot.TextColor,
                 // axis.Font, axis.FontSize, axis.FontWeight,
                 // axis.Angle,
-                // HorizontalTextAlign.Center, istop ? VerticalTextAlign.Bottom : VerticalTextAlign.Top);
+                // HorizontalAlignment.Center, istop ? VerticalAlignment.Bottom : VerticalAlignment.Top);
                 // maxh = Math.Max(maxh, h);
             }
         }

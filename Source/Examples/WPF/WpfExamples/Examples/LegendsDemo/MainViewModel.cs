@@ -38,7 +38,7 @@ namespace LegendsDemo
 
     public class MainViewModel : Observable
     {
-        private HorizontalTextAlign legendItemAlignment;
+        private HorizontalAlignment legendItemAlignment;
         private LegendItemOrder legendItemOrder;
         private LegendOrientation legendOrientation;
         private LegendPlacement legendPlacement;
@@ -50,7 +50,7 @@ namespace LegendsDemo
         public MainViewModel()
         {
             NumberOfSeries = 20;
-            LegendItemAlignment = HorizontalTextAlign.Left;
+            LegendItemAlignment = HorizontalAlignment.Left;
             PropertiesChanged();
         }
 
@@ -99,7 +99,7 @@ namespace LegendsDemo
         }
 
         [DisplayName("ItemAlignment")]
-        public HorizontalTextAlign LegendItemAlignment
+        public HorizontalAlignment LegendItemAlignment
         {
             get { return legendItemAlignment; }
             set

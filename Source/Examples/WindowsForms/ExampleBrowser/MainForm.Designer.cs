@@ -93,7 +93,7 @@ namespace ExampleBrowser
             plotModel1.LegendFont = null;
             plotModel1.LegendFontSize = 12D;
             plotModel1.LegendFontWeight = 400D;
-            plotModel1.LegendItemAlignment = OxyPlot.HorizontalTextAlign.Left;
+            plotModel1.LegendItemAlignment = OxyPlot.HorizontalAlignment.Left;
             plotModel1.LegendItemOrder = OxyPlot.LegendItemOrder.Normal;
             plotModel1.LegendItemSpacing = 24D;
             plotModel1.LegendMargin = 8D;
