@@ -143,19 +143,19 @@ namespace OxyPlot
 
                 string text = axis.FormatValue(value);
 
-                var ha = HorizontalTextAlign.Left;
-                var va = VerticalTextAlign.Middle;
+                var ha = HorizontalAlignment.Left;
+                var va = VerticalAlignment.Middle;
 
                 if (Math.Abs(Math.Abs(angle) - 90) < 10)
                 {
-                    ha = HorizontalTextAlign.Center;
-                    va = angle > 90 ? VerticalTextAlign.Top : VerticalTextAlign.Bottom;
+                    ha = HorizontalAlignment.Center;
+                    va = angle > 90 ? VerticalAlignment.Top : VerticalAlignment.Bottom;
                     angle = 0;
                 }
                 else if (angle > 90 || angle < -90)
                 {
                     angle -= 180;
-                    ha = HorizontalTextAlign.Right;
+                    ha = HorizontalAlignment.Right;
                 }
 
                 this.rc.DrawMathText(

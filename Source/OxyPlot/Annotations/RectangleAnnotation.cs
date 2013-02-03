@@ -133,8 +133,8 @@ namespace OxyPlot.Annotations
                     this.ActualFontSize, 
                     this.ActualFontWeight, 
                     this.TextRotation, 
-                    HorizontalTextAlign.Center, 
-                    VerticalTextAlign.Middle);
+                    HorizontalAlignment.Center, 
+                    VerticalAlignment.Middle);
             }
         }
 

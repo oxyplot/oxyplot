@@ -135,7 +135,7 @@
     <Compile Include="Render\AxisRendererBase.cs" />
     <Compile Include="Foundation\CohenSutherlandClipping.cs" />
     <Compile Include="Render\AngleAxisRenderer.cs" />
-    <Compile Include="Foundation\HorizontalTextAlign.cs" />
+    <Compile Include="Foundation\HorizontalAlignment.cs" />
     <Compile Include="Render\MagnitudeAxisRenderer.cs" />
     <Compile Include="Render\MathRenderingExtensions.cs" />
     <Compile Include="Foundation\OxyPenLineJoin.cs" />
@@ -143,7 +143,7 @@
     <Compile Include="Render\RenderingExtensions.cs" />
     <Compile Include="Render\HorizontalAndVerticalAxisRenderer.cs" />
     <Compile Include="Render\IRenderContext.cs" />
-    <Compile Include="Foundation\VerticalTextAlign.cs" />
+    <Compile Include="Foundation\VerticalAlignment.cs" />
     <Compile Include="Reporting\ReportWriters\WikiReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\HtmlReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\IReportWriter.cs" />

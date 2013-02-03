@@ -33,6 +33,9 @@ namespace OxyPlot.Wpf
     using System.Windows;
     using System.Windows.Media;
 
+    using HorizontalAlignment = OxyPlot.HorizontalAlignment;
+    using VerticalAlignment = OxyPlot.VerticalAlignment;
+
     /// <summary>
     /// Extension method used to convert to/from Windows/Windows.Media classes.
     /// </summary>
@@ -86,46 +89,46 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Converts a HorizontalAlignment to a HorizontalTextAlign.
+        /// Converts a HorizontalAlignment to a HorizontalAlignment.
         /// </summary>
         /// <param name="alignment">
         /// The alignment.
         /// </param>
         /// <returns>
-        /// A HorizontalTextAlign.
+        /// A HorizontalAlignment.
         /// </returns>
-        public static HorizontalTextAlign ToHorizontalTextAlign(this HorizontalAlignment alignment)
+        public static HorizontalAlignment ToHorizontalTextAlign(this System.Windows.HorizontalAlignment alignment)
         {
             switch (alignment)
             {
-                case HorizontalAlignment.Center:
-                    return HorizontalTextAlign.Center;
-                case HorizontalAlignment.Right:
-                    return HorizontalTextAlign.Right;
+                case System.Windows.HorizontalAlignment.Center:
+                    return HorizontalAlignment.Center;
+                case System.Windows.HorizontalAlignment.Right:
+                    return HorizontalAlignment.Right;
                 default:
-                    return HorizontalTextAlign.Left;
+                    return HorizontalAlignment.Left;
             }
         }
 
         /// <summary>
-        /// Converts a HorizontalAlignment to a VerticalTextAlign.
+        /// Converts a HorizontalAlignment to a VerticalAlignment.
         /// </summary>
         /// <param name="alignment">
         /// The alignment.
         /// </param>
         /// <returns>
-        /// A VerticalTextAlign.
+        /// A VerticalAlignment.
         /// </returns>
-        public static VerticalTextAlign ToVerticalTextAlign(this VerticalAlignment alignment)
+        public static VerticalAlignment ToVerticalTextAlign(this System.Windows.VerticalAlignment alignment)
         {
             switch (alignment)
             {
-                case VerticalAlignment.Center:
-                    return VerticalTextAlign.Middle;
-                case VerticalAlignment.Top:
-                    return VerticalTextAlign.Top;
+                case System.Windows.VerticalAlignment.Center:
+                    return VerticalAlignment.Middle;
+                case System.Windows.VerticalAlignment.Top:
+                    return VerticalAlignment.Top;
                 default:
-                    return VerticalTextAlign.Bottom;
+                    return VerticalAlignment.Bottom;
             }
         }
 

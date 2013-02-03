@@ -273,7 +273,7 @@ namespace OxyPlot
             this.LegendPosition = LegendPosition.RightTop;
             this.LegendOrientation = LegendOrientation.Vertical;
             this.LegendItemOrder = LegendItemOrder.Normal;
-            this.LegendItemAlignment = HorizontalTextAlign.Left;
+            this.LegendItemAlignment = HorizontalAlignment.Left;
             this.LegendSymbolPlacement = LegendSymbolPlacement.Left;
 
             this.DefaultColors = new List<OxyColor>
@@ -476,7 +476,7 @@ namespace OxyPlot
         /// Gets or sets the legend item alignment.
         /// </summary>
         /// <value> The legend item alignment. </value>
-        public HorizontalTextAlign LegendItemAlignment { get; set; }
+        public HorizontalAlignment LegendItemAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the legend item order.

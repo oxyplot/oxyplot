@@ -21,7 +21,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\MfA\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\MfA\</IntermediateOutputPath>
     <DefineConstants>TRACE;DEBUG;MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,11 +30,12 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Output\</OutputPath>
+    <OutputPath>..\..\Output\Android</OutputPath>
+    <IntermediateOutputPath>obj\Release\MfA\</IntermediateOutputPath>
     <DefineConstants>TRACE;MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\OxyPlot.XML</DocumentationFile>
+    <DocumentationFile>..\..\Output\Android\OxyPlot.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -145,7 +147,7 @@
     <Compile Include="Render\AxisRendererBase.cs" />
     <Compile Include="Foundation\CohenSutherlandClipping.cs" />
     <Compile Include="Render\AngleAxisRenderer.cs" />
-    <Compile Include="Foundation\HorizontalTextAlign.cs" />
+    <Compile Include="Foundation\HorizontalAlignment.cs" />
     <Compile Include="Render\MagnitudeAxisRenderer.cs" />
     <Compile Include="Render\MathRenderingExtensions.cs" />
     <Compile Include="Foundation\OxyPenLineJoin.cs" />
@@ -153,7 +155,7 @@
     <Compile Include="Render\RenderingExtensions.cs" />
     <Compile Include="Render\HorizontalAndVerticalAxisRenderer.cs" />
     <Compile Include="Render\IRenderContext.cs" />
-    <Compile Include="Foundation\VerticalTextAlign.cs" />
+    <Compile Include="Foundation\VerticalAlignment.cs" />
     <Compile Include="Reporting\ReportWriters\WikiReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\HtmlReportWriter.cs" />
     <Compile Include="Reporting\ReportWriters\IReportWriter.cs" />

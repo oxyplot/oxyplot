@@ -257,10 +257,10 @@ namespace ExampleLibrary
                                         LineStyle = LineStyle.Solid,
                                         Color = OxyColors.LightGray,
                                         Text = fields[0] + "  ",
-                                        TextVerticalAlignment = VerticalTextAlign.Bottom,
+                                        TextVerticalAlignment = VerticalAlignment.Bottom,
                                         TextPosition = 0,
                                         TextMargin = 4,
-                                        TextHorizontalAlignment = HorizontalTextAlign.Left
+                                        TextHorizontalAlignment = HorizontalAlignment.Left
                                     });
                         }
 

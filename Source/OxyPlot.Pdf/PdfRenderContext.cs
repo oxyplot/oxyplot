@@ -321,8 +321,8 @@ namespace OxyPlot.Pdf
             double fontSize,
             double fontWeight,
             double rotate,
-            HorizontalTextAlign halign,
-            VerticalTextAlign valign,
+            HorizontalAlignment halign,
+            VerticalAlignment valign,
             OxySize? maxSize)
         {
             if (text == null)
@@ -356,24 +356,24 @@ namespace OxyPlot.Pdf
             }
 
             double dx = 0;
-            if (halign == HorizontalTextAlign.Center)
+            if (halign == HorizontalAlignment.Center)
             {
                 dx = -size.Width / 2;
             }
 
-            if (halign == HorizontalTextAlign.Right)
+            if (halign == HorizontalAlignment.Right)
             {
                 dx = -size.Width;
             }
 
             double dy = 0;
             sf.LineAlignment = XLineAlignment.Near;
-            if (valign == VerticalTextAlign.Middle)
+            if (valign == VerticalAlignment.Middle)
             {
                 dy = -size.Height / 2;
             }
 
-            if (valign == VerticalTextAlign.Bottom)
+            if (valign == VerticalAlignment.Bottom)
             {
                 dy = -size.Height;
             }

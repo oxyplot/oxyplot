@@ -352,8 +352,8 @@ namespace OxyPlot
                     this.TitleFontSize,
                     this.TitleFontWeight,
                     0,
-                    HorizontalTextAlign.Center,
-                    VerticalTextAlign.Top);
+                    HorizontalAlignment.Center,
+                    VerticalAlignment.Top);
                 dy += size1.Height;
             }
 
@@ -367,8 +367,8 @@ namespace OxyPlot
                     this.SubtitleFontSize,
                     this.SubtitleFontWeight,
                     0,
-                    HorizontalTextAlign.Center,
-                    VerticalTextAlign.Top);
+                    HorizontalAlignment.Center,
+                    VerticalAlignment.Top);
             }
         }
 

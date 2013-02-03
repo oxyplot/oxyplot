@@ -345,8 +345,8 @@ namespace OxyPlot.Series
                         this.ActualFontSize,
                         this.ActualFontWeight,
                         0,
-                        sign > 0 ? HorizontalTextAlign.Left : HorizontalTextAlign.Right,
-                        VerticalTextAlign.Middle);
+                        sign > 0 ? HorizontalAlignment.Left : HorizontalAlignment.Right,
+                        VerticalAlignment.Middle);
                 }
 
                 // Render label inside the slice
@@ -375,8 +375,8 @@ namespace OxyPlot.Series
                         this.ActualFontSize,
                         this.ActualFontWeight,
                         textAngle,
-                        HorizontalTextAlign.Center,
-                        VerticalTextAlign.Middle);
+                        HorizontalAlignment.Center,
+                        VerticalAlignment.Middle);
                 }
             }
         }

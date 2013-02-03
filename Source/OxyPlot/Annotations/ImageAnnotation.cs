@@ -52,8 +52,8 @@ namespace OxyPlot.Annotations
             this.Height = new PlotLength(double.NaN, PlotLengthUnit.ScreenUnits);
             this.Opacity = 1.0;
             this.Interpolate = true;
-            this.HorizontalAlignment = HorizontalTextAlign.Center;
-            this.VerticalAlignment = VerticalTextAlign.Middle;
+            this.HorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
+            this.VerticalAlignment = OxyPlot.VerticalAlignment.Middle;
         }
 
         /// <summary>
@@ -74,8 +74,8 @@ namespace OxyPlot.Annotations
         public ImageAnnotation(
             OxyImage image, 
             ScreenPoint position, 
-            HorizontalTextAlign horizontalAlignment = HorizontalTextAlign.Center, 
-            VerticalTextAlign verticalAlignment = VerticalTextAlign.Middle)
+            HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Center, 
+            VerticalAlignment verticalAlignment = OxyPlot.VerticalAlignment.Middle)
             : this()
         {
             this.ImageSource = image;
@@ -103,8 +103,8 @@ namespace OxyPlot.Annotations
         public ImageAnnotation(
             OxyImage image, 
             IDataPoint position, 
-            HorizontalTextAlign horizontalAlignment = HorizontalTextAlign.Center, 
-            VerticalTextAlign verticalAlignment = VerticalTextAlign.Middle)
+            HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Center, 
+            VerticalAlignment verticalAlignment = OxyPlot.VerticalAlignment.Middle)
             : this()
         {
             this.ImageSource = image;
@@ -136,8 +136,8 @@ namespace OxyPlot.Annotations
             OxyImage image, 
             double relativeX, 
             double relativeY, 
-            HorizontalTextAlign horizontalAlignment = HorizontalTextAlign.Center, 
-            VerticalTextAlign verticalAlignment = VerticalTextAlign.Middle)
+            HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Center, 
+            VerticalAlignment verticalAlignment = OxyPlot.VerticalAlignment.Middle)
             : this()
         {
             this.ImageSource = image;
@@ -159,7 +159,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the horizontal alignment.
         /// </summary>
         /// <value> The horizontal alignment. </value>
-        public HorizontalTextAlign HorizontalAlignment { get; set; }
+        public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the X position of the image.
@@ -229,7 +229,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the vertical alignment.
         /// </summary>
         /// <value> The vertical alignment. </value>
-        public VerticalTextAlign VerticalAlignment { get; set; }
+        public VerticalAlignment VerticalAlignment { get; set; }
 
         /// <summary>
         /// Renders the image annotation.
@@ -280,22 +280,22 @@ namespace OxyPlot.Annotations
             double x = position.X;
             double y = position.Y;
 
-            if (this.HorizontalAlignment == HorizontalTextAlign.Center)
+            if (this.HorizontalAlignment == HorizontalAlignment.Center)
             {
                 x -= width * 0.5;
             }
 
-            if (this.HorizontalAlignment == HorizontalTextAlign.Right)
+            if (this.HorizontalAlignment == HorizontalAlignment.Right)
             {
                 x -= width;
             }
 
-            if (this.VerticalAlignment == VerticalTextAlign.Middle)
+            if (this.VerticalAlignment == VerticalAlignment.Middle)
             {
                 y -= height * 0.5;
             }
 
-            if (this.VerticalAlignment == VerticalTextAlign.Bottom)
+            if (this.VerticalAlignment == VerticalAlignment.Bottom)
             {
                 y -= height;
             }

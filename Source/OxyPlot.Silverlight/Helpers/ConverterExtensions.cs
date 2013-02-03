@@ -94,16 +94,16 @@ namespace OxyPlot.Silverlight
         /// <returns>
         /// A HorizontalTextAlign.
         /// </returns>
-        public static HorizontalTextAlign ToHorizontalTextAlign(this HorizontalAlignment alignment)
+        public static OxyPlot.HorizontalAlignment ToHorizontalTextAlign(this HorizontalAlignment alignment)
         {
             switch (alignment)
             {
                 case HorizontalAlignment.Center:
-                    return HorizontalTextAlign.Center;
+                    return OxyPlot.HorizontalAlignment.Center;
                 case HorizontalAlignment.Right:
-                    return HorizontalTextAlign.Right;
+                    return OxyPlot.HorizontalAlignment.Right;
                 default:
-                    return HorizontalTextAlign.Left;
+                    return OxyPlot.HorizontalAlignment.Left;
             }
         }
 

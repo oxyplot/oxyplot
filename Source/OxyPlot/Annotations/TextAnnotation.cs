@@ -47,8 +47,8 @@ namespace OxyPlot.Annotations
             this.Background = null;
             this.StrokeThickness = 1;
             this.Rotation = 0;
-            this.HorizontalAlignment = HorizontalTextAlign.Center;
-            this.VerticalAlignment = VerticalTextAlign.Bottom;
+            this.HorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
+            this.VerticalAlignment = OxyPlot.VerticalAlignment.Bottom;
             this.Padding = new OxyThickness(4);
         }
 
@@ -62,7 +62,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the horizontal alignment.
         /// </summary>
         /// <value> The horizontal alignment. </value>
-        public HorizontalTextAlign HorizontalAlignment { get; set; }
+        public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the position offset (screen coordinates).
@@ -103,7 +103,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the vertical alignment.
         /// </summary>
         /// <value> The vertical alignment. </value>
-        public VerticalTextAlign VerticalAlignment { get; set; }
+        public VerticalAlignment VerticalAlignment { get; set; }
 
         /// <summary>
         /// Renders the text annotation.
@@ -192,17 +192,17 @@ namespace OxyPlot.Annotations
             OxySize size,
             OxyThickness padding,
             double rotation,
-            HorizontalTextAlign horizontalAlignment,
-            VerticalTextAlign verticalAlignment)
+            HorizontalAlignment horizontalAlignment,
+            VerticalAlignment verticalAlignment)
         {
             double left, right, top, bottom;
             switch (horizontalAlignment)
             {
-                case HorizontalTextAlign.Center:
+                case HorizontalAlignment.Center:
                     left = -size.Width * 0.5;
                     right = -left;
                     break;
-                case HorizontalTextAlign.Right:
+                case HorizontalAlignment.Right:
                     left = -size.Width;
                     right = 0;
                     break;
@@ -214,11 +214,11 @@ namespace OxyPlot.Annotations
 
             switch (verticalAlignment)
             {
-                case VerticalTextAlign.Middle:
+                case VerticalAlignment.Middle:
                     top = -size.Height * 0.5;
                     bottom = -top;
                     break;
-                case VerticalTextAlign.Bottom:
+                case VerticalAlignment.Bottom:
                     top = -size.Height;
                     bottom = 0;
                     break;

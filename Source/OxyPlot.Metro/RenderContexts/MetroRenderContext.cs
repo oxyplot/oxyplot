@@ -488,8 +488,8 @@ namespace OxyPlot.Metro
             double fontSize,
             double fontWeight,
             double rotate,
-            HorizontalTextAlign halign,
-            VerticalTextAlign valign,
+            OxyPlot.HorizontalAlignment halign,
+            OxyPlot.VerticalAlignment valign,
             OxySize? maxSize)
         {
             var tb = new TextBlock { Text = text, Foreground = fill.ToBrush() };
@@ -510,23 +510,23 @@ namespace OxyPlot.Metro
             tb.Measure(new Size(1000, 1000));
 
             double dx = 0;
-            if (halign == HorizontalTextAlign.Center)
+            if (halign == OxyPlot.HorizontalAlignment.Center)
             {
                 dx = -tb.ActualWidth / 2;
             }
 
-            if (halign == HorizontalTextAlign.Right)
+            if (halign == OxyPlot.HorizontalAlignment.Right)
             {
                 dx = -tb.ActualWidth;
             }
 
             double dy = 0;
-            if (valign == VerticalTextAlign.Middle)
+            if (valign == OxyPlot.VerticalAlignment.Middle)
             {
                 dy = -tb.ActualHeight / 2;
             }
 
-            if (valign == VerticalTextAlign.Bottom)
+            if (valign == OxyPlot.VerticalAlignment.Bottom)
             {
                 dy = -tb.ActualHeight;
             }

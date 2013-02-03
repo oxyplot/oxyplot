@@ -70,10 +70,10 @@ namespace ExampleLibrary
             var model = new PlotModel("LineAnnotations", "with TextOrientation specified");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
-            model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "Horizontal", TextOrientation = AnnotationTextOrientation.Horizontal, TextVerticalAlignment = VerticalTextAlign.Bottom });
+            model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "Horizontal", TextOrientation = AnnotationTextOrientation.Horizontal, TextVerticalAlignment = VerticalAlignment.Bottom });
             model.Annotations.Add(new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Vertical", TextOrientation = AnnotationTextOrientation.Vertical });
             model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Horizontal (x=4)", TextPadding = 8, TextOrientation = AnnotationTextOrientation.Horizontal });
-            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 45, MaximumY = 10, Color = OxyColors.Green, Text = "Horizontal (x=45)", TextHorizontalAlignment = HorizontalTextAlign.Left, TextPadding = 8, TextOrientation = AnnotationTextOrientation.Horizontal });
+            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 45, MaximumY = 10, Color = OxyColors.Green, Text = "Horizontal (x=45)", TextHorizontalAlignment = HorizontalAlignment.Left, TextPadding = 8, TextOrientation = AnnotationTextOrientation.Horizontal });
             model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal", TextPosition = 0.5, TextOrientation = AnnotationTextOrientation.Horizontal });
             return model;
         }
@@ -209,15 +209,15 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
             model.Annotations.Add(new TextAnnotation { Position = new DataPoint(-6, 2), Text = "Text annotation 1" });
             model.Annotations.Add(new TextAnnotation { Position = new DataPoint(-7, 6), Rotation = 60, Text = "Text annotation 2" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(2, 2), Rotation = 20, HorizontalAlignment = HorizontalTextAlign.Right, VerticalAlignment = VerticalTextAlign.Top, Text = "Right/Top" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(2, 4), Rotation = 20, HorizontalAlignment = HorizontalTextAlign.Right, VerticalAlignment = VerticalTextAlign.Middle, Text = "Right/Middle" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(2, 6), Rotation = 20, HorizontalAlignment = HorizontalTextAlign.Right, VerticalAlignment = VerticalTextAlign.Bottom, Text = "Right/Bottom" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(6, 2), Rotation = 20, HorizontalAlignment = HorizontalTextAlign.Center, VerticalAlignment = VerticalTextAlign.Top, Text = "Center/Top" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(6, 4), Rotation = 20, HorizontalAlignment = HorizontalTextAlign.Center, VerticalAlignment = VerticalTextAlign.Middle, Text = "Center/Middle" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(6, 6), Rotation = 20, HorizontalAlignment = HorizontalTextAlign.Center, VerticalAlignment = VerticalTextAlign.Bottom, Text = "Center/Bottom" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 2), Rotation = 20, HorizontalAlignment = HorizontalTextAlign.Left, VerticalAlignment = VerticalTextAlign.Top, Text = "Left/Top" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 4), Rotation = 20, HorizontalAlignment = HorizontalTextAlign.Left, VerticalAlignment = VerticalTextAlign.Middle, Text = "Left/Middle" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 6), Rotation = 20, HorizontalAlignment = HorizontalTextAlign.Left, VerticalAlignment = VerticalTextAlign.Bottom, Text = "Left/Bottom" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(2, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top, Text = "Right/Top" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(2, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Middle, Text = "Right/Middle" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(2, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom, Text = "Right/Bottom" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(6, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Top, Text = "Center/Top" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(6, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Middle, Text = "Center/Middle" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(6, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Bottom, Text = "Center/Bottom" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top, Text = "Left/Top" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Middle, Text = "Left/Middle" });
+            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom, Text = "Left/Bottom" });
 
             double d = 0.05;
 
@@ -253,10 +253,10 @@ namespace ExampleLibrary
             var model = new PlotModel("Annotations on reversed axes");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80) { StartPosition = 1, EndPosition = 0 });
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { StartPosition = 1, EndPosition = 0 });
-            model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "First", TextHorizontalAlignment = HorizontalTextAlign.Left });
-            model.Annotations.Add(new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second", TextHorizontalAlignment = HorizontalTextAlign.Left, TextVerticalAlignment = VerticalTextAlign.Bottom });
-            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical", TextHorizontalAlignment = HorizontalTextAlign.Right });
-            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal", TextHorizontalAlignment = HorizontalTextAlign.Left });
+            model.Annotations.Add(new LineAnnotation { Slope = 0.1, Intercept = 1, Text = "First", TextHorizontalAlignment = HorizontalAlignment.Left });
+            model.Annotations.Add(new LineAnnotation { Slope = 0.3, Intercept = 2, MaximumX = 40, Color = OxyColors.Red, Text = "Second", TextHorizontalAlignment = HorizontalAlignment.Left, TextVerticalAlignment = VerticalAlignment.Bottom });
+            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Vertical, X = 4, MaximumY = 10, Color = OxyColors.Green, Text = "Vertical", TextHorizontalAlignment = HorizontalAlignment.Right });
+            model.Annotations.Add(new LineAnnotation { Type = LineAnnotationType.Horizontal, Y = 2, MaximumX = 4, Color = OxyColors.Gold, Text = "Horizontal", TextHorizontalAlignment = HorizontalAlignment.Left });
             return model;
         }
 
@@ -283,8 +283,8 @@ namespace ExampleLibrary
                 X = new PlotLength(0.5, PlotLengthUnit.RelativeToPlotArea),
                 Y = new PlotLength(0.5, PlotLengthUnit.RelativeToPlotArea),
                 Width = new PlotLength(1, PlotLengthUnit.RelativeToPlotArea),
-                HorizontalAlignment = HorizontalTextAlign.Center,
-                VerticalAlignment = VerticalTextAlign.Middle
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Middle
             });
 
             // Relative to plot area, inside top/right corner, 120pt wide
@@ -294,8 +294,8 @@ namespace ExampleLibrary
                 X = new PlotLength(1, PlotLengthUnit.RelativeToPlotArea),
                 Y = new PlotLength(0, PlotLengthUnit.RelativeToPlotArea),
                 Width = new PlotLength(120, PlotLengthUnit.ScreenUnits),
-                HorizontalAlignment = HorizontalTextAlign.Right,
-                VerticalAlignment = VerticalTextAlign.Top
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Top
             });
 
             // Relative to plot area, above top/left corner, 20pt high
@@ -306,8 +306,8 @@ namespace ExampleLibrary
                 Y = new PlotLength(0, PlotLengthUnit.RelativeToPlotArea),
                 OffsetY = new PlotLength(-5, PlotLengthUnit.ScreenUnits),
                 Height = new PlotLength(20, PlotLengthUnit.ScreenUnits),
-                HorizontalAlignment = HorizontalTextAlign.Left,
-                VerticalAlignment = VerticalTextAlign.Bottom
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Bottom
             });
 
             // At the point (50,50), 200pt wide
@@ -317,8 +317,8 @@ namespace ExampleLibrary
                 X = new PlotLength(50, PlotLengthUnit.Data),
                 Y = new PlotLength(50, PlotLengthUnit.Data),
                 Width = new PlotLength(200, PlotLengthUnit.ScreenUnits),
-                HorizontalAlignment = HorizontalTextAlign.Left,
-                VerticalAlignment = VerticalTextAlign.Top
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top
             });
 
             // At the point (50,20), 50 x units wide
@@ -328,8 +328,8 @@ namespace ExampleLibrary
                 X = new PlotLength(50, PlotLengthUnit.Data),
                 Y = new PlotLength(20, PlotLengthUnit.Data),
                 Width = new PlotLength(50, PlotLengthUnit.Data),
-                HorizontalAlignment = HorizontalTextAlign.Center,
-                VerticalAlignment = VerticalTextAlign.Top
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Top
             });
 
             // Relative to the viewport, centered at the bottom, with offset (could also use bottom vertical alignment)
@@ -340,8 +340,8 @@ namespace ExampleLibrary
                 Y = new PlotLength(1, PlotLengthUnit.RelativeToViewport),
                 OffsetY = new PlotLength(-35, PlotLengthUnit.ScreenUnits),
                 Height = new PlotLength(30, PlotLengthUnit.ScreenUnits),
-                HorizontalAlignment = HorizontalTextAlign.Center,
-                VerticalAlignment = VerticalTextAlign.Top
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Top
             });
 
             // Changing opacity
@@ -355,8 +355,8 @@ namespace ExampleLibrary
                             X = new PlotLength(10, PlotLengthUnit.Data),
                             Y = new PlotLength(y * 2, PlotLengthUnit.Data),
                             Width = new PlotLength(100, PlotLengthUnit.ScreenUnits),
-                            HorizontalAlignment = HorizontalTextAlign.Center,
-                            VerticalAlignment = VerticalTextAlign.Bottom
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            VerticalAlignment = VerticalAlignment.Bottom
                         });
             }
 

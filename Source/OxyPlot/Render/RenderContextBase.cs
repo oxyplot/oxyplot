@@ -297,8 +297,8 @@ namespace OxyPlot
             double fontSize,
             double fontWeight,
             double rotate,
-            HorizontalTextAlign halign,
-            VerticalTextAlign valign,
+            HorizontalAlignment halign,
+            VerticalAlignment valign,
             OxySize? maxSize);
 
         /// <summary>

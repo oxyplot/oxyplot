@@ -273,8 +273,8 @@ namespace OxyPlot
             double fontSize = 10,
             double fontWeight = 500,
             double rotate = 0,
-            HorizontalTextAlign halign = HorizontalTextAlign.Left,
-            VerticalTextAlign valign = VerticalTextAlign.Top,
+            HorizontalAlignment halign = HorizontalAlignment.Left,
+            VerticalAlignment valign = VerticalAlignment.Top,
             OxySize? maxSize = null);
 
         /// <summary>

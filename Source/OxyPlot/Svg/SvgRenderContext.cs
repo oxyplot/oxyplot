@@ -195,8 +195,8 @@ namespace OxyPlot
             double fontSize,
             double fontWeight,
             double rotate,
-            HorizontalTextAlign halign,
-            VerticalTextAlign valign,
+            HorizontalAlignment halign,
+            VerticalAlignment valign,
             OxySize? maxSize)
         {
             if (string.IsNullOrEmpty(text))
@@ -205,7 +205,7 @@ namespace OxyPlot
             }
 
             var lines = Regex.Split(text, "\r\n");
-            if (valign == VerticalTextAlign.Bottom)
+            if (valign == VerticalAlignment.Bottom)
             {
                 for (var i = lines.Length - 1; i >= 0; i--)
                 {

@@ -337,8 +337,8 @@ namespace OxyPlot.Series
                         this.ActualFontSize,
                         this.ActualFontWeight,
                         0,
-                        HorizontalTextAlign.Right,
-                        VerticalTextAlign.Middle);
+                        HorizontalAlignment.Right,
+                        VerticalAlignment.Middle);
                 }
 
                 if (this.MaximumLabelFormatString != null)
@@ -360,8 +360,8 @@ namespace OxyPlot.Series
                         this.ActualFontSize,
                         this.ActualFontWeight,
                         0,
-                        HorizontalTextAlign.Left,
-                        VerticalTextAlign.Middle);
+                        HorizontalAlignment.Left,
+                        VerticalAlignment.Middle);
                 }
             }
         }
