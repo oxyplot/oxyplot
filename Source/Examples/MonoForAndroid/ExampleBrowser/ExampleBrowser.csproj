@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{47BDB77E-C1AD-4784-ACA7-FC2D70C3A2BC}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
@@ -75,11 +73,11 @@
       <Project>{e965ba32-9561-4e2a-adb0-19487b25a939}</Project>
       <Name>OxyPlot.MonoForAndroid</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot\OxyPlotMA.csproj">
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlotMfA.csproj">
       <Project>{08A91765-2C9D-4D2B-B56D-FAE62AB204CC}</Project>
       <Name>OxyPlotMA</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ExampleLibrary\ExampleLibraryMA.csproj">
+    <ProjectReference Include="..\..\ExampleLibrary\ExampleLibraryMfA.csproj">
       <Project>{f4c226b3-0dab-474c-9466-5eacafa9b64a}</Project>
       <Name>ExampleLibraryMA</Name>
     </ProjectReference>

@@ -3,16 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B86739B8-5DE9-406F-9418-0751BF7C166F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WpfExamples</RootNamespace>
     <AssemblyName>WpfExamples</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -362,23 +358,23 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.OpenXml\OxyPlot.OpenXml_NET40.csproj">
-      <Project>{bb4fa452-a96a-4c47-aa65-7e88f6fae873}</Project>
+      <Project>{AF4DF6F4-FD99-4236-B0F1-CE8F5AD0D8A2}</Project>
       <Name>OxyPlot.OpenXml_NET40</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot.Pdf\OxyPlot.Pdf_NET40.csproj">
-      <Project>{12737c3f-5770-403f-90a1-bc12ebd1bb31}</Project>
+      <Project>{AD0C93A1-7E0A-4311-8088-143FCC13CA3E}</Project>
       <Name>OxyPlot.Pdf_NET40</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot.Wpf\OxyPlot.Wpf_NET40.csproj">
-      <Project>{698ccd8e-adcc-4565-8517-5edd36f07155}</Project>
+      <Project>{0D7C7710-C58B-4713-BA18-8231A2F35A12}</Project>
       <Name>OxyPlot.Wpf_NET40</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot.Xps\OxyPlot.Xps_NET40.csproj">
-      <Project>{639e0b40-a307-4d4a-bb78-be0019d8d7c1}</Project>
+      <Project>{87B7C658-12D9-4BD2-8FBB-9E4F2A670FB3}</Project>
       <Name>OxyPlot.Xps_NET40</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
-      <Project>{87f519b8-5a2f-48c6-ad53-c5f13a82ea6b}</Project>
+      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
   </ItemGroup>

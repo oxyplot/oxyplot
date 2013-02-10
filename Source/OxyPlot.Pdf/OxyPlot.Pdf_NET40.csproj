@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{AD0C93A1-7E0A-4311-8088-143FCC13CA3E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -77,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
-      <Project>{87f519b8-5a2f-48c6-ad53-c5f13a82ea6b}</Project>
+      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
       <Name>OxyPlot</Name>
     </ProjectReference>
   </ItemGroup>

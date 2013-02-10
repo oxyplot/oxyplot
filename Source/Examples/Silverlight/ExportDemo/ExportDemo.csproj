@@ -115,7 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.Pdf\OxyPlot.Pdf_SL5.csproj">
-      <Project>{c84caeba-3326-41c8-81da-b1eb680d7fa1}</Project>
+      <Project>{10A30E0C-D902-4803-9CCD-8902C41CA244}</Project>
       <Name>OxyPlot.Pdf_SL5</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot.Silverlight\OxyPlot.Silverlight.csproj">
