@@ -377,7 +377,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("TileMapAnnotation using OpenStreetMap")]
+        [Example("TileMapAnnotation (openstreetmap.org)")]
         public static PlotModel TileMapAnnotation2()
         {
             var model = new PlotModel("TileMapAnnotation");
@@ -395,7 +395,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("TileMapAnnotation (restricted Silverlight client access)")]
+        [Example("TileMapAnnotation (statkart.no)")]
         public static PlotModel TileMapAnnotation()
         {
             var model = new PlotModel("TileMapAnnotation");
