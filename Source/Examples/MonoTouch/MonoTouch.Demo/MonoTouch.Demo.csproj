@@ -98,7 +98,7 @@
       <Name>OxyPlot.MonoTouch</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ExampleLibrary\ExampleLibraryMT.csproj">
-      <Project>{A941B658-1237-482C-B0C7-378242D27647}</Project>
+      <Project>{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}</Project>
       <Name>ExampleLibraryMT</Name>
     </ProjectReference>
   </ItemGroup>
