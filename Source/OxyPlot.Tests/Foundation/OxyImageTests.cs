@@ -25,6 +25,42 @@
         }
 
         [Test]
+        public void PngFromArgb()
+        {
+            var data = new OxyColor[2, 4];
+            data[1, 0] = OxyColors.Blue;
+            data[1, 1] = OxyColors.Green;
+            data[1, 2] = OxyColors.Red;
+            data[1, 3] = OxyColors.White;
+            data[0, 0] = OxyColors.Yellow.ChangeAlpha(127);
+            data[0, 1] = OxyColors.Orange.ChangeAlpha(127);
+            data[0, 2] = OxyColors.Pink.ChangeAlpha(127);
+            data[0, 3] = OxyColors.Transparent;
+            var img = OxyImage.PngFromArgb(data);
+            var bytes = img.GetData();
+            File.WriteAllBytes("PngFromArgb.png", bytes);
+        }
+
+        [Test]
+        public void PngFromArgb2()
+        {
+            int w = 266;
+            int h = 40;
+            var data = new OxyColor[h, w];
+            for (int i = 0; i < h; i++)
+            {
+                for (int j = 0; j < w; j++)
+                {
+                    data[i, j] = OxyColor.FromHsv((double)j / w, 1, 1);
+                }
+            }
+
+            var img = OxyImage.PngFromArgb(data);
+            var bytes = img.GetData();
+            File.WriteAllBytes("PngFromArgb2.png", bytes);
+        }
+
+        [Test]
         public void FromArgbX()
         {
             var data = new OxyColor[2, 4];

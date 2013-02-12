@@ -227,8 +227,8 @@ namespace OxyPlot.Series
                     buffer[j, i] = this.ColorAxis.GetColor(this.Data[i, j]);
                 }
             }
-
-            this.image = OxyImage.FromArgb(buffer);
+            
+            this.image = OxyImage.PngFromArgb(buffer);
         }
     }
 }

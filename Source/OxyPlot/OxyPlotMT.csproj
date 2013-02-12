@@ -84,6 +84,7 @@
     <Compile Include="Foundation\ListFiller.cs" />
     <Compile Include="Foundation\OxyPalette.cs" />
     <Compile Include="Foundation\OxyPalettes.cs" />
+    <Compile Include="Foundation\PngEncoder.cs" />
     <Compile Include="Foundation\ScreenVector.cs" />
     <Compile Include="Foundation\StreamExtensions.cs" />
     <Compile Include="Foundation\StringHelper.cs" />

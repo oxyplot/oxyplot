@@ -430,5 +430,15 @@ namespace OxyPlot
             w.Write((uint)0);
             w.Write((uint)0);
         }
+
+        /// <summary>
+        /// Creates a PNG image from the specified pixels.
+        /// </summary>
+        /// <param name="pixels">The pixels (bottom line first).</param>
+        /// <returns>An OxyImage.</returns>
+        public static OxyImage PngFromArgb(OxyColor[,] pixels)
+        {
+            return new OxyImage(PngEncoder.Encode(pixels));
+        }
     }
 }

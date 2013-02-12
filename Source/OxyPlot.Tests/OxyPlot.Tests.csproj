@@ -88,7 +88,6 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Foundation\temp.bmp" />
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
