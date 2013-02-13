@@ -266,6 +266,11 @@ namespace OxyPlot
             bool interpolate)
         {
             var info = rc.GetImageInfo(image);
+            if (info == null)
+            {
+                return;
+            }
+
             rc.DrawImage(image, 0, 0, info.Width, info.Height, x, y, w, h, opacity, interpolate);
         }
 
