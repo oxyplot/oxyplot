@@ -34,6 +34,7 @@ namespace ExampleLibrary
     using System.Globalization;
     using System.IO;
     using System.Reflection;
+    using System.Threading;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -61,17 +62,29 @@ namespace ExampleLibrary
             return NumericOdeSolvers("Numeric ODE solvers", "y'=cos(x), y(0)=0", 0, 0, Math.Sin, (t, y) => Math.Cos(t));
         }
 
-        public static PlotModel NumericOdeSolvers(string title, string subtitle, double t0, double y0, Func<double, double> exact, Func<double, double, double> f)
+        public static PlotModel NumericOdeSolvers(
+            string title,
+            string subtitle,
+            double t0,
+            double y0,
+            Func<double, double> exact,
+            Func<double, double, double> f)
         {
-            var model = new PlotModel(title, subtitle) { LegendPosition = LegendPosition.BottomCenter, LegendPlacement = LegendPlacement.Outside, LegendOrientation = LegendOrientation.Horizontal };
+            var model = new PlotModel(title, subtitle)
+                            {
+                                LegendPosition = LegendPosition.BottomCenter,
+                                LegendPlacement = LegendPlacement.Outside,
+                                LegendOrientation = LegendOrientation.Horizontal
+                            };
             model.Series.Add(new FunctionSeries(exact, 0, 4, 100) { Title = "Exact solution", StrokeThickness = 5 });
 
-            model.Series.Add(new LineSeries("Euler, h=0.25")
-                {
-                    MarkerType = MarkerType.Circle,
-                    MarkerFill = OxyColors.Black,
-                    Points = Euler(f, t0, y0, 4, 0.25)
-                });
+            model.Series.Add(
+                new LineSeries("Euler, h=0.25")
+                    {
+                        MarkerType = MarkerType.Circle,
+                        MarkerFill = OxyColors.Black,
+                        Points = Euler(f, t0, y0, 4, 0.25)
+                    });
 
             //model.Series.Add(new LineSeries("Euler, h=1")
             //    {
@@ -80,26 +93,29 @@ namespace ExampleLibrary
             //        Points = Euler(f, t0, y0, 4, 1)
             //    });
 
-            model.Series.Add(new LineSeries("Heun, h=0.25")
-            {
-                MarkerType = MarkerType.Circle,
-                MarkerFill = OxyColors.Black,
-                Points = Heun(f, t0, y0, 4, 0.25)
-            });
+            model.Series.Add(
+                new LineSeries("Heun, h=0.25")
+                    {
+                        MarkerType = MarkerType.Circle,
+                        MarkerFill = OxyColors.Black,
+                        Points = Heun(f, t0, y0, 4, 0.25)
+                    });
 
-            model.Series.Add(new LineSeries("Midpoint, h=0.25")
-            {
-                MarkerType = MarkerType.Circle,
-                MarkerFill = OxyColors.Black,
-                Points = Midpoint(f, t0, y0, 4, 0.25)
-            });
+            model.Series.Add(
+                new LineSeries("Midpoint, h=0.25")
+                    {
+                        MarkerType = MarkerType.Circle,
+                        MarkerFill = OxyColors.Black,
+                        Points = Midpoint(f, t0, y0, 4, 0.25)
+                    });
 
-            model.Series.Add(new LineSeries("RK4, h=0.25")
-            {
-                MarkerType = MarkerType.Circle,
-                MarkerFill = OxyColors.Black,
-                Points = RungeKutta4(f, t0, y0, 4, 0.25)
-            });
+            model.Series.Add(
+                new LineSeries("RK4, h=0.25")
+                    {
+                        MarkerType = MarkerType.Circle,
+                        MarkerFill = OxyColors.Black,
+                        Points = RungeKutta4(f, t0, y0, 4, 0.25)
+                    });
 
             //model.Series.Add(new LineSeries("RK4, h=1")
             //{
@@ -112,7 +128,8 @@ namespace ExampleLibrary
             return model;
         }
 
-        private static IList<IDataPoint> Euler(Func<double, double, double> f, double t0, double y0, double t1, double h)
+        private static IList<IDataPoint> Euler(
+            Func<double, double, double> f, double t0, double y0, double t1, double h)
         {
             var points = new List<IDataPoint>();
             double y = y0;
@@ -139,7 +156,8 @@ namespace ExampleLibrary
             return points;
         }
 
-        private static IList<IDataPoint> Midpoint(Func<double, double, double> f, double t0, double y0, double t1, double h)
+        private static IList<IDataPoint> Midpoint(
+            Func<double, double, double> f, double t0, double y0, double t1, double h)
         {
             var points = new List<IDataPoint>();
             double y = y0;
@@ -152,7 +170,8 @@ namespace ExampleLibrary
             return points;
         }
 
-        private static IList<IDataPoint> RungeKutta4(Func<double, double, double> f, double t0, double y0, double t1, double h)
+        private static IList<IDataPoint> RungeKutta4(
+            Func<double, double, double> f, double t0, double y0, double t1, double h)
         {
             var points = new List<IDataPoint>();
             double y = y0;
@@ -180,31 +199,72 @@ namespace ExampleLibrary
             //// http://c82.net/posts.php?id=66
 
             var model = new PlotModel("Train schedule", "Bergensbanen (Oslo-Bergen, Norway)")
-                {
-                    IsLegendVisible = false,
-                    PlotAreaBorderThickness = 0,
-                    PlotMargins = new OxyThickness(60, 4, 4, 40)
-                };
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -20, 540, "Distance from Oslo S")
-            {
-                IsAxisVisible = true,
-                StringFormat = "0"
-            });
-            model.Axes.Add(new TimeSpanAxis(AxisPosition.Bottom, 0, TimeSpanAxis.ToDouble(TimeSpan.FromHours(24)))
-            {
-                StringFormat = "hh",
-                Title = "Time",
-                MajorStep = TimeSpanAxis.ToDouble(TimeSpan.FromHours(1)),
-                MinorStep = TimeSpanAxis.ToDouble(TimeSpan.FromMinutes(10)),
-                TickStyle = TickStyle.None,
-                MajorGridlineStyle = LineStyle.Solid,
-                MajorGridlineColor = OxyColors.LightGray,
-                MinorGridlineStyle = LineStyle.Solid,
-                MinorGridlineColor = OxyColor.FromArgb(255, 240, 240, 240)
-            });
+                            {
+                                IsLegendVisible = false,
+                                PlotAreaBorderThickness
+                                    = 0,
+                                PlotMargins =
+                                    new OxyThickness(
+                                    60, 4, 4, 40)
+                            };
+            model.Axes.Add(
+                new LinearAxis(AxisPosition.Left, -20, 540, "Distance from Oslo S")
+                    {
+                        IsAxisVisible = true,
+                        StringFormat = "0"
+                    });
+            model.Axes.Add(
+                new TimeSpanAxis(AxisPosition.Bottom, 0, TimeSpanAxis.ToDouble(TimeSpan.FromHours(24)))
+                    {
+                        StringFormat
+                            = "hh",
+                        Title =
+                            "Time",
+                        MajorStep =
+                            TimeSpanAxis
+                            .ToDouble
+                            (
+                                TimeSpan
+                            .FromHours
+                            (1)),
+                        MinorStep =
+                            TimeSpanAxis
+                            .ToDouble
+                            (
+                                TimeSpan
+                            .FromMinutes
+                            (10)),
+                        TickStyle =
+                            TickStyle
+                            .None,
+                        MajorGridlineStyle
+                            =
+                            LineStyle
+                            .Solid,
+                        MajorGridlineColor
+                            =
+                            OxyColors
+                            .LightGray,
+                        MinorGridlineStyle
+                            =
+                            LineStyle
+                            .Solid,
+                        MinorGridlineColor
+                            =
+                            OxyColor
+                            .FromArgb
+                            (
+                                255,
+                                240,
+                                240,
+                                240)
+                    });
 
             // Read the train schedule from a .csv resource
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources.Bergensbanen.csv"))
+            using (
+                var stream =
+                    Assembly.GetExecutingAssembly()
+                            .GetManifestResourceStream("ExampleLibrary.Resources.Bergensbanen.csv"))
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -212,23 +272,26 @@ namespace ExampleLibrary
                     var headerFields = header.Split(';');
                     int lines = headerFields.Length - 3;
                     var stations = new LineSeries()
-                        {
-                            StrokeThickness = 0,
-                            MarkerType = MarkerType.Circle,
-                            MarkerFill = OxyColor.FromAColor(200, OxyColors.Black),
-                            MarkerSize = 4,
-                        };
+                                       {
+                                           StrokeThickness = 0,
+                                           MarkerType = MarkerType.Circle,
+                                           MarkerFill = OxyColor.FromAColor(200, OxyColors.Black),
+                                           MarkerSize = 4,
+                                       };
 
                     // Add the line series for each train line
                     var series = new LineSeries[lines];
                     for (int i = 0; i < series.Length; i++)
                     {
                         series[i] = new LineSeries(headerFields[3 + i])
-                            {
-                                Color = OxyColor.FromAColor(180, OxyColors.Black),
-                                StrokeThickness = 2,
-                                TrackerFormatString = "Train {0}\nTime: {2}\nDistance from Oslo S: {4:0.0} km",
-                            };
+                                        {
+                                            Color =
+                                                OxyColor.FromAColor(
+                                                    180, OxyColors.Black),
+                                            StrokeThickness = 2,
+                                            TrackerFormatString =
+                                                "Train {0}\nTime: {2}\nDistance from Oslo S: {4:0.0} km",
+                                        };
                         model.Series.Add(series[i]);
                     }
 
@@ -324,7 +387,11 @@ namespace ExampleLibrary
         public static PlotModel LaLineaAreaSeries()
         {
             // http://en.wikipedia.org/wiki/La_Linea_(TV_series)
-            var model = new PlotModel("La Linea") { PlotType = PlotType.Cartesian, Background = OxyColor.FromRgb(84, 98, 207) };
+            var model = new PlotModel("La Linea")
+                            {
+                                PlotType = PlotType.Cartesian,
+                                Background = OxyColor.FromRgb(84, 98, 207)
+                            };
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -500, 1000));
             var series1 = new AreaSeries { Fill = OxyColors.White, StrokeThickness = 0 };
             series1.Points.Append(GetLineaPoints());
@@ -336,7 +403,11 @@ namespace ExampleLibrary
         public static PlotModel LaLinea()
         {
             // http://en.wikipedia.org/wiki/La_Linea_(TV_series)
-            var model = new PlotModel("La Linea") { PlotType = PlotType.Cartesian, Background = OxyColor.FromRgb(84, 98, 207) };
+            var model = new PlotModel("La Linea")
+                            {
+                                PlotType = PlotType.Cartesian,
+                                Background = OxyColor.FromRgb(84, 98, 207)
+                            };
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -500, 1000));
             var series1 = new LineSeries { Color = OxyColors.White, StrokeThickness = 1.5 };
             series1.Points.Append(GetLineaPoints());
@@ -1221,6 +1292,198 @@ namespace ExampleLibrary
             points.Add(new DataPoint(588.6629715, 0.352966309));
             points.Add(new DataPoint(588.6629715, 0.352966309));
             return points;
+        }
+
+        [Example("Mandelbrot custom series")]
+        public static PlotModel Mandelbrot()
+        {
+            // http://en.wikipedia.org/wiki/Mandelbrot_set
+            var model = new PlotModel { Title = "The Mandelbrot set" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -1.4, Maximum = 1.4 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -2, Maximum = 1 });
+            model.Axes.Add(
+                new ColorAxis
+                    {
+                        Position = AxisPosition.Right,
+                        Minimum = 0,
+                        Maximum = 64,
+                        Palette = OxyPalettes.Jet(64),
+                        HighColor = OxyColors.Black
+                    });
+            model.Series.Add(new MandelbrotSeries());
+            return model;
+        }
+
+        /// <summary>
+        /// Renders the Mandelbrot set as an image inside the current plot area.
+        /// </summary>
+        public class MandelbrotSeries : XYAxisSeries
+        {
+            /// <summary>
+            /// Gets or sets the color axis.
+            /// </summary>
+            /// <value>
+            /// The color axis.
+            /// </value>
+            /// <remarks>
+            /// The Maximum value of the ColorAxis defines the maximum number of iterations.
+            /// </remarks>
+            public ColorAxis ColorAxis { get; protected set; }
+
+            /// <summary>
+            /// Gets or sets the color axis key.
+            /// </summary>
+            /// <value> The color axis key. </value>
+            public string ColorAxisKey { get; set; }
+
+            /// <summary>
+            /// Gets the point on the series that is nearest the specified point.
+            /// </summary>
+            /// <param name="point">The point.</param>
+            /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
+            /// <returns>
+            /// A TrackerHitResult for the current hit.
+            /// </returns>
+            public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
+            {
+                var p = this.InverseTransform(point);
+                var it = Solve(p.X, p.Y, (int)this.ColorAxis.ActualMaximum + 1);
+                return new TrackerHitResult(
+                    this,
+                    p,
+                    point,
+                    null,
+                    -1,
+                    string.Format("X: {0:0.000}\r\nY: {1:0.000}\r\nIterations: {2}", p.X, p.Y, it));
+            }
+
+            /// <summary>
+            /// Renders the series on the specified render context.
+            /// </summary>
+            /// <param name="rc">The rendering context.</param>
+            /// <param name="model">The model.</param>
+            public override void Render(IRenderContext rc, PlotModel model)
+            {
+                var p0 = this.Transform(this.XAxis.ActualMinimum, this.YAxis.ActualMinimum);
+                var p1 = this.Transform(this.XAxis.ActualMaximum, this.YAxis.ActualMaximum);
+                var w = (int)(p1.X - p0.X);
+                var h = (int)(p0.Y - p1.Y);
+                int maxIterations = (int)this.ColorAxis.ActualMaximum + 1;
+                var pixels = new OxyColor[h, w];
+
+                ParallelFor(
+                    0,
+                    h,
+                    i =>
+                    {
+                        double y = this.YAxis.ActualMinimum
+                                   + ((double)i / (h - 1) * (this.YAxis.ActualMaximum - this.YAxis.ActualMinimum));
+                        for (int j = 0; j < w; j++)
+                        {
+                            double x = this.XAxis.ActualMinimum
+                                       + ((double)j / (w - 1)
+                                          * (this.XAxis.ActualMaximum - this.XAxis.ActualMinimum));
+                            var iterations = Solve(x, y, maxIterations);
+                            pixels[i, j] = this.ColorAxis.GetColor((double)iterations);
+                        }
+                    });
+
+                var bitmap = OxyImage.PngFromArgb(pixels);
+                rc.DrawImage(bitmap, p0.X, p1.Y, p1.X - p0.X, p0.Y - p1.Y, 1, true);
+            }
+
+            /// <summary>
+            /// Ensures that the axes of the series is defined.
+            /// </summary>
+            protected override void EnsureAxes()
+            {
+                base.EnsureAxes();
+                this.ColorAxis =
+                    this.PlotModel.GetAxisOrDefault(this.ColorAxisKey, this.PlotModel.DefaultColorAxis) as ColorAxis;
+            }
+
+            /// <summary>
+            /// Executes a serial for loop.
+            /// </summary>
+            /// <param name="i0">The start index (inclusive).</param>
+            /// <param name="i1">The end index (exclusive).</param>
+            /// <param name="action">The action that is invoked once per iteration.</param>
+            private static void SerialFor(int i0, int i1, Action<int> action)
+            {
+                for (int i = i0; i < i1; i++)
+                {
+                    action(i);
+                }
+            }
+
+            /// <summary>
+            /// Executes a parallel for loop using ThreadPool.
+            /// </summary>
+            /// <param name="i0">The start index (inclusive).</param>
+            /// <param name="i1">The end index (exclusive).</param>
+            /// <param name="action">The action that is invoked once per iteration.</param>
+            private static void ParallelFor(int i0, int i1, Action<int> action)
+            {
+                // Environment.ProcessorCount is not available here. Use 4 processors.
+                int p = 4;
+
+                // Initialize wait handles
+                var doneEvents = new WaitHandle[p];
+                for (int i = 0; i < p; i++)
+                {
+                    doneEvents[i] = new ManualResetEvent(false);
+                }
+
+                // Invoke the action of a partition of the range
+                Action<int, int, int> invokePartition = (k, j0, j1) =>
+                    {
+                        for (int i = j0; i < j1; i++)
+                        {
+                            action(i);
+                        }
+
+                        ((ManualResetEvent)doneEvents[k]).Set();
+                    };
+
+                // Start p background threads
+                int n = (i1 - i0 + p - 1) / p;
+                for (int i = 0; i < p; i++)
+                {
+                    int k = i;
+                    int j0 = i0 + (i * n);
+                    var j1 = Math.Min(j0 + n, i1);
+                    ThreadPool.QueueUserWorkItem(state => invokePartition(k, j0, j1));
+                }
+
+                // Wait for the threads to finish
+                foreach (var wh in doneEvents)
+                {
+                    wh.WaitOne();
+                }
+            }
+
+            /// <summary>
+            /// Calculates the escape time for the specified point.
+            /// </summary>
+            /// <param name="x0">The x0.</param>
+            /// <param name="y0">The y0.</param>
+            /// <param name="maxIterations">The max number of iterations.</param>
+            /// <returns>The number of iterations.</returns>
+            private static int Solve(double x0, double y0, int maxIterations)
+            {
+                int iteration = 0;
+                double x = 0;
+                double y = 0;
+                while ((x * x) + (y * y) <= 4 && iteration < maxIterations)
+                {
+                    double xtemp = (x * x) - (y * y) + x0;
+                    y = (2 * x * y) + y0;
+                    x = xtemp;
+                    iteration++;
+                }
+
+                return iteration;
+            }
         }
     }
 }
