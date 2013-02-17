@@ -66,6 +66,7 @@
     <Compile Include="Examples\BarSeries\RectangleBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\TornadoBarSeriesExamples.cs" />
     <Compile Include="Examples\HeatMapSeriesExamples.cs" />
+    <Compile Include="CustomSeries\MatrixSeries.cs" />
     <Compile Include="Examples\MiscExamples.cs" />
     <Compile Include="Examples\MouseEventExamples.cs" />
     <Compile Include="Examples\ExamplesBase.cs" />
@@ -103,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\OxyPlot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\west0479.mtx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
