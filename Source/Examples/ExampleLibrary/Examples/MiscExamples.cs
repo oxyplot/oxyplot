@@ -188,6 +188,52 @@ namespace ExampleLibrary
             return points;
         }
 
+        [Example("MatrixSeries (chemical process simulation problem)")]
+        public static PlotModel MatrixSeriesWest0479()
+        {
+            // http://www.cise.ufl.edu/research/sparse/matrices/HB/west0479
+            var model = new PlotModel();
+
+            double[,] matrix = null;
+
+            using (
+                var stream =
+                    Assembly.GetExecutingAssembly().GetManifestResourceStream("ExampleLibrary.Resources.west0479.mtx"))
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        if (line.StartsWith("%"))
+                        {
+                            continue;
+                        }
+
+                        var v = line.Split(' ');
+                        if (matrix == null)
+                        {
+                            int m = int.Parse(v[0]);
+                            int n = int.Parse(v[1]);
+                            matrix = new double[m, n];
+                            continue;
+                        }
+
+                        int i = int.Parse(v[0]) - 1;
+                        int j = int.Parse(v[1]) - 1;
+                        matrix[i, j] = double.Parse(v[2], CultureInfo.InvariantCulture);
+                    }
+                }
+            }
+
+            // Reverse the vertical axis
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Series.Add(new MatrixSeries { Matrix = matrix, ShowDiagonal = true });
+
+            return model;
+        }
+
         [Example("Train schedule")]
         public static PlotModel TrainSchedule()
         {
@@ -1292,6 +1338,75 @@ namespace ExampleLibrary
             points.Add(new DataPoint(588.6629715, 0.352966309));
             points.Add(new DataPoint(588.6629715, 0.352966309));
             return points;
+        }
+
+        [Example("Conway's Game of Life")]
+        public static PlotModel ConwayLife()
+        {
+            // http://en.wikipedia.org/wiki/Conway's_Game_of_Life
+            var model = new PlotModel { Title = "Conway's Game of Life", Subtitle = "Click the mouse to step to the next generation." };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            int m = 40;
+            int n = 40;
+            var matrix = new double[m, n];
+            var ms = new MatrixSeries { Matrix = matrix };
+
+            Action<int, int> blinker = (i, j) => { matrix[i, j] = matrix[i, j + 1] = matrix[i, j + 2] = 1; };
+            Action<int, int> glider = (i, j) => { matrix[i, j] = matrix[i + 1, j + 1] = matrix[i + 1, j + 2] = matrix[i + 2, j] = matrix[i + 2, j + 1] = 1; };
+            Action<int, int> rpentomino = (i, j) => { matrix[i, j + 1] = matrix[i, j + 2] = matrix[i + 1, j] = matrix[i + 1, j + 1] = matrix[i + 2, j + 1] = 1; };
+
+            blinker(2, 10);
+            glider(2, 2);
+            rpentomino(20, 20);
+
+            model.Series.Add(ms);
+            int g = 0;
+            Action stepToNextGeneration = () =>
+                {
+                    var next = new double[m, n];
+                    for (int i = 1; i < m - 1; i++)
+                    {
+                        for (int j = 1; j < n - 1; j++)
+                        {
+                            int k = (int)(matrix[i - 1, j - 1] + matrix[i - 1, j] + matrix[i - 1, j + 1] + matrix[i, j - 1]
+                                    + matrix[i, j + 1] + matrix[i + 1, j - 1] + matrix[i + 1, j]
+                                    + matrix[i + 1, j + 1]);
+
+                            if (matrix[i, j].Equals(0) && k == 3)
+                            {
+                                // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+                                next[i, j] = 1;
+                                continue;
+                            }
+
+                            if (matrix[i, j].Equals(1) && (k == 2 || k == 3))
+                            {
+                                // Any live cell with two or three live neighbours lives on to the next generation.
+                                next[i, j] = 1;
+                            }
+
+                            // Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+                            // Any live cell with more than three live neighbours dies, as if by overcrowding.
+                        }
+                    }
+
+                    g++;
+                    ms.Title = "Generation " + g;
+                    ms.Matrix = matrix = next;
+                    model.InvalidatePlot(true);
+                };
+
+            model.MouseDown += (s, e) =>
+                {
+                    if (e.ChangedButton == OxyMouseButton.Left)
+                    {
+                        stepToNextGeneration();
+                        e.Handled = true;
+                    }
+                };
+
+            return model;
         }
 
         [Example("Mandelbrot custom series")]
