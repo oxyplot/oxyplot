@@ -240,8 +240,7 @@ namespace OxyPlot.Series
                 if (d2 < minimumDistance)
                 {
                     var item = this.GetItem(i);
-                    result = new TrackerHitResult(this, dp, sp, item);
-
+                    
                     object xvalue = this.XAxis != null ? this.XAxis.GetValue(dp.X) : dp.X;
                     object yvalue = this.YAxis != null ? this.YAxis.GetValue(dp.Y) : dp.Y;
                     object zvalue = null;
@@ -255,7 +254,7 @@ namespace OxyPlot.Series
                         }
                     }
 
-                    result.Text = StringHelper.Format(
+                    var text = StringHelper.Format(
                         this.ActualCulture,
                         formatString,
                         item,
@@ -266,6 +265,8 @@ namespace OxyPlot.Series
                         yvalue,
                         colorAxisTitle,
                         zvalue);
+
+                    result = new TrackerHitResult(this, dp, sp, item, i, text);
 
                     minimumDistance = d2;
                 }
