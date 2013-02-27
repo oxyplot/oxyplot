@@ -1,0 +1,12 @@
+﻿<Window x:Class="AreaDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        Title="AreaDemo" Height="480" Width="640">
+    <DockPanel>
+        <oxy:Plot x:Name="plot1" Title="LineSeries and AreaSeries">
+            <oxy:AreaSeries ItemsSource="{Binding Measurements}" Title="Maximum/Minimum" DataFieldX="Time" DataFieldY="Maximum" DataFieldX2="Time" DataFieldY2="Minimum" Fill="LightBlue" StrokeThickness="0"/>
+            <oxy:LineSeries ItemsSource="{Binding Measurements}" Title="Average" DataFieldX="Time" DataFieldY="Value" Color="Blue" StrokeThickness="2" Smooth="False"/>
+        </oxy:Plot>
+    </DockPanel>
+</Window>
