@@ -318,6 +318,35 @@ namespace ExampleLibrary
             return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.BlackWhiteRed(9), MarkerType.Square, AxisPosition.Top);
         }
 
+        [Example("TrackerFormatString")]
+        public static PlotModel TrackerFormatString()
+        {
+            var model = new PlotModel("TrackerFormatString");
+
+            var s1 = new ScatterSeries { TrackerFormatString = "{Sum:0.0}" };
+            s1.Points.Add(new MyPoint { X = 10, Y = 40 });
+            s1.Points.Add(new MyPoint { X = 40, Y = 20 });
+            s1.Points.Add(new MyPoint { X = 60, Y = 30 });
+            model.Series.Add(s1);
+            return model;
+        }
+
+        public struct MyPoint : IDataPoint
+        {
+            public double X { get; set; }
+
+            public double Y { get; set; }
+
+            public double Sum
+            {
+                get
+                {
+                    // calculated on request
+                    return this.X + this.Y;
+                }
+            }
+        }
+
         static readonly Random Randomizer = new Random();
 
         private static ScatterSeries CreateRandomScatterSeries(int n, string title, MarkerType markerType)
