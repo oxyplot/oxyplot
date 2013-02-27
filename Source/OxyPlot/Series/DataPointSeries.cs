@@ -124,6 +124,21 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Gets the item at the specified index.
+        /// </summary>
+        /// <param name="i">The index of the item.</param>
+        /// <returns>The item of the index.</returns>
+        protected override object GetItem(int i)
+        {
+            if (this.ItemsSource == null && this.Points != null && i < this.Points.Count)
+            {
+                return this.Points[i];
+            }
+
+            return base.GetItem(i);
+        }
+
+        /// <summary>
         /// The update data.
         /// </summary>
         protected internal override void UpdateData()
