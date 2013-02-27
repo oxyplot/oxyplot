@@ -32,7 +32,7 @@ namespace OxyPlot.Series
     using System.Globalization;
 
     using OxyPlot.Axes;
-    
+
     /// <summary>
     /// Provides an abstract base class for plot series.
     /// </summary>
@@ -132,7 +132,8 @@ namespace OxyPlot.Series
         /// </returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
-            var thr = this.GetNearestPoint(point, true);
+            var thr = this.GetNearestPoint(point, true) ?? this.GetNearestPoint(point, false);
+
             if (thr != null)
             {
                 double distance = thr.Position.DistanceTo(point);

@@ -29,6 +29,7 @@ using OxyPlot;
 namespace ExampleLibrary
 {
     using System;
+    using System.Diagnostics;
 
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
@@ -86,6 +87,38 @@ namespace ExampleLibrary
                     e.Handled = true;
                 }
             };
+            return model;
+        }
+
+        [Example("MouseDown event and HitTestResult")]
+        public static PlotModel MouseDownEventHitTestResult()
+        {
+            var model = new PlotModel("MouseDown HitTestResult", "Reports the index of the nearest point.");
+
+            var s1 = new LineSeries();
+            s1.Points.Add(new DataPoint(0, 10));
+            s1.Points.Add(new DataPoint(10, 40));
+            s1.Points.Add(new DataPoint(40, 20));
+            s1.Points.Add(new DataPoint(60, 30));
+            model.Series.Add(s1);
+            s1.MouseDown += (s, e) =>
+                {
+                    model.Subtitle = "Index of nearest point in LineSeries: " + Math.Round(e.HitTestResult.Index);
+                    model.InvalidatePlot(false);
+                };
+
+            var s2 = new ScatterSeries();
+            s2.Points.Add(new DataPoint(0, 15));
+            s2.Points.Add(new DataPoint(10, 45));
+            s2.Points.Add(new DataPoint(40, 25));
+            s2.Points.Add(new DataPoint(60, 35));
+            model.Series.Add(s2);
+            s2.MouseDown += (s, e) =>
+                {
+                    model.Subtitle = "Index of nearest point in ScatterSeries: " + (int)e.HitTestResult.Index;
+                    model.InvalidatePlot(false);
+                };
+
             return model;
         }
 
