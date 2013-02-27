@@ -338,9 +338,12 @@ namespace OxyPlot.Pdf
 
             var font = new XFont(fontFamily, (float)fontSize * FontsizeFactor, fs);
 
-            var sf = new XStringFormat { Alignment = XStringAlignment.Near };
-
             var size = this.g.MeasureString(text, font);
+
+#if SILVERLIGHT
+            // Correct the height, MeasureString returns 2x height
+            size.Height *= 0.5;
+#endif
 
             if (maxSize != null)
             {
@@ -367,7 +370,7 @@ namespace OxyPlot.Pdf
             }
 
             double dy = 0;
-            sf.LineAlignment = XLineAlignment.Near;
+
             if (valign == VerticalAlignment.Middle)
             {
                 dy = -size.Height / 2;
@@ -388,10 +391,8 @@ namespace OxyPlot.Pdf
             this.g.TranslateTransform((float)p.X, (float)p.Y);
 
             var layoutRectangle = new XRect(0, 0, size.Width, size.Height);
-
-            var tf = new XTextFormatter(this.g);
-            tf.DrawString(text, font, ToBrush(fill), layoutRectangle, sf);
-
+            var sf = new XStringFormat { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
+            g.DrawString(text, font, ToBrush(fill), layoutRectangle, sf);
             this.g.Restore(state);
         }
 
@@ -428,6 +429,12 @@ namespace OxyPlot.Pdf
 
             var font = new XFont(fontFamily, (float)fontSize * FontsizeFactor, fs);
             var size = this.g.MeasureString(text, font);
+
+#if SILVERLIGHT
+            // Correct the height, MeasureString returns 2x height
+            size.Height *= 0.5;
+#endif
+            
             return new OxySize(size.Width, size.Height);
         }
 

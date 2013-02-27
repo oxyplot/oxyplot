@@ -41,6 +41,7 @@ namespace ExportDemo
     using System.Reflection;
 
     using OxyPlot;
+    using OxyPlot.Axes;
     using OxyPlot.Pdf;
     using OxyPlot.Series;
     using OxyPlot.Silverlight;
@@ -51,6 +52,10 @@ namespace ExportDemo
         {
             InitializeComponent();
             var tmp = new PlotModel("Export demo");
+            tmp.Axes.Add(new LinearAxis(AxisPosition.Bottom));
+            tmp.Axes.Add(new LinearAxis(AxisPosition.Top));
+            tmp.Axes.Add(new LinearAxis(AxisPosition.Left));
+            tmp.Axes.Add(new LinearAxis(AxisPosition.Right));
             tmp.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 2, 100, "sin(x)"));
 
             //var assembly = Assembly.GetExecutingAssembly();
