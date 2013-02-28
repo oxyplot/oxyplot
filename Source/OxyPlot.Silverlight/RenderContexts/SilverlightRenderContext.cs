@@ -65,6 +65,7 @@ namespace OxyPlot.Silverlight
             this.canvas = canvas;
             this.Width = canvas.ActualWidth;
             this.Height = canvas.ActualHeight;
+            this.RendersToScreen = true;
         }
 
         /// <summary>
@@ -100,6 +101,14 @@ namespace OxyPlot.Silverlight
         /// The current tooltip.
         /// </value>
         private string CurrentToolTip { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the context renders to screen.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the context renders to screen; otherwise, <c>false</c>.
+        /// </value>
+        public bool RendersToScreen { get; set; }
 
         /// <summary>
         /// The draw ellipse.

@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryTest", "Examples\WPF\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfExamples", "Examples\WPF\WpfExamples\WpfExamples.csproj", "{B86739B8-5DE9-406F-9418-0751BF7C166F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf.Tests", "OxyPlot.Pdf.Tests\OxyPlot.Pdf.Tests.csproj", "{FF600107-3DEB-404F-8A37-F63473BDFCB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -183,6 +185,16 @@ Global
 		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Release|Mixed Platforms.Build.0 = Release|x86
 		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Release|x86.ActiveCfg = Release|x86
 		{B86739B8-5DE9-406F-9418-0751BF7C166F}.Release|x86.Build.0 = Release|x86
+		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -79,6 +79,7 @@ namespace OxyPlot.Pdf
         /// <param name="background">The background color.</param>
         public PdfRenderContext(double width, double height, OxyColor background)
         {
+            this.RendersToScreen = false;
             this.doc = new PdfDocument();
             this.page = new PdfPage { Width = new XUnit(width), Height = new XUnit(height) };
             this.doc.AddPage(this.page);
@@ -434,7 +435,7 @@ namespace OxyPlot.Pdf
             // Correct the height, MeasureString returns 2x height
             size.Height *= 0.5;
 #endif
-            
+
             return new OxySize(size.Width, size.Height);
         }
 

@@ -179,7 +179,8 @@ namespace OxyPlot.Annotations
                 for (var y = (int)ymin; y < ymax; y++)
                 {
                     string uri = this.GetTileUri(x, y, zoom);
-                    var img = this.GetImage(uri);
+                    var img = this.GetImage(uri, rc.RendersToScreen);
+
                     if (img == null)
                     {
                         continue;
@@ -271,21 +272,25 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets the image from the specified uri.
         /// </summary>
-        /// <param name="uri">
-        /// The URI.
-        /// </param>
+        /// <param name="uri">The URI.</param>
+        /// <param name="async">Get the image asynchronously if set to <c>true</c>. The plot model will be invalidated when the image has been downloaded.</param>
         /// <returns>
         /// The image.
         /// </returns>
         /// <remarks>
         /// This method gets the image from cache, or starts an async download.
         /// </remarks>
-        private OxyImage GetImage(string uri)
+        private OxyImage GetImage(string uri, bool async)
         {
             OxyImage img;
             if (this.images.TryGetValue(uri, out img))
             {
                 return img;
+            }
+
+            if (!async)
+            {
+                return this.Download(uri);
             }
 
             lock (this.queue)
@@ -295,14 +300,64 @@ namespace OxyPlot.Annotations
                 this.queue.Enqueue(uri);
             }
 
-            this.StartDownload();
+            this.BeginDownload();
             return null;
+        }
+
+        /// <summary>
+        /// Downloads the image from the specified URI.
+        /// </summary>
+        /// <param name="uri">The URI.</param>
+        /// <returns>The image</returns>
+        private OxyImage Download(string uri)
+        {
+            OxyImage img = null;
+            var mre = new ManualResetEvent(false);
+            var request = (HttpWebRequest)WebRequest.Create(uri);
+            request.Method = "GET";
+            request.BeginGetResponse(
+               r =>
+               {
+                   try
+                   {
+                       if (request.HaveResponse)
+                       {
+                           var response = request.EndGetResponse(r);
+                           var stream = response.GetResponseStream();
+
+                           var ms = new MemoryStream();
+                           stream.CopyTo(ms);
+                           var buffer = ms.ToArray();
+
+                           img = new OxyImage(buffer);
+                           this.images[uri] = img;
+                       }
+
+                   }
+                   catch (Exception e)
+                   {
+                       var ie = e;
+                       while (ie != null)
+                       {
+                           System.Diagnostics.Debug.WriteLine(ie.Message);
+                           ie = ie.InnerException;
+                       }
+                   }
+                   finally
+                   {
+                       mre.Set();                       
+                   }
+               },
+               request);
+
+            mre.WaitOne();
+            return img;
         }
 
         /// <summary>
         /// Starts the next download in the queue.
         /// </summary>
-        private void StartDownload()
+        private void BeginDownload()
         {
             if (this.numberOfDownloads >= this.MaxNumberOfDownloads)
             {
@@ -373,7 +428,7 @@ namespace OxyPlot.Annotations
             this.PlotModel.InvalidatePlot(false);
             if (this.queue.Count > 0)
             {
-                this.StartDownload();
+                this.BeginDownload();
             }
         }
 

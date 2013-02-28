@@ -86,6 +86,20 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
+        /// Gets a value indicating whether the context renders to screen.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the context renders to screen; otherwise, <c>false</c>.
+        /// </value>
+        public bool RendersToScreen
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Draws an ellipse.
         /// </summary>
         /// <param name="rect">

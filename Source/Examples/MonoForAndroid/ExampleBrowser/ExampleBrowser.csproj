@@ -74,8 +74,8 @@
       <Name>OxyPlot.MonoForAndroid</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlotMfA.csproj">
-      <Project>{08A91765-2C9D-4D2B-B56D-FAE62AB204CC}</Project>
-      <Name>OxyPlotMA</Name>
+      <Project>{08a91765-2c9d-4d2b-b56d-fae62ab204cc}</Project>
+      <Name>OxyPlotMfA</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ExampleLibrary\ExampleLibraryMfA.csproj">
       <Project>{f4c226b3-0dab-474c-9466-5eacafa9b64a}</Project>
