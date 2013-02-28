@@ -37,6 +37,22 @@ namespace OxyPlot
     public abstract class RenderContextBase : IRenderContext
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="RenderContextBase" /> class.
+        /// </summary>
+        protected RenderContextBase()
+        {
+            this.RendersToScreen = true;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the context renders to screen.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the context renders to screen; otherwise, <c>false</c>.
+        /// </value>
+        public bool RendersToScreen { get; set; }
+
+        /// <summary>
         /// Draws an ellipse.
         /// </summary>
         /// <param name="rect">
@@ -380,7 +396,7 @@ namespace OxyPlot
             double y,
             double w,
             double h,
-            double opacity, 
+            double opacity,
             bool interpolate)
         {
         }

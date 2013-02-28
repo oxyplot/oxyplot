@@ -93,16 +93,16 @@
     <Compile Include="Examples\ScatterSeriesExamples.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OxyPlot\OxyPlotMfA.csproj">
-      <Project>{08A91765-2C9D-4D2B-B56D-FAE62AB204CC}</Project>
-      <Name>OxyPlotMA</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\Bergensbanen.csv" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\OxyPlot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\OxyPlot\OxyPlotMfA.csproj">
+      <Project>{08a91765-2c9d-4d2b-b56d-fae62ab204cc}</Project>
+      <Name>OxyPlotMfA</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

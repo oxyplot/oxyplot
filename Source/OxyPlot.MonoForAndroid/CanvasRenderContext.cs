@@ -53,7 +53,21 @@ namespace OxyPlot.MonoForAndroid
         /// <param name="canvas">The canvas.</param>
         public void SetTarget(Canvas canvas)
         {
-            this.canvas = canvas;            
+            this.canvas = canvas;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the context renders to screen.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the context renders to screen; otherwise, <c>false</c>.
+        /// </value>
+        public bool RendersToScreen
+        {
+            get
+            {
+                return true;
+            }
         }
 
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness = 1)

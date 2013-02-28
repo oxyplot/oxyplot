@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PngExporter.cs" company="OxyPlot">
+// <copyright file="PdfExporterTests.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
 //   Copyright (c) 2012 Oystein Bjorke
@@ -23,59 +23,45 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   The png exporter.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot.WindowsForms
+namespace OxyPlot.Pdf.Tests
 {
-    using System.Drawing;
-    using System.Drawing.Imaging;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
 
-    using OxyPlot.WindowsForms;
+    using ExampleLibrary;
+    using NUnit.Framework;
 
-    /// <summary>
-    /// The png exporter.
-    /// </summary>
-    public static class PngExporter
+    using OxyPlot.Pdf;
+
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    [TestFixture]
+    public class PdfExporterTests
     {
-        /// <summary>
-        /// The export.
-        /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="fileName">
-        /// The file name.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="background">
-        /// The background.
-        /// </param>
-        public static void Export(PlotModel model, string fileName, int width, int height, Brush background = null)
+        [Test]
+        public void Export_AllExamplesInExampleLibrary_CheckThatAllFilesExist()
         {
-            using (var bm = new Bitmap(width, height))
+            const string DestinationDirectory = "PdfExporterTests_ExampleLibrary";
+            if (!Directory.Exists(DestinationDirectory))
             {
-                using (Graphics g = Graphics.FromImage(bm))
-                {
-                    if (background != null)
-                    {
-                        g.FillRectangle(background, 0, 0, width, height);
-                    }
+                Directory.CreateDirectory(DestinationDirectory);
+            }
 
-                    var rc = new GraphicsRenderContext { RendersToScreen = false };
-                    rc.SetGraphicsTarget(g);
-                    model.Update();
-                    model.Render(rc, width, height);
-                    bm.Save(fileName, ImageFormat.Png);
+            // A4
+            const double Width = 297 / 25.4 * 72;
+            const double Height = 210 / 25.4 * 72;
+
+            foreach (var example in Examples.GetList())
+            {
+                var path = Path.Combine(DestinationDirectory, StringHelper.CreateValidFileName(example.Category + " - " + example.Title, ".pdf"));
+                using (var s = File.Create(path))
+                {
+                    PdfExporter.Export(example.PlotModel, s, Width, Height);
                 }
+
+                Assert.IsTrue(File.Exists(path));
             }
         }
-
     }
 }
