@@ -60,13 +60,13 @@ namespace OxyPlot.Wpf
         /// The line style property.
         /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
-            "LineStyle", typeof(LineStyle), typeof(PolygonAnnotation), new PropertyMetadata(LineStyle.Dash, AppearanceChanged));
+            "LineStyle", typeof(LineStyle), typeof(PolygonAnnotation), new PropertyMetadata(LineStyle.Solid, AppearanceChanged));
 
         /// <summary>
         /// The Points property.
         /// </summary>
         public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
-            "Points", typeof(IList<DataPoint>), typeof(PolygonAnnotation), new PropertyMetadata(new List<DataPoint>(), DataChanged));
+            "Points", typeof(IList<DataPoint>), typeof(PolygonAnnotation), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The stroke thickness property.

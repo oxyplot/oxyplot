@@ -54,7 +54,7 @@ namespace OxyPlot.Wpf
             "Stroke",
             typeof(Color),
             typeof(RectangleAnnotation),
-            new PropertyMetadata(null, AppearanceChanged));
+            new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
         ///     The Stroke property.

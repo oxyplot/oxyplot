@@ -54,7 +54,7 @@ namespace OxyPlot.Wpf
             "Stroke",
             typeof(Color),
             typeof(EllipseAnnotation),
-            new PropertyMetadata(null, AppearanceChanged));
+            new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
         ///     The Stroke property.
@@ -69,13 +69,13 @@ namespace OxyPlot.Wpf
         ///     The X property.
         /// </summary>
         public static readonly DependencyProperty XProperty = DependencyProperty.Register(
-            "X", typeof(double), typeof(EllipseAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
+            "X", typeof(double), typeof(EllipseAnnotation), new PropertyMetadata(0.0, DataChanged));
 
         /// <summary>
         ///     The Y property.
         /// </summary>
         public static readonly DependencyProperty YProperty = DependencyProperty.Register(
-            "Y", typeof(double), typeof(EllipseAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
+            "Y", typeof(double), typeof(EllipseAnnotation), new PropertyMetadata(0.0, DataChanged));
 
         /// <summary>
         ///     The text rotation property

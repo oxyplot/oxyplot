@@ -44,28 +44,10 @@ namespace OxyPlot.Wpf
             "Background", typeof(Color?), typeof(TextAnnotation), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The ClipByXAxis property.
-        /// </summary>
-        public static readonly DependencyProperty ClipByXAxisProperty = DependencyProperty.Register(
-            "ClipByXAxis", typeof(bool), typeof(TextAnnotation), new UIPropertyMetadata(true));
-
-        /// <summary>
-        /// The ClipByYAxis property.
-        /// </summary>
-        public static readonly DependencyProperty ClipByYAxisProperty = DependencyProperty.Register(
-            "ClipByYAxis", typeof(bool), typeof(TextAnnotation), new UIPropertyMetadata(true));
-
-        /// <summary>
         /// The TextColor property.
         /// </summary>
         public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
             "TextColor", typeof(Color), typeof(TextAnnotation), new PropertyMetadata(Colors.Blue, AppearanceChanged));
-
-        /// <summary>
-        /// The LineJoin property.
-        /// </summary>
-        public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
-            "LineJoin", typeof(OxyPenLineJoin), typeof(TextAnnotation), new UIPropertyMetadata(OxyPenLineJoin.Miter));
 
         /// <summary>
         /// The Offset property.
@@ -135,40 +117,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to clip the annotation line by the X axis range.
-        /// </summary>
-        /// <value><c>true</c> if clipping by the X axis is enabled; otherwise, <c>false</c>.</value>
-        public bool ClipByXAxis
-        {
-            get
-            {
-                return (bool)this.GetValue(ClipByXAxisProperty);
-            }
-
-            set
-            {
-                this.SetValue(ClipByXAxisProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to clip the annotation line by the Y axis range.
-        /// </summary>
-        /// <value><c>true</c> if clipping by the Y axis is enabled; otherwise, <c>false</c>.</value>
-        public bool ClipByYAxis
-        {
-            get
-            {
-                return (bool)this.GetValue(ClipByYAxisProperty);
-            }
-
-            set
-            {
-                this.SetValue(ClipByYAxisProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the color of the text.
         /// </summary>
         public Color TextColor
@@ -181,23 +129,6 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(TextColorProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the line join.
-        /// </summary>
-        /// <value>The line join.</value>
-        public OxyPenLineJoin LineJoin
-        {
-            get
-            {
-                return (OxyPenLineJoin)this.GetValue(LineJoinProperty);
-            }
-
-            set
-            {
-                this.SetValue(LineJoinProperty, value);
             }
         }
 

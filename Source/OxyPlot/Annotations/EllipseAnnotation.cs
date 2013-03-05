@@ -44,6 +44,7 @@ namespace OxyPlot.Annotations
         /// </summary>
         public EllipseAnnotation()
         {
+            this.Stroke = OxyColors.Black;
             this.Fill = OxyColors.LightBlue;
         }
 
