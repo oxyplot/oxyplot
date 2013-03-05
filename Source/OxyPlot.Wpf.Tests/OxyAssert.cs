@@ -30,8 +30,11 @@
 namespace OxyPlot.Wpf.Tests
 {
     using System;
+    using System.Collections;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Windows;
+    using System.Windows.Media;
 
     public class OxyAssert
     {
@@ -91,7 +94,7 @@ namespace OxyPlot.Wpf.Tests
                 }
 
                 var v2 = pd2.GetValue(o2);
-                if (v1 != null && v2 != null && v1.ToString().Equals(v2.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                if (AreEqual(v1, v2))
                 {
                     continue;
                 }
@@ -107,6 +110,53 @@ namespace OxyPlot.Wpf.Tests
             }
 
             NUnit.Framework.Assert.IsTrue(result);
+        }
+
+        private static bool AreEqual(object v1, object v2)
+        {
+            if (v1 == null || v2 == null)
+            {
+                return v1 == null && v2 == null;
+            }
+
+            if (v1 is Color && v2 is OxyColor)
+            {
+                return ((OxyColor)v2).ToColor().Equals((Color)v1);
+            }
+
+            if (v1 is Vector && v2 is ScreenVector)
+            {
+                return ((ScreenVector)v2).ToVector().Equals((Vector)v1);
+            }
+
+            if (v1 is Thickness && v2 is OxyThickness)
+            {
+                return ((OxyThickness)v2).ToThickness().Equals((Thickness)v1);
+            }
+
+            if (v1 is IList && v2 is IList)
+            {
+                return AreEqual((IList)v1, (IList)v2);
+            }
+
+            return v1.Equals(v2);
+        }
+
+        private static bool AreEqual(IList v1, IList v2)
+        {
+            if (v1.Count != v2.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < v1.Count; i++)
+            {
+                if (!AreEqual(v1[i], v2[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

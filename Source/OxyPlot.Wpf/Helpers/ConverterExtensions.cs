@@ -61,13 +61,13 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Converts a color to a Brush.
+        /// Converts an <see cref="OxyColor"/> to a <see cref="Brush"/>.
         /// </summary>
         /// <param name="c">
         /// The color.
         /// </param>
         /// <returns>
-        /// A SolidColorBrush.
+        /// A <see cref="SolidColorBrush"/>.
         /// </returns>
         public static Brush ToBrush(this OxyColor c)
         {
@@ -75,7 +75,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Converts an OxyColor to a Color.
+        /// Converts an <see cref="OxyColor"/> to a <see cref="Color"/>.
         /// </summary>
         /// <param name="c">
         /// The color.
@@ -86,6 +86,26 @@ namespace OxyPlot.Wpf
         public static Color ToColor(this OxyColor c)
         {
             return Color.FromArgb(c.A, c.R, c.G, c.B);
+        }
+
+        /// <summary>
+        /// Converts an OxyThickness to a Thickness.
+        /// </summary>
+        /// <param name="c">The thickness.</param>
+        /// <returns>A <see cref="Thickness"/> instance.</returns>
+        public static Thickness ToThickness(this OxyThickness c)
+        {
+            return new Thickness(c.Left, c.Top, c.Right, c.Bottom);
+        }
+
+        /// <summary>
+        /// Converts a ScreenVector to a Vector.
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <returns>A <see cref="Vector"/> instance.</returns>
+        public static Vector ToVector(this ScreenVector c)
+        {
+            return new Vector(c.X, c.Y);
         }
 
         /// <summary>
@@ -147,7 +167,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Converts a nullable Color to an OxyColor.
+        /// Converts a nullable <see cref="Color"/> to an OxyColor.
         /// </summary>
         /// <param name="color">
         /// The color.

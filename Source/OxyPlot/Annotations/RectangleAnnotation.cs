@@ -44,11 +44,12 @@ namespace OxyPlot.Annotations
         /// </summary>
         public RectangleAnnotation()
         {
+            this.Stroke = OxyColors.Black;
             this.Fill = OxyColors.LightBlue;
-            this.MinimumX = double.NaN;
-            this.MaximumX = double.NaN;
-            this.MinimumY = double.NaN;
-            this.MaximumY = double.NaN;
+            this.MinimumX = double.MinValue;
+            this.MaximumX = double.MaxValue;
+            this.MinimumY = double.MinValue;
+            this.MaximumY = double.MaxValue;
             this.TextRotation = 0;
         }
 

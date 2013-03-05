@@ -39,8 +39,48 @@ namespace OxyPlot.Wpf.Tests
         public void LineAnnotation()
         {
             var s1 = new LineAnnotation();
-            var s2 = new LineAnnotation();
+            var s2 = new Annotations.LineAnnotation();
             OxyAssert.PropertiesAreEqual(s1, s2);
         }
-   }
+    
+        [Test]
+        public void EllipseAnnotation()
+        {
+            var s1 = new EllipseAnnotation();
+            var s2 = new Annotations.EllipseAnnotation();
+            OxyAssert.PropertiesAreEqual(s1, s2);
+        }
+
+        [Test]
+        public void RectangleAnnotation()
+        {
+            var s1 = new RectangleAnnotation();
+            var s2 = new Annotations.RectangleAnnotation();
+            OxyAssert.PropertiesAreEqual(s1, s2);
+        }
+
+        [Test]
+        public void ArrowAnnotation()
+        {
+            var s1 = new ArrowAnnotation();
+            var s2 = new Annotations.ArrowAnnotation();
+            OxyAssert.PropertiesAreEqual(s1, s2);
+        }
+
+        [Test]
+        public void PolygonAnnotation()
+        {
+            var s1 = new PolygonAnnotation();
+            var s2 = new Annotations.PolygonAnnotation();
+            OxyAssert.PropertiesAreEqual(s1, s2);
+        }
+
+        [Test]
+        public void TextAnnotation()
+        {
+            var s1 = new TextAnnotation();
+            var s2 = new Annotations.TextAnnotation();
+            OxyAssert.PropertiesAreEqual(s1, s2);
+        }
+    }
 }
