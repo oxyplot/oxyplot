@@ -58,7 +58,7 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register(
                 "TrackerFormatString", 
                 typeof(string), 
-                typeof(XYAxisSeries), 
+                typeof(Series), 
                 new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace OxyPlot.Wpf
         /// </param>
         protected static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((XYAxisSeries)d).OnVisualChanged();
+            ((Series)d).OnVisualChanged();
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace OxyPlot.Wpf
         /// </param>
         protected static void DataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((XYAxisSeries)d).OnDataChanged();
+            ((Series)d).OnDataChanged();
         }
 
         /// <summary>
