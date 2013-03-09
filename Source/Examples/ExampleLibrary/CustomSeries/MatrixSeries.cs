@@ -117,15 +117,18 @@
             if (i >= 0 && i < this.matrix.GetLength(0) && j >= 0 && j < this.matrix.GetLength(1))
             {
                 var value = this.matrix[i, j];
-                var text = this.Format(
+                var text = StringHelper.Format(
+                    this.ActualCulture,
                     this.TrackerFormatString,
                     null,
                     this.Title,
-                    i, j, value);
+                    i, 
+                    j, 
+                    value);
                 return new TrackerHitResult(this, dp, point, null, -1, text);
             }
 
-            return base.GetNearestPoint(point, interpolate);
+            return null; 
         }
 
         /// <summary>

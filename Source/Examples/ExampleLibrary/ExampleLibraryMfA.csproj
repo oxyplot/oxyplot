@@ -47,6 +47,7 @@
     <Compile Include="CustomSeries\ErrorItem.cs" />
     <Compile Include="CustomSeries\FlagSeries.cs" />
     <Compile Include="CustomSeries\LineSegmentSeries.cs" />
+    <Compile Include="CustomSeries\MatrixSeries.cs" />
     <Compile Include="ExampleInfo.cs" />
     <Compile Include="Examples.cs" />
     <Compile Include="Attributes\ExamplesAttribute.cs" />
@@ -66,7 +67,6 @@
     <Compile Include="Examples\BarSeries\RectangleBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\TornadoBarSeriesExamples.cs" />
     <Compile Include="Examples\HeatMapSeriesExamples.cs" />
-    <Compile Include="CustomSeries\MatrixSeries.cs" />
     <Compile Include="Examples\MiscExamples.cs" />
     <Compile Include="Examples\MouseEventExamples.cs" />
     <Compile Include="Examples\ExamplesBase.cs" />

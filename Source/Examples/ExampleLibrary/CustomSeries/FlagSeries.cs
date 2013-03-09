@@ -108,7 +108,7 @@
                     this.symbolSize.Height);
                 if (r.Contains(point))
                 {
-                    var text = this.Format(this.TrackerFormatString, null, this.Title, v);
+                    var text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, null, this.Title, v);
 
                     return new TrackerHitResult(
                         this,
