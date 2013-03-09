@@ -18,6 +18,13 @@ copy ..\Output\NET45\OxyPlot.Xps.??? ..\Packages\OxyPlot.Wpf\lib\NET45
 copy ..\license.txt ..\Packages\OxyPlot.Wpf
 ..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.Wpf\OxyPlot.Wpf.nuspec -OutputDirectory ..\Packages >> pack.log
 
+REM === WPF (No PCL) ===
+mkdir ..\Packages\OxyPlot.Wpf_NoPCL\lib
+mkdir ..\Packages\OxyPlot.Wpf_NoPCL\lib\NET40
+copy ..\Output\NET40x\*.* ..\Packages\OxyPlot.Wpf_NoPCL\lib\NET40
+copy ..\license.txt ..\Packages\OxyPlot.Wpf_NoPCL
+..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.Wpf_NoPCL\OxyPlot.Wpf_NoPCL.nuspec -OutputDirectory ..\Packages >> pack.log
+
 REM === OpenXml ===
 mkdir ..\Packages\OxyPlot.OpenXml\lib
 mkdir ..\Packages\OxyPlot.OpenXml\lib\NET40
