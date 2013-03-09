@@ -211,6 +211,14 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to disconnect the canvas while updating.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if canvas should be disconnected while updating; otherwise, <c>false</c>.
+        /// </value>
+        public bool DisconnectCanvasWhileUpdating { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this instance is being rendered.
         /// </summary>
         /// <remarks>
@@ -1540,7 +1548,5 @@ namespace OxyPlot.Wpf
                 }
             }
         }
-
-        public bool DisconnectCanvasWhileUpdating { get; set; }
     }
 }
