@@ -179,8 +179,10 @@ namespace OxyPlot.Series
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
+            
             this.MinX = Math.Min(this.X0, this.X1);
             this.MaxX = Math.Max(this.X0, this.X1);
+
             this.MinY = Math.Min(this.Y0, this.Y1);
             this.MaxY = Math.Max(this.Y0, this.Y1);
 
@@ -189,8 +191,10 @@ namespace OxyPlot.Series
 
             this.XAxis.Include(this.MinX);
             this.XAxis.Include(this.MaxX);
-            this.XAxis.Include(this.MinY);
-            this.XAxis.Include(this.MaxY);
+
+            this.YAxis.Include(this.MinY);
+            this.YAxis.Include(this.MaxY);
+            
             this.ColorAxis.Include(this.MinValue);
             this.ColorAxis.Include(this.MaxValue);
         }
