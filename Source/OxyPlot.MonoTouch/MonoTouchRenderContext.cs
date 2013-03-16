@@ -38,10 +38,12 @@ namespace OxyPlot.MonoTouch
 	public class MonoTouchRenderContext : RenderContextBase
 	{
 		private CGContext gctx;
+		private RectangleF viewRect; 
 
 		public MonoTouchRenderContext (CGContext context, System.Drawing.RectangleF rect)
 		{
 			gctx = context;
+			viewRect = rect;
 		}
 
 		private UIColor ToColor(OxyColor c)
@@ -190,7 +192,7 @@ namespace OxyPlot.MonoTouch
             gctx.DrawPath (CGPathDrawingMode.Stroke);
 		}
 
-		public override void DrawText (ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign, OxySize? maxSize)
+		public override void DrawText (ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalAlignment halign, VerticalAlignment valign, OxySize? maxSize)
 		{
 			//This method needs work not 100% around vertical alignment.
 			if(string.IsNullOrEmpty(text))
@@ -227,33 +229,33 @@ namespace OxyPlot.MonoTouch
 
 			gctx.SaveState();
 			gctx.ScaleCTM(1, -1);
-			gctx.TranslateCTM(0, (float)-Height);
+			gctx.TranslateCTM(0, (float)-viewRect.Height);
 
-			float y = (float)(Height - p.Y);
+			float y = (float)(viewRect.Height - p.Y);
 			float x = 0;
 
 			switch(halign)
 			{
-			case HorizontalTextAlign.Left:
+			case HorizontalAlignment.Left:
 				x = (float)(p.X);
 				break;
-			case HorizontalTextAlign.Right:
+			case HorizontalAlignment.Right:
 				x = (float)(p.X - textSize.Width);
 				break;
-			case HorizontalTextAlign.Center:
+			case HorizontalAlignment.Center:
 				x = (float)(p.X - (textSize.Width / 2));
 				break;
 			}
 
 			switch(valign)
 			{
-			case VerticalTextAlign.Bottom:
+			case VerticalAlignment.Bottom:
 				y -= (float)fontSize;
 				break;
-			case VerticalTextAlign.Top:
+			case VerticalAlignment.Top:
 				//y += (float)fontSize;
 				//break;
-			case VerticalTextAlign.Middle:
+			case VerticalAlignment.Middle:
 				y -= (float)(fontSize / 2);
 				break;
 			}
