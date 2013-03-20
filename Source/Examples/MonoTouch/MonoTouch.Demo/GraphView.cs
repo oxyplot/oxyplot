@@ -52,8 +52,8 @@ namespace MonoTouch.Demo
 
 			var context = UIGraphics.GetCurrentContext();
 
-			var renderer = new MonoTouchRenderContext(context, rect);
-			plot.Render(renderer);
+			var renderer = new MonoTouchRenderContext(context);
+			plot.Render(renderer, rect.Width, rect.Height);
 		}
 	}
 }
