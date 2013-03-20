@@ -32,6 +32,7 @@ using System.Drawing;
 using System.Linq;
 using MonoTouch.UIKit;
 using MonoTouch.CoreGraphics;
+using MonoTouch.Foundation;
 
 namespace OxyPlot.MonoTouch
 {
@@ -39,9 +40,17 @@ namespace OxyPlot.MonoTouch
 	{
 		private CGContext gctx;
 
-		public MonoTouchRenderContext (CGContext context, System.Drawing.RectangleF rect)
+		public MonoTouchRenderContext (CGContext context)
 		{
 			gctx = context;
+
+			//SET RENDERING QUALITY
+			gctx.SetAllowsFontSmoothing(true);
+			gctx.SetAllowsFontSubpixelQuantization(true);
+			gctx.SetAllowsAntialiasing(true);
+			gctx.SetShouldSmoothFonts(true);
+			gctx.SetShouldAntialias(true);
+			gctx.InterpolationQuality = CGInterpolationQuality.High;
 		}
 
 		private UIColor ToColor(OxyColor c)
@@ -190,9 +199,8 @@ namespace OxyPlot.MonoTouch
             gctx.DrawPath (CGPathDrawingMode.Stroke);
 		}
 
-		public override void DrawText (ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalTextAlign halign, VerticalTextAlign valign, OxySize? maxSize)
+		public override void DrawText (ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalAlignment halign, VerticalAlignment valign, OxySize? maxSize)
 		{
-			//This method needs work not 100% around vertical alignment.
 			if(string.IsNullOrEmpty(text))
 			{
 				return;
@@ -204,8 +212,6 @@ namespace OxyPlot.MonoTouch
             {
                 //fs = FontStyle.Bold;
             }
-
-			var textSize = MeasureText(text, fontFamily, fontSize, fontWeight);
 
 			if (maxSize != null)
             {
@@ -220,71 +226,70 @@ namespace OxyPlot.MonoTouch
 //                }
             }
 
+			gctx.SaveState();
+			
 			gctx.SelectFont(fontFamily, (float)fontSize, CGTextEncoding.MacRoman);
 			ToColor(fill).SetFill();
-
+			
 			gctx.SetTextDrawingMode(CGTextDrawingMode.Fill);
-
-			gctx.SaveState();
-			gctx.ScaleCTM(1, -1);
-			gctx.TranslateCTM(0, (float)-Height);
-
-			float y = (float)(Height - p.Y);
-			float x = 0;
+			
+			var tfont = UIFont.FromName (fontFamily,(float)fontSize);
+			NSString nsstr = new NSString(text);
+			SizeF sz = nsstr.StringSize(tfont);
+			
+			float y = (float)(p.Y);
+			float x = (float)(p.X);
 
 			switch(halign)
 			{
-			case HorizontalTextAlign.Left:
+			case HorizontalAlignment.Left:
 				x = (float)(p.X);
 				break;
-			case HorizontalTextAlign.Right:
-				x = (float)(p.X - textSize.Width);
+			case HorizontalAlignment.Right:
+				x = (float)(p.X - sz.Width);
 				break;
-			case HorizontalTextAlign.Center:
-				x = (float)(p.X - (textSize.Width / 2));
+			case HorizontalAlignment.Center:
+				x = (float)(p.X - (sz.Width / 2));
 				break;
 			}
 
 			switch(valign)
 			{
-			case VerticalTextAlign.Bottom:
-				y -= (float)fontSize;
+			case VerticalAlignment.Bottom:
+				y -= (float)sz.Height;
 				break;
-			case VerticalTextAlign.Top:
+			case VerticalAlignment.Top:
 				//y += (float)fontSize;
-				//break;
-			case VerticalTextAlign.Middle:
-				y -= (float)(fontSize / 2);
+				break;
+			case VerticalAlignment.Middle:
+				y -= (float)(sz.Height / 2);
 				break;
 			}
 
-			gctx.ShowTextAtPoint(x, y, text);
+			RectangleF rect = new RectangleF(x,y,sz.Width,sz.Height);
+			nsstr.DrawString(rect, tfont);
+			
 			gctx.RestoreState();
 			//Console.WriteLine("X:{0:###} Y:{1:###} HA:{2}:{3:###} VA:{4}:{5:###} TW:{6:###} - {7}", p.X, p.Y, halign, x, valign, y, textSize.Width, text);
 		}
 
 		public override OxySize MeasureText (string text, string fontFamily, double fontSize, double fontWeight)
 		{
-			//This method needs work not 100% around calculating height.
 			if(text == null)
 			{
 				return OxySize.Empty;
 			}
-
+			
 			fontFamily = GetDefaultFont(fontFamily);
-
-			var currentPosition = gctx.TextPosition;
-
+			
 			gctx.SelectFont(fontFamily, (float)fontSize, CGTextEncoding.MacRoman);
-
-			gctx.SetTextDrawingMode(CGTextDrawingMode.Invisible);
-			gctx.ShowTextAtPoint(currentPosition.X, currentPosition.Y, text);
-
-			var newPosition = gctx.TextPosition;
-
-			var width = newPosition.X - currentPosition.X;
-
-			return new OxySize(width, fontSize);
+			
+			UIFont tfont = UIFont.FromName (fontFamily,(float)fontSize);
+			
+			NSString nsstr = new NSString(text);
+			SizeF sz = nsstr.StringSize(tfont);
+			
+			return new OxySize(sz.Width, sz.Height);
 		}
 
 		/// <summary>
