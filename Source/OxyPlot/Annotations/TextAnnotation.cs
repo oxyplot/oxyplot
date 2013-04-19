@@ -38,6 +38,11 @@ namespace OxyPlot.Annotations
     public class TextAnnotation : TextualAnnotation
     {
         /// <summary>
+        /// The actual bounds of the text.
+        /// </summary>
+        private IList<ScreenPoint> actualBounds;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TextAnnotation" /> class.
         /// </summary>
         public TextAnnotation()
@@ -128,10 +133,10 @@ namespace OxyPlot.Annotations
 
             const double MinDistSquared = 4;
 
-            var textBounds = GetTextBounds(
+            this.actualBounds = GetTextBounds(
                 position, textSize, this.Padding, this.Rotation, this.HorizontalAlignment, this.VerticalAlignment);
             rc.DrawClippedPolygon(
-                textBounds, clippingRect, MinDistSquared, this.Background, this.Stroke, this.StrokeThickness);
+                this.actualBounds, clippingRect, MinDistSquared, this.Background, this.Stroke, this.StrokeThickness);
 
             rc.DrawClippedText(
                 clippingRect,
@@ -160,7 +165,13 @@ namespace OxyPlot.Annotations
         /// </returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
-            return null;
+            if (this.actualBounds == null)
+            {
+                return null;
+            }
+
+            // Todo: see if performance can be improved by checking rectangle (with rotation and alignment), not polygon
+            return ScreenPointHelper.IsPointInPolygon(point, this.actualBounds) ? new HitTestResult(point) : null;
         }
 
         /// <summary>

@@ -30,6 +30,7 @@ namespace ExampleLibrary
 {
     using System;
     using System.Diagnostics;
+    using System.Reflection;
 
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
@@ -395,6 +396,68 @@ namespace ExampleLibrary
                 };
 
             model.Annotations.Add(pa);
+            return model;
+        }
+
+        [Example("TextAnnotation")]
+        public static PlotModel TextAnnotation()
+        {
+            var model = new PlotModel("TextAnnotation", "Click the text");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 20));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+            var ta = new TextAnnotation
+            {
+                Position = new DataPoint(4, -2),
+                Text = "Click here"
+            };
+
+            // Handle left mouse clicks
+            ta.MouseDown += (s, e) =>
+            {
+                if (e.ChangedButton != OxyMouseButton.Left)
+                {
+                    return;
+                }
+
+                ta.Background = ta.Background == null ? OxyColors.LightGreen : null;
+                model.InvalidatePlot(false);
+                e.Handled = true;
+            };
+
+            model.Annotations.Add(ta);
+            return model;
+        }
+
+        [Example("ImageAnnotation")]
+        public static PlotModel ImageAnnotation()
+        {
+            var model = new PlotModel("ImageAnnotation", "Click the image");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 20));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
+
+            OxyImage image;
+            var assembly = Assembly.GetExecutingAssembly();
+            using (var stream = assembly.GetManifestResourceStream("ExampleLibrary.Resources.OxyPlot.png"))
+            {
+                image = new OxyImage(stream);
+            }
+
+            var ia = new ImageAnnotation(image, new DataPoint(4, 2), HorizontalAlignment.Right);
+            model.Annotations.Add(ia);
+
+            // Handle left mouse clicks
+            ia.MouseDown += (s, e) =>
+            {
+                if (e.ChangedButton != OxyMouseButton.Left)
+                {
+                    return;
+                }
+
+                ia.HorizontalAlignment = ia.HorizontalAlignment == HorizontalAlignment.Right ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+                model.InvalidatePlot(false);
+                e.Handled = true;
+            };
+
             return model;
         }
 
