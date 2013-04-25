@@ -39,7 +39,6 @@ namespace SimpleDemo
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
         }
    }
 }
