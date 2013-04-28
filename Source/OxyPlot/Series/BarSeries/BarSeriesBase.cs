@@ -173,7 +173,7 @@ namespace OxyPlot.Series
         /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            if (this.ActualBarRectangles == null)
+            if (this.ActualBarRectangles == null || this.ValidItems == null)
             {
                 return null;
             }
@@ -210,7 +210,7 @@ namespace OxyPlot.Series
         {
             this.ActualBarRectangles = new List<OxyRect>();
 
-            if (this.ValidItems.Count == 0)
+            if (this.ValidItems == null || this.ValidItems.Count == 0)
             {
                 return;
             }
