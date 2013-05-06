@@ -200,6 +200,11 @@ namespace OxyPlot.Series
         /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
+            if (this.XAxis == null || this.YAxis == null)
+            {
+                return null;
+            }
+
             if (interpolate)
             {
                 return null;
@@ -228,7 +233,7 @@ namespace OxyPlot.Series
                                 this.TrackerFormatString,
                                 item,
                                 this.Title,
-                                p.X,
+                                this.XAxis.GetValue(p.X),
                                 item.High,
                                 item.Low,
                                 item.Open,

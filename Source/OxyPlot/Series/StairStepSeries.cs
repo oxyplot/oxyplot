@@ -109,6 +109,11 @@ namespace OxyPlot.Series
         /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
+            if (this.XAxis == null || this.YAxis == null)
+            {
+                return null;
+            }
+
             TrackerHitResult result = null;
 
             // http://paulbourke.net/geometry/pointlineplane/

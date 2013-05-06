@@ -27,13 +27,13 @@
 //   Gets the median.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ExampleLibrary
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using OxyPlot;
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
@@ -168,6 +168,30 @@ namespace ExampleLibrary
             model.Axes.Add(new CategoryAxis("Experiment No.", "1", "2", "3", "4", "5"));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, "Speed of light (km/s minus 299,000)") { MajorStep = 100, MinorStep = 100 });
             return model;
+        }
+
+        [Example("BoxPlot (DateTime axis)")]
+        public static PlotModel BoxPlotSeries_DateTimeAxis()
+        {
+            var m = new PlotModel();
+            var x0 = DateTimeAxis.ToDouble(new DateTime(2013, 05, 04));
+            var a = new DateTimeAxis(AxisPosition.Bottom)
+                        {
+                            Minimum = x0 - 0.9,
+                            Maximum = x0 + 1.9,
+                            IntervalType = DateTimeIntervalType.Days,
+                            MajorStep = 1,
+                            MinorStep = 1
+                        };
+            a.StringFormat = "yyyy-MM-dd";
+            m.Axes.Add(a);
+            var s = new BoxPlotSeries();
+            s.TrackerFormatString =
+                            "X: {1:yyyy-MM-dd}\nUpper Whisker: {2:0.00}\nThird Quartil: {3:0.00}\nMedian: {4:0.00}\nFirst Quartil: {5:0.00}\nLower Whisker: {6:0.00}";
+            s.Items.Add(new BoxPlotItem(x0, 10, 14, 16, 20, 22, new[] { 23.5 }));
+            s.Items.Add(new BoxPlotItem(x0 + 1, 11, 13, 14, 15, 18, new[] { 23.4 }));
+            m.Series.Add(s);
+            return m;
         }
     }
 }

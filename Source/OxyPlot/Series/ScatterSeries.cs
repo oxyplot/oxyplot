@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ScatterSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents a series for scatter plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
     using System;
@@ -58,7 +59,7 @@ namespace OxyPlot.Series
         /// The marker fill color.
         /// </param>
         /// <param name="markerSize">
-        /// Size of the markers (If ScatterPoint.Size is set, this value will be overriden).
+        /// Size of the markers (If ScatterPoint.Size is set, this value will be overridden).
         /// </param>
         public ScatterSeries(string title, OxyColor markerFill = null, double markerSize = 5)
             : this()
@@ -224,8 +225,7 @@ namespace OxyPlot.Series
 
             foreach (var p in this.Points)
             {
-                if (this.XAxis == null || this.YAxis == null || p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum
-                    || p.Y > this.YAxis.ActualMaximum)
+                if (p.X < this.XAxis.ActualMinimum || p.X > this.XAxis.ActualMaximum || p.Y < this.YAxis.ActualMinimum || p.Y > this.YAxis.ActualMaximum)
                 {
                     i++;
                     continue;
@@ -240,9 +240,9 @@ namespace OxyPlot.Series
                 if (d2 < minimumDistance)
                 {
                     var item = this.GetItem(i);
-                    
-                    object xvalue = this.XAxis != null ? this.XAxis.GetValue(dp.X) : dp.X;
-                    object yvalue = this.YAxis != null ? this.YAxis.GetValue(dp.Y) : dp.Y;
+
+                    object xvalue = this.XAxis.GetValue(dp.X);
+                    object yvalue = this.YAxis.GetValue(dp.Y);
                     object zvalue = null;
 
                     var scatterPoint = p as ScatterPoint;
@@ -281,7 +281,7 @@ namespace OxyPlot.Series
         /// Determines whether the specified point is valid.
         /// </summary>
         /// <param name="pt">
-        /// The pointt.
+        /// The point.
         /// </param>
         /// <param name="xaxis">
         /// The x axis.
@@ -368,10 +368,10 @@ namespace OxyPlot.Series
                 }
                 else
                 {
-// ReSharper disable PossibleNullReferenceException
+                    // ReSharper disable PossibleNullReferenceException
                     allPoints[i] = screenPoint;
                     markerSizes[i] = size;
-// ReSharper restore PossibleNullReferenceException
+                    // ReSharper restore PossibleNullReferenceException
                 }
             }
 
@@ -522,7 +522,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the max/min from the datapoints.
+        /// Updates the max/min from the data points.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
@@ -531,10 +531,10 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// The add scatter points.
+        /// Adds scatter points specified by a items source and data fields.
         /// </summary>
         /// <param name="dest">
-        /// The dest.
+        /// The destination collection.
         /// </param>
         /// <param name="itemsSource">
         /// The items source.
@@ -617,6 +617,5 @@ namespace OxyPlot.Series
                 this.ColorAxis.Include(this.MaxValue);
             }
         }
-
     }
 }

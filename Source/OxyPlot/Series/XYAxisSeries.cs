@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="XYAxisSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Abstract base class for series that contains an X-axis and Y-axis.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
     using System;
@@ -256,7 +257,7 @@ namespace OxyPlot.Series
         /// </returns>
         protected TrackerHitResult GetNearestInterpolatedPointInternal(IList<IDataPoint> points, ScreenPoint point)
         {
-            if (points == null)
+            if (this.XAxis == null || this.YAxis == null || points == null)
             {
                 return null;
             }
@@ -319,7 +320,7 @@ namespace OxyPlot.Series
         /// The point (screen coordinates).
         /// </param>
         /// <returns>
-        /// True if a point was found.
+        /// A <see cref="TrackerHitResult"/> if a point was found, null otherwise.
         /// </returns>
         protected TrackerHitResult GetNearestPointInternal(IEnumerable<IDataPoint> points, ScreenPoint point)
         {
@@ -329,7 +330,7 @@ namespace OxyPlot.Series
 
             double minimumDistance = double.MaxValue;
             int i = 0;
-            foreach (IDataPoint p in points)
+            foreach (var p in points)
             {
                 if (!this.IsValidPoint(p, this.XAxis, this.YAxis))
                 {
@@ -381,13 +382,13 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Converts the value of the specified object to a double precision floating point number. DateTime objects are converted using DateTimeAxis.ToDouble TimeSpan objects are converted using TimeSpanAxis.ToDouble
+        /// Converts the value of the specified object to a double precision floating point number. DateTime objects are converted using DateTimeAxis.ToDouble and TimeSpan objects are converted using TimeSpanAxis.ToDouble
         /// </summary>
         /// <param name="value">
         /// The value.
         /// </param>
         /// <returns>
-        /// The to double.
+        /// The floating point number value.
         /// </returns>
         protected virtual double ToDouble(object value)
         {
