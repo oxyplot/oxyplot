@@ -50,5 +50,31 @@ namespace ExampleLibrary
             plotModel1.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 100, "x_{i}^{j}"));
             return plotModel1;
         }
+    
+        [Example("#10045: DateTimeAxis with IntervalType = Minutes")]
+        public static PlotModel DateTimeAxisWithIntervalTypeMinutes()
+        {
+            var plotModel1 = new PlotModel();
+            var linearAxis1 = new LinearAxis();
+            linearAxis1.MinorGridlineStyle = LineStyle.Dot;
+            plotModel1.Axes.Add(linearAxis1);
+
+            var dateTimeAxis1 = new DateTimeAxis();
+            dateTimeAxis1.IntervalType = DateTimeIntervalType.Minutes;
+            // dateTimeAxis1.MajorStep = 1.0 / 24 / 60;
+            dateTimeAxis1.EndPosition = 0;
+            dateTimeAxis1.StartPosition = 1;
+            dateTimeAxis1.StringFormat = "hh:mm:ss";
+            plotModel1.Axes.Add(dateTimeAxis1);
+            var time0 = new DateTime(2013, 5, 6, 3, 24, 0);
+            var time1 = new DateTime(2013, 5, 6, 3, 28, 0);
+            //dateTimeAxis1.Minimum = DateTimeAxis.ToDouble(time0);
+            //dateTimeAxis1.Maximum = DateTimeAxis.ToDouble(time1);
+            var lineSeries1 = new LineSeries();
+            lineSeries1.Points.Add(new DataPoint(DateTimeAxis.ToDouble(time0), 36));
+            lineSeries1.Points.Add(new DataPoint(DateTimeAxis.ToDouble(time1), 26));
+            plotModel1.Series.Add(lineSeries1);
+            return plotModel1;
+        }
     }
 }
