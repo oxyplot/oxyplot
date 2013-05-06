@@ -486,7 +486,8 @@ namespace ExampleLibrary
             var model = new PlotModel("Select range", "Left click and drag to select a range.");
             model.Series.Add(new FunctionSeries(Math.Cos, 0, 40, 0.1));
 
-            RectangleAnnotation range = null;
+            var range = new RectangleAnnotation { Fill = OxyColors.SkyBlue.ChangeAlpha(120), MinimumX = 0, MaximumX = 0 };
+            model.Annotations.Add(range);
 
             double startx = double.NaN;
 
@@ -494,14 +495,6 @@ namespace ExampleLibrary
             {
                 if (e.ChangedButton == OxyMouseButton.Left)
                 {
-                    if (range == null)
-                    {
-                        // Create and add the annotation to the plot
-                        range = new RectangleAnnotation { Fill = OxyColors.SkyBlue.ChangeAlpha(120) };
-                        model.Annotations.Add(range);
-                        model.RefreshPlot(true);
-                    }
-
                     startx = range.InverseTransform(e.Position).X;
                     range.MinimumX = startx;
                     range.MaximumX = startx;
