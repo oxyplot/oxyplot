@@ -32,18 +32,15 @@ namespace ExampleLibrary
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    [Examples("Financial Series")]
-    public static class FinancialSeriesExamples
+    [Examples("HighLowSeries")]
+    public static class HighLowSeriesExamples
     {
         [Example("HighLowSeries")]
         public static PlotModel HighLowSeries()
         {
             var model = new PlotModel("HighLowSeries") { LegendSymbolLength = 24 };
-            var s1 = new HighLowSeries("random values")
-                         {
-                             Color = OxyColors.Black,
-                         };
-            var r = new Random();
+            var s1 = new HighLowSeries("random values") { Color = OxyColors.Black, };
+            var r = new Random(314);
             var price = 100.0;
             for (int x = 0; x < 24; x++)
             {
@@ -60,6 +57,34 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("HighLowSeries (DateTime axis)")]
+        public static PlotModel HighLowSeries_DateTimeAxis()
+        {
+            var m = new PlotModel();
+            var x0 = DateTimeAxis.ToDouble(new DateTime(2013, 05, 04));
+            var a = new DateTimeAxis(AxisPosition.Bottom)
+                        {
+                            Minimum = x0 - 0.9,
+                            Maximum = x0 + 1.9,
+                            IntervalType = DateTimeIntervalType.Days,
+                            MajorStep = 1,
+                            MinorStep = 1
+                        };
+            a.StringFormat = "yyyy-MM-dd";
+            m.Axes.Add(a);
+            var s = new HighLowSeries();
+            s.TrackerFormatString = "X: {1:yyyy-MM-dd}\nHigh: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}";
+            s.Items.Add(new HighLowItem(x0, 14, 10, 13, 12.4));
+            s.Items.Add(new HighLowItem(x0 + 1, 17, 8, 12.4, 16.3));
+            m.Series.Add(s);
+
+            return m;
+        }
+    }
+
+    [Examples("CandleStickSeries")]
+    public static class CandleStickSeriesExamples
+    {
         [Example("CandleStickSeries")]
         public static PlotModel CandleStickSeries()
         {
@@ -68,7 +93,7 @@ namespace ExampleLibrary
                          {
                              Color = OxyColors.Black,
                          };
-            var r = new Random();
+            var r = new Random(314);
             var price = 100.0;
             for (int x = 0; x < 16; x++)
             {
@@ -79,6 +104,7 @@ namespace ExampleLibrary
                 var close = low + r.NextDouble() * (high - low);
                 s1.Items.Add(new HighLowItem(x, high, low, open, close));
             }
+
             model.Series.Add(s1);
             model.Axes.Add(new LinearAxis(AxisPosition.Left) { MaximumPadding = 0.3, MinimumPadding = 0.3 });
 

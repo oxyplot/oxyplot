@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BoxPlotSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents a series for box plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
     using System.Collections.Generic;
@@ -189,6 +190,11 @@ namespace OxyPlot.Series
         /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
+            if (this.XAxis == null || this.YAxis == null)
+            {
+                return null;
+            }
+
             double minimumDistance = double.MaxValue;
             var result = new TrackerHitResult(this, DataPoint.Undefined, ScreenPoint.Undefined);
             foreach (var item in this.Items)
@@ -207,7 +213,7 @@ namespace OxyPlot.Series
                             this.OutlierTrackerFormatString,
                             item,
                             this.Title,
-                            result.DataPoint.X,
+                            this.XAxis.GetValue(result.DataPoint.X),
                             outlier);
                         minimumDistance = d;
                     }
@@ -226,7 +232,7 @@ namespace OxyPlot.Series
                         this.TrackerFormatString,
                         item,
                         this.Title,
-                        result.DataPoint.X,
+                        this.XAxis.GetValue(result.DataPoint.X),
                         item.UpperWhisker,
                         item.BoxTop,
                         item.Median,
@@ -252,7 +258,7 @@ namespace OxyPlot.Series
                         this.TrackerFormatString,
                         item,
                         this.Title,
-                        result.DataPoint.X,
+                        this.XAxis.GetValue(result.DataPoint.X),
                         item.UpperWhisker,
                         item.BoxTop,
                         item.Median,
@@ -319,11 +325,7 @@ namespace OxyPlot.Series
             foreach (var item in this.Items)
             {
                 // Add the outlier points
-                foreach (var outlier in item.Outliers)
-                {
-                    var screenPoint = this.Transform(item.X, outlier);
-                    outlierScreenPoints.Add(screenPoint);
-                }
+                outlierScreenPoints.AddRange(item.Outliers.Select(outlier => this.Transform(item.X, outlier)));
 
                 var topWhiskerTop = this.Transform(item.X, item.UpperWhisker);
                 var topWhiskerBottom = this.Transform(item.X, item.BoxTop);
@@ -444,23 +446,23 @@ namespace OxyPlot.Series
 
             var halfBoxWidth = legendBox.Width * 0.24;
             var halfWhiskerWidth = halfBoxWidth * this.WhiskerWidth;
-            double strokeThickness = 1;
+            const double LegendStrokeThickness = 1;
             var strokeColor = this.GetSelectableColor(this.Stroke);
             var fillColor = this.GetSelectableFillColor(this.Fill);
 
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, ytop) },
                 strokeColor,
-                strokeThickness,
-                LineStyleHelper.GetDashArray(LineStyle.Solid),
+                LegendStrokeThickness,
+                LineStyle.Solid.GetDashArray(),
                 OxyPenLineJoin.Miter,
                 true);
 
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid, ybottom), new ScreenPoint(xmid, legendBox.Bottom) },
                 strokeColor,
-                strokeThickness,
-                LineStyleHelper.GetDashArray(LineStyle.Solid),
+                LegendStrokeThickness,
+                LineStyle.Solid.GetDashArray(),
                 OxyPenLineJoin.Miter,
                 true);
 
@@ -474,8 +476,8 @@ namespace OxyPlot.Series
                             new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Bottom)
                         },
                     strokeColor,
-                    strokeThickness,
-                    LineStyleHelper.GetDashArray(LineStyle.Solid),
+                    LegendStrokeThickness,
+                    LineStyle.Solid.GetDashArray(),
                     OxyPenLineJoin.Miter,
                     true);
 
@@ -487,8 +489,8 @@ namespace OxyPlot.Series
                             new ScreenPoint(xmid + halfWhiskerWidth, legendBox.Top)
                         },
                     strokeColor,
-                    strokeThickness,
-                    LineStyleHelper.GetDashArray(LineStyle.Solid),
+                    LegendStrokeThickness,
+                    LineStyle.Solid.GetDashArray(),
                     OxyPenLineJoin.Miter,
                     true);
             }
@@ -500,7 +502,7 @@ namespace OxyPlot.Series
                     new OxyRect(xmid - halfBoxWidth, ytop, 2 * halfBoxWidth, ybottom - ytop),
                     fillColor,
                     strokeColor,
-                    strokeThickness);
+                    LegendStrokeThickness);
             }
 
             // median
@@ -509,8 +511,8 @@ namespace OxyPlot.Series
                 rc.DrawLine(
                     new[] { new ScreenPoint(xmid - halfBoxWidth, ymid), new ScreenPoint(xmid + halfBoxWidth, ymid) },
                     strokeColor,
-                    strokeThickness * this.MedianThickness,
-                    LineStyleHelper.GetDashArray(LineStyle.Solid),
+                    LegendStrokeThickness * this.MedianThickness,
+                    LineStyle.Solid.GetDashArray(),
                     OxyPenLineJoin.Miter,
                     true);
             }
@@ -609,6 +611,5 @@ namespace OxyPlot.Series
             var rect = new OxyRect(boxTop.X, boxTop.Y, boxBottom.X - boxTop.X, boxBottom.Y - boxTop.Y);
             return rect;
         }
-
     }
 }
