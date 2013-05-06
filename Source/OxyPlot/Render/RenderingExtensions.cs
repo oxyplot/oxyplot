@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RenderingExtensions.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   The rendering extensions.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
@@ -66,17 +67,17 @@ namespace OxyPlot
         */
 
         /// <summary>
-        /// The m 1.
+        /// The vertical distance to the bottom points of the triangles.
         /// </summary>
         private static readonly double M1 = Math.Tan(Math.PI / 6);
 
         /// <summary>
-        /// The m 2.
+        /// The vertical distance to the top points of the triangles .
         /// </summary>
         private static readonly double M2 = Math.Sqrt(1 + (M1 * M1));
 
         /// <summary>
-        /// The m 3.
+        /// The horizontal/vertical distance to the end points of the stars.
         /// </summary>
         private static readonly double M3 = Math.Tan(Math.PI / 4);
 
@@ -86,7 +87,7 @@ namespace OxyPlot
         /// <param name="rc">The render context.</param>
         /// <param name="points">The points.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
-        /// <param name="minDistSquared">The min dist squared.</param>
+        /// <param name="minDistSquared">The squared minimum distance.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="lineStyle">The line style.</param>
@@ -111,7 +112,6 @@ namespace OxyPlot
             int n = points.Count;
             if (n > 0)
             {
-
                 if (n == 1)
                 {
                     pts.Add(points[0]);
@@ -124,10 +124,9 @@ namespace OxyPlot
                     var s1 = points[i];
 
                     // Clipped version of this and next point.
-                    var s0c = s0;
-                    var s1c = s1;
-                    bool isInside = clipping.ClipLine(ref s0c, ref s1c);
-                    s0 = s1;
+                    var sc0 = s0;
+                    var sc1 = s1;
+                    bool isInside = clipping.ClipLine(ref sc0, ref sc1);
 
                     if (!isInside)
                     {
@@ -136,18 +135,18 @@ namespace OxyPlot
                     }
 
                     // render from s0c-s1c
-                    double dx = s1c.x - last.x;
-                    double dy = s1c.y - last.y;
+                    double dx = sc1.x - last.x;
+                    double dy = sc1.y - last.y;
 
-                    if (dx * dx + dy * dy > minDistSquared || i == 1 || i == n - 1)
+                    if ((dx * dx) + (dy * dy) > minDistSquared || i == 1 || i == n - 1)
                     {
-                        if (!s0c.Equals(last) || i == 1)
+                        if (!sc0.Equals(last) || i == 1)
                         {
-                            pts.Add(s0c);
+                            pts.Add(sc0);
                         }
 
-                        pts.Add(s1c);
-                        last = s1c;
+                        pts.Add(sc1);
+                        last = sc1;
                     }
 
                     // render the line if we are leaving the clipping region););
@@ -155,8 +154,8 @@ namespace OxyPlot
                     {
                         if (pts.Count > 0)
                         {
-                            rc.DrawLine(
-                                pts, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
+                            EnsureNonEmptyLineIsVisible(pts);
+                            rc.DrawLine(pts, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
                             if (pointsRendered != null)
                             {
                                 pointsRendered(pts);
@@ -167,27 +166,9 @@ namespace OxyPlot
                     }
                 }
 
-                // Check if the line contains two points and they are at the same point
-                if (pts.Count == 2)
-                {
-                    if (pts[0].DistanceTo(pts[1]) < 1)
-                    {
-                        // Modify to a small horizontal line to make sure it is being rendered
-                        pts[1] = new ScreenPoint(pts[0].X + 1, pts[0].Y);
-                        pts[0] = new ScreenPoint(pts[0].X - 1, pts[0].Y);
-                    }
-                }
-
-                // Check if the line contains a single point
-                if (pts.Count == 1)
-                {
-                    // Add a second point to make sure the line is being rendered as a small dot
-                    pts.Add(new ScreenPoint(pts[0].X + 1, pts[0].Y));
-                    pts[0] = new ScreenPoint(pts[0].X - 1, pts[0].Y);
-                }
-
                 if (pts.Count > 0)
                 {
+                    EnsureNonEmptyLineIsVisible(pts);
                     rc.DrawLine(pts, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
 
                     // Execute the 'callback'.
@@ -247,10 +228,10 @@ namespace OxyPlot
         /// <summary>
         /// Draws the specified image.
         /// </summary>
-        /// <param name="rc">The rc.</param>
+        /// <param name="rc">The render context.</param>
         /// <param name="image">The image.</param>
-        /// <param name="x">The destX position.</param>
-        /// <param name="y">The destY position.</param>
+        /// <param name="x">The destination X position.</param>
+        /// <param name="y">The destination Y position.</param>
         /// <param name="w">The width.</param>
         /// <param name="h">The height.</param>
         /// <param name="opacity">The opacity.</param>
@@ -280,13 +261,14 @@ namespace OxyPlot
         /// <param name="rc">The render context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="source">The source.</param>
-        /// <param name="x">The destX position.</param>
-        /// <param name="y">The destY position.</param>
+        /// <param name="x">The destination X position.</param>
+        /// <param name="y">The destination Y position.</param>
         /// <param name="w">The width.</param>
         /// <param name="h">The height.</param>
         /// <param name="opacity">The opacity.</param>
         /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
-        public static void DrawClippedImage(this IRenderContext rc,
+        public static void DrawClippedImage(
+            this IRenderContext rc,
             OxyRect clippingRect,
             OxyImage source,
             double x,
@@ -347,7 +329,6 @@ namespace OxyPlot
 
             rc.DrawImage(source, (uint)srcx, (uint)srcy, (uint)srcw, (uint)srch, destx, desty, destw, desth, opacity, interpolate);
         }
-
 
         /// <summary>
         /// Draws the polygon within the specified clipping rectangle.
@@ -506,13 +487,15 @@ namespace OxyPlot
         /// <param name="fill">The fill color.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="n">The number of points around the ellipse.</param>
         public static void DrawClippedEllipse(
             this IRenderContext rc,
             OxyRect clippingRectangle,
             OxyRect rect,
             OxyColor fill,
             OxyColor stroke,
-            double thickness)
+            double thickness,
+            int n = 100)
         {
             if (rc.SetClip(clippingRectangle))
             {
@@ -521,7 +504,6 @@ namespace OxyPlot
                 return;
             }
 
-            int n = 100;
             var points = new ScreenPoint[n];
             double cx = (rect.Left + rect.Right) / 2;
             double cy = (rect.Top + rect.Bottom) / 2;
@@ -651,7 +633,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="p">The center point of the marker.</param>
-        /// <param name="clippingRect">The clipping rect.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="type">The marker type.</param>
         /// <param name="outline">The outline.</param>
         /// <param name="size">The size of the marker.</param>
@@ -902,8 +884,8 @@ namespace OxyPlot
         public static void DrawRectangleAsPolygon(
             this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, OxyThickness thickness)
         {
-            if (thickness.Left == thickness.Right && thickness.Left == thickness.Top
-                && thickness.Left == thickness.Bottom)
+            if (thickness.Left.Equals(thickness.Right) && thickness.Left.Equals(thickness.Top)
+                && thickness.Left.Equals(thickness.Bottom))
             {
                 DrawRectangleAsPolygon(rc, rect, fill, stroke, thickness.Left);
                 return;
@@ -921,10 +903,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The add marker geometry.
+        /// Adds a marker geometry.
         /// </summary>
         /// <param name="p">
-        /// The p.
+        /// The position of the marker.
         /// </param>
         /// <param name="type">
         /// The type.
@@ -936,16 +918,16 @@ namespace OxyPlot
         /// The size.
         /// </param>
         /// <param name="ellipses">
-        /// The ellipses.
+        /// The ellipse collection.
         /// </param>
         /// <param name="rects">
-        /// The rects.
+        /// The rectangle collection.
         /// </param>
         /// <param name="polygons">
-        /// The polygons.
+        /// The polygon collection.
         /// </param>
         /// <param name="lines">
-        /// The lines.
+        /// The line collection.
         /// </param>
         private static void AddMarkerGeometry(
             ScreenPoint p,
@@ -963,6 +945,7 @@ namespace OxyPlot
                 {
                     throw new ArgumentNullException("outline", "The outline should be set when MarkerType is 'Custom'.");
                 }
+
                 var poly = outline.Select(o => new ScreenPoint(p.X + (o.x * size), p.Y + (o.y * size))).ToList();
                 polygons.Add(poly);
                 return;
@@ -987,8 +970,8 @@ namespace OxyPlot
                         polygons.Add(
                             new[]
                                 {
-                                    new ScreenPoint(p.x, p.y - M2 * size), new ScreenPoint(p.x + M2 * size, p.y),
-                                    new ScreenPoint(p.x, p.y + M2 * size), new ScreenPoint(p.x - M2 * size, p.y)
+                                    new ScreenPoint(p.x, p.y - (M2 * size)), new ScreenPoint(p.x + (M2 * size), p.y),
+                                    new ScreenPoint(p.x, p.y + (M2 * size)), new ScreenPoint(p.x - (M2 * size), p.y)
                                 });
                         break;
                     }
@@ -998,8 +981,8 @@ namespace OxyPlot
                         polygons.Add(
                             new[]
                                 {
-                                    new ScreenPoint(p.x - size, p.y + M1 * size),
-                                    new ScreenPoint(p.x + size, p.y + M1 * size), new ScreenPoint(p.x, p.y - M2 * size)
+                                    new ScreenPoint(p.x - size, p.y + (M1 * size)),
+                                    new ScreenPoint(p.x + size, p.y + (M1 * size)), new ScreenPoint(p.x, p.y - (M2 * size))
                                 });
                         break;
                     }
@@ -1020,10 +1003,10 @@ namespace OxyPlot
                 case MarkerType.Cross:
                 case MarkerType.Star:
                     {
-                        lines.Add(new ScreenPoint(p.x - size * M3, p.y - size * M3));
-                        lines.Add(new ScreenPoint(p.x + size * M3, p.y + size * M3));
-                        lines.Add(new ScreenPoint(p.x - size * M3, p.y + size * M3));
-                        lines.Add(new ScreenPoint(p.x + size * M3, p.y - size * M3));
+                        lines.Add(new ScreenPoint(p.x - (size * M3), p.y - (size * M3)));
+                        lines.Add(new ScreenPoint(p.x + (size * M3), p.y + (size * M3)));
+                        lines.Add(new ScreenPoint(p.x - (size * M3), p.y + (size * M3)));
+                        lines.Add(new ScreenPoint(p.x + (size * M3), p.y - (size * M3)));
                         break;
                     }
             }
@@ -1093,5 +1076,34 @@ namespace OxyPlot
             return rect;
         }
 
+        /// <summary>
+        /// Makes sure that a non empty line is visible.
+        /// </summary>
+        /// <param name="pts">The points (screen coordinates).</param>
+        /// <remarks>
+        /// If the line contains one point, another point is added.
+        /// If the line contains two points at the same position, the points are moved 2 pixels apart.
+        /// </remarks>
+        private static void EnsureNonEmptyLineIsVisible(IList<ScreenPoint> pts)
+        {
+            // Check if the line contains two points and they are at the same point
+            if (pts.Count == 2)
+            {
+                if (pts[0].DistanceTo(pts[1]) < 1)
+                {
+                    // Modify to a small horizontal line to make sure it is being rendered
+                    pts[1] = new ScreenPoint(pts[0].X + 1, pts[0].Y);
+                    pts[0] = new ScreenPoint(pts[0].X - 1, pts[0].Y);
+                }
+            }
+
+            // Check if the line contains a single point
+            if (pts.Count == 1)
+            {
+                // Add a second point to make sure the line is being rendered as a small dot
+                pts.Add(new ScreenPoint(pts[0].X + 1, pts[0].Y));
+                pts[0] = new ScreenPoint(pts[0].X - 1, pts[0].Y);
+            }
+        }
     }
 }
