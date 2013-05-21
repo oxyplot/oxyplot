@@ -1,0 +1,1 @@
+..\Tools\Lynx\CodeplexReleaseUploader.exe /UserName=%CODEPLEX_USERNAME% /Password=%CODEPLEX_PASSWORD% /Project=oxyplot "/Release=OxyPlot binaries" "/Description=Release assemblies and examples." /Upload=..\Output\OxyPlot-NET45-%1.zip /Upload=..\Output\*.zip > UploadRelease.log

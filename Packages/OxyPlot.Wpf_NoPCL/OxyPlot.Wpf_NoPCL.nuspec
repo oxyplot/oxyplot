@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>OxyPlot.Wpf_NoPCL</id>
+    <version>2013.1.1</version>
+    <authors>objo</authors>
+    <licenseUrl>http://oxyplot.codeplex.com/license</licenseUrl>
+    <projectUrl>http://oxyplot.codeplex.com/</projectUrl>
+    <iconUrl>http://www.objo.net/codeplex/icons/oxyplot.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>OxyPlot is an open source .NET plotting library. This version is not using Portable class libraries (PCL). Use this version if you want to see the Plot in the Visual Studio WPF XAML Designer. This package also includes the Pdf, Xps and OpenXml libraries.</description>
+    <tags>wpf plotting plot charting chart</tags>
+  </metadata>
+</package>
