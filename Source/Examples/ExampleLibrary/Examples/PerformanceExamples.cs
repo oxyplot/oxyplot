@@ -48,6 +48,26 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("LineSeries, 100k points, markers")]
+        public static PlotModel LineSeries1WithMarkers()
+        {
+            var model = new PlotModel("LineSeries, 100k points, markers");
+            var s1 = new LineSeries { MarkerType = MarkerType.Square };
+            AddPoints(s1.Points, 100000);
+            model.Series.Add(s1);
+            return model;
+        }
+
+        [Example("LineSeries, 100k points, markers, low res")]
+        public static PlotModel LineSeries1WithMarkersLowRes()
+        {
+            var model = new PlotModel("LineSeries, 100k points, markers, lower resolution");
+            var s1 = new LineSeries { MarkerType = MarkerType.Square, MarkerResolution = 3 };
+            AddPoints(s1.Points, 100000);
+            model.Series.Add(s1);
+            return model;
+        }
+
         [Example("LineSeries, 100k points, round line joins")]
         public static PlotModel LineSeries1Round()
         {

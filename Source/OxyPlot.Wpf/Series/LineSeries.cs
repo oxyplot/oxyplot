@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   This is a WPF wrapper of OxyPlot.LineSeries
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Wpf
 {
     using System.Windows;
@@ -95,6 +96,12 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty MarkerOutlineProperty = DependencyProperty.Register(
             "MarkerOutline", typeof(Point[]), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
 
+        /// <summary>
+        /// The marker resolution property.
+        /// </summary>
+        public static readonly DependencyProperty MarkerResolutionProperty =
+            DependencyProperty.Register("MarkerResolution", typeof(int), typeof(LineSeries), new PropertyMetadata(0, AppearanceChanged));
+        
         /// <summary>
         /// The marker size property.
         /// </summary>
@@ -292,7 +299,19 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets MarkerSize.
+        /// Gets or sets the marker resolution.
+        /// </summary>
+        /// <value>
+        /// The marker resolution.
+        /// </value>
+        public int MarkerResolution
+        {
+            get { return (int)GetValue(MarkerResolutionProperty); }
+            set { this.SetValue(MarkerResolutionProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the marker size.
         /// </summary>
         public double MarkerSize
         {
@@ -412,6 +431,7 @@ namespace OxyPlot.Wpf
             s.Color = this.Color.ToOxyColor();
             s.StrokeThickness = this.StrokeThickness;
             s.LineStyle = this.LineStyle;
+            s.MarkerResolution = this.MarkerResolution;
             s.MarkerSize = this.MarkerSize;
             s.MarkerStroke = this.MarkerStroke;
             s.MarkerType = this.MarkerType;
@@ -425,6 +445,5 @@ namespace OxyPlot.Wpf
             s.LabelMargin = this.LabelMargin;
             s.LineLegendPosition = this.LineLegendPosition;
         }
-
     }
 }
