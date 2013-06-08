@@ -62,6 +62,7 @@ namespace OxyPlot.Series
             this.StrokeThickness = 2;
             this.LineJoin = OxyPenLineJoin.Bevel;
             this.LineStyle = LineStyle.Undefined;
+            this.MarkerResolution = 0;
             this.MarkerSize = 3;
             this.MarkerStrokeThickness = 1;
             this.CanTrackerInterpolatePoints = true;
@@ -175,6 +176,14 @@ namespace OxyPlot.Series
         public ScreenPoint[] MarkerOutline { get; set; }
 
         /// <summary>
+        /// Gets or sets the marker resolution.
+        /// </summary>
+        /// <value>
+        /// The marker resolution.
+        /// </value>
+        public int MarkerResolution { get; set; }
+
+        /// <summary>
         /// Gets or sets the size of the marker.
         /// </summary>
         /// <value>The size of the marker.</value>
@@ -240,7 +249,7 @@ namespace OxyPlot.Series
                 return this.LineStyle != LineStyle.Undefined ? this.LineStyle : LineStyle.Solid;
             }
         }
-        
+
         /// <summary>
         /// Gets the smoothed points.
         /// </summary>
@@ -346,12 +355,12 @@ namespace OxyPlot.Series
             {
                 // Render line breaks
                 rc.DrawClippedLineSegments(
-                    lineBreakSegments, 
-                    clippingRect, 
-                    this.BrokenLineColor, 
-                    this.BrokenLineThickness, 
-                    this.BrokenLineStyle, 
-                    this.LineJoin, 
+                    lineBreakSegments,
+                    clippingRect,
+                    this.BrokenLineColor,
+                    this.BrokenLineThickness,
+                    this.BrokenLineStyle,
+                    this.LineJoin,
                     false);
             }
 
@@ -385,19 +394,19 @@ namespace OxyPlot.Series
             double ymid = (legendBox.Top + legendBox.Bottom) / 2;
             var pts = new[] { new ScreenPoint(legendBox.Left, ymid), new ScreenPoint(legendBox.Right, ymid) };
             rc.DrawLine(
-                pts, 
-                this.GetSelectableColor(this.ActualColor), 
-                this.StrokeThickness, 
+                pts,
+                this.GetSelectableColor(this.ActualColor),
+                this.StrokeThickness,
                 this.ActualLineStyle.GetDashArray());
             var midpt = new ScreenPoint(xmid, ymid);
             rc.DrawMarker(
-                midpt, 
-                legendBox, 
-                this.MarkerType, 
-                this.MarkerOutline, 
-                this.MarkerSize, 
-                this.MarkerFill, 
-                this.MarkerStroke, 
+                midpt,
+                legendBox,
+                this.MarkerType,
+                this.MarkerOutline,
+                this.MarkerSize,
+                this.MarkerFill,
+                this.MarkerStroke,
                 this.MarkerStrokeThickness);
         }
 
@@ -506,15 +515,15 @@ namespace OxyPlot.Series
 #endif
 
                 rc.DrawClippedText(
-                    clippingRect, 
-                    pt, 
-                    s, 
-                    this.ActualTextColor, 
-                    this.ActualFont, 
-                    this.ActualFontSize, 
-                    this.ActualFontWeight, 
-                    0, 
-                    HorizontalAlignment.Center, 
+                    clippingRect,
+                    pt,
+                    s,
+                    this.ActualTextColor,
+                    this.ActualFont,
+                    this.ActualFontSize,
+                    this.ActualFontWeight,
+                    0,
+                    HorizontalAlignment.Center,
                     VerticalAlignment.Bottom);
             }
         }
@@ -552,15 +561,15 @@ namespace OxyPlot.Series
 
             // Render the legend
             rc.DrawClippedText(
-                clippingRect, 
-                pt, 
-                this.Title, 
-                this.ActualTextColor, 
-                this.ActualFont, 
-                this.ActualFontSize, 
-                this.ActualFontWeight, 
-                0, 
-                ha, 
+                clippingRect,
+                pt,
+                this.Title,
+                this.ActualTextColor,
+                this.ActualFont,
+                this.ActualFontSize,
+                this.ActualFontWeight,
+                0,
+                ha,
                 VerticalAlignment.Middle);
         }
 
@@ -594,15 +603,19 @@ namespace OxyPlot.Series
 
             if (this.MarkerType != MarkerType.None)
             {
+                var markerBinOffset = this.MarkerResolution > 0 ? this.XAxis.Transform(this.MinX, this.MaxY, this.YAxis) : default(ScreenPoint);
+
                 rc.DrawMarkers(
-                    pointsToRender, 
-                    clippingRect, 
-                    this.MarkerType, 
-                    this.MarkerOutline, 
-                    new[] { this.MarkerSize }, 
-                    this.MarkerFill, 
-                    this.MarkerStroke, 
-                    this.MarkerStrokeThickness);
+                    pointsToRender,
+                    clippingRect,
+                    this.MarkerType,
+                    this.MarkerOutline,
+                    new[] { this.MarkerSize },
+                    this.MarkerFill,
+                    this.MarkerStroke,
+                    this.MarkerStrokeThickness,
+                    this.MarkerResolution,
+                    markerBinOffset);
             }
         }
 
@@ -622,13 +635,13 @@ namespace OxyPlot.Series
             IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
             rc.DrawClippedLine(
-                pointsToRender, 
-                clippingRect, 
-                this.MinimumSegmentLength * this.MinimumSegmentLength, 
-                this.GetSelectableColor(this.ActualColor), 
-                this.StrokeThickness, 
-                this.ActualLineStyle, 
-                this.LineJoin, 
+                pointsToRender,
+                clippingRect,
+                this.MinimumSegmentLength * this.MinimumSegmentLength,
+                this.GetSelectableColor(this.ActualColor),
+                this.StrokeThickness,
+                this.ActualLineStyle,
+                this.LineJoin,
                 false);
         }
 
