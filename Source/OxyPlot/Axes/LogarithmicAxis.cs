@@ -289,7 +289,7 @@ namespace OxyPlot.Axes
             if (newMaximum > this.AbsoluteMaximum)
             {
                 newMaximum = this.AbsoluteMaximum;
-                newMinimum = newMaximum * this.ActualMaximum / this.ActualMinimum;
+                newMinimum = newMaximum * this.ActualMinimum / this.ActualMaximum;
             }
 
             this.ViewMinimum = newMinimum;
