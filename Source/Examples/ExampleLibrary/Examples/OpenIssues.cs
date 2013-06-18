@@ -133,5 +133,36 @@ namespace ExampleLibrary
             plotModel1.Series.Add(lineSeries1);
             return plotModel1;
         }
+
+        [Example("10055: Hit testing LineSeries with smoothing")]
+        public static PlotModel MouseDownEvent()
+        {
+            var model = new PlotModel("LineSeries with smoothing", "Tracker uses wrong points");
+            var logarithmicAxis1 = new LogarithmicAxis { Position = AxisPosition.Bottom };
+            model.Axes.Add(logarithmicAxis1);
+
+            // Add a line series
+            var s1 = new LineSeries
+            {
+                Color = OxyColors.SkyBlue,
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 6,
+                MarkerStroke = OxyColors.White,
+                MarkerFill = OxyColors.SkyBlue,
+                MarkerStrokeThickness = 1.5,
+                Smooth = true
+            };
+            s1.Points.Add(new DataPoint(100, 100));
+            s1.Points.Add(new DataPoint(400, 200));
+            s1.Points.Add(new DataPoint(600, -300));
+            s1.Points.Add(new DataPoint(1000, 400));
+            s1.Points.Add(new DataPoint(1500, 500));
+            s1.Points.Add(new DataPoint(2500, 600));
+            s1.Points.Add(new DataPoint(3000, 700));
+            model.Series.Add(s1);
+
+            return model;
+        }
+
     }
 }
