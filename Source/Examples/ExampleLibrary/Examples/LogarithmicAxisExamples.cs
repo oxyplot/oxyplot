@@ -125,5 +125,14 @@ namespace ExampleLibrary
 
             return model;
         }
+
+        [Example("LogarithmicAxis with AbsoluteMaximum")]
+        public static PlotModel AbsoluteMaximum()
+        {
+            var model = new PlotModel("AbsoluteMaximum = 1000");
+            model.Axes.Add(new LogarithmicAxis(AxisPosition.Left, 0.1, 1000) { AbsoluteMaximum = 1000 });
+            model.Series.Add(new FunctionSeries(Math.Exp, 0, Math.Log(900), 100));
+            return model;
+        }
     }
 }
