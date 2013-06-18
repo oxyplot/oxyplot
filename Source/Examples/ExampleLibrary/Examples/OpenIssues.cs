@@ -76,5 +76,62 @@ namespace ExampleLibrary
             plotModel1.Series.Add(lineSeries1);
             return plotModel1;
         }
+
+        [Example("10056: Tracker wrong for logarithmic y-axis")]
+        public static PlotModel ValueTime()
+        {
+            var plotModel1 = new PlotModel
+                                 {
+                                     LegendBackground = OxyColor.FromArgb(200, 255, 255, 255),
+                                     LegendBorder = OxyColors.Black,
+                                     LegendPlacement = LegendPlacement.Outside,
+                                     PlotAreaBackground = OxyColors.Gray,
+                                     PlotAreaBorderColor = OxyColors.Gainsboro,
+                                     PlotAreaBorderThickness = 2,
+                                     Title = "Value / Time"
+                                 };
+            var linearAxis1 = new LinearAxis
+                                  {
+                                      AbsoluteMaximum = 45,
+                                      AbsoluteMinimum = 0,
+                                      Key = "X-Axis",
+                                      Maximum = 46,
+                                      Minimum = -1,
+                                      Position = AxisPosition.Bottom,
+                                      Title = "Years",
+                                      Unit = "yr"
+                                  };
+            plotModel1.Axes.Add(linearAxis1);
+            var logarithmicAxis1 = new LogarithmicAxis { Key = "Y-Axis", Title = "Value for section" };
+            plotModel1.Axes.Add(logarithmicAxis1);
+            var lineSeries1 = new LineSeries
+                                  {
+                                      Color = OxyColors.Red,
+                                      LineStyle = LineStyle.Solid,
+                                      MarkerFill = OxyColors.Black,
+                                      MarkerSize = 2,
+                                      MarkerStroke = OxyColors.Black,
+                                      MarkerType = MarkerType.Circle,
+                                      DataFieldX = "X",
+                                      DataFieldY = "Y",
+                                      XAxisKey = "X-Axis",
+                                      YAxisKey = "Y-Axis",
+                                      Background = OxyColors.White,
+                                      Title = "Section Value",
+                                      TrackerKey = "ValueVersusTimeTracker"
+                                  };
+            lineSeries1.Points.Add(new DataPoint(0, 0));
+            lineSeries1.Points.Add(new DataPoint(5, 0));
+            lineSeries1.Points.Add(new DataPoint(10, 0));
+            lineSeries1.Points.Add(new DataPoint(15, 0));
+            lineSeries1.Points.Add(new DataPoint(20, 1));
+            lineSeries1.Points.Add(new DataPoint(25, 1));
+            lineSeries1.Points.Add(new DataPoint(30, 1));
+            lineSeries1.Points.Add(new DataPoint(35, 1));
+            lineSeries1.Points.Add(new DataPoint(40, 1));
+            lineSeries1.Points.Add(new DataPoint(45, 1));
+            plotModel1.Series.Add(lineSeries1);
+            return plotModel1;
+        }
     }
 }
