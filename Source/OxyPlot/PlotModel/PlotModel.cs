@@ -1155,7 +1155,7 @@ namespace OxyPlot
                 yield return annotation;
             }
 
-            foreach (var s in this.Series)
+            foreach (var s in this.VisibleSeries)
             {
                 yield return s;
             }
@@ -1360,7 +1360,7 @@ namespace OxyPlot
                 bool createdlinearyaxis = false;
                 if (this.DefaultXAxis == null)
                 {
-                    if (this.Series.Any(series => series is ColumnSeries))
+                    if (this.VisibleSeries.Any(series => series is ColumnSeries))
                     {
                         this.DefaultXAxis = new CategoryAxis { Position = AxisPosition.Bottom };
                     }
@@ -1373,7 +1373,7 @@ namespace OxyPlot
 
                 if (this.DefaultYAxis == null)
                 {
-                    if (this.Series.Any(series => series is BarSeries))
+                    if (this.VisibleSeries.Any(series => series is BarSeries))
                     {
                         this.DefaultYAxis = new CategoryAxis { Position = AxisPosition.Left };
                     }

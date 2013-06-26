@@ -114,15 +114,24 @@ namespace OxyPlot.Series
                 return null;
             }
 
-            TrackerHitResult result = null;
-
             // http://paulbourke.net/geometry/pointlineplane/
-            double minimumDistance = double.MaxValue;
+            double minimumDistanceSquared = 16 * 16;
 
-            for (int i = 0; i + 1 < this.Points.Count; i++)
+            // snap to the nearest point
+            var result = this.GetNearestPointInternal(this.Points, point);
+            if (!interpolate && result.Position.DistanceToSquared(point) < minimumDistanceSquared)
+            {
+                return result;
+            }
+            
+            result = null;
+
+            // find the nearest point on the horizontal line segments
+            int n = this.Points.Count;
+            for (int i = 0; i < n; i++)
             {
                 var p1 = this.Points[i];
-                var p2 = this.Points[i + 1];
+                var p2 = this.Points[i + 1 < n ? i + 1 : i];
                 var sp1 = this.Transform(p1.X, p1.Y);
                 var sp2 = this.Transform(p2.X, p1.Y);
 
@@ -155,15 +164,15 @@ namespace OxyPlot.Series
 
                 double dx = point.x - sx;
                 double dy = point.y - sy;
-                double distance = (dx * dx) + (dy * dy);
+                double distanceSquared = (dx * dx) + (dy * dy);
 
-                if (distance < minimumDistance)
+                if (distanceSquared < minimumDistanceSquared)
                 {
                     double px = p1.X + (u * (p2.X - p1.X));
                     double py = p1.Y;
                     result = new TrackerHitResult(
                         this, new DataPoint(px, py), new ScreenPoint(sx, sy), this.GetItem(i), i);
-                    minimumDistance = distance;
+                    minimumDistanceSquared = distanceSquared;
                 }
             }
 
@@ -213,32 +222,32 @@ namespace OxyPlot.Series
                             }
 
                             rc.DrawClippedLineSegments(
-                                hlpts, 
-                                clippingRect, 
-                                this.GetSelectableColor(this.ActualColor), 
-                                this.StrokeThickness, 
-                                lineStyle, 
-                                this.LineJoin, 
+                                hlpts,
+                                clippingRect,
+                                this.GetSelectableColor(this.ActualColor),
+                                this.StrokeThickness,
+                                lineStyle,
+                                this.LineJoin,
                                 false);
                             rc.DrawClippedLineSegments(
-                                vlpts, 
-                                clippingRect, 
-                                this.GetSelectableColor(this.ActualColor), 
-                                verticalStrokeThickness, 
-                                this.VerticalLineStyle, 
-                                this.LineJoin, 
+                                vlpts,
+                                clippingRect,
+                                this.GetSelectableColor(this.ActualColor),
+                                verticalStrokeThickness,
+                                this.VerticalLineStyle,
+                                this.LineJoin,
                                 false);
                         }
                         else
                         {
                             rc.DrawClippedLine(
-                                lpts, 
-                                clippingRect, 
-                                0, 
-                                this.GetSelectableColor(this.ActualColor), 
-                                this.StrokeThickness, 
-                                lineStyle, 
-                                this.LineJoin, 
+                                lpts,
+                                clippingRect,
+                                0,
+                                this.GetSelectableColor(this.ActualColor),
+                                this.StrokeThickness,
+                                lineStyle,
+                                this.LineJoin,
                                 false);
                         }
                     }
@@ -246,13 +255,13 @@ namespace OxyPlot.Series
                     if (this.MarkerType != MarkerType.None)
                     {
                         rc.DrawMarkers(
-                            mpts, 
-                            clippingRect, 
-                            this.MarkerType, 
-                            this.MarkerOutline, 
-                            new[] { this.MarkerSize }, 
-                            this.MarkerFill, 
-                            this.MarkerStroke, 
+                            mpts,
+                            clippingRect,
+                            this.MarkerType,
+                            this.MarkerOutline,
+                            new[] { this.MarkerSize },
+                            this.MarkerFill,
+                            this.MarkerStroke,
                             this.MarkerStrokeThickness);
                     }
                 };
