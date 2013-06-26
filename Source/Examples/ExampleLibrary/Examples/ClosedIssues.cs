@@ -32,6 +32,7 @@ namespace ExampleLibrary
 {
     using OxyPlot;
     using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     [Examples("Z9 Issues (closed)")]
     public class ClosedIssues : ExamplesBase
@@ -65,6 +66,21 @@ namespace ExampleLibrary
                 };
             plotModel1.Axes.Add(bottomAxis);
             return plotModel1;
+        }
+
+        [Example("D445576: Invisible contour series")]
+        public static PlotModel InvisibleContourSeries()
+        {
+            var model = new PlotModel("Invisible contour series");
+            var cs = new ContourSeries
+            {
+                IsVisible = false,
+                ColumnCoordinates = ArrayHelper.CreateVector(-1, 1, 0.05),
+                RowCoordinates = ArrayHelper.CreateVector(-1, 1, 0.05)
+            };
+            cs.Data = ArrayHelper.Evaluate((x, y) => x + y, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Series.Add(cs);
+            return model;
         }
     }
 }
