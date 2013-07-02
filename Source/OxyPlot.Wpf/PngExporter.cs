@@ -43,12 +43,12 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Exports the specified plot model to a file.
         /// </summary>
-        /// <param name="model">The model.</param>
+        /// <param name="model">The model to export.</param>
         /// <param name="fileName">The file name.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="background">The background.</param>
-        /// <param name="resolution">The resolution.</param>
+        /// <param name="width">The width of the output bitmap.</param>
+        /// <param name="height">The height of the output bitmap.</param>
+        /// <param name="background">The background color. The default value is null.</param>
+        /// <param name="resolution">The resolution (dpi). The default value is 96.</param>
         public static void Export(PlotModel model, string fileName, int width, int height, OxyColor background = null, int resolution = 96)
         {
             using (var s = File.Create(fileName))
@@ -60,15 +60,15 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Exports the specified plot model to a stream.
         /// </summary>
-        /// <param name="model">The model.</param>
+        /// <param name="model">The model to export.</param>
         /// <param name="stream">The stream.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="background">The background.</param>
-        /// <param name="resolution">The resolution.</param>
+        /// <param name="width">The width of the output bitmap.</param>
+        /// <param name="height">The height of the output bitmap.</param>
+        /// <param name="background">The background color. The default value is null.</param>
+        /// <param name="resolution">The resolution (dpi). The default value is 96.</param>
         public static void Export(PlotModel model, Stream stream, int width, int height, OxyColor background = null, int resolution = 96)
         {
-            var bmp = ExportToBitmap(model, width, height, background);
+            var bmp = ExportToBitmap(model, width, height, background, resolution);
 
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bmp));
