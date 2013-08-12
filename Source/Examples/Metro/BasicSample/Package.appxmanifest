@@ -3,7 +3,7 @@
   <Identity Name="9d5b265b-1522-4d0b-b164-d2924937093a" Publisher="CN=objo" Version="1.0.0.0" />
   <Properties>
     <DisplayName>BasicSample</DisplayName>
-    <PublisherDisplayName>Julien</PublisherDisplayName>
+    <PublisherDisplayName>objo</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
