@@ -342,6 +342,9 @@ namespace OxyPlot.Axes
 
             this.ViewMinimum = Math.Max(newViewMinimum, this.AbsoluteMinimum);
             this.ViewMaximum = Math.Min(newViewMaximum, this.AbsoluteMaximum);
+            this.UpdateActualMaxMin();
+
+            this.OnAxisChanged(new AxisChangedEventArgs(AxisChangeTypes.Zoom));
         }
 
         /// <summary>

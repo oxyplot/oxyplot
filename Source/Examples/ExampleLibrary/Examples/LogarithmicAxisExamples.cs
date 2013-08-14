@@ -134,5 +134,17 @@ namespace ExampleLibrary
             model.Series.Add(new FunctionSeries(Math.Exp, 0, Math.Log(900), 100));
             return model;
         }
+
+        [Example("LogarithmicAxis with AxisChanged event handler")]
+        public static PlotModel AxisChangedEventHAndler()
+        {
+            var model = new PlotModel("AxisChanged event handler");
+            var logAxis = new LogarithmicAxis(AxisPosition.Left, 0.1, 1000);
+            int n = 0;
+            logAxis.AxisChanged += (s, e) => { model.Subtitle = "Changed " + (n++) + " times. ActualMaximum=" + logAxis.ActualMaximum; };
+            model.Axes.Add(logAxis);
+            model.Series.Add(new FunctionSeries(Math.Exp, 0, Math.Log(900), 100));
+            return model;
+        }
     }
 }
