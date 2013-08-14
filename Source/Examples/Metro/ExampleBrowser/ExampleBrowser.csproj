@@ -12,7 +12,8 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>ExampleBrowserBasic_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>ExampleBrowser_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>B8038AB98BE90B9895F7D9224F1141268CB1B548</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -132,6 +133,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="ExampleBrowserBasic_TemporaryKey.pfx" />
+    <None Include="ExampleBrowser_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Logo.png" />
