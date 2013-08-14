@@ -377,6 +377,64 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Gradient backgrounds by ImageAnnotation")]
+        public static PlotModel ImageAnnotationAsBackgroundGradient()
+        {
+            var model = new PlotModel("Using ImageAnnotations to draw a gradient backgrounds", "But do you really want this? This is 'chartjunk'!") { PlotMargins = new OxyThickness(60, 4, 4, 60) };
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+
+            // create a gradient image of height n
+            int n = 256;
+            var imageData1 = new OxyColor[n, 1];
+            for (int i = 0; i < n; i++)
+            {
+                imageData1[i, 0] = OxyColor.Interpolate(OxyColors.Red, OxyColors.Blue, i / (n - 1.0));
+            }
+
+            var image1 = OxyImage.PngFromArgb(imageData1); // png is required for silverlight
+
+            // or create a gradient image of height 2 (requires bitmap interpolation to be supported)
+            var imageData2 = new OxyColor[2, 1];
+            imageData2[1, 0] = OxyColors.Yellow; // top color
+            imageData2[0, 0] = OxyColors.Gray; // bottom color
+
+            var image2 = OxyImage.PngFromArgb(imageData2); // png is required for silverlight
+
+            // gradient filling the viewport
+            model.Annotations.Add(new ImageAnnotation
+            {
+                ImageSource = image2,
+                Interpolate = true,
+                Layer = AnnotationLayer.BelowAxes,
+                X = new PlotLength(0, PlotLengthUnit.RelativeToViewport),
+                Y = new PlotLength(0, PlotLengthUnit.RelativeToViewport),
+                Width = new PlotLength(1, PlotLengthUnit.RelativeToViewport),
+                Height = new PlotLength(1, PlotLengthUnit.RelativeToViewport),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top
+            });
+
+            // gradient filling the plot area
+            model.Annotations.Add(new ImageAnnotation
+            {
+                ImageSource = image1,
+                Interpolate = true,
+                Layer = AnnotationLayer.BelowAxes,
+                X = new PlotLength(0, PlotLengthUnit.RelativeToPlotArea),
+                Y = new PlotLength(0, PlotLengthUnit.RelativeToPlotArea),
+                Width = new PlotLength(1, PlotLengthUnit.RelativeToPlotArea),
+                Height = new PlotLength(1, PlotLengthUnit.RelativeToPlotArea),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top
+            });
+
+            // verify that a series is rendered above the gradients
+            model.Series.Add(new FunctionSeries(Math.Sin, 0, 7, 0.01));
+
+            return model;
+        }
+
         [Example("TileMapAnnotation (openstreetmap.org)")]
         public static PlotModel TileMapAnnotation2()
         {

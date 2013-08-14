@@ -54,7 +54,7 @@ namespace OxyPlot.Annotations
         }
 
         /// <summary>
-        /// Gets or sets the layer.
+        /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.BelowAxes"/>.
         /// </summary>
         public AnnotationLayer Layer { get; set; }
 
