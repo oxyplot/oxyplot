@@ -45,6 +45,14 @@ namespace OxyPlot.Series
     public class HeatMapSeries : XYAxisSeries
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="HeatMapSeries"/> class.
+        /// </summary>
+        public HeatMapSeries()
+        {
+            this.Interpolate = true;
+        }
+
+        /// <summary>
         /// The hash code of the current data.
         /// </summary>
         private int dataHash;
@@ -55,29 +63,40 @@ namespace OxyPlot.Series
         private OxyImage image;
 
         /// <summary>
-        /// Gets or sets the x 0.
+        /// Gets or sets the x-coordinate of the left column mid point.
         /// </summary>
         public double X0 { get; set; }
 
         /// <summary>
-        /// Gets or sets the x 1.
+        /// Gets or sets the x-coordinate of the right column mid point.
         /// </summary>
         public double X1 { get; set; }
 
         /// <summary>
-        /// Gets or sets the y 0.
+        /// Gets or sets the y-coordinate of the top row mid point.
         /// </summary>
         public double Y0 { get; set; }
 
         /// <summary>
-        /// Gets or sets the y 1.
+        /// Gets or sets the y-coordinate of the bottom row mid point.
         /// </summary>
         public double Y1 { get; set; }
 
         /// <summary>
-        /// Gets or sets the data.
+        /// Gets or sets the data array.
         /// </summary>
+        /// <remarks>
+        /// Note that the indices of the data array refer to [x,y].
+        /// </remarks>
         public double[,] Data { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to interpolate when rendering.
+        /// </summary>
+        /// <remarks>
+        /// This property is not supported on all platforms.
+        /// </remarks>
+        public bool Interpolate { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum value of the dataset.
@@ -122,12 +141,13 @@ namespace OxyPlot.Series
 
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
-            double dx = (this.X1 - this.X0) / m;
+            double dx = (this.X1 - this.X0) / (m - 1);
+            double dy = (this.Y1 - this.Y0) / (n - 1);
             double left = this.X0 - (dx * 0.5);
             double right = this.X1 + (dx * 0.5);
-            double dy = (this.Y1 - this.Y0) / n;
             double bottom = this.Y0 - (dy * 0.5);
             double top = this.Y1 + (dy * 0.5);
+
             var s00 = this.Transform(left, bottom);
             var s11 = this.Transform(right, top);
             var rect = OxyRect.Create(s00, s11);
@@ -141,7 +161,7 @@ namespace OxyPlot.Series
             if (this.image != null)
             {
                 var clip = this.GetClippingRect();
-                rc.DrawClippedImage(clip, this.image, rect.Left, rect.Top, rect.Width, rect.Height, 1, true);
+                rc.DrawClippedImage(clip, this.image, rect.Left, rect.Top, rect.Width, rect.Height, 1, this.Interpolate);
             }
         }
 
@@ -179,12 +199,17 @@ namespace OxyPlot.Series
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
-            
-            this.MinX = Math.Min(this.X0, this.X1);
-            this.MaxX = Math.Max(this.X0, this.X1);
 
-            this.MinY = Math.Min(this.Y0, this.Y1);
-            this.MaxY = Math.Max(this.Y0, this.Y1);
+            int m = this.Data.GetLength(0);
+            int n = this.Data.GetLength(1);
+            double dx = Math.Abs(this.X1 - this.X0) / (m - 1);
+            double dy = Math.Abs(this.Y1 - this.Y0) / (n - 1);
+
+            this.MinX = Math.Min(this.X0, this.X1) - dx / 2;
+            this.MaxX = Math.Max(this.X0, this.X1) + dx / 2;
+
+            this.MinY = Math.Min(this.Y0, this.Y1) - dy / 2;
+            this.MaxY = Math.Max(this.Y0, this.Y1) + dy / 2;
 
             this.MinValue = this.GetData().Min();
             this.MaxValue = this.GetData().Max();
@@ -194,7 +219,7 @@ namespace OxyPlot.Series
 
             this.YAxis.Include(this.MinY);
             this.YAxis.Include(this.MaxY);
-            
+
             this.ColorAxis.Include(this.MinValue);
             this.ColorAxis.Include(this.MaxValue);
         }
@@ -231,7 +256,7 @@ namespace OxyPlot.Series
                     buffer[j, i] = this.ColorAxis.GetColor(this.Data[i, j]);
                 }
             }
-            
+
             this.image = OxyImage.PngFromArgb(buffer);
         }
     }
