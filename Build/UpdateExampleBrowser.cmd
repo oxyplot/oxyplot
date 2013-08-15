@@ -1,5 +1,5 @@
 echo off
-echo HOST: '%MYFTPSERVER%'
-echo USER: '%MYFTPUSER%'
-echo PW:   '%MYFTPPWD%'
-..\Tools\Lynx\FtpUpload.exe %MYFTPSERVER% %MYFTPUSER% %MYFTPPWD% ..\Output\SL4\Examples\Silverlight\ExampleBrowser\ExampleBrowser.xap /objo.net/wwwroot/OxyPlot/ExampleBrowser/ExampleBrowser.xap
+echo HOST: 'ftp.oxyplot.org'
+echo USER: '%OXYPLOT_FTP_USER%'
+echo PW:   '%OXYPLOT_FTP_PWD%'
+..\Tools\Lynx\FtpUpload.exe ftp.oxyplot.org %OXYPLOT_FTP_USER% %OXYPLOT_FTP_PWD% ..\Output\SL4\Examples\Silverlight\ExampleBrowser\ExampleBrowser.xap /oxyplot.org/wwwroot/ExampleBrowser/ExampleBrowser.xap
