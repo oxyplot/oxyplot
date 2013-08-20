@@ -39,12 +39,19 @@ namespace OxyPlot.MonoForAndroid
     public class CanvasRenderContext : IRenderContext
     {
         private Canvas canvas;
-
+        private Paint paint;
+        private Path path;
+        private Rect bounds;
+        private List<float> pts;
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasRenderContext"/> class.
         /// </summary>
         public CanvasRenderContext()
         {
+          paint = new Paint();
+          path = new Path();
+          bounds = new Rect();
+          pts = new List<float>();
         }
 
         /// <summary>
@@ -72,7 +79,7 @@ namespace OxyPlot.MonoForAndroid
 
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness = 1)
         {
-            using (var paint = new Paint())
+            paint.Reset();
             {
                 paint.AntiAlias = true;
                 paint.StrokeWidth = (float)thickness;
@@ -93,7 +100,7 @@ namespace OxyPlot.MonoForAndroid
 
         public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness = 1)
         {
-            using (var paint = new Paint())
+            paint.Reset();
             {
                 paint.AntiAlias = true;
                 paint.StrokeWidth = (float)thickness;
@@ -119,51 +126,48 @@ namespace OxyPlot.MonoForAndroid
 
         public void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness = 1, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, bool aliased = false)
         {
-            using (var paint = new Paint())
+            paint.Reset();
             {
                 paint.StrokeWidth = (float)thickness;
                 paint.Color = stroke.ToColor();
                 paint.AntiAlias = !aliased;
-                var pts = new float[(points.Count - 1) * 4];
-                int j = 0;
+                pts.Clear();
                 for (int i = 0; i + 1 < points.Count; i++)
                 {
-                    pts[j++] = (float)points[i].X;
-                    pts[j++] = (float)points[i].Y;
-                    pts[j++] = (float)points[i + 1].X;
-                    pts[j++] = (float)points[i + 1].Y;
+                    pts.Add((float)points[i].X);
+                    pts.Add((float)points[i].Y);
+                    pts.Add((float)points[i + 1].X);
+                    pts.Add((float)points[i + 1].Y);
                 }
-
-                canvas.DrawLines(pts, paint);
+                canvas.DrawLines(pts.ToArray(), paint);
             }
         }
 
         public void DrawLineSegments(IList<ScreenPoint> points, OxyColor stroke, double thickness = 1, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, bool aliased = false)
         {
-            using (var paint = new Paint())
+            paint.Reset();
             {
                 paint.StrokeWidth = (float)thickness;
                 paint.Color = stroke.ToColor();
                 paint.AntiAlias = !aliased;
-                var pts = new float[points.Count * 2];
-                int i = 0;
+                pts.Clear();
                 foreach (var p in points)
                 {
-                    pts[i++] = (float)p.X;
-                    pts[i++] = (float)p.Y;
+                    pts.Add((float)p.X);
+                    pts.Add((float)p.Y);
                 }
 
-                canvas.DrawLines(pts, paint);
+                canvas.DrawLines(pts.ToArray(), paint);
             }
         }
 
         public void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness = 1, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter, bool aliased = false)
         {
-            using (var paint = new Paint())
+            paint.Reset();
             {
                 paint.AntiAlias = !aliased;
                 paint.StrokeWidth = (float)thickness;
-                using (var path = new Path())
+                path.Reset();
                 {
                     path.MoveTo((float)points[0].X, (float)points[0].Y);
                     for (int i = 1; i <= points.Count; i++)
@@ -196,7 +200,7 @@ namespace OxyPlot.MonoForAndroid
 
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness = 1)
         {
-            using (var paint = new Paint())
+            paint.Reset();
             {
                 paint.AntiAlias = false;
                 paint.StrokeWidth = (float)thickness;
@@ -225,12 +229,11 @@ namespace OxyPlot.MonoForAndroid
 
         public void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily = null, double fontSize = 10, double fontWeight = 500, double rotate = 0, OxyPlot.HorizontalAlignment halign = HorizontalAlignment.Left, VerticalAlignment valign = VerticalAlignment.Top, OxySize? maxSize = new OxySize?())
         {
-            using (var paint = new Paint())
+            paint.Reset();
             {
                 paint.AntiAlias = true;
                 paint.TextSize = (float)fontSize;
                 paint.Color = fill.ToColor();
-                var bounds = new Rect();
                 paint.GetTextBounds(text, 0, text.Length, bounds);
 
                 float dx = 0;
@@ -271,11 +274,10 @@ namespace OxyPlot.MonoForAndroid
                 return OxySize.Empty;
             }
 
-            using (var paint = new Paint())
+            paint.Reset();
             {
                 paint.AntiAlias = true;
                 paint.TextSize = (float)fontSize;
-                var bounds = new Rect();
                 paint.GetTextBounds(text, 0, text.Length, bounds);
                 // var width = paint.MeasureText(text);
                 return new OxySize(bounds.Width(), bounds.Height());
