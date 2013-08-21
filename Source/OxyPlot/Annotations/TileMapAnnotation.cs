@@ -273,14 +273,14 @@ namespace OxyPlot.Annotations
         /// Gets the image from the specified uri.
         /// </summary>
         /// <param name="uri">The URI.</param>
-        /// <param name="async">Get the image asynchronously if set to <c>true</c>. The plot model will be invalidated when the image has been downloaded.</param>
+        /// <param name="asyncLoading">Get the image asynchronously if set to <c>true</c>. The plot model will be invalidated when the image has been downloaded.</param>
         /// <returns>
         /// The image.
         /// </returns>
         /// <remarks>
         /// This method gets the image from cache, or starts an async download.
         /// </remarks>
-        private OxyImage GetImage(string uri, bool async)
+        private OxyImage GetImage(string uri, bool asyncLoading)
         {
             OxyImage img;
             if (this.images.TryGetValue(uri, out img))
@@ -288,7 +288,7 @@ namespace OxyPlot.Annotations
                 return img;
             }
 
-            if (!async)
+            if (!asyncLoading)
             {
                 return this.Download(uri);
             }
