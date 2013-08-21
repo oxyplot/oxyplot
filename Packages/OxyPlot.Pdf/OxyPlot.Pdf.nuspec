@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>OxyPlot.Pdf</id>
+    <version>2013.1.1</version>
+    <authors>objo</authors>
+    <licenseUrl>http://oxyplot.codeplex.com/license</licenseUrl>
+    <projectUrl>http://oxyplot.codeplex.com/</projectUrl>
+    <iconUrl>http://www.objo.net/codeplex/icons/oxyplot.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>OxyPlot is an open source .NET plotting library. This package contains the .pdf export extensions for Silverlight, .NET 4.0 and .NET 4.5.</description>
+    <tags>pdf plotting plot charting chart</tags>
+    <dependencies>
+      <dependency id="OxyPlot.Core" version="2013.1" />
+    </dependencies>
+  </metadata>
+</package>

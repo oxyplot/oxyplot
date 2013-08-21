@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F4C226B3-0DAB-474C-9466-5EACAFA9B64A}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExampleLibrary</RootNamespace>
+    <AssemblyName>ExampleLibrary</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidSupportedAbis>armeabi</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\MfA\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\MfA\</IntermediateOutputPath>
+    <DefineConstants>TRACE;DEBUG;MONO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\MfA\</OutputPath>
+    <IntermediateOutputPath>obj\Release\MfA\</IntermediateOutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Attributes\ExampleAttribute.cs" />
+    <Compile Include="CustomSeries\ErrorItem.cs" />
+    <Compile Include="CustomSeries\FlagSeries.cs" />
+    <Compile Include="CustomSeries\LineSegmentSeries.cs" />
+    <Compile Include="CustomSeries\MatrixSeries.cs" />
+    <Compile Include="ExampleInfo.cs" />
+    <Compile Include="Examples.cs" />
+    <Compile Include="Attributes\ExamplesAttribute.cs" />
+    <Compile Include="Examples\AnnotationExamples.cs" />
+    <Compile Include="Examples\BarSeries\BarAndColumnSeriesExamples.cs" />
+    <Compile Include="Examples\BarSeries\BarSeriesExamples.cs" />
+    <Compile Include="Examples\BarSeries\ColumnSeriesExamples.cs" />
+    <Compile Include="Examples\BarSeries\ErrorColumnSeriesExamples.cs" />
+    <Compile Include="Examples\BoxPlotSeriesExamples.cs" />
+    <Compile Include="Examples\CartesianAxesExamples.cs" />
+    <Compile Include="Examples\CategoryAxisExamples.cs" />
+    <Compile Include="Examples\AxisExamples.cs" />
+    <Compile Include="Examples\AreaSeriesExamples.cs" />
+    <Compile Include="Examples\ClosedIssues.cs" />
+    <Compile Include="Examples\ContourSeriesExamples.cs" />
+    <Compile Include="Examples\BarSeries\IntervalBarSeriesExamples.cs" />
+    <Compile Include="Examples\BarSeries\RectangleBarSeriesExamples.cs" />
+    <Compile Include="Examples\BarSeries\TornadoBarSeriesExamples.cs" />
+    <Compile Include="Examples\HeatMapSeriesExamples.cs" />
+    <Compile Include="Examples\MiscExamples.cs" />
+    <Compile Include="Examples\MouseEventExamples.cs" />
+    <Compile Include="Examples\ExamplesBase.cs" />
+    <Compile Include="Examples\ItemsSourceExamples.cs" />
+    <Compile Include="Examples\FunctionSeriesExamples.cs" />
+    <Compile Include="Examples\OpenIssues.cs" />
+    <Compile Include="Examples\PerformanceExamples.cs" />
+    <Compile Include="Examples\ShowMeTheNumbersExamples.cs" />
+    <Compile Include="Examples\DiscreteDataSeriesExamples.cs" />
+    <Compile Include="Examples\FilteringExamples.cs" />
+    <Compile Include="Examples\FinancialSeriesExamples.cs" />
+    <Compile Include="Examples\LinearAxisExamples.cs" />
+    <Compile Include="Examples\LegendExamples.cs" />
+    <Compile Include="Examples\CustomSeriesExamples.cs" />
+    <Compile Include="Examples\DateTimeAxisExamples.cs" />
+    <Compile Include="CustomSeries\ErrorSeries.cs" />
+    <Compile Include="Examples\LineSeriesExamples.cs" />
+    <Compile Include="Examples\LogarithmicAxisExamples.cs" />
+    <Compile Include="Examples\PieSeriesExamples.cs" />
+    <Compile Include="Examples\PolarPlotExamples.cs" />
+    <Compile Include="Examples\TimeSpanAxisExamples.cs" />
+    <Compile Include="Examples\TrackerExamples.cs" />
+    <Compile Include="Helpers\Sun.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Examples\ScatterSeriesExamples.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\OxyPlot\OxyPlotMfA.csproj">
+      <Project>{08a91765-2c9d-4d2b-b56d-fae62ab204cc}</Project>
+      <Name>OxyPlotMfA</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Bergensbanen.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\OxyPlot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\west0479.mtx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
