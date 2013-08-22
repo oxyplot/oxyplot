@@ -24,21 +24,12 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 
 namespace ExportDemo
 {
-    using System.Reflection;
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
 
     using OxyPlot;
     using OxyPlot.Axes;
@@ -50,7 +41,7 @@ namespace ExportDemo
     {
         public MainPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             var tmp = new PlotModel("Export demo");
             tmp.Axes.Add(new LinearAxis(AxisPosition.Bottom));
             tmp.Axes.Add(new LinearAxis(AxisPosition.Top));
@@ -65,9 +56,9 @@ namespace ExportDemo
             //    tmp.Annotations.Add(new ImageAnnotation(image, 1, 0, HorizontalTextAlign.Right, VerticalTextAlign.Bottom));
             //}
 
-            PlotModel = tmp;
+            this.PlotModel = tmp;
 
-            DataContext = this;
+            this.DataContext = this;
         }
 
         public PlotModel PlotModel { get; set; }
@@ -75,11 +66,11 @@ namespace ExportDemo
         private void SavePdf_Click(object sender, RoutedEventArgs e)
         {
             var d = new SaveFileDialog { Filter = "Pdf files (*.pdf)|*.pdf", DefaultExt = ".pdf" };
-            if (d.ShowDialog().Value)
+            if (true == d.ShowDialog())
             {
                 using (var s = d.OpenFile())
                 {
-                    PdfExporter.Export(Plot1.ActualModel, s, Plot1.ActualWidth, Plot1.ActualHeight);
+                    PdfExporter.Export(this.plot1.ActualModel, s, this.plot1.ActualWidth, this.plot1.ActualHeight);
                 }
             }
         }
@@ -87,12 +78,12 @@ namespace ExportDemo
         private void SaveSvg_Click(object sender, RoutedEventArgs e)
         {
             var d = new SaveFileDialog { Filter = "Svg files (*.svg)|*.svg", DefaultExt = ".svg" };
-            if (d.ShowDialog().Value)
+            if (true == d.ShowDialog())
             {
                 using (var s = d.OpenFile())
                 {
                     var rc = new SilverlightRenderContext(new Canvas());
-                    SvgExporter.Export(Plot1.ActualModel, s, Plot1.ActualWidth, Plot1.ActualHeight, true, rc);
+                    SvgExporter.Export(this.plot1.ActualModel, s, this.plot1.ActualWidth, this.plot1.ActualHeight, true, rc);
                 }
             }
         }
@@ -100,11 +91,11 @@ namespace ExportDemo
         private void SavePng_Click(object sender, RoutedEventArgs e)
         {
             var d = new SaveFileDialog { Filter = "Png files (*.png)|*.png", DefaultExt = ".png" };
-            if (d.ShowDialog().Value)
+            if (true == d.ShowDialog())
             {
                 using (var s = d.OpenFile())
                 {
-                    PngExporter.Export(Plot1.ActualModel, s, Plot1.ActualWidth, Plot1.ActualHeight);
+                    PngExporter.Export(this.plot1.ActualModel, s, this.plot1.ActualWidth, this.plot1.ActualHeight);
                 }
             }
         }

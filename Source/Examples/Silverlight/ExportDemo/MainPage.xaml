@@ -15,7 +15,6 @@
             <Button Content="Save SVG" Margin="8 0 0 0" Click="SaveSvg_Click"/>
             <Button Content="Save PNG" Margin="8 0 0 0" Click="SavePng_Click"/>
         </StackPanel>
-        <oxy:Plot x:Name="Plot1" Grid.Row="1" Model="{Binding PlotModel}">
-        </oxy:Plot>
+        <oxy:Plot x:Name="plot1" Grid.Row="1" Model="{Binding PlotModel}"/>
     </Grid>
 </UserControl>

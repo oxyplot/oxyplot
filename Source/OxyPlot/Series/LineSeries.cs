@@ -228,7 +228,7 @@ namespace OxyPlot.Series
         /// Gets the actual color.
         /// </summary>
         /// <value>The actual color.</value>
-        protected OxyColor ActualColor
+        public OxyColor ActualColor
         {
             get
             {

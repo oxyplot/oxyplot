@@ -28,7 +28,7 @@
             <oxy:Plot Model="{Binding Model}">
                 <oxy:Plot.DefaultTrackerTemplate>
                     <ControlTemplate>
-                        <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}" BorderBrush="{Binding Series.Color, Converter={StaticResource OxyColorConverter}}" BorderThickness="3">
+                        <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}" BorderBrush="{Binding Series.ActualColor, Converter={StaticResource OxyColorConverter}}" BorderThickness="3">
                             <oxy:TrackerControl.Content>
                                 <TextBlock Text="{Binding}" Margin="7" />
                             </oxy:TrackerControl.Content>

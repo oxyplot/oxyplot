@@ -31,39 +31,30 @@ namespace OxyPlot.Wpf
 {
     using System;
     using System.Globalization;
-    using System.Windows;
     using System.Windows.Data;
     using System.Windows.Media;
 
     /// <summary>
-    /// The oxy color converter.
+    /// Converts between OxyColor and Color.
     /// </summary>
-    [ValueConversion(typeof(OxyColor), typeof(Rect))]
+    [ValueConversion(typeof(OxyColor), typeof(Color))]
     public class OxyColorConverter : IValueConverter
     {
         /// <summary>
-        /// The convert.
+        /// Converts a value.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="targetType">
-        /// The target type.
-        /// </param>
-        /// <param name="parameter">
-        /// The parameter.
-        /// </param>
-        /// <param name="culture">
-        /// The culture.
-        /// </param>
+        /// <param name="value">The value produced by the binding source.</param>
+        /// <param name="targetType">The type of the binding target property.</param>
+        /// <param name="parameter">The converter parameter to use.</param>
+        /// <param name="culture">The culture to use in the converter.</param>
         /// <returns>
-        /// The convert.
+        /// A converted value. If the method returns null, the valid null value is used.
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is OxyColor)
+            var color = value as OxyColor;
+            if (color != null)
             {
-                var color = (OxyColor)value;
                 if (targetType == typeof(Color))
                 {
                     return color.ToColor();
@@ -79,22 +70,14 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The convert back.
+        /// Converts a value.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="targetType">
-        /// The target type.
-        /// </param>
-        /// <param name="parameter">
-        /// The parameter.
-        /// </param>
-        /// <param name="culture">
-        /// The culture.
-        /// </param>
+        /// <param name="value">The value that is produced by the binding target.</param>
+        /// <param name="targetType">The type to convert to.</param>
+        /// <param name="parameter">The converter parameter to use.</param>
+        /// <param name="culture">The culture to use in the converter.</param>
         /// <returns>
-        /// The convert back.
+        /// A converted value. If the method returns null, the valid null value is used.
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -106,16 +89,14 @@ namespace OxyPlot.Wpf
                     return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
                 }
 
-                if (value is SolidColorBrush)
+                var brush = value as SolidColorBrush;
+                if (brush != null)
                 {
-                    var brush = (SolidColorBrush)value;
-                    Color color = brush.Color;
-                    return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
+                    return OxyColor.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
                 }
             }
 
             return null;
         }
-
     }
 }
