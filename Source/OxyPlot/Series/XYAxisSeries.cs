@@ -293,7 +293,8 @@ namespace OxyPlot.Series
 
                 if (l2 < minimumDistance)
                 {
-                    double u = (spl - sp1).Length / (sp2 - sp1).Length;
+                    double segmentLength = (sp2 - sp1).Length;
+                    double u = segmentLength > 0 ? (spl - sp1).Length / segmentLength : 0;
                     dpn = new DataPoint(p1.X + (u * (p2.X - p1.X)), p1.Y + (u * (p2.Y - p1.Y)));
                     spn = spl;
                     minimumDistance = l2;
