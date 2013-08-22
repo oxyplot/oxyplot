@@ -98,5 +98,22 @@ namespace ExampleLibrary
             hms.Interpolate = false;
             return model;
         }
+
+        [Example("Diagonal matrix")]
+        public static PlotModel DiagonalMatrix()
+        {
+            var data = new double[3, 3];
+            data[0, 0] = 1;
+            data[1, 1] = 1;
+            data[2, 2] = 1;
+
+            var model = new PlotModel("Diagonal matrix");
+            model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+
+            // adding half cellwidth/cellheight to bounding box coordinates
+            var hms = new HeatMapSeries { X0 = 0.5, X1 = 2.5, Y0 = 0.5, Y1 = 2.5, Data = data, Interpolate = false };
+            model.Series.Add(hms);
+            return model;
+        }
     }
 }

@@ -28,6 +28,7 @@ namespace ExampleLibrary
 {
     using System;
     using OxyPlot;
+    using OxyPlot.Axes;
 
     [Examples("Custom series")]
     public static class CustomSeriesExamples
@@ -111,5 +112,22 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("MatrixSeries - diagonal matrix")]
+        public static PlotModel DiagonalMatrix()
+        {
+            var model = new PlotModel();
+
+            var matrix = new double[3, 3];
+            matrix[0, 0] = 1;
+            matrix[1, 1] = 2;
+            matrix[2, 2] = 3;
+
+            // Reverse the vertical axis
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            model.Series.Add(new MatrixSeries { Matrix = matrix, ShowDiagonal = true });
+
+            return model;
+        }
     }
 }
