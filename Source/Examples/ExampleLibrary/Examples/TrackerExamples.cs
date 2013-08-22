@@ -50,9 +50,25 @@ namespace ExampleLibrary
                              MarkerStrokeThickness = 1.5
                          };
             for (int i = 0; i < 63; i++)
+            {
                 s1.Points.Add(new DataPoint((int)(Math.Sqrt(i) * Math.Cos(i * 0.1)), (int)(Math.Sqrt(i) * Math.Sin(i * 0.1))));
+            }
+
             model.Series.Add(s1);
 
+            return model;
+        }
+
+        [Example("TrackerChangedEvent")]
+        public static PlotModel TrackerChangedEvent()
+        {
+            var model = new PlotModel("Handling the TrackerChanged event", "Press the left mouse button to test the tracker.");
+            model.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 100));
+            model.TrackerChanged += (s, e) =>
+            {
+                model.Subtitle = e.HitResult != null ? "Tracker item index = " + e.HitResult.Index : "Not tracking";
+                model.InvalidatePlot(false);
+            };
             return model;
         }
     }

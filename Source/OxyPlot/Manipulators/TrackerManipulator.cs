@@ -81,6 +81,7 @@ namespace OxyPlot
 
             this.currentSeries = null;
             this.PlotControl.HideTracker();
+            this.PlotControl.ActualModel.OnTrackerChanged(null);
         }
 
         /// <summary>
@@ -102,11 +103,12 @@ namespace OxyPlot
                 return;
             }
 
-            TrackerHitResult result = GetNearestHit(this.currentSeries, e.CurrentPosition, this.Snap, this.PointsOnly);
+            var result = GetNearestHit(this.currentSeries, e.CurrentPosition, this.Snap, this.PointsOnly);
             if (result != null)
             {
                 result.PlotModel = this.PlotControl.ActualModel;
                 this.PlotControl.ShowTracker(result);
+                this.PlotControl.ActualModel.OnTrackerChanged(result);
             }
         }
 
