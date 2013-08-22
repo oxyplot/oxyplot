@@ -42,27 +42,27 @@ namespace ExampleLibrary
         {
             var plotModel1 = new PlotModel
                 {
-                    Title = "Issue #9990", 
+                    Title = "Issue #9990",
                     Subtitle = "Minor gridlines should be below major gridlines"
                 };
             var leftAxis = new LinearAxis
                 {
-                    MajorGridlineStyle = LineStyle.Solid, 
-                    MajorGridlineColor = OxyColors.Black, 
-                    MajorGridlineThickness = 4, 
-                    MinorGridlineStyle = LineStyle.Solid, 
-                    MinorGridlineColor = OxyColors.LightBlue, 
-                    MinorGridlineThickness = 4, 
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MajorGridlineColor = OxyColors.Black,
+                    MajorGridlineThickness = 4,
+                    MinorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineColor = OxyColors.LightBlue,
+                    MinorGridlineThickness = 4,
                 };
             plotModel1.Axes.Add(leftAxis);
             var bottomAxis = new LinearAxis(AxisPosition.Bottom)
                 {
-                    MajorGridlineStyle = LineStyle.Solid, 
-                    MajorGridlineColor = OxyColors.Black, 
-                    MajorGridlineThickness = 4, 
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MajorGridlineColor = OxyColors.Black,
+                    MajorGridlineThickness = 4,
                     MinorGridlineStyle = LineStyle.Solid,
-                    MinorGridlineColor = OxyColors.LightBlue, 
-                    MinorGridlineThickness = 4, 
+                    MinorGridlineColor = OxyColors.LightBlue,
+                    MinorGridlineThickness = 4,
                 };
             plotModel1.Axes.Add(bottomAxis);
             return plotModel1;
@@ -80,6 +80,18 @@ namespace ExampleLibrary
             };
             cs.Data = ArrayHelper.Evaluate((x, y) => x + y, cs.ColumnCoordinates, cs.RowCoordinates);
             model.Series.Add(cs);
+            return model;
+        }
+
+        [Example("#10061: Argument out of range in OxyPlot mouse over")]
+        public static PlotModel ArgumentOutOfRangeInMouseOver()
+        {
+            var model = new PlotModel("Argument out of range in OxyPlot mouse over");
+            var ls = new LineSeries();
+            ls.Points.Add(new DataPoint(10, 10));
+            ls.Points.Add(new DataPoint(10, 10));
+            ls.Points.Add(new DataPoint(12, 10));
+            model.Series.Add(ls);
             return model;
         }
     }
