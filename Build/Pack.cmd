@@ -67,6 +67,8 @@ REM === WINFORMS ===
 mkdir ..\Packages\OxyPlot.WindowsForms\lib
 mkdir ..\Packages\OxyPlot.WindowsForms\lib\NET40
 mkdir ..\Packages\OxyPlot.WindowsForms\lib\NET45
+copy ..\Output\NET40\OxyPlot.??? ..\Packages\OxyPlot.WindowsForms\lib\NET40
+copy ..\Output\NET45\OxyPlot.??? ..\Packages\OxyPlot.WindowsForms\lib\NET45
 copy ..\Output\NET40\OxyPlot.WindowsForms.??? ..\Packages\OxyPlot.WindowsForms\lib\NET40
 copy ..\Output\NET45\OxyPlot.WindowsForms.??? ..\Packages\OxyPlot.WindowsForms\lib\NET45
 copy ..\license.txt ..\Packages\OxyPlot.WindowsForms
