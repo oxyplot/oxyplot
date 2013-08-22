@@ -351,7 +351,7 @@ namespace OxyPlot.Metro
                 this.HideTracker();
                 return;
             }
-            
+
             var ts = trackerHitResult.Series as ITrackableSeries;
             var trackerTemplate = this.DefaultTrackerTemplate;
             if (ts != null && !string.IsNullOrEmpty(ts.TrackerKey))
@@ -363,21 +363,19 @@ namespace OxyPlot.Metro
                 }
             }
 
-            if (trackerTemplate == null) {
+            if (trackerTemplate == null)
+            {
                 this.HideTracker();
                 return;
             }
-            
+
             var tracker = new ContentControl { Template = trackerTemplate };
 
             if (tracker != this.currentTracker)
             {
                 this.HideTracker();
-                if (trackerTemplate != null)
-                {
-                    this.overlays.Children.Add(tracker);
-                    this.currentTracker = tracker;
-                }
+                this.overlays.Children.Add(tracker);
+                this.currentTracker = tracker;
             }
 
             if (this.currentTracker != null)
@@ -683,7 +681,7 @@ namespace OxyPlot.Metro
             var position = this.Add(this.touchDownPoint, e.Cumulative.Translation);
             this.touchPan.Delta(new ManipulationEventArgs(position.ToScreenPoint()));
 
-            // todo: enabled pinch-zoom again!
+            // todo: enable pinch-zoom again!
             // this.touchZoom.Delta(
             // new ManipulationEventArgs(position.ToScreenPoint())
             // {

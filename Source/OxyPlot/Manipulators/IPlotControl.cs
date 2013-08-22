@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IPlotControl.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,11 +27,10 @@
 //   Interface for Plot controls.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
-    using OxyPlot.Annotations;
     using OxyPlot.Axes;
-    using OxyPlot.Series;
 
     /// <summary>
     /// Defines functionality in the Plot controls.
@@ -47,7 +46,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the axes from a point.
         /// </summary>
-        /// <param name="pt">
+        /// <param name="point">
         /// The point.
         /// </param>
         /// <param name="xaxis">
@@ -56,12 +55,12 @@ namespace OxyPlot
         /// <param name="yaxis">
         /// The y-axis.
         /// </param>
-        void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis);
+        void GetAxesFromPoint(ScreenPoint point, out Axis xaxis, out Axis yaxis);
 
         /// <summary>
         /// Gets the series from point.
         /// </summary>
-        /// <param name="pt">
+        /// <param name="point">
         /// The point (screen coordinates).
         /// </param>
         /// <param name="limit">
@@ -70,7 +69,7 @@ namespace OxyPlot
         /// <returns>
         /// The series.
         /// </returns>
-        Series.Series GetSeriesFromPoint(ScreenPoint pt, double limit = 100);
+        Series.Series GetSeriesFromPoint(ScreenPoint point, double limit = 100);
 
         /// <summary>
         /// Hides the tracker.
@@ -83,7 +82,7 @@ namespace OxyPlot
         void HideZoomRectangle();
 
         /// <summary>
-        /// Invalidate the plot (not blocking the UI thread)
+        /// Invalidates the plot (not blocking the UI thread)
         /// </summary>
         /// <param name="updateData">
         /// if set to <c>true</c>, all data collections will be updated.
@@ -94,18 +93,18 @@ namespace OxyPlot
         /// Pans the specified axis.
         /// </summary>
         /// <param name="axis">
-        /// The axis.
+        /// The axis to pan.
         /// </param>
-        /// <param name="ppt">
+        /// <param name="previousPoint">
         /// The previous point (screen coordinates).
         /// </param>
-        /// <param name="cpt">
+        /// <param name="currentPoint">
         /// The current point (screen coordinates).
         /// </param>
-        void Pan(Axis axis, ScreenPoint ppt, ScreenPoint cpt);
+        void Pan(Axis axis, ScreenPoint previousPoint, ScreenPoint currentPoint);
 
         /// <summary>
-        /// Refresh the plot immediately (blocking UI thread)
+        /// Refreshes the plot immediately (blocking UI thread)
         /// </summary>
         /// <param name="updateData">
         /// if set to <c>true</c>, all data collections will be updated.
@@ -139,10 +138,10 @@ namespace OxyPlot
         /// <summary>
         /// Shows the zoom rectangle.
         /// </summary>
-        /// <param name="r">
+        /// <param name="rectangle">
         /// The rectangle.
         /// </param>
-        void ShowZoomRectangle(OxyRect r);
+        void ShowZoomRectangle(OxyRect rectangle);
 
         /// <summary>
         /// Zooms the specified axis to the specified values.
@@ -150,13 +149,13 @@ namespace OxyPlot
         /// <param name="axis">
         /// The axis.
         /// </param>
-        /// <param name="p1">
+        /// <param name="newMinimum">
         /// The new minimum value.
         /// </param>
-        /// <param name="p2">
+        /// <param name="newMaximum">
         /// The new maximum value.
         /// </param>
-        void Zoom(Axis axis, double p1, double p2);
+        void Zoom(Axis axis, double newMinimum, double newMaximum);
 
         /// <summary>
         /// Zooms at the specified position.
@@ -171,6 +170,5 @@ namespace OxyPlot
         /// The position to zoom at.
         /// </param>
         void ZoomAt(Axis axis, double factor, double x);
-
     }
 }
