@@ -346,39 +346,43 @@ namespace OxyPlot.Metro
         /// </param>
         public void ShowTracker(TrackerHitResult trackerHitResult)
         {
-            if (trackerHitResult != null)
-            {
-                var ts = trackerHitResult.Series as ITrackableSeries;
-                var trackerTemplate = this.DefaultTrackerTemplate;
-                if (ts != null && !string.IsNullOrEmpty(ts.TrackerKey))
-                {
-                    var match = this.TrackerDefinitions.FirstOrDefault(t => t.TrackerKey == ts.TrackerKey);
-                    if (match != null)
-                    {
-                        trackerTemplate = match.TrackerTemplate;
-                    }
-                }
-
-                var tracker = new ContentControl { Template = trackerTemplate };
-
-                if (tracker != this.currentTracker)
-                {
-                    this.HideTracker();
-                    if (trackerTemplate != null)
-                    {
-                        this.overlays.Children.Add(tracker);
-                        this.currentTracker = tracker;
-                    }
-                }
-
-                if (this.currentTracker != null)
-                {
-                    this.currentTracker.DataContext = trackerHitResult;
-                }
-            }
-            else
+            if (trackerHitResult == null)
             {
                 this.HideTracker();
+                return;
+            }
+            
+            var ts = trackerHitResult.Series as ITrackableSeries;
+            var trackerTemplate = this.DefaultTrackerTemplate;
+            if (ts != null && !string.IsNullOrEmpty(ts.TrackerKey))
+            {
+                var match = this.TrackerDefinitions.FirstOrDefault(t => t.TrackerKey == ts.TrackerKey);
+                if (match != null)
+                {
+                    trackerTemplate = match.TrackerTemplate;
+                }
+            }
+
+            if (trackerTemplate == null) {
+                this.HideTracker();
+                return;
+            }
+            
+            var tracker = new ContentControl { Template = trackerTemplate };
+
+            if (tracker != this.currentTracker)
+            {
+                this.HideTracker();
+                if (trackerTemplate != null)
+                {
+                    this.overlays.Children.Add(tracker);
+                    this.currentTracker = tracker;
+                }
+            }
+
+            if (this.currentTracker != null)
+            {
+                this.currentTracker.DataContext = trackerHitResult;
             }
         }
 
