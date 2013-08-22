@@ -197,6 +197,5 @@ namespace OxyPlot
                 this.MouseUp(sender, e);
             }
         }
-
     }
 }

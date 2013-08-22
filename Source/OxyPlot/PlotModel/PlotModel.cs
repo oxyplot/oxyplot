@@ -322,6 +322,11 @@ namespace OxyPlot
         public object SyncRoot { get { return this.syncRoot; } }
 
         /// <summary>
+        /// Occurs when the tracker has been changed.
+        /// </summary>
+        public event EventHandler<TrackerEventArgs> TrackerChanged;
+
+        /// <summary>
         /// Occurs when the plot has been updated.
         /// </summary>
         public event EventHandler Updated;
@@ -1257,6 +1262,19 @@ namespace OxyPlot
             }
 
             return defaultAxis;
+        }
+
+        /// <summary>
+        /// Raises the TrackerChanged event.
+        /// </summary>
+        protected internal virtual void OnTrackerChanged(TrackerHitResult result)
+        {
+            var handler = this.TrackerChanged;
+            if (handler != null)
+            {
+                var args = new TrackerEventArgs { HitResult = result };
+                handler(this, args);
+            }
         }
 
         /// <summary>

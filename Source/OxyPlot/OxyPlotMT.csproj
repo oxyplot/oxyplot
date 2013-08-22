@@ -101,6 +101,7 @@
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="PlotModel\HitTestResult.cs" />
     <Compile Include="Foundation\OxyImage.cs" />
+    <Compile Include="PlotModel\TrackerEventArgs.cs" />
     <Compile Include="Reporting\NamespaceDoc.cs" />
     <Compile Include="Series\BarSeries\BarItem.cs" />
     <Compile Include="Series\BarSeries\BarItemBase.cs" />
