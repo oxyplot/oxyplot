@@ -1,6 +1,7 @@
 ﻿namespace OxyPlot.Tests
 {
     using System.IO;
+    using System.Linq;
 
     using NUnit.Framework;
 
@@ -99,6 +100,23 @@
             var img2 = OxyImage.FromIndexed8(data2, palette);
             var bytes2 = img2.GetData();
             File.WriteAllBytes("FromIndexed8_2.bmp", bytes2);
+        }
+
+        [Test]
+        public void Discussion453825()
+        {
+            var data = new byte[100 * 100];
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    data[i + (j * 100)] = (byte)(i + j);
+                }
+            }
+
+            var palette = OxyPalettes.Gray(255).Colors.ToArray();
+            var im = OxyImage.FromIndexed8(100, 100, data, palette);
+            File.WriteAllBytes("Discussion453825.bmp", im.GetData());
         }
     }
 }
