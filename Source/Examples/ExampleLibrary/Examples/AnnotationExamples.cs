@@ -380,7 +380,8 @@ namespace ExampleLibrary
         [Example("Gradient backgrounds by ImageAnnotation")]
         public static PlotModel ImageAnnotationAsBackgroundGradient()
         {
-            var model = new PlotModel("Using ImageAnnotations to draw a gradient backgrounds", "But do you really want this? This is 'chartjunk'!") { PlotMargins = new OxyThickness(60, 4, 4, 60) };
+            // http://en.wikipedia.org/wiki/Chartjunk
+            var model = new PlotModel("Using ImageAnnotations to draw a gradient backgrounds", "But do you really want this? This is called 'chartjunk'!") { PlotMargins = new OxyThickness(60, 4, 4, 60) };
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
             model.Axes.Add(new LinearAxis(AxisPosition.Left));
 
@@ -432,6 +433,99 @@ namespace ExampleLibrary
             // verify that a series is rendered above the gradients
             model.Series.Add(new FunctionSeries(Math.Sin, 0, 7, 0.01));
 
+            return model;
+        }
+
+        [Example("ImageAnnotation - normal axes")]
+        public static PlotModel ImageAnnotation_NormalAxes()
+        {
+            var model = new PlotModel("ImageAnnotation - normal axes");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+
+            // create an image
+            var pixels = new OxyColor[2, 2];
+            pixels[0, 0] = OxyColors.Green;
+            pixels[1, 0] = OxyColors.Blue;
+            pixels[0, 1] = OxyColors.Red;
+            pixels[1, 1] = OxyColors.Yellow;
+
+            var image = OxyImage.FromArgb(pixels);
+
+            model.Annotations.Add(
+                new ImageAnnotation
+                    {
+                        ImageSource = image,
+                        Interpolate = false,
+                        X = new PlotLength(0, PlotLengthUnit.Data),
+                        Y = new PlotLength(0, PlotLengthUnit.Data),
+                        Width = new PlotLength(80, PlotLengthUnit.Data),
+                        Height = new PlotLength(50, PlotLengthUnit.Data),
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Bottom
+                    });
+            return model;
+        }
+
+        [Example("ImageAnnotation - reverse horizontal axis")]
+        public static PlotModel ImageAnnotation_ReverseHorizontalAxis()
+        {
+            var model = new PlotModel("ImageAnnotation - reverse horizontal axis");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left));
+
+            // create an image
+            var pixels = new OxyColor[2, 2];
+            pixels[0, 0] = OxyColors.Green;
+            pixels[1, 0] = OxyColors.Blue;
+            pixels[0, 1] = OxyColors.Red;
+            pixels[1, 1] = OxyColors.Yellow;
+
+            var image = OxyImage.FromArgb(pixels);
+
+            model.Annotations.Add(
+                new ImageAnnotation
+                {
+                    ImageSource = image,
+                    Interpolate = false,
+                    X = new PlotLength(100, PlotLengthUnit.Data),
+                    Y = new PlotLength(0, PlotLengthUnit.Data),
+                    Width = new PlotLength(80, PlotLengthUnit.Data),
+                    Height = new PlotLength(50, PlotLengthUnit.Data),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Bottom
+                });
+            return model;
+        }
+
+        [Example("ImageAnnotation - reverse vertical axis")]
+        public static PlotModel ImageAnnotation_ReverseVerticalAxis()
+        {
+            var model = new PlotModel("ImageAnnotation - reverse vertical axis");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left) { StartPosition = 1, EndPosition = 0 });
+
+            // create an image
+            var pixels = new OxyColor[2, 2];
+            pixels[0, 0] = OxyColors.Green;
+            pixels[1, 0] = OxyColors.Blue;
+            pixels[0, 1] = OxyColors.Red;
+            pixels[1, 1] = OxyColors.Yellow;
+
+            var image = OxyImage.FromArgb(pixels);
+
+            model.Annotations.Add(
+                new ImageAnnotation
+                {
+                    ImageSource = image,
+                    Interpolate = false,
+                    X = new PlotLength(0, PlotLengthUnit.Data),
+                    Y = new PlotLength(100, PlotLengthUnit.Data),
+                    Width = new PlotLength(80, PlotLengthUnit.Data),
+                    Height = new PlotLength(50, PlotLengthUnit.Data),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Bottom
+                });
             return model;
         }
 

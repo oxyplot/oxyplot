@@ -29,6 +29,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Annotations
 {
+    using System;
+
     /// <summary>
     /// Represents a text annotation.
     /// </summary>
@@ -72,9 +74,9 @@ namespace OxyPlot.Annotations
         /// The vertical alignment.
         /// </param>
         public ImageAnnotation(
-            OxyImage image, 
-            ScreenPoint position, 
-            HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Center, 
+            OxyImage image,
+            ScreenPoint position,
+            HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Center,
             VerticalAlignment verticalAlignment = OxyPlot.VerticalAlignment.Middle)
             : this()
         {
@@ -101,9 +103,9 @@ namespace OxyPlot.Annotations
         /// The vertical alignment.
         /// </param>
         public ImageAnnotation(
-            OxyImage image, 
-            IDataPoint position, 
-            HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Center, 
+            OxyImage image,
+            IDataPoint position,
+            HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Center,
             VerticalAlignment verticalAlignment = OxyPlot.VerticalAlignment.Middle)
             : this()
         {
@@ -133,10 +135,10 @@ namespace OxyPlot.Annotations
         /// The vertical alignment.
         /// </param>
         public ImageAnnotation(
-            OxyImage image, 
-            double relativeX, 
-            double relativeY, 
-            HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Center, 
+            OxyImage image,
+            double relativeX,
+            double relativeY,
+            HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Center,
             VerticalAlignment verticalAlignment = OxyPlot.VerticalAlignment.Middle)
             : this()
         {
@@ -276,6 +278,9 @@ namespace OxyPlot.Annotations
             {
                 height = width / imageInfo.Width * imageInfo.Height;
             }
+
+            width = Math.Abs(width);
+            height = Math.Abs(height);
 
             double x = position.X;
             double y = position.Y;
@@ -432,7 +437,7 @@ namespace OxyPlot.Annotations
             switch (y.Unit)
             {
                 case PlotLengthUnit.Data:
-                    sy = this.YAxis.Transform(y.Value) - this.YAxis.Transform(0);
+                    sy = -this.YAxis.Transform(y.Value) + this.YAxis.Transform(0);
                     break;
                 case PlotLengthUnit.RelativeToPlotArea:
                     sy = model.PlotArea.Height * y.Value;
