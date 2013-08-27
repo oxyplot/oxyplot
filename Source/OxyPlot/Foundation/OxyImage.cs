@@ -70,7 +70,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Creates an <see cref="OxyImage"/> from the specified <see cref="OxyColor"/> array.
+        /// Creates a BITMAP image from the specified <see cref="OxyColor"/> array.
         /// </summary>
         /// <param name="data">
         /// The pixel data, indexed as [row,column] (from bottom-left).
@@ -105,7 +105,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Creates an <see cref="OxyImage"/> from the specified <see cref="OxyColor"/> array.
+        /// Creates a BITMAP image from the specified <see cref="OxyColor"/> array.
         /// </summary>
         /// <param name="data">
         /// The pixel data, indexed as [row,column] (from bottom-left).
@@ -140,7 +140,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Creates an <see cref="OxyImage"/> from the specified pixel data.
+        /// Creates a BITMAP image from the specified pixel data.
         /// </summary>
         /// <param name="width">
         /// The width.
@@ -179,17 +179,17 @@ namespace OxyPlot
             // Bitmap V4 info header (108 bytes)
             WriteBitmapV4Header(w, width, height, 32, pixelData.Length, dpi);
 
-            // Pixel array (from bottom-left corner)
+            // Pixel array (from bottom-left corner, no padding needed)
             w.Write(pixelData);
 
             return new OxyImage(ms.ToArray());
         }
 
         /// <summary>
-        /// Creates an <see cref="OxyImage"/> from the specified 8-bit indexed pixel data.
+        /// Creates a BITMAP image from the specified 8-bit indexed pixel data.
         /// </summary>
         /// <param name="indexedData">
-        /// The indexed pixel data (from bottom-left).
+        /// The indexed pixel data, indexed as [row,column] (from bottom-left).
         /// </param>
         /// <param name="palette">
         /// The palette.
@@ -208,7 +208,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Creates an <see cref="OxyImage"/> from the specified 8-bit indexed pixel data.
+        /// Creates a BITMAP image from the specified 8-bit indexed pixel data.
         /// </summary>
         /// <param name="width">
         /// The width.
@@ -217,7 +217,7 @@ namespace OxyPlot
         /// The height.
         /// </param>
         /// <param name="indexedPixelData">
-        /// The indexed pixel data (from bottom-left).
+        /// The indexed pixel data (from bottom-left, no padding).
         /// </param>
         /// <param name="palette">
         /// The palette.
@@ -239,6 +239,11 @@ namespace OxyPlot
             if (palette.Length == 0)
             {
                 throw new ArgumentException("Palette not defined.", "palette");
+            }
+
+            if (palette.Length > 256)
+            {
+                throw new ArgumentException("Too many colors in the palette.", "palette");
             }
 
             var ms = new MemoryStream();
@@ -268,13 +273,33 @@ namespace OxyPlot
             }
 
             // Pixel array (from bottom-left corner)
-            w.Write(indexedPixelData);
+
+            // The bits representing the bitmap pixels are packed in rows. The size of each row is rounded up to a
+            // multiple of 4 bytes (a 32-bit DWORD) by padding.
+            // For images with height > 1, multiple padded rows are stored consecutively, forming a Pixel Array.
+
+            // ReSharper disable once PossibleLossOfFraction
+            int rowSize = (int)Math.Floor(((8 * width) + 31) / 32) * 4;
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    w.Write(indexedPixelData[(i * width) + j]);
+                }
+
+                // padding
+                for (int j = width; j < rowSize; j++)
+                {
+                    w.Write((byte)0);
+                }
+            }
 
             return new OxyImage(ms.ToArray());
         }
 
         /// <summary>
-        /// Creates an <see cref="OxyImage"/> from the specified pixel data.
+        /// Creates a BITMAP image from the specified pixel data.
         /// </summary>
         /// <param name="width">
         /// The width.
@@ -317,6 +342,16 @@ namespace OxyPlot
             w.Write(pixelData);
 
             return new OxyImage(ms.ToArray());
+        }
+
+        /// <summary>
+        /// Creates a PNG image from the specified pixels.
+        /// </summary>
+        /// <param name="pixels">The pixels, indexed as [row,column] (bottom line first).</param>
+        /// <returns>An OxyImage.</returns>
+        public static OxyImage PngFromArgb(OxyColor[,] pixels)
+        {
+            return new OxyImage(PngEncoder.Encode(pixels));
         }
 
         /// <summary>
@@ -429,16 +464,6 @@ namespace OxyPlot
             w.Write((uint)0);
             w.Write((uint)0);
             w.Write((uint)0);
-        }
-
-        /// <summary>
-        /// Creates a PNG image from the specified pixels.
-        /// </summary>
-        /// <param name="pixels">The pixels (bottom line first).</param>
-        /// <returns>An OxyImage.</returns>
-        public static OxyImage PngFromArgb(OxyColor[,] pixels)
-        {
-            return new OxyImage(PngEncoder.Encode(pixels));
         }
     }
 }

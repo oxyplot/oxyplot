@@ -103,7 +103,7 @@
         }
 
         [Test]
-        public void Discussion453825()
+        public void Discussion453825_100()
         {
             var data = new byte[100 * 100];
             int k = 0;
@@ -118,6 +118,40 @@
             var palette = OxyPalettes.Gray(256).Colors.ToArray();
             var im = OxyImage.FromIndexed8(100, 100, data, palette);
             File.WriteAllBytes("Discussion453825.bmp", im.GetData());
+        }
+
+        [Test]
+        public void Discussion453825_199()
+        {
+            int w = 199;
+            int h = 256;
+            var data = new byte[h, w];
+            var data2 = new byte[h * w];
+            for (int i = 0; i < h; i++)
+            {
+                for (int j = 0; j < w; j++)
+                {
+                    data[i, j] = (byte)(i % 256);
+                    data2[(i * w) + j] = (byte)(i % 256);
+                }
+            }
+
+            var palette1 = OxyPalettes.Gray(256).Colors.ToArray();
+            var im1 = OxyImage.FromIndexed8(data, palette1);
+            var im2 = OxyImage.FromIndexed8(w, h, data2, palette1);
+            var bytes1 = im1.GetData();
+            var bytes2 = im2.GetData();
+
+            // The images should show a gradient image 199x256 - black at the bottom, white at the top
+            File.WriteAllBytes("Discussion453825_199a.bmp", bytes1);
+            File.WriteAllBytes("Discussion453825_199b.bmp", bytes2);
+
+            // The two files should be identical
+            Assert.IsTrue(bytes1.Length == bytes2.Length);
+            for (int i = 0; i < bytes1.Length; i++)
+            {
+                Assert.IsTrue(bytes1[i] == bytes2[i], "Position: " + i);
+            }
         }
     }
 }
