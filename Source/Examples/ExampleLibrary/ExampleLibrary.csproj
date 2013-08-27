@@ -41,6 +41,7 @@
     <Compile Include="CustomSeries\FlagSeries.cs" />
     <Compile Include="CustomSeries\LineSegmentSeries.cs" />
     <Compile Include="CustomSeries\MatrixSeries.cs" />
+    <Compile Include="CustomSeries\PolarHeatMapSeries.cs" />
     <Compile Include="ExampleInfo.cs" />
     <Compile Include="Examples.cs" />
     <Compile Include="Attributes\ExamplesAttribute.cs" />

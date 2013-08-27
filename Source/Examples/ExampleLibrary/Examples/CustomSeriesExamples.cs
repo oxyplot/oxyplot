@@ -29,6 +29,7 @@ namespace ExampleLibrary
     using System;
     using OxyPlot;
     using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     [Examples("Custom series")]
     public static class CustomSeriesExamples
@@ -126,6 +127,44 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Series.Add(new MatrixSeries { Matrix = matrix, ShowDiagonal = true });
+
+            return model;
+        }
+
+        [Example("PolarHeatMap")]
+        public static PlotModel PolarHeatMap()
+        {
+            var model = new PlotModel { Title = "Polar heat map", PlotMargins = new OxyThickness(40, 80, 40, 40), PlotType = PlotType.Polar, PlotAreaBorderThickness = 0 };
+
+            var matrix = new double[2, 2];
+            matrix[0, 0] = 0;
+            matrix[0, 1] = 2;
+            matrix[1, 0] = 1.5;
+            matrix[1, 1] = 0.2;
+
+            model.Axes.Add(new AngleAxis { StartAngle = 0, EndAngle = 360, Minimum = 0, Maximum = 360, MajorStep = 30, MinorStep = 15 });
+            model.Axes.Add(new MagnitudeAxis { Minimum = 0, Maximum = 100, MajorStep = 25, MinorStep = 5 });
+            model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Rainbow(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            model.Series.Add(new PolarHeatMapSeries { Data = matrix, Angle0 = 30, Angle1 = 150, Magnitude0 = 0, Magnitude1 = 80, Interpolate = false });
+
+            return model;
+        }
+
+        [Example("PolarHeatMap - interpolate")]
+        public static PlotModel PolarHeatMapInterpolate()
+        {
+            var model = new PlotModel { Title = "Polar heat map (interpolated)", PlotMargins = new OxyThickness(40, 80, 40, 40), PlotType = PlotType.Polar, PlotAreaBorderThickness = 0 };
+
+            var matrix = new double[2, 2];
+            matrix[0, 0] = 0;
+            matrix[0, 1] = 2;
+            matrix[1, 0] = 1.5;
+            matrix[1, 1] = 0.2;
+
+            model.Axes.Add(new AngleAxis { StartAngle = 0, EndAngle = 360, Minimum = 0, Maximum = 360, MajorStep = 30, MinorStep = 15 });
+            model.Axes.Add(new MagnitudeAxis { Minimum = 0, Maximum = 100, MajorStep = 25, MinorStep = 5 });
+            model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Rainbow(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            model.Series.Add(new PolarHeatMapSeries { Data = matrix, Angle0 = 30, Angle1 = 150, Magnitude0 = 0, Magnitude1 = 80, Interpolate = true });
 
             return model;
         }

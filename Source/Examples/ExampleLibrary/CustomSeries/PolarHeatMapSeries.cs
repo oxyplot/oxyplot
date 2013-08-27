@@ -1,0 +1,258 @@
+﻿namespace OxyPlot.Series
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using OxyPlot.Axes;
+
+    /// <summary>
+    /// Implements a polar heat map series.
+    /// </summary>
+    public class PolarHeatMapSeries : XYAxisSeries
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PolarHeatMapSeries"/> class.
+        /// </summary>
+        public PolarHeatMapSeries()
+        {
+            this.Interpolate = true;
+        }
+
+        /// <summary>
+        /// The image
+        /// </summary>
+        private OxyImage image;
+
+        /// <summary>
+        /// Gets or sets the x-coordinate of the left column mid point.
+        /// </summary>
+        public double Angle0 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the x-coordinate of the right column mid point.
+        /// </summary>
+        public double Angle1 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the y-coordinate of the top row mid point.
+        /// </summary>
+        public double Magnitude0 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the y-coordinate of the bottom row mid point.
+        /// </summary>
+        public double Magnitude1 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data array.
+        /// </summary>
+        /// <remarks>
+        /// Note that the indices of the data array refer to [x,y].
+        /// </remarks>
+        public double[,] Data { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to interpolate when rendering.
+        /// </summary>
+        /// <remarks>
+        /// This property is not supported on all platforms.
+        /// </remarks>
+        public bool Interpolate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum value of the dataset.
+        /// </summary>
+        public double MinValue { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the maximum value of the dataset.
+        /// </summary>
+        public double MaxValue { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the color axis.
+        /// </summary>
+        /// <value>
+        /// The color axis.
+        /// </value>
+        public ColorAxis ColorAxis { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the color axis key.
+        /// </summary>
+        /// <value> The color axis key. </value>
+        public string ColorAxisKey { get; set; }
+
+        /// <summary>
+        /// Renders the series on the specified render context.
+        /// </summary>
+        /// <param name="rc">
+        /// The rendering context.
+        /// </param>
+        /// <param name="model">
+        /// The model.
+        /// </param>
+        public override void Render(IRenderContext rc, PlotModel model)
+        {
+            if (this.Data == null)
+            {
+                this.image = null;
+                return;
+            }
+
+            int m = this.Data.GetLength(0);
+            int n = this.Data.GetLength(1);
+
+            // get the available plot area
+            var dest = model.PlotArea;
+            int width = (int)dest.Width;
+            int height = (int)dest.Height;
+            if (width == 0 || height == 0)
+            {
+                return;
+            }
+
+            var pixels = new OxyColor[height, width];
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    // transform from screen to magnitude/angle
+                    var sp = new ScreenPoint(dest.Left + x, dest.Bottom - y);
+                    var xy = this.InverseTransform(sp);
+
+                    // transform to indices in the Data array
+                    var ii = (xy.Y - this.Angle0) / (this.Angle1 - this.Angle0) * m;
+                    var jj = (xy.X - this.Magnitude0) / (this.Magnitude1 - this.Magnitude0) * n;
+                    if (ii >= 0 && ii < m && jj >= 0 && jj < n)
+                    {
+                        // get the (interpolated) value
+                        var value = this.GetValue(ii, jj);
+
+                        // use the color axis to get the color
+                        pixels[y, x] = this.ColorAxis.GetColor(value).ChangeAlpha(160);
+                    }
+                    else
+                    {
+                        // outside the range of the Data array
+                        pixels[y, x] = OxyColors.Transparent;
+                    }
+                }
+            }
+
+            // Create the PNG image
+            this.image = OxyImage.PngFromArgb(pixels);
+
+            // Render the image
+            var clip = this.GetClippingRect();
+            rc.DrawClippedImage(clip, this.image, dest.Left, dest.Top, dest.Width, dest.Height, 1, false);
+        }
+
+        /// <summary>
+        /// Gets the value at the specified data indices.
+        /// </summary>
+        /// <param name="ii">The first index in the Data array.</param>
+        /// <param name="jj">The second index in the Data array.</param>
+        /// <returns>The value.</returns>
+        protected virtual double GetValue(double ii, double jj)
+        {
+            if (!this.Interpolate)
+            {
+                var i = (int)Math.Floor(ii);
+                var j = (int)Math.Floor(jj);
+                return this.Data[i, j];
+            }
+
+            ii -= 0.5;
+            jj -= 0.5;
+
+            // bi-linear interpolation http://en.wikipedia.org/wiki/Bilinear_interpolation
+            var r = (int)Math.Floor(ii);
+            var c = (int)Math.Floor(jj);
+
+            int r0 = r > 0 ? r : 0;
+            int r1 = r + 1 < this.Data.GetLength(0) ? r + 1 : r;
+            int c0 = c > 0 ? c : 0;
+            int c1 = c + 1 < this.Data.GetLength(1) ? c + 1 : c;
+
+            double v00 = this.Data[r0, c0];
+            double v01 = this.Data[r0, c1];
+            double v10 = this.Data[r1, c0];
+            double v11 = this.Data[r1, c1];
+
+            double di = ii - r;
+            double dj = jj - c;
+
+            double v0 = (v00 * (1 - dj)) + (v01 * dj);
+            double v1 = (v10 * (1 - dj)) + (v11 * dj);
+
+            return (v0 * (1 - di)) + (v1 * di);
+        }
+
+        /// <summary>
+        /// Gets the point on the series that is nearest the specified point.
+        /// </summary>
+        /// <param name="point">
+        /// The point.
+        /// </param>
+        /// <param name="interpolate">
+        /// Interpolate the series if this flag is set to <c>true</c>.
+        /// </param>
+        /// <returns>
+        /// A TrackerHitResult for the current hit.
+        /// </returns>
+        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Ensures that the axes of the series is defined.
+        /// </summary>
+        protected override void EnsureAxes()
+        {
+            base.EnsureAxes();
+
+            this.ColorAxis =
+                this.PlotModel.GetAxisOrDefault(this.ColorAxisKey, this.PlotModel.DefaultColorAxis) as ColorAxis;
+        }
+
+        /// <summary>
+        /// Updates the max/minimum values.
+        /// </summary>
+        protected override void UpdateMaxMin()
+        {
+            base.UpdateMaxMin();
+
+            this.MinValue = this.GetData().Min();
+            this.MaxValue = this.GetData().Max();
+
+            //this.XAxis.Include(this.MinX);
+            //this.XAxis.Include(this.MaxX);
+
+            //this.YAxis.Include(this.MinY);
+            //this.YAxis.Include(this.MaxY);
+
+            this.ColorAxis.Include(this.MinValue);
+            this.ColorAxis.Include(this.MaxValue);
+        }
+
+        /// <summary>
+        /// Gets the data as a sequence (LINQ-friendly).
+        /// </summary>
+        /// <returns>The sequence of data.</returns>
+        protected IEnumerable<double> GetData()
+        {
+            int m = this.Data.GetLength(0);
+            int n = this.Data.GetLength(1);
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    yield return this.Data[i, j];
+                }
+            }
+        }
+    }
+}
