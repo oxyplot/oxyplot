@@ -498,11 +498,12 @@ namespace OxyPlot.WindowsForms
                 }
 
                 g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
-                int sx = (int)Math.Round(x);
-                int sy = (int)Math.Round(y);
-                int sw = (int)Math.Round(x + w) - sx;
-                int sh = (int)Math.Round(y + h) - sy;
-                g.DrawImage(image, new Rectangle(sx, sy, sw, sh), srcX, srcY, srcWidth, srcHeight, GraphicsUnit.Pixel, ia);
+                int sx = (int)Math.Floor(x);
+                int sy = (int)Math.Floor(y);
+                int sw = (int)Math.Ceiling(x + w) - sx;
+                int sh = (int)Math.Ceiling(y + h) - sy;
+                var destRect = new Rectangle(sx, sy, sw, sh);
+                g.DrawImage(image, destRect, srcX - 0.5f, srcY - 0.5f, srcWidth, srcHeight, GraphicsUnit.Pixel, ia);
             }
         }
 
