@@ -112,6 +112,7 @@ namespace OxyPlot.Axes
 
             x -= this.MidPoint.x;
             y -= this.MidPoint.y;
+            y *= -1;
             double th = Math.Atan2(y, x);
             double r = Math.Sqrt((x * x) + (y * y));
             x = (r / this.scale) + this.offset;
