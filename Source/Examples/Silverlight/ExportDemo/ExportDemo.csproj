@@ -133,7 +133,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
-  <UsingTask TaskName="PepitaGet.RestorePackagesTask" AssemblyFile="$(SolutionDir)..\Tools\Pepita\PepitaGet.dll" />
+  <UsingTask TaskName="PepitaGet.RestorePackagesTask" AssemblyFile="$(ProjectDir)..\..\..\..\Tools\Pepita\PepitaGet.dll" />
   <Target Name="BeforeBuild">
     <PepitaGet.RestorePackagesTask />
   </Target>
