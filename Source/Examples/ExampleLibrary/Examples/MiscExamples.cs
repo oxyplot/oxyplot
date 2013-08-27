@@ -251,7 +251,7 @@ namespace ExampleLibrary
                                     = 0,
                                 PlotMargins =
                                     new OxyThickness(
-                                    60, 4, 4, 40)
+                                    60, 4, 60, 40)
                             };
             model.Axes.Add(
                 new LinearAxis(AxisPosition.Left, -20, 540, "Distance from Oslo S")
@@ -366,9 +366,11 @@ namespace ExampleLibrary
                                         LineStyle = LineStyle.Solid,
                                         Color = OxyColors.LightGray,
                                         Text = fields[0] + "  ",
-                                        TextVerticalAlignment = VerticalAlignment.Bottom,
-                                        TextPosition = 0,
-                                        TextMargin = 4,
+                                        TextVerticalAlignment = VerticalAlignment.Middle,
+                                        TextPosition = 1,
+                                        TextMargin = 0,
+                                        TextPadding = 4,
+                                        ClipText = false,
                                         TextHorizontalAlignment = HorizontalAlignment.Left
                                     });
                         }

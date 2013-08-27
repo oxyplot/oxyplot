@@ -86,6 +86,7 @@ namespace OxyPlot.Annotations
             this.TextPosition = 1;
             this.TextOrientation = AnnotationTextOrientation.AlongLine;
             this.TextMargin = 12;
+            this.ClipText = true;
             this.TextHorizontalAlignment = HorizontalAlignment.Right;
             this.TextVerticalAlignment = VerticalAlignment.Top;
         }
@@ -192,6 +193,14 @@ namespace OxyPlot.Annotations
         /// Other positions are center aligned at the specified position
         /// </remarks>
         public double TextPosition { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to clip the text within the plot area.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if text should be clipped within the plot area; otherwise, <c>false</c>.
+        /// </value>
+        public bool ClipText { get; set; }
 
         /// <summary>
         /// Gets or sets the vertical alignment of text (above or below the line).
@@ -425,20 +434,39 @@ namespace OxyPlot.Annotations
                 position.X += f * this.TextPadding * Math.Cos(angleInRadians);
                 position.Y += f * this.TextPadding * Math.Sin(angleInRadians);
 
-                var cs = new CohenSutherlandClipping(clippingRectangle);
-                if (!string.IsNullOrEmpty(this.Text) && cs.IsInside(position))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
-                    rc.DrawClippedText(
-                        clippingRectangle,
-                        position,
-                        this.Text,
-                        this.ActualTextColor,
-                        this.ActualFont,
-                        this.ActualFontSize,
-                        this.ActualFontWeight,
-                        angle,
-                        this.TextHorizontalAlignment,
-                        this.TextVerticalAlignment);
+                    if (this.ClipText)
+                    {
+                        var cs = new CohenSutherlandClipping(clippingRectangle);
+                        if (cs.IsInside(position))
+                        {
+                            rc.DrawClippedText(
+                                clippingRectangle,
+                                position,
+                                this.Text,
+                                this.ActualTextColor,
+                                this.ActualFont,
+                                this.ActualFontSize,
+                                this.ActualFontWeight,
+                                angle,
+                                this.TextHorizontalAlignment,
+                                this.TextVerticalAlignment);
+                        }
+                    }
+                    else
+                    {
+                        rc.DrawText(
+                           position,
+                           this.Text,
+                           this.ActualTextColor,
+                           this.ActualFont,
+                           this.ActualFontSize,
+                           this.ActualFontWeight,
+                           angle,
+                           this.TextHorizontalAlignment,
+                           this.TextVerticalAlignment);
+                    }
                 }
             }
         }
@@ -501,11 +529,12 @@ namespace OxyPlot.Annotations
             }
 
             double l = (length * p) + margin;
+            double eps = 1e-8;
             length = 0;
             for (int i = 1; i < pts.Count; i++)
             {
                 double dl = (pts[i] - pts[i - 1]).Length;
-                if (l >= length && l <= length + dl)
+                if (l >= length - eps && l <= length + dl + eps)
                 {
                     double f = (l - length) / dl;
                     double x = (pts[i].X * f) + (pts[i - 1].X * (1 - f));

@@ -55,10 +55,16 @@ namespace OxyPlot.Wpf
             "ClipByYAxis", typeof(bool), typeof(LineAnnotation), new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
-        /// The color property.
+        /// The Color property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color), typeof(LineAnnotation), new PropertyMetadata(Colors.Blue, AppearanceChanged));
+
+        /// <summary>
+        /// The ClipText property.
+        /// </summary>
+        public static readonly DependencyProperty ClipTextProperty =
+            DependencyProperty.Register("ClipText", typeof(bool), typeof(LineAnnotation), new PropertyMetadata(true));
 
         /// <summary>
         /// The equation type property.
@@ -240,6 +246,18 @@ namespace OxyPlot.Wpf
             {
                 this.SetValue(ColorProperty, value);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the text should be clipped within the plot area.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if text should be clipped; otherwise, <c>false</c>.
+        /// </value>
+        public bool ClipText
+        {
+            get { return (bool)GetValue(ClipTextProperty); }
+            set { this.SetValue(ClipTextProperty, value); }
         }
 
         /// <summary>
@@ -567,6 +585,7 @@ namespace OxyPlot.Wpf
             a.TextMargin = this.TextMargin;
             a.TextHorizontalAlignment = this.TextHorizontalAlignment;
             a.TextVerticalAlignment = this.TextVerticalAlignment;
+            a.ClipText = this.ClipText;
         }
     }
 }
