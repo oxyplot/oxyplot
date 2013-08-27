@@ -450,7 +450,7 @@ namespace ExampleLibrary
             pixels[0, 1] = OxyColors.Red;
             pixels[1, 1] = OxyColors.Yellow;
 
-            var image = OxyImage.FromArgb(pixels);
+            var image = OxyImage.PngFromArgb(pixels);
 
             model.Annotations.Add(
                 new ImageAnnotation
@@ -481,7 +481,7 @@ namespace ExampleLibrary
             pixels[0, 1] = OxyColors.Red;
             pixels[1, 1] = OxyColors.Yellow;
 
-            var image = OxyImage.FromArgb(pixels);
+            var image = OxyImage.PngFromArgb(pixels);
 
             model.Annotations.Add(
                 new ImageAnnotation
@@ -512,7 +512,7 @@ namespace ExampleLibrary
             pixels[0, 1] = OxyColors.Red;
             pixels[1, 1] = OxyColors.Yellow;
 
-            var image = OxyImage.FromArgb(pixels);
+            var image = OxyImage.PngFromArgb(pixels);
 
             model.Annotations.Add(
                 new ImageAnnotation
