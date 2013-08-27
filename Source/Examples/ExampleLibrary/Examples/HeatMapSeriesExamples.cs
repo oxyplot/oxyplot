@@ -115,5 +115,26 @@ namespace ExampleLibrary
             model.Series.Add(hms);
             return model;
         }
+
+        [Example("Diagonal matrix (6x6)")]
+        public static PlotModel DiagonalMatrix2()
+        {
+            // https://oxyplot.codeplex.com/discussions/453174
+            var data = new double[6, 6];
+            data[0, 0] = 1;
+            data[1, 1] = 1;
+            data[2, 2] = 1;
+            data[3, 3] = 1;
+            data[4, 4] = 1;
+            data[5, 5] = 1;
+
+            var model = new PlotModel("Diagonal matrix");
+            model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+
+            // note: the coordinates are specifying the centers of the edge cells
+            var hms = new HeatMapSeries { X0 = 0, X1 = 5, Y0 = 0, Y1 = 5, Data = data, Interpolate = true };
+            model.Series.Add(hms);
+            return model;
+        }
     }
 }
