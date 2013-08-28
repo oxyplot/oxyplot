@@ -459,7 +459,7 @@ namespace OxyPlot.WindowsForms
 
         public override void CleanUp()
         {
-            var imagesToRelease = imageCache.Keys.Where(i => !imagesInUse.Contains(i));
+            var imagesToRelease = imageCache.Keys.Where(i => !imagesInUse.Contains(i)).ToList();
             foreach (var i in imagesToRelease)
             {
                 var image = this.GetImage(i);
