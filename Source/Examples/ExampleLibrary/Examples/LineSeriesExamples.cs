@@ -29,8 +29,6 @@ using OxyPlot;
 
 namespace ExampleLibrary
 {
-    using System.Collections.Generic;
-
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
@@ -451,5 +449,24 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Invisible LineSeries")]
+        public static PlotModel InvisibleSeries()
+        {
+            var model = new PlotModel("Invisible LineSeries");
+            var s1 = new LineSeries("Series 1 (visible)");
+            s1.Points.Add(new DataPoint(0, 5));
+            s1.Points.Add(new DataPoint(10, 20));
+            model.Series.Add(s1);
+
+            var s2 = new LineSeries("Series 2 (invisible)")
+            {
+                IsVisible = false
+            };
+            s2.Points.Add(new DataPoint(0, 10));
+            s2.Points.Add(new DataPoint(10, 40));
+            model.Series.Add(s2);
+
+            return model;
+        }
     }
 }
