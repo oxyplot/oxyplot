@@ -96,6 +96,9 @@ namespace OxyPlot
                 {
                     this.RenderLegends(rc, this.LegendArea);
                 }
+
+                // Clean up unused images
+                rc.CleanUp();
             }
         }
 

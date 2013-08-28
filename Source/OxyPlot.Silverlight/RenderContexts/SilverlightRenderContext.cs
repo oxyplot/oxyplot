@@ -918,7 +918,7 @@ namespace OxyPlot.Silverlight
         public void CleanUp()
         {
             // Find the images in the cache that has not been used since last call to this method
-            var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i));
+            var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i)).ToList();
 
             // Remove the images from the cache
             foreach (var i in imagesToRelease)
