@@ -84,7 +84,7 @@ namespace ExampleLibrary
             model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates
-            var hms = new HeatMapSeries { X0 = 0.5, X1 = 1.5, Y0 = 0.5, Y1 = 2.5, Data = data };
+            var hms = new HeatMapSeries { CoordinateDefinition = HeatMapCoordinateDefinition.Center, X0 = 0.5, X1 = 1.5, Y0 = 0.5, Y1 = 2.5, Data = data };
             model.Series.Add(hms);
             return model;
         }
@@ -99,7 +99,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Diagonal matrix")]
+        [Example("Diagonal matrix (center defined)")]
         public static PlotModel DiagonalMatrix()
         {
             var data = new double[3, 3];
@@ -111,13 +111,30 @@ namespace ExampleLibrary
             model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates
-            var hms = new HeatMapSeries { X0 = 0.5, X1 = 2.5, Y0 = 0.5, Y1 = 2.5, Data = data, Interpolate = false };
+            var hms = new HeatMapSeries { CoordinateDefinition = HeatMapCoordinateDefinition.Center, X0 = 0.5, X1 = 2.5, Y0 = 0.5, Y1 = 2.5, Data = data, Interpolate = false };
+            model.Series.Add(hms);
+            return model;
+        }
+
+        [Example("Diagonal matrix (edge defined)")]
+        public static PlotModel DiagonalMatrix2()
+        {
+            var data = new double[3, 3];
+            data[0, 0] = 1;
+            data[1, 1] = 1;
+            data[2, 2] = 1;
+
+            var model = new PlotModel("Diagonal matrix");
+            model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+
+            // adding half cellwidth/cellheight to bounding box coordinates
+            var hms = new HeatMapSeries { CoordinateDefinition = HeatMapCoordinateDefinition.Edge, X0 = 0, X1 = 3, Y0 = 0, Y1 = 3, Data = data, Interpolate = false };
             model.Series.Add(hms);
             return model;
         }
 
         [Example("Diagonal matrix (6x6)")]
-        public static PlotModel DiagonalMatrix2()
+        public static PlotModel DiagonalMatrix_6x6()
         {
             // https://oxyplot.codeplex.com/discussions/453174
             var data = new double[6, 6];

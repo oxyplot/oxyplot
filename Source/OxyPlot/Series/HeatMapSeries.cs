@@ -37,6 +37,22 @@ namespace OxyPlot.Series
     using OxyPlot.Axes;
 
     /// <summary>
+    /// Specifies how the heat map coordinates are defined.
+    /// </summary>
+    public enum HeatMapCoordinateDefinition
+    {
+        /// <summary>
+        /// The coordinates defines the center of the cells
+        /// </summary>
+        Center,
+
+        /// <summary>
+        /// The coordinates defines the edge of the cells
+        /// </summary>
+        Edge
+    }
+
+    /// <summary>
     /// The heat map series.
     /// </summary>
     /// <remarks>
@@ -44,14 +60,6 @@ namespace OxyPlot.Series
     /// </remarks>
     public class HeatMapSeries : XYAxisSeries
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HeatMapSeries"/> class.
-        /// </summary>
-        public HeatMapSeries()
-        {
-            this.Interpolate = true;
-        }
-
         /// <summary>
         /// The hash code of the current data.
         /// </summary>
@@ -61,6 +69,14 @@ namespace OxyPlot.Series
         /// The image
         /// </summary>
         private OxyImage image;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HeatMapSeries"/> class.
+        /// </summary>
+        public HeatMapSeries()
+        {
+            this.Interpolate = true;
+        }
 
         /// <summary>
         /// Gets or sets the x-coordinate of the left column mid point.
@@ -123,6 +139,14 @@ namespace OxyPlot.Series
         public string ColorAxisKey { get; set; }
 
         /// <summary>
+        /// Gets or sets the coordinate definition. The default value is Center.
+        /// </summary>
+        /// <value>
+        /// The coordinate definition.
+        /// </value>
+        public HeatMapCoordinateDefinition CoordinateDefinition { get; set; }
+
+        /// <summary>
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">
@@ -139,14 +163,24 @@ namespace OxyPlot.Series
                 return;
             }
 
-            int m = this.Data.GetLength(0);
-            int n = this.Data.GetLength(1);
-            double dx = (this.X1 - this.X0) / (m - 1);
-            double dy = (this.Y1 - this.Y0) / (n - 1);
-            double left = this.X0 - (dx * 0.5);
-            double right = this.X1 + (dx * 0.5);
-            double bottom = this.Y0 - (dy * 0.5);
-            double top = this.Y1 + (dy * 0.5);
+            double left = this.X0;
+            double right = this.X1;
+            double bottom = this.Y0;
+            double top = this.Y1;
+
+            if (this.CoordinateDefinition == HeatMapCoordinateDefinition.Center)
+            {
+                int m = this.Data.GetLength(0);
+                int n = this.Data.GetLength(1);
+
+                double dx = (this.X1 - this.X0) / (m - 1);
+                double dy = (this.Y1 - this.Y0) / (n - 1);
+
+                left -= dx / 2;
+                right += dx / 2;
+                bottom -= dy / 2;
+                top += dy / 2;
+            }
 
             var s00 = this.Transform(left, bottom);
             var s11 = this.Transform(right, top);
@@ -202,14 +236,22 @@ namespace OxyPlot.Series
 
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
-            double dx = Math.Abs(this.X1 - this.X0) / (m - 1);
-            double dy = Math.Abs(this.Y1 - this.Y0) / (n - 1);
 
-            this.MinX = Math.Min(this.X0, this.X1) - dx / 2;
-            this.MaxX = Math.Max(this.X0, this.X1) + dx / 2;
+            this.MinX = Math.Min(this.X0, this.X1);
+            this.MaxX = Math.Max(this.X0, this.X1);
 
-            this.MinY = Math.Min(this.Y0, this.Y1) - dy / 2;
-            this.MaxY = Math.Max(this.Y0, this.Y1) + dy / 2;
+            this.MinY = Math.Min(this.Y0, this.Y1);
+            this.MaxY = Math.Max(this.Y0, this.Y1);
+
+            if (this.CoordinateDefinition == HeatMapCoordinateDefinition.Center)
+            {
+                double dx = Math.Abs(this.X1 - this.X0) / (m - 1);
+                double dy = Math.Abs(this.Y1 - this.Y0) / (n - 1);
+                this.MinX -= dx / 2;
+                this.MaxX += dx / 2;
+                this.MinY -= dy / 2;
+                this.MaxY += dy / 2;
+            }
 
             this.MinValue = this.GetData().Min();
             this.MaxValue = this.GetData().Max();
