@@ -150,6 +150,25 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("PolarHeatMap on linear axes")]
+        public static PlotModel PolarHeatMapLinearAxes()
+        {
+            var model = new PlotModel { Title = "Polar heat map on linear axes" };
+
+            var matrix = new double[2, 2];
+            matrix[0, 0] = 0;
+            matrix[0, 1] = 2;
+            matrix[1, 0] = 1.5;
+            matrix[1, 1] = 0.2;
+
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -100, 100));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 100));
+            model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Rainbow(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            model.Series.Add(new PolarHeatMapSeries { Data = matrix, Angle0 = 30, Angle1 = 150, Magnitude0 = 0, Magnitude1 = 80, Interpolate = true });
+
+            return model;
+        }
+
         [Example("PolarHeatMap - interpolate")]
         public static PlotModel PolarHeatMapInterpolate()
         {
