@@ -121,10 +121,17 @@
                     // transform from screen to magnitude/angle
                     var sp = new ScreenPoint(dest.Left + x, dest.Bottom - y);
                     var xy = this.InverseTransform(sp);
+                    double angle = xy.Y;
+                    double magnitude = xy.X;
+                    if (this.PlotModel.PlotType != PlotType.Polar)
+                    {
+                        angle = Math.Atan2(xy.Y, xy.X) / Math.PI * 180;
+                        magnitude = Math.Sqrt((xy.X * xy.X) + (xy.Y * xy.Y));
+                    }
 
                     // transform to indices in the Data array
-                    var ii = (xy.Y - this.Angle0) / (this.Angle1 - this.Angle0) * m;
-                    var jj = (xy.X - this.Magnitude0) / (this.Magnitude1 - this.Magnitude0) * n;
+                    var ii = (angle - this.Angle0) / (this.Angle1 - this.Angle0) * m;
+                    var jj = (magnitude - this.Magnitude0) / (this.Magnitude1 - this.Magnitude0) * n;
                     if (ii >= 0 && ii < m && jj >= 0 && jj < n)
                     {
                         // get the (interpolated) value
