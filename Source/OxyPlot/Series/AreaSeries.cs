@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AreaSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,9 +27,9 @@
 //   Represents an area series that fills the polygon defined by one or two sets of points.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -68,10 +68,42 @@ namespace OxyPlot.Series
         public string DataFieldY2 { get; set; }
 
         /// <summary>
+        /// Gets or sets the color of the second line.
+        /// </summary>
+        /// <value>The color.</value>
+        public OxyColor Color2 { get; set; }
+
+        /// <summary>
+        /// Gets the actual color of the second line.
+        /// </summary>
+        /// <value>The actual color.</value>
+        public OxyColor ActualColor2
+        {
+            get
+            {
+                return this.Color2 ?? this.ActualColor;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the area fill color.
         /// </summary>
         /// <value>The fill.</value>
         public OxyColor Fill { get; set; }
+
+        /// <summary>
+        /// Gets the actual fill color.
+        /// </summary>
+        /// <value>
+        /// The actual fill.
+        /// </value>
+        public OxyColor ActualFill
+        {
+            get
+            {
+                return this.Fill ?? (this.ActualColor != null ? this.ActualColor.ChangeAlpha(100) : null);
+            }
+        }
 
         /// <summary>
         /// Gets the second list of points.
@@ -154,7 +186,7 @@ namespace OxyPlot.Series
                 return;
             }
 
-            base.VerifyAxes();
+            this.VerifyAxes();
 
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
@@ -200,7 +232,7 @@ namespace OxyPlot.Series
                 pts1,
                 clippingRect,
                 minDistSquared,
-                this.GetSelectableColor(this.ActualColor),
+                this.GetSelectableColor(this.ActualColor2),
                 this.StrokeThickness,
                 this.ActualLineStyle,
                 this.LineJoin,
@@ -212,7 +244,7 @@ namespace OxyPlot.Series
             pts.AddRange(pts0);
 
             // pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
-            rc.DrawClippedPolygon(pts, clippingRect, minDistSquared, this.GetSelectableFillColor(this.Fill), null);
+            rc.DrawClippedPolygon(pts, clippingRect, minDistSquared, this.GetSelectableFillColor(this.ActualFill), null);
 
             // draw the markers on top
             rc.DrawMarkers(
@@ -258,10 +290,9 @@ namespace OxyPlot.Series
             var pts = new List<ScreenPoint>();
             pts.AddRange(pts0);
             pts.AddRange(pts1);
-            var color = this.GetSelectableColor(this.ActualColor);
-            rc.DrawLine(pts0, color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.ActualLineStyle));
-            rc.DrawLine(pts1, color, this.StrokeThickness, LineStyleHelper.GetDashArray(this.ActualLineStyle));
-            rc.DrawPolygon(pts, this.GetSelectableFillColor(this.Fill), null);
+            rc.DrawLine(pts0, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
+            rc.DrawLine(pts1, this.GetSelectableColor(this.ActualColor2), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
+            rc.DrawPolygon(pts, this.GetSelectableFillColor(this.ActualFill), null);
         }
 
         /// <summary>
@@ -290,6 +321,5 @@ namespace OxyPlot.Series
             base.UpdateMaxMin();
             this.InternalUpdateMaxMin(this.points2);
         }
-
     }
 }

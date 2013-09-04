@@ -38,6 +38,12 @@ namespace OxyPlot.Wpf
     public class AreaSeries : LineSeries
     {
         /// <summary>
+        /// The color property.
+        /// </summary>
+        public static readonly DependencyProperty Color2Property = DependencyProperty.Register(
+            "Color2", typeof(Color?), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
         /// The constant y 2 property.
         /// </summary>
         public static readonly DependencyProperty ConstantY2Property = DependencyProperty.Register(
@@ -73,6 +79,22 @@ namespace OxyPlot.Wpf
         public AreaSeries()
         {
             this.InternalSeries = new OxyPlot.Series.AreaSeries();
+        }
+
+        /// <summary>
+        /// Gets or sets the color of the second line.
+        /// </summary>
+        public Color? Color2
+        {
+            get
+            {
+                return (Color?)this.GetValue(Color2Property);
+            }
+
+            set
+            {
+                this.SetValue(Color2Property, value);
+            }
         }
 
         /// <summary>
@@ -175,13 +197,13 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);
-            var s = series as OxyPlot.Series.AreaSeries;
+            var s = (OxyPlot.Series.AreaSeries)series;
+            s.Color2 = this.Color2.ToOxyColor();
             s.DataFieldX2 = this.DataFieldX2;
             s.DataFieldY2 = this.DataFieldY2;
             s.ConstantY2 = this.ConstantY2;
             s.Fill = this.Fill.ToOxyColor();
             s.Reverse2 = this.Reverse2;
         }
-
     }
 }
