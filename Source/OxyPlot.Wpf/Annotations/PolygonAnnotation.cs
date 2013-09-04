@@ -66,7 +66,7 @@ namespace OxyPlot.Wpf
         /// The Points property.
         /// </summary>
         public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
-            "Points", typeof(IList<DataPoint>), typeof(PolygonAnnotation), new PropertyMetadata(null, DataChanged));
+            "Points", typeof(IList<DataPoint>), typeof(PolygonAnnotation), new PropertyMetadata(new List<DataPoint>(), DataChanged));
 
         /// <summary>
         /// The stroke thickness property.
@@ -151,11 +151,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the points.
         /// </summary>
-        public IList<DataPoint> Points
+        public IList<IDataPoint> Points
         {
             get
             {
-                return (IList<DataPoint>)this.GetValue(PointsProperty);
+                return (IList<IDataPoint>)this.GetValue(PointsProperty);
             }
 
             set

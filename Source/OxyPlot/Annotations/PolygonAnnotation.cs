@@ -52,6 +52,7 @@ namespace OxyPlot.Annotations
             this.StrokeThickness = 1;
             this.LineStyle = LineStyle.Solid;
             this.LineJoin = OxyPenLineJoin.Miter;
+            this.Points = new List<IDataPoint>();
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace OxyPlot.Annotations
         /// Gets or sets the points.
         /// </summary>
         /// <value> The points. </value>
-        public IList<DataPoint> Points { get; set; }
+        public IList<IDataPoint> Points { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
@@ -107,7 +108,7 @@ namespace OxyPlot.Annotations
             }
 
             // transform to screen coordinates
-            this.screenPoints = this.Points.Select(p => this.Transform(p)).ToList();
+            this.screenPoints = this.Points.Select(this.Transform).ToList();
             if (this.screenPoints.Count == 0)
             {
                 return;

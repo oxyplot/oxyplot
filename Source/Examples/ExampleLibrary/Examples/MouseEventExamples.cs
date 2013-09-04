@@ -373,7 +373,7 @@ namespace ExampleLibrary
             var pa = new PolygonAnnotation
                 {
                     Points =
-                        new[]
+                        new IDataPoint[]
                             {
                                 new DataPoint(4, -2), new DataPoint(8, -4), new DataPoint(17, 7), new DataPoint(5, 8),
                                 new DataPoint(2, 5)
