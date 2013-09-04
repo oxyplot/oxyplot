@@ -210,7 +210,7 @@ namespace OxyPlot.Series
                 // http://msdn.microsoft.com/en-us/library/bb613546.aspx
 
                 // Using reflection on DataFieldX and DataFieldY
-                this.AddDataPoints((IList)pts, this.ItemsSource, this.DataFieldX, this.DataFieldY);
+                this.AddDataPoints(pts, this.ItemsSource, this.DataFieldX, this.DataFieldY);
             }
         }
 
@@ -229,7 +229,7 @@ namespace OxyPlot.Series
         /// <param name="dataFieldY">
         /// The data field y.
         /// </param>
-        protected void AddDataPoints(IList dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
+        protected void AddDataPoints(IList<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
         {
             PropertyInfo pix = null;
             PropertyInfo piy = null;

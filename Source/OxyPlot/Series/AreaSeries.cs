@@ -40,7 +40,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The second list of points.
         /// </summary>
-        private readonly List<IDataPoint> points2 = new List<IDataPoint>();
+        private IList<IDataPoint> points2 = new List<IDataPoint>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "AreaSeries" /> class.
@@ -106,14 +106,19 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets the second list of points.
+        /// Gets or sets the second list of points.
         /// </summary>
         /// <value>The second list of points.</value>
-        public List<IDataPoint> Points2
+        public IList<IDataPoint> Points2
         {
             get
             {
                 return this.points2;
+            }
+
+            set
+            {
+                this.points2 = value;
             }
         }
 
