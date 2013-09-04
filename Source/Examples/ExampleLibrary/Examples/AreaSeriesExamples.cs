@@ -33,6 +33,57 @@ namespace ExampleLibrary
     [Examples("AreaSeries")]
     public static class AreaSeriesExamples
     {
+        [Example("Default style")]
+        public static PlotModel DefaultStyle()
+        {
+            var plotModel1 = new PlotModel("AreaSeries with default style");
+            plotModel1.Series.Add(CreateExampleSeries());
+            return plotModel1;
+        }
+
+        [Example("Different stroke colors")]
+        public static PlotModel DifferentColors()
+        {
+            var plotModel1 = new PlotModel("Different stroke colors");
+            var areaSeries1 = CreateExampleSeries();
+            areaSeries1.Color = OxyColors.Red;
+            areaSeries1.Color2 = OxyColors.Blue;
+            plotModel1.Series.Add(areaSeries1);
+            return plotModel1;
+        }
+
+        [Example("Crossing lines")]
+        public static PlotModel CrossingLines()
+        {
+            var plotModel1 = new PlotModel("Crossing lines");
+            plotModel1.Series.Add(CreateExampleSeries2());
+            return plotModel1;
+        }
+
+        private static AreaSeries CreateExampleSeries()
+        {
+            var areaSeries1 = new AreaSeries();
+            areaSeries1.Points.Add(new DataPoint(0, 50));
+            areaSeries1.Points.Add(new DataPoint(10, 40));
+            areaSeries1.Points.Add(new DataPoint(20, 60));
+            areaSeries1.Points2.Add(new DataPoint(0, 60));
+            areaSeries1.Points2.Add(new DataPoint(5, 80));
+            areaSeries1.Points2.Add(new DataPoint(20, 70));
+            return areaSeries1;
+        }
+
+        private static AreaSeries CreateExampleSeries2()
+        {
+            var areaSeries1 = new AreaSeries();
+            areaSeries1.Points.Add(new DataPoint(0, 50));
+            areaSeries1.Points.Add(new DataPoint(10, 140));
+            areaSeries1.Points.Add(new DataPoint(20, 60));
+            areaSeries1.Points2.Add(new DataPoint(0, 60));
+            areaSeries1.Points2.Add(new DataPoint(5, 80));
+            areaSeries1.Points2.Add(new DataPoint(20, 70));
+            return areaSeries1;
+        }
+
         [Example("LineSeries and AreaSeries")]
         public static PlotModel LineSeriesandAreaSeries()
         {
