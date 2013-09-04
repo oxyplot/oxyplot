@@ -94,5 +94,14 @@ namespace ExampleLibrary
             model.Series.Add(ls);
             return model;
         }
+
+        [Example("#9971: Don't show minor ticks")]
+        public static PlotModel DontShowMinorTicks()
+        {
+            var model = new PlotModel("ShowMinorTicks = false");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom) { ShowMinorTicks = false });
+            model.Axes.Add(new LinearAxis(AxisPosition.Left) { ShowMinorTicks = false });
+            return model;
+        }
     }
 }

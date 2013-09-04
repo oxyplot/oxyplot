@@ -100,7 +100,10 @@ namespace OxyPlot
 
             if (pass == 0)
             {
-                this.RenderMinorItems(axis, axisPosition);
+                if (axis.ShowMinorTicks)
+                {
+                    this.RenderMinorItems(axis, axisPosition);
+                }
             }
 
             if (pass == 1)
@@ -342,7 +345,7 @@ namespace OxyPlot
             double a1;
             var majorSegments = new List<ScreenPoint>();
             var majorTickSegments = new List<ScreenPoint>();
-            this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
+                this.GetTickPositions(axis, axis.TickStyle, axis.MajorTickSize, axis.Position, out a0, out a1);
 
             foreach (double value in this.MajorTickValues)
             {
@@ -560,6 +563,7 @@ namespace OxyPlot
             double a1;
             var minorSegments = new List<ScreenPoint>();
             var minorTickSegments = new List<ScreenPoint>();
+
             this.GetTickPositions(axis, axis.TickStyle, axis.MinorTickSize, axis.Position, out a0, out a1);
 
             foreach (double value in this.MinorTickValues)
