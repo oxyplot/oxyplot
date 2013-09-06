@@ -12,6 +12,16 @@
     public class PolarHeatMapSeries : XYAxisSeries
     {
         /// <summary>
+        /// The image
+        /// </summary>
+        private OxyImage image;
+
+        /// <summary>
+        /// The pixels
+        /// </summary>
+        private OxyColor[,] pixels;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PolarHeatMapSeries"/> class.
         /// </summary>
         public PolarHeatMapSeries()
@@ -20,9 +30,12 @@
         }
 
         /// <summary>
-        /// The image
+        /// Gets or sets the size of the image - if set to 0, the image will be generated at every update.
         /// </summary>
-        private OxyImage image;
+        /// <value>
+        /// The size of the image.
+        /// </value>
+        public int ImageSize { get; set; }
 
         /// <summary>
         /// Gets or sets the x-coordinate of the left column mid point.
@@ -101,6 +114,23 @@
                 return;
             }
 
+            if (this.ImageSize > 0)
+            {
+                this.RenderFixed(rc, model);
+            }
+            else
+            {
+                this.RenderDynamic(rc, model);
+            }
+        }
+
+        /// <summary>
+        /// Renders by an image sized from the available plot area.
+        /// </summary>
+        /// <param name="rc">The rc.</param>
+        /// <param name="model">The model.</param>
+        public void RenderDynamic(IRenderContext rc, PlotModel model)
+        {
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
 
@@ -113,7 +143,12 @@
                 return;
             }
 
-            var pixels = new OxyColor[height, width];
+            if (this.pixels == null || this.pixels.GetLength(0) != height || this.pixels.GetLength(1) != width)
+            {
+                this.pixels = new OxyColor[height, width];
+            }
+
+            var p = this.pixels;
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
@@ -138,18 +173,100 @@
                         var value = this.GetValue(ii, jj);
 
                         // use the color axis to get the color
-                        pixels[y, x] = this.ColorAxis.GetColor(value).ChangeAlpha(160);
+                        p[y, x] = this.ColorAxis.GetColor(value).ChangeAlpha(160);
                     }
                     else
                     {
                         // outside the range of the Data array
-                        pixels[y, x] = OxyColors.Transparent;
+                        p[y, x] = OxyColors.Transparent;
                     }
                 }
             }
 
             // Create the PNG image
-            this.image = OxyImage.PngFromArgb(pixels);
+            this.image = OxyImage.PngFromArgb(p);
+
+            // Render the image
+            var clip = this.GetClippingRect();
+            rc.DrawClippedImage(clip, this.image, dest.Left, dest.Top, dest.Width, dest.Height, 1, false);
+        }
+
+        /// <summary>
+        /// Refreshes the image next time the series is rendered.
+        /// </summary>
+        public void Refresh()
+        {
+            this.image = null;
+        }
+
+        /// <summary>
+        /// Renders by scaling a fixed image.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The model.</param>
+        public void RenderFixed(IRenderContext rc, PlotModel model)
+        {
+            if (image == null)
+            {
+                int m = this.Data.GetLength(0);
+                int n = this.Data.GetLength(1);
+
+                int width = this.ImageSize;
+                int height = this.ImageSize;
+                if (this.pixels == null || this.pixels.GetLength(0) != height || this.pixels.GetLength(1) != width)
+                {
+                    this.pixels = new OxyColor[height, width];
+                }
+
+                var p = this.pixels;
+                for (int i = 0; i < height; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        double x = (j - width * 0.5) / (width * 0.5) * this.Magnitude1;
+                        double y = (i - height * 0.5) / (height * 0.5) * this.Magnitude1;
+
+                        double angle = Math.Atan2(i - height * 0.5, j - width * 0.5) / Math.PI * 180;
+                        double magnitude = Math.Sqrt(x * x + y * y);
+
+                        // transform to indices in the Data array
+                        var ii = (angle - this.Angle0) / (this.Angle1 - this.Angle0) * m;
+                        var jj = (magnitude - this.Magnitude0) / (this.Magnitude1 - this.Magnitude0) * n;
+                        if (ii >= 0 && ii < m && jj >= 0 && jj < n)
+                        {
+                            // get the (interpolated) value
+                            var value = this.GetValue(ii, jj);
+
+                            // use the color axis to get the color
+                            p[i, j] = this.ColorAxis.GetColor(value).ChangeAlpha(160);
+                        }
+                        else
+                        {
+                            // outside the range of the Data array
+                            p[i, j] = OxyColors.Transparent;
+                        }
+                    }
+                }
+
+                // Create the PNG image
+                this.image = OxyImage.PngFromArgb(p);
+            }
+
+            OxyRect dest;
+            if (this.PlotModel.PlotType != PlotType.Polar)
+            {
+                var topleft = this.Transform(-this.Magnitude1, this.Magnitude1);
+                var bottomright = this.Transform(this.Magnitude1, -this.Magnitude1);
+                dest = new OxyRect(topleft.X, topleft.Y, bottomright.X - topleft.X, bottomright.Y - topleft.Y);
+            }
+            else
+            {
+                var top = this.Transform(this.Magnitude1, 90);
+                var bottom = this.Transform(this.Magnitude1, 270);
+                var left = this.Transform(this.Magnitude1, 180);
+                var right = this.Transform(this.Magnitude1, 0);
+                dest = new OxyRect(left.X, top.Y, right.X - left.X, bottom.Y - top.Y);
+            }
 
             // Render the image
             var clip = this.GetClippingRect();
