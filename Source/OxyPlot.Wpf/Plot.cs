@@ -1009,6 +1009,9 @@ namespace OxyPlot.Wpf
             {
                 if (Math.Abs(d) < 1e-8 && e.ChangedButton == MouseButton.Right)
                 {
+                    // TODO: why is the data context not passed to the context menu??
+                    this.ContextMenu.DataContext = this.DataContext;
+
                     this.ContextMenu.Visibility = Visibility.Visible;
                     this.ContextMenu.IsOpen = true;
                 }
