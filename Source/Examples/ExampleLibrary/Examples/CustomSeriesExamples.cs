@@ -150,6 +150,24 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("PolarHeatMap (interpolated)")]
+        public static PlotModel PolarHeatMapInterpolated()
+        {
+            var model = PolarHeatMap();
+            model.Title = "Polar heat map (interpolated)";
+            ((PolarHeatMapSeries)model.Series[0]).Interpolate = true;
+            return model;
+        }
+
+        [Example("PolarHeatMap fixed size image")]
+        public static PlotModel PolarHeatMapFixed()
+        {
+            var model = PolarHeatMap();
+            model.Title = "Polar heat map with fixed size image";
+            ((PolarHeatMapSeries)model.Series[0]).ImageSize = 800;
+            return model;
+        }
+
         [Example("PolarHeatMap on linear axes")]
         public static PlotModel PolarHeatMapLinearAxes()
         {
@@ -169,22 +187,21 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("PolarHeatMap - interpolate")]
-        public static PlotModel PolarHeatMapInterpolate()
+        [Example("PolarHeatMap linear axes, fixed size image (256x256)")]
+        public static PlotModel PolarHeatMapLinearAxesFixed256()
         {
-            var model = new PlotModel { Title = "Polar heat map (interpolated)", PlotMargins = new OxyThickness(40, 80, 40, 40), PlotType = PlotType.Polar, PlotAreaBorderThickness = 0 };
+            var model = PolarHeatMapLinearAxes();
+            model.Title = "Polar heat map on linear axes & fixed size image (256x256)";
+            ((PolarHeatMapSeries)model.Series[0]).ImageSize = 256;
+            return model;
+        }
 
-            var matrix = new double[2, 2];
-            matrix[0, 0] = 0;
-            matrix[0, 1] = 2;
-            matrix[1, 0] = 1.5;
-            matrix[1, 1] = 0.2;
-
-            model.Axes.Add(new AngleAxis { StartAngle = 0, EndAngle = 360, Minimum = 0, Maximum = 360, MajorStep = 30, MinorStep = 15 });
-            model.Axes.Add(new MagnitudeAxis { Minimum = 0, Maximum = 100, MajorStep = 25, MinorStep = 5 });
-            model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Rainbow(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
-            model.Series.Add(new PolarHeatMapSeries { Data = matrix, Angle0 = 30, Angle1 = 150, Magnitude0 = 0, Magnitude1 = 80, Interpolate = true });
-
+        [Example("PolarHeatMap linear axes, fixed size image (1000x1000)")]
+        public static PlotModel PolarHeatMapLinearAxesFixed1000()
+        {
+            var model = PolarHeatMapLinearAxes();
+            model.Title = "Polar heat map on linear axes & fixed size image (1000x1000)";
+            ((PolarHeatMapSeries)model.Series[0]).ImageSize = 1000;
             return model;
         }
     }
