@@ -335,6 +335,7 @@ namespace OxyPlot.Series
             {
                 if (!this.IsValidPoint(p, this.XAxis, this.YAxis))
                 {
+                    i++;
                     continue;
                 }
 
