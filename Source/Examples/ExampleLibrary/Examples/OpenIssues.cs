@@ -31,6 +31,7 @@
 namespace ExampleLibrary
 {
     using System;
+    using System.Collections.Generic;
 
     using OxyPlot;
     using OxyPlot.Axes;
@@ -50,7 +51,7 @@ namespace ExampleLibrary
             plotModel1.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 100, "x_{i}^{j}"));
             return plotModel1;
         }
-    
+
         [Example("#10045: DateTimeAxis with IntervalType = Minutes")]
         public static PlotModel DateTimeAxisWithIntervalTypeMinutes()
         {
@@ -164,5 +165,21 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("10076: Slow redraws with noisy data")]
+        public static PlotModel NoisyData()
+        {
+            var model = new PlotModel("Noisy data");
+
+            const int n = 500;
+            var points = new List<IDataPoint>(n);
+            var rng = new Random();
+            for (int i = 0; i < n; i++)
+            {
+                points.Add(new DataPoint(i + 1, rng.NextDouble()));
+            }
+
+            model.Series.Add(new LineSeries { ItemsSource = points });
+            return model;
+        }
     }
 }
