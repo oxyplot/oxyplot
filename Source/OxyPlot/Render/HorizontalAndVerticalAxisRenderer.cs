@@ -244,7 +244,7 @@ namespace OxyPlot
         /// <returns>
         /// The interpolated value.
         /// </returns>
-        private static double Lerp(double x0, double x1, double f)
+        protected static double Lerp(double x0, double x1, double f)
         {
             return (x0 * (1 - f)) + (x1 * f);
         }
@@ -261,7 +261,7 @@ namespace OxyPlot
         /// <param name="eps">
         /// The distance tolerance.
         /// </param>
-        private static void SnapTo(double target, ref double v, double eps = 0.5)
+        protected static void SnapTo(double target, ref double v, double eps = 0.5)
         {
             if (v > target - eps && v < target + eps)
             {
@@ -278,7 +278,7 @@ namespace OxyPlot
         /// <param name="titlePosition">
         /// The title position.
         /// </param>
-        private void RenderAxisTitle(Axis axis, double titlePosition)
+        protected virtual void RenderAxisTitle(Axis axis, double titlePosition)
         {
             bool isHorizontal = axis.IsHorizontal();
 
@@ -328,7 +328,7 @@ namespace OxyPlot
         /// <param name="titlePosition">
         /// The title position.
         /// </param>
-        private void RenderMajorItems(Axis axis, double axisPosition, double titlePosition)
+        protected virtual void RenderMajorItems(Axis axis, double axisPosition, double titlePosition)
         {
             double eps = axis.ActualMinorStep * 1e-3;
 
@@ -547,7 +547,7 @@ namespace OxyPlot
         /// <param name="axisPosition">
         /// The axis position.
         /// </param>
-        private void RenderMinorItems(Axis axis, double axisPosition)
+        protected virtual void RenderMinorItems(Axis axis, double axisPosition)
         {
             double eps = axis.ActualMinorStep * 1e-3;
             double actualMinimum = axis.ActualMinimum;
