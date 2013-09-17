@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotModel.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Plot coordinate system type
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
@@ -216,6 +217,11 @@ namespace OxyPlot
         private const string PrivateDefaultFont = "Segoe UI";
 
         /// <summary>
+        /// The synchronization root object.
+        /// </summary>
+        private readonly object syncRoot = new object();
+
+        /// <summary>
         /// The current color index.
         /// </summary>
         private int currentColorIndex;
@@ -226,7 +232,7 @@ namespace OxyPlot
         public PlotModel()
         {
             this.Axes = new Collection<Axis>();
-            this.Series = new Collection<OxyPlot.Series.Series>();
+            this.Series = new Collection<Series.Series>();
             this.Annotations = new Collection<Annotation>();
 
             this.PlotType = PlotType.XY;
@@ -311,17 +317,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The synchronization root object.
-        /// </summary>
-        private object syncRoot = new object();
-
-        /// <summary>
-        /// Gets an object that can be used to synchronize access to the PlotModel.
-        /// </summary>
-        /// <value>The sync root.</value>
-        public object SyncRoot { get { return this.syncRoot; } }
-
-        /// <summary>
         /// Occurs when the tracker has been changed.
         /// </summary>
         public event EventHandler<TrackerEventArgs> TrackerChanged;
@@ -335,6 +330,15 @@ namespace OxyPlot
         /// Occurs when the plot is about to be updated.
         /// </summary>
         public event EventHandler Updating;
+
+        /// <summary>
+        /// Gets an object that can be used to synchronize access to the PlotModel.
+        /// </summary>
+        /// <value>The sync root.</value>
+        public object SyncRoot
+        {
+            get { return this.syncRoot; }
+        }
 
         /// <summary>
         /// Gets or sets the default font.
@@ -612,7 +616,7 @@ namespace OxyPlot
         public OxyRect PlotArea { get; private set; }
 
         /// <summary>
-        /// Gets or sets the distance between two neighbourhood tiers of the same AxisPosition.
+        /// Gets or sets the distance between two neighborhood tiers of the same AxisPosition.
         /// </summary>
         public double AxisTierDistance { get; set; }
 
@@ -919,10 +923,10 @@ namespace OxyPlot
         /// The point.
         /// </param>
         /// <param name="xaxis">
-        /// The xaxis.
+        /// The x-axis.
         /// </param>
         /// <param name="yaxis">
-        /// The yaxis.
+        /// The y-axis.
         /// </param>
         public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis)
         {
@@ -1267,6 +1271,7 @@ namespace OxyPlot
         /// <summary>
         /// Raises the TrackerChanged event.
         /// </summary>
+        /// <param name="result">The result.</param>
         protected internal virtual void OnTrackerChanged(TrackerHitResult result)
         {
             var handler = this.TrackerChanged;

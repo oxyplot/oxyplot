@@ -208,8 +208,7 @@ namespace OxyPlot.Series
                         result.DataPoint = new DataPoint(item.X, outlier);
                         result.Position = sp;
                         result.Item = item;
-                        result.Text = StringHelper.Format(
-                            this.ActualCulture,
+                        result.Text = this.Format(
                             this.OutlierTrackerFormatString,
                             item,
                             this.Title,
@@ -227,8 +226,7 @@ namespace OxyPlot.Series
                     result.Position = this.Transform(result.DataPoint);
                     result.Item = item;
 
-                    result.Text = StringHelper.Format(
-                        this.ActualCulture,
+                    result.Text = this.Format(
                         this.TrackerFormatString,
                         item,
                         this.Title,
@@ -253,8 +251,7 @@ namespace OxyPlot.Series
                     result.DataPoint = this.InverseTransform(p);
                     result.Position = this.Transform(result.DataPoint);
                     result.Item = item;
-                    result.Text = StringHelper.Format(
-                        this.ActualCulture,
+                    result.Text = this.Format(
                         this.TrackerFormatString,
                         item,
                         this.Title,

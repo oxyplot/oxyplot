@@ -29,6 +29,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Wpf
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Globalization;
@@ -55,7 +56,7 @@ namespace OxyPlot.Wpf
         /// The culture property.
         /// </summary>
         public static readonly DependencyProperty CultureProperty = DependencyProperty.Register(
-            "Culture", typeof(CultureInfo), typeof(Plot), new UIPropertyMetadata(null, AppearanceChanged));
+            "Culture", typeof(IFormatProvider), typeof(Plot), new UIPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The default tracker property.
@@ -453,11 +454,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets Culture.
         /// </summary>
-        public CultureInfo Culture
+        public IFormatProvider Culture
         {
             get
             {
-                return (CultureInfo)this.GetValue(CultureProperty);
+                return (IFormatProvider)this.GetValue(CultureProperty);
             }
 
             set
@@ -1255,7 +1256,7 @@ namespace OxyPlot.Wpf
                 m.PlotMargins = this.PlotMargins.ToOxyThickness();
                 m.AutoAdjustPlotMargins = this.AutoAdjustPlotMargins;
 
-                m.Culture = this.Culture;
+                // m.Culture = this.Culture;
 
                 m.Padding = this.Padding.ToOxyThickness();
                 m.TitleFont = this.TitleFont;

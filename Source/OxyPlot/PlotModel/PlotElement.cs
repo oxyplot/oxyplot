@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotElement.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,9 +27,10 @@
 //   Abstract base class for all plottable elements (Axes, Annotations, Series).
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
-    using System;
+    using System.Globalization;
 
     /// <summary>
     /// Provides an abstract base class for elements contained in a <see cref="PlotModel"/>.
@@ -137,6 +138,32 @@ namespace OxyPlot
             {
                 return this.TextColor ?? this.PlotModel.TextColor;
             }
+        }
+
+        /// <summary>
+        /// Gets the actual culture.
+        /// </summary>
+        /// <remarks>
+        /// The culture is defined in the parent PlotModel.
+        /// </remarks>
+        protected CultureInfo ActualCulture
+        {
+            get
+            {
+                return this.PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
+            }
+        }
+
+        /// <summary>
+        /// Formats the specified item and arguments with the specified format string.
+        /// </summary>
+        /// <param name="formatString">The format string.</param>
+        /// <param name="item">The item.</param>
+        /// <param name="values">The values.</param>
+        /// <returns>The formatted string.</returns>
+        public string Format(string formatString, object item, params object[] values)
+        {
+            return StringHelper.Format(this.ActualCulture, formatString, item, values);
         }
     }
 }

@@ -29,8 +29,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Series
 {
-    using System.Globalization;
-
     using OxyPlot.Axes;
 
     /// <summary>
@@ -47,20 +45,6 @@ namespace OxyPlot.Series
         protected Series()
         {
             this.IsVisible = true;
-        }
-
-        /// <summary>
-        /// Gets the actual culture.
-        /// </summary>
-        /// <remarks>
-        /// The culture is defined in the parent PlotModel.
-        /// </remarks>
-        public CultureInfo ActualCulture
-        {
-            get
-            {
-                return this.PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
-            }
         }
 
         /// <summary>
@@ -98,7 +82,10 @@ namespace OxyPlot.Series
         /// <returns>
         /// A TrackerHitResult for the current hit.
         /// </returns>
-        public abstract TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
+        public virtual TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
+        {
+            return null;
+        }
 
         /// <summary>
         /// Renders the series on the specified render context.

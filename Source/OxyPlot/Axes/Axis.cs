@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Axis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,12 +27,12 @@
 //   Abstract base class for axes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Globalization;
 
     using OxyPlot.Series;
 
@@ -189,20 +189,6 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <value> The absolute minimum. </value>
         public double AbsoluteMinimum { get; set; }
-
-        /// <summary>
-        /// Gets the actual culture.
-        /// </summary>
-        /// <remarks>
-        /// The culture is defined in the parent PlotModel.
-        /// </remarks>
-        public CultureInfo ActualCulture
-        {
-            get
-            {
-                return this.PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
-            }
-        }
 
         /// <summary>
         /// Gets or sets the actual major step.
@@ -831,8 +817,8 @@ namespace OxyPlot.Axes
                 return string.Format(this.ActualCulture, fmt, mantissa, exp);
             }
 
-            string format = this.ActualStringFormat ?? this.StringFormat ?? string.Empty;
-            return x.ToString(format, this.ActualCulture);
+            string format = string.Concat("{0:", this.ActualStringFormat ?? this.StringFormat ?? string.Empty, "}");
+            return string.Format(this.ActualCulture, format, x);
         }
 
         /// <summary>
@@ -846,7 +832,7 @@ namespace OxyPlot.Axes
         /// </returns>
         public virtual string FormatValueForTracker(double x)
         {
-            return x.ToString(this.ActualCulture);
+            return string.Format(this.ActualCulture, "{0}", x);
         }
 
         /// <summary>
@@ -1135,9 +1121,9 @@ namespace OxyPlot.Axes
         /// </returns>
         public override string ToString()
         {
-            return string.Format(
-                CultureInfo.InvariantCulture,
+            return this.Format(
                 "{0}({1}, {2}, {3}, {4})",
+                null,
                 this.GetType().Name,
                 this.Position,
                 this.ActualMinimum,

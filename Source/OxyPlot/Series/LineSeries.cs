@@ -489,8 +489,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                var s = StringHelper.Format(
-                    this.ActualCulture, this.LabelFormatString, this.GetItem(index), point.X, point.Y);
+                var s = this.Format(this.LabelFormatString, this.GetItem(index), point.X, point.Y);
 
 #if SUPPORTLABELPLACEMENT
                     switch (this.LabelPlacement)

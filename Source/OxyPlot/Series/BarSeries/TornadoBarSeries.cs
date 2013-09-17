@@ -226,7 +226,7 @@ namespace OxyPlot.Series
                     var categoryIndex = item.GetCategoryIndex(i);
                     var value = this.ValidItems[i].Minimum;
                     var dp = new DataPoint(categoryIndex, value);
-                    var text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, item, value);
+                    var text = this.Format(this.TrackerFormatString, item, value);
                     return new TrackerHitResult(this, dp, point, item, i, text);
                 }
 
@@ -237,7 +237,7 @@ namespace OxyPlot.Series
                     var categoryIndex = item.GetCategoryIndex(i);
                     var value = this.ValidItems[i].Maximum;
                     var dp = new DataPoint(categoryIndex, value);
-                    var text = StringHelper.Format(this.ActualCulture, this.TrackerFormatString, item, value);
+                    var text = this.Format(this.TrackerFormatString, item, value);
                     return new TrackerHitResult(this, dp, point, item, i, text);
                 }
             }
@@ -320,8 +320,7 @@ namespace OxyPlot.Series
 
                 if (this.MinimumLabelFormatString != null)
                 {
-                    var s = StringHelper.Format(
-                        this.ActualCulture,
+                    var s = this.Format(
                         this.MinimumLabelFormatString,
                         this.GetItem(this.ValidItemsIndexInversion[i]),
                         item.Minimum);
@@ -343,8 +342,7 @@ namespace OxyPlot.Series
 
                 if (this.MaximumLabelFormatString != null)
                 {
-                    var s = StringHelper.Format(
-                        this.ActualCulture,
+                    var s = this.Format(
                         this.MaximumLabelFormatString,
                         this.GetItem(this.ValidItemsIndexInversion[i]),
                         item.Maximum);

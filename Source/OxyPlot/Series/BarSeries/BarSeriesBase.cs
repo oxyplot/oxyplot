@@ -495,8 +495,7 @@ namespace OxyPlot.Series
 
             var categoryAxis = this.GetCategoryAxis();
 
-            var text = StringHelper.Format(
-                this.ActualCulture,
+            var text = this.Format(
                 this.TrackerFormatString,
                 item,
                 this.Title,
