@@ -57,6 +57,8 @@
     <Compile Include="Annotations\EllipseAnnotation.cs" />
     <Compile Include="Annotations\ImageAnnotation.cs" />
     <Compile Include="Annotations\TileMapAnnotation.cs" />
+    <Compile Include="Axes\ColorAxis.cs" />
+    <Compile Include="Axes\RangeColorAxis.cs" />
     <Compile Include="Foundation\PlotLength.cs" />
     <Compile Include="Foundation\PlotLengthUnit.cs" />
     <Compile Include="Annotations\RectangleAnnotation.cs" />
@@ -72,7 +74,7 @@
     <Compile Include="Axes\AxisLayer.cs" />
     <Compile Include="Axes\AxisPosition.cs" />
     <Compile Include="Axes\CategoryAxis.cs" />
-    <Compile Include="Axes\ColorAxis.cs" />
+    <Compile Include="Axes\LinearColorAxis.cs" />
     <Compile Include="Axes\DateTimeAxis.cs" />
     <Compile Include="Axes\DateTimeIntervalType.cs" />
     <Compile Include="Axes\LinearAxis.cs" />

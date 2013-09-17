@@ -1419,7 +1419,7 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -1.4, Maximum = 1.4 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -2, Maximum = 1 });
             model.Axes.Add(
-                new ColorAxis
+                new LinearColorAxis
                     {
                         Position = AxisPosition.Right,
                         Minimum = 0,
@@ -1445,7 +1445,7 @@ namespace ExampleLibrary
             /// <remarks>
             /// The Maximum value of the ColorAxis defines the maximum number of iterations.
             /// </remarks>
-            public ColorAxis ColorAxis { get; protected set; }
+            public LinearColorAxis ColorAxis { get; protected set; }
 
             /// <summary>
             /// Gets or sets the color axis key.
@@ -1516,7 +1516,7 @@ namespace ExampleLibrary
             {
                 base.EnsureAxes();
                 this.ColorAxis =
-                    this.PlotModel.GetAxisOrDefault(this.ColorAxisKey, this.PlotModel.DefaultColorAxis) as ColorAxis;
+                    this.PlotModel.GetAxisOrDefault(this.ColorAxisKey, this.PlotModel.DefaultColorAxis) as LinearColorAxis;
             }
 
             /// <summary>

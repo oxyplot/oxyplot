@@ -69,7 +69,7 @@ namespace ExampleLibrary
         public static PlotModel CreateRandomScatterSeriesWithColorAxisPlotModel(int n, OxyPalette palette, MarkerType markerType = MarkerType.Square, AxisPosition colorAxisPosition = AxisPosition.Right, OxyColor highColor = null, OxyColor lowColor = null)
         {
             var model = new PlotModel(string.Format("ScatterSeries (n={0})", n)) { Background = OxyColors.LightGray };
-            model.Axes.Add(new ColorAxis { Position = colorAxisPosition, Palette = palette, Minimum = -1, Maximum = 1, HighColor = highColor, LowColor = lowColor });
+            model.Axes.Add(new LinearColorAxis { Position = colorAxisPosition, Palette = palette, Minimum = -1, Maximum = 1, HighColor = highColor, LowColor = lowColor });
 
             var s1 = new ScatterSeries
             {
@@ -316,6 +316,38 @@ namespace ExampleLibrary
         public static PlotModel ColorMapBlackWhiteRed9TopLegend()
         {
             return CreateRandomScatterSeriesWithColorAxisPlotModel(2500, OxyPalettes.BlackWhiteRed(9), MarkerType.Square, AxisPosition.Top);
+        }
+
+        [Example("ScatterSeries with RangeColorAxis")]
+        public static PlotModel RangeColorAxis()
+        {
+            int n = 1000;
+            var model = new PlotModel(string.Format("ScatterSeries and RangeColorAxis (n={0})", n)) { Background = OxyColors.LightGray };
+            var rca = new RangeColorAxis
+                {
+                    Position = AxisPosition.Right,
+                    Maximum = 2,
+                    Minimum = -2
+                };
+            rca.AddRange(0, 0.5, OxyColors.Blue);
+            rca.AddRange(-0.2, -0.1, OxyColors.Red);
+            model.Axes.Add(rca);
+
+            var s1 = new ScatterSeries
+            {
+                MarkerType = MarkerType.Square,
+                MarkerSize = 6,
+            };
+
+            var random = new Random();
+            for (int i = 0; i < n; i++)
+            {
+                double x = random.NextDouble() * 2.2 - 1.1;
+                s1.Points.Add(new ScatterPoint(x, random.NextDouble()) { Value = x });
+            }
+
+            model.Series.Add(s1);
+            return model;
         }
 
         [Example("TrackerFormatString")]

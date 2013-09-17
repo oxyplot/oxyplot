@@ -51,7 +51,7 @@ namespace ExampleLibrary
             var peaksData = ArrayHelper.Evaluate(peaks, xvalues, yvalues);
 
             var model = new PlotModel("Peaks");
-            model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             var hms = new HeatMapSeries { X0 = x0, X1 = x1, Y0 = y0, Y1 = y1, Data = peaksData };
             model.Series.Add(hms);
@@ -81,7 +81,7 @@ namespace ExampleLibrary
             data[1, 2] = 0.2;
 
             var model = new PlotModel("Coordinates example", "Bounding box should be [0,2] and [0,3]");
-            model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates
             var hms = new HeatMapSeries { CoordinateDefinition = HeatMapCoordinateDefinition.Center, X0 = 0.5, X1 = 1.5, Y0 = 0.5, Y1 = 2.5, Data = data };
@@ -108,7 +108,7 @@ namespace ExampleLibrary
             data[2, 2] = 1;
 
             var model = new PlotModel("Diagonal matrix");
-            model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates
             var hms = new HeatMapSeries { CoordinateDefinition = HeatMapCoordinateDefinition.Center, X0 = 0.5, X1 = 2.5, Y0 = 0.5, Y1 = 2.5, Data = data, Interpolate = false };
@@ -125,7 +125,7 @@ namespace ExampleLibrary
             data[2, 2] = 1;
 
             var model = new PlotModel("Diagonal matrix");
-            model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates
             var hms = new HeatMapSeries { CoordinateDefinition = HeatMapCoordinateDefinition.Edge, X0 = 0, X1 = 3, Y0 = 0, Y1 = 3, Data = data, Interpolate = false };
@@ -146,7 +146,7 @@ namespace ExampleLibrary
             data[5, 5] = 1;
 
             var model = new PlotModel("Diagonal matrix");
-            model.Axes.Add(new ColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // note: the coordinates are specifying the centers of the edge cells
             var hms = new HeatMapSeries { X0 = 0, X1 = 5, Y0 = 0, Y1 = 5, Data = data, Interpolate = true };

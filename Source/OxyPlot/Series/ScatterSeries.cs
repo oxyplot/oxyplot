@@ -90,9 +90,9 @@ namespace OxyPlot.Series
         public int BinSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the color map.
+        /// Gets or sets the color axis.
         /// </summary>
-        /// <value> The color map. </value>
+        /// <value> The color axis. </value>
         /// <remarks>
         /// This is used to map scatter point values to colors.
         /// </remarks>
