@@ -30,7 +30,6 @@
 namespace OxyPlot.Annotations
 {
     using System;
-    using System.Globalization;
 
     using OxyPlot.Axes;
 
@@ -39,20 +38,6 @@ namespace OxyPlot.Annotations
     /// </summary>
     public abstract class Annotation : UIPlotElement
     {
-        /// <summary>
-        /// Gets the actual culture.
-        /// </summary>
-        /// <remarks>
-        /// The culture is defined in the parent PlotModel.
-        /// </remarks>
-        public CultureInfo ActualCulture
-        {
-            get
-            {
-                return this.PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
-            }
-        }
-
         /// <summary>
         /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.BelowAxes"/>.
         /// </summary>
@@ -105,19 +90,6 @@ namespace OxyPlot.Annotations
         }
 
         /// <summary>
-        /// Tests if the plot element is hit by the specified point.
-        /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="tolerance">The tolerance.</param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
-        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
-        {
-            return null;
-        }
-
-        /// <summary>
         /// Transforms the specified coordinates to a screen point.
         /// </summary>
         /// <param name="x">
@@ -160,6 +132,19 @@ namespace OxyPlot.Annotations
         public DataPoint InverseTransform(ScreenPoint position)
         {
             return Axis.InverseTransform(position, this.XAxis, this.YAxis);
+        }
+
+        /// <summary>
+        /// Tests if the plot element is hit by the specified point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>
+        /// A hit test result.
+        /// </returns>
+        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
+        {
+            return null;
         }
 
         /// <summary>
