@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ShapesRenderContext.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   The text measurement methods.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Wpf
 {
     using System;
@@ -66,24 +67,19 @@ namespace OxyPlot.Wpf
     public class ShapesRenderContext : IRenderContext
     {
         /// <summary>
-        /// The clip rectangle.
+        /// The maximum number of figures per geometry.
         /// </summary>
-        private Rect? clip;
+        private const int MaxFiguresPerGeometry = 16;
 
         /// <summary>
         /// The images in use
         /// </summary>
-        private HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+        private readonly HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
 
         /// <summary>
         /// The image cache
         /// </summary>
-        private Dictionary<OxyImage, BitmapSource> imageCache = new Dictionary<OxyImage, BitmapSource>();
-
-        /// <summary>
-        /// The maximum number of figures per geometry.
-        /// </summary>
-        private const int MaxFiguresPerGeometry = 16;
+        private readonly Dictionary<OxyImage, BitmapSource> imageCache = new Dictionary<OxyImage, BitmapSource>();
 
         /// <summary>
         /// The brush cache.
@@ -91,13 +87,29 @@ namespace OxyPlot.Wpf
         private readonly Dictionary<OxyColor, Brush> brushCache = new Dictionary<OxyColor, Brush>();
 
         /// <summary>
+        /// The font family cache
+        /// </summary>
+        private readonly Dictionary<string, FontFamily> fontFamilyCache = new Dictionary<string, FontFamily>();
+
+        /// <summary>
         /// The canvas.
         /// </summary>
         private readonly Canvas canvas;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShapesRenderContext"/> class.
+        /// The clip rectangle.
         /// </summary>
+        private Rect? clip;
+
+        /// <summary>
+        /// The current tool tip
+        /// </summary>
+        private string currentToolTip;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShapesRenderContext" /> class.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
         public ShapesRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
@@ -124,14 +136,6 @@ namespace OxyPlot.Wpf
         /// The XamlWriter does not serialize StreamGeometry, so set this to false if you want to export to XAML. Using stream geometry seems to be slightly faster than using path geometry.
         /// </remarks>
         public bool UseStreamGeometry { get; set; }
-
-        /// <summary>
-        /// Gets or sets the current tooltip.
-        /// </summary>
-        /// <value>
-        /// The current tooltip.
-        /// </value>
-        private string CurrentToolTip { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the context renders to screen.
@@ -590,7 +594,7 @@ namespace OxyPlot.Wpf
             var tb = new TextBlock { Text = text, Foreground = this.GetCachedBrush(fill) };
             if (fontFamily != null)
             {
-                tb.FontFamily = new FontFamily(fontFamily);
+                tb.FontFamily = this.GetCachedFontFamily(fontFamily);
             }
 
             if (fontSize > 0)
@@ -667,9 +671,9 @@ namespace OxyPlot.Wpf
                 this.Add(c);
             }
             else
-            {
+                {
                 this.Add(tb);
-            }
+                }
         }
 
         /// <summary>
@@ -725,7 +729,7 @@ namespace OxyPlot.Wpf
         /// <params>This is only used in the plot controls.</params>
         public void SetToolTip(string text)
         {
-            this.CurrentToolTip = text;
+            this.currentToolTip = text;
         }
 
         /// <summary>
@@ -971,9 +975,9 @@ namespace OxyPlot.Wpf
         /// </param>
         private void ApplyTooltip(FrameworkElement element)
         {
-            if (!string.IsNullOrEmpty(this.CurrentToolTip))
+            if (!string.IsNullOrEmpty(this.currentToolTip))
             {
-                element.ToolTip = this.CurrentToolTip;
+                element.ToolTip = this.currentToolTip;
             }
         }
 
@@ -1041,7 +1045,7 @@ namespace OxyPlot.Wpf
             {
                 streamGeometryContext.Close();
                 var path = new Path();
-                this.SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
+                this.SetStroke(path, stroke, thickness, lineJoin, null, aliased);
                 path.Data = streamGeometry;
                 this.Add(path);
             }
@@ -1072,6 +1076,28 @@ namespace OxyPlot.Wpf
             }
 
             return brush;
+        }
+
+        /// <summary>
+        /// Gets the cached font family.
+        /// </summary>
+        /// <param name="familyName">Name of the family.</param>
+        /// <returns>The FontFamily.</returns>
+        private FontFamily GetCachedFontFamily(string familyName)
+        {
+            if (familyName == null)
+            {
+                return null;
+            }
+
+            FontFamily ff;
+            if (!this.fontFamilyCache.TryGetValue(familyName, out ff))
+            {
+                ff = new FontFamily(familyName);
+                this.fontFamilyCache.Add(familyName, ff);
+            }
+
+            return ff;
         }
 
         /// <summary>

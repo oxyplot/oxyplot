@@ -177,6 +177,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public Plot()
         {
+            this.DisconnectCanvasWhileUpdating = true;
             this.series = new ObservableCollection<Series>();
             this.axes = new ObservableCollection<Axis>();
             this.annotations = new ObservableCollection<Annotation>();
@@ -539,6 +540,7 @@ namespace OxyPlot.Wpf
             }
 
             this.canvas = new Canvas();
+            // this.canvas.CacheMode = new BitmapCache();
             this.grid.Children.Add(this.canvas);
             this.canvas.UpdateLayout();
             this.renderContext = new ShapesRenderContext(this.canvas);
