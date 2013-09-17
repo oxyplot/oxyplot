@@ -28,10 +28,11 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// The OxyPlot solution provides plotting functionality on many platforms.
+    /// The OxyPlot solution provides plotting functionality for WPF, Windows forms, Silverlight and Mono applications.
     /// </summary>
     [System.Runtime.CompilerServices.CompilerGenerated]
     internal class LibraryDoc
     {
+        //// This class is used by the API documentation system.
     }
 }
