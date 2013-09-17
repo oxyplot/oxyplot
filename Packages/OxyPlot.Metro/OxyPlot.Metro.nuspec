@@ -9,7 +9,7 @@
     <projectUrl>http://oxyplot.codeplex.com/</projectUrl>
     <iconUrl>http://www.objo.net/codeplex/icons/oxyplot.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>OxyPlot is an open source .NET plotting library.</description>
+    <description>OxyPlot is an open source plotting library for .NET.</description>
     <language>en-US</language>
     <tags>winrt win8 metro plotting plot charting chart</tags>
     <dependencies>
