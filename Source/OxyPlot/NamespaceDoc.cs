@@ -33,5 +33,6 @@ namespace OxyPlot
     [System.Runtime.CompilerServices.CompilerGenerated]
     internal class NamespaceDoc
     {
+        //// This class is used by the API documentation system.
     }
 }
