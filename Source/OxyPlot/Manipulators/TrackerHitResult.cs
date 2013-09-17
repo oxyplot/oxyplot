@@ -147,7 +147,7 @@ namespace OxyPlot
             object yvalue = this.YAxis != null ? this.YAxis.GetValue(this.DataPoint.Y) : this.DataPoint.Y;
 
             return StringHelper.Format(
-                this.Series.ActualCulture,
+                this.PlotModel.ActualCulture,
                 formatString,
                 this.Item,
                 this.Series.Title,

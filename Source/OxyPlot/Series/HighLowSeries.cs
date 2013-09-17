@@ -228,8 +228,7 @@ namespace OxyPlot.Series
                         result.Index = index;
                         if (this.TrackerFormatString != null)
                         {
-                            result.Text = StringHelper.Format(
-                                this.ActualCulture,
+                            result.Text = this.Format(
                                 this.TrackerFormatString,
                                 item,
                                 this.Title,

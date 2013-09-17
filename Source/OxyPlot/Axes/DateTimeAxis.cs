@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a DateTime axis.
+//   Represents an axis presenting <see cref="System.DateTime"/> values.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -37,11 +37,11 @@ namespace OxyPlot.Axes
     using System.Linq;
 
     /// <summary>
-    /// Represents a axis presenting <see cref="System.DateTime"/> values.
+    /// Represents an axis presenting <see cref="System.DateTime"/> values.
     /// </summary>
     /// <remarks>
     /// The actual numeric values on the axis are days since 1900/01/01.
-    /// Use the static ToDouble and ToDateTime to convert numeric values to DateTimes.
+    /// Use the static ToDouble and ToDateTime to convert numeric values to and from DateTimes.
     /// The StringFormat value can be used to force formatting of the axis values
     /// "yyyy-MM-dd" shows date
     /// "w" or "ww" shows week number
@@ -53,7 +53,7 @@ namespace OxyPlot.Axes
         /// The time origin.
         /// </summary>
         /// <remarks>
-        /// Same date values as Excel
+        /// This gives the same numeric date values as Excel
         /// </remarks>
         private static DateTime timeOrigin = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
@@ -309,7 +309,7 @@ namespace OxyPlot.Axes
             int week = this.GetWeek(time);
             fmt = fmt.Replace("ww", week.ToString("00"));
             fmt = fmt.Replace("w", week.ToString(CultureInfo.InvariantCulture));
-            return time.ToString(fmt, this.ActualCulture);
+            return this.Format(fmt, null, time);
         }
 
         /// <summary>
@@ -673,7 +673,13 @@ namespace OxyPlot.Axes
         /// </returns>
         private int GetWeek(DateTime date)
         {
-            return this.ActualCulture.Calendar.GetWeekOfYear(date, this.CalendarWeekRule, this.FirstDayOfWeek);
+            var culture = this.ActualCulture as CultureInfo;
+            if (culture != null)
+            {
+                return culture.Calendar.GetWeekOfYear(date, this.CalendarWeekRule, this.FirstDayOfWeek);
+            }
+
+            return 0;
         }
     }
 }

@@ -256,8 +256,7 @@ namespace OxyPlot.Series
                     if (result == null || result.Position.DistanceToSquared(point) > r.Position.DistanceToSquared(point))
                     {
                         result = r;
-                        result.Text = StringHelper.Format(
-                            this.ActualCulture,
+                        result.Text = this.Format(
                             this.TrackerFormatString,
                             null,
                             this.Title,
@@ -484,7 +483,8 @@ namespace OxyPlot.Series
                 angle += 180;
             }
 
-            string text = contour.ContourLevel.ToString(this.LabelFormatString, this.ActualCulture);
+            var formatString = string.Concat("{0:", this.LabelFormatString, "}");
+            string text = string.Format(this.ActualCulture, formatString, contour.ContourLevel);
             contourLabels.Add(new ContourLabel { Position = pos, Angle = angle, Text = text });
         }
 

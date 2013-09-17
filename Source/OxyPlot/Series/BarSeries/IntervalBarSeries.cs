@@ -200,8 +200,7 @@ namespace OxyPlot.Series
                     var categoryIndex = item.GetCategoryIndex(i);
                     double value = (this.ValidItems[i].Start + this.ValidItems[i].End) / 2;
                     var dp = new DataPoint(categoryIndex, value);
-                    var text = StringHelper.Format(
-                        this.ActualCulture,
+                    var text = this.Format(
                         this.TrackerFormatString,
                         item,
                         this.Items[i].Start,
@@ -278,8 +277,7 @@ namespace OxyPlot.Series
 
                 if (this.LabelFormatString != null)
                 {
-                    var s = StringHelper.Format(
-                        this.ActualCulture, this.LabelFormatString, this.GetItem(i), item.Start, item.End, item.Title);
+                    var s = this.Format(this.LabelFormatString, this.GetItem(i), item.Start, item.End, item.Title);
 
                     var pt = new ScreenPoint(
                         (rectangle.Left + rectangle.Right) / 2, (rectangle.Top + rectangle.Bottom) / 2);

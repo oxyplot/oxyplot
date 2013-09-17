@@ -140,8 +140,7 @@ namespace OxyPlot.Series
                     var sp = point;
                     var dp = new DataPoint(i, value);
                     var item = this.GetItem(i);
-                    var text = StringHelper.Format(
-                        this.ActualCulture,
+                    var text = this.Format(
                         this.TrackerFormatString,
                         item,
                         this.Items[i].X0,
@@ -216,8 +215,7 @@ namespace OxyPlot.Series
 
                 if (this.LabelFormatString != null)
                 {
-                    var s = StringHelper.Format(
-                        this.ActualCulture,
+                    var s = this.Format(
                         this.LabelFormatString,
                         this.GetItem(i),
                         item.X0,

@@ -254,8 +254,7 @@ namespace OxyPlot.Series
                         }
                     }
 
-                    var text = StringHelper.Format(
-                        this.ActualCulture,
+                    var text = this.Format(
                         formatString,
                         item,
                         this.Title,
