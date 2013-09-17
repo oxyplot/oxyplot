@@ -259,6 +259,48 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("Sharing Y axis")]
+        public static PlotModel SharingY()
+        {
+            var plotModel1 = new PlotModel();
+            var yaxis = new LinearAxis
+                {
+                    EndPosition = 0,
+                    StartPosition = 1,
+                    Maximum = 1.5,
+                    Minimum = -1.5,
+                    Position = AxisPosition.Left
+                };
+            plotModel1.Axes.Add(yaxis);
+
+            var x1 = new LinearAxis
+                {
+                    StartPosition = 0,
+                    EndPosition = 0.45,
+                    Maximum = 7,
+                    Minimum = 0,
+                    Position = AxisPosition.Bottom,
+                    Key = "x1"
+                };
+            plotModel1.Axes.Add(x1);
+
+            var x2 = new LinearAxis
+            {
+                StartPosition = 0.55,
+                EndPosition = 1,
+                Maximum = 10,
+                Minimum = 0,
+                Position = AxisPosition.Bottom,
+                Key = "x2"
+            };
+            plotModel1.Axes.Add(x2);
+
+            plotModel1.Series.Add(new OxyPlot.Series.FunctionSeries(Math.Sin, 0, 10, 1000) { XAxisKey = "x1" });
+            plotModel1.Series.Add(new OxyPlot.Series.FunctionSeries(Math.Sin, 0, 10, 1000) { XAxisKey = "x2" });
+
+            return plotModel1;
+        }
+
         [Example("Four axes")]
         public static PlotModel FourAxes()
         {
