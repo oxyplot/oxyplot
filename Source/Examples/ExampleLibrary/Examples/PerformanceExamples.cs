@@ -44,7 +44,16 @@ namespace ExampleLibrary
             var s1 = new LineSeries();
             AddPoints(s1.Points, 100000);
             model.Series.Add(s1);
+            return model;
+        }
 
+        [Example("LineSeries, 100k points (dashed line)")]
+        public static PlotModel LineSeries1d()
+        {
+            var model = new PlotModel("LineSeries, 100k points");
+            var s1 = new LineSeries { LineStyle = LineStyle.Dash };
+            AddPoints(s1.Points, 100000);
+            model.Series.Add(s1);
             return model;
         }
 
