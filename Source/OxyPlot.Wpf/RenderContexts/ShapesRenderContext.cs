@@ -164,7 +164,7 @@ namespace OxyPlot.Wpf
         /// <param name="thickness">The thickness.</param>
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            var e = new Ellipse();
+            var e = this.CreateAndAdd<Ellipse>(rect.Left, rect.Top);
             this.SetStroke(e, stroke, thickness);
             if (fill != null)
             {
@@ -175,8 +175,6 @@ namespace OxyPlot.Wpf
             e.Height = rect.Height;
             Canvas.SetLeft(e, rect.Left);
             Canvas.SetTop(e, rect.Top);
-
-            this.Add(e, rect.Left, rect.Top);
         }
 
         /// <summary>
@@ -196,7 +194,7 @@ namespace OxyPlot.Wpf
         /// </param>
         public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
-            var path = new Path();
+            var path = this.CreateAndAdd<Path>();
             this.SetStroke(path, stroke, thickness);
             if (fill != null)
             {
@@ -210,8 +208,6 @@ namespace OxyPlot.Wpf
             }
 
             path.Data = gg;
-
-            this.Add(path);
         }
 
         /// <summary>
@@ -247,7 +243,7 @@ namespace OxyPlot.Wpf
             // balance the number of points per polyline and the number of polylines
             var numPointsPerPolyline = Math.Max(points.Count / MaxPolylinesPerLine, MinPointsPerPolyline);
 
-            var polyline = new Polyline();
+            var polyline = this.CreateAndAdd<Polyline>();
             this.SetStroke(polyline, stroke, thickness, lineJoin, dashArray, 0, aliased);
             var pc = new PointCollection(numPointsPerPolyline);
 
@@ -259,10 +255,9 @@ namespace OxyPlot.Wpf
                 if (pc.Count >= numPointsPerPolyline)
                 {
                     polyline.Points = pc;
-                    this.Add(polyline);
 
                     // start a new polyline at last point so there is no gap
-                    polyline = new Polyline();
+                    polyline = this.CreateAndAdd<Polyline>();
 
                     // TODO: calculate stroke dash offset...
                     this.SetStroke(polyline, stroke, thickness, lineJoin, dashArray, 0, aliased);
@@ -275,10 +270,9 @@ namespace OxyPlot.Wpf
             if (pc.Count > 1 || points.Count == 1)
             {
                 polyline.Points = pc;
-                this.Add(polyline);
             }
 #else
-            var e = new Polyline();
+            var e = this.CreateAndAdd<Polyline>();
             this.SetStroke(e, stroke, thickness, lineJoin, dashArray, 0, aliased);
 
             var pc = new PointCollection(points.Count);
@@ -288,8 +282,6 @@ namespace OxyPlot.Wpf
             }
 
             e.Points = pc;
-
-            this.Add(e);
 #endif
         }
 
@@ -337,7 +329,7 @@ namespace OxyPlot.Wpf
             {
                 if (path == null)
                 {
-                    path = new Path();
+                    path = this.CreateAndAdd<Path>();
                     this.SetStroke(path, stroke, thickness, lineJoin, dashArray, 0, aliased);
                     pathGeometry = new PathGeometry();
                 }
@@ -352,7 +344,6 @@ namespace OxyPlot.Wpf
                 if (count > MaxFiguresPerGeometry || dashArray != null)
                 {
                     path.Data = pathGeometry;
-                    this.Add(path);
                     path = null;
                     count = 0;
                 }
@@ -361,7 +352,6 @@ namespace OxyPlot.Wpf
             if (path != null)
             {
                 path.Data = pathGeometry;
-                this.Add(path);
             }
         }
 
@@ -398,7 +388,7 @@ namespace OxyPlot.Wpf
             OxyPenLineJoin lineJoin,
             bool aliased)
         {
-            var e = new Polygon();
+            var e = this.CreateAndAdd<Polygon>();
             this.SetStroke(e, stroke, thickness, lineJoin, dashArray, 0, aliased);
 
             if (fill != null)
@@ -413,7 +403,6 @@ namespace OxyPlot.Wpf
             }
 
             e.Points = pc;
-            this.Add(e);
         }
 
         /// <summary>
@@ -460,7 +449,7 @@ namespace OxyPlot.Wpf
             {
                 if (path == null)
                 {
-                    path = new Path();
+                    path = this.CreateAndAdd<Path>();
                     this.SetStroke(path, stroke, thickness, lineJoin, dashArray, 0, aliased);
                     if (fill != null)
                     {
@@ -530,7 +519,6 @@ namespace OxyPlot.Wpf
                         path.Data = pathGeometry;
                     }
 
-                    this.Add(path);
                     path = null;
                     count = 0;
                 }
@@ -547,8 +535,6 @@ namespace OxyPlot.Wpf
                 {
                     path.Data = pathGeometry;
                 }
-
-                this.Add(path);
             }
         }
 
@@ -569,7 +555,7 @@ namespace OxyPlot.Wpf
         /// </param>
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            var e = new Rectangle();
+            var e = this.CreateAndAdd<Rectangle>(rect.Left, rect.Top);
             this.SetStroke(e, stroke, thickness, OxyPenLineJoin.Miter, null, 0, true);
 
             if (fill != null)
@@ -581,8 +567,6 @@ namespace OxyPlot.Wpf
             e.Height = rect.Height;
             Canvas.SetLeft(e, rect.Left);
             Canvas.SetTop(e, rect.Top);
-
-            this.Add(e, rect.Left, rect.Top);
         }
 
         /// <summary>
@@ -595,7 +579,7 @@ namespace OxyPlot.Wpf
         /// <param name="thickness">The stroke thickness.</param>
         public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
-            var path = new Path();
+            var path = this.CreateAndAdd<Path>();
             this.SetStroke(path, stroke, thickness);
             if (fill != null)
             {
@@ -609,7 +593,6 @@ namespace OxyPlot.Wpf
             }
 
             path.Data = gg;
-            this.Add(path);
         }
 
         /// <summary>
@@ -637,7 +620,9 @@ namespace OxyPlot.Wpf
             VerticalAlignment valign,
             OxySize? maxSize)
         {
-            var tb = new TextBlock { Text = text, Foreground = this.GetCachedBrush(fill) };
+            var tb = this.CreateAndAdd<TextBlock>();
+            tb.Text = text;
+            tb.Foreground = this.GetCachedBrush(fill);
             if (fontFamily != null)
             {
                 tb.FontFamily = this.GetCachedFontFamily(fontFamily);
@@ -706,20 +691,13 @@ namespace OxyPlot.Wpf
 
             transform.Children.Add(new TranslateTransform(p.X, p.Y));
             tb.RenderTransform = transform;
+            if (tb.Clip != null)
+            {
+                tb.Clip.Transform = tb.RenderTransform.Inverse as Transform;
+            }
+
             tb.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
             this.ApplyTooltip(tb);
-
-            if (this.clip.HasValue)
-            {
-                // add a clipping container that is not rotated
-                var c = new Canvas();
-                c.Children.Add(tb);
-                this.Add(c);
-            }
-            else
-            {
-                this.Add(tb);
-            }
         }
 
         /// <summary>
@@ -828,7 +806,7 @@ namespace OxyPlot.Wpf
                 return;
             }
 
-            var image = new Image();
+            var image = this.CreateAndAdd<Image>(destX, destY);
             var bitmapChain = this.GetImageSource(source);
 
             if (srcX == 0 && srcY == 0 && srcWidth == bitmapChain.PixelWidth && srcHeight == bitmapChain.PixelHeight)
@@ -853,7 +831,6 @@ namespace OxyPlot.Wpf
 
             image.Source = bitmapChain;
             this.ApplyTooltip(image);
-            this.Add(image, destX, destY);
         }
 
         /// <summary>
@@ -998,19 +975,30 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The add.
+        /// Creates an element of the specified type and adds it to the canvas.
         /// </summary>
-        /// <param name="e">The e.</param>
-        /// <param name="clipOffsetX">The clip offset X.</param>
-        /// <param name="clipOffsetY">The clip offset Y.</param>
-        private void Add(FrameworkElement e, double clipOffsetX = 0, double clipOffsetY = 0)
+        /// <typeparam name="T">Type of element to create.</typeparam>
+        /// <param name="clipOffsetX">The clip offset executable.</param>
+        /// <param name="clipOffsetY">The clip offset asynchronous.</param>
+        /// <returns>The element.</returns>
+        private T CreateAndAdd<T>(double clipOffsetX = 0, double clipOffsetY = 0) where T : FrameworkElement, new()
         {
+            // TODO: here we can do some tricks...
+            var element = new T();
+
             if (this.clip != null)
             {
-                this.ApplyClip(e, clipOffsetX, clipOffsetY);
+                element.Clip = new RectangleGeometry(
+                        new Rect(
+                            this.clip.Value.X - clipOffsetX,
+                            this.clip.Value.Y - clipOffsetY,
+                            this.clip.Value.Width,
+                            this.clip.Value.Height));
             }
 
-            this.canvas.Children.Add(e);
+            this.canvas.Children.Add(element);
+
+            return element;
         }
 
         /// <summary>
@@ -1078,10 +1066,9 @@ namespace OxyPlot.Wpf
                 if (count > MaxFiguresPerGeometry || dashArray != null)
                 {
                     streamGeometryContext.Close();
-                    var path = new Path();
+                    var path = this.CreateAndAdd<Path>();
                     this.SetStroke(path, stroke, thickness, lineJoin, dashArray, 0, aliased);
                     path.Data = streamGeometry;
-                    this.Add(path);
                     streamGeometry = null;
                     count = 0;
                 }
@@ -1090,10 +1077,9 @@ namespace OxyPlot.Wpf
             if (streamGeometry != null)
             {
                 streamGeometryContext.Close();
-                var path = new Path();
+                var path = this.CreateAndAdd<Path>();
                 this.SetStroke(path, stroke, thickness, lineJoin, null, 0, aliased);
                 path.Data = streamGeometry;
-                this.Add(path);
             }
         }
 
@@ -1198,20 +1184,6 @@ namespace OxyPlot.Wpf
             {
                 shape.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
                 shape.SnapsToDevicePixels = true;
-            }
-        }
-
-        /// <summary>
-        /// Applies the clip rectangle.
-        /// </summary>
-        /// <param name="image">The image.</param>
-        /// <param name="x">The x offset of the element.</param>
-        /// <param name="y">The y offset of the element.</param>
-        private void ApplyClip(UIElement image, double x, double y)
-        {
-            if (this.clip.HasValue)
-            {
-                image.Clip = new RectangleGeometry(new Rect(this.clip.Value.X - x, this.clip.Value.Y - y, this.clip.Value.Width, this.clip.Value.Height));
             }
         }
 
