@@ -309,7 +309,8 @@ namespace OxyPlot.Axes
             int week = this.GetWeek(time);
             fmt = fmt.Replace("ww", week.ToString("00"));
             fmt = fmt.Replace("w", week.ToString(CultureInfo.InvariantCulture));
-            return this.Format(fmt, null, time);
+            fmt = string.Concat("{0:", fmt, "}");
+            return string.Format(this.ActualCulture, fmt, time);
         }
 
         /// <summary>

@@ -1121,9 +1121,9 @@ namespace OxyPlot.Axes
         /// </returns>
         public override string ToString()
         {
-            return this.Format(
+            return string.Format(
+                this.ActualCulture,
                 "{0}({1}, {2}, {3}, {4})",
-                null,
                 this.GetType().Name,
                 this.Position,
                 this.ActualMinimum,
