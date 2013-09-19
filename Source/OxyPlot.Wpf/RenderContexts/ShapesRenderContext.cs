@@ -72,6 +72,16 @@ namespace OxyPlot.Wpf
         private const int MaxFiguresPerGeometry = 16;
 
         /// <summary>
+        /// The maximum number of polylines per line.
+        /// </summary>
+        private const int MaxPolylinesPerLine = 64;
+
+        /// <summary>
+        /// The minimum number of points per polyline.
+        /// </summary>
+        private const int MinPointsPerPolyline = 16;
+
+        /// <summary>
         /// The images in use
         /// </summary>
         private readonly HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
@@ -233,8 +243,43 @@ namespace OxyPlot.Wpf
             OxyPenLineJoin lineJoin,
             bool aliased)
         {
+#if TRY_NEW_METHOD
+            // balance the number of points per polyline and the number of polylines
+            var numPointsPerPolyline = Math.Max(points.Count / MaxPolylinesPerLine, MinPointsPerPolyline);
+
+            var polyline = new Polyline();
+            this.SetStroke(polyline, stroke, thickness, lineJoin, dashArray, 0, aliased);
+            var pc = new PointCollection(numPointsPerPolyline);
+
+            foreach (var p in points)
+            {
+                pc.Add(p.ToPoint(aliased));
+
+                // use multiple polylines with limited number of points to improve WPF performance
+                if (pc.Count >= numPointsPerPolyline)
+                {
+                    polyline.Points = pc;
+                    this.Add(polyline);
+
+                    // start a new polyline at last point so there is no gap
+                    polyline = new Polyline();
+
+                    // TODO: calculate stroke dash offset...
+                    this.SetStroke(polyline, stroke, thickness, lineJoin, dashArray, 0, aliased);
+                    var startPoint = pc.Last();
+                    pc = new PointCollection(numPointsPerPolyline);
+                    pc.Add(startPoint);
+                }
+            }
+
+            if (pc.Count > 1 || points.Count == 1)
+            {
+                polyline.Points = pc;
+                this.Add(polyline);
+            }
+#else
             var e = new Polyline();
-            this.SetStroke(e, stroke, thickness, lineJoin, dashArray, aliased);
+            this.SetStroke(e, stroke, thickness, lineJoin, dashArray, 0, aliased);
 
             var pc = new PointCollection(points.Count);
             foreach (var p in points)
@@ -245,6 +290,7 @@ namespace OxyPlot.Wpf
             e.Points = pc;
 
             this.Add(e);
+#endif
         }
 
         /// <summary>
@@ -292,7 +338,7 @@ namespace OxyPlot.Wpf
                 if (path == null)
                 {
                     path = new Path();
-                    this.SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
+                    this.SetStroke(path, stroke, thickness, lineJoin, dashArray, 0, aliased);
                     pathGeometry = new PathGeometry();
                 }
 
@@ -353,7 +399,7 @@ namespace OxyPlot.Wpf
             bool aliased)
         {
             var e = new Polygon();
-            this.SetStroke(e, stroke, thickness, lineJoin, dashArray, aliased);
+            this.SetStroke(e, stroke, thickness, lineJoin, dashArray, 0, aliased);
 
             if (fill != null)
             {
@@ -415,7 +461,7 @@ namespace OxyPlot.Wpf
                 if (path == null)
                 {
                     path = new Path();
-                    this.SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
+                    this.SetStroke(path, stroke, thickness, lineJoin, dashArray, 0, aliased);
                     if (fill != null)
                     {
                         path.Fill = this.GetCachedBrush(fill);
@@ -524,7 +570,7 @@ namespace OxyPlot.Wpf
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var e = new Rectangle();
-            this.SetStroke(e, stroke, thickness, OxyPenLineJoin.Miter, null, true);
+            this.SetStroke(e, stroke, thickness, OxyPenLineJoin.Miter, null, 0, true);
 
             if (fill != null)
             {
@@ -671,9 +717,9 @@ namespace OxyPlot.Wpf
                 this.Add(c);
             }
             else
-                {
+            {
                 this.Add(tb);
-                }
+            }
         }
 
         /// <summary>
@@ -1033,7 +1079,7 @@ namespace OxyPlot.Wpf
                 {
                     streamGeometryContext.Close();
                     var path = new Path();
-                    this.SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
+                    this.SetStroke(path, stroke, thickness, lineJoin, dashArray, 0, aliased);
                     path.Data = streamGeometry;
                     this.Add(path);
                     streamGeometry = null;
@@ -1045,7 +1091,7 @@ namespace OxyPlot.Wpf
             {
                 streamGeometryContext.Close();
                 var path = new Path();
-                this.SetStroke(path, stroke, thickness, lineJoin, null, aliased);
+                this.SetStroke(path, stroke, thickness, lineJoin, null, 0, aliased);
                 path.Data = streamGeometry;
                 this.Add(path);
             }
@@ -1103,30 +1149,20 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The set stroke.
         /// </summary>
-        /// <param name="shape">
-        /// The shape.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="dashOffset">The dash offset.</param>
+        /// <param name="aliased">The aliased.</param>
         private void SetStroke(
             Shape shape,
             OxyColor stroke,
             double thickness,
             OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
             IEnumerable<double> dashArray = null,
+            double dashOffset = 0,
             bool aliased = false)
         {
             if (stroke != null && thickness > 0)
@@ -1154,6 +1190,7 @@ namespace OxyPlot.Wpf
                 if (dashArray != null)
                 {
                     shape.StrokeDashArray = new DoubleCollection(dashArray);
+                    shape.StrokeDashOffset = dashOffset;
                 }
             }
 
