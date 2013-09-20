@@ -1,0 +1,11 @@
+﻿<Window x:Class="UserControlDemo.MainWindow2"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:UserControlDemo="clr-namespace:UserControlDemo"
+        Title="Plot in DataTemplate/UserControl" Height="480" Width="640">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type UserControlDemo:ViewModel}">
+            <UserControlDemo:UserControl1 DataContext="{Binding}"/>
+        </DataTemplate>
+    </Window.Resources>
+    <TabControl ItemsSource="{Binding Models}" DisplayMemberPath="Title"/>
+</Window>
