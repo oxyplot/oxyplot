@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.MonoForAndroid", "OxyPlot.MonoForAndroid\OxyPlot.MonoForAndroid.csproj", "{E965BA32-9561-4E2A-ADB0-19487B25A939}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlotMfA", "OxyPlot\OxyPlotMfA.csproj", "{08A91765-2C9D-4D2B-B56D-FAE62AB204CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibraryMfA", "Examples\ExampleLibrary\ExampleLibraryMfA.csproj", "{F4C226B3-0DAB-474C-9466-5EACAFA9B64A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\MonoForAndroid\ExampleBrowser\ExampleBrowser.csproj", "{47BDB77E-C1AD-4784-ACA7-FC2D70C3A2BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E965BA32-9561-4E2A-ADB0-19487B25A939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E965BA32-9561-4E2A-ADB0-19487B25A939}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E965BA32-9561-4E2A-ADB0-19487B25A939}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E965BA32-9561-4E2A-ADB0-19487B25A939}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08A91765-2C9D-4D2B-B56D-FAE62AB204CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08A91765-2C9D-4D2B-B56D-FAE62AB204CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08A91765-2C9D-4D2B-B56D-FAE62AB204CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08A91765-2C9D-4D2B-B56D-FAE62AB204CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4C226B3-0DAB-474C-9466-5EACAFA9B64A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4C226B3-0DAB-474C-9466-5EACAFA9B64A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4C226B3-0DAB-474C-9466-5EACAFA9B64A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4C226B3-0DAB-474C-9466-5EACAFA9B64A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47BDB77E-C1AD-4784-ACA7-FC2D70C3A2BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47BDB77E-C1AD-4784-ACA7-FC2D70C3A2BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47BDB77E-C1AD-4784-ACA7-FC2D70C3A2BC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{47BDB77E-C1AD-4784-ACA7-FC2D70C3A2BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47BDB77E-C1AD-4784-ACA7-FC2D70C3A2BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47BDB77E-C1AD-4784-ACA7-FC2D70C3A2BC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

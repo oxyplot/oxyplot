@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Histogram", "Histogram.csproj", "{6BA93A60-C2C2-46BA-8C83-0E563F2C5CD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlotSL", "..\..\trunk\Source\OxyPlot\OxyPlotSL.csproj", "{EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Silverlight", "..\..\trunk\Source\OxyPlot.Silverlight\OxyPlot.Silverlight.csproj", "{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BA93A60-C2C2-46BA-8C83-0E563F2C5CD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA93A60-C2C2-46BA-8C83-0E563F2C5CD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BA93A60-C2C2-46BA-8C83-0E563F2C5CD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BA93A60-C2C2-46BA-8C83-0E563F2C5CD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF3BAA47-86E8-4256-AEA8-458E3FFCBBAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EB36333-58C3-47FD-B01F-C1C3FAF1888A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

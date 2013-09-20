@@ -1,0 +1,14 @@
+﻿<Window x:Class="LegendsDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" 
+        Title="Legends demo" Height="480" Width="640">
+    <DockPanel>
+        <pt:PropertyEditor SelectedObject="{Binding}" DockPanel.Dock="Left" Width="300" LabelWidth="120" ShowTabs="False" Margin="8"/>
+        <Grid>
+            <oxy:Plot 
+            x:Name="plot1" 
+            Model="{Binding Model}" 
+            Background="White"/>
+        </Grid>
+    </DockPanel>
+</Window>
