@@ -48,7 +48,7 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(AnnotationLayer.AboveSeries, AppearanceChanged));
 
         /// <summary>
-        /// Gets or sets the layer.
+        /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.AboveSeries"/>.
         /// </summary>
         public AnnotationLayer Layer
         {
