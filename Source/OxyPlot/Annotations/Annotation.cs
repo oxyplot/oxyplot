@@ -39,7 +39,15 @@ namespace OxyPlot.Annotations
     public abstract class Annotation : UIPlotElement
     {
         /// <summary>
-        /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.BelowAxes"/>.
+        /// Initializes a new instance of the <see cref="Annotation"/> class.
+        /// </summary>
+        protected Annotation()
+        {
+            this.Layer = AnnotationLayer.AboveSeries;
+        }
+
+        /// <summary>
+        /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.AboveSeries"/>.
         /// </summary>
         public AnnotationLayer Layer { get; set; }
 

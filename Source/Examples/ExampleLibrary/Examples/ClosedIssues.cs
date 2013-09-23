@@ -31,6 +31,7 @@
 namespace ExampleLibrary
 {
     using OxyPlot;
+    using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
@@ -103,5 +104,33 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis(AxisPosition.Left) { ShowMinorTicks = false });
             return model;
         }
+
+        [Example("#100079: AreaSeries draws on top of other elements")]
+        public static PlotModel DefaultAnnotationLayer()
+        {
+            var plotModel1 = new PlotModel("Annotations should be drawn on top by default", "The line annotation should be on top!");
+            var areaSeries1 = new AreaSeries();
+            areaSeries1.Points.Add(new DataPoint(0, 50));
+            areaSeries1.Points.Add(new DataPoint(10, 40));
+            areaSeries1.Points.Add(new DataPoint(20, 60));
+            areaSeries1.Points2.Add(new DataPoint(0, 60));
+            areaSeries1.Points2.Add(new DataPoint(5, 80));
+            areaSeries1.Points2.Add(new DataPoint(20, 70));
+            areaSeries1.Color = OxyColors.Red;
+            areaSeries1.Color2 = OxyColors.Blue;
+            areaSeries1.Fill = OxyColors.Yellow;
+
+            plotModel1.Series.Add(areaSeries1);
+            var lineAnnotation = new LineAnnotation
+            {
+                Type = LineAnnotationType.Vertical,
+                Layer = AnnotationLayer.AboveSeries,
+                X = 6
+            };
+
+            plotModel1.Annotations.Add(lineAnnotation);
+            return plotModel1;
+        }
+
     }
 }
