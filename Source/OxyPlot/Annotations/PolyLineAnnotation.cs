@@ -34,8 +34,28 @@ namespace OxyPlot.Annotations
     /// <summary>
     /// Represents a polyline annotation.
     /// </summary>
-    public class PolyLineAnnotation : PathAnnotation
+    public class PolylineAnnotation : PathAnnotation
     {
+        /// <summary>
+        /// Gets or sets the points.
+        /// </summary>
+        /// <value> The points. </value>
+        public IList<IDataPoint> Points { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum length of the segment.
+        /// Increasing this number will increase performance,
+        /// but make the curve less accurate.
+        /// </summary>
+        /// <value>The minimum length of the segment.</value>
+        public double MinimumSegmentLength { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref = "PolylineAnnotation" /> is smooth.
+        /// </summary>
+        /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
+        public bool Smooth { get; set; }
+
         /// <summary>
         /// Gets the screen points.
         /// </summary>
@@ -44,7 +64,15 @@ namespace OxyPlot.Annotations
         /// </returns>
         protected override IList<ScreenPoint> GetScreenPoints()
         {
-            throw new NotImplementedException();
+            List<ScreenPoint> screenPoints = this.Points.Select(this.Transform).ToList();
+
+            if (this.Smooth)
+            {
+                var resampledPoints = ScreenPointHelper.ResamplePoints(screenPoints, this.MinimumSegmentLength);
+                return CanonicalSplineHelper.CreateSpline(resampledPoints, 0.5, null, false, 0.25);
+            }
+
+            return this.Points.Select(this.Transform).ToList();
         }
     }
 }

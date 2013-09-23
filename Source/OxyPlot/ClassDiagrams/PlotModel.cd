@@ -83,7 +83,7 @@
   <Class Name="OxyPlot.Annotations.LineAnnotation" Collapsed="true">
     <Position X="25.25" Y="6.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAAQGAAAACBwAIAAABgAgAAAFAAAAAAACTAAkiAgYGA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIQAAAgAAYEA=</HashCode>
       <FileName>Annotations\LineAnnotation.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -275,22 +275,23 @@
   <Class Name="OxyPlot.Annotations.PathAnnotation" Collapsed="true">
     <Position X="25.25" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>BACUGAAAAKRwAIAAABiAoAAABKAAAAQAKDAAlCAgACA=</HashCode>
       <FileName>Annotations\PathAnnotation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Annotations.FunctionAnnotation" Collapsed="true">
     <Position X="27" Y="6.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAAEIAAAAAAARAAAgAAAFA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAIQAAAAAAAAA=</HashCode>
       <FileName>Annotations\FunctionAnnotation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OxyPlot.Annotations.PolyLineAnnotation" Collapsed="true">
+  <Class Name="OxyPlot.Annotations.PolylineAnnotation" Collapsed="true">
     <Position X="23.25" Y="6.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>BAAQCAAAACAgAAAAABgAAAAABAAAAAAAACAAgCAgAAA=</HashCode>
-      <FileName>Annotations\PolyLineAnnotation.cs</FileName>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Annotations\PolylineAnnotation.cs</FileName>
+      <NewMemberFileName>Annotations\PolyLineAnnotation.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="OxyPlot.Series.ITrackableSeries" Collapsed="true">
