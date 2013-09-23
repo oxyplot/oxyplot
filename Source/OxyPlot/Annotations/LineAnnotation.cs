@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LineAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -48,12 +48,7 @@ namespace OxyPlot.Annotations
         {
             this.Type = LineAnnotationType.LinearEquation;
         }
-
-        /// <summary>
-        /// Gets or sets the y=f(x) equation when Type is Equation.
-        /// </summary>
-        public Func<double, double> Equation { get; set; }
-
+                
         /// <summary>
         /// Gets or sets the y-intercept when Type is LinearEquation.
         /// </summary>
@@ -90,38 +85,14 @@ namespace OxyPlot.Annotations
         public double Y { get; set; }
 
         /// <summary>
-        /// Renders the line annotation.
+        /// Gets the screen points.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The plot model.
-        /// </param>
+        /// <returns>
+        /// The list of points to display on screen for this path.
+        /// </returns>
         protected override IList<ScreenPoint> GetScreenPoints()
         {
-            this.aliased = false;
-
-            double actualMinimumX = Math.Max(this.MinimumX, this.XAxis.ActualMinimum);
-            double actualMaximumX = Math.Min(this.MaximumX, this.XAxis.ActualMaximum);
-            double actualMinimumY = Math.Max(this.MinimumY, this.YAxis.ActualMinimum);
-            double actualMaximumY = Math.Min(this.MaximumY, this.YAxis.ActualMaximum);
-
-            if (!this.ClipByXAxis)
-            {
-                double right = XAxis.InverseTransform(PlotModel.PlotArea.Right);
-                double left = XAxis.InverseTransform(PlotModel.PlotArea.Left);
-                actualMaximumX = Math.Max(left, right);
-                actualMinimumX = Math.Min(left, right);
-            }
-
-            if (!this.ClipByYAxis)
-            {
-                double bottom = YAxis.InverseTransform(PlotModel.PlotArea.Bottom);
-                double top = YAxis.InverseTransform(PlotModel.PlotArea.Top);
-                actualMaximumY = Math.Max(top, bottom);
-                actualMinimumY = Math.Min(top, bottom);
-            }
+            this.Aliased = false;
 
             // y=f(x)
             Func<double, double> fx = null;
@@ -137,12 +108,6 @@ namespace OxyPlot.Annotations
                 case LineAnnotationType.Vertical:
                     fy = y => this.X;
                     break;
-                case LineAnnotationType.EquationY:
-                    fx = this.Equation;
-                    break;
-                case LineAnnotationType.EquationX:
-                    fy = this.Equation;
-                    break;
                 default:
                     fx = x => (this.Slope * x) + this.Intercept;
                     break;
@@ -150,40 +115,40 @@ namespace OxyPlot.Annotations
 
             var points = new List<DataPoint>();
 
-            bool isCurvedLine = !(this.XAxis is LinearAxis) || !(this.YAxis is LinearAxis) || this.Type == LineAnnotationType.EquationY;
+            bool isCurvedLine = !(this.XAxis is LinearAxis && this.YAxis is LinearAxis);
 
             if (!isCurvedLine)
             {
                 // we only need to calculate two points if it is a straight line
                 if (fx != null)
                 {
-                    points.Add(new DataPoint(actualMinimumX, fx(actualMinimumX)));
-                    points.Add(new DataPoint(actualMaximumX, fx(actualMaximumX)));
+                    points.Add(new DataPoint(this.ActualMinimumX, fx(this.ActualMinimumX)));
+                    points.Add(new DataPoint(this.ActualMaximumX, fx(this.ActualMaximumX)));
                 }
                 else if (fy != null)
                 {
-                    points.Add(new DataPoint(fy(actualMinimumY), actualMinimumY));
-                    points.Add(new DataPoint(fy(actualMaximumY), actualMaximumY));
+                    points.Add(new DataPoint(fy(this.ActualMinimumY), this.ActualMinimumY));
+                    points.Add(new DataPoint(fy(this.ActualMaximumY), this.ActualMaximumY));
                 }
 
                 if (this.Type == LineAnnotationType.Horizontal || this.Type == LineAnnotationType.Vertical)
                 {
                     // use aliased line drawing for horizontal and vertical lines
-                    this.aliased = true;
+                    this.Aliased = true;
                 }
             }
             else
             {
                 if (fx != null)
                 {
-                    double x = actualMinimumX;
+                    double x = this.ActualMinimumX;
 
                     // todo: the step size should be adaptive
-                    double dx = (actualMaximumX - actualMinimumX) / 100;
+                    double dx = (this.ActualMaximumX - this.ActualMinimumX) / 100;
                     while (true)
                     {
                         points.Add(new DataPoint(x, fx(x)));
-                        if (x > actualMaximumX)
+                        if (x > this.ActualMaximumX)
                         {
                             break;
                         }
@@ -193,14 +158,14 @@ namespace OxyPlot.Annotations
                 }
                 else if (fy != null)
                 {
-                    double y = actualMinimumY;
+                    double y = this.ActualMinimumY;
 
                     // todo: the step size should be adaptive
-                    double dy = (actualMaximumY - actualMinimumY) / 100;
+                    double dy = (this.ActualMaximumY - this.ActualMinimumY) / 100;
                     while (true)
                     {
                         points.Add(new DataPoint(fy(y), y));
-                        if (y > actualMaximumY)
+                        if (y > this.ActualMaximumY)
                         {
                             break;
                         }
@@ -209,6 +174,7 @@ namespace OxyPlot.Annotations
                     }
                 }
             }
+
             // transform to screen coordinates
             return points.Select(p => this.Transform(p)).ToList();
         }
