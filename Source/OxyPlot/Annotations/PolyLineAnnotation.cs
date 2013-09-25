@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AnnotationLayer.cs" company="OxyPlot">
+// <copyright file="PolyLineAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -23,30 +23,56 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   The annotation layer.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Annotations
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     /// <summary>
-    /// Specifies the layer for an <see cref="Annotation"/>.
+    /// Represents a polyline annotation.
     /// </summary>
-    public enum AnnotationLayer
+    public class PolylineAnnotation : PathAnnotation
     {
         /// <summary>
-        /// Render the annotation below the gridlines of the axes.
+        /// Gets or sets the points.
         /// </summary>
-        BelowAxes,
+        /// <value> The points. </value>
+        public IList<IDataPoint> Points { get; set; }
 
         /// <summary>
-        /// Render the annotation below the series.
+        /// Gets or sets the minimum length of the segment.
+        /// Increasing this number will increase performance,
+        /// but make the curve less accurate.
         /// </summary>
-        BelowSeries,
+        /// <value>The minimum length of the segment.</value>
+        public double MinimumSegmentLength { get; set; }
 
         /// <summary>
-        /// Render the annotation above the series.
+        /// Gets or sets a value indicating whether this <see cref = "PolylineAnnotation" /> is smooth.
         /// </summary>
-        AboveSeries
+        /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
+        public bool Smooth { get; set; }
+
+        /// <summary>
+        /// Gets the screen points.
+        /// </summary>
+        /// <returns>
+        /// The list of points to display on screen for this path.
+        /// </returns>
+        protected override IList<ScreenPoint> GetScreenPoints()
+        {
+            List<ScreenPoint> screenPoints = this.Points.Select(this.Transform).ToList();
+
+            if (this.Smooth)
+            {
+                var resampledPoints = ScreenPointHelper.ResamplePoints(screenPoints, this.MinimumSegmentLength);
+                return CanonicalSplineHelper.CreateSpline(resampledPoints, 0.5, null, false, 0.25);
+            }
+
+            return this.Points.Select(this.Transform).ToList();
+        }
     }
 }
