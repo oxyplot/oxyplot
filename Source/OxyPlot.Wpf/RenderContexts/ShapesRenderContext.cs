@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The text measurement methods.
+//   Provides a <see cref="IRenderContext"/> implementation that adds WPF shapes to a <see cref="Canvas"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ namespace OxyPlot.Wpf
     }
 
     /// <summary>
-    /// Rendering WPF shapes to a Canvas
+    /// Provides a <see cref="IRenderContext"/> implementation that adds WPF shapes to a <see cref="Canvas"/>.
     /// </summary>
     public class ShapesRenderContext : IRenderContext
     {
@@ -126,6 +126,7 @@ namespace OxyPlot.Wpf
             this.TextMeasurementMethod = TextMeasurementMethod.TextBlock;
             this.UseStreamGeometry = true;
             this.RendersToScreen = true;
+            this.BalancedLineDrawingThicknessLimit = 3.5;
         }
 
         /// <summary>
@@ -135,6 +136,11 @@ namespace OxyPlot.Wpf
         /// The text measurement method.
         /// </value>
         public TextMeasurementMethod TextMeasurementMethod { get; set; }
+
+        /// <summary>
+        /// Gets or sets the thickness limit for "balanced" line drawing.
+        /// </summary>
+        public double BalancedLineDrawingThicknessLimit { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to use stream geometry for lines and polygons rendering.
@@ -211,26 +217,14 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The draw line.
+        /// Draws the polyline from the specified points.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -239,39 +233,12 @@ namespace OxyPlot.Wpf
             OxyPenLineJoin lineJoin,
             bool aliased)
         {
-#if TRY_NEW_METHOD
-            // balance the number of points per polyline and the number of polylines
-            var numPointsPerPolyline = Math.Max(points.Count / MaxPolylinesPerLine, MinPointsPerPolyline);
-
-            var polyline = this.CreateAndAdd<Polyline>();
-            this.SetStroke(polyline, stroke, thickness, lineJoin, dashArray, 0, aliased);
-            var pc = new PointCollection(numPointsPerPolyline);
-
-            foreach (var p in points)
+            if (thickness < this.BalancedLineDrawingThicknessLimit)
             {
-                pc.Add(p.ToPoint(aliased));
-
-                // use multiple polylines with limited number of points to improve WPF performance
-                if (pc.Count >= numPointsPerPolyline)
-                {
-                    polyline.Points = pc;
-
-                    // start a new polyline at last point so there is no gap
-                    polyline = this.CreateAndAdd<Polyline>();
-
-                    // TODO: calculate stroke dash offset...
-                    this.SetStroke(polyline, stroke, thickness, lineJoin, dashArray, 0, aliased);
-                    var startPoint = pc.Last();
-                    pc = new PointCollection(numPointsPerPolyline);
-                    pc.Add(startPoint);
-                }
+                this.DrawLineBalanced(points, stroke, thickness, dashArray, lineJoin, aliased);
+                return;
             }
 
-            if (pc.Count > 1 || points.Count == 1)
-            {
-                polyline.Points = pc;
-            }
-#else
             var e = this.CreateAndAdd<Polyline>();
             this.SetStroke(e, stroke, thickness, lineJoin, dashArray, 0, aliased);
 
@@ -281,8 +248,8 @@ namespace OxyPlot.Wpf
                 pc.Add(p.ToPoint(aliased));
             }
 
+            // var pc = new PointCollection(points.Select(p => p.ToPoint(aliased)));
             e.Points = pc;
-#endif
         }
 
         /// <summary>
@@ -983,7 +950,7 @@ namespace OxyPlot.Wpf
         /// <returns>The element.</returns>
         private T CreateAndAdd<T>(double clipOffsetX = 0, double clipOffsetY = 0) where T : FrameworkElement, new()
         {
-            // TODO: here we can do some tricks...
+            // TODO: here we can reuse existing elements in the canvas.Children collection
             var element = new T();
 
             if (this.clip != null)
@@ -1221,6 +1188,93 @@ namespace OxyPlot.Wpf
                 this.imageCache.Add(image, btm);
                 return btm;
             }
+        }
+
+        /// <summary>
+        /// Draws the line using the MaxPolylinesPerLine and MinPointsPerPolyline properties.
+        /// </summary>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">Render aliased if set to <c>true</c>.</param>
+        /// <remarks>
+        /// See <a href="https://oxyplot.codeplex.com/discussions/456679">discussion</a>.
+        /// </remarks>
+        private void DrawLineBalanced(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        {
+            // balance the number of points per polyline and the number of polylines
+            var numPointsPerPolyline = Math.Max(points.Count / MaxPolylinesPerLine, MinPointsPerPolyline);
+
+            var polyline = this.CreateAndAdd<Polyline>();
+            this.SetStroke(polyline, stroke, thickness, lineJoin, dashArray, 0, aliased);
+            var pc = new PointCollection(numPointsPerPolyline);
+
+            var n = points.Count;
+            double lineLength = 0;
+            var dashPatternLength = (dashArray != null) ? dashArray.Sum() : 0;
+            var last = new Point();
+            for (int i = 0; i < n; i++)
+            {
+                var p = points[i].ToPoint(aliased);
+                pc.Add(p);
+
+                // alt. 1
+                if (dashArray != null)
+                {
+                    if (i > 0)
+                    {
+                        var delta = p - last;
+                        var dist = Math.Sqrt((delta.X * delta.X) + (delta.Y * delta.Y));
+                        lineLength += dist;
+                    }
+
+                    last = p;
+                }
+
+                // use multiple polylines with limited number of points to improve WPF performance
+                if (pc.Count >= numPointsPerPolyline)
+                {
+                    polyline.Points = pc;
+
+                    if (i < n - 1)
+                    {
+                        // alt.2
+                        ////if (dashArray != null)
+                        ////{
+                        ////    lineLength += this.GetLength(polyline);
+                        ////}
+
+                        // start a new polyline at last point so there is no gap (it is not necessary to use the % operator)
+                        var dashOffset = dashPatternLength > 0 ? lineLength / thickness : 0;
+                        polyline = this.CreateAndAdd<Polyline>();
+                        this.SetStroke(polyline, stroke, thickness, lineJoin, dashArray, dashOffset, aliased);
+                        pc = new PointCollection(numPointsPerPolyline) { pc.Last() };
+                    }
+                }
+            }
+
+            if (pc.Count > 1 || n == 1)
+            {
+                polyline.Points = pc;
+            }
+        }
+
+        /// <summary>
+        /// Gets the length of the specified polyline.
+        /// </summary>
+        /// <param name="polyline">The polyline.</param>
+        /// <returns>The length.</returns>
+        private static double GetLength(Polyline polyline)
+        {
+            double length = 0;
+            for (int i = 1; i < polyline.Points.Count; i++)
+            {
+                length += polyline.Points[i - 1].DistanceTo(polyline.Points[i]);
+            }
+
+            return length;
         }
     }
 }
