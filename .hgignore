@@ -47,6 +47,7 @@ _TeamCity*/
 AppPackages/
 *.dotCover
 *.ncrunchsolution
+*.GhostDoc.xml
 
 [Tt]est[Rr]esult*
 [Bb]uild[Ll]og.*
