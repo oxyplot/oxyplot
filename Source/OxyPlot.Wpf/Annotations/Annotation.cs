@@ -66,7 +66,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the internal annotation object.
         /// </summary>
-        public OxyPlot.Annotations.Annotation InternalAnnotation { get; protected set; }
+        public Annotations.Annotation InternalAnnotation { get; protected set; }
 
         /// <summary>
         /// Creates the internal annotation object.
@@ -74,7 +74,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// The annotation.
         /// </returns>
-        public abstract OxyPlot.Annotations.Annotation CreateModel();
+        public abstract Annotations.Annotation CreateModel();
 
         /// <summary>
         /// Synchronizes the properties.

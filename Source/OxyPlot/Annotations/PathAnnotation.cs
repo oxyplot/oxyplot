@@ -28,8 +28,6 @@ namespace OxyPlot.Annotations
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Represents all annotations who are paths such as lines, functions or polylines
@@ -69,7 +67,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Initializes a new instance of the <see cref="PathAnnotation"/> class.
         /// </summary>
-        public PathAnnotation()
+        protected PathAnnotation()
         {
             this.MinimumX = double.MinValue;
             this.MaximumX = double.MaxValue;

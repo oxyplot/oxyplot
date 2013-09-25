@@ -26,10 +26,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Annotations
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Represents a polyline annotation.
@@ -64,7 +62,7 @@ namespace OxyPlot.Annotations
         /// </returns>
         protected override IList<ScreenPoint> GetScreenPoints()
         {
-            List<ScreenPoint> screenPoints = this.Points.Select(this.Transform).ToList();
+            var screenPoints = this.Points.Select(this.Transform).ToList();
 
             if (this.Smooth)
             {

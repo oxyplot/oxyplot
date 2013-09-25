@@ -24,6 +24,7 @@
 // </copyright>
 namespace OxyPlot.Wpf
 {
+    using System.Collections.Generic;
     using System.Windows;
 
     /// <summary>
@@ -44,11 +45,36 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("MinimumSegmentLength", typeof(double), typeof(PolylineAnnotation), new PropertyMetadata(0));
 
         /// <summary>
+        /// The points property
+        /// </summary>
+        public static readonly DependencyProperty PointsProperty =
+            DependencyProperty.Register("Points", typeof(IList<IDataPoint>), typeof(PolylineAnnotation), new PropertyMetadata(new List<IDataPoint>()));
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PolylineAnnotation"/> class.
         /// </summary>
         public PolylineAnnotation()
         {
-            this.InternalAnnotation = new OxyPlot.Annotations.PolylineAnnotation();
+            this.InternalAnnotation = new Annotations.PolylineAnnotation();
+        }
+
+        /// <summary>
+        /// Gets or sets the points.
+        /// </summary>
+        /// <value>
+        /// The points.
+        /// </value>
+        public IList<IDataPoint> Points
+        {
+            get
+            {
+                return (IList<IDataPoint>)this.GetValue(PointsProperty);
+            }
+
+            set
+            {
+                this.SetValue(PointsProperty, value);
+            }
         }
 
         /// <summary>
@@ -94,8 +120,8 @@ namespace OxyPlot.Wpf
         {
             base.SynchronizeProperties();
 
-            var a = (OxyPlot.Annotations.PolylineAnnotation)this.InternalAnnotation;
-
+            var a = (Annotations.PolylineAnnotation)this.InternalAnnotation;
+            a.Points = this.Points;
             a.Smooth = this.Smooth;
             a.MinimumSegmentLength = this.MinimumSegmentLength;
         }
