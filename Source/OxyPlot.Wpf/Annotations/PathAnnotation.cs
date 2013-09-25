@@ -348,7 +348,7 @@ namespace OxyPlot.Wpf
         {
             base.SynchronizeProperties();
 
-            var a = (OxyPlot.Annotations.PathAnnotation)this.InternalAnnotation;
+            var a = (Annotations.PathAnnotation)this.InternalAnnotation;
             a.Color = this.Color.ToOxyColor();
 
             a.ClipByXAxis = this.ClipByXAxis;

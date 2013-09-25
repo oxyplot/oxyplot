@@ -29,13 +29,21 @@ namespace OxyPlot.Annotations
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Represents a line annotation defined 
     /// </summary>
     public class FunctionAnnotation : PathAnnotation
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FunctionAnnotation"/> class.
+        /// </summary>
+        public FunctionAnnotation()
+        {
+            this.Resolution = 400;
+            this.Type = FunctionAnnotationType.EquationX;
+        }
+
         /// <summary>
         /// Gets or sets the type of function. Can be either f(x) or f(y).
         /// </summary>
@@ -48,6 +56,14 @@ namespace OxyPlot.Annotations
         /// Gets or sets the y=f(x) equation when Type is Equation.
         /// </summary>
         public Func<double, double> Equation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the resolution.
+        /// </summary>
+        /// <value>
+        /// The resolution.
+        /// </value>
+        public int Resolution { get; set; }
 
         /// <summary>
         /// Gets the screen points.
@@ -76,7 +92,7 @@ namespace OxyPlot.Annotations
                 double x = this.ActualMinimumX;
 
                 // todo: the step size should be adaptive
-                double dx = (this.ActualMaximumX - this.ActualMinimumX) / 100;
+                double dx = (this.ActualMaximumX - this.ActualMinimumX) / this.Resolution;
                 while (true)
                 {
                     points.Add(new DataPoint(x, fx(x)));
@@ -93,7 +109,7 @@ namespace OxyPlot.Annotations
                 double y = ActualMinimumY;
 
                 // todo: the step size should be adaptive
-                double dy = (this.ActualMaximumY - this.ActualMinimumY) / 100;
+                double dy = (this.ActualMaximumY - this.ActualMinimumY) / this.Resolution;
                 while (true)
                 {
                     points.Add(new DataPoint(fy(y), y));

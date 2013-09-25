@@ -26,6 +26,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Wpf
 {
+    using System;
     using System.Windows;
 
     using OxyPlot.Annotations;
@@ -33,7 +34,7 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.PathAnnotation
     /// </summary>
-    public class FunctionAnnotation : OxyPlot.Wpf.PathAnnotation
+    public class FunctionAnnotation : PathAnnotation
     {
         /// <summary>
         /// The line type property.
@@ -45,11 +46,61 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(FunctionAnnotationType.EquationX, DataChanged));
 
         /// <summary>
+        /// The equation property
+        /// </summary>
+        public static readonly DependencyProperty EquationProperty =
+            DependencyProperty.Register("Equation", typeof(Func<double, double>), typeof(FunctionAnnotation), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The resolution property
+        /// </summary>
+        public static readonly DependencyProperty ResolutionProperty =
+            DependencyProperty.Register("Resolution", typeof(int), typeof(FunctionAnnotation), new PropertyMetadata(400));
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FunctionAnnotation"/> class.
         /// </summary>
         public FunctionAnnotation()
         {
-            this.InternalAnnotation = new OxyPlot.Annotations.FunctionAnnotation();
+            this.InternalAnnotation = new Annotations.FunctionAnnotation();
+        }
+
+        /// <summary>
+        /// Gets or sets the equation.
+        /// </summary>
+        /// <value>
+        /// The equation.
+        /// </value>
+        public Func<double, double> Equation
+        {
+            get
+            {
+                return (Func<double, double>)this.GetValue(EquationProperty);
+            }
+
+            set
+            {
+                this.SetValue(EquationProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the resolution.
+        /// </summary>
+        /// <value>
+        /// The resolution.
+        /// </value>
+        public int Resolution
+        {
+            get
+            {
+                return (int)this.GetValue(ResolutionProperty);
+            }
+
+            set
+            {
+                this.SetValue(ResolutionProperty, value);
+            }
         }
 
         /// <summary>
@@ -87,8 +138,10 @@ namespace OxyPlot.Wpf
         {
             base.SynchronizeProperties();
 
-            var a = (OxyPlot.Annotations.FunctionAnnotation)this.InternalAnnotation;
+            var a = (Annotations.FunctionAnnotation)this.InternalAnnotation;
             a.Type = this.Type;
+            a.Equation = this.Equation;
+            a.Resolution = this.Resolution;
         }
     }
 }

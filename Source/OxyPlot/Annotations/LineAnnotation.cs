@@ -44,7 +44,6 @@ namespace OxyPlot.Annotations
         /// Initializes a new instance of the <see cref = "LineAnnotation" /> class.
         /// </summary>
         public LineAnnotation()
-            : base()
         {
             this.Type = LineAnnotationType.LinearEquation;
         }
@@ -125,7 +124,7 @@ namespace OxyPlot.Annotations
                     points.Add(new DataPoint(this.ActualMinimumX, fx(this.ActualMinimumX)));
                     points.Add(new DataPoint(this.ActualMaximumX, fx(this.ActualMaximumX)));
                 }
-                else if (fy != null)
+                else
                 {
                     points.Add(new DataPoint(fy(this.ActualMinimumY), this.ActualMinimumY));
                     points.Add(new DataPoint(fy(this.ActualMaximumY), this.ActualMaximumY));
@@ -156,7 +155,7 @@ namespace OxyPlot.Annotations
                         x += dx;
                     }
                 }
-                else if (fy != null)
+                else
                 {
                     double y = this.ActualMinimumY;
 

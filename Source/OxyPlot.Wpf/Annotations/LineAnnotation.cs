@@ -30,14 +30,13 @@
 namespace OxyPlot.Wpf
 {
     using System.Windows;
-    using System.Windows.Media;
 
     using OxyPlot.Annotations;
 
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.LineAnnotation
     /// </summary>
-    public class LineAnnotation : OxyPlot.Wpf.PathAnnotation
+    public class LineAnnotation : PathAnnotation
     {
         /// <summary>
         /// The line type property.
@@ -101,7 +100,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public LineAnnotation()
         {
-            this.InternalAnnotation = new OxyPlot.Annotations.LineAnnotation();
+            this.InternalAnnotation = new Annotations.LineAnnotation();
         }
 
         /// <summary>
@@ -254,7 +253,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// The annotation.
         /// </returns>
-        public override OxyPlot.Annotations.Annotation CreateModel()
+        public override Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAnnotation;
@@ -266,7 +265,7 @@ namespace OxyPlot.Wpf
         public override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = (OxyPlot.Annotations.LineAnnotation)this.InternalAnnotation;
+            var a = (Annotations.LineAnnotation)this.InternalAnnotation;
             a.Type = this.Type;
             a.Slope = this.Slope;
             a.Intercept = this.Intercept;
