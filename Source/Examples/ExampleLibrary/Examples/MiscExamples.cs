@@ -1427,14 +1427,59 @@ namespace ExampleLibrary
                         Palette = OxyPalettes.Jet(64),
                         HighColor = OxyColors.Black
                     });
-            model.Series.Add(new MandelbrotSeries());
+            model.Series.Add(new MandelbrotSetSeries());
+            return model;
+        }
+
+        [Example("Julia set custom series")]
+        public static PlotModel JuliaSet()
+        {
+            // http://en.wikipedia.org/wiki/Julia_set
+            var model = new PlotModel { Subtitle = "Click and move the mouse" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -2, Maximum = 2 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -2.5, Maximum = 2.5 });
+            model.Axes.Add(
+                new LinearColorAxis
+                {
+                    Position = AxisPosition.Right,
+                    Minimum = 0,
+                    Maximum = 64,
+                    Palette = OxyPalettes.Jet(64),
+                    HighColor = OxyColors.Black
+                });
+
+            var jss = new JuliaSetSeries();
+
+            // Delegate to set the c and title
+            Action<double, double> setConstant = (c1, c2) =>
+            {
+                jss.C1 = c1;
+                jss.C2 = c2;
+                model.Title = string.Format("The Julia set, c={0:0.00000}+{1:0.00000}i", jss.C1, jss.C2);
+            };
+
+            // Update the c by the position where the mouse was clicked/moved
+            EventHandler<OxyMouseEventArgs> handleMouseEvent = (s, e) =>
+            {
+                var c = jss.InverseTransform(e.Position);
+                setConstant(c.X, c.Y);
+                model.InvalidatePlot(true);
+                e.Handled = true;
+            };
+            jss.MouseDown += handleMouseEvent;
+            jss.MouseMove += handleMouseEvent;
+
+            // set the initial c
+            setConstant(-0.726895347709114071439, 0.188887129043845954792);
+
+            model.Series.Add(jss);
             return model;
         }
 
         /// <summary>
         /// Renders the Mandelbrot set as an image inside the current plot area.
         /// </summary>
-        public class MandelbrotSeries : XYAxisSeries
+        public class MandelbrotSetSeries : XYAxisSeries
         {
             /// <summary>
             /// Gets or sets the color axis.
@@ -1510,6 +1555,31 @@ namespace ExampleLibrary
             }
 
             /// <summary>
+            /// Calculates the escape time for the specified point.
+            /// </summary>
+            /// <param name="x0">The x0.</param>
+            /// <param name="y0">The y0.</param>
+            /// <param name="maxIterations">The max number of iterations.</param>
+            /// <returns>
+            /// The number of iterations.
+            /// </returns>
+            protected virtual int Solve(double x0, double y0, int maxIterations)
+            {
+                int iteration = 0;
+                double x = 0;
+                double y = 0;
+                while ((x * x) + (y * y) <= 4 && iteration < maxIterations)
+                {
+                    double xtemp = (x * x) - (y * y) + x0;
+                    y = (2 * x * y) + y0;
+                    x = xtemp;
+                    iteration++;
+                }
+
+                return iteration;
+            }
+
+            /// <summary>
             /// Ensures that the axes of the series is defined.
             /// </summary>
             protected override void EnsureAxes()
@@ -1578,23 +1648,24 @@ namespace ExampleLibrary
                     wh.WaitOne();
                 }
             }
+        }
 
-            /// <summary>
-            /// Calculates the escape time for the specified point.
-            /// </summary>
-            /// <param name="x0">The x0.</param>
-            /// <param name="y0">The y0.</param>
-            /// <param name="maxIterations">The max number of iterations.</param>
-            /// <returns>The number of iterations.</returns>
-            private static int Solve(double x0, double y0, int maxIterations)
+        private class JuliaSetSeries : MandelbrotSetSeries
+        {
+            public double C1 { get; set; }
+            public double C2 { get; set; }
+
+            protected override int Solve(double x0, double y0, int maxIterations)
             {
                 int iteration = 0;
-                double x = 0;
-                double y = 0;
+                double x = x0;
+                double y = y0;
+                double cr = this.C1;
+                double ci = this.C2;
                 while ((x * x) + (y * y) <= 4 && iteration < maxIterations)
                 {
-                    double xtemp = (x * x) - (y * y) + x0;
-                    y = (2 * x * y) + y0;
+                    double xtemp = (x * x) - (y * y) + cr;
+                    y = (2 * x * y) + ci;
                     x = xtemp;
                     iteration++;
                 }
