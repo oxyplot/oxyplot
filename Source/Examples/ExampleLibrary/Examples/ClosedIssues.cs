@@ -30,6 +30,8 @@
 
 namespace ExampleLibrary
 {
+    using System;
+
     using OxyPlot;
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
@@ -130,6 +132,47 @@ namespace ExampleLibrary
 
             plotModel1.Annotations.Add(lineAnnotation);
             return plotModel1;
+        }
+
+        [Example("#10060: AnnotationLayers")]
+        public static PlotModel AnnotationLayers()
+        {
+            var model = new PlotModel("AnnotationLayers");
+
+            var a1 = new RectangleAnnotation { MinimumX = 10, MaximumX = 20, MinimumY = -1, MaximumY = 1, Layer = AnnotationLayer.BelowAxes };
+            var a2 = new RectangleAnnotation { MinimumX = 30, MaximumX = 40, MinimumY = -1, MaximumY = 1, Layer = AnnotationLayer.BelowSeries };
+            var a3 = new RectangleAnnotation { MinimumX = 50, MaximumX = 60, MinimumY = -1, MaximumY = 1, Layer = AnnotationLayer.AboveSeries };
+            model.Annotations.Add(a1);
+            model.Annotations.Add(a2);
+            model.Annotations.Add(a3);
+            var s1 = new FunctionSeries(Math.Sin, 0, 100, 0.01);
+            model.Series.Add(s1);
+            a1.MouseDown += (s, e) =>
+            {
+                model.Subtitle = "Clicked annotation below axes";
+                model.RefreshPlot(true);
+                e.Handled = true;
+            };
+            a2.MouseDown += (s, e) =>
+            {
+                model.Subtitle = "Clicked annotation below series";
+                model.RefreshPlot(true);
+                e.Handled = true;
+            };
+            a3.MouseDown += (s, e) =>
+            {
+                model.Subtitle = "Clicked annotation above series";
+                model.RefreshPlot(true);
+                e.Handled = true;
+            };
+            s1.MouseDown += (s, e) =>
+            {
+                model.Subtitle = "Clicked series";
+                model.RefreshPlot(true);
+                e.Handled = true;
+            };
+
+            return model;
         }
 
     }
