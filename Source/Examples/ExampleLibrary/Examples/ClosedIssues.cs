@@ -31,6 +31,7 @@
 namespace ExampleLibrary
 {
     using System;
+    using System.Collections.Generic;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -175,5 +176,45 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("#10076: Slow redraws with noisy data")]
+        public static PlotModel NoisyData()
+        {
+            var model = new PlotModel("Noisy data");
+
+            const int n = 500;
+            var points = new List<IDataPoint>(n);
+            var rng = new Random();
+            for (int i = 0; i < n; i++)
+            {
+                points.Add(new DataPoint(i + 1, rng.NextDouble()));
+            }
+
+            model.Series.Add(new LineSeries { ItemsSource = points });
+            return model;
+        }
+        
+        [Example("#10076: Dashed line test")]
+        public static PlotModel DashedLineTest()
+        {
+            var model = new PlotModel("Dashed line test");
+
+            for (int y = 1; y <= 24; y++)
+            {
+                var line = new LineSeries()
+                {
+                    StrokeThickness = y,
+                    LineStyle = LineStyle.Dash,
+                    Dashes = new double[] { 1, 2, 3 } // has no effect
+                };
+                for (int i = 0; i < 20; i++)
+                {
+                    line.Points.Add(new DataPoint(i + 1, y));
+                }
+
+                model.Series.Add(line);
+            }
+
+            return model;
+        }
     }
 }
