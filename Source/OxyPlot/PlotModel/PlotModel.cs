@@ -812,6 +812,21 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Gets the visible axes.
+        /// </summary>
+        /// <value>
+        /// The visible axes.
+        /// </value>
+        private IEnumerable<Axis> VisibleAxes
+        {
+            get
+            {
+                return this.Axes.Where(s => s.IsAxisVisible);
+            }
+        }
+
+
+        /// <summary>
         /// Attaches this model to the specified plot control.
         /// </summary>
         /// <param name="plotControl">The plot control.</param>
@@ -1154,12 +1169,17 @@ namespace OxyPlot
         /// <returns>An enumerator of the plot elements.</returns>
         public IEnumerable<PlotElement> GetElements()
         {
-            foreach (var axis in this.Axes)
+            foreach (var annotation in this.Annotations.Where(a => a.Layer == AnnotationLayer.BelowAxes))
+            {
+                yield return annotation;
+            }
+
+            foreach (var axis in this.VisibleAxes.Where(a => a.Layer == AxisLayer.BelowSeries))
             {
                 yield return axis;
             }
 
-            foreach (var annotation in this.Annotations)
+            foreach (var annotation in this.Annotations.Where(a => a.Layer == AnnotationLayer.BelowSeries))
             {
                 yield return annotation;
             }
@@ -1167,6 +1187,16 @@ namespace OxyPlot
             foreach (var s in this.VisibleSeries)
             {
                 yield return s;
+            }
+
+            foreach (var annotation in this.Annotations.Where(a => a.Layer == AnnotationLayer.AboveSeries))
+            {
+                yield return annotation;
+            }
+
+            foreach (var axis in this.VisibleAxes.Where(a => a.Layer == AxisLayer.AboveSeries))
+            {
+                yield return axis;
             }
         }
 
