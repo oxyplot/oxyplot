@@ -190,6 +190,17 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Polyline annotations")]
+        public static PlotModel PolylineAnnotations()
+        {
+            var model = new PlotModel("PolylinesAnnotations");
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 30));
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 30));
+            model.Annotations.Add(new PolylineAnnotation() { Points = new IDataPoint[] { new DataPoint(0, 10), new DataPoint(5, 5), new DataPoint(20, 1), new DataPoint(30, 20) }, Text = "Polyline" });
+            model.Annotations.Add(new PolylineAnnotation() { Points = new IDataPoint[] { new DataPoint(0, 15), new DataPoint(3, 23), new DataPoint(9, 30), new DataPoint(20, 12), new DataPoint(30, 10) }, Smooth = true, Text = "Smooth Polyline" });
+            return model;
+        }
+
         [Example("PolygonAnnotations")]
         public static PlotModel PolygonAnnotations()
         {

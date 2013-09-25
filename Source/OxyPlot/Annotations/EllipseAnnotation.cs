@@ -103,7 +103,7 @@ namespace OxyPlot.Annotations
         {
             base.Render(rc, model);
 
-            this.screenRectangle = OxyRect.Create(this.Transform(this.X - (Width / 2), Y - (Height / 2)), this.Transform(X + (Width / 2), Y + (Height / 2)));
+            this.screenRectangle = OxyRect.Create(this.Transform(this.X - (this.Width / 2), this.Y - (this.Height / 2)), this.Transform(this.X + (this.Width / 2), this.Y + (this.Height / 2)));
 
             // clip to the area defined by the axes
             var clipping = this.GetClippingRect();

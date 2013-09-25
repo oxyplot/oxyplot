@@ -45,9 +45,14 @@
     </Compile>
     <Compile Include="Annotations\Annotation.cs" />
     <Compile Include="Annotations\AnnotationLayer.cs" />
+    <Compile Include="Annotations\AnnotationTextOrientation.cs" />
     <Compile Include="Annotations\ArrowAnnotation.cs" />
     <Compile Include="Annotations\EllipseAnnotation.cs" />
+    <Compile Include="Annotations\FunctionAnnotation.cs" />
+    <Compile Include="Annotations\FunctionAnnotationType.cs" />
     <Compile Include="Annotations\ImageAnnotation.cs" />
+    <Compile Include="Annotations\PathAnnotation.cs" />
+    <Compile Include="Annotations\PolylineAnnotation.cs" />
     <Compile Include="Annotations\TileMapAnnotation.cs" />
     <Compile Include="Axes\ColorAxis.cs" />
     <Compile Include="Axes\RangeColorAxis.cs" />

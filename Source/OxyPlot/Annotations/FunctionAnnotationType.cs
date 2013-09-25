@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AnnotationLayer.cs" company="OxyPlot">
+// <copyright file="FunctionAnnotationType.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,29 +24,24 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The annotation layer.
+//   The function annotation type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// Specifies the layer for an <see cref="Annotation"/>.
+    /// Specifies the definition of function line in a <see cref="FunctionAnnotation"/>.
     /// </summary>
-    public enum AnnotationLayer
+    public enum FunctionAnnotationType
     {
         /// <summary>
-        /// Render the annotation below the gridlines of the axes.
+        /// Curve equation x=f(y) given by the Equation property
         /// </summary>
-        BelowAxes,
+        EquationX,
 
         /// <summary>
-        /// Render the annotation below the series.
+        /// Curve equation y=f(x) given by the Equation property
         /// </summary>
-        BelowSeries,
-
-        /// <summary>
-        /// Render the annotation above the series.
-        /// </summary>
-        AboveSeries
+        EquationY
     }
 }
