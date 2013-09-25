@@ -1,0 +1,60 @@
+﻿<Window x:Class="ExportDemo.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" Title="OxyPlot ExportDemo" Height="480" Width="640">
+    <DockPanel>
+        <!-- This application is using the Caliburn.Micro framework -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Save svg..." Name="SaveSvg"/>
+                <MenuItem Header="Save pdf..." Name="SavePdf"/>
+                <MenuItem Header="Save png..." Name="SavePng"/>
+                <MenuItem Header="Save xaml..." Name="SaveXaml"/>
+                <MenuItem Header="Save xps..." Name="SaveXps"/>
+                <Separator/>
+                <MenuItem Header="Print..." Name="Print"/>
+                <Separator/>
+                <MenuItem Header="Save text report..." Name="SaveTextReport"/>
+                <MenuItem Header="Save html5 report..." Name="SaveHtmlReport"/>
+                <MenuItem Header="Save LaTeX report..." Name="SaveLatexReport"/>
+                <MenuItem Header="Save pdf report..." Name="SavePdfReport"/>
+                <MenuItem Header="Save rtf report..." Name="SaveRtfReport"/>
+                <MenuItem Header="Save xps report..." Name="SaveXpsReport"/>
+                <MenuItem Header="Save docx report..." Name="SaveDocxReport"/>
+                <Separator/>
+                <MenuItem Header="Exit" Name="Exit"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Copy svg" Name="CopySvg"/>
+                <MenuItem Header="Copy bitmap" Name="CopyBitmap"/>
+                <MenuItem Header="Copy xaml" Name="CopyXaml"/>
+            </MenuItem>
+            <p:EnumMenuItem x:Name="ModelMenu" Header="Model" SelectedValue="{Binding CurrentModel}"/>
+            <MenuItem Header="Help">
+                <MenuItem Header="Home page" Name="HelpHome"/>
+                <MenuItem Header="Documentation" Name="HelpDocumentation"/>
+                <Separator/>
+                <MenuItem Header="About" Name="HelpAbout"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="{Binding TotalNumberOfPoints, StringFormat='Total number of data points: {0}'}"/>
+            </StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <oxy:Plot 
+            x:Name="plot1" 
+            Model="{Binding Model}" 
+            Background="White">
+                <oxy:Plot.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy svg" Name="ContextCopySvg"/>
+                        <MenuItem Header="Copy bitmap" Name="ContextCopyBitmap"/>
+                        <MenuItem Header="Copy xaml" Name="ContextCopyXaml"/>
+                    </ContextMenu>
+                </oxy:Plot.ContextMenu>
+            </oxy:Plot>           
+        </Grid>
+    </DockPanel>
+</Window>

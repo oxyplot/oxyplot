@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{698CCD8E-ADCC-4565-8517-5EDD36F07155}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OxyPlot.Wpf</RootNamespace>
+    <AssemblyName>OxyPlot.Wpf</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\NET45\</OutputPath>
+    <DefineConstants>TRACE;WPF</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Output\NET45\OxyPlot.Wpf.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>OxyPlot.Wpf.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Annotations\Annotation.cs" />
+    <Compile Include="Annotations\ArrowAnnotation.cs" />
+    <Compile Include="Annotations\EllipseAnnotation.cs" />
+    <Compile Include="Annotations\PolygonAnnotation.cs" />
+    <Compile Include="Annotations\RectangleAnnotation.cs" />
+    <Compile Include="Annotations\TextAnnotation.cs" />
+    <Compile Include="Annotations\LineAnnotation.cs" />
+    <Compile Include="Annotations\TextualAnnotation.cs" />
+    <Compile Include="Axes\AngleAxis.cs" />
+    <Compile Include="Axes\Axis.cs" />
+    <Compile Include="Axes\CategoryAxis.cs" />
+    <Compile Include="Axes\DateTimeAxis.cs" />
+    <Compile Include="Axes\MagnitudeAxis.cs" />
+    <Compile Include="Axes\TimeSpanAxis.cs" />
+    <Compile Include="Axes\LinearAxis.cs" />
+    <Compile Include="Axes\LogarithmicAxis.cs" />
+    <Compile Include="Converters\ThicknessConverter.cs" />
+    <Compile Include="Converters\OxyColorConverter.cs" />
+    <Compile Include="Helpers\WeakEvents\RenderingEventListener.cs" />
+    <Compile Include="Helpers\WeakEvents\RenderingEventManager.cs" />
+    <Compile Include="Helpers\WeakEvents\WeakEventListenerT.cs" />
+    <Compile Include="Helpers\WeakEvents\WeakEventManagerBaseT.cs" />
+    <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="RenderingControl.cs" />
+    <Compile Include="Series\BarSeries\ColumnSeries.cs" />
+    <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
+    <Compile Include="Series\BarSeries\BarSeriesBase.cs" />
+    <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
+    <Compile Include="XamlExporter.cs" />
+    <Compile Include="Helpers\InputBindingX.cs" />
+    <Compile Include="Helpers\KeyGestureExtension.cs" />
+    <Compile Include="Plot.Properties.cs" />
+    <Compile Include="PngExporter.cs" />
+    <Compile Include="Series\BarSeries\BarSeries.cs" />
+    <Compile Include="Series\TwoColorLineSeries.cs" />
+    <Compile Include="Series\XYAxisSeries.cs" />
+    <Compile Include="Series\ItemsSeries.cs" />
+    <Compile Include="Series\ScatterSeries.cs" />
+    <Compile Include="Series\Series.cs" />
+    <Compile Include="Tracker\TrackerControl.cs" />
+    <Compile Include="Tracker\TrackerDefinition.cs" />
+    <None Include="OxyPlot.Wpf.snk" />
+    <None Include="RenderContexts\GeometryRenderContext.cs" />
+    <None Include="RenderContexts\DrawingRenderContext.cs" />
+    <Compile Include="PlotFrame.cs" />
+    <Compile Include="Series\AreaSeries.cs" />
+    <Compile Include="Series\LineSeries.cs" />
+    <Compile Include="Plot.cs" />
+    <Compile Include="Series\DataPointSeries.cs" />
+    <Compile Include="Helpers\ConverterExtensions.cs" />
+    <Compile Include="RenderContexts\ShapesRenderContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
+      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
+      <Name>OxyPlot</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
