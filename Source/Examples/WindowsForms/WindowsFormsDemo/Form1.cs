@@ -24,12 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Windows.Forms;
-using OxyPlot;
 
 namespace WindowsFormsDemo
 {
+    using System;
+    using System.Drawing;
+    using System.Windows.Forms;
+
+    using OxyPlot;
     using OxyPlot.Series;
 
     public partial class Form1 : Form
@@ -37,6 +39,7 @@ namespace WindowsFormsDemo
         public Form1()
         {
             InitializeComponent();
+            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             var pm = new PlotModel("Trigonometric functions", "Example using the FunctionSeries")
                          {
                              PlotType = PlotType.Cartesian,

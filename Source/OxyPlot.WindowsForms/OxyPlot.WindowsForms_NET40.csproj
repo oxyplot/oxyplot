@@ -55,6 +55,7 @@
     <Compile Include="Plot.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="PlotModelExtensions.cs" />
     <Compile Include="PngExporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />

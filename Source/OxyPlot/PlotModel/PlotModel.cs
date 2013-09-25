@@ -1136,7 +1136,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Create an svg model and return it as a string.
+        /// Creates an svg model and return it as a string.
         /// </summary>
         /// <param name="width">The width (points).</param>
         /// <param name="height">The height (points).</param>

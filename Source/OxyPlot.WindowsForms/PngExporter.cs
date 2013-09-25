@@ -32,8 +32,6 @@ namespace OxyPlot.WindowsForms
     using System.Drawing;
     using System.Drawing.Imaging;
 
-    using OxyPlot.WindowsForms;
-
     /// <summary>
     /// The png exporter.
     /// </summary>
@@ -61,7 +59,7 @@ namespace OxyPlot.WindowsForms
         {
             using (var bm = new Bitmap(width, height))
             {
-                using (Graphics g = Graphics.FromImage(bm))
+                using (var g = Graphics.FromImage(bm))
                 {
                     if (background != null)
                     {
@@ -76,6 +74,5 @@ namespace OxyPlot.WindowsForms
                 }
             }
         }
-
     }
 }

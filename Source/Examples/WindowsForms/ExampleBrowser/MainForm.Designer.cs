@@ -35,7 +35,6 @@ namespace ExampleBrowser
         private void InitializeComponent()
         {
             OxyPlot.PlotModel plotModel1 = new OxyPlot.PlotModel();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.plot1 = new OxyPlot.WindowsForms.Plot();
@@ -76,13 +75,13 @@ namespace ExampleBrowser
             this.plot1.KeyboardPanHorizontalStep = 0.1D;
             this.plot1.KeyboardPanVerticalStep = 0.1D;
             this.plot1.Location = new System.Drawing.Point(0, 0);
-            plotModel1.Annotations = ((System.Collections.ObjectModel.Collection<OxyPlot.Annotations.Annotation>)(resources.GetObject("plotModel1.Annotations")));
+            plotModel1.Annotations = null;
             plotModel1.AutoAdjustPlotMargins = true;
-            plotModel1.Axes = ((System.Collections.ObjectModel.Collection<OxyPlot.Axes.Axis>)(resources.GetObject("plotModel1.Axes")));
+            plotModel1.Axes = null;
             plotModel1.AxisTierDistance = 4D;
             plotModel1.Background = null;
             plotModel1.Culture = null;
-            plotModel1.DefaultColors = ((System.Collections.Generic.IList<OxyPlot.OxyColor>)(resources.GetObject("plotModel1.DefaultColors")));
+            plotModel1.DefaultColors = null;
             plotModel1.DefaultFont = "Segoe UI";
             plotModel1.DefaultFontSize = 12D;
             plotModel1.IsLegendVisible = true;
@@ -97,6 +96,7 @@ namespace ExampleBrowser
             plotModel1.LegendItemOrder = OxyPlot.LegendItemOrder.Normal;
             plotModel1.LegendItemSpacing = 24D;
             plotModel1.LegendMargin = 8D;
+            plotModel1.LegendMaxWidth = double.NaN;
             plotModel1.LegendOrientation = OxyPlot.LegendOrientation.Vertical;
             plotModel1.LegendPadding = 8D;
             plotModel1.LegendPlacement = OxyPlot.LegendPlacement.Inside;
@@ -111,16 +111,17 @@ namespace ExampleBrowser
             plotModel1.LegendTitleFontSize = 12D;
             plotModel1.LegendTitleFontWeight = 700D;
             plotModel1.PlotAreaBackground = null;
-            plotModel1.PlotAreaBorderColor = ((OxyPlot.OxyColor)(resources.GetObject("plotModel1.PlotAreaBorderColor")));
+            plotModel1.PlotAreaBorderColor = null;
             plotModel1.PlotAreaBorderThickness = 1D;
             plotModel1.PlotType = OxyPlot.PlotType.XY;
-            plotModel1.Series = ((System.Collections.ObjectModel.Collection<OxyPlot.Series.Series>)(resources.GetObject("plotModel1.Series")));
+            plotModel1.SelectionColor = null;
+            plotModel1.Series = null;
             plotModel1.Subtitle = null;
             plotModel1.SubtitleColor = null;
             plotModel1.SubtitleFont = null;
             plotModel1.SubtitleFontSize = 14D;
             plotModel1.SubtitleFontWeight = 400D;
-            plotModel1.TextColor = ((OxyPlot.OxyColor)(resources.GetObject("plotModel1.TextColor")));
+            plotModel1.TextColor = null;
             plotModel1.Title = null;
             plotModel1.TitleColor = null;
             plotModel1.TitleFont = null;

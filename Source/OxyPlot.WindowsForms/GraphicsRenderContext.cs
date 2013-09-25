@@ -34,6 +34,7 @@ namespace OxyPlot.WindowsForms
     using System.Drawing;
     using System.Drawing.Drawing2D;
     using System.Drawing.Imaging;
+    using System.Drawing.Text;
     using System.IO;
     using System.Linq;
 
@@ -42,7 +43,7 @@ namespace OxyPlot.WindowsForms
     /// <summary>
     /// The graphics render context.
     /// </summary>
-    internal class GraphicsRenderContext : RenderContextBase
+    public class GraphicsRenderContext : RenderContextBase
     {
         /// <summary>
         /// The font size factor.
@@ -55,19 +56,13 @@ namespace OxyPlot.WindowsForms
         private Graphics g;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GraphicsRenderContext"/> class.
-        /// </summary>
-        public GraphicsRenderContext()
-        {
-        }
-
-        /// <summary>
         /// Sets the graphics target.
         /// </summary>
         /// <param name="graphics">The graphics surface.</param>
         public void SetGraphicsTarget(Graphics graphics)
         {
             this.g = graphics;
+            this.g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
         }
 
         /// <summary>
@@ -90,7 +85,7 @@ namespace OxyPlot.WindowsForms
                 return;
             }
 
-            using (var pen = new Pen(this.ToColor(stroke), (float)thickness))
+            using (var pen = this.GetCachedPen(stroke, thickness))
             {
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
                 this.g.DrawEllipse(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
@@ -120,28 +115,34 @@ namespace OxyPlot.WindowsForms
             }
 
             this.g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
-            using (var pen = new Pen(this.ToColor(stroke), (float)thickness))
+            using (var pen = this.GetCachedPen(stroke, thickness, dashArray, lineJoin))
             {
-
-                if (dashArray != null)
-                {
-                    pen.DashPattern = this.ToFloatArray(dashArray);
-                }
-
-                switch (lineJoin)
-                {
-                    case OxyPenLineJoin.Round:
-                        pen.LineJoin = LineJoin.Round;
-                        break;
-                    case OxyPenLineJoin.Bevel:
-                        pen.LineJoin = LineJoin.Bevel;
-                        break;
-
-                    // The default LineJoin is Miter
-                }
 
                 this.g.DrawLines(pen, this.ToPoints(points));
             }
+        }
+
+        private Pen GetCachedPen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
+        {
+            // TODO: cache
+            var pen = new Pen(this.ToColor(stroke), (float)thickness);
+            if (dashArray != null)
+            {
+                pen.DashPattern = this.ToFloatArray(dashArray);
+            }
+
+            switch (lineJoin)
+            {
+                case OxyPenLineJoin.Round:
+                    pen.LineJoin = LineJoin.Round;
+                    break;
+                case OxyPenLineJoin.Bevel:
+                    pen.LineJoin = LineJoin.Bevel;
+                    break;
+                // The default LineJoin is Miter
+            }
+
+            return pen;
         }
 
         /// <summary>
@@ -178,9 +179,8 @@ namespace OxyPlot.WindowsForms
 
             if (stroke != null && thickness > 0)
             {
-                using (var pen = new Pen(this.ToColor(stroke), (float)thickness))
+                using (var pen = this.GetCachedPen(stroke, thickness))
                 {
-
                     if (dashArray != null)
                     {
                         pen.DashPattern = this.ToFloatArray(dashArray);
@@ -231,7 +231,7 @@ namespace OxyPlot.WindowsForms
                 return;
             }
 
-            using (var pen = new Pen(this.ToColor(stroke), (float)thickness))
+            using (var pen = this.GetCachedPen(stroke, thickness))
             {
                 this.g.DrawRectangle(pen, (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
             }
@@ -530,19 +530,14 @@ namespace OxyPlot.WindowsForms
                 return src;
             }
 
-            if (source != null)
+            Image btm;
+            using (var ms = new MemoryStream(source.GetData()))
             {
-                Image btm;
-                using (var ms = new MemoryStream(source.GetData()))
-                {
-                    btm = Image.FromStream(ms);
-                }
-
-                this.imageCache.Add(source, btm);
-                return btm;
+                btm = Image.FromStream(ms);
             }
 
-            return null;
+            this.imageCache.Add(source, btm);
+            return btm;
         }
 
         public override bool SetClip(OxyRect rect)
