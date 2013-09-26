@@ -350,6 +350,24 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("ScatterSeries with selected items")]
+        public static PlotModel SelectedItems()
+        {
+            var model = RandomScatter(10, 8);
+
+            model.SelectionColor = OxyColors.Red;
+
+            var series = model.Series[0];
+
+            series.SelectionMode = SelectionMode.Single;
+
+            series.IsSelected = true;
+            series.SelectItem(3);
+            series.SelectItem(5);
+
+            return model;
+        }
+
         [Example("TrackerFormatString")]
         public static PlotModel TrackerFormatString()
         {
