@@ -27,12 +27,12 @@
 //   Represents a series for scatter plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace OxyPlot.Series
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     using OxyPlot.Axes;
 
@@ -407,6 +407,37 @@ namespace OxyPlot.Series
                     markerSizes,
                     this.ActualMarkerFillColor,
                     this.MarkerStroke,
+                    this.MarkerStrokeThickness,
+                    this.BinSize,
+                    binOffset);
+            }
+
+            if (this.IsSelected)
+            {
+                IList<ScreenPoint> selectedPoints = null;
+                IEnumerable<int> selectedIndexes = this.GetSelectedItems();
+
+                switch (this.SelectionMode)
+                {
+                    case SelectionMode.All:
+                        selectedPoints = allPoints;
+                        break;
+                    case SelectionMode.Single:
+                        selectedPoints = new[] { allPoints[selectedIndexes.Last()] };
+                        break;
+                    case SelectionMode.Multiple:
+                        selectedPoints = selectedIndexes.Select(index => allPoints[index]).ToList();
+                        break;
+                }
+
+                rc.DrawMarkers(
+                    selectedPoints,
+                    clippingRect,
+                    this.MarkerType,
+                    this.MarkerOutline,
+                    markerSizes,
+                    this.PlotModel.SelectionColor,
+                    this.PlotModel.SelectionColor,
                     this.MarkerStrokeThickness,
                     this.BinSize,
                     binOffset);

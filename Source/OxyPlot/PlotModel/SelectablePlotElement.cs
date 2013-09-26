@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SelectablePlotElement.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,12 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a plot element that supports selection.
+//   Represents a series for scatter plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Provides an abstract base class for plot elements that support selection.
@@ -37,7 +39,12 @@ namespace OxyPlot
     public abstract class SelectablePlotElement : PlotElement
     {
         /// <summary>
-        /// The is selected.
+        /// The selected items.
+        /// </summary>
+        private Dictionary<int, bool> selectedItems = new Dictionary<int, bool>();
+
+        /// <summary>
+        /// A value indicating whether or not this instance is selected
         /// </summary>
         private bool isSelected;
 
@@ -48,6 +55,7 @@ namespace OxyPlot
         {
             this.Selectable = true;
             this.IsSelected = false;
+            this.SelectionMode = SelectionMode.All;
         }
 
         /// <summary>
@@ -56,12 +64,14 @@ namespace OxyPlot
         public event EventHandler Selected;
 
         /// <summary>
-        /// Gets or sets the index of the selected item (or -1 if all items are selected).
+        /// Occurs when the selected items is changed.
         /// </summary>
-        /// <value>
-        /// The index of the selected.
-        /// </value>
-        public int SelectedIndex { get; set; }
+        public event EventHandler SelectedItemsChanged;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this plot element can be selected.
+        /// </summary>
+        public bool Selectable { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this plot element is selected.
@@ -86,9 +96,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this plot element can be selected.
+        /// Gets or sets the selection mode.
         /// </summary>
-        public bool Selectable { get; set; }
+        /// <value>The selection mode.</value>
+        public SelectionMode SelectionMode { get; set; }
 
         /// <summary>
         /// Gets the actual selection color.
@@ -108,7 +119,58 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the selection color it the element is selected, or the specified color if it is not.
+        /// Gets the indices of the selected items in this element.
+        /// </summary>
+        /// <returns>A collection of item indices.</returns>
+        public IEnumerable<int> GetSelectedItems()
+        {
+            return this.selectedItems.Keys;
+        }
+
+        /// <summary>
+        /// Clears the selected items.
+        /// </summary>
+        public void ClearSelectedItems()
+        {
+            this.selectedItems.Clear();
+            this.OnSelectedItemsChanged();
+        }
+
+        /// <summary>
+        /// Determines whether the specified item is selected.
+        /// </summary>
+        /// <param name="index">The index of the item.</param>
+        /// <returns><c>true</c> if the item is selected; otherwise, <c>false</c>.</returns>
+        public bool IsItemSelected(int index)
+        {
+            return this.selectedItems.ContainsKey(index);
+        }
+
+        /// <summary>
+        /// Selects the specified item.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        public void SelectItem(int index)
+        {
+            this.selectedItems[index] = true;
+            this.OnSelectedItemsChanged();
+        }
+
+        /// <summary>
+        /// Unselects the specified item.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        public void UnselectItem(int index)
+        {
+            if (this.selectedItems.ContainsKey(index))
+            {
+                this.selectedItems.Remove(index);
+                this.OnSelectedItemsChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets the selection color if the element is selected, or the specified color if it is not.
         /// </summary>
         /// <param name="originalColor">The unselected color of the element.</param>
         /// <param name="index">The index of the item to check (use -1 for all items).</param>
@@ -122,7 +184,7 @@ namespace OxyPlot
                 return null;
             }
 
-            if (this.IsSelected && (index == -1 || index == this.SelectedIndex))
+            if (this.IsSelected && (index == -1 || this.IsItemSelected(index)))
             {
                 return this.ActualSelectedColor;
             }
@@ -146,7 +208,7 @@ namespace OxyPlot
         /// <summary>
         /// Raises the Selected event.
         /// </summary>
-        protected void OnIsSelectedChanged()
+        private void OnIsSelectedChanged()
         {
             var eh = this.Selected;
             if (eh != null)
@@ -155,5 +217,17 @@ namespace OxyPlot
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:SelectedItemsChanged" /> event.
+        /// </summary>
+        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void OnSelectedItemsChanged(EventArgs args = null)
+        {
+            var e = this.SelectedItemsChanged;
+            if (e != null)
+            {
+                e(this, args);
+            }
+        }
     }
 }
