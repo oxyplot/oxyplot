@@ -350,7 +350,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("ScatterSeries with selected items")]
+        [Example("ScatterSeries with Selected items")]
         public static PlotModel SelectedItems()
         {
             var model = RandomScatter(10, 8);
@@ -359,7 +359,7 @@ namespace ExampleLibrary
 
             var series = model.Series[0];
 
-            series.SelectionMode = SelectionMode.Single;
+            series.SelectionMode = SelectionMode.Multiple;
 
             series.IsSelected = true;
             series.SelectItem(3);
