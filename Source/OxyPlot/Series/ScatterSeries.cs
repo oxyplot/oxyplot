@@ -423,7 +423,7 @@ namespace OxyPlot.Series
                         selectedPoints = allPoints;
                         break;
                     case SelectionMode.Single:
-                        selectedPoints = new[] { allPoints[selectedIndexes.Last()] };
+                        selectedPoints = selectedIndexes.Count() == 0 ? new ScreenPoint[] { } : new[] { allPoints[selectedIndexes.Last()] };
                         break;
                     case SelectionMode.Multiple:
                         selectedPoints = selectedIndexes.Select(index => allPoints[index]).ToList();
