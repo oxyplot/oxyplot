@@ -31,7 +31,6 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Provides an abstract base class for plot elements that support selection.
@@ -39,14 +38,9 @@ namespace OxyPlot
     public abstract class SelectablePlotElement : PlotElement
     {
         /// <summary>
-        /// The selected items.
+        /// The selection
         /// </summary>
-        private Dictionary<int, bool> selectedItems = new Dictionary<int, bool>();
-
-        /// <summary>
-        /// A value indicating whether or not this instance is selected
-        /// </summary>
-        private bool isSelected;
+        private Selection selection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectablePlotElement"/> class.
@@ -54,19 +48,13 @@ namespace OxyPlot
         protected SelectablePlotElement()
         {
             this.Selectable = true;
-            this.IsSelected = false;
             this.SelectionMode = SelectionMode.All;
         }
 
         /// <summary>
-        /// Occurs when the IsSelected property is changed.
-        /// </summary>
-        public event EventHandler Selected;
-
-        /// <summary>
         /// Occurs when the selected items is changed.
         /// </summary>
-        public event EventHandler SelectedItemsChanged;
+        public event EventHandler SelectionChanged;
 
         /// <summary>
         /// Gets or sets a value indicating whether this plot element can be selected.
@@ -74,32 +62,26 @@ namespace OxyPlot
         public bool Selectable { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this plot element is selected.
-        /// </summary>
-        public bool IsSelected
-        {
-            get
-            {
-                return this.isSelected;
-            }
-
-            set
-            {
-                if (value == this.isSelected)
-                {
-                    return;
-                }
-
-                this.isSelected = value;
-                this.OnIsSelectedChanged();
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the selection mode.
         /// </summary>
         /// <value>The selection mode.</value>
+        /// <remarks>
+        /// This is only used by the select/unselect functionality, not by the rendering.
+        /// </remarks>
         public SelectionMode SelectionMode { get; set; }
+
+#if X
+        // Not yet implemented - must make sure that Selection.Everything is not modified...
+
+        /// <summary>
+        /// Determines whether everything is selected.
+        /// </summary>
+        /// <returns><c>true</c> if everything is selected; otherwise, <c>false</c>.</returns>
+        public bool IsEverythingSelected()
+        {
+            return this.selection.IsEverythingSelected();
+        }
+#endif
 
         /// <summary>
         /// Gets the actual selection color.
@@ -119,21 +101,31 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the indices of the selected items in this element.
+        /// Determines whether any part of this element is selected.
         /// </summary>
-        /// <returns>A collection of item indices.</returns>
-        public IEnumerable<int> GetSelectedItems()
+        /// <returns><c>true</c> if this element is selected; otherwise, <c>false</c>.</returns>
+        public bool IsSelected()
         {
-            return this.selectedItems.Keys;
+            return this.selection != null;
         }
 
         /// <summary>
-        /// Clears the selected items.
+        /// Gets the indices of the selected items in this element.
         /// </summary>
-        public void ClearSelectedItems()
+        /// <returns>Enumerator of item indices.</returns>
+        public IEnumerable<int> GetSelectedItems()
         {
-            this.selectedItems.Clear();
-            this.OnSelectedItemsChanged();
+            this.EnsureSelection();
+            return this.selection.GetSelectedItems();
+        }
+
+        /// <summary>
+        /// Clears the selection.
+        /// </summary>
+        public void ClearSelection()
+        {
+            this.selection = null;
+            this.OnSelectionChanged();
         }
 
         /// <summary>
@@ -143,7 +135,17 @@ namespace OxyPlot
         /// <returns><c>true</c> if the item is selected; otherwise, <c>false</c>.</returns>
         public bool IsItemSelected(int index)
         {
-            return this.selectedItems.ContainsKey(index);
+            if (this.selection == null)
+            {
+                return false;
+            }
+
+            if (index == -1)
+            {
+                return this.selection.IsEverythingSelected();
+            }
+
+            return this.selection.IsItemSelected(index);
         }
 
         /// <summary>
@@ -152,8 +154,9 @@ namespace OxyPlot
         /// <param name="index">The index.</param>
         public void SelectItem(int index)
         {
-            this.selectedItems[index] = true;
-            this.OnSelectedItemsChanged();
+            this.EnsureSelection();
+            this.selection.Select(index);
+            this.OnSelectionChanged();
         }
 
         /// <summary>
@@ -162,15 +165,13 @@ namespace OxyPlot
         /// <param name="index">The index.</param>
         public void UnselectItem(int index)
         {
-            if (this.selectedItems.ContainsKey(index))
-            {
-                this.selectedItems.Remove(index);
-                this.OnSelectedItemsChanged();
-            }
+            this.EnsureSelection();
+            this.selection.Unselect(index);
+            this.OnSelectionChanged();
         }
 
         /// <summary>
-        /// Gets the selection color if the element is selected, or the specified color if it is not.
+        /// Gets the selection color if the item is selected, or the specified color if it is not.
         /// </summary>
         /// <param name="originalColor">The unselected color of the element.</param>
         /// <param name="index">The index of the item to check (use -1 for all items).</param>
@@ -179,12 +180,13 @@ namespace OxyPlot
         /// </returns>
         protected OxyColor GetSelectableColor(OxyColor originalColor, int index = -1)
         {
+            // TODO: rename to GetActualColor? (33 usages)
             if (originalColor == null)
             {
                 return null;
             }
 
-            if (this.IsSelected && (index == -1 || this.IsItemSelected(index)))
+            if (this.IsItemSelected(index))
             {
                 return this.ActualSelectedColor;
             }
@@ -202,28 +204,28 @@ namespace OxyPlot
         /// </returns>
         protected OxyColor GetSelectableFillColor(OxyColor originalColor, int index = -1)
         {
+            // TODO: rename to GetActualFillColor (13 usages)
             return this.GetSelectableColor(originalColor, index);
         }
 
         /// <summary>
-        /// Raises the Selected event.
+        /// Ensures that the selection field is not null.
         /// </summary>
-        private void OnIsSelectedChanged()
+        private void EnsureSelection()
         {
-            var eh = this.Selected;
-            if (eh != null)
+            if (this.selection == null)
             {
-                eh(this, new EventArgs());
+                this.selection = new Selection();
             }
         }
 
         /// <summary>
-        /// Raises the <see cref="E:SelectedItemsChanged" /> event.
+        /// Raises the <see cref="SelectionChanged" /> event.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void OnSelectedItemsChanged(EventArgs args = null)
+        private void OnSelectionChanged(EventArgs args = null)
         {
-            var e = this.SelectedItemsChanged;
+            var e = this.SelectionChanged;
             if (e != null)
             {
                 e(this, args);

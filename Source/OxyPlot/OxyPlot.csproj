@@ -109,6 +109,7 @@
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="PlotModel\HitTestResult.cs" />
     <Compile Include="Foundation\OxyImage.cs" />
+    <Compile Include="PlotModel\Selection.cs" />
     <Compile Include="PlotModel\SelectionMode.cs" />
     <Compile Include="PlotModel\TrackerEventArgs.cs" />
     <Compile Include="Reporting\NamespaceDoc.cs" />
