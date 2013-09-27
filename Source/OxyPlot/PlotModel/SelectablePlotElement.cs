@@ -62,7 +62,7 @@ namespace OxyPlot
         public bool Selectable { get; set; }
 
         /// <summary>
-        /// Gets or sets the selection mode.
+        /// Gets or sets the selection mode of items in this element.
         /// </summary>
         /// <value>The selection mode.</value>
         /// <remarks>
@@ -129,6 +129,15 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Unselects all items in this element.
+        /// </summary>
+        public void Unselect()
+        {
+            this.selection = null;
+            this.OnSelectionChanged();
+        }
+
+        /// <summary>
         /// Determines whether the specified item is selected.
         /// </summary>
         /// <param name="index">The index of the item.</param>
@@ -149,12 +158,31 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Selects all items in this element.
+        /// </summary>
+        public void Select()
+        {
+            this.selection = Selection.Everything;
+            this.OnSelectionChanged();
+        }
+
+        /// <summary>
         /// Selects the specified item.
         /// </summary>
         /// <param name="index">The index.</param>
         public void SelectItem(int index)
         {
+            if (this.SelectionMode == SelectionMode.All)
+            {
+                throw new InvalidOperationException("Use the Select() method when using SelectionMode.All");
+            }
+
             this.EnsureSelection();
+            if (this.SelectionMode == SelectionMode.Single)
+            {
+                this.selection.Clear();
+            }
+            
             this.selection.Select(index);
             this.OnSelectionChanged();
         }
@@ -165,6 +193,11 @@ namespace OxyPlot
         /// <param name="index">The index.</param>
         public void UnselectItem(int index)
         {
+            if (this.SelectionMode == SelectionMode.All)
+            {
+                throw new InvalidOperationException("Use the Unselect() method when using SelectionMode.All");
+            }
+
             this.EnsureSelection();
             this.selection.Unselect(index);
             this.OnSelectionChanged();
