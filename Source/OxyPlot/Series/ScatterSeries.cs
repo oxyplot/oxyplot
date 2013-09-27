@@ -32,7 +32,7 @@ namespace OxyPlot.Series
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    
+
     using OxyPlot.Axes;
 
     /// <summary>
@@ -322,7 +322,7 @@ namespace OxyPlot.Series
             var selectedMarkerSizes = new List<double>(n);
             var groupPoints = new Dictionary<int, IList<ScreenPoint>>();
             var groupSizes = new Dictionary<int, IList<double>>();
-            
+
             // check if any item of the series is selected
             bool isSelected = this.IsSelected();
 
@@ -446,14 +446,15 @@ namespace OxyPlot.Series
             double ymid = (legendBox.Top + legendBox.Bottom) / 2;
 
             var midpt = new ScreenPoint(xmid, ymid);
+
             rc.DrawMarker(
                 midpt,
                 legendBox,
                 this.MarkerType,
                 this.MarkerOutline,
                 this.MarkerSize,
-                this.ActualMarkerFillColor,
-                this.MarkerStroke,
+                this.IsSelected() ? PlotModel.SelectionColor : this.ActualMarkerFillColor,
+                this.IsSelected() ? PlotModel.SelectionColor : this.MarkerStroke,
                 this.MarkerStrokeThickness);
         }
 
