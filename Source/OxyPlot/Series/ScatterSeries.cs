@@ -32,8 +32,7 @@ namespace OxyPlot.Series
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
-
+    
     using OxyPlot.Axes;
 
     /// <summary>
@@ -313,21 +312,19 @@ namespace OxyPlot.Series
                 return;
             }
 
-            OxyRect clippingRect = this.GetClippingRect();
+            var clippingRect = this.GetClippingRect();
 
             var points = this.Points;
             int n = points.Count;
+            var allPoints = new List<ScreenPoint>(n);
+            var allMarkerSizes = new List<double>(n);
+            var selectedPoints = new List<ScreenPoint>();
+            var selectedMarkerSizes = new List<double>(n);
             var groupPoints = new Dictionary<int, IList<ScreenPoint>>();
             var groupSizes = new Dictionary<int, IList<double>>();
-
-            ScreenPoint[] allPoints = null;
-            double[] markerSizes = null;
-
-            if (this.ColorAxis == null)
-            {
-                allPoints = new ScreenPoint[n];
-                markerSizes = new double[n];
-            }
+            
+            // check if any item of the series is selected
+            bool isSelected = this.IsSelected();
 
             // Transform all points to screen coordinates
             for (int i = 0; i < n; i++)
@@ -348,39 +345,48 @@ namespace OxyPlot.Series
                     size = this.MarkerSize;
                 }
 
+                // Transform from data to screen coordinates
                 var screenPoint = this.XAxis.Transform(dp.X, dp.Y, this.YAxis);
+
+                if (isSelected && this.IsItemSelected(i))
+                {
+                    selectedPoints.Add(screenPoint);
+                    selectedMarkerSizes.Add(size);
+                    continue;
+                }
 
                 if (this.ColorAxis != null)
                 {
-                    if (!double.IsNaN(value))
+                    if (double.IsNaN(value))
                     {
-                        int group = this.ColorAxis.GetPaletteIndex(value);
-                        if (!groupPoints.ContainsKey(group))
-                        {
-                            groupPoints.Add(group, new List<ScreenPoint>());
-                            groupSizes.Add(group, new List<double>());
-                        }
-
-                        groupPoints[group].Add(screenPoint);
-                        groupSizes[group].Add(size);
+                        // The value is not defined, skip this point.
+                        continue;
                     }
+
+                    int group = this.ColorAxis.GetPaletteIndex(value);
+                    if (!groupPoints.ContainsKey(group))
+                    {
+                        groupPoints.Add(group, new List<ScreenPoint>());
+                        groupSizes.Add(group, new List<double>());
+                    }
+
+                    groupPoints[group].Add(screenPoint);
+                    groupSizes[group].Add(size);
                 }
                 else
                 {
-                    // ReSharper disable PossibleNullReferenceException
-                    allPoints[i] = screenPoint;
-                    markerSizes[i] = size;
-                    // ReSharper restore PossibleNullReferenceException
+                    allPoints.Add(screenPoint);
+                    allMarkerSizes.Add(size);
                 }
             }
 
+            // Offset of the bins
             var binOffset = this.XAxis.Transform(this.MinX, this.MaxY, this.YAxis);
 
-            // Draw the markers
             if (this.ColorAxis != null)
             {
-                var markerIsStrokedOnly = this.MarkerType == MarkerType.Plus || this.MarkerType == MarkerType.Star
-                                          || this.MarkerType == MarkerType.Cross;
+                // Draw the grouped (by color defined in ColorAxis) markers
+                var markerIsStrokedOnly = this.MarkerType == MarkerType.Plus || this.MarkerType == MarkerType.Star || this.MarkerType == MarkerType.Cross;
                 foreach (var group in groupPoints)
                 {
                     var color = this.ColorAxis.GetColor(group.Key);
@@ -397,51 +403,32 @@ namespace OxyPlot.Series
                         binOffset);
                 }
             }
-            else
-            {
-                rc.DrawMarkers(
+
+            // Draw unselected markers
+            rc.DrawMarkers(
                     allPoints,
                     clippingRect,
                     this.MarkerType,
                     this.MarkerOutline,
-                    markerSizes,
+                    allMarkerSizes,
                     this.ActualMarkerFillColor,
                     this.MarkerStroke,
                     this.MarkerStrokeThickness,
                     this.BinSize,
                     binOffset);
-            }
 
-            if (this.IsSelected)
-            {
-                IList<ScreenPoint> selectedPoints = null;
-                IEnumerable<int> selectedIndexes = this.GetSelectedItems();
-
-                switch (this.SelectionMode)
-                {
-                    case SelectionMode.All:
-                        selectedPoints = allPoints;
-                        break;
-                    case SelectionMode.Single:
-                        selectedPoints = selectedIndexes.Count() == 0 ? new ScreenPoint[] { } : new[] { allPoints[selectedIndexes.Last()] };
-                        break;
-                    case SelectionMode.Multiple:
-                        selectedPoints = selectedIndexes.Select(index => allPoints[index]).ToList();
-                        break;
-                }
-
-                rc.DrawMarkers(
-                    selectedPoints,
-                    clippingRect,
-                    this.MarkerType,
-                    this.MarkerOutline,
-                    markerSizes,
-                    this.PlotModel.SelectionColor,
-                    this.PlotModel.SelectionColor,
-                    this.MarkerStrokeThickness,
-                    this.BinSize,
-                    binOffset);
-            }
+            // Draw the selected markers
+            rc.DrawMarkers(
+                selectedPoints,
+                clippingRect,
+                this.MarkerType,
+                this.MarkerOutline,
+                selectedMarkerSizes,
+                this.PlotModel.SelectionColor,
+                this.PlotModel.SelectionColor,
+                this.MarkerStrokeThickness,
+                this.BinSize,
+                binOffset);
         }
 
         /// <summary>

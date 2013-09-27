@@ -56,7 +56,8 @@ namespace ExampleLibrary
                 MarkerStrokeThickness = 0,
                 BinSize = binsize
             };
-            var random = new Random();
+
+            var random = new Random(123);
             for (int i = 0; i < n; i++)
             {
                 s1.Points.Add(new ScatterPoint(random.NextDouble(), random.NextDouble()));
@@ -361,7 +362,6 @@ namespace ExampleLibrary
 
             series.SelectionMode = SelectionMode.Multiple;
 
-            series.IsSelected = true;
             series.SelectItem(3);
             series.SelectItem(5);
 
