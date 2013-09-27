@@ -46,27 +46,6 @@ namespace ExampleLibrary
             return RandomScatter(31000, 8);
         }
 
-        public static PlotModel RandomScatter(int n, int binsize)
-        {
-            var model = new PlotModel(string.Format("ScatterSeries (n={0})", n), "BinSize = " + binsize);
-
-            var s1 = new ScatterSeries("Series 1")
-            {
-                MarkerType = MarkerType.Diamond,
-                MarkerStrokeThickness = 0,
-                BinSize = binsize
-            };
-
-            var random = new Random(123);
-            for (int i = 0; i < n; i++)
-            {
-                s1.Points.Add(new ScatterPoint(random.NextDouble(), random.NextDouble()));
-            }
-
-            model.Series.Add(s1);
-            return model;
-        }
-
         public static PlotModel CreateRandomScatterSeriesWithColorAxisPlotModel(int n, OxyPalette palette, MarkerType markerType = MarkerType.Square, AxisPosition colorAxisPosition = AxisPosition.Right, OxyColor highColor = null, OxyColor lowColor = null)
         {
             var model = new PlotModel(string.Format("ScatterSeries (n={0})", n)) { Background = OxyColors.LightGray };
@@ -351,10 +330,36 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("ScatterSeries with Selected items")]
-        public static PlotModel SelectedItems()
+        [Example("ScatterSeries with single-selected items")]
+        public static PlotModel SingleSelectItems()
         {
             var model = RandomScatter(10, 8);
+            model.Subtitle = "Click to select a point";
+
+            model.SelectionColor = OxyColors.Red;
+
+            var series = model.Series[0];
+
+            series.SelectionMode = SelectionMode.Single;
+
+            series.SelectItem(3);
+            series.SelectItem(5);
+
+            series.MouseDown += (s, e) =>
+                {
+                    var index = (int)e.HitTestResult.Index;
+                    series.SelectItem(index);
+                    model.RefreshPlot(false);
+                };
+
+            return model;
+        }
+
+        [Example("ScatterSeries with multi-selected items")]
+        public static PlotModel MultiSelectItems()
+        {
+            var model = RandomScatter(10, 8);
+            model.Subtitle = "Click to toggle point selection";
 
             model.SelectionColor = OxyColors.Red;
 
@@ -364,6 +369,50 @@ namespace ExampleLibrary
 
             series.SelectItem(3);
             series.SelectItem(5);
+
+            series.MouseDown += (s, e) =>
+            {
+                var index = (int)e.HitTestResult.Index;
+                if (series.IsItemSelected(index))
+                {
+                    series.UnselectItem(index);
+                }
+                else
+                {
+                    series.SelectItem(index);
+                }
+
+                model.RefreshPlot(false);
+            };
+
+            return model;
+        }
+
+        [Example("ScatterSeries with SelectionMode.All")]
+        public static PlotModel AllSelected()
+        {
+            var model = RandomScatter(10, 8);
+            model.Subtitle = "Click to select/unselect all points";
+
+            model.SelectionColor = OxyColors.Red;
+
+            var series = model.Series[0];
+
+            series.SelectionMode = SelectionMode.All;
+
+            series.MouseDown += (s, e) =>
+                {
+                    if (series.IsSelected())
+                    {
+                        series.Unselect();
+                    }
+                    else
+                    {
+                        series.Select();
+                    }
+
+                    model.RefreshPlot(false);
+                };
 
             return model;
         }
@@ -397,15 +446,35 @@ namespace ExampleLibrary
             }
         }
 
-        static readonly Random Randomizer = new Random();
+        private static PlotModel RandomScatter(int n, int binSize)
+        {
+            var model = new PlotModel(string.Format("ScatterSeries (n={0})", n), "BinSize = " + binSize);
+
+            var s1 = new ScatterSeries("Series 1")
+            {
+                MarkerType = MarkerType.Diamond,
+                MarkerStrokeThickness = 0,
+                BinSize = binSize
+            };
+
+            var random = new Random(1);
+            for (int i = 0; i < n; i++)
+            {
+                s1.Points.Add(new ScatterPoint(random.NextDouble(), random.NextDouble()));
+            }
+
+            model.Series.Add(s1);
+            return model;
+        }
 
         private static ScatterSeries CreateRandomScatterSeries(int n, string title, MarkerType markerType)
         {
+            var r = new Random(12345);
             var s1 = new ScatterSeries { Title = title, MarkerType = markerType, MarkerStroke = OxyColors.Black, MarkerStrokeThickness = 1.0 };
             for (int i = 0; i < n; i++)
             {
-                double x = Randomizer.NextDouble() * 10;
-                double y = Randomizer.NextDouble() * 10;
+                double x = r.NextDouble() * 10;
+                double y = r.NextDouble() * 10;
                 var p = new ScatterPoint(x, y);
                 s1.Points.Add(p);
             }
@@ -426,11 +495,13 @@ namespace ExampleLibrary
 
         private static IList<IDataPoint> CreateRandomPoints(int n)
         {
+            var r = new Random(12345);
+
             var points = new List<IDataPoint>();
             for (int i = 0; i < n; i++)
             {
-                double x = Randomizer.NextDouble() * 10;
-                double y = Randomizer.NextDouble() * 10;
+                double x = r.NextDouble() * 10;
+                double y = r.NextDouble() * 10;
                 var p = new DataPoint(x, y);
                 points.Add(p);
             }
