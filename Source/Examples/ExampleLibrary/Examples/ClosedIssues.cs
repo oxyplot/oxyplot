@@ -192,7 +192,7 @@ namespace ExampleLibrary
             model.Series.Add(new LineSeries { ItemsSource = points });
             return model;
         }
-        
+
         [Example("#10076: Dashed line test")]
         public static PlotModel DashedLineTest()
         {
@@ -214,6 +214,15 @@ namespace ExampleLibrary
                 model.Series.Add(line);
             }
 
+            return model;
+        }
+
+        [Example("#10076: Super exponential format")]
+        public static PlotModel SuperExponentialFormat()
+        {
+            var model = new PlotModel("UseSuperExponentialFormat=true and 0");
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 100, 10, 1) { UseSuperExponentialFormat = true });
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -100, 100, 20, 10) { UseSuperExponentialFormat = true });
             return model;
         }
     }
