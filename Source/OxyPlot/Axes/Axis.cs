@@ -44,8 +44,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Exponent function.
         /// </summary>
-        protected static readonly Func<double, double> Exponent = x => x == 0.0 ? 0.0 : Math.Round(Math.Log(Math.Abs(x), 10));
-
+        protected static readonly Func<double, double> Exponent = x => Math.Floor(Math.Log(Math.Abs(x), 10));
+        
         /// <summary>
         /// Mantissa function. http://en.wikipedia.org/wiki/Mantissa
         /// </summary>
@@ -798,10 +798,8 @@ namespace OxyPlot.Axes
         public virtual string FormatValue(double x)
         {
             // The "SuperExponentialFormat" renders the number with superscript exponents. E.g. 10^2
-            if (this.UseSuperExponentialFormat)
+            if (this.UseSuperExponentialFormat && !x.Equals(0))
             {
-                // if (x == 1 || x == 10 || x == -1 || x == -10)
-                // return x.ToString();
                 double exp = Exponent(x);
                 double mantissa = Mantissa(x);
                 string fmt;
