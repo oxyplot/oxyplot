@@ -413,6 +413,27 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("Big numbers with super exponential format")]
+        public static PlotModel BigNumbersSuperExponentialFormat()
+        {
+            var plotModel1 = new PlotModel();
+            var linearAxis1 = new LinearAxis();
+            linearAxis1.Maximum = 6E+32;
+            linearAxis1.Minimum = -1E+47;
+            linearAxis1.Title = "big numbers";
+            linearAxis1.UseSuperExponentialFormat = true;
+            plotModel1.Axes.Add(linearAxis1);
+
+            var linearAxis2 = new LinearAxis();
+            linearAxis2.Maximum = 3E+50;
+            linearAxis2.Minimum = -1E+40;
+            linearAxis2.Position = AxisPosition.Bottom;
+            linearAxis2.Title = "big numbers";
+            linearAxis2.UseSuperExponentialFormat = true;
+            plotModel1.Axes.Add(linearAxis2);
+            return plotModel1;
+        }
+
         [Example("Small numbers")]
         public static PlotModel SmallNumbers()
         {

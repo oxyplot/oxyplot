@@ -44,7 +44,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Exponent function.
         /// </summary>
-        protected static readonly Func<double, double> Exponent = x => Math.Round(Math.Log(Math.Abs(x), 10));
+        protected static readonly Func<double, double> Exponent = x => x == 0.0 ? 0.0 : Math.Round(Math.Log(Math.Abs(x), 10));
 
         /// <summary>
         /// Mantissa function. http://en.wikipedia.org/wiki/Mantissa
