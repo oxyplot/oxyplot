@@ -49,7 +49,7 @@ namespace OxyPlot
     public class CodeGenerator
     {
         /// <summary>
-        /// The sb.
+        /// The string builder.
         /// </summary>
         private readonly StringBuilder sb;
 
@@ -64,7 +64,7 @@ namespace OxyPlot
         private string indentString;
 
         /// <summary>
-        /// The indents.
+        /// The current number of indents.
         /// </summary>
         private int indents;
 
@@ -95,7 +95,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets Indents.
+        /// Gets or sets the number of indents.
         /// </summary>
         private int Indents
         {
@@ -226,6 +226,53 @@ namespace OxyPlot
                 }
 
                 this.AppendLine("{0}.Add({1});", name, code);
+            }
+        }
+
+        /// <summary>
+        /// Creates and sets the elements of an array.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="array">The array.</param>
+        private void AddArray(string name, Array array)
+        {
+            var elementType = array.GetType().GetElementType();
+            if (array.Rank == 1)
+            {
+                this.AppendLine("{0} = new {1}[{2}];", name, elementType.Name, array.Length);
+                for (int i = 0; i < array.Length; i++)
+                {
+                    var code = array.GetValue(i).ToCode();
+                    if (code == null)
+                    {
+                        continue;
+                    }
+
+                    this.AppendLine("{0}[{1}] = {2};", name, i, code);
+                }
+            }
+
+            if (array.Rank == 2)
+            {
+                this.AppendLine("{0} = new {1}[{2}, {3}];", name, elementType.Name, array.GetLength(0), array.GetLength(1));
+                for (int i = 0; i < array.GetLength(0); i++)
+                {
+                    for (int j = 0; j < array.GetLength(1); j++)
+                    {
+                        var code = array.GetValue(i, j).ToCode();
+                        if (code == null)
+                        {
+                            continue;
+                        }
+
+                        this.AppendLine("{0}[{1}, {2}] = {3};", name, i, j, code);
+                    }
+                }
+            }
+
+            if (array.Rank > 2)
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -375,6 +422,7 @@ namespace OxyPlot
         {
             var instanceType = instance.GetType();
             var listsToAdd = new Dictionary<string, IList>();
+            var arraysToAdd = new Dictionary<string, Array>();
             foreach (var pi in instanceType.GetProperties())
             {
                 // check the [CodeGeneration] attribute
@@ -391,6 +439,13 @@ namespace OxyPlot
                 // check if lists are equal
                 if (this.AreListsEqual(value as IList, defaultValue as IList))
                 {
+                    continue;
+                }
+
+                var array = value as Array;
+                if (array != null)
+                {
+                    arraysToAdd.Add(name, array);
                     continue;
                 }
 
@@ -424,6 +479,13 @@ namespace OxyPlot
                 var name = kvp.Key;
                 var list = kvp.Value;
                 this.AddItems(name, list);
+            }
+
+            foreach (var kvp in arraysToAdd)
+            {
+                var name = kvp.Key;
+                var array = kvp.Value;
+                this.AddArray(name, array);
             }
         }
 
