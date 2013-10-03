@@ -174,11 +174,9 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The synchronize properties.
+        /// Synchronizes the properties.
         /// </summary>
-        /// <param name="series">
-        /// The series.
-        /// </param>
+        /// <param name="series">The series.</param>
         protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);

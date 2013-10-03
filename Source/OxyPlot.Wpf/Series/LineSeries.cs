@@ -41,6 +41,24 @@ namespace OxyPlot.Wpf
     public class LineSeries : DataPointSeries
     {
         /// <summary>
+        /// The BrokenLineColor property.
+        /// </summary>
+        public static readonly DependencyProperty BrokenLineColorProperty = DependencyProperty.Register(
+            "BrokenLineColor", typeof(Color), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
+        /// The BrokenLineStyle property.
+        /// </summary>
+        public static readonly DependencyProperty BrokenLineStyleProperty = DependencyProperty.Register(
+            "BrokenLineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
+        /// The BrokenLineThickness property.
+        /// </summary>
+        public static readonly DependencyProperty BrokenLineThicknessProperty = DependencyProperty.Register(
+            "BrokenLineThickness", typeof(double), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
+        
+        /// <summary>
         /// The dashes property.
         /// </summary>
         public static readonly DependencyProperty DashesProperty = DependencyProperty.Register(
@@ -101,7 +119,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty MarkerResolutionProperty =
             DependencyProperty.Register("MarkerResolution", typeof(int), typeof(LineSeries), new PropertyMetadata(0, AppearanceChanged));
-        
+
         /// <summary>
         /// The marker size property.
         /// </summary>
@@ -162,6 +180,54 @@ namespace OxyPlot.Wpf
         public LineSeries()
         {
             this.InternalSeries = new OxyPlot.Series.LineSeries();
+        }
+
+        /// <summary>
+        /// Gets or sets the broken line color.
+        /// </summary>
+        public Color BrokenLineColor
+        {
+            get
+            {
+                return (Color)this.GetValue(BrokenLineColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(BrokenLineColorProperty, value);
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the broken line style.
+        /// </summary>
+        public LineStyle BrokenLineStyle
+        {
+            get
+            {
+                return (LineStyle)this.GetValue(BrokenLineStyleProperty);
+            }
+
+            set
+            {
+                this.SetValue(BrokenLineStyleProperty, value);
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the broken line thickness.
+        /// </summary>
+        public double BrokenLineThickness
+        {
+            get
+            {
+                return (double)this.GetValue(BrokenLineThicknessProperty);
+            }
+
+            set
+            {
+                this.SetValue(BrokenLineThicknessProperty, value);
+            }
         }
 
         /// <summary>
@@ -419,11 +485,9 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The synchronize properties.
+        /// Synchronizes the properties.
         /// </summary>
-        /// <param name="series">
-        /// The series.
-        /// </param>
+        /// <param name="series">The series.</param>
         protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);
@@ -444,6 +508,9 @@ namespace OxyPlot.Wpf
             s.LabelFormatString = this.LabelFormatString;
             s.LabelMargin = this.LabelMargin;
             s.LineLegendPosition = this.LineLegendPosition;
+            s.BrokenLineColor = this.BrokenLineColor.ToOxyColor();
+            s.BrokenLineStyle = this.BrokenLineStyle;
+            s.BrokenLineThickness = this.BrokenLineThickness;
         }
     }
 }
