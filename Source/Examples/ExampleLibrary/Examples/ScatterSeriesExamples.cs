@@ -405,8 +405,19 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("ScatterSeries with SelectionMode.All")]
+        [Example("ScatterSeries with SelectionMode.All (no tracker)")]
         public static PlotModel AllSelected()
+        {
+            return AllSelected(false);
+        }
+
+        [Example("ScatterSeries with SelectionMode.All (with tracker)")]
+        public static PlotModel AllSelectedWithTracker()
+        {
+            return AllSelected(true);
+        }
+
+        private static PlotModel AllSelected(bool showTracker)
         {
             var model = RandomScatter(10, 8);
             model.Subtitle = "Click to select all points";
@@ -421,11 +432,16 @@ namespace ExampleLibrary
                 {
                     series.Select();
                     model.RefreshPlot(false);
-                    e.Handled = true;
+                    e.Handled = !showTracker;
                 };
 
             model.MouseDown += (s, e) =>
             {
+                if (e.HitTestResult != null && showTracker)
+                {
+                    return;
+                }
+
                 series.ClearSelection();
                 model.RefreshPlot(false);
                 e.Handled = true;
