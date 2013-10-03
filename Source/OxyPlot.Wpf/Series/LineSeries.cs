@@ -44,20 +44,20 @@ namespace OxyPlot.Wpf
         /// The BrokenLineColor property.
         /// </summary>
         public static readonly DependencyProperty BrokenLineColorProperty = DependencyProperty.Register(
-            "BrokenLineColor", typeof(Color), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
+            "BrokenLineColor", typeof(Color?), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The BrokenLineStyle property.
         /// </summary>
         public static readonly DependencyProperty BrokenLineStyleProperty = DependencyProperty.Register(
-            "BrokenLineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
+            "BrokenLineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(LineStyle.Solid, AppearanceChanged));
 
         /// <summary>
         /// The BrokenLineThickness property.
         /// </summary>
         public static readonly DependencyProperty BrokenLineThicknessProperty = DependencyProperty.Register(
-            "BrokenLineThickness", typeof(double), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
-        
+            "BrokenLineThickness", typeof(double), typeof(LineSeries), new PropertyMetadata(0d, AppearanceChanged));
+
         /// <summary>
         /// The dashes property.
         /// </summary>
@@ -185,11 +185,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the broken line color.
         /// </summary>
-        public Color BrokenLineColor
+        public Color? BrokenLineColor
         {
             get
             {
-                return (Color)this.GetValue(BrokenLineColorProperty);
+                return (Color?)this.GetValue(BrokenLineColorProperty);
             }
 
             set
@@ -197,7 +197,7 @@ namespace OxyPlot.Wpf
                 this.SetValue(BrokenLineColorProperty, value);
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the broken line style.
         /// </summary>
@@ -213,7 +213,7 @@ namespace OxyPlot.Wpf
                 this.SetValue(BrokenLineStyleProperty, value);
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the broken line thickness.
         /// </summary>
