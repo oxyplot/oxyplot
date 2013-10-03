@@ -139,41 +139,33 @@ namespace OxyPlot.Series
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            if (interpolate)
+            TrackerHitResult result1, result2;
+            if (interpolate && this.CanTrackerInterpolatePoints)
             {
-                var r1 = this.GetNearestInterpolatedPointInternal(this.Points, point);
-                if (r1 != null)
-                {
-                    return r1;
-                }
-
-                var r2 = this.GetNearestInterpolatedPointInternal(this.points2, point);
-                if (r2 != null)
-                {
-                    return r2;
-                }
+                result1 = this.GetNearestInterpolatedPointInternal(this.Points, point);
+                result2 = this.GetNearestInterpolatedPointInternal(this.Points2, point);
             }
             else
             {
-                var result1 = this.GetNearestPointInternal(this.Points, point);
-                var result2 = this.GetNearestPointInternal(this.points2, point);
+                result1 = this.GetNearestPointInternal(this.Points, point);
+                result2 = this.GetNearestPointInternal(this.Points2, point);
+            }
 
-                if (result1 != null && result2 != null)
-                {
-                    double dist1 = result1.Position.DistanceTo(point);
-                    double dist2 = result2.Position.DistanceTo(point);
-                    return dist1 < dist2 ? result1 : result2;
-                }
+            if (result1 != null && result2 != null)
+            {
+                double dist1 = result1.Position.DistanceTo(point);
+                double dist2 = result2.Position.DistanceTo(point);
+                return dist1 < dist2 ? result1 : result2;
+            }
 
-                if (result1 != null)
-                {
-                    return result1;
-                }
+            if (result1 != null)
+            {
+                return result1;
+            }
 
-                if (result2 != null)
-                {
-                    return result2;
-                }
+            if (result2 != null)
+            {
+                return result2;
             }
 
             return null;
