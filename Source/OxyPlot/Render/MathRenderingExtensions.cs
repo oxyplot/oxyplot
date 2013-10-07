@@ -291,11 +291,13 @@ namespace OxyPlot
                     {
                         string supString = s.Substring(i + 2, i1 - i - 2);
                         i = i1 + 1;
-                        OxySize size = drawText(currentX, superscriptY, supString, superscriptFontSize);
+                        var size = drawText(currentX, superscriptY, supString, superscriptFontSize);
                         if (currentX + size.Width > maximumX)
                         {
                             maximumX = currentX + size.Width;
                         }
+
+                        maxHeight = Math.Max(maxHeight, superscriptY - y + size.Height);
 
                         continue;
                     }
@@ -309,11 +311,13 @@ namespace OxyPlot
                     {
                         string subString = s.Substring(i + 2, i1 - i - 2);
                         i = i1 + 1;
-                        OxySize size = drawText(currentX, subscriptY, subString, subscriptFontSize);
+                        var size = drawText(currentX, subscriptY, subString, subscriptFontSize);
                         if (currentX + size.Width > maximumX)
                         {
                             maximumX = currentX + size.Width;
                         }
+
+                        maxHeight = Math.Max(maxHeight, subscriptY - y + size.Height);
 
                         continue;
                     }
@@ -334,7 +338,7 @@ namespace OxyPlot
                 }
 
                 currentX = maximumX + 2;
-                OxySize size2 = drawText(currentX, y, regularString, fontSize);
+                var size2 = drawText(currentX, y, regularString, fontSize);
                 currentX += size2.Width + 2;
                 maxHeight = Math.Max(maxHeight, size2.Height);
                 maximumX = currentX;
