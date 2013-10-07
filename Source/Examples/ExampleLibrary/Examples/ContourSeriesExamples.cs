@@ -30,19 +30,20 @@ namespace ExampleLibrary
 {
     using System;
 
+    using OxyPlot.Axes;
     using OxyPlot.Series;
 
     [Examples("ContourSeries")]
     public class ContourSeriesExamples : ExamplesBase
     {
-        [Example("Peaks")]
-        public static PlotModel Peaks()
-        {
-            Func<double, double, double> peaks = (x, y) =>
+        private static Func<double, double, double> peaks = (x, y) =>
                3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1))
                - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y)
                - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
 
+        [Example("Peaks")]
+        public static PlotModel Peaks()
+        {
             var model = new PlotModel("Peaks");
             var cs = new ContourSeries
                 {
@@ -50,6 +51,7 @@ namespace ExampleLibrary
                     RowCoordinates = ArrayHelper.CreateVector(-3.1, 3.1, 0.05)
                 };
             cs.Data = ArrayHelper.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
             model.Series.Add(cs);
             return model;
         }
@@ -57,11 +59,6 @@ namespace ExampleLibrary
         [Example("Peaks (different contour colors)")]
         public static PlotModel PeaksWithColors()
         {
-            Func<double, double, double> peaks = (x, y) =>
-               3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1))
-               - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y)
-               - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
-
             var model = new PlotModel("Peaks");
             var cs = new ContourSeries
             {
@@ -70,8 +67,26 @@ namespace ExampleLibrary
                 ContourColors = new[] { OxyColors.SeaGreen, OxyColors.RoyalBlue, OxyColors.IndianRed }
             };
             cs.Data = ArrayHelper.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
             model.Series.Add(cs);
             return model;
         }
+
+        [Example("Peaks (wide array)")]
+        public static PlotModel WideArrayPeaks()
+        {
+            var model = new PlotModel("Peaks");
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -3.16262, 3.162));
+            var cs = new ContourSeries
+            {
+                ColumnCoordinates = ArrayHelper.CreateVector(-3, 3, 0.05),
+                RowCoordinates = ArrayHelper.CreateVector(-1, 1, 0.05)
+            };
+            cs.Data = ArrayHelper.Evaluate(peaks, cs.ColumnCoordinates, cs.RowCoordinates);
+            model.Subtitle = cs.Data.GetLength(0) + "×" + cs.Data.GetLength(1);
+            model.Series.Add(cs);
+            return model;
+        }
+
     }
 }

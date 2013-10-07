@@ -350,6 +350,13 @@ namespace ExampleLibrary
                     var index = (int)e.HitTestResult.Index;
                     series.SelectItem(index);
                     model.RefreshPlot(false);
+                    e.Handled = true;
+                };
+            model.MouseDown += (s, e) =>
+                {
+                    series.ClearSelection();
+                    model.RefreshPlot(false);
+                    e.Handled = true;
                 };
 
             return model;
@@ -373,6 +380,8 @@ namespace ExampleLibrary
             series.MouseDown += (s, e) =>
             {
                 var index = (int)e.HitTestResult.Index;
+
+                // Toggle the selection state for this item
                 if (series.IsItemSelected(index))
                 {
                     series.UnselectItem(index);
@@ -383,16 +392,35 @@ namespace ExampleLibrary
                 }
 
                 model.RefreshPlot(false);
+                e.Handled = true;
+            };
+
+            model.MouseDown += (s, e) =>
+            {
+                series.ClearSelection();
+                model.RefreshPlot(false);
+                e.Handled = true;
             };
 
             return model;
         }
 
-        [Example("ScatterSeries with SelectionMode.All")]
+        [Example("ScatterSeries with SelectionMode.All (no tracker)")]
         public static PlotModel AllSelected()
         {
+            return AllSelected(false);
+        }
+
+        [Example("ScatterSeries with SelectionMode.All (with tracker)")]
+        public static PlotModel AllSelectedWithTracker()
+        {
+            return AllSelected(true);
+        }
+
+        private static PlotModel AllSelected(bool showTracker)
+        {
             var model = RandomScatter(10, 8);
-            model.Subtitle = "Click to select/unselect all points";
+            model.Subtitle = "Click to select all points";
 
             model.SelectionColor = OxyColors.Red;
 
@@ -402,17 +430,22 @@ namespace ExampleLibrary
 
             series.MouseDown += (s, e) =>
                 {
-                    if (series.IsSelected())
-                    {
-                        series.Unselect();
-                    }
-                    else
-                    {
-                        series.Select();
-                    }
-
+                    series.Select();
                     model.RefreshPlot(false);
+                    e.Handled = !showTracker;
                 };
+
+            model.MouseDown += (s, e) =>
+            {
+                if (e.HitTestResult != null && showTracker)
+                {
+                    return;
+                }
+
+                series.ClearSelection();
+                model.RefreshPlot(false);
+                e.Handled = true;
+            };
 
             return model;
         }

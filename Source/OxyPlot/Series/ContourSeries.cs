@@ -208,7 +208,7 @@ namespace OxyPlot.Series
                 actualContourLevels = ArrayHelper.CreateVector(min, max, actualStep);
             }
 
-            Conrec.Contour(this.Data, this.RowCoordinates, this.ColumnCoordinates, actualContourLevels, renderer);
+            Conrec.Contour(this.Data, this.ColumnCoordinates, this.RowCoordinates, actualContourLevels, renderer);
 
             this.JoinContourSegments();
 
