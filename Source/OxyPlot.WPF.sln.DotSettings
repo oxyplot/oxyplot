@@ -1,4 +1,17 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeStyle/CodeCleanup/Profiles/=StyleCop/@EntryIndexedValue">&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;Profile name="StyleCop"&gt;&lt;CSArrangeThisQualifier&gt;True&lt;/CSArrangeThisQualifier&gt;&lt;CSOptimizeUsings&gt;&lt;OptimizeUsings&gt;True&lt;/OptimizeUsings&gt;&lt;EmbraceInRegion&gt;False&lt;/EmbraceInRegion&gt;&lt;RegionName&gt;&lt;/RegionName&gt;&lt;/CSOptimizeUsings&gt;&lt;CSReformatCode&gt;True&lt;/CSReformatCode&gt;&lt;CSReorderTypeMembers&gt;True&lt;/CSReorderTypeMembers&gt;&lt;StyleCop.Documentation&gt;&lt;SA1600ElementsMustBeDocumented&gt;True&lt;/SA1600ElementsMustBeDocumented&gt;&lt;SA1604ElementDocumentationMustHaveSummary&gt;True&lt;/SA1604ElementDocumentationMustHaveSummary&gt;&lt;SA1609PropertyDocumentationMustHaveValueDocumented&gt;True&lt;/SA1609PropertyDocumentationMustHaveValueDocumented&gt;&lt;SA1611ElementParametersMustBeDocumented&gt;True&lt;/SA1611ElementParametersMustBeDocumented&gt;&lt;SA1615ElementReturnValueMustBeDocumented&gt;True&lt;/SA1615ElementReturnValueMustBeDocumented&gt;&lt;SA1617VoidReturnValueMustNotBeDocumented&gt;True&lt;/SA1617VoidReturnValueMustNotBeDocumented&gt;&lt;SA1618GenericTypeParametersMustBeDocumented&gt;True&lt;/SA1618GenericTypeParametersMustBeDocumented&gt;&lt;SA1626SingleLineCommentsMustNotUseDocumentationStyleSlashes&gt;True&lt;/SA1626SingleLineCommentsMustNotUseDocumentationStyleSlashes&gt;&lt;SA1628DocumentationTextMustBeginWithACapitalLetter&gt;True&lt;/SA1628DocumentationTextMustBeginWithACapitalLetter&gt;&lt;SA1629DocumentationTextMustEndWithAPeriod&gt;True&lt;/SA1629DocumentationTextMustEndWithAPeriod&gt;&lt;SA1633SA1641UpdateFileHeader&gt;ReplaceCopyrightElement&lt;/SA1633SA1641UpdateFileHeader&gt;&lt;SA1639FileHeaderMustHaveSummary&gt;True&lt;/SA1639FileHeaderMustHaveSummary&gt;&lt;SA1642ConstructorSummaryDocumentationMustBeginWithStandardText&gt;True&lt;/SA1642ConstructorSummaryDocumentationMustBeginWithStandardText&gt;&lt;SA1643DestructorSummaryDocumentationMustBeginWithStandardText&gt;True&lt;/SA1643DestructorSummaryDocumentationMustBeginWithStandardText&gt;&lt;SA1644DocumentationHeadersMustNotContainBlankLines&gt;True&lt;/SA1644DocumentationHeadersMustNotContainBlankLines&gt;&lt;/StyleCop.Documentation&gt;&lt;StyleCop.Layout&gt;&lt;SA1500CurlyBracketsForMultiLineStatementsMustNotShareLine&gt;True&lt;/SA1500CurlyBracketsForMultiLineStatementsMustNotShareLine&gt;&lt;SA1509OpeningCurlyBracketsMustNotBePrecededByBlankLine&gt;True&lt;/SA1509OpeningCurlyBracketsMustNotBePrecededByBlankLine&gt;&lt;SA1510ChainedStatementBlocksMustNotBePrecededByBlankLine&gt;True&lt;/SA1510ChainedStatementBlocksMustNotBePrecededByBlankLine&gt;&lt;SA1511WhileDoFooterMustNotBePrecededByBlankLine&gt;True&lt;/SA1511WhileDoFooterMustNotBePrecededByBlankLine&gt;&lt;SA1512SingleLineCommentsMustNotBeFollowedByBlankLine&gt;True&lt;/SA1512SingleLineCommentsMustNotBeFollowedByBlankLine&gt;&lt;SA1513ClosingCurlyBracketMustBeFollowedByBlankLine&gt;True&lt;/SA1513ClosingCurlyBracketMustBeFollowedByBlankLine&gt;&lt;SA1514ElementDocumentationHeaderMustBePrecededByBlankLine&gt;True&lt;/SA1514ElementDocumentationHeaderMustBePrecededByBlankLine&gt;&lt;SA1515SingleLineCommentMustBeProceededByBlankLine&gt;True&lt;/SA1515SingleLineCommentMustBeProceededByBlankLine&gt;&lt;/StyleCop.Layout&gt;&lt;StyleCop.Maintainability&gt;&lt;SA1119StatementMustNotUseUnnecessaryParenthesis&gt;True&lt;/SA1119StatementMustNotUseUnnecessaryParenthesis&gt;&lt;/StyleCop.Maintainability&gt;&lt;StyleCop.Ordering&gt;&lt;AlphabeticalUsingDirectives&gt;Alphabetical&lt;/AlphabeticalUsingDirectives&gt;&lt;ExpandUsingDirectives&gt;FullyQualify&lt;/ExpandUsingDirectives&gt;&lt;SA1212PropertyAccessorsMustFollowOrder&gt;True&lt;/SA1212PropertyAccessorsMustFollowOrder&gt;&lt;SA1213EventAccessorsMustFollowOrder&gt;True&lt;/SA1213EventAccessorsMustFollowOrder&gt;&lt;/StyleCop.Ordering&gt;&lt;StyleCop.Readability&gt;&lt;SA1100DoNotPrefixCallsWithBaseUnlessLocalImplementationExists&gt;True&lt;/SA1100DoNotPrefixCallsWithBaseUnlessLocalImplementationExists&gt;&lt;SA1106CodeMustNotContainEmptyStatements&gt;True&lt;/SA1106CodeMustNotContainEmptyStatements&gt;&lt;SA1108BlockStatementsMustNotContainEmbeddedComments&gt;True&lt;/SA1108BlockStatementsMustNotContainEmbeddedComments&gt;&lt;SA1109BlockStatementsMustNotContainEmbeddedRegions&gt;True&lt;/SA1109BlockStatementsMustNotContainEmbeddedRegions&gt;&lt;SA1120CommentsMustContainText&gt;True&lt;/SA1120CommentsMustContainText&gt;&lt;SA1121UseBuiltInTypeAlias&gt;True&lt;/SA1121UseBuiltInTypeAlias&gt;&lt;SA1122UseStringEmptyForEmptyStrings&gt;True&lt;/SA1122UseStringEmptyForEmptyStrings&gt;&lt;SA1123DoNotPlaceRegionsWithinElements&gt;True&lt;/SA1123DoNotPlaceRegionsWithinElements&gt;&lt;SA1124CodeMustNotContainEmptyRegions&gt;True&lt;/SA1124CodeMustNotContainEmptyRegions&gt;&lt;/StyleCop.Readability&gt;&lt;StyleCop.Spacing&gt;&lt;SA1001CommasMustBeSpacedCorrectly&gt;True&lt;/SA1001CommasMustBeSpacedCorrectly&gt;&lt;SA1005SingleLineCommentsMustBeginWithSingleSpace&gt;True&lt;/SA1005SingleLineCommentsMustBeginWithSingleSpace&gt;&lt;SA1006PreprocessorKeywordsMustNotBePrecededBySpace&gt;True&lt;/SA1006PreprocessorKeywordsMustNotBePrecededBySpace&gt;&lt;SA1021NegativeSignsMustBeSpacedCorrectly&gt;True&lt;/SA1021NegativeSignsMustBeSpacedCorrectly&gt;&lt;SA1022PositiveSignsMustBeSpacedCorrectly&gt;True&lt;/SA1022PositiveSignsMustBeSpacedCorrectly&gt;&lt;SA1025CodeMustNotContainMultipleWhitespaceInARow&gt;True&lt;/SA1025CodeMustNotContainMultipleWhitespaceInARow&gt;&lt;/StyleCop.Spacing&gt;&lt;RemoveCodeRedundancies&gt;True&lt;/RemoveCodeRedundancies&gt;&lt;CSUseAutoProperty&gt;True&lt;/CSUseAutoProperty&gt;&lt;CSMakeFieldReadonly&gt;True&lt;/CSMakeFieldReadonly&gt;&lt;CSUseVar&gt;&lt;BehavourStyle&gt;CAN_CHANGE_TO_IMPLICIT&lt;/BehavourStyle&gt;&lt;LocalVariableStyle&gt;ALWAYS_IMPLICIT&lt;/LocalVariableStyle&gt;&lt;ForeachVariableStyle&gt;ALWAYS_IMPLICIT&lt;/ForeachVariableStyle&gt;&lt;/CSUseVar&gt;&lt;/Profile&gt;</s:String>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_LINQ_QUERY/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_ARRAY_AND_OBJECT_INITIALIZER/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_EXPRESSION/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_EXTENDS_LIST/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_FOR_STMT/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTILINE_PARAMETER/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTIPLE_DECLARATION/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTLINE_TYPE_PARAMETER_CONSTRAINS/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_MULTLINE_TYPE_PARAMETER_LIST/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ANONYMOUS_METHOD_DECLARATION_BRACES/@EntryValue">NEXT_LINE_SHIFTED_2</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/CASE_BLOCK_BRACES/@EntryValue">NEXT_LINE_SHIFTED_2</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/INITIALIZER_BRACES/@EntryValue">NEXT_LINE_SHIFTED_2</s:String>
 	<s:String x:Key="/Default/CodeStyle/CSharpMemberOrderPattern/CustomPattern/@EntryValue">&lt;?xml version="1.0" encoding="utf-8"?&gt;&#xD;
 &lt;!-- Last updated 15.05.2012 --&gt;&#xD;
 &lt;Patterns xmlns="urn:shemas-jetbrains-com:member-reordering-patterns"&gt;&#xD;
@@ -58,6 +71,7 @@
         &lt;Access Order="public internal protected-internal protected private"/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Constants"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- Static fields --&gt;&#xD;
@@ -73,6 +87,7 @@
         &lt;Readonly/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Static Fields"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- Fields --&gt;&#xD;
@@ -85,6 +100,7 @@
         &lt;Readonly/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Fields"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- constructors and destructors --&gt;&#xD;
@@ -100,6 +116,7 @@
         &lt;Kind Order="constructor destructor"/&gt;&#xD;
         &lt;Access Order="public internal protected-internal protected private"/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Constructors and Destructors"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- delegates --&gt;&#xD;
@@ -112,6 +129,7 @@
         &lt;Static /&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Delegates"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- public events --&gt;&#xD;
@@ -127,6 +145,7 @@
         &lt;Static /&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Public Events"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- interface events --&gt;&#xD;
@@ -141,6 +160,7 @@
         &lt;ImplementsInterface Immediate="true"/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Explicit Interface Events" /&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- other events --&gt;&#xD;
@@ -153,6 +173,7 @@
         &lt;Static /&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Events"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- enum --&gt;&#xD;
@@ -164,6 +185,7 @@
         &lt;Access Order="public internal protected-internal protected private" /&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Enums"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- interfaces --&gt;&#xD;
@@ -175,6 +197,7 @@
         &lt;Access Order="public internal protected-internal protected private" /&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Interfaces"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- public properties --&gt;&#xD;
@@ -190,6 +213,7 @@
         &lt;Static/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Public Properties"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- interface properties --&gt;&#xD;
@@ -204,6 +228,7 @@
         &lt;ImplementsInterface Immediate="true"/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Explicit Interface Properties" /&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- other properties --&gt;&#xD;
@@ -216,6 +241,7 @@
         &lt;Static/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Properties"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- public indexers --&gt;&#xD;
@@ -231,6 +257,7 @@
         &lt;Static/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Public Indexers"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- interface indexers --&gt;&#xD;
@@ -245,6 +272,7 @@
         &lt;ImplementsInterface Immediate="true"/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Explicit Interface Indexers" /&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- other indexers --&gt;&#xD;
@@ -257,6 +285,7 @@
         &lt;Static/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Indexers"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- public methods (includes operators) --&gt;&#xD;
@@ -275,6 +304,7 @@
         &lt;Static/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Public Methods and Operators"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- interface methods --&gt;&#xD;
@@ -289,6 +319,7 @@
         &lt;ImplementsInterface Immediate="true"/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Explicit Interface Methods" /&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- other methods --&gt;&#xD;
@@ -301,6 +332,7 @@
         &lt;Static/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Methods"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- operators --&gt;&#xD;
@@ -313,6 +345,7 @@
         &lt;Static/&gt;&#xD;
         &lt;Name/&gt;&#xD;
       &lt;/Sort&gt;&#xD;
+      &lt;Group Region="Operators"/&gt;&#xD;
     &lt;/Entry&gt;&#xD;
 &#xD;
     &lt;!-- Nested structs --&gt;&#xD;
