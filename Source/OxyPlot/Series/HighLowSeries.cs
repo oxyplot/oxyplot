@@ -96,13 +96,13 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the color of the curve.
+        /// Gets or sets the color of the item.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets the actual color.
+        /// Gets the actual color of the item.
         /// </summary>
         /// <value>The actual color.</value>
         public OxyColor ActualColor

@@ -27,6 +27,7 @@
 //   Represents a series for candlestick charts.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
     using System;
@@ -35,8 +36,8 @@ namespace OxyPlot.Series
     /// Represents a series for candlestick charts.
     /// </summary>
     /// <remarks>
-    /// http://en.wikipedia.org/wiki/Candlestick_chart
-    /// http://www.mathworks.com/help/toolbox/finance/candle.html
+    /// See also <a href="http://en.wikipedia.org/wiki/Candlestick_chart">Wikipedia</a> and 
+    /// <a href="http://www.mathworks.com/help/toolbox/finance/candle.html">Matlab documentation</a>.
     /// </remarks>
     public class CandleStickSeries : HighLowSeries
     {
@@ -46,6 +47,10 @@ namespace OxyPlot.Series
         public CandleStickSeries()
         {
             this.CandleWidth = 10;
+            this.IncreasingFill = null;
+            this.DecreasingFill = null;
+            this.ShadowEndColor = null;
+            this.ShadowEndLength = 1.0;
         }
 
         /// <summary>
@@ -73,11 +78,10 @@ namespace OxyPlot.Series
         /// The title.
         /// </param>
         public CandleStickSeries(OxyColor color, double strokeThickness = 1, string title = null)
-            : this()
+            : this(title)
         {
             this.Color = color;
             this.StrokeThickness = strokeThickness;
-            this.Title = title;
         }
 
         /// <summary>
@@ -85,6 +89,39 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The width of the candle.</value>
         public double CandleWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color used when the closing value is greater than opening value.
+        /// </summary>
+        public OxyColor IncreasingFill { get; set; }
+
+        /// <summary>
+        /// Gets or sets the fill color used when the closing value is less than opening value.
+        /// </summary>
+        public OxyColor DecreasingFill { get; set; }
+
+        /// <summary>
+        /// Gets or sets the end color of the shadow.
+        /// </summary>
+        /// <value>The end color of the shadow.</value>
+        public OxyColor ShadowEndColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the lengths of the shadow ends.
+        /// </summary>
+        /// <value>The length relative to the width of the candle.</value>
+        public double ShadowEndLength { get; set; }
+
+        /// <summary>
+        /// Gets the actual increasing fill color.
+        /// </summary>
+        public OxyColor ActualIncreasingFill
+        {
+            get
+            {
+                return this.IncreasingFill ?? this.ActualColor;
+            }
+        }
 
         /// <summary>
         /// Renders the series on the specified rendering context.
@@ -137,6 +174,7 @@ namespace OxyPlot.Series
                         var max = new ScreenPoint(open.X, Math.Max(open.Y, close.Y));
                         var min = new ScreenPoint(open.X, Math.Min(open.Y, close.Y));
 
+                        // Upper shadow
                         rc.DrawClippedLine(
                             new[] { high, min },
                             clippingRect,
@@ -147,6 +185,7 @@ namespace OxyPlot.Series
                             this.LineJoin,
                             true);
 
+                        // Lower shadow
                         rc.DrawClippedLine(
                             new[] { max, low },
                             clippingRect,
@@ -156,13 +195,46 @@ namespace OxyPlot.Series
                             this.LineStyle,
                             this.LineJoin,
                             true);
+
+                        // Shadow ends
+                        if (this.ShadowEndColor != null && this.ShadowEndLength > 0)
+                        {
+                            var highLeft = new ScreenPoint(high.X - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, high.Y);
+                            var highRight = new ScreenPoint(high.X + (this.CandleWidth * 0.5 * this.ShadowEndLength), high.Y);
+                            rc.DrawClippedLine(
+                                 new[] { highLeft, highRight },
+                                 clippingRect,
+                                 0,
+                                 this.GetSelectableColor(this.ShadowEndColor),
+                                 this.StrokeThickness,
+                                 this.LineStyle,
+                                 this.LineJoin,
+                                 true);
+
+                            var lowLeft = new ScreenPoint(low.X - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, low.Y);
+                            var lowRight = new ScreenPoint(low.X + (this.CandleWidth * 0.5 * this.ShadowEndLength), low.Y);
+                            rc.DrawClippedLine(
+                                new[] { lowLeft, lowRight },
+                                clippingRect,
+                                0,
+                                this.GetSelectableColor(this.ShadowEndColor),
+                                this.StrokeThickness,
+                                this.LineStyle,
+                                this.LineJoin,
+                                true);
+                        }
+
+                        // Body
                         var openLeft = open;
                         openLeft.X -= this.CandleWidth * 0.5;
                         var closeRight = close;
                         closeRight.X += this.CandleWidth * 0.5;
                         var rect = new OxyRect(openLeft.X, min.Y, this.CandleWidth, max.Y - min.Y);
-                        rc.DrawClippedRectangleAsPolygon(
-                            rect, clippingRect, v.Open > v.Close ? this.GetSelectableFillColor(this.ActualColor) : null, this.GetSelectableColor(this.ActualColor), this.StrokeThickness);
+                        var fillColor = v.Open > v.Close
+                                            ? this.GetSelectableFillColor(this.ActualIncreasingFill)
+                                            : this.GetSelectableFillColor(this.DecreasingFill);
+                        var strokeColor = this.GetSelectableColor(this.ActualColor);
+                        rc.DrawClippedRectangleAsPolygon(rect, clippingRect, fillColor, strokeColor, this.StrokeThickness);
                     }
                 }
             }
@@ -182,7 +254,7 @@ namespace OxyPlot.Series
             double xmid = (legendBox.Left + legendBox.Right) / 2;
             double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
             double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
-            double[] dashArray = LineStyleHelper.GetDashArray(this.LineStyle);
+            double[] dashArray = this.LineStyle.GetDashArray();
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
                 this.GetSelectableColor(this.ActualColor),
@@ -190,12 +262,37 @@ namespace OxyPlot.Series
                 dashArray,
                 OxyPenLineJoin.Miter,
                 true);
+
+            // Shadow ends
+            if (this.ShadowEndColor != null && this.ShadowEndLength > 0)
+            {
+                var highLeft = new ScreenPoint(xmid - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, legendBox.Top);
+                var highRight = new ScreenPoint(xmid + (this.CandleWidth * 0.5 * this.ShadowEndLength), legendBox.Top);
+                rc.DrawLine(
+                     new[] { highLeft, highRight },
+                     this.GetSelectableColor(this.ShadowEndColor),
+                     this.StrokeThickness,
+                     dashArray,
+                     this.LineJoin,
+                     true);
+
+                var lowLeft = new ScreenPoint(xmid - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, legendBox.Bottom);
+                var lowRight = new ScreenPoint(xmid + (this.CandleWidth * 0.5 * this.ShadowEndLength), legendBox.Bottom);
+                rc.DrawLine(
+                    new[] { lowLeft, lowRight },
+                    this.GetSelectableColor(this.ShadowEndColor),
+                    this.StrokeThickness,
+                    dashArray,
+                    this.LineJoin,
+                    true);
+            }
+
+
             rc.DrawRectangleAsPolygon(
                 new OxyRect(xmid - (this.CandleWidth * 0.5), yclose, this.CandleWidth, yopen - yclose),
-                this.GetSelectableFillColor(this.ActualColor),
+                this.GetSelectableFillColor(this.ActualIncreasingFill),
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness);
         }
-
     }
 }
