@@ -164,5 +164,17 @@ namespace ExampleLibrary
 
             return model;
         }
+
+        [Example("#10080: LegendItemAlignment = Center")]
+        public static PlotModel LegendItemAlignmentCenter()
+        {
+            var plotModel1 = new PlotModel("LegendItemAlignment = Center");
+            plotModel1.LegendItemAlignment = HorizontalAlignment.Center;
+            plotModel1.LegendBorder = OxyColors.Black;
+            plotModel1.LegendBorderThickness = 1;
+            plotModel1.Series.Add(new FunctionSeries(x => Math.Sin(x) / x, 0, 10, 100, "sin(x)/x"));
+            plotModel1.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 100, "cos(x)"));
+            return plotModel1;
+        }
     }
 }
