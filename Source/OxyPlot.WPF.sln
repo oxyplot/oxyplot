@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfExamples", "Examples\WPF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Pdf.Tests", "OxyPlot.Pdf.Tests\OxyPlot.Pdf.Tests.csproj", "{FF600107-3DEB-404F-8A37-F63473BDFCB8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathBlockDemo", "Examples\WPF\MathBlockDemo\MathBlockDemo.csproj", "{D301156F-622D-4821-8C9A-10B895057634}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -195,6 +197,16 @@ Global
 		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FF600107-3DEB-404F-8A37-F63473BDFCB8}.Release|x86.ActiveCfg = Release|Any CPU
+		{D301156F-622D-4821-8C9A-10B895057634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D301156F-622D-4821-8C9A-10B895057634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D301156F-622D-4821-8C9A-10B895057634}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D301156F-622D-4821-8C9A-10B895057634}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D301156F-622D-4821-8C9A-10B895057634}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D301156F-622D-4821-8C9A-10B895057634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D301156F-622D-4821-8C9A-10B895057634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D301156F-622D-4821-8C9A-10B895057634}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D301156F-622D-4821-8C9A-10B895057634}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D301156F-622D-4821-8C9A-10B895057634}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -208,5 +220,6 @@ Global
 		{F97B3093-EBDD-46C9-890E-0501922B9168} = {831970F4-9390-4214-848B-70E6250443DC}
 		{2F190086-3322-4407-A052-845E0DA24392} = {831970F4-9390-4214-848B-70E6250443DC}
 		{B86739B8-5DE9-406F-9418-0751BF7C166F} = {831970F4-9390-4214-848B-70E6250443DC}
+		{D301156F-622D-4821-8C9A-10B895057634} = {831970F4-9390-4214-848B-70E6250443DC}
 	EndGlobalSection
 EndGlobal
