@@ -192,7 +192,7 @@ namespace ExampleLibrary
             model.Series.Add(new LineSeries { ItemsSource = points });
             return model;
         }
-        
+
         [Example("#10076: Dashed line test")]
         public static PlotModel DashedLineTest()
         {
@@ -216,5 +216,46 @@ namespace ExampleLibrary
 
             return model;
         }
+
+        [Example("#10076: Super exponential format")]
+        public static PlotModel SuperExponentialFormat()
+        {
+            var model = new PlotModel("UseSuperExponentialFormat=true and 0");
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 100, 10, 1) { UseSuperExponentialFormat = true });
+            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -100, 100, 20, 10) { UseSuperExponentialFormat = true });
+            return model;
+        }
+
+        [Example("#10084: AreaSeries should respect CanTrackerInterpolatePoints")]
+        public static PlotModel AreaSeries_CanTrackerInterpolatePointsFalse()
+        {
+            var plotModel1 = new PlotModel("AreaSeries with CanTrackerInterpolatePoints=false");
+            var areaSeries1 = new AreaSeries { CanTrackerInterpolatePoints = false };
+            areaSeries1.Points.Add(new DataPoint(0, 50));
+            areaSeries1.Points.Add(new DataPoint(10, 40));
+            areaSeries1.Points.Add(new DataPoint(20, 60));
+            areaSeries1.Points2.Add(new DataPoint(0, 60));
+            areaSeries1.Points2.Add(new DataPoint(5, 80));
+            areaSeries1.Points2.Add(new DataPoint(20, 70));
+            plotModel1.Series.Add(areaSeries1);
+            return plotModel1;
+        }
+
+        [Example("#10084: AreaSeries should respect CanTrackerInterpolatePoints")]
+        public static PlotModel AreaSeries_CanTrackerInterpolatePointsTrue()
+        {
+            var plotModel1 = new PlotModel("AreaSeries with CanTrackerInterpolatePoints=true");
+            var areaSeries1 = new AreaSeries { CanTrackerInterpolatePoints = true };
+            areaSeries1.Points.Add(new DataPoint(0, 50));
+            areaSeries1.Points.Add(new DataPoint(10, 40));
+            areaSeries1.Points.Add(new DataPoint(20, 60));
+            areaSeries1.Points2.Add(new DataPoint(0, 60));
+            areaSeries1.Points2.Add(new DataPoint(5, 80));
+            areaSeries1.Points2.Add(new DataPoint(20, 70));
+            plotModel1.Series.Add(areaSeries1);
+            return plotModel1;
+        }
+
+
     }
 }
