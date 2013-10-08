@@ -50,15 +50,31 @@
             return model;
         }
 
-        [Example("Minute data")]
-        public static PlotModel Test()
+        [Example("Minute data (DateTimeAxis)")]
+        public static PlotModel MinuteData_DateTimeAxis()
         {
-            var recordings = new List<Recording>
+            var lst = new List<MinuteRec>
                 {
-                    new Recording { QTime = new DateTime(2013, 10, 8, 9, 0, 0), O = 100, C = 103, L = 97, H = 104 },
-                    new Recording { QTime = new DateTime(2013, 10, 8, 9, 1, 0), O = 103, C = 102, L = 97, H = 107 },
-                    new Recording { QTime = new DateTime(2013, 10, 8, 9, 2, 0), O = 102, C = 97, L = 93, H = 104 },
-                    new Recording { QTime = new DateTime(2013, 10, 8, 10, 0, 0), O = 102, C = 97, L = 93, H = 104 }
+                new MinuteRec { Time = DateTime.Parse("06:31:00"), O = 1672.5000, H = 1673.5000, L = 1671.7500, C = 1672.7500 }, 
+                new MinuteRec { Time = DateTime.Parse("06:32:00"), O = 1672.5000, H = 1673.5000, L = 1672.5000, C = 1672.5000 },
+                new MinuteRec { Time = DateTime.Parse("06:33:00"), O = 1672.5000, H = 1672.7500, L = 1670.7500, C = 1671.2500 },
+                new MinuteRec { Time = DateTime.Parse("06:34:00"), O = 1671.2500, H = 1671.2500, L = 1670.2500, C = 1670.5000 },
+                new MinuteRec { Time = DateTime.Parse("06:35:00"), O = 1670.7500, H = 1671.7500, L = 1670.5000, C = 1671.2500 },
+                new MinuteRec { Time = DateTime.Parse("06:36:00"), O = 1671.0000, H = 1672.5000, L = 1671.0000, C = 1672.5000 },
+                new MinuteRec { Time = DateTime.Parse("06:37:00"), O = 1672.5000, H = 1673.0000, L = 1672.0000, C = 1673.0000 },
+                new MinuteRec { Time = DateTime.Parse("06:38:00"), O = 1672.7500, H = 1673.2500, L = 1672.5000, C = 1672.5000 },
+                new MinuteRec { Time = DateTime.Parse("06:39:00"), O = 1672.5000, H = 1672.7500, L = 1671.2500, C = 1671.2500 },
+                new MinuteRec { Time = DateTime.Parse("06:40:00"), O = 1671.2500, H = 1672.5000, L = 1671.0000, C = 1672.0000 },
+                new MinuteRec { Time = DateTime.Parse("06:41:00"), O = 1672.2500, H = 1672.5000, L = 1671.2500, C = 1672.5000 },
+                new MinuteRec { Time = DateTime.Parse("06:42:00"), O = 1672.2500, H = 1672.5000, L = 1671.5000, C = 1671.5000 },
+                new MinuteRec { Time = DateTime.Parse("06:43:00"), O = 1671.5000, H = 1671.7500, L = 1670.5000, C = 1671.0000 },
+                new MinuteRec { Time = DateTime.Parse("06:44:00"), O = 1670.7500, H = 1671.7500, L = 1670.7500, C = 1671.7500 },
+                new MinuteRec { Time = DateTime.Parse("06:45:00"), O = 1672.0000, H = 1672.2500, L = 1671.5000, C = 1671.5000 },
+                new MinuteRec { Time = DateTime.Parse("06:46:00"), O = 1671.7500, H = 1671.7500, L = 1671.0000, C = 1671.5000 },
+                new MinuteRec { Time = DateTime.Parse("06:47:00"), O = 1671.7500, H = 1672.2500, L = 1671.5000, C = 1671.7500 },
+                new MinuteRec { Time = DateTime.Parse("06:48:00"), O = 1671.7500, H = 1672.7500, L = 1671.7500, C = 1672.5000 },
+                new MinuteRec { Time = DateTime.Parse("06:49:00"), O = 1672.2500, H = 1673.7500, L = 1672.2500, C = 1673.7500 },
+                new MinuteRec { Time = DateTime.Parse("06:50:00"), O = 1673.7500, H = 1675.0000, L = 1673.5000, C = 1675.0000 }
                 };
 
             var pm = new PlotModel("Minute Data");
@@ -73,21 +89,74 @@
                 Color = OxyColors.Black,
                 IncreasingFill = OxyColors.DarkGreen,
                 DecreasingFill = OxyColors.Red,
+                DataFieldX = "Time",
+                DataFieldHigh = "H",
+                DataFieldLow = "L",
+                DataFieldOpen = "O",
+                DataFieldClose = "C",
+                TrackerFormatString = "High: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}",
+                ItemsSource = lst
+            };
+            pm.Series.Add(candleStickSeries);
+            return pm;
+        }
+
+        [Example("Minute data (TimeSpanAxis)")]
+        public static PlotModel MinuteData_TimeSpan()
+        {
+            var lst = new List<MinuteRec>
+            {
+                new MinuteRec { QTime = TimeSpan.Parse("06:31:00"), O = 1672.5000, H = 1673.5000, L = 1671.7500, C = 1672.7500 }, 
+                new MinuteRec { QTime = TimeSpan.Parse("06:32:00"), O = 1672.5000, H = 1673.5000, L = 1672.5000, C = 1672.5000 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:33:00"), O = 1672.5000, H = 1672.7500, L = 1670.7500, C = 1671.2500 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:34:00"), O = 1671.2500, H = 1671.2500, L = 1670.2500, C = 1670.5000 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:35:00"), O = 1670.7500, H = 1671.7500, L = 1670.5000, C = 1671.2500 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:36:00"), O = 1671.0000, H = 1672.5000, L = 1671.0000, C = 1672.5000 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:37:00"), O = 1672.5000, H = 1673.0000, L = 1672.0000, C = 1673.0000 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:38:00"), O = 1672.7500, H = 1673.2500, L = 1672.5000, C = 1672.5000 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:39:00"), O = 1672.5000, H = 1672.7500, L = 1671.2500, C = 1671.2500 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:40:00"), O = 1671.2500, H = 1672.5000, L = 1671.0000, C = 1672.0000 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:41:00"), O = 1672.2500, H = 1672.5000, L = 1671.2500, C = 1672.5000 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:42:00"), O = 1672.2500, H = 1672.5000, L = 1671.5000, C = 1671.5000 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:43:00"), O = 1671.5000, H = 1671.7500, L = 1670.5000, C = 1671.0000 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:44:00"), O = 1670.7500, H = 1671.7500, L = 1670.7500, C = 1671.7500 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:45:00"), O = 1672.0000, H = 1672.2500, L = 1671.5000, C = 1671.5000 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:46:00"), O = 1671.7500, H = 1671.7500, L = 1671.0000, C = 1671.5000 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:47:00"), O = 1671.7500, H = 1672.2500, L = 1671.5000, C = 1671.7500 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:48:00"), O = 1671.7500, H = 1672.7500, L = 1671.7500, C = 1672.5000 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:49:00"), O = 1672.2500, H = 1673.7500, L = 1672.2500, C = 1673.7500 },
+                new MinuteRec { QTime = TimeSpan.Parse("06:50:00"), O = 1673.7500, H = 1675.0000, L = 1673.5000, C = 1675.0000 }
+                    
+            };
+
+            var pm = new PlotModel("Minute Data");
+
+            var timeSpanAxis1 = new TimeSpanAxis { Position = AxisPosition.Bottom, StringFormat = "hh:mm" };
+            pm.Axes.Add(timeSpanAxis1);
+            var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
+            pm.Axes.Add(linearAxis1);
+            var candleStickSeries = new CandleStickSeries
+            {
+                CandleWidth = 5,
+                Color = OxyColors.DarkGray,
+                IncreasingFill = OxyColors.DarkGreen,
+                DecreasingFill = OxyColors.Red,
                 DataFieldX = "QTime",
                 DataFieldHigh = "H",
                 DataFieldLow = "L",
                 DataFieldOpen = "O",
                 DataFieldClose = "C",
                 TrackerFormatString = "High: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}",
-                ItemsSource = recordings
+                ItemsSource = lst
             };
             pm.Series.Add(candleStickSeries);
             return pm;
         }
 
-        public class Recording
+        public class MinuteRec
         {
-            public DateTime QTime { get; set; }
+            public DateTime Time { get; set; }
+            public TimeSpan QTime { get; set; }
             public double H { get; set; }
             public double L { get; set; }
             public double O { get; set; }
