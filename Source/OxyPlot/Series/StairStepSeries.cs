@@ -119,11 +119,11 @@ namespace OxyPlot.Series
 
             // snap to the nearest point
             var result = this.GetNearestPointInternal(this.Points, point);
-            if (!interpolate && result.Position.DistanceToSquared(point) < minimumDistanceSquared)
+            if (!interpolate && result != null && result.Position.DistanceToSquared(point) < minimumDistanceSquared)
             {
                 return result;
             }
-            
+
             result = null;
 
             // find the nearest point on the horizontal line segments

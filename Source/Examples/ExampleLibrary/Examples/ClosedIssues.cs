@@ -256,6 +256,13 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("D461507: StairStepSeries NullReferenceException")]
+        public static PlotModel StairStepSeries_NullReferenceException()
+        {
+            var plotModel1 = new PlotModel("StairStepSeries NullReferenceException");
+            plotModel1.Series.Add(new StairStepSeries());
+            return plotModel1;
+        }
 
     }
 }
