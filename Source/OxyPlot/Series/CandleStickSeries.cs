@@ -85,9 +85,8 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the width of the candle.
+        /// Gets or sets the width of the candle (in screen space units).
         /// </summary>
-        /// <value>The width of the candle.</value>
         public double CandleWidth { get; set; }
 
         /// <summary>
@@ -230,7 +229,7 @@ namespace OxyPlot.Series
                         var closeRight = close;
                         closeRight.X += this.CandleWidth * 0.5;
                         var rect = new OxyRect(openLeft.X, min.Y, this.CandleWidth, max.Y - min.Y);
-                        var fillColor = v.Open > v.Close
+                        var fillColor = v.Close > v.Open
                                             ? this.GetSelectableFillColor(this.ActualIncreasingFill)
                                             : this.GetSelectableFillColor(this.DecreasingFill);
                         var strokeColor = this.GetSelectableColor(this.ActualColor);

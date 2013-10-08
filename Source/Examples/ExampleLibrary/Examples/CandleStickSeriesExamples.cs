@@ -1,6 +1,7 @@
 ﻿namespace ExampleLibrary
 {
     using System;
+    using System.Collections.Generic;
 
     using OxyPlot;
     using OxyPlot.Axes;
@@ -47,6 +48,50 @@
             s1.ShadowEndColor = OxyColors.Gray;
             s1.Color = OxyColors.Black;
             return model;
+        }
+
+        [Example("Minute data")]
+        public static PlotModel Test()
+        {
+            var recordings = new List<Recording>
+                {
+                    new Recording { QTime = new DateTime(2013, 10, 8, 9, 0, 0), O = 100, C = 103, L = 97, H = 104 },
+                    new Recording { QTime = new DateTime(2013, 10, 8, 9, 1, 0), O = 103, C = 102, L = 97, H = 107 },
+                    new Recording { QTime = new DateTime(2013, 10, 8, 9, 2, 0), O = 102, C = 97, L = 93, H = 104 },
+                    new Recording { QTime = new DateTime(2013, 10, 8, 10, 0, 0), O = 102, C = 97, L = 93, H = 104 }
+                };
+
+            var pm = new PlotModel("Minute Data");
+
+            var timeSpanAxis1 = new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "hh:mm" };
+            pm.Axes.Add(timeSpanAxis1);
+            var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };
+            pm.Axes.Add(linearAxis1);
+            var candleStickSeries = new CandleStickSeries
+            {
+                CandleWidth = 6,
+                Color = OxyColors.Black,
+                IncreasingFill = OxyColors.DarkGreen,
+                DecreasingFill = OxyColors.Red,
+                DataFieldX = "QTime",
+                DataFieldHigh = "H",
+                DataFieldLow = "L",
+                DataFieldOpen = "O",
+                DataFieldClose = "C",
+                TrackerFormatString = "High: {2:0.00}\nLow: {3:0.00}\nOpen: {4:0.00}\nClose: {5:0.00}",
+                ItemsSource = recordings
+            };
+            pm.Series.Add(candleStickSeries);
+            return pm;
+        }
+
+        public class Recording
+        {
+            public DateTime QTime { get; set; }
+            public double H { get; set; }
+            public double L { get; set; }
+            public double O { get; set; }
+            public double C { get; set; }
         }
     }
 }
