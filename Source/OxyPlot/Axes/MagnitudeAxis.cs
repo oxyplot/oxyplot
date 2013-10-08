@@ -198,9 +198,7 @@ namespace OxyPlot.Axes
 
             this.ActualMinimum = 0;
             double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
-            this.scale = 0.5 * r / (this.ActualMaximum - this.ActualMinimum);
-            this.Offset = this.ActualMinimum;
+            this.SetTransform(0.5 * r / (this.ActualMaximum - this.ActualMinimum), this.ActualMinimum);
         }
-
     }
 }

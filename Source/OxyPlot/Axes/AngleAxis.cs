@@ -176,8 +176,7 @@ namespace OxyPlot.Axes
             double startAngle = this.StartAngle / 180 * Math.PI;
             double endAngle = this.EndAngle / 180 * Math.PI;
 
-            this.Scale = (endAngle - startAngle) / (this.ActualMaximum - this.ActualMinimum);
-            this.Offset = this.ActualMinimum - (startAngle / this.Scale);
+            this.SetTransform((endAngle - startAngle) / (this.ActualMaximum - this.ActualMinimum), this.ActualMinimum - (startAngle / this.Scale));
         }
 
     }

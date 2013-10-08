@@ -60,6 +60,7 @@ namespace WpfExamples
                     new Example(typeof(DateTimeDemo.MainWindow), null, "Plotting with DateTime axes."),
                     new Example(typeof(HistogramDemo.MainWindow), null, "Plots a histogram."),
                     new Example(typeof(LegendsDemo.MainWindow), null, "Demonstrates legend box capabilities."),
+                    new Example(typeof(OverlayDemo.MainWindow), null, "WPF overlays."),
                     new Example(typeof(PieDemo.MainWindow), null, "Shows a pie chart."),
                     new Example(typeof(PolarDemo.MainWindow), null, "Creates a polar plot."),
                     new Example(typeof(RealtimeDemo.MainWindow), null, "Plotting a curve that updates automatically."),

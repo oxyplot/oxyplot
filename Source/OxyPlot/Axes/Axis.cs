@@ -45,7 +45,7 @@ namespace OxyPlot.Axes
         /// Exponent function.
         /// </summary>
         protected static readonly Func<double, double> Exponent = x => Math.Floor(Math.Log(Math.Abs(x), 10));
-        
+
         /// <summary>
         /// Mantissa function. http://en.wikipedia.org/wiki/Mantissa
         /// </summary>
@@ -177,6 +177,11 @@ namespace OxyPlot.Axes
         /// Occurs when the axis has been changed (by zooming, panning or resetting).
         /// </summary>
         public event EventHandler<AxisChangedEventArgs> AxisChanged;
+
+        /// <summary>
+        /// Occurs when the transform changed (size or axis range was changed).
+        /// </summary>
+        public event EventHandler TransformChanged;
 
         /// <summary>
         /// Gets or sets the absolute maximum. This is only used for the UI control. It will not be possible to zoom/pan beyond this limit.
@@ -718,6 +723,19 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
+        /// Transforms the specified point to screen coordinates.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the point.</param>
+        /// <param name="y">The y-coordinate of the point.</param>
+        /// <param name="xaxis">The x-axis.</param>
+        /// <param name="yaxis">The y-axis.</param>
+        /// <returns>The transformed point.</returns>
+        public static ScreenPoint Transform(double x, double y, Axis xaxis, Axis yaxis)
+        {
+            return xaxis.Transform(x, y, yaxis);
+        }
+
+        /// <summary>
         /// Transform the specified screen point to data coordinates.
         /// </summary>
         /// <param name="p">The point.</param>
@@ -1185,8 +1203,7 @@ namespace OxyPlot.Axes
             double mid = (this.ActualMaximum + this.ActualMinimum) / 2;
 
             double dx = (this.offset - mid) * this.scale;
-            this.scale = sgn * newScale;
-            this.offset = (dx / this.scale) + mid;
+            this.SetTransform(sgn * newScale, (dx / this.scale) + mid);
 
             double newMaximum = this.InverseTransform(sx1);
             double newMinimum = this.InverseTransform(sx0);
@@ -1502,24 +1519,34 @@ namespace OxyPlot.Axes
             double min = this.PreTransform(this.ActualMinimum);
 
             double da = a0 - a1;
+            double newOffset, newScale;
             if (Math.Abs(da) > double.Epsilon)
             {
-                this.offset = (a0 / da * max) - (a1 / da * min);
+                newOffset = (a0 / da * max) - (a1 / da * min);
             }
             else
             {
-                this.offset = 0;
+                newOffset = 0;
             }
 
             double range = max - min;
             if (Math.Abs(range) > double.Epsilon)
             {
-                this.scale = (a1 - a0) / range;
+                newScale = (a1 - a0) / range;
             }
             else
             {
-                this.scale = 1;
+                newScale = 1;
             }
+
+            this.SetTransform(newScale, newOffset);
+        }
+
+        protected void SetTransform(double newScale, double newOffset)
+        {
+            this.scale = newScale;
+            this.offset = newOffset;
+            this.OnTransformChanged(new EventArgs());
         }
 
         /// <summary>
@@ -1728,6 +1755,19 @@ namespace OxyPlot.Axes
             this.UpdateActualMaxMin();
 
             var handler = this.AxisChanged;
+            if (handler != null)
+            {
+                handler(this, args);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:TransformChanged" /> event.
+        /// </summary>
+        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected virtual void OnTransformChanged(EventArgs args)
+        {
+            var handler = this.TransformChanged;
             if (handler != null)
             {
                 handler(this, args);
