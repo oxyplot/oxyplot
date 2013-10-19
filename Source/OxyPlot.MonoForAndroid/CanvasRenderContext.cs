@@ -336,10 +336,10 @@ namespace OxyPlot.MonoForAndroid
         /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
         public void DrawImage(
             OxyImage source,
-            uint srcX,
-            uint srcY,
-            uint srcWidth,
-            uint srcHeight,
+            double srcX,
+            double srcY,
+            double srcWidth,
+            double srcHeight,
             double destX,
             double destY,
             double destWidth,

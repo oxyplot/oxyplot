@@ -315,7 +315,7 @@ namespace OxyPlot.Axes
                 return -1;
             }
 
-            return (Math.Log(x) - this.offset) * this.scale;
+            return (Math.Log(x) - this.Offset) * this.Scale;
         }
 
         /// <summary>

@@ -169,43 +169,6 @@ namespace OxyPlot.Axes
         internal double[] TotalWidthPerCategory { get; set; }
 
         /// <summary>
-        /// Fills the specified array.
-        /// </summary>
-        /// <param name="array">
-        /// The array.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        public static void Fill(double[] array, double value)
-        {
-            for (var i = 0; i < array.Length; i++)
-            {
-                array[i] = value;
-            }
-        }
-
-        /// <summary>
-        /// Fills the specified array.
-        /// </summary>
-        /// <param name="array">
-        /// The array.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        public static void Fill(double[,] array, double value)
-        {
-            for (var i = 0; i < array.GetLength(0); i++)
-            {
-                for (var j = 0; j < array.GetLength(1); j++)
-                {
-                    array[i, j] = value;
-                }
-            }
-        }
-
-        /// <summary>
         /// Formats the value to be used on the axis.
         /// </summary>
         /// <param name="x">
@@ -451,14 +414,14 @@ namespace OxyPlot.Axes
             }
 
             this.PositiveBaseValues = new double[stackIndices.Count, this.Labels.Count];
-            Fill(this.PositiveBaseValues, double.NaN);
+            this.PositiveBaseValues.Fill2D(double.NaN);
             this.NegativeBaseValues = new double[stackIndices.Count, this.Labels.Count];
-            Fill(this.NegativeBaseValues, double.NaN);
+            this.NegativeBaseValues.Fill2D(double.NaN);
 
             this.MaxValue = new double[stackIndices.Count, this.Labels.Count];
-            Fill(this.MaxValue, double.NaN);
+            this.MaxValue.Fill2D(double.NaN);
             this.MinValue = new double[stackIndices.Count, this.Labels.Count];
-            Fill(this.MinValue, double.NaN);
+            this.MinValue.Fill2D(double.NaN);
         }
 
         /// <summary>

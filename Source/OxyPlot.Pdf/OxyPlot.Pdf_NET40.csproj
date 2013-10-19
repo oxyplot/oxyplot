@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="LatexReportWriter.cs" />
     <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="PdfSharpExtensions.cs" />
     <Compile Include="RtfReportWriter.cs" />
     <Compile Include="PdfExporter.cs" />
     <Compile Include="PdfRenderContext.cs" />

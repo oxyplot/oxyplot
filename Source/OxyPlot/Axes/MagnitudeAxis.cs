@@ -115,7 +115,7 @@ namespace OxyPlot.Axes
             y *= -1;
             double th = Math.Atan2(y, x);
             double r = Math.Sqrt((x * x) + (y * y));
-            x = (r / this.scale) + this.offset;
+            x = (r / this.Scale) + this.Offset;
             y = (th / angleAxis.Scale) + angleAxis.Offset;
             return new DataPoint(x, y);
         }
@@ -172,7 +172,7 @@ namespace OxyPlot.Axes
                 throw new InvalidOperationException("Polar angle axis not defined!");
             }
 
-            double r = (x - this.Offset) * this.scale;
+            double r = (x - this.Offset) * this.Scale;
             double theta = (y - angleAxis.Offset) * angleAxis.Scale;
 
             return new ScreenPoint(this.MidPoint.x + (r * Math.Cos(theta)), this.MidPoint.y - (r * Math.Sin(theta)));

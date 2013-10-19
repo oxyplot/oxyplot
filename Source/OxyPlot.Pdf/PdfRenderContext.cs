@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdfRenderContext.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   PDF Render context using PdfSharp (and SilverPDF for Silverlight)
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Pdf
 {
     using System;
@@ -35,7 +36,6 @@ namespace OxyPlot.Pdf
     using System.Linq;
 
     using PdfSharp.Drawing;
-    using PdfSharp.Drawing.Layout;
     using PdfSharp.Pdf;
 
     /// <summary>
@@ -47,7 +47,7 @@ namespace OxyPlot.Pdf
     internal class PdfRenderContext : RenderContextBase, IDisposable
     {
         /// <summary>
-        /// The fontsize factor.
+        /// The font size factor.
         /// </summary>
         private const double FontsizeFactor = 1.0;
 
@@ -62,9 +62,14 @@ namespace OxyPlot.Pdf
         private readonly XGraphics g;
 
         /// <summary>
-        /// The pdf page.
+        /// The images in use
         /// </summary>
-        private readonly PdfPage page;
+        private readonly HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+
+        /// <summary>
+        /// The image cache
+        /// </summary>
+        private readonly Dictionary<OxyImage, XImage> imageCache = new Dictionary<OxyImage, XImage>();
 
         /// <summary>
         /// The disposed flag.
@@ -81,9 +86,9 @@ namespace OxyPlot.Pdf
         {
             this.RendersToScreen = false;
             this.doc = new PdfDocument();
-            this.page = new PdfPage { Width = new XUnit(width), Height = new XUnit(height) };
-            this.doc.AddPage(this.page);
-            this.g = XGraphics.FromPdfPage(this.page);
+            var page = new PdfPage { Width = new XUnit(width), Height = new XUnit(height) };
+            this.doc.AddPage(page);
+            this.g = XGraphics.FromPdfPage(page);
             if (background != null)
             {
                 this.g.DrawRectangle(ToBrush(background), 0, 0, width, height);
@@ -100,20 +105,12 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The draw ellipse.
+        /// Draws an ellipse.
         /// </summary>
-        /// <param name="rect">
-        /// The rect.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The thickness.</param>
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             if (fill != null)
@@ -129,26 +126,14 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The draw line.
+        /// Draws the polyline from the specified points.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public override void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -186,29 +171,15 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The draw polygon.
+        /// Draws the polygon from the specified points. The polygon can have stroke and/or fill.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public override void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
@@ -253,20 +224,12 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The draw rectangle.
+        /// Draws the rectangle.
         /// </summary>
-        /// <param name="rect">
-        /// The rect.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             if (fill != null)
@@ -282,38 +245,18 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The draw text.
+        /// Draws the text.
         /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="rotate">
-        /// The rotate.
-        /// </param>
-        /// <param name="halign">
-        /// The halign.
-        /// </param>
-        /// <param name="valign">
-        /// The valign.
-        /// </param>
-        /// <param name="maxSize">
-        /// The maximum size of the text.
-        /// </param>
+        /// <param name="p">The p.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="rotate">The rotation angle.</param>
+        /// <param name="halign">The horizontal alignment.</param>
+        /// <param name="valign">The vertical alignment.</param>
+        /// <param name="maxSize">The maximum size of the text.</param>
         public override void DrawText(
             ScreenPoint p,
             string text,
@@ -393,25 +336,17 @@ namespace OxyPlot.Pdf
 
             var layoutRectangle = new XRect(0, 0, size.Width, size.Height);
             var sf = new XStringFormat { Alignment = XStringAlignment.Near, LineAlignment = XLineAlignment.Near };
-            g.DrawString(text, font, ToBrush(fill), layoutRectangle, sf);
+            this.g.DrawString(text, font, ToBrush(fill), layoutRectangle, sf);
             this.g.Restore(state);
         }
 
         /// <summary>
-        /// The measure text.
+        /// Measures the text.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
         /// <returns>
         /// The text size.
         /// </returns>
@@ -440,7 +375,7 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// Save the document to a stream.
+        /// Saves the document to a stream.
         /// </summary>
         /// <param name="s">
         /// The stream.
@@ -448,6 +383,82 @@ namespace OxyPlot.Pdf
         public void Save(Stream s)
         {
             this.doc.Save(s);
+        }
+
+        /// <summary>
+        /// Cleans up.
+        /// </summary>
+        public override void CleanUp()
+        {
+            var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i));
+            foreach (var i in imagesToRelease)
+            {
+                var image = this.GetImage(i);
+                image.Dispose();
+                this.imageCache.Remove(i);
+            }
+
+            this.imagesInUse.Clear();
+        }
+
+        /// <summary>
+        /// Gets the image info.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns>
+        /// The image info.
+        /// </returns>
+        public override OxyImageInfo GetImageInfo(OxyImage source)
+        {
+            var image = this.GetImage(source);
+            return image == null ? null : new OxyImageInfo { Width = image.PixelWidth, Height = image.PixelHeight, DpiX = image.HorizontalResolution, DpiY = image.VerticalResolution };
+        }
+
+        /// <summary>
+        /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcY">The y-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcWidth">Width of the portion of the source image to draw.</param>
+        /// <param name="srcHeight">Height of the portion of the source image to draw.</param>
+        /// <param name="destX">The x-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destY">The y-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destWidth">The width of the drawn image.</param>
+        /// <param name="destHeight">The height of the drawn image.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
+        public override void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double destX, double destY, double destWidth, double destHeight, double opacity, bool interpolate)
+        {
+            var image = this.GetImage(source);
+            if (image != null)
+            {
+                // opacity not suported?
+                // g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
+                this.g.DrawImage(image, new XRect(destX, destY, destWidth, destHeight), new XRect(srcX, srcY, srcWidth, srcHeight), XGraphicsUnit.Presentation);
+            }
+        }
+
+        /// <summary>
+        /// Sets the clip rectangle.
+        /// </summary>
+        /// <param name="rect">The clip rectangle.</param>
+        /// <returns>
+        /// True if the clip rectangle was set.
+        /// </returns>
+        public override bool SetClip(OxyRect rect)
+        {
+            this.g.Save();
+            this.g.IntersectClip(rect.ToXRect());
+            return true;
+        }
+
+        /// <summary>
+        /// Resets the clip rectangle.
+        /// </summary>
+        public override void ResetClip()
+        {
+            this.g.Restore();
         }
 
         /// <summary>
@@ -510,95 +521,10 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
-        /// </param>
-        private void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    if (this.doc != null)
-                    {
-                        this.doc.Dispose();
-                    }
-                }
-            }
-
-            this.disposed = true;
-        }
-
-        /// <summary>
-        /// Cleans up.
-        /// </summary>
-        public override void CleanUp()
-        {
-            var imagesToRelease = imageCache.Keys.Where(i => !imagesInUse.Contains(i));
-            foreach (var i in imagesToRelease)
-            {
-                var image = this.GetImage(i);
-                image.Dispose();
-                imageCache.Remove(i);
-            }
-
-            imagesInUse.Clear();
-        }
-
-        /// <summary>
-        /// Gets the image info.
+        /// Gets or creates a <see cref="XImage"/> from the specified image.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <returns></returns>
-        public override OxyImageInfo GetImageInfo(OxyImage source)
-        {
-            var image = this.GetImage(source);
-            return image == null ? null : new OxyImageInfo { Width = (uint)image.PixelWidth, Height = (uint)image.PixelHeight, DpiX = image.HorizontalResolution, DpiY = image.VerticalResolution };
-        }
-
-        /// <summary>
-        /// Draws the image.
-        /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="srcX">The SRC X.</param>
-        /// <param name="srcY">The SRC Y.</param>
-        /// <param name="srcWidth">Width of the SRC.</param>
-        /// <param name="srcHeight">Height of the SRC.</param>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        /// <param name="w">The w.</param>
-        /// <param name="h">The h.</param>
-        /// <param name="opacity">The opacity.</param>
-        /// <param name="interpolate">if set to <c>true</c> [interpolate].</param>
-        public override void DrawImage(OxyImage source, uint srcX, uint srcY, uint srcWidth, uint srcHeight, double x, double y, double w, double h, double opacity, bool interpolate)
-        {
-            var image = this.GetImage(source);
-            if (image != null)
-            {
-                // opacity not suported?
-                // g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
-                g.DrawImage(image, new XRect(x, y, w, h), new XRect(srcX, srcY, srcWidth, srcHeight), XGraphicsUnit.Presentation);
-            }
-        }
-
-        /// <summary>
-        /// The images in use
-        /// </summary>
-        private HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
-
-        /// <summary>
-        /// The image cache
-        /// </summary>
-        private Dictionary<OxyImage, XImage> imageCache = new Dictionary<OxyImage, XImage>();
-
-
-        /// <summary>
-        /// Gets the image.
-        /// </summary>
-        /// <param name="source">The source.</param>
-        /// <returns></returns>
+        /// <returns>The image</returns>
         private XImage GetImage(OxyImage source)
         {
             if (source == null)
@@ -638,39 +564,25 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// Sets the clip.
+        /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="rect">The rect.</param>
-        /// <returns></returns>
-        public override bool SetClip(OxyRect rect)
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
+        /// </param>
+        private void Dispose(bool disposing)
         {
-            this.g.Save();
-            this.g.IntersectClip(rect.ToXRect());
-            return true;
-        }
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    if (this.doc != null)
+                    {
+                        this.doc.Dispose();
+                    }
+                }
+            }
 
-        /// <summary>
-        /// Resets the clip.
-        /// </summary>
-        public override void ResetClip()
-        {
-            this.g.Restore();
-        }
-    }
-
-    /// <summary>
-    /// Provides extension methods for OxyPlot to PdfSharp type conversion.
-    /// </summary>
-    public static class PdfSharpExtensions
-    {
-        /// <summary>
-        /// Converts an <see cref="OxyRect"/> to an <see cref="XRect"/>.
-        /// </summary>
-        /// <param name="r">The rectangle.</param>
-        /// <returns>The <see cref="XRect"/></returns>
-        public static XRect ToXRect(this OxyRect r)
-        {
-            return new XRect((int)Math.Round(r.Left), (int)Math.Round(r.Top), (int)Math.Round(r.Width), (int)Math.Round(r.Height));
+            this.disposed = true;
         }
     }
 }

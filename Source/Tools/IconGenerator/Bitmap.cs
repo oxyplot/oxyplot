@@ -5,6 +5,7 @@
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [CLSCompliant(false)]
     public struct BITMAPFILEHEADER
     {
         public ushort bfType;
@@ -15,6 +16,7 @@
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    [CLSCompliant(false)]
     public struct BITMAPINFOHEADER
     {
         public uint biSize;
@@ -36,6 +38,7 @@
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [CLSCompliant(false)]
     public struct RGBQUAD
     {
         public byte rgbBlue;
@@ -44,6 +47,7 @@
         public byte rgbReserved;
     }
 
+    [CLSCompliant(false)]
     public class Bitmap
     {
         public ushort Type { get; set; }

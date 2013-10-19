@@ -810,7 +810,7 @@ namespace OxyPlot.Silverlight
                 return null;
             }
 
-            return new OxyImageInfo { Width = (uint)bmp.PixelWidth, Height = (uint)bmp.PixelHeight, DpiX = 96, DpiY = 96 };
+            return new OxyImageInfo { Width = bmp.PixelWidth, Height = bmp.PixelHeight, DpiX = 96, DpiY = 96 };
         }
 
         /// <summary>
@@ -829,10 +829,10 @@ namespace OxyPlot.Silverlight
         /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
         public void DrawImage(
             OxyImage source,
-            uint srcX,
-            uint srcY,
-            uint srcWidth,
-            uint srcHeight,
+            double srcX,
+            double srcY,
+            double srcWidth,
+            double srcHeight,
             double destX,
             double destY,
             double destWidth,

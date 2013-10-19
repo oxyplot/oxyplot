@@ -373,29 +373,29 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Draws the image.
+        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="srcX">The SRC X.</param>
-        /// <param name="srcY">The SRC Y.</param>
-        /// <param name="srcWidth">Width of the SRC.</param>
-        /// <param name="srcHeight">Height of the SRC.</param>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        /// <param name="w">The w.</param>
-        /// <param name="h">The h.</param>
+        /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcY">The y-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcWidth">Width of the portion of the source image to draw.</param>
+        /// <param name="srcHeight">Height of the portion of the source image to draw.</param>
+        /// <param name="destX">The x-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destY">The y-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destWidth">The width of the drawn image.</param>
+        /// <param name="destHeight">The height of the drawn image.</param>
         /// <param name="opacity">The opacity.</param>
         /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
         public virtual void DrawImage(
             OxyImage source,
-            uint srcX,
-            uint srcY,
-            uint srcWidth,
-            uint srcHeight,
-            double x,
-            double y,
-            double w,
-            double h,
+            double srcX,
+            double srcY,
+            double srcWidth,
+            double srcHeight,
+            double destX,
+            double destY,
+            double destWidth,
+            double destHeight,
             double opacity,
             bool interpolate)
         {

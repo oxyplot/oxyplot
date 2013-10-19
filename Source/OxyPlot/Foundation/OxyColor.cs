@@ -145,6 +145,7 @@ namespace OxyPlot
         /// <returns>
         /// The <see cref="OxyColor"/>.
         /// </returns>
+        [CLSCompliant(false)]
         public static OxyColor FromUInt32(uint color)
         {
             var a = (byte)(color >> 24);
@@ -595,6 +596,7 @@ namespace OxyPlot
         /// <returns>
         /// The <see cref="uint"/>.
         /// </returns>
+        [CLSCompliant(false)]
         public uint ToUint()
         {
             uint u = (uint)this.A << 24;

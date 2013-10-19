@@ -42,6 +42,7 @@ namespace OxyPlot.Pdf
     /// <summary>
     /// Provides a report writer for portable document format using MigraDoc.
     /// </summary>
+    [CLSCompliant(false)]
     public class PdfReportWriter : IDisposable, IReportWriter
     {
         /// <summary>
@@ -448,6 +449,5 @@ namespace OxyPlot.Pdf
 
             this.disposed = true;
         }
-
     }
 }
