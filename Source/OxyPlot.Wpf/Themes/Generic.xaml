@@ -41,7 +41,6 @@
   <Style TargetType="{x:Type local:Plot}">
     <Setter Property="Background" Value="White" />
     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-    <Setter Property="IsManipulationEnabled" Value="true" />
     <Setter Property="DefaultTrackerTemplate">
       <Setter.Value>
         <ControlTemplate>

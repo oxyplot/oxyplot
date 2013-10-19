@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OxyPlot.Xps</RootNamespace>
     <AssemblyName>OxyPlot.Xps</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\NET40\</OutputPath>
+    <OutputPath>bin\Debug\NET35\</OutputPath>
     <IntermediateOutputPath>obj\Debug\NET40\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -25,12 +25,12 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Output\NET40x\</OutputPath>
+    <OutputPath>..\..\Output\NET35\</OutputPath>
     <IntermediateOutputPath>obj\Release\NET40\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\NET40x\OxyPlot.Xps.XML</DocumentationFile>
+    <DocumentationFile>..\..\Output\NET35\OxyPlot.Xps.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -39,9 +39,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Printing" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -54,13 +51,13 @@
     <Compile Include="Reporting\FlowDocumentReportWriter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf_NET40x.csproj">
-      <Project>{85bf44b4-059b-4768-be4f-3bd4508615c7}</Project>
-      <Name>OxyPlot.Wpf_NET40x</Name>
+    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf_NET35.csproj">
+      <Project>{4925e7c0-cee4-41f2-bf38-f343e242f047}</Project>
+      <Name>OxyPlot.Wpf_NET35</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OxyPlot\OxyPlot_NET40x.csproj">
-      <Project>{bcc43e58-e473-403e-a84d-63fedc723040}</Project>
-      <Name>OxyPlot_NET40x</Name>
+    <ProjectReference Include="..\OxyPlot\OxyPlot_NET35.csproj">
+      <Project>{197b9f4f-ff78-48e9-982f-938c59c6e49e}</Project>
+      <Name>OxyPlot_NET35</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

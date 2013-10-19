@@ -81,7 +81,8 @@ namespace ExampleBrowser
             {
                 this.vm.FrameRate = this.frameCount / (this.watch.ElapsedMilliseconds * 0.001);
                 this.frameCount = 0;
-                this.watch.Restart();
+                this.watch.Reset();
+                this.watch.Start();
             }
 
             if (this.vm.MeasureFrameRate)
