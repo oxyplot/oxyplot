@@ -43,7 +43,7 @@ namespace OxyPlot.Wpf
         /// The color property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
-            "Color", typeof(Color), typeof(Series), new PropertyMetadata( AppearanceChanged));
+            "Color", typeof(Color), typeof(Series), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
         /// The title property.

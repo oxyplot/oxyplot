@@ -52,7 +52,7 @@ namespace OxyPlot.Wpf
         ///     The fill color property.
         /// </summary>
         public static readonly DependencyProperty FillColorProperty = DependencyProperty.Register(
-            "FillColor", typeof(Color), typeof(BarSeriesBase), new PropertyMetadata(AppearanceChanged));
+            "FillColor", typeof(Color), typeof(BarSeriesBase), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
         ///     The is stacked property.
@@ -90,7 +90,7 @@ namespace OxyPlot.Wpf
                 "NegativeFillColor",
                 typeof(Color),
                 typeof(BarSeriesBase),
-                new PropertyMetadata(null, AppearanceChanged));
+                new PropertyMetadata(MoreColors.Undefined, AppearanceChanged));
 
         /// <summary>
         /// The stack group property

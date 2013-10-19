@@ -94,6 +94,11 @@ namespace OxyPlot.Wpf.Tests
                 }
 
                 var v2 = pd2.GetValue(o2);
+                if (v2 is Color)
+                {
+                    v2 = ((Color)v2).ToOxyColor();
+                }
+
                 if (AreEqual(v1, v2))
                 {
                     continue;
