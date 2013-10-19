@@ -29,12 +29,15 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Metro
 {
+    using System;
+
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
 
     /// <summary>
     /// The tracker definition.
     /// </summary>
+    [CLSCompliant(false)]
     public class TrackerDefinition : DependencyObject
     {
         /// <summary>

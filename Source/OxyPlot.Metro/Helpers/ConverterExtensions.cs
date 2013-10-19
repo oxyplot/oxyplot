@@ -39,6 +39,7 @@ namespace OxyPlot.Metro
     /// <summary>
     /// Extension method used to convert to/from Windows/Windows.Media classes.
     /// </summary>
+    [CLSCompliant(false)]
     public static class ConverterExtensions
     {
         /// <summary>

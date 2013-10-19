@@ -50,6 +50,7 @@ namespace OxyPlot.Metro
     /// The plot control for Windows Store apps.
     /// </summary>
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
+    [CLSCompliant(false)]
     public partial class Plot : Control, IPlotControl
     {
         /// <summary>
@@ -717,9 +718,26 @@ namespace OxyPlot.Metro
         protected override void OnPointerMoved(PointerRoutedEventArgs e)
         {
             base.OnPointerMoved(e);
+
+            if (e.Handled)
+            {
+                return;
+            }
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(e);
+                this.ActualModel.HandleMouseMove(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Delta(this.CreateManipulationEventArgs(e));
+                e.Handled = true;
             }
         }
 
@@ -751,6 +769,16 @@ namespace OxyPlot.Metro
                 clickCount = 2;
             }
 
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(e);
+                this.ActualModel.HandleMouseDown(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             this.mouseManipulator = this.GetManipulator(button, clickCount, shift, control);
 
             if (this.mouseManipulator != null)
@@ -772,6 +800,23 @@ namespace OxyPlot.Metro
         {
             base.OnPointerReleased(e);
 
+            if (e.Handled)
+            {
+                return;
+            }
+
+            this.ReleasePointerCapture(e.Pointer);
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(e);
+                this.ActualModel.HandleMouseUp(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Completed(this.CreateManipulationEventArgs(e));
@@ -779,7 +824,6 @@ namespace OxyPlot.Metro
             }
 
             this.mouseManipulator = null;
-            this.ReleasePointerCapture(e.Pointer);
 
             e.Handled = true;
         }
@@ -822,6 +866,62 @@ namespace OxyPlot.Metro
             ((Plot)sender).OnModelChanged();
         }
 
+        /// <summary>
+        /// Converts the specified mouse button.
+        /// </summary>
+        /// <param name="button">The button.</param>
+        /// <returns>A <see cref="OxyMouseButton"/></returns>
+        private static OxyMouseButton Convert(MouseButton button)
+        {
+            switch (button)
+            {
+                case MouseButton.Left:
+                    return OxyMouseButton.Left;
+                case MouseButton.Middle:
+                    return OxyMouseButton.Middle;
+                case MouseButton.Right:
+                    return OxyMouseButton.Right;
+                case MouseButton.XButton1:
+                    return OxyMouseButton.XButton1;
+                case MouseButton.XButton2:
+                    return OxyMouseButton.XButton2;
+                default:
+                    return OxyMouseButton.None;
+            }
+        }
+
+        /// <summary>
+        /// Creates the mouse event arguments.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="PointerRoutedEventArgs"/> instance containing the event data.
+        /// </param>
+        /// <returns>
+        /// Mouse event arguments.
+        /// </returns>
+        private OxyMouseEventArgs CreateMouseEventArgs(PointerRoutedEventArgs e)
+        {
+            var position = e.GetCurrentPoint(this).Position;
+            var button = this.GetMouseButton(e);
+            var shift = (e.KeyModifiers & VirtualKeyModifiers.Shift) == VirtualKeyModifiers.Shift;
+            var control = (e.KeyModifiers & VirtualKeyModifiers.Control) == VirtualKeyModifiers.Control;
+            int clickCount = 1;
+            if (MouseButtonHelper.IsDoubleClick(this, position))
+            {
+                clickCount = 2;
+            }
+
+            return new OxyMouseEventArgs
+            {
+                ChangedButton = Convert(button),
+                Position = position.ToScreenPoint(),
+                IsShiftDown = shift,
+                IsControlDown = control,
+                IsAltDown = false,
+                ClickCount = clickCount
+            };
+        }
+        
         /// <summary>
         /// Adds a vector to a point.
         /// </summary>
