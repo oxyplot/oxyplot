@@ -371,7 +371,7 @@ namespace OxyPlot.Reporting
         {
             get
             {
-                if (this.textColor != null)
+                if (!this.textColor.IsUndefined())
                 {
                     return this.textColor;
                 }

@@ -139,7 +139,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// The update data.
+        /// Updates the data.
         /// </summary>
         protected internal override void UpdateData()
         {

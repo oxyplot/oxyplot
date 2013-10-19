@@ -64,7 +64,7 @@ namespace ExampleBrowser
         {
             get
             {
-                return SelectedExample != null && SelectedExample.PlotModel.Background != null
+                return SelectedExample != null && SelectedExample.PlotModel.Background.IsVisible()
                            ? SelectedExample.PlotModel.Background.ToColor()
                            : Color.White;
             }

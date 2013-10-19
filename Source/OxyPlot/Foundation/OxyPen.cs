@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyPen.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Describes a pen in terms of color, thickness, line style and line join type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
@@ -59,13 +60,13 @@ namespace OxyPlot
         {
             this.Color = color;
             this.Thickness = thickness;
-            this.DashArray = LineStyleHelper.GetDashArray(lineStyle);
+            this.DashArray = lineStyle.GetDashArray();
             this.LineStyle = lineStyle;
             this.LineJoin = lineJoin;
         }
 
         /// <summary>
-        /// Gets or sets the color.
+        /// Gets or sets the color of the pen.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
@@ -77,9 +78,9 @@ namespace OxyPlot
         public double[] DashArray { get; set; }
 
         /// <summary>
-        /// Gets or sets the line join.
+        /// Gets or sets the line join type.
         /// </summary>
-        /// <value>The line join.</value>
+        /// <value>The line join type.</value>
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
@@ -89,9 +90,9 @@ namespace OxyPlot
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the thickness.
+        /// Gets or sets the line thickness.
         /// </summary>
-        /// <value>The thickness.</value>
+        /// <value>The line thickness.</value>
         public double Thickness { get; set; }
 
         /// <summary>
@@ -108,7 +109,7 @@ namespace OxyPlot
             LineStyle lineStyle = LineStyle.Solid,
             OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
-            if (color == null || lineStyle == LineStyle.None || Math.Abs(thickness) < double.Epsilon)
+            if (color.IsInvisible() || lineStyle == LineStyle.None || Math.Abs(thickness) < double.Epsilon)
             {
                 return null;
             }
@@ -133,6 +134,5 @@ namespace OxyPlot
                 return result;
             }
         }
-
     }
 }

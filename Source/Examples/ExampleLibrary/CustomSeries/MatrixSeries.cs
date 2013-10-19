@@ -201,7 +201,7 @@
 
             rc.DrawClippedLineSegments(points, clip, this.GridColor, 1, LineStyle.Solid, OxyPenLineJoin.Miter, true);
 
-            if (this.BorderColor != null)
+            if (this.BorderColor.IsVisible())
             {
                 var borderPoints = new List<ScreenPoint>
                     {

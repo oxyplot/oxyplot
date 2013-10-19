@@ -30,7 +30,6 @@
 namespace OxyPlot
 {
     using System;
-    using System.ComponentModel;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
@@ -38,31 +37,31 @@ namespace OxyPlot
     /// <summary>
     /// Describes a color in terms of alpha, red, green, and blue channels.
     /// </summary>
-    public class OxyColor : ICodeGenerating
+    public struct OxyColor : ICodeGenerating
     {
         /// <summary>
-        /// Gets or sets the alpha value.
+        /// Gets the alpha value.
         /// </summary>
         /// <value> The alpha value. </value>
-        public byte A { get; set; }
+        public byte A { get; private set; }
 
         /// <summary>
-        /// Gets or sets the blue value.
+        /// Gets the blue value.
         /// </summary>
         /// <value> The blue value. </value>
-        public byte B { get; set; }
+        public byte B { get; private set; }
 
         /// <summary>
-        /// Gets or sets the green value.
+        /// Gets the green value.
         /// </summary>
         /// <value> The green value. </value>
-        public byte G { get; set; }
+        public byte G { get; private set; }
 
         /// <summary>
-        /// Gets or sets the red value.
+        /// Gets the red value.
         /// </summary>
         /// <value> The red value. </value>
-        public byte R { get; set; }
+        public byte R { get; private set; }
 
         /// <summary>
         /// Parse a string.
@@ -208,7 +207,7 @@ namespace OxyPlot
                 }
 
                 hue *= 6.0;
-                int i = (int)Math.Floor(hue);
+                var i = (int)Math.Floor(hue);
                 double f = hue - i;
                 double aa = val * (1 - sat);
                 double bb = val * (1 - (sat * f));
@@ -298,7 +297,7 @@ namespace OxyPlot
         /// </returns>
         public static OxyColor FromAColor(byte a, OxyColor color)
         {
-            return new OxyColor { A = a, R = color.R, G = color.G, B = color.B };
+            return FromArgb(a, color.R, color.G, color.B);
         }
 
         /// <summary>
@@ -391,14 +390,9 @@ namespace OxyPlot
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj == null)
             {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
+                throw new InvalidOperationException("Should not compare against null!");
             }
 
             if (obj.GetType() != typeof(OxyColor))
@@ -420,16 +414,6 @@ namespace OxyPlot
         /// </returns>
         public bool Equals(OxyColor other)
         {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
             return other.A == this.A && other.R == this.R && other.G == this.G && other.B == this.B;
         }
 
@@ -443,11 +427,12 @@ namespace OxyPlot
         {
             var t = typeof(OxyColors);
             var colors = t.GetFields(BindingFlags.Public | BindingFlags.Static);
+            var thisColor = this;
             var colorField = colors.FirstOrDefault(
                 field =>
                 {
                     var color = field.GetValue(null);
-                    return this.Equals(color);
+                    return thisColor.Equals(color);
                 });
             return colorField != null ? colorField.Name : null;
         }
@@ -576,7 +561,7 @@ namespace OxyPlot
         /// The factor.
         /// </param>
         /// <returns>
-        /// The new OxyColor.
+        /// A OxyColor with the new intensity.
         /// </returns>
         public OxyColor ChangeIntensity(double factor)
         {
@@ -609,10 +594,46 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Determines whether this color is invisible.
+        /// </summary>
+        /// <returns><c>True</c> if the alpha value is 0.</returns>
+        public bool IsInvisible()
+        {
+            return this.A == 0;
+        }
+
+        /// <summary>
+        /// Determines whether this color is visible.
+        /// </summary>
+        /// <returns><c>True</c> if the alpha value is greater than 0.</returns>
+        public bool IsVisible()
+        {
+            return this.A > 0;
+        }
+
+        /// <summary>
+        /// Determines whether this color is undefined.
+        /// </summary>
+        /// <returns><c>True</c> if the color equals <see cref="OxyColors.Undefined"/>.</returns>
+        public bool IsUndefined()
+        {
+            return this.Equals(OxyColors.Undefined);
+        }
+
+        /// <summary>
+        /// Determines whether this color is automatic.
+        /// </summary>
+        /// <returns><c>True</c> if the color equals <see cref="OxyColors.Automatic"/>.</returns>
+        public bool IsAutomatic()
+        {
+            return this.Equals(OxyColors.Automatic);
+        }
+
+        /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>
         /// <returns>
-        /// The to code.
+        /// The code.
         /// </returns>
         public string ToCode()
         {
@@ -623,6 +644,16 @@ namespace OxyPlot
             }
 
             return string.Format("OxyColor.FromArgb({0}, {1}, {2}, {3})", this.A, this.R, this.G, this.B);
+        }
+
+        /// <summary>
+        /// Gets the actual color.
+        /// </summary>
+        /// <param name="defaultColor">The default color.</param>
+        /// <returns>The default color if the current color equals OxyColors.Automatic, otherwise the color itself.</returns>
+        public OxyColor GetActualColor(OxyColor defaultColor)
+        {
+            return this.IsAutomatic() ? defaultColor : this;
         }
     }
 }

@@ -95,7 +95,7 @@ namespace ExportDemo
             {
                 using (var s = d.OpenFile())
                 {
-                    PngExporter.Export(this.plot1.ActualModel, s, this.plot1.ActualWidth, this.plot1.ActualHeight);
+                    PngExporter.Export(this.plot1.ActualModel, s, this.plot1.ActualWidth, this.plot1.ActualHeight, OxyColors.Transparent);
                 }
             }
         }

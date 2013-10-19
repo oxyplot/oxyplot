@@ -205,7 +205,7 @@ namespace OxyPlot.Annotations
             // draw the copyright notice
             var p = new ScreenPoint(clippingRect.Right - 5, clippingRect.Bottom - 5);
             var textSize = rc.MeasureText(this.CopyrightNotice, null, 12);
-            rc.DrawRectangle(new OxyRect(p.X - textSize.Width - 2, p.Y - textSize.Height - 2, textSize.Width + 4, textSize.Height + 4), OxyColors.White.ChangeAlpha(200), null);
+            rc.DrawRectangle(new OxyRect(p.X - textSize.Width - 2, p.Y - textSize.Height - 2, textSize.Width + 4, textSize.Height + 4), OxyColors.White.ChangeAlpha(200), OxyColors.Undefined);
 
             rc.DrawText(
                 p,

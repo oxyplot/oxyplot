@@ -47,9 +47,9 @@ namespace OxyPlot.Series
         public CandleStickSeries()
         {
             this.CandleWidth = 10;
-            this.IncreasingFill = null;
-            this.DecreasingFill = null;
-            this.ShadowEndColor = null;
+            this.IncreasingFill = OxyColors.Automatic;
+            this.DecreasingFill = OxyColors.Undefined;
+            this.ShadowEndColor = OxyColors.Undefined;
             this.ShadowEndLength = 1.0;
         }
 
@@ -118,7 +118,7 @@ namespace OxyPlot.Series
         {
             get
             {
-                return this.IncreasingFill ?? this.ActualColor;
+                return this.IncreasingFill.GetActualColor(this.ActualColor);
             }
         }
 
@@ -196,7 +196,7 @@ namespace OxyPlot.Series
                             true);
 
                         // Shadow ends
-                        if (this.ShadowEndColor != null && this.ShadowEndLength > 0)
+                        if (this.ShadowEndColor.IsVisible() && this.ShadowEndLength > 0)
                         {
                             var highLeft = new ScreenPoint(high.X - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, high.Y);
                             var highRight = new ScreenPoint(high.X + (this.CandleWidth * 0.5 * this.ShadowEndLength), high.Y);
@@ -263,7 +263,7 @@ namespace OxyPlot.Series
                 true);
 
             // Shadow ends
-            if (this.ShadowEndColor != null && this.ShadowEndLength > 0)
+            if (this.ShadowEndColor.IsVisible() && this.ShadowEndLength > 0)
             {
                 var highLeft = new ScreenPoint(xmid - (this.CandleWidth * 0.5 * this.ShadowEndLength) - 1, legendBox.Top);
                 var highRight = new ScreenPoint(xmid + (this.CandleWidth * 0.5 * this.ShadowEndLength), legendBox.Top);

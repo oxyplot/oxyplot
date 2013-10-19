@@ -74,13 +74,13 @@ namespace OxyPlot.WindowsForms
         /// <param name="thickness">The thickness.</param>
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 this.g.FillEllipse(
                     this.ToBrush(fill), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
             }
 
-            if (stroke == null || thickness <= 0)
+            if (stroke.IsInvisible() || thickness <= 0)
             {
                 return;
             }
@@ -109,7 +109,7 @@ namespace OxyPlot.WindowsForms
             OxyPenLineJoin lineJoin,
             bool aliased)
         {
-            if (stroke == null || thickness <= 0 || points.Count < 2)
+            if (stroke.IsInvisible() || thickness <= 0 || points.Count < 2)
             {
                 return;
             }
@@ -117,7 +117,6 @@ namespace OxyPlot.WindowsForms
             this.g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
             using (var pen = this.GetCachedPen(stroke, thickness, dashArray, lineJoin))
             {
-
                 this.g.DrawLines(pen, this.ToPoints(points));
             }
         }
@@ -171,35 +170,37 @@ namespace OxyPlot.WindowsForms
 
             this.g.SmoothingMode = aliased ? SmoothingMode.None : SmoothingMode.HighQuality;
 
-            PointF[] pts = this.ToPoints(points);
-            if (fill != null)
+            var pts = this.ToPoints(points);
+            if (fill.IsVisible())
             {
                 this.g.FillPolygon(this.ToBrush(fill), pts);
             }
 
-            if (stroke != null && thickness > 0)
+            if (stroke.IsInvisible() || thickness <= 0)
             {
-                using (var pen = this.GetCachedPen(stroke, thickness))
+                return;
+            }
+
+            using (var pen = this.GetCachedPen(stroke, thickness))
+            {
+                if (dashArray != null)
                 {
-                    if (dashArray != null)
-                    {
-                        pen.DashPattern = this.ToFloatArray(dashArray);
-                    }
-
-                    switch (lineJoin)
-                    {
-                        case OxyPenLineJoin.Round:
-                            pen.LineJoin = LineJoin.Round;
-                            break;
-                        case OxyPenLineJoin.Bevel:
-                            pen.LineJoin = LineJoin.Bevel;
-                            break;
-
-                        // The default LineJoin is Miter
-                    }
-
-                    this.g.DrawPolygon(pen, pts);
+                    pen.DashPattern = this.ToFloatArray(dashArray);
                 }
+
+                switch (lineJoin)
+                {
+                    case OxyPenLineJoin.Round:
+                        pen.LineJoin = LineJoin.Round;
+                        break;
+                    case OxyPenLineJoin.Bevel:
+                        pen.LineJoin = LineJoin.Bevel;
+                        break;
+
+                    // The default LineJoin is Miter
+                }
+
+                this.g.DrawPolygon(pen, pts);
             }
         }
 
@@ -220,13 +221,13 @@ namespace OxyPlot.WindowsForms
         /// </param>
         public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 this.g.FillRectangle(
                     this.ToBrush(fill), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
             }
 
-            if (stroke == null || thickness <= 0)
+            if (stroke.IsInvisible() || thickness <= 0)
             {
                 return;
             }
@@ -384,7 +385,7 @@ namespace OxyPlot.WindowsForms
         /// </returns>
         private Brush ToBrush(OxyColor fill)
         {
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 return new SolidBrush(this.ToColor(fill));
             }

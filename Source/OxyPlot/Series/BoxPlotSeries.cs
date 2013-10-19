@@ -50,7 +50,7 @@ namespace OxyPlot.Series
                 "X: {1:0.00}\nUpper Whisker: {2:0.00}\nThird Quartil: {3:0.00}\nMedian: {4:0.00}\nFirst Quartil: {5:0.00}\nLower Whisker: {6:0.00}";
             this.OutlierTrackerFormatString = "X: {1:0.00}\nY: {2:0.00}";
             this.Title = null;
-            this.Fill = null;
+            this.Fill = OxyColors.Automatic;
             this.Stroke = OxyColors.Black;
             this.BoxWidth = 0.3;
             this.StrokeThickness = 1;
@@ -407,7 +407,7 @@ namespace OxyPlot.Series
                             mc.Y - this.MedianPointSize,
                             this.MedianPointSize * 2,
                             this.MedianPointSize * 2);
-                        rc.DrawEllipse(ellipseRect, fillColor, null, 0);
+                        rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined, 0);
                     }
                 }
             }
@@ -520,7 +520,7 @@ namespace OxyPlot.Series
                     ymid - this.MedianPointSize,
                     this.MedianPointSize * 2,
                     this.MedianPointSize * 2);
-                rc.DrawEllipse(ellipseRect, fillColor, null);
+                rc.DrawEllipse(ellipseRect, fillColor, OxyColors.Undefined);
             }
         }
 

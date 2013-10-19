@@ -46,6 +46,9 @@ namespace OxyPlot.Axes
             this.Position = AxisPosition.None;
             this.IsPanEnabled = false;
             this.IsZoomEnabled = false;
+
+            this.LowColor = OxyColors.Undefined;
+            this.HighColor = OxyColors.Undefined;
         }
 
         /// <summary>
@@ -119,12 +122,12 @@ namespace OxyPlot.Axes
         /// </remarks>
         public override int GetPaletteIndex(double value)
         {
-            if (this.LowColor != null && value < this.Minimum)
+            if (!this.LowColor.IsUndefined() && value < this.Minimum)
             {
                 return 0;
             }
 
-            if (this.HighColor != null && value > this.Maximum)
+            if (!this.HighColor.IsUndefined() && value > this.Maximum)
             {
                 return this.Palette.Colors.Count + 1;
             }
@@ -194,7 +197,7 @@ namespace OxyPlot.Axes
                                 ? new OxyRect(ymin, top, ymax - ymin, height)
                                 : new OxyRect(left, ymin, width, ymax - ymin),
                             color,
-                            null);
+                            OxyColors.Undefined);
                     };
 
                 int n = this.Palette.Colors.Count;
@@ -211,13 +214,13 @@ namespace OxyPlot.Axes
                     highLowLength *= -1;
                 }
 
-                if (this.LowColor != null)
+                if (!this.LowColor.IsUndefined())
                 {
                     double ylow = this.Transform(this.ActualMinimum);
                     drawColorRect(ylow, ylow + highLowLength, this.LowColor);
                 }
 
-                if (this.HighColor != null)
+                if (!this.HighColor.IsUndefined())
                 {
                     double yhigh = this.Transform(this.ActualMaximum);
                     drawColorRect(yhigh, yhigh - highLowLength, this.HighColor);

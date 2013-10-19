@@ -78,6 +78,7 @@
     <Compile Include="Helpers\WeakEvents\RenderingEventManager.cs" />
     <Compile Include="Helpers\WeakEvents\WeakEventListenerT.cs" />
     <Compile Include="Helpers\WeakEvents\WeakEventManagerBaseT.cs" />
+    <Compile Include="MoreColors.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Plot.TouchEvents.cs" />
     <Compile Include="RenderingControl.cs" />

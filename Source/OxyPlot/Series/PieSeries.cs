@@ -436,7 +436,7 @@ namespace OxyPlot.Series
         {
             foreach (var slice in this.Slices)
             {
-                if (slice.Fill == null)
+                if (slice.Fill.IsAutomatic())
                 {
                     slice.DefaultFillColor = model.GetDefaultColor();
                 }

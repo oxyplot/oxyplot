@@ -60,7 +60,7 @@ namespace ExampleLibrary
                     Color = OxyColors.Black,
                     FontSize = 0,
                     ContourLevelStep = 1,
-                    LabelBackground = null,
+                    LabelBackground = OxyColors.Undefined,
                     ColumnCoordinates = yvalues,
                     RowCoordinates = xvalues,
                     Data = peaksData

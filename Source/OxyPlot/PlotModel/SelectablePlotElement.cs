@@ -93,7 +93,7 @@ namespace OxyPlot
             {
                 if (this.PlotModel != null)
                 {
-                    return this.PlotModel.SelectionColor ?? PlotModel.DefaultSelectionColor;
+                    return this.PlotModel.SelectionColor.GetActualColor(PlotModel.DefaultSelectionColor);
                 }
 
                 return PlotModel.DefaultSelectionColor;
@@ -213,10 +213,10 @@ namespace OxyPlot
         /// </returns>
         protected OxyColor GetSelectableColor(OxyColor originalColor, int index = -1)
         {
-            // TODO: rename to GetActualColor? (33 usages)
-            if (originalColor == null)
+            // TODO: rename to GetActualColor (33 usages)
+            if (originalColor.IsUndefined())
             {
-                return null;
+                return OxyColors.Undefined;
             }
 
             if (this.IsItemSelected(index))

@@ -232,7 +232,7 @@ namespace OxyPlot
             var textSize = rc.DrawMathText(
                 new ScreenPoint(x, y),
                 s.Title,
-                this.LegendTextColor ?? this.TextColor,
+                this.LegendTextColor.GetActualColor(this.TextColor),
                 this.LegendFont ?? this.DefaultFont,
                 this.LegendFontSize,
                 this.LegendFontWeight,
@@ -343,7 +343,7 @@ namespace OxyPlot
                     titleSize = rc.DrawMathText(
                         new ScreenPoint(rect.Left + x, rect.Top + top),
                         this.LegendTitle,
-                        this.LegendTitleColor ?? this.TextColor,
+                        this.LegendTitleColor.GetActualColor(this.TextColor),
                         this.LegendTitleFont ?? this.DefaultFont,
                         this.LegendTitleFontSize,
                         this.LegendTitleFontWeight,

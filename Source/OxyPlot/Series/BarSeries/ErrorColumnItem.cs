@@ -39,6 +39,7 @@ namespace OxyPlot.Series
         /// </summary>
         public ErrorColumnItem()
         {
+            this.Color = OxyColors.Undefined;
         }
 
         /// <summary>
@@ -53,15 +54,12 @@ namespace OxyPlot.Series
         /// <param name="categoryIndex">
         /// Index of the category.
         /// </param>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        public ErrorColumnItem(double value, double error, int categoryIndex = -1, OxyColor color = null)
+        public ErrorColumnItem(double value, double error, int categoryIndex = -1)
+            : this()
         {
             this.Value = value;
             this.Error = error;
             this.CategoryIndex = categoryIndex;
-            this.Color = color;
         }
 
         /// <summary>
@@ -77,7 +75,7 @@ namespace OxyPlot.Series
         /// </returns>
         public override string ToCode()
         {
-            if (this.Color != null)
+            if (!this.Color.IsUndefined())
             {
                 return CodeGenerator.FormatConstructor(
                     this.GetType(), "{0},{1},{2},{3}", this.Value, this.Error, this.CategoryIndex, this.Color.ToCode());

@@ -36,6 +36,7 @@ using OxyPlot.Pdf;
 
 namespace CsvDemo
 {
+    using OxyPlot;
     using OxyPlot.Wpf;
 
     /// <summary>
@@ -93,7 +94,7 @@ namespace CsvDemo
                 switch (ext)
                 {
                     case ".png":
-                        plot1.SaveBitmap(dlg.FileName);
+                        plot1.SaveBitmap(dlg.FileName, 0, 0, OxyColors.Automatic);
                         break;
                     case ".svg":
                         var rc = new ShapesRenderContext(null);
@@ -133,7 +134,7 @@ namespace CsvDemo
         private void CopySvg_Click(object sender, RoutedEventArgs e)
         {
             var rc = new ShapesRenderContext(null);
-            Clipboard.SetText(vm.Model.ToSvg(plot1.ActualWidth, plot1.ActualHeight, true,rc));
+            Clipboard.SetText(vm.Model.ToSvg(plot1.ActualWidth, plot1.ActualHeight, true, rc));
         }
 
         private void CopyBitmap_Click(object sender, RoutedEventArgs e)

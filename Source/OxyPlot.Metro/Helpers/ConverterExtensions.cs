@@ -135,14 +135,14 @@ namespace OxyPlot.Metro
         /// </returns>
         public static OxyColor ToOxyColor(this Color? color)
         {
-            return color.HasValue ? color.Value.ToOxyColor() : null;
+            return color.HasValue ? color.Value.ToOxyColor() : OxyColors.Undefined;
         }
 
         /// <summary>
         /// Converts a SolidColorBrush to an OxyColor.
         /// </summary>
         /// <param name="brush">
-        /// The brush.
+        /// The brush to convert.
         /// </param>
         /// <returns>
         /// An oxycolor.
@@ -150,7 +150,7 @@ namespace OxyPlot.Metro
         public static OxyColor ToOxyColor(this Brush brush)
         {
             var scb = brush as SolidColorBrush;
-            return scb != null ? scb.Color.ToOxyColor() : null;
+            return scb != null ? scb.Color.ToOxyColor() : OxyColors.Undefined;
         }
 
         /// <summary>

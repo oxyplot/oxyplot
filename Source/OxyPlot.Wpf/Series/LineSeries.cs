@@ -44,7 +44,7 @@ namespace OxyPlot.Wpf
         /// The BrokenLineColor property.
         /// </summary>
         public static readonly DependencyProperty BrokenLineColorProperty = DependencyProperty.Register(
-            "BrokenLineColor", typeof(Color?), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
+            "BrokenLineColor", typeof(Color), typeof(LineSeries), new PropertyMetadata(AppearanceChanged));
 
         /// <summary>
         /// The BrokenLineStyle property.
@@ -106,7 +106,7 @@ namespace OxyPlot.Wpf
         /// The marker fill property.
         /// </summary>
         public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(
-            "MarkerFill", typeof(Color?), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
+            "MarkerFill", typeof(Color), typeof(LineSeries), new PropertyMetadata(AppearanceChanged));
 
         /// <summary>
         /// The marker outline property.
@@ -130,7 +130,7 @@ namespace OxyPlot.Wpf
         /// The marker stroke property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeProperty = DependencyProperty.Register(
-            "MarkerStroke", typeof(OxyColor), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
+            "MarkerStroke", typeof(Color), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The marker stroke thickness property.
@@ -185,11 +185,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the broken line color.
         /// </summary>
-        public Color? BrokenLineColor
+        public Color BrokenLineColor
         {
             get
             {
-                return (Color?)this.GetValue(BrokenLineColorProperty);
+                return (Color)this.GetValue(BrokenLineColorProperty);
             }
 
             set
@@ -335,11 +335,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets MarkerFill.
         /// </summary>
-        public Color? MarkerFill
+        public Color MarkerFill
         {
             get
             {
-                return (Color?)this.GetValue(MarkerFillProperty);
+                return (Color)this.GetValue(MarkerFillProperty);
             }
 
             set
@@ -395,11 +395,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets MarkerStroke.
         /// </summary>
-        public OxyColor MarkerStroke
+        public Color MarkerStroke
         {
             get
             {
-                return (OxyColor)this.GetValue(MarkerStrokeProperty);
+                return (Color)this.GetValue(MarkerStrokeProperty);
             }
 
             set
@@ -497,7 +497,7 @@ namespace OxyPlot.Wpf
             s.LineStyle = this.LineStyle;
             s.MarkerResolution = this.MarkerResolution;
             s.MarkerSize = this.MarkerSize;
-            s.MarkerStroke = this.MarkerStroke;
+            s.MarkerStroke = this.MarkerStroke.ToOxyColor();
             s.MarkerType = this.MarkerType;
             s.MarkerStrokeThickness = this.MarkerStrokeThickness;
             s.Dashes = this.Dashes;

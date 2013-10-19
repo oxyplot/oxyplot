@@ -62,7 +62,7 @@ namespace OxyPlot.Series
         /// <value>The actual color.</value>
         public OxyColor ActualColor2
         {
-            get { return this.Color2 ?? this.defaultColor2; }
+            get { return this.Color2.GetActualColor(this.defaultColor2); }
         }
 
         /// <summary>
@@ -100,10 +100,14 @@ namespace OxyPlot.Series
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
-            if (this.Color2 == null)
+            if (this.Color2.IsAutomatic())
+            {
+                this.defaultColor2 = model.GetDefaultColor();
+            }
+
+            if (this.LineStyle2 == LineStyle.Undefined)
             {
                 this.LineStyle2 = model.GetDefaultLineStyle();
-                this.defaultColor2 = model.GetDefaultColor();
             }
         }
 

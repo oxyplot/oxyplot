@@ -614,8 +614,9 @@ namespace OxyPlot.WindowsForms
                 Debug.WriteLine(trace);
                 using (var font = new Font("Arial", 10))
                 {
+                    e.Graphics.ResetTransform();
                     e.Graphics.DrawString(
-                        "OxyPlot paint exception: " + paintException.Message, font, Brushes.Red, 10, 10);
+                        "OxyPlot paint exception: " + paintException.Message, font, Brushes.Red, this.Width / 2, this.Height / 2, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
                 }
             }
         }

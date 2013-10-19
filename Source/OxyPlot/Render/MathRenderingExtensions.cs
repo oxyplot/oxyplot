@@ -209,7 +209,7 @@ namespace OxyPlot
         {
             if (text.Contains("^{") || text.Contains("_{"))
             {
-                return InternalDrawMathText(rc, 0, 0, text, null, fontFamily, fontSize, fontWeight, true);
+                return InternalDrawMathText(rc, 0, 0, text, OxyColors.Black, fontFamily, fontSize, fontWeight, true);
             }
 
             return rc.MeasureText(text, fontFamily, fontSize, fontWeight);

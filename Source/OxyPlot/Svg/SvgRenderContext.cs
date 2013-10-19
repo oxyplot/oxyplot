@@ -67,9 +67,9 @@ namespace OxyPlot
 
             this.w = new SvgWriter(s, width, height, isDocument);
             this.TextMeasurer = textMeasurer;
-            if (background != null)
+            if (background.IsVisible())
             {
-                this.w.WriteRectangle(0, 0, width, height, this.w.CreateStyle(background, null, 0));
+                this.w.WriteRectangle(0, 0, width, height, this.w.CreateStyle(background, OxyColors.Undefined, 0));
             }
         }
 
@@ -136,7 +136,7 @@ namespace OxyPlot
             OxyPenLineJoin lineJoin,
             bool aliased)
         {
-            this.w.WritePolyline(points, this.w.CreateStyle(null, stroke, thickness, dashArray, lineJoin));
+            this.w.WritePolyline(points, this.w.CreateStyle(OxyColors.Undefined, stroke, thickness, dashArray, lineJoin));
         }
 
         /// <summary>

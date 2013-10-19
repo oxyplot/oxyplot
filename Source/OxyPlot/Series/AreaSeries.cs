@@ -48,6 +48,7 @@ namespace OxyPlot.Series
         public AreaSeries()
         {
             this.Reverse2 = true;
+            this.Color2 = OxyColors.Automatic;
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace OxyPlot.Series
         {
             get
             {
-                return this.Color2 ?? this.ActualColor;
+                return this.Color2.GetActualColor(this.ActualColor);
             }
         }
 
@@ -101,7 +102,7 @@ namespace OxyPlot.Series
         {
             get
             {
-                return this.Fill ?? (this.ActualColor != null ? this.ActualColor.ChangeAlpha(100) : null);
+                return this.Fill.GetActualColor(this.ActualColor.ChangeAlpha(100));
             }
         }
 
@@ -241,7 +242,7 @@ namespace OxyPlot.Series
             pts.AddRange(pts0);
 
             // pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
-            rc.DrawClippedPolygon(pts, clippingRect, minDistSquared, this.GetSelectableFillColor(this.ActualFill), null);
+            rc.DrawClippedPolygon(pts, clippingRect, minDistSquared, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
 
             // draw the markers on top
             rc.DrawMarkers(
@@ -289,7 +290,7 @@ namespace OxyPlot.Series
             pts.AddRange(pts1);
             rc.DrawLine(pts0, this.GetSelectableColor(this.ActualColor), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
             rc.DrawLine(pts1, this.GetSelectableColor(this.ActualColor2), this.StrokeThickness, this.ActualLineStyle.GetDashArray());
-            rc.DrawPolygon(pts, this.GetSelectableFillColor(this.ActualFill), null);
+            rc.DrawPolygon(pts, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
         }
 
         /// <summary>

@@ -52,9 +52,9 @@ namespace OxyPlot.Wpf
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var color = value as OxyColor;
-            if (color != null)
+            if (value is OxyColor)
             {
+                var color = (OxyColor)value;
                 if (targetType == typeof(Color))
                 {
                     return color.ToColor();

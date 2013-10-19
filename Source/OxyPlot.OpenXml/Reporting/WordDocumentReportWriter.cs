@@ -356,7 +356,7 @@ namespace OxyPlot.OpenXml
 
             // write to a png
             // todo: write to a stream, not to disk
-            PngExporter.Export(plot.PlotModel, sourceFullPath, (int)plot.Width, (int)plot.Height);
+            PngExporter.Export(plot.PlotModel, sourceFullPath, (int)plot.Width, (int)plot.Height, OxyColors.Automatic);
 
             // append the image to the document
             this.AppendImage(sourceFullPath, "Plot" + plot.FigureNumber);
@@ -559,7 +559,7 @@ namespace OxyPlot.OpenXml
             rPr.Append(
                 new FontSizeComplexScript
                     {
-                       Val = new StringValue((ps.FontSize * 2).ToString(CultureInfo.InvariantCulture))
+                        Val = new StringValue((ps.FontSize * 2).ToString(CultureInfo.InvariantCulture))
                     });
 
             if (ps.Bold)
@@ -764,7 +764,8 @@ namespace OxyPlot.OpenXml
             // The possible values for this attribute are defined by the ST_PositiveCoordinate simple type (§20.1.10.42).
             var paragraph1 = new DocumentFormat.OpenXml.Wordprocessing.Paragraph
                 {
-                   RsidParagraphAddition = "00D91137", RsidRunAdditionDefault = "00AC08EB"
+                    RsidParagraphAddition = "00D91137",
+                    RsidRunAdditionDefault = "00AC08EB"
                 };
 
             var run1 = new Run();
@@ -778,7 +779,10 @@ namespace OxyPlot.OpenXml
 
             var inline1 = new Inline
                 {
-                   DistanceFromTop = 0U, DistanceFromBottom = 0U, DistanceFromLeft = 0U, DistanceFromRight = 0U
+                    DistanceFromTop = 0U,
+                    DistanceFromBottom = 0U,
+                    DistanceFromLeft = 0U,
+                    DistanceFromRight = 0U
                 };
             var extent1 = new Extent { Cx = 5753100L, Cy = 3600450L };
             extent1.Cx = (long)(width * 914400);
@@ -805,7 +809,9 @@ namespace OxyPlot.OpenXml
             var nonVisualPictureProperties1 = new NonVisualPictureProperties();
             var nonVisualDrawingProperties1 = new NonVisualDrawingProperties
                 {
-                   Id = 0U, Name = name, Description = description
+                    Id = 0U,
+                    Name = name,
+                    Description = description
                 };
 
             var nonVisualPictureDrawingProperties1 = new NonVisualPictureDrawingProperties();

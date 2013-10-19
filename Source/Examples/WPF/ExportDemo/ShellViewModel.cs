@@ -239,7 +239,7 @@ namespace ExportDemo
             var path = this.GetFilename(".png files|*.png", ".png");
             if (path != null)
             {
-                this.Plot.SaveBitmap(path);
+                this.Plot.SaveBitmap(path, 0, 0, OxyColors.Automatic);
                 OpenContainingFolder(path);
             }
         }
@@ -476,7 +476,7 @@ namespace ExportDemo
             main.AddParagraph("The plot is rendered to a .png file and included in the report as an image. Zoom in to see the difference.");
 
             string pngPlotFileName = fileNameWithoutExtension + "_Plot2.png";
-            PngExporter.Export(this.Model, pngPlotFileName, 800, 500);
+            PngExporter.Export(this.Model, pngPlotFileName, 800, 500, OxyColors.Automatic);
             main.AddImage(pngPlotFileName, "Plot as image");
 
             main.AddHeader(2, "Data");

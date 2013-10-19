@@ -41,7 +41,7 @@ namespace OxyPlot.Wpf
         /// The color property.
         /// </summary>
         public static readonly DependencyProperty Color2Property = DependencyProperty.Register(
-            "Color2", typeof(Color?), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
+            "Color2", typeof(Color), typeof(Series), new PropertyMetadata(AppearanceChanged));
 
         /// <summary>
         /// The constant y 2 property.
@@ -65,7 +65,7 @@ namespace OxyPlot.Wpf
         /// The fill property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-            "Fill", typeof(Color?), typeof(AreaSeries), new PropertyMetadata(null, AppearanceChanged));
+            "Fill", typeof(Color), typeof(AreaSeries), new PropertyMetadata(AppearanceChanged));
 
         /// <summary>
         /// The reverse 2 property.
@@ -84,11 +84,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the color of the second line.
         /// </summary>
-        public Color? Color2
+        public Color Color2
         {
             get
             {
-                return (Color?)this.GetValue(Color2Property);
+                return (Color)this.GetValue(Color2Property);
             }
 
             set
@@ -148,11 +148,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets Fill.
         /// </summary>
-        public Color? Fill
+        public Color Fill
         {
             get
             {
-                return (Color?)this.GetValue(FillProperty);
+                return (Color)this.GetValue(FillProperty);
             }
 
             set

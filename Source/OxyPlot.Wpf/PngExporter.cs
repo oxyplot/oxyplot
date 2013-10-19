@@ -49,7 +49,7 @@ namespace OxyPlot.Wpf
         /// <param name="height">The height of the output bitmap.</param>
         /// <param name="background">The background color. The default value is null.</param>
         /// <param name="resolution">The resolution (dpi). The default value is 96.</param>
-        public static void Export(PlotModel model, string fileName, int width, int height, OxyColor background = null, int resolution = 96)
+        public static void Export(PlotModel model, string fileName, int width, int height, OxyColor background, int resolution = 96)
         {
             using (var s = File.Create(fileName))
             {
@@ -66,7 +66,7 @@ namespace OxyPlot.Wpf
         /// <param name="height">The height of the output bitmap.</param>
         /// <param name="background">The background color. The default value is null.</param>
         /// <param name="resolution">The resolution (dpi). The default value is 96.</param>
-        public static void Export(PlotModel model, Stream stream, int width, int height, OxyColor background = null, int resolution = 96)
+        public static void Export(PlotModel model, Stream stream, int width, int height, OxyColor background, int resolution = 96)
         {
             var bmp = ExportToBitmap(model, width, height, background, resolution);
 
@@ -85,7 +85,7 @@ namespace OxyPlot.Wpf
         /// <param name="background">The background.</param>
         /// <param name="dpi">The resolution.</param>
         /// <returns>A bitmap.</returns>
-        public static BitmapSource ExportToBitmap(PlotModel model, int width, int height, OxyColor background = null, int dpi = 96)
+        public static BitmapSource ExportToBitmap(PlotModel model, int width, int height, OxyColor background, int dpi = 96)
         {
             var canvas = new Canvas { Width = width, Height = height, Background = background.ToBrush() };
             canvas.Measure(new Size(width, height));

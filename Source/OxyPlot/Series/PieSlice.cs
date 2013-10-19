@@ -39,6 +39,7 @@ namespace OxyPlot.Series
         /// </summary>
         public PieSlice()
         {
+            this.Fill = OxyColors.Automatic;
         }
 
         /// <summary>
@@ -50,14 +51,11 @@ namespace OxyPlot.Series
         /// <param name="value">
         /// The value.
         /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        public PieSlice(string label, double value, OxyColor fill = null)
+        public PieSlice(string label, double value)
+            : this()
         {
             this.Label = label;
             this.Value = value;
-            this.Fill = fill;
         }
 
         /// <summary>
@@ -71,7 +69,7 @@ namespace OxyPlot.Series
         /// <value>The actual color.</value>
         public OxyColor ActualFillColor
         {
-            get { return this.Fill ?? this.DefaultFillColor; }
+            get { return this.Fill.GetActualColor(this.DefaultFillColor); }
         }
 
         /// <summary>
@@ -94,6 +92,5 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The default fill color.</value>
         internal OxyColor DefaultFillColor { get; set; }
-
     }
 }

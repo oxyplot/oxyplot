@@ -51,35 +51,15 @@ namespace OxyPlot.Series
         /// <summary>
         /// Initializes a new instance of the <see cref="ScatterSeries"/> class.
         /// </summary>
-        /// <param name="title">
-        /// The title.
-        /// </param>
-        /// <param name="markerFill">
-        /// The marker fill color.
-        /// </param>
-        /// <param name="markerSize">
-        /// Size of the markers (If ScatterPoint.Size is set, this value will be overridden).
-        /// </param>
-        public ScatterSeries(string title, OxyColor markerFill = null, double markerSize = 5)
-            : this()
-        {
-            this.MarkerFill = markerFill;
-            this.MarkerSize = markerSize;
-            this.Title = title;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterSeries"/> class.
-        /// </summary>
         public ScatterSeries()
         {
             this.DataFieldSize = null;
             this.DataFieldValue = null;
 
-            this.MarkerFill = null;
+            this.MarkerFill = OxyColors.Automatic;
             this.MarkerSize = 5;
             this.MarkerType = MarkerType.Square;
-            this.MarkerStroke = null;
+            this.MarkerStroke = OxyColors.Automatic;
             this.MarkerStrokeThickness = 1.0;
         }
 
@@ -133,7 +113,7 @@ namespace OxyPlot.Series
         /// <value>The actual color.</value>
         public OxyColor ActualMarkerFillColor
         {
-            get { return this.MarkerFill ?? this.defaultMarkerFillColor; }
+            get { return this.MarkerFill.GetActualColor(this.defaultMarkerFillColor); }
         }
 
         /// <summary>
@@ -476,14 +456,14 @@ namespace OxyPlot.Series
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
-            if (this.MarkerFill == null)
+            if (this.MarkerFill.IsAutomatic())
             {
                 this.defaultMarkerFillColor = model.GetDefaultColor();
             }
         }
 
         /// <summary>
-        /// The update data.
+        /// Updates the data.
         /// </summary>
         protected internal override void UpdateData()
         {

@@ -170,7 +170,7 @@ namespace OxyPlot.Annotations
                 clippingRect,
                 MinimumSegmentLength * MinimumSegmentLength,
                 this.GetSelectableColor(this.Color),
-                null);
+                OxyColors.Undefined);
 
             if (!string.IsNullOrEmpty(this.Text))
             {

@@ -49,7 +49,7 @@ namespace OxyPlot.Xps
         /// <param name="height">The height.</param>
         /// <param name="background">The background color.</param>
         public static void Export(
-            PlotModel model, string fileName, double width, double height, OxyColor background = null)
+            PlotModel model, string fileName, double width, double height, OxyColor background)
         {
             using (var xpsPackage = Package.Open(fileName, FileMode.Create, FileAccess.ReadWrite))
             {

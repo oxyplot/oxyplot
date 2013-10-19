@@ -68,7 +68,7 @@ namespace OxyPlot.Tests
                     w.WriteLine(
                         new ScreenPoint(10, 10),
                         new ScreenPoint(150, 80),
-                        w.CreateStyle(null, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
+                        w.CreateStyle(OxyColors.Undefined, OxyColors.Black, 2, LineStyleHelper.GetDashArray(LineStyle.Solid)));
                 }
             }
 

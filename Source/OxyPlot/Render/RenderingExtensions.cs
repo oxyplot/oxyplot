@@ -895,11 +895,11 @@ namespace OxyPlot
             var sp1 = new ScreenPoint(rect.Right, rect.Top);
             var sp2 = new ScreenPoint(rect.Right, rect.Bottom);
             var sp3 = new ScreenPoint(rect.Left, rect.Bottom);
-            rc.DrawPolygon(new[] { sp0, sp1, sp2, sp3 }, fill, null, 0, null, OxyPenLineJoin.Miter, true);
-            rc.DrawPolygon(new[] { sp0, sp1 }, null, stroke, thickness.Top, null, OxyPenLineJoin.Miter, true);
-            rc.DrawPolygon(new[] { sp1, sp2 }, null, stroke, thickness.Right, null, OxyPenLineJoin.Miter, true);
-            rc.DrawPolygon(new[] { sp2, sp3 }, null, stroke, thickness.Bottom, null, OxyPenLineJoin.Miter, true);
-            rc.DrawPolygon(new[] { sp3, sp0 }, null, stroke, thickness.Left, null, OxyPenLineJoin.Miter, true);
+            rc.DrawPolygon(new[] { sp0, sp1, sp2, sp3 }, fill, OxyColors.Undefined, 0, null, OxyPenLineJoin.Miter, true);
+            rc.DrawPolygon(new[] { sp0, sp1 }, OxyColors.Undefined, stroke, thickness.Top, null, OxyPenLineJoin.Miter, true);
+            rc.DrawPolygon(new[] { sp1, sp2 }, OxyColors.Undefined, stroke, thickness.Right, null, OxyPenLineJoin.Miter, true);
+            rc.DrawPolygon(new[] { sp2, sp3 }, OxyColors.Undefined, stroke, thickness.Bottom, null, OxyPenLineJoin.Miter, true);
+            rc.DrawPolygon(new[] { sp3, sp0 }, OxyColors.Undefined, stroke, thickness.Left, null, OxyPenLineJoin.Miter, true);
         }
 
         /// <summary>

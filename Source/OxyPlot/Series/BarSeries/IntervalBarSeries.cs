@@ -52,6 +52,8 @@ namespace OxyPlot.Series
         {
             this.Items = new List<IntervalBarItem>();
 
+            this.FillColor = OxyColors.Automatic;
+            this.LabelColor = OxyColors.Automatic;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 1;
             this.BarWidth = 1;
@@ -86,7 +88,7 @@ namespace OxyPlot.Series
         /// <value>The actual color.</value>
         public OxyColor ActualFillColor
         {
-            get { return this.FillColor ?? this.defaultFillColor; }
+            get { return this.FillColor.GetActualColor(this.defaultFillColor); }
         }
 
         /// <summary>
@@ -271,7 +273,7 @@ namespace OxyPlot.Series
                 rc.DrawClippedRectangleAsPolygon(
                     rectangle,
                     clippingRect,
-                    this.GetSelectableFillColor(item.Color ?? this.ActualFillColor),
+                    this.GetSelectableFillColor(item.Color.GetActualColor(this.ActualFillColor)),
                     this.StrokeColor,
                     this.StrokeThickness);
 
@@ -369,7 +371,7 @@ namespace OxyPlot.Series
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
-            if (this.FillColor == null)
+            if (this.FillColor.IsAutomatic())
             {
                 this.defaultFillColor = model.GetDefaultColor();
             }

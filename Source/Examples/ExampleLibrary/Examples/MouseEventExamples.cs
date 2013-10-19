@@ -418,7 +418,7 @@ namespace ExampleLibrary
                     return;
                 }
 
-                ta.Background = ta.Background == null ? OxyColors.LightGreen : null;
+                ta.Background = ta.Background.IsUndefined() ? OxyColors.LightGreen : OxyColors.Undefined;
                 model.InvalidatePlot(false);
                 e.Handled = true;
             };
