@@ -84,7 +84,7 @@ namespace OxyPlot.Wpf
         /// The marker fill property.
         /// </summary>
         public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(
-            "MarkerFill", typeof(Color), typeof(ScatterSeries), new PropertyMetadata(AppearanceChanged));
+            "MarkerFill", typeof(Color), typeof(ScatterSeries), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
         /// The marker outline property.
@@ -102,7 +102,7 @@ namespace OxyPlot.Wpf
         /// The marker stroke property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeProperty = DependencyProperty.Register(
-            "MarkerStroke", typeof(Color), typeof(ScatterSeries), new PropertyMetadata(AppearanceChanged));
+            "MarkerStroke", typeof(Color), typeof(ScatterSeries), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
         /// The marker stroke thickness property.

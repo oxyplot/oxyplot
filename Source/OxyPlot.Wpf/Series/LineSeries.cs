@@ -44,7 +44,7 @@ namespace OxyPlot.Wpf
         /// The BrokenLineColor property.
         /// </summary>
         public static readonly DependencyProperty BrokenLineColorProperty = DependencyProperty.Register(
-            "BrokenLineColor", typeof(Color), typeof(LineSeries), new PropertyMetadata(AppearanceChanged));
+            "BrokenLineColor", typeof(Color), typeof(LineSeries), new PropertyMetadata(MoreColors.Undefined, AppearanceChanged));
 
         /// <summary>
         /// The BrokenLineStyle property.
@@ -106,7 +106,7 @@ namespace OxyPlot.Wpf
         /// The marker fill property.
         /// </summary>
         public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(
-            "MarkerFill", typeof(Color), typeof(LineSeries), new PropertyMetadata(AppearanceChanged));
+            "MarkerFill", typeof(Color), typeof(LineSeries), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
         /// The marker outline property.
@@ -130,7 +130,7 @@ namespace OxyPlot.Wpf
         /// The marker stroke property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeProperty = DependencyProperty.Register(
-            "MarkerStroke", typeof(Color), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
+            "MarkerStroke", typeof(Color), typeof(LineSeries), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
         /// The marker stroke thickness property.

@@ -41,7 +41,7 @@ namespace OxyPlot.Wpf
         /// The Background property.
         /// </summary>
         public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Color), typeof(TextAnnotation), new PropertyMetadata(null, AppearanceChanged));
+            "Background", typeof(Color), typeof(TextAnnotation), new PropertyMetadata(MoreColors.Undefined, AppearanceChanged));
 
         /// <summary>
         /// The TextColor property.
