@@ -1198,7 +1198,8 @@ namespace OxyPlot.Axes
             double mid = (this.ActualMaximum + this.ActualMinimum) / 2;
 
             double dx = (this.offset - mid) * this.scale;
-            this.SetTransform(sgn * newScale, (dx / this.scale) + mid);
+            var newOffset = (dx / (sgn * newScale)) + mid;
+            this.SetTransform(sgn * newScale, newOffset); 
 
             double newMaximum = this.InverseTransform(sx1);
             double newMinimum = this.InverseTransform(sx0);
