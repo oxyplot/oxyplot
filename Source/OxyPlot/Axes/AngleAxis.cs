@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AngleAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents an angular axis for polar plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Axes
 {
     using System;
@@ -53,10 +54,10 @@ namespace OxyPlot.Axes
         /// Initializes a new instance of the <see cref="AngleAxis"/> class.
         /// </summary>
         /// <param name="minimum">
-        /// The minimum.
+        /// The minimum value.
         /// </param>
         /// <param name="maximum">
-        /// The maximum.
+        /// The maximum value.
         /// </param>
         /// <param name="majorStep">
         /// The major step.
@@ -95,7 +96,7 @@ namespace OxyPlot.Axes
         public double EndAngle { get; set; }
 
         /// <summary>
-        /// Inverse transform the specified screen point.
+        /// Inverse transforms the specified screen point.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
@@ -103,6 +104,7 @@ namespace OxyPlot.Axes
         /// <returns>
         /// The data point.
         /// </returns>
+        /// <exception cref="System.InvalidOperationException">Angle axis should always be the y-axis.</exception>
         public override DataPoint InverseTransform(double x, double y, Axis yaxis)
         {
             throw new InvalidOperationException("Angle axis should always be the y-axis.");
@@ -125,7 +127,7 @@ namespace OxyPlot.Axes
         /// <param name="rc">The render context.</param>
         /// <param name="model">The model.</param>
         /// <param name="axisLayer">The rendering order.</param>
-        /// <param name="pass"></param>
+        /// <param name="pass">The pass.</param>
         public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
         {
             if (this.Layer != axisLayer)
@@ -158,11 +160,9 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// The update transform.
+        /// Updates the scale and offset properties of the transform from the specified boundary rectangle.
         /// </summary>
-        /// <param name="bounds">
-        /// The bounds.
-        /// </param>
+        /// <param name="bounds">The bounds.</param>
         internal override void UpdateTransform(OxyRect bounds)
         {
             double x0 = bounds.Left;
@@ -176,8 +176,9 @@ namespace OxyPlot.Axes
             double startAngle = this.StartAngle / 180 * Math.PI;
             double endAngle = this.EndAngle / 180 * Math.PI;
 
-            this.SetTransform((endAngle - startAngle) / (this.ActualMaximum - this.ActualMinimum), this.ActualMinimum - (startAngle / this.Scale));
+            var newScale = (endAngle - startAngle) / (this.ActualMaximum - this.ActualMinimum);
+            var newOffset = this.ActualMinimum - (startAngle / newScale);
+            this.SetTransform(newScale, newOffset);
         }
-
     }
 }
