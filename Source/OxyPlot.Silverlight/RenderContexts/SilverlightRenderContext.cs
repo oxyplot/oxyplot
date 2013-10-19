@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SilverlightRenderContext.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Rendering Silverlight shapes to a Canvas
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Silverlight
 {
     using System.Collections.Generic;
@@ -53,6 +54,31 @@ namespace OxyPlot.Silverlight
         /// The canvas.
         /// </summary>
         private readonly Canvas canvas;
+
+        /// <summary>
+        /// The images in use
+        /// </summary>
+        private readonly HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+
+        /// <summary>
+        /// The image cache
+        /// </summary>
+        private readonly Dictionary<OxyImage, BitmapSource> imageCache = new Dictionary<OxyImage, BitmapSource>();
+
+        /// <summary>
+        /// The current tool tip
+        /// </summary>
+        private string currentToolTip;
+
+        /// <summary>
+        /// The clip rectangle.
+        /// </summary>
+        private Rect clipRect;
+
+        /// <summary>
+        /// The clip flag.
+        /// </summary>
+        private bool clip;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SilverlightRenderContext"/> class.
@@ -95,14 +121,6 @@ namespace OxyPlot.Silverlight
         public double Width { get; private set; }
 
         /// <summary>
-        /// Gets or sets the current tooltip.
-        /// </summary>
-        /// <value>
-        /// The current tooltip.
-        /// </value>
-        private string CurrentToolTip { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the context renders to screen.
         /// </summary>
         /// <value>
@@ -111,30 +129,22 @@ namespace OxyPlot.Silverlight
         public bool RendersToScreen { get; set; }
 
         /// <summary>
-        /// The draw ellipse.
+        /// Draws an ellipse.
         /// </summary>
-        /// <param name="rect">
-        /// The rect.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The thickness.</param>
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var el = new Ellipse();
-            if (stroke != null)
+            if (stroke.IsVisible())
             {
                 el.Stroke = new SolidColorBrush(stroke.ToColor());
                 el.StrokeThickness = thickness;
             }
 
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 el.Fill = new SolidColorBrush(fill.ToColor());
             }
@@ -147,25 +157,18 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// The draw ellipses.
+        /// Draws the collection of ellipses, where all have the same stroke and fill.
+        /// This performs better than calling DrawEllipse multiple times.
         /// </summary>
-        /// <param name="rectangles">
-        /// The rectangles.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rectangles">The rectangles.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = new Path();
             this.SetStroke(path, stroke, thickness);
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 path.Fill = this.GetCachedBrush(fill);
             }
@@ -176,7 +179,7 @@ namespace OxyPlot.Silverlight
                 gg.Children.Add(
                     new EllipseGeometry
                         {
-                            Center = new Point(rect.Left + rect.Width / 2, rect.Top + rect.Height / 2),
+                            Center = new Point(rect.Left + (rect.Width / 2), rect.Top + (rect.Height / 2)),
                             RadiusX = rect.Width / 2,
                             RadiusY = rect.Height / 2
                         });
@@ -187,26 +190,14 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// The draw line.
+        /// Draws the polyline from the specified points.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -230,26 +221,15 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// The draw line segments.
+        /// Draws the multiple line segments defined by points (0,1) (2,3) (4,5) etc.
+        /// This should have better performance than calling DrawLine for each segment.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -285,29 +265,15 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// The draw polygon.
+        /// Draws the polygon from the specified points. The polygon can have stroke and/or fill.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
@@ -320,7 +286,7 @@ namespace OxyPlot.Silverlight
             var po = new Polygon();
             this.SetStroke(po, stroke, thickness, lineJoin, dashArray, aliased);
 
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 po.Fill = this.GetCachedBrush(fill);
             }
@@ -337,29 +303,16 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// The draw polygons.
+        /// Draws a collection of polygons, where all polygons have the same stroke and fill.
+        /// This performs better than calling DrawPolygon multiple times.
         /// </summary>
-        /// <param name="polygons">
-        /// The polygons.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="polygons">The polygons.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public void DrawPolygons(
             IList<IList<ScreenPoint>> polygons,
             OxyColor fill,
@@ -371,7 +324,7 @@ namespace OxyPlot.Silverlight
         {
             var path = new Path();
             this.SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 path.Fill = this.GetCachedBrush(fill);
             }
@@ -402,30 +355,22 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Draws a rectangle.
+        /// Draws the rectangle.
         /// </summary>
-        /// <param name="rect">
-        /// The rect.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var el = new Rectangle();
-            if (stroke != null)
+            if (stroke.IsVisible())
             {
                 el.Stroke = new SolidColorBrush(stroke.ToColor());
                 el.StrokeThickness = thickness;
             }
 
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 el.Fill = new SolidColorBrush(fill.ToColor());
             }
@@ -441,23 +386,15 @@ namespace OxyPlot.Silverlight
         /// Draws a collection of rectangles, where all have the same stroke and fill.
         /// This performs better than calling DrawRectangle multiple times.
         /// </summary>
-        /// <param name="rectangles">
-        /// The rectangles.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rectangles">The rectangles.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = new Path();
             this.SetStroke(path, stroke, thickness);
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 path.Fill = this.GetCachedBrush(fill);
             }
@@ -473,38 +410,18 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// The draw text.
+        /// Draws the text.
         /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="rotate">
-        /// The rotate.
-        /// </param>
-        /// <param name="halign">
-        /// The halign.
-        /// </param>
-        /// <param name="valign">
-        /// The valign.
-        /// </param>
-        /// <param name="maxSize">
-        /// The maximum size of the text.
-        /// </param>
+        /// <param name="p">The position.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="rotate">The rotation angle.</param>
+        /// <param name="halign">The horizontal alignment.</param>
+        /// <param name="valign">The vertical alignment.</param>
+        /// <param name="maxSize">The maximum size of the text.</param>
         public void DrawText(
             ScreenPoint p,
             string text,
@@ -573,7 +490,7 @@ namespace OxyPlot.Silverlight
 
             var transform = new TransformGroup();
             transform.Children.Add(new TranslateTransform { X = (int)dx, Y = (int)dy });
-            if (rotate != 0)
+            if (!rotate.Equals(0))
             {
                 transform.Children.Add(new RotateTransform { Angle = rotate });
             }
@@ -582,7 +499,7 @@ namespace OxyPlot.Silverlight
             tb.RenderTransform = transform;
             this.ApplyTooltip(tb);
 
-            if (this.clip.HasValue)
+            if (this.clip)
             {
                 // add a clipping container that is not rotated
                 var c = new Canvas();
@@ -596,21 +513,14 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// The measure text.
+        /// Measures the text.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
         /// <returns>
+        /// The text size.
         /// </returns>
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
@@ -649,150 +559,7 @@ namespace OxyPlot.Silverlight
         /// </params>
         public void SetToolTip(string text)
         {
-            this.CurrentToolTip = text;
-        }
-
-        /// <summary>
-        /// The create dash array collection.
-        /// </summary>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        private static DoubleCollection CreateDashArrayCollection(IList<double> dashArray)
-        {
-            var dac = new DoubleCollection();
-            foreach (double v in dashArray)
-            {
-                dac.Add(v);
-            }
-
-            return dac;
-        }
-
-        /// <summary>
-        /// The get font weight.
-        /// </summary>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        private static FontWeight GetFontWeight(double fontWeight)
-        {
-            return fontWeight > FontWeights.Normal ? System.Windows.FontWeights.Bold : System.Windows.FontWeights.Normal;
-        }
-
-        /// <summary>
-        /// Adds the specified element to the canvas.
-        /// </summary>
-        /// <param name="element">The element.</param>
-        /// <param name="clipOffsetX">The clip offset X.</param>
-        /// <param name="clipOffsetY">The clip offset Y.</param>
-        private void Add(UIElement element, double clipOffsetX = 0, double clipOffsetY = 0)
-        {
-            if (this.clip.HasValue)
-            {
-                this.ApplyClip(element, clipOffsetX, clipOffsetY);
-            }
-
-            this.canvas.Children.Add(element);
-        }
-
-        /// <summary>
-        /// The apply tooltip.
-        /// </summary>
-        /// <param name="element">
-        /// The element.
-        /// </param>
-        private void ApplyTooltip(DependencyObject element)
-        {
-            if (!string.IsNullOrEmpty(this.CurrentToolTip))
-            {
-                ToolTipService.SetToolTip(element, this.CurrentToolTip);
-            }
-        }
-
-        /// <summary>
-        /// Gets the cached brush.
-        /// </summary>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <returns>
-        /// The brush.
-        /// </returns>
-        private Brush GetCachedBrush(OxyColor stroke)
-        {
-            Brush brush;
-            if (!this.brushCache.TryGetValue(stroke, out brush))
-            {
-                brush = new SolidColorBrush(stroke.ToColor());
-                this.brushCache.Add(stroke, brush);
-            }
-
-            return brush;
-        }
-
-        /// <summary>
-        /// The set stroke.
-        /// </summary>
-        /// <param name="shape">
-        /// The shape.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
-        private void SetStroke(
-            Shape shape,
-            OxyColor stroke,
-            double thickness,
-            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
-            double[] dashArray = null,
-            bool aliased = false)
-        {
-            if (stroke != null && thickness > 0)
-            {
-                shape.Stroke = this.GetCachedBrush(stroke);
-
-                switch (lineJoin)
-                {
-                    case OxyPenLineJoin.Round:
-                        shape.StrokeLineJoin = PenLineJoin.Round;
-                        break;
-                    case OxyPenLineJoin.Bevel:
-                        shape.StrokeLineJoin = PenLineJoin.Bevel;
-                        break;
-
-                    // The default StrokeLineJoin is Miter
-                }
-
-                if (thickness != 1)
-                {
-                    // default values is 1
-                    shape.StrokeThickness = thickness;
-                }
-
-                if (dashArray != null)
-                {
-                    shape.StrokeDashArray = CreateDashArrayCollection(dashArray);
-                }
-            }
-
-            // shape.UseLayoutRounding = aliased;
+            this.currentToolTip = text;
         }
 
         /// <summary>
@@ -848,7 +615,7 @@ namespace OxyPlot.Silverlight
             var image = new Image();
             var bmp = this.GetImageSource(source);
 
-            if (srcX == 0 && srcY == 0 && srcWidth == bmp.PixelWidth && srcHeight == bmp.PixelHeight)
+            if (srcX.Equals(0) && srcY.Equals(0) && srcWidth.Equals(bmp.PixelWidth) && srcHeight.Equals(bmp.PixelHeight))
             {
                 // do not crop
             }
@@ -866,8 +633,8 @@ namespace OxyPlot.Silverlight
 
             // TODO: not available in Silverlight??
             // RenderOptions.SetBitmapScalingMode(image, interpolate ? BitmapScalingMode.HighQuality : BitmapScalingMode.NearestNeighbor);
-            //Canvas.SetLeft(image, x);
-            //Canvas.SetTop(image, y);
+            // Canvas.SetLeft(image, x);
+            // Canvas.SetTop(image, y);
             image.RenderTransform = new TranslateTransform { X = destX, Y = destY };
             image.Source = bmp;
             this.ApplyTooltip(image);
@@ -875,38 +642,23 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Applies the clip rectangle.
+        /// Sets the clipping rectangle.
         /// </summary>
-        /// <param name="image">The image.</param>
-        /// <param name="x">The x offset of the element.</param>
-        /// <param name="y">The y offset of the element.</param>
-        private void ApplyClip(UIElement image, double x, double y)
-        {
-            image.Clip = new RectangleGeometry() { Rect = new Rect(this.clip.Value.X - x, this.clip.Value.Y - y, this.clip.Value.Width, this.clip.Value.Height) };
-        }
-
-        /// <summary>
-        /// The clip rectangle.
-        /// </summary>
-        private Rect? clip;
-
-        /// <summary>
-        /// Sets the clip.
-        /// </summary>
-        /// <param name="clippingRect">The clipping rect.</param>
-        /// <returns></returns>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <returns>True if the clipping rectangle was set.</returns>
         public bool SetClip(OxyRect clippingRect)
         {
-            clip = clippingRect.ToRect(false);
+            this.clipRect = clippingRect.ToRect(false);
+            this.clip = true;
             return true;
         }
 
         /// <summary>
-        /// Resets the clip rectangle.
+        /// Resets the clipping rectangle.
         /// </summary>
         public void ResetClip()
         {
-            clip = null;
+            this.clip = false;
         }
 
         /// <summary>
@@ -930,14 +682,139 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// The images in use
+        /// Creates the dash array collection.
         /// </summary>
-        private HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+        /// <param name="dashArray">The dash array.</param>
+        /// <returns>A DoubleCollection.</returns>
+        private static DoubleCollection CreateDashArrayCollection(IEnumerable<double> dashArray)
+        {
+            var dac = new DoubleCollection();
+            foreach (double v in dashArray)
+            {
+                dac.Add(v);
+            }
+
+            return dac;
+        }
 
         /// <summary>
-        /// The image cache
+        /// Gets the font weight.
         /// </summary>
-        private Dictionary<OxyImage, BitmapSource> imageCache = new Dictionary<OxyImage, BitmapSource>();
+        /// <param name="fontWeight">The font weight.</param>
+        /// <returns>A <see cref="FontWeight"/></returns>
+        private static FontWeight GetFontWeight(double fontWeight)
+        {
+            return fontWeight > FontWeights.Normal ? System.Windows.FontWeights.Bold : System.Windows.FontWeights.Normal;
+        }
+
+        /// <summary>
+        /// Adds the specified element to the canvas.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="clipOffsetX">The clip offset X.</param>
+        /// <param name="clipOffsetY">The clip offset Y.</param>
+        private void Add(UIElement element, double clipOffsetX = 0, double clipOffsetY = 0)
+        {
+            if (this.clip)
+            {
+                this.ApplyClip(element, clipOffsetX, clipOffsetY);
+            }
+
+            this.canvas.Children.Add(element);
+        }
+
+        /// <summary>
+        /// Applies the tooltip to the specified element.
+        /// </summary>
+        /// <param name="element">
+        /// The element.
+        /// </param>
+        private void ApplyTooltip(DependencyObject element)
+        {
+            if (!string.IsNullOrEmpty(this.currentToolTip))
+            {
+                ToolTipService.SetToolTip(element, this.currentToolTip);
+            }
+        }
+
+        /// <summary>
+        /// Gets the cached brush.
+        /// </summary>
+        /// <param name="stroke">
+        /// The stroke.
+        /// </param>
+        /// <returns>
+        /// The brush.
+        /// </returns>
+        private Brush GetCachedBrush(OxyColor stroke)
+        {
+            Brush brush;
+            if (!this.brushCache.TryGetValue(stroke, out brush))
+            {
+                brush = new SolidColorBrush(stroke.ToColor());
+                this.brushCache.Add(stroke, brush);
+            }
+
+            return brush;
+        }
+
+        /// <summary>
+        /// Sets the stroke of the specified shape.
+        /// </summary>
+        /// <param name="shape">The shape.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="aliased">aliased if set to <c>true</c>.</param>
+        private void SetStroke(
+            Shape shape,
+            OxyColor stroke,
+            double thickness,
+            OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter,
+            IEnumerable<double> dashArray = null,
+            bool aliased = false)
+        {
+            if (stroke.IsVisible() && thickness > 0)
+            {
+                shape.Stroke = this.GetCachedBrush(stroke);
+
+                switch (lineJoin)
+                {
+                    case OxyPenLineJoin.Round:
+                        shape.StrokeLineJoin = PenLineJoin.Round;
+                        break;
+                    case OxyPenLineJoin.Bevel:
+                        shape.StrokeLineJoin = PenLineJoin.Bevel;
+                        break;
+
+                    // The default StrokeLineJoin is Miter
+                }
+
+                shape.StrokeThickness = thickness;
+
+                if (dashArray != null)
+                {
+                    shape.StrokeDashArray = CreateDashArrayCollection(dashArray);
+                }
+
+                if (aliased)
+                {
+                    // shape.UseLayoutRounding = aliased;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Applies the clip rectangle.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="x">The x offset of the element.</param>
+        /// <param name="y">The y offset of the element.</param>
+        private void ApplyClip(UIElement image, double x, double y)
+        {
+            image.Clip = new RectangleGeometry { Rect = new Rect(this.clipRect.X - x, this.clipRect.Y - y, this.clipRect.Width, this.clipRect.Height) };
+        }
 
         /// <summary>
         /// Gets the bitmap source.

@@ -31,10 +31,8 @@ namespace OxyPlot.Metro
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Threading.Tasks;
-
+    
     using Windows.Foundation;
     using Windows.Storage.Streams;
     using Windows.UI.Text;
@@ -117,13 +115,13 @@ namespace OxyPlot.Metro
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var el = new Ellipse();
-            if (stroke != null)
+            if (stroke.IsVisible())
             {
                 el.Stroke = stroke.ToBrush();
                 el.StrokeThickness = thickness;
             }
 
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 el.Fill = fill.ToBrush();
             }
@@ -154,7 +152,7 @@ namespace OxyPlot.Metro
         {
             var path = new Path();
             this.SetStroke(path, stroke, thickness);
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 path.Fill = this.GetCachedBrush(fill);
             }
@@ -309,7 +307,7 @@ namespace OxyPlot.Metro
             var po = new Polygon();
             this.SetStroke(po, stroke, thickness, lineJoin, dashArray, aliased);
 
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 po.Fill = this.GetCachedBrush(fill);
             }
@@ -360,7 +358,7 @@ namespace OxyPlot.Metro
         {
             var path = new Path();
             this.SetStroke(path, stroke, thickness, lineJoin, dashArray, aliased);
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 path.Fill = this.GetCachedBrush(fill);
             }
@@ -408,13 +406,13 @@ namespace OxyPlot.Metro
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var el = new Rectangle();
-            if (stroke != null)
+            if (stroke.IsVisible())
             {
                 el.Stroke = stroke.ToBrush();
                 el.StrokeThickness = thickness;
             }
 
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 el.Fill = fill.ToBrush();
             }
@@ -446,7 +444,7 @@ namespace OxyPlot.Metro
         {
             var path = new Path();
             this.SetStroke(path, stroke, thickness);
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 path.Fill = this.GetCachedBrush(fill);
             }
@@ -506,6 +504,11 @@ namespace OxyPlot.Metro
             OxyPlot.VerticalAlignment valign,
             OxySize? maxSize)
         {
+            if (fill.IsInvisible() || string.IsNullOrEmpty(text))
+            {
+                return;
+            }
+
             var tb = new TextBlock { Text = text, Foreground = fill.ToBrush() };
 
             // tb.SetValue(TextOptions.TextHintingModeProperty, TextHintingMode.Animated);
@@ -844,32 +847,34 @@ namespace OxyPlot.Metro
             double[] dashArray = null,
             bool aliased = false)
         {
-            if (stroke != null && thickness > 0)
+            if (stroke.IsInvisible() || thickness <= 0)
             {
-                shape.Stroke = this.GetCachedBrush(stroke);
+                return;
+            }
 
-                switch (lineJoin)
-                {
-                    case OxyPenLineJoin.Round:
-                        shape.StrokeLineJoin = PenLineJoin.Round;
-                        break;
-                    case OxyPenLineJoin.Bevel:
-                        shape.StrokeLineJoin = PenLineJoin.Bevel;
-                        break;
+            shape.Stroke = this.GetCachedBrush(stroke);
 
-                    // The default StrokeLineJoin is Miter
-                }
+            switch (lineJoin)
+            {
+                case OxyPenLineJoin.Round:
+                    shape.StrokeLineJoin = PenLineJoin.Round;
+                    break;
+                case OxyPenLineJoin.Bevel:
+                    shape.StrokeLineJoin = PenLineJoin.Bevel;
+                    break;
 
-                if (!thickness.Equals(1.0))
-                {
-                    // default values is 1
-                    shape.StrokeThickness = thickness;
-                }
+                // The default StrokeLineJoin is Miter
+            }
 
-                if (dashArray != null)
-                {
-                    shape.StrokeDashArray = CreateDashArrayCollection(dashArray);
-                }
+            if (!thickness.Equals(1.0))
+            {
+                // default values is 1
+                shape.StrokeThickness = thickness;
+            }
+
+            if (dashArray != null)
+            {
+                shape.StrokeDashArray = CreateDashArrayCollection(dashArray);
             }
 
             // shape.UseLayoutRounding = aliased;

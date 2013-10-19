@@ -95,13 +95,13 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty LegendBackgroundProperty =
             DependencyProperty.Register(
-                "LegendBackground", typeof(Color?), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
+                "LegendBackground", typeof(Color), typeof(Plot), new PropertyMetadata(MoreColors.Undefined, AppearanceChanged));
 
         /// <summary>
         /// The legend border property.
         /// </summary>
         public static readonly DependencyProperty LegendBorderProperty = DependencyProperty.Register(
-            "LegendBorder", typeof(Color?), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
+            "LegendBorder", typeof(Color), typeof(Plot), new PropertyMetadata(MoreColors.Undefined, AppearanceChanged));
 
         /// <summary>
         /// The legend border thickness property.
@@ -552,11 +552,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets LegendBackground.
         /// </summary>
-        public Color? LegendBackground
+        public Color LegendBackground
         {
             get
             {
-                return (Color?)this.GetValue(LegendBackgroundProperty);
+                return (Color)this.GetValue(LegendBackgroundProperty);
             }
 
             set
@@ -568,11 +568,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets LegendBorder.
         /// </summary>
-        public Color? LegendBorder
+        public Color LegendBorder
         {
             get
             {
-                return (Color?)this.GetValue(LegendBorderProperty);
+                return (Color)this.GetValue(LegendBorderProperty);
             }
 
             set

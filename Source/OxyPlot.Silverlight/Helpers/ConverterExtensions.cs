@@ -122,20 +122,6 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Converts a nullable Color to an OxyColor.
-        /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// An OxyColor.
-        /// </returns>
-        public static OxyColor ToOxyColor(this Color? color)
-        {
-            return color.HasValue ? color.Value.ToOxyColor() : null;
-        }
-
-        /// <summary>
         /// Converts a Brush to an OxyColor.
         /// </summary>
         /// <param name="brush">
@@ -147,7 +133,7 @@ namespace OxyPlot.Silverlight
         public static OxyColor ToOxyColor(this Brush brush)
         {
             var scb = brush as SolidColorBrush;
-            return scb != null ? scb.Color.ToOxyColor() : null;
+            return scb != null ? scb.Color.ToOxyColor() : OxyColors.Undefined;
         }
 
         /// <summary>

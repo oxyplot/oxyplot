@@ -53,7 +53,7 @@ namespace OxyPlot
                 {
                     return;
                 }
-                
+
                 this.Width = width;
                 this.Height = height;
 
@@ -272,20 +272,20 @@ namespace OxyPlot
         {
             // Render the main background of the plot area (only if there are axes)
             // The border is rendered by DrawRectangleAsPolygon to ensure that it is pixel aligned with the tick marks.
-            if (this.Axes.Count > 0 && this.PlotAreaBackground != null)
+            if (this.Axes.Count > 0 && this.PlotAreaBackground.IsVisible())
             {
-                rc.DrawRectangleAsPolygon(this.PlotArea, this.PlotAreaBackground, null, 0);
+                rc.DrawRectangleAsPolygon(this.PlotArea, this.PlotAreaBackground, OxyColors.Undefined, 0);
             }
 
             foreach (var s in this.VisibleSeries)
             {
                 var s2 = s as XYAxisSeries;
-                if (s2 == null || s2.Background == null)
+                if (s2 == null || s2.Background.IsInvisible())
                 {
                     continue;
                 }
 
-                rc.DrawRectangle(s2.GetScreenRectangle(), s2.Background, null, 0);
+                rc.DrawRectangle(s2.GetScreenRectangle(), s2.Background, OxyColors.Undefined, 0);
             }
         }
 
@@ -303,7 +303,7 @@ namespace OxyPlot
             // The border is rendered by DrawBox to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
             if (this.Axes.Count > 0)
             {
-                rc.DrawRectangleAsPolygon(this.PlotArea, null, this.PlotAreaBorderColor, this.PlotAreaBorderThickness);
+                rc.DrawRectangleAsPolygon(this.PlotArea, OxyColors.Undefined, this.PlotAreaBorderColor, this.PlotAreaBorderThickness);
             }
         }
 
@@ -350,7 +350,7 @@ namespace OxyPlot
                 rc.DrawMathText(
                     new ScreenPoint(dx, dy),
                     this.Title,
-                    this.TitleColor ?? this.TextColor,
+                    this.TitleColor.GetActualColor(this.TextColor),
                     this.ActualTitleFont,
                     this.TitleFontSize,
                     this.TitleFontWeight,
@@ -365,7 +365,7 @@ namespace OxyPlot
                 rc.DrawMathText(
                     new ScreenPoint(dx, dy),
                     this.Subtitle,
-                    this.SubtitleColor ?? this.TextColor,
+                    this.SubtitleColor.GetActualColor(this.TextColor),
                     this.ActualSubtitleFont,
                     this.SubtitleFontSize,
                     this.SubtitleFontWeight,

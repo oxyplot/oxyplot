@@ -49,7 +49,7 @@ namespace OxyPlot.Annotations
         {
             this.TextColor = OxyColors.Blue;
             this.Stroke = OxyColors.Black;
-            this.Background = null;
+            this.Background = OxyColors.Undefined;
             this.StrokeThickness = 1;
             this.Rotation = 0;
             this.HorizontalAlignment = OxyPlot.HorizontalAlignment.Center;

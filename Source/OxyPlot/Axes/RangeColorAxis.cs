@@ -88,12 +88,12 @@ namespace OxyPlot.Axes
         /// </remarks>
         public override int GetPaletteIndex(double value)
         {
-            if (this.LowColor != null && value < this.ranges[0].LowerBound)
+            if (!this.LowColor.IsUndefined() && value < this.ranges[0].LowerBound)
             {
                 return -1;
             }
 
-            if (this.HighColor != null && value > this.ranges[this.ranges.Count - 1].UpperBound)
+            if (!this.HighColor.IsUndefined() && value > this.ranges[this.ranges.Count - 1].UpperBound)
             {
                 return this.ranges.Count;
             }
@@ -190,7 +190,7 @@ namespace OxyPlot.Axes
                             ? new OxyRect(ymin, top, ymax - ymin, height)
                             : new OxyRect(left, ymin, width, ymax - ymin),
                         color,
-                        null);
+                        OxyColors.Undefined);
                 };
 
                 foreach (ColorRange range in this.ranges)
@@ -230,13 +230,13 @@ namespace OxyPlot.Axes
                     highLowLength *= -1;
                 }
 
-                if (this.LowColor != null)
+                if (!this.LowColor.IsUndefined())
                 {
                     double ylow = this.Transform(this.ActualMinimum);
                     drawColorRect(ylow, ylow + highLowLength, this.LowColor);
                 }
 
-                if (this.HighColor != null)
+                if (!this.HighColor.IsUndefined())
                 {
                     double yhigh = this.Transform(this.ActualMaximum);
                     drawColorRect(yhigh, yhigh - highLowLength, this.HighColor);

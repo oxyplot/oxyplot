@@ -41,7 +41,7 @@ namespace OxyPlot.Wpf
         /// The Background property.
         /// </summary>
         public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Color?), typeof(TextAnnotation), new PropertyMetadata(null, AppearanceChanged));
+            "Background", typeof(Color), typeof(TextAnnotation), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The TextColor property.
@@ -103,11 +103,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the fill color of the background rectangle.
         /// </summary>
-        public Color? Background
+        public Color Background
         {
             get
             {
-                return (Color?)this.GetValue(BackgroundProperty);
+                return (Color)this.GetValue(BackgroundProperty);
             }
 
             set

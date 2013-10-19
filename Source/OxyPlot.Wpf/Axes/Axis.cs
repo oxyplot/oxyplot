@@ -377,7 +377,7 @@ namespace OxyPlot.Wpf
         /// The title color property.
         /// </summary>
         public static readonly DependencyProperty TitleColorProperty = DependencyProperty.Register(
-            "TitleColor", typeof(Color?), typeof(Axis), new UIPropertyMetadata(null));
+            "TitleColor", typeof(Color), typeof(Axis), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The title font property.
@@ -1278,11 +1278,11 @@ namespace OxyPlot.Wpf
         /// <value>
         /// The color of the title.
         /// </value>
-        public Color? TitleColor
+        public Color TitleColor
         {
             get
             {
-                return (Color?)this.GetValue(TitleColorProperty);
+                return (Color)this.GetValue(TitleColorProperty);
             }
 
             set

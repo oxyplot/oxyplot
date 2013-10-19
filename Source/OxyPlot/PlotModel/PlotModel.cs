@@ -241,6 +241,15 @@ namespace OxyPlot
             this.Padding = new OxyThickness(8, 8, 16, 8);
             this.AutoAdjustPlotMargins = true;
 
+            this.Background = OxyColors.Undefined;
+            this.PlotAreaBackground = OxyColors.Undefined;
+            
+            this.SelectionColor = OxyColors.Yellow;
+
+            this.TextColor = OxyColors.Black;
+            this.TitleColor = OxyColors.Automatic;
+            this.SubtitleColor = OxyColors.Automatic;
+
             this.DefaultFont = PrivateDefaultFont;
             this.DefaultFontSize = 12;
 
@@ -252,7 +261,6 @@ namespace OxyPlot
             this.SubtitleFontWeight = FontWeights.Normal;
             this.TitlePadding = 6;
 
-            this.TextColor = OxyColors.Black;
             this.PlotAreaBorderColor = OxyColors.Black;
             this.PlotAreaBorderThickness = 1;
 
@@ -270,9 +278,12 @@ namespace OxyPlot
             this.LegendItemSpacing = 24;
             this.LegendMargin = 8;
 
-            this.LegendBackground = null;
-            this.LegendBorder = null;
+            this.LegendBackground = OxyColors.Undefined;
+            this.LegendBorder = OxyColors.Undefined;
             this.LegendBorderThickness = 1;
+
+            this.LegendTextColor = OxyColors.Automatic;
+            this.LegendTitleColor = OxyColors.Automatic;
 
             this.LegendMaxWidth = double.NaN;
             this.LegendPlacement = LegendPlacement.Inside;

@@ -6,6 +6,8 @@
 
 namespace ExampleBrowser
 {
+    using OxyPlot;
+
     partial class MainForm
     {
         /// <summary>
@@ -79,14 +81,14 @@ namespace ExampleBrowser
             plotModel1.AutoAdjustPlotMargins = true;
             plotModel1.Axes = null;
             plotModel1.AxisTierDistance = 4D;
-            plotModel1.Background = null;
+            plotModel1.Background = OxyColors.Transparent;
             plotModel1.Culture = null;
             plotModel1.DefaultColors = null;
             plotModel1.DefaultFont = "Segoe UI";
             plotModel1.DefaultFontSize = 12D;
             plotModel1.IsLegendVisible = true;
-            plotModel1.LegendBackground = null;
-            plotModel1.LegendBorder = null;
+            plotModel1.LegendBackground = OxyColors.Undefined;
+            plotModel1.LegendBorder = OxyColors.Undefined;
             plotModel1.LegendBorderThickness = 1D;
             plotModel1.LegendColumnSpacing = 0D;
             plotModel1.LegendFont = null;
@@ -104,26 +106,26 @@ namespace ExampleBrowser
             plotModel1.LegendSymbolLength = 16D;
             plotModel1.LegendSymbolMargin = 4D;
             plotModel1.LegendSymbolPlacement = OxyPlot.LegendSymbolPlacement.Left;
-            plotModel1.LegendTextColor = null;
+            plotModel1.LegendTextColor = OxyColors.Undefined;
             plotModel1.LegendTitle = null;
-            plotModel1.LegendTitleColor = null;
+            plotModel1.LegendTitleColor = OxyColors.Undefined;
             plotModel1.LegendTitleFont = null;
             plotModel1.LegendTitleFontSize = 12D;
             plotModel1.LegendTitleFontWeight = 700D;
-            plotModel1.PlotAreaBackground = null;
-            plotModel1.PlotAreaBorderColor = null;
+            plotModel1.PlotAreaBackground = OxyColors.Undefined;
+            plotModel1.PlotAreaBorderColor = OxyColors.Undefined;
             plotModel1.PlotAreaBorderThickness = 1D;
             plotModel1.PlotType = OxyPlot.PlotType.XY;
-            plotModel1.SelectionColor = null;
+            plotModel1.SelectionColor = OxyColors.Undefined;
             plotModel1.Series = null;
             plotModel1.Subtitle = null;
-            plotModel1.SubtitleColor = null;
+            plotModel1.SubtitleColor = OxyColors.Undefined;
             plotModel1.SubtitleFont = null;
             plotModel1.SubtitleFontSize = 14D;
             plotModel1.SubtitleFontWeight = 400D;
-            plotModel1.TextColor = null;
+            plotModel1.TextColor = OxyColors.Undefined;
             plotModel1.Title = null;
-            plotModel1.TitleColor = null;
+            plotModel1.TitleColor = OxyColors.Undefined;
             plotModel1.TitleFont = null;
             plotModel1.TitleFontSize = 18D;
             plotModel1.TitleFontWeight = 700D;

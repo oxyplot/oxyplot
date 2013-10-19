@@ -49,10 +49,10 @@ namespace OxyPlot.Wpf
         /// <param name="height">The height.</param>
         /// <param name="background">The background.</param>
         /// <returns>A xaml string.</returns>
-        public static string ExportToString(PlotModel model, double width, double height, OxyColor background = null)
+        public static string ExportToString(PlotModel model, double width, double height, OxyColor background)
         {
             var g = new Grid();
-            if (background != null)
+            if (background.IsVisible())
             {
                 g.Background = background.ToBrush();
             }
@@ -87,13 +87,12 @@ namespace OxyPlot.Wpf
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="background">The background.</param>
-        public static void Export(PlotModel model, string fileName, double width, double height, OxyColor background = null)
+        public static void Export(PlotModel model, string fileName, double width, double height, OxyColor background)
         {
             using (var w = new StreamWriter(fileName))
             {
                 w.Write(ExportToString(model, width, height, background));
             }
         }
-
     }
 }

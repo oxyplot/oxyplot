@@ -49,6 +49,16 @@ namespace OxyPlot.Series
         private OxyColor defaultColor;
 
         /// <summary>
+        /// The default marker fill color.
+        /// </summary>
+        private OxyColor defaultMarkerFill;
+
+        /// <summary>
+        /// The default line style.
+        /// </summary>
+        private LineStyle defaultLineStyle;
+
+        /// <summary>
         /// The smoothed points.
         /// </summary>
         private IList<IDataPoint> smoothedPoints;
@@ -58,6 +68,10 @@ namespace OxyPlot.Series
         /// </summary>
         public LineSeries()
         {
+            this.Color = OxyColors.Automatic;
+            this.BrokenLineColor = OxyColors.Undefined;
+            this.MarkerFill = OxyColors.Automatic;
+            this.MarkerStroke = OxyColors.Automatic;
             this.MinimumSegmentLength = 2;
             this.StrokeThickness = 2;
             this.LineJoin = OxyPenLineJoin.Bevel;
@@ -232,7 +246,19 @@ namespace OxyPlot.Series
         {
             get
             {
-                return this.Color ?? this.defaultColor;
+                return this.Color.GetActualColor(this.defaultColor);
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual marker fill color.
+        /// </summary>
+        /// <value>The actual color.</value>
+        public OxyColor ActualMarkerFill
+        {
+            get
+            {
+                return this.MarkerFill.GetActualColor(this.defaultMarkerFill);
             }
         }
 
@@ -246,7 +272,7 @@ namespace OxyPlot.Series
         {
             get
             {
-                return this.LineStyle != LineStyle.Undefined ? this.LineStyle : LineStyle.Solid;
+                return this.LineStyle != LineStyle.Undefined ? this.LineStyle : this.defaultLineStyle;
             }
         }
 
@@ -275,7 +301,7 @@ namespace OxyPlot.Series
             if (interpolate)
             {
                 // Cannot interpolate if there is no line
-                if (this.ActualColor == null || this.StrokeThickness.IsZero())
+                if (this.ActualColor.IsInvisible() || this.StrokeThickness.IsZero())
                 {
                     return null;
                 }
@@ -405,7 +431,7 @@ namespace OxyPlot.Series
                 this.MarkerType,
                 this.MarkerOutline,
                 this.MarkerSize,
-                this.MarkerFill,
+                this.ActualMarkerFill,
                 this.MarkerStroke,
                 this.MarkerStrokeThickness);
         }
@@ -418,20 +444,18 @@ namespace OxyPlot.Series
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
-            // todo: should use ActualLineStyle
-            if (this.Color == null)
+            if (this.LineStyle == LineStyle.Undefined)
             {
-                if (this.LineStyle == LineStyle.Undefined)
-                {
-                    this.LineStyle = model.GetDefaultLineStyle();
-                }
+                this.defaultLineStyle = model.GetDefaultLineStyle();
+            }
 
+            if (this.Color.IsAutomatic())
+            {
                 this.defaultColor = model.GetDefaultColor();
 
-                // And MarkerFill will be overridden if not set to null
-                if (this.MarkerFill == null)
+                if (this.MarkerFill.IsAutomatic())
                 {
-                    this.MarkerFill = this.defaultColor;
+                    this.defaultMarkerFill = this.defaultColor;
                 }
             }
         }

@@ -63,6 +63,7 @@ namespace OxyPlot.Series
             this.MaximumFillColor = OxyColor.FromRgb(216, 82, 85);
             this.MinimumFillColor = OxyColor.FromRgb(84, 138, 209);
 
+            this.LabelColor = OxyColors.Automatic;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 1;
             this.BarWidth = 1;
@@ -132,7 +133,7 @@ namespace OxyPlot.Series
         /// <value>The actual color.</value>
         public OxyColor ActualMaximumFillColor
         {
-            get { return this.MaximumFillColor ?? this.defaultMaximumFillColor; }
+            get { return this.MaximumFillColor.GetActualColor(this.defaultMaximumFillColor); }
         }
 
         /// <summary>
@@ -159,7 +160,7 @@ namespace OxyPlot.Series
         /// <value>The actual color.</value>
         public OxyColor ActualMinimumFillColor
         {
-            get { return this.MinimumFillColor ?? this.defaultMinimumFillColor; }
+            get { return this.MinimumFillColor.GetActualColor(this.defaultMinimumFillColor); }
         }
 
         /// <summary>
@@ -186,17 +187,17 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the actual rectangles for the maximum bars.
         /// </summary>
-		protected internal IList<OxyRect> ActualMaximumBarRectangles { get; set; }
+        protected internal IList<OxyRect> ActualMaximumBarRectangles { get; set; }
 
         /// <summary>
         /// Gets or sets the actual rectangles for the minimum bars.
         /// </summary>
-		protected internal IList<OxyRect> ActualMinimumBarRectangles { get; set; }
+        protected internal IList<OxyRect> ActualMinimumBarRectangles { get; set; }
 
         /// <summary>
         /// Gets or sets the valid items
         /// </summary>
-		protected internal IList<TornadoBarItem> ValidItems { get; set; }
+        protected internal IList<TornadoBarItem> ValidItems { get; set; }
 
         /// <summary>
         /// Gets or sets the dictionary which stores the index-inversion for the valid items
@@ -308,13 +309,13 @@ namespace OxyPlot.Series
                 rc.DrawClippedRectangleAsPolygon(
                     minimumRectangle,
                     clippingRect,
-                    item.MinimumColor ?? this.ActualMinimumFillColor,
+                    item.MinimumColor.GetActualColor(this.ActualMinimumFillColor),
                     this.StrokeColor,
                     this.StrokeThickness);
                 rc.DrawClippedRectangleAsPolygon(
                     maximumRectangle,
                     clippingRect,
-                    item.MaximumColor ?? this.ActualMaximumFillColor,
+                    item.MaximumColor.GetActualColor(this.ActualMaximumFillColor),
                     this.StrokeColor,
                     this.StrokeThickness);
 
@@ -441,12 +442,12 @@ namespace OxyPlot.Series
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
-            if (this.MaximumFillColor == null)
+            if (this.MaximumFillColor.IsAutomatic())
             {
                 this.defaultMaximumFillColor = model.GetDefaultColor();
             }
 
-            if (this.MinimumFillColor == null)
+            if (this.MinimumFillColor.IsAutomatic())
             {
                 this.defaultMinimumFillColor = model.GetDefaultColor();
             }

@@ -50,6 +50,8 @@ namespace OxyPlot.Series
         /// </summary>
         protected BarSeriesBase()
         {
+            this.FillColor = OxyColors.Automatic;
+            this.NegativeFillColor = OxyColors.Undefined;
             this.StrokeColor = OxyColors.Black;
             this.StrokeThickness = 0;
             this.TrackerFormatString = "{0}, {1}: {2}";
@@ -84,7 +86,7 @@ namespace OxyPlot.Series
         /// <value>The actual color.</value>
         public OxyColor ActualFillColor
         {
-            get { return this.FillColor ?? this.defaultFillColor; }
+            get { return this.FillColor.GetActualColor(this.defaultFillColor); }
         }
 
         /// <summary>
@@ -327,7 +329,7 @@ namespace OxyPlot.Series
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
-            if (this.FillColor == null)
+            if (this.FillColor.IsAutomatic())
             {
                 this.defaultFillColor = model.GetDefaultColor();
             }
@@ -564,17 +566,16 @@ namespace OxyPlot.Series
         {
             // Get the color of the item
             var actualFillColor = item.Color;
-            if (actualFillColor == null)
+            if (actualFillColor.IsAutomatic())
             {
                 actualFillColor = this.ActualFillColor;
-                if (item.Value < 0 && this.NegativeFillColor != null)
+                if (item.Value < 0 && !this.NegativeFillColor.IsUndefined())
                 {
                     actualFillColor = this.NegativeFillColor;
                 }
             }
 
-            rc.DrawClippedRectangleAsPolygon(
-                rect, clippingRect, this.GetSelectableFillColor(actualFillColor), this.StrokeColor, this.StrokeThickness);
+            rc.DrawClippedRectangleAsPolygon(rect, clippingRect, this.GetSelectableFillColor(actualFillColor), this.StrokeColor, this.StrokeThickness);
         }
 
         /// <summary>

@@ -24,10 +24,10 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 

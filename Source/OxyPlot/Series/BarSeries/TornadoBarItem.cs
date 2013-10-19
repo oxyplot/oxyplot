@@ -42,40 +42,8 @@ namespace OxyPlot.Series
             this.Minimum = double.NaN;
             this.Maximum = double.NaN;
             this.BaseValue = double.NaN;
-            this.MinimumColor = null;
-            this.MaximumColor = null;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TornadoBarItem"/> class.
-        /// </summary>
-        /// <param name="minimum">
-        /// The minimum.
-        /// </param>
-        /// <param name="maximum">
-        /// The maximum.
-        /// </param>
-        /// <param name="baseValue">
-        /// The base value.
-        /// </param>
-        /// <param name="minimumColor">
-        /// The minimum color.
-        /// </param>
-        /// <param name="maximumColor">
-        /// The maximum color.
-        /// </param>
-        public TornadoBarItem(
-            double minimum,
-            double maximum,
-            double baseValue = double.NaN,
-            OxyColor minimumColor = null,
-            OxyColor maximumColor = null)
-        {
-            this.Minimum = minimum;
-            this.Maximum = maximum;
-            this.BaseValue = baseValue;
-            this.MinimumColor = minimumColor;
-            this.MaximumColor = maximumColor;
+            this.MinimumColor = OxyColors.Automatic;
+            this.MaximumColor = OxyColors.Automatic;
         }
 
         /// <summary>
@@ -111,7 +79,7 @@ namespace OxyPlot.Series
         /// </returns>
         public string ToCode()
         {
-            if (this.MaximumColor != null)
+            if (!this.MaximumColor.IsUndefined())
             {
                 return CodeGenerator.FormatConstructor(
                     this.GetType(),
@@ -123,7 +91,7 @@ namespace OxyPlot.Series
                     this.MaximumColor.ToCode());
             }
 
-            if (this.MinimumColor != null)
+            if (!this.MinimumColor.IsUndefined())
             {
                 return CodeGenerator.FormatConstructor(
                     this.GetType(),
@@ -142,6 +110,5 @@ namespace OxyPlot.Series
 
             return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1}", this.Minimum, this.Maximum);
         }
-
     }
 }

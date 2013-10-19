@@ -71,7 +71,7 @@ namespace OxyPlot.Wpf
         /// </returns>
         public static Brush ToBrush(this OxyColor c)
         {
-            return c != null ? new SolidColorBrush(c.ToColor()) : null;
+            return !c.IsUndefined() ? new SolidColorBrush(c.ToColor()) : null;
         }
 
         /// <summary>
@@ -167,20 +167,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Converts a nullable <see cref="Color"/> to an OxyColor.
-        /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// An OxyColor.
-        /// </returns>
-        public static OxyColor ToOxyColor(this Color? color)
-        {
-            return color.HasValue ? color.Value.ToOxyColor() : null;
-        }
-
-        /// <summary>
         /// Converts a <see cref="Brush"/> to an <see cref="OxyColor"/>.
         /// </summary>
         /// <param name="brush">
@@ -192,7 +178,7 @@ namespace OxyPlot.Wpf
         public static OxyColor ToOxyColor(this Brush brush)
         {
             var scb = brush as SolidColorBrush;
-            return scb != null ? scb.Color.ToOxyColor() : null;
+            return scb != null ? scb.Color.ToOxyColor() : OxyColors.Undefined;
         }
 
         /// <summary>

@@ -42,7 +42,7 @@ namespace OxyPlot.Wpf.Tests
         {
             var plotModel = TestModels.CreateTestModel1();
             const string FileName = "PngExporterTests_Plot1.png";
-            PngExporter.Export(plotModel, FileName, 400, 300);
+            PngExporter.Export(plotModel, FileName, 400, 300, OxyColors.Automatic);
             Assert.IsTrue(File.Exists(FileName));
         }
 

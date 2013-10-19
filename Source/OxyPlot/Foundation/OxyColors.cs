@@ -35,6 +35,16 @@ namespace OxyPlot
     public static class OxyColors
     {
         /// <summary>
+        /// The undefined color.
+        /// </summary>
+        public static readonly OxyColor Undefined = OxyColor.FromUInt32(0x00000000);
+
+        /// <summary>
+        /// The automatic color.
+        /// </summary>
+        public static readonly OxyColor Automatic = OxyColor.FromUInt32(0x00000001);
+
+        /// <summary>
         /// The alice blue.
         /// </summary>
         public static readonly OxyColor AliceBlue = OxyColor.FromUInt32(0xFFF0F8FF);

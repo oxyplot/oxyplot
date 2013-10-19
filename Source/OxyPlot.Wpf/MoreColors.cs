@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ColumnItem.cs" company="OxyPlot">
+// <copyright file="MoreColors.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,37 +24,27 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents an item used in the ColumnSeries.
+//   Defines additional <see cref="Colors"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.Series
+namespace OxyPlot.Wpf
 {
+    using System.Windows.Media;
+
     /// <summary>
-    /// Represents an item used in the ColumnSeries.
+    /// Defines additional <see cref="Colors"/>.
     /// </summary>
-    public class ColumnItem : BarItemBase
+    public static class MoreColors
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnItem"/> class.
+        /// The undefined color.
         /// </summary>
-        public ColumnItem()
-        {
-        }
+        public static readonly Color Undefined = Color.FromArgb(0, 0, 0, 0);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnItem"/> class.
+        /// The automatic color.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="categoryIndex">
-        /// Index of the category.
-        /// </param>
-        public ColumnItem(double value, int categoryIndex = -1)
-        {
-            this.Value = value;
-            this.CategoryIndex = categoryIndex;
-        }
+        public static readonly Color Automatic = Color.FromArgb(0, 0, 0, 1);
     }
 }

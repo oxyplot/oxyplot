@@ -67,7 +67,7 @@ namespace OxyPlot.Series
             this.LabelStep = 1;
             this.LabelBackground = OxyColor.FromAColor(220, OxyColors.White);
 
-            this.Color = null;
+            this.Color = OxyColors.Automatic;
             this.StrokeThickness = 1.0;
             this.LineStyle = LineStyle.Solid;
 
@@ -86,7 +86,7 @@ namespace OxyPlot.Series
         /// <value>The actual color.</value>
         public OxyColor ActualColor
         {
-            get { return this.Color ?? this.defaultColor; }
+            get { return this.Color.GetActualColor(this.defaultColor); }
         }
 
         /// <summary>
@@ -313,11 +313,13 @@ namespace OxyPlot.Series
                         }
                     }
 
+                    var strokeColor = contour.Color.GetActualColor(this.ActualColor);
+
                     rc.DrawClippedLine(
                         pts,
                         clippingRect,
                         4,
-                        this.GetSelectableColor(contour.Color ?? this.ActualColor),
+                        this.GetSelectableColor(strokeColor),
                         this.StrokeThickness,
                         this.LineStyle,
                         OxyPenLineJoin.Miter,
@@ -343,14 +345,12 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Sets default values from the plotmodel.
+        /// Sets default values from the plot model.
         /// </summary>
-        /// <param name="model">
-        /// The plot model.
-        /// </param>
+        /// <param name="model">The plot model.</param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
-            if (this.Color == null)
+            if (this.Color.IsAutomatic())
             {
                 this.LineStyle = model.GetDefaultLineStyle();
                 this.defaultColor = model.GetDefaultColor();
@@ -358,7 +358,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the max/min from the datapoints.
+        /// Updates the max/minimum values.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
@@ -441,16 +441,15 @@ namespace OxyPlot.Series
         /// The contour.
         /// </param>
         /// <param name="pts">
-        /// The pts.
+        /// The points of the contour.
         /// </param>
         /// <param name="clippingRect">
-        /// The clipping rect.
+        /// The clipping rectangle.
         /// </param>
         /// <param name="contourLabels">
         /// The contour labels.
         /// </param>
-        private void AddContourLabels(
-            Contour contour, ScreenPoint[] pts, OxyRect clippingRect, List<ContourLabel> contourLabels)
+        private void AddContourLabels(Contour contour, ScreenPoint[] pts, OxyRect clippingRect, ICollection<ContourLabel> contourLabels)
         {
             // todo: support label spacing and label step
             if (pts.Length < 2)
@@ -498,7 +497,7 @@ namespace OxyPlot.Series
         /// The contour level.
         /// </param>
         /// <param name="eps">
-        /// The eps.
+        /// The distance tolerance.
         /// </param>
         /// <param name="reverse">
         /// reverse the segment if set to <c>true</c>.
@@ -637,30 +636,32 @@ namespace OxyPlot.Series
         /// </param>
         private void RenderLabelBackground(IRenderContext rc, ContourLabel cl)
         {
-            if (this.LabelBackground != null)
+            if (this.LabelBackground.IsInvisible())
             {
-                // Calculate background polygon
-                var size = rc.MeasureText(cl.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
-                double a = cl.Angle / 180 * Math.PI;
-                double dx = Math.Cos(a);
-                double dy = Math.Sin(a);
-
-                double ux = dx * 0.6;
-                double uy = dy * 0.6;
-                double vx = -dy * 0.5;
-                double vy = dx * 0.5;
-                double x = cl.Position.X;
-                double y = cl.Position.Y;
-
-                var bpts = new[]
-                    {
-                        new ScreenPoint(x - (size.Width * ux) - (size.Height * vx), y - (size.Width * uy) - (size.Height * vy)),
-                        new ScreenPoint(x + (size.Width * ux) - (size.Height * vx), y + (size.Width * uy) - (size.Height * vy)),
-                        new ScreenPoint(x + (size.Width * ux) + (size.Height * vx), y + (size.Width * uy) + (size.Height * vy)),
-                        new ScreenPoint(x - (size.Width * ux) + (size.Height * vx), y - (size.Width * uy) + (size.Height * vy))
-                    };
-                rc.DrawPolygon(bpts, this.LabelBackground, null);
+                return;
             }
+
+            // Calculate background polygon
+            var size = rc.MeasureText(cl.Text, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
+            double a = cl.Angle / 180 * Math.PI;
+            double dx = Math.Cos(a);
+            double dy = Math.Sin(a);
+
+            double ux = dx * 0.6;
+            double uy = dy * 0.6;
+            double vx = -dy * 0.5;
+            double vy = dx * 0.5;
+            double x = cl.Position.X;
+            double y = cl.Position.Y;
+
+            var bpts = new[]
+                           {
+                               new ScreenPoint(x - (size.Width * ux) - (size.Height * vx), y - (size.Width * uy) - (size.Height * vy)),
+                               new ScreenPoint(x + (size.Width * ux) - (size.Height * vx), y + (size.Width * uy) - (size.Height * vy)),
+                               new ScreenPoint(x + (size.Width * ux) + (size.Height * vx), y + (size.Width * uy) + (size.Height * vy)),
+                               new ScreenPoint(x - (size.Width * ux) + (size.Height * vx), y - (size.Width * uy) + (size.Height * vy))
+                           };
+            rc.DrawPolygon(bpts, this.LabelBackground, OxyColors.Undefined);
         }
 
         /// <summary>
@@ -693,6 +694,7 @@ namespace OxyPlot.Series
             {
                 this.Points = points;
                 this.ContourLevel = contourLevel;
+                this.Color = OxyColors.Automatic;
             }
 
             /// <summary>
@@ -723,7 +725,6 @@ namespace OxyPlot.Series
             /// </summary>
             /// <value>The text.</value>
             public string Text { get; set; }
-
         }
 
         /// <summary>
@@ -764,7 +765,6 @@ namespace OxyPlot.Series
                 this.StartPoint = startPoint;
                 this.EndPoint = endPoint;
             }
-
         }
     }
 }

@@ -39,6 +39,7 @@ namespace OxyPlot.Series
         /// </summary>
         public RectangleBarItem()
         {
+            this.Color = OxyColors.Automatic;
         }
 
         /// <summary>
@@ -56,25 +57,21 @@ namespace OxyPlot.Series
         /// <param name="y1">
         /// The y1.
         /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        public RectangleBarItem(double x0, double y0, double x1, double y1, string title = null, OxyColor color = null)
+        public RectangleBarItem(double x0, double y0, double x1, double y1)
+            : this()
         {
             this.X0 = x0;
             this.Y0 = y0;
             this.X1 = x1;
             this.Y1 = y1;
-            this.Title = title;
-            this.Color = color;
         }
 
         /// <summary>
         /// Gets or sets the color.
         /// </summary>
+        /// <remarks>
+        /// If set to Automatic, the FillColor of the RectangleBarSeries will be used.
+        /// </remarks>
         public OxyColor Color { get; set; }
 
         /// <summary>
@@ -110,7 +107,7 @@ namespace OxyPlot.Series
         /// </returns>
         public string ToCode()
         {
-            if (this.Color != null)
+            if (!this.Color.IsUndefined())
             {
                 return CodeGenerator.FormatConstructor(
                     this.GetType(),

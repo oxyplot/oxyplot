@@ -240,7 +240,7 @@ namespace ExampleLibrary
             var model = new PlotModel("ScatterSeries (cross)");
             var s1 = new ScatterSeries();
             s1.MarkerType = MarkerType.Cross;
-            s1.MarkerFill = null;
+            s1.MarkerFill = OxyColors.Undefined;
             s1.MarkerStroke = OxyColors.Black;
             AddPoints(s1.Points, 2000);
             model.Series.Add(s1);

@@ -32,7 +32,7 @@ namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
-    
+
     using OxyPlot.Series;
 
     /// <summary>
@@ -120,7 +120,7 @@ namespace OxyPlot.Axes
             this.TitlePosition = 0.5;
             this.TitleFormatString = "{0} [{1}]";
             this.TitleClippingLength = 0.9;
-            this.TitleColor = null;
+            this.TitleColor = OxyColors.Automatic;
             this.TitleFontSize = double.NaN;
             this.TitleFontWeight = FontWeights.Normal;
             this.ClipTitle = true;
@@ -647,7 +647,7 @@ namespace OxyPlot.Axes
         {
             get
             {
-                return this.TitleColor ?? this.PlotModel.TextColor;
+                return this.TitleColor.GetActualColor(this.PlotModel.TextColor);
             }
         }
 
@@ -1199,7 +1199,7 @@ namespace OxyPlot.Axes
 
             double dx = (this.offset - mid) * this.scale;
             var newOffset = (dx / (sgn * newScale)) + mid;
-            this.SetTransform(sgn * newScale, newOffset); 
+            this.SetTransform(sgn * newScale, newOffset);
 
             double newMaximum = this.InverseTransform(sx1);
             double newMinimum = this.InverseTransform(sx0);

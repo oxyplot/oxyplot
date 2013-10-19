@@ -89,7 +89,7 @@ namespace OxyPlot.Pdf
             var page = new PdfPage { Width = new XUnit(width), Height = new XUnit(height) };
             this.doc.AddPage(page);
             this.g = XGraphics.FromPdfPage(page);
-            if (background != null)
+            if (background.IsVisible())
             {
                 this.g.DrawRectangle(ToBrush(background), 0, 0, width, height);
             }
@@ -113,12 +113,12 @@ namespace OxyPlot.Pdf
         /// <param name="thickness">The thickness.</param>
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 this.g.DrawEllipse(ToBrush(fill), rect.Left, rect.Top, rect.Width, rect.Height);
             }
 
-            if (stroke != null && thickness > 0)
+            if (stroke.IsVisible() && thickness > 0)
             {
                 var pen = new XPen(ToColor(stroke), (float)thickness);
                 this.g.DrawEllipse(pen, rect.Left, rect.Top, rect.Width, rect.Height);
@@ -142,7 +142,7 @@ namespace OxyPlot.Pdf
             OxyPenLineJoin lineJoin,
             bool aliased)
         {
-            if (stroke == null || thickness <= 0)
+            if (stroke.IsVisible() || thickness <= 0)
             {
                 return;
             }
@@ -193,12 +193,12 @@ namespace OxyPlot.Pdf
 
             var pts = ToPoints(points);
 
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 this.g.DrawPolygon(ToBrush(fill), pts, XFillMode.Alternate);
             }
 
-            if (stroke != null && thickness > 0)
+            if (stroke.IsVisible() && thickness > 0)
             {
                 var pen = new XPen(ToColor(stroke), (float)thickness);
 
@@ -232,12 +232,12 @@ namespace OxyPlot.Pdf
         /// <param name="thickness">The stroke thickness.</param>
         public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 this.g.DrawRectangle(ToBrush(fill), rect.Left, rect.Top, rect.Width, rect.Height);
             }
 
-            if (stroke != null && thickness > 0)
+            if (stroke.IsVisible() && thickness > 0)
             {
                 var pen = new XPen(ToColor(stroke), (float)thickness);
                 this.g.DrawRectangle(pen, rect.Left, rect.Top, rect.Width, rect.Height);
@@ -472,7 +472,7 @@ namespace OxyPlot.Pdf
         /// </returns>
         private static XBrush ToBrush(OxyColor fill)
         {
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 return new XSolidBrush(ToColor(fill));
             }

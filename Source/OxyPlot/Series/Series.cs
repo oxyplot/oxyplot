@@ -45,6 +45,7 @@ namespace OxyPlot.Series
         protected Series()
         {
             this.IsVisible = true;
+            this.Background = OxyColors.Undefined;
         }
 
         /// <summary>

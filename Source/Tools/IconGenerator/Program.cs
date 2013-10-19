@@ -81,7 +81,7 @@
                 grx.SetGraphicsTarget(Graphics.FromImage(bm));
                 using (var s = File.OpenWrite(fileName))
                 {
-                    using (var rc = new SvgRenderContext(s, size, size, true, grx, null))
+                    using (var rc = new SvgRenderContext(s, size, size, true, grx, OxyColors.Transparent))
                     {
                         iconRenderer.Render(rc, size);
                     }

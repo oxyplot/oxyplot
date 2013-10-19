@@ -107,7 +107,7 @@ namespace OxyPlot.Series
         /// <value>The actual color.</value>
         public OxyColor ActualColor
         {
-            get { return this.Color ?? this.defaultColor; }
+            get { return this.Color.GetActualColor(this.defaultColor); }
         }
 
         /// <summary>
@@ -397,7 +397,7 @@ namespace OxyPlot.Series
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
-            if (this.Color == null)
+            if (this.Color.IsAutomatic())
             {
                 this.LineStyle = model.GetDefaultLineStyle();
                 this.defaultColor = model.GetDefaultColor();

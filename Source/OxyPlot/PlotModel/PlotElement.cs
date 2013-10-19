@@ -45,6 +45,7 @@ namespace OxyPlot
             this.Font = null;
             this.FontSize = double.NaN;
             this.FontWeight = FontWeights.Normal;
+            this.TextColor = OxyColors.Automatic;
         }
 
         /// <summary>
@@ -136,7 +137,7 @@ namespace OxyPlot
         {
             get
             {
-                return this.TextColor ?? this.PlotModel.TextColor;
+                return this.TextColor.GetActualColor(this.PlotModel.TextColor);
             }
         }
 

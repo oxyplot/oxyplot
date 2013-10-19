@@ -34,6 +34,8 @@ namespace ExampleBrowser
 {
     using System.Reflection;
 
+    using Windows.UI;
+
     using OxyPlot.Metro;
     using Windows.UI.Xaml.Data;
     using Windows.UI.Xaml.Media;
@@ -60,20 +62,21 @@ namespace ExampleBrowser
         public IEnumerable<ExampleInfo> Examples
         {
             get { return examples; }
-            set { examples = value; RaisePropertyChanged("Examples"); }
+            set { examples = value; this.RaisePropertyChanged("Examples"); }
         }
 
         public ICollectionView ExamplesView { get; set; }
 
         private ExampleInfo selectedExample;
+
         public ExampleInfo SelectedExample
         {
-            get { return selectedExample; }
+            get { return this.selectedExample; }
             set
             {
-                selectedExample = value;
-                RaisePropertyChanged("SelectedExample");
-                RaisePropertyChanged("PlotBackground");
+                this.selectedExample = value;
+                this.RaisePropertyChanged("SelectedExample");
+                this.RaisePropertyChanged("PlotBackground");
             }
         }
 
@@ -81,7 +84,7 @@ namespace ExampleBrowser
         {
             get
             {
-                return selectedExample != null && selectedExample.PlotModel.Background != null ? selectedExample.PlotModel.Background.ToBrush() : new SolidColorBrush() { Opacity = 0 }; // Brushes.Transparent;
+                return this.selectedExample != null && this.selectedExample.PlotModel.Background.IsVisible() ? this.selectedExample.PlotModel.Background.ToBrush() : new SolidColorBrush(Colors.White); 
             }
         }
 

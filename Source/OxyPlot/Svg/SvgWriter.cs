@@ -136,7 +136,7 @@ namespace OxyPlot
         {
             // http://oreilly.com/catalog/svgess/chapter/ch03.html
             var style = new StringBuilder();
-            if (fill == null)
+            if (fill.IsInvisible())
             {
                 style.AppendFormat("fill:none;");
             }
@@ -149,7 +149,7 @@ namespace OxyPlot
                 }
             }
 
-            if (stroke == null)
+            if (stroke.IsInvisible())
             {
                 style.AppendFormat("stroke:none;");
             }
@@ -417,7 +417,7 @@ namespace OxyPlot
         /// <returns>The color string.</returns>
         protected string ColorToString(OxyColor color)
         {
-            if (color == OxyColors.Black)
+            if (color.Equals(OxyColors.Black))
             {
                 return "black";
             }

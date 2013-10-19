@@ -98,7 +98,7 @@ namespace ExampleBrowser
         {
             get
             {
-                return selectedExample != null && selectedExample.PlotModel.Background != null ? selectedExample.PlotModel.Background.ToBrush() : new SolidColorBrush(Colors.Transparent);
+                return selectedExample != null && selectedExample.PlotModel.Background.IsVisible() ? selectedExample.PlotModel.Background.ToBrush() : new SolidColorBrush(Colors.Transparent);
             }
         }
 

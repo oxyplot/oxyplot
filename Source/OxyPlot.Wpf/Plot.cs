@@ -172,7 +172,7 @@ namespace OxyPlot.Wpf
 #if !NET35
             this.IsManipulationEnabled = true;
 #endif
-  
+
             // this.CommandBindings.Add(new CommandBinding(CopyCode, this.DoCopyCode));
             // this.InputBindings.Add(new KeyBinding(CopyCode, Key.C, ModifierKeys.Control | ModifierKeys.Alt));
         }
@@ -581,7 +581,7 @@ namespace OxyPlot.Wpf
         /// <param name="background">
         /// The background.
         /// </param>
-        public void SaveBitmap(string fileName, int width = 0, int height = 0, OxyColor background = null)
+        public void SaveBitmap(string fileName, int width, int height, OxyColor background)
         {
             // var tmp = this.Model;
             // this.Model = null;
@@ -595,7 +595,7 @@ namespace OxyPlot.Wpf
                 height = (int)this.ActualHeight;
             }
 
-            if (background == null)
+            if (background.IsAutomatic())
             {
                 background = this.Background.ToOxyColor();
             }

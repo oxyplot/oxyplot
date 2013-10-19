@@ -172,7 +172,7 @@ namespace OxyPlot.Wpf
         {
             var e = this.CreateAndAdd<Ellipse>(rect.Left, rect.Top);
             this.SetStroke(e, stroke, thickness);
-            if (fill != null)
+            if (fill.IsVisible())
             {
                 e.Fill = this.GetCachedBrush(fill);
             }
@@ -202,7 +202,7 @@ namespace OxyPlot.Wpf
         {
             var path = this.CreateAndAdd<Path>();
             this.SetStroke(path, stroke, thickness);
-            if (fill != null)
+            if (!fill.IsUndefined())
             {
                 path.Fill = this.GetCachedBrush(fill);
             }
@@ -358,7 +358,7 @@ namespace OxyPlot.Wpf
             var e = this.CreateAndAdd<Polygon>();
             this.SetStroke(e, stroke, thickness, lineJoin, dashArray, 0, aliased);
 
-            if (fill != null)
+            if (!fill.IsUndefined())
             {
                 e.Fill = this.GetCachedBrush(fill);
             }
@@ -418,7 +418,7 @@ namespace OxyPlot.Wpf
                 {
                     path = this.CreateAndAdd<Path>();
                     this.SetStroke(path, stroke, thickness, lineJoin, dashArray, 0, aliased);
-                    if (fill != null)
+                    if (!fill.IsUndefined())
                     {
                         path.Fill = this.GetCachedBrush(fill);
                     }
@@ -442,14 +442,14 @@ namespace OxyPlot.Wpf
                     {
                         if (usg)
                         {
-                            sgc.BeginFigure(p.ToPoint(aliased), fill != null, true);
+                            sgc.BeginFigure(p.ToPoint(aliased), !fill.IsUndefined(), true);
                         }
                         else
                         {
                             figure = new PathFigure
                                 {
                                     StartPoint = p.ToPoint(aliased),
-                                    IsFilled = fill != null,
+                                    IsFilled = !fill.IsUndefined(),
                                     IsClosed = true
                                 };
                             pathGeometry.Figures.Add(figure);
@@ -461,12 +461,12 @@ namespace OxyPlot.Wpf
                     {
                         if (usg)
                         {
-                            sgc.LineTo(p.ToPoint(aliased), stroke != null, true);
+                            sgc.LineTo(p.ToPoint(aliased), !stroke.IsUndefined(), true);
                         }
                         else
                         {
                             figure.Segments.Add(
-                                new LineSegment(p.ToPoint(aliased), stroke != null) { IsSmoothJoin = true });
+                                new LineSegment(p.ToPoint(aliased), !stroke.IsUndefined()) { IsSmoothJoin = true });
                         }
                     }
                 }
@@ -525,7 +525,7 @@ namespace OxyPlot.Wpf
             var e = this.CreateAndAdd<Rectangle>(rect.Left, rect.Top);
             this.SetStroke(e, stroke, thickness, OxyPenLineJoin.Miter, null, 0, true);
 
-            if (fill != null)
+            if (!fill.IsUndefined())
             {
                 e.Fill = this.GetCachedBrush(fill);
             }
@@ -548,7 +548,7 @@ namespace OxyPlot.Wpf
         {
             var path = this.CreateAndAdd<Path>();
             this.SetStroke(path, stroke, thickness);
-            if (fill != null)
+            if (!fill.IsUndefined())
             {
                 path.Fill = this.GetCachedBrush(fill);
             }
@@ -1120,7 +1120,7 @@ namespace OxyPlot.Wpf
             double dashOffset = 0,
             bool aliased = false)
         {
-            if (stroke != null && thickness > 0)
+            if (!stroke.IsUndefined() && thickness > 0)
             {
                 shape.Stroke = this.GetCachedBrush(stroke);
 

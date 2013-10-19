@@ -39,6 +39,7 @@ namespace OxyPlot.Series
         /// </summary>
         public IntervalBarItem()
         {
+            this.Color = OxyColors.Undefined;
         }
 
         /// <summary>
@@ -53,15 +54,12 @@ namespace OxyPlot.Series
         /// <param name="title">
         /// The title.
         /// </param>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        public IntervalBarItem(double start, double end, string title = null, OxyColor color = null)
+        public IntervalBarItem(double start, double end, string title = null)
+            : this()
         {
             this.Start = start;
             this.End = end;
             this.Title = title;
-            this.Color = color;
         }
 
         /// <summary>
@@ -92,7 +90,7 @@ namespace OxyPlot.Series
         /// </returns>
         public string ToCode()
         {
-            if (this.Color != null)
+            if (this.Color.IsUndefined())
             {
                 return CodeGenerator.FormatConstructor(
                     this.GetType(), "{0},{1},{2},{3}", this.Start, this.End, this.Title, this.Color.ToCode());
