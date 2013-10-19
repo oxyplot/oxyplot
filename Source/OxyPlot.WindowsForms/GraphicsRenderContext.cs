@@ -337,7 +337,7 @@ namespace OxyPlot.WindowsForms
 
                     this.g.TranslateTransform(dx, dy);
 
-                    var layoutRectangle = new RectangleF(0, 0, size.Width, size.Height);
+                    var layoutRectangle = new RectangleF(0, 0, size.Width + 0.1f, size.Height + 0.1f);
                     this.g.DrawString(text, font, this.ToBrush(fill), layoutRectangle, sf);
 
                     this.g.ResetTransform();
