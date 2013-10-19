@@ -47,6 +47,7 @@ namespace OxyPlot.Metro
     /// <summary>
     /// Rendering Metro shapes to a Canvas
     /// </summary>
+    [CLSCompliant(false)]
     public class MetroRenderContext : IRenderContext
     {
         /// <summary>
@@ -60,19 +61,19 @@ namespace OxyPlot.Metro
         private readonly Canvas canvas;
 
         /// <summary>
-        /// The clip rectangle.
-        /// </summary>
-        private Rect? clip;
-
-        /// <summary>
         /// The images in use
         /// </summary>
-        private HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+        private readonly HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
 
         /// <summary>
         /// The image cache
         /// </summary>
-        private Dictionary<OxyImage, BitmapSource> imageCache = new Dictionary<OxyImage, BitmapSource>();
+        private readonly Dictionary<OxyImage, BitmapSource> imageCache = new Dictionary<OxyImage, BitmapSource>();
+
+        /// <summary>
+        /// The clip rectangle.
+        /// </summary>
+        private Rect? clip;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MetroRenderContext" /> class.
