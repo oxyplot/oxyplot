@@ -32,8 +32,7 @@ namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-
+    
     using OxyPlot.Series;
 
     /// <summary>
@@ -54,16 +53,12 @@ namespace OxyPlot.Axes
         /// <summary>
         /// The offset.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate",
-            Justification = "Reviewed. Suppression is OK here.")]
-        protected double offset;
+        private double offset;
 
         /// <summary>
         /// The scale.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate",
-            Justification = "Reviewed. Suppression is OK here.")]
-        protected double scale;
+        private double scale;
 
         /// <summary>
         /// The position.
@@ -1542,13 +1537,6 @@ namespace OxyPlot.Axes
             this.SetTransform(newScale, newOffset);
         }
 
-        protected void SetTransform(double newScale, double newOffset)
-        {
-            this.scale = newScale;
-            this.offset = newOffset;
-            this.OnTransformChanged(new EventArgs());
-        }
-
         /// <summary>
         /// Creates tick values at the specified interval.
         /// </summary>
@@ -1598,6 +1586,18 @@ namespace OxyPlot.Axes
             }
 
             return values;
+        }
+
+        /// <summary>
+        /// Sets the transform.
+        /// </summary>
+        /// <param name="newScale">The new scale.</param>
+        /// <param name="newOffset">The new offset.</param>
+        protected void SetTransform(double newScale, double newOffset)
+        {
+            this.scale = newScale;
+            this.offset = newOffset;
+            this.OnTransformChanged(new EventArgs());
         }
 
         /// <summary>

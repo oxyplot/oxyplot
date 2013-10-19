@@ -473,10 +473,10 @@ namespace OxyPlot.WindowsForms
         public override OxyImageInfo GetImageInfo(OxyImage source)
         {
             var image = this.GetImage(source);
-            return image == null ? null : new OxyImageInfo { Width = (uint)image.Width, Height = (uint)image.Height, DpiX = image.HorizontalResolution, DpiY = image.VerticalResolution };
+            return image == null ? null : new OxyImageInfo { Width = image.Width, Height = image.Height, DpiX = image.HorizontalResolution, DpiY = image.VerticalResolution };
         }
 
-        public override void DrawImage(OxyImage source, uint srcX, uint srcY, uint srcWidth, uint srcHeight, double x, double y, double w, double h, double opacity, bool interpolate)
+        public override void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double x, double y, double w, double h, double opacity, bool interpolate)
         {
             var image = this.GetImage(source);
             if (image != null)
@@ -503,7 +503,7 @@ namespace OxyPlot.WindowsForms
                 int sw = (int)Math.Ceiling(x + w) - sx;
                 int sh = (int)Math.Ceiling(y + h) - sy;
                 var destRect = new Rectangle(sx, sy, sw, sh);
-                g.DrawImage(image, destRect, srcX - 0.5f, srcY - 0.5f, srcWidth, srcHeight, GraphicsUnit.Pixel, ia);
+                g.DrawImage(image, destRect, (float)srcX - 0.5f, (float)srcY - 0.5f, (float)srcWidth, (float)srcHeight, GraphicsUnit.Pixel, ia);
             }
         }
 

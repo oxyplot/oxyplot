@@ -345,7 +345,7 @@ namespace OxyPlot
         /// <param name="destHeight">The height of the drawn image.</param>
         /// <param name="opacity">The opacity.</param>
         /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
-        void DrawImage(OxyImage source, uint srcX, uint srcY, uint srcWidth, uint srcHeight, double destX, double destY, double destWidth, double destHeight, double opacity, bool interpolate);
+        void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double destX, double destY, double destWidth, double destHeight, double opacity, bool interpolate);
 
         /// <summary>
         /// Sets the clip rectangle.
@@ -371,7 +371,7 @@ namespace OxyPlot
         /// <value>
         /// The width.
         /// </value>
-        public uint Width { get; set; }
+        public int Width { get; set; }
 
         /// <summary>
         /// Gets or sets the height in pixels.
@@ -379,7 +379,7 @@ namespace OxyPlot
         /// <value>
         /// The height.
         /// </value>
-        public uint Height { get; set; }
+        public int Height { get; set; }
 
         /// <summary>
         /// Gets or sets the horizontal resolution in dpi.

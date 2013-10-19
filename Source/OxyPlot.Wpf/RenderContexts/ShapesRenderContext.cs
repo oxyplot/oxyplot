@@ -740,7 +740,7 @@ namespace OxyPlot.Wpf
                 return null;
             }
 
-            return new OxyImageInfo { Width = (uint)bmp.PixelWidth, Height = (uint)bmp.PixelHeight, DpiX = bmp.DpiX, DpiY = bmp.DpiY };
+            return new OxyImageInfo { Width = bmp.PixelWidth, Height = bmp.PixelHeight, DpiX = bmp.DpiX, DpiY = bmp.DpiY };
         }
 
         /// <summary>
@@ -759,10 +759,10 @@ namespace OxyPlot.Wpf
         /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
         public void DrawImage(
             OxyImage source,
-            uint srcX,
-            uint srcY,
-            uint srcWidth,
-            uint srcHeight,
+            double srcX,
+            double srcY,
+            double srcWidth,
+            double srcHeight,
             double destX,
             double destY,
             double destWidth,

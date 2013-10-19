@@ -327,7 +327,7 @@ namespace OxyPlot
             var destw = w * srcw / info.Width;
             var desth = h * srch / info.Height;
 
-            rc.DrawImage(source, (uint)srcx, (uint)srcy, (uint)srcw, (uint)srch, destx, desty, destw, desth, opacity, interpolate);
+            rc.DrawImage(source, srcx, srcy, srcw, srch, destx, desty, destw, desth, opacity, interpolate);
         }
 
         /// <summary>

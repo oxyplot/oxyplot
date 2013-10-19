@@ -640,7 +640,7 @@ namespace OxyPlot.Metro
                 return null;
             }
 
-            return new OxyImageInfo { Width = (uint)bmp.PixelWidth, Height = (uint)bmp.PixelHeight, DpiX = 96, DpiY = 96 };
+            return new OxyImageInfo { Width = bmp.PixelWidth, Height = bmp.PixelHeight, DpiX = 96, DpiY = 96 };
         }
 
         /// <summary>
@@ -659,10 +659,10 @@ namespace OxyPlot.Metro
         /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
         public void DrawImage(
             OxyImage source,
-            uint srcX,
-            uint srcY,
-            uint srcWidth,
-            uint srcHeight,
+            double srcX,
+            double srcY,
+            double srcWidth,
+            double srcHeight,
             double destX,
             double destY,
             double destWidth,
@@ -733,7 +733,7 @@ namespace OxyPlot.Metro
         public void CleanUp()
         {
             // Find the images in the cache that has not been used since last call to this method
-            var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i));
+            var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i)).ToArray();
 
             // Remove the images from the cache
             foreach (var i in imagesToRelease)
