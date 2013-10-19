@@ -279,7 +279,7 @@ namespace OxyPlot
             // For images with height > 1, multiple padded rows are stored consecutively, forming a Pixel Array.
 
             // ReSharper disable once PossibleLossOfFraction
-            int rowSize = (int)Math.Floor(((8 * width) + 31) / 32) * 4;
+            int rowSize = (int)Math.Floor((double)((8 * width) + 31) / 32) * 4;
 
             for (int i = 0; i < height; i++)
             {

@@ -663,7 +663,9 @@ namespace OxyPlot.Wpf
                 tb.Clip.Transform = tb.RenderTransform.Inverse as Transform;
             }
 
+#if !NET35
             tb.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
+#endif
             this.ApplyTooltip(tb);
         }
 

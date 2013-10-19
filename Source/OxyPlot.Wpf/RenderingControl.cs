@@ -43,7 +43,7 @@ namespace OxyPlot.Wpf
         private readonly RenderingEventListener renderingEventListener;
 
         /// <summary>
-         /// Initializes a new instance of the <see cref="RenderingControl"/> class.
+        /// Initializes a new instance of the <see cref="RenderingControl"/> class.
         /// </summary>
         protected RenderingControl()
         {
@@ -71,6 +71,8 @@ namespace OxyPlot.Wpf
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="eventArgs">The <see cref="System.Windows.Media.RenderingEventArgs"/> instance containing the event data.</param>
-        protected abstract void OnCompositionTargetRendering(object sender, RenderingEventArgs eventArgs);
+        protected virtual void OnCompositionTargetRendering(object sender, RenderingEventArgs eventArgs)
+        {
+        }
     }
 }
