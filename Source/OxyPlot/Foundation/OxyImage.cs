@@ -70,6 +70,22 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Gets the width of the image.
+        /// </summary>
+        /// <value>
+        /// The width.
+        /// </value>
+        public int Width { get; private set; }
+
+        /// <summary>
+        /// Gets the height of the image.
+        /// </summary>
+        /// <value>
+        /// The height.
+        /// </value>
+        public int Height { get; private set; }
+
+        /// <summary>
         /// Creates a BITMAP image from the specified <see cref="OxyColor"/> array.
         /// </summary>
         /// <param name="data">
@@ -182,7 +198,7 @@ namespace OxyPlot
             // Pixel array (from bottom-left corner, no padding needed)
             w.Write(pixelData);
 
-            return new OxyImage(ms.ToArray());
+            return new OxyImage(ms.ToArray()) { Width = width, Height = height };
         }
 
         /// <summary>
@@ -279,7 +295,7 @@ namespace OxyPlot
             // For images with height > 1, multiple padded rows are stored consecutively, forming a Pixel Array.
 
             // ReSharper disable once PossibleLossOfFraction
-            int rowSize = (int)Math.Floor((double)((8 * width) + 31) / 32) * 4;
+            int rowSize = (int)Math.Floor(((8 * width) + 31) / 32) * 4;
 
             for (int i = 0; i < height; i++)
             {
