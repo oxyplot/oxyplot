@@ -36,6 +36,8 @@ namespace LegendsDemo
     using PropertyTools.DataAnnotations;
     using WpfExamples;
 
+    using HorizontalAlignment = OxyPlot.HorizontalAlignment;
+
     public class MainViewModel : Observable
     {
         private HorizontalAlignment legendItemAlignment;
