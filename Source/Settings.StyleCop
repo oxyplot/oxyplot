@@ -7,8 +7,10 @@
       <Value>pdf</Value>
       <Value>PdfSharp</Value>
       <Value>png</Value>
+      <Value>pubid</Value>
       <Value>SilverPdf</Value>
       <Value>svg</Value>
+      <Value>sysid</Value>
       <Value>veeness</Value>
       <Value>wpf</Value>
       <Value>xaml</Value>

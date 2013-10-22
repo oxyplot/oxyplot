@@ -46,6 +46,16 @@ namespace OxyPlot
         private bool endIsWritten;
 
         /// <summary>
+        /// The clip path
+        /// </summary>
+        private string clipPath;
+
+        /// <summary>
+        /// The clip path number
+        /// </summary>
+        private int clipPathNumber = 1;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SvgWriter"/> class.
         /// </summary>
         /// <param name="stream">
@@ -89,6 +99,7 @@ namespace OxyPlot
                 this.Complete();
             }
 
+            this.Flush();
             base.Close();
         }
 
@@ -156,7 +167,7 @@ namespace OxyPlot
             else
             {
                 string formatString = "stroke:{0};stroke-width:{1:" + this.NumberFormat + "}";
-                style.AppendFormat(formatString, this.ColorToString(stroke), thickness);
+                style.AppendFormat(CultureInfo.InvariantCulture, formatString, this.ColorToString(stroke), thickness);
                 switch (lineJoin)
                 {
                     case OxyPenLineJoin.Round:
@@ -213,6 +224,72 @@ namespace OxyPlot
             this.WriteAttributeString("rx", width / 2);
             this.WriteAttributeString("ry", height / 2);
             this.WriteAttributeString("style", style);
+            this.WriteClipPathAttribute();
+            this.WriteEndElement();
+        }
+
+        public void BeginClip(double x, double y, double width, double height)
+        {
+            // http://www.w3.org/TR/SVG/masking.html
+            // https://developer.mozilla.org/en-US/docs/Web/SVG/Element/clipPath
+            // http://www.svgbasics.com/clipping.html
+            this.clipPath = "clipPath" + (this.clipPathNumber++);
+            this.WriteStartElement("g");
+            this.WriteAttributeString("clip-rule", "nonzero");
+            this.WriteStartElement("clipPath");
+            this.WriteAttributeString("id", this.clipPath);
+            this.WriteStartElement("rect");
+            this.WriteAttributeString("x", x);
+            this.WriteAttributeString("y", y);
+            this.WriteAttributeString("width", width);
+            this.WriteAttributeString("height", height);
+            this.WriteEndElement(); // rect
+            this.WriteEndElement(); // clipPath
+        }
+
+        public void EndClip()
+        {
+            this.WriteEndElement(); // g
+            this.clipPath = null;
+        }
+
+        public void WriteImage(
+            double srcX,
+            double srcY,
+            double srcWidth,
+            double srcHeight,
+            double destX,
+            double destY,
+            double destWidth,
+            double destHeight,
+            OxyImage image)
+        {
+            double x = destX - (srcX / srcWidth * destWidth);
+            double width = image.Width / srcWidth * destWidth;
+            double y = destY - (srcY / srcHeight * destHeight);
+            double height = image.Height / srcHeight * destHeight;
+            this.BeginClip(destX, destY, destWidth, destHeight);
+            this.WriteImage(x, y, width, height, image);
+            this.EndClip();
+        }
+
+        public void WriteImage(double x, double y, double width, double height, OxyImage image)
+        {
+            // http://www.w3.org/TR/SVG/shapes.html#ImageElement
+            this.WriteStartElement("image");
+            this.WriteAttributeString("x", x);
+            this.WriteAttributeString("y", y);
+            this.WriteAttributeString("width", width);
+            this.WriteAttributeString("height", height);
+            this.WriteAttributeString("preserveAspectRatio", "none");
+            var imageData = image.GetData();
+            var encodedImage = new StringBuilder();
+            encodedImage.Append("data:");
+            encodedImage.Append("image/png");
+            encodedImage.Append(";base64,");
+            encodedImage.Append(Convert.ToBase64String(imageData));
+            this.WriteAttributeString("xlink", "href", null, encodedImage.ToString());
+            this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
 
@@ -238,6 +315,7 @@ namespace OxyPlot
             this.WriteAttributeString("x2", p2.X);
             this.WriteAttributeString("y2", p2.Y);
             this.WriteAttributeString("style", style);
+            this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
 
@@ -256,6 +334,7 @@ namespace OxyPlot
             this.WriteStartElement("polygon");
             this.WriteAttributeString("points", this.PointsToString(points));
             this.WriteAttributeString("style", style);
+            this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
 
@@ -274,6 +353,7 @@ namespace OxyPlot
             this.WriteStartElement("polyline");
             this.WriteAttributeString("points", this.PointsToString(pts));
             this.WriteAttributeString("style", style);
+            this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
 
@@ -304,6 +384,7 @@ namespace OxyPlot
             this.WriteAttributeString("width", width);
             this.WriteAttributeString("height", height);
             this.WriteAttributeString("style", style);
+            this.WriteClipPathAttribute();
             this.WriteEndElement();
         }
 
@@ -404,6 +485,7 @@ namespace OxyPlot
             }
 
             this.WriteAttributeString("fill", this.ColorToString(fill));
+            this.WriteClipPathAttribute();
 
             // WriteAttributeString("style", style);
             this.WriteString(text);
@@ -438,6 +520,19 @@ namespace OxyPlot
         protected void WriteAttributeString(string name, double value)
         {
             this.WriteAttributeString(name, value.ToString(this.NumberFormat, CultureInfo.InvariantCulture));
+        }
+
+        /// <summary>
+        /// Writes the clip path attribute.
+        /// </summary>
+        private void WriteClipPathAttribute()
+        {
+            if (this.clipPath == null)
+            {
+                return;
+            }
+
+            this.WriteAttributeString("clip-path", string.Format("url(#{0})", this.clipPath));
         }
 
         /// <summary>
@@ -496,7 +591,7 @@ namespace OxyPlot
             this.WriteAttributeString("width", this.GetAutoValue(width, "100%"));
             this.WriteAttributeString("height", this.GetAutoValue(height, "100%"));
             this.WriteAttributeString("version", "1.1");
+            this.WriteAttributeString("xmlns", "xlink", null, "http://www.w3.org/1999/xlink");
         }
-
     }
 }

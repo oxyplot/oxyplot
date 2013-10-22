@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="XmlWriterBase.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Abstract base class for exporters that write xml.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
@@ -42,7 +43,7 @@ namespace OxyPlot
         /// <summary>
         /// The xml writer.
         /// </summary>
-        private XmlWriter w;
+        private readonly XmlWriter w;
 
         /// <summary>
         /// The disposed flag.
@@ -106,19 +107,31 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Writes an attribute string with a prefix.
+        /// </summary>
+        /// <param name="prefix">The prefix.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="ns">The constant.</param>
+        /// <param name="value">The value.</param>
+        protected void WriteAttributeString(string prefix, string name, string ns, string value)
+        {
+            this.w.WriteAttributeString(prefix, name, ns, value);
+        }
+
+        /// <summary>
         /// The write doc type.
         /// </summary>
         /// <param name="name">
-        /// The name.
+        /// The name of the DOCTYPE. This must be non-empty.
         /// </param>
         /// <param name="pubid">
-        /// The pubid.
+        /// If non-null it also writes PUBLIC "pubid" "sysid" where pubid and sysid are replaced with the value of the given arguments.
         /// </param>
         /// <param name="sysid">
-        /// The sysid.
+        /// If pubid is null and sysid is non-null it writes SYSTEM "sysid" where sysid is replaced with the value of this argument.
         /// </param>
         /// <param name="subset">
-        /// The subset.
+        /// If non-null it writes [subset] where subset is replaced with the value of this argument.
         /// </param>
         protected void WriteDocType(string name, string pubid, string sysid, string subset)
         {
