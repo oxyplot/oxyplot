@@ -468,17 +468,18 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Changes the opacity value.
+        /// Create a new color based on the current color and the specified opacity value.
         /// </summary>
         /// <param name="newAlpha">
-        /// The new alpha.
+        /// The new opacity (alpha) value.
         /// </param>
         /// <returns>
         /// The new color.
         /// </returns>
+        [Obsolete("Replace with FromAColor static method")]
         public OxyColor ChangeAlpha(byte newAlpha)
         {
-            return FromArgb(newAlpha, this.R, this.G, this.B);
+            return FromAColor(newAlpha, this);
         }
 
         /// <summary>

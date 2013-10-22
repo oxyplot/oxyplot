@@ -273,7 +273,7 @@ namespace ExampleLibrary
         public static PlotModel MarkerTypes2()
         {
             var pm = CreateModel("MarkerType", (int)MarkerType.Custom);
-            pm.LegendBackground = OxyColors.White.ChangeAlpha(220);
+            pm.LegendBackground = OxyColor.FromAColor(220, OxyColors.White);
             pm.LegendBorder = OxyColors.Black;
             pm.LegendBorderThickness = 1.0;
             int i = 0;

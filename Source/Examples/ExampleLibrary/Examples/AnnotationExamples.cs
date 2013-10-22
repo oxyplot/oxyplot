@@ -84,8 +84,8 @@ namespace ExampleLibrary
             var model = new PlotModel("FunctionAnnotation");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 80));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
-            model.Annotations.Add(new FunctionAnnotation { Equation = Math.Sin, StrokeThickness = 2, Color = OxyColors.Blue.ChangeAlpha(120), Text = "f(x)=sin(x)" });
-            model.Annotations.Add(new FunctionAnnotation { Equation = y => y * y, StrokeThickness = 2, Color = OxyColors.Red.ChangeAlpha(120), Type = FunctionAnnotationType.EquationY, Text = "f(y)=y^2" });
+            model.Annotations.Add(new FunctionAnnotation { Equation = Math.Sin, StrokeThickness = 2, Color = OxyColor.FromAColor(120, OxyColors.Blue), Text = "f(x)=sin(x)" });
+            model.Annotations.Add(new FunctionAnnotation { Equation = y => y * y, StrokeThickness = 2, Color = OxyColor.FromAColor(120, OxyColors.Red), Type = FunctionAnnotationType.EquationY, Text = "f(y)=y^2" });
             return model;
         }
 
@@ -95,7 +95,7 @@ namespace ExampleLibrary
             var model = new PlotModel("RectangleAnnotation");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
             model.Axes.Add(new LinearAxis(AxisPosition.Left));
-            model.Annotations.Add(new RectangleAnnotation { MinimumX = 20, MaximumX = 70, MinimumY = 10, MaximumY = 40, TextRotation = 10, Text = "RectangleAnnotation", Fill = OxyColors.Blue.ChangeAlpha(99), Stroke = OxyColors.Black, StrokeThickness = 2 });
+            model.Annotations.Add(new RectangleAnnotation { MinimumX = 20, MaximumX = 70, MinimumY = 10, MaximumY = 40, TextRotation = 10, Text = "RectangleAnnotation", Fill = OxyColor.FromAColor(99, OxyColors.Blue), Stroke = OxyColors.Black, StrokeThickness = 2 });
             return model;
         }
 
@@ -105,11 +105,11 @@ namespace ExampleLibrary
             var model = new PlotModel("EllipseAnnotation");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
             model.Axes.Add(new LinearAxis(AxisPosition.Left));
-            model.Annotations.Add(new EllipseAnnotation { X = 20, Y = 60, Width = 20, Height = 15, Text = "EllipseAnnotation", TextRotation = 10, Fill = OxyColors.Green.ChangeAlpha(99), Stroke = OxyColors.Black, StrokeThickness = 2 });
+            model.Annotations.Add(new EllipseAnnotation { X = 20, Y = 60, Width = 20, Height = 15, Text = "EllipseAnnotation", TextRotation = 10, Fill = OxyColor.FromAColor(99, OxyColors.Green), Stroke = OxyColors.Black, StrokeThickness = 2 });
 
-            model.Annotations.Add(new EllipseAnnotation { X = 20, Y = 20, Width = 20, Height = 20, Fill = OxyColors.Green.ChangeAlpha(99), Stroke = OxyColors.Black, StrokeThickness = 2 });
-            model.Annotations.Add(new EllipseAnnotation { X = 30, Y = 20, Width = 20, Height = 20, Fill = OxyColors.Red.ChangeAlpha(99), Stroke = OxyColors.Black, StrokeThickness = 2 });
-            model.Annotations.Add(new EllipseAnnotation { X = 25, Y = 30, Width = 20, Height = 20, Fill = OxyColors.Blue.ChangeAlpha(99), Stroke = OxyColors.Black, StrokeThickness = 2 });
+            model.Annotations.Add(new EllipseAnnotation { X = 20, Y = 20, Width = 20, Height = 20, Fill = OxyColor.FromAColor(99, OxyColors.Green), Stroke = OxyColors.Black, StrokeThickness = 2 });
+            model.Annotations.Add(new EllipseAnnotation { X = 30, Y = 20, Width = 20, Height = 20, Fill = OxyColor.FromAColor(99, OxyColors.Red), Stroke = OxyColors.Black, StrokeThickness = 2 });
+            model.Annotations.Add(new EllipseAnnotation { X = 25, Y = 30, Width = 20, Height = 20, Fill = OxyColor.FromAColor(99, OxyColors.Blue), Stroke = OxyColors.Black, StrokeThickness = 2 });
             return model;
         }
 
@@ -119,7 +119,7 @@ namespace ExampleLibrary
             var model = new PlotModel("RectangleAnnotations - vertical limit");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom));
             model.Axes.Add(new LinearAxis(AxisPosition.Left));
-            model.Annotations.Add(new RectangleAnnotation { MaximumY = 89.5, Text = "Valid area", Fill = OxyColors.Black.ChangeAlpha(99) });
+            model.Annotations.Add(new RectangleAnnotation { MaximumY = 89.5, Text = "Valid area", Fill = OxyColor.FromAColor(99, OxyColors.Black) });
             return model;
         }
 
@@ -129,10 +129,10 @@ namespace ExampleLibrary
             var model = new PlotModel("RectangleAnnotation - horizontal bands");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 10));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, 87, 97) { MajorStep = 1, MinorStep = 1 });
-            model.Annotations.Add(new RectangleAnnotation { MinimumY = 89.5, MaximumY = 90.8, Text = "Invalid", Fill = OxyColors.Red.ChangeAlpha(99) });
-            model.Annotations.Add(new RectangleAnnotation { MinimumY = 90.8, MaximumY = 92.1, Fill = OxyColors.Orange.ChangeAlpha(99) });
-            model.Annotations.Add(new RectangleAnnotation { MinimumY = 92.1, MaximumY = 94.6, Fill = OxyColors.Yellow.ChangeAlpha(99) });
-            model.Annotations.Add(new RectangleAnnotation { MinimumY = 94.6, MaximumY = 96, Text = "Ok", Fill = OxyColors.Green.ChangeAlpha(99) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumY = 89.5, MaximumY = 90.8, Text = "Invalid", Fill = OxyColor.FromAColor(99, OxyColors.Red) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumY = 90.8, MaximumY = 92.1, Fill = OxyColor.FromAColor(99, OxyColors.Orange) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumY = 92.1, MaximumY = 94.6, Fill = OxyColor.FromAColor(99, OxyColors.Yellow) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumY = 94.6, MaximumY = 96, Text = "Ok", Fill = OxyColor.FromAColor(99, OxyColors.Green) });
             LineSeries series1;
             model.Series.Add(series1 = new LineSeries { Color = OxyColors.Black, StrokeThickness = 6.0, LineJoin = OxyPenLineJoin.Round });
             series1.Points.Add(new DataPoint(0.5, 90.7));
@@ -154,10 +154,10 @@ namespace ExampleLibrary
             var model = new PlotModel("RectangleAnnotation - vertical bands");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 10));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, 87, 97) { MajorStep = 1, MinorStep = 1 });
-            model.Annotations.Add(new RectangleAnnotation { MinimumX = 2.5, MaximumX = 2.8, TextRotation = 90, Text = "Red", Fill = OxyColors.Red.ChangeAlpha(99) });
-            model.Annotations.Add(new RectangleAnnotation { MinimumX = 2.8, MaximumX = 6.1, TextRotation = 90, Text = "Orange", Fill = OxyColors.Orange.ChangeAlpha(99) });
-            model.Annotations.Add(new RectangleAnnotation { MinimumX = 6.1, MaximumX = 7.6, TextRotation = 90, Text = "Yellow", Fill = OxyColors.Yellow.ChangeAlpha(99) });
-            model.Annotations.Add(new RectangleAnnotation { MinimumX = 7.6, MaximumX = 9.7, TextRotation = 270, Text = "Green", Fill = OxyColors.Green.ChangeAlpha(99) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumX = 2.5, MaximumX = 2.8, TextRotation = 90, Text = "Red", Fill = OxyColor.FromAColor(99, OxyColors.Red) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumX = 2.8, MaximumX = 6.1, TextRotation = 90, Text = "Orange", Fill = OxyColor.FromAColor(99, OxyColors.Orange) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumX = 6.1, MaximumX = 7.6, TextRotation = 90, Text = "Yellow", Fill = OxyColor.FromAColor(99, OxyColors.Yellow) });
+            model.Annotations.Add(new RectangleAnnotation { MinimumX = 7.6, MaximumX = 9.7, TextRotation = 270, Text = "Green", Fill = OxyColor.FromAColor(99, OxyColors.Green) });
             LineSeries series1;
             model.Series.Add(series1 = new LineSeries { Color = OxyColors.Black, StrokeThickness = 6.0, LineJoin = OxyPenLineJoin.Round });
             series1.Points.Add(new DataPoint(0.5, 90.7));
@@ -595,8 +595,8 @@ namespace ExampleLibrary
                 StrokeThickness = 3,
                 FontSize = 20,
                 FontWeight = FontWeights.Bold,
-                TextColor = OxyColors.Magenta.ChangeAlpha(160),
-                Color = OxyColors.Magenta.ChangeAlpha(100)
+                TextColor = OxyColor.FromAColor(160, OxyColors.Magenta),
+                Color = OxyColor.FromAColor(100, OxyColors.Magenta)
             });
 
             return model;

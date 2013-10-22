@@ -485,7 +485,7 @@ namespace ExampleLibrary
             var model = new PlotModel("Select range", "Left click and drag to select a range.");
             model.Series.Add(new FunctionSeries(Math.Cos, 0, 40, 0.1));
 
-            var range = new RectangleAnnotation { Fill = OxyColors.SkyBlue.ChangeAlpha(120), MinimumX = 0, MaximumX = 0 };
+            var range = new RectangleAnnotation { Fill = OxyColor.FromAColor(120, OxyColors.SkyBlue), MinimumX = 0, MaximumX = 0 };
             model.Annotations.Add(range);
 
             double startx = double.NaN;

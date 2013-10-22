@@ -173,7 +173,7 @@
                         var value = this.GetValue(ii, jj);
 
                         // use the color axis to get the color
-                        p[y, x] = this.ColorAxis.GetColor(value).ChangeAlpha(160);
+                        p[y, x] = OxyColor.FromAColor(160, this.ColorAxis.GetColor(value));
                     }
                     else
                     {
@@ -238,7 +238,7 @@
                             var value = this.GetValue(ii, jj);
 
                             // use the color axis to get the color
-                            p[i, j] = this.ColorAxis.GetColor(value).ChangeAlpha(160);
+                            p[i, j] = OxyColor.FromAColor(160, this.ColorAxis.GetColor(value));
                         }
                         else
                         {
