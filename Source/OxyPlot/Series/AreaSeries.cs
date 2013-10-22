@@ -102,7 +102,7 @@ namespace OxyPlot.Series
         {
             get
             {
-                return this.Fill.GetActualColor(this.ActualColor.ChangeAlpha(100));
+                return this.Fill.GetActualColor(OxyColor.FromAColor(100, this.ActualColor));
             }
         }
 

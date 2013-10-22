@@ -37,14 +37,6 @@ namespace OxyPlot.Tests
     public class OxyColorTests
     {
         [Test]
-        public void ChangeAlpha()
-        {
-            var c = OxyColors.Red.ChangeAlpha(100);
-            Assert.AreEqual(100, c.A);
-            Assert.AreEqual(255, c.R);
-        }
-
-        [Test]
         public void Parse()
         {
             Assert.AreEqual(OxyColors.Red, OxyColor.Parse("#FF0000"));
@@ -112,7 +104,7 @@ namespace OxyPlot.Tests
         {
             Assert.AreEqual("255,255,0,0", OxyColors.Red.ToByteString());
         }
-        
+
         [Test]
         public void ToCode()
         {
@@ -125,19 +117,19 @@ namespace OxyPlot.Tests
         {
             Assert.AreEqual(new[] { 0, 1, 1 }, OxyColors.Red.ToHsv());
         }
-        
+
         [Test]
         public new void ToString()
         {
             Assert.AreEqual("#ffff0000", OxyColors.Red.ToString());
         }
-        
+
         [Test]
         public void ToUint()
         {
             Assert.AreEqual(0xFFFF0000, OxyColors.Red.ToUint());
         }
-        
+
         [Test]
         public void HueDifference()
         {
