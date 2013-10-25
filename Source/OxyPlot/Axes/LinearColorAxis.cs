@@ -122,12 +122,12 @@ namespace OxyPlot.Axes
         /// </remarks>
         public override int GetPaletteIndex(double value)
         {
-            if (!this.LowColor.IsUndefined() && value < this.Minimum)
+            if (!this.LowColor.IsUndefined() && value < this.ActualMinimum)
             {
                 return 0;
             }
 
-            if (!this.HighColor.IsUndefined() && value > this.Maximum)
+            if (!this.HighColor.IsUndefined() && value > this.ActualMaximum)
             {
                 return this.Palette.Colors.Count + 1;
             }
