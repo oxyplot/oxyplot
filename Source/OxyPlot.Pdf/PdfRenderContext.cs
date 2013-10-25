@@ -142,7 +142,7 @@ namespace OxyPlot.Pdf
             OxyPenLineJoin lineJoin,
             bool aliased)
         {
-            if (stroke.IsVisible() || thickness <= 0)
+            if (stroke.IsInvisible() || thickness <= 0)
             {
                 return;
             }
