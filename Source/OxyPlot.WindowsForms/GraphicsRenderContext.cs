@@ -77,7 +77,7 @@ namespace OxyPlot.WindowsForms
             if (fill.IsVisible())
             {
                 this.g.FillEllipse(
-                    this.ToBrush(fill), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
+                    fill.ToBrush(), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
             }
 
             if (stroke.IsInvisible() || thickness <= 0)
@@ -124,7 +124,7 @@ namespace OxyPlot.WindowsForms
         private Pen GetCachedPen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
             // TODO: cache
-            var pen = new Pen(this.ToColor(stroke), (float)thickness);
+            var pen = new Pen(stroke.ToColor(), (float)thickness);
             if (dashArray != null)
             {
                 pen.DashPattern = this.ToFloatArray(dashArray);
@@ -173,7 +173,7 @@ namespace OxyPlot.WindowsForms
             var pts = this.ToPoints(points);
             if (fill.IsVisible())
             {
-                this.g.FillPolygon(this.ToBrush(fill), pts);
+                this.g.FillPolygon(fill.ToBrush(), pts);
             }
 
             if (stroke.IsInvisible() || thickness <= 0)
@@ -224,7 +224,7 @@ namespace OxyPlot.WindowsForms
             if (fill.IsVisible())
             {
                 this.g.FillRectangle(
-                    this.ToBrush(fill), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
+                    fill.ToBrush(), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
             }
 
             if (stroke.IsInvisible() || thickness <= 0)
@@ -339,7 +339,7 @@ namespace OxyPlot.WindowsForms
                     this.g.TranslateTransform(dx, dy);
 
                     var layoutRectangle = new RectangleF(0, 0, size.Width + 0.1f, size.Height + 0.1f);
-                    this.g.DrawString(text, font, this.ToBrush(fill), layoutRectangle, sf);
+                    this.g.DrawString(text, font, fill.ToBrush(), layoutRectangle, sf);
 
                     this.g.ResetTransform();
                 }
@@ -372,39 +372,6 @@ namespace OxyPlot.WindowsForms
                 var size = this.g.MeasureString(text, font);
                 return new OxySize(size.Width, size.Height);
             }
-        }
-
-        /// <summary>
-        /// Converts a fill color to a System.Drawing.Brush.
-        /// </summary>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <returns>
-        /// The brush.
-        /// </returns>
-        private Brush ToBrush(OxyColor fill)
-        {
-            if (fill.IsVisible())
-            {
-                return new SolidBrush(this.ToColor(fill));
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Converts a color to a System.Drawing.Color.
-        /// </summary>
-        /// <param name="c">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// The System.Drawing.Color.
-        /// </returns>
-        private Color ToColor(OxyColor c)
-        {
-            return Color.FromArgb(c.A, c.R, c.G, c.B);
         }
 
         /// <summary>

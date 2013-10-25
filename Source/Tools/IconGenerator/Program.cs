@@ -1,8 +1,8 @@
 ﻿namespace IconGenerator
 {
     using System;
+    using System.Diagnostics;
     using System.Drawing;
-    using System.Drawing.Drawing2D;
     using System.Drawing.Imaging;
     using System.Drawing.Text;
     using System.IO;
@@ -33,14 +33,21 @@
             // http://msdn.microsoft.com/en-us/library/windows/desktop/aa511280.aspx#size
             // https://github.com/audreyr/favicon-cheat-sheet
             int[] sizes = { 256, 228, 195, 152, 144, 128, 120, 114, 96, 72, 64, 57, 48, 40, 32, 24, 20, 16 };
-
-            var icon1 = new Icon1();
-            var icon2 = new Icon2();
+            var pngOptimizer = Path.GetFullPath(@"..\..\..\..\..\Tools\TruePNG\TruePNG.exe");
+            var iconRenderer = new IconRenderer3();
             foreach (var size in sizes)
             {
                 // CreateBitmap(size, icon1, string.Format("v1_{0}.png", size));
-                CreateBitmap(size, icon2, string.Format("OxyPlot_{0}.png", size));
-                // CreateSvg(size, icon2, string.Format("OxyPlot_{0}.svg", size));
+                var pngFile = string.Format("OxyPlot_{0}.png", size);
+                CreateBitmap(size, iconRenderer, pngFile);
+                CreateSvg(size, iconRenderer, string.Format("OxyPlot_{0}.svg", size));
+
+                // Optimize png
+                var p = Process.Start(pngOptimizer, pngFile + " /o max");
+                if (p != null)
+                {
+                    p.WaitForExit();
+                }
             }
 
             var ico = new IcoMaker.Icon();
@@ -60,8 +67,8 @@
                 using (var g = Graphics.FromImage(bm))
                 {
                     g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
-                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    //g.SmoothingMode = SmoothingMode.AntiAlias;
+                    //g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                     //g.PixelOffsetMode = PixelOffsetMode.HighQuality;
                     //g.CompositingQuality = CompositingQuality.HighQuality;
                     //g.CompositingMode = CompositingMode.SourceOver;
@@ -100,7 +107,7 @@
         public abstract void Render(IRenderContext rc, double size);
     }
 
-    public class Icon1 : IconRenderer
+    public class IconRenderer1 : IconRenderer
     {
         /// <summary>
         /// Renders the icon on the specified render context.
@@ -117,7 +124,7 @@
         }
     }
 
-    public class Icon2 : IconRenderer
+    public class IconRenderer2 : IconRenderer
     {
         /// <summary>
         /// Renders the icon on the specified render context.
@@ -149,14 +156,9 @@
             double x1 = 3.1;
             double y0 = -3;
             double y1 = 3;
-            Func<double, double, double> peaks =
-                (x, y) =>
-                3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1))
-                - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y)
-                - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
-            var xvalues = ArrayHelper.CreateVector(x0, x1, 100);
-            var yvalues = ArrayHelper.CreateVector(y0, y1, 100);
-            var peaksData = ArrayHelper.Evaluate(peaks, xvalues, yvalues);
+            var xx = ArrayHelper.CreateVector(x0, x1, 100);
+            var yy = ArrayHelper.CreateVector(y0, y1, 100);
+            var peaksData = ArrayHelper.Evaluate(IconRenderer3.Peaks, xx, yy);
 
             pm.Axes.Add(
                 new LinearColorAxis
@@ -170,6 +172,54 @@
 
             var hms = new HeatMapSeries { X0 = x0, X1 = x1, Y0 = y0, Y1 = y1, Data = peaksData };
             pm.Series.Add(hms);
+        }
+    }
+
+    /// <summary>
+    /// Generates a heatmap icon based on the peaks function.
+    /// </summary>
+    public class IconRenderer3 : IconRenderer
+    {
+        /// <summary>
+        /// Initializes static members of the <see cref="IconRenderer3"/> class.
+        /// </summary>
+        static IconRenderer3()
+        {
+            Peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
+        }
+
+        /// <summary>
+        /// Gets the peaks function.
+        /// </summary>
+        public static Func<double, double, double> Peaks { get; private set; }
+
+        /// <summary>
+        /// Renders the icon on the specified render context.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="size">The size.</param>
+        public override void Render(IRenderContext rc, double size)
+        {
+            var n = (int)size;
+            var data = ArrayHelper.Evaluate(Peaks, ArrayHelper.CreateVector(-3.1, 3.1, n), ArrayHelper.CreateVector(3, -3, n));
+            var palette = OxyPalettes.Jet(256);
+            var min = data.Min2D();
+            var max = data.Max2D();
+            for (int x = 0; x < n; x++)
+            {
+                for (int y = 0; y < n; y++)
+                {
+                    var i = (int)((data[x, y] - min) / (max - min) * palette.Colors.Count);
+                    i = Math.Min(Math.Max(i, 0), palette.Colors.Count - 1);
+                    rc.DrawRectangle(new OxyRect(x, y, 1, 1), palette.Colors[i], OxyColors.Undefined, 0);
+                }
+            }
+
+            var frameWidth = (int)Math.Max(Math.Round(size / 32), 1);
+            rc.DrawRectangle(new OxyRect(0, 0, size, frameWidth), OxyColors.Black, OxyColors.Black, 0);
+            rc.DrawRectangle(new OxyRect(0, size - frameWidth, size, frameWidth), OxyColors.Black, OxyColors.Undefined, 0);
+            rc.DrawRectangle(new OxyRect(0, 0, frameWidth, size), OxyColors.Black, OxyColors.Undefined, 0);
+            rc.DrawRectangle(new OxyRect(size - frameWidth, 0, frameWidth, size), OxyColors.Black, OxyColors.Undefined, 0);
         }
     }
 }

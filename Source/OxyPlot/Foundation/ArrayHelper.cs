@@ -156,5 +156,39 @@ namespace OxyPlot
                 }
             }
         }
+
+        public static double Max2D(this double[,] array)
+        {
+            var max = double.MinValue;
+            for (var i = 0; i < array.GetLength(0); i++)
+            {
+                for (var j = 0; j < array.GetLength(1); j++)
+                {
+                    if (array[i, j] > max)
+                    {
+                        max = array[i, j];
+                    }
+                }
+            }
+
+            return max;
+        }
+
+        public static double Min2D(this double[,] array)
+        {
+            var min = double.MaxValue;
+            for (var i = 0; i < array.GetLength(0); i++)
+            {
+                for (var j = 0; j < array.GetLength(1); j++)
+                {
+                    if (array[i, j] < min)
+                    {
+                        min = array[i, j];
+                    }
+                }
+            }
+
+            return min;
+        }
     }
 }
