@@ -91,6 +91,7 @@ namespace WpfExamples
             if (example != null)
             {
                 var window = example.Create();
+                window.Icon = this.Icon;
                 window.Show();
             }
         }

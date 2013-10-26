@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\..\..\..\Icons\OxyPlot.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -103,6 +106,11 @@
       <Project>{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}</Project>
       <Name>ExampleLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\..\..\..\Icons\OxyPlot_64.png">
+      <Link>OxyPlot_64.png</Link>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <UsingTask TaskName="PepitaGet.RestorePackagesTask" AssemblyFile="$(ProjectDir)..\..\..\..\Tools\Pepita\PepitaGet.dll" />

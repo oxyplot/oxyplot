@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\..\..\..\Icons\OxyPlot.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -103,8 +106,13 @@
       <Name>ExampleLibrary_NET35</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\..\..\..\Icons\OxyPlot_64.png">
+      <Link>OxyPlot_64.png</Link>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <UsingTask TaskName="PepitaGet.RestorePackagesTask" AssemblyFile="$(SolutionDir)..\Tools\Pepita\PepitaGet.dll" />
+  <UsingTask TaskName="PepitaGet.RestorePackagesTask" AssemblyFile="$(ProjectDir)..\..\..\..\Tools\Pepita\PepitaGet.dll" />
   <Target Name="BeforeBuild">
     <PepitaGet.RestorePackagesTask />
   </Target>
