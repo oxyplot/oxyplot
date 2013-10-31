@@ -901,7 +901,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Inverse transform the specified screen coordinate. This method can only be used with non-polar coordinate systems.
+        /// Inverse transforms the specified screen coordinate. This method can only be used with non-polar coordinate systems.
         /// </summary>
         /// <param name="sx">
         /// The screen coordinate.
@@ -915,10 +915,10 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Determines whether this axis is horizontal.
+        /// Determines whether the axis is horizontal.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if this axis is horizontal; otherwise, <c>false</c> .
+        /// <c>true</c> if the axis is horizontal; otherwise, <c>false</c> .
         /// </returns>
         public bool IsHorizontal()
         {
@@ -941,10 +941,10 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Determines whether this axis is vertical.
+        /// Determines whether the axis is vertical.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if this axis is vertical; otherwise, <c>false</c> .
+        /// <c>true</c> if the axis is vertical; otherwise, <c>false</c> .
         /// </returns>
         public bool IsVertical()
         {
@@ -1480,23 +1480,6 @@ namespace OxyPlot.Axes
             this.ScreenMin = new ScreenPoint(x0, y1);
             this.ScreenMax = new ScreenPoint(x1, y0);
 
-            // this.MidPoint = new ScreenPoint((x0 + x1) / 2, (y0 + y1) / 2);
-
-            // if (this.Position == AxisPosition.Angle)
-            // {
-            // this.scale = 2 * Math.PI / (this.ActualMaximum - this.ActualMinimum);
-            // this.Offset = this.ActualMinimum;
-            // return;
-            // }
-
-            // if (this.Position == AxisPosition.Magnitude)
-            // {
-            // this.ActualMinimum = 0;
-            // double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
-            // this.scale = 0.5 * r / (this.ActualMaximum - this.ActualMinimum);
-            // this.Offset = this.ActualMinimum;
-            // return;
-            // }
             double a0 = this.IsHorizontal() ? x0 : y0;
             double a1 = this.IsHorizontal() ? x1 : y1;
 
@@ -1581,7 +1564,9 @@ namespace OxyPlot.Axes
                 i++;
                 if (x >= min - eps && x <= max + eps)
                 {
-                    x = x.RemoveNoise();
+                    // limit to 8 digits - Math.Round(x, 8) does not work for very small numbers
+                    // TODO: can this be improved?
+                    x = double.Parse(x.ToString("e8"));
                     values.Add(x);
                 }
             }
@@ -1618,35 +1603,6 @@ namespace OxyPlot.Axes
             return this.CalculateActualInterval(availableSize, maxIntervalSize, this.ActualMaximum - this.ActualMinimum);
         }
 
-        // alternative algorithm not in use
-        /*        private double CalculateActualIntervalOldAlgorithm(double availableSize, double maxIntervalSize)
-                {
-                    const int minimumTags = 5;
-                    const int maximumTags = 20;
-                    var numberOfTags = (int) (availableSize/maxIntervalSize);
-                    double range = ActualMaximum - ActualMinimum;
-                    double interval = range/numberOfTags;
-                    const int k1 = 10;
-                    interval = Math.Log10(interval/k1);
-                    interval = Math.Ceiling(interval);
-                    interval = Math.Pow(10, interval)*k1;
-
-                    if (range/interval > maximumTags) interval *= 5;
-                    if (range/interval < minimumTags) interval *= 0.5;
-
-                    if (interval <= 0) interval = 1;
-                    return interval;
-                }*/
-
-        // ===
-        // the following algorithm is from
-        // System.Windows.Controls.DataVisualization.Charting.LinearAxis.cs
-
-        // (c) Copyright Microsoft Corporation.
-        // This source is subject to the Microsoft Public License (MIT).
-        // Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
-        // All other rights reserved.
-
         /// <summary>
         /// Returns the actual interval to use to determine which values are displayed in the axis.
         /// </summary>
@@ -1681,6 +1637,10 @@ namespace OxyPlot.Axes
             double interval = Math.Pow(10, exponent(range));
             double tempInterval = interval;
 
+            // Function to remove 'double precision noise'
+            // TODO: can this be improved
+            Func<double, double> removeNoise = x => double.Parse(x.ToString("e14"));
+
             // decrease interval until interval count becomes less than maxIntervalCount
             while (true)
             {
@@ -1688,16 +1648,16 @@ namespace OxyPlot.Axes
                 if (m == 5)
                 {
                     // reduce 5 to 2
-                    tempInterval = (tempInterval / 2.5).RemoveNoiseFromDoubleMath();
+                    tempInterval = removeNoise(tempInterval / 2.5);
                 }
                 else if (m == 2 || m == 1 || m == 10)
                 {
                     // reduce 2 to 1, 10 to 5, 1 to 0.5
-                    tempInterval = (tempInterval / 2.0).RemoveNoiseFromDoubleMath();
+                    tempInterval = removeNoise(tempInterval / 2.0);
                 }
                 else
                 {
-                    tempInterval = (tempInterval / 2.0).RemoveNoiseFromDoubleMath();
+                    tempInterval = removeNoise(tempInterval / 2.0);
                 }
 
                 if (range / tempInterval > maxIntervalCount)
@@ -1717,7 +1677,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// The calculate minor interval.
+        /// Calculates the minor interval.
         /// </summary>
         /// <param name="majorInterval">
         /// The major interval.
@@ -1746,7 +1706,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Raises the AxisChanged event.
+        /// Raises the <see cref="AxisChanged"/> event.
         /// </summary>
         /// <param name="args">
         /// The <see cref="OxyPlot.Axes.AxisChangedEventArgs"/> instance containing the event data.
@@ -1763,7 +1723,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TransformChanged" /> event.
+        /// Raises the <see cref="TransformChanged"/> event.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected virtual void OnTransformChanged(EventArgs args)

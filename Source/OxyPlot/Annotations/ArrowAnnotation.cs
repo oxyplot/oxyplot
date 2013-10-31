@@ -134,7 +134,7 @@ namespace OxyPlot.Annotations
 
             this.screenEndPoint = this.Transform(this.EndPoint);
 
-            if (!this.ArrowDirection.x.IsZero() || !this.ArrowDirection.y.IsZero())
+            if (this.ArrowDirection.LengthSquared > 0)
             {
                 this.screenStartPoint = this.screenEndPoint - this.ArrowDirection;
             }

@@ -301,7 +301,7 @@ namespace OxyPlot.Series
             if (interpolate)
             {
                 // Cannot interpolate if there is no line
-                if (this.ActualColor.IsInvisible() || this.StrokeThickness.IsZero())
+                if (this.ActualColor.IsInvisible() || this.StrokeThickness.Equals(0))
                 {
                     return null;
                 }

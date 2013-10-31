@@ -88,7 +88,6 @@
     <Compile Include="Foundation\ScreenVector.cs" />
     <Compile Include="Foundation\StreamExtensions.cs" />
     <Compile Include="Foundation\StringHelper.cs" />
-    <Compile Include="Foundation\DoubleExtensions.cs" />
     <Compile Include="Foundation\FractionHelper.cs" />
     <Compile Include="Foundation\ArrayHelper.cs" />
     <Compile Include="Foundation\IDataPoint.cs" />
