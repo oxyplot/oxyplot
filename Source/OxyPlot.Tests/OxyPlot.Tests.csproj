@@ -66,7 +66,6 @@
     <Compile Include="Foundation\OxyPaletteTests.cs" />
     <Compile Include="Foundation\FractionHelperTests.cs" />
     <Compile Include="Foundation\StringHelperTests.cs" />
-    <Compile Include="Foundation\DoubleExtensionsTests.cs" />
     <Compile Include="PlotModel\PlotModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Svg\SvgValidator.cs" />

@@ -118,7 +118,7 @@ namespace ContourDemo
                 - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
 
             this.Examples.Add(new Example("peaks", -3, 3, 0.05, -3, 3, 0.05, -6, 10, 1, peaks));
-
+            Func<double, double> square = x => x * x;
             this.Examples.Add(
                 new Example(
                     "Conrec example 1",
@@ -133,7 +133,7 @@ namespace ContourDemo
                     0.25,
                     (x, y) =>
                     1.0
-                    / ((x * x + (y - 0.842) * (y + 0.842)).Squared() + (x * (y - 0.842) + x * (y - 0.842)).Squared())));
+                    / (square(x * x + (y - 0.842) * (y + 0.842)) + square(x * (y - 0.842) + x * (y - 0.842)))));
 
             // todo: something wrong here?
             double c = 0;
@@ -199,10 +199,10 @@ namespace ContourDemo
                     1,
                     0.1,
                     (x, y) =>
-                        {
-                            double r = Math.Sqrt(x * x + y * y);
-                            return Math.Sin(r + 0.1) / (r + 0.1);
-                        },
+                    {
+                        double r = Math.Sqrt(x * x + y * y);
+                        return Math.Sin(r + 0.1) / (r + 0.1);
+                    },
                     "0.0"));
         }
 

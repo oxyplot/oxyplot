@@ -200,11 +200,13 @@ namespace OxyPlot.Series
                 {
                     double range = max - min;
                     double step = range / 20;
-                    actualStep = Math.Pow(10, Math.Floor(step.GetExponent()));
+                    double stepExp = Math.Round(Math.Log(Math.Abs(step), 10));
+                    actualStep = Math.Pow(10, Math.Floor(stepExp));
                 }
 
-                max = max.ToUpperMultiple(actualStep);
-                min = min.ToLowerMultiple(actualStep);
+                max = Math.Round(actualStep * (int)Math.Ceiling(max / actualStep), 14);
+                min = Math.Round(actualStep * (int)Math.Floor(min / actualStep), 14);
+
                 actualContourLevels = ArrayHelper.CreateVector(min, max, actualStep);
             }
 

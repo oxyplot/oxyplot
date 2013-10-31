@@ -56,7 +56,7 @@ namespace OxyPlot
             var result = new double[n];
             for (int i = 0; i < n; i++)
             {
-                result[i] = (x0 + ((x1 - x0) * i / (n - 1))).RemoveNoise();
+                result[i] = Math.Round(x0 + ((x1 - x0) * i / (n - 1)), 8);
             }
 
             return result;
@@ -83,7 +83,7 @@ namespace OxyPlot
             var result = new double[n + 1];
             for (int i = 0; i <= n; i++)
             {
-                result[i] = (x0 + (i * dx)).RemoveNoise();
+                result[i] = Math.Round(x0 + (i * dx), 8);
             }
 
             return result;

@@ -393,12 +393,12 @@ namespace OxyPlot.Axes
                 var e1 = (int)Math.Ceiling(Math.Log(this.ActualMaximum) / logBase);
                 if (!double.IsNaN(this.ActualMinimum))
                 {
-                    this.ActualMinimum = Math.Exp(e0 * logBase).RemoveNoiseFromDoubleMath();
+                    this.ActualMinimum = Math.Round(Math.Exp(e0 * logBase), 14);
                 }
 
                 if (!double.IsNaN(this.ActualMaximum))
                 {
-                    this.ActualMaximum = Math.Exp(e1 * logBase).RemoveNoiseFromDoubleMath();
+                    this.ActualMaximum = Math.Round(Math.Exp(e1 * logBase), 14);
                 }
             }
 
