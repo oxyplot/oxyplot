@@ -588,7 +588,7 @@ namespace OxyPlot.Silverlight
                     break;
             }
 
-            if (!dx.IsZero() || !dy.IsZero())
+            if ((dx * dx) + (dy * dy) > 0)
             {
                 dx = dx * this.ActualModel.PlotArea.Width * this.KeyboardPanHorizontalStep;
                 dy = dy * this.ActualModel.PlotArea.Height * this.KeyboardPanVerticalStep;
@@ -604,7 +604,7 @@ namespace OxyPlot.Silverlight
                 e.Handled = true;
             }
 
-            if (!zoom.IsZero())
+            if (Math.Abs(zoom) > 0)
             {
                 if (control)
                 {
