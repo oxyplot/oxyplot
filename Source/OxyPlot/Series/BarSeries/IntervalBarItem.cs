@@ -39,7 +39,7 @@ namespace OxyPlot.Series
         /// </summary>
         public IntervalBarItem()
         {
-            this.Color = OxyColors.Undefined;
+            this.Color = OxyColors.Automatic;
         }
 
         /// <summary>
