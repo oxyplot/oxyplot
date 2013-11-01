@@ -63,25 +63,6 @@ namespace OxyPlot.MonoTouch
             return new RectangleF((int)rect.Left, (int)rect.Top, (int)rect.Width, (int)rect.Height);
         }
 
-		private void SetFill (OxyColor color)
-		{
-			if(color == null) return;
-			ToColor(color).SetFill();
-		}
-
-		private void SetStroke (OxyColor color)
-		{
-			if(color == null) return;
-			ToColor(color).SetStroke();
-		}
-
-		private void SetAttributes (OxyColor fill, OxyColor stroke, double thickness)
-		{
-			gctx.SetLineWidth ((float)thickness);
-			SetFill(fill);
-			SetStroke (stroke);
-		}
-
 		private PointF ToPoint (ScreenPoint p)
 		{
 			return new PointF((float)p.X, (float)p.Y);
@@ -89,7 +70,7 @@ namespace OxyPlot.MonoTouch
 
 		public override void DrawEllipse (OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
 		{
-			if (fill != null)
+			if (fill.IsVisible())
             {
 				ToColor(fill).SetFill();
                 var path = new CGPath ();
@@ -99,37 +80,36 @@ namespace OxyPlot.MonoTouch
 	            gctx.DrawPath (CGPathDrawingMode.Fill);
             }
 
-            if (stroke == null || thickness <= 0)
+            if (stroke.IsVisible() && thickness > 0)
             {
-                return;
+                ToColor(stroke).SetStroke();
+       		    gctx.SetLineWidth ((float)thickness);
+
+			    var path2 = new CGPath ();
+                path2.AddElipseInRect(ToRectangle(rect));
+
+                gctx.AddPath (path2);
+                gctx.DrawPath (CGPathDrawingMode.Stroke);
             }
-
-			SetAttributes (null, stroke, thickness);
-
-			var path2 = new CGPath ();
-            path2.AddElipseInRect(ToRectangle(rect));
-
-            gctx.AddPath (path2);
-            gctx.DrawPath (CGPathDrawingMode.Stroke);
 		}
 
 		public override void DrawLine (IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
 		{
-			if (stroke == null || thickness <= 0)
+			if (stroke.IsVisible() && thickness > 0)
             {
-                return;
+			    gctx.SetAllowsAntialiasing(aliased);
+			    gctx.SetLineCap(ToLine(lineJoin));
+
+                ToColor(stroke).SetStroke();
+       		    gctx.SetLineWidth ((float)thickness);
+
+                var path = new CGPath ();
+
+                path.AddLines(points.Select(p => ToPoint(p)).ToArray());
+
+                gctx.AddPath (path);
+                gctx.DrawPath (CGPathDrawingMode.Stroke);
             }
-			gctx.SetAllowsAntialiasing(aliased);
-			gctx.SetLineCap(ToLine(lineJoin));
-
-			SetAttributes (null, stroke, thickness);
-
-            var path = new CGPath ();
-
-            path.AddLines(points.Select(p => ToPoint(p)).ToArray());
-
-            gctx.AddPath (path);
-            gctx.DrawPath (CGPathDrawingMode.Stroke);
 		}
 
 		private CGLineCap ToLine (OxyPenLineJoin lineJoin)
@@ -151,7 +131,7 @@ namespace OxyPlot.MonoTouch
 		{
 			gctx.SetAllowsAntialiasing(aliased);
 
-            if (fill != null)
+            if (fill.IsVisible())
 			{
 				ToColor(fill).SetFill();
 				var path = new CGPath ();
@@ -161,10 +141,10 @@ namespace OxyPlot.MonoTouch
 	            gctx.DrawPath (CGPathDrawingMode.Fill);
 			}
 
-            if (stroke != null && thickness > 0)
+            if (stroke.IsVisible() && thickness > 0)
 			{
-				SetAttributes (null, stroke, thickness);
-
+                ToColor(stroke).SetStroke();
+       		    gctx.SetLineWidth ((float)thickness);
 				gctx.SetLineCap(ToLine(lineJoin));
 
 	            var path = new CGPath ();
@@ -177,7 +157,7 @@ namespace OxyPlot.MonoTouch
 
 		public override void DrawRectangle (OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
 		{
-			if (fill != null)
+			if (fill.IsVisible())
 			{
 				ToColor(fill).SetFill();
 				var path = new CGPath ();
@@ -186,19 +166,19 @@ namespace OxyPlot.MonoTouch
 	            gctx.DrawPath (CGPathDrawingMode.Fill);
 			}
 
-			if (stroke == null || thickness <= 0)
+			if (stroke.IsVisible() && thickness > 0)
             {
-                return;
+                ToColor(stroke).SetStroke();
+       		    gctx.SetLineWidth ((float)thickness);
+
+ 			    var path2 = new CGPath ();
+                path2.AddRect(ToRectangle(rect));
+                gctx.AddPath (path2);
+                gctx.DrawPath (CGPathDrawingMode.Stroke);
             }
-
-			SetAttributes (null, stroke, thickness);
-
-			var path2 = new CGPath ();
-            path2.AddRect(ToRectangle(rect));
-            gctx.AddPath (path2);
-            gctx.DrawPath (CGPathDrawingMode.Stroke);
 		}
-		public static double DegreesToRadians(double angle)
+
+		private static double DegreesToRadians(double angle)
         {
           return Math.PI * angle / 180.0;
         }
@@ -287,7 +267,7 @@ namespace OxyPlot.MonoTouch
 
 		public override OxySize MeasureText (string text, string fontFamily, double fontSize, double fontWeight)
 		{
-			if(text == null)
+			if (text == null)
 			{
 				return OxySize.Empty;
 			}
