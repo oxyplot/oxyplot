@@ -27,275 +27,276 @@
 //   Gets the default font for IOS if the default font is Segoe UI as this font is not supported by IOS.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
-using MonoTouch.Foundation;
 
 namespace OxyPlot.MonoTouch
 {
-	public class MonoTouchRenderContext : RenderContextBase
-	{
-		private CGContext gctx;
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Linq;
+    using MonoTouch.UIKit;
+    using MonoTouch.CoreGraphics;
+    using MonoTouch.Foundation;
 
-		public MonoTouchRenderContext (CGContext context)
-		{
-			gctx = context;
+    public class MonoTouchRenderContext : RenderContextBase
+    {
+        private CGContext gctx;
 
-			//SET RENDERING QUALITY
-			gctx.SetAllowsFontSmoothing(true);
-			gctx.SetAllowsFontSubpixelQuantization(true);
-			gctx.SetAllowsAntialiasing(true);
-			gctx.SetShouldSmoothFonts(true);
-			gctx.SetShouldAntialias(true);
-			gctx.InterpolationQuality = CGInterpolationQuality.High;
-		}
+        public MonoTouchRenderContext(CGContext context)
+        {
+            gctx = context;
 
-		private UIColor ToColor(OxyColor c)
+            //SET RENDERING QUALITY
+            gctx.SetAllowsFontSmoothing(true);
+            gctx.SetAllowsFontSubpixelQuantization(true);
+            gctx.SetAllowsAntialiasing(true);
+            gctx.SetShouldSmoothFonts(true);
+            gctx.SetShouldAntialias(true);
+            gctx.InterpolationQuality = CGInterpolationQuality.High;
+        }
+
+        private UIColor ToColor(OxyColor c)
         {
             return UIColor.FromRGBA(c.R, c.G, c.B, c.A);
         }
 
-		private RectangleF ToRectangle(OxyRect rect)
+        private RectangleF ToRectangle(OxyRect rect)
         {
             return new RectangleF((int)rect.Left, (int)rect.Top, (int)rect.Width, (int)rect.Height);
         }
 
-		private PointF ToPoint (ScreenPoint p)
-		{
-			return new PointF((float)p.X, (float)p.Y);
-		}
+        private PointF ToPoint(ScreenPoint p)
+        {
+            return new PointF((float)p.X, (float)p.Y);
+        }
 
-		public override void DrawEllipse (OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
-		{
-			if (fill.IsVisible())
+        public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            if (fill.IsVisible())
             {
-				ToColor(fill).SetFill();
-                var path = new CGPath ();
-	            path.AddElipseInRect(ToRectangle(rect));
+                ToColor(fill).SetFill();
+                var path = new CGPath();
+                path.AddElipseInRect(ToRectangle(rect));
 
-	            gctx.AddPath (path);
-	            gctx.DrawPath (CGPathDrawingMode.Fill);
+                gctx.AddPath(path);
+                gctx.DrawPath(CGPathDrawingMode.Fill);
             }
 
             if (stroke.IsVisible() && thickness > 0)
             {
                 ToColor(stroke).SetStroke();
-       		    gctx.SetLineWidth ((float)thickness);
+                gctx.SetLineWidth((float)thickness);
 
-			    var path2 = new CGPath ();
+                var path2 = new CGPath();
                 path2.AddElipseInRect(ToRectangle(rect));
 
-                gctx.AddPath (path2);
-                gctx.DrawPath (CGPathDrawingMode.Stroke);
+                gctx.AddPath(path2);
+                gctx.DrawPath(CGPathDrawingMode.Stroke);
             }
-		}
+        }
 
-		public override void DrawLine (IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
-		{
-			if (stroke.IsVisible() && thickness > 0)
+        public override void DrawLine(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        {
+            if (stroke.IsVisible() && thickness > 0)
             {
-			    gctx.SetAllowsAntialiasing(aliased);
-			    gctx.SetLineCap(ToLine(lineJoin));
+                gctx.SetAllowsAntialiasing(aliased);
+                gctx.SetLineCap(ToLine(lineJoin));
 
                 ToColor(stroke).SetStroke();
-       		    gctx.SetLineWidth ((float)thickness);
+                gctx.SetLineWidth((float)thickness);
 
-                var path = new CGPath ();
+                var path = new CGPath();
 
                 path.AddLines(points.Select(p => ToPoint(p)).ToArray());
 
-                gctx.AddPath (path);
-                gctx.DrawPath (CGPathDrawingMode.Stroke);
+                gctx.AddPath(path);
+                gctx.DrawPath(CGPathDrawingMode.Stroke);
             }
-		}
-
-		private CGLineCap ToLine (OxyPenLineJoin lineJoin)
-		{
-			switch(lineJoin)
-			{
-			case OxyPenLineJoin.Bevel:
-				return CGLineCap.Butt;
-			case OxyPenLineJoin.Miter:
-				return CGLineCap.Square;
-			case OxyPenLineJoin.Round:
-				return CGLineCap.Round;
-			}
-
-			return CGLineCap.Square;
-		}
-
-		public override void DrawPolygon (IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
-		{
-			gctx.SetAllowsAntialiasing(aliased);
-
-            if (fill.IsVisible())
-			{
-				ToColor(fill).SetFill();
-				var path = new CGPath ();
-	            path.AddLines(points.Select(p => ToPoint(p)).ToArray());
-				path.CloseSubpath();
-				gctx.AddPath(path);
-	            gctx.DrawPath (CGPathDrawingMode.Fill);
-			}
-
-            if (stroke.IsVisible() && thickness > 0)
-			{
-                ToColor(stroke).SetStroke();
-       		    gctx.SetLineWidth ((float)thickness);
-				gctx.SetLineCap(ToLine(lineJoin));
-
-	            var path = new CGPath ();
-	            path.AddLines(points.Select(p => ToPoint(p)).ToArray());
-				path.CloseSubpath();
-				gctx.AddPath(path);
-	            gctx.DrawPath (CGPathDrawingMode.Stroke);
-			}
-		}
-
-		public override void DrawRectangle (OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
-		{
-			if (fill.IsVisible())
-			{
-				ToColor(fill).SetFill();
-				var path = new CGPath ();
-	            path.AddRect(ToRectangle(rect));
-	            gctx.AddPath (path);
-	            gctx.DrawPath (CGPathDrawingMode.Fill);
-			}
-
-			if (stroke.IsVisible() && thickness > 0)
-            {
-                ToColor(stroke).SetStroke();
-       		    gctx.SetLineWidth ((float)thickness);
-
- 			    var path2 = new CGPath ();
-                path2.AddRect(ToRectangle(rect));
-                gctx.AddPath (path2);
-                gctx.DrawPath (CGPathDrawingMode.Stroke);
-            }
-		}
-
-		private static double DegreesToRadians(double angle)
-        {
-          return Math.PI * angle / 180.0;
         }
 
-		public override void DrawText (ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalAlignment halign, VerticalAlignment valign, OxySize? maxSize)
-		{
-			if(string.IsNullOrEmpty(text))
-			{
-				return;
-			}
+        private CGLineCap ToLine(OxyPenLineJoin lineJoin)
+        {
+            switch (lineJoin)
+            {
+                case OxyPenLineJoin.Bevel:
+                    return CGLineCap.Butt;
+                case OxyPenLineJoin.Miter:
+                    return CGLineCap.Square;
+                case OxyPenLineJoin.Round:
+                    return CGLineCap.Round;
+            }
 
-			fontFamily = GetDefaultFont(fontFamily);
+            return CGLineCap.Square;
+        }
 
-			if (fontWeight >= 700)
+        public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
+        {
+            gctx.SetAllowsAntialiasing(aliased);
+
+            if (fill.IsVisible())
+            {
+                ToColor(fill).SetFill();
+                var path = new CGPath();
+                path.AddLines(points.Select(p => ToPoint(p)).ToArray());
+                path.CloseSubpath();
+                gctx.AddPath(path);
+                gctx.DrawPath(CGPathDrawingMode.Fill);
+            }
+
+            if (stroke.IsVisible() && thickness > 0)
+            {
+                ToColor(stroke).SetStroke();
+                gctx.SetLineWidth((float)thickness);
+                gctx.SetLineCap(ToLine(lineJoin));
+
+                var path = new CGPath();
+                path.AddLines(points.Select(p => ToPoint(p)).ToArray());
+                path.CloseSubpath();
+                gctx.AddPath(path);
+                gctx.DrawPath(CGPathDrawingMode.Stroke);
+            }
+        }
+
+        public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
+        {
+            if (fill.IsVisible())
+            {
+                ToColor(fill).SetFill();
+                var path = new CGPath();
+                path.AddRect(ToRectangle(rect));
+                gctx.AddPath(path);
+                gctx.DrawPath(CGPathDrawingMode.Fill);
+            }
+
+            if (stroke.IsVisible() && thickness > 0)
+            {
+                ToColor(stroke).SetStroke();
+                gctx.SetLineWidth((float)thickness);
+
+                var path2 = new CGPath();
+                path2.AddRect(ToRectangle(rect));
+                gctx.AddPath(path2);
+                gctx.DrawPath(CGPathDrawingMode.Stroke);
+            }
+        }
+
+        public override void DrawText(ScreenPoint p, string text, OxyColor fill, string fontFamily, double fontSize, double fontWeight, double rotate, HorizontalAlignment halign, VerticalAlignment valign, OxySize? maxSize)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return;
+            }
+
+            fontFamily = GetDefaultFont(fontFamily);
+
+            if (fontWeight >= 700)
             {
                 //fs = FontStyle.Bold;
             }
 
-			if (maxSize != null)
+            if (maxSize != null)
             {
-//                if (size.Width > maxSize.Value.Width)
-//                {
-//                    size.Width = (float)maxSize.Value.Width;
-//                }
-//
-//                if (size.Height > maxSize.Value.Height)
-//                {
-//                    size.Height = (float)maxSize.Value.Height;
-//                }
+                //                if (size.Width > maxSize.Value.Width)
+                //                {
+                //                    size.Width = (float)maxSize.Value.Width;
+                //                }
+                //
+                //                if (size.Height > maxSize.Value.Height)
+                //                {
+                //                    size.Height = (float)maxSize.Value.Height;
+                //                }
             }
 
-			gctx.SaveState();
-			
-			gctx.SelectFont(fontFamily, (float)fontSize, CGTextEncoding.MacRoman);
-			ToColor(fill).SetFill();
-			
-			gctx.SetTextDrawingMode(CGTextDrawingMode.Fill);
-			
-			var tfont = UIFont.FromName (fontFamily,(float)fontSize);
-			NSString nsstr = new NSString(text);
-			SizeF sz = nsstr.StringSize(tfont);
-			
-			float y = (float)(p.Y);
-			float x = (float)(p.X);
+            gctx.SaveState();
 
-			
+            gctx.SelectFont(fontFamily, (float)fontSize, CGTextEncoding.MacRoman);
+            ToColor(fill).SetFill();
+
+            gctx.SetTextDrawingMode(CGTextDrawingMode.Fill);
+
+            var tfont = UIFont.FromName(fontFamily, (float)fontSize);
+            NSString nsstr = new NSString(text);
+            SizeF sz = nsstr.StringSize(tfont);
+
+            float y = (float)(p.Y);
+            float x = (float)(p.X);
+
             // Rotate the text here.
-            var m = CGAffineTransform.MakeTranslation(-x,-y);
-            m.Multiply( CGAffineTransform.MakeRotation((float)DegreesToRadians(rotate)));
-            m.Multiply( CGAffineTransform.MakeTranslation(x,y));
-            
-            gctx.ConcatCTM( m );
+            var m = CGAffineTransform.MakeTranslation(-x, -y);
+            m.Multiply(CGAffineTransform.MakeRotation((float)DegreesToRadians(rotate)));
+            m.Multiply(CGAffineTransform.MakeTranslation(x, y));
 
-			switch(halign)
-			{
-			case HorizontalAlignment.Left:
-				x = (float)(p.X);
-				break;
-			case HorizontalAlignment.Right:
-				x = (float)(p.X - sz.Width);
-				break;
-			case HorizontalAlignment.Center:
-				x = (float)(p.X - (sz.Width / 2));
-				break;
-			}
+            gctx.ConcatCTM(m);
 
-			switch(valign)
-			{
-			case VerticalAlignment.Bottom:
-				y -= (float)sz.Height;
-				break;
-			case VerticalAlignment.Top:
-				//y += (float)fontSize;
-				break;
-			case VerticalAlignment.Middle:
-				y -= (float)(sz.Height / 2);
-				break;
-			}
+            switch (halign)
+            {
+                case HorizontalAlignment.Left:
+                    x = (float)(p.X);
+                    break;
+                case HorizontalAlignment.Right:
+                    x = (float)(p.X - sz.Width);
+                    break;
+                case HorizontalAlignment.Center:
+                    x = (float)(p.X - (sz.Width / 2));
+                    break;
+            }
 
-			RectangleF rect = new RectangleF(x,y,sz.Width,sz.Height);
-			nsstr.DrawString(rect, tfont);
-			
-			gctx.RestoreState();
-			//Console.WriteLine("X:{0:###} Y:{1:###} HA:{2}:{3:###} VA:{4}:{5:###} TW:{6:###} - {7}", p.X, p.Y, halign, x, valign, y, textSize.Width, text);
-		}
+            switch (valign)
+            {
+                case VerticalAlignment.Bottom:
+                    y -= (float)sz.Height;
+                    break;
+                case VerticalAlignment.Top:
+                    //y += (float)fontSize;
+                    break;
+                case VerticalAlignment.Middle:
+                    y -= (float)(sz.Height / 2);
+                    break;
+            }
 
-		public override OxySize MeasureText (string text, string fontFamily, double fontSize, double fontWeight)
-		{
-			if (text == null)
-			{
-				return OxySize.Empty;
-			}
-			
-			fontFamily = GetDefaultFont(fontFamily);
-			
-			gctx.SelectFont(fontFamily, (float)fontSize, CGTextEncoding.MacRoman);
-			
-			UIFont tfont = UIFont.FromName (fontFamily,(float)fontSize);
-			
-			NSString nsstr = new NSString(text);
-			SizeF sz = nsstr.StringSize(tfont);
-			
-			return new OxySize(sz.Width, sz.Height);
-		}
+            RectangleF rect = new RectangleF(x, y, sz.Width, sz.Height);
+            nsstr.DrawString(rect, tfont);
 
-		/// <summary>
-		/// Gets the default font for IOS if the default font is Segoe UI as this font is not supported by IOS.
-		/// </summary>
-		/// <returns>
-		/// The default font of Helvetica Neue.
-		/// </returns>
-		/// <param name='fontFamily'>
-		/// Font family.
-		/// </param>
-		private string GetDefaultFont(string fontFamily)
-		{
-			return fontFamily == "Segoe UI" ? "Helvetica Neue" : fontFamily;
-		}
-	}
+            gctx.RestoreState();
+            //Console.WriteLine("X:{0:###} Y:{1:###} HA:{2}:{3:###} VA:{4}:{5:###} TW:{6:###} - {7}", p.X, p.Y, halign, x, valign, y, textSize.Width, text);
+        }
+
+        public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
+        {
+            if (text == null)
+            {
+                return OxySize.Empty;
+            }
+
+            fontFamily = GetDefaultFont(fontFamily);
+
+            gctx.SelectFont(fontFamily, (float)fontSize, CGTextEncoding.MacRoman);
+
+            UIFont tfont = UIFont.FromName(fontFamily, (float)fontSize);
+
+            NSString nsstr = new NSString(text);
+            SizeF sz = nsstr.StringSize(tfont);
+
+            return new OxySize(sz.Width, sz.Height);
+        }
+
+        private static double DegreesToRadians(double angle)
+        {
+            return Math.PI * angle / 180.0;
+        }
+
+        /// <summary>
+        /// Gets the default font for iOS if the default font is Segoe UI as this font is not supported by iOS.
+        /// </summary>
+        /// <returns>
+        /// The default font of Helvetica Neue.
+        /// </returns>
+        /// <param name='fontFamily'>
+        /// Font family.
+        /// </param>
+        private string GetDefaultFont(string fontFamily)
+        {
+            return fontFamily == "Segoe UI" ? "Helvetica Neue" : fontFamily;
+        }
+    }
 }
