@@ -1,0 +1,33 @@
+﻿<Window x:Class="CsvDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        Title="CSV demo" Height="480" Width="640"
+        AllowDrop="True" Drop="Window_Drop">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Open csv..." Click="OpenCsv_Click"/>
+                <Separator/>
+                <MenuItem Header="Save plot..." Click="SavePlot_Click"/>
+                <MenuItem Header="Save report..." Click="SaveReport_Click"/>
+                <Separator/>
+                <MenuItem Header="Exit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Copy svg" Click="CopySvg_Click"/>
+                <MenuItem Header="Copy bitmap" Click="CopyBitmap_Click"/>
+                <MenuItem Header="Copy xaml" Click="CopyXaml_Click"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="Website" Click="HelpWeb_Click"/>
+                <MenuItem Header="About" Click="HelpAbout_Click"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <oxy:Plot 
+            x:Name="plot1" 
+            Model="{Binding Model}" 
+            Background="White"/>
+        </Grid>
+    </DockPanel>
+</Window>
