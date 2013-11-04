@@ -18,6 +18,8 @@
     <MandroidI18n />
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <DeployExternal>True</DeployExternal>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -37,7 +39,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -70,16 +71,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.MonoForAndroid\OxyPlot.MonoForAndroid.csproj">
-      <Project>{e965ba32-9561-4e2a-adb0-19487b25a939}</Project>
+      <Project>{E965BA32-9561-4E2A-ADB0-19487B25A939}</Project>
       <Name>OxyPlot.MonoForAndroid</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\OxyPlot\OxyPlotMfA.csproj">
-      <Project>{08a91765-2c9d-4d2b-b56d-fae62ab204cc}</Project>
+      <Project>{08A91765-2C9D-4D2B-B56D-FAE62AB204CC}</Project>
       <Name>OxyPlotMfA</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ExampleLibrary\ExampleLibraryMfA.csproj">
-      <Project>{f4c226b3-0dab-474c-9466-5eacafa9b64a}</Project>
-      <Name>ExampleLibraryMA</Name>
+      <Project>{F4C226B3-0DAB-474C-9466-5EACAFA9B64A}</Project>
+      <Name>ExampleLibraryMfA</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

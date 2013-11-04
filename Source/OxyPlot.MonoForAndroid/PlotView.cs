@@ -125,10 +125,10 @@ namespace OxyPlot.MonoForAndroid
                         canvas.GetClipBounds(bounds);
 
                         // Render the background
-                        if (this.model.Background != null)
+                        if (!this.model.Background.IsUndefined())
                         {
                             // TODO: can we set this.Background instead?
-                            rc.DrawRectangle(new OxyRect(bounds.Left, bounds.Top, bounds.Width(), bounds.Height()), this.model.Background, null, 0);
+                            rc.DrawRectangle(new OxyRect(bounds.Left, bounds.Top, bounds.Width(), bounds.Height()), this.model.Background, OxyColors.Undefined, 0);
                         }
                         
                         this.model.Render(rc, bounds.Right - bounds.Left, bounds.Bottom - bounds.Top);
