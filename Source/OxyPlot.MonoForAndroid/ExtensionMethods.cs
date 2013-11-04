@@ -32,9 +32,11 @@ namespace OxyPlot.MonoForAndroid
     {
         public static Color ToColor(this OxyColor color)
         {
-            if (color == null)
-                return Color.Transparent;
-            return new Color(color.R, color.G, color.B, color.A);
+			if (color.IsInvisible ()) {
+				return Color.Transparent;
+			}
+
+			return new Color(color.R, color.G, color.B, color.A);
         }
 
         public static RectF ToRectF(this OxyRect rect)
