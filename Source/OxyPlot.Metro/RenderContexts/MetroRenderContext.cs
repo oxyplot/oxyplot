@@ -47,7 +47,6 @@ namespace OxyPlot.Metro
     /// <summary>
     /// Rendering Metro shapes to a Canvas
     /// </summary>
-    [CLSCompliant(false)]
     public class MetroRenderContext : IRenderContext
     {
         /// <summary>
