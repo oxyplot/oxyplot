@@ -159,7 +159,7 @@
                     }
                 }
 
-                this.image = OxyImage.PngFromArgb(pixels);
+                this.image = OxyImage.Create(pixels, ImageFormat.Png);
             }
 
             var clip = this.GetClippingRect();

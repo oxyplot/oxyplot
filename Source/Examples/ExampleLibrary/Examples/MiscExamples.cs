@@ -1550,7 +1550,7 @@ namespace ExampleLibrary
                         }
                     });
 
-                var bitmap = OxyImage.PngFromArgb(pixels);
+                var bitmap = OxyImage.Create(pixels, ImageFormat.Png);
                 rc.DrawImage(bitmap, p0.X, p1.Y, p1.X - p0.X, p0.Y - p1.Y, 1, true);
             }
 
