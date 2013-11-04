@@ -25,7 +25,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System;
 using System.Reflection;
 
 [assembly: AssemblyConfiguration("")]
@@ -34,8 +33,6 @@ using System.Reflection;
 [assembly: AssemblyCopyright("Copyright (C) OxyPlot 2012.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
-[assembly: CLSCompliant(true)]
 
 [assembly: AssemblyVersion("2013.2.1.1")]
 [assembly: AssemblyFileVersion("2013.2.1.1")]

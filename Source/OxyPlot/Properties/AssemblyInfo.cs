@@ -4,7 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Reflection;
 
 [assembly: AssemblyTitle("OxyPlot")]
 [assembly: AssemblyDescription("OxyPlot core library")]
+
+[assembly: CLSCompliant(true)]
