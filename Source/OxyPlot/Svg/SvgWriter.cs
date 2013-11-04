@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SvgWriter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Scalable Vector Graphics writer.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
@@ -201,10 +202,10 @@ namespace OxyPlot
         /// Writes an ellipse.
         /// </summary>
         /// <param name="x">
-        /// The x coordinate of the center.
+        /// The x-coordinate of the center.
         /// </param>
         /// <param name="y">
-        /// The y coordinate of the center.
+        /// The y-coordinate of the center.
         /// </param>
         /// <param name="width">
         /// The width.
@@ -228,6 +229,13 @@ namespace OxyPlot
             this.WriteEndElement();
         }
 
+        /// <summary>
+        /// Sets a clipping rectangle.
+        /// </summary>
+        /// <param name="x">The x coordinate of the clipping rectangle.</param>
+        /// <param name="y">The y coordinate of the clipping rectangle.</param>
+        /// <param name="width">The width of the clipping rectangle.</param>
+        /// <param name="height">The height of the clipping rectangle.</param>
         public void BeginClip(double x, double y, double width, double height)
         {
             // http://www.w3.org/TR/SVG/masking.html
@@ -247,12 +255,27 @@ namespace OxyPlot
             this.WriteEndElement(); // clipPath
         }
 
+        /// <summary>
+        /// Resets the clipping rectangle.
+        /// </summary>
         public void EndClip()
         {
             this.WriteEndElement(); // g
             this.clipPath = null;
         }
 
+        /// <summary>
+        /// Writes a portion of the specified image.
+        /// </summary>
+        /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcY">The y-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcWidth">Width of the portion of the source image to draw.</param>
+        /// <param name="srcHeight">Height of the portion of the source image to draw.</param>
+        /// <param name="destX">The destination x-coordinate.</param>
+        /// <param name="destY">The destination y-coordinate.</param>
+        /// <param name="destWidth">Width of the destination rectangle.</param>
+        /// <param name="destHeight">Height of the destination rectangle.</param>
+        /// <param name="image">The image.</param>
         public void WriteImage(
             double srcX,
             double srcY,
@@ -273,6 +296,14 @@ namespace OxyPlot
             this.EndClip();
         }
 
+        /// <summary>
+        /// Writes the specified image.
+        /// </summary>
+        /// <param name="x">The x-coordinate.</param>
+        /// <param name="y">The y-coordinate.</param>
+        /// <param name="width">The width of the image.</param>
+        /// <param name="height">The height of the image.</param>
+        /// <param name="image">The image.</param>
         public void WriteImage(double x, double y, double width, double height, OxyImage image)
         {
             // http://www.w3.org/TR/SVG/shapes.html#ImageElement
@@ -509,7 +540,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write attribute string.
+        /// Writes an double attribute.
         /// </summary>
         /// <param name="name">
         /// The name.
@@ -569,7 +600,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// The write header.
+        /// Writes the header.
         /// </summary>
         /// <param name="width">
         /// The width.
