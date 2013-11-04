@@ -44,7 +44,6 @@ namespace OxyPlot.Pdf
         /// </summary>
         /// <param name="r">The rectangle.</param>
         /// <returns>The <see cref="XRect"/></returns>
-        [CLSCompliant(false)]
         public static XRect ToXRect(this OxyRect r)
         {
             return new XRect((int)Math.Round(r.Left), (int)Math.Round(r.Top), (int)Math.Round(r.Width), (int)Math.Round(r.Height));
