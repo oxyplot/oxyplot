@@ -75,7 +75,7 @@
                     var rc = new GraphicsRenderContext { RendersToScreen = false };
                     rc.SetGraphicsTarget(g);
                     iconRenderer.Render(rc, size);
-                    bm.Save(fileName, ImageFormat.Png);
+                    bm.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
                 }
             }
         }

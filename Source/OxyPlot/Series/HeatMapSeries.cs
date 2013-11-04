@@ -358,7 +358,7 @@ namespace OxyPlot.Series
                 }
             }
 
-            this.image = OxyImage.PngFromArgb(buffer);
+            this.image = OxyImage.Create(buffer, ImageFormat.Png);
         }
     }
 }

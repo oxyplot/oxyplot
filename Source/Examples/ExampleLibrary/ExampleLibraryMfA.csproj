@@ -14,6 +14,8 @@
     <AndroidSupportedAbis>armeabi</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,6 +26,7 @@
     <DefineConstants>TRACE;DEBUG;MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -97,7 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\OxyPlot\OxyPlotMfA.csproj">
-      <Project>{08a91765-2c9d-4d2b-b56d-fae62ab204cc}</Project>
+      <Project>{08A91765-2C9D-4D2B-B56D-FAE62AB204CC}</Project>
       <Name>OxyPlotMfA</Name>
     </ProjectReference>
   </ItemGroup>

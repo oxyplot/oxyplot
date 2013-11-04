@@ -184,7 +184,7 @@
             }
 
             // Create the PNG image
-            this.image = OxyImage.PngFromArgb(p);
+            this.image = OxyImage.Create(p, ImageFormat.Png);
 
             // Render the image
             var clip = this.GetClippingRect();
@@ -249,7 +249,7 @@
                 }
 
                 // Create the PNG image
-                this.image = OxyImage.PngFromArgb(p);
+                this.image = OxyImage.Create(p, ImageFormat.Png);
             }
 
             OxyRect dest;

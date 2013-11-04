@@ -1,5 +1,6 @@
 ﻿namespace OxyPlot.Tests
 {
+    using System;
     using System.IO;
     using System.Linq;
 
@@ -9,7 +10,24 @@
     public class OxyImageTests
     {
         [Test]
-        public void FromArgb()
+        [TestCase("test_8bit.png", ImageFormat.Png)]
+        [TestCase("test_32bit.png", ImageFormat.Png)]
+        [TestCase("test_8bit.bmp", ImageFormat.Bmp)]
+        [TestCase("test_24bit.bmp", ImageFormat.Bmp)]
+        [TestCase("test_32bit.bmp", ImageFormat.Bmp)]
+        //// [TestCase("test.jpg", ImageFormat.Jpeg)]
+        public void GetFormat_TestFiles_(string fileName, ImageFormat expectedImageFormat)
+        {
+            var image = new OxyImage(File.ReadAllBytes(@"Imaging\TestImages\" + fileName));
+            Assert.AreEqual(expectedImageFormat, image.Format);
+            Assert.AreEqual(137, image.Width);
+            Assert.AreEqual(59, image.Height);
+            Assert.AreEqual(72, Math.Round(image.DpiX));
+            Assert.AreEqual(72, Math.Round(image.DpiY));
+        }
+
+        [Test]
+        public void Create_SmallImageToPng()
         {
             var data = new OxyColor[2, 4];
             data[1, 0] = OxyColors.Blue;
@@ -20,30 +38,13 @@
             data[0, 1] = OxyColor.FromAColor(127, OxyColors.Orange);
             data[0, 2] = OxyColor.FromAColor(127, OxyColors.Pink);
             data[0, 3] = OxyColors.Transparent;
-            var img = OxyImage.FromArgb(data);
+            var img = OxyImage.Create(data, ImageFormat.Png);
             var bytes = img.GetData();
-            File.WriteAllBytes("FromArgb.bmp", bytes);
+            File.WriteAllBytes(@"Imaging\SmallImage.png", bytes);
         }
 
         [Test]
-        public void PngFromArgb()
-        {
-            var data = new OxyColor[2, 4];
-            data[1, 0] = OxyColors.Blue;
-            data[1, 1] = OxyColors.Green;
-            data[1, 2] = OxyColors.Red;
-            data[1, 3] = OxyColors.White;
-            data[0, 0] = OxyColor.FromAColor(127, OxyColors.Yellow);
-            data[0, 1] = OxyColor.FromAColor(127, OxyColors.Orange);
-            data[0, 2] = OxyColor.FromAColor(127, OxyColors.Pink);
-            data[0, 3] = OxyColors.Transparent;
-            var img = OxyImage.PngFromArgb(data);
-            var bytes = img.GetData();
-            File.WriteAllBytes("PngFromArgb.png", bytes);
-        }
-
-        [Test]
-        public void PngFromArgb2()
+        public void Create_LargeImageToPng()
         {
             int w = 266;
             int h = 40;
@@ -56,13 +57,13 @@
                 }
             }
 
-            var img = OxyImage.PngFromArgb(data);
+            var img = OxyImage.Create(data, ImageFormat.Png);
             var bytes = img.GetData();
-            File.WriteAllBytes("PngFromArgb2.png", bytes);
+            File.WriteAllBytes(@"Imaging\LargeImage.png", bytes);
         }
 
         [Test]
-        public void FromArgbX()
+        public void Create_SmallImageToBmp()
         {
             var data = new OxyColor[2, 4];
             data[1, 0] = OxyColors.Blue;
@@ -73,16 +74,15 @@
             data[0, 1] = OxyColor.FromAColor(127, OxyColors.Orange);
             data[0, 2] = OxyColor.FromAColor(127, OxyColors.Pink);
             data[0, 3] = OxyColors.Transparent;
-            var img = OxyImage.FromArgbX(data);
+            var img = OxyImage.Create(data, ImageFormat.Bmp, new BmpEncoderOptions());
             var bytes = img.GetData();
-            File.WriteAllBytes("FromArgbX.bmp", bytes);
+            File.WriteAllBytes(@"Imaging\SmallImage.bmp", bytes);
         }
 
         [Test]
-        public void FromIndexed8()
+        public void Create_Indexed8bitToBmp()
         {
-            var data = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7 };
-            var data2 = new byte[,] { { 0, 1, 2, 3 }, { 4, 5, 6, 7 } };
+            var data = new byte[,] { { 0, 1, 2, 3 }, { 4, 5, 6, 7 } };
 
             var palette = new OxyColor[8];
             palette[4] = OxyColors.Blue;
@@ -93,31 +93,27 @@
             palette[1] = OxyColor.FromAColor(127, OxyColors.Orange);
             palette[2] = OxyColor.FromAColor(127, OxyColors.Pink);
             palette[3] = OxyColors.Transparent;
-            var img = OxyImage.FromIndexed8(4, 2, data, palette);
+            var img = OxyImage.Create(data, palette, ImageFormat.Bmp);
             var bytes = img.GetData();
-            File.WriteAllBytes("FromIndexed8.bmp", bytes);
-
-            var img2 = OxyImage.FromIndexed8(data2, palette);
-            var bytes2 = img2.GetData();
-            File.WriteAllBytes("FromIndexed8_2.bmp", bytes2);
+            File.WriteAllBytes(@"Imaging\FromIndexed8.bmp", bytes);
         }
 
         [Test]
         public void Discussion453825_100()
         {
-            var data = new byte[100 * 100];
+            var data = new byte[100, 100];
             int k = 0;
             for (int i = 0; i < 100; i++)
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    data[i + (j * 100)] = (byte)(k++ % 256);
+                    data[i, j] = (byte)(k++ % 256);
                 }
             }
 
             var palette = OxyPalettes.Gray(256).Colors.ToArray();
-            var im = OxyImage.FromIndexed8(100, 100, data, palette);
-            File.WriteAllBytes("Discussion453825.bmp", im.GetData());
+            var im = OxyImage.Create(data, palette, ImageFormat.Bmp);
+            File.WriteAllBytes(@"Imaging\Discussion453825.bmp", im.GetData());
         }
 
         [Test]
@@ -137,21 +133,11 @@
             }
 
             var palette1 = OxyPalettes.Gray(256).Colors.ToArray();
-            var im1 = OxyImage.FromIndexed8(data, palette1);
-            var im2 = OxyImage.FromIndexed8(w, h, data2, palette1);
+            var im1 = OxyImage.Create(data, palette1, ImageFormat.Bmp);
             var bytes1 = im1.GetData();
-            var bytes2 = im2.GetData();
 
             // The images should show a gradient image 199x256 - black at the bottom, white at the top
-            File.WriteAllBytes("Discussion453825_199a.bmp", bytes1);
-            File.WriteAllBytes("Discussion453825_199b.bmp", bytes2);
-
-            // The two files should be identical
-            Assert.IsTrue(bytes1.Length == bytes2.Length);
-            for (int i = 0; i < bytes1.Length; i++)
-            {
-                Assert.IsTrue(bytes1[i] == bytes2[i], "Position: " + i);
-            }
+            File.WriteAllBytes(@"Imaging\Discussion453825_199a.bmp", bytes1);
         }
     }
 }
