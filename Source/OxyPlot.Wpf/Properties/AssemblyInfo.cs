@@ -4,6 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Markup;
@@ -11,6 +12,8 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle("OxyPlot for WPF")]
 [assembly: AssemblyDescription("OxyPlot controls for WPF")]
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
+
+[assembly: CLSCompliant(true)]
 
 [assembly: XmlnsPrefix("http://oxyplot.codeplex.com", "oxy")]
 [assembly: XmlnsDefinition("http://oxyplot.codeplex.com", "OxyPlot.Wpf")]
