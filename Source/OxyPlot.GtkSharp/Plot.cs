@@ -120,6 +120,8 @@ namespace OxyPlot.GtkSharp
             this.ZoomRectangleCursor = new Cursor(CursorType.Sizing); //  Cursors.SizeNWSE;
             this.ZoomHorizontalCursor = new Cursor(CursorType.SbHDoubleArrow);
             this.ZoomVerticalCursor = new Cursor(CursorType.SbVDoubleArrow);
+            this.AddEvents((int)(EventMask.ButtonPressMask | EventMask.ButtonReleaseMask | EventMask.KeyPressMask | EventMask.PointerMotionMask));
+            this.CanFocus = true;
         }
 
         /// <summary>
@@ -463,18 +465,15 @@ namespace OxyPlot.GtkSharp
             this.InvalidatePlot(false);
         }
 
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseDown" /> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
         protected override bool OnButtonPressEvent(EventButton e)
         {
             if (this.mouseManipulator != null)
             {
-                return false;
+                return true;
             }
 
-            this.GdkWindow.Focus(e.Time);
+            this.GrabFocus(); // .HasFocus = true;
+
             //  this.Capture = true; // TODO
 
             if (this.ActualModel != null)
@@ -516,9 +515,8 @@ namespace OxyPlot.GtkSharp
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Delta(this.CreateManipulationEventArgs(e));
-                return true;
             }
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -543,11 +541,10 @@ namespace OxyPlot.GtkSharp
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Completed(this.CreateManipulationEventArgs(e));
-                return true;
             }
 
             this.mouseManipulator = null;
-            return false;
+            return true;
 
         }
 
@@ -667,7 +664,6 @@ namespace OxyPlot.GtkSharp
                     break;
                 case Gdk.Key.minus:
                 case Gdk.Key.KP_Subtract:
-                //case Keys.OemMinus: /* TODO */
                 case Gdk.Key.Page_Down:
                     zoom = -1;
                     break;
@@ -716,8 +712,7 @@ namespace OxyPlot.GtkSharp
                         break;
                     case Gdk.Key.x:
 
-                        // this.SetClipboardText(this.ActualModel.ToXml()); // TODO
-                        handled = true;
+                        // this.SetClipboardText(this.ActualModel.ToXml());
                         break;
                 }
             }
@@ -810,12 +805,12 @@ namespace OxyPlot.GtkSharp
         /// </returns>
         private ManipulationEventArgs CreateManipulationEventArgs(EventButton e)
         {
-            return new ManipulationEventArgs(new ScreenPoint(e.XRoot, e.YRoot));
+            return new ManipulationEventArgs(new ScreenPoint(e.X, e.Y));
         }
 
         private ManipulationEventArgs CreateManipulationEventArgs(EventMotion e)
         {
-            return new ManipulationEventArgs(new ScreenPoint(e.XRoot, e.YRoot));
+            return new ManipulationEventArgs(new ScreenPoint(e.X, e.Y));
         }
 
         /// <summary>
@@ -834,23 +829,23 @@ namespace OxyPlot.GtkSharp
             bool alt = (e.State & ModifierType.Mod1Mask) != 0;
 
             bool lmb = e.Button == 1;
-            bool rmb = e.Button == 2;
-            bool mmb = e.Button == 3;
+            bool mmb = e.Button == 2;
+            bool rmb = e.Button == 3;
             bool xb1 = e.Button == 4;
             bool xb2 = e.Button == 5;
+            bool doubleClick = (e.Type == EventType.TwoButtonPress);
+            //bool singleClick = (e.Type == EventType.ButtonPress);
 
             // MMB / control RMB / control+alt LMB
-/*  TODO: double click
             if (mmb || (control && rmb) || (control && alt && lmb))
             {
-                if (e.Clicks == 2)
+                if (doubleClick)
                 {
                     return new ResetManipulator(this);
                 }
 
                 return new ZoomRectangleManipulator(this);
             }
-*/
             // Right mouse button / alt+left mouse button
             if (rmb || (lmb && alt))
             {

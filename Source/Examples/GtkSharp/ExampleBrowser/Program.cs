@@ -47,7 +47,7 @@ namespace ExampleBrowser
             var window = new MainWindow();
             window.SetSizeRequest(943 + 100, 554 + 100);
             window.Visible = true;
-            window.Show();
+            window.ShowAll();
             Application.Run();
         }
     }
