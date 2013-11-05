@@ -59,7 +59,7 @@ namespace OxyPlot
         {
             base.Render(axis, pass);
 
-            double totalShift = axis.PositionTierMinShift;
+            double totalShift = axis.AxisDistance + axis.PositionTierMinShift;
             double tierSize = axis.PositionTierSize - this.Plot.AxisTierDistance;
 
             // store properties locally for performance

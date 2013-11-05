@@ -35,6 +35,11 @@ namespace OxyPlot.Axes
     /// </summary>
     public abstract class ColorAxis : Axis
     {
+        protected ColorAxis()
+        {
+            this.AxisDistance = 20;
+        }
+
         /// <summary>
         /// Gets the color.
         /// </summary>
