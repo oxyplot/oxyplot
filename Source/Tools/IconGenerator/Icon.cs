@@ -20,7 +20,6 @@
 
         public enum ImageFormat { Unknown, PNG, BMP }
 
-        [CLSCompliant(false)]
         public class Entry
         {
             public byte Width { get; set; }
