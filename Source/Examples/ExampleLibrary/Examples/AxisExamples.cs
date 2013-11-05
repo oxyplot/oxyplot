@@ -987,5 +987,41 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis(AxisPosition.Right, -1, 1, "Right axis") { Angle = 45 });
             return model;
         }
+
+        [Example("Axis distance")]
+        public static PlotModel AxisDistance()
+        {
+            var plotModel = new PlotModel("AxisDistance = 20")
+                {
+                    Axes =
+                        {
+                            new LinearAxis
+                                {
+                                    AxislineStyle = LineStyle.Solid,
+                                    AxisDistance = 20,
+                                    Position = AxisPosition.Bottom
+                                },
+                            new LinearAxis
+                                {
+                                    AxislineStyle = LineStyle.Solid,
+                                    AxisDistance = 20,
+                                    Position = AxisPosition.Left
+                                },
+                            new LinearAxis
+                                {
+                                    AxislineStyle = LineStyle.Solid,
+                                    AxisDistance = 20,
+                                    Position = AxisPosition.Right
+                                },
+                            new LinearAxis
+                                {
+                                    AxislineStyle = LineStyle.Solid,
+                                    AxisDistance = 20,
+                                    Position = AxisPosition.Top
+                                }
+                        }
+                };
+            return plotModel;
+        }
     }
 }
