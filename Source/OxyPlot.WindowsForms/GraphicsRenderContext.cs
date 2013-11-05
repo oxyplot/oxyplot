@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GraphicsRenderContext.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   The graphics render context.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.WindowsForms
 {
     using System;
@@ -51,6 +52,16 @@ namespace OxyPlot.WindowsForms
         private const float FontsizeFactor = 0.8f;
 
         /// <summary>
+        /// The images in use
+        /// </summary>
+        private readonly HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
+
+        /// <summary>
+        /// The image cache
+        /// </summary>
+        private readonly Dictionary<OxyImage, Image> imageCache = new Dictionary<OxyImage, Image>();
+
+        /// <summary>
         /// The GDI+ drawing surface.
         /// </summary>
         private Graphics g;
@@ -66,11 +77,11 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Draws the ellipse.
+        /// Draws an ellipse.
         /// </summary>
-        /// <param name="rect">The rect.</param>
-        /// <param name="fill">The fill.</param>
-        /// <param name="stroke">The stroke.</param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
@@ -93,14 +104,14 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Draws the line.
+        /// Draws the polyline from the specified points.
         /// </summary>
         /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke.</param>
-        /// <param name="thickness">The thickness.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         /// <param name="dashArray">The dash array.</param>
-        /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public override void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -121,39 +132,16 @@ namespace OxyPlot.WindowsForms
             }
         }
 
-        private Pen GetCachedPen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
-        {
-            // TODO: cache
-            var pen = new Pen(stroke.ToColor(), (float)thickness);
-            if (dashArray != null)
-            {
-                pen.DashPattern = this.ToFloatArray(dashArray);
-            }
-
-            switch (lineJoin)
-            {
-                case OxyPenLineJoin.Round:
-                    pen.LineJoin = LineJoin.Round;
-                    break;
-                case OxyPenLineJoin.Bevel:
-                    pen.LineJoin = LineJoin.Bevel;
-                    break;
-                // The default LineJoin is Miter
-            }
-
-            return pen;
-        }
-
         /// <summary>
-        /// Draws the polygon.
+        /// Draws the polygon from the specified points. The polygon can have stroke and/or fill.
         /// </summary>
         /// <param name="points">The points.</param>
-        /// <param name="fill">The fill.</param>
-        /// <param name="stroke">The stroke.</param>
-        /// <param name="thickness">The thickness.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         /// <param name="dashArray">The dash array.</param>
-        /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public override void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
@@ -205,20 +193,12 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// The draw rectangle.
+        /// Draws the rectangle.
         /// </summary>
-        /// <param name="rect">
-        /// The rect.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             if (fill.IsVisible())
@@ -239,38 +219,18 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// The draw text.
+        /// Draws the text.
         /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="rotate">
-        /// The rotate.
-        /// </param>
-        /// <param name="halign">
-        /// The halign.
-        /// </param>
-        /// <param name="valign">
-        /// The valign.
-        /// </param>
-        /// <param name="maxSize">
-        /// The maximum size of the text.
-        /// </param>
+        /// <param name="p">The p.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="rotate">The rotation angle.</param>
+        /// <param name="halign">The horizontal alignment.</param>
+        /// <param name="valign">The vertical alignment.</param>
+        /// <param name="maxSize">The maximum size of the text.</param>
         public override void DrawText(
             ScreenPoint p,
             string text,
@@ -347,13 +307,15 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// The measure text.
+        /// Measures the text.
         /// </summary>
         /// <param name="text">The text.</param>
         /// <param name="fontFamily">The font family.</param>
-        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <returns>The size of the text.</returns>
+        /// <returns>
+        /// The text size.
+        /// </returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (text == null)
@@ -374,6 +336,142 @@ namespace OxyPlot.WindowsForms
             }
         }
 
+        /// <summary>
+        /// Cleans up resources not in use.
+        /// </summary>
+        /// <remarks>
+        /// This method is called at the end of each rendering.
+        /// </remarks>
+        public override void CleanUp()
+        {
+            var imagesToRelease = imageCache.Keys.Where(i => !imagesInUse.Contains(i)).ToList();
+            foreach (var i in imagesToRelease)
+            {
+                var image = this.GetImage(i);
+                image.Dispose();
+                imageCache.Remove(i);
+            }
+
+            imagesInUse.Clear();
+        }
+
+        /// <summary>
+        /// Draws the image.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="srcX">The source executable.</param>
+        /// <param name="srcY">The source asynchronous.</param>
+        /// <param name="srcWidth">Width of the source.</param>
+        /// <param name="srcHeight">Height of the source.</param>
+        /// <param name="x">The executable.</param>
+        /// <param name="y">The asynchronous.</param>
+        /// <param name="w">The forward.</param>
+        /// <param name="h">The authentication.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="interpolate">if set to <c>true</c> [interpolate].</param>
+        public override void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double x, double y, double w, double h, double opacity, bool interpolate)
+        {
+            var image = this.GetImage(source);
+            if (image != null)
+            {
+                ImageAttributes ia = null;
+                if (opacity < 1)
+                {
+                    var cm = new ColorMatrix
+                                 {
+                                     Matrix00 = 1f,
+                                     Matrix11 = 1f,
+                                     Matrix22 = 1f,
+                                     Matrix33 = 1f,
+                                     Matrix44 = (float)opacity
+                                 };
+
+                    ia = new ImageAttributes();
+                    ia.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                }
+
+                g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
+                int sx = (int)Math.Floor(x);
+                int sy = (int)Math.Floor(y);
+                int sw = (int)Math.Ceiling(x + w) - sx;
+                int sh = (int)Math.Ceiling(y + h) - sy;
+                var destRect = new Rectangle(sx, sy, sw, sh);
+                g.DrawImage(image, destRect, (float)srcX - 0.5f, (float)srcY - 0.5f, (float)srcWidth, (float)srcHeight, GraphicsUnit.Pixel, ia);
+            }
+        }
+
+        /// <summary>
+        /// Sets the clip rectangle.
+        /// </summary>
+        /// <param name="rect">The clip rectangle.</param>
+        /// <returns>
+        /// True if the clip rectangle was set.
+        /// </returns>
+        public override bool SetClip(OxyRect rect)
+        {
+            this.g.SetClip(rect.ToRect(false));
+            return true;
+        }
+
+        /// <summary>
+        /// Resets the clip rectangle.
+        /// </summary>
+        public override void ResetClip()
+        {
+            this.g.ResetClip();
+        }
+
+        private Image GetImage(OxyImage source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            if (!this.imagesInUse.Contains(source))
+            {
+                this.imagesInUse.Add(source);
+            }
+
+            Image src;
+            if (this.imageCache.TryGetValue(source, out src))
+            {
+                return src;
+            }
+
+            Image btm;
+            using (var ms = new MemoryStream(source.GetData()))
+            {
+                btm = Image.FromStream(ms);
+            }
+
+            this.imageCache.Add(source, btm);
+            return btm;
+        }
+
+        private Pen GetCachedPen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
+        {
+            // TODO: cache
+            var pen = new Pen(stroke.ToColor(), (float)thickness);
+            if (dashArray != null)
+            {
+                pen.DashPattern = this.ToFloatArray(dashArray);
+            }
+
+            switch (lineJoin)
+            {
+                case OxyPenLineJoin.Round:
+                    pen.LineJoin = LineJoin.Round;
+                    break;
+                case OxyPenLineJoin.Bevel:
+                    pen.LineJoin = LineJoin.Bevel;
+                    break;
+                // The default LineJoin is Miter
+            }
+
+            return pen;
+        }
+        
         /// <summary>
         /// Converts a double array to a float array.
         /// </summary>
@@ -423,100 +521,6 @@ namespace OxyPlot.WindowsForms
             }
 
             return r;
-        }
-
-        public override void CleanUp()
-        {
-            var imagesToRelease = imageCache.Keys.Where(i => !imagesInUse.Contains(i)).ToList();
-            foreach (var i in imagesToRelease)
-            {
-                var image = this.GetImage(i);
-                image.Dispose();
-                imageCache.Remove(i);
-            }
-
-            imagesInUse.Clear();
-        }
-
-        public override OxyImageInfo GetImageInfo(OxyImage source)
-        {
-            var image = this.GetImage(source);
-            return image == null ? null : new OxyImageInfo { Width = image.Width, Height = image.Height, DpiX = image.HorizontalResolution, DpiY = image.VerticalResolution };
-        }
-
-        public override void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double x, double y, double w, double h, double opacity, bool interpolate)
-        {
-            var image = this.GetImage(source);
-            if (image != null)
-            {
-                ImageAttributes ia = null;
-                if (opacity < 1)
-                {
-                    var cm = new ColorMatrix
-                                 {
-                                     Matrix00 = 1f,
-                                     Matrix11 = 1f,
-                                     Matrix22 = 1f,
-                                     Matrix33 = 1f,
-                                     Matrix44 = (float)opacity
-                                 };
-
-                    ia = new ImageAttributes();
-                    ia.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                }
-
-                g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
-                int sx = (int)Math.Floor(x);
-                int sy = (int)Math.Floor(y);
-                int sw = (int)Math.Ceiling(x + w) - sx;
-                int sh = (int)Math.Ceiling(y + h) - sy;
-                var destRect = new Rectangle(sx, sy, sw, sh);
-                g.DrawImage(image, destRect, (float)srcX - 0.5f, (float)srcY - 0.5f, (float)srcWidth, (float)srcHeight, GraphicsUnit.Pixel, ia);
-            }
-        }
-
-        private HashSet<OxyImage> imagesInUse = new HashSet<OxyImage>();
-
-        private Dictionary<OxyImage, Image> imageCache = new Dictionary<OxyImage, Image>();
-
-
-        private Image GetImage(OxyImage source)
-        {
-            if (source == null)
-            {
-                return null;
-            }
-
-            if (!this.imagesInUse.Contains(source))
-            {
-                this.imagesInUse.Add(source);
-            }
-
-            Image src;
-            if (this.imageCache.TryGetValue(source, out src))
-            {
-                return src;
-            }
-
-            Image btm;
-            using (var ms = new MemoryStream(source.GetData()))
-            {
-                btm = Image.FromStream(ms);
-            }
-
-            this.imageCache.Add(source, btm);
-            return btm;
-        }
-
-        public override bool SetClip(OxyRect rect)
-        {
-            this.g.SetClip(rect.ToRect(false));
-            return true;
-        }
-
-        public override void ResetClip()
-        {
-            this.g.ResetClip();
         }
     }
 }
