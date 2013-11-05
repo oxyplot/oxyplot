@@ -78,6 +78,12 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("AxisTitleDistance", typeof(double), typeof(Axis), new PropertyMetadata(4.0));
 
         /// <summary>
+        /// The axis distance property.
+        /// </summary>
+        public static readonly DependencyProperty AxisDistanceProperty =
+            DependencyProperty.Register("AxisDistance", typeof(double), typeof(Axis), new PropertyMetadata(0.0));
+
+        /// <summary>
         /// The axisline color property.
         /// </summary>
         public static readonly DependencyProperty AxislineColorProperty = DependencyProperty.Register(
@@ -480,6 +486,22 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(AngleProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets AxisDistance.
+        /// </summary>
+        public double AxisDistance
+        {
+            get
+            {
+                return (double)this.GetValue(AxisDistanceProperty);
+            }
+
+            set
+            {
+                this.SetValue(AxisDistanceProperty, value);
             }
         }
 
@@ -1499,6 +1521,7 @@ namespace OxyPlot.Wpf
             a.AbsoluteMaximum = this.AbsoluteMaximum;
             a.AbsoluteMinimum = this.AbsoluteMinimum;
             a.Angle = this.Angle;
+            a.AxisDistance = this.AxisDistance;
             a.AxislineColor = this.AxislineColor.ToOxyColor();
             a.AxislineStyle = this.AxislineStyle;
             a.AxislineThickness = this.AxislineThickness;

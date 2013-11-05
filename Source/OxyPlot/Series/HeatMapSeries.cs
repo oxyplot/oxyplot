@@ -213,46 +213,44 @@ namespace OxyPlot.Series
         /// </returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
-            double left = this.X0;
-            double right = this.X1;
-            double bottom = this.Y0;
-            double top = this.Y1;
-
-            if (this.CoordinateDefinition == HeatMapCoordinateDefinition.Center)
+            if (!this.Interpolate)
             {
-                int m = this.Data.GetLength(0);
-                int n = this.Data.GetLength(1);
-
-                double dx = (this.X1 - this.X0) / (m - 1);
-                double dy = (this.Y1 - this.Y0) / (n - 1);
-
-                left -= dx / 2;
-                right += dx / 2;
-                bottom -= dy / 2;
-                top += dy / 2;
+                // it make no sense to interpolate the tracker
+                // when the plot is not interpolated
+                interpolate = false;
             }
 
             var p = this.InverseTransform(point);
-            if (p.X >= left && p.X <= right && p.Y >= bottom && p.Y <= top)
+
+            if (!this.IsPointInRange(p))
             {
-                int m = this.Data.GetLength(0);
-                int n = this.Data.GetLength(1);
-                double i = (p.X - this.X0) / (this.X1 - this.X0) * (m - 1);
-                double j = (p.Y - this.Y0) / (this.Y1 - this.Y0) * (n - 1);
-                
-                var v = GetValue(this.Data, i, j);
-
-                var formatString = this.TrackerFormatString;
-                if (string.IsNullOrEmpty(this.TrackerFormatString))
-                {
-                    formatString = "{2},{4}: {5}";
-                }
-
-                var text = this.Format(formatString, null, this.Title, this.XAxis.Title, p.X, this.YAxis.Title, p.Y, v);
-                return new TrackerHitResult(this, p, point, null, -1, text);
+                return null;
             }
 
-            return null;
+            double dx = (this.X1 - this.X0) / (this.Data.GetLength(0) - 1);
+            double dy = (this.Y1 - this.Y0) / (this.Data.GetLength(1) - 1);
+
+            double i = (p.X - this.X0) / dx;
+            double j = (p.Y - this.Y0) / dy;
+
+            if (!interpolate)
+            {
+                i = Math.Round(i);
+                j = Math.Round(j);
+                p = new DataPoint((i * dx) + this.X0, (j * dy) + this.Y0);
+                point = this.Transform(p);
+            }
+
+            var v = GetValue(this.Data, i, j);
+
+            var formatString = this.TrackerFormatString;
+            if (string.IsNullOrEmpty(this.TrackerFormatString))
+            {
+                formatString = "{2},{4}: {5}";
+            }
+
+            var text = this.Format(formatString, null, this.Title, this.XAxis.Title, p.X, this.YAxis.Title, p.Y, v);
+            return new TrackerHitResult(this, p, point, null, -1, text);
         }
 
         /// <summary>
@@ -331,15 +329,41 @@ namespace OxyPlot.Series
         /// <returns>The interpolated value.</returns>
         private static double GetValue(double[,] data, double i, double j)
         {
-            int i0 = (int)i;
+            var i0 = (int)i;
             int i1 = i0 + 1 < data.GetLength(0) ? i0 + 1 : i0;
             double ix = i - i0;
-            int j0 = (int)j;
+            var j0 = (int)j;
             int j1 = j0 + 1 < data.GetLength(1) ? j0 + 1 : j0;
             double jx = j - j0;
             var v0 = (data[i0, j0] * (1 - ix)) + (data[i1, j0] * ix);
             var v1 = (data[i0, j1] * (1 - ix)) + (data[i1, j1] * ix);
             return (v0 * (1 - jx)) + (v1 * jx);
+        }
+
+        /// <summary>
+        /// Tests if a <see cref="DataPoint"/> is inside the heat map
+        /// </summary>
+        /// <param name="p">The <see cref="DataPoint"/> to test.</param>
+        /// <returns><c>True</c> if the point is inside the heat map.</returns>
+        private bool IsPointInRange(DataPoint p)
+        {
+            double left = this.X0;
+            double right = this.X1;
+            double bottom = this.Y0;
+            double top = this.Y1;
+
+            if (this.CoordinateDefinition == HeatMapCoordinateDefinition.Center)
+            {
+                double dx = (this.X1 - this.X0) / (this.Data.GetLength(0) - 1);
+                double dy = (this.Y1 - this.Y0) / (this.Data.GetLength(1) - 1);
+
+                left -= dx / 2;
+                right += dx / 2;
+                bottom -= dy / 2;
+                top += dy / 2;
+            }
+
+            return p.X >= left && p.X <= right && p.Y >= bottom && p.Y <= top;
         }
 
         /// <summary>

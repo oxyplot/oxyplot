@@ -4,25 +4,30 @@
 //   
 //   Copyright (c) 2012 Oystein Bjorke
 //   
-//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-//   associated documentation files (the "Software"), to deal in the Software without restriction,
-//   including without limitation the rights to use, copy, modify, merge, publish, distribute,
-//   sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
-//   furnished to do so, subject to the following conditions:
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
 //   
-//   The above copyright notice and this permission notice shall be included in all copies or substantial
-//   portions of the Software.
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
 //   
-//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
-//   NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-//   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
 //   Rendering helper class for horizontal and vertical axes (both linear and logarithmic)
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
@@ -32,7 +37,7 @@ namespace OxyPlot
     using OxyPlot.Axes;
 
     /// <summary>
-    /// Preovides functionality to render horizontal and vertical axes.
+    /// Provides functionality to render horizontal and vertical axes.
     /// </summary>
     public class HorizontalAndVerticalAxisRenderer : AxisRendererBase
     {
@@ -59,7 +64,7 @@ namespace OxyPlot
         {
             base.Render(axis, pass);
 
-            double totalShift = axis.PositionTierMinShift;
+            double totalShift = axis.AxisDistance + axis.PositionTierMinShift;
             double tierSize = axis.PositionTierSize - this.Plot.AxisTierDistance;
 
             // store properties locally for performance
@@ -109,6 +114,47 @@ namespace OxyPlot
             if (pass == 1)
             {
                 this.RenderMajorItems(axis, axisPosition, titlePosition);
+            }
+        }
+
+        /// <summary>
+        /// Interpolates linearly between two values.
+        /// </summary>
+        /// <param name="x0">
+        /// The x0.
+        /// </param>
+        /// <param name="x1">
+        /// The x1.
+        /// </param>
+        /// <param name="f">
+        /// The interpolation factor.
+        /// </param>
+        /// <returns>
+        /// The interpolated value.
+        /// </returns>
+        protected static double Lerp(double x0, double x1, double f)
+        {
+            // http://en.wikipedia.org/wiki/Linear_interpolation
+            return (x0 * (1 - f)) + (x1 * f);
+        }
+
+        /// <summary>
+        /// Snaps v to value if it is within the the specified distance.
+        /// </summary>
+        /// <param name="target">
+        /// The target value.
+        /// </param>
+        /// <param name="v">
+        /// The value to snap.
+        /// </param>
+        /// <param name="eps">
+        /// The distance tolerance.
+        /// </param>
+        protected static void SnapTo(double target, ref double v, double eps = 0.5)
+        {
+            if (v > target - eps && v < target + eps)
+            {
+                v = target;
             }
         }
 
@@ -225,47 +271,6 @@ namespace OxyPlot
             {
                 ha = (HorizontalAlignment)(-(int)defaultVerticalAlignment);
                 va = (VerticalAlignment)((int)defaultHorizontalAlignment);
-            }
-        }
-
-        /// <summary>
-        /// Linear interpolation
-        /// http://en.wikipedia.org/wiki/Linear_interpolation
-        /// </summary>
-        /// <param name="x0">
-        /// The x0.
-        /// </param>
-        /// <param name="x1">
-        /// The x1.
-        /// </param>
-        /// <param name="f">
-        /// The interpolation factor.
-        /// </param>
-        /// <returns>
-        /// The interpolated value.
-        /// </returns>
-        protected static double Lerp(double x0, double x1, double f)
-        {
-            return (x0 * (1 - f)) + (x1 * f);
-        }
-
-        /// <summary>
-        /// Snaps v to value if it is within the the specified distance.
-        /// </summary>
-        /// <param name="target">
-        /// The target value.
-        /// </param>
-        /// <param name="v">
-        /// The value to snap.
-        /// </param>
-        /// <param name="eps">
-        /// The distance tolerance.
-        /// </param>
-        protected static void SnapTo(double target, ref double v, double eps = 0.5)
-        {
-            if (v > target - eps && v < target + eps)
-            {
-                v = target;
             }
         }
 
