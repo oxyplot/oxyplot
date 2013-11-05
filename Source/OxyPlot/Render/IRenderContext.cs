@@ -52,10 +52,10 @@ namespace OxyPlot
         /// The rectangle.
         /// </param>
         /// <param name="fill">
-        /// The fill color.
+        /// The fill color. If set to <c>OxyColors.Undefined</c>, the ellipse will not be filled.
         /// </param>
         /// <param name="stroke">
-        /// The stroke color.
+        /// The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipse will not be stroked.
         /// </param>
         /// <param name="thickness">
         /// The thickness.
@@ -63,17 +63,17 @@ namespace OxyPlot
         void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
         /// <summary>
-        /// Draws the collection of ellipses, where all have the same stroke and fill.
+        /// Draws a collection of ellipses, where all have the same stroke and fill.
         /// This performs better than calling DrawEllipse multiple times.
         /// </summary>
         /// <param name="rectangles">
         /// The rectangles.
         /// </param>
         /// <param name="fill">
-        /// The fill color.
+        /// The fill color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be filled.
         /// </param>
         /// <param name="stroke">
-        /// The stroke color.
+        /// The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be stroked.
         /// </param>
         /// <param name="thickness">
         /// The stroke thickness.
@@ -81,7 +81,7 @@ namespace OxyPlot
         void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
         /// <summary>
-        /// Draws the polyline from the specified points.
+        /// Draws a polyline.
         /// </summary>
         /// <param name="points">
         /// The points.
@@ -110,7 +110,7 @@ namespace OxyPlot
             bool aliased = false);
 
         /// <summary>
-        /// Draws the multiple line segments defined by points (0,1) (2,3) (4,5) etc.
+        /// Draws line segments defined by points (0,1) (2,3) (4,5) etc.
         /// This should have better performance than calling DrawLine for each segment.
         /// </summary>
         /// <param name="points">
@@ -140,16 +140,16 @@ namespace OxyPlot
             bool aliased = false);
 
         /// <summary>
-        /// Draws the polygon from the specified points. The polygon can have stroke and/or fill.
+        /// Draws a polygon.
         /// </summary>
         /// <param name="points">
         /// The points.
         /// </param>
         /// <param name="fill">
-        /// The fill color.
+        /// The fill color. If set to <c>OxyColors.Undefined</c>, the polygon will not be filled.
         /// </param>
         /// <param name="stroke">
-        /// The stroke color.
+        /// The stroke color. If set to <c>OxyColors.Undefined</c>, the polygon will not be stroked.
         /// </param>
         /// <param name="thickness">
         /// The stroke thickness.
@@ -161,7 +161,7 @@ namespace OxyPlot
         /// The line join type.
         /// </param>
         /// <param name="aliased">
-        /// if set to <c>true</c> the shape will be aliased.
+        /// If set to <c>true</c> the polygon will be aliased.
         /// </param>
         void DrawPolygon(
             IList<ScreenPoint> points,
@@ -180,10 +180,10 @@ namespace OxyPlot
         /// The polygons.
         /// </param>
         /// <param name="fill">
-        /// The fill color.
+        /// The fill color. If set to <c>OxyColors.Undefined</c>, the polygons will not be filled.
         /// </param>
         /// <param name="stroke">
-        /// The stroke color.
+        /// The stroke color. If set to <c>OxyColors.Undefined</c>, the polygons will not be stroked.
         /// </param>
         /// <param name="thickness">
         /// The stroke thickness.
@@ -207,16 +207,16 @@ namespace OxyPlot
             bool aliased = false);
 
         /// <summary>
-        /// Draws the rectangle.
+        /// Draws a rectangle.
         /// </summary>
         /// <param name="rect">
         /// The rectangle.
         /// </param>
         /// <param name="fill">
-        /// The fill color.
+        /// The fill color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be filled.
         /// </param>
         /// <param name="stroke">
-        /// The stroke color.
+        /// The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be stroked.
         /// </param>
         /// <param name="thickness">
         /// The stroke thickness.
@@ -231,10 +231,10 @@ namespace OxyPlot
         /// The rectangles.
         /// </param>
         /// <param name="fill">
-        /// The fill color.
+        /// The fill color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be filled.
         /// </param>
         /// <param name="stroke">
-        /// The stroke color.
+        /// The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be stroked.
         /// </param>
         /// <param name="thickness">
         /// The stroke thickness.
@@ -242,7 +242,7 @@ namespace OxyPlot
         void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
         /// <summary>
-        /// Draws the text.
+        /// Draws text.
         /// </summary>
         /// <param name="p">
         /// The position.
@@ -251,7 +251,7 @@ namespace OxyPlot
         /// The text.
         /// </param>
         /// <param name="fill">
-        /// The fill color.
+        /// The text color.
         /// </param>
         /// <param name="fontFamily">
         /// The font family.
@@ -287,7 +287,7 @@ namespace OxyPlot
             OxySize? maxSize = null);
 
         /// <summary>
-        /// Measures the text.
+        /// Measures the size of the specified text.
         /// </summary>
         /// <param name="text">
         /// The text.
@@ -302,7 +302,7 @@ namespace OxyPlot
         /// The font weight.
         /// </param>
         /// <returns>
-        /// The text size.
+        /// The size of the text.
         /// </returns>
         OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500);
 
@@ -326,7 +326,7 @@ namespace OxyPlot
         void CleanUp();
 
         /// <summary>
-        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
+        /// Draws a portion of the specified <see cref="OxyImage"/>.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
