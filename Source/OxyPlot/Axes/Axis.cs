@@ -136,6 +136,7 @@ namespace OxyPlot.Axes
 
             this.IntervalLength = 60;
 
+            this.AxisDistance = 0;
             this.AxisTitleDistance = 4;
             this.AxisTickToLabelDistance = 4;
         }
@@ -270,6 +271,11 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <value> The axis title distance. </value>
         public double AxisTitleDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance between the plot area and the axis
+        /// </summary>
+        public double AxisDistance { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the axis line.
@@ -1010,6 +1016,7 @@ namespace OxyPlot.Axes
                         break;
                 }
 
+                height += this.AxisDistance;
                 height += this.AxisTickToLabelDistance;
                 height += maximumTextSize.Height;
                 if (labelTextSize.Height > 0)
@@ -1030,6 +1037,7 @@ namespace OxyPlot.Axes
                         break;
                 }
 
+                width += this.AxisDistance;
                 width += this.AxisTickToLabelDistance;
                 width += maximumTextSize.Width;
                 if (labelTextSize.Height > 0)
