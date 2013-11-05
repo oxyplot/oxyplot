@@ -393,7 +393,7 @@ namespace OxyPlot.GtkSharp
         /// <param name="data">The data.</param>
         public void ShowTracker(TrackerHitResult data)
         {
-            // not implemented for WindowsForms
+            // not implemented for GtkSharp
         }
 
         /// <summary>
@@ -496,9 +496,9 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove" /> event.
+        /// Called on mouse move event.
         /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
+        /// <param name="e">An instance that contains the event data.</param>
         protected override bool OnMotionNotifyEvent(EventMotion e)
         {
 
@@ -520,10 +520,10 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
+        /// Called on button release event.
         /// </summary>
         /// <param name="e">
-        /// A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.
+        /// An instance that contains the event data.
         /// </param>
         protected override bool OnButtonReleaseEvent(EventButton e)
         {
@@ -549,10 +549,10 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseWheel"/> event.
+        /// Called on MouseWheel  event.
         /// </summary>
         /// <param name="e">
-        /// A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.
+        /// An instance that contains the event data.
         /// </param>
         /* TODO */
         /*
@@ -565,69 +565,62 @@ namespace OxyPlot.GtkSharp
          */
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.Paint"/> event.
+        /// Called on an expose (paint) event.
         /// </summary>
         /// <param name="e">
-        /// A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.
+        /// An instance that contains the event data.
         /// </param>
         protected override bool OnExposeEvent(EventExpose e)
         {
+			using (Cairo.Context g = Gdk.CairoHelper.Create(e.Window)) {
+				try {
+					lock (this.invalidateLock) {
+						if (this.isModelInvalidated) {
+							if (this.model != null) {
+								this.model.Update (this.updateDataFlag);
+								this.updateDataFlag = false;
+							}
 
-            Cairo.Context g = Gdk.CairoHelper.Create(e.Window);
-            try
-            {
-                lock (this.invalidateLock)
-                {
-                    if (this.isModelInvalidated)
-                    {
-                        if (this.model != null)
-                        {
-                            this.model.Update(this.updateDataFlag);
-                            this.updateDataFlag = false;
-                        }
+							this.isModelInvalidated = false;
+						}
+					}
 
-                        this.isModelInvalidated = false;
-                    }
-                }
+					lock (this.renderingLock) {
+						this.renderContext.SetGraphicsTarget(g);
+						if (this.model != null) {
+							int width;
+							int height;
+							this.GetSizeRequest (out width, out height);
+							this.model.Render(this.renderContext, width, height);
+						}
 
-                lock (this.renderingLock)
-                {
-                    this.renderContext.SetGraphicsTarget(g);
-                    if (this.model != null)
-                    {
-                        int width; int height;
-                        this.GetSizeRequest(out width, out height);
-                        this.model.Render(this.renderContext, width, height);
-                    }
-
-                    if (this.zoomRectangle.HasValue)
-                    {
-                        this.renderContext.DrawRectangle(zoomRectangle.Value, OxyColor.FromArgb(0x40, 0xFF, 0xFF, 0x00), OxyColors.Transparent, 1.0);
-                    }
-                }
-            }
-            catch (Exception paintException)
-            {
-                var trace = new StackTrace(paintException);
-                Debug.WriteLine(paintException);
-                Debug.WriteLine(trace);
-                //using (var font = new Font("Arial", 10))
-                {
-                    //int width; int height;
-                    //this.GetSizeRequest(out width, out height);
-                    Debug.Assert(false, "OxyPlot paint exception: " + paintException.Message);
-                    //g.ResetTransform();
-                    //g.DrawString(, font, Brushes.Red, width / 2, height / 2, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
-                }
-            }
+						if (this.zoomRectangle.HasValue) {
+							// this.renderContext.DrawRectangle(zoomRectangle.Value, OxyColor.FromArgb(0x40, 0xFF, 0xFF, 0x00), OxyColors.Transparent, 1.0);
+						}
+					}
+				} catch (Exception paintException) {
+					var trace = new StackTrace (paintException);
+					Debug.WriteLine (paintException);
+					Debug.WriteLine (trace);
+					//using (var font = new Font("Arial", 10))
+					{
+						//int width; int height;
+						//this.GetSizeRequest(out width, out height);
+						Debug.Assert (false, "OxyPlot paint exception: " + paintException.Message);
+						//g.ResetTransform();
+						//g.DrawString(, font, Brushes.Red, width / 2, height / 2, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+					}
+            
+				}
+			}
             return true;
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.PreviewKeyDown"/> event.
+        /// Called on KeyPress event.
         /// </summary>
         /// <param name="e">
-        /// A <see cref="T:System.Windows.Forms.PreviewKeyDownEventArgs"/> that contains the event data.
+        /// An instance that contains the event data.
         /// </param>
         protected override bool OnKeyPressEvent(EventKey e)
         {
@@ -720,23 +713,10 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.Resize"/> event.
-        /// </summary>
-        /// <param name="e">
-        /// An <see cref="T:System.EventArgs"/> that contains the event data.
-        /// </param>
-        // TODO
-        //protected override void OnResize(EventArgs e)
-        //{
-        //    base.OnResize(e);
-        //    this.InvalidatePlot(false);
-        //}
-
-        /// <summary>
         /// Converts the changed button.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.
+        /// The instance containing the event data.
         /// </param>
         /// <returns>
         /// The mouse button.
@@ -765,7 +745,7 @@ namespace OxyPlot.GtkSharp
         /// Creates the mouse event arguments.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.
+        /// The instance containing the event data.
         /// </param>
         /// <returns>
         /// Mouse event arguments.
