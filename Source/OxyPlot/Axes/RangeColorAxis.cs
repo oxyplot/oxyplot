@@ -154,6 +154,7 @@ namespace OxyPlot.Axes
 
             if (pass == 0)
             {
+                double distance = this.AxisDistance;
                 double left = model.PlotArea.Left;
                 double top = model.PlotArea.Top;
                 double width = this.MajorTickSize - 2;
@@ -164,20 +165,20 @@ namespace OxyPlot.Axes
                 switch (this.Position)
                 {
                     case AxisPosition.Left:
-                        left = model.PlotArea.Left - TierShift - width;
+                        left = model.PlotArea.Left - TierShift - width - distance;
                         top = model.PlotArea.Top;
                         break;
                     case AxisPosition.Right:
-                        left = model.PlotArea.Right + TierShift;
+                        left = model.PlotArea.Right + TierShift + distance;
                         top = model.PlotArea.Top;
                         break;
                     case AxisPosition.Top:
                         left = model.PlotArea.Left;
-                        top = model.PlotArea.Top - TierShift - height;
+                        top = model.PlotArea.Top - TierShift - height - distance;
                         break;
                     case AxisPosition.Bottom:
                         left = model.PlotArea.Left;
-                        top = model.PlotArea.Bottom + TierShift;
+                        top = model.PlotArea.Bottom + TierShift + distance;
                         break;
                 }
 
