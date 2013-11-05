@@ -241,13 +241,23 @@ namespace OxyPlot.Series
 
             var p = this.InverseTransform(point);
             if (p.X >= left && p.X <= right && p.Y >= bottom && p.Y <= top)
-            {
+            {               
                 int m = this.Data.GetLength(0);
                 int n = this.Data.GetLength(1);
                 double i = (p.X - this.X0) / (this.X1 - this.X0) * (m - 1);
                 double j = (p.Y - this.Y0) / (this.Y1 - this.Y0) * (n - 1);
 
-                var v = interpolate ? GetValue(this.Data, i, j) : this.Data[(int)Math.Round(i), (int)Math.Round(j)];
+                if (!interpolate)
+                {
+                    i = (int)Math.Round(i);
+                    j = (int)Math.Round(j);
+                    double x = i * (this.X1 - this.X0) / (m - 1) + this.X0;
+                    double y = j * (this.Y1 - this.Y0) / (n - 1) + this.Y0;
+                    p = new DataPoint(x, y);
+                    point = this.Transform(p);
+                }
+
+                var v = GetValue(this.Data, i, j);
 
                 var formatString = this.TrackerFormatString;
                 if (string.IsNullOrEmpty(this.TrackerFormatString))
