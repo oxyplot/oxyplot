@@ -27,7 +27,6 @@
 
 namespace ExampleBrowser
 {
-    using System.Drawing;
     using System.Linq;
     using Gtk;
     using Gdk;
@@ -134,6 +133,35 @@ namespace ExampleBrowser
             vm.SelectedExample = vm.Examples.FirstOrDefault();
             InitPlot();
 
+/*			Gtk.TreeViewColumn artistColumn = new Gtk.TreeViewColumn ();
+			artistColumn.Title = "Artist";
+
+			Gtk.CellRendererText artistNameCell = new Gtk.CellRendererText ();
+
+			artistColumn.PackStart (artistNameCell, true);
+
+			Gtk.TreeViewColumn songColumn = new Gtk.TreeViewColumn ();
+			songColumn.Title = "Song Title";
+
+			Gtk.CellRendererText songTitleCell = new Gtk.CellRendererText ();
+			songColumn.PackStart (songTitleCell, true);
+
+			treeView1.AppendColumn (artistColumn);
+			treeView1.AppendColumn (songColumn);
+
+			artistColumn.AddAttribute (artistNameCell, "text", 0);
+			songColumn.AddAttribute (songTitleCell, "text", 1);
+
+			Gtk.TreeStore musicListStore = new Gtk.TreeStore (typeof (string), typeof (string));
+
+			Gtk.TreeIter iter = musicListStore.AppendValues ("Dance");
+			musicListStore.AppendValues (iter, "Fannypack", "Nu Nu (Yeah Yeah) (double j and haze radio edit)");
+
+			iter = musicListStore.AppendValues ("Hip-hop");
+			musicListStore.AppendValues (iter, "Nelly", "Country Grammer");
+
+			treeView1.Model = musicListStore;
+*/
             var treeModel = new TreeStore(typeof(string), typeof(string));
             TreeIter iter = new TreeIter();
             string last = null;
@@ -176,17 +204,16 @@ namespace ExampleBrowser
                 }
             });
 
-            this.hbox1.PackStart(treeView1, false, false, 6);
-            this.hbox1.PackStart(plot1, true, true, 6);
-            treeView1.Show();
-            hbox1.Show();
+			this.hbox1.PackStart(treeView1, false, false, 6);
+            this.hbox1.PackStart(plot1, false, false, 6);
+
+			this.Add(this.hbox1);
             // 
             // MainWindow
             // 
             //this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             //this.AutoScaleMode = Gtk.AutoScaleMode.Font;
             //this.ClientSize = new System.Drawing.Size(943, 554);
-            this.Add(this.hbox1);
             this.Name = "MainWindow";
             this.Title = "OxyPlot.GtkSharp Example Browser";
             this.DeleteEvent += (delegate(object sender, DeleteEventArgs a)
