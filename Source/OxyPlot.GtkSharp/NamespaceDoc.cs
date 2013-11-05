@@ -28,7 +28,7 @@
 namespace OxyPlot.GtkSharp
 {
     /// <summary>
-    /// The OxyPlot.GtkSharp namespace contains controls for GTk# and a png exporter.
+    /// The OxyPlot.GtkSharp namespace contains controls for GTK# and a png exporter.
     /// </summary>
     [System.Runtime.CompilerServices.CompilerGenerated]
     internal class NamespaceDoc

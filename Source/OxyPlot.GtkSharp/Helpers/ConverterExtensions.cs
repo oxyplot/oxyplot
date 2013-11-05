@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ConverterExtensions.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -38,6 +38,11 @@ namespace OxyPlot.GtkSharp
     /// </summary>
     public static class ConverterExtensions
     {
+        /// <summary>
+        /// Converts an <see cref="OxyPenLineJoin"/> to a <see cref="LineJoin"/>.
+        /// </summary>
+        /// <param name="lineJoin">The <see cref="OxyPenLineJoin"/> to convert.</param>
+        /// <returns>The converted value.</returns>
         public static LineJoin ToLineJoin(this OxyPenLineJoin lineJoin)
         {
             switch (lineJoin)
@@ -50,72 +55,44 @@ namespace OxyPlot.GtkSharp
                     return LineJoin.Miter;
             }
         }
-        public static void SetSourceColor(this Cairo.Context g, OxyColor c)
+
+        /// <summary>
+        /// Sets the source color for the Cairo context.
+        /// </summary>
+        /// <param name="g">The Cairo context.</param>
+        /// <param name="c">The color.</param>
+        public static void SetSourceColor(this Context g, OxyColor c)
         {
             g.SetSourceRGBA(c.R / 256.0, c.G / 256.0, c.B / 256.0, c.A / 256.0);
         }
-                
-        /// <summary>
-        /// Converts a HorizontalAlignment to a HorizontalTextAlign.
-        /// </summary>
-        /// <param name="alignment">
-        /// The alignment.
-        /// </param>
-        /// <returns>
-        /// A HorizontalTextAlign.
-        /// </returns>
-        public static OxyPlot.HorizontalAlignment ToHorizontalTextAlign(this HorizontalAlignment alignment)
-        {
-            switch (alignment)
-            {
-                case HorizontalAlignment.Center:
-                    return OxyPlot.HorizontalAlignment.Center;
-                case HorizontalAlignment.Right:
-                    return OxyPlot.HorizontalAlignment.Right;
-                default:
-                    return OxyPlot.HorizontalAlignment.Left;
-            }
-        }
 
         /// <summary>
-        /// Converts a Thickness to an OxyThickness.
+        /// Converts a <see cref="ScreenPoint"/> to a Cairo <see cref="PointD"/>.
         /// </summary>
-        /// <returns>
-        /// An OxyPlot thickness.
-        /// </returns>
-        /// <summary>
-        /// Converts a ScreenPoint to a Point.
-        /// </summary>
-        /// <param name="pt">
-        /// The screen point.
-        /// </param>
-        /// <param name="aliased">
-        /// use pixel alignment conversion if set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// A point.
-        /// </returns>
-        public static Cairo.PointD ToPointD(this ScreenPoint pt, bool aliased)
+        /// <param name="pt">The point to convert.</param>
+        /// <param name="aliased">Alias if set to <c>true</c>.</param>
+        /// <returns>The converted point.</returns>
+        public static PointD ToPointD(this ScreenPoint pt, bool aliased)
         {
             if (aliased)
             {
-                return new Cairo.PointD(pt.X, pt.Y);
+                return new PointD(pt.X, pt.Y);
             }
 
-            return new Cairo.PointD((int)Math.Round(pt.X), (int)Math.Round(pt.Y));
+            return new PointD((int)Math.Round(pt.X), (int)Math.Round(pt.Y));
         }
 
         /// <summary>
-        /// Converts an OxyRect to a Rect.
+        /// Converts an <see cref="OxyRect"/> to a <see cref="Rectangle"/>.
         /// </summary>
         /// <param name="r">
         /// The rectangle.
         /// </param>
         /// <param name="aliased">
-        /// use pixel alignment if set to <c>true</c>.
+        /// Use pixel alignment if set to <c>true</c>.
         /// </param>
         /// <returns>
-        /// A rect.
+        /// The converted rectangle.
         /// </returns>
         public static Rectangle ToRect(this OxyRect r, bool aliased)
         {
