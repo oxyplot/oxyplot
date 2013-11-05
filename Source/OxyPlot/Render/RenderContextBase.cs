@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RenderContextBase.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   The abstract render context base class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System.Collections.Generic;
@@ -94,7 +95,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Draws the polyline from the specified points.
+        /// Draws a polyline.
         /// </summary>
         /// <param name="points">
         /// The points.
@@ -123,7 +124,7 @@ namespace OxyPlot
             bool aliased);
 
         /// <summary>
-        /// Draws the multiple line segments defined by points (0,1) (2,3) (4,5) etc.
+        /// Draws multiple line segments defined by points (0,1) (2,3) (4,5) etc.
         /// This should have better performance than calling DrawLine for each segment.
         /// </summary>
         /// <param name="points">
@@ -142,7 +143,7 @@ namespace OxyPlot
         /// The line join type.
         /// </param>
         /// <param name="aliased">
-        /// if set to <c>true</c> the shape will be aliased.
+        /// If set to <c>true</c> the shape will be aliased.
         /// </param>
         public virtual void DrawLineSegments(
             IList<ScreenPoint> points,
@@ -159,7 +160,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Draws the polygon from the specified points. The polygon can have stroke and/or fill.
+        /// Draws a polygon. The polygon can have stroke and/or fill.
         /// </summary>
         /// <param name="points">
         /// The points.
@@ -180,7 +181,7 @@ namespace OxyPlot
         /// The line join type.
         /// </param>
         /// <param name="aliased">
-        /// if set to <c>true</c> the shape will be aliased.
+        /// If set to <c>true</c> the shape will be aliased.
         /// </param>
         public abstract void DrawPolygon(
             IList<ScreenPoint> points,
@@ -232,7 +233,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Draws the rectangle.
+        /// Draws a rectangle.
         /// </summary>
         /// <param name="rect">
         /// The rectangle.
@@ -276,7 +277,7 @@ namespace OxyPlot
         /// Draws the text.
         /// </summary>
         /// <param name="p">
-        /// The p.
+        /// The position of the text.
         /// </param>
         /// <param name="text">
         /// The text.
@@ -373,7 +374,7 @@ namespace OxyPlot
         /// <param name="destWidth">The width of the drawn image.</param>
         /// <param name="destHeight">The height of the drawn image.</param>
         /// <param name="opacity">The opacity.</param>
-        /// <param name="interpolate">interpolate if set to <c>true</c>.</param>
+        /// <param name="interpolate">Interpolate if set to <c>true</c>.</param>
         public virtual void DrawImage(
             OxyImage source,
             double srcX,
