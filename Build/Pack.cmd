@@ -73,3 +73,11 @@ copy ..\Output\NET40\OxyPlot.WindowsForms.??? ..\Packages\OxyPlot.WindowsForms\l
 copy ..\Output\NET45\OxyPlot.WindowsForms.??? ..\Packages\OxyPlot.WindowsForms\lib\NET45
 copy ..\license.txt ..\Packages\OxyPlot.WindowsForms
 ..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.WindowsForms\OxyPlot.WindowsForms.nuspec -OutputDirectory ..\Packages >> pack.log
+
+REM === GTK# ===
+mkdir ..\Packages\OxyPlot.GtkSharp\lib
+mkdir ..\Packages\OxyPlot.GtkSharp\lib\NET40
+copy ..\Output\NET40\OxyPlot.??? ..\Packages\OxyPlot.GtkSharp\lib\NET40
+copy ..\Output\NET40\OxyPlot.GtkSharp.??? ..\Packages\OxyPlot.GtkSharp\lib\NET40
+copy ..\license.txt ..\Packages\OxyPlot.GtkSharp
+..\Tools\NuGet\NuGet.exe pack ..\Packages\OxyPlot.GtkSharp\OxyPlot.GtkSharp.nuspec -OutputDirectory ..\Packages >> pack.log
