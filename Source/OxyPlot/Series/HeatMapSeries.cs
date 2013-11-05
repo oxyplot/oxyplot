@@ -218,6 +218,13 @@ namespace OxyPlot.Series
             double bottom = this.Y0;
             double top = this.Y1;
 
+            if (!this.Interpolate)
+            {
+                // it make no sense to interpolate the tracker
+                // when the plot is not interpolated
+                interpolate = false;
+            }
+
             if (this.CoordinateDefinition == HeatMapCoordinateDefinition.Center)
             {
                 int m = this.Data.GetLength(0);
@@ -239,8 +246,8 @@ namespace OxyPlot.Series
                 int n = this.Data.GetLength(1);
                 double i = (p.X - this.X0) / (this.X1 - this.X0) * (m - 1);
                 double j = (p.Y - this.Y0) / (this.Y1 - this.Y0) * (n - 1);
-                
-                var v = GetValue(this.Data, i, j);
+
+                var v = interpolate ? GetValue(this.Data, i, j) : this.Data[(int)Math.Round(i), (int)Math.Round(j)];
 
                 var formatString = this.TrackerFormatString;
                 if (string.IsNullOrEmpty(this.TrackerFormatString))
