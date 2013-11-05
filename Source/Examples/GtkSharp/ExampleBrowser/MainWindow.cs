@@ -45,7 +45,6 @@ namespace ExampleBrowser
             OxyPlot.PlotModel plotModel1 = new OxyPlot.PlotModel();
             this.hbox1 = new Gtk.HBox(false, 6);
             this.treeView1 = new Gtk.TreeView();
-            this.label1 = new Gtk.Label("Hello");
             this.plot1 = new OxyPlot.GtkSharp.Plot();
             this.hbox1.SetSizeRequest(943, 554);
             this.hbox1.Name = "hbox1";
@@ -59,7 +58,6 @@ namespace ExampleBrowser
             this.treeView1.Name = "treeView1";
             this.treeView1.SetSizeRequest(314, 554);
             this.treeView1.Visible = true;
-            label1.LabelProp = "hello";
 
             //this.treeView1.TabIndex = 1;
             // 
@@ -178,12 +176,9 @@ namespace ExampleBrowser
                 }
             });
 
-            this.hbox1.Add(label1);
-            this.hbox1.PackStart(label1, false, false, 6);
             this.hbox1.PackStart(treeView1, false, false, 6);
             this.hbox1.PackStart(plot1, true, true, 6);
             treeView1.Show();
-            label1.Show();
             hbox1.Show();
             // 
             // MainWindow
@@ -203,7 +198,6 @@ namespace ExampleBrowser
 
         private Gtk.HBox hbox1;
         private Gtk.TreeView treeView1;
-        private Gtk.Label label1;
         private OxyPlot.GtkSharp.Plot plot1;
         public MainWindow() : base("Example Browser")
         {
