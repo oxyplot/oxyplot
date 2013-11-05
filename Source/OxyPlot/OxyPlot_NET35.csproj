@@ -102,7 +102,7 @@
     <Compile Include="Imaging\Png\PngDecoder.cs" />
     <Compile Include="Imaging\Png\PngEncoder.cs" />
     <Compile Include="Imaging\Png\PngEncoderOptions.cs" />
-    <Compile Include="Imaging\Jpeg\JpegDecoder.cs" />
+    <None Include="Imaging\Jpeg\JpegDecoder.cs" />
     <Compile Include="Svg\SvgRenderContext.cs" />
     <Compile Include="Svg\SvgWriter.cs" />
     <Compile Include="Svg\SvgExporter.cs" />
