@@ -32,11 +32,78 @@ namespace OxyPlot
     using System.IO;
     using System.Linq;
 
-    public enum ColorType { GrayScale = 0, TrueColor = 2, IndexedColor = 3, GrayScaleWithAlpha = 4, TrueColorWithAlpha = 6 }
+    /// <summary>
+    /// Defines the color type
+    /// </summary>
+    public enum ColorType
+    {
+        /// <summary>
+        /// Gray scale
+        /// </summary>
+        GrayScale = 0,
 
-    public enum CompressionMethod { Deflate = 0 }
+        /// <summary>
+        /// True color
+        /// </summary>
+        TrueColor = 2,
 
-    public enum FilterMethod { None = 0, Sub = 1, Up = 2, Avg = 3, Paeth = 4 }
+        /// <summary>
+        /// Indexed color
+        /// </summary>
+        IndexedColor = 3,
+        
+        /// <summary>
+        /// Gray scale with alpha
+        /// </summary>
+        GrayScaleWithAlpha = 4,
+        
+        /// <summary>
+        /// True color with alpha
+        /// </summary>
+        TrueColorWithAlpha = 6
+    }
+
+    /// <summary>
+    /// Defines the compression method.
+    /// </summary>
+    public enum CompressionMethod
+    {
+        /// <summary>
+        /// DEFLATE compression
+        /// </summary>
+        Deflate = 0
+    }
+
+    /// <summary>
+    /// Defines the filter method.
+    /// </summary>
+    public enum FilterMethod
+    {
+        /// <summary>
+        /// No filter.
+        /// </summary>
+        None = 0,
+
+        /// <summary>
+        /// Sub filter
+        /// </summary>
+        Sub = 1,
+        
+        /// <summary>
+        /// Up filter
+        /// </summary>
+        Up = 2,
+        
+        /// <summary>
+        /// Average filter
+        /// </summary>
+        Avg = 3,
+
+        /// <summary>
+        /// Paeth filter
+        /// </summary>
+        Paeth = 4
+    }
 
     /// <summary>
     /// Defines interlace methods (chapter 8.2)
@@ -143,6 +210,14 @@ namespace OxyPlot
             return w.ToArray();
         }
 
+        /// <summary>
+        /// Encodes the specified 8-bit indexed pixels.
+        /// </summary>
+        /// <param name="pixels">The pixels.</param>
+        /// <param name="palette">The palette.</param>
+        /// <returns>
+        /// The image data.
+        /// </returns>
         public byte[] Encode(byte[,] pixels, OxyColor[] palette)
         {
             throw new NotImplementedException();
