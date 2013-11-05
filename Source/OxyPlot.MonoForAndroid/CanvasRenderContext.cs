@@ -308,19 +308,6 @@ namespace OxyPlot.MonoForAndroid
         }
 
         /// <summary>
-        /// Gets the size of the specified image.
-        /// </summary>
-        /// <param name="source">The image source.</param>
-        /// <returns>
-        /// The image info.
-        /// </returns>
-        public OxyImageInfo GetImageInfo(OxyImage source)
-        {
-            // TODO
-            return null;
-        }
-
-        /// <summary>
         /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>

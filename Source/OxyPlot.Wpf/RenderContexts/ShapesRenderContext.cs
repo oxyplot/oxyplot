@@ -726,24 +726,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets the size of the specified image.
-        /// </summary>
-        /// <param name="source">The image source.</param>
-        /// <returns>
-        /// An <see cref="OxyImageInfo" /> structure.
-        /// </returns>
-        public OxyImageInfo GetImageInfo(OxyImage source)
-        {
-            var bmp = this.GetImageSource(source);
-            if (bmp == null)
-            {
-                return null;
-            }
-
-            return new OxyImageInfo { Width = bmp.PixelWidth, Height = bmp.PixelHeight, DpiX = bmp.DpiX, DpiY = bmp.DpiY };
-        }
-
-        /// <summary>
         /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>

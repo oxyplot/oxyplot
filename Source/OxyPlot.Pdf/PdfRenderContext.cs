@@ -402,19 +402,6 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// Gets the image info.
-        /// </summary>
-        /// <param name="source">The source.</param>
-        /// <returns>
-        /// The image info.
-        /// </returns>
-        public override OxyImageInfo GetImageInfo(OxyImage source)
-        {
-            var image = this.GetImage(source);
-            return image == null ? null : new OxyImageInfo { Width = image.PixelWidth, Height = image.PixelHeight, DpiX = image.HorizontalResolution, DpiY = image.VerticalResolution };
-        }
-
-        /// <summary>
         /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>
