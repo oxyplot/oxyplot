@@ -37,7 +37,6 @@ namespace OxyPlot.Pdf
     /// <summary>
     /// Provides a report writer for rich text format using MigraDoc.
     /// </summary>
-    [CLSCompliant(false)]
     public class RtfReportWriter : PdfReportWriter
     {
         /// <summary>
