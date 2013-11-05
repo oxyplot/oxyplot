@@ -47,7 +47,6 @@ namespace OxyPlot.Metro
     /// <summary>
     /// Rendering Metro shapes to a Canvas
     /// </summary>
-    [CLSCompliant(false)]
     public class MetroRenderContext : IRenderContext
     {
         /// <summary>
@@ -627,24 +626,6 @@ namespace OxyPlot.Metro
         /// </params>
         public void SetToolTip(string text)
         {
-        }
-
-        /// <summary>
-        /// Gets the size of the specified image.
-        /// </summary>
-        /// <param name="source">The image source.</param>
-        /// <returns>
-        /// An <see cref="OxyImageInfo" /> structure.
-        /// </returns>
-        public OxyImageInfo GetImageInfo(OxyImage source)
-        {
-            var bmp = this.GetImageSource(source);
-            if (bmp == null)
-            {
-                return null;
-            }
-
-            return new OxyImageInfo { Width = bmp.PixelWidth, Height = bmp.PixelHeight, DpiX = 96, DpiY = 96 };
         }
 
         /// <summary>

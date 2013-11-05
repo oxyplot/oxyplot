@@ -376,12 +376,6 @@ namespace OxyPlot.GtkSharp
             imagesInUse.Clear();
         }
 
-        public override OxyImageInfo GetImageInfo(OxyImage source)
-        {
-            var image = this.GetImage(source);
-            return image == null ? null : new OxyImageInfo { Width = image.Width, Height = image.Height, DpiX = 96, DpiY = 96 }; // TODO DpiX, DpiY
-        }
-
         public override void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double x, double y, double w, double h, double opacity, bool interpolate)
         {
             var image = this.GetImage(source);

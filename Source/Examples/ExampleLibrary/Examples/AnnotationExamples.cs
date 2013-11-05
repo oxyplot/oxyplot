@@ -415,14 +415,14 @@ namespace ExampleLibrary
                 imageData1[i, 0] = OxyColor.Interpolate(OxyColors.Red, OxyColors.Blue, i / (n - 1.0));
             }
 
-            var image1 = OxyImage.PngFromArgb(imageData1); // png is required for silverlight
+            var image1 = OxyImage.Create(imageData1, ImageFormat.Png); // png is required for silverlight
 
             // or create a gradient image of height 2 (requires bitmap interpolation to be supported)
             var imageData2 = new OxyColor[2, 1];
             imageData2[1, 0] = OxyColors.Yellow; // top color
             imageData2[0, 0] = OxyColors.Gray; // bottom color
 
-            var image2 = OxyImage.PngFromArgb(imageData2); // png is required for silverlight
+            var image2 = OxyImage.Create(imageData2, ImageFormat.Png); // png is required for silverlight
 
             // gradient filling the viewport
             model.Annotations.Add(new ImageAnnotation
@@ -472,7 +472,7 @@ namespace ExampleLibrary
             pixels[0, 1] = OxyColors.Red;
             pixels[1, 1] = OxyColors.Yellow;
 
-            var image = OxyImage.PngFromArgb(pixels);
+            var image = OxyImage.Create(pixels, ImageFormat.Png);
 
             model.Annotations.Add(
                 new ImageAnnotation
@@ -503,7 +503,7 @@ namespace ExampleLibrary
             pixels[0, 1] = OxyColors.Red;
             pixels[1, 1] = OxyColors.Yellow;
 
-            var image = OxyImage.PngFromArgb(pixels);
+            var image = OxyImage.Create(pixels, ImageFormat.Png);
 
             model.Annotations.Add(
                 new ImageAnnotation
@@ -534,7 +534,7 @@ namespace ExampleLibrary
             pixels[0, 1] = OxyColors.Red;
             pixels[1, 1] = OxyColors.Yellow;
 
-            var image = OxyImage.PngFromArgb(pixels);
+            var image = OxyImage.Create(pixels, ImageFormat.Png);
 
             model.Annotations.Add(
                 new ImageAnnotation

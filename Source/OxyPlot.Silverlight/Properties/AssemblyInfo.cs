@@ -4,7 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Reflection;
 
 [assembly: AssemblyTitle("OxyPlot for Silverlight")]
 [assembly: AssemblyDescription("OxyPlot controls for Silverlight")]
+
+[assembly: CLSCompliant(true)]

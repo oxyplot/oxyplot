@@ -50,7 +50,6 @@ namespace OxyPlot.Metro
     /// The plot control for Windows Store apps.
     /// </summary>
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
-    [CLSCompliant(false)]
     public partial class Plot : Control, IPlotControl
     {
         /// <summary>

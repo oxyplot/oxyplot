@@ -246,13 +246,7 @@ namespace OxyPlot
             double opacity,
             bool interpolate)
         {
-            var info = rc.GetImageInfo(image);
-            if (info == null)
-            {
-                return;
-            }
-
-            rc.DrawImage(image, 0, 0, info.Width, info.Height, x, y, w, h, opacity, interpolate);
+            rc.DrawImage(image, 0, 0, image.Width, image.Height, x, y, w, h, opacity, interpolate);
         }
 
         /// <summary>
@@ -291,13 +285,6 @@ namespace OxyPlot
                 return;
             }
 
-            // The render context does not support clipping, we must calculate the rectangle
-            var info = rc.GetImageInfo(source);
-            if (info == null)
-            {
-                return;
-            }
-
             // Fint the positions of the clipping rectangle normalized to image coordinates (0,1)
             var i0 = (clippingRect.Left - x) / w;
             var i1 = (clippingRect.Right - x) / w;
@@ -305,14 +292,14 @@ namespace OxyPlot
             var j1 = (clippingRect.Bottom - y) / h;
 
             // Find the origin of the clipped source rectangle
-            var srcx = i0 < 0 ? 0u : i0 * info.Width;
-            var srcy = j0 < 0 ? 0u : j0 * info.Height;
+            var srcx = i0 < 0 ? 0u : i0 * source.Width;
+            var srcy = j0 < 0 ? 0u : j0 * source.Height;
             srcx = (int)Math.Ceiling(srcx);
             srcy = (int)Math.Ceiling(srcy);
 
             // Find the size of the clipped source rectangle
-            var srcw = i1 > 1 ? info.Width - srcx : (i1 * info.Width) - srcx;
-            var srch = j1 > 1 ? info.Height - srcy : (j1 * info.Height) - srcy;
+            var srcw = i1 > 1 ? source.Width - srcx : (i1 * source.Width) - srcx;
+            var srch = j1 > 1 ? source.Height - srcy : (j1 * source.Height) - srcy;
             srcw = (int)srcw;
             srch = (int)srch;
 
@@ -322,10 +309,10 @@ namespace OxyPlot
             }
 
             // The clipped destination rectangle
-            var destx = i0 < 0 ? x : x + (srcx / info.Width * w);
-            var desty = j0 < 0 ? y : y + (srcy / info.Height * h);
-            var destw = w * srcw / info.Width;
-            var desth = h * srch / info.Height;
+            var destx = i0 < 0 ? x : x + (srcx / source.Width * w);
+            var desty = j0 < 0 ? y : y + (srcy / source.Height * h);
+            var destw = w * srcw / source.Width;
+            var desth = h * srch / source.Height;
 
             rc.DrawImage(source, srcx, srcy, srcw, srch, destx, desty, destw, desth, opacity, interpolate);
         }

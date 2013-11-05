@@ -252,12 +252,6 @@ namespace OxyPlot.Annotations
 
             var clippingRect = this.GetClippingRect();
 
-            var imageInfo = rc.GetImageInfo(this.ImageSource);
-            if (imageInfo == null)
-            {
-                return;
-            }
-
             var s = this.GetVector(this.Width, this.Height, rc, model);
 
             var width = s.X;
@@ -265,18 +259,18 @@ namespace OxyPlot.Annotations
 
             if (double.IsNaN(width) && double.IsNaN(height))
             {
-                width = imageInfo.Width;
-                height = imageInfo.Height;
+                width = this.ImageSource.Width;
+                height = this.ImageSource.Height;
             }
 
             if (double.IsNaN(width))
             {
-                width = height / imageInfo.Height * imageInfo.Width;
+                width = height / this.ImageSource.Height * this.ImageSource.Width;
             }
 
             if (double.IsNaN(height))
             {
-                height = width / imageInfo.Width * imageInfo.Height;
+                height = width / this.ImageSource.Width * this.ImageSource.Height;
             }
 
             width = Math.Abs(width);

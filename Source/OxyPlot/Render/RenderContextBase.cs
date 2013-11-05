@@ -361,18 +361,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the size of the specified image.
-        /// </summary>
-        /// <param name="source">The image source.</param>
-        /// <returns>
-        /// The image info.
-        /// </returns>
-        public virtual OxyImageInfo GetImageInfo(OxyImage source)
-        {
-            return null;
-        }
-
-        /// <summary>
         /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>

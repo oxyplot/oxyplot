@@ -214,7 +214,7 @@ namespace OxyPlot.Tests
             data[0, 3] = OxyColor.FromAColor(127, OxyColors.Yellow);
             data[0, 1] = OxyColor.FromAColor(127, OxyColors.Orange);
             data[0, 2] = OxyColor.FromAColor(127, OxyColors.Pink);
-            return OxyImage.FromArgb(data);
+            return OxyImage.Create(data, ImageFormat.Png);
         }
 
         private static IEnumerable<ScreenPoint> CreatePointList()

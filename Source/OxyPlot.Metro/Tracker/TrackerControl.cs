@@ -40,7 +40,6 @@ namespace OxyPlot.Metro
     /// <summary>
     /// The tracker control.
     /// </summary>
-    [CLSCompliant(false)]
     public class TrackerControl : ContentControl
     {
         /// <summary>

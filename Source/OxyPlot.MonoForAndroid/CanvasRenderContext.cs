@@ -83,13 +83,13 @@ namespace OxyPlot.MonoForAndroid
             {
                 paint.AntiAlias = true;
                 paint.StrokeWidth = (float)thickness;
-                if (fill != null)
+                if (fill.IsVisible())
                 {
                     paint.SetStyle(Paint.Style.Fill);
                     paint.Color = stroke.ToColor();
                     canvas.DrawOval(rect.ToRectF(), paint);
                 }
-                if (stroke != null)
+                if (stroke.IsVisible())
                 {
                     paint.SetStyle(Paint.Style.Stroke);
                     paint.Color = stroke.ToColor();
@@ -106,14 +106,14 @@ namespace OxyPlot.MonoForAndroid
                 paint.StrokeWidth = (float)thickness;
                 foreach (var rect in rectangles)
                 {
-                    if (fill != null)
+                    if (fill.IsVisible())
                     {
                         paint.SetStyle(Paint.Style.Fill);
                         paint.Color = fill.ToColor();
                         canvas.DrawOval(rect.ToRectF(), paint);
                     }
 
-                    if (stroke != null)
+                    if (stroke.IsVisible())
                     {
                         paint.SetStyle(Paint.Style.Stroke);
                         paint.Color = stroke.ToColor();
@@ -175,14 +175,14 @@ namespace OxyPlot.MonoForAndroid
                         path.LineTo((float)points[i % points.Count].X, (float)points[i % points.Count].Y);
                     }
 
-                    if (fill != null)
+                    if (fill.IsVisible())
                     {
                         paint.SetStyle(Paint.Style.Fill);
                         paint.Color = fill.ToColor();
                         canvas.DrawPath(path, paint);
                     }
 
-                    if (stroke != null)
+                    if (stroke.IsVisible())
                     {
                         paint.SetStyle(Paint.Style.Stroke);
                         paint.Color = stroke.ToColor();
@@ -204,13 +204,13 @@ namespace OxyPlot.MonoForAndroid
             {
                 paint.AntiAlias = false;
                 paint.StrokeWidth = (float)thickness;
-                if (fill != null)
+                if (fill.IsVisible())
                 {
                     paint.SetStyle(Paint.Style.Fill);
                     paint.Color = fill.ToColor();
                     canvas.DrawRect((float)rect.Left, (float)rect.Top, (float)rect.Right, (float)rect.Bottom, paint);
                 }
-                if (stroke != null)
+                if (stroke.IsVisible())
                 {
                     paint.SetStyle(Paint.Style.Stroke);
                     paint.Color = stroke.ToColor();
@@ -305,19 +305,6 @@ namespace OxyPlot.MonoForAndroid
         public void CleanUp()
         {
             // TODO
-        }
-
-        /// <summary>
-        /// Gets the size of the specified image.
-        /// </summary>
-        /// <param name="source">The image source.</param>
-        /// <returns>
-        /// The image info.
-        /// </returns>
-        public OxyImageInfo GetImageInfo(OxyImage source)
-        {
-            // TODO
-            return null;
         }
 
         /// <summary>

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IRenderContext.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Render context interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System.Collections.Generic;
@@ -325,13 +326,6 @@ namespace OxyPlot
         void CleanUp();
 
         /// <summary>
-        /// Gets the size of the specified image.
-        /// </summary>
-        /// <param name="source">The image source.</param>
-        /// <returns>The image info.</returns>
-        OxyImageInfo GetImageInfo(OxyImage source);
-
-        /// <summary>
         /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>
@@ -358,43 +352,5 @@ namespace OxyPlot
         /// Resets the clip rectangle.
         /// </summary>
         void ResetClip();
-    }
-
-    /// <summary>
-    /// Provides information about the size of an image.
-    /// </summary>
-    public class OxyImageInfo
-    {
-        /// <summary>
-        /// Gets or sets the width in pixels.
-        /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
-        public int Width { get; set; }
-
-        /// <summary>
-        /// Gets or sets the height in pixels.
-        /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
-        public int Height { get; set; }
-
-        /// <summary>
-        /// Gets or sets the horizontal resolution in dpi.
-        /// </summary>
-        /// <value>
-        /// The dpi X.
-        /// </value>
-        public double DpiX { get; set; }
-
-        /// <summary>
-        /// Gets or sets the vertical resolution in dpi.
-        /// </summary>
-        /// <value>
-        /// The dpi Y.
-        /// </value>
-        public double DpiY { get; set; }
     }
 }

@@ -32,15 +32,44 @@ namespace OxyPlot
     using System.IO;
     using System.Linq;
 
+    public enum ColorType { GrayScale = 0, TrueColor = 2, IndexedColor = 3, GrayScaleWithAlpha = 4, TrueColorWithAlpha = 6 }
+
+    public enum CompressionMethod { Deflate = 0 }
+
+    public enum FilterMethod { None = 0, Sub = 1, Up = 2, Avg = 3, Paeth = 4 }
+
+    /// <summary>
+    /// Defines interlace methods (chapter 8.2)
+    /// </summary>
+    public enum InterlaceMethod
+    {
+        /// <summary>
+        ///  The null method, pixels are extracted sequentially from left to right, and scanlines sequentially from top to bottom.
+        /// </summary>
+        None = 0,
+
+        /// <summary>
+        /// Adam7, defines seven distinct passes over the image. Each pass transmits a subset of the pixels in the reference image. 
+        /// The pass in which each pixel is transmitted (numbered from 1 to 7) is defined by replicating a 8-by-8 pattern over the 
+        /// entire image, starting at the upper left corner.
+        /// </summary>
+        Adam7 = 1
+    }
+
     /// <summary>
     /// Provides encoding of uncompressed png images.
     /// </summary>
-    public class PngEncoder
+    public class PngEncoder : IImageEncoder
     {
         /// <summary>
         /// The CRC table
         /// </summary>
         private static readonly ulong[] CrcTable;
+
+        /// <summary>
+        /// The options
+        /// </summary>
+        private readonly PngEncoderOptions options;
 
         /// <summary>
         /// Initializes static members of the <see cref="PngEncoder" /> class.
@@ -68,18 +97,24 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PngEncoder"/> class.
+        /// </summary>
+        /// <param name="options">The options.</param>
+        public PngEncoder(PngEncoderOptions options)
+        {
+            this.options = options;
+        }
+
+        /// <summary>
         /// Encodes the specified image data to png.
         /// </summary>
         /// <param name="pixels">
         /// The pixel data (bottom line first).
         /// </param>
-        /// <param name="dpi">
-        /// The image resolution in dots per inch.
-        /// </param>
         /// <returns>
         /// The png image data.
         /// </returns>
-        public static byte[] Encode(OxyColor[,] pixels, int dpi = 96)
+        public byte[] Encode(OxyColor[,] pixels)
         {
             int height = pixels.GetLength(0);
             int width = pixels.GetLength(1);
@@ -102,10 +137,15 @@ namespace OxyPlot
             w.Write((byte)0x89);
             w.Write("PNG\r\n\x1a\n".ToCharArray());
             WriteChunk(w, "IHDR", CreateHeaderData(width, height));
-            WriteChunk(w, "pHYs", CreatePhysicalDimensionsData(dpi, dpi));
+            WriteChunk(w, "pHYs", CreatePhysicalDimensionsData(this.options.DpiX, this.options.DpiY));
             WriteChunk(w, "IDAT", CreateUncompressedBlocks(bytes));
             WriteChunk(w, "IEND", new byte[0]);
             return w.ToArray();
+        }
+
+        public byte[] Encode(byte[,] pixels, OxyColor[] palette)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -117,7 +157,8 @@ namespace OxyPlot
         /// <returns>
         /// The check sum.
         /// </returns>
-        private static uint Adler32(IEnumerable<byte> data)
+        [CLSCompliant(false)]
+        public static uint Adler32(IEnumerable<byte> data)
         {
             // http://en.wikipedia.org/wiki/Adler-32
             uint a = 1;
@@ -170,7 +211,7 @@ namespace OxyPlot
         /// <returns>
         /// The data.
         /// </returns>
-        private static byte[] CreatePhysicalDimensionsData(int dpix, int dpiy)
+        private static byte[] CreatePhysicalDimensionsData(double dpix, double dpiy)
         {
             var ppux = (int)(dpix / 0.0254);
             var ppuy = (int)(dpiy / 0.0254);
