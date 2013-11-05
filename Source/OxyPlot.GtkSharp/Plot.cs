@@ -34,9 +34,9 @@ namespace OxyPlot.GtkSharp
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Runtime.InteropServices;
-    using Gtk;
+
     using Gdk;
-    using Cairo;
+    using Gtk;
 
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -117,7 +117,7 @@ namespace OxyPlot.GtkSharp
             this.KeyboardPanHorizontalStep = 0.1;
             this.KeyboardPanVerticalStep = 0.1;
             this.PanCursor = new Cursor(CursorType.Hand1);
-            this.ZoomRectangleCursor = new Cursor(CursorType.Sizing); //  Cursors.SizeNWSE;
+            this.ZoomRectangleCursor = new Cursor(CursorType.Sizing);
             this.ZoomHorizontalCursor = new Cursor(CursorType.SbHDoubleArrow);
             this.ZoomVerticalCursor = new Cursor(CursorType.SbVDoubleArrow);
             this.AddEvents((int)(EventMask.ButtonPressMask | EventMask.ButtonReleaseMask | EventMask.KeyPressMask | EventMask.PointerMotionMask));
@@ -370,19 +370,19 @@ namespace OxyPlot.GtkSharp
             switch (cursorType)
             {
                 case OxyPlot.CursorType.Pan:
-                    base.GdkWindow.Cursor = this.PanCursor;
+                    this.GdkWindow.Cursor = this.PanCursor;
                     break;
                 case OxyPlot.CursorType.ZoomRectangle:
-                    base.GdkWindow.Cursor = this.ZoomRectangleCursor;
+                    this.GdkWindow.Cursor = this.ZoomRectangleCursor;
                     break;
                 case OxyPlot.CursorType.ZoomHorizontal:
-                    base.GdkWindow.Cursor = this.ZoomHorizontalCursor;
+                    this.GdkWindow.Cursor = this.ZoomHorizontalCursor;
                     break;
                 case OxyPlot.CursorType.ZoomVertical:
-                    base.GdkWindow.Cursor = this.ZoomVerticalCursor;
+                    this.GdkWindow.Cursor = this.ZoomVerticalCursor;
                     break;
                 default:
-                    base.GdkWindow.Cursor = new Cursor(CursorType.Arrow);
+                    this.GdkWindow.Cursor = new Cursor(CursorType.Arrow);
                     break;
             }
         }
@@ -465,6 +465,11 @@ namespace OxyPlot.GtkSharp
             this.InvalidatePlot(false);
         }
 
+        /// <summary>
+        /// Called when [button press event].
+        /// </summary>
+        /// <param name="e">The decimal.</param>
+        /// <returns>True if the event was handled?</returns>
         protected override bool OnButtonPressEvent(EventButton e)
         {
             if (this.mouseManipulator != null)
@@ -474,8 +479,7 @@ namespace OxyPlot.GtkSharp
 
             this.GrabFocus(); // .HasFocus = true;
 
-            //  this.Capture = true; // TODO
-
+            // TODO: this.Capture = true;
             if (this.ActualModel != null)
             {
                 var args = this.CreateMouseEventArgs(e);
@@ -492,6 +496,7 @@ namespace OxyPlot.GtkSharp
             {
                 this.mouseManipulator.Started(this.CreateManipulationEventArgs(e));
             }
+
             return true;
         }
 
@@ -499,9 +504,9 @@ namespace OxyPlot.GtkSharp
         /// Called on mouse move event.
         /// </summary>
         /// <param name="e">An instance that contains the event data.</param>
+        /// <returns>True if the event was handled.</returns>
         protected override bool OnMotionNotifyEvent(EventMotion e)
         {
-
             if (this.ActualModel != null)
             {
                 var args = this.CreateMouseEventArgs(e);
@@ -516,6 +521,7 @@ namespace OxyPlot.GtkSharp
             {
                 this.mouseManipulator.Delta(this.CreateManipulationEventArgs(e));
             }
+
             return true;
         }
 
@@ -525,6 +531,7 @@ namespace OxyPlot.GtkSharp
         /// <param name="e">
         /// An instance that contains the event data.
         /// </param>
+        /// <returns>True if event was handled?</returns>
         protected override bool OnButtonReleaseEvent(EventButton e)
         {
             // this.Capture = false; // TODO
@@ -545,83 +552,76 @@ namespace OxyPlot.GtkSharp
 
             this.mouseManipulator = null;
             return true;
-
         }
 
         /// <summary>
         /// Called on MouseWheel  event.
         /// </summary>
-        /// <param name="e">
-        /// An instance that contains the event data.
-        /// </param>
-        /* TODO */
-        /*
-        protected override void OnMouseWheel( MouseEventArgs e)
-        {
-            bool isControlDown = ModifierKeys == Keys.Control;
-            var m = new ZoomStepManipulator(this, e.Delta * 0.001, isControlDown);
-            m.Started(new ManipulationEventArgs(e.Location.ToScreenPoint()));
-        }
-         */
-
-        /// <summary>
-        /// Called on an expose (paint) event.
-        /// </summary>
-        /// <param name="e">
-        /// An instance that contains the event data.
-        /// </param>
+        /// <param name="e">An instance that contains the event data.</param>
+        /// <returns>True if event was handled?</returns>
         protected override bool OnExposeEvent(EventExpose e)
         {
-			using (Cairo.Context g = Gdk.CairoHelper.Create(e.Window)) {
-				try {
-					lock (this.invalidateLock) {
-						if (this.isModelInvalidated) {
-							if (this.model != null) {
-								this.model.Update (this.updateDataFlag);
-								this.updateDataFlag = false;
-							}
+            using (Cairo.Context g = CairoHelper.Create(e.Window))
+            {
+                try
+                {
+                    lock (this.invalidateLock)
+                    {
+                        if (this.isModelInvalidated)
+                        {
+                            if (this.model != null)
+                            {
+                                this.model.Update(this.updateDataFlag);
+                                this.updateDataFlag = false;
+                            }
 
-							this.isModelInvalidated = false;
-						}
-					}
+                            this.isModelInvalidated = false;
+                        }
+                    }
 
-					lock (this.renderingLock) {
-						this.renderContext.SetGraphicsTarget(g);
-						if (this.model != null) {
-							int width;
-							int height;
-							this.GetSizeRequest (out width, out height);
-							this.model.Render(this.renderContext, width, height);
-						}
+                    lock (this.renderingLock)
+                    {
+                        this.renderContext.SetGraphicsTarget(g);
+                        if (this.model != null)
+                        {
+                            int width;
+                            int height;
+                            this.GetSizeRequest(out width, out height);
+                            this.model.Render(this.renderContext, width, height);
+                        }
 
-						if (this.zoomRectangle.HasValue) {
-							// this.renderContext.DrawRectangle(zoomRectangle.Value, OxyColor.FromArgb(0x40, 0xFF, 0xFF, 0x00), OxyColors.Transparent, 1.0);
-						}
-					}
-				} catch (Exception paintException) {
-					var trace = new StackTrace (paintException);
-					Debug.WriteLine (paintException);
-					Debug.WriteLine (trace);
-					//using (var font = new Font("Arial", 10))
-					{
-						//int width; int height;
-						//this.GetSizeRequest(out width, out height);
-						Debug.Assert (false, "OxyPlot paint exception: " + paintException.Message);
-						//g.ResetTransform();
-						//g.DrawString(, font, Brushes.Red, width / 2, height / 2, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
-					}
-            
-				}
-			}
+                        if (this.zoomRectangle.HasValue)
+                        {
+                            // this.renderContext.DrawRectangle(zoomRectangle.Value, OxyColor.FromArgb(0x40, 0xFF, 0xFF, 0x00), OxyColors.Transparent, 1.0);
+                        }
+                    }
+                }
+                catch (Exception paintException)
+                {
+                    var trace = new StackTrace(paintException);
+                    Debug.WriteLine(paintException);
+                    Debug.WriteLine(trace);
+
+                    // using (var font = new Font("Arial", 10))
+                    {
+                        // int width; int height;
+                        // this.GetSizeRequest(out width, out height);
+                        Debug.Assert(false, "OxyPlot paint exception: " + paintException.Message);
+                       
+                        // g.ResetTransform();
+                        // g.DrawString(, font, Brushes.Red, width / 2, height / 2, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                    }
+                }
+            }
+
             return true;
         }
 
         /// <summary>
         /// Called on KeyPress event.
         /// </summary>
-        /// <param name="e">
-        /// An instance that contains the event data.
-        /// </param>
+        /// <param name="e">An instance that contains the event data.</param>
+        /// <returns>True if event was handled?</returns>
         protected override bool OnKeyPressEvent(EventKey e)
         {
             bool handled = false;
@@ -709,6 +709,7 @@ namespace OxyPlot.GtkSharp
                         break;
                 }
             }
+
             return handled;
         }
 
@@ -740,7 +741,6 @@ namespace OxyPlot.GtkSharp
             return OxyMouseButton.Left;
         }
 
-
         /// <summary>
         /// Creates the mouse event arguments.
         /// </summary>
@@ -762,6 +762,13 @@ namespace OxyPlot.GtkSharp
             };
         }
 
+        /// <summary>
+        /// Creates the mouse event arguments.
+        /// </summary>
+        /// <param name="e">The motion event args.</param>
+        /// <returns>
+        /// Mouse event arguments.
+        /// </returns>
         private OxyMouseEventArgs CreateMouseEventArgs(EventMotion e)
         {
             return new OxyMouseEventArgs
@@ -781,13 +788,20 @@ namespace OxyPlot.GtkSharp
         /// The MouseEventArgs instance containing the event data.
         /// </param>
         /// <returns>
-        /// A manipulation event args object.
+        /// A <see cref="ManipulationEventArgs"/> object.
         /// </returns>
         private ManipulationEventArgs CreateManipulationEventArgs(EventButton e)
         {
             return new ManipulationEventArgs(new ScreenPoint(e.X, e.Y));
         }
 
+        /// <summary>
+        /// Creates the manipulation event arguments.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        /// <returns>
+        /// A <see cref="ManipulationEventArgs"/> object.
+        /// </returns>
         private ManipulationEventArgs CreateManipulationEventArgs(EventMotion e)
         {
             return new ManipulationEventArgs(new ScreenPoint(e.X, e.Y));
@@ -813,8 +827,7 @@ namespace OxyPlot.GtkSharp
             bool rmb = e.Button == 3;
             bool xb1 = e.Button == 4;
             bool xb2 = e.Button == 5;
-            bool doubleClick = (e.Type == EventType.TwoButtonPress);
-            //bool singleClick = (e.Type == EventType.ButtonPress);
+            bool doubleClick = e.Type == EventType.TwoButtonPress;
 
             // MMB / control RMB / control+alt LMB
             if (mmb || (control && rmb) || (control && alt && lmb))
@@ -826,6 +839,7 @@ namespace OxyPlot.GtkSharp
 
                 return new ZoomRectangleManipulator(this);
             }
+
             // Right mouse button / alt+left mouse button
             if (rmb || (lmb && alt))
             {
@@ -858,12 +872,12 @@ namespace OxyPlot.GtkSharp
             {
                 // todo: can't get the following solution to work
                 // http://stackoverflow.com/questions/5707990/requested-clipboard-operation-did-not-succeed
-                base.GetClipboard(Gdk.Selection.Clipboard).Text = text;
+                this.GetClipboard(Gdk.Selection.Clipboard).Text = text;
             }
             catch (ExternalException)
             {
                 // Requested Clipboard operation did not succeed.
-                //MessageBox.Show(this, ee.Message, "OxyPlot");
+                // MessageBox.Show(this, ee.Message, "OxyPlot");
             }
         }
     }
