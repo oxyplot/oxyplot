@@ -215,8 +215,7 @@ namespace OxyPlot.Series
         {
             if (!this.Interpolate)
             {
-                // it make no sense to interpolate the tracker
-                // when the plot is not interpolated
+                // It makes no sense to interpolate the tracker when the plot is not interpolated.
                 interpolate = false;
             }
 
@@ -290,8 +289,8 @@ namespace OxyPlot.Series
                 this.MaxY += dy / 2;
             }
 
-            this.MinValue = this.GetData().Min();
-            this.MaxValue = this.GetData().Max();
+            this.MinValue = this.GetData().Where(x => !double.IsNaN(x)).Min();
+            this.MaxValue = this.GetData().Where(x => !double.IsNaN(x)).Max();
 
             this.XAxis.Include(this.MinX);
             this.XAxis.Include(this.MaxX);
@@ -329,6 +328,12 @@ namespace OxyPlot.Series
         /// <returns>The interpolated value.</returns>
         private static double GetValue(double[,] data, double i, double j)
         {
+            var closestData = data[(int)Math.Round(i), (int)Math.Round(j)];
+            if (double.IsNaN(closestData))
+            {
+                return double.NaN;
+            }
+
             var i0 = (int)i;
             int i1 = i0 + 1 < data.GetLength(0) ? i0 + 1 : i0;
             double ix = i - i0;
@@ -337,6 +342,27 @@ namespace OxyPlot.Series
             double jx = j - j0;
             var v0 = (data[i0, j0] * (1 - ix)) + (data[i1, j0] * ix);
             var v1 = (data[i0, j1] * (1 - ix)) + (data[i1, j1] * ix);
+
+            if (double.IsNaN(v0))
+            {
+                if (double.IsNaN(v1))
+                {
+                    return closestData;
+                }
+
+                return v1 * jx;
+            }
+            
+            if (double.IsNaN(v1))
+            {
+                if (double.IsNaN(v0))
+                {
+                    return closestData;
+                }
+
+                return (v0 * (1 - jx));
+            }
+            
             return (v0 * (1 - jx)) + (v1 * jx);
         }
 
