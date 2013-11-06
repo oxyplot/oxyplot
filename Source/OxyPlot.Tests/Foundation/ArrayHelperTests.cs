@@ -26,7 +26,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Tests
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
 
     using NUnit.Framework;
 
@@ -71,6 +73,29 @@ namespace OxyPlot.Tests
             Assert.AreEqual(0, dvector[0, 0]);
             Assert.AreEqual(1, dvector[10, 10]);
             Assert.AreEqual(0.3 * 0.4, dvector[3, 4]);
+        }
+
+        [Test]
+        public void Min2D()
+        {
+            var array1 = new double[,] { { 4, 2 } };
+            Assert.AreEqual(2, array1.Min2D(), "Min2D()");
+            var array2 = new[,] { { 4, double.NaN } };
+            Assert.AreEqual(double.NaN, array2.Min2D(), "Min2D() with NaN");
+            Assert.AreEqual(4, array2.Min2D(true), "Min2D(true) with NaN");
+            var array3 = new[] { 4, double.NaN };
+            Assert.AreEqual(double.NaN, array3.Min(), "LINQ Min()");
+        }
+
+        [Test]
+        public void Max2D()
+        {
+            var array1 = new double[,] { { 4, 2 } };
+            Assert.AreEqual(4, array1.Max2D(), "Max2D()");
+            var array2 = new[,] { { 4, double.NaN } };
+            Assert.AreEqual(4, array2.Max2D(), "Max2D() with NaN");
+            var array3 = new[] { 4, double.NaN };
+            Assert.AreEqual(4, array3.Max(), "LINQ Max()");
         }
     }
 }
