@@ -122,7 +122,7 @@ namespace OxyPlot.Axes
         {
             if (paletteIndex == int.MinValue)
             {
-                return OxyColors.Gray;
+                return NaNColor;
             }
 
             if (paletteIndex == -1)

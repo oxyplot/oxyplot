@@ -80,6 +80,11 @@ namespace OxyPlot.Axes
         /// </returns>
         public override OxyColor GetColor(int paletteIndex)
         {
+            if (paletteIndex == int.MinValue)
+            {
+                return NaNColor;
+            }
+
             if (paletteIndex == 0)
             {
                 return this.LowColor;
@@ -122,6 +127,11 @@ namespace OxyPlot.Axes
         /// </remarks>
         public override int GetPaletteIndex(double value)
         {
+            if (double.IsNaN(value))
+            {
+                return int.MinValue;
+            }
+            
             if (!this.LowColor.IsUndefined() && value < this.ActualMinimum)
             {
                 return 0;

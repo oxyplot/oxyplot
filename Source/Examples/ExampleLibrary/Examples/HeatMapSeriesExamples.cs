@@ -29,6 +29,7 @@ using OxyPlot;
 namespace ExampleLibrary
 {
     using System;
+    using System.Linq;
 
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -89,6 +90,17 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Coordinates with two NaN values")]
+        public static PlotModel CoordinatesWithNanValue()
+        {
+            var model = Coordinates();
+            var hms = (HeatMapSeries)model.Series[0];
+            hms.Data[0, 1] = double.NaN;
+            hms.Data[1, 0] = double.NaN;
+            model.Title = "Coordinates example including two NaN values";
+            return model;
+        }
+
         [Example("Not interpolated")]
         public static PlotModel NotInterpolated()
         {
@@ -96,6 +108,17 @@ namespace ExampleLibrary
             model.Title = "Not interpolated values";
             var hms = (HeatMapSeries)model.Series[0];
             hms.Interpolate = false;
+            return model;
+        }
+
+        [Example("Not interpolated with two NaN values")]
+        public static PlotModel NotInterpolatedWithNanValue()
+        {
+            var model = NotInterpolated();
+            var hms = (HeatMapSeries)model.Series[0];
+            hms.Data[0, 1] = double.NaN;
+            hms.Data[1, 0] = double.NaN;
+            model.Title = "Not interpolated values including two NaN values";
             return model;
         }
 
