@@ -6,7 +6,7 @@
     <authors>objo</authors>
     <licenseUrl>http://oxyplot.codeplex.com/license</licenseUrl>
     <projectUrl>http://oxyplot.codeplex.com/</projectUrl>
-    <iconUrl>http://www.objo.net/codeplex/icons/oxyplot.png</iconUrl>
+    <iconUrl>http://oxyplot.org/icons/oxyplot_128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>OxyPlot is an open source plotting library for .NET.</description>
     <tags>winforms plotting plot charting chart</tags>
