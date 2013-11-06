@@ -159,7 +159,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Finds the maximum value in the specified 2D array.
+        /// Finds the maximum value in the specified 2D array (NaN values not included).
         /// </summary>
         /// <param name="array">The array.</param>
         /// <returns>The maximum value.</returns>
@@ -170,7 +170,7 @@ namespace OxyPlot
             {
                 for (var j = 0; j < array.GetLength(1); j++)
                 {
-                    if (array[i, j] > max)
+                    if (array[i, j].CompareTo(max) > 0)
                     {
                         max = array[i, j];
                     }
@@ -184,15 +184,23 @@ namespace OxyPlot
         /// Finds the minimum value in the specified 2D array.
         /// </summary>
         /// <param name="array">The array.</param>
-        /// <returns>The minimum value.</returns>
-        public static double Min2D(this double[,] array)
+        /// <param name="excludeNaN">Exclude NaN values if set to <c>true</c>.</param>
+        /// <returns>
+        /// The minimum value.
+        /// </returns>
+        public static double Min2D(this double[,] array, bool excludeNaN = false)
         {
             var min = double.MaxValue;
             for (var i = 0; i < array.GetLength(0); i++)
             {
                 for (var j = 0; j < array.GetLength(1); j++)
                 {
-                    if (array[i, j] < min)
+                    if (excludeNaN && double.IsNaN(array[i, j]))
+                    {
+                        continue;
+                    }
+
+                    if (array[i, j].CompareTo(min) < 0)
                     {
                         min = array[i, j];
                     }
