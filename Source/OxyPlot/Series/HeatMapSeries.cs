@@ -31,8 +31,6 @@
 namespace OxyPlot.Series
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     using OxyPlot.Axes;
 
@@ -289,8 +287,8 @@ namespace OxyPlot.Series
                 this.MaxY += dy / 2;
             }
 
-            this.MinValue = this.GetData().Where(x => !double.IsNaN(x)).Min();
-            this.MaxValue = this.GetData().Where(x => !double.IsNaN(x)).Max();
+            this.MinValue = this.Data.Min2D(true);
+            this.MaxValue = this.Data.Max2D();
 
             this.XAxis.Include(this.MinX);
             this.XAxis.Include(this.MaxX);
@@ -300,23 +298,6 @@ namespace OxyPlot.Series
 
             this.ColorAxis.Include(this.MinValue);
             this.ColorAxis.Include(this.MaxValue);
-        }
-
-        /// <summary>
-        /// Gets the data as a sequence (LINQ-friendly).
-        /// </summary>
-        /// <returns>The sequence of data.</returns>
-        protected IEnumerable<double> GetData()
-        {
-            int m = this.Data.GetLength(0);
-            int n = this.Data.GetLength(1);
-            for (int i = 0; i < m; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    yield return this.Data[i, j];
-                }
-            }
         }
 
         /// <summary>
@@ -360,7 +341,7 @@ namespace OxyPlot.Series
                     return closestData;
                 }
 
-                return (v0 * (1 - jx));
+                return v0 * (1 - jx);
             }
             
             return (v0 * (1 - jx)) + (v1 * jx);

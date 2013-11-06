@@ -24,13 +24,12 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using OxyPlot;
 
 namespace ExampleLibrary
 {
     using System;
-    using System.Linq;
 
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
@@ -70,55 +69,37 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Coordinates")]
-        public static PlotModel Coordinates()
+        [Example("Interpolated")]
+        public static PlotModel Interpolated()
         {
-            var data = new double[2, 3];
-            data[0, 0] = 0;
-            data[0, 1] = 0.2;
-            data[0, 2] = 0.4;
-            data[1, 0] = 0.1;
-            data[1, 1] = 0.3;
-            data[1, 2] = 0.2;
-
-            var model = new PlotModel("Coordinates example", "Bounding box should be [0,2] and [0,3]");
-            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
-
-            // adding half cellwidth/cellheight to bounding box coordinates
-            var hms = new HeatMapSeries { CoordinateDefinition = HeatMapCoordinateDefinition.Center, X0 = 0.5, X1 = 1.5, Y0 = 0.5, Y1 = 2.5, Data = data };
-            model.Series.Add(hms);
-            return model;
+            return CreateExample("Interpolated 2x3", true);
         }
 
-        [Example("Coordinates with two NaN values")]
-        public static PlotModel CoordinatesWithNanValue()
+        [Example("Interpolated with two NaN values")]
+        public static PlotModel InterpolatedWithNanValue()
         {
-            var model = Coordinates();
+            var model = CreateExample("Interpolated including two NaN values", true);
             var hms = (HeatMapSeries)model.Series[0];
             hms.Data[0, 1] = double.NaN;
             hms.Data[1, 0] = double.NaN;
-            model.Title = "Coordinates example including two NaN values";
             return model;
         }
 
         [Example("Not interpolated")]
         public static PlotModel NotInterpolated()
         {
-            var model = Coordinates();
-            model.Title = "Not interpolated values";
-            var hms = (HeatMapSeries)model.Series[0];
-            hms.Interpolate = false;
-            return model;
+            return CreateExample("Not interpolated values", false);
         }
 
         [Example("Not interpolated with two NaN values")]
         public static PlotModel NotInterpolatedWithNanValue()
         {
-            var model = NotInterpolated();
+            var model = CreateExample("Not interpolated values including two NaN values", false);
+            var ca = (ColorAxis)model.Axes[0];
+            ca.InvalidNumberColor = OxyColors.Transparent;
             var hms = (HeatMapSeries)model.Series[0];
             hms.Data[0, 1] = double.NaN;
             hms.Data[1, 0] = double.NaN;
-            model.Title = "Not interpolated values including two NaN values";
             return model;
         }
 
@@ -173,6 +154,40 @@ namespace ExampleLibrary
 
             // note: the coordinates are specifying the centers of the edge cells
             var hms = new HeatMapSeries { X0 = 0, X1 = 5, Y0 = 0, Y1 = 5, Data = data, Interpolate = true };
+            model.Series.Add(hms);
+            return model;
+        }
+
+        /// <summary>
+        /// Creates a simple 2x3 example heat map.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <param name="interpolate">Interpolate the HeatMapSeries if set to <c>true</c>.</param>
+        /// <returns>A <see cref="PlotModel"/>.</returns>
+        private static PlotModel CreateExample(string title, bool interpolate)
+        {
+            var data = new double[2, 3];
+            data[0, 0] = 0;
+            data[0, 1] = 0.2;
+            data[0, 2] = 0.4;
+            data[1, 0] = 0.1;
+            data[1, 1] = 0.3;
+            data[1, 2] = 0.2;
+
+            var model = new PlotModel(title, "Bounding box should be [0,2] and [0,3]");
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+
+            // adding half cellwidth/cellheight to bounding box coordinates
+            var hms = new HeatMapSeries
+            {
+                CoordinateDefinition = HeatMapCoordinateDefinition.Center,
+                X0 = 0.5,
+                X1 = 1.5,
+                Y0 = 0.5,
+                Y1 = 2.5,
+                Data = data,
+                Interpolate = interpolate
+            };
             model.Series.Add(hms);
             return model;
         }

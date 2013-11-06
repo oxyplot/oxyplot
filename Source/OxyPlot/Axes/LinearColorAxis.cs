@@ -82,7 +82,7 @@ namespace OxyPlot.Axes
         {
             if (paletteIndex == int.MinValue)
             {
-                return NaNColor;
+                return this.InvalidNumberColor;
             }
 
             if (paletteIndex == 0)

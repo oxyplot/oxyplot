@@ -36,26 +36,21 @@ namespace OxyPlot.Axes
     public abstract class ColorAxis : Axis
     {
         /// <summary>
-        /// The color used to represent NaN values.
-        /// </summary>
-        private OxyColor naNColor = OxyColors.Gray;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ColorAxis"/> class.
         /// </summary>
         protected ColorAxis()
         {
             this.AxisDistance = 20;
+            this.InvalidNumberColor = OxyColors.Gray;
         }
 
         /// <summary>
-        /// Gets or sets the color used to represent NaN values. This is set to OxyColors.Gray by default.
+        /// Gets or sets the color used to represent NaN values.
         /// </summary>
-        public OxyColor NaNColor
-        {
-            get { return naNColor; }
-            set { naNColor = value; }
-        }
+        /// <value>
+        /// A <see cref="OxyColor"/> that defines the color. The default value is <c>OxyColors.Gray</c>.
+        /// </value>
+        public OxyColor InvalidNumberColor { get; set; }
 
         /// <summary>
         /// Gets the color.
