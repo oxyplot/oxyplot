@@ -17,6 +17,8 @@
     /// </summary>
     class Program
     {
+        private static string pngOptimizer;
+
         static void Main(string[] args)
         {
             if (args.Length > 0)
@@ -33,21 +35,23 @@
             // http://msdn.microsoft.com/en-us/library/windows/desktop/aa511280.aspx#size
             // https://github.com/audreyr/favicon-cheat-sheet
             int[] sizes = { 256, 228, 195, 152, 144, 128, 120, 114, 96, 72, 64, 57, 48, 40, 32, 24, 20, 16 };
-            var pngOptimizer = Path.GetFullPath(@"..\..\..\..\..\Tools\TruePNG\TruePNG.exe");
-            var iconRenderer = new IconRenderer3();
+            pngOptimizer = Path.GetFullPath(@"..\..\..\..\..\Tools\TruePNG\TruePNG.exe");
+            
+            var iconRenderer = new IconRenderer4();
+
             foreach (var size in sizes)
             {
                 // CreateBitmap(size, icon1, string.Format("v1_{0}.png", size));
                 var pngFile = string.Format("OxyPlot_{0}.png", size);
+                var svgFile = string.Format("OxyPlot_{0}.svg", size);
+                Console.WriteLine("Generating {0}x{0} icon", size);
+                Console.WriteLine("  Saving {0}", svgFile);
+                CreateSvg(size, iconRenderer, svgFile);
+                Console.WriteLine("  Saving {0}", pngFile);
                 CreateBitmap(size, iconRenderer, pngFile);
-                CreateSvg(size, iconRenderer, string.Format("OxyPlot_{0}.svg", size));
-
-                // Optimize png
-                var p = Process.Start(pngOptimizer, pngFile + " /o max");
-                if (p != null)
-                {
-                    p.WaitForExit();
-                }
+                Console.WriteLine("  Optimizing {0}", pngFile);
+                OptimizePng(pngFile);
+                Console.WriteLine();
             }
 
             var ico = new IcoMaker.Icon();
@@ -58,6 +62,18 @@
             ico.AddImage("OxyPlot_64.png");
             ico.AddImage("OxyPlot_256.png");
             ico.Save("OxyPlot.ico");
+        }
+
+        private static void OptimizePng(string pngFile)
+        {
+            var psi = new ProcessStartInfo(pngOptimizer, pngFile + " /o max");
+            //  psi.CreateNoWindow = true;
+            psi.WindowStyle = ProcessWindowStyle.Hidden;
+            var p = Process.Start(psi);
+            if (p != null)
+            {
+                p.WaitForExit();
+            }
         }
 
         static void CreateBitmap(int size, IconRenderer iconRenderer, string fileName)
@@ -86,7 +102,7 @@
             using (var bm = new Bitmap(size, size))
             {
                 grx.SetGraphicsTarget(Graphics.FromImage(bm));
-                using (var s = File.OpenWrite(fileName))
+                using (var s = File.Create(fileName))
                 {
                     using (var rc = new SvgRenderContext(s, size, size, true, grx, OxyColors.Transparent))
                     {
@@ -205,6 +221,7 @@
             var palette = OxyPalettes.Jet(256);
             var min = data.Min2D();
             var max = data.Max2D();
+            var pixels = new OxyColor[n, n];
             for (int x = 0; x < n; x++)
             {
                 for (int y = 0; y < n; y++)
@@ -214,6 +231,59 @@
                     rc.DrawRectangle(new OxyRect(x, y, 1, 1), palette.Colors[i], OxyColors.Undefined, 0);
                 }
             }
+
+            var frameWidth = (int)Math.Max(Math.Round(size / 32), 1);
+            rc.DrawRectangle(new OxyRect(0, 0, size, frameWidth), OxyColors.Black, OxyColors.Black, 0);
+            rc.DrawRectangle(new OxyRect(0, size - frameWidth, size, frameWidth), OxyColors.Black, OxyColors.Undefined, 0);
+            rc.DrawRectangle(new OxyRect(0, 0, frameWidth, size), OxyColors.Black, OxyColors.Undefined, 0);
+            rc.DrawRectangle(new OxyRect(size - frameWidth, 0, frameWidth, size), OxyColors.Black, OxyColors.Undefined, 0);
+        }
+    }
+
+    /// <summary>
+    /// Generates a heatmap icon based on the peaks function.
+    /// </summary>
+    public class IconRenderer4 : IconRenderer
+    {
+        /// <summary>
+        /// Initializes static members of the <see cref="IconRenderer3"/> class.
+        /// </summary>
+        static IconRenderer4()
+        {
+            Peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
+        }
+
+        /// <summary>
+        /// Gets the peaks function.
+        /// </summary>
+        public static Func<double, double, double> Peaks { get; private set; }
+
+        /// <summary>
+        /// Renders the icon on the specified render context.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="size">The size.</param>
+        public override void Render(IRenderContext rc, double size)
+        {
+            var n = (int)size * 2;
+            var data = ArrayHelper.Evaluate(Peaks, ArrayHelper.CreateVector(-3.1, 2.6, n), ArrayHelper.CreateVector(3.0, -3.4, n));
+            var palette = OxyPalettes.BlueWhiteRed(5);
+            var min = data.Min2D();
+            var max = data.Max2D();
+            var pixels = new OxyColor[n, n];
+            for (int x = 0; x < n; x++)
+            {
+                for (int y = 0; y < n; y++)
+                {
+                    var i = (int)((data[x, y] - min) / (max - min) * palette.Colors.Count);
+                    i = Math.Min(Math.Max(i, 0), palette.Colors.Count - 1);
+                    pixels[x, y] = palette.Colors[i];
+                    //rc.DrawRectangle(new OxyRect(x, y, 1, 1), palette.Colors[i], OxyColors.Undefined, 0);
+                }
+            }
+
+            var image = OxyImage.Create(pixels, OxyPlot.ImageFormat.Png);
+            rc.DrawImage(image, 0, 0, n, n, 0, 0, size, size, 1, true);
 
             var frameWidth = (int)Math.Max(Math.Round(size / 32), 1);
             rc.DrawRectangle(new OxyRect(0, 0, size, frameWidth), OxyColors.Black, OxyColors.Black, 0);
