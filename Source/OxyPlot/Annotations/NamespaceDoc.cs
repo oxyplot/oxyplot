@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LibraryDoc.cs" company="OxyPlot">
+// <copyright file="NamespaceDoc.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -25,13 +25,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot
+namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// The OxyPlot solution provides plotting functionality for Windows store apps, WPF, Windows forms, Silverlight and Mono based applications.
+    /// The OxyPlot.Axes namespace contains the annotations and related types.
     /// </summary>
     [System.Runtime.CompilerServices.CompilerGenerated]
-    internal class LibraryDoc
+    internal class NamespaceDoc
     {
         //// This class is used by the API documentation system.
     }
