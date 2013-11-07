@@ -259,6 +259,36 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcY">The y-coordinate of the upper-left corner of the portion of the source image to draw.</param>
+        /// <param name="srcWidth">Width of the portion of the source image to draw.</param>
+        /// <param name="srcHeight">Height of the portion of the source image to draw.</param>
+        /// <param name="destX">The x-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destY">The y-coordinate of the upper-left corner of drawn image.</param>
+        /// <param name="destWidth">The width of the drawn image.</param>
+        /// <param name="destHeight">The height of the drawn image.</param>
+        /// <param name="opacity">The opacity.</param>
+        /// <param name="interpolate">Interpolate if set to <c>true</c>.</param>
+        public override void DrawImage(
+            OxyImage source,
+            double srcX,
+            double srcY,
+            double srcWidth,
+            double srcHeight,
+            double destX,
+            double destY,
+            double destWidth,
+            double destHeight,
+            double opacity,
+            bool interpolate)
+        {
+            this.w.WriteImage(srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight, source);
+        }
+
+        /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
