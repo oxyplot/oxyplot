@@ -243,7 +243,7 @@ namespace OxyPlot
 
             this.Background = OxyColors.Undefined;
             this.PlotAreaBackground = OxyColors.Undefined;
-            
+
             this.SelectionColor = OxyColors.Yellow;
 
             this.TextColor = OxyColors.Black;
@@ -1354,20 +1354,22 @@ namespace OxyPlot
         /// </summary>
         private void EnforceCartesianTransforms()
         {
+            var notColorAxes = this.Axes.Where(a => !(a is ColorAxis)).ToArray();
+
             // Set the same scaling on all axes
-            double sharedScale = this.Axes.Min(a => Math.Abs(a.Scale));
-            foreach (var a in this.Axes)
+            double sharedScale = notColorAxes.Min(a => Math.Abs(a.Scale));
+            foreach (var a in notColorAxes)
             {
                 a.Zoom(sharedScale);
             }
 
-            sharedScale = this.Axes.Max(a => Math.Abs(a.Scale));
-            foreach (var a in this.Axes)
+            sharedScale = notColorAxes.Max(a => Math.Abs(a.Scale));
+            foreach (var a in notColorAxes)
             {
                 a.Zoom(sharedScale);
             }
 
-            foreach (var a in this.Axes)
+            foreach (var a in notColorAxes)
             {
                 a.UpdateTransform(this.PlotArea);
             }

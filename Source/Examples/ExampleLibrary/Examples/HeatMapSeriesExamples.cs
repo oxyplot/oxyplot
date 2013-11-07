@@ -75,6 +75,14 @@ namespace ExampleLibrary
             return CreateExample("Interpolated 2x3", true);
         }
 
+        [Example("Interpolated on Cartesian axes")]
+        public static PlotModel InterpolatedCartesian()
+        {
+            var model = CreateExample("Interpolated 2x3", true);
+            model.PlotType = PlotType.Cartesian;
+            return model;
+        }
+
         [Example("Interpolated with two NaN values")]
         public static PlotModel InterpolatedWithNanValue()
         {
