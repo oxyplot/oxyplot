@@ -49,6 +49,7 @@ namespace OxyPlot.Series
         {
             this.Reverse2 = true;
             this.Color2 = OxyColors.Automatic;
+            this.Fill = OxyColors.Automatic;
         }
 
         /// <summary>
