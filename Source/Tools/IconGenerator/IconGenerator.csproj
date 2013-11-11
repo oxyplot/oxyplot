@@ -52,6 +52,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Bitmap.cs" />
+    <Compile Include="Functions.cs" />
     <Compile Include="Icon.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
