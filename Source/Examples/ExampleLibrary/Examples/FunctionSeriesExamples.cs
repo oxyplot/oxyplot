@@ -191,6 +191,20 @@ namespace ExampleLibrary
             return m;
         }
 
+        [Example("Folium of Descartes")]
+        public static PlotModel DescartesFolium()
+        {
+            // http://www.wolframalpha.com/input/?i=folium+of+Descartes
+
+            var m = new PlotModel("Folium of Descartes") { PlotType = PlotType.Cartesian };
+            m.Axes.Add(new LinearAxis(AxisPosition.Left, -3, 3));
+            m.Axes.Add(new LinearAxis(AxisPosition.Bottom, -3, 3));
+            double a = 1;
+            m.Series.Add(new FunctionSeries(t => 3 * a * t / (t * t * t + 1), t => 3 * a * t * t / (t * t * t + 1), -30, 30, 1001, string.Format("a={0}", a)));
+
+            return m;
+        }
+
         [Example("Trisectrix of Maclaurin")]
         public static PlotModel TrisectrixOfMaclaurin()
         {
@@ -200,6 +214,31 @@ namespace ExampleLibrary
             var m = new PlotModel("Trisectrix of Maclaurin") { PlotType = PlotType.Cartesian };
             double a = 1;
             m.Series.Add(new FunctionSeries(t => a * (t * t - 3) / (t * t + 1), t => a * t * (t * t - 3) / (t * t + 1), -5, 5, 1000));
+            return m;
+        }
+
+        [Example("Fermat's spiral")]
+        public static PlotModel FermatsSpiral()
+        {
+            // http://en.wikipedia.org/wiki/Fermat's_spiral
+            // http://www.wolframalpha.com/input/?i=Fermat%27s+spiral
+            var m = new PlotModel("Fermat's spiral") { PlotType = PlotType.Cartesian };
+            double a = 1;
+            m.Series.Add(new FunctionSeries(t => a * Math.Sqrt(t) * Math.Cos(t), t => a * Math.Sqrt(t) * Math.Sin(t), 0, 20, 1000));
+            m.Series.Add(new FunctionSeries(t => -a * Math.Sqrt(t) * Math.Cos(t), t => -a * Math.Sqrt(t) * Math.Sin(t), 0, 20, 1000));
+            return m;
+        }
+
+        [Example("Fish curve")]
+        public static PlotModel FishCurve()
+        {
+            // http://www.wolframalpha.com/input/?i=fish+curve
+            var m = new PlotModel("Fish curve") { PlotType = PlotType.Cartesian };
+            for (double a = 0.1; a < 1; a += 0.1)
+            {
+                m.Series.Add(new FunctionSeries(t => a * (Math.Cos(t) - Math.Sin(t) * Math.Sin(t) / Math.Sqrt(2)), t => a * Math.Cos(t) * Math.Sin(t), 0, 2 * Math.PI, 1000));
+            }
+
             return m;
         }
 
