@@ -34,10 +34,10 @@
 
             // http://msdn.microsoft.com/en-us/library/windows/desktop/aa511280.aspx#size
             // https://github.com/audreyr/favicon-cheat-sheet
-            int[] sizes = { 256, 228, 195, 152, 144, 128, 120, 114, 96, 72, 64, 57, 48, 40, 32, 24, 20, 16 };
+            int[] sizes = { 512, 256, 228, 195, 152, 144, 128, 120, 114, 96, 72, 64, 57, 48, 40, 32, 24, 20, 16 };
             pngOptimizer = Path.GetFullPath(@"..\..\..\..\..\Tools\TruePNG\TruePNG.exe");
-            
-            var iconRenderer = new IconRenderer4();
+
+            var iconRenderer = new Candidate5();
 
             foreach (var size in sizes)
             {
@@ -62,6 +62,8 @@
             ico.AddImage("OxyPlot_64.png");
             ico.AddImage("OxyPlot_256.png");
             ico.Save("OxyPlot.ico");
+
+            // Process.Start("Explorer.exe", "/select," + Path.GetFullPath("OxyPlot.ico"));
         }
 
         private static void OptimizePng(string pngFile)
@@ -123,7 +125,10 @@
         public abstract void Render(IRenderContext rc, double size);
     }
 
-    public class IconRenderer1 : IconRenderer
+    /// <summary>
+    /// Generates an icon by text.
+    /// </summary>
+    public class Candidate1 : IconRenderer
     {
         /// <summary>
         /// Renders the icon on the specified render context.
@@ -140,7 +145,10 @@
         }
     }
 
-    public class IconRenderer2 : IconRenderer
+    /// <summary>
+    /// Generates a heatmap icon.
+    /// </summary>
+    public class Candidate2 : IconRenderer
     {
         /// <summary>
         /// Renders the icon on the specified render context.
@@ -174,7 +182,7 @@
             double y1 = 3;
             var xx = ArrayHelper.CreateVector(x0, x1, 100);
             var yy = ArrayHelper.CreateVector(y0, y1, 100);
-            var peaksData = ArrayHelper.Evaluate(IconRenderer3.Peaks, xx, yy);
+            var peaksData = ArrayHelper.Evaluate(Functions.Peaks, xx, yy);
 
             pm.Axes.Add(
                 new LinearColorAxis
@@ -192,23 +200,10 @@
     }
 
     /// <summary>
-    /// Generates a heatmap icon based on the peaks function.
+    /// Generates a heatmap icon based on the peaks function and a "jet" palette.
     /// </summary>
-    public class IconRenderer3 : IconRenderer
+    public class Candidate3 : IconRenderer
     {
-        /// <summary>
-        /// Initializes static members of the <see cref="IconRenderer3"/> class.
-        /// </summary>
-        static IconRenderer3()
-        {
-            Peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
-        }
-
-        /// <summary>
-        /// Gets the peaks function.
-        /// </summary>
-        public static Func<double, double, double> Peaks { get; private set; }
-
         /// <summary>
         /// Renders the icon on the specified render context.
         /// </summary>
@@ -217,7 +212,7 @@
         public override void Render(IRenderContext rc, double size)
         {
             var n = (int)size;
-            var data = ArrayHelper.Evaluate(Peaks, ArrayHelper.CreateVector(-3.1, 3.1, n), ArrayHelper.CreateVector(3, -3, n));
+            var data = ArrayHelper.Evaluate(Functions.Peaks, ArrayHelper.CreateVector(-3.1, 3.1, n), ArrayHelper.CreateVector(3, -3, n));
             var palette = OxyPalettes.Jet(256);
             var min = data.Min2D();
             var max = data.Max2D();
@@ -241,23 +236,10 @@
     }
 
     /// <summary>
-    /// Generates a heatmap icon based on the peaks function.
+    /// Generates a heatmap icon based on the peaks function and blue-white-red palette.
     /// </summary>
-    public class IconRenderer4 : IconRenderer
+    public class Candidate4 : IconRenderer
     {
-        /// <summary>
-        /// Initializes static members of the <see cref="IconRenderer3"/> class.
-        /// </summary>
-        static IconRenderer4()
-        {
-            Peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
-        }
-
-        /// <summary>
-        /// Gets the peaks function.
-        /// </summary>
-        public static Func<double, double, double> Peaks { get; private set; }
-
         /// <summary>
         /// Renders the icon on the specified render context.
         /// </summary>
@@ -266,7 +248,7 @@
         public override void Render(IRenderContext rc, double size)
         {
             var n = (int)size * 2;
-            var data = ArrayHelper.Evaluate(Peaks, ArrayHelper.CreateVector(-3.1, 2.6, n), ArrayHelper.CreateVector(3.0, -3.4, n));
+            var data = ArrayHelper.Evaluate(Functions.Peaks, ArrayHelper.CreateVector(-3.1, 2.6, n), ArrayHelper.CreateVector(3.0, -3.4, n));
             var palette = OxyPalettes.BlueWhiteRed(5);
             var min = data.Min2D();
             var max = data.Max2D();
@@ -278,7 +260,6 @@
                     var i = (int)((data[x, y] - min) / (max - min) * palette.Colors.Count);
                     i = Math.Min(Math.Max(i, 0), palette.Colors.Count - 1);
                     pixels[x, y] = palette.Colors[i];
-                    //rc.DrawRectangle(new OxyRect(x, y, 1, 1), palette.Colors[i], OxyColors.Undefined, 0);
                 }
             }
 
@@ -290,6 +271,46 @@
             rc.DrawRectangle(new OxyRect(0, size - frameWidth, size, frameWidth), OxyColors.Black, OxyColors.Undefined, 0);
             rc.DrawRectangle(new OxyRect(0, 0, frameWidth, size), OxyColors.Black, OxyColors.Undefined, 0);
             rc.DrawRectangle(new OxyRect(size - frameWidth, 0, frameWidth, size), OxyColors.Black, OxyColors.Undefined, 0);
+        }
+    }
+
+    /// <summary>
+    /// Generates a icon based on the peaks function and a simple blue-white palette.
+    /// </summary>
+    public class Candidate5 : IconRenderer
+    {
+        /// <summary>
+        /// Renders the icon on the specified render context.
+        /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="size">The size.</param>
+        public override void Render(IRenderContext rc, double size)
+        {
+            var n = (int)size * 2;
+            var data = ArrayHelper.Evaluate(Functions.Peaks, ArrayHelper.CreateVector(-3.1, 2.6, n), ArrayHelper.CreateVector(3.0, -3.4, n));
+            var c = OxyColor.FromArgb(255, 90, 165, 200);
+            var palette = OxyPalette.Interpolate(5, OxyColors.White, c, OxyColors.White);
+            var min = data.Min2D();
+            var max = data.Max2D();
+            var pixels = new OxyColor[n, n];
+            for (int x = 0; x < n; x++)
+            {
+                for (int y = 0; y < n; y++)
+                {
+                    var i = (int)((data[x, y] - min) / (max - min) * palette.Colors.Count);
+                    i = Math.Min(Math.Max(i, 0), palette.Colors.Count - 1);
+                    pixels[x, y] = palette.Colors[i];
+                }
+            }
+
+            var image = OxyImage.Create(pixels, OxyPlot.ImageFormat.Png);
+            
+            // fix image interpolation artifacts on the edge
+            rc.DrawImage(image, 0, 0, n, n, 0, 0, size, size, 1, true);
+            rc.DrawRectangle(new OxyRect(0, 0, size, 2), c, OxyColors.Undefined, 0);
+            rc.DrawRectangle(new OxyRect(0, size - 1, size, 1), c, OxyColors.Undefined, 0);
+            rc.DrawRectangle(new OxyRect(0, 0, 2, size), c, OxyColors.Undefined, 0);
+            rc.DrawRectangle(new OxyRect(size - 1, 0, 1, size), c, OxyColors.Undefined, 0);
         }
     }
 }
