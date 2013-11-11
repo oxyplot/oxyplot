@@ -61,6 +61,7 @@
     <Compile Include="Examples\BarSeries\IntervalBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\RectangleBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\TornadoBarSeriesExamples.cs" />
+    <Compile Include="Examples\CustomAxisExamples.cs" />
     <Compile Include="Examples\HeatMapSeriesExamples.cs" />
     <Compile Include="Examples\MiscExamples.cs" />
     <Compile Include="Examples\MouseEventExamples.cs" />
