@@ -65,7 +65,7 @@ namespace OxyPlot.Wpf
         /// The fill property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
-            "Fill", typeof(Color), typeof(AreaSeries), new PropertyMetadata(AppearanceChanged));
+            "Fill", typeof(Color), typeof(AreaSeries), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
         /// The reverse 2 property.
