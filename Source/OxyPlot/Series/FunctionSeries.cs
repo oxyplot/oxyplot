@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FunctionSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents a line series that generates its dataset from a function.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
     using System;
@@ -35,7 +36,7 @@ namespace OxyPlot.Series
     /// Represents a line series that generates its dataset from a function.
     /// </summary>
     /// <remarks>
-    /// Define f(x) and make a plot on the range [x0,x1] or define fx(t) and fy(t) and make a plot on the range [t0,t1].
+    /// Define <code>f(x)</code> and make a plot on the range <code>[x0,x1]</code> or define <code>x(t)</code> and <code>y(t)</code> and make a plot on the range <code>[t0,t1]</code>.
     /// </remarks>
     public class FunctionSeries : LineSeries
     {
@@ -47,10 +48,10 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FunctionSeries"/> class.
+        /// Initializes a new instance of the <see cref="FunctionSeries"/> class using a function <code>f(x)</code>.
         /// </summary>
         /// <param name="f">
-        /// The function f(x).
+        /// The function <code>f(x)</code>.
         /// </param>
         /// <param name="x0">
         /// The start x value.
@@ -74,10 +75,10 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FunctionSeries"/> class.
+        /// Initializes a new instance of the <see cref="FunctionSeries"/> class using a function <code>f(x)</code>.
         /// </summary>
         /// <param name="f">
-        /// The function f(x).
+        /// The function <code>f(x)</code>.
         /// </param>
         /// <param name="x0">
         /// The start x value.
@@ -97,22 +98,22 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FunctionSeries"/> class.
+        /// Initializes a new instance of the <see cref="FunctionSeries"/> class using functions <code>x(t)</code> and <code>y(t)</code>.
         /// </summary>
         /// <param name="fx">
-        /// The function fx(t).
+        /// The function <code>x(t)</code>.
         /// </param>
         /// <param name="fy">
-        /// The function fy(t).
+        /// The function <code>y(t)</code>.
         /// </param>
         /// <param name="t0">
-        /// The t0.
+        /// The start t parameter.
         /// </param>
         /// <param name="t1">
-        /// The t1.
+        /// The end t parameter.
         /// </param>
         /// <param name="dt">
-        /// The increment dt.
+        /// The increment in t.
         /// </param>
         /// <param name="title">
         /// The title.
@@ -127,19 +128,19 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FunctionSeries"/> class.
+        /// Initializes a new instance of the <see cref="FunctionSeries"/> class using functions <code>x(t)</code> and <code>y(t)</code>.
         /// </summary>
         /// <param name="fx">
-        /// The function fx(t).
+        /// The function <code>x(t)</code>.
         /// </param>
         /// <param name="fy">
-        /// The function fy(t).
+        /// The function <code>y(t)</code>.
         /// </param>
         /// <param name="t0">
-        /// The t0.
+        /// The start t parameter.
         /// </param>
         /// <param name="t1">
-        /// The t1.
+        /// The end t parameter.
         /// </param>
         /// <param name="n">
         /// The number of points.
@@ -152,6 +153,5 @@ namespace OxyPlot.Series
             : this(fx, fy, t0, t1, (t1 - t0) / (n - 1), title)
         {
         }
-
     }
 }
