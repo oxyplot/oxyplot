@@ -179,10 +179,10 @@ namespace OxyPlot.WindowsForms
                 switch (lineJoin)
                 {
                     case OxyPenLineJoin.Round:
-                        pen.LineJoin = LineJoin.Round;
+                        pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
                         break;
                     case OxyPenLineJoin.Bevel:
-                        pen.LineJoin = LineJoin.Bevel;
+                        pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
                         break;
 
                     // The default LineJoin is Miter
@@ -461,10 +461,10 @@ namespace OxyPlot.WindowsForms
             switch (lineJoin)
             {
                 case OxyPenLineJoin.Round:
-                    pen.LineJoin = LineJoin.Round;
+                    pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
                     break;
                 case OxyPenLineJoin.Bevel:
-                    pen.LineJoin = LineJoin.Bevel;
+                    pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
                     break;
                 // The default LineJoin is Miter
             }
