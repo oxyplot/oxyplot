@@ -284,7 +284,7 @@ namespace ExportDemo
         }
 
         private static DataPointSeries CreateNormalDistributionSeries(double x0, double x1, double mean, double variance,
-                                                                 int n = 1001)
+                                                                 int n = 1000)
         {
             var ls = new LineSeries
                          {

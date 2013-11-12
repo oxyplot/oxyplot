@@ -42,6 +42,9 @@ namespace OxyPlot
         /// </summary>
         private readonly byte[] data;
 
+        // TODO: remove when PNG decoder is implemented
+        internal OxyColor[,] pixels;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyImage"/> class from the specified stream.
         /// </summary>
@@ -142,7 +145,12 @@ namespace OxyPlot
         public static OxyImage Create(OxyColor[,] pixels, ImageFormat format, ImageEncoderOptions encoderOptions = null)
         {
             var encoder = GetEncoder(format, encoderOptions);
-            return new OxyImage(encoder.Encode(pixels));
+            var image = new OxyImage(encoder.Encode(pixels));
+            
+            // TODO: remove when PNG decoder is implemented
+            image.pixels = pixels;
+
+            return image;
         }
 
         /// <summary>
@@ -162,6 +170,12 @@ namespace OxyPlot
         /// <returns>The pixels in an array [width,height].</returns>
         public OxyColor[,] GetPixels()
         {
+            // TODO: remove when PNG decoder is implemented
+            if (this.pixels != null)
+            {
+                return this.pixels;
+            }
+
             var decoder = GetDecoder(this.Format);
             var ms = new MemoryStream(this.data);
             return decoder.Decode(ms);

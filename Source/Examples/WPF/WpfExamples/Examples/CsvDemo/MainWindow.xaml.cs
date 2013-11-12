@@ -102,7 +102,11 @@ namespace CsvDemo
                         File.WriteAllText(dlg.FileName, svg);
                         break;
                     case ".pdf":
-                        PdfExporter.Export(vm.Model, dlg.FileName, plot1.ActualWidth, plot1.ActualHeight);
+                        using (var s = File.Create(dlg.FileName))
+                        {
+                            PdfExporter.Export(vm.Model, s, plot1.ActualWidth, plot1.ActualHeight);
+                        }
+
                         break;
                     case ".xaml":
                         plot1.SaveXaml(dlg.FileName);
