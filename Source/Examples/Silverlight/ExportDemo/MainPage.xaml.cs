@@ -70,7 +70,19 @@ namespace ExportDemo
             {
                 using (var s = d.OpenFile())
                 {
-                    PdfExporter.Export(this.plot1.ActualModel, s, this.plot1.ActualWidth, this.plot1.ActualHeight);
+                    OxyPlot.PdfExporter.Export(this.plot1.ActualModel, s, this.plot1.ActualWidth, this.plot1.ActualHeight);
+                }
+            }
+        }
+
+        private void SaveSilverPdf_Click(object sender, RoutedEventArgs e)
+        {
+            var d = new SaveFileDialog { Filter = "Pdf files (*.pdf)|*.pdf", DefaultExt = ".pdf" };
+            if (true == d.ShowDialog())
+            {
+                using (var s = d.OpenFile())
+                {
+                    OxyPlot.Pdf.PdfExporter.Export(this.plot1.ActualModel, s, this.plot1.ActualWidth, this.plot1.ActualHeight);
                 }
             }
         }
