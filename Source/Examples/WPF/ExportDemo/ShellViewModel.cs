@@ -219,7 +219,21 @@ namespace ExportDemo
             var path = this.GetFilename(".pdf files|*.pdf", ".pdf");
             if (path != null)
             {
-                PdfExporter.Export(this.Model, path, this.Plot.ActualWidth, this.Plot.ActualHeight);
+                using (var stream = File.Create(path))
+                {
+                    OxyPlot.PdfExporter.Export(this.Model, stream, this.Plot.ActualWidth, this.Plot.ActualHeight);
+                }
+
+                OpenContainingFolder(path);
+            }
+        }
+
+        public void SavePdf_PdfSharp()
+        {
+            var path = this.GetFilename(".pdf files|*.pdf", ".pdf");
+            if (path != null)
+            {
+                OxyPlot.Pdf.PdfExporter.Export(this.Model, path, this.Plot.ActualWidth, this.Plot.ActualHeight);
                 OpenContainingFolder(path);
             }
         }

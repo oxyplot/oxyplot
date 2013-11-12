@@ -1,14 +1,21 @@
 <StyleCopSettings Version="105">
   <GlobalSettings>
     <CollectionProperty Name="RecognizedWords">
+      <Value>Ansi</Value>
+      <Value>Bézier</Value>
       <Value>Conrec</Value>
       <Value>Migra</Value>
       <Value>MigraDoc</Value>
       <Value>pdf</Value>
       <Value>PdfSharp</Value>
+      <Value>pieslice</Value>
+      <Value>pieslice-shaped</Value>
       <Value>png</Value>
+      <Value>pt</Value>
       <Value>pubid</Value>
+      <Value>RGB</Value>
       <Value>SilverPdf</Value>
+      <Value>subpath</Value>
       <Value>svg</Value>
       <Value>sysid</Value>
       <Value>veeness</Value>

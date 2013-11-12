@@ -93,6 +93,18 @@
     <Compile Include="Foundation\DataPoint.cs" />
     <Compile Include="Foundation\MarkerType.cs" />
     <Compile Include="Foundation\LineStyle.cs" />
+    <Compile Include="Pdf\FontSubType.cs" />
+    <Compile Include="Pdf\PortableDocumentExtensions.cs" />
+    <Compile Include="Pdf\PortableDocumentFont.cs" />
+    <Compile Include="Pdf\PortableDocumentFontFamily.cs" />
+    <Compile Include="Pdf\PortableDocumentImage.cs" />
+    <Compile Include="Pdf\PdfExporter.cs" />
+    <Compile Include="Pdf\PdfRenderContext.cs" />
+    <Compile Include="Pdf\PdfWriter.cs" />
+    <Compile Include="Pdf\PortableDocument.cs" />
+    <Compile Include="Pdf\PortableDocumentImageUtilities.cs" />
+    <Compile Include="Pdf\StandardFonts.cs" />
+    <Compile Include="Series\NamespaceDoc.cs" />
     <Compile Include="Utilities\XmlWriterBase.cs" />
     <Compile Include="Utilities\BinaryReaderExtensions.cs" />
     <Compile Include="Utilities\ListFiller.cs" />
@@ -113,6 +125,7 @@
     <Compile Include="Svg\SvgRenderContext.cs" />
     <Compile Include="Svg\SvgWriter.cs" />
     <Compile Include="Svg\SvgExporter.cs" />
+    <Compile Include="Annotations\NamespaceDoc.cs" />
     <Compile Include="Annotations\RectangleAnnotation.cs" />
     <Compile Include="Annotations\TextAnnotation.cs" />
     <Compile Include="Annotations\PolygonAnnotation.cs" />
@@ -130,6 +143,7 @@
     <Compile Include="Annotations\PathAnnotation.cs" />
     <Compile Include="Annotations\PolylineAnnotation.cs" />
     <Compile Include="Annotations\TileMapAnnotation.cs" />
+    <Compile Include="Axes\NamespaceDoc.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
     <Compile Include="Axes\ColorAxis.cs" />
     <Compile Include="Axes\RangeColorAxis.cs" />
@@ -251,6 +265,9 @@
     <None Include="ClassDiagrams\PlotModel.cd" />
     <None Include="ClassDiagrams\Reporting.cd" />
     <None Include="OxyPlot.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pdf\ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

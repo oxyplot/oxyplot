@@ -53,6 +53,9 @@
     <Compile Include="Foundation\ListFillerTests.cs" />
     <Compile Include="Imaging\TestImages\OxyImageTests.cs" />
     <Compile Include="OxyAssert.cs" />
+    <Compile Include="Pdf\PdfExporterTests.cs" />
+    <Compile Include="Pdf\PortableDocumentExtensions.cs" />
+    <Compile Include="Pdf\PortableDocumentTests.cs" />
     <Compile Include="TestModels.cs" />
     <Compile Include="Svg\SvgAssert.cs" />
     <Compile Include="Svg\SvgExporterTests.cs" />
