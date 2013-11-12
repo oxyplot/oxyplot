@@ -12,6 +12,7 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Margin="8">
             <Button Content="Save PDF" Click="SavePdf_Click"/>
+            <Button Content="Save PDF (SilverPDF)" Margin="8 0 0 0" Click="SaveSilverPdf_Click"/>
             <Button Content="Save SVG" Margin="8 0 0 0" Click="SaveSvg_Click"/>
             <Button Content="Save PNG" Margin="8 0 0 0" Click="SavePng_Click"/>
         </StackPanel>
