@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot.MonoForAndroid
+namespace OxyPlot.XamarinAndroid
 {
     using Android.Graphics;
 

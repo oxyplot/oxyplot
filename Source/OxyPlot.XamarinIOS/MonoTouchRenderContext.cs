@@ -28,7 +28,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.MonoTouch
+namespace OxyPlot.XamarinIOS
 {
     using System;
     using System.Collections.Generic;

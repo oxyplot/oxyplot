@@ -27,7 +27,7 @@
 //   Represents a control that displays a plot.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot.MonoTouch
+namespace OxyPlot.XamarinIOS
 {
     using System;
     using System.ComponentModel;
