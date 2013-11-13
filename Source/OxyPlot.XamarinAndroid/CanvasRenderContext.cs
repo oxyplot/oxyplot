@@ -27,10 +27,11 @@
 //   Provides a render context for Android.Graphics.Canvas.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Collections.Generic;
 
-namespace OxyPlot.MonoForAndroid
+namespace OxyPlot.XamarinAndroid
 {
+    using System.Collections.Generic;
+
     using Android.Graphics;
 
     /// <summary>

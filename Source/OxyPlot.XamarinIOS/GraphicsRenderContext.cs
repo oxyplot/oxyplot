@@ -27,7 +27,7 @@
 //   The graphics render context.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot.MonoGame
+namespace OxyPlot.XamarinIOS
 {
     using System;
     using System.Collections.Generic;
