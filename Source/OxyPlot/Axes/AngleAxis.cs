@@ -42,6 +42,8 @@ namespace OxyPlot.Axes
         /// </summary>
         public AngleAxis()
         {
+            this.Position = AxisPosition.None;
+            this.TickStyle = TickStyle.None;
             this.IsPanEnabled = false;
             this.IsZoomEnabled = false;
             this.MajorGridlineStyle = LineStyle.Solid;
