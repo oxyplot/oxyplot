@@ -110,6 +110,16 @@
     <Compile Include="Imaging\Png\PngEncoder.cs" />
     <Compile Include="Imaging\Png\PngEncoderOptions.cs" />
     <None Include="Imaging\Jpeg\JpegDecoder.cs" />
+    <Compile Include="Imaging\Deflate\Arrays.cs" />
+    <Compile Include="Imaging\Deflate\BitReader.cs" />
+    <Compile Include="Imaging\Deflate\ByteBitReader.cs" />
+    <Compile Include="Imaging\Deflate\CanonicalCode.cs" />
+    <Compile Include="Imaging\Deflate\CircularDictionary.cs" />
+    <Compile Include="Imaging\Deflate\CodeTree.cs" />
+    <Compile Include="Imaging\Deflate\Deflate.cs" />
+    <Compile Include="Imaging\Deflate\InternalNode.cs" />
+    <Compile Include="Imaging\Deflate\Leaf.cs" />
+    <Compile Include="Imaging\Deflate\Node.cs" />
     <Compile Include="Svg\SvgRenderContext.cs" />
     <Compile Include="Svg\SvgWriter.cs" />
     <Compile Include="Svg\SvgExporter.cs" />
@@ -256,6 +266,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Pdf\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Imaging\Deflate\Readme.md" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
