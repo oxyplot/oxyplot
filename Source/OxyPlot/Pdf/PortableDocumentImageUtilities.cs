@@ -59,15 +59,15 @@ namespace OxyPlot
             int i = 0;
             int j = 0;
 
-            // Start at the bottom row
-            for (int y = image.Height - 1; y >= 0; y--)
+            // Start at the top row
+            for (int y = 0; y < image.Height; y++)
             {
                 for (int x = 0; x < image.Width; x++)
                 {
-                    maskBits[j++] = pixels[y, x].A;
-                    bits[i++] = pixels[y, x].R;
-                    bits[i++] = pixels[y, x].G;
-                    bits[i++] = pixels[y, x].B;
+                    maskBits[j++] = pixels[x, y].A;
+                    bits[i++] = pixels[x, y].R;
+                    bits[i++] = pixels[x, y].G;
+                    bits[i++] = pixels[x, y].B;
                 }
             }
 
