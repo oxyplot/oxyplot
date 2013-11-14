@@ -161,28 +161,9 @@ namespace OxyPlot
 
             for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
             {
-                double maxValueOfPositionTier = 0;
                 var axesOfPosition = this.Axes.Where(a => a.Position == position).ToList();
-                foreach (var positionTier in axesOfPosition.Select(a => a.PositionTier).Distinct().OrderBy(l => l))
-                {
-                    var axesOfPositionTier = axesOfPosition.Where(a => a.PositionTier == positionTier).ToList();
-                    double maxSizeOfPositionTier = MaxSizeOfPositionTier(rc, axesOfPositionTier);
-                    double minValueOfPositionTier = maxValueOfPositionTier;
 
-                    if (Math.Abs(maxValueOfPositionTier) > 1e-5)
-                    {
-                        maxValueOfPositionTier += this.AxisTierDistance;
-                    }
-
-                    maxValueOfPositionTier += maxSizeOfPositionTier;
-
-                    foreach (Axis axis in axesOfPositionTier)
-                    {
-                        axis.PositionTierSize = maxSizeOfPositionTier;
-                        axis.PositionTierMinShift = minValueOfPositionTier;
-                        axis.PositionTierMaxShift = maxValueOfPositionTier;
-                    }
-                }
+                var maxValueOfPositionTier = AdjustAxesPositions(rc, axesOfPosition);
 
                 if (maxValueOfPositionTier > newPlotMargins[position])
                 {
@@ -193,28 +174,9 @@ namespace OxyPlot
 
             // Special case for AngleAxis which is all around the plot
             {
-                double maxValueOfPositionTier = 0;
-                var axesOfPosition = this.Axes.OfType<AngleAxis>().ToList();
-                foreach (var positionTier in axesOfPosition.Select(a => a.PositionTier).Distinct().OrderBy(l => l))
-                {
-                    var axesOfPositionTier = axesOfPosition.Where(a => a.PositionTier == positionTier).ToList();
-                    double maxSizeOfPositionTier = MaxSizeOfPositionTier(rc, axesOfPositionTier.Cast<Axis>());
-                    double minValueOfPositionTier = maxValueOfPositionTier;
+                var axesOfPosition = this.Axes.OfType<AngleAxis>().Cast<Axis>().ToList();
 
-                    if (Math.Abs(maxValueOfPositionTier) > 1e-5)
-                    {
-                        maxValueOfPositionTier += this.AxisTierDistance;
-                    }
-
-                    maxValueOfPositionTier += maxSizeOfPositionTier;
-
-                    foreach (Axis axis in axesOfPositionTier)
-                    {
-                        axis.PositionTierSize = maxSizeOfPositionTier;
-                        axis.PositionTierMinShift = minValueOfPositionTier;
-                        axis.PositionTierMaxShift = maxValueOfPositionTier;
-                    }
-                }
+                var maxValueOfPositionTier = AdjustAxesPositions(rc, axesOfPosition);
 
                 for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
                 {
@@ -236,6 +198,34 @@ namespace OxyPlot
             }
 
             return isAdjusted;
+        }
+
+        private double AdjustAxesPositions(IRenderContext rc, IList<Axis> parallelAxes)
+        {
+            double maxValueOfPositionTier = 0;
+
+            foreach (var positionTier in parallelAxes.Select(a => a.PositionTier).Distinct().OrderBy(l => l))
+            {
+                var axesOfPositionTier = parallelAxes.Where(a => a.PositionTier == positionTier).ToList();
+                var maxSizeOfPositionTier = MaxSizeOfPositionTier(rc, axesOfPositionTier);
+                var minValueOfPositionTier = maxValueOfPositionTier;
+
+                if (Math.Abs(maxValueOfPositionTier) > 1e-5)
+                {
+                    maxValueOfPositionTier += this.AxisTierDistance;
+                }
+
+                maxValueOfPositionTier += maxSizeOfPositionTier;
+
+                foreach (var axis in axesOfPositionTier)
+                {
+                    axis.PositionTierSize = maxSizeOfPositionTier;
+                    axis.PositionTierMinShift = minValueOfPositionTier;
+                    axis.PositionTierMaxShift = maxValueOfPositionTier;
+                }
+            }
+
+            return maxValueOfPositionTier;
         }
 
         /// <summary>
