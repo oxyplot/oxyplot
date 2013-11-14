@@ -767,6 +767,7 @@ namespace ExampleLibrary
             var model = new PlotModel("Manual plot margins");
             model.LegendPosition = LegendPosition.RightBottom;
             model.AutoAdjustPlotMargins = false;
+            model.PlotMargins = new OxyThickness(60, 4, 4, 40);
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X") { TickStyle = TickStyle.Outside });
             model.Axes.Add(new LinearAxis(AxisPosition.Left, "Y") { TickStyle = TickStyle.Outside });
             model.Series.Add(new LineSeries("Butterfly curve") { ItemsSource = ButterflyCurve(0, Math.PI * 4, 1000) });

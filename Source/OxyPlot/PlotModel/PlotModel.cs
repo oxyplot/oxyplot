@@ -237,8 +237,8 @@ namespace OxyPlot
 
             this.PlotType = PlotType.XY;
 
-            this.PlotMargins = new OxyThickness(60, 4, 4, 40);
-            this.Padding = new OxyThickness(8, 8, 16, 8);
+            this.PlotMargins = new OxyThickness(4);
+            this.Padding = new OxyThickness(8);
             this.AutoAdjustPlotMargins = true;
 
             this.Background = OxyColors.Undefined;

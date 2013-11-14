@@ -149,7 +149,6 @@ namespace ExampleLibrary
             // http://en.wikipedia.org/wiki/Rose_curve
 
             var m = new PlotModel("Rose curve");
-            m.PlotMargins = new OxyThickness(60, 20, 4, 40);
             m.PlotType = PlotType.Polar;
             m.PlotAreaBorderThickness = 0;
 

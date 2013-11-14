@@ -68,7 +68,12 @@ namespace ExampleLibrary
         [Example("AbsoluteMinimum Y, manual plotmargins")]
         public static PlotModel AbsoluteYmin2()
         {
-            var plot = new PlotModel("Y: AbsoluteMinimum = 0", "AutoAdjustPlotMargins = false") { PlotType = PlotType.Cartesian, AutoAdjustPlotMargins = false };
+            var plot = new PlotModel("Y: AbsoluteMinimum = 0", "AutoAdjustPlotMargins = false")
+                {
+                    PlotType = PlotType.Cartesian,
+                    AutoAdjustPlotMargins = false,
+                    PlotMargins = new OxyThickness(60, 4, 4, 40)
+                };
             var c = OxyColors.DarkBlue;
             plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });
             plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { AbsoluteMinimum = 0, Minimum = 0, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Solid, MajorGridlineColor = OxyColor.FromAColor(40, c), MinorGridlineColor = OxyColor.FromAColor(20, c) });

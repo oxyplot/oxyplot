@@ -42,7 +42,6 @@ namespace ExampleLibrary
                             {
                                 PlotType = PlotType.Polar,
                                 PlotAreaBorderThickness = 0,
-                                PlotMargins = new OxyThickness(60, 20, 4, 40)
                             };
             model.Axes.Add(
                 new AngleAxis(0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
@@ -80,7 +79,6 @@ namespace ExampleLibrary
             {
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = 0,
-                PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
                 new AngleAxis(0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
@@ -101,7 +99,6 @@ namespace ExampleLibrary
             {
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = 0,
-                PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
                 new AngleAxis(0, 180, 45, 15)
