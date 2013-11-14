@@ -150,56 +150,75 @@ namespace OxyPlot
         /// </returns>
         private bool AdjustPlotMargins(IRenderContext rc)
         {
-            bool isAdjusted = false;
-            var newPlotMargins = new Dictionary<AxisPosition, double>
-                {
-                    { AxisPosition.Left, this.ActualPlotMargins.Left },
-                    { AxisPosition.Top, this.ActualPlotMargins.Top },
-                    { AxisPosition.Right, this.ActualPlotMargins.Right },
-                    { AxisPosition.Bottom, this.ActualPlotMargins.Bottom }
-                };
+            var currentMargin = this.ActualPlotMargins;
 
             for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
             {
                 var axesOfPosition = this.Axes.Where(a => a.Position == position).ToList();
 
-                var maxValueOfPositionTier = AdjustAxesPositions(rc, axesOfPosition);
+                var requiredSize = AdjustAxesPositions(rc, axesOfPosition);
 
-                if (maxValueOfPositionTier > newPlotMargins[position])
-                {
-                    newPlotMargins[position] = maxValueOfPositionTier;
-                    isAdjusted = true;
-                }
+                EnsureMarginIsBigEnough(ref currentMargin, requiredSize, position);
             }
 
             // Special case for AngleAxis which is all around the plot
+            var angularAxes = this.Axes.OfType<AngleAxis>().Cast<Axis>().ToList();
+
+            if (angularAxes.Any())
             {
-                var axesOfPosition = this.Axes.OfType<AngleAxis>().Cast<Axis>().ToList();
+                var requiredSize = AdjustAxesPositions(rc, angularAxes);
 
-                var maxValueOfPositionTier = AdjustAxesPositions(rc, axesOfPosition);
-
-                for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
-                {
-                    if (maxValueOfPositionTier > newPlotMargins[position])
-                    {
-                        newPlotMargins[position] = maxValueOfPositionTier;
-                        isAdjusted = true;
-                    }
-                }
+                EnsureMarginIsBigEnough(ref currentMargin, requiredSize);
             }
 
-            if (isAdjusted)
-            {
-                this.ActualPlotMargins = new OxyThickness(
-                    newPlotMargins[AxisPosition.Left],
-                    newPlotMargins[AxisPosition.Top],
-                    newPlotMargins[AxisPosition.Right],
-                    newPlotMargins[AxisPosition.Bottom]);
-            }
+            if (currentMargin.Equals(this.ActualPlotMargins)) return false;
 
-            return isAdjusted;
+            this.ActualPlotMargins = currentMargin;
+            return true;
         }
 
+        /// <summary>
+        /// Increase margin size if needed, do it on all borders
+        /// </summary>
+        private static void EnsureMarginIsBigEnough(ref OxyThickness currentMargin, double minBorderSize)
+        {
+            currentMargin.Bottom = Math.Max(currentMargin.Bottom, minBorderSize);
+            currentMargin.Left = Math.Max(currentMargin.Left, minBorderSize);
+            currentMargin.Right = Math.Max(currentMargin.Right, minBorderSize);
+            currentMargin.Top = Math.Max(currentMargin.Top, minBorderSize);
+        }
+
+        /// <summary>
+        /// Increase margin size if needed, do it on the specified border.
+        /// </summary>
+        private static void EnsureMarginIsBigEnough(ref OxyThickness currentMargin, double minBorderSize, AxisPosition borderPosition)
+        {
+            switch (borderPosition)
+            {
+                case AxisPosition.Bottom:
+                    currentMargin.Bottom = Math.Max(currentMargin.Bottom, minBorderSize);
+                    break;
+
+                case AxisPosition.Left:
+                    currentMargin.Left = Math.Max(currentMargin.Left, minBorderSize);
+                    break;
+
+                case AxisPosition.Right:
+                    currentMargin.Right = Math.Max(currentMargin.Right, minBorderSize);
+                    break;
+
+                case AxisPosition.Top:
+                    currentMargin.Top = Math.Max(currentMargin.Top, minBorderSize);
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Adjust the positions of parallel axes, returns total size
+        /// </summary>
         private double AdjustAxesPositions(IRenderContext rc, IList<Axis> parallelAxes)
         {
             double maxValueOfPositionTier = 0;
