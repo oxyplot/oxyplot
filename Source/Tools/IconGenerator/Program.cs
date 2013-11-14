@@ -259,7 +259,7 @@
                 {
                     var i = (int)((data[x, y] - min) / (max - min) * palette.Colors.Count);
                     i = Math.Min(Math.Max(i, 0), palette.Colors.Count - 1);
-                    pixels[x, y] = palette.Colors[i];
+                    pixels[y, n - 1 - x] = palette.Colors[i];
                 }
             }
 
@@ -299,12 +299,12 @@
                 {
                     var i = (int)((data[x, y] - min) / (max - min) * palette.Colors.Count);
                     i = Math.Min(Math.Max(i, 0), palette.Colors.Count - 1);
-                    pixels[x, y] = palette.Colors[i];
+                    pixels[y, n - 1 - x] = palette.Colors[i];
                 }
             }
 
             var image = OxyImage.Create(pixels, OxyPlot.ImageFormat.Png);
-            
+
             // fix image interpolation artifacts on the edge
             rc.DrawImage(image, 0, 0, n, n, 0, 0, size, size, 1, true);
             rc.DrawRectangle(new OxyRect(0, 0, size, 2), c, OxyColors.Undefined, 0);

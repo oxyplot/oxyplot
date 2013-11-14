@@ -48,12 +48,12 @@
         {
             int w = 266;
             int h = 40;
-            var data = new OxyColor[h, w];
-            for (int i = 0; i < h; i++)
+            var data = new OxyColor[w, h];
+            for (int y = 0; y < h; y++)
             {
-                for (int j = 0; j < w; j++)
+                for (int x = 0; x < w; x++)
                 {
-                    data[i, j] = OxyColor.FromHsv((double)j / w, 1, 1);
+                    data[x, y] = OxyColor.FromHsv((double)x / w, 1, 1);
                 }
             }
 

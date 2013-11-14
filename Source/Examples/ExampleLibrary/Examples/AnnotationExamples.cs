@@ -409,18 +409,18 @@ namespace ExampleLibrary
 
             // create a gradient image of height n
             int n = 256;
-            var imageData1 = new OxyColor[n, 1];
+            var imageData1 = new OxyColor[1, n];
             for (int i = 0; i < n; i++)
             {
-                imageData1[i, 0] = OxyColor.Interpolate(OxyColors.Red, OxyColors.Blue, i / (n - 1.0));
+                imageData1[0, i] = OxyColor.Interpolate(OxyColors.Blue, OxyColors.Red, i / (n - 1.0));
             }
 
             var image1 = OxyImage.Create(imageData1, ImageFormat.Png); // png is required for silverlight
 
             // or create a gradient image of height 2 (requires bitmap interpolation to be supported)
-            var imageData2 = new OxyColor[2, 1];
-            imageData2[1, 0] = OxyColors.Yellow; // top color
-            imageData2[0, 0] = OxyColors.Gray; // bottom color
+            var imageData2 = new OxyColor[1, 2];
+            imageData2[0, 0] = OxyColors.Yellow; // top color
+            imageData2[0, 1] = OxyColors.Gray; // bottom color
 
             var image2 = OxyImage.Create(imageData2, ImageFormat.Png); // png is required for silverlight
 
@@ -467,11 +467,11 @@ namespace ExampleLibrary
 
             // create an image
             var pixels = new OxyColor[2, 2];
-            pixels[0, 0] = OxyColors.Green;
-            pixels[1, 0] = OxyColors.Blue;
-            pixels[0, 1] = OxyColors.Red;
-            pixels[1, 1] = OxyColors.Yellow;
-
+            pixels[0, 0] = OxyColors.Blue;
+            pixels[1, 0] = OxyColors.Yellow;
+            pixels[0, 1] = OxyColors.Green;
+            pixels[1, 1] = OxyColors.Red;
+            
             var image = OxyImage.Create(pixels, ImageFormat.Png);
 
             model.Annotations.Add(
@@ -498,10 +498,10 @@ namespace ExampleLibrary
 
             // create an image
             var pixels = new OxyColor[2, 2];
-            pixels[0, 0] = OxyColors.Green;
-            pixels[1, 0] = OxyColors.Blue;
-            pixels[0, 1] = OxyColors.Red;
-            pixels[1, 1] = OxyColors.Yellow;
+            pixels[0, 0] = OxyColors.Blue;
+            pixels[1, 0] = OxyColors.Yellow;
+            pixels[0, 1] = OxyColors.Green;
+            pixels[1, 1] = OxyColors.Red;
 
             var image = OxyImage.Create(pixels, ImageFormat.Png);
 
@@ -529,10 +529,10 @@ namespace ExampleLibrary
 
             // create an image
             var pixels = new OxyColor[2, 2];
-            pixels[0, 0] = OxyColors.Green;
-            pixels[1, 0] = OxyColors.Blue;
-            pixels[0, 1] = OxyColors.Red;
-            pixels[1, 1] = OxyColors.Yellow;
+            pixels[0, 0] = OxyColors.Blue;
+            pixels[1, 0] = OxyColors.Yellow;
+            pixels[0, 1] = OxyColors.Green;
+            pixels[1, 1] = OxyColors.Red;
 
             var image = OxyImage.Create(pixels, ImageFormat.Png);
 

@@ -51,6 +51,11 @@
     <Compile Include="Axes\AxisTests.cs" />
     <Compile Include="Foundation\OxyColorTests.cs" />
     <Compile Include="Foundation\ListFillerTests.cs" />
+    <Compile Include="Imaging\Deflate\DeflateStreamExtensions.cs" />
+    <Compile Include="Imaging\Deflate\NayukiDeflateTests.cs" />
+    <Compile Include="Imaging\Deflate\DeflateTests.cs" />
+    <Compile Include="Imaging\Deflate\StringBitReader.cs" />
+    <Compile Include="Imaging\Png\PngDecoderTests.cs" />
     <Compile Include="Imaging\TestImages\OxyImageTests.cs" />
     <Compile Include="OxyAssert.cs" />
     <Compile Include="Pdf\PdfExporterTests.cs" />

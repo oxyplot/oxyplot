@@ -205,15 +205,15 @@ namespace OxyPlot.Tests
 
         private static OxyImage CreateImage()
         {
-            var data = new OxyColor[2, 4];
-            data[1, 0] = OxyColors.Blue;
-            data[1, 1] = OxyColors.Green;
-            data[1, 2] = OxyColors.Red;
-            data[1, 3] = OxyColors.White;
-            data[0, 0] = OxyColors.Transparent;
-            data[0, 3] = OxyColor.FromAColor(127, OxyColors.Yellow);
-            data[0, 1] = OxyColor.FromAColor(127, OxyColors.Orange);
-            data[0, 2] = OxyColor.FromAColor(127, OxyColors.Pink);
+            var data = new OxyColor[4, 2];
+            data[0, 0] = OxyColors.Blue;
+            data[1, 0] = OxyColors.Green;
+            data[2, 0] = OxyColors.Red;
+            data[3, 0] = OxyColors.White;
+            data[0, 1] = OxyColors.Transparent;
+            data[3, 1] = OxyColor.FromAColor(127, OxyColors.Yellow);
+            data[1, 1] = OxyColor.FromAColor(127, OxyColors.Orange);
+            data[2, 1] = OxyColor.FromAColor(127, OxyColors.Pink);
             return OxyImage.Create(data, ImageFormat.Png);
         }
 

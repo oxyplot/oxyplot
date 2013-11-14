@@ -39,7 +39,7 @@ namespace OxyPlot
         /// Encodes the specified pixels.
         /// </summary>
         /// <param name="pixels">
-        /// The pixel data (bottom line first).
+        /// The pixel data. The indexing is [x,y] where [0,0] is top-left.
         /// </param>
         /// <returns>
         /// The image data.
@@ -49,7 +49,7 @@ namespace OxyPlot
         /// <summary>
         /// Encodes the specified 8-bit indexed pixels.
         /// </summary>
-        /// <param name="pixels">The pixels.</param>
+        /// <param name="pixels">The indexed pixel data. The indexing is [x,y] where [0,0] is top-left.</param>
         /// <param name="palette">The palette.</param>
         /// <returns>The image data.</returns>
         byte[] Encode(byte[,] pixels, OxyColor[] palette);

@@ -333,7 +333,7 @@ namespace OxyPlot.Series
 
                 return v1 * jx;
             }
-            
+
             if (double.IsNaN(v1))
             {
                 if (double.IsNaN(v0))
@@ -343,7 +343,7 @@ namespace OxyPlot.Series
 
                 return v0 * (1 - jx);
             }
-            
+
             return (v0 * (1 - jx)) + (v1 * jx);
         }
 
@@ -380,12 +380,12 @@ namespace OxyPlot.Series
         {
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
-            var buffer = new OxyColor[n, m];
+            var buffer = new OxyColor[m, n];
             for (int i = 0; i < m; i++)
             {
                 for (int j = 0; j < n; j++)
                 {
-                    buffer[j, i] = this.ColorAxis.GetColor(this.Data[i, j]);
+                    buffer[i, j] = this.ColorAxis.GetColor(this.Data[i, n - 1 - j]);
                 }
             }
 

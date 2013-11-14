@@ -111,42 +111,42 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Diagonal matrix (center defined)")]
-        public static PlotModel DiagonalMatrix()
+        [Example("Diagonal (center defined)")]
+        public static PlotModel Diagonal()
         {
             var data = new double[3, 3];
             data[0, 0] = 1;
             data[1, 1] = 1;
             data[2, 2] = 1;
 
-            var model = new PlotModel("Diagonal matrix");
+            var model = new PlotModel("Diagonal");
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates
-            var hms = new HeatMapSeries { CoordinateDefinition = HeatMapCoordinateDefinition.Center, X0 = 0.5, X1 = 2.5, Y0 = 0.5, Y1 = 2.5, Data = data, Interpolate = false };
+            var hms = new HeatMapSeries { CoordinateDefinition = HeatMapCoordinateDefinition.Center, X0 = 0.5, X1 = 2.5, Y0 = 2.5, Y1 = 0.5, Data = data, Interpolate = false };
             model.Series.Add(hms);
             return model;
         }
 
-        [Example("Diagonal matrix (edge defined)")]
-        public static PlotModel DiagonalMatrix2()
+        [Example("Diagonal (edge defined)")]
+        public static PlotModel Diagonal2()
         {
             var data = new double[3, 3];
             data[0, 0] = 1;
             data[1, 1] = 1;
             data[2, 2] = 1;
 
-            var model = new PlotModel("Diagonal matrix");
+            var model = new PlotModel("Diagonal");
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates
-            var hms = new HeatMapSeries { CoordinateDefinition = HeatMapCoordinateDefinition.Edge, X0 = 0, X1 = 3, Y0 = 0, Y1 = 3, Data = data, Interpolate = false };
+            var hms = new HeatMapSeries { CoordinateDefinition = HeatMapCoordinateDefinition.Edge, X0 = 0, X1 = 3, Y0 = 3, Y1 = 0, Data = data, Interpolate = false };
             model.Series.Add(hms);
             return model;
         }
 
-        [Example("Diagonal matrix (6x6)")]
-        public static PlotModel DiagonalMatrix_6x6()
+        [Example("Diagonal (6x6)")]
+        public static PlotModel Diagonal_6x6()
         {
             // https://oxyplot.codeplex.com/discussions/453174
             var data = new double[6, 6];
@@ -157,7 +157,7 @@ namespace ExampleLibrary
             data[4, 4] = 1;
             data[5, 5] = 1;
 
-            var model = new PlotModel("Diagonal matrix");
+            var model = new PlotModel("Diagonal");
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // note: the coordinates are specifying the centers of the edge cells

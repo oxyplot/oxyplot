@@ -51,12 +51,12 @@ namespace OxyPlot
         /// Indexed color
         /// </summary>
         IndexedColor = 3,
-        
+
         /// <summary>
         /// Gray scale with alpha
         /// </summary>
         GrayScaleWithAlpha = 4,
-        
+
         /// <summary>
         /// True color with alpha
         /// </summary>
@@ -88,12 +88,12 @@ namespace OxyPlot
         /// Sub filter
         /// </summary>
         Sub = 1,
-        
+
         /// <summary>
         /// Up filter
         /// </summary>
         Up = 2,
-        
+
         /// <summary>
         /// Average filter
         /// </summary>
@@ -176,27 +176,27 @@ namespace OxyPlot
         /// Encodes the specified image data to png.
         /// </summary>
         /// <param name="pixels">
-        /// The pixel data (bottom line first).
+        /// The pixel data indexed as [x,y] (bottom line first).
         /// </param>
         /// <returns>
         /// The png image data.
         /// </returns>
         public byte[] Encode(OxyColor[,] pixels)
         {
-            int height = pixels.GetLength(0);
-            int width = pixels.GetLength(1);
+            int width = pixels.GetLength(0);
+            int height = pixels.GetLength(1);
             var bytes = new byte[(width * height * 4) + height];
 
             int k = 0;
-            for (int i = height - 1; i >= 0; i--)
+            for (int y = 0; y < height; y++)
             {
                 bytes[k++] = 0; // Filter
-                for (int j = 0; j < width; j++)
+                for (int x = 0; x < width; x++)
                 {
-                    bytes[k++] = pixels[i, j].R;
-                    bytes[k++] = pixels[i, j].G;
-                    bytes[k++] = pixels[i, j].B;
-                    bytes[k++] = pixels[i, j].A;
+                    bytes[k++] = pixels[x, y].R;
+                    bytes[k++] = pixels[x, y].G;
+                    bytes[k++] = pixels[x, y].B;
+                    bytes[k++] = pixels[x, y].A;
                 }
             }
 

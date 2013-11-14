@@ -120,7 +120,7 @@ namespace OxyPlot
         /// <summary>
         /// Creates an image from 8-bit indexed pixels.
         /// </summary>
-        /// <param name="pixels">The pixels.</param>
+        /// <param name="pixels">The pixels indexed as [x,y]. [0,0] is top-left.</param>
         /// <param name="palette">The palette.</param>
         /// <param name="format">The image format.</param>
         /// <param name="encoderOptions">The encoder options.</param>
@@ -138,7 +138,7 @@ namespace OxyPlot
         /// <summary>
         /// Creates an image from 32-bit true-color pixels.
         /// </summary>
-        /// <param name="pixels">The pixels.</param>
+        /// <param name="pixels">The pixels indexed as [x,y]. [0,0] is top-left.</param>
         /// <param name="format">The image format.</param>
         /// <param name="encoderOptions">The encoder options.</param>
         /// <returns>An <see cref="OxyImage"/></returns>
@@ -167,7 +167,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the pixels of the image.
         /// </summary>
-        /// <returns>The pixels in an array [width,height].</returns>
+        /// <returns>The pixels in an array [width,height]. [0,0] is top-left.</returns>
         public OxyColor[,] GetPixels()
         {
             // TODO: remove when PNG decoder is implemented
