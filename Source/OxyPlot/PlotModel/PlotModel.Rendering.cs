@@ -120,18 +120,18 @@ namespace OxyPlot
             foreach (var axis in axesOfPositionTier)
             {
                 OxySize size = axis.Measure(rc);
-                if (axis.IsHorizontal())
-                {
-                    if (size.Height > maxSizeOfPositionTier)
-                    {
-                        maxSizeOfPositionTier = size.Height;
-                    }
-                }
-                else
+                if (axis.IsVertical())
                 {
                     if (size.Width > maxSizeOfPositionTier)
                     {
                         maxSizeOfPositionTier = size.Width;
+                    }
+                }
+                else // caution: this includes AngleAxis because Position=None
+                {
+                    if (size.Height > maxSizeOfPositionTier)
+                    {
+                        maxSizeOfPositionTier = size.Height;
                     }
                 }
             }
@@ -188,6 +188,41 @@ namespace OxyPlot
                 {
                     newPlotMargins[position] = maxValueOfPositionTier;
                     isAdjusted = true;
+                }
+            }
+
+            // Special case for AngleAxis which is all around the plot
+            {
+                double maxValueOfPositionTier = 0;
+                var axesOfPosition = this.Axes.OfType<AngleAxis>().ToList();
+                foreach (var positionTier in axesOfPosition.Select(a => a.PositionTier).Distinct().OrderBy(l => l))
+                {
+                    var axesOfPositionTier = axesOfPosition.Where(a => a.PositionTier == positionTier).ToList();
+                    double maxSizeOfPositionTier = MaxSizeOfPositionTier(rc, axesOfPositionTier.Cast<Axis>());
+                    double minValueOfPositionTier = maxValueOfPositionTier;
+
+                    if (Math.Abs(maxValueOfPositionTier) > 1e-5)
+                    {
+                        maxValueOfPositionTier += this.AxisTierDistance;
+                    }
+
+                    maxValueOfPositionTier += maxSizeOfPositionTier;
+
+                    foreach (Axis axis in axesOfPositionTier)
+                    {
+                        axis.PositionTierSize = maxSizeOfPositionTier;
+                        axis.PositionTierMinShift = minValueOfPositionTier;
+                        axis.PositionTierMaxShift = maxValueOfPositionTier;
+                    }
+                }
+
+                for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
+                {
+                    if (maxValueOfPositionTier > newPlotMargins[position])
+                    {
+                        newPlotMargins[position] = maxValueOfPositionTier;
+                        isAdjusted = true;
+                    }
                 }
             }
 

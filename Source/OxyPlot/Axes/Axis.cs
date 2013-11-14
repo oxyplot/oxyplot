@@ -1004,28 +1004,7 @@ namespace OxyPlot.Axes
             double width = 0;
             double height = 0;
 
-            if (this.IsHorizontal())
-            {
-                switch (this.TickStyle)
-                {
-                    case TickStyle.Outside:
-                        height += this.MajorTickSize;
-                        break;
-                    case TickStyle.Crossing:
-                        height += this.MajorTickSize * 0.75;
-                        break;
-                }
-
-                height += this.AxisDistance;
-                height += this.AxisTickToLabelDistance;
-                height += maximumTextSize.Height;
-                if (labelTextSize.Height > 0)
-                {
-                    height += this.AxisTitleDistance;
-                    height += labelTextSize.Height;
-                }
-            }
-            else
+            if (this.IsVertical())
             {
                 switch (this.TickStyle)
                 {
@@ -1044,6 +1023,27 @@ namespace OxyPlot.Axes
                 {
                     width += this.AxisTitleDistance;
                     width += labelTextSize.Height;
+                }
+            }
+            else // caution: this includes AngleAxis because Position=None
+            {
+                switch (this.TickStyle)
+                {
+                    case TickStyle.Outside:
+                        height += this.MajorTickSize;
+                        break;
+                    case TickStyle.Crossing:
+                        height += this.MajorTickSize * 0.75;
+                        break;
+                }
+
+                height += this.AxisDistance;
+                height += this.AxisTickToLabelDistance;
+                height += maximumTextSize.Height;
+                if (labelTextSize.Height > 0)
+                {
+                    height += this.AxisTitleDistance;
+                    height += labelTextSize.Height;
                 }
             }
 
