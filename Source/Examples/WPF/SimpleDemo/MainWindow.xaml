@@ -1,0 +1,14 @@
+﻿<Window x:Class="SimpleDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
+        xmlns:simpleDemo="clr-namespace:SimpleDemo"
+        Title="OxyPlot SimpleDemo" Height="480" Width="640">
+    <Window.DataContext>
+        <simpleDemo:MainViewModel />
+    </Window.DataContext>
+    <Grid>
+        <!-- The OxyPlot control is binding to a PlotModel in the MainViewModel -->
+        <oxy:Plot Model="{Binding Model}"/>
+    </Grid>
+</Window>
