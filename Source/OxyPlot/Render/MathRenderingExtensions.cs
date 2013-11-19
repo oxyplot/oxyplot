@@ -107,13 +107,13 @@ namespace OxyPlot
                 return OxySize.Empty;
             }
 
-            if (angle.Equals(0) && (text.Contains("^{") || text.Contains("_{")))
+            if (text.Contains("^{") || text.Contains("_{"))
             {
                 double x = pt.X;
                 double y = pt.Y;
 
                 // Measure
-                var size = InternalDrawMathText(rc, x, y, text, textColor, fontFamily, fontSize, fontWeight, true);
+                var size = InternalDrawMathText(rc, x, y, text, textColor, fontFamily, fontSize, fontWeight, true, angle);
 
                 switch (ha)
                 {
@@ -135,7 +135,7 @@ namespace OxyPlot
                         break;
                 }
 
-                InternalDrawMathText(rc, x, y, text, textColor, fontFamily, fontSize, fontWeight, false);
+                InternalDrawMathText(rc, x, y, text, textColor, fontFamily, fontSize, fontWeight, false, angle);
                 return measure ? size : OxySize.Empty;
             }
 
@@ -209,7 +209,7 @@ namespace OxyPlot
         {
             if (text.Contains("^{") || text.Contains("_{"))
             {
-                return InternalDrawMathText(rc, 0, 0, text, OxyColors.Black, fontFamily, fontSize, fontWeight, true);
+                return InternalDrawMathText(rc, 0, 0, text, OxyColors.Black, fontFamily, fontSize, fontWeight, true, 0.0);
             }
 
             return rc.MeasureText(text, fontFamily, fontSize, fontWeight);
@@ -257,28 +257,38 @@ namespace OxyPlot
             string fontFamily,
             double fontSize,
             double fontWeight,
-            bool measureOnly)
+            bool measureOnly,
+            double angle)
         {
             int i = 0;
+            double angleRadian = (angle * Math.PI) / 180.0;
+            double cosAngle = Math.Round(Math.Cos(angleRadian), 5);
+            double sinAngle = Math.Round(Math.Sin(angleRadian), 5);
 
-            double currentX = x;
-            double maximumX = x;
-            double maxHeight = 0;
+            double currentX = x, maximumX = x;
+            double currentY = y, maximumY = y;
 
             // http://en.wikipedia.org/wiki/Subscript_and_superscript
-            double superscriptY = y + fontSize * SuperAlignment;
+            double superScriptXDisplacement = sinAngle * fontSize * SuperAlignment;
+            double superScriptYDisplacement = cosAngle * fontSize * SuperAlignment;
+
+            double subscriptXDisplacement = sinAngle * fontSize * SubAlignment;
+            double subscriptYDisplacement = cosAngle * fontSize * SubAlignment;
+
             double superscriptFontSize = fontSize * SuperSize;
-            double subscriptY = y + fontSize * SubAlignment;
             double subscriptFontSize = fontSize * SubSize;
 
             Func<double, double, string, double, OxySize> drawText = (xb, yb, text, fSize) =>
                 {
                     if (!measureOnly)
                     {
-                        rc.DrawText(new ScreenPoint(xb, yb), text, textColor, fontFamily, fSize, fontWeight);
+                        rc.DrawText(new ScreenPoint(xb, yb), text, textColor, fontFamily, fSize, fontWeight, angle);
                     }
 
-                    return rc.MeasureText(text, fontFamily, fSize, fontWeight);
+                    var flatSize = rc.MeasureText(text, fontFamily, fSize, fontWeight);
+                    double width = Math.Abs(flatSize.Width * cosAngle + flatSize.Height * sinAngle);
+                    double height = Math.Abs(flatSize.Width * sinAngle + flatSize.Height * cosAngle);
+                    return new OxySize(width, height);
                 };
 
             while (i < s.Length)
@@ -291,13 +301,17 @@ namespace OxyPlot
                     {
                         string supString = s.Substring(i + 2, i1 - i - 2);
                         i = i1 + 1;
-                        var size = drawText(currentX, superscriptY, supString, superscriptFontSize);
+                        double sx = currentX + superScriptXDisplacement;
+                        double sy = currentY + superScriptYDisplacement;
+                        var size = drawText(sx, sy, supString, superscriptFontSize);
                         if (currentX + size.Width > maximumX)
                         {
                             maximumX = currentX + size.Width;
                         }
-
-                        maxHeight = Math.Max(maxHeight, superscriptY - y + size.Height);
+                        if (currentY + size.Height > maximumY)
+                        {
+                            maximumY = currentY + size.Height;
+                        }
 
                         continue;
                     }
@@ -311,13 +325,17 @@ namespace OxyPlot
                     {
                         string subString = s.Substring(i + 2, i1 - i - 2);
                         i = i1 + 1;
-                        var size = drawText(currentX, subscriptY, subString, subscriptFontSize);
+                        double sx = currentX - subscriptXDisplacement;
+                        double sy = currentY + subscriptYDisplacement;
+                        var size = drawText(sx, sy, subString, subscriptFontSize);
                         if (currentX + size.Width > maximumX)
                         {
                             maximumX = currentX + size.Width;
                         }
-
-                        maxHeight = Math.Max(maxHeight, subscriptY - y + size.Height);
+                        if (currentY + size.Height > maximumY)
+                        {
+                            maximumY = currentY + size.Height;
+                        }
 
                         continue;
                     }
@@ -337,14 +355,18 @@ namespace OxyPlot
                     i = i2;
                 }
 
-                currentX = maximumX + 2;
-                var size2 = drawText(currentX, y, regularString, fontSize);
-                currentX += size2.Width + 2;
-                maxHeight = Math.Max(maxHeight, size2.Height);
+                currentX = maximumX + 2 * cosAngle;
+                currentY = maximumY + 2 * sinAngle;
+                var size2 = drawText(currentX, currentY, regularString, fontSize);
+
+                currentX += (size2.Width + 2) * cosAngle;
+                currentY += (size2.Height + 2) * sinAngle;
+
                 maximumX = currentX;
+                maximumY = currentY;
             }
 
-            return new OxySize(maximumX - x, maxHeight);
+            return new OxySize(maximumX - x, maximumY - y);
         }
 
     }
