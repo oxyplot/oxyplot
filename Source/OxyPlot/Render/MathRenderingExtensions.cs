@@ -265,8 +265,8 @@ namespace OxyPlot
             double cosAngle = Math.Round(Math.Cos(angleRadian), 5);
             double sinAngle = Math.Round(Math.Sin(angleRadian), 5);
 
-            double currentX = x, maximumX = x;
-            double currentY = y, maximumY = y;
+            double currentX = x, maximumX = x, minimumX = x;
+            double currentY = y, maximumY = y, minimumY = y;
 
             // http://en.wikipedia.org/wiki/Subscript_and_superscript
             double superScriptXDisplacement = sinAngle * fontSize * SuperAlignment;
@@ -308,9 +308,17 @@ namespace OxyPlot
                         {
                             maximumX = currentX + size.Width;
                         }
+                        if (currentX + size.Width < minimumX)
+                        {
+                            minimumX = currentX + size.Width;
+                        }
                         if (currentY + size.Height > maximumY)
                         {
                             maximumY = currentY + size.Height;
+                        }
+                        if (currentY + size.Height < minimumY)
+                        {
+                            minimumY = currentY + size.Height;
                         }
 
                         continue;
@@ -328,13 +336,21 @@ namespace OxyPlot
                         double sx = currentX - subscriptXDisplacement;
                         double sy = currentY + subscriptYDisplacement;
                         var size = drawText(sx, sy, subString, subscriptFontSize);
-                        if (currentX + size.Width > maximumX)
+                        if (currentX + size.Width * cosAngle > maximumX)
                         {
-                            maximumX = currentX + size.Width;
+                            maximumX = currentX + size.Width * cosAngle;
                         }
-                        if (currentY + size.Height > maximumY)
+                        if (currentX + size.Width * cosAngle < minimumX)
                         {
-                            maximumY = currentY + size.Height;
+                            minimumX = currentX + size.Width * cosAngle;
+                        }
+                        if (currentY + size.Height * sinAngle > maximumY)
+                        {
+                            maximumY = currentY + size.Height * sinAngle;
+                        }
+                        if (currentY + size.Height * sinAngle < minimumY)
+                        {
+                            minimumY = currentY + size.Height * sinAngle;
                         }
 
                         continue;
@@ -362,11 +378,13 @@ namespace OxyPlot
                 currentX += (size2.Width + 2) * cosAngle;
                 currentY += (size2.Height + 2) * sinAngle;
 
-                maximumX = currentX;
-                maximumY = currentY;
+                maximumX = Math.Max(currentX, maximumX);
+                maximumY = Math.Max(currentY, maximumY);
+                minimumX = Math.Min(currentX, minimumX);
+                minimumY = Math.Min(currentY, minimumY);
             }
 
-            return new OxySize(maximumX - x, maximumY - y);
+            return new OxySize(maximumX - minimumX, maximumY - minimumY);
         }
 
     }
