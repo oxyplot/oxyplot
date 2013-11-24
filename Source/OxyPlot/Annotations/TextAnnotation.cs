@@ -138,7 +138,7 @@ namespace OxyPlot.Annotations
             rc.DrawClippedPolygon(
                 this.actualBounds, clippingRect, MinDistSquared, this.Background, this.Stroke, this.StrokeThickness);
 
-            rc.DrawClippedText(
+            rc.DrawClippedMathText(
                 clippingRect,
                 position,
                 this.Text,
