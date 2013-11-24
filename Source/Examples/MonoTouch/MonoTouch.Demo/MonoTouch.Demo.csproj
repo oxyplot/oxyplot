@@ -23,6 +23,8 @@
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
     <MtouchArch>ARMv7</MtouchArch>
+    <MtouchI18n>
+    </MtouchI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -44,8 +46,10 @@
     <ConsolePause>false</ConsolePause>
     <MtouchDebug>true</MtouchDebug>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <IpaPackageName />
-    <MtouchI18n />
+    <IpaPackageName>
+    </IpaPackageName>
+    <MtouchI18n>
+    </MtouchI18n>
     <BuildIpa>true</BuildIpa>
     <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
@@ -58,7 +62,8 @@
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
     <BuildIpa>true</BuildIpa>
-    <IpaPackageName />
+    <IpaPackageName>
+    </IpaPackageName>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -89,17 +94,17 @@
     <Content Include="Images\Icon72x72.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\OxyPlot\OxyPlotMT.csproj">
-      <Project>{A9B53EF9-88CE-4934-8C8F-236ECEEA676D}</Project>
-      <Name>OxyPlotMT</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot.MonoTouch\OxyPlot.MonoTouch.csproj">
-      <Project>{7DCF07B1-B8BD-4EF0-B1FC-2AAC4466B6C6}</Project>
-      <Name>OxyPlot.MonoTouch</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\ExampleLibrary\ExampleLibraryMT.csproj">
       <Project>{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}</Project>
       <Name>ExampleLibraryMT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\OxyPlot.XamarinIOS\OxyPlot.XamarinIOS.csproj">
+      <Project>{7DCF07B1-B8BD-4EF0-B1FC-2AAC4466B6C6}</Project>
+      <Name>OxyPlot.XamarinIOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlotMT.csproj">
+      <Project>{A9B53EF9-88CE-4934-8C8F-236ECEEA676D}</Project>
+      <Name>OxyPlotMT</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

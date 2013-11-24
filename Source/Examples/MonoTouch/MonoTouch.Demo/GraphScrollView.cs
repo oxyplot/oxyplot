@@ -29,7 +29,7 @@ using MonoTouch.UIKit;
 using System.Drawing;
 
 using OxyPlot;
-using OxyPlot.MonoTouch;
+using OxyPlot.XamarinIOS;
 using ExampleLibrary;
 
 namespace MonoTouch.Demo
