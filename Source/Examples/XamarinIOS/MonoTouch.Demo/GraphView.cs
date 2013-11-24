@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GraphScrollView.cs" company="OxyPlot">
+// <copyright file="GraphView.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,38 +24,36 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
 using MonoTouch.UIKit;
 using System.Drawing;
 
 using OxyPlot;
-using OxyPlot.MonoTouch;
+using OxyPlot.XamarinIOS;
 using ExampleLibrary;
 
 namespace MonoTouch.Demo
 {
-	public class GraphScrollView : UIScrollView
+	public class GraphView : UIView
 	{
-		public GraphScrollView (ExampleInfo exampleInfo, RectangleF rect)
-			: base(rect)
+		private ExampleInfo exampleInfo;
+
+		public GraphView (ExampleInfo exampleInfo)
 		{
-			ShowsVerticalScrollIndicator = true;
-			ShowsHorizontalScrollIndicator = true;
-			BouncesZoom = true;
-			PagingEnabled = false;
-			DecelerationRate = UIScrollView.DecelerationRateNormal;
-			BackgroundColor = UIColor.DarkGray;
-			MaximumZoomScale = 5f;
-			MinimumZoomScale = 1f;
-			ContentSize = new SizeF(rect.Size.Width * 5, rect.Size.Height * 5);
+			this.exampleInfo = exampleInfo;
+		}
 
-			var image = new UIImageView(new GraphView(exampleInfo).GetImage(rect));
+		public override void Draw (System.Drawing.RectangleF rect)
+		{
+			var plot = exampleInfo.PlotModel;
 
-			AddSubview(image);
+			plot.PlotMargins = new OxyThickness(5);
+			plot.Background = OxyColors.LightGray;
+			plot.Update(true);
 
-			this.ViewForZoomingInScrollView = delegate(UIScrollView scrollView) {
-				return image;
-			};
+			var context = UIGraphics.GetCurrentContext();
+
+			var renderer = new MonoTouchRenderContext(context);
+			plot.Render(renderer, rect.Width, rect.Height);
 		}
 	}
 }
