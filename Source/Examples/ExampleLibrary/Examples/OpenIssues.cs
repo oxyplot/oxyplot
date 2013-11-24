@@ -34,6 +34,7 @@ namespace ExampleLibrary
     using System.Collections.Generic;
 
     using OxyPlot;
+    using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
@@ -49,6 +50,21 @@ namespace ExampleLibrary
             var bottomAxis = new LinearAxis(AxisPosition.Bottom) { Title = "x_{i}^{j}" };
             plotModel1.Axes.Add(bottomAxis);
             plotModel1.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 100, "x_{i}^{j}"));
+            return plotModel1;
+        }
+
+        [Example("#10018: Sub/superscript in rotated annotations")]
+        public static PlotModel RotatedSubSuperScript()
+        {
+            var s = "x_{A}^{B}";
+            var plotModel1 = new PlotModel { Title = s, Subtitle = s };
+            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Left) { Title = s, Minimum = -1, Maximum = 1 });
+            plotModel1.Axes.Add(new LinearAxis(AxisPosition.Bottom) { Title = s, Minimum = -1, Maximum = 11 });
+            for (int rotation = 0; rotation < 360; rotation += 45)
+            {
+                plotModel1.Annotations.Add(new TextAnnotation { Text = s, Position = new DataPoint(rotation / 360d * 10, 0), Rotation = rotation });
+            }
+
             return plotModel1;
         }
 

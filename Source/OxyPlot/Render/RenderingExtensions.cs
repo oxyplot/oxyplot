@@ -549,6 +549,49 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Draws clipped math text.
+        /// </summary>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="p">The position.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="rotate">The rotation angle.</param>
+        /// <param name="horizontalAlignment">The horizontal align.</param>
+        /// <param name="verticalAlignment">The vertical align.</param>
+        /// <param name="maxSize">Size of the max.</param>
+        public static void DrawClippedMathText(
+            this IRenderContext rc,
+            OxyRect clippingRectangle,
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily = null,
+            double fontSize = 10,
+            double fontWeight = 500,
+            double rotate = 0,
+            HorizontalAlignment horizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment verticalAlignment = VerticalAlignment.Top,
+            OxySize? maxSize = null)
+        {
+            if (rc.SetClip(clippingRectangle))
+            {
+                rc.DrawMathText(p, text, fill, fontFamily, fontSize, fontWeight, rotate, horizontalAlignment, verticalAlignment, maxSize);
+                rc.ResetClip();
+                return;
+            }
+
+            // fall back simply check position
+            if (clippingRectangle.Contains(p.X, p.Y))
+            {
+                rc.DrawMathText(p, text, fill, fontFamily, fontSize, fontWeight, rotate, horizontalAlignment, verticalAlignment, maxSize);
+            }
+        }
+
+        /// <summary>
         /// Draws a line specified by coordinates.
         /// </summary>
         /// <param name="rc">
