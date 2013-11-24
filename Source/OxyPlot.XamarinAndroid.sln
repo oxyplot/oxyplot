@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.MonoForAndroid", "OxyPlot.MonoForAndroid\OxyPlot.MonoForAndroid.csproj", "{E965BA32-9561-4E2A-ADB0-19487B25A939}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlotMfA", "OxyPlot\OxyPlotMfA.csproj", "{08A91765-2C9D-4D2B-B56D-FAE62AB204CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.XamarinAndroid", "OxyPlot.XamarinAndroid\OxyPlot.XamarinAndroid.csproj", "{E965BA32-9561-4E2A-ADB0-19487B25A939}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibraryMfA", "Examples\ExampleLibrary\ExampleLibraryMfA.csproj", "{F4C226B3-0DAB-474C-9466-5EACAFA9B64A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\MonoForAndroid\ExampleBrowser\ExampleBrowser.csproj", "{47BDB77E-C1AD-4784-ACA7-FC2D70C3A2BC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.MonoForAndroid", "OxyPlot.XamarinAndroid\OxyPlot.MonoForAndroid.csproj", "{E965BA32-9561-4E2A-ADB0-19487B25A939}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
