@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotActivity.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
@@ -31,7 +31,7 @@ namespace ExampleBrowser
 {
     using System.Linq;
 
-    using OxyPlot.MonoForAndroid;
+	using OxyPlot.XamarinAndroid;
 
     [Activity(Label = "Plot")]
     public class PlotActivity : Activity
