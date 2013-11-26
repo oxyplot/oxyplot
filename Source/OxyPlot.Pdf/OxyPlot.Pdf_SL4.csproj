@@ -68,9 +68,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
-      <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
-      <Name>OxyPlot</Name>
+    <ProjectReference Include="..\OxyPlot\OxyPlot_SL4.csproj">
+      <Project>{773f6437-dada-4af3-b8be-827334c6885d}</Project>
+      <Name>OxyPlot_SL4</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />

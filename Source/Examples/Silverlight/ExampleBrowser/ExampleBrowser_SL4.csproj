@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -91,10 +91,12 @@
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -105,13 +107,13 @@
       <Project>{388db184-b394-4f9d-8937-aae920caad70}</Project>
       <Name>OxyPlot.Silverlight_SL4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj">
-      <Project>{7a0b35c0-dd17-4964-8e9a-44d6cecdc692}</Project>
-      <Name>OxyPlot</Name>
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot_SL4.csproj">
+      <Project>{773f6437-dada-4af3-b8be-827334c6885d}</Project>
+      <Name>OxyPlot_SL4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ExampleLibrary\ExampleLibrary.csproj">
-      <Project>{facb89e5-53a5-4748-9f5b-e0714ebb37b2}</Project>
-      <Name>ExampleLibrary</Name>
+    <ProjectReference Include="..\..\ExampleLibrary\ExampleLibrary_SL4.csproj">
+      <Project>{6c7c4741-ab5c-48b3-8962-18d8d2315a5d}</Project>
+      <Name>ExampleLibrary_SL4</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />

@@ -80,7 +80,7 @@ namespace ExampleLibrary
             var m = new PlotModel();
 
             var xa = new DateTimeAxis(AxisPosition.Bottom);
-#if PCL
+#if PCL || SILVERLIGHT
             // TimeZone not available in PCL...
 #else
             xa.TimeZone = TimeZoneInfo.FindSystemTimeZoneById(
@@ -160,30 +160,43 @@ namespace ExampleLibrary
             public TimeSpan Sunset { get; set; }
         }
 
-        private static Collection<SunItem> CreateSunData(int year, double lat, double lon, TimeZoneInfo tzi = null)
+        private static Collection<SunItem> CreateSunData(int year, double lat, double lon, Func<DateTime, DateTime> utcToLocalTime)
         {
             var data = new Collection<SunItem>();
             var day = new DateTime(year, 1, 1);
 
             while (day.Year == year)
             {
-                var sunrise = Sun.Calculate(day, lat, lon, true, tzi);
-                var sunset = Sun.Calculate(day, lat, lon, false, tzi);
+                var sunrise = Sun.Calculate(day, lat, lon, true, utcToLocalTime);
+                var sunset = Sun.Calculate(day, lat, lon, false, utcToLocalTime);
                 data.Add(new SunItem { Day = day, Sunrise = sunrise - day, Sunset = sunset - day });
                 day = day.AddDays(1);
             }
+
             return data;
+        }
+
+        public static bool IsDaylightSaving(DateTime time)
+        {
+            // Daylight saving starts last sunday in March and ends last sunday in October
+            // http://en.wikipedia.org/wiki/Daylight_saving_time
+            var start = new DateTime(time.Year, 3, 31, 2, 0, 0);
+            start = start.AddDays(-(int)start.DayOfWeek);
+            var end = new DateTime(time.Year, 10, 31, 3, 0, 0);
+            end = end.AddDays(-(int)end.DayOfWeek);
+            return time >= start && time <= end;
         }
 
         [Example("Sunrise and sunset in Oslo")]
         public static PlotModel SunriseandsunsetinOslo()
         {
             int year = DateTime.Now.Year;
-#if PCL
-            var sunData = CreateSunData(year, 59.91, 10.75);
-#else
-            var sunData = CreateSunData(year, 59.91, 10.75, TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time"));
-#endif
+
+            // Convert UTC time to Western European Time (WET)
+            Func<DateTime, DateTime> utcToLocalTime = utc => utc.AddHours(IsDaylightSaving(utc) ? 2 : 1);
+
+            var sunData = CreateSunData(year, 59.91, 10.75, utcToLocalTime);
+            
             var plotModel1 = new PlotModel("Sunrise and sunset in Oslo", "UTC time");
 
             var dateTimeAxis1 = new DateTimeAxis
