@@ -58,6 +58,7 @@ REM === SILVERLIGHT ===
 mkdir ..\Packages\OxyPlot.Silverlight\lib
 mkdir ..\Packages\OxyPlot.Silverlight\lib\SL4
 mkdir ..\Packages\OxyPlot.Silverlight\lib\SL5
+copy ..\Output\SL4\OxyPlot.??? ..\Packages\OxyPlot.Silverlight\lib\SL4
 copy ..\Output\SL4\OxyPlot.Silverlight.??? ..\Packages\OxyPlot.Silverlight\lib\SL4
 copy ..\Output\SL5\OxyPlot.Silverlight.??? ..\Packages\OxyPlot.Silverlight\lib\SL5
 copy ..\license.txt ..\Packages\OxyPlot.Silverlight
