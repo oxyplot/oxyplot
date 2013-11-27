@@ -87,6 +87,7 @@
     <Compile Include="Examples\BarSeries\TornadoBarSeriesExamples.cs" />
     <Compile Include="Examples\CustomAxisExamples.cs" />
     <Compile Include="Examples\HeatMapSeriesExamples.cs" />
+    <Compile Include="Examples\LinearColorAxisExamples.cs" />
     <Compile Include="Examples\MiscExamples.cs" />
     <Compile Include="Examples\MouseEventExamples.cs" />
     <Compile Include="Examples\ExamplesBase.cs" />
