@@ -45,17 +45,17 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the blue white red (31) palette.
+        /// Gets the blue-white-red palette with 31 colors.
         /// </summary>
         public static OxyPalette BlueWhiteRed31 { get; private set; }
 
         /// <summary>
-        /// Gets the hot (64) palette.
+        /// Gets the hot palette with 64 colors.
         /// </summary>
         public static OxyPalette Hot64 { get; private set; }
 
         /// <summary>
-        /// Gets the hue64 palette.
+        /// Gets the hue palette with 64 colors.
         /// </summary>
         public static OxyPalette Hue64 { get; private set; }
 
@@ -161,6 +161,30 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Creates a hue-based palette from magenta to red.
+        /// </summary>
+        /// <param name="numberOfColors">
+        /// The number of colors.
+        /// </param>
+        /// <returns>
+        /// The palette.
+        /// </returns>
+        /// <remarks>
+        /// This palette contains only distinct colors and with the cool colors (blues) first.
+        /// </remarks>
+        public static OxyPalette HueDistinct(int numberOfColors)
+        {
+            return OxyPalette.Interpolate(
+                numberOfColors,
+                OxyColors.Magenta,
+                OxyColors.Blue,
+                OxyColors.Cyan,
+                OxyColors.Green,
+                OxyColors.Yellow,
+                OxyColors.Red);
+        }
+
+        /// <summary>
         /// Creates a 'jet' palette with the specified number of colors.
         /// </summary>
         /// <param name="numberOfColors">
@@ -169,9 +193,6 @@ namespace OxyPlot
         /// <returns>
         /// A palette.
         /// </returns>
-        /// <remarks>
-        /// See http://www.mathworks.se/help/techdoc/ref/colormap.html.
-        /// </remarks>
         public static OxyPalette Jet(int numberOfColors)
         {
             return OxyPalette.Interpolate(

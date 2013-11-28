@@ -29,7 +29,6 @@ namespace OxyPlot
 {
     using System;
     using System.IO;
-    using System.Linq;
 
     /// <summary>
     /// Provides encoding of bmp images.
@@ -61,19 +60,19 @@ namespace OxyPlot
         /// </returns>
         public byte[] Encode(OxyColor[,] pixels)
         {
-            int height = pixels.GetLength(0);
-            int width = pixels.GetLength(1);
+            int width = pixels.GetLength(0);
+            int height = pixels.GetLength(1);
 
             var bytes = new byte[width * height * 4];
             int k = 0;
-            for (int i = 0; i < height; i++)
+            for (int y = 0; y < height; y++)
             {
-                for (int j = 0; j < width; j++)
+                for (int x = 0; x < width; x++)
                 {
-                    bytes[k++] = pixels[i, j].B;
-                    bytes[k++] = pixels[i, j].G;
-                    bytes[k++] = pixels[i, j].R;
-                    bytes[k++] = pixels[i, j].A;
+                    bytes[k++] = pixels[x, y].B;
+                    bytes[k++] = pixels[x, y].G;
+                    bytes[k++] = pixels[x, y].R;
+                    bytes[k++] = pixels[x, y].A;
                 }
             }
 
@@ -93,8 +92,9 @@ namespace OxyPlot
 
             // Bitmap info header (40 bytes)
             WriteBitmapInfoHeader(w, width, height, 32, bytes.Length, this.options.DpiX, this.options.DpiY);
-			// Bitmap info V4 header (108 bytes)
-			// WriteBitmapV4Header(w, width, height, 32, bytes.Length, this.options.DpiX, this.options.DpiY);
+
+            // Bitmap info V4 header (108 bytes)
+            //// WriteBitmapV4Header(w, width, height, 32, bytes.Length, this.options.DpiX, this.options.DpiY);
 
             // Pixel array (from bottom-left corner)
             w.Write(bytes);
@@ -122,8 +122,8 @@ namespace OxyPlot
                 throw new ArgumentException("Too many colors in the palette.", "palette");
             }
 
-            int height = pixels.GetLength(0);
-            int width = pixels.GetLength(1);
+            int width = pixels.GetLength(0);
+            int height = pixels.GetLength(1);
             var length = width * height;
 
             var ms = new MemoryStream();
@@ -161,11 +161,11 @@ namespace OxyPlot
             // ReSharper disable once PossibleLossOfFraction
             int rowSize = (int)Math.Floor((double)((8 * width) + 31) / 32) * 4;
 
-            for (int i = 0; i < height; i++)
+            for (int y = 0; y < height; y++)
             {
-                for (int j = 0; j < width; j++)
+                for (int x = 0; x < width; x++)
                 {
-                    w.Write(pixels[i, j]);
+                    w.Write(pixels[x, y]);
                 }
 
                 // padding

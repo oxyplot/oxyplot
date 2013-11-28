@@ -25,21 +25,20 @@
 // </copyright>
 // <summary>
 //   Calculation of sunrise/sunset
-//   http://williams.best.vwh.net/sunrise_sunset_algorithm.htm
-//   based on code by Huysentruit Wouter, Fastload-Media.be
-//   Added support for TimeZoneInfo
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
 
 namespace ExampleLibrary
 {
+    using System;
+
     /// <summary>
     /// Calculation of sunrise/sunset
+    /// </summary>
+    /// <remarks>
     /// http://williams.best.vwh.net/sunrise_sunset_algorithm.htm
     /// based on code by Huysentruit Wouter, Fastload-Media.be
-    /// Added support for TimeZoneInfo
-    /// </summary>
+    /// </remarks>
     public static class Sun
     {
         private static double Deg2Rad(double angle)
@@ -55,83 +54,92 @@ namespace ExampleLibrary
         private static double FixValue(double value, double min, double max)
         {
             while (value < min)
-                value += (max - min);
+            {
+                value += max - min;
+            }
 
             while (value >= max)
-                value -= (max - min);
+            {
+                value -= max - min;
+            }
 
             return value;
         }
 
-        public static DateTime Calculate(DateTime date, double latitude, double longitude, bool sunrise, TimeZoneInfo tzi, double zenith = 90.5)
+        public static DateTime Calculate(DateTime date, double latitude, double longitude, bool sunrise, Func<DateTime, DateTime> utcToLocalTime, double zenith = 90.5)
         {
-            //   1. first calculate the day of the year
-            int N = date.DayOfYear;
+            // 1. first calculate the day of the year
+            int n = date.DayOfYear;
 
-            //   2. convert the longitude to hour value and calculate an approximate time
+            // 2. convert the longitude to hour value and calculate an approximate time
             double lngHour = longitude / 15.0;
 
             double t;
 
             if (sunrise)
-                t = N + ((6.0 - lngHour) / 24.0);
+            {
+                t = n + ((6.0 - lngHour) / 24.0);
+            }
             else
-                t = N + ((18.0 - lngHour) / 24.0);
+            {
+                t = n + ((18.0 - lngHour) / 24.0);
+            }
 
-            //   3. calculate the Sun's mean anomaly
-            double M = (0.9856 * t) - 3.289;
+            // 3. calculate the Sun's mean anomaly
+            double m = (0.9856 * t) - 3.289;
 
-            //    4. calculate the Sun's true longitude
-            double L = M + (1.916 * Math.Sin(Deg2Rad(M))) + (0.020 * Math.Sin(Deg2Rad(2 * M))) + 282.634;
-            L = FixValue(L, 0, 360);
+            // 4. calculate the Sun's true longitude
+            double l = m + (1.916 * Math.Sin(Deg2Rad(m))) + (0.020 * Math.Sin(Deg2Rad(2 * m))) + 282.634;
+            l = FixValue(l, 0, 360);
 
-            //    5a. calculate the Sun's right ascension
-            double RA = Rad2Deg(Math.Atan(0.91764 * Math.Tan(Deg2Rad(L))));
-            RA = FixValue(RA, 0, 360);
+            // 5a. calculate the Sun's right ascension
+            double ra = Rad2Deg(Math.Atan(0.91764 * Math.Tan(Deg2Rad(l))));
+            ra = FixValue(ra, 0, 360);
 
-            //    5b. right ascension value needs to be in the same quadrant as L
-            double Lquadrant = (Math.Floor(L / 90.0)) * 90.0;
-            double RAquadrant = (Math.Floor(RA / 90.0)) * 90.0;
-            RA = RA + (Lquadrant - RAquadrant);
+            // 5b. right ascension value needs to be in the same quadrant as L
+            double lquadrant = Math.Floor(l / 90.0) * 90.0;
+            double raquadrant = Math.Floor(ra / 90.0) * 90.0;
+            ra = ra + (lquadrant - raquadrant);
 
-            //    5c. right ascension value needs to be converted into hours
-            RA = RA / 15.0;
+            // 5c. right ascension value needs to be converted into hours
+            ra = ra / 15.0;
 
-            //    6. calculate the Sun's declination
-            double sinDec = 0.39782 * Math.Sin(Deg2Rad(L));
+            // 6. calculate the Sun's declination
+            double sinDec = 0.39782 * Math.Sin(Deg2Rad(l));
             double cosDec = Math.Cos(Math.Asin(sinDec));
 
-            //    7a. calculate the Sun's local hour angle
+            // 7a. calculate the Sun's local hour angle
             double cosH = (Math.Cos(Deg2Rad(zenith)) - (sinDec * Math.Sin(Deg2Rad(latitude)))) /
                           (cosDec * Math.Cos(Deg2Rad(latitude)));
 
-            //    7b. finish calculating H and convert into hours
-            double H;
+            // 7b. finish calculating H and convert into hours
+            double h;
 
             if (sunrise)
-                H = 360.0 - Rad2Deg(Math.Acos(cosH));
+            {
+                h = 360.0 - Rad2Deg(Math.Acos(cosH));
+            }
             else
-                H = Rad2Deg(Math.Acos(cosH));
+            {
+                h = Rad2Deg(Math.Acos(cosH));
+            }
 
-            H = H / 15.0;
+            h = h / 15.0;
 
-            //    8. calculate local mean time of rising/setting
-            double T = H + RA - (0.06571 * t) - 6.622;
+            // 8. calculate local mean time of rising/setting
+            double localMeanTime = h + ra - (0.06571 * t) - 6.622;
 
-            //    9. adjust back to UTC
-            double UT = T - lngHour;
+            // 9. adjust back to UTC
+            double utc = localMeanTime - lngHour;
 
-            //    10. convert UT value to local time zone of latitude/longitude
+            // 10. convert UT value to local time zone of latitude/longitude
+            date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
+            var utctime = date.AddHours(utc);
+            var localTime = utcToLocalTime(utctime);
 
-            var utctime = date.Date.AddHours(UT);
-#if PCL
-            var localtime = utctime;
-#else
-            var localtime = TimeZoneInfo.ConvertTimeFromUtc(utctime, tzi);
-#endif
-            UT = (localtime - date).TotalHours;
-            UT = FixValue(UT, 0, 24);
-            return date.AddHours(UT);
+            utc = (localTime - date).TotalHours;
+            utc = FixValue(utc, 0, 24);
+            return date.AddHours(utc);
         }
     }
 

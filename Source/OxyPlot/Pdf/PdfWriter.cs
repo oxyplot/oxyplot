@@ -166,7 +166,11 @@
 
         public void Dispose()
         {
+#if NET35
+            this.w.Close();
+#else
             this.w.Dispose();
+#endif
         }
     }
 }

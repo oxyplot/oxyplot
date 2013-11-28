@@ -65,6 +65,7 @@ namespace MonoTouch.Demo
 			               new SizeF(UIScreen.MainScreen.ApplicationFrame.Size.Width,
 			          UIScreen.MainScreen.ApplicationFrame.Height -
 			          UIScreen.MainScreen.ApplicationFrame.Top - 10)));
+			scrollView.BackgroundColor = UIColor.White;
 			View = scrollView;
 		}
 
