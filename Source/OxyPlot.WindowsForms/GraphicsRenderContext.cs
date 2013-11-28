@@ -85,13 +85,19 @@ namespace OxyPlot.WindowsForms
         /// <param name="thickness">The thickness.</param>
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
+            var isStroked = stroke.IsVisible() && thickness > 0;
+
             if (fill.IsVisible())
             {
-                this.g.FillEllipse(
-                    fill.ToBrush(), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
+                if (!isStroked)
+                {
+                    this.g.SmoothingMode = SmoothingMode.HighQuality;
+                }
+
+                this.g.FillEllipse(fill.ToBrush(), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
             }
 
-            if (stroke.IsInvisible() || thickness <= 0)
+            if (!isStroked)
             {
                 return;
             }
@@ -471,7 +477,7 @@ namespace OxyPlot.WindowsForms
 
             return pen;
         }
-        
+
         /// <summary>
         /// Converts a double array to a float array.
         /// </summary>
