@@ -46,6 +46,7 @@ namespace OxyPlot.Axes
             this.Position = AxisPosition.None;
             this.IsPanEnabled = false;
             this.IsZoomEnabled = false;
+            this.Palette = OxyPalettes.Jet(200);
 
             this.LowColor = OxyColors.Undefined;
             this.HighColor = OxyColors.Undefined;
@@ -177,6 +178,11 @@ namespace OxyPlot.Axes
             if (this.Position == AxisPosition.None)
             {
                 return;
+            }
+
+            if (this.Palette == null)
+            {
+                throw new InvalidOperationException("No Palette defined for color axis.");
             }
 
             if (pass == 0)
