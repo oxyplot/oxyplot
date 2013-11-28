@@ -48,7 +48,7 @@ namespace OxyPlot
         /// Decodes an image from the specified stream.
         /// </summary>
         /// <param name="s">The stream.</param>
-        /// <returns>The 32-bit pixel data.</returns>
+        /// <returns>The 32-bit pixel data. The indexing is [x,y] where [0,0] is top-left.</returns>
         OxyColor[,] Decode(Stream s);
     }
 }

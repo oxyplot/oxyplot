@@ -46,6 +46,7 @@ namespace OxyPlot.Axes
             this.Position = AxisPosition.None;
             this.IsPanEnabled = false;
             this.IsZoomEnabled = false;
+            this.Palette = OxyPalettes.Jet(200);
 
             this.LowColor = OxyColors.Undefined;
             this.HighColor = OxyColors.Undefined;
@@ -68,6 +69,14 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <value> The palette. </value>
         public OxyPalette Palette { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to render the colors as an image.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the rendering should use an image; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderAsImage { get; set; }
 
         /// <summary>
         /// Gets the color.
@@ -131,7 +140,7 @@ namespace OxyPlot.Axes
             {
                 return int.MinValue;
             }
-            
+
             if (!this.LowColor.IsUndefined() && value < this.ActualMinimum)
             {
                 return 0;
@@ -171,6 +180,11 @@ namespace OxyPlot.Axes
                 return;
             }
 
+            if (this.Palette == null)
+            {
+                throw new InvalidOperationException("No Palette defined for color axis.");
+            }
+
             if (pass == 0)
             {
                 double distance = this.AxisDistance;
@@ -199,42 +213,62 @@ namespace OxyPlot.Axes
                         break;
                 }
 
-                Action<double, double, OxyColor> drawColorRect = (ylow, yhigh, color) =>
+                if (this.RenderAsImage)
+                {
+                    var axisLength = this.Transform(this.ActualMaximum) - this.Transform(this.ActualMinimum);
+                    bool reverse = axisLength > 0;
+                    axisLength = Math.Abs(axisLength);
+
+                    if (this.IsHorizontal())
                     {
-                        double ymin = Math.Min(ylow, yhigh);
-                        double ymax = Math.Max(ylow, yhigh);
-                        rc.DrawRectangle(
-                            this.IsHorizontal()
-                                ? new OxyRect(ymin, top, ymax - ymin, height)
-                                : new OxyRect(left, ymin, width, ymax - ymin),
-                            color,
-                            OxyColors.Undefined);
-                    };
-
-                int n = this.Palette.Colors.Count;
-                for (int i = 0; i < n; i++)
-                {
-                    double ylow = this.Transform(this.GetLowValue(i));
-                    double yhigh = this.Transform(this.GetHighValue(i));
-                    drawColorRect(ylow, yhigh, this.Palette.Colors[i]);
+                        var colorAxisImage = this.GenerateColorAxisImage(reverse);
+                        rc.DrawImage(colorAxisImage, left, top, axisLength, height, 1, true);
+                    }
+                    else
+                    {
+                        var colorAxisImage = this.GenerateColorAxisImage(reverse);
+                        rc.DrawImage(colorAxisImage, left, top, width, axisLength, 1, true);
+                    }
                 }
-
-                double highLowLength = 10;
-                if (this.IsHorizontal())
+                else
                 {
-                    highLowLength *= -1;
-                }
+                    Action<double, double, OxyColor> drawColorRect = (ylow, yhigh, color) =>
+                                       {
+                                           double ymin = Math.Min(ylow, yhigh);
+                                           double ymax = Math.Max(ylow, yhigh) + 0.5;
+                                           rc.DrawRectangle(
+                                               this.IsHorizontal()
+                                                   ? new OxyRect(ymin, top, ymax - ymin, height)
+                                                   : new OxyRect(left, ymin, width, ymax - ymin),
+                                               color,
+                                               OxyColors.Undefined);
+                                       };
 
-                if (!this.LowColor.IsUndefined())
-                {
-                    double ylow = this.Transform(this.ActualMinimum);
-                    drawColorRect(ylow, ylow + highLowLength, this.LowColor);
-                }
+                    int n = this.Palette.Colors.Count;
+                    for (int i = 0; i < n; i++)
+                    {
+                        double ylow = this.Transform(this.GetLowValue(i));
+                        double yhigh = this.Transform(this.GetHighValue(i));
+                        drawColorRect(ylow, yhigh, this.Palette.Colors[i]);
+                    }
 
-                if (!this.HighColor.IsUndefined())
-                {
-                    double yhigh = this.Transform(this.ActualMaximum);
-                    drawColorRect(yhigh, yhigh - highLowLength, this.HighColor);
+                    double highLowLength = 10;
+                    if (this.IsHorizontal())
+                    {
+                        highLowLength *= -1;
+                    }
+
+                    if (!this.LowColor.IsUndefined())
+                    {
+                        double ylow = this.Transform(this.ActualMinimum);
+                        drawColorRect(ylow, ylow + highLowLength, this.LowColor);
+                    }
+
+                    if (!this.HighColor.IsUndefined())
+                    {
+                        double yhigh = this.Transform(this.ActualMaximum);
+                        drawColorRect(yhigh, yhigh - highLowLength, this.HighColor);
+                    }
                 }
             }
 
@@ -268,6 +302,34 @@ namespace OxyPlot.Axes
         {
             return ((double)paletteIndex / this.Palette.Colors.Count * (this.ActualMaximum - this.ActualMinimum))
                    + this.ActualMinimum;
+        }
+
+        /// <summary>
+        /// Generates the image used to render the color axis.
+        /// </summary>
+        /// <param name="reverse">Reverse the colors if set to <c>true</c>.</param>
+        /// <returns>
+        /// An <see cref="OxyImage" /> used to render the color axis.
+        /// </returns>
+        private OxyImage GenerateColorAxisImage(bool reverse)
+        {
+            int n = this.Palette.Colors.Count;
+            var buffer = this.IsHorizontal() ? new OxyColor[n, 1] : new OxyColor[1, n];
+            for (var i = 0; i < n; i++)
+            {
+                var color = this.Palette.Colors[i];
+                var i2 = reverse ? n - 1 - i : i;
+                if (this.IsHorizontal())
+                {
+                    buffer[i2, 0] = color;
+                }
+                else
+                {
+                    buffer[0, i2] = color;
+                }
+            }
+
+            return OxyImage.Create(buffer, ImageFormat.Png);
         }
     }
 }

@@ -11,9 +11,11 @@
     <RootNamespace>OxyPlot</RootNamespace>
     <AssemblyName>OxyPlot</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile136</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -110,6 +112,16 @@
     <Compile Include="Imaging\Png\PngEncoder.cs" />
     <Compile Include="Imaging\Png\PngEncoderOptions.cs" />
     <None Include="Imaging\Jpeg\JpegDecoder.cs" />
+    <Compile Include="Imaging\Deflate\Arrays.cs" />
+    <Compile Include="Imaging\Deflate\BitReader.cs" />
+    <Compile Include="Imaging\Deflate\ByteBitReader.cs" />
+    <Compile Include="Imaging\Deflate\CanonicalCode.cs" />
+    <Compile Include="Imaging\Deflate\CircularDictionary.cs" />
+    <Compile Include="Imaging\Deflate\CodeTree.cs" />
+    <Compile Include="Imaging\Deflate\Deflate.cs" />
+    <Compile Include="Imaging\Deflate\InternalNode.cs" />
+    <Compile Include="Imaging\Deflate\Leaf.cs" />
+    <Compile Include="Imaging\Deflate\Node.cs" />
     <Compile Include="Svg\SvgRenderContext.cs" />
     <Compile Include="Svg\SvgWriter.cs" />
     <Compile Include="Svg\SvgExporter.cs" />
@@ -256,6 +268,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Pdf\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Imaging\Deflate\Readme.md" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -145,7 +145,7 @@
 
             if (this.pixels == null || this.pixels.GetLength(0) != height || this.pixels.GetLength(1) != width)
             {
-                this.pixels = new OxyColor[height, width];
+                this.pixels = new OxyColor[width, height];
             }
 
             var p = this.pixels;
@@ -154,7 +154,7 @@
                 for (int x = 0; x < width; x++)
                 {
                     // transform from screen to magnitude/angle
-                    var sp = new ScreenPoint(dest.Left + x, dest.Bottom - y);
+                    var sp = new ScreenPoint(dest.Left + x, dest.Top + y);
                     var xy = this.InverseTransform(sp);
                     double angle = xy.Y;
                     double magnitude = xy.X;
@@ -173,12 +173,12 @@
                         var value = this.GetValue(ii, jj);
 
                         // use the color axis to get the color
-                        p[y, x] = OxyColor.FromAColor(160, this.ColorAxis.GetColor(value));
+                        p[x, y] = OxyColor.FromAColor(160, this.ColorAxis.GetColor(value));
                     }
                     else
                     {
                         // outside the range of the Data array
-                        p[y, x] = OxyColors.Transparent;
+                        p[x, y] = OxyColors.Transparent;
                     }
                 }
             }
@@ -215,18 +215,18 @@
                 int height = this.ImageSize;
                 if (this.pixels == null || this.pixels.GetLength(0) != height || this.pixels.GetLength(1) != width)
                 {
-                    this.pixels = new OxyColor[height, width];
+                    this.pixels = new OxyColor[width, height];
                 }
 
                 var p = this.pixels;
-                for (int i = 0; i < height; i++)
+                for (int yi = 0; yi < height; yi++)
                 {
-                    for (int j = 0; j < width; j++)
+                    for (int xi = 0; xi < width; xi++)
                     {
-                        double x = (j - width * 0.5) / (width * 0.5) * this.Magnitude1;
-                        double y = (i - height * 0.5) / (height * 0.5) * this.Magnitude1;
+                        double x = (xi - width * 0.5) / (width * 0.5) * this.Magnitude1;
+                        double y = -(yi - height * 0.5) / (height * 0.5) * this.Magnitude1;
 
-                        double angle = Math.Atan2(i - height * 0.5, j - width * 0.5) / Math.PI * 180;
+                        double angle = Math.Atan2(y, x) / Math.PI * 180;
                         double magnitude = Math.Sqrt(x * x + y * y);
 
                         // transform to indices in the Data array
@@ -238,12 +238,12 @@
                             var value = this.GetValue(ii, jj);
 
                             // use the color axis to get the color
-                            p[i, j] = OxyColor.FromAColor(160, this.ColorAxis.GetColor(value));
+                            p[xi, yi] = OxyColor.FromAColor(160, this.ColorAxis.GetColor(value));
                         }
                         else
                         {
                             // outside the range of the Data array
-                            p[i, j] = OxyColors.Transparent;
+                            p[xi, yi] = OxyColors.Transparent;
                         }
                     }
                 }

@@ -122,13 +122,13 @@
                     this.TrackerFormatString,
                     null,
                     this.Title,
-                    i, 
-                    j, 
+                    i,
+                    j,
                     value);
                 return new TrackerHitResult(this, dp, point, null, -1, text);
             }
 
-            return null; 
+            return null;
         }
 
         /// <summary>
@@ -148,14 +148,15 @@
             var p0 = this.Transform(0, 0);
             var p1 = this.Transform(n, m);
 
+            // note matrix index [i,j] maps to image index [j,i]
             if (this.image == null)
             {
-                var pixels = new OxyColor[m, n];
+                var pixels = new OxyColor[n, m];
                 for (int i = 0; i < m; i++)
                 {
                     for (int j = 0; j < n; j++)
                     {
-                        pixels[i, j] = Math.Abs(this.Matrix[m - 1 - i, j]) <= this.ZeroTolerance ? OxyColors.Transparent : this.NotZeroColor;
+                        pixels[j, i] = Math.Abs(this.Matrix[i, j]) <= this.ZeroTolerance ? OxyColors.Transparent : this.NotZeroColor;
                     }
                 }
 
@@ -168,7 +169,6 @@
             var w = Math.Abs(p0.X - p1.X);
             var h = Math.Abs(p0.Y - p1.Y);
             rc.DrawClippedImage(clip, this.image, x0, y0, w, h, 1, false);
-
 
             var points = new List<ScreenPoint>();
             if (this.GridInterval > 0)

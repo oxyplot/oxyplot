@@ -76,28 +76,29 @@ namespace OxyPlot
                 switch (type)
                 {
                     case "pHYs":
-                    {
-                        if (length != 9)
                         {
-                            throw new FormatException("Wrong length of pHYs chunk.");
+                            if (length != 9)
+                            {
+                                throw new FormatException("Wrong length of pHYs chunk.");
+                            }
+
+                            var ppux = inputReader.ReadBigEndianUInt32();
+                            var ppuy = inputReader.ReadBigEndianUInt32();
+                            var unit = inputReader.ReadByte();
+                            dpix = ppux * 0.0254;
+                            dpiy = ppuy * 0.0254;
+                            break;
                         }
 
-                        var ppux = inputReader.ReadBigEndianUInt32();
-                        var ppuy = inputReader.ReadBigEndianUInt32();
-                        var unit = inputReader.ReadByte();
-                        dpix = ppux * 0.0254;
-                        dpiy = ppuy * 0.0254;
-                        break;
-                    }
-
                     default:
-                    {
-                        ms.Position += length;
-                        break;
-                    }
+                        {
+                            ms.Position += length;
+                            break;
+                        }
                 }
 
-                var crc = inputReader.ReadBigEndianUInt32();
+                // Read CRC
+                inputReader.ReadBigEndianUInt32();
             }
 
             return new OxyImageInfo { Width = width, Height = height, DpiX = dpix, DpiY = dpiy, BitsPerPixel = bitDepth };
@@ -108,7 +109,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="s">The stream.</param>
         /// <returns>
-        /// The 32-bit pixel data.
+        /// The 32-bit pixel data, indexed as [x,y].
         /// </returns>
         public OxyColor[,] Decode(Stream s)
         {
@@ -117,13 +118,13 @@ namespace OxyPlot
             var inputReader = new BinaryReader(s);
             var signature = inputReader.ReadBytes(8);
             if (signature[0] != 0x89 || signature[1] != 0x50 || signature[2] != 0x4E || signature[3] != 0x47
-                || signature[4] != 0x0D || signature[5] != 0x0A9 || signature[6] != 0x1A || signature[7] != 0x0A)
+                || signature[4] != 0x0D || signature[5] != 0x0A || signature[6] != 0x1A || signature[7] != 0x0A)
             {
                 throw new FormatException("Invalid signature.");
             }
 
             var headerLength = inputReader.ReadBigEndianUInt32();
-            if (headerLength != 24)
+            if (headerLength != 13)
             {
                 throw new FormatException("Header not supported.");
             }
@@ -134,8 +135,8 @@ namespace OxyPlot
                 throw new FormatException("Invalid header.");
             }
 
-            var width = inputReader.ReadBigEndianUInt32();
-            var height = inputReader.ReadBigEndianUInt32();
+            var width = (int)inputReader.ReadBigEndianUInt32();
+            var height = (int)inputReader.ReadBigEndianUInt32();
             var bitDepth = inputReader.ReadByte();
             var colorType = (ColorType)inputReader.ReadByte();
             var compressionMethod = (CompressionMethod)inputReader.ReadByte();
@@ -144,16 +145,6 @@ namespace OxyPlot
             var headerCRC = inputReader.ReadBigEndianUInt32();
             double dpix = 96;
             double dpiy = 96;
-
-            /*
-            Console.WriteLine("Width:" + width);
-            Console.WriteLine("Height:" + height);
-            Console.WriteLine("BitDepth:" + bitDepth);
-            Console.WriteLine("ColorType:" + (ColorType)colorType);
-            Console.WriteLine("CompressionMethod:" + (CompressionMethod)compressionMethod);
-            Console.WriteLine("FilterMethod:" + (FilterMethod)filterMethod);
-            Console.WriteLine("InterlaceMethod:" + (InterlaceMethod)interlaceMethod);
-            */
 
             if (bitDepth != 8)
             {
@@ -196,46 +187,44 @@ namespace OxyPlot
                         throw new NotImplementedException();
 
                     case "IDAT":
-                    {
-                        var method = inputReader.ReadByte();
-                        var check = inputReader.ReadByte();
-                        var bytes = inputReader.ReadBytes(length - 6);
-                        var expectedCheckSum = inputReader.ReadBigEndianUInt32();
-
-                        var deflatedBytes = Deflate(bytes);
-                        var actualCheckSum = PngEncoder.Adler32(deflatedBytes);
-
-                        if (actualCheckSum != expectedCheckSum)
                         {
-                            throw new FormatException("Invalid checksum.");
-                        }
+                            var method = inputReader.ReadByte();
+                            var check = inputReader.ReadByte();
+                            var bytes = inputReader.ReadBytes(length - 6);
+                            var expectedCheckSum = inputReader.ReadBigEndianUInt32();
 
-                        ms.Write(deflatedBytes, 0, deflatedBytes.Length);
-                        break;
-                    }
+                            var deflatedBytes = Deflate(bytes);
+                            var actualCheckSum = PngEncoder.Adler32(deflatedBytes);
+
+                            if (actualCheckSum != expectedCheckSum)
+                            {
+                                throw new FormatException("Invalid checksum.");
+                            }
+
+                            ms.Write(deflatedBytes, 0, deflatedBytes.Length);
+                            break;
+                        }
 
                     case "pHYs":
-                    {
-                        if (length != 9)
                         {
-                            throw new FormatException("Wrong length of pHYs chunk.");
+                            if (length != 9)
+                            {
+                                throw new FormatException("Wrong length of pHYs chunk.");
+                            }
+
+                            var ppux = inputReader.ReadBigEndianUInt32();
+                            var ppuy = inputReader.ReadBigEndianUInt32();
+                            var unit = inputReader.ReadByte();
+                            dpix = ppux * 0.0254;
+                            dpiy = ppuy * 0.0254;
+                            break;
                         }
 
-                        var ppux = inputReader.ReadBigEndianUInt32();
-                        var ppuy = inputReader.ReadBigEndianUInt32();
-                        var unit = inputReader.ReadByte();
-                        dpix = ppux * 0.0254;
-                        dpiy = ppuy * 0.0254;
-                        // Console.WriteLine("dpix:" + dpix);
-                        // Console.WriteLine("dpiy:" + dpiy);
-                        break;
-                    }
-
                     default:
-                    {
-                        var bytes = inputReader.ReadBytes(length);
-                        break;
-                    }
+                        {
+                            var bytes = inputReader.ReadBytes(length);
+                            break;
+                        }
                 }
 
                 var crc = inputReader.ReadBigEndianUInt32();
@@ -243,26 +232,35 @@ namespace OxyPlot
 
             var pixels = new OxyColor[width, height];
             ms.Position = 0;
-            //var bitReader = new ByteBitReader(ms);
-            for (int y = 0; y < height; y++)
+            for (int y = height - 1; y >= 0; y--)
             {
                 ms.ReadByte();
-                //var filterType = bitReader.readByte();
                 for (int x = 0; x < width; x++)
                 {
-                    byte red, green, blue, alpha = 255;
-                    red = (byte)ms.ReadByte();
-                    green = (byte)ms.ReadByte();
-                    blue = (byte)ms.ReadByte();
-                    alpha = (byte)ms.ReadByte();
-                    //red = (byte)bitReader.ReadBits(bitDepth);
-                    //green = (byte)bitReader.ReadBits(bitDepth);
-                    //blue = (byte)bitReader.ReadBits(bitDepth);
-                    //alpha = (byte)bitReader.ReadBits(bitDepth);
+                    var red = (byte)ms.ReadByte();
+                    var green = (byte)ms.ReadByte();
+                    var blue = (byte)ms.ReadByte();
+                    var alpha = (byte)ms.ReadByte();
 
                     pixels[x, y] = OxyColor.FromArgb(alpha, red, green, blue);
                 }
             }
+
+            /*
+            var bitReader = new ByteBitReader(ms);
+            for (int y = 0; y < height; y++)
+            {
+                var filterType = bitReader.readByte();
+                for (int x = 0; x < width; x++)
+                {
+                    var red = (byte)bitReader.ReadBits(bitDepth);
+                    var green = (byte)bitReader.ReadBits(bitDepth);
+                    var blue = (byte)bitReader.ReadBits(bitDepth);
+                    var alpha = (byte)bitReader.ReadBits(bitDepth);
+
+                    pixels[x, y] = OxyColor.FromArgb(alpha, red, green, blue);
+                }
+            }*/
 
             if (ms.Position != ms.Length)
             {
@@ -292,8 +290,10 @@ namespace OxyPlot
             }
 
             return outputStream.ToArray();
+#elif BCL_COMPRESSION
+            // TODO: https://www.nuget.org/packages/Microsoft.Bcl.Compression/
 #else
-            throw new NotImplementedException();
+            return OxyPlot.Deflate.Decompress(bytes);
 #endif
         }
     }

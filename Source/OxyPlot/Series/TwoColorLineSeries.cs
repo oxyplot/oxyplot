@@ -100,6 +100,8 @@ namespace OxyPlot.Series
         /// </param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
+            base.SetDefaultValues(model);
+
             if (this.Color2.IsAutomatic())
             {
                 this.defaultColor2 = model.GetDefaultColor();

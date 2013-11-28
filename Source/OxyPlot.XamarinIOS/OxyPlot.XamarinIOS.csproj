@@ -33,16 +33,16 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="XamarinIOS" />
+    <Reference Include="monotouch" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="XamarinIOSRenderContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OxyPlot\OxyPlotMT.csproj">
-      <Project>{A9B53EF9-88CE-4934-8C8F-236ECEEA676D}</Project>
-      <Name>OxyPlotMT</Name>
+    <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
+      <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
+      <Name>OxyPlot</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

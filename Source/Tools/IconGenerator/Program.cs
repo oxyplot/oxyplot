@@ -1,11 +1,14 @@
 ﻿namespace IconGenerator
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Drawing;
+    using System.Drawing.Drawing2D;
     using System.Drawing.Imaging;
     using System.Drawing.Text;
     using System.IO;
+    using System.Linq;
 
     using OxyPlot;
     using OxyPlot.Axes;
@@ -34,19 +37,30 @@
 
             // http://msdn.microsoft.com/en-us/library/windows/desktop/aa511280.aspx#size
             // https://github.com/audreyr/favicon-cheat-sheet
-            int[] sizes = { 512, 256, 228, 195, 152, 144, 128, 120, 114, 96, 72, 64, 57, 48, 40, 32, 24, 20, 16 };
+            // https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
+            var sizes = new List<int>();
+            sizes.AddRange(new[] { 256, 64, 48, 32, 24, 16 }); // Standard icon sizes
+            sizes.AddRange(new[] { 150, 310, 126, 98, 70, 56, 270, 210, 120, 558, 434, 310, 248, 54, 42, 30, 24, 256, 48, 32, 16, 90, 70, 50, 43, 33, 24, 1116, 540, 868, 420, 620, 300 }); // Windows store app
+            sizes.AddRange(new[] { 120, 152, 76, 1024, 80, 40, 58, 29, 44, 22, 50, 25 }); // Apple
+            sizes.AddRange(new[] { 512, 256, 248, 228, 195, 144, 128, 114, 100, 96, 72, 57, 42, 40, 33, 20 }); // Other
+            sizes.AddRange(new[] { 2048 }); // Really big
             pngOptimizer = Path.GetFullPath(@"..\..\..\..\..\Tools\TruePNG\TruePNG.exe");
 
             var iconRenderer = new Candidate5();
+            bool generateSvg = false;
 
-            foreach (var size in sizes)
+            foreach (var size in sizes.Distinct().OrderBy(x => x))
             {
                 // CreateBitmap(size, icon1, string.Format("v1_{0}.png", size));
                 var pngFile = string.Format("OxyPlot_{0}.png", size);
                 var svgFile = string.Format("OxyPlot_{0}.svg", size);
                 Console.WriteLine("Generating {0}x{0} icon", size);
-                Console.WriteLine("  Saving {0}", svgFile);
-                CreateSvg(size, iconRenderer, svgFile);
+                if (generateSvg)
+                {
+                    Console.WriteLine("  Saving {0}", svgFile);
+                    CreateSvg(size, iconRenderer, svgFile);
+                }
+
                 Console.WriteLine("  Saving {0}", pngFile);
                 CreateBitmap(size, iconRenderer, pngFile);
                 Console.WriteLine("  Optimizing {0}", pngFile);
@@ -54,48 +68,106 @@
                 Console.WriteLine();
             }
 
-            var ico = new IcoMaker.Icon();
-            ico.AddImage("OxyPlot_16.png");
-            ico.AddImage("OxyPlot_24.png");
-            ico.AddImage("OxyPlot_32.png");
-            ico.AddImage("OxyPlot_48.png");
-            ico.AddImage("OxyPlot_64.png");
-            ico.AddImage("OxyPlot_256.png");
-            ico.Save("OxyPlot.ico");
+            var icon = new IcoMaker.Icon();
+            icon.AddImage("OxyPlot_16.png");
+            icon.AddImage("OxyPlot_24.png");
+            icon.AddImage("OxyPlot_32.png");
+            icon.AddImage("OxyPlot_48.png");
+            icon.AddImage("OxyPlot_64.png");
+            icon.AddImage("OxyPlot_256.png");
+            icon.Save("OxyPlot.ico");
+
+            var favIcon = new IcoMaker.Icon();
+            favIcon.AddImage("OxyPlot_16.png");
+            favIcon.AddImage("OxyPlot_32.png");
+            favIcon.AddImage("OxyPlot_48.png");
+            favIcon.AddImage("OxyPlot_64.png");
+            favIcon.Save("favicon.ico");
 
             // Process.Start("Explorer.exe", "/select," + Path.GetFullPath("OxyPlot.ico"));
         }
 
         private static void OptimizePng(string pngFile)
         {
-            var psi = new ProcessStartInfo(pngOptimizer, pngFile + " /o max");
-            //  psi.CreateNoWindow = true;
-            psi.WindowStyle = ProcessWindowStyle.Hidden;
+            // /o max : optimization level
+            // /nc : don't change ColorType and BitDepth
+            // /md keep pHYs : keep pHYs metadata
+            var psi = new ProcessStartInfo(pngOptimizer, pngFile + " /o max /nc /md keep pHYs")
+                          {
+                              CreateNoWindow = true,
+                              WindowStyle = ProcessWindowStyle.Hidden
+                          };
             var p = Process.Start(psi);
-            if (p != null)
-            {
-                p.WaitForExit();
-            }
+            p.WaitForExit();
         }
 
-        static void CreateBitmap(int size, IconRenderer iconRenderer, string fileName)
+        private static GraphicsPath GetRoundedRect(RectangleF baseRect, float radius)
         {
-            using (var bm = new Bitmap(size, size))
+            // Based on http://www.codeproject.com/Articles/5649/Extended-Graphics-An-implementation-of-Rounded-Rec
+            // create the arc for the rectangle sides and declare 
+            // a graphics path object for the drawing 
+            float diameter = radius * 2f;
+            var sizeF = new SizeF(diameter, diameter);
+            var arc = new RectangleF(baseRect.Location, sizeF);
+            var path = new GraphicsPath();
+
+            // top left arc 
+            path.AddArc(arc, 180, 90);
+
+            // top right arc 
+            arc.X = baseRect.Right - diameter;
+            path.AddArc(arc, 270, 90);
+
+            // bottom right arc 
+            arc.Y = baseRect.Bottom - diameter;
+            path.AddArc(arc, 0, 90);
+
+            // bottom left arc
+            arc.X = baseRect.Left;
+            path.AddArc(arc, 90, 90);
+
+            path.CloseFigure();
+            return path;
+        }
+
+        static void CreateBitmap(int size, IconRenderer iconRenderer, string fileName, double cornerRadius = 0)
+        {
+            using (var bm = new Bitmap(size, size, PixelFormat.Format32bppArgb))
             {
                 using (var g = Graphics.FromImage(bm))
                 {
                     g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                    //g.SmoothingMode = SmoothingMode.AntiAlias;
-                    //g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    //g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                    //g.CompositingQuality = CompositingQuality.HighQuality;
-                    //g.CompositingMode = CompositingMode.SourceOver;
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                    g.CompositingQuality = CompositingQuality.HighQuality;
+                    g.CompositingMode = CompositingMode.SourceOver;
                     var rc = new GraphicsRenderContext { RendersToScreen = false };
                     rc.SetGraphicsTarget(g);
+                    g.Clear(Color.Transparent);
+
+                    if (cornerRadius > 0)
+                    {
+                        // TODO: no antialiasing on the clipping path?
+                        var path = GetRoundedRect(new RectangleF(0, 0, size, size), (float)cornerRadius);
+                        g.SetClip(path, CombineMode.Replace);
+                    }
+
                     iconRenderer.Render(rc, size);
                     bm.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
                 }
             }
+        }
+
+        static Bitmap Resize(Bitmap source, int width, int height)
+        {
+            var bmp = new Bitmap(width, height, source.PixelFormat);
+            var g = Graphics.FromImage(bmp);
+            g.InterpolationMode = InterpolationMode.High;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.DrawImage(source, new Rectangle(0, 0, width, height));
+            return bmp;
         }
 
         static void CreateSvg(int size, IconRenderer iconRenderer, string fileName)
@@ -259,7 +331,7 @@
                 {
                     var i = (int)((data[x, y] - min) / (max - min) * palette.Colors.Count);
                     i = Math.Min(Math.Max(i, 0), palette.Colors.Count - 1);
-                    pixels[x, y] = palette.Colors[i];
+                    pixels[y, n - 1 - x] = palette.Colors[i];
                 }
             }
 
@@ -299,12 +371,12 @@
                 {
                     var i = (int)((data[x, y] - min) / (max - min) * palette.Colors.Count);
                     i = Math.Min(Math.Max(i, 0), palette.Colors.Count - 1);
-                    pixels[x, y] = palette.Colors[i];
+                    pixels[y, n - 1 - x] = palette.Colors[i];
                 }
             }
 
             var image = OxyImage.Create(pixels, OxyPlot.ImageFormat.Png);
-            
+
             // fix image interpolation artifacts on the edge
             rc.DrawImage(image, 0, 0, n, n, 0, 0, size, size, 1, true);
             rc.DrawRectangle(new OxyRect(0, 0, size, 2), c, OxyColors.Undefined, 0);

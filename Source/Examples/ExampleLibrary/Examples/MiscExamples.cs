@@ -2246,22 +2246,21 @@ namespace ExampleLibrary
                 var w = (int)(p1.X - p0.X);
                 var h = (int)(p0.Y - p1.Y);
                 int maxIterations = (int)this.ColorAxis.ActualMaximum + 1;
-                var pixels = new OxyColor[h, w];
+                var pixels = new OxyColor[w, h];
 
                 ParallelFor(
                     0,
                     h,
                     i =>
                     {
-                        double y = this.YAxis.ActualMinimum
-                                   + ((double)i / (h - 1) * (this.YAxis.ActualMaximum - this.YAxis.ActualMinimum));
+                        double y = this.YAxis.ActualMaximum - ((double)i / (h - 1) * (this.YAxis.ActualMaximum - this.YAxis.ActualMinimum));
                         for (int j = 0; j < w; j++)
                         {
                             double x = this.XAxis.ActualMinimum
                                        + ((double)j / (w - 1)
                                           * (this.XAxis.ActualMaximum - this.XAxis.ActualMinimum));
                             var iterations = Solve(x, y, maxIterations);
-                            pixels[i, j] = this.ColorAxis.GetColor((double)iterations);
+                            pixels[j, i] = this.ColorAxis.GetColor((double)iterations);
                         }
                     });
 
