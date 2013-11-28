@@ -235,7 +235,7 @@ namespace OxyPlot.Axes
                     Action<double, double, OxyColor> drawColorRect = (ylow, yhigh, color) =>
                                        {
                                            double ymin = Math.Min(ylow, yhigh);
-                                           double ymax = Math.Max(ylow, yhigh);
+                                           double ymax = Math.Max(ylow, yhigh) + 0.5;
                                            rc.DrawRectangle(
                                                this.IsHorizontal()
                                                    ? new OxyRect(ymin, top, ymax - ymin, height)
