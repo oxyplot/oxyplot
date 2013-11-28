@@ -30,6 +30,7 @@
 namespace OxyPlot
 {
     using System.IO;
+    using System.ServiceModel;
 
     /// <summary>
     /// Exports plots to scalable vector graphics.
@@ -45,8 +46,13 @@ namespace OxyPlot
         /// <param name="height">The height (points).</param>
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
         /// <param name="textMeasurer">The text measurer.</param>
-        public static void Export(PlotModel model, Stream stream, double width, double height, bool isDocument, IRenderContext textMeasurer)
+        public static void Export(PlotModel model, Stream stream, double width, double height, bool isDocument, IRenderContext textMeasurer = null)
         {
+            if (textMeasurer == null)
+            {
+                textMeasurer = new PdfRenderContext(width, height, model.Background);
+            }
+
             using (var rc = new SvgRenderContext(stream, width, height, true, textMeasurer, model.Background))
             {
                 model.Update();
@@ -67,7 +73,7 @@ namespace OxyPlot
         /// <returns>
         /// The plot as a svg string.
         /// </returns>
-        public static string ExportToString(PlotModel model, double width, double height, bool isDocument, IRenderContext textMeasurer)
+        public static string ExportToString(PlotModel model, double width, double height, bool isDocument, IRenderContext textMeasurer = null)
         {
             string svg;
             using (var ms = new MemoryStream())
