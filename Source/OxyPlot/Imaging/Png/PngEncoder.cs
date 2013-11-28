@@ -233,7 +233,7 @@ namespace OxyPlot
         /// The check sum.
         /// </returns>
         [CLSCompliant(false)]
-        public static uint Adler32(IEnumerable<byte> data)
+        internal static uint Adler32(IEnumerable<byte> data)
         {
             // http://en.wikipedia.org/wiki/Adler-32
             uint a = 1;
