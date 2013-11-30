@@ -1,0 +1,9 @@
+<Configuration>
+  <NamespaceFolders>
+    <SkipFolder>2EB36333-58C3-47FD-B01F-C1C3FAF1888A/d:Converters</SkipFolder>
+    <SkipFolder>2EB36333-58C3-47FD-B01F-C1C3FAF1888A/d:Helpers</SkipFolder>
+    <SkipFolder>2EB36333-58C3-47FD-B01F-C1C3FAF1888A/d:RenderContexts</SkipFolder>
+    <SkipFolder>2EB36333-58C3-47FD-B01F-C1C3FAF1888A/d:Themes</SkipFolder>
+    <SkipFolder>2EB36333-58C3-47FD-B01F-C1C3FAF1888A/d:Tracker</SkipFolder>
+  </NamespaceFolders>
+</Configuration>
