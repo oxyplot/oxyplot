@@ -148,7 +148,6 @@
     <Compile Include="Annotations\TileMapAnnotation.cs" />
     <Compile Include="Axes\NamespaceDoc.cs" />
     <Compile Include="Axes\LogarithmicAxis.cs" />
-    <Compile Include="Axes\ColorAxis.cs" />
     <Compile Include="Axes\RangeColorAxis.cs" />
     <Compile Include="Axes\AngleAxis.cs" />
     <Compile Include="Axes\Axis.cs" />
@@ -157,6 +156,8 @@
     <Compile Include="Axes\AxisLayer.cs" />
     <Compile Include="Axes\AxisPosition.cs" />
     <Compile Include="Axes\CategoryAxis.cs" />
+    <Compile Include="Axes\CategoryColorAxis.cs" />
+    <Compile Include="Axes\IColorAxis.cs" />
     <Compile Include="Axes\LinearColorAxis.cs" />
     <Compile Include="Axes\DateTimeAxis.cs" />
     <Compile Include="Axes\DateTimeIntervalType.cs" />

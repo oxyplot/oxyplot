@@ -6,14 +6,14 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>EBZw8A2UbBI/BUq9ZBHDNVgBY1uVEQMJ45sgpP2SPzE=</HashCode>
+      <HashCode>EBZw8A2UbBI/BUq9ZBHDNVgFY1uVEQMJ45sgpP2SPzU=</HashCode>
       <FileName>PlotModel\PlotModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Series.LineSeries" Collapsed="true">
     <Position X="9.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAQCAAEMAiAAAOCAABBAAAAhRCAMEAAAEDABggAKIgA=</HashCode>
+      <HashCode>BIQCAAEMAiAAAOCAABBwAAAhRCAcEAAAEDADggAKIgA=</HashCode>
       <FileName>Series\LineSeries.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -62,7 +62,7 @@
   <Class Name="OxyPlot.Axes.CategoryAxis" Collapsed="true">
     <Position X="14.25" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAEAABMAAEEAgAIBAAAFAAAAAEnAAAAAEgAJAAABE=</HashCode>
+      <HashCode>AIEAEIABMAAFEEgAIJAAAFABBAAElAAAgAEgAJAAABE=</HashCode>
       <FileName>Axes\CategoryAxis.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -104,7 +104,7 @@
   <Class Name="OxyPlot.Series.CandleStickSeries" Collapsed="true">
     <Position X="13.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAABAA=</HashCode>
+      <HashCode>AAAAAAEAAAAAAAAggAABAAAAgAAAIAAAABAAAAAABAA=</HashCode>
       <FileName>Series\CandleStickSeries.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -175,7 +175,7 @@
   <Class Name="OxyPlot.Axes.Axis" Collapsed="true">
     <Position X="13.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gEeXCAHRedQgH2V0ttJAe5wCkhCEgABEG1cgwZQB4C0=</HashCode>
+      <HashCode>gEeXCAHRedQgH2V0ttJAe5yCkhCEgABEG1cgwZQB4S0=</HashCode>
       <FileName>Axes\Axis.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -237,13 +237,6 @@
       <FileName>Series\BarSeries\TornadoBarSeries.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OxyPlot.ColorAxis" Collapsed="true">
-    <Position X="16.25" Y="2" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAABAAAQAAAAAAAQIAACAAAAAAAAiAABAAAQAAAAA=</HashCode>
-      <FileName>Axes\ColorAxis.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="OxyPlot.Series.BarSeriesBase&lt;T&gt;" Collapsed="true">
     <Position X="2" Y="8.75" Width="1.5" />
     <TypeIdentifier>
@@ -282,14 +275,14 @@
   <Class Name="OxyPlot.Annotations.FunctionAnnotation" Collapsed="true">
     <Position X="27" Y="6.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAIQAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAgAAAAIQAAAAAAAAA=</HashCode>
       <FileName>Annotations\FunctionAnnotation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OxyPlot.Annotations.PolylineAnnotation" Collapsed="true">
     <Position X="23.25" Y="6.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <HashCode>IAAAAAAAAAAAgCAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Annotations\PolylineAnnotation.cs</FileName>
       <NewMemberFileName>Annotations\PolyLineAnnotation.cs</NewMemberFileName>
     </TypeIdentifier>
