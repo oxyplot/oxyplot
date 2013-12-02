@@ -786,7 +786,7 @@ namespace OxyPlot
         /// Gets the default color axis.
         /// </summary>
         /// <value> The default color axis. </value>
-        public ColorAxis DefaultColorAxis { get; private set; }
+        public IColorAxis DefaultColorAxis { get; private set; }
 
         /// <summary>
         /// Gets the actual title font.
@@ -835,7 +835,6 @@ namespace OxyPlot
                 return this.Axes.Where(s => s.IsAxisVisible);
             }
         }
-
 
         /// <summary>
         /// Attaches this model to the specified plot control.
@@ -987,7 +986,7 @@ namespace OxyPlot
 
             foreach (var axis in this.Axes)
             {
-                if (axis is ColorAxis)
+                if (axis is IColorAxis)
                 {
                     continue;
                 }
@@ -1354,7 +1353,7 @@ namespace OxyPlot
         /// </summary>
         private void EnforceCartesianTransforms()
         {
-            var notColorAxes = this.Axes.Where(a => !(a is ColorAxis)).ToArray();
+            var notColorAxes = this.Axes.Where(a => !(a is IColorAxis)).ToArray();
 
             // Set the same scaling on all axes
             double sharedScale = notColorAxes.Min(a => Math.Abs(a.Scale));
@@ -1396,7 +1395,7 @@ namespace OxyPlot
             this.DefaultYAxis = this.Axes.FirstOrDefault(a => a.IsVertical() && a.IsXyAxis());
             this.DefaultMagnitudeAxis = this.Axes.FirstOrDefault(a => a is MagnitudeAxis) as MagnitudeAxis;
             this.DefaultAngleAxis = this.Axes.FirstOrDefault(a => a is AngleAxis) as AngleAxis;
-            this.DefaultColorAxis = this.Axes.FirstOrDefault(a => a is ColorAxis) as ColorAxis;
+            this.DefaultColorAxis = this.Axes.FirstOrDefault(a => a is IColorAxis) as IColorAxis;
 
             if (this.DefaultXAxis == null)
             {

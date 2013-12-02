@@ -112,7 +112,7 @@ namespace ExampleLibrary
         public static PlotModel NotInterpolatedWithNanValue()
         {
             var model = CreateExample("Not interpolated values including two NaN values", false);
-            var ca = (ColorAxis)model.Axes[0];
+            var ca = (LinearColorAxis)model.Axes[0];
             ca.InvalidNumberColor = OxyColors.Transparent;
             var hms = (HeatMapSeries)model.Series[0];
             hms.Data[0, 1] = double.NaN;
