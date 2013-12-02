@@ -584,7 +584,7 @@ namespace OxyPlot
             // Set clipping path using non-zero rule (W)
             // Set clipping path using even-odd rule (W*)
             // End path without filling or stroking (n)
-            this.AppendLine("{0} {1} {2} {3} re {4} n", x, y, w, h, evenOddRule ? "W*" : "W");
+            // TODO: this.AppendLine("{0} {1} {2} {3} re {4} n", x, y, w, h, evenOddRule ? "W*" : "W");
         }
 
         /// <summary>
