@@ -53,6 +53,19 @@
             <ListBox ItemsSource="{Binding ExamplesView}" ItemContainerStyle="{DynamicResource ListboxItemStyle}" 
                      SelectedItem="{Binding SelectedExample}" BorderThickness="0,0,0,1">
                 <ListBox.GroupStyle>
+                    <!-- GroupStyle with headers -->
+                    <!--<GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Padding="2 0 8 0"/>
+                                    <TextBlock Text="{Binding ItemCount, StringFormat='({0})'}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>-->
+
+                    <!-- GroupStyle with expanders -->
                     <GroupStyle>
                         <GroupStyle.ContainerStyle>
                             <Style TargetType="{x:Type GroupItem}">
@@ -62,8 +75,8 @@
                                             <Expander IsExpanded="False" ExpandDirection="Down">
                                                 <Expander.Header>
                                                     <StackPanel Orientation="Horizontal">
-                                                        <TextBlock FontWeight="Bold" Text="{Binding Name}" Padding="2"/>
-                                                        <TextBlock Text="{Binding ItemCount, StringFormat='{}{0} item(s)'}"/>
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Name}" Padding="0 0 8 0"/>
+                                                        <TextBlock Text="{Binding ItemCount, StringFormat='({0})'}"/>
                                                     </StackPanel>
                                                 </Expander.Header>
                                                 <ItemsPresenter />
