@@ -89,7 +89,7 @@
         /// <value>
         /// The color axis.
         /// </value>
-        public ColorAxis ColorAxis { get; protected set; }
+        public IColorAxis ColorAxis { get; protected set; }
 
         /// <summary>
         /// Gets or sets the color axis key.
@@ -338,8 +338,7 @@
         {
             base.EnsureAxes();
 
-            this.ColorAxis =
-                this.PlotModel.GetAxisOrDefault(this.ColorAxisKey, this.PlotModel.DefaultColorAxis) as ColorAxis;
+            this.ColorAxis = this.PlotModel.GetAxisOrDefault(this.ColorAxisKey, (Axis)this.PlotModel.DefaultColorAxis) as IColorAxis;
         }
 
         /// <summary>
@@ -358,8 +357,12 @@
             //this.YAxis.Include(this.MinY);
             //this.YAxis.Include(this.MaxY);
 
-            this.ColorAxis.Include(this.MinValue);
-            this.ColorAxis.Include(this.MaxValue);
+            var colorAxis = this.ColorAxis as Axis;
+            if (colorAxis != null)
+            {
+                colorAxis.Include(this.MinValue);
+                colorAxis.Include(this.MaxValue);
+            }
         }
 
         /// <summary>

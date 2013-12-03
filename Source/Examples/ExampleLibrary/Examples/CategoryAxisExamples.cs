@@ -30,6 +30,7 @@ namespace ExampleLibrary
 
     using OxyPlot;
     using OxyPlot.Axes;
+    using OxyPlot.Series;
 
     [Examples("CategoryAxis")]
     public static class CategoryAxisExamples
@@ -63,6 +64,5 @@ namespace ExampleLibrary
             plotModel1.Axes.Add(linearAxis);
             return plotModel1;
         }
-
     }
 }

@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="OxyPlot.Axes.Axis" Collapsed="true">
+    <Position X="9" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gEeXCAHRedQgH2V0ttJAe5yCkhCEgABEG1cgwZQB4S0=</HashCode>
+      <FileName>Axes\Axis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Axes.LinearColorAxis" Collapsed="true">
+    <Position X="8" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAQAAIAAAAQIAACAAAAAAAAiAABAAAQAAACA=</HashCode>
+      <FileName>Axes\LinearColorAxis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OxyPlot.Axes.RangeColorAxis" Collapsed="true">
+    <Position X="10.25" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAIAAAAAAAAAAAiAABAAAQAEACA=</HashCode>
+      <FileName>Axes\RangeColorAxis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OxyPlot.Axes.LinearAxis" Collapsed="true">
+    <Position X="10.25" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAQAAACAAAAAAAAAAAAAAAAAAAAEAAAAAQAA=</HashCode>
+      <FileName>Axes\LinearAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Axes.LogarithmicAxis" Collapsed="true">
+    <Position X="7.75" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAEgAAAIAAABQAAAAAQAAAAAAAABQAQAA=</HashCode>
+      <FileName>Axes\LogarithmicAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Axes.CategoryAxis" Collapsed="true">
+    <Position X="12.5" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIEAEIABMAAFEEgAIJAAAFABBAAElAAAgAEgAJAAABE=</HashCode>
+      <FileName>Axes\CategoryAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OxyPlot.Axes.CategoryColorAxis" Collapsed="true">
+    <Position X="12.5" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAQAAACAAAAAAAAiQABAAAAAAAAA=</HashCode>
+      <FileName>Axes\CategoryColorAxis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="OxyPlot.Axes.IColorAxis">
+    <Position X="5.75" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiAAAAAAAAAAAA=</HashCode>
+      <FileName>Axes\IColorAxis.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ColorAxis.cs" company="OxyPlot">
+// <copyright file="IColorAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,44 +24,27 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The color axis.
+//   Defines functionality for color axes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Axes
 {
     /// <summary>
-    /// Provides an abstract base class for color axes.
+    /// Defines functionality for color axes.
     /// </summary>
-    public abstract class ColorAxis : Axis
+    public interface IColorAxis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorAxis"/> class.
-        /// </summary>
-        protected ColorAxis()
-        {
-            this.AxisDistance = 20;
-            this.InvalidNumberColor = OxyColors.Gray;
-        }
-
-        /// <summary>
-        /// Gets or sets the color used to represent NaN values.
-        /// </summary>
-        /// <value>
-        /// A <see cref="OxyColor"/> that defines the color. The default value is <c>OxyColors.Gray</c>.
-        /// </value>
-        public OxyColor InvalidNumberColor { get; set; }
-
-        /// <summary>
-        /// Gets the color.
+        /// Gets the color of the specified index in the color palette.
         /// </summary>
         /// <param name="paletteIndex">
-        /// The color map index.
+        /// The color map index (less than NumberOfEntries).
         /// </param>
         /// <returns>
         /// The color.
         /// </returns>
-        public abstract OxyColor GetColor(int paletteIndex);
+        OxyColor GetColor(int paletteIndex);
 
         /// <summary>
         /// Gets the palette index of the specified value.
@@ -75,31 +58,23 @@ namespace OxyPlot.Axes
         /// <remarks>
         /// If the value is less than minimum, 0 is returned. If the value is greater than maximum, Palette.Colors.Count+1 is returned.
         /// </remarks>
-        public abstract int GetPaletteIndex(double value);
+        int GetPaletteIndex(double value);
+    }
 
-        /// <summary>
-        /// Determines whether the axis is used for X/Y values.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> .
-        /// </returns>
-        public override bool IsXyAxis()
-        {
-            return false;
-        }
-
+    /// <summary>
+    /// Provides extension methods for <see cref="IColorAxis"/>.
+    /// </summary>
+    public static class IColorAxisExtensions
+    {
         /// <summary>
         /// Gets the color for the specified value.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// The color.
-        /// </returns>
-        public virtual OxyColor GetColor(double value)
+        /// <param name="axis">The axis.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The color.</returns>
+        public static OxyColor GetColor(this IColorAxis axis, double value)
         {
-            return this.GetColor(this.GetPaletteIndex(value));
+            return axis.GetColor(axis.GetPaletteIndex(value));
         }
     }
 }

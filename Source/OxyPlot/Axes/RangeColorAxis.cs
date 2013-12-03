@@ -36,7 +36,7 @@ namespace OxyPlot.Axes
     /// <summary>
     /// Represents a color axis that contains colors for specified ranges.
     /// </summary>
-    public class RangeColorAxis : ColorAxis
+    public class RangeColorAxis : LinearAxis, IColorAxis
     {
         /// <summary>
         /// The ranges
@@ -49,9 +49,23 @@ namespace OxyPlot.Axes
         public RangeColorAxis()
         {
             this.Position = AxisPosition.None;
+            this.AxisDistance = 20;
+
+            this.LowColor = OxyColors.Undefined;
+            this.HighColor = OxyColors.Undefined;
+            this.InvalidNumberColor = OxyColors.Gray;
+
             this.IsPanEnabled = false;
             this.IsZoomEnabled = false;
         }
+
+        /// <summary>
+        /// Gets or sets the color used to represent NaN values.
+        /// </summary>
+        /// <value>
+        /// A <see cref="OxyColor"/> that defines the color. The default value is <c>OxyColors.Gray</c>.
+        /// </value>
+        public OxyColor InvalidNumberColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of values above the maximum value.
@@ -86,7 +100,7 @@ namespace OxyPlot.Axes
         /// <remarks>
         /// If the value is less than minimum, 0 is returned. If the value is greater than maximum, Palette.Colors.Count+1 is returned.
         /// </remarks>
-        public override int GetPaletteIndex(double value)
+        public int GetPaletteIndex(double value)
         {
             if (!this.LowColor.IsUndefined() && value < this.ranges[0].LowerBound)
             {
@@ -118,7 +132,7 @@ namespace OxyPlot.Axes
         /// <returns>
         /// The color.
         /// </returns>
-        public override OxyColor GetColor(int paletteIndex)
+        public OxyColor GetColor(int paletteIndex)
         {
             if (paletteIndex == int.MinValue)
             {
