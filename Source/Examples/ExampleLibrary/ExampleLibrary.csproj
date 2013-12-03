@@ -58,6 +58,7 @@
     <Compile Include="Examples\CategoryAxisExamples.cs" />
     <Compile Include="Examples\AxisExamples.cs" />
     <Compile Include="Examples\AreaSeriesExamples.cs" />
+    <Compile Include="Examples\CategoryColorAxisExamples.cs" />
     <Compile Include="Examples\ClosedIssues.cs" />
     <Compile Include="Examples\ContourSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\IntervalBarSeriesExamples.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Examples\FunctionSeriesExamples.cs" />
     <Compile Include="Examples\OpenIssues.cs" />
     <Compile Include="Examples\PerformanceExamples.cs" />
+    <Compile Include="Examples\RangeColorAxisExamples.cs" />
     <Compile Include="Examples\ShowMeTheNumbersExamples.cs" />
     <Compile Include="Examples\DiscreteDataSeriesExamples.cs" />
     <Compile Include="Examples\FilteringExamples.cs" />

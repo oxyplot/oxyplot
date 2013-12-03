@@ -75,7 +75,7 @@ namespace OxyPlot.Series
         /// <remarks>
         /// This is used to map scatter point values to colors.
         /// </remarks>
-        public ColorAxis ColorAxis { get; set; }
+        public IColorAxis ColorAxis { get; set; }
 
         /// <summary>
         /// Gets or sets the color axis key.
@@ -189,7 +189,7 @@ namespace OxyPlot.Series
 
             var xaxisTitle = this.XAxis.Title ?? "X";
             var yaxisTitle = this.YAxis.Title ?? "Y";
-            var colorAxisTitle = (this.ColorAxis != null ? this.ColorAxis.Title : null) ?? "Z";
+            var colorAxisTitle = (this.ColorAxis != null ? ((Axis)this.ColorAxis).Title : null) ?? "Z";
 
             var formatString = TrackerFormatString;
             if (string.IsNullOrEmpty(this.TrackerFormatString))
@@ -449,7 +449,7 @@ namespace OxyPlot.Series
         {
             base.EnsureAxes();
 
-            this.ColorAxis = PlotModel.GetAxisOrDefault(this.ColorAxisKey, PlotModel.DefaultColorAxis) as ColorAxis;
+            this.ColorAxis = PlotModel.GetAxisOrDefault(this.ColorAxisKey, (Axis)PlotModel.DefaultColorAxis) as IColorAxis;
         }
 
         /// <summary>
@@ -613,10 +613,11 @@ namespace OxyPlot.Series
             this.MinValue = minvalue;
             this.MaxValue = maxvalue;
 
-            if (this.ColorAxis != null)
+            var colorAxis = this.ColorAxis as Axis;
+            if (colorAxis != null)
             {
-                this.ColorAxis.Include(this.MinValue);
-                this.ColorAxis.Include(this.MaxValue);
+                colorAxis.Include(this.MinValue);
+                colorAxis.Include(this.MaxValue);
             }
         }
     }
