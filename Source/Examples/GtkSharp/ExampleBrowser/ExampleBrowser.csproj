@@ -37,7 +37,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>..\..\..\..\Output\NET45\Examples\WindowsForms\ExampleBrowser\</OutputPath>
+    <OutputPath>..\..\..\..\Output\NET45\Examples\GtkSharp\ExampleBrowser\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>none</DebugType>
