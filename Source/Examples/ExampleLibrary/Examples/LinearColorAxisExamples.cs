@@ -182,5 +182,16 @@
             colorAxis.EndPosition = 0;
             return model;
         }
+
+        [Example("Short vertical")]
+        public static PlotModel Vertical_Short()
+        {
+            var model = HeatMapSeriesExamples.CreatePeaks(OxyPalettes.Jet(600), false);
+            var colorAxis = (LinearColorAxis)model.Axes[0];
+            colorAxis.StartPosition = 0.02;
+            colorAxis.EndPosition = 0.5;
+            return model;
+        }
+
     }
 }
