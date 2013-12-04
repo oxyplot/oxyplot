@@ -39,24 +39,29 @@ namespace ExampleLibrary
         public static PlotModel ArchimedeanSpiral()
         {
             var model = new PlotModel("Polar plot", "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π")
-                            {
-                                PlotType = PlotType.Polar,
-                                PlotAreaBorderThickness = 0,
-                            };
+            {
+                PlotType = PlotType.Polar,
+                PlotAreaBorderThickness = 0,
+                PlotMargins = new OxyThickness(60, 20, 4, 40)
+            };
             model.Axes.Add(
-                new AngleAxis(0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
-                    {
-                        MajorGridlineStyle = LineStyle.Solid,
-                        MinorGridlineStyle = LineStyle.Solid,
-                        FormatAsFractions = true,
-                        FractionUnit = Math.PI,
-                        FractionUnitSymbol = "π"
-                    });
-            model.Axes.Add(new MagnitudeAxis()
-                               {
-                                   MajorGridlineStyle = LineStyle.Solid,
-                                   MinorGridlineStyle = LineStyle.Solid
-                               });
+                new AngleAxis
+                {
+                    MajorStep = Math.PI / 4,
+                    MinorStep = Math.PI / 16,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Solid,
+                    FormatAsFractions = true,
+                    FractionUnit = Math.PI,
+                    FractionUnitSymbol = "π",
+                    Minimum = 0,
+                    Maximum = 2 * Math.PI
+                });
+            model.Axes.Add(new MagnitudeAxis
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
             model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
             return model;
         }
@@ -72,6 +77,17 @@ namespace ExampleLibrary
             return model;
         }
 
+        [Example("Spiral with magnitude axis min and max")]
+        public static PlotModel ArchimedeanSpiral3()
+        {
+            var model = ArchimedeanSpiral();
+            model.Title += " (axis Minimum = 10 and Maximum = 20)";
+            var magnitudeAxis = (MagnitudeAxis)model.Axes[1];
+            magnitudeAxis.Minimum = 10;
+            magnitudeAxis.Maximum = 20;
+            return model;
+        }
+
         [Example("Angle axis with offset angle")]
         public static PlotModel OffsetAngles()
         {
@@ -79,16 +95,37 @@ namespace ExampleLibrary
             {
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = 0,
+                PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
-            model.Axes.Add(
-                new AngleAxis(0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
-                {
-                    StartAngle = 30,
-                    EndAngle = 390,
-                    StringFormat = "0.00"
-                });
+
+            var angleAxis = new AngleAxis(0, Math.PI * 2, Math.PI / 4, Math.PI / 16)
+            {
+                StringFormat = "0.00",
+                StartAngle = 30,
+                EndAngle = 390
+            };
+            model.Axes.Add(angleAxis);
             model.Axes.Add(new MagnitudeAxis());
             model.Series.Add(new FunctionSeries(t => t, t => t, 0, Math.PI * 6, 0.01));
+
+            // Subscribe to the mouse down event on the line series.
+            model.MouseDown += (s, e) =>
+            {
+                var increment = 0d;
+
+                // Increment and decrement must be in degrees (corresponds to the StartAngle and EndAngle properties).
+                if (e.ChangedButton == OxyMouseButton.Left) increment = 15;
+                if (e.ChangedButton == OxyMouseButton.Right) increment = -15;
+
+                if (Math.Abs(increment) > double.Epsilon)
+                {
+                    angleAxis.StartAngle += increment;
+                    angleAxis.EndAngle += increment;
+                    model.RefreshPlot(false);
+                    e.Handled = true;
+                }
+            };
+
             return model;
         }
 
@@ -99,9 +136,10 @@ namespace ExampleLibrary
             {
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = 0,
+                PlotMargins = new OxyThickness(60, 20, 4, 40)
             };
             model.Axes.Add(
-                new AngleAxis(0, 180, 45, 15)
+                new AngleAxis(0, 180, 45, 9)
                 {
                     StartAngle = 0,
                     EndAngle = 180,
@@ -113,7 +151,7 @@ namespace ExampleLibrary
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Solid
             });
-            model.Series.Add(new FunctionSeries(t => Math.Sin(t / 180 * Math.PI), t => t, 0, 180, 0.01));
+            model.Series.Add(new FunctionSeries(x => Math.Sin(x / 180 * Math.PI), t => t, 0, 180, 0.01));
             return model;
         }
     }

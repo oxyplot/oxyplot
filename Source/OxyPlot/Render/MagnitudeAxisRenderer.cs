@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MagnitudeAxisRenderer.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,10 +27,12 @@
 //   The magnitude axis renderer.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using OxyPlot.Axes;
 
@@ -63,10 +65,10 @@ namespace OxyPlot
         {
             base.Render(axis, pass);
 
-            var angleAxis = this.Plot.DefaultAngleAxis as Axis;
+            var angleAxis = this.Plot.DefaultAngleAxis;
             if (axis.RelatedAxis != null)
             {
-                angleAxis = axis.RelatedAxis;
+                angleAxis = axis.RelatedAxis as AngleAxis;
             }
 
             if (angleAxis == null)
@@ -74,72 +76,187 @@ namespace OxyPlot
                 throw new NullReferenceException("Angle axis should not be null.");
             }
 
-            if (axis.ShowMinorTicks)
+            angleAxis.UpdateActualMaxMin();
+
+            var majorTicks = MajorTickValues.Where(x => x > axis.ActualMinimum && x <= axis.ActualMaximum).ToArray();
+
+            if (pass == 0 && axis.ShowMinorTicks && this.MinorPen != null)
             {
-                // GetVerticalTickPositions(axis, axis.TickStyle, axis.MinorTickSize, out y0, out y1);
+                var minorTicks = MinorTickValues.Where(x => x >= axis.ActualMinimum && x <= axis.ActualMaximum && !majorTicks.Contains(x)).ToArray();
 
-                foreach (double xValue in this.MinorTickValues)
+                foreach (var tickValue in minorTicks)
                 {
-                    if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
-                    {
-                        continue;
-                    }
-
-                    if (this.MajorTickValues.Contains(xValue))
-                    {
-                        continue;
-                    }
-
-                    var pts = new List<ScreenPoint>();
-                    for (double th = angleAxis.ActualMinimum;
-                         th <= angleAxis.ActualMaximum + angleAxis.MinorStep * 0.01;
-                         th += angleAxis.MinorStep * 0.1)
-                    {
-                        pts.Add(axis.Transform(xValue, th, angleAxis));
-                    }
-
-                    if (this.MinorPen != null)
-                    {
-                        this.rc.DrawLine(pts, this.MinorPen.Color, this.MinorPen.Thickness, this.MinorPen.DashArray);
-                    }
-
-                    // RenderGridline(x, y + y0, x, y + y1, minorTickPen);
+                    this.RenderTick(axis, angleAxis, tickValue, this.MinorPen);
                 }
             }
 
-            // GetVerticalTickPositions(axis, axis.TickStyle, axis.MajorTickSize, out y0, out y1);
-
-            foreach (double xValue in this.MajorTickValues)
+            if (pass == 0 && this.MajorPen != null)
             {
-                if (xValue < axis.ActualMinimum || xValue > axis.ActualMaximum)
+                foreach (var tickValue in majorTicks)
                 {
-                    continue;
+                    this.RenderTick(axis, angleAxis, tickValue, this.MajorPen);
                 }
+            }
 
-                var pts = new List<ScreenPoint>();
-                for (double th = angleAxis.ActualMinimum;
-                     th <= angleAxis.ActualMaximum + angleAxis.MinorStep * 0.01;
-                     th += angleAxis.MinorStep * 0.1)
+            if (pass == 1)
+            {
+                foreach (double tickValue in majorTicks)
                 {
-                    pts.Add(axis.Transform(xValue, th, angleAxis));
+                    this.RenderTickText(axis, tickValue, angleAxis);
                 }
-
-                if (this.MajorPen != null)
-                {
-                    this.rc.DrawLine(pts, this.MajorPen.Color, this.MajorPen.Thickness, this.MajorPen.DashArray);
-                }
-
-                // RenderGridline(x, y + y0, x, y + y1, majorTickPen);
-                // var pt = new ScreenPoint(x, istop ? y + y1 - TICK_DIST : y + y1 + TICK_DIST);
-                // string text = axis.FormatValue(xValue);
-                // double h = rc.MeasureText(text, axis.Font, axis.FontSize, axis.FontWeight).Height;
-                // rc.DrawText(pt, text, axis.LabelColor ?? plot.TextColor,
-                // axis.Font, axis.FontSize, axis.FontWeight,
-                // axis.Angle,
-                // HorizontalAlignment.Center, istop ? VerticalAlignment.Bottom : VerticalAlignment.Top);
-                // maxh = Math.Max(maxh, h);
             }
         }
 
+        /// <summary>
+        /// Returns the angle (in radian) of the axis line in screen coordinate
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <param name="angleAxis">The angle axis.</param>
+        /// <returns>The angle (in radians).</returns>
+        private static double GetActualAngle(Axis axis, Axis angleAxis)
+        {
+            var a = axis.Transform(0, angleAxis.Angle, angleAxis);
+            var b = axis.Transform(1, angleAxis.Angle, angleAxis);
+            return Math.Atan2(b.y - a.y, b.x - a.x);
+        }
+
+        /// <summary>
+        /// Choose the most appropriate alignment for tick text
+        /// </summary>
+        /// <param name="actualAngle">The actual angle.</param>
+        /// <param name="ha">The horizontal alignment.</param>
+        /// <param name="va">The vertical alignment.</param>
+        private static void GetTickTextAligment(double actualAngle, out HorizontalAlignment ha, out VerticalAlignment va)
+        {
+            if (actualAngle > 3 * Math.PI / 4 || actualAngle < -3 * Math.PI / 4)
+            {
+                ha = HorizontalAlignment.Center;
+                va = VerticalAlignment.Top;
+            }
+            else if (actualAngle < -Math.PI / 4)
+            {
+                ha = HorizontalAlignment.Right;
+                va = VerticalAlignment.Middle;
+            }
+            else if (actualAngle > Math.PI / 4)
+            {
+                ha = HorizontalAlignment.Left;
+                va = VerticalAlignment.Middle;
+            }
+            else
+            {
+                ha = HorizontalAlignment.Center;
+                va = VerticalAlignment.Bottom;
+            }
+        }
+        
+        /// <summary>
+        /// Renders a tick, chooses the best implementation
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <param name="angleAxis">The angle axis.</param>
+        /// <param name="x">The x-value.</param>
+        /// <param name="pen">The pen.</param>
+        private void RenderTick(Axis axis, AngleAxis angleAxis, double x, OxyPen pen)
+        {
+            var isFullCircle = Math.Abs(Math.Abs(angleAxis.EndAngle - angleAxis.StartAngle) - 360) < 1e-6;
+
+            if (isFullCircle && pen.DashArray == null)
+            {
+                this.RenderTickCircle(axis, angleAxis, x, pen);
+            }
+            else
+            {
+                this.RenderTickArc(axis, angleAxis, x, pen);
+            }
+        }
+
+        /// <summary>
+        /// Renders a tick by drawing an ellipse
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <param name="angleAxis">The angle axis.</param>
+        /// <param name="x">The x-value.</param>
+        /// <param name="pen">The pen.</param>
+        private void RenderTickCircle(Axis axis, Axis angleAxis, double x, OxyPen pen)
+        {
+            var zero = angleAxis.Offset;
+            var center = axis.Transform(axis.ActualMinimum, zero, angleAxis);
+            var right = axis.Transform(x, zero, angleAxis).X;
+            var radius = right - center.X;
+            var width = radius * 2;
+            var left = right - width;
+            var top = center.Y - radius;
+            var height = width;
+
+            this.rc.DrawEllipse(new OxyRect(left, top, width, height), OxyColors.Undefined, pen.Color, pen.Thickness);
+        }
+
+        /// <summary>
+        /// Renders a tick by drawing an lot of segments
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <param name="angleAxis">The angle axis.</param>
+        /// <param name="x">The x-value.</param>
+        /// <param name="pen">The pen.</param>
+        private void RenderTickArc(Axis axis, AngleAxis angleAxis, double x, OxyPen pen)
+        {
+            // caution: make sure angleAxis.UpdateActualMaxMin(); has been called
+            var minAngle = angleAxis.ActualMinimum;
+            var maxAngle = angleAxis.ActualMaximum;
+
+            // number of segment to draw a full circle
+            // - decrease if you want get more speed
+            // - increase if you want more detail
+            // (making a public property of it would be a great idea)
+            const double MaxSegments = 90.0;
+
+            // compute the actual number of segments
+            var segmentCount = (int)(MaxSegments * Math.Abs(angleAxis.EndAngle - angleAxis.StartAngle) / 360.0);
+
+            var angleStep = (maxAngle - minAngle) / (segmentCount - 1);
+
+            var points = new List<ScreenPoint>();
+
+            for (var i = 0; i < segmentCount; i++)
+            {
+                var angle = minAngle + (i * angleStep);
+                points.Add(axis.Transform(x, angle, angleAxis));
+            }
+
+            this.rc.DrawLine(points, pen.Color, pen.Thickness, pen.DashArray);
+        }
+
+        /// <summary>
+        /// Renders major tick text
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <param name="x">The x-value.</param>
+        /// <param name="angleAxis">The angle axis.</param>
+        private void RenderTickText(Axis axis, double x, Axis angleAxis)
+        {
+            var actualAngle = GetActualAngle(axis, angleAxis);
+            var dx = axis.AxisTickToLabelDistance * Math.Sin(actualAngle);
+            var dy = -axis.AxisTickToLabelDistance * Math.Cos(actualAngle);
+
+            HorizontalAlignment ha;
+            VerticalAlignment va;
+            GetTickTextAligment(actualAngle, out ha, out va);
+
+            var pt = axis.Transform(x, angleAxis.Angle, angleAxis);
+            pt = new ScreenPoint(pt.X + dx, pt.Y + dy);
+
+            string text = axis.FormatValue(x);
+            this.rc.DrawMathText(
+                pt,
+                text,
+                axis.ActualTextColor,
+                axis.ActualFont,
+                axis.ActualFontSize,
+                axis.ActualFontWeight,
+                axis.Angle,
+                ha,
+                va);
+        }
     }
 }

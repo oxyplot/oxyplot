@@ -31,6 +31,7 @@
 namespace OxyPlot.Axes
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents an angular axis for polar plots.
@@ -83,8 +84,6 @@ namespace OxyPlot.Axes
             this.MajorStep = majorStep;
             this.MinorStep = minorStep;
             this.Title = title;
-            this.StartAngle = 0;
-            this.EndAngle = 360;
         }
 
         /// <summary>
@@ -96,6 +95,49 @@ namespace OxyPlot.Axes
         /// Gets or sets the end angle (degrees).
         /// </summary>
         public double EndAngle { get; set; }
+
+        /// <summary>
+        /// Gets the coordinates used to draw ticks and tick labels (numbers or category names).
+        /// </summary>
+        /// <param name="majorLabelValues">
+        /// The major label values.
+        /// </param>
+        /// <param name="majorTickValues">
+        /// The major tick values.
+        /// </param>
+        /// <param name="minorTickValues">
+        /// The minor tick values.
+        /// </param>
+        public override void GetTickValues(
+            out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
+        {
+            var minimum = this.StartAngle / this.Scale;
+            var maximum = this.EndAngle / this.Scale;
+
+            minorTickValues = CreateTickValues(minimum, maximum, this.ActualMinorStep);
+            majorTickValues = CreateTickValues(minimum, maximum, this.ActualMajorStep);
+            majorLabelValues = maximum > minimum ?
+                CreateTickValues(0, maximum - minimum, this.ActualMajorStep) :
+                CreateTickValues(0, minimum - maximum, this.ActualMajorStep);
+        }
+
+        /// <summary>
+        /// Determines whether the specified value is valid.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified value is valid; otherwise, <c>false</c> .
+        /// </returns>
+        public override bool IsValidValue(double value)
+        {
+            return !double.IsNaN(value) &&
+                !double.IsInfinity(value) &&
+                value < this.FilterMaxValue &&
+                value > this.FilterMinValue &&
+                (this.FilterFunction == null || this.FilterFunction(value));
+        }
 
         /// <summary>
         /// Inverse transforms the specified screen point.
@@ -167,19 +209,26 @@ namespace OxyPlot.Axes
         /// <param name="bounds">The bounds.</param>
         internal override void UpdateTransform(OxyRect bounds)
         {
-            double x0 = bounds.Left;
-            double x1 = bounds.Right;
-            double y0 = bounds.Bottom;
-            double y1 = bounds.Top;
+            var x0 = bounds.Left;
+            var x1 = bounds.Right;
+            var y0 = bounds.Bottom;
+            var y1 = bounds.Top;
 
             this.ScreenMin = new ScreenPoint(x0, y1);
             this.ScreenMax = new ScreenPoint(x1, y0);
 
-            double startAngle = this.StartAngle / 180 * Math.PI;
-            double endAngle = this.EndAngle / 180 * Math.PI;
-
-            var newScale = (endAngle - startAngle) / (this.ActualMaximum - this.ActualMinimum);
-            var newOffset = this.ActualMinimum - (startAngle / newScale);
+            double newScale;
+            if (double.IsNaN(this.StartAngle) || double.IsNaN(this.EndAngle) || double.IsNaN(this.ActualMinimum) || double.IsNaN(this.ActualMaximum) ||
+                (Math.Abs(this.StartAngle - default(double)) < double.Epsilon && Math.Abs(this.EndAngle - default(double)) < double.Epsilon))
+            {
+                newScale = Math.Sign(this.EndAngle - this.StartAngle);
+            }
+            else
+            {
+                newScale = (this.EndAngle - this.StartAngle) / (this.ActualMaximum - this.ActualMinimum);
+            }
+            
+            var newOffset = this.ActualMinimum - (this.StartAngle / newScale);
             this.SetTransform(newScale, newOffset);
         }
     }
