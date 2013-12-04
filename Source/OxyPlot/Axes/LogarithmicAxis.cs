@@ -405,5 +405,69 @@ namespace OxyPlot.Axes
             base.UpdateActualMaxMin();
         }
 
+        /// <summary>
+        /// Calculates the actual maximum value.
+        /// </summary>
+        /// <param name="range">The difference between the minimum and maximum data values.</param>
+        protected override void CalculateActualMaximum(double range)
+        {
+            if (!double.IsNaN(this.ViewMaximum))
+            {
+                this.ActualMaximum = this.ViewMaximum;
+            }
+            else if (!double.IsNaN(this.Maximum))
+            {
+                // Override the ActualMaximum by the Maximum value
+                this.ActualMaximum = this.Maximum;
+            }
+            else if (range < double.Epsilon)
+            {
+                this.ActualMaximum = this.DataMaximum + double.Epsilon;
+            }
+            else
+            {
+                this.ActualMaximum = this.DataMaximum;
+
+                if (!double.IsNaN(this.ActualMinimum) && !double.IsNaN(this.ActualMaximum))
+                {
+                    var x1 = this.PreTransform(this.ActualMaximum);
+                    var x0 = this.PreTransform(this.ActualMinimum);
+                    var dx = this.MaximumPadding * (x1 - x0);
+                    this.ActualMaximum = this.PostInverseTransform(x1 + dx);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Calculates the actual minimum value.
+        /// </summary>
+        /// <param name="range">The difference between the minimum and maximum data values.</param>
+        protected override void CalculateActualMinimum(double range)
+        {
+            if (!double.IsNaN(this.ViewMinimum))
+            {
+                this.ActualMinimum = this.ViewMinimum;
+            }
+            else if (!double.IsNaN(this.Minimum))
+            {
+                this.ActualMinimum = this.Minimum;
+            }
+            else if (range < double.Epsilon)
+            {
+                this.ActualMinimum = this.DataMinimum - double.Epsilon;
+            }
+            else
+            {
+                this.ActualMinimum = this.DataMinimum;
+
+                if (!double.IsNaN(this.ActualMaximum) && !double.IsNaN(this.ActualMaximum))
+                {
+                    var x1 = this.PreTransform(this.ActualMaximum);
+                    var x0 = this.PreTransform(this.ActualMinimum);
+                    var dx = this.MinimumPadding * (x1 - x0);
+                    this.ActualMinimum = this.PostInverseTransform(x0 - dx);
+                }
+            }
+        }
     }
 }
