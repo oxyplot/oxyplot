@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MagnitudeAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents a magnitude axis for polar plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Axes
 {
     using System;
@@ -137,7 +138,7 @@ namespace OxyPlot.Axes
         /// <param name="rc">The render context.</param>
         /// <param name="model">The model.</param>
         /// <param name="axisLayer">The rendering order.</param>
-        /// <param name="pass"></param>
+        /// <param name="pass">The rendering pass.</param>
         public override void Render(IRenderContext rc, PlotModel model, AxisLayer axisLayer, int pass)
         {
             if (this.Layer != axisLayer)
@@ -172,10 +173,10 @@ namespace OxyPlot.Axes
                 throw new InvalidOperationException("Polar angle axis not defined!");
             }
 
-            double r = (x - this.Offset) * this.Scale;
-            double theta = (y - angleAxis.Offset) * angleAxis.Scale;
+            var r = (x - this.Offset) * this.Scale;
+            var theta = (y - angleAxis.Offset) * angleAxis.Scale;
 
-            return new ScreenPoint(this.MidPoint.x + (r * Math.Cos(theta)), this.MidPoint.y - (r * Math.Sin(theta)));
+            return new ScreenPoint(this.MidPoint.x + (r * Math.Cos(theta / 180 * Math.PI)), this.MidPoint.y - (r * Math.Sin(theta / 180 * Math.PI)));
         }
 
         /// <summary>
@@ -196,7 +197,7 @@ namespace OxyPlot.Axes
 
             this.MidPoint = new ScreenPoint((x0 + x1) / 2, (y0 + y1) / 2);
 
-            this.ActualMinimum = 0;
+            // this.ActualMinimum = 0;
             double r = Math.Min(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
             this.SetTransform(0.5 * r / (this.ActualMaximum - this.ActualMinimum), this.ActualMinimum);
         }

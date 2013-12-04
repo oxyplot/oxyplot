@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AngleAxisRenderer.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,9 +27,11 @@
 //   The angle axis renderer.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
+    using System.Linq;
 
     using OxyPlot.Axes;
 
@@ -60,10 +62,11 @@ namespace OxyPlot
         /// <exception cref="System.InvalidOperationException">Magnitude axis not defined.</exception>
         public override void Render(Axis axis, int pass)
         {
+            var angleAxis = (AngleAxis)axis;
+
             base.Render(axis, pass);
 
             var magnitudeAxis = this.Plot.DefaultMagnitudeAxis;
-
             if (axis.RelatedAxis != null)
             {
                 magnitudeAxis = axis.RelatedAxis as MagnitudeAxis;
@@ -74,65 +77,52 @@ namespace OxyPlot
                 throw new InvalidOperationException("Magnitude axis not defined.");
             }
 
-            double eps = axis.MinorStep * 1e-3;
+            var scaledStartAngle = angleAxis.StartAngle / angleAxis.Scale;
+            var scaledEndAngle = angleAxis.EndAngle / angleAxis.Scale;
 
-            if (axis.ShowMinorTicks)
+            var axisLength = Math.Abs(scaledEndAngle - scaledStartAngle);
+            var eps = axis.MinorStep * 1e-3;
+            if (axis.ShowMinorTicks && this.MinorPen != null)
             {
-                foreach (double value in this.MinorTickValues)
+                var tickCount = Math.Abs((int)(axisLength / axis.ActualMinorStep));
+                var screenPoints = this.MinorTickValues
+                    .Where(x => x > Math.Min(scaledStartAngle, scaledEndAngle) - eps &&
+                           x < Math.Max(scaledStartAngle, scaledEndAngle) + eps &&
+                           !this.MajorTickValues.Contains(x))
+                    .Take(tickCount + 1)
+                    .Select(x => magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, x, axis));
+
+                foreach (var screenPoint in screenPoints)
                 {
-                    if (value < axis.ActualMinimum - eps || value > axis.ActualMaximum + eps)
-                    {
-                        continue;
-                    }
-
-                    if (this.MajorTickValues.Contains(value))
-                    {
-                        continue;
-                    }
-
-                    var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, value, axis);
-
-                    if (this.MinorPen != null)
-                    {
-                        this.rc.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, pt.x, pt.y, this.MinorPen, false);
-                    }
+                    this.rc.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, screenPoint.x, screenPoint.y, this.MinorPen, false);
                 }
             }
 
-            var angleAxis = (AngleAxis)axis;
-            bool isFullCircle = Math.Abs(Math.Abs(angleAxis.EndAngle - angleAxis.StartAngle) - 360) < 1e-6;
-
-            foreach (double value in this.MajorTickValues)
+            var isFullCircle = Math.Abs(Math.Abs(Math.Max(angleAxis.EndAngle, angleAxis.StartAngle) - Math.Min(angleAxis.StartAngle, angleAxis.EndAngle)) - 360) < 1e-3;
+            var majorTickCount = (int)(axisLength / axis.ActualMajorStep);
+            if (!isFullCircle)
             {
-                // skip the last value (overlapping with the first)
-                if (isFullCircle && value > axis.ActualMaximum - eps)
-                {
-                    continue;
-                }
+                majorTickCount++;
+            }
 
-                if (value < axis.ActualMinimum - eps || value > axis.ActualMaximum + eps)
-                {
-                    continue;
-                }
+            if (this.MajorPen != null)
+            {
+                var screenPoints = this.MajorTickValues
+                    .Where(x => x > Math.Min(scaledStartAngle, scaledEndAngle) - eps && x < Math.Max(scaledStartAngle, scaledEndAngle) + eps)
+                    .Take(majorTickCount)
+                    .Select(x => magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, x, axis))
+                    .ToArray();
 
-                ScreenPoint pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, value, axis);
-                if (this.MajorPen != null)
+                foreach (var point in screenPoints)
                 {
-                    this.rc.DrawLine(
-                        magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, pt.x, pt.y, this.MajorPen, false);
+                    this.rc.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, point.x, point.y, this.MajorPen, false);
                 }
             }
 
-            foreach (double value in this.MajorLabelValues)
+            foreach (var value in this.MajorLabelValues.Take(majorTickCount))
             {
-                // skip the last value (overlapping with the first)
-                if (isFullCircle && value > axis.ActualMaximum - eps)
-                {
-                    continue;
-                }
-
                 var pt = magnitudeAxis.Transform(magnitudeAxis.ActualMaximum, value, axis);
-                double angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
+                var angle = Math.Atan2(pt.y - magnitudeAxis.MidPoint.y, pt.x - magnitudeAxis.MidPoint.x);
 
                 // add some margin
                 pt.x += Math.Cos(angle) * axis.AxisTickToLabelDistance;
@@ -141,7 +131,7 @@ namespace OxyPlot
                 // Convert to degrees
                 angle *= 180 / Math.PI;
 
-                string text = axis.FormatValue(value);
+                var text = axis.FormatValue(value);
 
                 var ha = HorizontalAlignment.Left;
                 var va = VerticalAlignment.Middle;

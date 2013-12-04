@@ -791,12 +791,13 @@ namespace OxyPlot.Axes
             }
 
             // Coerce the minimum range
-            double range = this.ActualMaximum - this.ActualMinimum;
+            var range = this.ActualMaximum - this.ActualMinimum;
             if (range < this.MinimumRange)
             {
-                double avg = (this.ActualMaximum + this.ActualMinimum) * 0.5;
-                this.ActualMinimum = avg - (this.MinimumRange * 0.5);
-                this.ActualMaximum = avg + (this.MinimumRange * 0.5);
+                var average = (this.ActualMaximum + this.ActualMinimum) * 0.5;
+                var delta = this.MinimumRange / 2;
+                this.ActualMinimum = average - delta;
+                this.ActualMaximum = average + delta;
             }
 
             if (this.AbsoluteMaximum <= this.AbsoluteMinimum)
@@ -942,8 +943,11 @@ namespace OxyPlot.Axes
         /// </returns>
         public virtual bool IsValidValue(double value)
         {
-            return !double.IsNaN(value) && !double.IsInfinity(value) && value < this.FilterMaxValue
-                   && value > this.FilterMinValue && (this.FilterFunction == null || this.FilterFunction(value));
+            return !double.IsNaN(value) &&
+                !double.IsInfinity(value) &&
+                value < this.FilterMaxValue &&
+                value > this.FilterMinValue &&
+                (this.FilterFunction == null || this.FilterFunction(value));
         }
 
         /// <summary>
@@ -1025,8 +1029,9 @@ namespace OxyPlot.Axes
                     width += labelTextSize.Height;
                 }
             }
-            else // caution: this includes AngleAxis because Position=None
+            else
             {
+                // caution: this includes AngleAxis because Position=None
                 switch (this.TickStyle)
                 {
                     case TickStyle.Outside:
@@ -1352,71 +1357,19 @@ namespace OxyPlot.Axes
         /// </summary>
         internal virtual void ResetDataMaxMin()
         {
-            this.DataMaximum = this.DataMinimum = double.NaN;
+            this.DataMaximum = this.DataMinimum = this.ActualMaximum = this.ActualMinimum = double.NaN;
         }
 
         /// <summary>
-        /// Updates the actual maximum and minimum values. If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used. If Maximum or Minimum have been set, these values will be used. Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
+        /// Updates the actual maximum and minimum values. If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum
+        /// values will be used. If Maximum or Minimum have been set, these values will be used. Otherwise the maximum and minimum values
+        /// of the series will be used, including the 'padding'.
         /// </summary>
         internal virtual void UpdateActualMaxMin()
         {
-            // Use the minimum/maximum of the data as default
-            this.ActualMaximum = this.DataMaximum;
-            this.ActualMinimum = this.DataMinimum;
-
-            double range = this.ActualMaximum - this.ActualMinimum;
-            double zeroRange = this.ActualMaximum > 0 ? this.ActualMaximum : 1;
-
-            if (!double.IsNaN(this.ViewMaximum))
-            {
-                // Override the ActualMaximum by the ViewMaximum value (from zoom/pan)
-                this.ActualMaximum = this.ViewMaximum;
-            }
-            else if (!double.IsNaN(this.Maximum))
-            {
-                // Override the ActualMaximum by the Maximum value
-                this.ActualMaximum = this.Maximum;
-            }
-            else
-            {
-                if (range < double.Epsilon)
-                {
-                    this.ActualMaximum += zeroRange * 0.5;
-                }
-
-                if (!double.IsNaN(this.ActualMinimum) && !double.IsNaN(this.ActualMaximum))
-                {
-                    double x1 = this.PreTransform(this.ActualMaximum);
-                    double x0 = this.PreTransform(this.ActualMinimum);
-                    double dx = this.MaximumPadding * (x1 - x0);
-                    this.ActualMaximum = this.PostInverseTransform(x1 + dx);
-                }
-            }
-
-            if (!double.IsNaN(this.ViewMinimum))
-            {
-                this.ActualMinimum = this.ViewMinimum;
-            }
-            else if (!double.IsNaN(this.Minimum))
-            {
-                this.ActualMinimum = this.Minimum;
-            }
-            else
-            {
-                if (range < double.Epsilon)
-                {
-                    this.ActualMinimum -= zeroRange * 0.5;
-                }
-
-                if (!double.IsNaN(this.ActualMaximum) && !double.IsNaN(this.ActualMaximum))
-                {
-                    double x1 = this.PreTransform(this.ActualMaximum);
-                    double x0 = this.PreTransform(this.ActualMinimum);
-                    double dx = this.MinimumPadding * (x1 - x0);
-                    this.ActualMinimum = this.PostInverseTransform(x0 - dx);
-                }
-            }
-
+            var range = this.DataMaximum - this.DataMinimum;
+            this.CalculateActualMaximum(range);
+            this.CalculateActualMinimum(range);
             this.CoerceActualMaxMin();
         }
 
@@ -1546,40 +1499,83 @@ namespace OxyPlot.Axes
         /// </returns>
         protected static IList<double> CreateTickValues(double min, double max, double step)
         {
-            if (max <= min)
-            {
-                throw new ArgumentException("Axis: Maximum should be larger than minimum.", "max");
-            }
-
             if (step <= 0)
             {
-                throw new ArgumentException("Axis: Step cannot be zero or negative.", "step");
+                throw new ArgumentException("Axis: Step cannot be zero.", "step");
             }
 
-            double x0 = Math.Round(min / step) * step;
-            int n = Math.Max((int)((max - min) / step), 1);
-            var values = new List<double>(n);
-
-            // Limit the maximum number of iterations (in case something is wrong with the step size)
-            int i = 0;
-            const int MaxIterations = 1000;
-            double x = x0;
-            double eps = step * 1e-3;
-
-            while (x <= max + eps && i < MaxIterations)
+            if (max <= min && step > 0)
             {
-                x = x0 + (i * step);
+                step *= -1;
+            }
+
+            const int MaxIterations = 1000;
+            var value = Math.Round(min / step) * step;
+            var count = Math.Max((int)((max - min) / step), 1);
+            var epsilon = step * 1e-3;
+            var values = new List<double>(count);
+            var i = 0;
+            while (step >= 0 ? value <= max + epsilon : value >= max - epsilon && i < MaxIterations)
+            {
                 i++;
-                if (x >= min - eps && x <= max + eps)
-                {
-                    // limit to 8 digits - Math.Round(x, 8) does not work for very small numbers
-                    // TODO: can this be improved?
-                    x = double.Parse(x.ToString("e8"));
-                    values.Add(x);
-                }
+                
+                // limit to 8 digits - Math.Round(x, 8) does not work for very small numbers
+                // TODO: can this be improved?
+                value = double.Parse(value.ToString("e8"));
+                values.Add(value);
+                value += step;
             }
 
             return values;
+        }
+
+        /// <summary>
+        /// Calculates the actual maximum value.
+        /// </summary>
+        /// <param name="range">The difference between the minimum and maximum data values.</param>
+        protected virtual void CalculateActualMaximum(double range)
+        {
+            if (!double.IsNaN(this.ViewMaximum))
+            {
+                this.ActualMaximum = this.ViewMaximum;
+            }
+            else if (!double.IsNaN(this.Maximum))
+            {
+                // Override the ActualMaximum by the Maximum value
+                this.ActualMaximum = this.Maximum;
+            }
+            else if (range < double.Epsilon)
+            {
+                this.ActualMaximum = this.DataMaximum + double.Epsilon;
+            }
+            else
+            {
+                this.ActualMaximum = this.DataMaximum;
+            }
+        }
+
+        /// <summary>
+        /// Calculates the actual minimum value.
+        /// </summary>
+        /// <param name="range">The difference between the minimum and maximum data values.</param>
+        protected virtual void CalculateActualMinimum(double range)
+        {
+            if (!double.IsNaN(this.ViewMinimum))
+            {
+                this.ActualMinimum = this.ViewMinimum;
+            }
+            else if (!double.IsNaN(this.Minimum))
+            {
+                this.ActualMinimum = this.Minimum;
+            }
+            else if (range < double.Epsilon)
+            {
+                this.ActualMinimum = this.DataMinimum - double.Epsilon;
+            }
+            else
+            {
+                this.ActualMinimum = this.DataMinimum;
+            }
         }
 
         /// <summary>
