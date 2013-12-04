@@ -125,7 +125,7 @@ namespace OxyPlot.Xps
             {
                 using (var xpsdoc = new XpsDocument(package))
                 {
-                    XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsdoc);
+                    var writer = XpsDocument.CreateXpsDocumentWriter(xpsdoc);
                     writer.Write(this.CreateFixedDocument(new Size(width, height)));
                 }
             }
@@ -316,17 +316,12 @@ namespace OxyPlot.Xps
         /// <param name="margins">
         /// The margins.
         /// </param>
-        private void AddPageBody(
-            DocumentPaginator sourceFlowDocPaginator, int pageNo, Canvas pageCanvas, Thickness margins)
+        private void AddPageBody(DocumentPaginator sourceFlowDocPaginator, int pageNo, Canvas pageCanvas, Thickness margins)
         {
-            using (var dpv = new DocumentPageView())
-            {
-                dpv.DocumentPaginator = sourceFlowDocPaginator;
-                dpv.PageNumber = pageNo;
-                Canvas.SetTop(dpv, margins.Top);
-                Canvas.SetLeft(dpv, margins.Left);
-                pageCanvas.Children.Add(dpv);
-            }
+            var dpv = new DocumentPageView { DocumentPaginator = sourceFlowDocPaginator, PageNumber = pageNo };
+            Canvas.SetTop(dpv, margins.Top);
+            Canvas.SetLeft(dpv, margins.Left);
+            pageCanvas.Children.Add(dpv);
         }
 
         /// <summary>
@@ -378,7 +373,7 @@ namespace OxyPlot.Xps
         private FixedDocument CreateFixedDocument(Size size)
         {
             IDocumentPaginatorSource dps = this.doc;
-            DocumentPaginator sourceFlowDocPaginator = dps.DocumentPaginator;
+            var sourceFlowDocPaginator = dps.DocumentPaginator;
             sourceFlowDocPaginator.PageSize = new Size(
                 size.Width - this.Style.Margins.Left - this.Style.Margins.Right,
                 size.Height - this.Style.Margins.Top - this.Style.Margins.Bottom);
@@ -427,6 +422,5 @@ namespace OxyPlot.Xps
 
             this.disposed = true;
         }
-
     }
 }
