@@ -73,6 +73,7 @@ namespace OxyPlot
         /// </summary>
         public virtual void Close()
         {
+            this.Flush();
         }
 
         /// <summary>

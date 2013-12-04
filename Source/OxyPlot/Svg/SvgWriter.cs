@@ -100,7 +100,6 @@ namespace OxyPlot
                 this.Complete();
             }
 
-            this.Flush();
             base.Close();
         }
 
