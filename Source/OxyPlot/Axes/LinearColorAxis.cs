@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The color axis.
+//   Represents a linear color axis.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

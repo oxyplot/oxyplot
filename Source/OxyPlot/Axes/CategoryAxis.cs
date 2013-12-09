@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CategoryAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,9 +24,10 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a category axes.
+//   Represents a category axis.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Axes
 {
     using System.Collections;
@@ -40,7 +41,9 @@ namespace OxyPlot.Axes
     /// Represents a category axis.
     /// </summary>
     /// <remarks>
-    /// The category axis is using the label collection indices as the coordinate. If you have 5 categories in the Labels collection, the categories will be placed at coordinates 0 to 4. The range of the axis will be from -0.5 to 4.5 (excl. padding).
+    /// The category axis is using the index of the label collection items as coordinates. 
+    /// If you have 5 categories in the Labels collection, the categories will be placed at coordinates 0 to 4. 
+    /// The range of the axis will be from -0.5 to 4.5 (excluding padding).
     /// </remarks>
     public class CategoryAxis : LinearAxis
     {
@@ -459,6 +462,5 @@ namespace OxyPlot.Axes
                 }
             }
         }
-
     }
 }

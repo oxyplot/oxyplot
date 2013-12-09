@@ -28,7 +28,7 @@
 namespace OxyPlot.Axes
 {
     /// <summary>
-    /// The OxyPlot.Axes namespace contains the axes and related types.
+    /// The OxyPlot.Axes namespace contains classes that represents the axes of the plots.
     /// </summary>
     [System.Runtime.CompilerServices.CompilerGenerated]
     internal class NamespaceDoc

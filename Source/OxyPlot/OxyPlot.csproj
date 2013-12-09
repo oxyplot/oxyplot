@@ -156,6 +156,7 @@
     <Compile Include="Axes\CategoryAxis.cs" />
     <Compile Include="Axes\CategoryColorAxis.cs" />
     <Compile Include="Axes\IColorAxis.cs" />
+    <Compile Include="Axes\ColorAxisExtensions.cs" />
     <Compile Include="Axes\LinearColorAxis.cs" />
     <Compile Include="Axes\DateTimeAxis.cs" />
     <Compile Include="Axes\DateTimeIntervalType.cs" />

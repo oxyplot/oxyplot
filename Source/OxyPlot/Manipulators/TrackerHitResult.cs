@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TrackerHitResult.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Provides a data container for a tracker hit result.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using OxyPlot.Series;
@@ -54,7 +55,7 @@ namespace OxyPlot
         /// <param name="item">The item.</param>
         /// <param name="index">The index.</param>
         /// <param name="text">The text.</param>
-        public TrackerHitResult(OxyPlot.Series.Series series, IDataPoint dp, ScreenPoint sp, object item = null, double index = -1, string text = null)
+        public TrackerHitResult(Series.Series series, IDataPoint dp, ScreenPoint sp, object item = null, double index = -1, string text = null)
         {
             this.DataPoint = dp;
             this.Position = sp;
@@ -157,6 +158,5 @@ namespace OxyPlot
                 yvalue,
                 this.Item).Trim();
         }
-
     }
 }
