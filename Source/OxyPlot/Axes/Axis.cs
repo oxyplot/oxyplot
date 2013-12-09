@@ -46,8 +46,11 @@ namespace OxyPlot.Axes
         protected static readonly Func<double, double> Exponent = x => Math.Floor(Math.Log(Math.Abs(x), 10));
 
         /// <summary>
-        /// Mantissa function. http://en.wikipedia.org/wiki/Mantissa
+        /// Mantissa function. 
         /// </summary>
+        /// <remarks>
+        /// See also <a href="http://en.wikipedia.org/wiki/Mantissa">Wikipedia</a>.
+        /// </remarks>
         protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
 
         /// <summary>
@@ -840,20 +843,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Formats the value to be used by the tracker.
-        /// </summary>
-        /// <param name="x">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// The formatted value.
-        /// </returns>
-        public virtual string FormatValueForTracker(double x)
-        {
-            return string.Format(this.ActualCulture, "{0}", x);
-        }
-
-        /// <summary>
         /// Gets the coordinates used to draw ticks and tick labels (numbers or category names).
         /// </summary>
         /// <param name="majorLabelValues">
@@ -874,14 +863,17 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Gets the value from an axis coordinate, converts from double to the correct data type if necessary. e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
+        /// Gets the value from an axis coordinate, converts from a coordinate <see cref="double"/> value to the actual data type. 
         /// </summary>
         /// <param name="x">
         /// The coordinate.
         /// </param>
         /// <returns>
-        /// The value.
+        /// The converted value.
         /// </returns>
+        /// <remarks>
+        /// Examples: The <see cref="DateTimeAxis"/> returns the <see cref="DateTime"/> and <see cref="CategoryAxis"/> returns category strings.
+        /// </remarks>
         public virtual object GetValue(double x)
         {
             return x;
