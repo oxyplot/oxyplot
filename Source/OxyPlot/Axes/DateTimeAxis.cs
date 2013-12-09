@@ -55,7 +55,17 @@ namespace OxyPlot.Axes
         /// <remarks>
         /// This gives the same numeric date values as Excel
         /// </remarks>
-        private static DateTime timeOrigin = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime TimeOrigin = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        /// <summary>
+        /// The maximum day value
+        /// </summary>
+        private static readonly double MaxDayValue = (DateTime.MaxValue - TimeOrigin).TotalDays;
+
+        /// <summary>
+        /// The minimum day value
+        /// </summary>
+        private static readonly double MinDayValue = (DateTime.MinValue - TimeOrigin).TotalDays;
 
         /// <summary>
         /// The actual interval type.
@@ -253,16 +263,16 @@ namespace OxyPlot.Axes
         /// The number of days after the time origin.
         /// </param>
         /// <returns>
-        /// A date/time structure.
+        /// A <see cref="DateTime"/> structure. Ticks = 0 if the value is invalid.
         /// </returns>
         public static DateTime ToDateTime(double value)
         {
-            if (double.IsNaN(value))
+            if (double.IsNaN(value) || value < MinDayValue || value > MaxDayValue)
             {
                 return new DateTime();
             }
 
-            return timeOrigin.AddDays(value - 1);
+            return TimeOrigin.AddDays(value - 1);
         }
 
         /// <summary>
@@ -276,7 +286,7 @@ namespace OxyPlot.Axes
         /// </returns>
         public static double ToDouble(DateTime value)
         {
-            var span = value - timeOrigin;
+            var span = value - TimeOrigin;
             return span.TotalDays + 1;
         }
 
@@ -579,7 +589,14 @@ namespace OxyPlot.Axes
         private IList<double> CreateDateTickValues(
             double min, double max, double step, DateTimeIntervalType intervalType)
         {
-            DateTime start = ToDateTime(min);
+            var values = new Collection<double>();
+            var start = ToDateTime(min);
+            if (start.Ticks == 0)
+            {
+                // Invalid start time
+                return values;
+            }
+
             switch (intervalType)
             {
                 case DateTimeIntervalType.Weeks:
@@ -600,13 +617,24 @@ namespace OxyPlot.Axes
             }
 
             // Adds a tick to the end time to make sure the end DateTime is included.
-            DateTime end = ToDateTime(max).AddTicks(1);
+            var end = ToDateTime(max).AddTicks(1);
+            if (end.Ticks == 0)
+            {
+                // Invalid end time
+                return values;
+            }
 
-            DateTime current = start;
-            var values = new Collection<double>();
+            var current = start;
             double eps = step * 1e-3;
-            DateTime minDateTime = ToDateTime(min - eps);
-            DateTime maxDateTime = ToDateTime(max + eps);
+            var minDateTime = ToDateTime(min - eps);
+            var maxDateTime = ToDateTime(max + eps);
+
+            if (minDateTime.Ticks == 0 || maxDateTime.Ticks == 0)
+            {
+                // Invalid min/max time
+                return values;
+            }
+
             while (current < end)
             {
                 if (current > minDateTime && current < maxDateTime)
@@ -614,17 +642,26 @@ namespace OxyPlot.Axes
                     values.Add(ToDouble(current));
                 }
 
-                switch (intervalType)
+                try
                 {
-                    case DateTimeIntervalType.Months:
-                        current = current.AddMonths((int)Math.Ceiling(step));
-                        break;
-                    case DateTimeIntervalType.Years:
-                        current = current.AddYears((int)Math.Ceiling(step));
-                        break;
-                    default:
-                        current = current.AddDays(step);
-                        break;
+                    switch (intervalType)
+                    {
+                        case DateTimeIntervalType.Months:
+                            current = current.AddMonths((int)Math.Ceiling(step));
+                            break;
+                        case DateTimeIntervalType.Years:
+                            current = current.AddYears((int)Math.Ceiling(step));
+                            break;
+                        default:
+                            current = current.AddDays(step);
+                            break;
+                    }
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    // AddMonths/AddYears/AddDays can throw an exception
+                    // We could test this by comparing to MaxDayValue/MinDayValue, but it is easier to catch the exception...
+                    break;
                 }
             }
 
@@ -632,7 +669,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Creates date/time tick values.
+        /// Creates <see cref="DateTime"/> tick values.
         /// </summary>
         /// <param name="min">
         /// The min.
@@ -646,9 +683,8 @@ namespace OxyPlot.Axes
         /// <param name="intervalType">
         /// The interval type.
         /// </param>
-        /// DateTime tick values.
         /// <returns>
-        /// DateTime tick values.
+        /// A list of <see cref="DateTime"/> tick values.
         /// </returns>
         private IList<double> CreateDateTimeTickValues(
             double min, double max, double interval, DateTimeIntervalType intervalType)

@@ -67,5 +67,17 @@ namespace OxyPlot.Tests
         {
             Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(double.NaN));
         }
+
+        [Test]
+        public void ToDateTime_VeryBigValue()
+        {
+            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(double.MaxValue));
+        }
+
+        [Test]
+        public void ToDateTime_VerySmallValue()
+        {
+            Assert.AreEqual(new DateTime(), DateTimeAxis.ToDateTime(double.MinValue));
+        }
     }
 }
