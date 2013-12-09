@@ -43,9 +43,9 @@ namespace OxyPlot.Axes
     /// The actual numeric values on the axis are days since 1900/01/01.
     /// Use the static ToDouble and ToDateTime to convert numeric values to and from DateTimes.
     /// The StringFormat value can be used to force formatting of the axis values
-    /// "yyyy-MM-dd" shows date
-    /// "w" or "ww" shows week number
-    /// "h:mm" shows hours and minutes
+    /// <code>"yyyy-MM-dd"</code> shows date
+    /// <code>"w"</code> or <code>"ww"</code> shows week number
+    /// <code>"h:mm"</code> shows hours and minutes
     /// </remarks>
     public class DateTimeAxis : LinearAxis
     {
@@ -660,7 +660,7 @@ namespace OxyPlot.Axes
             }
 
             // For shorter step sizes we use the method from Axis
-            return CreateTickValues(min, max, interval);
+            return Axis.CreateTickValues(min, max, interval);
         }
 
         /// <summary>
@@ -674,13 +674,7 @@ namespace OxyPlot.Axes
         /// </returns>
         private int GetWeek(DateTime date)
         {
-            var culture = this.ActualCulture as CultureInfo;
-            if (culture != null)
-            {
-                return culture.Calendar.GetWeekOfYear(date, this.CalendarWeekRule, this.FirstDayOfWeek);
-            }
-
-            return 0;
+            return this.ActualCulture.Calendar.GetWeekOfYear(date, this.CalendarWeekRule, this.FirstDayOfWeek);
         }
     }
 }

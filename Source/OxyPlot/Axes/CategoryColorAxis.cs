@@ -150,15 +150,9 @@ namespace OxyPlot.Axes
                 int n = this.Palette.Colors.Count;
                 for (int i = 0; i < n; i++)
                 {
-                    double ylow = this.Transform(this.GetLowValue(i, majorLabelValues));
-                    double yhigh = this.Transform(this.GetHighValue(i, majorLabelValues));
-                    drawColorRect(ylow, yhigh, this.Palette.Colors[i]);
-                }
-
-                double highLowLength = 10;
-                if (this.IsHorizontal())
-                {
-                    highLowLength *= -1;
+                    double low = this.Transform(this.GetLowValue(i, majorLabelValues));
+                    double high = this.Transform(this.GetHighValue(i, majorLabelValues));
+                    drawColorRect(low, high, this.Palette.Colors[i]);
                 }
             }
 
@@ -196,25 +190,6 @@ namespace OxyPlot.Axes
                                    ? this.ActualMaximum
                                    : (majorLabelValues[paletteIndex] + majorLabelValues[paletteIndex + 1]) / 2;
             return highValue;
-        }
-
-        /// <summary>
-        /// Gets the low value of the specified palette index.
-        /// </summary>
-        /// <param name="paletteIndex">
-        /// Index of the palette.
-        /// </param>
-        /// <returns>
-        /// The value.
-        /// </returns>
-        protected double GetLowValue(int paletteIndex)
-        {
-            IList<double> majorLabelValues;
-            IList<double> majorTickValues;
-            IList<double> minorTickValues;
-            this.GetTickValues(out majorLabelValues, out majorTickValues, out minorTickValues);
-            var lowValue = this.GetLowValue(paletteIndex, majorLabelValues);
-            return lowValue;
         }
 
         /// <summary>

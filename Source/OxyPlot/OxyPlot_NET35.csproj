@@ -114,6 +114,7 @@
     <Compile Include="Imaging\Png\PngDecoder.cs" />
     <Compile Include="Imaging\Png\PngEncoder.cs" />
     <Compile Include="Imaging\Png\PngEncoderOptions.cs" />
+    <None Include="ClassDiagrams\Axes.cd" />
     <None Include="Imaging\Jpeg\JpegDecoder.cs" />
     <Compile Include="Imaging\Deflate\Arrays.cs" />
     <Compile Include="Imaging\Deflate\BitReader.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Axes\CategoryAxis.cs" />
     <Compile Include="Axes\CategoryColorAxis.cs" />
     <Compile Include="Axes\IColorAxis.cs" />
+    <Compile Include="Axes\ColorAxisExtensions.cs" />
     <Compile Include="Axes\LinearColorAxis.cs" />
     <Compile Include="Axes\DateTimeAxis.cs" />
     <Compile Include="Axes\DateTimeIntervalType.cs" />
@@ -272,6 +274,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Pdf\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Imaging\Deflate\Readme.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
