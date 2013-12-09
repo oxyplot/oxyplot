@@ -192,20 +192,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Formats the value to be used by the tracker.
-        /// </summary>
-        /// <param name="x">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// The formatted value.
-        /// </returns>
-        public override string FormatValueForTracker(double x)
-        {
-            return this.FormatValue(x);
-        }
-
-        /// <summary>
         /// Gets the category value.
         /// </summary>
         /// <param name="categoryIndex">

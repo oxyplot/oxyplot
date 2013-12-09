@@ -502,7 +502,7 @@ namespace OxyPlot.Series
                 this.TrackerFormatString,
                 item,
                 this.Title,
-                categoryAxis.FormatValueForTracker(categoryIndex),
+                categoryAxis.FormatValue(categoryIndex),
                 barItem.Value);
             return text;
         }
