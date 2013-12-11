@@ -116,9 +116,7 @@ namespace OxyPlot.Axes
 
             minorTickValues = Axis.CreateTickValues(minimum, maximum, this.ActualMinorStep);
             majorTickValues = Axis.CreateTickValues(minimum, maximum, this.ActualMajorStep);
-            majorLabelValues = maximum > minimum ?
-                Axis.CreateTickValues(0, maximum - minimum, this.ActualMajorStep) :
-                Axis.CreateTickValues(0, minimum - maximum, this.ActualMajorStep);
+            majorLabelValues = Axis.CreateTickValues(0, maximum > minimum ? maximum - minimum : minimum - maximum, this.ActualMajorStep);
         }
 
         /// <summary>
@@ -217,17 +215,7 @@ namespace OxyPlot.Axes
             this.ScreenMin = new ScreenPoint(x0, y1);
             this.ScreenMax = new ScreenPoint(x1, y0);
 
-            double newScale;
-            if (double.IsNaN(this.StartAngle) || double.IsNaN(this.EndAngle) || double.IsNaN(this.ActualMinimum) || double.IsNaN(this.ActualMaximum) ||
-                (Math.Abs(this.StartAngle - default(double)) < double.Epsilon && Math.Abs(this.EndAngle - default(double)) < double.Epsilon))
-            {
-                newScale = Math.Sign(this.EndAngle - this.StartAngle);
-            }
-            else
-            {
-                newScale = (this.EndAngle - this.StartAngle) / (this.ActualMaximum - this.ActualMinimum);
-            }
-            
+            var newScale = (this.EndAngle - this.StartAngle) / (this.ActualMaximum - this.ActualMinimum);
             var newOffset = this.ActualMinimum - (this.StartAngle / newScale);
             this.SetTransform(newScale, newOffset);
         }
