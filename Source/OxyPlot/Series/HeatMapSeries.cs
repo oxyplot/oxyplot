@@ -74,6 +74,8 @@ namespace OxyPlot.Series
         public HeatMapSeries()
         {
             this.Interpolate = true;
+            this.LabelFormatString = "0.00";
+            this.LabelFontSize = 0;
         }
 
         /// <summary>
@@ -145,6 +147,17 @@ namespace OxyPlot.Series
         public HeatMapCoordinateDefinition CoordinateDefinition { get; set; }
 
         /// <summary>
+        /// Gets or sets the label format string.
+        /// </summary>
+        /// <value>The format string.</value>
+        public string LabelFormatString { get; set; }
+
+        /// <summary>
+        /// Gets or sets the font size of the labels relative to the cell height. The default value is 0 (labels not visible).
+        /// </summary>
+        public double LabelFontSize { get; set; }
+
+        /// <summary>
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">
@@ -166,13 +179,13 @@ namespace OxyPlot.Series
             double bottom = this.Y0;
             double top = this.Y1;
 
+            int m = this.Data.GetLength(0);
+            int n = this.Data.GetLength(1);
+            double dx = (this.X1 - this.X0) / (m - 1);
+            double dy = (this.Y1 - this.Y0) / (n - 1);
+
             if (this.CoordinateDefinition == HeatMapCoordinateDefinition.Center)
             {
-                int m = this.Data.GetLength(0);
-                int n = this.Data.GetLength(1);
-
-                double dx = (this.X1 - this.X0) / (m - 1);
-                double dy = (this.Y1 - this.Y0) / (n - 1);
 
                 left -= dx / 2;
                 right += dx / 2;
@@ -190,10 +203,29 @@ namespace OxyPlot.Series
                 this.dataHash = this.Data.GetHashCode();
             }
 
+            var clip = this.GetClippingRect();
             if (this.image != null)
             {
-                var clip = this.GetClippingRect();
                 rc.DrawClippedImage(clip, this.image, rect.Left, rect.Top, rect.Width, rect.Height, 1, this.Interpolate);
+            }
+
+            if (this.LabelFontSize > 0)
+            {
+                double fontSize = (rect.Height / n) * this.LabelFontSize;
+                for (int i = 0; i < m; i++)
+                {
+                    for (int j = 0; j < n; j++)
+                    {
+                        var p = new DataPoint((i * dx) + this.X0, (j * dy) + this.Y0);
+                        var point = this.Transform(p);
+                        var v = GetValue(this.Data, i, j);
+                        var color = this.ColorAxis.GetColor(v);
+                        var hsv = color.ToHsv();
+                        var textColor = hsv[2] > 0.6 ? OxyColors.Black : OxyColors.White;
+                        var label = v.ToString(this.LabelFormatString, this.ActualCulture);
+                        rc.DrawClippedText(clip, point, label, textColor, this.ActualFont, fontSize, 500, 0, HorizontalAlignment.Center, VerticalAlignment.Middle);
+                    }
+                }
             }
         }
 
@@ -382,14 +414,23 @@ namespace OxyPlot.Series
         /// </summary>
         private void UpdateImage()
         {
+            // determine if the provided data should be reversed in x-direction
+            var reverseX = this.XAxis.IsReversed;
+
+            // determine if the provided data should be reversed in y-direction (
+            var reverseY = this.YAxis.IsReversed;
+
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
             var buffer = new OxyColor[m, n];
             for (int i = 0; i < m; i++)
             {
+                var ii = reverseX ? m - 1 - i : i;
                 for (int j = 0; j < n; j++)
                 {
-                    buffer[i, j] = this.ColorAxis.GetColor(this.Data[i, n - 1 - j]);
+                    // Note the negation here - image must be rendered the oppsite direction of the standard y axis
+                    var jj = !reverseY ? n - 1 - j : j;
+                    buffer[i, j] = this.ColorAxis.GetColor(this.Data[ii, jj]);
                 }
             }
 

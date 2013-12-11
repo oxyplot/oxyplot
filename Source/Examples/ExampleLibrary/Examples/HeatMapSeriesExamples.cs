@@ -108,6 +108,31 @@ namespace ExampleLibrary
             return CreateExample("Not interpolated values", false);
         }
 
+        [Example("Not interpolated, reversed x-axis")]
+        public static PlotModel NotInterpolatedReversedX()
+        {
+            var model = CreateExample("Not interpolated values", false);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, StartPosition = 1, EndPosition = 0 });
+            return model;
+        }
+
+        [Example("Not interpolated, reversed y-axis")]
+        public static PlotModel NotInterpolatedReversedY()
+        {
+            var model = CreateExample("Not interpolated values", false);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 });
+            return model;
+        }
+
+        [Example("Not interpolated, reversed x- and y-axis")]
+        public static PlotModel NotInterpolatedReversedXY()
+        {
+            var model = CreateExample("Not interpolated values", false);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, StartPosition = 1, EndPosition = 0 });
+            return model;
+        }
+
         [Example("Not interpolated with two NaN values")]
         public static PlotModel NotInterpolatedWithNanValue()
         {
@@ -203,10 +228,80 @@ namespace ExampleLibrary
                 Y0 = 0.5,
                 Y1 = 2.5,
                 Data = data,
-                Interpolate = interpolate
+                Interpolate = interpolate,
+                LabelFontSize = 0.2
             };
             model.Series.Add(hms);
             return model;
+        }
+
+        [Example("Confusion matrix")]
+        public static PlotModel ConfusionMatrix()
+        {
+            // Example provided by Pau Climent Pérez
+            // See also http://en.wikipedia.org/wiki/Confusion_matrix
+            var data = new double[3, 3];
+
+            data[0, 0] = 1;
+            data[1, 1] = 0.8;
+            data[1, 2] = 0.2;
+            data[2, 2] = 1;
+
+            // I guess this is where the confusion comes from?
+            data = data.Transpose();
+
+            string[] cat1 = { "class A", "class B", "class C" };
+
+            var model = new PlotModel("Confusion Matrix");
+
+            var palette = OxyPalette.Interpolate(50, OxyColors.White, OxyColors.Black);
+
+            var lca = new LinearColorAxis { Position = AxisPosition.Right, Palette = palette, HighColor = OxyColors.White, LowColor = OxyColors.White };
+            model.Axes.Add(lca);
+
+            var axis1 = new CategoryAxis(AxisPosition.Top, "Actual class", cat1);
+            model.Axes.Add(axis1);
+
+            // We invert this axis, so that they look "symmetrical"
+            var axis2 = new CategoryAxis(AxisPosition.Left, "Predicted class", cat1);
+            axis2.Angle = -90;
+            axis2.StartPosition = 1;
+            axis2.EndPosition = 0;
+
+            model.Axes.Add(axis2);
+
+            var hms = new HeatMapSeries
+            {
+                Data = data,
+                Interpolate = false,
+                LabelFontSize = 0.25,
+                X0 = 0,
+                X1 = data.GetLength(1) - 1,
+                Y0 = 0,
+                Y1 = data.GetLength(0) - 1,
+            };
+
+            model.Series.Add(hms);
+            return model;
+        }
+    }
+    
+    internal static class ArrayExtensions
+    {
+        public static double[,] Transpose(this double[,] input)
+        {
+            int m = input.GetLength(0);
+            int n = input.GetLength(1);
+            var output = new double[n, m];
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    output[j, i] = input[i, j];
+                }
+            }
+
+            return output;
         }
     }
 }
