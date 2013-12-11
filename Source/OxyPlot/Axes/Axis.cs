@@ -1353,15 +1353,44 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Updates the actual maximum and minimum values. If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum
+        /// Updates the <see cref="ActualMaximum"/> and <see cref="ActualMinimum"/> values. 
+        /// </summary>
+        /// <remarks>
+        /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum
         /// values will be used. If Maximum or Minimum have been set, these values will be used. Otherwise the maximum and minimum values
         /// of the series will be used, including the 'padding'.
-        /// </summary>
+        /// </remarks>
         internal virtual void UpdateActualMaxMin()
         {
-            var range = this.DataMaximum - this.DataMinimum;
-            this.CalculateActualMaximum(range);
-            this.CalculateActualMinimum(range);
+            if (!double.IsNaN(this.ViewMaximum))
+            {
+                // The user has zoomed/panned the axis, use the ViewMaximum value.
+                this.ActualMaximum = this.ViewMaximum;
+            }
+            else if (!double.IsNaN(this.Maximum))
+            {
+                // The Maximum value has been set
+                this.ActualMaximum = this.Maximum;
+            }
+            else
+            {
+                // Calculate the actual maximum, including padding
+                this.ActualMaximum = this.CalculateActualMaximum();
+            }
+
+            if (!double.IsNaN(this.ViewMinimum))
+            {
+                this.ActualMinimum = this.ViewMinimum;
+            }
+            else if (!double.IsNaN(this.Minimum))
+            {
+                this.ActualMinimum = this.Minimum;
+            }
+            else
+            {
+                this.ActualMinimum = this.CalculateActualMinimum();
+            }
+
             this.CoerceActualMaxMin();
         }
 
@@ -1477,44 +1506,37 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Creates tick values at the specified interval.
         /// </summary>
-        /// <param name="min">
-        /// The minimum coordinate.
-        /// </param>
-        /// <param name="max">
-        /// The maximum coordinate.
-        /// </param>
-        /// <param name="step">
-        /// The interval.
-        /// </param>
-        /// <returns>
-        /// A list of tick values.
-        /// </returns>
-        protected static IList<double> CreateTickValues(double min, double max, double step)
+        /// <param name="from">The start value.</param>
+        /// <param name="to">The end value.</param>
+        /// <param name="step">The interval.</param>
+        /// <param name="maxTicks">The maximum number of ticks (optional). The default value is 1000.</param>
+        /// <returns>A sequence of values.</returns>
+        /// <exception cref="System.ArgumentException">Axis: Step cannot be zero or negative.;step</exception>
+        protected static IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000)
         {
             if (step <= 0)
             {
-                throw new ArgumentException("Axis: Step cannot be zero.", "step");
+                throw new ArgumentException("Axis: Step cannot be zero or negative.", "step");
             }
 
-            if (max <= min && step > 0)
+            if (to <= from && step > 0)
             {
                 step *= -1;
             }
 
-            const int MaxIterations = 1000;
-            var value = Math.Round(min / step) * step;
-            var count = Math.Max((int)((max - min) / step), 1);
-            var epsilon = step * 1e-3;
+            var value = Math.Round(from / step) * step;
+            var count = Math.Max((int)((to - from) / step), 1);
+            var epsilon = step * 1e-3 * Math.Sign(step);
             var values = new List<double>(count);
             var i = 0;
-            while (step >= 0 ? value <= max + epsilon : value >= max - epsilon && i < MaxIterations)
+            while (value <= to + epsilon && i < maxTicks)
             {
                 i++;
-                
-                // limit to 8 digits - Math.Round(x, 8) does not work for very small numbers
+
+                // get rid of numerical noise, limit to 8 digits 
+                // have tried to use Math.Round(x, 8), but this does not work for very small numbers
                 // TODO: can this be improved?
-                value = double.Parse(value.ToString("e8"));
-                values.Add(value);
+                values.Add(double.Parse(value.ToString("e8")));
                 value += step;
             }
 
@@ -1522,52 +1544,55 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Calculates the actual maximum value.
+        /// Calculates the actual maximum value of the axis, including the <see cref="MaximumPadding" />.
         /// </summary>
-        /// <param name="range">The difference between the minimum and maximum data values.</param>
-        protected virtual void CalculateActualMaximum(double range)
+        /// <returns>The new actual maximum value of the axis.</returns>
+        protected virtual double CalculateActualMaximum()
         {
-            if (!double.IsNaN(this.ViewMaximum))
+            var actualMaximum = this.DataMaximum;
+            double range = this.DataMaximum - this.DataMinimum;
+
+            if (range < double.Epsilon)
             {
-                this.ActualMaximum = this.ViewMaximum;
+                double zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
+                actualMaximum += zeroRange * 0.5;
             }
-            else if (!double.IsNaN(this.Maximum))
+
+            if (!double.IsNaN(this.DataMinimum) && !double.IsNaN(actualMaximum))
             {
-                // Override the ActualMaximum by the Maximum value
-                this.ActualMaximum = this.Maximum;
+                double x1 = this.PreTransform(actualMaximum);
+                double x0 = this.PreTransform(this.DataMinimum);
+                double dx = this.MaximumPadding * (x1 - x0);
+                return this.PostInverseTransform(x1 + dx);
             }
-            else if (range < double.Epsilon)
-            {
-                this.ActualMaximum = this.DataMaximum + double.Epsilon;
-            }
-            else
-            {
-                this.ActualMaximum = this.DataMaximum;
-            }
+
+            return actualMaximum;
         }
 
         /// <summary>
-        /// Calculates the actual minimum value.
+        /// Calculates the actual minimum value of the axis, including the <see cref="MinimumPadding" />.
         /// </summary>
-        /// <param name="range">The difference between the minimum and maximum data values.</param>
-        protected virtual void CalculateActualMinimum(double range)
+        /// <returns>The new actual minimum value of the axis.</returns>
+        protected virtual double CalculateActualMinimum()
         {
-            if (!double.IsNaN(this.ViewMinimum))
+            var actualMinimum = this.DataMinimum;
+            double range = this.DataMaximum - this.DataMinimum;
+
+            if (range < double.Epsilon)
             {
-                this.ActualMinimum = this.ViewMinimum;
+                double zeroRange = this.DataMaximum > 0 ? this.DataMaximum : 1;
+                actualMinimum -= zeroRange * 0.5;
             }
-            else if (!double.IsNaN(this.Minimum))
+
+            if (!double.IsNaN(this.ActualMaximum))
             {
-                this.ActualMinimum = this.Minimum;
+                double x1 = this.PreTransform(this.ActualMaximum);
+                double x0 = this.PreTransform(actualMinimum);
+                double dx = this.MinimumPadding * (x1 - x0);
+                return this.PostInverseTransform(x0 - dx);
             }
-            else if (range < double.Epsilon)
-            {
-                this.ActualMinimum = this.DataMinimum - double.Epsilon;
-            }
-            else
-            {
-                this.ActualMinimum = this.DataMinimum;
-            }
+
+            return actualMinimum;
         }
 
         /// <summary>
