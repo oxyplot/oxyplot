@@ -204,5 +204,68 @@ namespace ExampleLibrary
             ((PolarHeatMapSeries)model.Series[0]).ImageSize = 1000;
             return model;
         }
+
+        [Example("Design structure matrix (DSM)")]
+        public static PlotModel DesignStructureMatrix()
+        {
+            // See also http://en.wikipedia.org/wiki/Design_structure_matrix
+            var data = new double[7, 7];
+
+            // indexing: data[column,row]
+            data[1, 0] = 1;
+            data[5, 0] = 1;
+            data[3, 1] = 1;
+            data[0, 2] = 1;
+            data[6, 2] = 1;
+            data[4, 3] = 1;
+            data[1, 4] = 1;
+            data[5, 4] = 1;
+            data[2, 5] = 1;
+            data[0, 6] = 1;
+            data[4, 6] = 1;
+
+            for (int i = 0; i < 7; i++)
+            {
+                data[i, i] = -1;
+            }
+
+
+            var model = new PlotModel("Design structure matrix (DSM)");
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.None, Palette = new OxyPalette(OxyColors.White, OxyColors.LightGreen), LowColor = OxyColors.Black, Minimum = 0, IsAxisVisible = false });
+            model.Axes.Add(new CategoryAxis(AxisPosition.Top, null, new[] { "A", "B", "C", "D", "E", "F", "G" }));
+            model.Axes.Add(new CategoryAxis(AxisPosition.Left, null, new[] { "Element A", "Element B", "Element C", "Element D", "Element E", "Element F", "Element G" })
+            {
+                StartPosition = 1,
+                EndPosition = 0
+            });
+
+            var hms = new DesignStructureMatrixSeries
+            {
+                Data = data,
+                Interpolate = false,
+                LabelFormatString = "#",
+                LabelFontSize = 0.25,
+                X0 = 0,
+                X1 = data.GetLength(0) - 1,
+                Y0 = 0,
+                Y1 = data.GetLength(1) - 1,
+            };
+
+            model.Series.Add(hms);
+            return model;
+        }
+    }
+
+    public class DesignStructureMatrixSeries : HeatMapSeries
+    {
+        protected override string GetLabel(double v, int i, int j)
+        {
+            if (i == j)
+            {
+                return ((CategoryAxis)this.XAxis).Labels[i];
+            }
+
+            return base.GetLabel(v, i, j);
+        }
     }
 }

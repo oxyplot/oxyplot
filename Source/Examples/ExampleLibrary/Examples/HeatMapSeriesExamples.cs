@@ -198,7 +198,7 @@ namespace ExampleLibrary
             var data = new double[3, 3];
             data[0, 0] = 1;
             data[1, 1] = 1;
-            data[2, 2] = 1;          
+            data[2, 2] = 1;
 
             var model = new PlotModel("Diagonal (center defined)");
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
