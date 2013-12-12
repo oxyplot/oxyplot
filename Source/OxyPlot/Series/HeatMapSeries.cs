@@ -188,7 +188,6 @@ namespace OxyPlot.Series
 
             if (this.CoordinateDefinition == HeatMapCoordinateDefinition.Center)
             {
-
                 left -= dx / 2;
                 right += dx / 2;
                 bottom -= dy / 2;
@@ -213,21 +212,7 @@ namespace OxyPlot.Series
 
             if (this.LabelFontSize > 0)
             {
-                double fontSize = (rect.Height / n) * this.LabelFontSize;
-                for (int i = 0; i < m; i++)
-                {
-                    for (int j = 0; j < n; j++)
-                    {
-                        var p = new DataPoint((i * dx) + this.X0, (j * dy) + this.Y0);
-                        var point = this.Transform(p);
-                        var v = GetValue(this.Data, i, j);
-                        var color = this.ColorAxis.GetColor(v);
-                        var hsv = color.ToHsv();
-                        var textColor = hsv[2] > 0.6 ? OxyColors.Black : OxyColors.White;
-                        var label = v.ToString(this.LabelFormatString, this.ActualCulture);
-                        rc.DrawClippedText(clip, point, label, textColor, this.ActualFont, fontSize, 500, 0, HorizontalAlignment.Center, VerticalAlignment.Middle);
-                    }
-                }
+                this.RenderLabels(rc, rect);
             }
         }
 
@@ -283,7 +268,7 @@ namespace OxyPlot.Series
             var text = this.Format(formatString, null, this.Title, this.XAxis.Title, p.X, this.YAxis.Title, p.Y, v);
             return new TrackerHitResult(this, p, point, null, -1, text);
         }
-
+        
         /// <summary>
         /// Ensures that the axes of the series is defined.
         /// </summary>
@@ -338,6 +323,58 @@ namespace OxyPlot.Series
             }
         }
 
+        /// <summary>
+        /// Renders the labels.
+        /// </summary>
+        /// <param name="rc">The <see cref="IRenderContext"/></param>
+        /// <param name="rect">The bounding rectangle for the data.</param>
+        protected virtual void RenderLabels(IRenderContext rc, OxyRect rect)
+        {
+            var clip = this.GetClippingRect();
+            int m = this.Data.GetLength(0);
+            int n = this.Data.GetLength(1);
+            double dx = (this.X1 - this.X0) / (m - 1);
+            double dy = (this.Y1 - this.Y0) / (n - 1);
+            double fontSize = (rect.Height / n) * this.LabelFontSize;
+
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    var p = new DataPoint((i * dx) + this.X0, (j * dy) + this.Y0);
+                    var point = this.Transform(p);
+                    var v = GetValue(this.Data, i, j);
+                    var color = this.ColorAxis.GetColor(v);
+                    var hsv = color.ToHsv();
+                    var textColor = hsv[2] > 0.6 ? OxyColors.Black : OxyColors.White;
+                    var label = this.GetLabel(v, i, j);
+                    rc.DrawClippedText(
+                        clip,
+                        point,
+                        label,
+                        textColor,
+                        this.ActualFont,
+                        fontSize,
+                        500,
+                        0,
+                        HorizontalAlignment.Center,
+                        VerticalAlignment.Middle);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the label for the specified cell.
+        /// </summary>
+        /// <param name="v">The value of the cell.</param>
+        /// <param name="i">The first index.</param>
+        /// <param name="j">The second index.</param>
+        /// <returns>The label string.</returns>
+        protected virtual string GetLabel(double v, int i, int j)
+        {
+            return v.ToString(this.LabelFormatString, this.ActualCulture);
+        }
+        
         /// <summary>
         /// Gets the interpolated value at the specified position in the data array (by bilinear interpolation).
         /// </summary>
