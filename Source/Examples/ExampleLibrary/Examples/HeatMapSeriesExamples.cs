@@ -28,6 +28,7 @@
 namespace ExampleLibrary
 {
     using System;
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
 
     using OxyPlot;
@@ -78,21 +79,21 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Interpolated")]
+        [Example("2×3, interpolated")]
         public static PlotModel Interpolated()
         {
-            return CreateExample("Interpolated 2x3", true);
+            return CreateExample("Interpolated", true);
         }
 
-        [Example("Interpolated on Cartesian axes")]
+        [Example("2×3, interpolated, cartesian axes")]
         public static PlotModel InterpolatedCartesian()
         {
-            var model = CreateExample("Interpolated 2x3", true);
+            var model = CreateExample("Interpolated, cartesian axes", true);
             model.PlotType = PlotType.Cartesian;
             return model;
         }
 
-        [Example("Interpolated with two NaN values")]
+        [Example("2×3, interpolated with two NaN values")]
         public static PlotModel InterpolatedWithNanValue()
         {
             var model = CreateExample("Interpolated including two NaN values", true);
@@ -102,38 +103,13 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Not interpolated")]
+        [Example("2×3, not interpolated")]
         public static PlotModel NotInterpolated()
         {
             return CreateExample("Not interpolated values", false);
         }
 
-        [Example("Not interpolated, reversed x-axis")]
-        public static PlotModel NotInterpolatedReversedX()
-        {
-            var model = CreateExample("Not interpolated values", false);
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, StartPosition = 1, EndPosition = 0 });
-            return model;
-        }
-
-        [Example("Not interpolated, reversed y-axis")]
-        public static PlotModel NotInterpolatedReversedY()
-        {
-            var model = CreateExample("Not interpolated values", false);
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 });
-            return model;
-        }
-
-        [Example("Not interpolated, reversed x- and y-axis")]
-        public static PlotModel NotInterpolatedReversedXY()
-        {
-            var model = CreateExample("Not interpolated values", false);
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, StartPosition = 1, EndPosition = 0 });
-            return model;
-        }
-
-        [Example("Not interpolated with two NaN values")]
+        [Example("2×3, not interpolated with two NaN values")]
         public static PlotModel NotInterpolatedWithNanValue()
         {
             var model = CreateExample("Not interpolated values including two NaN values", false);
@@ -145,15 +121,86 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Diagonal (center defined)")]
+        [Example("2×3, reversed x-axis")]
+        public static PlotModel NotInterpolatedReversedX()
+        {
+            var model = CreateExample("Reversed x-axis", false);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, StartPosition = 1, EndPosition = 0 });
+            return model;
+        }
+
+        [Example("2×3, X0>X1")]
+        public static PlotModel X0GreaterThanX1()
+        {
+            var model = CreateExample("X0>X1", false);
+            var hms = (HeatMapSeries)model.Series[0];
+            var tmp = hms.X0;
+            hms.X0 = hms.X1;
+            hms.X1 = tmp;
+            return model;
+        }
+
+        [Example("2×3, reversed x-axis, X0>X1")]
+        public static PlotModel ReversedX_X0GreaterThanX1()
+        {
+            var model = CreateExample("Reversed x-axis, X0>X1", false);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, StartPosition = 1, EndPosition = 0 });
+            var hms = (HeatMapSeries)model.Series[0];
+            var tmp = hms.X0;
+            hms.X0 = hms.X1;
+            hms.X1 = tmp;
+            return model;
+        }
+
+        [Example("2×3, reversed y-axis")]
+        public static PlotModel NotInterpolatedReversedY()
+        {
+            var model = CreateExample("Reversed y-axis", false);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 });
+            return model;
+        }
+
+        [Example("2×3, Y0>Y1")]
+        public static PlotModel Y0GreaterThanY1()
+        {
+            var model = CreateExample("Y0>Y1", false);
+            var hms = (HeatMapSeries)model.Series[0];
+            var tmp = hms.Y0;
+            hms.Y0 = hms.Y1;
+            hms.Y1 = tmp;
+            return model;
+        }
+
+        [Example("2×3, reversed y-axis, Y0>Y1")]
+        public static PlotModel ReversedY_Y0GreaterThanY1()
+        {
+            var model = CreateExample("Reversed y-axis, Y0>Y1", false);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 });
+            var hms = (HeatMapSeries)model.Series[0];
+            var tmp = hms.Y0;
+            hms.Y0 = hms.Y1;
+            hms.Y1 = tmp;
+            return model;
+        }
+
+        [Example("2x3, reversed x- and y-axis")]
+        public static PlotModel NotInterpolatedReversedXY()
+        {
+            var model = CreateExample("Reversed x- and y-axis", false);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, StartPosition = 1, EndPosition = 0 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, StartPosition = 1, EndPosition = 0 });
+            return model;
+        }
+
+        [Example("3×3, diagonal (center defined)")]
         public static PlotModel Diagonal()
         {
             var data = new double[3, 3];
             data[0, 0] = 1;
             data[1, 1] = 1;
-            data[2, 2] = 1;
+            data[2, 2] = 1;          
 
-            var model = new PlotModel("Diagonal");
+            var model = new PlotModel("Diagonal (center defined)");
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates
@@ -162,7 +209,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Diagonal (edge defined)")]
+        [Example("3×3, diagonal (edge defined)")]
         public static PlotModel Diagonal2()
         {
             var data = new double[3, 3];
@@ -170,7 +217,7 @@ namespace ExampleLibrary
             data[1, 1] = 1;
             data[2, 2] = 1;
 
-            var model = new PlotModel("Diagonal");
+            var model = new PlotModel("Diagonal (edge defined)");
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // adding half cellwidth/cellheight to bounding box coordinates
@@ -179,7 +226,7 @@ namespace ExampleLibrary
             return model;
         }
 
-        [Example("Diagonal (6x6)")]
+        [Example("6×6, diagonal")]
         public static PlotModel Diagonal_6X6()
         {
             // https://oxyplot.codeplex.com/discussions/453174
@@ -191,46 +238,11 @@ namespace ExampleLibrary
             data[4, 4] = 1;
             data[5, 5] = 1;
 
-            var model = new PlotModel("Diagonal");
+            var model = new PlotModel("Diagonal 6×6");
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
 
             // note: the coordinates are specifying the centers of the edge cells
-            var hms = new HeatMapSeries { X0 = 0, X1 = 5, Y0 = 0, Y1 = 5, Data = data, Interpolate = true };
-            model.Series.Add(hms);
-            return model;
-        }
-
-        /// <summary>
-        /// Creates a simple 2x3 example heat map.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="interpolate">Interpolate the HeatMapSeries if set to <c>true</c>.</param>
-        /// <returns>A <see cref="PlotModel"/>.</returns>
-        private static PlotModel CreateExample(string title, bool interpolate)
-        {
-            var data = new double[2, 3];
-            data[0, 0] = 0;
-            data[0, 1] = 0.2;
-            data[0, 2] = 0.4;
-            data[1, 0] = 0.1;
-            data[1, 1] = 0.3;
-            data[1, 2] = 0.2;
-
-            var model = new PlotModel(title, "Bounding box should be [0,2] and [0,3]");
-            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
-
-            // adding half cellwidth/cellheight to bounding box coordinates
-            var hms = new HeatMapSeries
-            {
-                CoordinateDefinition = HeatMapCoordinateDefinition.Center,
-                X0 = 0.5,
-                X1 = 1.5,
-                Y0 = 0.5,
-                Y1 = 2.5,
-                Data = data,
-                Interpolate = interpolate,
-                LabelFontSize = 0.2
-            };
+            var hms = new HeatMapSeries { X0 = 0, X1 = 5, Y0 = 5, Y1 = 0, Data = data, Interpolate = false };
             model.Series.Add(hms);
             return model;
         }
@@ -284,8 +296,43 @@ namespace ExampleLibrary
             model.Series.Add(hms);
             return model;
         }
+
+        /// <summary>
+        /// Creates a simple example heat map from a 2×3 matrix.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <param name="interpolate">Interpolate the HeatMapSeries if set to <c>true</c>.</param>
+        /// <returns>A <see cref="PlotModel"/>.</returns>
+        private static PlotModel CreateExample(string title, bool interpolate)
+        {
+            var data = new double[2, 3];
+            data[0, 0] = 0;
+            data[0, 1] = 0.2;
+            data[0, 2] = 0.4;
+            data[1, 0] = 0.1;
+            data[1, 1] = 0.3;
+            data[1, 2] = 0.2;
+
+            var model = new PlotModel("HeatMapSeries", title);
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.Jet(500), HighColor = OxyColors.Gray, LowColor = OxyColors.Black });
+
+            // adding half cellwidth/cellheight to bounding box coordinates
+            var hms = new HeatMapSeries
+            {
+                CoordinateDefinition = HeatMapCoordinateDefinition.Center,
+                X0 = 0.5,
+                X1 = 1.5,
+                Y0 = 0.5,
+                Y1 = 2.5,
+                Data = data,
+                Interpolate = interpolate,
+                LabelFontSize = 0.2
+            };
+            model.Series.Add(hms);
+            return model;
+        }
     }
-    
+
     internal static class ArrayExtensions
     {
         public static double[,] Transpose(this double[,] input)
