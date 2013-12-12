@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The heat map series.
+//   Represents a heat map.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -51,11 +51,8 @@ namespace OxyPlot.Series
     }
 
     /// <summary>
-    /// The heat map series.
+    /// Represents a heat map.
     /// </summary>
-    /// <remarks>
-    /// Does not work with Silverlight. Silverlight does not support bitmaps, only PNG and JPG.
-    /// </remarks>
     public class HeatMapSeries : XYAxisSeries
     {
         /// <summary>
@@ -79,22 +76,22 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets or sets the x-coordinate of the left column mid point.
+        /// Gets or sets the x-coordinate of the mid point for the elements at index [0,*] in the data set.
         /// </summary>
         public double X0 { get; set; }
 
         /// <summary>
-        /// Gets or sets the x-coordinate of the right column mid point.
+        /// Gets or sets the x-coordinate of the mid point for the elements at index [m-1,*] in the data set.
         /// </summary>
         public double X1 { get; set; }
 
         /// <summary>
-        /// Gets or sets the y-coordinate of the top row mid point.
+        /// Gets or sets the y-coordinate of the mid point for the elements at index [*,0] in the data set.
         /// </summary>
         public double Y0 { get; set; }
 
         /// <summary>
-        /// Gets or sets the y-coordinate of the bottom row mid point.
+        /// Gets or sets the y-coordinate of the mid point for the elements at index [*,n-1] in the data set.
         /// </summary>
         public double Y1 { get; set; }
 
@@ -103,11 +100,13 @@ namespace OxyPlot.Series
         /// </summary>
         /// <remarks>
         /// Note that the indices of the data array refer to [x,y].
+        /// The first dimension is along the x-axis.
+        /// The second dimension is along the y-axis.
         /// </remarks>
         public double[,] Data { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to interpolate when rendering.
+        /// Gets or sets a value indicating whether to interpolate when rendering. The default value is <c>true</c>.
         /// </summary>
         /// <remarks>
         /// This property is not supported on all platforms.
@@ -115,14 +114,14 @@ namespace OxyPlot.Series
         public bool Interpolate { get; set; }
 
         /// <summary>
-        /// Gets or sets the minimum value of the dataset.
+        /// Gets the minimum value of the dataset.
         /// </summary>
-        public double MinValue { get; protected set; }
+        public double MinValue { get; private set; }
 
         /// <summary>
-        /// Gets or sets the maximum value of the dataset.
+        /// Gets the maximum value of the dataset.
         /// </summary>
-        public double MaxValue { get; protected set; }
+        public double MaxValue { get; private set; }
 
         /// <summary>
         /// Gets or sets the color axis.
@@ -139,7 +138,7 @@ namespace OxyPlot.Series
         public string ColorAxisKey { get; set; }
 
         /// <summary>
-        /// Gets or sets the coordinate definition. The default value is Center.
+        /// Gets or sets the coordinate definition. The default value is <see cref="HeatMapCoordinateDefinition.Center"/>.
         /// </summary>
         /// <value>
         /// The coordinate definition.
@@ -147,9 +146,12 @@ namespace OxyPlot.Series
         public HeatMapCoordinateDefinition CoordinateDefinition { get; set; }
 
         /// <summary>
-        /// Gets or sets the label format string.
+        /// Gets or sets the format string for the cell labels.
         /// </summary>
         /// <value>The format string.</value>
+        /// <remarks>
+        /// The label format string is only used when <see cref="LabelFontSize"/> is greater than 0.
+        /// </remarks>
         public string LabelFormatString { get; set; }
 
         /// <summary>
@@ -415,10 +417,10 @@ namespace OxyPlot.Series
         private void UpdateImage()
         {
             // determine if the provided data should be reversed in x-direction
-            var reverseX = this.XAxis.IsReversed;
+            var reverseX = this.XAxis.Transform(this.X0) > this.XAxis.Transform(this.X1);
 
-            // determine if the provided data should be reversed in y-direction (
-            var reverseY = this.YAxis.IsReversed;
+            // determine if the provided data should be reversed in y-direction
+            var reverseY = this.YAxis.Transform(this.Y0) > this.YAxis.Transform(this.Y1);
 
             int m = this.Data.GetLength(0);
             int n = this.Data.GetLength(1);
@@ -428,8 +430,7 @@ namespace OxyPlot.Series
                 var ii = reverseX ? m - 1 - i : i;
                 for (int j = 0; j < n; j++)
                 {
-                    // Note the negation here - image must be rendered the oppsite direction of the standard y axis
-                    var jj = !reverseY ? n - 1 - j : j;
+                    var jj = reverseY ? n - 1 - j : j;
                     buffer[i, j] = this.ColorAxis.GetColor(this.Data[ii, jj]);
                 }
             }
