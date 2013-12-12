@@ -73,7 +73,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Observable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
