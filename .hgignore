@@ -38,6 +38,10 @@ Output/
 ClientBin/
 lib/
 
+Documentation/Images/Series/
+Web/Examples/
+Web/favicon.ico
+
 Tools/    # Add manually
 
 _ReSharper*/
