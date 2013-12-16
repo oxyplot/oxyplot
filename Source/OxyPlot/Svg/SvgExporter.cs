@@ -35,8 +35,38 @@ namespace OxyPlot
     /// <summary>
     /// Exports plots to scalable vector graphics.
     /// </summary>
-    public static class SvgExporter
+    public class SvgExporter
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SvgExporter"/> class.
+        /// </summary>
+        public SvgExporter()
+        {
+            this.Width = 600;
+            this.Height = 400;
+            this.IsDocument = true;
+        }
+
+        /// <summary>
+        /// Gets or sets the width (in user units, px) of the output area.
+        /// </summary>
+        public double Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets the height (in user units, px) of the output area.
+        /// </summary>
+        public double Height { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the xml headers should be included.
+        /// </summary>
+        public bool IsDocument { get; set; }
+
+        /// <summary>
+        /// Gets or sets the text measurer.
+        /// </summary>
+        public IRenderContext TextMeasurer { get; set; }
+
         /// <summary>
         /// Exports the specified model to a stream.
         /// </summary>
@@ -86,6 +116,26 @@ namespace OxyPlot
             }
 
             return svg;
+        }
+
+        /// <summary>
+        /// Exports the specified <see cref="PlotModel"/> to a <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="model">The model to export.</param>
+        /// <param name="stream">The target stream.</param>
+        public void Export(PlotModel model, Stream stream)
+        {
+            Export(model, stream, this.Width, this.Height, this.IsDocument, this.TextMeasurer);
+        }
+
+        /// <summary>
+        /// Exports the specified <see cref="PlotModel"/> to a string.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>the SVG content as a string.</returns>
+        public string ExportToString(PlotModel model)
+        {
+            return ExportToString(model, this.Width, this.Height, this.IsDocument, this.TextMeasurer);
         }
     }
 }

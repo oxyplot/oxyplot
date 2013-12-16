@@ -33,6 +33,7 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     /// <summary>
     /// Implements an <see cref="IRenderContext"/> producing PDF documents by <see cref="PortableDocument"/>.
@@ -96,7 +97,7 @@ namespace OxyPlot
             double y = this.doc.PageHeight - rect.Bottom;
             if (isStroked)
             {
-                this.doc.SetLineWidth(thickness);
+                this.SetLineWidth(thickness);
                 this.doc.SetColor(stroke);
                 if (isFilled)
                 {
@@ -133,10 +134,10 @@ namespace OxyPlot
             bool aliased)
         {
             this.doc.SetColor(stroke);
-            this.doc.SetLineWidth(thickness);
+            this.SetLineWidth(thickness);
             if (dashArray != null)
             {
-                this.doc.SetLineDashPattern(dashArray, 0);
+                this.SetLineDashPattern(dashArray, 0);
             }
 
             this.doc.SetLineJoin(Convert(lineJoin));
@@ -190,10 +191,10 @@ namespace OxyPlot
             if (isStroked)
             {
                 this.doc.SetColor(stroke);
-                this.doc.SetLineWidth(thickness);
+                this.SetLineWidth(thickness);
                 if (dashArray != null)
                 {
-                    this.doc.SetLineDashPattern(dashArray, 0);
+                    this.SetLineDashPattern(dashArray, 0);
                 }
 
                 this.doc.SetLineJoin(Convert(lineJoin));
@@ -238,7 +239,7 @@ namespace OxyPlot
             double y = this.doc.PageHeight - rect.Bottom;
             if (isStroked)
             {
-                this.doc.SetLineWidth(thickness);
+                this.SetLineWidth(thickness);
                 this.doc.SetColor(stroke);
                 if (isFilled)
                 {
@@ -283,7 +284,7 @@ namespace OxyPlot
             OxySize? maxSize)
         {
             this.doc.SaveState();
-            this.doc.SetFont(fontFamily, fontSize, fontWeight > 500);
+            this.doc.SetFont(fontFamily, fontSize / 96 * 72, fontWeight > 500);
             this.doc.SetFillColor(fill);
 
             double width, height;
@@ -352,7 +353,7 @@ namespace OxyPlot
         /// </returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
-            this.doc.SetFont(fontFamily, fontSize, fontWeight > 500);
+            this.doc.SetFont(fontFamily, fontSize / 96 * 72, fontWeight > 500);
             double width, height;
             this.doc.MeasureText(text, out width, out height);
             return new OxySize(width, height);
@@ -430,6 +431,26 @@ namespace OxyPlot
             this.doc.Scale(width, height);
             this.doc.DrawImage(image);
             this.doc.RestoreState();
+        }
+
+        /// <summary>
+        /// Sets the width of the line.
+        /// </summary>
+        /// <param name="thickness">The thickness (in 1/96 inch units).</param>
+        private void SetLineWidth(double thickness)
+        {
+            // Convert from 1/96 inch to points
+            this.doc.SetLineWidth(thickness / 96 * 72);
+        }
+
+        /// <summary>
+        /// Sets the line dash pattern.
+        /// </summary>
+        /// <param name="dashArray">The dash array (in 1/96 inch units).</param>
+        /// <param name="dashPhase">The dash phase (in 1/96 inch units).</param>
+        private void SetLineDashPattern(double[] dashArray, double dashPhase)
+        {
+            this.doc.SetLineDashPattern(dashArray.Select(d => d / 96 * 72).ToArray(), dashPhase / 96 * 72);
         }
 
         /// <summary>

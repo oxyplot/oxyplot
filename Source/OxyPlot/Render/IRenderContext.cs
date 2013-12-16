@@ -58,7 +58,7 @@ namespace OxyPlot
         /// The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipse will not be stroked.
         /// </param>
         /// <param name="thickness">
-        /// The thickness.
+        /// The thickness (in device independent units, 1/96 inch).
         /// </param>
         void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
@@ -76,7 +76,7 @@ namespace OxyPlot
         /// The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be stroked.
         /// </param>
         /// <param name="thickness">
-        /// The stroke thickness.
+        /// The stroke thickness (in device independent units, 1/96 inch).
         /// </param>
         void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
@@ -90,10 +90,10 @@ namespace OxyPlot
         /// The stroke color.
         /// </param>
         /// <param name="thickness">
-        /// The stroke thickness.
+        /// The stroke thickness (in device independent units, 1/96 inch).
         /// </param>
         /// <param name="dashArray">
-        /// The dash array.
+        /// The dash array (in device independent units, 1/96 inch).
         /// </param>
         /// <param name="lineJoin">
         /// The line join type.
@@ -120,10 +120,10 @@ namespace OxyPlot
         /// The stroke color.
         /// </param>
         /// <param name="thickness">
-        /// The stroke thickness.
+        /// The stroke thickness (in device independent units, 1/96 inch).
         /// </param>
         /// <param name="dashArray">
-        /// The dash array.
+        /// The dash array (in device independent units, 1/96 inch).
         /// </param>
         /// <param name="lineJoin">
         /// The line join type.
@@ -152,10 +152,10 @@ namespace OxyPlot
         /// The stroke color. If set to <c>OxyColors.Undefined</c>, the polygon will not be stroked.
         /// </param>
         /// <param name="thickness">
-        /// The stroke thickness.
+        /// The stroke thickness (in device independent units, 1/96 inch).
         /// </param>
         /// <param name="dashArray">
-        /// The dash array.
+        /// The dash array (in device independent units, 1/96 inch).
         /// </param>
         /// <param name="lineJoin">
         /// The line join type.
@@ -186,10 +186,10 @@ namespace OxyPlot
         /// The stroke color. If set to <c>OxyColors.Undefined</c>, the polygons will not be stroked.
         /// </param>
         /// <param name="thickness">
-        /// The stroke thickness.
+        /// The stroke thickness (in device independent units, 1/96 inch).
         /// </param>
         /// <param name="dashArray">
-        /// The dash array.
+        /// The dash array (in device independent units, 1/96 inch).
         /// </param>
         /// <param name="lineJoin">
         /// The line join type.
@@ -219,7 +219,7 @@ namespace OxyPlot
         /// The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be stroked.
         /// </param>
         /// <param name="thickness">
-        /// The stroke thickness.
+        /// The stroke thickness (in device independent units, 1/96 inch).
         /// </param>
         void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
@@ -237,7 +237,7 @@ namespace OxyPlot
         /// The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be stroked.
         /// </param>
         /// <param name="thickness">
-        /// The stroke thickness.
+        /// The stroke thickness (in device independent units, 1/96 inch).
         /// </param>
         void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness = 1.0);
 
@@ -257,7 +257,7 @@ namespace OxyPlot
         /// The font family.
         /// </param>
         /// <param name="fontSize">
-        /// Size of the font.
+        /// Size of the font (in device independent units, 1/96 inch).
         /// </param>
         /// <param name="fontWeight">
         /// The font weight.
@@ -272,7 +272,7 @@ namespace OxyPlot
         /// The vertical alignment.
         /// </param>
         /// <param name="maxSize">
-        /// The maximum size of the text.
+        /// The maximum size of the text (in device independent units, 1/96 inch).
         /// </param>
         void DrawText(
             ScreenPoint p,
@@ -296,13 +296,13 @@ namespace OxyPlot
         /// The font family.
         /// </param>
         /// <param name="fontSize">
-        /// Size of the font.
+        /// Size of the font (in device independent units, 1/96 inch).
         /// </param>
         /// <param name="fontWeight">
         /// The font weight.
         /// </param>
         /// <returns>
-        /// The size of the text.
+        /// The size of the text (in device independent units, 1/96 inch).
         /// </returns>
         OxySize MeasureText(string text, string fontFamily = null, double fontSize = 10, double fontWeight = 500);
 
