@@ -280,6 +280,16 @@ namespace OxyPlot.Wpf
             "PanCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.Hand));
 
         /// <summary>
+        /// The plot area background property.
+        /// </summary>
+        public static readonly DependencyProperty PlotAreaBackgroundProperty =
+            DependencyProperty.Register(
+                "PlotAreaBackground",
+                typeof(Brush),
+                typeof(Plot),
+                new PropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
         /// The plot area border color property.
         /// </summary>
         public static readonly DependencyProperty PlotAreaBorderColorProperty =
@@ -932,6 +942,23 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the background brush of the plot area.
+        /// </summary>
+        /// <value> The brush.</value>
+        public Brush PlotAreaBackground
+        {
+            get
+            {
+                return (Brush)this.GetValue(PlotAreaBackgroundProperty);
+            }
+
+            set
+            {
+                this.SetValue(PlotAreaBackgroundProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the color of the plot area border.
         /// </summary>
         /// <value> The color of the plot area border. </value>
@@ -1292,10 +1319,10 @@ namespace OxyPlot.Wpf
                 m.LegendItemAlignment = this.LegendItemAlignment.ToHorizontalTextAlign();
                 m.LegendSymbolPlacement = this.LegendSymbolPlacement;
 
+                m.PlotAreaBackground = this.PlotAreaBackground.ToOxyColor();
                 m.PlotAreaBorderColor = this.PlotAreaBorderColor.ToOxyColor();
                 m.PlotAreaBorderThickness = this.PlotAreaBorderThickness;
             }
         }
-
     }
 }
