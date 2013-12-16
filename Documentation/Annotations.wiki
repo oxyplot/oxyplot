@@ -1,0 +1,15 @@
+﻿@syntax owiki
+@title OxyPlot Annotations
+@keywords OxyPlot,Annotations
+
+== Annotations
+
+// TODO //
+
+Annotations are elements of the plot that shows information that is not part of the series collection (this also means the annotations will not show up in the series legends). Arrows, text labels, lines and areas are examples of annotations.
+
+=== Lines
+=== Arrows
+=== Rectangles
+=== Polygons
+=== Text

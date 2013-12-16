@@ -1,0 +1,26 @@
+﻿@syntax owiki
+@title OxyPlot Pull Requests
+@keywords OxyPlot,Pull requests
+
+== Contributions
+
+Bug fixes and new features are greatly appreciated. But please read the requirements below before submitting a pull request.
+
+Many ways to contribute, not only in code, but can also be documentation, examples, packaging etc.
+
+New features and bugs should be added in the [https://oxyplot.codeplex.com/workitem/list/basic|issues] list. It might be a good idea to discuss in the [https://oxyplot.codeplex.com/discussions|discussion forum] first if you are not sure if it is a bug.
+
+Then create a [https://oxyplot.codeplex.com/SourceControl/network/create/fork|new fork] and submit a [https://oxyplot.codeplex.com/SourceControl/send/contribution|pull request] when the contribution is ready.
+
+=== Requirements for pull requests
+
+- Include examples or unit tests for the change / new feature
+- Make sure the code builds on all platforms
+- Make sure all unit tests are passing
+- The new code should be StyleCop compliant (see [CodingStyle|coding style])
+
+And please:
+
+- commit clean change lists, make it easy to review
+- do not mix multiple issues in the same change list
+- do not clean code in the same change list as fixing an issue, do it in a separate commit

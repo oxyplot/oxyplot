@@ -1,0 +1,49 @@
+﻿@syntax owiki
+@title Silverlight Example
+@keywords OxyPlot,Silverlight,Example
+
+== Silverlight Example
+
+=== Create project
+Start Visual Studio and select "FILE -> New -> Project..." to create a new Silverlight application:
+
+{Images/SilverlightNewProject.png}
+
+=== Add references
+
+You need references to the OxyPlot and OxyPlot.Silverlight assemblies. The easiest way to do this is to right click on the "References" item in the Solution Explorer and select "Manage NuGet Packages..." (this requires that the "NuGet Package Manager" extension is installed):
+
+{Images/SilverlightAddReference.png}
+
+In the "Manage NuGet packages" dialog, search for "OxyPlot" in the top-right search textbox. 
+Select the "OxyPlot.Silverlight" package and click install:
+
+{Images/SilverlightInstallPackage.png}
+
+You can also use the [http://docs.nuget.org/docs/start-here/using-the-package-manager-console|Package Manager Console] to install the package:
+
+```
+PM> Install-Package OxyPlot.Silverlight
+```
+
+=== Create a ViewModel
+
+Add a class that creates a [API/OxyPlot.PlotModel|PlotModel] and a [API/OxyPlot.FunctionSeries|FunctionSeries].
+
+```cs
+@include ..\Source\Examples\DocumentationExamples\HelloWorld\SilverlightApplication1\MainViewModel.cs
+```
+
+=== Create the view
+
+Define the namespace in the `Window` element, set the `DataContext` and add a [API/OxyPlot.Silverlight.Plot|Plot] control:
+
+```xml
+@include ..\Source\Examples\DocumentationExamples\HelloWorld\SilverlightApplication1\MainPage.xaml
+```
+
+The application should now look like this:
+
+{Images/SilverlightExample1.png}
+
+The source code can be found in `Documentation\Examples\SilverlightApplication1`.
