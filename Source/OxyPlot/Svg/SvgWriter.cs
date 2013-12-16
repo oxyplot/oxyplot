@@ -63,10 +63,10 @@ namespace OxyPlot
         /// The stream.
         /// </param>
         /// <param name="width">
-        /// The width.
+        /// The width (in user units, px).
         /// </param>
         /// <param name="height">
-        /// The height.
+        /// The height (in user units, px).
         /// </param>
         /// <param name="isDocument">
         /// if set to <c>true</c>, the writer will write the xml headers (?xml and !DOCTYPE).
@@ -127,7 +127,7 @@ namespace OxyPlot
         /// The stroke color.
         /// </param>
         /// <param name="thickness">
-        /// The stroke thickness.
+        /// The stroke thickness (in user units, px).
         /// </param>
         /// <param name="dashArray">
         /// The line dash array.
@@ -434,7 +434,7 @@ namespace OxyPlot
         /// The font family.
         /// </param>
         /// <param name="fontSize">
-        /// The font size.
+        /// The font size (in user units, px).
         /// </param>
         /// <param name="fontWeight">
         /// The font weight.

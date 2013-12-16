@@ -35,8 +35,18 @@ namespace OxyPlot
     /// <summary>
     /// Provides functionality to export plots to pdf.
     /// </summary>
-    public static class PdfExporter
+    public class PdfExporter
     {
+        /// <summary>
+        /// Gets or sets the width (in points, 1/72 inch) of the output document.
+        /// </summary>
+        public double Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets the height (in points, 1/72 inch) of the output document.
+        /// </summary>
+        public double Height { get; set; }
+
         /// <summary>
         /// Exports the specified model to a stream.
         /// </summary>
@@ -58,6 +68,16 @@ namespace OxyPlot
             model.Update();
             model.Render(rc, width, height);
             rc.Save(stream);
+        }
+
+        /// <summary>
+        /// Exports the specified <see cref="PlotModel"/> to the specified <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="stream">The stream.</param>
+        public void Export(PlotModel model, Stream stream)
+        {
+            Export(model, stream, this.Width, this.Height);
         }
     }
 }
