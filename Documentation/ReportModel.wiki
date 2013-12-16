@@ -1,0 +1,19 @@
+﻿@syntax owiki
+@title OxyPlot Report Model
+@keywords OxyPlot,Report Model
+
+== Report model
+
+// TODO //
+
+The report model can be used to generate simple reports. The objective is to create a very simple object model that can be used for basic reports containing headers, paragraphs, simple tables and figures.
+
+The output formats should includes HTML, Latex and Text. Support for Word (OpenXML) and PDF is under consideration, but this may add dependencies to other libraries.
+
+||Item      || Description      || HTML || Latex || Text |
+|Header     |Headers            | Yes   | Yes    |Yes    |
+|Paragraph  |Text               | Yes   | Yes    |Yes    |
+|Table      |Tables             | Yes   | Yes    |Yes    |
+|Image      |Bitmap graphics    | Yes   | Yes    |No     |
+|Drawing    |Vector graphics    | Yes   | No*    |No     |
+|Equation   |Equations (Tex)    | No*   | Yes    |No     |

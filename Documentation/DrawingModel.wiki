@@ -1,0 +1,13 @@
+﻿@syntax owiki
+@title OxyPlot Drawing Model
+@keywords OxyPlot,Drawing Model
+
+== Drawing model
+
+// Under construction //
+
+The drawing model can be used to generate simple drawings that can be included in plots and reports.
+
+- a simple model for generating drawings (lines, ellipses, rectangles, text etc)
+- reusing render contexts and exporters 
+- can be included in the [ReportModel|report models]

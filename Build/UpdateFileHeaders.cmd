@@ -1,1 +1,1 @@
-..\Tools\Lynx\FileHeaderUpdater.exe /Company="OxyPlot" /Copyright="http://oxyplot.codeplex.com, license: Ms-PL" /Directory="..\Source"
+..\Tools\Lynx\UpdateFileHeaders.exe /Company="OxyPlot" /copyright-file=..\License.txt /Directory="..\Source"

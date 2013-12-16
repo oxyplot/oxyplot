@@ -1,0 +1,26 @@
+﻿@syntax owiki
+@title OxyPlot frequently asked questions
+@keywords OxyPlot,Frequently asked questions, faq
+
+== Frequently asked questions
+
+=== Where is the source code?
+
+You can clone the Mercurial repository from `https://hg.codeplex.com/oxyplot`, or download a zip archive from the "Source code" tab at [http://oxyplot.codeplex.com]. It is recommended to use Mercurial since the source code is frequently updated.
+
+=== Where can I find examples?
+
+All solutions contain an "ExampleBrowser" project that can be used to render the plots in the "ExampleLibrary" project.
+The example library contains platform independent code and the source can be found in `~Source\Examples\ExampleLibrary\Examples`. There are also platform specific examples in the "Examples" solution folders.
+
+=== The OxyPlot core library cannot be built in VS2010
+
+You probably need to install [http://visualstudiogallery.msdn.microsoft.com/b0e0b5e9-e138-410b-ad10-00cb3caf4981/|Portable library tools]
+
+=== The XAML visual designer fails in VS2012
+
+Make sure you have updated to service pack 3 or later. If it still fails you may need to repair your installation of Visual Studio.
+
+=== Is support for 3D plots planned?
+
+No.
