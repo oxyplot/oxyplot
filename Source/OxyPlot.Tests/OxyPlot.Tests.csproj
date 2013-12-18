@@ -124,10 +124,6 @@
       <Project>{facb89e5-53a5-4748-9f5b-e0714ebb37b2}</Project>
       <Name>ExampleLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OxyPlot.Wpf\OxyPlot.Wpf.csproj">
-      <Project>{698ccd8e-adcc-4565-8517-5edd36f07155}</Project>
-      <Name>OxyPlot.Wpf</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
       <Project>{7A0B35C0-DD17-4964-8E9A-44D6CECDC692}</Project>
       <Name>OxyPlot</Name>
