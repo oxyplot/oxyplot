@@ -33,8 +33,6 @@ namespace OxyPlot.Tests
 
     using NUnit.Framework;
 
-    using OxyPlot.Wpf;
-
     /// <summary>
     /// Provides methods to assert that plots look as expected.
     /// </summary>
@@ -55,8 +53,7 @@ namespace OxyPlot.Tests
             string baseline = @"baseline\" + path;
             using (var s = File.Create(path))
             {
-                var rc = new ShapesRenderContext(null);
-                SvgExporter.Export(plot, s, 800, 500, false, rc);
+                SvgExporter.Export(plot, s, 800, 500, false);
             }
 
             if (!Directory.Exists("baseline"))
