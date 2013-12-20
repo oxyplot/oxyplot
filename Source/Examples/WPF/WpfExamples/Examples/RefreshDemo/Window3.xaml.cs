@@ -69,6 +69,7 @@ namespace RefreshDemo
 
         void UpdatePlot()
         {
+            // No need to lock to sync root - this is running on the UI thread
             this.PlotModel.Title = "Plot updated: " + DateTime.Now;
             this.PlotModel.Series[0] = new FunctionSeries(Math.Sin, x, x + 4, 0.01);
             x += 0.1;

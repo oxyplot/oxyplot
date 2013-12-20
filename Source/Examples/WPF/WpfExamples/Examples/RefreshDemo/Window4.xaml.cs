@@ -57,8 +57,11 @@ namespace RefreshDemo
             {
                 while (!worker.CancellationPending)
                 {
-                    PlotModel.Title = "Plot updated: " + DateTime.Now;
-                    this.PlotModel.Series[0] = new FunctionSeries(Math.Sin, x, x + 4, 0.01);
+                    lock (this.PlotModel.SyncRoot)
+                    {
+                        this.PlotModel.Title = "Plot updated: " + DateTime.Now;
+                        this.PlotModel.Series[0] = new FunctionSeries(Math.Sin, x, x + 4, 0.01);
+                    }
                     x += 0.1;
                     PlotModel.RefreshPlot(true);
                     Thread.Sleep(100);
