@@ -385,6 +385,15 @@ namespace OxyPlot.Wpf
             "Title", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
+        /// The refresh flag property
+        /// </summary>
+        public static readonly DependencyProperty RefreshFlagProperty = DependencyProperty.Register(
+            "RefreshFlag",
+            typeof(int),
+            typeof(Plot),
+            new FrameworkPropertyMetadata(0, (s, e) => ((Plot)s).RefreshFlagChanged()));
+
+        /// <summary>
         /// The zoom horizontal cursor property.
         /// </summary>
         public static readonly DependencyProperty ZoomHorizontalCursorProperty =
@@ -1201,6 +1210,23 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the refresh flag (an integer value). When the flag is changed, the plot will be refreshed.
+        /// </summary>
+        /// <value>The refresh value.</value>
+        public int RefreshFlag
+        {
+            get
+            {
+                return (int)this.GetValue(RefreshFlagProperty);
+            }
+
+            set
+            {
+                this.SetValue(RefreshFlagProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the horizontal zoom cursor.
         /// </summary>
         /// <value> The zoom horizontal cursor. </value>
@@ -1323,6 +1349,14 @@ namespace OxyPlot.Wpf
                 m.PlotAreaBorderColor = this.PlotAreaBorderColor.ToOxyColor();
                 m.PlotAreaBorderThickness = this.PlotAreaBorderThickness;
             }
+        }
+
+        /// <summary>
+        /// Refreshes the plot when the refresh flag is changed.
+        /// </summary>
+        private void RefreshFlagChanged()
+        {
+            this.RefreshPlot(true);
         }
     }
 }

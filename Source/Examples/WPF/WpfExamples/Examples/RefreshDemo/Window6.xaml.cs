@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainWindow.xaml.cs" company="OxyPlot">
+// <copyright file="Window6.xaml.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Interaction logic for MainWindow.xaml
+//   Interaction logic for Window4.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,38 +33,16 @@ namespace RefreshDemo
     using System.Windows;
 
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Window6.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Window6 : Window
     {
-        public MainWindow()
+        public Window6()
         {
-            InitializeComponent();
-        }
-
-        private void RefreshMethod1_Click(object sender, RoutedEventArgs e)
-        {
-            new Window1().Show();
-        }
-
-        private void RefreshMethod2_Click(object sender, RoutedEventArgs e)
-        {
-            new Window2().Show();
-        }
-        
-        private void RefreshMethod3_Click(object sender, RoutedEventArgs e)
-        {
-            new Window3().Show();
-        }
-
-        private void RefreshMethod4_Click(object sender, RoutedEventArgs e)
-        {
-            new Window4().Show();
-        }
-
-        private void RefreshMethod6_Click(object sender, RoutedEventArgs e)
-        {
-            new Window6().Show();
+            this.InitializeComponent();
+            var vm = new Window6ViewModel();
+            this.Closed += (s, e) => vm.Close();
+            this.DataContext = vm;
         }
     }
 }

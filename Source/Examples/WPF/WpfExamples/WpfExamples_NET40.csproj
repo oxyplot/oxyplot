@@ -105,6 +105,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\RefreshDemo\Window6.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\TaskDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -230,6 +234,10 @@
     </Compile>
     <Compile Include="Examples\OverlayDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\RefreshDemo\Window6ViewModel.cs" />
+    <Compile Include="Examples\RefreshDemo\Window6.xaml.cs">
+      <DependentUpon>Window6.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\TaskDemo\MainViewModel.cs" />
     <Compile Include="Examples\TaskDemo\MainWindow.xaml.cs">
