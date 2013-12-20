@@ -1089,13 +1089,13 @@ namespace OxyPlot.Axes
             if (newMinimum < this.AbsoluteMinimum)
             {
                 newMinimum = this.AbsoluteMinimum;
-                newMaximum = newMinimum + this.ActualMaximum - this.ActualMinimum;
+                newMaximum = Math.Min(newMinimum + this.ActualMaximum - this.ActualMinimum, this.AbsoluteMaximum);
             }
 
             if (newMaximum > this.AbsoluteMaximum)
             {
                 newMaximum = this.AbsoluteMaximum;
-                newMinimum = newMaximum - (this.ActualMaximum - this.ActualMinimum);
+                newMinimum = Math.Max(newMaximum - (this.ActualMaximum - this.ActualMinimum), this.AbsoluteMinimum);
             }
 
             this.ViewMinimum = newMinimum;
