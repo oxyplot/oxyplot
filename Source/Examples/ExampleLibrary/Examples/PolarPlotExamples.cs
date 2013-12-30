@@ -154,5 +154,31 @@ namespace ExampleLibrary
             model.Series.Add(new FunctionSeries(x => Math.Sin(x / 180 * Math.PI), t => t, 0, 180, 0.01));
             return model;
         }
+
+        [Example("Semi-circle offset angle axis range")]
+        public static PlotModel SemiCircleOffsetAngleAxisRange()
+        {
+            var model = new PlotModel("Semi-circle polar plot", "Angle axis range offset to -180 - 180")
+            {
+                PlotType = PlotType.Polar,
+                PlotAreaBorderThickness = 0,
+                PlotMargins = new OxyThickness(60, 20, 4, 40)
+            };
+            model.Axes.Add(
+                new AngleAxis(-180, 180, 45, 9)
+                {
+                    StartAngle = 0,
+                    EndAngle = 360,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Solid
+                });
+            model.Axes.Add(new MagnitudeAxis(0, 1)
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Solid
+            });
+            model.Series.Add(new FunctionSeries(x => Math.Sin(x / 180 * Math.PI), t => t, 0, 180, 0.01));
+            return model;
+        }
     }
 }
