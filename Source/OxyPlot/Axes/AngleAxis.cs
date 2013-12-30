@@ -116,7 +116,7 @@ namespace OxyPlot.Axes
 
             minorTickValues = Axis.CreateTickValues(minimum, maximum, this.ActualMinorStep);
             majorTickValues = Axis.CreateTickValues(minimum, maximum, this.ActualMajorStep);
-            majorLabelValues = Axis.CreateTickValues(0, maximum > minimum ? maximum - minimum : minimum - maximum, this.ActualMajorStep);
+            majorLabelValues = Axis.CreateTickValues(this.Minimum, this.Maximum, this.ActualMajorStep);
         }
 
         /// <summary>
