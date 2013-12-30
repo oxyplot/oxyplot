@@ -1,0 +1,15 @@
+﻿<Window x:Class="MemoryTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:MemoryTest="clr-namespace:MemoryTest"
+        Title="MemoryTest" Height="350" Width="240">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="8"/>
+            <EventSetter Event="Click" Handler="OpenWindow_Click"/>
+        </Style>
+    </Window.Resources>
+    <StackPanel>
+        <Button Content="Test 1" Tag="{x:Type MemoryTest:Window1}"/>
+        <Button Content="Test 2" Tag="{x:Type MemoryTest:Window2}"/>
+    </StackPanel>
+</Window>

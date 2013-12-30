@@ -1,0 +1,70 @@
+﻿@syntax owiki
+@title Building OxyPlot
+@keywords OxyPlot,Build
+
+== Building OxyPlot
+
+=== Requirements
+
+The OxyPlot solutions can be opened in
+
+- VS 2010 (with the [http://visualstudiogallery.msdn.microsoft.com/b0e0b5e9-e138-410b-ad10-00cb3caf4981|Portable Library Tools] extension)
+- VS 2012 (with SP4)
+- VS 2013
+- VS 2013 Express for Windows (for Windows Store apps)
+- VS 2013 Express for Windows Desktop (for classic Windows Desktop applications)
+- MonoDevelop
+- Xamarin Studio (for GTK#, Android, iOS and OSX apps)
+
+Depending on what platform you want to build, you may need to install extra SDKs or target framework profiles
+
+- .NET 3.5
+- .NET 4.0
+- .NET 4.5
+- Silverlight 4
+- Silverlight 5
+- Windows Store App
+- GTK#
+- Xamarin.iOS
+- Xamarin.Android
+- Xamarin.Mac
+- MonoTouch
+- Mono for Android
+- MonoMac
+
+=== Obtain the source code
+
+OxyPlot is using Mercurial (Hg) distributed version control system (DVCS). To obtain the code, it is recommended to install one of the following Mercurial clients
+
+- [http://tortoisehg.bitbucket.org/|TortoiseHg] (Windows shell extension)
+- [http://www.sourcetreeapp.com/|SourceTree] (for Windows and Mac, also supports Git)
+- [http://mercurial.selenic.com/|Mercurial] (command line)
+
+There is also a Mercurial plug-in for Visual Studio: [http://visualhg.codeplex.com/|VisualHG]
+
+Clone the repository from `https://hg.codeplex.com/oxyplot`
+
+{Images\TortoiseHgClone.png}
+
+or from the command line
+
+```
+hg clone https://hg.codeplex.com/oxyplot
+```
+
+If you don't want to use Mercurial, you can also obtain the complete source code from the [http://oxyplot.codeplex.com|CodePlex] project page. Navigate to the "Source Code" tab, then click the "Download" link.
+
+=== Build
+
+It should be possible to open the solution and build without any additional steps.
+You can also build the source code by scripts in the `Build/` folder.
+
+=== Build output
+
+The build output of the //Release// configurations are placed in the `Output/` folder. The output of the //Debug// configurations are placed under the `Source/*/bin/Debug` folders. 
+
+=== Additional information
+
+OxyPlot uses [https://github.com/SimonCropp/Pepita|Pepita] to update the Nuget packages. The `PepitaGet.dll` is placed in `Tools\Pepita` and is included in the Mercurial repository. The PepitaGet tasks will be executed every time the solution is built.
+
+OxyPlot is currently being built by [http://www.microsoft.com/visualstudio|Visual Studio] on a Windows 8.1 virtual machine (running on [https://www.virtualbox.org|VirtualBox]). The build machine is running [http://www.jetbrains.com/teamcity/|TeamCity] and trigs the build on every code check-in. The build steps are described in the `Build/BuildSteps.txt` file. The build machine is automatically pushing [http://nuget.org|NuGet] packages and uploading the binaries to Codeplex.

@@ -1,0 +1,68 @@
+TruePNG 0.4.0.9 : PNG Optimizer
+by x128 (2010-2013)
+x128@ua.fm
+
+TruePNG {options} file
+
+options:
+/f#	PNG delta filters 0=None, 1=Sub, 2=Up, 3=Average, 4=Paeth, 5=Mixed
+/fe	PNG extra filters, overrides /f switch
+/i#	PNG interlace method 0=None, 1=Adam7 (default input)
+/g#	PNG gamma 0=Remove, 1=Apply & Remove, 2=Keep (default)
+/a#	PNG dirty transparency 0=Clean (default), 1=Optimize
+/na	PNG don't change RGB values for fully transparent pixels
+/nc	PNG don't change ColorType and BitDepth
+/np	PNG don't change Palette
+/nz	PNG don't recompress IDAT, works with /md switch
+/tz	PNG compress tEXt chunk
+/md	PNG handle metadata (chunks). After this parameter you need to specify
+	    an action (keep or remove), then list of comma-separated chunks or
+	    predefined keyword that means the group of chunks.
+	    color=gAMA,cHRM,sRGB,iCCP
+	    text=iTXt,tEXt,zTXt
+	    misc=bKGD,pHYs,sBIT,sPLT,hIST,tIME
+	    all=all of noncritical chunks, for example:
+	    /md keep tEXt,bKGD,pHYs
+	    /md remove all
+	    /md remove color,text
+	    /md keep color,bKGD,pHYs
+	    if not used /nz, the chunk gAMA managed by the respective switch /g
+
+/cq	PNG color quantization & dithering
+	    c=<number of colors> in range 2..4096 (default c=256)
+	    d=<dither amount> in range 0..100 (default d=0)
+	    for example: /cq c=200 d=75
+
+/zc#	zlib compression level 1..9
+/zm#	zlib memory level 1..9
+/zs#	zlib compression strategy 0..3
+/zw#	zlib window size 0..7 (where 0..7 corresponds 256,512,1024,2048,4096,
+	     8192,16384,32768 respectively)
+
+/quiet	quiet mode
+/force	write the file even if the size is greater than original
+/out <file>	write output file to <file>
+/y	confirm overwriting file
+
+syntax:
+f,zc,zm,zs - these parameters can be taken as single values or composite if
+             necessary, these parameters can be combined, as shown below:
+/zc9     - "zc = 9"
+/zc1,2,3 - "try zc = 1,2 and 3"
+/zc7-9   - "try zc = from 7 to 9"
+/zc1,7-9 - "try zc = 1 and from 7 to 9"
+/f1,2,3 = /f1-3 = /f1,2-3
+
+options should begin with / or - and the values can be separated by space
+/f0,5 = /f 0,5 = -f0,5 = -f 0,5
+
+optimization level:
+/o0            = /nz /md remove all
+/o1 or /o fast = /zc9 /zm8-9 /zs0-3 /f0,5 (default)
+/o2 or /o good = /zc9 /zm1-9 /zs0-3 /f0-5
+/o3 or /o best = /zc9 /zm1-9 /zs0-3 /fe
+/o4 or /o max  = /zc9 /zm1-9 /zs0-3 /fe /a1 /i0 /md remove all
+
+examples:
+TruePNG image.png - optimize image.png with default options
+TruePNG image.png /o max - best result (slow)

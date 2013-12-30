@@ -1,0 +1,115 @@
+Two configurations
+- build (including push to nuget)
+- upload
+
+== OxyPlot build
+
+Build number format: 2013.1.{0}.1
+
+Artifact paths:
+  build/**/*.* => Build
+  output/**/*.xap => Output
+  output/**/*.zip => Output
+  tools/**/*.* => Tools
+
+VCS root: https://hg.codeplex.com/oxyplot
+
+=== Build steps
+
+# Update verison number
+     Directory: Tools\Lynx
+     Command: VersionUpdater.exe /Version=%build.number% /Directory=..\..
+# Create changeset ID file
+       mkdir Output
+       echo %build.vcs.number%> Output\changeset.id
+# Build WPF solution
+      Solution: Source\OxyPlot.WPF.sln
+      Targets: Rebuild
+      Configuration: Release
+# Run unit tests
+      NUnit runner: NUnit 2.6.0
+      Platform: auto (MSIL)
+      Version: 4.0
+      Run tests from: 
+        Source\OxyPlot.Tests\bin\Release\OxyPlot.Tests.dll
+        Source\OxyPlot.Wpf.Tests\bin\Release\OxyPlot.Wpf.Tests.dll
+      Coverage: dotCover
+      Filters: 
+        +:OxyPlot*
+        -:*.Tests*
+# Build Windosw Forms solution
+      Solution: Source\OxyPlot.WindowsForms.sln
+      Targets: Rebuild
+      Configuration: Release
+# Build GTK# solution
+      Solution: Source\OxyPlot.GtkSharp.sln
+      Targets: Rebuild
+      Configuration: Release
+# Build Silverlight solution
+      Solution: Source\OxyPlot.Silverlight.sln
+      Targets: Rebuild
+      Configuration: Release
+# Build Metro solution
+      Solution: Source\OxyPlot.Metro.sln
+      Targets: Rebuild
+      Configuration: Release
+# Build Silverlight 4 solution
+      Solution: Source\OxyPlot.Silverlight4.sln
+      Targets: Rebuild
+      Configuration: Release
+# Build Windows Forms 4.0 solution
+      Solution: Source\OxyPlot.WindowsForms_NET40.sln
+      Targets: Rebuild
+      Configuration: Release
+# Build WPF 4.0 solution
+      Solution: Source\OxyPlot.WPF_NET40.sln
+      Targets: Rebuild
+      Configuration: Release
+# Generate documentation
+     Working directory: build
+     Commands:
+       GenerateAPIDocumentation.cmd
+       GenerateDocumentation.cmd
+# Pack and push to NuGet
+      Working directory: Build
+      Command:
+        pack.cmd 
+        push.cmd
+# Delete pdb
+     Command: del /S *.pdb
+     Working directory: Output\NET45\Examples
+# Zip release
+     Working directory: build
+     Command: ZipRelease %build.number%
+
+Build triggers
+Triggers a build after a VCS check-in is detected
+
+Build parameters:
+
+Environment variables:
+
+
+== OxyPlot Upload
+
+Build number format: %dep.bt6.build.number%
+
+=== Build steps
+# Update example browser
+     Working directory: build
+     Command:           UpdateExampleBrowser.cmd
+# Upload release to Codeplex
+     Working directory: build
+     Command:           UploadRelease %dep.bt6.build.number%
+
+# Upload documentation
+
+Build trigger:
+  Wait for a successful build in: OxyPlot
+Dependencies: 
+  Artifact dependency
+    Source: OxyPlot
+    Paths: Output => Output
+
+
+
