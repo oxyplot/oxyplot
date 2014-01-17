@@ -3,63 +3,157 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
         <title>oxyplot.org</title>
-        <link rel="stylesheet" type="text/css" href="style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+        <xlink rel="stylesheet" type="text/css" href="style.css" />
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
     </head>
     <body>
-        <!-- <img src="../icons/OxyPlot_128.png" style="float:right; padding: 0 0 0 1em"/> -->
-        <header>
-        <h1>oxyplot.org</h1>
-        </header>
-        <p>OxyPlot is an open source, cross-platform .NET plotting library.</p>
-        <p>This site is currently under construction and we will have more for you soon.</p>
-        <ul>
-            <li><a href="http://oxyplot.codeplex.com">Project home page</a> (codeplex)</li>
-            <li><a href="doc">Documentation</a></li>
-            <li><a href="doc/API">API documentation</a></li>
-            <li><a href="http://www.nudoq.org/#!/Projects/OxyPlot">API documentation (nudoq.org)</a></li>
-            <li><a href="ExampleBrowser">Example browser</a> (Silverlight)</li>
-        </ul>
-        
-        <div class="examples">        
-            <div class="example">
-                <img src="examples/Example1.png" alt="LineSeries"/>
-                <div><a href="examples/Example1.png">png</a> <a href="examples/Example1.pdf">pdf</a> <a href="examples/Example1.svg">svg</a></div>
-            </div>
-            <div class="example">
-                <img src="examples/LineSeries.png" alt="LineSeries"/>
-                <div><a href="examples/LineSeries.png">png</a> <a href="examples/LineSeries.pdf">pdf</a> <a href="examples/LineSeries.svg">svg</a></div>
-            </div>
-            <div class="example">
-                <img src="examples/LineSeriesSmoothed.png" alt="LineSeries (smoothed)"/>
-                <div><a href="examples/LineSeriesSmoothed.png">png</a> <a href="examples/LineSeriesSmoothed.pdf">pdf</a> <a href="examples/LineSeriesSmoothed.svg">svg</a></div>
-            </div>
-            <div class="example">
-                <img src="examples/TwoColorLineSeries.png" alt="TwoColorLineSeries"/>
-                <div><a href="examples/TwoColorLineSeries.png">png</a> <a href="examples/TwoColorLineSeries.pdf">pdf</a> <a href="examples/TwoColorLineSeries.svg">svg</a></div>
-            </div>
-            <div class="example">
-                <img src="examples/ContourSeries.png" alt="ContourSeries"/>
-                <div><a href="examples/ContourSeries.png">png</a> <a href="examples/ContourSeries.pdf">pdf</a> <a href="examples/ContourSeries.svg">svg</a></div>
-            </div>
-            <div class="example">
-                <img src="examples/HeatMapSeries.png" alt="HeatMapSeries"/>
-                <div><a href="examples/HeatMapSeries.png">png</a> <a href="examples/HeatMapSeries.pdf">pdf</a> <a href="examples/HeatMapSeries.svg">svg</a></div>
-            </div>
-            <div class="example">
-                <img src="examples/ColumnSeries.png" alt="ColumnSeries"/>
-                <div><a href="examples/ColumnSeries.png">png</a> <a href="examples/ColumnSeries.pdf">pdf</a> <a href="examples/ColumnSeries.svg">svg</a></div>
-            </div>
-            <div class="example">
-                <img src="examples/BarSeries.png" alt="BarSeries"/>
-                <div><a href="examples/BarSeries.png">png</a> <a href="examples/BarSeries.pdf">pdf</a> <a href="examples/BarSeries.svg">svg</a></div>
-            </div>
+
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <a href="https://oxyplot.codeplex.com/SourceControl/network/create/fork"><img style="position: absolute; top: 0; right: 0; border: 0;" src="ForkmeRibbon/forkme_red.png" alt="Fork me on CodePlex" /></a>
+
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">OxyPlot</a>
         </div>
-        
+         <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="ExampleBrowser" target="_blank">Examples</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="doc/">Documentation</a></li>
+                <li><a href="doc/GettingStarted.html">Getting started</a></li>
+                <li><a href="docs/API/">API documentation</a></li>
+                <li class="divider"></li>
+                <li><a href="http://www.nudoq.org/#!/Projects/OxyPlot/">Documentation at NuDoq</a></li>
+              </ul>
+            </li>
+            <li><a href="http://oxyplot.codeplex.com">Codeplex</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">NuGet <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="http://nuget.org/List/Packages/OxyPlot.Wpf/">OxyPlot.Wpf</a></li>
+                <li><a href="http://nuget.org/List/Packages/OxyPlot.Silverlight/">OxyPlot.Silverlight</a></li>
+                <li><a href="http://nuget.org/List/Packages/OxyPlot.Metro/">OxyPlot.Metro</a></li>
+                <li><a href="http://nuget.org/List/Packages/OxyPlot.WindowsForms/">OxyPlot.WindowsForms</a></li>
+                <li><a href="http://nuget.org/List/Packages/OxyPlot.Pdf/">OxyPlot.Pdf</a></li>
+                <li><a href="http://nuget.org/List/Packages/OxyPlot.OpenXml/">OxyPlot.OpenXml</a></li>
+                <li><a href="http://nuget.org/List/Packages/OxyPlot.GtkSharp/">OxyPlot.GtkSharp</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Xamarin <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="http://components.xamarin.com/">OxyPlot for iOS (under construction)</a></li>
+                <li><a href="http://components.xamarin.com/">OxyPlot for Android (under construction)</a></li>
+                <li><a href="http://components.xamarin.com/">OxyPlot for Mac (under construction)</a></li>
+              </ul>
+            </li>
+          </ul>
+<!--          
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://oxyplot.codeplex.com">Codeplex</a></li>
+          </ul>
+-->
+        </div><!--/.nav-collapse -->      </div>
+    </div>
+    
+
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Open and portable plotting</h1>
+        <!--<img src="../icons/OxyPlot_128.png" style="float:right; padding: 0 0 0 1em"/>-->
+        <p>OxyPlot is an open source and cross-platform plotting library for .NET.</p>
+          <p>The code is licensed under the very liberal <a href="http://www.tldrlegal.com/license/mit-license">MIT license</a>.
+          This means that the library can be used in commercial applications, and modified as much as you want. But remember there is no warranty or support included...</p>
+          <p>What does it look like?</p>
+        <p><img class="jumbotron-image img-responsive" src="examples/Example1.png" alt="OxyPlot example 1"></p>
+          <p>The same plotting code can be used on different user interface platforms, and the plots can be exported to file formats like <a href="examples/Example1.png">png</a>, <a href="examples/Example1.pdf">pdf</a> and <a href="examples/Example1.svg">svg</a>.</p>
+        <p><a class="btn btn-primary btn-lg" role="button" href="ExampleBrowser/">See more examples &raquo;</a>&nbsp;
+        <a class="btn btn-primary btn-lg" role="button" href="doc/Features.html/">Features &raquo;</a>&nbsp;
+        <a class="btn btn-primary btn-lg" role="button" href="doc/GettingStarted.html">Get started &raquo;</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Features</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="doc/Features.html" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Getting started</h2>
+          <p>It should not take much time to get a plot running in your application. Use the NuGet package manager to add the OxyPlot references. Then add a "Plot" control to your view and create a "PlotModel" that is bound to this control.</p>
+          <p><a class="btn btn-default" href="doc/GettingStarted.html" role="button">View details &raquo;</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>Contribute</h2>
+          <p>This project is continuously evolving. Any kind of help is greatly appreciated. It could be writing documentation, testing, coding or helping out on the discussion forum!</p>
+          <p><a class="btn btn-default" href="doc/Contributions.html" role="button">Read more &raquo;</a>
+<!--          <a class="btn btn-default" href="https://oxyplot.codeplex.com/SourceControl/network/create/fork" role="button">Fork me on CodePlex &raquo;</a>--></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container marketing">
+
+    <hr class="featurette-divider">
+    
+     <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Example 1<span class="text-muted"></span></h2>
+          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" src="examples/Example1.png" alt="LineSeries">
+        </div>
+      </div>
+      
+    <hr class="featurette-divider">
+    
+     <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Example 2<span class="text-muted"></span></h2>
+          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" src="examples/ContourSeries.png" alt="ContourSeries">
+        </div>
+      </div>
+
+    <hr class="featurette-divider">
+      
+     <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Example 3<span class="text-muted"></span></h2>
+          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" src="examples/HeatMapSeries.png" alt="HeatMapSeries">
+        </div>
+      </div>
+    
+        <hr class="featurette-divider">
         <footer>
-            <a href="http://jigsaw.w3.org/css-validator/check/referer">css</a> | <a href="http://validator.w3.org/check/referer">html</a>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+            <p>&copy; 2014 OxyPlot contributors &middot; <a href="http://jigsaw.w3.org/css-validator/check/referer">css</a> &middot;  <a href="http://validator.w3.org/check/referer">html</a></p>
         </footer>
-        
+    </div>
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+            
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
