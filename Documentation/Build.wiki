@@ -18,13 +18,13 @@ The OxyPlot solutions can be opened in
 
 Depending on what platform you want to build, you may need to install extra SDKs or target framework profiles
 
-- .NET 3.5
+- [http://www.microsoft.com/en-us/download/details.aspx?id=22|.NET 3.5]
 - .NET 4.0
 - .NET 4.5
 - Silverlight 4
 - Silverlight 5
 - Windows Store App
-- GTK#
+- [http://www.mono-project.com/GtkSharp|GTK#]
 - Xamarin.iOS
 - Xamarin.Android
 - Xamarin.Mac
