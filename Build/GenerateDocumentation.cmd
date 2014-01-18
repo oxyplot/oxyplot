@@ -1,4 +1,5 @@
 "C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe" ..\Source\Examples\DocumentationExamples\ExampleGenerator\ExampleGenerator.sln /p:Configuration=Release
+mkdir ..\Documentation\Images\Series
 ..\Source\Examples\DocumentationExamples\ExampleGenerator\bin\Release\ExampleGenerator.exe ..\Documentation\Images\Series
 
 ..\Tools\Lynx\WikiT.exe /format=html /template=..\Documentation\Help_Template.html /localLinks={0}.html /version=2013.1.1 /input=..\Documentation\*.wiki /output=..\Output\Documentation > GenerateDocumentation.log
