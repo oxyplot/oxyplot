@@ -349,13 +349,13 @@ namespace OxyPlot.Series
             var transformedContiguousLines = contiguousLines.Select(l => l.Select(Transform).ToArray());
             foreach (var transformedContiguousLine in transformedContiguousLines)
             {
-                this.RenderPoints(rc, clippingRect, transformedContiguousLine);    
+                this.RenderPoints(rc, clippingRect, transformedContiguousLine);
             }
 
             if (this.BrokenLineThickness > 0 && this.BrokenLineStyle != LineStyle.None)
             {
                 var brokenLines = CalculateBrokenLines(contiguousLines);
-                var transformedBrokenLines = brokenLines.Select(l => new[] { Transform(l.Item1), Transform(l.Item2) });
+                var transformedBrokenLines = brokenLines.Select(l => new[] { Transform(l.Point1), Transform(l.Point2) });
                 foreach (var transformedBrokenLine in transformedBrokenLines)
                 {
                     rc.DrawClippedLineSegments(
@@ -467,13 +467,13 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="contiguousLineSegments">The collection of contiguous lines for which to calculate the delimiting broken lines.</param>
         /// <returns><see cref="IDataPoint"/> pairs representing the broken lines delimiting the passed collection of contiguous lines.</returns>
-        protected static IEnumerable<Tuple<IDataPoint, IDataPoint>> CalculateBrokenLines(ICollection<ICollection<IDataPoint>> contiguousLineSegments)
+        protected static IEnumerable<Segment> CalculateBrokenLines(ICollection<ICollection<IDataPoint>> contiguousLineSegments)
         {
             for (var i = 1; i < contiguousLineSegments.ToArray().Count(); i++)
             {
                 var segment0 = contiguousLineSegments.ElementAt(i - 1);
                 var segment1 = contiguousLineSegments.ElementAt(i);
-                yield return new Tuple<IDataPoint, IDataPoint>(segment0.Last(), segment1.First());
+                yield return new Segment(segment0.Last(), segment1.First());
             }
         }
 
@@ -526,7 +526,7 @@ namespace OxyPlot.Series
             foreach (var point in this.Points)
             {
                 index++;
-                
+
                 if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
                 {
                     continue;
@@ -702,6 +702,33 @@ namespace OxyPlot.Series
         {
             double tolerance = Math.Abs(Math.Max(this.MaxX - this.MinX, this.MaxY - this.MinY) / ToleranceDivisor);
             this.smoothedPoints = CanonicalSplineHelper.CreateSpline(this.Points, 0.5, null, false, tolerance);
+        }
+
+        /// <summary>
+        /// Represents a line segment.
+        /// </summary>
+        protected class Segment
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Segment"/> class.
+            /// </summary>
+            /// <param name="point1">The first point of the segment.</param>
+            /// <param name="point2">The second point of the segment.</param>
+            public Segment(IDataPoint point1, IDataPoint point2)
+            {
+                this.Point1 = point1;
+                this.Point2 = point2;
+            }
+
+            /// <summary>
+            /// Gets the first point1 of the segment.
+            /// </summary>
+            public IDataPoint Point1 { get; private set; }
+
+            /// <summary>
+            /// Gets the second point of the segment.
+            /// </summary>
+            public IDataPoint Point2 { get; private set; }
         }
     }
 }
