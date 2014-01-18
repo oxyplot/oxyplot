@@ -71,7 +71,7 @@ VCS root: https://hg.codeplex.com/oxyplot
      Solution: Source\OxyPlot.Metro.sln
      Targets: Rebuild
      Configuration: Release
-# Build Silverlight 4 solution
+# Build Silverlight 4 solution (disabled)
      Solution: Source\OxyPlot.Silverlight4.sln
      Targets: Rebuild
      Configuration: Release
@@ -83,7 +83,7 @@ VCS root: https://hg.codeplex.com/oxyplot
      Solution: Source\OxyPlot.WPF_NET40.sln
      Targets: Rebuild
      Configuration: Release
-# Pack NuGet
+# Create NuGet packages
      Working directory: Build
      Command: pack.cmd 
 # Generate documentation
@@ -91,18 +91,18 @@ VCS root: https://hg.codeplex.com/oxyplot
      Commands:
        GenerateAPIDocumentation.cmd
        GenerateDocumentation.cmd
+# Clean examples
+     Working directory: build
+     Command: DeleteExamplePdbFiles.cmd
+# Create release
+     Working directory: build
+     Command: ZipRelease %build.number%
 # Update web
      Working directory: build
      Commands:
        xcopy ..\icons\favicon.ico ..\Web /Y
        mkdir ..\Web\Examples
        xcopy ..\documentation\images\series ..\Web\Examples /Y
-# Delete pdb files
-     Working directory: build
-     Command: DeleteExamplePdbFiles.cmd
-# Create release
-     Working directory: build
-     Command: ZipRelease %build.number%
 
 === Build triggers
 Triggers a build after a VCS check-in is detected
@@ -113,7 +113,8 @@ Triggers a build after a VCS check-in is detected
 Build number format: %dep.bt6.build.number%
 
 === Build steps
-# Push to NuGet
+
+# Push packages to NuGet
      Working directory: Build
      Command: push.cmd
 # Upload example browser
@@ -122,14 +123,19 @@ Build number format: %dep.bt6.build.number%
 # Upload documentation
      Working directory: build
      Command: UploadDocumentation.cmd
-# Zip and upload release
+# Upload release
      Working directory: build
-     Command: UploadRelease %build.number%
+     Command: UploadRelease.cmd %build.number%
+# Update web pages
+     Working directory: build
+     Command: UploadWeb.cmd
 
 === Build trigger
+
 Wait for a successful build in: OxyPlot
 
 === Dependencies 
+
 # Artifact dependency
     Source: OxyPlot
     Paths: 
