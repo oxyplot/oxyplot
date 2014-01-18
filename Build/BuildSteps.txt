@@ -2,6 +2,11 @@
 
 This document describes the configuration of the build server running on Team City.
 
+== Requirements
+
+- Visual Studio 2013
+- 7-Zip in default folder
+
 == Build parameters:
 
 Defined under "Parameters" in the TeamCity project.
@@ -10,18 +15,22 @@ Environment variables:
 - NUGET_ACCESS_KEY
 - OXYPLOT_FTP_USER
 - OXYPLOT_FTP_PWD
+- EnableNuGetPackageRestore = true
 
 == OxyPlot build
 
 Build number format: 2014.1.%build.counter%.1
 
 Artifact paths:
-  build/**/*.* => Build
-  output/**/*.xap => Output
-  output/**/*.zip => Output
-  tools/**/*.* => Tools
+  Build/**/*.* => Build.zip
+  Icons/**/*.* => Icons.zip
+  Output/**/*.* => Output.zip
+  Packages/**/*.* => Packages.zip
+  Tools/**/*.* => Tools.zip
+  Web/**/*.* => Web.zip
 
 VCS root: https://hg.codeplex.com/oxyplot
+  Clean all files before build
 
 === Build steps
 
@@ -117,7 +126,13 @@ Wait for a successful build in: OxyPlot
 === Dependencies 
 # Artifact dependency
     Source: OxyPlot
-    Paths: Output => Output
+    Paths: 
+      Build.zip!**=>Build
+      Icons.zip!**=>Icons
+      Output.zip!**=>Output
+      Packages.zip!**=>Packages
+      Tools.zip!**=>Tools
+      Web.zip!**=>Web
 
 
 
