@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>$title</title>
+    <meta name="keywords" content="$keywords" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="web_style.css" />
+</head>
+<body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="..\">OxyPlot</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="Index.html">Index</a></li>
+                            <li><a href="GettingStarted.html">Getting started</a></li>
+                            <li><a href="API/Index.html">API documentation</a></li>
+                            <li class="divider"></li>
+                            <li><a href="http://www.nudoq.org/#!/Projects/OxyPlot/" target="_blank">Documentation at NuDoq</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="../ExampleBrowser/" target="_blank">Examples</a></li>
+                    <li><a href="http://oxyplot.codeplex.com" target="_blank">Codeplex</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container marketing">
+        <div class="row">
+            $body
+        </div>
+    </div>
+
+    <div class="container">
+        <hr class="featurette-divider" />
+        <footer><p>OxyPlot version $version &middot; <a href="http://jigsaw.w3.org/css-validator/check/referer">css</a> &middot;  <a href="http://validator.w3.org/check/referer">html</a></p></footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-43517378-1', 'oxyplot.org');
+        ga('send', 'pageview');
+
+    </script>
+</body>
+</html>

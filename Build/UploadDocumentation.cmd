@@ -1,1 +1,1 @@
-..\Tools\Lynx\FtpUpload.exe %OXYPLOT_FTP_SERVER% %OXYPLOT_FTP_USER% %OXYPLOT_FTP_PASSWORD% ..\Output\Documentation\*.* %OXYPLOT_FTP_FOLDER%/doc /t=1
+..\Tools\Lynx\FtpUpload.exe ftp.oxyplot.org %OXYPLOT_FTP_USER% %OXYPLOT_FTP_PWD% ..\Output\Documentation\*.* /oxyplot.org/wwwroot/doc /t=1
