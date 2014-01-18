@@ -9,8 +9,6 @@
 The 'tracker' is shown when you press down the left mouse button over some data in the plot.
 By default the tracker shows the values of the current point.
 
-{images/tracker.png}
-
 
 === Format string
 

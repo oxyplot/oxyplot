@@ -9,12 +9,12 @@
 The OxyPlot solutions can be opened in
 
 - VS 2010 (with the [http://visualstudiogallery.msdn.microsoft.com/b0e0b5e9-e138-410b-ad10-00cb3caf4981|Portable Library Tools] extension)
-- VS 2012 (with SP4)
+- VS 2012 (with the latest update)
 - VS 2013
-- VS 2013 Express for Windows (for Windows Store apps)
-- VS 2013 Express for Windows Desktop (for classic Windows Desktop applications)
 - MonoDevelop
 - Xamarin Studio (for GTK#, Android, iOS and OSX apps)
+
+VS Express does not support Portable Class Libraries, and cannot be used to build OxyPlot. But, you can use VS Express to build applications that reference the OxyPlot assemblies!
 
 Depending on what platform you want to build, you may need to install extra SDKs or target framework profiles
 
@@ -65,6 +65,6 @@ The build output of the //Release// configurations are placed in the `Output/` f
 
 === Additional information
 
-OxyPlot uses [https://github.com/SimonCropp/Pepita|Pepita] to update the Nuget packages. The `PepitaGet.dll` is placed in `Tools\Pepita` and is included in the Mercurial repository. The PepitaGet tasks will be executed every time the solution is built.
+OxyPlot uses [https://github.com/SimonCropp/Pepita|Pepita] to update the Nuget packages. The `PepitaGet.dll` library is placed in `Tools\Pepita` folder. The PepitaGet tasks will be executed every time the solution is built.
 
-OxyPlot is currently being built by [http://www.microsoft.com/visualstudio|Visual Studio] on a Windows 8.1 virtual machine (running on [https://www.virtualbox.org|VirtualBox]). The build machine is running [http://www.jetbrains.com/teamcity/|TeamCity] and trigs the build on every code check-in. The build steps are described in the `Build/BuildSteps.txt` file. The build machine is automatically pushing [http://nuget.org|NuGet] packages and uploading the binaries to Codeplex.
+OxyPlot is currently being built by [http://www.microsoft.com/visualstudio|Visual Studio 2013] on a Windows 8.1 virtual machine (running on [https://www.virtualbox.org|VirtualBox]). The build machine is running [http://www.jetbrains.com/teamcity/|TeamCity] and trigs the build on every code check-in. The build steps are described in the `Build/BuildSteps.txt` file. The build machine is automatically pushing [http://nuget.org|NuGet] packages and uploading the output files to Codeplex and oxyplot.org.

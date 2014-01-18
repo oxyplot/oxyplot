@@ -17,7 +17,7 @@ The following guidelines are picked up mostly from the books by Edward Tufte and
 
 === Grid lines
 
-- Avoid dark/heavy gridlines
+- Avoid dark/heavy grid lines
 
 === Ticks
 
