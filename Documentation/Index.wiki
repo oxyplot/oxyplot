@@ -2,8 +2,6 @@
 @title OxyPlot user's guide
 @keywords OxyPlot,User's guide
 
-= OxyPlot user's guide
-
 // NOTE: The documentation is under construction //
 
 == Introduction
