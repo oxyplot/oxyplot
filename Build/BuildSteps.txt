@@ -91,6 +91,12 @@ VCS root: https://hg.codeplex.com/oxyplot
      Commands:
        GenerateAPIDocumentation.cmd
        GenerateDocumentation.cmd
+# Update web
+     Working directory: build
+     Commands:
+       xcopy ..\icons\favicon.ico ..\Web /Y
+       mkdir ..\Web\Examples
+       xcopy ..\documentation\images\series ..\Web\Examples /Y
 # Delete pdb files
      Working directory: build
      Command: DeleteExamplePdbFiles.cmd
