@@ -63,14 +63,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZLib.Silverlight">
-      <HintPath>..\..\..\packages\ImageTools.0.3.1\lib\sl40\ICSharpCode.SharpZLib.Silverlight.dll</HintPath>
-    </Reference>
     <Reference Include="ImageTools">
       <HintPath>..\..\..\packages\ImageTools.0.3.1\lib\sl40\ImageTools.dll</HintPath>
-    </Reference>
-    <Reference Include="ImageTools.IO.Png">
-      <HintPath>..\..\..\packages\ImageTools.0.3.1\lib\sl40\ImageTools.IO.Png.dll</HintPath>
     </Reference>
     <Reference Include="ImageTools.Utils">
       <HintPath>..\..\..\packages\ImageTools.0.3.1\lib\sl40\ImageTools.Utils.dll</HintPath>
@@ -79,12 +73,8 @@
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
-    <Reference Include="zxing.Silverlight">
-      <HintPath>..\..\..\packages\ImageTools.0.3.1\lib\sl40\zxing.Silverlight.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
