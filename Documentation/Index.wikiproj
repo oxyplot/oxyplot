@@ -1,6 +1,6 @@
 <WikiProject>
 <Format>html</Format>
-<Template>..\Documentation\Template.html</Template>
+<Template>..\Documentation\Help_Template.html</Template>
 <LocalLinks>{0}.html</LocalLinks>
 <Input>*.wiki</Input>
 <Output>..\Output\Documentation</Output>
