@@ -1,0 +1,11 @@
+﻿@syntax owiki
+@title Getting started
+@keywords OxyPlot,Getting started,Intro
+
+== Getting started
+
+- [HelloWpf|WPF]
+- [HelloWindowsForms|Windows Forms]
+- [HelloSilverlight|Silverlight]
+- [HelloWindowsStoreApp|Windows Store App]
+- [HelloGTK|GTK#]
