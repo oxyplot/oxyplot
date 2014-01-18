@@ -355,7 +355,7 @@
         /// </returns>
         private int DecodeSymbol(CodeTree code)
         {
-            var currentNode = code.root;
+            var currentNode = code.Root;
             while (true)
             {
                 var temp = this.input.ReadNoEof();

@@ -70,7 +70,7 @@ namespace OxyPlot
         public CanonicalCode(CodeTree tree, int symbolLimit)
         {
             this.codeLengths = new int[symbolLimit];
-            this.BuildCodeLengths(tree.root, 0);
+            this.BuildCodeLengths(tree.Root, 0);
         }
 
         private void BuildCodeLengths(Node node, int depth)

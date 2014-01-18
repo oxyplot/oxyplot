@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MathRenderingExtensions.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,15 +24,16 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The math rendering extensions.
+//   Provides functionality to render mathematical expressions.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
 
     /// <summary>
-    /// Provides functionality to render mathematic expressions (TeX syntax).
+    /// Provides functionality to render mathematical expressions (in <c>TeX</c> syntax).
     /// </summary>
     public static class MathRenderingExtensions
     {
@@ -245,6 +246,9 @@ namespace OxyPlot
         /// <param name="measureOnly">
         /// The measure only.
         /// </param>
+        /// <param name="angle">
+        /// The angle of the text (degrees).
+        /// </param>
         /// <returns>
         /// The size of the text.
         /// </returns>
@@ -286,8 +290,8 @@ namespace OxyPlot
                     }
 
                     var flatSize = rc.MeasureText(text, fontFamily, fSize, fontWeight);
-                    double width = Math.Abs(flatSize.Width * cosAngle + flatSize.Height * sinAngle);
-                    double height = Math.Abs(flatSize.Width * sinAngle + flatSize.Height * cosAngle);
+                    double width = Math.Abs((flatSize.Width * cosAngle) + (flatSize.Height * sinAngle));
+                    double height = Math.Abs((flatSize.Width * sinAngle) + (flatSize.Height * cosAngle));
                     return new OxySize(width, height);
                 };
 
@@ -308,14 +312,17 @@ namespace OxyPlot
                         {
                             maximumX = currentX + size.Width;
                         }
+
                         if (currentX + size.Width < minimumX)
                         {
                             minimumX = currentX + size.Width;
                         }
+
                         if (currentY + size.Height > maximumY)
                         {
                             maximumY = currentY + size.Height;
                         }
+
                         if (currentY + size.Height < minimumY)
                         {
                             minimumY = currentY + size.Height;
@@ -336,21 +343,24 @@ namespace OxyPlot
                         double sx = currentX - subscriptXDisplacement;
                         double sy = currentY + subscriptYDisplacement;
                         var size = drawText(sx, sy, subString, subscriptFontSize);
-                        if (currentX + size.Width * cosAngle > maximumX)
+                        if (currentX + (size.Width * cosAngle) > maximumX)
                         {
-                            maximumX = currentX + size.Width * cosAngle;
+                            maximumX = currentX + (size.Width * cosAngle);
                         }
-                        if (currentX + size.Width * cosAngle < minimumX)
+
+                        if (currentX + (size.Width * cosAngle) < minimumX)
                         {
-                            minimumX = currentX + size.Width * cosAngle;
+                            minimumX = currentX + (size.Width * cosAngle);
                         }
-                        if (currentY + size.Height * sinAngle > maximumY)
+
+                        if (currentY + (size.Height * sinAngle) > maximumY)
                         {
-                            maximumY = currentY + size.Height * sinAngle;
+                            maximumY = currentY + (size.Height * sinAngle);
                         }
-                        if (currentY + size.Height * sinAngle < minimumY)
+
+                        if (currentY + (size.Height * sinAngle) < minimumY)
                         {
-                            minimumY = currentY + size.Height * sinAngle;
+                            minimumY = currentY + (size.Height * sinAngle);
                         }
 
                         continue;
@@ -371,8 +381,8 @@ namespace OxyPlot
                     i = i2;
                 }
 
-                currentX = maximumX + 2 * cosAngle;
-                currentY = maximumY + 2 * sinAngle;
+                currentX = maximumX + (2 * cosAngle);
+                currentY = maximumY + (2 * sinAngle);
                 var size2 = drawText(currentX, currentY, regularString, fontSize);
 
                 currentX += (size2.Width + 2) * cosAngle;
@@ -386,6 +396,5 @@ namespace OxyPlot
 
             return new OxySize(maximumX - minimumX, maximumY - minimumY);
         }
-
     }
 }
