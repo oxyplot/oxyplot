@@ -64,6 +64,8 @@
     <Content Include="ClientBin\ExampleBrowser.xap" />
     <Content Include="Default.aspx" />
     <Content Include="Default.html" />
+    <Content Include="Index.html" />
+    <Content Include="Index_4.html" />
     <Content Include="Silverlight.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
