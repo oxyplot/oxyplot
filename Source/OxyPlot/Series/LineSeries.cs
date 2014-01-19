@@ -450,8 +450,10 @@ namespace OxyPlot.Series
                 // Make sure the smooth points are re-evaluated.
                 this.ResetSmoothedPoints();
 
-				if (smoothedPoints.Count == 0)
-					return;
+                if (this.smoothedPoints.Count == 0)
+                {
+                    return;
+                }
 
                 // Update the max/min from the smoothed points
                 this.MinX = this.smoothedPoints.Where(x => !double.IsNaN(x.X)).Min(x => x.X);
