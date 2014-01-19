@@ -23,15 +23,12 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   Defines the OpenIssues type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace ExampleLibrary
 {
     using System;
-    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -39,6 +36,8 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("Z0 Issues (open)")]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    // ReSharper disable InconsistentNaming
     public class OpenIssues : ExamplesBase
     {
         [Example("#10018: Sub/superscript in vertical axis title")]
@@ -188,6 +187,20 @@ namespace ExampleLibrary
             plotModel1.LegendBorderThickness = 1;
             plotModel1.Series.Add(new FunctionSeries(x => Math.Sin(x) / x, 0, 10, 100, "sin(x)/x"));
             plotModel1.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 100, "cos(x)"));
+            return plotModel1;
+        }
+
+        [Example("#10117: Selecting points changes the legend colours")]
+        public static PlotModel SelectingPointsChangesTheLegendColors()
+        {
+            var plotModel1 = new PlotModel("Issue 10117");
+            return plotModel1;
+        }
+
+        [Example("#10115: GetNearestPoint return DataPoint even when custom IDataPoint used")]
+        public static PlotModel GetNearestPointReturnsDataPoint()
+        {
+            var plotModel1 = new PlotModel("Issue 10115");
             return plotModel1;
         }
     }

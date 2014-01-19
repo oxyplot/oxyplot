@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FilteringExamples.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -23,16 +23,22 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+
+    using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
     [Examples("Filtering data points")]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public static class FilteringExamples
     {
         [Example("Filtering invalid points")]
@@ -42,48 +48,51 @@ namespace ExampleLibrary
             plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis"));
             plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis"));
 
-            var lsNaN = new LineSeries("NaN");
-            lsNaN.Points.Add(new DataPoint(double.NaN, double.NaN));
-            lsNaN.Points.Add(new DataPoint(1, 0));
-            lsNaN.Points.Add(new DataPoint(2, 10));
-            lsNaN.Points.Add(new DataPoint(double.NaN, 20));
-            lsNaN.Points.Add(new DataPoint(3, 10));
-            lsNaN.Points.Add(new DataPoint(4, 0));
-            lsNaN.Points.Add(new DataPoint(4.5, double.NaN));
-            lsNaN.Points.Add(new DataPoint(5, 0));
-            lsNaN.Points.Add(new DataPoint(6, 10));
-            lsNaN.Points.Add(new DataPoint(double.NaN, double.NaN));
-            lsNaN.Points.Add(new DataPoint(7, 0));
-            lsNaN.Points.Add(new DataPoint(double.NaN, double.NaN));
-            plot.Series.Add(lsNaN);
-            var lsPosInf = new LineSeries("PositiveInfinity");
-            lsPosInf.Points.Add(new DataPoint(double.PositiveInfinity, double.PositiveInfinity));
-            lsPosInf.Points.Add(new DataPoint(1, 1));
-            lsPosInf.Points.Add(new DataPoint(2, 11));
-            lsPosInf.Points.Add(new DataPoint(double.PositiveInfinity, 20));
-            lsPosInf.Points.Add(new DataPoint(3, 11));
-            lsPosInf.Points.Add(new DataPoint(4, 1));
-            lsPosInf.Points.Add(new DataPoint(4.5, double.PositiveInfinity));
-            lsPosInf.Points.Add(new DataPoint(5, 1));
-            lsPosInf.Points.Add(new DataPoint(6, 11));
-            lsPosInf.Points.Add(new DataPoint(double.PositiveInfinity, double.PositiveInfinity));
-            lsPosInf.Points.Add(new DataPoint(7, 1));
-            lsPosInf.Points.Add(new DataPoint(double.PositiveInfinity, double.PositiveInfinity));
-            plot.Series.Add(lsPosInf);
-            var lsNegInf = new LineSeries("NegativeInfinity");
-            lsNegInf.Points.Add(new DataPoint(double.NegativeInfinity, double.NegativeInfinity));
-            lsNegInf.Points.Add(new DataPoint(1, 2));
-            lsNegInf.Points.Add(new DataPoint(2, 12));
-            lsNegInf.Points.Add(new DataPoint(double.NegativeInfinity, 20));
-            lsNegInf.Points.Add(new DataPoint(3, 12));
-            lsNegInf.Points.Add(new DataPoint(4, 2));
-            lsNegInf.Points.Add(new DataPoint(4.5, double.NegativeInfinity));
-            lsNegInf.Points.Add(new DataPoint(5, 2));
-            lsNegInf.Points.Add(new DataPoint(6, 12));
-            lsNegInf.Points.Add(new DataPoint(double.NegativeInfinity, double.NegativeInfinity));
-            lsNegInf.Points.Add(new DataPoint(7, 2));
-            lsNegInf.Points.Add(new DataPoint(double.NegativeInfinity, double.NegativeInfinity));
-            plot.Series.Add(lsNegInf);
+            var ls1 = new LineSeries("NaN");
+            ls1.Points.Add(new DataPoint(double.NaN, double.NaN));
+            ls1.Points.Add(new DataPoint(1, 0));
+            ls1.Points.Add(new DataPoint(2, 10));
+            ls1.Points.Add(new DataPoint(double.NaN, 20));
+            ls1.Points.Add(new DataPoint(3, 10));
+            ls1.Points.Add(new DataPoint(4, 0));
+            ls1.Points.Add(new DataPoint(4.5, double.NaN));
+            ls1.Points.Add(new DataPoint(5, 0));
+            ls1.Points.Add(new DataPoint(6, 10));
+            ls1.Points.Add(new DataPoint(double.NaN, double.NaN));
+            ls1.Points.Add(new DataPoint(7, 0));
+            ls1.Points.Add(new DataPoint(double.NaN, double.NaN));
+            plot.Series.Add(ls1);
+            
+            var ls2 = new LineSeries("PositiveInfinity");
+            ls2.Points.Add(new DataPoint(double.PositiveInfinity, double.PositiveInfinity));
+            ls2.Points.Add(new DataPoint(1, 1));
+            ls2.Points.Add(new DataPoint(2, 11));
+            ls2.Points.Add(new DataPoint(double.PositiveInfinity, 20));
+            ls2.Points.Add(new DataPoint(3, 11));
+            ls2.Points.Add(new DataPoint(4, 1));
+            ls2.Points.Add(new DataPoint(4.5, double.PositiveInfinity));
+            ls2.Points.Add(new DataPoint(5, 1));
+            ls2.Points.Add(new DataPoint(6, 11));
+            ls2.Points.Add(new DataPoint(double.PositiveInfinity, double.PositiveInfinity));
+            ls2.Points.Add(new DataPoint(7, 1));
+            ls2.Points.Add(new DataPoint(double.PositiveInfinity, double.PositiveInfinity));
+            plot.Series.Add(ls2);
+
+            var ls3 = new LineSeries("NegativeInfinity");
+            ls3.Points.Add(new DataPoint(double.NegativeInfinity, double.NegativeInfinity));
+            ls3.Points.Add(new DataPoint(1, 2));
+            ls3.Points.Add(new DataPoint(2, 12));
+            ls3.Points.Add(new DataPoint(double.NegativeInfinity, 20));
+            ls3.Points.Add(new DataPoint(3, 12));
+            ls3.Points.Add(new DataPoint(4, 2));
+            ls3.Points.Add(new DataPoint(4.5, double.NegativeInfinity));
+            ls3.Points.Add(new DataPoint(5, 2));
+            ls3.Points.Add(new DataPoint(6, 12));
+            ls3.Points.Add(new DataPoint(double.NegativeInfinity, double.NegativeInfinity));
+            ls3.Points.Add(new DataPoint(7, 2));
+            ls3.Points.Add(new DataPoint(double.NegativeInfinity, double.NegativeInfinity));
+            plot.Series.Add(ls3);
+
             return plot;
         }
 
@@ -115,15 +124,17 @@ namespace ExampleLibrary
         public static PlotModel FilteringPointsOutsideRange()
         {
             var plot = new PlotModel("Filtering points outside (-1,1)");
-          plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { FilterMinValue=-1, FilterMaxValue=1});
-          plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { FilterMinValue = -1, FilterMaxValue = 1 });
+            plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { FilterMinValue = -1, FilterMaxValue = 1 });
+            plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { FilterMinValue = -1, FilterMaxValue = 1 });
 
             var ls = new LineSeries();
-            for (double i = 0; i < 200;i+=0.01)
-                ls.Points.Add(new DataPoint(0.01*i*Math.Sin(i), 0.01*i*Math.Cos(i)));
+            for (double i = 0; i < 200; i += 0.01)
+            {
+                ls.Points.Add(new DataPoint(0.01 * i * Math.Sin(i), 0.01 * i * Math.Cos(i)));
+            }
+
             plot.Series.Add(ls);
             return plot;
         }
-
     }
 }
