@@ -23,15 +23,13 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   Defines the ClosedIssues type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace ExampleLibrary
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using OxyPlot;
     using OxyPlot.Annotations;
@@ -39,6 +37,8 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     [Examples("Z9 Issues (closed)")]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    // ReSharper disable InconsistentNaming
     public class ClosedIssues : ExamplesBase
     {
         [Example("#9990: Major grid lines in front of minor")]
@@ -177,11 +177,10 @@ namespace ExampleLibrary
         }
 
         [Example("#10076: Slow redraws with noisy data")]
-        public static PlotModel NoisyData()
+        public static PlotModel NoisyData(int n = 500)
         {
             var model = new PlotModel("Noisy data");
 
-            const int n = 500;
             var points = new List<IDataPoint>(n);
             var rng = new Random();
             for (int i = 0; i < n; i++)
@@ -200,7 +199,7 @@ namespace ExampleLibrary
 
             for (int y = 1; y <= 24; y++)
             {
-                var line = new LineSeries()
+                var line = new LineSeries
                 {
                     StrokeThickness = y,
                     LineStyle = LineStyle.Dash,
@@ -264,7 +263,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("Empty LineSeries with smoothing")]
+        [Example("#10118: Empty LineSeries with smoothing")]
         public static PlotModel EmptyLineSeriesWithSmoothing_ThrowsException()
         {
             var plotModel1 = new PlotModel("Empty LineSeries with smoothing");
