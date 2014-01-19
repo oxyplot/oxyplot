@@ -47,7 +47,7 @@
 - [Design]
 
 == Extras
-- [PortableDocument|PDF creation]
+- [PortableDocument|Creating PDF files]
 - [ReportModel|Report model]
 - [DrawingModel|Drawing model]
 

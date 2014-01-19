@@ -8,6 +8,8 @@ The OxyPlot core library contains a class `PortableDocument` that can be used to
 
 ```cs
 var doc = new PortableDocument();
+doc.Title = "Hello world";
+doc.Author = "objo";
 doc.AddPage(PageSize.A4);
 doc.SetFont("Arial", 96);
 doc.DrawText(50, 400, "Hello world!");
