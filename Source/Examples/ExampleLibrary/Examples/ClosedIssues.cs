@@ -264,5 +264,12 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
+        [Example("Empty LineSeries with smoothing")]
+        public static PlotModel EmptyLineSeriesWithSmoothing_ThrowsException()
+        {
+            var plotModel1 = new PlotModel("Empty LineSeries with smoothing");
+            plotModel1.Series.Add(new LineSeries { Smooth = true });
+            return plotModel1;
+        }
     }
 }
