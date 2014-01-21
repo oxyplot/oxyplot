@@ -2,150 +2,169 @@
 
 This document describes the configuration of the build server running on Team City.
 
-== Requirements
+== Virtual machine (VirtualBox)
 
+Memory: 4096Mb
+Processors: 2
+Not enabling video acceleration
+Video memory: 128Mb
+OS: Windows 8.1
+
+== Installed software
+
+- TeamCity 8.0.5
 - Visual Studio 2013
+- Mercurial
 - 7-Zip in default folder
+- .NET 3.5
+- GTK# / Xamarin Studio
 
 == Build parameters:
 
 Defined under "Parameters" in the TeamCity project.
 
 Environment variables:
-- NUGET_ACCESS_KEY
-- OXYPLOT_FTP_USER
-- OXYPLOT_FTP_PWD
-- EnableNuGetPackageRestore = true
+EnableNuGetPackageRestore = true
+NUGET_ACCESS_KEY = ####
+CODEPLEX_USERNAME = ####
+CODEPLEX_PASSWORD = ####
+OXYPLOT_FTP_SERVER = ftp.oxyplot.org
+OXYPLOT_FTP_USER = ####
+OXYPLOT_FTP_PWD = ####
+YEAR = 2014
 
-== OxyPlot build
+== OxyPlot :: Build
 
-Build number format: 2014.1.%build.counter%.1
+Build configuration ID: OxyPlot_Build
+Build number format: %env.YEAR%.1.%build.counter%.1
 
 Artifact paths:
-  Build/**/*.* => Build.zip
-  Icons/**/*.* => Icons.zip
-  Output/**/*.* => Output.zip
-  Packages/**/*.* => Packages.zip
-  Tools/**/*.* => Tools.zip
-  Web/**/*.* => Web.zip
+build/**/*.* => Output.zip!/build/
+icons/**/*.* => Output.zip!/icons/
+output/**/*.zip => Output.zip!/output/
+packages/**/*.* => Output.zip!/packages/
+tools/**/*.* => Output.zip!/tools/
+web/**/*.* => Output.zip!/web/
 
-VCS root: https://hg.codeplex.com/oxyplot
-  Clean all files before build
+VCS root: 
+Type of VCS: Mercurial
+Pull changes from: https://hg.codeplex.com/oxyplot
+
+Automatically on agent
+
+Version Control Settings:
+Clean all files before build
 
 === Build steps
 
 # Update verison number
-     Directory: Tools\Lynx
-     Command: VersionUpdater.exe /Version=%build.number% /Directory=..\..
+Directory: Tools\Lynx
+VersionUpdater.exe /Version=%build.number% /Directory=..\..
+
 # Create changeset ID file
-     mkdir Output
-     echo %build.vcs.number%> Output\changeset.id
+Commands:
+mkdir Output
+echo %build.vcs.number%> Output\changeset.id
+hg log > Output\changesets.log
+
 # Build WPF solution
-     Solution: Source\OxyPlot.WPF.sln
-     Targets: Rebuild
-     Configuration: Release
+Solution: Source\OxyPlot.WPF.sln
+
 # Run unit tests
-     NUnit runner: NUnit 2.6.0
-     Platform: auto (MSIL)
-     Version: 4.0
-     Run tests from: 
-       Source\OxyPlot.Tests\bin\Release\OxyPlot.Tests.dll
-       Source\OxyPlot.Wpf.Tests\bin\Release\OxyPlot.Wpf.Tests.dll
-     Coverage: dotCover
-     Filters: 
-       +:OxyPlot*
-       -:*.Tests*
-# Build Windosw Forms solution
-     Solution: Source\OxyPlot.WindowsForms.sln
-     Targets: Rebuild
-     Configuration: Release
+NUnit runner: NUnit 2.6.3
+Platform: auto (MSIL)
+Version: 4.0
+Run tests from: 
+Source\OxyPlot.Tests\bin\Release\OxyPlot.Tests.dll
+Source\OxyPlot.Wpf.Tests\bin\Release\OxyPlot.Wpf.Tests.dll
+Coverage: dotCover
+Filters: 
++:OxyPlot*
+-:*.Tests*
+
+# Build Windows Forms solution
+Source\OxyPlot.WindowsForms.sln
+
 # Build GTK# solution
-     Solution: Source\OxyPlot.GtkSharp.sln
-     Targets: Rebuild
-     Configuration: Release
+Source\OxyPlot.GtkSharp.sln
+
 # Build Silverlight solution
-     Solution: Source\OxyPlot.Silverlight.sln
-     Targets: Rebuild
-     Configuration: Release
+Source\OxyPlot.Silverlight.sln
+
 # Build Metro solution
-     Solution: Source\OxyPlot.Metro.sln
-     Targets: Rebuild
-     Configuration: Release
+Source\OxyPlot.Metro.sln
+
 # Build Silverlight 4 solution (disabled)
-     Solution: Source\OxyPlot.Silverlight4.sln
-     Targets: Rebuild
-     Configuration: Release
+Source\OxyPlot.Silverlight4.sln
+
 # Build Windows Forms 4.0 solution
-     Solution: Source\OxyPlot.WindowsForms_NET40.sln
-     Targets: Rebuild
-     Configuration: Release
+Source\OxyPlot.WindowsForms_NET40.sln
+
 # Build WPF 4.0 solution
-     Solution: Source\OxyPlot.WPF_NET40.sln
-     Targets: Rebuild
-     Configuration: Release
+Source\OxyPlot.WPF_NET40.sln
+
 # Create NuGet packages
-     Working directory: Build
-     Command: pack.cmd 
+Build
+pack.cmd 
+
 # Generate documentation
-     Working directory: build
-     Commands:
-       GenerateAPIDocumentation.cmd %build.number%
-       GenerateDocumentation.cmd %build.number%
+Build
+GenerateDocumentation.cmd %build.number%
+
 # Clean examples
-     Working directory: build
-     Command: DeleteExamplePdbFiles.cmd
+Build
+DeleteExamplePdbFiles.cmd
+
 # Create release
-     Working directory: build
-     Command: ZipRelease %build.number%
+Build
+ZipRelease.cmd %build.number%
+
 # Update web
-     Working directory: build
-     Commands:
-       xcopy ..\icons\favicon.ico ..\Web /Y
-       mkdir ..\Web\Examples
-       xcopy ..\documentation\images\series ..\Web\Examples /Y
+Build
+UpdateWeb.cmd
 
 === Build triggers
 
 Triggers a build after a VCS check-in is detected
 
 
-== OxyPlot Upload
-
-Build number format: %dep.bt6.build.number%
+== OxyPlot :: Upload
+Build configuration ID: OxyPlot_Upload
+Build number format: %dep.OxyPlot_Build.build.number%
 
 === Build steps
 
 # Push packages to NuGet
-     Working directory: Build
-     Command: push.cmd
+Build
+push.cmd
+
 # Upload example browser
-     Working directory: build
-     Command: UploadExampleBrowser.cmd
-# Upload documentation
-     Working directory: build
-     Command: UploadDocumentation.cmd
-# Upload release
-     Working directory: build
-     Command: UploadRelease.cmd %build.number%
+build
+UploadExampleBrowser.cmd
+
 # Update web pages
-     Working directory: build
-     Command: UploadWeb.cmd
+Build
+UploadWeb.cmd
+
+# Upload documentation
+Build
+UploadDocumentation.cmd
+
+# Upload release
+Build
+UploadRelease.cmd %build.number%
 
 === Build trigger
 
-Wait for a successful build in: OxyPlot
+Finish Build Trigger:
+Wait for a successful build in: OxyPlot build
 
 === Dependencies 
 
 # Artifact dependency
-    Source: OxyPlot
-    Paths: 
-      Build.zip!**=>Build
-      Icons.zip!**=>Icons
-      Output.zip!**=>Output
-      Packages.zip!**=>Packages
-      Tools.zip!**=>Tools
-      Web.zip!**=>Web
+Source: OxyPlot :: Build
+Paths: 
+Output.zip!** => .
 
-
+Clean destination paths before downloading artifacts
 
