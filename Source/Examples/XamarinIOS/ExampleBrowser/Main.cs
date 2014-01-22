@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GraphView.cs" company="OxyPlot">
+// <copyright file="Main.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,36 +24,24 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using MonoTouch.UIKit;
-using System.Drawing;
 
-using OxyPlot;
-using OxyPlot.XamarinIOS;
-using ExampleLibrary;
-
-namespace MonoTouch.Demo
+namespace ExampleBrowser
 {
-	public class GraphView : UIView
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  
+  using MonoTouch.Foundation;
+  using MonoTouch.UIKit;
+
+	public class Application
 	{
-		private ExampleInfo exampleInfo;
-
-		public GraphView (ExampleInfo exampleInfo)
+		// This is the main entry point of the application.
+		static void Main (string[] args)
 		{
-			this.exampleInfo = exampleInfo;
-		}
-
-		public override void Draw (System.Drawing.RectangleF rect)
-		{
-			var plot = exampleInfo.PlotModel;
-
-			plot.PlotMargins = new OxyThickness(5);
-			plot.Background = OxyColors.LightGray;
-			plot.Update(true);
-
-			var context = UIGraphics.GetCurrentContext();
-
-			var renderer = new MonoTouchRenderContext(context);
-			plot.Render(renderer, rect.Width, rect.Height);
+			// if you want to use a different Application Delegate class from "AppDelegate"
+			// you can specify it here.
+			UIApplication.Main (args, null, "AppDelegate");
 		}
 	}
 }

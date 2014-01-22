@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot", "OxyPlot\OxyPlot.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibrary", "Examples\ExampleLibrary\ExampleLibrary.csproj", "{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoTouch.Demo", "Examples\XamarinIOS\MonoTouch.Demo\MonoTouch.Demo.csproj", "{8A7939AC-BAC2-4CFB-B429-DB92F106700C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\XamarinIOS\ExampleBrowser\ExampleBrowser.csproj", "{8A7939AC-BAC2-4CFB-B429-DB92F106700C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>OxyPlot Demo</string>
+	<string>OxyPlot Example Browser</string>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>Images/Icon57x57.png</string>

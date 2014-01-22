@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Export.cs" company="OxyPlot">
+// <copyright file="GraphScrollView.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,38 +24,41 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
 
-namespace MonoTouch.Demo
+namespace ExampleBrowser
 {
-	public static class Export
+  using System;
+  using System.Drawing;
+
+  using MonoTouch.UIKit;
+  
+  using OxyPlot;
+  using OxyPlot.XamarinIOS;
+  
+  using ExampleLibrary;
+
+	public class GraphScrollView : UIScrollView
 	{
-		public static NSData ToPng(this UIView view, RectangleF rect)
+		public GraphScrollView (ExampleInfo exampleInfo, RectangleF rect)
+			: base(rect)
 		{
-			return view.GetImage(rect).AsPNG();
-		}
+			ShowsVerticalScrollIndicator = true;
+			ShowsHorizontalScrollIndicator = true;
+			BouncesZoom = true;
+			PagingEnabled = false;
+			DecelerationRate = UIScrollView.DecelerationRateNormal;
+			BackgroundColor = UIColor.DarkGray;
+			MaximumZoomScale = 5f;
+			MinimumZoomScale = 1f;
+			ContentSize = new SizeF(rect.Size.Width * 5, rect.Size.Height * 5);
 
-		public static UIImage GetImage(this UIView view, RectangleF rect)
-		{
-			UIGraphics.BeginImageContext(rect.Size);
-			view.Draw(rect);
-			var image = UIGraphics.GetImageFromCurrentImageContext();
-			UIGraphics.EndImageContext();
+			var image = new UIImageView(new GraphView(exampleInfo).GetImage(rect));
 
-			return image;
-		}
+			AddSubview(image);
 
-		public static NSData ToPdf(this UIView view, RectangleF rect)
-		{
-			var data = new NSMutableData();
-			UIGraphics.BeginPDFContext(data, rect, null);
-			UIGraphics.BeginPDFPage();
-			view.Draw(rect);
-			UIGraphics.EndPDFContent();
-
-			return data;
+			this.ViewForZoomingInScrollView = delegate(UIScrollView scrollView) {
+				return image;
+			};
 		}
 	}
 }

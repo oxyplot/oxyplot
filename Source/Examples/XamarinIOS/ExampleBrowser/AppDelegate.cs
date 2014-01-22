@@ -24,16 +24,19 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using MonoTouch.Dialog;
-using ExampleLibrary;
 
-namespace MonoTouch.Demo
+namespace ExampleBrowser
 {
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  
+  using MonoTouch.Foundation;
+  using MonoTouch.UIKit;
+  using MonoTouch.Dialog;
+  
+  using ExampleLibrary;
+
 	// The UIApplicationDelegate for the application. This class is responsible for launching the
 	// User Interface of the application, as well as listening (and optionally responding) to
 	// application events from iOS.
