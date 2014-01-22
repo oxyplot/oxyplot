@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GraphScrollView.cs" company="OxyPlot">
+// <copyright file="Export.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,38 +24,40 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using MonoTouch.UIKit;
-using System.Drawing;
 
-using OxyPlot;
-using OxyPlot.XamarinIOS;
-using ExampleLibrary;
-
-namespace MonoTouch.Demo
+namespace ExampleBrowser
 {
-	public class GraphScrollView : UIScrollView
+  using System.Drawing;
+  
+  using MonoTouch.Foundation;
+  using MonoTouch.UIKit;
+
+	public static class Export
 	{
-		public GraphScrollView (ExampleInfo exampleInfo, RectangleF rect)
-			: base(rect)
+		public static NSData ToPng(this UIView view, RectangleF rect)
 		{
-			ShowsVerticalScrollIndicator = true;
-			ShowsHorizontalScrollIndicator = true;
-			BouncesZoom = true;
-			PagingEnabled = false;
-			DecelerationRate = UIScrollView.DecelerationRateNormal;
-			BackgroundColor = UIColor.DarkGray;
-			MaximumZoomScale = 5f;
-			MinimumZoomScale = 1f;
-			ContentSize = new SizeF(rect.Size.Width * 5, rect.Size.Height * 5);
+			return view.GetImage(rect).AsPNG();
+		}
 
-			var image = new UIImageView(new GraphView(exampleInfo).GetImage(rect));
+		public static UIImage GetImage(this UIView view, RectangleF rect)
+		{
+			UIGraphics.BeginImageContext(rect.Size);
+			view.Draw(rect);
+			var image = UIGraphics.GetImageFromCurrentImageContext();
+			UIGraphics.EndImageContext();
 
-			AddSubview(image);
+			return image;
+		}
 
-			this.ViewForZoomingInScrollView = delegate(UIScrollView scrollView) {
-				return image;
-			};
+		public static NSData ToPdf(this UIView view, RectangleF rect)
+		{
+			var data = new NSMutableData();
+			UIGraphics.BeginPDFContext(data, rect, null);
+			UIGraphics.BeginPDFPage();
+			view.Draw(rect);
+			UIGraphics.EndPDFContent();
+
+			return data;
 		}
 	}
 }

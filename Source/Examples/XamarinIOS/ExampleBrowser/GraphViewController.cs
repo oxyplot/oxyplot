@@ -24,14 +24,18 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using MonoTouch.MessageUI;
-using ExampleLibrary;
 
-namespace MonoTouch.Demo
+namespace ExampleBrowser
 {
+
+  using System.Drawing;
+  
+  using MonoTouch.Foundation;
+  using MonoTouch.UIKit;
+  using MonoTouch.MessageUI;
+  
+  using ExampleLibrary;
+
 	public class GraphViewController : UIViewController
 	{
 		private readonly ExampleInfo exampleInfo;
