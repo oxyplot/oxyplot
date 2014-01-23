@@ -88,5 +88,11 @@ namespace ExampleLibrary
             model.Series.Add(hms);
             return model;
         }
+
+        [Example("#522598: Peaks 400x400")]
+        public static PlotModel Peaks400()
+        {
+            return HeatMapSeriesExamples.CreatePeaks(null, true, 400);
+        }
     }
 }
