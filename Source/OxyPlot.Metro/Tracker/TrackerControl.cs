@@ -569,7 +569,7 @@ namespace OxyPlot.Metro
 #if WPF
 			ScreenPoint pos = this.Position;
 #endif
-#if SILVERLIGHT || METRO
+#if SILVERLIGHT || NETFX_CORE
             Point pos = this.Position.ToPoint(true);
 #endif
 
