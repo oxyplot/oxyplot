@@ -39,12 +39,37 @@
             // https://github.com/audreyr/favicon-cheat-sheet
             // https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
             var sizes = new List<int>();
-            sizes.AddRange(new[] { 256, 64, 48, 32, 24, 16 }); // Standard icon sizes
-            sizes.AddRange(new[] { 150, 310, 126, 98, 70, 56, 270, 210, 120, 558, 434, 310, 248, 54, 42, 30, 24, 256, 48, 32, 16, 90, 70, 50, 43, 33, 24, 1116, 540, 868, 420, 620, 300 }); // Windows store app
-            sizes.AddRange(new[] { 120, 152, 76, 1024, 80, 40, 58, 29, 44, 22, 50, 25 }); // Apple
-            sizes.AddRange(new[] { 512, 256, 248, 228, 195, 144, 128, 114, 100, 96, 72, 57, 42, 40, 33, 20 }); // Other
+            
+            // Standard icon sizes
+            sizes.AddRange(new[] { 256, 64, 48, 32, 24, 16 });
+            
+            // Windows store app
+            sizes.AddRange(new[] { 150, 310, 126, 98, 70, 56, 270, 210, 120, 558, 434, 310, 248, 54, 42, 30, 24, 256, 48, 32, 16, 90, 70, 50, 43, 33, 24, 1116, 540, 868, 420, 620, 300 }); 
+            
+            // Apple OS X?
+            sizes.AddRange(new[] { 1024, 44, 22, 25 });
+
+            // Apple App icons
+            sizes.Add(57); // iPhone iOS 5-6
+            sizes.Add(114); // iPhone @2x iOS 5-6
+            sizes.Add(120); // iPhone @2x iOS 7
+            sizes.Add(72); // iPad iOS 5-6
+            sizes.Add(144); // iPad @2x iOS 5-6
+            sizes.Add(76); // iPad iOS 7
+            sizes.Add(152); // iPad @2x iOS 7
+            
+            // Apple Spotlight & Settings icons
+            sizes.Add(29); // iPhone Spotlight iOS 5,6 + Settings iOS 5-7
+            sizes.Add(58); // iPhone Spotlight @2x iOS 5,6 + Settings @2x iOS 5-7
+            sizes.Add(50); // iPad Spotlight iOS 5-6
+            sizes.Add(100); // iPad Spotlight @2x iOS 5-6
+            sizes.Add(50); // Spotlight iOS 7
+            sizes.Add(100); // Spotlight @2x 7
+
+            // Other
+            sizes.AddRange(new[] { 512, 256, 248, 228, 195, 144, 128, 114, 100, 96, 72, 57, 42, 40, 33, 20 });
             sizes.AddRange(new[] { 2048 }); // Really big
-            pngOptimizer = Path.GetFullPath(@"..\..\..\..\..\Tools\TruePNG\TruePNG.exe");
+            pngOptimizer = Path.GetFullPath(@"TruePNG.exe");
 
             var iconRenderer = new Candidate5();
             bool generateSvg = false;
