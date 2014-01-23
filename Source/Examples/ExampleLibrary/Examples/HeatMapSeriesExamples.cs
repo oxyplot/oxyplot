@@ -45,15 +45,15 @@ namespace ExampleLibrary
             return CreatePeaks();
         }
 
-        public static PlotModel CreatePeaks(OxyPalette palette = null, bool includeContours = true)
+        public static PlotModel CreatePeaks(OxyPalette palette = null, bool includeContours = true, int n = 100)
         {
             double x0 = -3.1;
             double x1 = 3.1;
             double y0 = -3;
             double y1 = 3;
             Func<double, double, double> peaks = (x, y) => 3 * (1 - x) * (1 - x) * Math.Exp(-(x * x) - (y + 1) * (y + 1)) - 10 * (x / 5 - x * x * x - y * y * y * y * y) * Math.Exp(-x * x - y * y) - 1.0 / 3 * Math.Exp(-(x + 1) * (x + 1) - y * y);
-            var xvalues = ArrayHelper.CreateVector(x0, x1, 100);
-            var yvalues = ArrayHelper.CreateVector(y0, y1, 100);
+            var xvalues = ArrayHelper.CreateVector(x0, x1, n);
+            var yvalues = ArrayHelper.CreateVector(y0, y1, n);
             var peaksData = ArrayHelper.Evaluate(peaks, xvalues, yvalues);
 
             var model = new PlotModel("Peaks");
