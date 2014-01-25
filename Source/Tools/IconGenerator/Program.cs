@@ -63,8 +63,8 @@
             sizes.Add(58); // iPhone Spotlight @2x iOS 5,6 + Settings @2x iOS 5-7
             sizes.Add(50); // iPad Spotlight iOS 5-6
             sizes.Add(100); // iPad Spotlight @2x iOS 5-6
-            sizes.Add(50); // Spotlight iOS 7
-            sizes.Add(100); // Spotlight @2x 7
+            sizes.Add(40); // Spotlight iOS 7
+            sizes.Add(80); // Spotlight @2x 7
 
             // Other
             sizes.AddRange(new[] { 512, 256, 248, 228, 195, 144, 128, 114, 100, 96, 72, 57, 42, 40, 33, 20 });
