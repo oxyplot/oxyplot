@@ -169,6 +169,8 @@ namespace OxyPlot.XamarinIOS
 
         public override void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
+			this.SetAlias(true);
+
             if (fill.IsVisible())
             {
                 ToColor(fill).SetFill();
