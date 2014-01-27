@@ -1,6 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MonoTouchRenderContext.cs" company="OxyPlot">
+﻿// <copyright file="MonoTouchRenderContext.cs" company="OxyPlot">
 //   The MIT License (MIT)
+// --------------------------------------------------------------------------------------------------------------------
 //
 //   Copyright (c) 2012 Oystein Bjorke
 //
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Gets the default font for IOS if the default font is Segoe UI as this font is not supported by IOS.
+//   Implements a <see cref="IRenderContext"/> for MonoTouch CoreGraphics.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -38,6 +38,9 @@ namespace OxyPlot.XamarinIOS
     using MonoTouch.CoreGraphics;
     using MonoTouch.Foundation;
 
+	/// <summary>
+	/// Implements a <see cref="IRenderContext"/> for MonoTouch CoreGraphics.
+	/// </summary>
     public class MonoTouchRenderContext : RenderContextBase
     {
         private CGContext gctx;
@@ -46,7 +49,7 @@ namespace OxyPlot.XamarinIOS
         {
             gctx = context;
 
-            //SET RENDERING QUALITY
+			// Set rendering quality
             gctx.SetAllowsFontSmoothing(true);
             gctx.SetAllowsFontSubpixelQuantization(true);
             gctx.SetAllowsAntialiasing(true);
@@ -70,8 +73,15 @@ namespace OxyPlot.XamarinIOS
             return new PointF((float)p.X, (float)p.Y);
         }
 
+		private void SetAlias(bool alias) 
+		{
+			gctx.SetShouldAntialias(!alias);
+		}
+
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
+			this.SetAlias(false);
+
             if (fill.IsVisible())
             {
                 ToColor(fill).SetFill();
@@ -87,10 +97,10 @@ namespace OxyPlot.XamarinIOS
                 ToColor(stroke).SetStroke();
                 gctx.SetLineWidth((float)thickness);
 
-                var path2 = new CGPath();
-                path2.AddElipseInRect(ToRectangle(rect));
+                var path = new CGPath();
+                path.AddElipseInRect(ToRectangle(rect));
 
-                gctx.AddPath(path2);
+                gctx.AddPath(path);
                 gctx.DrawPath(CGPathDrawingMode.Stroke);
             }
         }
@@ -99,13 +109,13 @@ namespace OxyPlot.XamarinIOS
         {
             if (stroke.IsVisible() && thickness > 0)
             {
-                gctx.SetAllowsAntialiasing(aliased);
+				this.SetAlias(aliased);
                 gctx.SetLineCap(ToLine(lineJoin));
 
                 ToColor(stroke).SetStroke();
                 gctx.SetLineWidth((float)thickness);
 
-                var path = new CGPath();
+				var path = new CGPath();
 
                 path.AddLines(points.Select(p => ToPoint(p)).ToArray());
 
@@ -131,7 +141,7 @@ namespace OxyPlot.XamarinIOS
 
         public override void DrawPolygon(IList<ScreenPoint> points, OxyColor fill, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
-            gctx.SetAllowsAntialiasing(aliased);
+			this.SetAlias(aliased);
 
             if (fill.IsVisible())
             {
@@ -212,6 +222,8 @@ namespace OxyPlot.XamarinIOS
             gctx.SelectFont(fontFamily, (float)fontSize, CGTextEncoding.MacRoman);
             ToColor(fill).SetFill();
 
+			this.SetAlias(false);
+
             gctx.SetTextDrawingMode(CGTextDrawingMode.Fill);
 
             var tfont = UIFont.FromName(fontFamily, (float)fontSize);
@@ -223,7 +235,7 @@ namespace OxyPlot.XamarinIOS
 
             // Rotate the text here.
             var m = CGAffineTransform.MakeTranslation(-x, -y);
-            m.Multiply(CGAffineTransform.MakeRotation((float)DegreesToRadians(rotate)));
+			m.Multiply(CGAffineTransform.MakeRotation((float)(Math.PI / 180d * rotate)));
             m.Multiply(CGAffineTransform.MakeTranslation(x, y));
 
             gctx.ConcatCTM(m);
@@ -258,7 +270,6 @@ namespace OxyPlot.XamarinIOS
             nsstr.DrawString(rect, tfont);
 
             gctx.RestoreState();
-            //Console.WriteLine("X:{0:###} Y:{1:###} HA:{2}:{3:###} VA:{4}:{5:###} TW:{6:###} - {7}", p.X, p.Y, halign, x, valign, y, textSize.Width, text);
         }
 
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
@@ -278,11 +289,6 @@ namespace OxyPlot.XamarinIOS
             SizeF sz = nsstr.StringSize(tfont);
 
             return new OxySize(sz.Width, sz.Height);
-        }
-
-        private static double DegreesToRadians(double angle)
-        {
-            return Math.PI * angle / 180.0;
         }
 
         /// <summary>
