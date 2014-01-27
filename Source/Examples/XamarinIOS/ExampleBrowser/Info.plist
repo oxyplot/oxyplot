@@ -6,12 +6,19 @@
 	<string>OxyPlot Example Browser</string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>Images/Icon57x57.png</string>
-		<string>Images/Icon114x114.png</string>
-		<string>Images/Icon72x72.png</string>
-		<string>Images/Icon29x29.png</string>
-		<string>Images/Icon58x58.png</string>
-		<string>Images/Icon50x50.png</string>
+		<string>Images/OxyPlot_57</string>
+		<string>Images/OxyPlot_114</string>
+		<string>Images/OxyPlot_72</string>
+		<string>Images/OxyPlot_29</string>
+		<string>Images/OxyPlot_58</string>
+		<string>Images/OxyPlot_50</string>
+		<string>Images/OxyPlot_120</string>
+		<string>Images/OxyPlot_144</string>
+		<string>Images/OxyPlot_76</string>
+		<string>Images/OxyPlot_152</string>
+		<string>Images/OxyPlot_100</string>
+		<string>Images/OxyPlot_40</string>
+		<string>Images/OxyPlot_80</string>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.3.0</string>

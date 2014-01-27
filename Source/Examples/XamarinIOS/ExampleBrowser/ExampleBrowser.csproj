@@ -85,15 +85,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Content Include="Images\Icon.png" />
-    <Content Include="Images\Icon114x114.png" />
-    <Content Include="Images\Icon29x29.png" />
-    <Content Include="Images\Icon50x50.png" />
-    <Content Include="Images\Icon57x57.png" />
-    <Content Include="Images\Icon58x58.png" />
-    <Content Include="Images\Icon72x72.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\OxyPlot.XamarinIOS\OxyPlot.XamarinIOS.csproj">
       <Project>{7DCF07B1-B8BD-4EF0-B1FC-2AAC4466B6C6}</Project>
       <Name>OxyPlot.XamarinIOS</Name>
@@ -106,5 +97,49 @@
       <Project>{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}</Project>
       <Name>ExampleLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_57.png">
+      <Link>Images\OxyPlot_57.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_114.png">
+      <Link>Images\OxyPlot_114.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_72.png">
+      <Link>Images\OxyPlot_72.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_76.png">
+      <Link>Images\OxyPlot_76.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_120.png">
+      <Link>Images\OxyPlot_120.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_144.png">
+      <Link>Images\OxyPlot_144.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_152.png">
+      <Link>Images\OxyPlot_152.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_29.png">
+      <Link>Images\OxyPlot_29.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_40.png">
+      <Link>Images\OxyPlot_40.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_50.png">
+      <Link>Images\OxyPlot_50.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_58.png">
+      <Link>Images\OxyPlot_58.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_80.png">
+      <Link>Images\OxyPlot_80.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\..\Icons\OxyPlot_100.png">
+      <Link>Images\OxyPlot_100.png</Link>
+    </BundleResource>
   </ItemGroup>
 </Project>
