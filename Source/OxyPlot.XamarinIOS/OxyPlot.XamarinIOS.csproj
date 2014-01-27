@@ -37,7 +37,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="XamarinIOSRenderContext.cs" />
+    <Compile Include="MonoTouchRenderContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OxyPlot\OxyPlot.csproj">
