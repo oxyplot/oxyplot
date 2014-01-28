@@ -271,11 +271,6 @@ namespace OxyPlot.XamarinIOS
             this.gctx.SetShouldAntialias(!alias);
         }
 
-        private UIColor ToColor(OxyColor c)
-        {
-            return UIColor.FromRGBA(c.R, c.G, c.B, c.A);
-        }
-
         private CGColor ConvertColor(OxyColor c)
         {
             return new CGColor(c.R / 255f, c.G / 255f, c.B / 255f, c.A / 255f);
@@ -283,16 +278,14 @@ namespace OxyPlot.XamarinIOS
 
         private void SetFill(OxyColor c)
         {
-            // this.gctx.SetFillColor(this.ConvertColor(c));
-            this.ToColor(c).SetFill();
+            this.gctx.SetFillColor(this.ConvertColor(c));
         }
 
         private void SetStroke(OxyColor c, double thickness, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
-            this.ToColor(c).SetStroke();
-            // this.gctx.SetStroke(this.ConvertColor(c));
+			this.gctx.SetStrokeColor(this.ConvertColor(c));
             this.gctx.SetLineWidth((float)thickness);
-            this.gctx.SetLineCap(ConvertLineJoin(lineJoin));
+			this.gctx.SetLineCap(this.ConvertLineJoin(lineJoin));
         }
 
         private RectangleF ConvertRectangle(OxyRect rect)
