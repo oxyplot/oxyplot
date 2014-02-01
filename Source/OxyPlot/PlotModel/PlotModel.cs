@@ -222,6 +222,11 @@ namespace OxyPlot
         private readonly object syncRoot = new object();
 
         /// <summary>
+        /// The plot control that renders this plot.
+        /// </summary>
+        private WeakReference plotControlReference;
+
+        /// <summary>
         /// The current color index.
         /// </summary>
         private int currentColorIndex;
@@ -392,7 +397,13 @@ namespace OxyPlot
         /// Only one PlotControl can render the plot at the same time.
         /// </remarks>
         /// <value>The plot control.</value>
-        public IPlotControl PlotControl { get; private set; }
+        public IPlotControl PlotControl
+        {
+            get
+            {
+                return (this.plotControlReference != null) ? (IPlotControl)this.plotControlReference.Target : null;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the annotations.
@@ -846,7 +857,7 @@ namespace OxyPlot
         /// </remarks>
         public void AttachPlotControl(IPlotControl plotControl)
         {
-            this.PlotControl = plotControl;
+            this.plotControlReference = (plotControl == null) ? null : new WeakReference(plotControl);
         }
 
         /// <summary>
@@ -919,12 +930,13 @@ namespace OxyPlot
         /// <param name="updateData">Updates all data sources if set to <c>true</c>.</param>
         public void RefreshPlot(bool updateData)
         {
-            if (this.PlotControl == null)
+            var plotControl = this.PlotControl;
+            if (plotControl == null)
             {
                 return;
             }
 
-            this.PlotControl.RefreshPlot(updateData);
+            plotControl.RefreshPlot(updateData);
         }
 
         /// <summary>
@@ -933,12 +945,13 @@ namespace OxyPlot
         /// <param name="updateData">Updates all data sources if set to <c>true</c>.</param>
         public void InvalidatePlot(bool updateData)
         {
-            if (this.PlotControl == null)
+            var plotControl = this.PlotControl;
+            if (plotControl == null)
             {
                 return;
             }
 
-            this.PlotControl.InvalidatePlot(updateData);
+            plotControl.InvalidatePlot(updateData);
         }
 
         /// <summary>
