@@ -141,7 +141,7 @@ namespace OxyPlot.Pdf
 
             // style = document.Styles[StyleNames.Footer];
             // style.ParagraphFormat.AddTabStop("8cm", TabAlignment.Center);
-            Style style = document.Styles.AddStyle("TableHeader", "Normal");
+            var style = document.Styles.AddStyle("TableHeader", "Normal");
             SetStyle(style, reportStyle.TableHeaderStyle);
 
             style = document.Styles.AddStyle("TableCaption", "Normal");
@@ -181,52 +181,37 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The write drawing.
+        /// Writes the specified drawing.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The drawing.
         /// </param>
-        public void WriteDrawing(DrawingFigure d)
+        void IReportWriter.WriteDrawing(DrawingFigure d)
         {
-            Paragraph p = this.WriteStartFigure(d);
+            var p = this.WriteStartFigure(d);
             this.CurrentSection.AddParagraph("Drawings are not implemented.");
             this.WriteEndFigure(d, p);
         }
 
         /// <summary>
-        /// The write end figure.
-        /// </summary>
-        /// <param name="f">
-        /// The f.
-        /// </param>
-        /// <param name="pa">
-        /// The pa.
-        /// </param>
-        public void WriteEndFigure(Figure f, Paragraph pa)
-        {
-            pa.AddLineBreak();
-            pa.AddFormattedText(f.GetFullCaption(this.style), "FigureText");
-        }
-
-        /// <summary>
-        /// The write equation.
+        /// Writes the specified equation.
         /// </summary>
         /// <param name="equation">
         /// The equation.
         /// </param>
-        public void WriteEquation(Equation equation)
+        void IReportWriter.WriteEquation(Equation equation)
         {
-            Paragraph p = this.CurrentSection.AddParagraph();
+            var p = this.CurrentSection.AddParagraph();
             p.AddText("Equations are not supported.");
         }
 
         /// <summary>
-        /// The write header.
+        /// Writes the specified header.
         /// </summary>
         /// <param name="h">
-        /// The h.
+        /// The header.
         /// </param>
-        public void WriteHeader(Header h)
+        void IReportWriter.WriteHeader(Header h)
         {
             if (h.Text == null)
             {
@@ -242,14 +227,14 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The write image.
+        /// Writes the specified image.
         /// </summary>
         /// <param name="i">
-        /// The i.
+        /// The image.
         /// </param>
-        public void WriteImage(Image i)
+        void IReportWriter.WriteImage(Image i)
         {
-            Paragraph p = this.WriteStartFigure(i);
+            var p = this.WriteStartFigure(i);
             if (i.Source != null)
             {
                 MigraDoc.DocumentObjectModel.Shapes.Image pi = p.AddImage(Path.GetFullPath(i.Source));
@@ -260,23 +245,23 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The write paragraph.
+        /// Writes the specified paragraph.
         /// </summary>
         /// <param name="p">
-        /// The p.
+        /// The paragraph.
         /// </param>
-        public void WriteParagraph(Reporting.Paragraph p)
+        void IReportWriter.WriteParagraph(Reporting.Paragraph p)
         {
             this.CurrentSection.AddParagraph(p.Text ?? string.Empty);
         }
 
         /// <summary>
-        /// The write plot.
+        /// Writes the specified plot.
         /// </summary>
         /// <param name="plot">
         /// The plot.
         /// </param>
-        public void WritePlot(PlotFigure plot)
+        void IReportWriter.WritePlot(PlotFigure plot)
         {
             var temporaryPlotFileName = Guid.NewGuid() + ".pdf";
             this.temporaryPlotFiles.Add(temporaryPlotFileName);
@@ -290,7 +275,7 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// Writes the report.
+        /// Writes the specified report.
         /// </summary>
         /// <param name="report">
         /// The report.
@@ -306,26 +291,12 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// Writes the start of a figure.
-        /// </summary>
-        /// <param name="f">
-        /// The figure.
-        /// </param>
-        /// <returns>
-        /// A paragraph
-        /// </returns>
-        public Paragraph WriteStartFigure(Figure f)
-        {
-            return this.CurrentSection.AddParagraph();
-        }
-
-        /// <summary>
-        /// Writes the table.
+        /// Writes the specified table.
         /// </summary>
         /// <param name="table">
         /// The table.
         /// </param>
-        public void WriteTable(Table table)
+        void IReportWriter.WriteTable(Table table)
         {
             if (table.Rows == null)
             {
@@ -368,10 +339,47 @@ namespace OxyPlot.Pdf
             }
 
             // table.SetEdge(0, 0, t.Columns.Count, t.Items.Count(), Edge.Box, BorderStyle.Single, 1.5, Colors.Black);
-            var pa = this.CurrentSection.AddParagraph();
-            pa.AddFormattedText(table.GetFullCaption(this.style), "TableCaption");
+            if (table.Caption != null)
+            {
+                var pa = this.CurrentSection.AddParagraph();
+                pa.AddFormattedText(table.GetFullCaption(this.style), "TableCaption");
+            }
 
             this.CurrentSection.Add(pdfTable);
+        }
+
+        /// <summary>
+        /// Writes the start of a figure.
+        /// </summary>
+        /// <param name="f">
+        /// The figure.
+        /// </param>
+        /// <returns>
+        /// A paragraph
+        /// </returns>
+        protected Paragraph WriteStartFigure(Figure f)
+        {
+            return this.CurrentSection.AddParagraph();
+        }
+
+        /// <summary>
+        /// Writes the figure text.
+        /// </summary>
+        /// <param name="f">
+        /// The f.
+        /// </param>
+        /// <param name="pa">
+        /// The paragraph.
+        /// </param>
+        protected void WriteEndFigure(Figure f, Paragraph pa)
+        {
+            if (f.FigureText == null)
+            {
+                return;
+            }
+
+            pa.AddLineBreak();
+            pa.AddFormattedText(f.GetFullCaption(this.style), "FigureText");
         }
 
         /// <summary>
@@ -399,7 +407,7 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// The set style.
+        /// Sets a paragraph style.
         /// </summary>
         /// <param name="style">
         /// The style.

@@ -64,6 +64,24 @@ namespace OxyPlot.Pdf.Tests
             Assert.IsTrue(new FileInfo(FileName).Length > 0);
         }
 
+        [Test]
+        public void ExportToStream_ReportWithNoCaptions_CheckThatOutputFileExists()
+        {
+            const string FileName = "ReportWithNoPlotCaptions.pdf";
+            var s = File.Create(FileName);
+            var r = new Report();
+            r.AddHeader(1, "Test");
+            r.AddPlot(new PlotModel("Plot 1"), null, 600, 400);
+            r.AddPlot(new PlotModel("Plot 2"), null, 600, 400);
+
+            using (var w = new PdfReportWriter(s))
+            {
+                w.WriteReport(r, new ReportStyle());
+            }
+
+            Assert.IsTrue(new FileInfo(FileName).Length > 0);
+        }
+
         private static Report CreateReport()
         {
             var r = new Report();
