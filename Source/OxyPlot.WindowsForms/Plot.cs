@@ -72,6 +72,12 @@ namespace OxyPlot.WindowsForms
         private readonly GraphicsRenderContext renderContext;
 
         /// <summary>
+        /// The tracker label.
+        /// </summary>
+        [NonSerialized]
+        private Label trackerLabel;
+
+        /// <summary>
         /// The current model (holding a reference to this plot control).
         /// </summary>
         [NonSerialized]
@@ -245,6 +251,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         public void HideTracker()
         {
+            this.trackerLabel.Visible = false;
         }
 
         /// <summary>
@@ -389,7 +396,15 @@ namespace OxyPlot.WindowsForms
         /// <param name="data">The data.</param>
         public void ShowTracker(TrackerHitResult data)
         {
-            // not implemented for WindowsForms
+            if (this.trackerLabel == null)
+            {
+                this.trackerLabel = new Label { Parent = this, BackColor = Color.LightSkyBlue, AutoSize = true };
+            }
+
+            this.trackerLabel.Text = data.ToString();
+            this.trackerLabel.Top = (int)data.Position.Y - this.Top;
+            this.trackerLabel.Left = (int)data.Position.X - this.Left;
+            this.trackerLabel.Visible = true;
         }
 
         /// <summary>
@@ -616,7 +631,7 @@ namespace OxyPlot.WindowsForms
                 {
                     e.Graphics.ResetTransform();
                     e.Graphics.DrawString(
-                        "OxyPlot paint exception: " + paintException.Message, font, Brushes.Red, this.Width / 2, this.Height / 2, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                        "OxyPlot paint exception: " + paintException.Message, font, Brushes.Red, this.Width * 0.5f, this.Height * 0.5f, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
                 }
             }
         }
