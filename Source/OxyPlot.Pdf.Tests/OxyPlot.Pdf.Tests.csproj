@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PdfReportWriterTests.cs" />
     <Compile Include="PdfSharpTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PdfExporterTests.cs" />
