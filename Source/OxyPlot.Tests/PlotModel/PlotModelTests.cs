@@ -36,6 +36,8 @@ namespace OxyPlot.Tests
 
     using ExampleLibrary;
 
+    using NSubstitute;
+
     using NUnit.Framework;
 
     using OxyPlot.Axes;
@@ -107,6 +109,22 @@ namespace OxyPlot.Tests
             plot.Series.Add(ls2);
 
             // OxyAssert.AreEqual(plot, "B11");
+        }
+
+        [Test]
+        public void PlotControl_CollectedPlotControl_ReferenceShouldNotBeAlive()
+        {
+            var plot = Substitute.For<IPlotControl>();
+            var pm = new PlotModel();
+            pm.AttachPlotControl(plot);
+            Assert.IsNotNull(pm.PlotControl);
+
+            // ReSharper disable once RedundantAssignment
+            plot = null;
+            GC.Collect();
+
+            // Verify that the reference is lost
+            Assert.IsNull(pm.PlotControl);
         }
     }
 }
