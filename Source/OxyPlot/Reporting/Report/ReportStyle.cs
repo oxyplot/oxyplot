@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ReportStyle.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,13 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The report style.
+//   Represents a report style.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// The report style.
+    /// Represents a report style.
     /// </summary>
     public class ReportStyle
     {
@@ -63,9 +64,9 @@ namespace OxyPlot.Reporting
                 this.HeaderStyles[i] = new ParagraphStyle { BasedOn = this.HeaderStyles[i - 1] };
             }
 
-            for (int i = 0; i < this.HeaderStyles.Length; i++)
+            foreach (var t in this.HeaderStyles)
             {
-                this.HeaderStyles[i].Bold = true;
+                t.Bold = true;
             }
 
             this.HeaderStyles[0].FontSize = 16;
@@ -101,27 +102,27 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets BodyTextStyle.
+        /// Gets or sets the body text style.
         /// </summary>
         public ParagraphStyle BodyTextStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets DefaultStyle.
+        /// Gets or sets the default style.
         /// </summary>
         public ParagraphStyle DefaultStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets FigureTextFormatString.
+        /// Gets or sets the figure text format string.
         /// </summary>
         public string FigureTextFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets FigureTextStyle.
+        /// Gets or sets figure text style.
         /// </summary>
         public ParagraphStyle FigureTextStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets HeaderStyles.
+        /// Gets or sets header styles.
         /// </summary>
         public ParagraphStyle[] HeaderStyles { get; set; }
 
@@ -133,24 +134,23 @@ namespace OxyPlot.Reporting
         // todo: should the FormatStrings be in the Report class?
 
         /// <summary>
-        /// Gets or sets TableCaptionFormatString.
+        /// Gets or sets the table caption format string.
         /// </summary>
         public string TableCaptionFormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets TableCaptionStyle.
+        /// Gets or sets the table caption style.
         /// </summary>
         public ParagraphStyle TableCaptionStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets TableHeaderStyle.
+        /// Gets or sets the table header style.
         /// </summary>
         public ParagraphStyle TableHeaderStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets TableTextStyle.
+        /// Gets or sets the table text style.
         /// </summary>
         public ParagraphStyle TableTextStyle { get; set; }
-
     }
 }

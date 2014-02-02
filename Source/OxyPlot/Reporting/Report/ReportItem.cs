@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ReportItem.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,9 +24,10 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a report item (abstract base class).
+//   Provides a base class for report items.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Reporting
 {
     using System.Collections;
@@ -34,7 +35,7 @@ namespace OxyPlot.Reporting
     using System.Collections.ObjectModel;
 
     /// <summary>
-    /// Represents a report item (abstract base class).
+    /// Provides a base class for report items.
     /// </summary>
     public abstract class ReportItem
     {
@@ -125,7 +126,7 @@ namespace OxyPlot.Reporting
         /// Adds an image to the report.
         /// </summary>
         /// <param name="src">
-        /// The src.
+        /// The image source file.
         /// </param>
         /// <param name="text">
         /// The text.
@@ -189,10 +190,10 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The add table of contents.
+        /// Adds a table of contents.
         /// </summary>
         /// <param name="b">
-        /// The b.
+        /// The source for the table of contents.
         /// </param>
         public void AddTableOfContents(ReportItem b)
         {
@@ -200,17 +201,17 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The update.
+        /// Updates the item.
         /// </summary>
         public virtual void Update()
         {
         }
 
         /// <summary>
-        /// The write.
+        /// Writes the item to a <see cref="IReportWriter"/>.
         /// </summary>
         /// <param name="w">
-        /// The w.
+        /// The target <see cref="IReportWriter"/>.
         /// </param>
         public virtual void Write(IReportWriter w)
         {
@@ -223,17 +224,17 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Writes the content of the item.
+        /// Writes the content of the item to the specified <see cref="IReportWriter"/>.
         /// </summary>
         /// <param name="w">
-        /// The writer.
+        /// The target <see cref="IReportWriter"/>.
         /// </param>
         public virtual void WriteContent(IReportWriter w)
         {
         }
 
         /// <summary>
-        /// The update figure numbers.
+        /// Updates the figure numbers.
         /// </summary>
         protected void UpdateFigureNumbers()
         {
@@ -257,21 +258,21 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The update figure numbers.
+        /// Updates the figure numbers.
         /// </summary>
         /// <param name="fc">
-        /// The fc.
+        /// The figure counter.
         /// </param>
         private void UpdateFigureNumbers(FigureCounter fc)
         {
             var table = this as Table;
-            if (table != null)
+            if (table != null && table.Caption != null)
             {
                 table.TableNumber = fc.TableNumber++;
             }
 
             var figure = this as Figure;
-            if (figure != null)
+            if (figure != null && figure.FigureText != null)
             {
                 figure.FigureNumber = fc.FigureNumber++;
             }
@@ -283,7 +284,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The figure counter.
+        /// Provides a figure and table counter.
         /// </summary>
         private class FigureCounter
         {
@@ -297,15 +298,14 @@ namespace OxyPlot.Reporting
             }
 
             /// <summary>
-            /// Gets or sets FigureNumber.
+            /// Gets or sets the current figure number.
             /// </summary>
             public int FigureNumber { get; set; }
 
             /// <summary>
-            /// Gets or sets TableNumber.
+            /// Gets or sets the current table number.
             /// </summary>
             public int TableNumber { get; set; }
-
         }
     }
 }

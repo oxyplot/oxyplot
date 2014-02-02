@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TableColumn.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -23,41 +23,51 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a table column definition.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Collections.ObjectModel;
-using System.Globalization;
 
 namespace OxyPlot.Reporting
 {
-    public enum Alignment { Left, Right, Center };
-
+    /// <summary>
+    /// Represents a table column definition.
+    /// </summary>
     public class TableColumn
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref = "TableColumn" /> class.
+        /// </summary>
+        public TableColumn()
+        {
+            this.Width = double.NaN;
+            this.Alignment = Alignment.Center;
+        }
+
+        /// <summary>
+        /// Gets the actual width (mm).
+        /// </summary>
+        /// <value>The actual width.</value>
+        public double ActualWidth { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the horizontal alignment of the column.
+        /// </summary>
         public Alignment Alignment { get; set; }
-        public string Header { get; set; }
-        public string StringFormat { get; set; }
-        public string Path { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the column is a header.
+        /// </summary>
+        public bool IsHeader { get; set; }
+
+        /// <summary>
+        /// Gets or sets the width.
+        /// </summary>
+        /// <value>The width.</value>
+        /// <remarks>
+        /// NaN: auto width.
+        /// Negative numbers: weights
+        /// </remarks>
         public double Width { get; set; }
-        // public Collection<TableColumn> SubColumns { get; set; }
-
-        public TableColumn(string header, string path, string stringFormat=null, Alignment alignment=Alignment.Center)
-        {
-            Header = header;
-            Path = path;
-            StringFormat = stringFormat;
-            Alignment = alignment;
-            // SubColumns = new Collection<TableColumn>();
-        }
-
-        public string GetText(object item)
-        {
-            var pi = item.GetType().GetProperty(Path);
-            object o = pi.GetValue(item, null);
-            var of = o as IFormattable;
-            if (of != null)
-                return of.ToString(StringFormat, CultureInfo.InvariantCulture);
-            return o!=null ? o.ToString():null;
-        }
     }
 }

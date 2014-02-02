@@ -33,86 +33,6 @@ namespace OxyPlot.Reporting
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a table column definition.
-    /// </summary>
-    public class TableColumn
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref = "TableColumn" /> class.
-        /// </summary>
-        public TableColumn()
-        {
-            this.Width = double.NaN;
-            this.Alignment = Alignment.Center;
-        }
-
-        /// <summary>
-        /// Gets or sets the actual width (mm).
-        /// </summary>
-        /// <value>The actual width.</value>
-        public double ActualWidth { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets Alignment.
-        /// </summary>
-        public Alignment Alignment { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether IsHeader.
-        /// </summary>
-        public bool IsHeader { get; set; }
-
-        /// <summary>
-        /// Gets or sets the width.
-        /// NaN: auto width.
-        /// Negative numbers: weights
-        /// </summary>
-        /// <value>The width.</value>
-        public double Width { get; set; }
-
-    }
-
-    /// <summary>
-    /// Represents a table row definition.
-    /// </summary>
-    public class TableRow
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref = "TableRow" /> class.
-        /// </summary>
-        public TableRow()
-        {
-            this.Cells = new List<TableCell>();
-        }
-
-        /// <summary>
-        /// Gets Cells.
-        /// </summary>
-        public IList<TableCell> Cells { get; private set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether IsHeader.
-        /// </summary>
-        public bool IsHeader { get; set; }
-
-    }
-
-    /// <summary>
-    /// Represents a table cell.
-    /// </summary>
-    public class TableCell
-    {
-        // public Alignment Alignment { get; set; }
-        // public int RowSpan { get; set; }
-        // public int ColumnSpan { get; set; }
-        /// <summary>
-        /// Gets or sets Content.
-        /// </summary>
-        public string Content { get; set; }
-
-    }
-
-    /// <summary>
     /// Represents a table.
     /// </summary>
     public class Table : ReportItem
@@ -128,7 +48,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets the actual width of the table (mm).
+        /// Gets the actual width of the table (mm).
         /// </summary>
         /// <value>The actual width.</value>
         public double ActualWidth { get; private set; }
@@ -161,13 +81,13 @@ namespace OxyPlot.Reporting
         public double Width { get; set; }
 
         /// <summary>
-        /// The get full caption.
+        /// Gets the full caption.
         /// </summary>
         /// <param name="style">
         /// The style.
         /// </param>
         /// <returns>
-        /// The get full caption.
+        /// The caption string.
         /// </returns>
         public string GetFullCaption(ReportStyle style)
         {
@@ -175,7 +95,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The update.
+        /// Updates the table.
         /// </summary>
         public override void Update()
         {
@@ -184,10 +104,10 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The write content.
+        /// Writes the content of the table.
         /// </summary>
         /// <param name="w">
-        /// The w.
+        /// The target <see cref="IReportWriter"/>.
         /// </param>
         public override void WriteContent(IReportWriter w)
         {
@@ -195,7 +115,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The update widths.
+        /// Updates the column widths of the table.
         /// </summary>
         private void UpdateWidths()
         {
@@ -240,13 +160,12 @@ namespace OxyPlot.Reporting
             double w = this.ActualWidth - totalWidth;
             foreach (var c in this.Columns)
             {
-                if (c.Width < 0 && totalWeight != 0)
+                if (c.Width < 0 && !totalWeight.Equals(0))
                 {
                     double weight = -c.Width;
                     c.ActualWidth = w * (weight / totalWeight);
                 }
             }
         }
-
     }
 }
