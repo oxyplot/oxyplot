@@ -441,7 +441,11 @@ namespace OxyPlot.Reporting
         /// </param>
         private void WriteEndFigure(string text)
         {
-            this.WriteDiv("figuretext", string.Format("Fig {0}. {1}", this.figureCounter, text));
+            if (text != null)
+            {
+                this.WriteDiv("figuretext", string.Format("Fig {0}. {1}", this.figureCounter, text));
+            }
+
             this.WriteEndElement();
         }
 

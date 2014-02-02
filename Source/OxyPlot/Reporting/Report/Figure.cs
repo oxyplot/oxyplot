@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Figure.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,39 +24,43 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a figure (abstract base class for DrawingFigure, Image and PlotFigure).
+//   Provides a base class for figures (drawings, images and plots).
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// Represents a figure (abstract base class for DrawingFigure, Image and PlotFigure).
+    /// Provides a base class for figures (drawings, images and plots).
     /// </summary>
     public abstract class Figure : ReportItem
     {
         /// <summary>
-        /// Gets or sets FigureNumber.
+        /// Gets or sets the figure number.
         /// </summary>
         public int FigureNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets FigureText.
+        /// Gets or sets the figure text.
         /// </summary>
+        /// <remarks>
+        /// No figure text will be shown if set to <c>null</c>.
+        /// A figure number will be counted if the figure text is not <c>null</c>.
+        /// </remarks>
         public string FigureText { get; set; }
 
         /// <summary>
-        /// The get full caption.
+        /// Gets the full caption for the figure.
         /// </summary>
         /// <param name="style">
         /// The style.
         /// </param>
         /// <returns>
-        /// The get full caption.
+        /// The caption string.
         /// </returns>
         public string GetFullCaption(ReportStyle style)
         {
             return string.Format(style.FigureTextFormatString, this.FigureNumber, this.FigureText);
         }
-
     }
 }

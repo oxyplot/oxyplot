@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ParagraphStyle.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,13 +24,14 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The paragraph style.
+//   Represents a paragraph style.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Reporting
 {
     /// <summary>
-    /// The paragraph style.
+    /// Represents a paragraph style.
     /// </summary>
     public class ParagraphStyle
     {
@@ -100,12 +101,12 @@ namespace OxyPlot.Reporting
         private OxyColor textColor;
 
         /// <summary>
-        /// Gets or sets BasedOn.
+        /// Gets or sets the style that this style is based on.
         /// </summary>
         public ParagraphStyle BasedOn { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Bold.
+        /// Gets or sets a value indicating whether text should be written in bold.
         /// </summary>
         public bool Bold
         {
@@ -131,7 +132,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets FontFamily.
+        /// Gets or sets the font family.
         /// </summary>
         public string FontFamily
         {
@@ -157,7 +158,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets FontSize.
+        /// Gets or sets the font size.
         /// </summary>
         public double FontSize
         {
@@ -183,7 +184,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Italic.
+        /// Gets or sets a value indicating whether text should be written in italic.
         /// </summary>
         public bool Italic
         {
@@ -209,7 +210,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets LeftIndentation.
+        /// Gets or sets the left indentation.
         /// </summary>
         public double LeftIndentation
         {
@@ -235,7 +236,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets LineSpacing.
+        /// Gets or sets the line spacing.
         /// </summary>
         public double LineSpacing
         {
@@ -261,7 +262,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether PageBreakBefore.
+        /// Gets or sets a value indicating whether there should be a page break before the paragraph.
         /// </summary>
         public bool PageBreakBefore
         {
@@ -287,7 +288,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets RightIndentation.
+        /// Gets or sets the right indentation.
         /// </summary>
         public double RightIndentation
         {
@@ -313,7 +314,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets SpacingAfter.
+        /// Gets or sets spacing after the paragraph.
         /// </summary>
         public double SpacingAfter
         {
@@ -339,7 +340,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets SpacingBefore.
+        /// Gets or sets spacing before the paragraph.
         /// </summary>
         public double SpacingBefore
         {
@@ -365,7 +366,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets TextColor.
+        /// Gets or sets text color.
         /// </summary>
         public OxyColor TextColor
         {

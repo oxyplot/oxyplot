@@ -118,6 +118,10 @@
     <Compile Include="Pdf\PortableDocument.cs" />
     <Compile Include="Pdf\PortableDocumentImageUtilities.cs" />
     <Compile Include="Pdf\StandardFonts.cs" />
+    <Compile Include="Reporting\Report\Alignment.cs" />
+    <Compile Include="Reporting\Report\TableCell.cs" />
+    <Compile Include="Reporting\Report\TableColumn.cs" />
+    <Compile Include="Reporting\Report\TableRow.cs" />
     <Compile Include="Series\NamespaceDoc.cs" />
     <Compile Include="Utilities\XmlWriterBase.cs" />
     <Compile Include="Utilities\BinaryReaderExtensions.cs" />

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TableOfContents.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents a table of contents.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Reporting
 {
     using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace OxyPlot.Reporting
         /// Initializes a new instance of the <see cref="TableOfContents"/> class.
         /// </summary>
         /// <param name="b">
-        /// The b.
+        /// The source.
         /// </param>
         public TableOfContents(ReportItem b)
         {
@@ -52,36 +53,36 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Gets or sets Base.
+        /// Gets the source item.
         /// </summary>
-        public ReportItem Base { get; set; }
+        public ReportItem Base { get; private set; }
 
         /// <summary>
-        /// Gets or sets Contents.
+        /// Gets the contents.
         /// </summary>
-        public List<ContentItem> Contents { get; set; }
+        public List<ContentItem> Contents { get; private set; }
 
         /// <summary>
-        /// The update.
+        /// Updates the table of contents.
         /// </summary>
         public override void Update()
         {
             this.Contents.Clear();
             var hh = new HeaderHelper();
-            this.Search(this.Base, hh);
+            this.AppendHeaders(this.Base, hh);
             base.Update();
         }
 
         /// <summary>
-        /// The search.
+        /// Appends headers (recursively) to the <see cref="Contents"/> of the object.
         /// </summary>
         /// <param name="item">
         /// The item.
         /// </param>
         /// <param name="hh">
-        /// The hh.
+        /// The header formatter.
         /// </param>
-        private void Search(ReportItem item, HeaderHelper hh)
+        private void AppendHeaders(ReportItem item, HeaderHelper hh)
         {
             var h = item as Header;
             if (h != null)
@@ -92,22 +93,22 @@ namespace OxyPlot.Reporting
 
             foreach (var c in item.Children)
             {
-                this.Search(c, hh);
+                this.AppendHeaders(c, hh);
             }
         }
 
         /// <summary>
-        /// The content item.
+        /// Represents an item in the table of contents.
         /// </summary>
         public class ContentItem
         {
             /// <summary>
-            /// Gets or sets Chapter.
+            /// Gets or sets the chapter.
             /// </summary>
             public string Chapter { get; set; }
 
             /// <summary>
-            /// Gets or sets Title.
+            /// Gets or sets the title.
             /// </summary>
             public string Title { get; set; }
         }

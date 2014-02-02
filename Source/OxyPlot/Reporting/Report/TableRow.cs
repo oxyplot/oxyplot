@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Report.cs" company="OxyPlot">
+// <copyright file="TableRow.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,64 +24,35 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a report.
+//   Represents a table row definition.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot.Reporting
 {
-    using System.Globalization;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a report.
+    /// Represents a table row definition.
     /// </summary>
-    public class Report : ReportItem
+    public class TableRow
     {
         /// <summary>
-        /// Gets the actual culture.
+        /// Initializes a new instance of the <see cref = "TableRow" /> class.
         /// </summary>
-        public CultureInfo ActualCulture
+        public TableRow()
         {
-            get
-            {
-                return this.Culture ?? CultureInfo.CurrentCulture;
-            }
+            this.Cells = new List<TableCell>();
         }
 
         /// <summary>
-        /// Gets or sets the name of the author.
+        /// Gets Cells.
         /// </summary>
-        public string Author { get; set; }
+        public IList<TableCell> Cells { get; private set; }
 
         /// <summary>
-        /// Gets or sets the culture.
+        /// Gets or sets a value indicating whether IsHeader.
         /// </summary>
-        /// <value>
-        /// The culture.
-        /// </value>
-        public CultureInfo Culture { get; set; }
-
-        /// <summary>
-        /// Gets or sets the subtitle.
-        /// </summary>
-        public string SubTitle { get; set; }
-
-        /// <summary>
-        /// Gets or sets the title.
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Writes the report to a <see cref="IReportWriter"/>.
-        /// </summary>
-        /// <param name="w">
-        /// The target <see cref="IReportWriter"/>.
-        /// </param>
-        public override void Write(IReportWriter w)
-        {
-            this.UpdateParent(this);
-            this.UpdateFigureNumbers();
-            base.Write(w);
-        }
+        public bool IsHeader { get; set; }
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsTable.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,11 +27,11 @@
 //   Represents a table of items.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Reporting
 {
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     /// <summary>
@@ -64,39 +64,34 @@ namespace OxyPlot.Reporting
 
         /// <summary>
         /// Gets or sets the items.
-        /// The table will be filled when this property is set.
         /// </summary>
         /// <value>The items.</value>
+        /// <remarks>
+        /// The table will be filled when this property is set.
+        /// </remarks>
         public IEnumerable Items { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether ItemsInRows.
+        /// Gets a value indicating whether the items should be exported in rows.
         /// </summary>
         public bool ItemsInRows { get; private set; }
 
         /// <summary>
-        /// The has header.
+        /// Determines if the table has a header.
         /// </summary>
         /// <returns>
-        /// The has header.
+        /// <c>true</c> if the table has a header.
         /// </returns>
         public bool HasHeader()
         {
-            foreach (var c in this.Fields)
-            {
-                if (c.Header != null)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return this.Fields.Any(c => c.Header != null);
         }
 
         /// <summary>
-        /// The to array.
+        /// Converts the table to an array of strings.
         /// </summary>
         /// <returns>
+        /// A string array.
         /// </returns>
         public string[,] ToArray()
         {
@@ -144,7 +139,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The update.
+        /// Updates the table.
         /// </summary>
         public override void Update()
         {
@@ -153,7 +148,7 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The update items.
+        /// Updates the table items.
         /// </summary>
         public void UpdateItems()
         {
@@ -216,12 +211,13 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The transpose.
+        /// Transposes the specified string array.
         /// </summary>
         /// <param name="input">
         /// The input.
         /// </param>
         /// <returns>
+        /// A transposed string array.
         /// </returns>
         private static string[,] Transpose(string[,] input)
         {
@@ -238,6 +234,5 @@ namespace OxyPlot.Reporting
 
             return result;
         }
-
     }
 }

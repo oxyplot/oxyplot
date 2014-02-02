@@ -192,8 +192,12 @@ namespace OxyPlot.Reporting
         /// </param>
         public void WriteTable(Table t)
         {
-            this.tableCounter++;
-            this.WriteLine(string.Format("Table {0}. {1}", this.tableCounter, t.Caption));
+            if (t.Caption != null)
+            {
+                this.tableCounter++;
+                this.WriteLine(string.Format("Table {0}. {1}", this.tableCounter, t.Caption));
+            }
+
             this.WriteLine();
             int rows = t.Rows.Count;
             int cols = t.Columns.Count;
