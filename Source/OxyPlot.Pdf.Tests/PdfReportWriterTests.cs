@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RtfReportWriter.cs" company="OxyPlot">
+// <copyright file="PdfReportWriterTests.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -23,40 +23,54 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   RTF report writer using MigraDoc.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.Pdf
+namespace OxyPlot.Pdf.Tests
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
 
-    using MigraDoc.RtfRendering;
+    using NUnit.Framework;
 
-    /// <summary>
-    /// Provides a report writer for rich text format using MigraDoc.
-    /// </summary>
-    public class RtfReportWriter : PdfReportWriter
+    using OxyPlot.Reporting;
+
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    [TestFixture]
+    public class PdfReportWriterTests
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RtfReportWriter"/> class.
-        /// </summary>
-        /// <param name="filename">
-        /// The FileName.
-        /// </param>
-        public RtfReportWriter(string filename)
-            : base(filename)
+        [Test]
+        public void ExportToStream_ReportWithPlots_CheckThatOutputFileExists()
         {
+            const string FileName = "ExportToStream.pdf";
+            var s = File.Create(FileName);
+            using (var w = new PdfReportWriter(s))
+            {
+                w.WriteReport(CreateReport(), new ReportStyle());
+            }
+
+            Assert.IsTrue(new FileInfo(FileName).Length > 0);
         }
 
-        /// <summary>
-        /// The close.
-        /// </summary>
-        public override void Close()
+        [Test]
+        public void ExportToFileName_ReportWithPlots_CheckThatOutputFileExists()
         {
-            var r = new RtfDocumentRenderer();
-            r.Render(this.Document, this.Output, Path.GetTempPath());
+            const string FileName = "ExportToFileName.pdf";
+            using (var w = new PdfReportWriter(FileName))
+            {
+                w.WriteReport(CreateReport(), new ReportStyle());
+            }
+
+            Assert.IsTrue(new FileInfo(FileName).Length > 0);
+        }
+
+        private static Report CreateReport()
+        {
+            var r = new Report();
+            r.AddHeader(1, "Test");
+            r.AddPlot(new PlotModel("Plot 1"), "First plot", 600, 400);
+            r.AddPlot(new PlotModel("Plot 2"), "Second plot", 600, 400);
+            return r;
         }
     }
 }

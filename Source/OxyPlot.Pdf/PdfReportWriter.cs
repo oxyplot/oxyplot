@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PdfReportWriter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,9 +27,11 @@
 //   PDF report writer using MigraDoc.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Pdf
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     using MigraDoc.DocumentObjectModel;
@@ -44,6 +46,11 @@ namespace OxyPlot.Pdf
     /// </summary>
     public class PdfReportWriter : IDisposable, IReportWriter
     {
+        /// <summary>
+        /// List of plot files created during report generation.
+        /// </summary>
+        private readonly List<string> temporaryPlotFiles = new List<string>();
+
         /// <summary>
         /// The current section.
         /// </summary>
@@ -71,8 +78,19 @@ namespace OxyPlot.Pdf
         /// The FileName.
         /// </param>
         public PdfReportWriter(string filename)
+            : this(File.Create(filename))
         {
-            this.FileName = filename;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PdfReportWriter"/> class.
+        /// </summary>
+        /// <param name="output">
+        /// The output <see cref="Stream"/>.
+        /// </param>
+        public PdfReportWriter(Stream output)
+        {
+            this.Output = output;
             this.Document = new Document();
         }
 
@@ -82,9 +100,9 @@ namespace OxyPlot.Pdf
         protected Document Document { get; set; }
 
         /// <summary>
-        /// Gets or sets the file name.
+        /// Gets the output stream.
         /// </summary>
-        protected string FileName { get; set; }
+        protected Stream Output { get; private set; }
 
         /// <summary>
         /// Gets the current section.
@@ -148,7 +166,8 @@ namespace OxyPlot.Pdf
 
             var r = new PdfDocumentRenderer { Document = this.Document };
             r.RenderDocument();
-            r.PdfDocument.Save(this.FileName);
+            r.PdfDocument.Save(this.Output);
+            this.CleanTemporaryPlotFiles();
             this.isClosed = true;
         }
 
@@ -259,25 +278,12 @@ namespace OxyPlot.Pdf
         /// </param>
         public void WritePlot(PlotFigure plot)
         {
-            if (this.FileName == null)
-            {
-                return;
-            }
-
-            var directory = Path.GetDirectoryName(this.FileName);
-            if (directory == null)
-            {
-                return;
-            }
-
-            var source = string.Format(
-                "{0}_Plot{1}.pdf", Path.GetFileNameWithoutExtension(this.FileName), plot.FigureNumber);
-            var sourceFullPath = Path.Combine(directory, source);
-
-            PdfExporter.Export(plot.PlotModel, sourceFullPath, plot.Width, plot.Height);
+            var temporaryPlotFileName = Guid.NewGuid() + ".pdf";
+            this.temporaryPlotFiles.Add(temporaryPlotFileName);
+            PdfExporter.Export(plot.PlotModel, temporaryPlotFileName, plot.Width, plot.Height);
 
             var p = this.WriteStartFigure(plot);
-            MigraDoc.DocumentObjectModel.Shapes.Image pi = p.AddImage(sourceFullPath);
+            MigraDoc.DocumentObjectModel.Shapes.Image pi = p.AddImage(temporaryPlotFileName);
             pi.Width = Unit.FromCentimeter(15);
 
             this.WriteEndFigure(plot, p);
@@ -428,6 +434,17 @@ namespace OxyPlot.Pdf
         private static Color ToMigraDocColor(OxyColor c)
         {
             return new Color(c.A, c.R, c.G, c.B);
+        }
+
+        /// <summary>
+        /// Erases the temporary plot files.
+        /// </summary>
+        private void CleanTemporaryPlotFiles()
+        {
+            foreach (var fileName in this.temporaryPlotFiles)
+            {
+                File.Delete(fileName);
+            }
         }
 
         /// <summary>
