@@ -83,6 +83,15 @@
     <Compile Include="Foundation\DataPoint.cs" />
     <Compile Include="Foundation\MarkerType.cs" />
     <Compile Include="Foundation\LineStyle.cs" />
+    <Compile Include="Input\OxyKey.cs" />
+    <Compile Include="Input\OxyModifierKeys.cs" />
+    <Compile Include="Input\OxyMouseButton.cs" />
+    <Compile Include="Input\Gestures\OxyInputGesture.cs" />
+    <Compile Include="Input\Gestures\OxyKeyGesture.cs" />
+    <Compile Include="Input\Gestures\OxyMouseGesture.cs" />
+    <Compile Include="Input\Gestures\OxyMouseWheelGesture.cs" />
+    <Compile Include="Input\Gestures\OxyShakeGesture.cs" />
+    <Compile Include="Input\Gestures\OxyTouchGesture.cs" />
     <Compile Include="Pdf\FontSubType.cs" />
     <Compile Include="Pdf\PortableDocumentExtensions.cs" />
     <Compile Include="Pdf\PortableDocumentFont.cs" />
@@ -198,7 +207,6 @@
     <Compile Include="Series\HeatMapSeries.cs" />
     <Compile Include="Series\LineLegendPosition.cs" />
     <Compile Include="PlotModel\PlotModel.MouseEvents.cs" />
-    <Compile Include="PlotModel\OxyMouseButton.cs" />
     <Compile Include="PlotModel\OxyMouseEventArgs.cs" />
     <Compile Include="PlotModel\PlotElement.cs" />
     <Compile Include="PlotModel\PlotModel.Legends.cs" />
