@@ -34,6 +34,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides an abstract base class for plot elements that handle mouse events.
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public abstract class UIPlotElement : SelectablePlotElement
     {
         /// <summary>
@@ -111,6 +112,5 @@ namespace OxyPlot
         /// A hit test result.
         /// </returns>
         protected internal abstract HitTestResult HitTest(ScreenPoint point, double tolerance);
-
     }
 }
