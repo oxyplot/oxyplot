@@ -36,10 +36,12 @@ namespace OxyPlot
     /// <summary>
     /// Provides functionality to interpolate a list of points by a canonical spline.
     /// </summary>
+    /// <remarks>
+    /// CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
+    /// www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html
+    /// </remarks>
     internal static class CanonicalSplineHelper
     {
-        // CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
-        // www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html
         /// <summary>
         /// Creates a spline of data points.
         /// </summary>
@@ -247,6 +249,5 @@ namespace OxyPlot
                 points.Add(pt);
             }
         }
-
     }
 }
