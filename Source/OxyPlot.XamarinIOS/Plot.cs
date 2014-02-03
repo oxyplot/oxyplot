@@ -112,59 +112,14 @@ namespace OxyPlot.XamarinIOS
         }
 
         /// <summary>
-        /// Get the axes from a point.
-        /// </summary>
-        /// <param name="pt">
-        /// The point.
-        /// </param>
-        /// <param name="xaxis">
-        /// The xaxis.
-        /// </param>
-        /// <param name="yaxis">
-        /// The yaxis.
-        /// </param>
-        public void GetAxesFromPoint(ScreenPoint pt, out IAxis xaxis, out IAxis yaxis)
-        {
-            if (this.Model == null)
-            {
-                xaxis = null;
-                yaxis = null;
-                return;
-            }
-
-            this.Model.GetAxesFromPoint(pt, out xaxis, out yaxis);
-        }
-
-        /// <summary>
-        /// Get the series from a point.
-        /// </summary>
-        /// <param name="pt">
-        /// The ppint.
-        /// </param>
-        /// <param name="limit">
-        /// The limit.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public ISeries GetSeriesFromPoint(ScreenPoint pt, double limit)
-        {
-            if (this.Model == null)
-            {
-                return null;
-            }
-
-            return this.Model.GetSeriesFromPoint(pt, limit);
-        }
-
-        /// <summary>
-        /// The hide tracker.
+        /// Hides the tracker.
         /// </summary>
         public void HideTracker()
         {
         }
 
         /// <summary>
-        /// The hide zoom rectangle.
+        /// Hides the zoom rectangle.
         /// </summary>
         public void HideZoomRectangle()
         {
@@ -173,11 +128,9 @@ namespace OxyPlot.XamarinIOS
         }
 
         /// <summary>
-        /// The invalidate plot.
+        /// Invalidates the plot (not blocking the UI thread)
         /// </summary>
-        /// <param name="updateData">
-        /// The update data.
-        /// </param>
+        /// <param name="updateData">if set to <c>true</c>, all data collections will be updated.</param>
         public void InvalidatePlot(bool updateData)
         {
             lock (this)
@@ -190,29 +143,9 @@ namespace OxyPlot.XamarinIOS
         }
 
         /// <summary>
-        /// The pan.
+        /// Refresh the plot immediately (blocking UI thread)
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="x0">
-        /// The x 0.
-        /// </param>
-        /// <param name="x1">
-        /// The x 1.
-        /// </param>
-        public void Pan(IAxis axis, ScreenPoint x0, ScreenPoint x1)
-        {
-            axis.Pan(x0, x1);
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
-        /// The refresh plot.
-        /// </summary>
-        /// <param name="updateData">
-        /// The update data.
-        /// </param>
+        /// <param name="updateData">if set to <c>true</c>, all data collections will be updated.</param>
         public void RefreshPlot(bool updateData)
         {
             lock (this)
@@ -225,26 +158,14 @@ namespace OxyPlot.XamarinIOS
         }
 
         /// <summary>
-        /// The reset.
+        /// Sets the cursor type.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        public void Reset(IAxis axis)
-        {
-            axis.Reset();
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
-        /// Sets the cursor.
-        /// </summary>
-        /// <param name="cursor">
-        /// The cursor.
+        /// <param name="cursorType">
+        /// The cursor type.
         /// </param>
         public void SetCursor(OxyCursor cursor)
         {
-            switch (cursor)
+            switch (cursorType)
             {
                 case OxyCursor.Arrow:
                     this.Cursor = Cursors.Arrow;
@@ -265,118 +186,76 @@ namespace OxyPlot.XamarinIOS
         }
 
         /// <summary>
-        /// The show tracker.
+        /// Shows the tracker.
         /// </summary>
-        /// <param name="data">
-        /// The data.
-        /// </param>
+        /// <param name="data">The data.</param>
         public void ShowTracker(TrackerHitResult data)
         {
-            // not implemented for WindowsForms
+
         }
 
         /// <summary>
-        /// The show zoom rectangle.
+        /// Shows the zoom rectangle.
         /// </summary>
-        /// <param name="r">
-        /// The r.
-        /// </param>
-        public void ShowZoomRectangle(OxyRect r)
+        /// <param name="rectangle">The rectangle.</param>
+        public void ShowZoomRectangle(OxyRect rectangle)
         {
-            this.zoomRectangle = new Rectangle((int)r.Left, (int)r.Top, (int)r.Width, (int)r.Height);
+            this.zoomRectangle = new Rectangle((int)rectangle.Left, (int)rectangle.Top, (int)rectangle.Width, (int)rectangle.Height);
             this.Invalidate();
         }
 
         /// <summary>
-        /// The zoom.
+        /// Resets all axes.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="p1">
-        /// The p 1.
-        /// </param>
-        /// <param name="p2">
-        /// The p 2.
-        /// </param>
-        public void Zoom(IAxis axis, double p1, double p2)
+        public void ResetAllAxes()
         {
-            axis.Zoom(p1, p2);
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
-        /// The zoom all.
-        /// </summary>
-        public void ZoomAll()
-        {
-            foreach (var a in this.Model.Axes)
+            if (this.ActualModel != null)
             {
-                a.Reset();
+                this.ActualModel.ResetAllAxes();
             }
 
             this.InvalidatePlot(false);
         }
 
         /// <summary>
-        /// The zoom at.
+        /// Pans all axes.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
+        /// <param name="deltax">
+        /// The horizontal delta.
         /// </param>
-        /// <param name="factor">
-        /// The factor.
+        /// <param name="deltay">
+        /// The vertical delta.
         /// </param>
-        /// <param name="x">
-        /// The x.
-        /// </param>
-        public void ZoomAt(IAxis axis, double factor, double x)
+        public void PanAllAxes(double deltax, double deltay)
         {
-            axis.ZoomAt(factor, x);
+            if (this.ActualModel != null)
+            {
+                this.ActualModel.PanAllAxes(deltax, deltay);
+            }
+
             this.InvalidatePlot(false);
         }
 
         /// <summary>
-        /// The on key down.
+        /// Zooms all axes.
         /// </summary>
-        /// <param name="e">
-        /// The e.
+        /// <param name="delta">
+        /// The delta.
         /// </param>
-        protected override void OnKeyDown(KeyEventArgs e)
+        public void ZoomAllAxes(double delta)
         {
-            base.OnKeyDown(e);
-            if (e.KeyCode == Keys.A)
+            if (this.ActualModel != null)
             {
-                this.ZoomAll();
+                this.ActualModel.ZoomAllAxes(delta);
             }
 
-            bool control = (e.Modifiers & Keys.Control) == Keys.Control;
-            bool alt = (e.Modifiers & Keys.Alt) == Keys.Alt;
-
-            if (control && alt && this.ActualModel != null)
-            {
-                switch (e.KeyCode)
-                {
-                    case Keys.R:
-                        this.SetClipboardText(this.ActualModel.CreateTextReport());
-                        break;
-                    case Keys.C:
-                        this.SetClipboardText(this.ActualModel.ToCode());
-                        break;
-                    case Keys.X:
-
-                        // Clipboard.SetText(this.ToXml());
-                        break;
-                }
-            }
+            this.InvalidatePlot(false);
         }
 
         /// <summary>
-        /// The on mouse down.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseDown" /> event.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
@@ -388,6 +267,17 @@ namespace OxyPlot.XamarinIOS
 
             this.Focus();
             this.Capture = true;
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(e);
+                this.ActualModel.HandleMouseDown(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             this.mouseManipulator = this.GetManipulator(e);
 
             if (this.mouseManipulator != null)
@@ -397,14 +287,23 @@ namespace OxyPlot.XamarinIOS
         }
 
         /// <summary>
-        /// The on mouse move.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove" /> event.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(e);
+                this.ActualModel.HandleMouseMove(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Delta(this.CreateManipulationEventArgs(e));
@@ -420,14 +319,24 @@ namespace OxyPlot.XamarinIOS
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
+            this.Capture = false;
+
+            if (this.ActualModel != null)
+            {
+                var args = this.CreateMouseEventArgs(e);
+                this.ActualModel.HandleMouseUp(this, args);
+                if (args.Handled)
+                {
+                    return;
+                }
+            }
+
             if (this.mouseManipulator != null)
             {
                 this.mouseManipulator.Completed(this.CreateManipulationEventArgs(e));
             }
 
             this.mouseManipulator = null;
-
-            this.Capture = false;
         }
 
         /// <summary>
@@ -535,7 +444,7 @@ namespace OxyPlot.XamarinIOS
             if (mmb || (control && rmb) || (control && alt && lmb))
             {
                 if (e.Clicks == 2)
-                {
+                    {
                     return new ResetManipulator(this);
                 }
 
@@ -584,6 +493,5 @@ namespace OxyPlot.XamarinIOS
                 MessageBox.Show(this, ee.Message, "OxyPlot");
             }
         }
-
     }
 }

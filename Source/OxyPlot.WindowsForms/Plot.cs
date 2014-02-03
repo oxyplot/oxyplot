@@ -37,9 +37,6 @@ namespace OxyPlot.WindowsForms
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
-    using OxyPlot.Axes;
-    using OxyPlot.Series;
-
     /// <summary>
     /// Represents a control that displays a plot.
     /// </summary>
@@ -201,52 +198,6 @@ namespace OxyPlot.WindowsForms
         public Cursor ZoomVerticalCursor { get; set; }
 
         /// <summary>
-        /// Gets the axes from a point.
-        /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="xaxis">
-        /// The x axis.
-        /// </param>
-        /// <param name="yaxis">
-        /// The y axis.
-        /// </param>
-        public void GetAxesFromPoint(ScreenPoint point, out Axis xaxis, out Axis yaxis)
-        {
-            if (this.Model == null)
-            {
-                xaxis = null;
-                yaxis = null;
-                return;
-            }
-
-            this.Model.GetAxesFromPoint(point, out xaxis, out yaxis);
-        }
-
-        /// <summary>
-        /// Gets the series from a point.
-        /// </summary>
-        /// <param name="point">
-        /// The point (screen coordinates).
-        /// </param>
-        /// <param name="limit">
-        /// The limit.
-        /// </param>
-        /// <returns>
-        /// The series.
-        /// </returns>
-        public Series GetSeriesFromPoint(ScreenPoint point, double limit)
-        {
-            if (this.Model == null)
-            {
-                return null;
-            }
-
-            return this.Model.GetSeriesFromPoint(point, limit);
-        }
-
-        /// <summary>
         /// Hides the tracker.
         /// </summary>
         public void HideTracker()
@@ -307,37 +258,6 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Pans the specified axis.
-        /// </summary>
-        /// <param name="axis">The axis.</param>
-        /// <param name="previousPoint">The x0.</param>
-        /// <param name="x1">The x1.</param>
-        public void Pan(Axis axis, ScreenPoint previousPoint, ScreenPoint x1)
-        {
-            axis.Pan(previousPoint, x1);
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
-        /// Pans all axes.
-        /// </summary>
-        /// <param name="deltax">
-        /// The horizontal delta.
-        /// </param>
-        /// <param name="deltay">
-        /// The vertical delta.
-        /// </param>
-        public void PanAll(double deltax, double deltay)
-        {
-            foreach (var a in this.ActualModel.Axes)
-            {
-                a.Pan(a.IsHorizontal() ? deltax : deltay);
-            }
-
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
         /// Refresh the plot immediately (blocking UI thread)
         /// </summary>
         /// <param name="updateData">if set to <c>true</c>, all data collections will be updated.</param>
@@ -350,16 +270,6 @@ namespace OxyPlot.WindowsForms
             }
 
             this.Refresh();
-        }
-
-        /// <summary>
-        /// Resets the specified axis.
-        /// </summary>
-        /// <param name="axis">The axis.</param>
-        public void Reset(Axis axis)
-        {
-            axis.Reset();
-            this.InvalidatePlot(false);
         }
 
         /// <summary>
@@ -418,25 +328,32 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Zooms the specified axis to the specified values.
-        /// </summary>
-        /// <param name="axis">The axis.</param>
-        /// <param name="newMinimum">The new minimum value.</param>
-        /// <param name="newMaximum">The new maximum value.</param>
-        public void Zoom(Axis axis, double newMinimum, double newMaximum)
-        {
-            axis.Zoom(newMinimum, newMaximum);
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
         /// Resets all axes.
         /// </summary>
         public void ResetAllAxes()
         {
-            foreach (var a in this.Model.Axes)
+            if (this.ActualModel != null)
             {
-                a.Reset();
+                this.ActualModel.ResetAllAxes();
+            }
+
+            this.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Pans all axes.
+        /// </summary>
+        /// <param name="deltax">
+        /// The horizontal delta.
+        /// </param>
+        /// <param name="deltay">
+        /// The vertical delta.
+        /// </param>
+        public void PanAllAxes(double deltax, double deltay)
+        {
+            if (this.ActualModel != null)
+            {
+                this.ActualModel.PanAllAxes(deltax, deltay);
             }
 
             this.InvalidatePlot(false);
@@ -450,29 +367,11 @@ namespace OxyPlot.WindowsForms
         /// </param>
         public void ZoomAllAxes(double delta)
         {
-            foreach (var a in this.ActualModel.Axes)
+            if (this.ActualModel != null)
             {
-                this.ZoomAt(a, delta);
+                this.ActualModel.ZoomAllAxes(delta);
             }
 
-            this.RefreshPlot(false);
-        }
-
-        /// <summary>
-        /// Zooms at the specified position.
-        /// </summary>
-        /// <param name="axis">The axis.</param>
-        /// <param name="factor">The zoom factor.</param>
-        /// <param name="x">The position to zoom at.</param>
-        public void ZoomAt(Axis axis, double factor, double x = double.NaN)
-        {
-            if (double.IsNaN(x))
-            {
-                double sx = (axis.Transform(axis.ActualMaximum) + axis.Transform(axis.ActualMinimum)) * 0.5;
-                x = axis.InverseTransform(sx);
-            }
-
-            axis.ZoomAt(factor, x);
             this.InvalidatePlot(false);
         }
 
@@ -694,7 +593,7 @@ namespace OxyPlot.WindowsForms
                     deltay *= 0.2;
                 }
 
-                this.PanAll(deltax, deltay);
+                this.PanAllAxes(deltax, deltay);
 
                 // e.Handled = true;
             }

@@ -33,7 +33,6 @@ namespace OxyPlot
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -1114,7 +1113,7 @@ namespace OxyPlot
         /// <returns>
         /// The nearest series.
         /// </returns>
-        public Series.Series GetSeriesFromPoint(ScreenPoint point, double limit)
+        public Series.Series GetSeriesFromPoint(ScreenPoint point, double limit = 100)
         {
             double mindist = double.MaxValue;
             Series.Series closest = null;
@@ -1322,6 +1321,42 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Resets all axes in the model.
+        /// </summary>
+        public void ResetAllAxes()
+        {
+            foreach (var a in this.Axes)
+            {
+                a.Reset();
+            }
+        }
+
+        /// <summary>
+        /// Pans all axes.
+        /// </summary>
+        /// <param name="dx">The horizontal distance to pan (screen coordinates).</param>
+        /// <param name="dy">The vertical distance to pan (screen coordinates).</param>
+        public void PanAllAxes(double dx, double dy)
+        {
+            foreach (var a in this.Axes)
+            {
+                a.Pan(a.IsHorizontal() ? dx : dy);
+            }
+        }
+
+        /// <summary>
+        /// Zooms all axes.
+        /// </summary>
+        /// <param name="factor">The zoom factor.</param>
+        public void ZoomAllAxes(double factor)
+        {
+            foreach (var a in this.Axes)
+            {
+                a.ZoomAtCenter(factor);
+            }
+        }
+
+        /// <summary>
         /// Raises the TrackerChanged event.
         /// </summary>
         /// <param name="result">The result.</param>
@@ -1486,7 +1521,7 @@ namespace OxyPlot
             {
                 if (!this.Axes.Contains(this.DefaultXAxis))
                 {
-                    Debug.Assert(this.DefaultXAxis != null, "Default x-axis not created.");
+                    System.Diagnostics.Debug.Assert(this.DefaultXAxis != null, "Default x-axis not created.");
                     if (this.DefaultXAxis != null)
                     {
                         this.Axes.Add(this.DefaultXAxis);
@@ -1495,7 +1530,7 @@ namespace OxyPlot
 
                 if (!this.Axes.Contains(this.DefaultYAxis))
                 {
-                    Debug.Assert(this.DefaultYAxis != null, "Default y-axis not created.");
+                    System.Diagnostics.Debug.Assert(this.DefaultYAxis != null, "Default y-axis not created.");
                     if (this.DefaultYAxis != null)
                     {
                         this.Axes.Add(this.DefaultYAxis);

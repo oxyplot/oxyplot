@@ -58,6 +58,17 @@ namespace OxyPlot
         protected IPlotControl PlotControl { get; private set; }
 
         /// <summary>
+        /// Gets the plot model.
+        /// </summary>
+        protected PlotModel PlotModel
+        {
+            get
+            {
+                return this.PlotControl.ActualModel;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the X axis.
         /// </summary>
         /// <value>The X axis.</value>
@@ -111,7 +122,16 @@ namespace OxyPlot
         {
             Axis xaxis;
             Axis yaxis;
-            this.PlotControl.GetAxesFromPoint(e.CurrentPosition, out xaxis, out yaxis);
+            if (this.PlotModel != null)
+            {
+                this.PlotModel.GetAxesFromPoint(e.CurrentPosition, out xaxis, out yaxis);
+            }
+            else
+            {
+                xaxis = null;
+                yaxis = null;
+            }
+
             this.StartPosition = e.CurrentPosition;
 
             this.XAxis = xaxis;

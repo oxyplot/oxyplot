@@ -132,7 +132,7 @@ namespace OxyPlot
         public override void Started(ManipulationEventArgs e)
         {
             base.Started(e);
-            this.currentSeries = this.PlotControl.GetSeriesFromPoint(e.CurrentPosition);
+            this.currentSeries = this.PlotModel != null ? this.PlotModel.GetSeriesFromPoint(e.CurrentPosition) : null;
             this.Delta(e);
         }
 

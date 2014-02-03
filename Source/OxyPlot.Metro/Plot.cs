@@ -33,7 +33,6 @@ namespace OxyPlot.Metro
     using System.Collections.ObjectModel;
     using System.Linq;
 
-    using OxyPlot.Axes;
     using OxyPlot.Series;
 
     using Windows.ApplicationModel.DataTransfer;
@@ -190,48 +189,6 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Gets the axes from a point.
-        /// </summary>
-        /// <param name="pt">
-        /// The point.
-        /// </param>
-        /// <param name="xaxis">
-        /// The x-axis.
-        /// </param>
-        /// <param name="yaxis">
-        /// The y-axis.
-        /// </param>
-        public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis)
-        {
-            if (this.ActualModel != null)
-            {
-                this.ActualModel.GetAxesFromPoint(pt, out xaxis, out yaxis);
-            }
-            else
-            {
-                xaxis = null;
-                yaxis = null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the series that is nearest the specified point (in screen coordinates).
-        /// </summary>
-        /// <param name="pt">
-        /// The point.
-        /// </param>
-        /// <param name="limit">
-        /// The maximum distance, if this is exceeded the method will return null.
-        /// </param>
-        /// <returns>
-        /// The closest DataSeries
-        /// </returns>
-        public Series GetSeriesFromPoint(ScreenPoint pt, double limit)
-        {
-            return this.ActualModel != null ? this.ActualModel.GetSeriesFromPoint(pt, limit) : null;
-        }
-
-        /// <summary>
         /// Hides the tracker.
         /// </summary>
         public void HideTracker()
@@ -267,24 +224,6 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Pans the specified axis.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="ppt">
-        /// The previous point (screen coordinates).
-        /// </param>
-        /// <param name="cpt">
-        /// The current point (screen coordinates).
-        /// </param>
-        public void Pan(Axis axis, ScreenPoint ppt, ScreenPoint cpt)
-        {
-            axis.Pan(ppt, cpt);
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
         /// Refreshes the plot immediately (not blocking the UI thread).
         /// </summary>
         /// <param name="update">
@@ -294,17 +233,6 @@ namespace OxyPlot.Metro
         {
             // don't block ui thread
             this.InvalidatePlot(update);
-        }
-
-        /// <summary>
-        /// Resets the specified axis.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        public void Reset(Axis axis)
-        {
-            axis.Reset();
         }
 
         /// <summary>
@@ -401,54 +329,13 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Zooms the specified axis to the specified values.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="p1">
-        /// The new minimum value.
-        /// </param>
-        /// <param name="p2">
-        /// The new maximum value.
-        /// </param>
-        public void Zoom(Axis axis, double p1, double p2)
-        {
-            axis.Zoom(p1, p2);
-            this.RefreshPlot(false);
-        }
-
-        /// <summary>
-        /// Zooms at the specified position.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="factor">
-        /// The zoom factor.
-        /// </param>
-        /// <param name="x">
-        /// The position to zoom at.
-        /// </param>
-        public void ZoomAt(Axis axis, double factor, double x = double.NaN)
-        {
-            if (double.IsNaN(x))
-            {
-                double sx = (axis.Transform(axis.ActualMaximum) + axis.Transform(axis.ActualMinimum)) * 0.5;
-                x = axis.InverseTransform(sx);
-            }
-
-            axis.ZoomAt(factor, x);
-        }
-
-        /// <summary>
         /// Resets all axes.
         /// </summary>
         public void ResetAllAxes()
         {
-            foreach (Axis a in this.ActualModel.Axes)
+            if (this.ActualModel != null)
             {
-                a.Reset();
+                this.ActualModel.ResetAllAxes();
             }
 
             this.InvalidatePlot(false);
@@ -478,12 +365,12 @@ namespace OxyPlot.Metro
         /// </param>
         public void ZoomAllAxes(double delta)
         {
-            foreach (var a in this.ActualModel.Axes)
+            if (this.ActualModel != null)
             {
-                this.ZoomAt(a, delta);
+                this.ActualModel.ZoomAllAxes(delta);
             }
 
-            this.RefreshPlot(false);
+            this.InvalidatePlot(false);
         }
 
         /// <summary>
@@ -920,7 +807,7 @@ namespace OxyPlot.Metro
                 ClickCount = clickCount
             };
         }
-        
+
         /// <summary>
         /// Adds a vector to a point.
         /// </summary>

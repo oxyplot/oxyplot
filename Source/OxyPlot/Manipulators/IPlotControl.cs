@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Interface for Plot controls.
+//   Interface for plot controls.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,43 +33,14 @@ namespace OxyPlot
     using OxyPlot.Axes;
 
     /// <summary>
-    /// Defines functionality in the Plot controls.
+    /// Defines functionality in the plot controls.
     /// </summary>
     public interface IPlotControl
     {
         /// <summary>
-        /// Gets the actual model.
+        /// Gets the actual <see cref="PlotModel"/> of the control.
         /// </summary>
-        /// <value>The actual model.</value>
         PlotModel ActualModel { get; }
-
-        /// <summary>
-        /// Gets the axes from a point.
-        /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="xaxis">
-        /// The x-axis.
-        /// </param>
-        /// <param name="yaxis">
-        /// The y-axis.
-        /// </param>
-        void GetAxesFromPoint(ScreenPoint point, out Axis xaxis, out Axis yaxis);
-
-        /// <summary>
-        /// Gets the series from point.
-        /// </summary>
-        /// <param name="point">
-        /// The point (screen coordinates).
-        /// </param>
-        /// <param name="limit">
-        /// The maximum allowed distance.
-        /// </param>
-        /// <returns>
-        /// The series.
-        /// </returns>
-        Series.Series GetSeriesFromPoint(ScreenPoint point, double limit = 100);
 
         /// <summary>
         /// Hides the tracker.
@@ -85,23 +56,9 @@ namespace OxyPlot
         /// Invalidates the plot (not blocking the UI thread)
         /// </summary>
         /// <param name="updateData">
-        /// if set to <c>true</c>, all data collections will be updated.
+        /// if set to <c>true</c>, all data bindings will be updated.
         /// </param>
         void InvalidatePlot(bool updateData = true);
-
-        /// <summary>
-        /// Pans the specified axis.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis to pan.
-        /// </param>
-        /// <param name="previousPoint">
-        /// The previous point (screen coordinates).
-        /// </param>
-        /// <param name="currentPoint">
-        /// The current point (screen coordinates).
-        /// </param>
-        void Pan(Axis axis, ScreenPoint previousPoint, ScreenPoint currentPoint);
 
         /// <summary>
         /// Refreshes the plot immediately (blocking UI thread)
@@ -110,14 +67,6 @@ namespace OxyPlot
         /// if set to <c>true</c>, all data collections will be updated.
         /// </param>
         void RefreshPlot(bool updateData = true);
-
-        /// <summary>
-        /// Resets the specified axis.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        void Reset(Axis axis);
 
         /// <summary>
         /// Sets the cursor type.
@@ -142,33 +91,5 @@ namespace OxyPlot
         /// The rectangle.
         /// </param>
         void ShowZoomRectangle(OxyRect rectangle);
-
-        /// <summary>
-        /// Zooms the specified axis to the specified values.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="newMinimum">
-        /// The new minimum value.
-        /// </param>
-        /// <param name="newMaximum">
-        /// The new maximum value.
-        /// </param>
-        void Zoom(Axis axis, double newMinimum, double newMaximum);
-
-        /// <summary>
-        /// Zooms at the specified position.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="factor">
-        /// The zoom factor.
-        /// </param>
-        /// <param name="x">
-        /// The position to zoom at.
-        /// </param>
-        void ZoomAt(Axis axis, double factor, double x);
     }
 }
