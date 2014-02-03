@@ -180,21 +180,22 @@
     <Compile Include="Axes\Rendering\AngleAxisRenderer.cs" />
     <Compile Include="Axes\Rendering\MagnitudeAxisRenderer.cs" />
     <Compile Include="Axes\Rendering\HorizontalAndVerticalAxisRenderer.cs" />
-    <Compile Include="Manipulators\IPlotControl.cs" />
-    <Compile Include="Manipulators\ZoomManipulator.cs" />
-    <Compile Include="Manipulators\ZoomStepManipulator.cs" />
-    <Compile Include="Manipulators\ResetManipulator.cs" />
-    <Compile Include="Manipulators\ManipulationEventArgs.cs" />
-    <Compile Include="Manipulators\TrackerManipulator.cs" />
-    <Compile Include="Manipulators\ZoomRectangleManipulator.cs" />
-    <Compile Include="Manipulators\ManipulatorBase.cs" />
-    <Compile Include="Manipulators\CursorType.cs" />
-    <Compile Include="Manipulators\PanManipulator.cs" />
-    <Compile Include="Manipulators\TrackerHitResult.cs" />
+    <Compile Include="PlotController\Manipulators\ManipulationEventArgs.cs" />
+    <Compile Include="PlotController\Manipulators\ManipulatorBase.cs" />
+    <Compile Include="PlotController\Manipulators\PanManipulator.cs" />
+    <Compile Include="PlotController\Manipulators\ResetManipulator.cs" />
+    <Compile Include="PlotController\Manipulators\TrackerHitResult.cs" />
+    <Compile Include="PlotController\Manipulators\TrackerManipulator.cs" />
+    <Compile Include="PlotController\Manipulators\ZoomManipulator.cs" />
+    <Compile Include="PlotController\Manipulators\ZoomRectangleManipulator.cs" />
+    <Compile Include="PlotController\Manipulators\ZoomStepManipulator.cs" />
+    <Compile Include="PlotController\PlotController.cs" />
     <Compile Include="PlotModel\HitTestResult.cs" />
     <Compile Include="PlotModel\Selection.cs" />
     <Compile Include="PlotModel\SelectionMode.cs" />
     <Compile Include="PlotModel\TrackerEventArgs.cs" />
+    <Compile Include="PlotView\IPlotControl.cs" />
+    <Compile Include="PlotView\CursorType.cs" />
     <Compile Include="Series\BarSeries\BarItem.cs" />
     <Compile Include="Series\BarSeries\BarItemBase.cs" />
     <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
@@ -287,6 +288,7 @@
   <ItemGroup>
     <None Include="Imaging\Deflate\Readme.md" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
