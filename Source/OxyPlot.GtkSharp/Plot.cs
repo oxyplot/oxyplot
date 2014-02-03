@@ -198,52 +198,6 @@ namespace OxyPlot.GtkSharp
         public Cursor ZoomVerticalCursor { get; set; }
 
         /// <summary>
-        /// Gets the axes from a point.
-        /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="xaxis">
-        /// The x axis.
-        /// </param>
-        /// <param name="yaxis">
-        /// The y axis.
-        /// </param>
-        public void GetAxesFromPoint(ScreenPoint point, out Axis xaxis, out Axis yaxis)
-        {
-            if (this.Model == null)
-            {
-                xaxis = null;
-                yaxis = null;
-                return;
-            }
-
-            this.Model.GetAxesFromPoint(point, out xaxis, out yaxis);
-        }
-
-        /// <summary>
-        /// Gets the series from a point.
-        /// </summary>
-        /// <param name="point">
-        /// The point (screen coordinates).
-        /// </param>
-        /// <param name="limit">
-        /// The limit.
-        /// </param>
-        /// <returns>
-        /// The series.
-        /// </returns>
-        public Series GetSeriesFromPoint(ScreenPoint point, double limit)
-        {
-            if (this.Model == null)
-            {
-                return null;
-            }
-
-            return this.Model.GetSeriesFromPoint(point, limit);
-        }
-
-        /// <summary>
         /// Hides the tracker.
         /// </summary>
         public void HideTracker()
@@ -303,18 +257,6 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Pans the specified axis.
-        /// </summary>
-        /// <param name="axis">The axis.</param>
-        /// <param name="previousPoint">The x0.</param>
-        /// <param name="x1">The x1.</param>
-        public void Pan(Axis axis, ScreenPoint previousPoint, ScreenPoint x1)
-        {
-            axis.Pan(previousPoint, x1);
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
         /// Pans all axes.
         /// </summary>
         /// <param name="deltax">
@@ -325,9 +267,9 @@ namespace OxyPlot.GtkSharp
         /// </param>
         public void PanAll(double deltax, double deltay)
         {
-            foreach (var a in this.ActualModel.Axes)
+            if (this.ActualModel != null)
             {
-                a.Pan(a.IsHorizontal() ? deltax : deltay);
+                this.ActualModel.PanAllAxes(deltax, deltay);
             }
 
             this.InvalidatePlot(false);
@@ -347,16 +289,6 @@ namespace OxyPlot.GtkSharp
 
             this.QueueDraw();
             this.GdkWindow.ProcessUpdates(false);
-        }
-
-        /// <summary>
-        /// Resets the specified axis.
-        /// </summary>
-        /// <param name="axis">The axis.</param>
-        public void Reset(Axis axis)
-        {
-            axis.Reset();
-            this.InvalidatePlot(false);
         }
 
         /// <summary>
@@ -407,25 +339,13 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Zooms the specified axis to the specified values.
-        /// </summary>
-        /// <param name="axis">The axis.</param>
-        /// <param name="newMinimum">The new minimum value.</param>
-        /// <param name="newMaximum">The new maximum value.</param>
-        public void Zoom(Axis axis, double newMinimum, double newMaximum)
-        {
-            axis.Zoom(newMinimum, newMaximum);
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
         /// Resets all axes.
         /// </summary>
         public void ResetAllAxes()
         {
-            foreach (var a in this.Model.Axes)
+            if (this.ActualModel != null)
             {
-                a.Reset();
+                this.ActualModel.ResetAllAxes();
             }
 
             this.InvalidatePlot(false);
@@ -439,29 +359,11 @@ namespace OxyPlot.GtkSharp
         /// </param>
         public void ZoomAllAxes(double delta)
         {
-            foreach (var a in this.ActualModel.Axes)
+            if (this.ActualModel != null)
             {
-                this.ZoomAt(a, delta);
+                this.ActualModel.ZoomAllAxes(delta);
             }
 
-            this.RefreshPlot(false);
-        }
-
-        /// <summary>
-        /// Zooms at the specified position.
-        /// </summary>
-        /// <param name="axis">The axis.</param>
-        /// <param name="factor">The zoom factor.</param>
-        /// <param name="x">The position to zoom at.</param>
-        public void ZoomAt(Axis axis, double factor, double x = double.NaN)
-        {
-            if (double.IsNaN(x))
-            {
-                double sx = (axis.Transform(axis.ActualMaximum) + axis.Transform(axis.ActualMinimum)) * 0.5;
-                x = axis.InverseTransform(sx);
-            }
-
-            axis.ZoomAt(factor, x);
             this.InvalidatePlot(false);
         }
 
@@ -607,7 +509,7 @@ namespace OxyPlot.GtkSharp
                         // int width; int height;
                         // this.GetSizeRequest(out width, out height);
                         Debug.Assert(false, "OxyPlot paint exception: " + paintException.Message);
-                       
+
                         // g.ResetTransform();
                         // g.DrawString(, font, Brushes.Red, width / 2, height / 2, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
                     }

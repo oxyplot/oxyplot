@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   The Silverlight Plot control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Silverlight
 {
     using System;
@@ -146,7 +147,7 @@ namespace OxyPlot.Silverlight
             this.SizeChanged += this.OnSizeChanged;
 
             // http://nuggets.hammond-turner.org.uk/2009/01/quickie-simulating-datacontextchanged.html
-            this.SetBinding(DataContextWatcherProperty, new Binding());
+            this.SetBinding(Plot.DataContextWatcherProperty, new Binding());
         }
 
         /// <summary>
@@ -171,48 +172,6 @@ namespace OxyPlot.Silverlight
             {
                 return this.trackerDefinitions;
             }
-        }
-
-        /// <summary>
-        /// Gets the axes from a point.
-        /// </summary>
-        /// <param name="pt">
-        /// The point.
-        /// </param>
-        /// <param name="xaxis">
-        /// The x-axis.
-        /// </param>
-        /// <param name="yaxis">
-        /// The y-axis.
-        /// </param>
-        public void GetAxesFromPoint(ScreenPoint pt, out Axis xaxis, out Axis yaxis)
-        {
-            if (this.ActualModel != null)
-            {
-                this.ActualModel.GetAxesFromPoint(pt, out xaxis, out yaxis);
-            }
-            else
-            {
-                xaxis = null;
-                yaxis = null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the series that is nearest the specified point (in screen coordinates).
-        /// </summary>
-        /// <param name="pt">
-        /// The point.
-        /// </param>
-        /// <param name="limit">
-        /// The maximum distance, if this is exceeded the method will return null.
-        /// </param>
-        /// <returns>
-        /// The closest DataSeries
-        /// </returns>
-        public Series GetSeriesFromPoint(ScreenPoint pt, double limit)
-        {
-            return this.ActualModel != null ? this.ActualModel.GetSeriesFromPoint(pt, limit) : null;
         }
 
         /// <summary>
@@ -317,19 +276,6 @@ namespace OxyPlot.Silverlight
         public void Reset(Axis axis)
         {
             axis.Reset();
-        }
-
-        /// <summary>
-        /// Reset all axes.
-        /// </summary>
-        public void ResetAllAxes()
-        {
-            foreach (var a in this.ActualModel.Axes)
-            {
-                a.Reset();
-            }
-
-            this.InvalidatePlot(false);
         }
 
         /// <summary>
@@ -485,60 +431,32 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Zooms the specified axis to the specified values.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="p1">
-        /// The new minimum value.
-        /// </param>
-        /// <param name="p2">
-        /// The new maximum value.
-        /// </param>
-        public void Zoom(Axis axis, double p1, double p2)
-        {
-            axis.Zoom(p1, p2);
-            this.RefreshPlot(false);
-        }
-
-        /// <summary>
         /// Zooms all axes.
         /// </summary>
-        /// <param name="delta">
-        /// The delta.
-        /// </param>
-        public void ZoomAllAxes(double delta)
-        {
-            foreach (var a in this.ActualModel.Axes)
-            {
-                this.ZoomAt(a, delta);
-            }
-
-            this.RefreshPlot(false);
-        }
-
-        /// <summary>
-        /// Zooms at the specified position.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
         /// <param name="factor">
         /// The zoom factor.
         /// </param>
-        /// <param name="x">
-        /// The position to zoom at.
-        /// </param>
-        public void ZoomAt(Axis axis, double factor, double x = double.NaN)
+        public void ZoomAllAxes(double factor)
         {
-            if (double.IsNaN(x))
+            if (this.ActualModel != null)
             {
-                double sx = (axis.Transform(axis.ActualMaximum) + axis.Transform(axis.ActualMinimum)) * 0.5;
-                x = axis.InverseTransform(sx);
+                this.ActualModel.ZoomAllAxes(factor);
             }
 
-            axis.ZoomAt(factor, x);
+            this.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Resets all axes.
+        /// </summary>
+        public void ResetAllAxes()
+        {
+            if (this.ActualModel != null)
+            {
+                this.ActualModel.ResetAllAxes();
+            }
+
+            this.InvalidatePlot(false);
         }
 
         /// <summary>

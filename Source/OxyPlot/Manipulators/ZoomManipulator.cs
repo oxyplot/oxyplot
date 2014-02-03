@@ -57,15 +57,15 @@ namespace OxyPlot
 
             if (this.XAxis != null)
             {
-                this.PlotControl.ZoomAt(this.XAxis, e.ScaleX, current.X);
+                this.XAxis.ZoomAt(e.ScaleX, current.X);
             }
 
             if (this.YAxis != null)
             {
-                this.PlotControl.ZoomAt(this.YAxis, e.ScaleY, current.Y);
+                this.YAxis.ZoomAt(e.ScaleY, current.Y);
             }
 
-            this.PlotControl.InvalidatePlot();
+            this.PlotControl.InvalidatePlot(false);
         }
 
     }

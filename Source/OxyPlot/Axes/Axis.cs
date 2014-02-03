@@ -1300,6 +1300,17 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
+        /// Zooms the axis with the specified zoom factor at the center of the axis.
+        /// </summary>
+        /// <param name="factor">The zoom factor.</param>
+        public virtual void ZoomAtCenter(double factor)
+        {
+            double sx = (this.Transform(this.ActualMaximum) + this.Transform(this.ActualMinimum)) * 0.5;
+            var x = this.InverseTransform(sx);
+            this.ZoomAt(factor, x);
+        }
+
+        /// <summary>
         /// Modifies the data range of the axis [DataMinimum,DataMaximum] to includes the specified value.
         /// </summary>
         /// <param name="value">

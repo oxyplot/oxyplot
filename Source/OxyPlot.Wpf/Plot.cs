@@ -252,48 +252,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets the axes from a point.
-        /// </summary>
-        /// <param name="pt">
-        /// The point.
-        /// </param>
-        /// <param name="xaxis">
-        /// The x-axis.
-        /// </param>
-        /// <param name="yaxis">
-        /// The y-axis.
-        /// </param>
-        public void GetAxesFromPoint(ScreenPoint pt, out Axes.Axis xaxis, out Axes.Axis yaxis)
-        {
-            if (this.ActualModel != null)
-            {
-                this.ActualModel.GetAxesFromPoint(pt, out xaxis, out yaxis);
-            }
-            else
-            {
-                xaxis = null;
-                yaxis = null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the series that is nearest the specified point (in screen coordinates).
-        /// </summary>
-        /// <param name="pt">
-        /// The point.
-        /// </param>
-        /// <param name="limit">
-        /// The maximum distance, if this is exceeded the method will return null.
-        /// </param>
-        /// <returns>
-        /// The closest DataSeries
-        /// </returns>
-        public OxyPlot.Series.Series GetSeriesFromPoint(ScreenPoint pt, double limit)
-        {
-            return this.ActualModel != null ? this.ActualModel.GetSeriesFromPoint(pt, limit) : null;
-        }
-
-        /// <summary>
         /// Hides the tracker.
         /// </summary>
         public void HideTracker()
@@ -334,24 +292,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Pans the specified axis.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="ppt">
-        /// The previous point (screen coordinates).
-        /// </param>
-        /// <param name="cpt">
-        /// The current point (screen coordinates).
-        /// </param>
-        public void Pan(Axes.Axis axis, ScreenPoint ppt, ScreenPoint cpt)
-        {
-            axis.Pan(ppt, cpt);
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
         /// Refresh the plot immediately (blocking UI thread)
         /// </summary>
         /// <param name="updateData">
@@ -360,17 +300,6 @@ namespace OxyPlot.Wpf
         public void RefreshPlot(bool updateData)
         {
             this.InvalidatePlot(updateData);
-        }
-
-        /// <summary>
-        /// Resets the specified axis.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        public void Reset(Axes.Axis axis)
-        {
-            axis.Reset();
         }
 
         /// <summary>
@@ -464,47 +393,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Zooms the specified axis to the specified values.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="p1">
-        /// The new minimum value.
-        /// </param>
-        /// <param name="p2">
-        /// The new maximum value.
-        /// </param>
-        public void Zoom(Axes.Axis axis, double p1, double p2)
-        {
-            axis.Zoom(p1, p2);
-            this.RefreshPlot(false);
-        }
-
-        /// <summary>
-        /// Zooms at the specified position.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="factor">
-        /// The zoom factor.
-        /// </param>
-        /// <param name="x">
-        /// The position to zoom at.
-        /// </param>
-        public void ZoomAt(Axes.Axis axis, double factor, double x = double.NaN)
-        {
-            if (double.IsNaN(x))
-            {
-                double sx = (axis.Transform(axis.ActualMaximum) + axis.Transform(axis.ActualMinimum)) * 0.5;
-                x = axis.InverseTransform(sx);
-            }
-
-            axis.ZoomAt(factor, x);
-        }
-
-        /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> .
         /// </summary>
         public override void OnApplyTemplate()
@@ -543,24 +431,40 @@ namespace OxyPlot.Wpf
         /// <param name="delta">
         /// The delta.
         /// </param>
-        public void PanAll(Vector delta)
+        public void PanAllAxes(Vector delta)
         {
-            foreach (Axes.Axis a in this.ActualModel.Axes)
+            if (this.ActualModel != null)
             {
-                a.Pan(a.IsHorizontal() ? delta.X : delta.Y);
+                this.ActualModel.PanAllAxes(delta.X, delta.Y);
             }
 
             this.InvalidatePlot(false);
         }
 
         /// <summary>
-        /// Reset all axes.
+        /// Zooms all axes.
+        /// </summary>
+        /// <param name="factor">
+        /// The zoom factor.
+        /// </param>
+        public void ZoomAllAxes(double factor)
+        {
+            if (this.ActualModel != null)
+            {
+                this.ActualModel.ZoomAllAxes(factor);
+            }
+
+            this.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Resets all axes.
         /// </summary>
         public void ResetAllAxes()
         {
-            foreach (Axes.Axis a in this.ActualModel.Axes)
+            if (this.ActualModel != null)
             {
-                a.Reset();
+                this.ActualModel.ResetAllAxes();
             }
 
             this.InvalidatePlot(false);
@@ -637,22 +541,6 @@ namespace OxyPlot.Wpf
         {
             return XamlExporter.ExportToString(
                 this.ActualModel, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
-        }
-
-        /// <summary>
-        /// Zooms all axes.
-        /// </summary>
-        /// <param name="delta">
-        /// The delta.
-        /// </param>
-        public void ZoomAllAxes(double delta)
-        {
-            foreach (var a in this.ActualModel.Axes)
-            {
-                this.ZoomAt(a, delta);
-            }
-
-            this.RefreshPlot(false);
         }
 
         /// <summary>
@@ -752,7 +640,7 @@ namespace OxyPlot.Wpf
                     delta *= 0.2;
                 }
 
-                this.PanAll(delta);
+                this.PanAllAxes(delta);
                 e.Handled = true;
             }
 
