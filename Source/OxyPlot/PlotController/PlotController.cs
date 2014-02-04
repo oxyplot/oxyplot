@@ -35,5 +35,6 @@ namespace OxyPlot
     /// </summary>
     public class PlotController
     {
+        // TODO: See https://oxyplot.codeplex.com/SourceControl/network/forks/objo/issue9625
     }
 }
