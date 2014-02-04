@@ -55,7 +55,7 @@ namespace OxyPlot
         public override bool Equals(OxyInputGesture other)
         {
             var tg = other as OxyTouchGesture;
-            return tg != null && tg.FingerCount == this.FingerCount;
+            return tg != null && tg.FingerCount == this.FingerCount && tg.TapCount == this.TapCount;
         }
     }
 }
