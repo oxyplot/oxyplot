@@ -1515,6 +1515,16 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
+        /// Resets the current values.
+        /// </summary>
+        /// <remarks>
+        /// The current values may be modified during update of max/min and rendering.
+        /// </remarks>
+        protected internal virtual void ResetCurrentValues()
+        {
+        }
+
+        /// <summary>
         /// Creates tick values at the specified interval.
         /// </summary>
         /// <param name="from">The start value.</param>

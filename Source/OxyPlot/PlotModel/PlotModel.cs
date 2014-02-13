@@ -1186,7 +1186,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets all elements of the plot model.
+        /// Gets all elements of the plot model, sorted by rendering priority.
         /// </summary>
         /// <returns>An enumerator of the plot elements.</returns>
         public IEnumerable<PlotElement> GetElements()
@@ -1267,6 +1267,7 @@ namespace OxyPlot
 
                 foreach (var c in this.Axes.OfType<CategoryAxis>())
                 {
+                    // TODO: move this call into CategoryAxis.UpdateFromSeries?
                     c.UpdateLabels(this.VisibleSeries);
                 }
 
@@ -1284,6 +1285,7 @@ namespace OxyPlot
                 foreach (var a in this.Axes)
                 {
                     a.UpdateFromSeries(this.VisibleSeries);
+                    a.ResetCurrentValues();
                 }
 
                 // Update the max and min of the axes

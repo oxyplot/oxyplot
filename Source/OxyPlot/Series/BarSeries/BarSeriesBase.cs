@@ -150,12 +150,12 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the valid items
         /// </summary>
-        protected internal IList<BarItemBase> ValidItems { get; set; }
+        protected IList<BarItemBase> ValidItems { get; set; }
 
         /// <summary>
         /// Gets or sets the dictionary which stores the index-inversion for the valid items
         /// </summary>
-        protected internal Dictionary<int, int> ValidItemsIndexInversion { get; set; }
+        protected Dictionary<int, int> ValidItemsIndexInversion { get; set; }
 
         /// <summary>
         /// Gets or sets the actual rectangles for the bars.
@@ -222,7 +222,7 @@ namespace OxyPlot.Series
             var categoryAxis = this.GetCategoryAxis();
 
             var actualBarWidth = this.GetActualBarWidth();
-            var stackIndex = this.IsStacked ? categoryAxis.StackIndexMapping[this.StackGroup] : 0;
+            var stackIndex = this.IsStacked ? categoryAxis.GetStackIndex(this.StackGroup) : 0;
             for (var i = 0; i < this.ValidItems.Count; i++)
             {
                 var item = this.ValidItems[i];
@@ -234,9 +234,7 @@ namespace OxyPlot.Series
                 var baseValue = double.NaN;
                 if (this.IsStacked)
                 {
-                    baseValue = value < 0
-                                    ? categoryAxis.NegativeBaseValues[stackIndex, categoryIndex]
-                                    : categoryAxis.PositiveBaseValues[stackIndex, categoryIndex];
+                    baseValue = categoryAxis.GetCurrentBaseValue(stackIndex, categoryIndex, value < 0);
                 }
 
                 if (double.IsNaN(baseValue))
@@ -254,19 +252,12 @@ namespace OxyPlot.Series
                 }
                 else
                 {
-                    categoryValue = categoryIndex - 0.5 + categoryAxis.BarOffset[categoryIndex];
+                    categoryValue = categoryIndex - 0.5 + categoryAxis.GetCurrentBarOffset(categoryIndex);
                 }
 
                 if (this.IsStacked)
                 {
-                    if (value < 0)
-                    {
-                        categoryAxis.NegativeBaseValues[stackIndex, categoryIndex] = topValue;
-                    }
-                    else
-                    {
-                        categoryAxis.PositiveBaseValues[stackIndex, categoryIndex] = topValue;
-                    }
+                    categoryAxis.SetCurrentBaseValue(stackIndex, categoryIndex, value < 0, topValue);
                 }
 
                 var rect = this.GetRectangle(baseValue, topValue, categoryValue, categoryValue + actualBarWidth);
@@ -281,7 +272,7 @@ namespace OxyPlot.Series
 
                 if (!this.IsStacked)
                 {
-                    categoryAxis.BarOffset[categoryIndex] += actualBarWidth;
+                    categoryAxis.IncreaseCurrentBarOffset(categoryIndex, actualBarWidth);
                 }
             }
         }
@@ -337,7 +328,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// The update axis max min.
+        /// Updates the axes to include the max and min of this series.
         /// </summary>
         protected internal override void UpdateAxisMaxMin()
         {
@@ -380,22 +371,22 @@ namespace OxyPlot.Series
                     var minTemp = values.Where(v => v <= 0).Sum();
                     var maxTemp = values.Where(v => v >= 0).Sum();
 
-                    int stackIndex = categoryAxis.StackIndexMapping[this.StackGroup];
-                    var stackedMinValue = categoryAxis.MinValue[stackIndex, i];
+                    int stackIndex = categoryAxis.GetStackIndex(this.StackGroup);
+                    var stackedMinValue = categoryAxis.GetCurrentMinValue(stackIndex, i);
                     if (!double.IsNaN(stackedMinValue))
                     {
                         minTemp += stackedMinValue;
                     }
 
-                    categoryAxis.MinValue[stackIndex, i] = minTemp;
+                    categoryAxis.SetCurrentMinValue(stackIndex, i, minTemp);
 
-                    var stackedMaxValue = categoryAxis.MaxValue[stackIndex, i];
+                    var stackedMaxValue = categoryAxis.GetCurrentMaxValue(stackIndex, i);
                     if (!double.IsNaN(stackedMaxValue))
                     {
                         maxTemp += stackedMaxValue;
                     }
 
-                    categoryAxis.MaxValue[stackIndex, i] = maxTemp;
+                    categoryAxis.SetCurrentMaxValue(stackIndex, i, maxTemp);
 
                     minValue = Math.Min(minValue, minTemp + this.BaseValue);
                     maxValue = Math.Max(maxValue, maxTemp + this.BaseValue);

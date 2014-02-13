@@ -254,7 +254,7 @@ namespace OxyPlot.Series
             var categoryAxis = this.GetCategoryAxis();
 
             var actualBarWidth = this.GetActualBarWidth();
-            var stackIndex = categoryAxis.StackIndexMapping[this.StackGroup];
+            var stackIndex = categoryAxis.GetStackIndex(this.StackGroup);
 
             for (var i = 0; i < this.ValidItems.Count; i++)
             {
