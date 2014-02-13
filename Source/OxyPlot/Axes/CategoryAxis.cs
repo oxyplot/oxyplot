@@ -435,8 +435,12 @@ namespace OxyPlot.Axes
         /// <remarks>
         /// This is used by the category axis that need to know the number of series using the axis.
         /// </remarks>
-        internal override void UpdateFromSeries(IEnumerable<Series> series)
+        internal override void UpdateFromSeries(Series[] series)
         {
+            base.UpdateFromSeries(series);
+
+            this.UpdateLabels(series);
+
             if (this.Labels.Count == 0)
             {
                 this.TotalWidthPerCategory = null;
@@ -536,7 +540,7 @@ namespace OxyPlot.Axes
         /// <param name="series">
         /// The list of series which are rendered
         /// </param>
-        internal void UpdateLabels(IEnumerable<Series> series)
+        private void UpdateLabels(Series[] series)
         {
             if (this.ItemsSource != null)
             {
