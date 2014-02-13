@@ -82,6 +82,11 @@ namespace OxyPlot
                     this.UpdateIntervals();
                 }
 
+                foreach (var a in this.Axes)
+                {
+                    a.ResetCurrentValues();
+                }
+
                 this.RenderBackgrounds(rc);
                 this.RenderAnnotations(rc, AnnotationLayer.BelowAxes);
                 this.RenderAxes(rc, AxisLayer.BelowSeries);

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ErrorColumnSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents a series for clustered or stacked column charts with an error value.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
     using System;
@@ -91,22 +92,22 @@ namespace OxyPlot.Series
                     var minTemp = values.Where(v => v <= 0).Sum();
                     var maxTemp = values.Where(v => v >= 0).Sum() + ((ErrorColumnItem)items.Last()).Error;
 
-                    int stackIndex = categoryAxis.StackIndexMapping[this.StackGroup];
-                    var stackedMinValue = categoryAxis.MinValue[stackIndex, i];
+                    int stackIndex = categoryAxis.GetStackIndex(this.StackGroup);
+                    var stackedMinValue = categoryAxis.GetCurrentMinValue(stackIndex, i);
                     if (!double.IsNaN(stackedMinValue))
                     {
                         minTemp += stackedMinValue;
                     }
 
-                    categoryAxis.MinValue[stackIndex, i] = minTemp;
+                    categoryAxis.SetCurrentMinValue(stackIndex, i, minTemp);
 
-                    var stackedMaxValue = categoryAxis.MaxValue[stackIndex, i];
+                    var stackedMaxValue = categoryAxis.GetCurrentMaxValue(stackIndex, i);
                     if (!double.IsNaN(stackedMaxValue))
                     {
                         maxTemp += stackedMaxValue;
                     }
 
-                    categoryAxis.MaxValue[stackIndex, i] = maxTemp;
+                    categoryAxis.SetCurrentMaxValue(stackIndex, i, maxTemp);
 
                     minValue = Math.Min(minValue, minTemp + this.BaseValue);
                     maxValue = Math.Max(maxValue, maxTemp + this.BaseValue);
@@ -114,12 +115,8 @@ namespace OxyPlot.Series
             }
             else
             {
-                var valuesMin =
-                    this.ValidItems.Select(item => item.Value - ((ErrorColumnItem)item).Error).Concat(new[] { 0d }).
-                        ToList();
-                var valuesMax =
-                    this.ValidItems.Select(item => item.Value + ((ErrorColumnItem)item).Error).Concat(new[] { 0d }).
-                        ToList();
+                var valuesMin = this.ValidItems.Select(item => item.Value - ((ErrorColumnItem)item).Error).Concat(new[] { 0d }).ToList();
+                var valuesMax = this.ValidItems.Select(item => item.Value + ((ErrorColumnItem)item).Error).Concat(new[] { 0d }).ToList();
                 minValue = valuesMin.Min();
                 maxValue = valuesMax.Max();
                 if (this.BaseValue < minValue)
@@ -190,8 +187,8 @@ namespace OxyPlot.Series
             // Render the error
             var lowerValue = topValue - errorItem.Error;
             var upperValue = topValue + errorItem.Error;
-            var left = 0.5 - this.ErrorWidth / 2;
-            var right = 0.5 + this.ErrorWidth / 2;
+            var left = 0.5 - (this.ErrorWidth / 2);
+            var right = 0.5 + (this.ErrorWidth / 2);
             var leftValue = categoryValue + (left * actualBarWidth);
             var middleValue = categoryValue + (0.5 * actualBarWidth);
             var rightValue = categoryValue + (right * actualBarWidth);
@@ -235,6 +232,5 @@ namespace OxyPlot.Series
                     true);
             }
         }
-
     }
 }

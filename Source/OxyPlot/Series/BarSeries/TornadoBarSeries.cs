@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TornadoBarSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents a series that can be used to create tornado plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
     using System;
@@ -293,11 +294,10 @@ namespace OxyPlot.Series
                 var categoryIndex = item.GetCategoryIndex(i);
 
                 var baseValue = double.IsNaN(item.BaseValue) ? this.BaseValue : item.BaseValue;
-
-                var p0 = this.Transform(item.Minimum, categoryIndex - 0.5 + categoryAxis.BarOffset[categoryIndex]);
-                var p1 = this.Transform(
-                    item.Maximum, categoryIndex - 0.5 + categoryAxis.BarOffset[categoryIndex] + actualBarWidth);
-                var p2 = this.Transform(baseValue, categoryIndex - 0.5 + categoryAxis.BarOffset[categoryIndex]);
+                var barOffset = categoryAxis.GetCurrentBarOffset(categoryIndex);
+                var p0 = this.Transform(item.Minimum, categoryIndex - 0.5 + barOffset);
+                var p1 = this.Transform(item.Maximum, categoryIndex - 0.5 + barOffset + actualBarWidth);
+                var p2 = this.Transform(baseValue, categoryIndex - 0.5 + barOffset);
                 p2.X = (int)p2.X;
 
                 var minimumRectangle = OxyRect.Create(p0.X, p0.Y, p2.X, p1.Y);
@@ -584,6 +584,5 @@ namespace OxyPlot.Series
         {
             return this.XAxis;
         }
-
     }
 }

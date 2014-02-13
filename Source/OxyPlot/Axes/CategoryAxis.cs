@@ -41,12 +41,57 @@ namespace OxyPlot.Axes
     /// Represents a category axis.
     /// </summary>
     /// <remarks>
-    /// The category axis is using the index of the label collection items as coordinates. 
-    /// If you have 5 categories in the Labels collection, the categories will be placed at coordinates 0 to 4. 
+    /// The category axis is using the index of the label collection items as coordinates.
+    /// If you have 5 categories in the Labels collection, the categories will be placed at coordinates 0 to 4.
     /// The range of the axis will be from -0.5 to 4.5 (excluding padding).
     /// </remarks>
     public class CategoryAxis : LinearAxis
     {
+        /// <summary>
+        /// The current offset of the bars (not used for stacked bar series).
+        /// </summary>
+        /// <remarks>
+        /// These offsets are modified during rendering.
+        /// </remarks>
+        private double[] currentBarOffset;
+
+        /// <summary>
+        /// The current max value per StackIndex and Label.
+        /// </summary>
+        /// <remarks>
+        /// These values are modified during rendering.
+        /// </remarks>
+        private double[,] currentMaxValue;
+
+        /// <summary>
+        /// The current min value per StackIndex and Label.
+        /// </summary>
+        /// <remarks>
+        /// These values are modified during rendering.
+        /// </remarks>
+        private double[,] currentMinValue;
+
+        /// <summary>
+        /// The base value per StackIndex and Label for positive values of stacked bar series.
+        /// </summary>
+        /// <remarks>
+        /// These values are modified during rendering.
+        /// </remarks>
+        private double[,] currentPositiveBaseValues;
+
+        /// <summary>
+        /// The base value per StackIndex and Label for negative values of stacked bar series.
+        /// </summary>
+        /// <remarks>
+        /// These values are modified during rendering.
+        /// </remarks>
+        private double[,] currentNegativeBaseValues;
+
+        /// <summary>
+        /// The maximum stack index.
+        /// </summary>
+        private int maxStackIndex;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
         /// </summary>
@@ -127,49 +172,29 @@ namespace OxyPlot.Axes
         public IList<string> Labels { get; set; }
 
         /// <summary>
-        /// Gets or sets the current offset of the bars (not used for stacked bar series).
+        /// Gets the maximal width of all labels.
         /// </summary>
-        internal double[] BarOffset { get; set; }
+        public double MaxWidth { get; private set; }
 
         /// <summary>
-        /// Gets or sets the max value per StackIndex and Label (only used for stacked bar series).
+        /// Gets or sets the original offset of the bars (not used for stacked bar series).
         /// </summary>
-        internal double[,] MaxValue { get; set; }
+        private double[] BarOffset { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximal width of all labels
+        /// Gets or sets the stack index mapping. The mapping indicates to which rank a specific stack index belongs.
         /// </summary>
-        internal double MaxWidth { get; set; }
-
-        /// <summary>
-        /// Gets or sets the min value per StackIndex and Label (only used for stacked bar series).
-        /// </summary>
-        internal double[,] MinValue { get; set; }
-
-        /// <summary>
-        /// Gets or sets per StackIndex and Label the base value for negative values of stacked bar series.
-        /// </summary>
-        internal double[,] NegativeBaseValues { get; set; }
-
-        /// <summary>
-        /// Gets or sets per StackIndex and Label the base value for positive values of stacked bar series.
-        /// </summary>
-        internal double[,] PositiveBaseValues { get; set; }
-
-        /// <summary>
-        /// Gets or sets the StackIndexMapping. The mapping indicates to which rank a specific stack index belongs.
-        /// </summary>
-        internal Dictionary<string, int> StackIndexMapping { get; set; }
+        private Dictionary<string, int> StackIndexMapping { get; set; }
 
         /// <summary>
         /// Gets or sets the offset of the bars per StackIndex and Label (only used for stacked bar series).
         /// </summary>
-        internal double[,] StackedBarOffset { get; set; }
+        private double[,] StackedBarOffset { get; set; }
 
         /// <summary>
         /// Gets or sets sum of the widths of the single bars per label. This is used to find the bar width of BarSeries
         /// </summary>
-        internal double[] TotalWidthPerCategory { get; set; }
+        private double[] TotalWidthPerCategory { get; set; }
 
         /// <summary>
         /// Formats the value to be used on the axis.
@@ -275,6 +300,111 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
+        /// Gets the current bar offset for the specified category index.
+        /// </summary>
+        /// <param name="categoryIndex">The category index.</param>
+        /// <returns>The offset.</returns>
+        public double GetCurrentBarOffset(int categoryIndex)
+        {
+            return this.currentBarOffset[categoryIndex];
+        }
+
+        /// <summary>
+        /// Increases the current bar offset for the specified category index.
+        /// </summary>
+        /// <param name="categoryIndex">The category index.</param>
+        /// <param name="delta">The offset increase.</param>
+        public void IncreaseCurrentBarOffset(int categoryIndex, double delta)
+        {
+            this.currentBarOffset[categoryIndex] += delta;
+        }
+
+        /// <summary>
+        /// Gets the current base value for the specified stack and category index.
+        /// </summary>
+        /// <param name="stackIndex">The stack index.</param>
+        /// <param name="categoryIndex">The category index.</param>
+        /// <param name="negativeValue">if set to <c>true</c> get the base value for negative values.</param>
+        /// <returns>The current base value.</returns>
+        public double GetCurrentBaseValue(int stackIndex, int categoryIndex, bool negativeValue)
+        {
+            return negativeValue ? this.currentNegativeBaseValues[stackIndex, categoryIndex] : this.currentPositiveBaseValues[stackIndex, categoryIndex];
+        }
+
+        /// <summary>
+        /// Sets the current base value for the specified stack and category index.
+        /// </summary>
+        /// <param name="stackIndex">Index of the stack.</param>
+        /// <param name="categoryIndex">Index of the category.</param>
+        /// <param name="negativeValue">if set to <c>true</c> set the base value for negative values.</param>
+        /// <param name="newValue">The new value.</param>
+        public void SetCurrentBaseValue(int stackIndex, int categoryIndex, bool negativeValue, double newValue)
+        {
+            if (negativeValue)
+            {
+                this.currentNegativeBaseValues[stackIndex, categoryIndex] = newValue;
+            }
+            else
+            {
+                this.currentPositiveBaseValues[stackIndex, categoryIndex] = newValue;
+            }
+        }
+
+        /// <summary>
+        /// Gets the current maximum value for the specified stack and category index.
+        /// </summary>
+        /// <param name="stackIndex">The stack index.</param>
+        /// <param name="categoryIndex">The category index.</param>
+        /// <returns>The current value.</returns>
+        public double GetCurrentMaxValue(int stackIndex, int categoryIndex)
+        {
+            return this.currentMaxValue[stackIndex, categoryIndex];
+        }
+
+        /// <summary>
+        /// Sets the current maximum value for the specified stack and category index.
+        /// </summary>
+        /// <param name="stackIndex">The stack index.</param>
+        /// <param name="categoryIndex">The category index.</param>
+        /// <param name="newValue">The new value.</param>
+        public void SetCurrentMaxValue(int stackIndex, int categoryIndex, double newValue)
+        {
+            this.currentMaxValue[stackIndex, categoryIndex] = newValue;
+        }
+
+        /// <summary>
+        /// Gets the current minimum value for the specified stack and category index.
+        /// </summary>
+        /// <param name="stackIndex">The stack index.</param>
+        /// <param name="categoryIndex">The category index.</param>
+        /// <returns>The current value.</returns>
+        public double GetCurrentMinValue(int stackIndex, int categoryIndex)
+        {
+            return this.currentMinValue[stackIndex, categoryIndex];
+        }
+
+        /// <summary>
+        /// Sets the current minimum value for the specified stack and category index.
+        /// </summary>
+        /// <param name="stackIndex">The stack index.</param>
+        /// <param name="categoryIndex">The category index.</param>
+        /// <param name="newValue">The new value.</param>
+        public void SetCurrentMinValue(int stackIndex, int categoryIndex, double newValue)
+        {
+            this.currentMinValue[stackIndex, categoryIndex] = newValue;
+        }
+
+        /// <summary>
+        /// Gets the stack index for the specified stack group.
+        /// </summary>
+        /// <param name="stackGroup">The stack group.</param>
+        /// <returns>The stack index.</returns>
+        public int GetStackIndex(string stackGroup)
+        {
+            return this.StackIndexMapping[stackGroup];
+        }
+
+        /// <summary>
         /// Updates the actual maximum and minimum values. If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used. If Maximum or Minimum have been set, these values will be used. Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
         /// </summary>
         internal override void UpdateActualMaxMin()
@@ -314,10 +444,6 @@ namespace OxyPlot.Axes
                 this.BarOffset = null;
                 this.StackedBarOffset = null;
                 this.StackIndexMapping = null;
-                this.PositiveBaseValues = null;
-                this.NegativeBaseValues = null;
-                this.MaxValue = null;
-                this.MinValue = null;
 
                 return;
             }
@@ -351,8 +477,7 @@ namespace OxyPlot.Axes
             }
 
             // Add width of unstacked series
-            var unstackedBarSeries =
-                categorizedSeries.Where(s => !(s is IStackableSeries) || !((IStackableSeries)s).IsStacked).ToList();
+            var unstackedBarSeries = categorizedSeries.Where(s => !(s is IStackableSeries) || !((IStackableSeries)s).IsStacked).ToList();
             foreach (var s in unstackedBarSeries)
             {
                 for (var i = 0; i < this.Labels.Count; i++)
@@ -402,15 +527,7 @@ namespace OxyPlot.Axes
                 this.StackIndexMapping.Add(stackIndices[i], i);
             }
 
-            this.PositiveBaseValues = new double[stackIndices.Count, this.Labels.Count];
-            this.PositiveBaseValues.Fill2D(double.NaN);
-            this.NegativeBaseValues = new double[stackIndices.Count, this.Labels.Count];
-            this.NegativeBaseValues.Fill2D(double.NaN);
-
-            this.MaxValue = new double[stackIndices.Count, this.Labels.Count];
-            this.MaxValue.Fill2D(double.NaN);
-            this.MinValue = new double[stackIndices.Count, this.Labels.Count];
-            this.MinValue.Fill2D(double.NaN);
+            this.maxStackIndex = stackIndices.Count;
         }
 
         /// <summary>
@@ -446,6 +563,38 @@ namespace OxyPlot.Axes
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Resets the current values.
+        /// </summary>
+        /// <remarks>
+        /// The current values may be modified during update of max/min and rendering.
+        /// </remarks>
+        protected internal override void ResetCurrentValues()
+        {
+            base.ResetCurrentValues();
+            this.currentBarOffset = this.BarOffset != null ? this.BarOffset.ToArray() : null;
+
+            if (this.maxStackIndex > 0)
+            {
+                this.currentPositiveBaseValues = new double[this.maxStackIndex, this.Labels.Count];
+                this.currentPositiveBaseValues.Fill2D(double.NaN);
+                this.currentNegativeBaseValues = new double[this.maxStackIndex, this.Labels.Count];
+                this.currentNegativeBaseValues.Fill2D(double.NaN);
+
+                this.currentMaxValue = new double[this.maxStackIndex, this.Labels.Count];
+                this.currentMaxValue.Fill2D(double.NaN);
+                this.currentMinValue = new double[this.maxStackIndex, this.Labels.Count];
+                this.currentMinValue.Fill2D(double.NaN);
+            }
+            else
+            {
+                this.currentPositiveBaseValues = null;
+                this.currentNegativeBaseValues = null;
+                this.currentMaxValue = null;
+                this.currentMinValue = null;
             }
         }
     }
