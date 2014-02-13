@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlotModel.Rendering.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,16 +27,19 @@
 //   Partial PlotModel class - this file contains rendering methods.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1601:PartialElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public partial class PlotModel
     {
         /// <summary>
@@ -108,81 +111,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Calculates the maximum size of the specified axes.
-        /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="axesOfPositionTier">
-        /// The axes of position tier.
-        /// </param>
-        /// <returns>
-        /// The maximum size.
-        /// </returns>
-        private static double MaxSizeOfPositionTier(IRenderContext rc, IEnumerable<Axis> axesOfPositionTier)
-        {
-            double maxSizeOfPositionTier = 0;
-            foreach (var axis in axesOfPositionTier)
-            {
-                OxySize size = axis.Measure(rc);
-                if (axis.IsVertical())
-                {
-                    if (size.Width > maxSizeOfPositionTier)
-                    {
-                        maxSizeOfPositionTier = size.Width;
-                    }
-                }
-                else // caution: this includes AngleAxis because Position=None
-                {
-                    if (size.Height > maxSizeOfPositionTier)
-                    {
-                        maxSizeOfPositionTier = size.Height;
-                    }
-                }
-            }
-
-            return maxSizeOfPositionTier;
-        }
-
-        /// <summary>
-        /// Adjust the plot margins.
-        /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <returns>
-        /// The adjust plot margins.
-        /// </returns>
-        private bool AdjustPlotMargins(IRenderContext rc)
-        {
-            var currentMargin = this.ActualPlotMargins;
-
-            for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
-            {
-                var axesOfPosition = this.Axes.Where(a => a.Position == position).ToList();
-
-                var requiredSize = AdjustAxesPositions(rc, axesOfPosition);
-
-                EnsureMarginIsBigEnough(ref currentMargin, requiredSize, position);
-            }
-
-            // Special case for AngleAxis which is all around the plot
-            var angularAxes = this.Axes.OfType<AngleAxis>().Cast<Axis>().ToList();
-
-            if (angularAxes.Any())
-            {
-                var requiredSize = AdjustAxesPositions(rc, angularAxes);
-
-                EnsureMarginIsBigEnough(ref currentMargin, requiredSize);
-            }
-
-            if (currentMargin.Equals(this.ActualPlotMargins)) return false;
-
-            this.ActualPlotMargins = currentMargin;
-            return true;
-        }
-
-        /// <summary>
         /// Increase margin size if needed, do it on all borders
         /// </summary>
         private static void EnsureMarginIsBigEnough(ref OxyThickness currentMargin, double minBorderSize)
@@ -222,8 +150,90 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Calculates the maximum size of the specified axes.
+        /// </summary>
+        /// <param name="rc">
+        /// The render context.
+        /// </param>
+        /// <param name="axesOfPositionTier">
+        /// The axes of position tier.
+        /// </param>
+        /// <returns>
+        /// The maximum size.
+        /// </returns>
+        private static double MaxSizeOfPositionTier(IRenderContext rc, IEnumerable<Axis> axesOfPositionTier)
+        {
+            double maxSizeOfPositionTier = 0;
+            foreach (var axis in axesOfPositionTier)
+            {
+                var size = axis.Measure(rc);
+                if (axis.IsVertical())
+                {
+                    if (size.Width > maxSizeOfPositionTier)
+                    {
+                        maxSizeOfPositionTier = size.Width;
+                    }
+                }
+                else
+                {
+                    // caution: this includes AngleAxis because Position=None
+                    if (size.Height > maxSizeOfPositionTier)
+                    {
+                        maxSizeOfPositionTier = size.Height;
+                    }
+                }
+            }
+
+            return maxSizeOfPositionTier;
+        }
+
+        /// <summary>
+        /// Adjust the plot margins.
+        /// </summary>
+        /// <param name="rc">
+        /// The render context.
+        /// </param>
+        /// <returns>
+        /// The adjust plot margins.
+        /// </returns>
+        private bool AdjustPlotMargins(IRenderContext rc)
+        {
+            var currentMargin = this.ActualPlotMargins;
+
+            for (var position = AxisPosition.Left; position <= AxisPosition.Bottom; position++)
+            {
+                var axesOfPosition = this.VisibleAxes.Where(a => a.Position == position).ToList();
+
+                var requiredSize = this.AdjustAxesPositions(rc, axesOfPosition);
+
+                EnsureMarginIsBigEnough(ref currentMargin, requiredSize, position);
+            }
+
+            // Special case for AngleAxis which is all around the plot
+            var angularAxes = this.VisibleAxes.OfType<AngleAxis>().Cast<Axis>().ToList();
+
+            if (angularAxes.Any())
+            {
+                var requiredSize = this.AdjustAxesPositions(rc, angularAxes);
+
+                EnsureMarginIsBigEnough(ref currentMargin, requiredSize);
+            }
+
+            if (currentMargin.Equals(this.ActualPlotMargins))
+            {
+                return false;
+            }
+
+            this.ActualPlotMargins = currentMargin;
+            return true;
+        }
+
+        /// <summary>
         /// Adjust the positions of parallel axes, returns total size
         /// </summary>
+        /// <param name="rc">The render context.</param>
+        /// <param name="parallelAxes">The parallel axes.</param>
+        /// <returns>The maximum value of the position tier??</returns>
         private double AdjustAxesPositions(IRenderContext rc, IList<Axis> parallelAxes)
         {
             double maxValueOfPositionTier = 0;
@@ -301,9 +311,9 @@ namespace OxyPlot
         {
             for (int i = 0; i < 2; i++)
             {
-                foreach (var a in this.Axes)
+                foreach (var a in this.VisibleAxes)
                 {
-                    if (a.IsAxisVisible && a.Layer == layer)
+                    if (a.Layer == layer)
                     {
                         a.Render(rc, this, layer, i);
                     }
