@@ -1251,10 +1251,12 @@ namespace OxyPlot
                 // Updates the default axes
                 this.EnsureDefaultAxes();
 
+                var visibleSeries = this.VisibleSeries.ToArray();
+
                 // Update data of the series
                 if (updateData)
                 {
-                    foreach (var s in this.VisibleSeries)
+                    foreach (var s in visibleSeries)
                     {
                         s.UpdateData();
                     }
@@ -1265,16 +1267,10 @@ namespace OxyPlot
                     a.PlotModel = this;
                 }
 
-                foreach (var c in this.Axes.OfType<CategoryAxis>())
-                {
-                    // TODO: move this call into CategoryAxis.UpdateFromSeries?
-                    c.UpdateLabels(this.VisibleSeries);
-                }
-
                 // Update valid data of the series
                 if (updateData)
                 {
-                    foreach (var s in this.VisibleSeries)
+                    foreach (var s in visibleSeries)
                     {
                         s.UpdateValidData();
                     }
@@ -1284,7 +1280,7 @@ namespace OxyPlot
                 // This is used by the category axis that need to know the number of series using the axis.
                 foreach (var a in this.Axes)
                 {
-                    a.UpdateFromSeries(this.VisibleSeries);
+                    a.UpdateFromSeries(visibleSeries);
                     a.ResetCurrentValues();
                 }
 

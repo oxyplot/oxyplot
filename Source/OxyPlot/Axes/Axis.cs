@@ -1414,7 +1414,7 @@ namespace OxyPlot.Axes
         /// <remarks>
         /// This is used by the category axis that need to know the number of series using the axis.
         /// </remarks>
-        internal virtual void UpdateFromSeries(IEnumerable<Series> series)
+        internal virtual void UpdateFromSeries(Series[] series)
         {
         }
 
