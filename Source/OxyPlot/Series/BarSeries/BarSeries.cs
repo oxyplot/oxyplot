@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BarSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents a series for clustered or stacked bar charts.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
     using System;
@@ -138,26 +139,16 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Draws the label.
+        /// Renders the item label.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="clippingRect">
-        /// The clipping rect.
-        /// </param>
-        /// <param name="rect">
-        /// The rect.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="i">
-        /// The i.
-        /// </param>
-        protected override void RenderLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int i)
+        /// <param name="rc">The render context</param>
+        /// <param name="clippingRect">The clipping rectangle</param>
+        /// <param name="rect">The rectangle of the item.</param>
+        /// <param name="value">The value of the label.</param>
+        /// <param name="index">The index of the bar item.</param>
+        protected override void RenderLabel(IRenderContext rc, OxyRect clippingRect, OxyRect rect, double value, int index)
         {
-            var s = this.Format(this.LabelFormatString, this.GetItem(this.ValidItemsIndexInversion[i]), value);
+            var s = this.Format(this.LabelFormatString, this.GetItem(this.ValidItemsIndexInversion[index]), value);
             HorizontalAlignment ha;
             ScreenPoint pt;
             switch (this.LabelPlacement)
@@ -192,6 +183,5 @@ namespace OxyPlot.Series
                 ha,
                 VerticalAlignment.Middle);
         }
-
     }
 }

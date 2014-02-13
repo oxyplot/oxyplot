@@ -173,8 +173,8 @@ namespace OxyPlot.Series
         /// </summary>
         protected internal override void EnsureAxes()
         {
-            this.XAxis = PlotModel.GetAxisOrDefault(this.XAxisKey, PlotModel.DefaultXAxis);
-            this.YAxis = PlotModel.GetAxisOrDefault(this.YAxisKey, PlotModel.DefaultYAxis);
+            this.XAxis = this.PlotModel.GetAxisOrDefault(this.XAxisKey, this.PlotModel.DefaultXAxis);
+            this.YAxis = this.PlotModel.GetAxisOrDefault(this.YAxisKey, this.PlotModel.DefaultYAxis);
         }
 
         /// <summary>
