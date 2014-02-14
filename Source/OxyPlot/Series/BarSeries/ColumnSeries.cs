@@ -83,7 +83,7 @@ namespace OxyPlot.Series
         protected override double GetActualBarWidth()
         {
             var categoryAxis = this.GetCategoryAxis();
-            return this.ColumnWidth / (1 + categoryAxis.GapWidth) / categoryAxis.MaxWidth;
+            return this.ColumnWidth / (1 + categoryAxis.GapWidth) / categoryAxis.GetMaxWidth();
         }
 
         /// <summary>

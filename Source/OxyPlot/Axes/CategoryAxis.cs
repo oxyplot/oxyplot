@@ -93,6 +93,11 @@ namespace OxyPlot.Axes
         private int maxStackIndex;
 
         /// <summary>
+        /// The maximal width of all labels.
+        /// </summary>
+        private double maxWidth;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
         /// </summary>
         public CategoryAxis()
@@ -172,11 +177,6 @@ namespace OxyPlot.Axes
         public IList<string> Labels { get; set; }
 
         /// <summary>
-        /// Gets the maximal width of all labels.
-        /// </summary>
-        public double MaxWidth { get; private set; }
-
-        /// <summary>
         /// Gets or sets the original offset of the bars (not used for stacked bar series).
         /// </summary>
         private double[] BarOffset { get; set; }
@@ -214,6 +214,15 @@ namespace OxyPlot.Axes
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the maximum width of all category labels.
+        /// </summary>
+        /// <returns>The maximum width.</returns>
+        public double GetMaxWidth()
+        {
+            return this.maxWidth;
         }
 
         /// <summary>
@@ -444,7 +453,7 @@ namespace OxyPlot.Axes
             if (this.Labels.Count == 0)
             {
                 this.TotalWidthPerCategory = null;
-                this.MaxWidth = double.NaN;
+                this.maxWidth = double.NaN;
                 this.BarOffset = null;
                 this.StackedBarOffset = null;
                 this.StackIndexMapping = null;
@@ -492,13 +501,13 @@ namespace OxyPlot.Axes
                 }
             }
 
-            this.MaxWidth = this.TotalWidthPerCategory.Max();
+            this.maxWidth = this.TotalWidthPerCategory.Max();
 
             // Calculate BarOffset and StackedBarOffset
             this.BarOffset = new double[this.Labels.Count];
             this.StackedBarOffset = new double[stackIndices.Count + 1, this.Labels.Count];
 
-            var factor = 0.5 / (1 + this.GapWidth) / this.MaxWidth;
+            var factor = 0.5 / (1 + this.GapWidth) / this.maxWidth;
             for (var i = 0; i < this.Labels.Count; i++)
             {
                 this.BarOffset[i] = 0.5 - (this.TotalWidthPerCategory[i] * factor);
@@ -519,7 +528,7 @@ namespace OxyPlot.Axes
                     this.StackedBarOffset[j, i] = this.BarOffset[i];
                     if (j < stackIndices.Count)
                     {
-                        this.BarOffset[i] += stackRankBarWidth[j] / (1 + this.GapWidth) / this.MaxWidth;
+                        this.BarOffset[i] += stackRankBarWidth[j] / (1 + this.GapWidth) / this.maxWidth;
                     }
                 }
             }
@@ -532,42 +541,6 @@ namespace OxyPlot.Axes
             }
 
             this.maxStackIndex = stackIndices.Count;
-        }
-
-        /// <summary>
-        /// Creates Labels list if no labels were set
-        /// </summary>
-        /// <param name="series">
-        /// The list of series which are rendered
-        /// </param>
-        private void UpdateLabels(Series[] series)
-        {
-            if (this.ItemsSource != null)
-            {
-                this.Labels.Clear();
-                ReflectionHelper.FillList(this.ItemsSource, this.LabelField, this.Labels);
-            }
-
-            if (this.Labels.Count == 0)
-            {
-                foreach (var s in series)
-                {
-                    if (!s.IsUsing(this))
-                    {
-                        continue;
-                    }
-
-                    var bsb = s as CategorizedSeries;
-                    if (bsb != null)
-                    {
-                        int max = bsb.GetItems().Count;
-                        while (this.Labels.Count < max)
-                        {
-                            this.Labels.Add((this.Labels.Count + 1).ToString(CultureInfo.InvariantCulture));
-                        }
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -599,6 +572,42 @@ namespace OxyPlot.Axes
                 this.currentNegativeBaseValues = null;
                 this.currentMaxValue = null;
                 this.currentMinValue = null;
+            }
+        }
+
+        /// <summary>
+        /// Creates Labels list if no labels were set
+        /// </summary>
+        /// <param name="series">
+        /// The list of series which are rendered
+        /// </param>
+        private void UpdateLabels(IEnumerable<Series> series)
+        {
+            if (this.ItemsSource != null)
+            {
+                this.Labels.Clear();
+                ReflectionHelper.FillList(this.ItemsSource, this.LabelField, this.Labels);
+            }
+
+            if (this.Labels.Count == 0)
+            {
+                foreach (var s in series)
+                {
+                    if (!s.IsUsing(this))
+                    {
+                        continue;
+                    }
+
+                    var bsb = s as CategorizedSeries;
+                    if (bsb != null)
+                    {
+                        int max = bsb.GetItems().Count;
+                        while (this.Labels.Count < max)
+                        {
+                            this.Labels.Add((this.Labels.Count + 1).ToString(CultureInfo.InvariantCulture));
+                        }
+                    }
+                }
             }
         }
     }
