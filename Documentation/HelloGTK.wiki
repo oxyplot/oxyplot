@@ -8,4 +8,4 @@
 
 - Adding the "OxyPlot GTK#" NuGet package
 - Add a control
-- Bind to a PlotModel
+- Bind to a `PlotModel`
