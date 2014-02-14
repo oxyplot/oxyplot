@@ -40,10 +40,6 @@ Add a class that creates a [API/OxyPlot.PlotModel|PlotModel] and a [API/OxyPlot.
 
 Define the namespace in the `Window` element, set the `DataContext` and add a [API/OxyPlot.Wpf.Plot|Plot] control:
 
-```cs
-@include ..\Source\Examples\DocumentationExamples\HelloWorld\WpfApplication1\MainViewModel.cs
-```
-
 ```xml
 @include ..\Source\Examples\DocumentationExamples\HelloWorld\WpfApplication1\MainWindow.xaml
 ```
