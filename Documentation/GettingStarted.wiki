@@ -4,8 +4,15 @@
 
 == Getting started
 
+=== C#
+
 - [HelloWpf|WPF]
+- [HelloWpfXaml|WPF] (XAML)
 - [HelloWindowsForms|Windows Forms]
 - [HelloSilverlight|Silverlight]
 - [HelloWindowsStoreApp|Windows Store App]
 - [HelloGTK|GTK#]
+
+=== VB.NET
+
+- [HelloVB|WPF]

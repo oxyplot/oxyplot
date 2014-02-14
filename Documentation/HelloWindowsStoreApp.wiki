@@ -2,7 +2,9 @@
 @title Windows Store App Example
 @keywords OxyPlot,Windows Store App,Windows 8,WinRT,Metro,Example
 
-== Windows Store App Example
+== Windows Store app example
+
+This example shows how to create a Windows Store app where the content of the plot is defined in code.
 
 === Create project
 Start Visual Studio and select "FILE -> New -> Project..." to create a new Windows Store app:
@@ -26,7 +28,7 @@ You can also use the [http://docs.nuget.org/docs/start-here/using-the-package-ma
 PM> Install-Package OxyPlot.Metro
 ```
 
-=== Create a ViewModel
+=== Create a view model
 
 Add a class that creates a [API/OxyPlot.PlotModel|PlotModel] and a [API/OxyPlot.FunctionSeries|FunctionSeries].
 
