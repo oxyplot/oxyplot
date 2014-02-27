@@ -28,13 +28,15 @@
 namespace ExampleBrowser
 {
 
-  using System.Drawing;
+  	using System.Drawing;
   
-  using MonoTouch.Foundation;
-  using MonoTouch.UIKit;
-  using MonoTouch.MessageUI;
+  	using MonoTouch.Foundation;
+  	using MonoTouch.UIKit;
+  	using MonoTouch.MessageUI;
   
-  using ExampleLibrary;
+  	using ExampleLibrary;
+
+	using OxyPlot.XamarinIOS;
 
 	public class GraphViewController : UIViewController
 	{
@@ -64,13 +66,13 @@ namespace ExampleBrowser
 					actionSheet.ShowInView (View);
 				});
 
-			var scrollView = new GraphScrollView(exampleInfo,
-			                 new RectangleF(new PointF(0, 0),
-			               new SizeF(UIScreen.MainScreen.ApplicationFrame.Size.Width,
-			          UIScreen.MainScreen.ApplicationFrame.Height -
-			          UIScreen.MainScreen.ApplicationFrame.Top - 10)));
-			scrollView.BackgroundColor = UIColor.White;
-			View = scrollView;
+			// Only for iOS 7 and later?
+			this.EdgesForExtendedLayout = UIRectEdge.None;
+
+			var plot = new PlotView ();
+			plot.Model = exampleInfo.PlotModel;
+			plot.BackgroundColor = UIColor.White;
+			this.View = plot;
 		}
 
 		private void Email(string exportType)
@@ -100,6 +102,7 @@ namespace ExampleBrowser
 			mail.Finished += HandleMailFinished;
 			mail.AddAttachmentData(nsData, attachmentType, title);
 
+			// TODO: obsolete method
 			this.PresentModalViewController (mail, true);
 		}
 
@@ -113,6 +116,8 @@ namespace ExampleBrowser
 		        // you should handle other values that could be returned
 		        // in e.Result and also in e.Error
 		    }
+
+			// TODO: obsolete method
 		    e.Controller.DismissModalViewControllerAnimated (true);
 		}
 	}

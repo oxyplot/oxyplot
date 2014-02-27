@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GraphView.cs" company="OxyPlot">
+// <copyright file="Export.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
 //   Copyright (c) 2012 Oystein Bjorke
@@ -25,38 +25,39 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ExampleBrowser
+namespace OxyPlot.XamarinIOS
 {
   using System.Drawing;
-
+  
+  using MonoTouch.Foundation;
   using MonoTouch.UIKit;
 
-  using OxyPlot;
-  using OxyPlot.XamarinIOS;
-
-  using ExampleLibrary;
-
-	public class GraphView : UIView
+	public static class ExportExtensions
 	{
-		private ExampleInfo exampleInfo;
-
-		public GraphView (ExampleInfo exampleInfo)
+		public static NSData ToPng(this UIView view, RectangleF rect)
 		{
-			this.exampleInfo = exampleInfo;
+			return view.GetImage(rect).AsPNG();
 		}
 
-		public override void Draw (System.Drawing.RectangleF rect)
+		public static UIImage GetImage(this UIView view, RectangleF rect)
 		{
-			var plot = exampleInfo.PlotModel;
+			UIGraphics.BeginImageContext(rect.Size);
+			view.Draw(rect);
+			var image = UIGraphics.GetImageFromCurrentImageContext();
+			UIGraphics.EndImageContext();
 
-			plot.PlotMargins = new OxyThickness(5);
-			plot.Background = OxyColors.LightGray;
-			plot.Update(true);
+			return image;
+		}
 
-			var context = UIGraphics.GetCurrentContext();
+		public static NSData ToPdf(this UIView view, RectangleF rect)
+		{
+			var data = new NSMutableData();
+			UIGraphics.BeginPDFContext(data, rect, null);
+			UIGraphics.BeginPDFPage();
+			view.Draw(rect);
+			UIGraphics.EndPDFContent();
 
-			var renderer = new MonoTouchRenderContext(context);
-			plot.Render(renderer, rect.Width, rect.Height);
+			return data;
 		}
 	}
 }
