@@ -133,7 +133,7 @@
             }
 
             this.symbolPosition = model.PlotArea.Bottom;
-            this.symbolSize = rc.MeasureText(this.Symbol, this.FontFamily, this.FontSize);
+			this.symbolSize = rc.MeasureText(this.Symbol, this.ActualFont, this.ActualFontSize);
             foreach (var v in this.Values)
             {
                 if (double.IsNaN(v) || v < this.XAxis.ActualMinimum || v > this.XAxis.ActualMaximum)
@@ -146,8 +146,8 @@
                     new ScreenPoint(x, this.symbolPosition),
                     this.Symbol,
                     this.Color,
-                    this.FontFamily,
-                    this.FontSize,
+					this.ActualFont,
+					this.ActualFontSize,
                     FontWeights.Normal,
                     0,
                     HorizontalAlignment.Center,
