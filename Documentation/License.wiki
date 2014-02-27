@@ -4,12 +4,12 @@
 
 == License
 
-Information about the license is found in the `~/License.txt` file. 
+Information about the license is found in the `~/LICENSE` file. 
 
 OxyPlot is licensed under the [http://en.wikipedia.org/wiki/MIT_License|MIT] license. This is the shortest and probably broadest of all the popular open-source licenses. Its terms are very loose and more permissive than most other licenses. It is also compatible with [http://en.wikipedia.org/wiki/GPL|GPL].
 
 ```
-@include ..\License.txt
+@include ..\LICENSE
 ```
 
 The license is explained in [http://www.smashingmagazine.com/2010/03/24/a-short-guide-to-open-source-and-similar-licenses/|a short guide to open source licenses]:
@@ -20,3 +20,18 @@ The license is explained in [http://www.smashingmagazine.com/2010/03/24/a-short-
 
 The MIT License is the least restrictive license out there. It basically says that anyone can do whatever they want with the licensed material, as long as it is accompanied by the license.
 
+== AUTHORS
+
+Information about the copyright holders is found in the `~/AUTHORS` file. 
+
+```
+@include ..\AUTHORS
+```
+
+== CONTRIBUTORS
+
+Information about the contributors is found in the `~/CONTRIBUTORS` file. 
+
+```
+@include ..\CONTRIBUTORS
+```

@@ -1,1 +1,1 @@
-..\Tools\Lynx\UpdateFileHeaders.exe /Company="OxyPlot" /copyright-file=..\License.txt /Directory="..\Source"
+..\Tools\Lynx\UpdateFileHeaders.exe /Company="OxyPlot" /copyright-file=..\LICENSE /Directory="..\Source"
