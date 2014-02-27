@@ -30,7 +30,6 @@
 
 namespace OxyPlot.GtkSharp
 {
-    using System;
     using Cairo;
 
     /// <summary>
@@ -76,14 +75,14 @@ namespace OxyPlot.GtkSharp
         {
             if (aliased)
             {
-                return new PointD(pt.X, pt.Y);
+                return new PointD(0.5 + (int)pt.X, 0.5 + (int)pt.Y);
             }
 
-            return new PointD((int)Math.Round(pt.X), (int)Math.Round(pt.Y));
+            return new PointD(pt.X, pt.Y);
         }
 
         /// <summary>
-        /// Converts an <see cref="OxyRect"/> to a <see cref="Rectangle"/>.
+        /// Converts an <see cref="OxyRect"/> to a <see cref="Cairo.Rectangle"/>.
         /// </summary>
         /// <param name="r">
         /// The rectangle.
@@ -98,54 +97,14 @@ namespace OxyPlot.GtkSharp
         {
             if (aliased)
             {
-                var x = (int)r.Left;
-                var y = (int)r.Top;
-                var ri = (int)r.Right;
-                var bo = (int)r.Bottom;
+                var x = 0.5 + (int)r.Left;
+                var y = 0.5 + (int)r.Top;
+                var ri = 0.5 + (int)r.Right;
+                var bo = 0.5 + (int)r.Bottom;
                 return new Rectangle(x, y, ri - x, bo - y);
             }
 
-            return new Rectangle(
-                (int)Math.Round(r.Left), (int)Math.Round(r.Top), (int)Math.Round(r.Width), (int)Math.Round(r.Height));
-        }
-
-        /// <summary>
-        /// Converts a point to a ScreenPoint.
-        /// </summary>
-        /// <param name="pt">
-        /// The point.
-        /// </param>
-        /// <returns>
-        /// A screen point.
-        /// </returns>
-        public static ScreenPoint ToScreenPoint(this Point pt)
-        {
-            return new ScreenPoint(pt.X, pt.Y);
-        }
-
-        /// <summary>
-        /// Converts a Point array to a ScreenPoint array.
-        /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <returns>
-        /// A ScreenPoint array.
-        /// </returns>
-        public static ScreenPoint[] ToScreenPointArray(this Point[] points)
-        {
-            if (points == null)
-            {
-                return null;
-            }
-
-            var pts = new ScreenPoint[points.Length];
-            for (int i = 0; i < points.Length; i++)
-            {
-                pts[i] = points[i].ToScreenPoint();
-            }
-
-            return pts;
+            return new Rectangle(r.Left, r.Top, r.Width, r.Height);
         }
     }
 }
