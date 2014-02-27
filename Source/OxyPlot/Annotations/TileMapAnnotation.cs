@@ -204,15 +204,15 @@ namespace OxyPlot.Annotations
 
             // draw the copyright notice
             var p = new ScreenPoint(clippingRect.Right - 5, clippingRect.Bottom - 5);
-            var textSize = rc.MeasureText(this.CopyrightNotice, null, 12);
+			var textSize = rc.MeasureText(this.CopyrightNotice, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
             rc.DrawRectangle(new OxyRect(p.X - textSize.Width - 2, p.Y - textSize.Height - 2, textSize.Width + 4, textSize.Height + 4), OxyColor.FromAColor(200, OxyColors.White), OxyColors.Undefined);
 
             rc.DrawText(
                 p,
                 this.CopyrightNotice,
                 OxyColors.Black,
-                null,
-                12,
+				this.ActualFont,
+				this.ActualFontSize,
                 500,
                 0,
                 HorizontalAlignment.Right,
