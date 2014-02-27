@@ -22,6 +22,26 @@ Then create a [https://oxyplot.codeplex.com/SourceControl/network/create/fork|ne
 And please:
 
 - commit clean change lists, make it easy to review
+- define full name and e-mail address in the change list user information (to be used in the AUTHORS and CONTRIBUTORS files)
 - include the issue number in the description, e.g. "#9945"
 - do not mix multiple issues in the same change list
 - do not clean code in the same change list as fixing an issue, do it in a separate change list
+
+=== Set user information in SourceTree
+
+Tools | Options | General | Default user information
+
+{Images\SourceTree_UserInformation.png}
+
+=== Set user information in TortoiseHg
+
+Settings | Commit | Username: "First Last <email@address.com>"
+
+=== User information in Tortoise
+
+In your `~/.hgrc` (*nix) or `mercurial.ini` (Windows) file:
+
+```
+[ui]
+username = First Last <email@address.com>
+```
