@@ -53,6 +53,8 @@ namespace ExportDemo
 
     using PropertyTools.Wpf;
 
+    using SvgExporter = OxyPlot.SvgExporter;
+
     [Export(typeof(IShell))]
     public class ShellViewModel : PropertyChangedBase, IShell
     {
@@ -360,7 +362,14 @@ namespace ExportDemo
                 var textMeasurer = new ShapesRenderContext(new Canvas());
                 using (var s = File.Create(path))
                 {
-                    SvgExporter.Export(this.Model, s, this.Plot.ActualWidth, this.Plot.ActualHeight, true, textMeasurer);
+                    var exporter = new OxyPlot.Wpf.SvgExporter
+                    {
+                        Width = this.Plot.ActualWidth,
+                        Height = this.Plot.ActualHeight,
+                        IsDocument = true,
+                        TextMeasurer = textMeasurer
+                    };
+                    exporter.Export(this.Model, s);
                 }
 
                 OpenContainingFolder(path);
@@ -382,8 +391,7 @@ namespace ExportDemo
             var path = this.GetFilename(".xaml files|*.xaml", ".xaml");
             if (path != null)
             {
-                XamlExporter.Export(
-                    this.Model, path, this.Plot.ActualWidth, this.Plot.ActualHeight, this.Model.Background);
+                XamlExporter.Export(this.Model, path, this.Plot.ActualWidth, this.Plot.ActualHeight, this.Model.Background);
                 OpenContainingFolder(path);
             }
         }
@@ -393,8 +401,7 @@ namespace ExportDemo
             var path = this.GetFilename(".xps files|*.xps", ".xps");
             if (path != null)
             {
-                XpsExporter.Export(
-                    this.Model, path, this.Plot.ActualWidth, this.Plot.ActualHeight, this.Model.Background);
+                XpsExporter.Export(this.Model, path, this.Plot.ActualWidth, this.Plot.ActualHeight, this.Model.Background);
                 OpenContainingFolder(path);
             }
         }

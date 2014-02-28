@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PngExporter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,21 +24,54 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The png exporter.
+//   Provides functionality to export plots to png.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.WindowsForms
 {
     using System.Drawing;
     using System.Drawing.Imaging;
+    using System.IO;
 
     /// <summary>
-    /// The png exporter.
+    /// Provides functionality to export plots to png.
     /// </summary>
-    public static class PngExporter
+    public class PngExporter
     {
         /// <summary>
-        /// The export.
+        /// Initializes a new instance of the <see cref="PngExporter"/> class.
+        /// </summary>
+        public PngExporter()
+        {
+            this.Width = 700;
+            this.Height = 400;
+            this.Resolution = 96;
+            this.Background = OxyColors.White;
+        }
+
+        /// <summary>
+        /// Gets or sets the width of the output image.
+        /// </summary>
+        public int Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets the height of the output image.
+        /// </summary>
+        public int Height { get; set; }
+
+        /// <summary>
+        /// Gets or sets the resolution (dpi) of the output image.
+        /// </summary>
+        public int Resolution { get; set; }
+
+        /// <summary>
+        /// Gets or sets the background color.
+        /// </summary>
+        public OxyColor Background { get; set; }
+
+        /// <summary>
+        /// Exports the specified model.
         /// </summary>
         /// <param name="model">
         /// The model.
@@ -57,20 +90,39 @@ namespace OxyPlot.WindowsForms
         /// </param>
         public static void Export(PlotModel model, string fileName, int width, int height, Brush background = null)
         {
-            using (var bm = new Bitmap(width, height))
+            var exporter = new PngExporter { Width = width, Height = height, Background = background.ToOxyColor() };
+            using (var stream = File.Create(fileName))
+            {
+                exporter.Export(model, stream);
+            }
+        }
+
+        /// <summary>
+        /// Exports the specified <see cref="PlotModel"/> to the specified <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="stream">The output stream.</param>
+        public void Export(PlotModel model, Stream stream)
+        {
+            using (var bm = new Bitmap(this.Width, this.Height))
             {
                 using (var g = Graphics.FromImage(bm))
                 {
-                    if (background != null)
+                    if (this.Background.IsVisible())
                     {
-                        g.FillRectangle(background, 0, 0, width, height);
+                        using (var brush = this.Background.ToBrush())
+                        {
+                            g.FillRectangle(brush, 0, 0, this.Width, this.Height);
+                        }
                     }
 
-                    var rc = new GraphicsRenderContext { RendersToScreen = false };
-                    rc.SetGraphicsTarget(g);
-                    model.Update();
-                    model.Render(rc, width, height);
-                    bm.Save(fileName, ImageFormat.Png);
+                    using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
+                    {
+                        model.Update();
+                        model.Render(rc, this.Width, this.Height);
+                    }
+
+                    bm.Save(stream, ImageFormat.Png);
                 }
             }
         }

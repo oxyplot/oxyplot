@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Exports plot models to svg.
+//   Exports plot models to scalable vector graphics.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.IO;
 
     /// <summary>
-    /// Exports plots to scalable vector graphics.
+    /// Provides functionality to export plots to scalable vector graphics.
     /// </summary>
     public class SvgExporter
     {
@@ -48,12 +48,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the width (in user units, px) of the output area.
+        /// Gets or sets the width (in user units) of the output area.
         /// </summary>
         public double Width { get; set; }
 
         /// <summary>
-        /// Gets or sets the height (in user units, px) of the output area.
+        /// Gets or sets the height (in user units) of the output area.
         /// </summary>
         public double Height { get; set; }
 

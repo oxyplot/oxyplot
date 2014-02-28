@@ -16,7 +16,9 @@
             var plot = new PlotModel
             {
                 Title = "Normal distribution",
-                Subtitle = "Probability density function"
+                Subtitle = "Probability density function",
+                DefaultFont = "Arial",
+                Culture = CultureInfo.InvariantCulture
             };
 
             plot.Axes.Add(new LinearAxis

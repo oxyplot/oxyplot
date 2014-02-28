@@ -33,7 +33,12 @@
         private static void Export(PlotModel model, string name)
         {
             var fileName = Path.Combine(OutputDirectory, name + ".png");
-            PngExporter.Export(model, fileName, 600, 400, Brushes.White);
+            Console.WriteLine(fileName);
+            using (var stream = File.Create(fileName))
+            {
+                var exporter = new PngExporter { Width = 600, Height = 400 };
+                exporter.Export(model, stream);
+            }
 
             fileName = Path.ChangeExtension(fileName, ".pdf");
             Console.WriteLine(fileName);
@@ -45,10 +50,18 @@
 
             fileName = Path.ChangeExtension(fileName, ".svg");
             Console.WriteLine(fileName);
+
             using (var stream = File.Create(fileName))
             {
-                var exporter = new SvgExporter { Width = 600, Height = 400, IsDocument = true };
-                exporter.Export(model, stream);
+                using (var exporter = new OxyPlot.WindowsForms.SvgExporter
+                                       {
+                                           Width = 600,
+                                           Height = 400,
+                                           IsDocument = true
+                                       })
+                {
+                    exporter.Export(model, stream);
+                }
             }
         }
     }
