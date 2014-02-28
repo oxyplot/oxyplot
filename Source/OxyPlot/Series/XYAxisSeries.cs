@@ -379,7 +379,7 @@ namespace OxyPlot.Series
         /// </returns>
         protected virtual bool IsValidPoint(IDataPoint pt, Axis xaxis, Axis yaxis)
         {
-            return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
+            return pt != null && !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
                    && (xaxis != null && xaxis.IsValidValue(pt.X)) && (yaxis != null && yaxis.IsValidValue(pt.Y));
         }
 
