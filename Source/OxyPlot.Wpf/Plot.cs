@@ -273,9 +273,9 @@ namespace OxyPlot.Wpf
         /// </param>
         public void InvalidatePlot(bool updateData = true)
         {
-           // if (!this.IsLoaded)
+            if (!this.IsLoaded)
             {
-             //   return;
+                return;
             }
 
             this.UpdateModel(updateData);
