@@ -1292,18 +1292,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Updates the axis transforms.
-        /// </summary>
-        public void UpdateAxisTransforms()
-        {
-            // Update the axis transforms
-            foreach (var a in this.Axes)
-            {
-                a.UpdateTransform(this.PlotArea);
-            }
-        }
-
-        /// <summary>
         /// Gets the axis for the specified key.
         /// </summary>
         /// <param name="key">The key.</param>
@@ -1392,6 +1380,18 @@ namespace OxyPlot
             {
                 var args = new EventArgs();
                 handler(this, args);
+            }
+        }
+
+        /// <summary>
+        /// Updates the axis transforms.
+        /// </summary>
+        private void UpdateAxisTransforms()
+        {
+            // Update the axis transforms
+            foreach (var a in this.Axes)
+            {
+                a.UpdateTransform(this.PlotArea);
             }
         }
 
