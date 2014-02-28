@@ -45,7 +45,7 @@ namespace AnnotationDemo
         public MainWindow()
         {
             this.InitializeComponent();
-            this.PolygonPoints = new List<DataPoint>()
+            this.PolygonPoints = new List<IDataPoint>
                 {
                    new DataPoint(10, 10), new DataPoint(80, 30), new DataPoint(60, 70) 
                 };
@@ -55,6 +55,6 @@ namespace AnnotationDemo
         /// <summary>
         /// Gets the polygon points.
         /// </summary>
-        public IList<DataPoint> PolygonPoints { get; private set; }
+        public IList<IDataPoint> PolygonPoints { get; private set; }
     }
 }
