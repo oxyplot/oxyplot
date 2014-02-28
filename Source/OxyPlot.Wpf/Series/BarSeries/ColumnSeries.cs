@@ -74,7 +74,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     The synchronize properties.
+        ///     Synchronizes the properties.
         /// </summary>
         /// <param name="series">
         ///     The series.

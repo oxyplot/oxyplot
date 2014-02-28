@@ -76,7 +76,7 @@ namespace OxyPlot.Wpf
         private Canvas canvas;
 
         /// <summary>
-        /// The current model.
+        /// The currently attached model.
         /// </summary>
         private PlotModel currentlyAttachedModel;
 
@@ -138,7 +138,9 @@ namespace OxyPlot.Wpf
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Plot), new FrameworkPropertyMetadata(typeof(Plot)));
             PaddingProperty.OverrideMetadata(
                 typeof(Plot), new FrameworkPropertyMetadata(new Thickness(8, 8, 16, 8), AppearanceChanged));
-            ResetAxesCommand = new RoutedCommand();
+            
+            // ReSharper disable once RedundantNameQualifier
+            Plot.ResetAxesCommand = new RoutedCommand();
         }
 
         /// <summary>
@@ -166,9 +168,6 @@ namespace OxyPlot.Wpf
 #if !NET35
             this.IsManipulationEnabled = true;
 #endif
-
-            // this.CommandBindings.Add(new CommandBinding(CopyCode, this.DoCopyCode));
-            // this.InputBindings.Add(new KeyBinding(CopyCode, Key.C, ModifierKeys.Control | ModifierKeys.Alt));
         }
 
         /// <summary>
@@ -250,11 +249,13 @@ namespace OxyPlot.Wpf
         /// </summary>
         public void HideTracker()
         {
-            if (this.currentTracker != null)
+            if (this.currentTracker == null)
             {
-                this.overlays.Children.Remove(this.currentTracker);
-                this.currentTracker = null;
+                return;
             }
+
+            this.overlays.Children.Remove(this.currentTracker);
+            this.currentTracker = null;
         }
 
         /// <summary>
@@ -337,10 +338,10 @@ namespace OxyPlot.Wpf
             }
 
             var ts = trackerHitResult.Series as ITrackableSeries;
-            ControlTemplate trackerTemplate = this.DefaultTrackerTemplate;
+            var trackerTemplate = this.DefaultTrackerTemplate;
             if (ts != null && !string.IsNullOrEmpty(ts.TrackerKey))
             {
-                TrackerDefinition match = this.TrackerDefinitions.FirstOrDefault(t => t.TrackerKey == ts.TrackerKey);
+                var match = this.TrackerDefinitions.FirstOrDefault(t => t.TrackerKey == ts.TrackerKey);
                 if (match != null)
                 {
                     trackerTemplate = match.TrackerTemplate;
@@ -355,6 +356,7 @@ namespace OxyPlot.Wpf
 
             var tracker = new ContentControl { Template = trackerTemplate };
 
+            // ReSharper disable once RedundantNameQualifier
             if (!object.ReferenceEquals(tracker, this.currentTracker))
             {
                 this.HideTracker();
@@ -398,7 +400,6 @@ namespace OxyPlot.Wpf
             }
 
             this.canvas = new Canvas();
-            // this.canvas.CacheMode = new BitmapCache();
             this.grid.Children.Add(this.canvas);
             this.canvas.UpdateLayout();
             this.renderContext = new ShapesRenderContext(this.canvas);
@@ -412,8 +413,7 @@ namespace OxyPlot.Wpf
             this.CommandBindings.Add(new CommandBinding(ResetAxesCommand, this.ResetAxesHandler));
 
             var resetAxesInputBinding = new InputBindingX { Command = ResetAxesCommand };
-            BindingOperations.SetBinding(
-                resetAxesInputBinding, InputBindingX.GeztureProperty, new Binding("ResetAxesGesture") { Source = this });
+            BindingOperations.SetBinding(resetAxesInputBinding, InputBindingX.GeztureProperty, new Binding("ResetAxesGesture") { Source = this });
             this.InputBindings.Add(resetAxesInputBinding);
         }
 
@@ -505,8 +505,7 @@ namespace OxyPlot.Wpf
         /// </param>
         public void SaveXaml(string fileName)
         {
-            XamlExporter.Export(
-                this.ActualModel, fileName, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
+            XamlExporter.Export(this.ActualModel, fileName, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
         }
 
         /// <summary>
@@ -517,8 +516,7 @@ namespace OxyPlot.Wpf
         /// </returns>
         public BitmapSource ToBitmap()
         {
-            return PngExporter.ExportToBitmap(
-                this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, this.Background.ToOxyColor());
+            return PngExporter.ExportToBitmap(this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, this.Background.ToOxyColor());
         }
 
         /// <summary>
@@ -529,8 +527,7 @@ namespace OxyPlot.Wpf
         /// </returns>
         public string ToXaml()
         {
-            return XamlExporter.ExportToString(
-                this.ActualModel, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
+            return XamlExporter.ExportToString(this.ActualModel, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
         }
 
         /// <summary>

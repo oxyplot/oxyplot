@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeAxis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   This is a WPF wrapper of OxyPlot.DateTimeAxis.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Wpf
 {
     using System;
@@ -95,7 +96,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public DateTimeAxis()
         {
-            this.InternalAxis = new OxyPlot.Axes.DateTimeAxis();
+            this.InternalAxis = new Axes.DateTimeAxis();
         }
 
         /// <summary>
@@ -195,23 +196,24 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The create model.
+        /// Creates the internal model.
         /// </summary>
         /// <returns>
+        /// The internal axis.
         /// </returns>
-        public override OxyPlot.Axes.Axis CreateModel()
+        public override Axes.Axis CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAxis;
         }
 
         /// <summary>
-        /// The synchronize properties.
+        /// Synchronizes the properties.
         /// </summary>
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.InternalAxis as OxyPlot.Axes.DateTimeAxis;
+            var a = (Axes.DateTimeAxis)this.InternalAxis;
 
             a.IntervalType = this.IntervalType;
             a.MinorIntervalType = this.MinorIntervalType;
@@ -220,14 +222,13 @@ namespace OxyPlot.Wpf
 
             if (this.FirstDateTime > DateTime.MinValue)
             {
-                a.Minimum = OxyPlot.Axes.DateTimeAxis.ToDouble(this.FirstDateTime);
+                a.Minimum = Axes.DateTimeAxis.ToDouble(this.FirstDateTime);
             }
 
             if (this.LastDateTime < DateTime.MaxValue)
             {
-                a.Maximum = OxyPlot.Axes.DateTimeAxis.ToDouble(this.LastDateTime);
+                a.Maximum = Axes.DateTimeAxis.ToDouble(this.LastDateTime);
             }
         }
-
     }
 }

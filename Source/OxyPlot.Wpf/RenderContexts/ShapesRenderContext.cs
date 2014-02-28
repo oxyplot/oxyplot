@@ -760,7 +760,9 @@ namespace OxyPlot.Wpf
             var image = this.CreateAndAdd<Image>(destX, destY);
             var bitmapChain = this.GetImageSource(source);
 
+            // ReSharper disable CompareOfFloatsByEqualityOperator
             if (srcX == 0 && srcY == 0 && srcWidth == bitmapChain.PixelWidth && srcHeight == bitmapChain.PixelHeight)
+            // ReSharper restore CompareOfFloatsByEqualityOperator
             {
                 // do not crop
             }
@@ -1243,22 +1245,6 @@ namespace OxyPlot.Wpf
             {
                 polyline.Points = pc;
             }
-        }
-
-        /// <summary>
-        /// Gets the length of the specified polyline.
-        /// </summary>
-        /// <param name="polyline">The polyline.</param>
-        /// <returns>The length.</returns>
-        private static double GetLength(Polyline polyline)
-        {
-            double length = 0;
-            for (int i = 1; i < polyline.Points.Count; i++)
-            {
-                length += polyline.Points[i - 1].DistanceTo(polyline.Points[i]);
-            }
-
-            return length;
         }
     }
 }

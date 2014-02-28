@@ -50,7 +50,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public MagnitudeAxis()
         {
-            this.InternalAxis = new OxyPlot.Axes.MagnitudeAxis();
+            this.InternalAxis = new Axes.MagnitudeAxis();
         }
     }
 }

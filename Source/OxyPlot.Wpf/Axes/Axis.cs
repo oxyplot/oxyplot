@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Axis.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   The axis base.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Wpf
 {
     using System;
@@ -84,19 +85,19 @@ namespace OxyPlot.Wpf
             DependencyProperty.Register("AxisDistance", typeof(double), typeof(Axis), new PropertyMetadata(0.0));
 
         /// <summary>
-        /// The axisline color property.
+        /// The axis line color property.
         /// </summary>
         public static readonly DependencyProperty AxislineColorProperty = DependencyProperty.Register(
             "AxislineColor", typeof(Color), typeof(Axis), new UIPropertyMetadata(Colors.Black));
 
         /// <summary>
-        /// The axisline style property.
+        /// The axis line style property.
         /// </summary>
         public static readonly DependencyProperty AxislineStyleProperty = DependencyProperty.Register(
             "AxislineStyle", typeof(LineStyle), typeof(Axis), new UIPropertyMetadata(LineStyle.None));
 
         /// <summary>
-        /// The axisline thickness property.
+        /// The axis line thickness property.
         /// </summary>
         public static readonly DependencyProperty AxislineThicknessProperty =
             DependencyProperty.Register("AxislineThickness", typeof(double), typeof(Axis), new UIPropertyMetadata(1.0));
@@ -367,7 +368,7 @@ namespace OxyPlot.Wpf
             "TickStyle", typeof(Axes.TickStyle), typeof(Axis), new PropertyMetadata(Axes.TickStyle.Outside, AppearanceChanged));
 
         /// <summary>
-        /// The tickline color property.
+        /// The tick line color property.
         /// </summary>
         public static readonly DependencyProperty TicklineColorProperty = DependencyProperty.Register(
             "TicklineColor", typeof(Color), typeof(Axis), new PropertyMetadata(Colors.Black, AppearanceChanged));
@@ -439,7 +440,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the internal axis.
         /// </summary>
-        public OxyPlot.Axes.Axis InternalAxis { get; protected set; }
+        public Axes.Axis InternalAxis { get; protected set; }
 
         /// <summary>
         /// Gets or sets AbsoluteMaximum.
@@ -560,7 +561,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the axis line style.
         /// </summary>
         /// <value>
-        /// The axisline style.
+        /// The axis line style.
         /// </value>
         public LineStyle AxislineStyle
         {
@@ -579,7 +580,7 @@ namespace OxyPlot.Wpf
         /// Gets or sets the axis line thickness.
         /// </summary>
         /// <value>
-        /// The axisline thickness.
+        /// The axis line thickness.
         /// </value>
         public double AxislineThickness
         {
@@ -1438,7 +1439,7 @@ namespace OxyPlot.Wpf
         /// Creates the model.
         /// </summary>
         /// <returns>An axis object.</returns>
-        public abstract OxyPlot.Axes.Axis CreateModel();
+        public abstract Axes.Axis CreateModel();
 
         /// <summary>
         /// The visual appearance changed.
@@ -1504,7 +1505,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The on visual changed handler.
+        /// Handles changed visuals.
         /// </summary>
         protected void OnVisualChanged()
         {
@@ -1516,7 +1517,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The synchronize properties.
+        /// Synchronizes the properties.
         /// </summary>
         protected virtual void SynchronizeProperties()
         {

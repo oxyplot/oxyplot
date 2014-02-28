@@ -80,7 +80,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public PolygonAnnotation()
         {
-            this.InternalAnnotation = new OxyPlot.Annotations.PolygonAnnotation();
+            this.InternalAnnotation = new Annotations.PolygonAnnotation();
         }
 
         /// <summary>

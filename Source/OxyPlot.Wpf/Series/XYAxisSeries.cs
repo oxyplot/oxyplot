@@ -27,9 +27,9 @@
 //   Abstract base class for series that use X and Y axes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Wpf
 {
-    using System.Collections;
     using System.Windows;
 
     /// <summary>

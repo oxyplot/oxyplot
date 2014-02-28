@@ -473,10 +473,10 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The create model.
+        /// Creates the internal series.
         /// </summary>
         /// <returns>
-        /// The series.
+        /// The internal series.
         /// </returns>
         public override OxyPlot.Series.Series CreateModel()
         {
