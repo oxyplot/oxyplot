@@ -39,13 +39,13 @@
             // https://github.com/audreyr/favicon-cheat-sheet
             // https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
             var sizes = new List<int>();
-            
+
             // Standard icon sizes
             sizes.AddRange(new[] { 256, 64, 48, 32, 24, 16 });
-            
+
             // Windows store app
-            sizes.AddRange(new[] { 150, 310, 126, 98, 70, 56, 270, 210, 120, 558, 434, 310, 248, 54, 42, 30, 24, 256, 48, 32, 16, 90, 70, 50, 43, 33, 24, 1116, 540, 868, 420, 620, 300 }); 
-            
+            sizes.AddRange(new[] { 150, 310, 126, 98, 70, 56, 270, 210, 120, 558, 434, 310, 248, 54, 42, 30, 24, 256, 48, 32, 16, 90, 70, 50, 43, 33, 24, 1116, 540, 868, 420, 620, 300 });
+
             // Apple OS X?
             sizes.AddRange(new[] { 1024, 44, 22, 25 });
 
@@ -57,7 +57,7 @@
             sizes.Add(144); // iPad @2x iOS 5-6
             sizes.Add(76); // iPad iOS 7
             sizes.Add(152); // iPad @2x iOS 7
-            
+
             // Apple Spotlight & Settings icons
             sizes.Add(29); // iPhone Spotlight iOS 5,6 + Settings iOS 5-7
             sizes.Add(58); // iPhone Spotlight @2x iOS 5,6 + Settings @2x iOS 5-7
@@ -167,18 +167,20 @@
                     g.PixelOffsetMode = PixelOffsetMode.HighQuality;
                     g.CompositingQuality = CompositingQuality.HighQuality;
                     g.CompositingMode = CompositingMode.SourceOver;
-                    var rc = new GraphicsRenderContext { RendersToScreen = false };
-                    rc.SetGraphicsTarget(g);
-                    g.Clear(Color.Transparent);
-
-                    if (cornerRadius > 0)
+                    using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
                     {
-                        // TODO: no antialiasing on the clipping path?
-                        var path = GetRoundedRect(new RectangleF(0, 0, size, size), (float)cornerRadius);
-                        g.SetClip(path, CombineMode.Replace);
+                        g.Clear(Color.Transparent);
+
+                        if (cornerRadius > 0)
+                        {
+                            // TODO: no antialiasing on the clipping path?
+                            var path = GetRoundedRect(new RectangleF(0, 0, size, size), (float)cornerRadius);
+                            g.SetClip(path, CombineMode.Replace);
+                        }
+
+                        iconRenderer.Render(rc, size);
                     }
 
-                    iconRenderer.Render(rc, size);
                     bm.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
                 }
             }
@@ -197,15 +199,16 @@
 
         static void CreateSvg(int size, IconRenderer iconRenderer, string fileName)
         {
-            var grx = new GraphicsRenderContext();
             using (var bm = new Bitmap(size, size))
             {
-                grx.SetGraphicsTarget(Graphics.FromImage(bm));
-                using (var s = File.Create(fileName))
+                using (var grx = new GraphicsRenderContext(Graphics.FromImage(bm)))
                 {
-                    using (var rc = new SvgRenderContext(s, size, size, true, grx, OxyColors.Transparent))
+                    using (var s = File.Create(fileName))
                     {
-                        iconRenderer.Render(rc, size);
+                        using (var rc = new SvgRenderContext(s, size, size, true, grx, OxyColors.Transparent))
+                        {
+                            iconRenderer.Render(rc, size);
+                        }
                     }
                 }
             }
