@@ -32,6 +32,7 @@ namespace OxyPlot.Wpf
     using System;
     using System.Windows;
     using System.Windows.Media;
+    using System.Windows.Shapes;
 
     using HorizontalAlignment = OxyPlot.HorizontalAlignment;
     using VerticalAlignment = OxyPlot.VerticalAlignment;
@@ -58,6 +59,22 @@ namespace OxyPlot.Wpf
             double dx = p1.X - p2.X;
             double dy = p1.Y - p2.Y;
             return Math.Sqrt((dx * dx) + (dy * dy));
+        }
+
+        /// <summary>
+        /// Gets the length of the specified polyline.
+        /// </summary>
+        /// <param name="polyline">The polyline.</param>
+        /// <returns>The length.</returns>
+        public static double GetLength(this Polyline polyline)
+        {
+            double length = 0;
+            for (int i = 1; i < polyline.Points.Count; i++)
+            {
+                length += polyline.Points[i - 1].DistanceTo(polyline.Points[i]);
+            }
+
+            return length;
         }
 
         /// <summary>

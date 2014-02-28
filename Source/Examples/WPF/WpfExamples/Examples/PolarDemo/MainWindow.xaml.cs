@@ -88,7 +88,7 @@ namespace PolarDemo
         public IList<IDataPoint> SpiralPoints { get; set; }
 
         /// <summary>
-        /// The create model.
+        /// Creates the model.
         /// </summary>
         /// <returns>
         /// A PlotModel.

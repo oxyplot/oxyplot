@@ -65,7 +65,7 @@ namespace OxyPlot.Wpf
         public override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = (OxyPlot.Annotations.TextualAnnotation)this.InternalAnnotation;
+            var a = (Annotations.TextualAnnotation)this.InternalAnnotation;
             a.Text = this.Text;
         }
     }

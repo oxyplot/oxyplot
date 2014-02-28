@@ -97,7 +97,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         public TextAnnotation()
         {
-            this.InternalAnnotation = new OxyPlot.Annotations.TextAnnotation();
+            this.InternalAnnotation = new Annotations.TextAnnotation();
         }
 
         /// <summary>
@@ -234,7 +234,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// The annotation.
         /// </returns>
-        public override OxyPlot.Annotations.Annotation CreateModel()
+        public override Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAnnotation;
@@ -246,7 +246,7 @@ namespace OxyPlot.Wpf
         public override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = (OxyPlot.Annotations.TextAnnotation)this.InternalAnnotation;
+            var a = (Annotations.TextAnnotation)this.InternalAnnotation;
             a.HorizontalAlignment = this.HorizontalAlignment.ToHorizontalTextAlign();
             a.Background = this.Background.ToOxyColor();
 
