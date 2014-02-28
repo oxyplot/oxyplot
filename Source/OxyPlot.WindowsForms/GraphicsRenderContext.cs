@@ -44,7 +44,7 @@ namespace OxyPlot.WindowsForms
     /// <summary>
     /// The graphics render context.
     /// </summary>
-    public class GraphicsRenderContext : RenderContextBase
+    public class GraphicsRenderContext : RenderContextBase, IDisposable
     {
         /// <summary>
         /// The font size factor.
@@ -65,6 +65,19 @@ namespace OxyPlot.WindowsForms
         /// The GDI+ drawing surface.
         /// </summary>
         private Graphics g;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphicsRenderContext"/> class.
+        /// </summary>
+        /// <param name="graphics">The drawing surface.</param>
+        public GraphicsRenderContext(Graphics graphics = null)
+        {
+            this.g = graphics;
+            if (this.g != null)
+            {
+                this.g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+            }
+        }
 
         /// <summary>
         /// Sets the graphics target.
@@ -94,7 +107,7 @@ namespace OxyPlot.WindowsForms
                     this.g.SmoothingMode = SmoothingMode.HighQuality;
                 }
 
-                this.g.FillEllipse(fill.ToBrush(), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
+                this.g.FillEllipse(this.GetCachedBrush(fill), (float)rect.Left, (float)rect.Top, (float)rect.Width, (float)rect.Height);
             }
 
             if (!isStroked)
@@ -455,6 +468,11 @@ namespace OxyPlot.WindowsForms
             return btm;
         }
 
+        private Brush GetCachedBrush(OxyColor fill)
+        {
+            return fill.ToBrush();
+        }
+
         private Pen GetCachedPen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
             // TODO: cache
@@ -527,6 +545,18 @@ namespace OxyPlot.WindowsForms
             }
 
             return r;
+        }
+
+        public void Dispose()
+        {
+            foreach (var i in this.imageCache)
+            {
+                i.Value.Dispose();
+            }
+
+            // pens
+
+            // brushes
         }
     }
 }

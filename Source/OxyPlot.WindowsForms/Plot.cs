@@ -111,7 +111,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         public Plot()
         {
-            this.renderContext = new GraphicsRenderContext();
+            this.renderContext = new GraphicsRenderContext(null);
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             this.DoubleBuffered = true;
