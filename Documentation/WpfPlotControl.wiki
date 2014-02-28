@@ -1,0 +1,7 @@
+﻿@syntax owiki
+@title WPF Example
+@keywords OxyPlot,WPF,Example
+
+== WPF plot control
+
+// TODO //

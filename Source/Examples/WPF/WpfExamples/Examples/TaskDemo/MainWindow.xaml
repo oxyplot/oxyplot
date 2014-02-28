@@ -1,0 +1,9 @@
+﻿<Window x:Class="TaskDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" xmlns:TaskDemo="clr-namespace:TaskDemo"
+        Title="TaskDemo" Height="480" Width="640">
+    <Grid>
+        <oxy:Plot Title="TaskDemo" Model="{Binding PlotModel}"/>
+    </Grid>
+</Window>

@@ -1,0 +1,14 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=OxyPlotAPI.chm
+Contents file=OxyPlotAPI.hhc
+Default topic=Index.html
+Display compile progress=No
+Full-text search=Yes
+Title=OxyPlot API
+
+[FILES]
+Index.html
+
+[INFOTYPES]
+

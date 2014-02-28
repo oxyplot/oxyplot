@@ -1,0 +1,11 @@
+﻿@syntax owiki
+@title GTK# Example
+@keywords OxyPlot,GTK#,Example
+
+== GTK# Example
+
+// TODO //
+
+- Adding the "OxyPlot GTK#" NuGet package
+- Add a control
+- Bind to a `PlotModel`
