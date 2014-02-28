@@ -156,7 +156,6 @@ namespace OxyPlot.Wpf
             this.axes.CollectionChanged += this.OnAxesChanged;
             this.annotations.CollectionChanged += this.OnAnnotationsChanged;
 
-            this.DataContextChanged += this.OnDataContextChanged;
             this.SizeChanged += this.OnSizeChanged;
 
             this.Loaded += this.PlotLoaded;
@@ -1077,20 +1076,6 @@ namespace OxyPlot.Wpf
         private void OnAxesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             this.SyncLogicalTree(e);
-        }
-
-        /// <summary>
-        /// Called when the data context is changed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            this.OnModelChanged();
         }
 
         /// <summary>
