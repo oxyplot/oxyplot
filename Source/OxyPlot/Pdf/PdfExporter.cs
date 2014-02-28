@@ -48,6 +48,11 @@ namespace OxyPlot
         public double Height { get; set; }
 
         /// <summary>
+        /// Gets or sets the background color.
+        /// </summary>
+        public OxyColor Background { get; set; }
+
+        /// <summary>
         /// Exports the specified model to a stream.
         /// </summary>
         /// <param name="model">
@@ -64,10 +69,8 @@ namespace OxyPlot
         /// </param>
         public static void Export(PlotModel model, Stream stream, double width, double height)
         {
-            var rc = new PdfRenderContext(width, height, model.Background);
-            model.Update();
-            model.Render(rc, width, height);
-            rc.Save(stream);
+            var exporter = new PdfExporter { Width = width, Height = height, Background = model.Background };
+            exporter.Export(model, stream);
         }
 
         /// <summary>
@@ -77,7 +80,10 @@ namespace OxyPlot
         /// <param name="stream">The stream.</param>
         public void Export(PlotModel model, Stream stream)
         {
-            Export(model, stream, this.Width, this.Height);
+            var rc = new PdfRenderContext(this.Width, this.Height, this.Background);
+            model.Update();
+            model.Render(rc, this.Width, this.Height);
+            rc.Save(stream);
         }
     }
 }

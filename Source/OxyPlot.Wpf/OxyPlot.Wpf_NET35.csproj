@@ -91,6 +91,7 @@
     <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
     <Compile Include="Series\BarSeries\BarSeriesBase.cs" />
     <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
+    <Compile Include="SvgExporter.cs" />
     <Compile Include="XamlExporter.cs" />
     <Compile Include="Helpers\InputBindingX.cs" />
     <Compile Include="Helpers\KeyGestureExtension.cs" />

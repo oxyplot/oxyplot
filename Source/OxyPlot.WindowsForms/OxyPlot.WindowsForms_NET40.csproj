@@ -58,6 +58,7 @@
     <Compile Include="PlotModelExtensions.cs" />
     <Compile Include="PngExporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SvgExporter.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PlotModelExtensions.cs" company="OxyPlot">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SvgExporter.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
-//   Copyright (c) 2012 OxyPlot contributors
+//   Copyright (c) 2012 Oystein Bjorke
 //   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
@@ -24,37 +24,25 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides extension methods to the <see cref="PlotModel" />.
+//   Exports plots to scalable vector graphics using text measuring in WPF.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.WindowsForms
+namespace OxyPlot.Wpf
 {
-    using System;
-    using System.Drawing;
+    using System.Windows.Controls;
 
     /// <summary>
-    /// Provides extension methods to the <see cref="PlotModel"/>.
+    /// Provides functionality to export plots to scalable vector graphics using text measuring in WPF.
     /// </summary>
-    public static class PlotModelExtensions
+    public class SvgExporter : OxyPlot.SvgExporter
     {
         /// <summary>
-        /// Creates an SVG string.
+        /// Initializes a new instance of the <see cref="SvgExporter"/> class.
         /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="width">The width (points).</param>
-        /// <param name="height">The height (points).</param>
-        /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
-        /// <returns>A <see cref="string"/>.</returns>
-        public static string ToSvg(this PlotModel model, double width, double height, bool isDocument)
+        public SvgExporter()
         {
-            using (var g = Graphics.FromHwnd(IntPtr.Zero))
-            {
-                using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
-                {
-                    return model.ToSvg(width, height, isDocument, rc);
-                }
-            }
+            this.TextMeasurer = new ShapesRenderContext(new Canvas());
         }
     }
 }

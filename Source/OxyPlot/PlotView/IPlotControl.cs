@@ -30,8 +30,6 @@
 
 namespace OxyPlot
 {
-    using OxyPlot.Axes;
-
     /// <summary>
     /// Defines functionality in the plot controls.
     /// </summary>

@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Export a PlotModel to .xaml
+//   Provides functionality to export plots to XAML.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ namespace OxyPlot.Wpf
     using System.Xml;
 
     /// <summary>
-    /// Export a PlotModel to .xaml
+    /// Provides functionality to export plots to XAML.
     /// </summary>
     public static class XamlExporter
     {
