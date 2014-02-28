@@ -1473,8 +1473,11 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected void OnDataChanged()
         {
-            // post event to  parent
-            this.OnVisualChanged();
+            var pc = this.Parent as IPlotControl;
+            if (pc != null)
+            {
+                pc.InvalidatePlot();
+            }
         }
 
         /// <summary>
@@ -1508,7 +1511,7 @@ namespace OxyPlot.Wpf
             var pc = this.Parent as IPlotControl;
             if (pc != null)
             {
-                pc.InvalidatePlot();
+                pc.InvalidatePlot(false);
             }
         }
 

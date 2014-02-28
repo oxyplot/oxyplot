@@ -188,10 +188,8 @@ namespace OxyPlot.Wpf
             var pc = this.Parent as IPlotControl;
             if (pc != null)
             {
-                // pc.UpdateModel();
+                pc.InvalidatePlot();
             }
-
-            this.OnVisualChanged();
         }
 
         /// <summary>
@@ -217,7 +215,7 @@ namespace OxyPlot.Wpf
             var pc = this.Parent as IPlotControl;
             if (pc != null)
             {
-                pc.InvalidatePlot();
+                pc.InvalidatePlot(false);
             }
         }
 

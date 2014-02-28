@@ -30,7 +30,6 @@
 namespace OxyPlot.Wpf
 {
     using System;
-    using System.Collections;
     using System.Windows;
 
     /// <summary>
@@ -159,21 +158,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The on items source changed.
-        /// </summary>
-        /// <param name="oldValue">
-        /// The old value.
-        /// </param>
-        /// <param name="newValue">
-        /// The new value.
-        /// </param>
-        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
-        {
-            base.OnItemsSourceChanged(oldValue, newValue);
-            this.OnDataChanged();
-        }
-
-        /// <summary>
         /// Synchronizes the properties.
         /// </summary>
         /// <param name="series">The series.</param>
@@ -188,6 +172,5 @@ namespace OxyPlot.Wpf
             s.Smooth = this.Smooth;
             s.Mapping = this.Mapping;
         }
-
     }
 }
