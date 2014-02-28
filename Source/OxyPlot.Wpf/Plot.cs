@@ -71,11 +71,6 @@ namespace OxyPlot.Wpf
         private readonly ObservableCollection<TrackerDefinition> trackerDefinitions;
 
         /// <summary>
-        /// The update model and visuals lock.
-        /// </summary>
-        private readonly object updateModelAndVisualsLock = new object();
-
-        /// <summary>
         /// The canvas.
         /// </summary>
         private Canvas canvas;
@@ -83,7 +78,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The current model.
         /// </summary>
-        private PlotModel currentModel;
+        private PlotModel currentlyAttachedModel;
 
         /// <summary>
         /// The current tracker.
@@ -279,15 +274,13 @@ namespace OxyPlot.Wpf
         /// </param>
         public void InvalidatePlot(bool updateData = true)
         {
-            if (updateData)
+           // if (!this.IsLoaded)
             {
-                this.isPlotInvalidated = 2;
-            }
-            else
-            {
-                Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0);
+             //   return;
             }
 
+            this.UpdateModel(updateData);
+            Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0);
             this.Invoke(this.InvalidateArrange);
         }
 
@@ -487,8 +480,6 @@ namespace OxyPlot.Wpf
         /// </param>
         public void SaveBitmap(string fileName, int width, int height, OxyColor background)
         {
-            // var tmp = this.Model;
-            // this.Model = null;
             if (width == 0)
             {
                 width = (int)this.ActualWidth;
@@ -556,14 +547,7 @@ namespace OxyPlot.Wpf
             {
                 if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 1) == 1)
                 {
-                    this.UpdateModelAndVisuals(false);
-                }
-                else
-                {
-                    if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 2) == 2)
-                    {
-                        this.UpdateModelAndVisuals(true);
-                    }
+                    this.UpdateVisuals();
                 }
             }
 
@@ -855,7 +839,16 @@ namespace OxyPlot.Wpf
         protected virtual void PlotLoaded(object sender, RoutedEventArgs e)
         {
             this.IsRendering = true;
-            this.OnModelChanged();
+        
+            lock (this.modelLock)
+            {
+                if (this.currentlyAttachedModel != null)
+                {
+                    this.currentlyAttachedModel.AttachPlotControl(this);
+                }
+            }
+
+            this.InvalidatePlot();
         }
 
         /// <summary>
@@ -867,11 +860,14 @@ namespace OxyPlot.Wpf
         {
             this.IsRendering = false;
 
-            if (this.currentModel != null)
+            lock (this.modelLock)
             {
-                this.currentModel.AttachPlotControl(null);
-                this.currentModel = null;
-            }
+                if (this.currentlyAttachedModel != null)
+                {
+                    this.currentlyAttachedModel.AttachPlotControl(null);
+                    this.currentlyAttachedModel = null;
+                }
+            } 
         }
 
         /// <summary>
@@ -1104,23 +1100,26 @@ namespace OxyPlot.Wpf
         {
             lock (this.modelLock)
             {
-                if (this.currentModel != null)
+                if (this.currentlyAttachedModel != null)
                 {
-                    this.currentModel.AttachPlotControl(null);
+                    this.currentlyAttachedModel.AttachPlotControl(null);
+                    this.currentlyAttachedModel = null;
                 }
 
                 if (this.Model != null)
                 {
                     if (this.Model.PlotControl != null)
                     {
-                        throw new InvalidOperationException(
-                            "This PlotModel is already in use by some other plot control.");
+                        throw new InvalidOperationException("This PlotModel is already in use by some other plot control.");
                     }
 
+                    this.currentlyAttachedModel = this.Model;
+                    this.internalModel = null;
+
+                    // TODO: @tibel - is it really OK to remove this?
                     if (this.IsLoaded)
                     {
-                        this.currentModel = this.Model;
-                        this.currentModel.AttachPlotControl(this);
+                        this.currentlyAttachedModel.AttachPlotControl(this);
                     }
                 }
             }
@@ -1153,7 +1152,10 @@ namespace OxyPlot.Wpf
         /// </param>
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.InvalidatePlot(false);
+            if (e.NewSize.Height > 0 && e.NewSize.Width > 0)
+            {
+                this.InvalidatePlot(false);
+            }
         }
 
         /// <summary>
@@ -1198,7 +1200,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Updates the model. If Model==null, an internal model will be created. The ActualModel.UpdateModelAndVisuals will be called (updates all series data).
+        /// Updates the model. If Model==null, an internal model will be created. The ActualModel.Update will be called (updates all series data).
         /// </summary>
         /// <param name="updateData">
         /// if set to <c>true</c> , all data collections will be updated.
@@ -1209,59 +1211,110 @@ namespace OxyPlot.Wpf
             // axes/series/annotations and properties from the WPF objects to the internal model
             if (this.Model == null)
             {
-                // Create an internal model
                 if (this.internalModel == null)
                 {
                     this.internalModel = new PlotModel();
                 }
 
-                // Transfer axes, series and properties from
-                // the WPF dependency objects to the internal model
-                if (this.Series != null)
-                {
-                    this.internalModel.Series.Clear();
-                    foreach (var s in this.Series)
-                    {
-                        this.internalModel.Series.Add(s.CreateModel());
-                    }
-                }
-
-                if (this.Axes != null && this.Axes.Count > 0)
-                {
-                    this.internalModel.Axes.Clear();
-
-                    foreach (var a in this.Axes)
-                    {
-                        this.internalModel.Axes.Add(a.CreateModel());
-                    }
-                }
-
-                if (this.Annotations != null)
-                {
-                    this.internalModel.Annotations.Clear();
-
-                    foreach (var a in this.Annotations)
-                    {
-                        this.internalModel.Annotations.Add(a.CreateModel());
-                    }
-                }
+                // Synchronize axes, series and properties from the WPF dependency objects to the internal model                
+                this.SynchronizeProperties();
+                this.SynchronizeSeries();
+                this.SynchronizeAxes();
+                this.SynchronizeAnnotations();
             }
 
             this.ActualModel.Update(updateData);
         }
 
         /// <summary>
-        /// Updates the model. If Model==null, an internal model will be created. The ActualModel.UpdateModel will be called (updates all series data).
+        /// Synchronize properties in the internal plot model
         /// </summary>
-        /// <param name="updateData">
-        /// if set to <c>true</c> , all data collections will be updated.
-        /// </param>
-        private void UpdateModelAndVisuals(bool updateData)
+        private void SynchronizeProperties()
         {
-            lock (this.updateModelAndVisualsLock)
+            var m = this.internalModel;
+            m.Title = this.Title;
+            m.Subtitle = this.Subtitle;
+            m.PlotType = this.PlotType;
+            m.PlotMargins = this.PlotMargins.ToOxyThickness();
+            m.AutoAdjustPlotMargins = this.AutoAdjustPlotMargins;
+
+            m.Culture = this.Culture;
+
+            m.Padding = this.Padding.ToOxyThickness();
+            m.TitleFont = this.TitleFont;
+            m.TitleFontSize = this.TitleFontSize;
+            m.SubtitleFontSize = this.SubtitleFontSize;
+            m.TitleFontWeight = this.TitleFontWeight.ToOpenTypeWeight();
+            m.SubtitleFontWeight = this.SubtitleFontWeight.ToOpenTypeWeight();
+            m.TitlePadding = this.TitlePadding;
+            m.TextColor = this.TextColor.ToOxyColor();
+
+            m.IsLegendVisible = this.IsLegendVisible;
+            m.LegendTitleFont = this.LegendTitleFont;
+            m.LegendTitleFontSize = this.LegendTitleFontSize;
+            m.LegendTitleFontWeight = this.LegendTitleFontWeight.ToOpenTypeWeight();
+            m.LegendFont = this.LegendFont;
+            m.LegendFontSize = this.LegendFontSize;
+            m.LegendFontWeight = this.LegendFontWeight.ToOpenTypeWeight();
+            m.LegendSymbolLength = this.LegendSymbolLength;
+            m.LegendSymbolMargin = this.LegendSymbolMargin;
+            m.LegendPadding = this.LegendPadding;
+            m.LegendColumnSpacing = this.LegendColumnSpacing;
+            m.LegendItemSpacing = this.LegendItemSpacing;
+            m.LegendMargin = this.LegendMargin;
+            m.LegendMaxWidth = this.LegendMaxWidth;
+
+            m.LegendBackground = this.LegendBackground.ToOxyColor();
+            m.LegendBorder = this.LegendBorder.ToOxyColor();
+            m.LegendBorderThickness = this.LegendBorderThickness;
+
+            m.LegendPlacement = this.LegendPlacement;
+            m.LegendPosition = this.LegendPosition;
+            m.LegendOrientation = this.LegendOrientation;
+            m.LegendItemOrder = this.LegendItemOrder;
+            m.LegendItemAlignment = this.LegendItemAlignment.ToHorizontalTextAlign();
+            m.LegendSymbolPlacement = this.LegendSymbolPlacement;
+
+            m.PlotAreaBackground = this.PlotAreaBackground.ToOxyColor();
+            m.PlotAreaBorderColor = this.PlotAreaBorderColor.ToOxyColor();
+            m.PlotAreaBorderThickness = this.PlotAreaBorderThickness;
+        }
+
+        /// <summary>
+        /// Synchronizes the annotations in the internal model.
+        /// </summary>
+        private void SynchronizeAnnotations()
+        {
+            this.internalModel.Annotations.Clear();
+
+            foreach (var a in this.Annotations)
             {
-                this.UpdateModel(updateData);
-                this.UpdateVisuals();
+                this.internalModel.Annotations.Add(a.CreateModel());
+            }
+        }
+
+        /// <summary>
+        /// Synchronizes the axes in the internal model.
+        /// </summary>
+        private void SynchronizeAxes()
+        {
+            this.internalModel.Axes.Clear();
+
+            foreach (var a in this.Axes)
+            {
+                this.internalModel.Axes.Add(a.CreateModel());
+            }
+        }
+
+        /// <summary>
+        /// Synchronizes the series in the internal model.
+        /// </summary>
+        private void SynchronizeSeries()
+        {
+            this.internalModel.Series.Clear();
+            foreach (var s in this.Series)
+            {
+                this.internalModel.Series.Add(s.CreateModel());
             }
         }
 
@@ -1280,8 +1333,6 @@ namespace OxyPlot.Wpf
 
             if (this.ActualModel != null)
             {
-                this.SynchronizeProperties();
-
                 if (this.DisconnectCanvasWhileUpdating)
                 {
                     // TODO: profile... not sure if this makes any difference                    
