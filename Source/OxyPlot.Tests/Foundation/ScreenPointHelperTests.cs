@@ -37,6 +37,12 @@ namespace OxyPlot.Tests
     public class ScreenPointHelperTests
     {
         [Test]
+        public void IsPointInPolygon_NullPoints()
+        {
+            Assert.IsFalse(ScreenPointHelper.IsPointInPolygon(default(ScreenPoint), null));
+        }
+
+        [Test]
         public void ResamplePoints()
         {
             var points = CreatePointList();

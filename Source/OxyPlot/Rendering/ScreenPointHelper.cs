@@ -171,7 +171,7 @@ namespace OxyPlot
         /// </returns>
         public static bool IsPointInPolygon(ScreenPoint p, IList<ScreenPoint> pts)
         {
-            int nvert = pts.Count;
+            int nvert = (pts != null) ? pts.Count : 0;
             bool c = false;
             for (int i = 0, j = nvert - 1; i < nvert; j = i++)
             {
