@@ -1295,63 +1295,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Synchronize properties between the WPF control and the internal PlotModel (only if Model is undefined).
-        /// </summary>
-        private void SynchronizeProperties()
-        {
-            if (this.internalModel != null)
-            {
-                var m = this.internalModel;
-                m.Title = this.Title;
-                m.Subtitle = this.Subtitle;
-                m.PlotType = this.PlotType;
-                m.PlotMargins = this.PlotMargins.ToOxyThickness();
-                m.AutoAdjustPlotMargins = this.AutoAdjustPlotMargins;
-
-                m.Culture = this.Culture;
-
-                m.Padding = this.Padding.ToOxyThickness();
-                m.TitleFont = this.TitleFont;
-                m.TitleFontSize = this.TitleFontSize;
-                m.SubtitleFontSize = this.SubtitleFontSize;
-                m.TitleFontWeight = this.TitleFontWeight.ToOpenTypeWeight();
-                m.SubtitleFontWeight = this.SubtitleFontWeight.ToOpenTypeWeight();
-                m.TitlePadding = this.TitlePadding;
-                m.TextColor = this.TextColor.ToOxyColor();
-
-                m.IsLegendVisible = this.IsLegendVisible;
-                m.LegendTitleFont = this.LegendTitleFont;
-                m.LegendTitleFontSize = this.LegendTitleFontSize;
-                m.LegendTitleFontWeight = this.LegendTitleFontWeight.ToOpenTypeWeight();
-                m.LegendFont = this.LegendFont;
-                m.LegendFontSize = this.LegendFontSize;
-                m.LegendFontWeight = this.LegendFontWeight.ToOpenTypeWeight();
-                m.LegendSymbolLength = this.LegendSymbolLength;
-                m.LegendSymbolMargin = this.LegendSymbolMargin;
-                m.LegendPadding = this.LegendPadding;
-                m.LegendColumnSpacing = this.LegendColumnSpacing;
-                m.LegendItemSpacing = this.LegendItemSpacing;
-                m.LegendMargin = this.LegendMargin;
-                m.LegendMaxWidth = this.LegendMaxWidth;
-
-                m.LegendBackground = this.LegendBackground.ToOxyColor();
-                m.LegendBorder = this.LegendBorder.ToOxyColor();
-                m.LegendBorderThickness = this.LegendBorderThickness;
-
-                m.LegendPlacement = this.LegendPlacement;
-                m.LegendPosition = this.LegendPosition;
-                m.LegendOrientation = this.LegendOrientation;
-                m.LegendItemOrder = this.LegendItemOrder;
-                m.LegendItemAlignment = this.LegendItemAlignment.ToHorizontalTextAlign();
-                m.LegendSymbolPlacement = this.LegendSymbolPlacement;
-
-                m.PlotAreaBackground = this.PlotAreaBackground.ToOxyColor();
-                m.PlotAreaBorderColor = this.PlotAreaBorderColor.ToOxyColor();
-                m.PlotAreaBorderThickness = this.PlotAreaBorderThickness;
-            }
-        }
-
-        /// <summary>
         /// Refreshes the plot when the refresh flag is changed.
         /// </summary>
         private void RefreshFlagChanged()
