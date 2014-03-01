@@ -31,11 +31,13 @@ And please:
 
 Tools | Options | General | Default user information
 
-{Images\SourceTree_UserInformation.png}
+{Images/SourceTree_UserInformation.png}
 
 === Set user information in TortoiseHg
 
 Settings | Commit | Username: "First Last <email@address.com>"
+
+{Images/TortoiseHg_UserInformation.png}
 
 === User information in Tortoise
 
