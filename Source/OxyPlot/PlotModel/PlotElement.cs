@@ -97,19 +97,6 @@ namespace OxyPlot
         public OxyColor TextColor { get; set; }
 
         /// <summary>
-        /// Returns a hash code for this instance by reflection (!) on all public properties.
-        /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
-        /// </returns>
-        public override int GetHashCode()
-        {
-            // Get the values of all properties in the object (this is slow, any better ideas?)
-            var propertyValues = this.GetType().GetProperties().Select(pi => pi.GetValue(this, null));
-            return propertyValues.GetHashCode();
-        }
-
-        /// <summary>
         /// Gets the actual font.
         /// </summary>
         protected internal string ActualFont
@@ -167,6 +154,19 @@ namespace OxyPlot
             {
                 return this.PlotModel != null ? this.PlotModel.ActualCulture : CultureInfo.CurrentCulture;
             }
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance by reflection (!) on all public properties.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            // Get the values of all properties in the object (this is slow, any better ideas?)
+            var propertyValues = this.GetType().GetProperties().Select(pi => pi.GetValue(this, null));
+            return propertyValues.GetHashCode();
         }
 
         /// <summary>
