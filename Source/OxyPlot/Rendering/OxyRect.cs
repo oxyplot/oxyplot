@@ -59,28 +59,43 @@ namespace OxyPlot
         private double width;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyRect"/> structure that has the specified x-coordinate, y-coordinate, width, and height.
+        /// Initializes a new instance of the <see cref="OxyRect" /> structure that has the specified x-coordinate, y-coordinate, width, and height.
         /// </summary>
-        /// <param name="left">
-        /// The x-coordinate location of the left side of the rectangle.
-        /// </param>
-        /// <param name="top">
-        /// The y-coordinate location of the top side of the rectangle.
-        /// </param>
-        /// <param name="width">
-        /// The width of the rectangle.
-        /// </param>
-        /// <param name="height">
-        /// The height of the rectangle.
-        /// </param>
+        /// <param name="left">The x-coordinate location of the left side of the rectangle.</param>
+        /// <param name="top">The y-coordinate location of the top side of the rectangle.</param>
+        /// <param name="width">The width of the rectangle.</param>
+        /// <param name="height">The height of the rectangle.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// width;The width should not be negative.
+        /// or
+        /// height;The height should not be negative.
+        /// </exception>
         public OxyRect(double left, double top, double width, double height)
         {
+            if (width < 0)
+            {
+                throw new ArgumentOutOfRangeException("width", "The width should not be negative.");
+            }
+
+            if (height < 0)
+            {
+                throw new ArgumentOutOfRangeException("height", "The height should not be negative.");
+            }
+
             this.left = left;
             this.top = top;
             this.width = width;
             this.height = height;
-            System.Diagnostics.Debug.Assert(width >= 0, "Width should be larger than 0.");
-            System.Diagnostics.Debug.Assert(height >= 0, "Height should be larger than 0.");
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OxyRect"/> struct that is exactly large enough to contain the two specified points.
+        /// </summary>
+        /// <param name="p0">The first point that the new rectangle must contain.</param>
+        /// <param name="p1">The second point that the new rectangle must contain.</param>
+        public OxyRect(ScreenPoint p0, ScreenPoint p1)
+            : this(Math.Min(p0.X, p1.X), Math.Min(p0.Y, p1.Y), Math.Abs(p1.X - p0.X), Math.Abs(p1.Y - p0.Y))
+        {
         }
 
         /// <summary>
@@ -230,17 +245,6 @@ namespace OxyPlot
         public static OxyRect Create(double x0, double y0, double x1, double y1)
         {
             return new OxyRect(Math.Min(x0, x1), Math.Min(y0, y1), Math.Abs(x1 - x0), Math.Abs(y1 - y0));
-        }
-
-        /// <summary>
-        /// Creates a rectangle from the specified corner coordinates.
-        /// </summary>
-        /// <param name="p0">The first corner.</param>
-        /// <param name="p1">The second corner.</param>
-        /// <returns>A rectangle.</returns>
-        public static OxyRect Create(ScreenPoint p0, ScreenPoint p1)
-        {
-            return Create(p0.X, p0.Y, p1.X, p1.Y);
         }
 
         /// <summary>
