@@ -68,3 +68,5 @@ The build output of the //Release// configurations are placed in the `Output/` f
 OxyPlot uses [https://github.com/SimonCropp/Pepita|Pepita] to update the Nuget packages. The `PepitaGet.dll` library is placed in `Tools\Pepita` folder. The PepitaGet tasks will be executed every time the solution is built.
 
 OxyPlot is currently being built by [http://www.microsoft.com/visualstudio|Visual Studio 2013] on a Windows 8.1 virtual machine (running on [https://www.virtualbox.org|VirtualBox]). The build machine is running [http://www.jetbrains.com/teamcity/|TeamCity] and trigs the build on every code check-in. The build steps are described in the `Build/BuildSteps.txt` file. The build machine is automatically pushing [http://nuget.org|NuGet] packages and uploading the output files to Codeplex and oxyplot.org.
+
+{Images\BuildMachine.png}
