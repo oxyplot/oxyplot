@@ -94,5 +94,38 @@ namespace ExampleLibrary
         {
             return HeatMapSeriesExamples.CreatePeaks(null, true, 400);
         }
+
+        [Example("#474875: Updating HeatMapSeries 1")]
+        public static PlotModel UpdatingHeatMapSeries1()
+        {
+            var model = HeatMapSeriesExamples.CreatePeaks();
+            model.Title = "Updating HeatMapSeries";
+            model.Subtitle = "Click the heat map to change the Maximum of the color axis.";
+            var lca = (LinearColorAxis)model.Axes[0];
+            var hms = (HeatMapSeries)model.Series[0];
+            hms.MouseDown += (s, e) =>
+            {
+                lca.Maximum = double.IsNaN(lca.Maximum) ? 10 : double.NaN;
+                model.InvalidatePlot(true);
+            };
+            return model;
+        }
+
+        [Example("#474875: Updating HeatMapSeries 2")]
+        public static PlotModel UpdatingHeatMapSeries()
+        {
+            var model = HeatMapSeriesExamples.CreatePeaks();
+            model.Title = "Updating HeatMapSeries";
+            model.Subtitle = "Click the heat map to change the Maximum of the color axis and invoke the Invalidate method on the HeatMapSeries.";
+            var lca = (LinearColorAxis)model.Axes[0];
+            var hms = (HeatMapSeries)model.Series[0];
+            hms.MouseDown += (s, e) =>
+            {
+                lca.Maximum = double.IsNaN(lca.Maximum) ? 10 : double.NaN;
+                hms.Invalidate();
+                model.InvalidatePlot(true);
+            };
+            return model;
+        }
     }
 }

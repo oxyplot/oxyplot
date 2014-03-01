@@ -56,9 +56,14 @@ namespace OxyPlot.Series
     public class HeatMapSeries : XYAxisSeries
     {
         /// <summary>
-        /// The hash code of the current data.
+        /// The hash code of the data when the image was updated.
         /// </summary>
         private int dataHash;
+
+        /// <summary>
+        /// The hash code of the color axis when the image was updated.
+        /// </summary>
+        private int colorAxisHash;
 
         /// <summary>
         /// The image
@@ -160,6 +165,17 @@ namespace OxyPlot.Series
         public double LabelFontSize { get; set; }
 
         /// <summary>
+        /// Invalidates the image that renders the heat map. The image will be regenerated the next time the <see cref="HeatMapSeries"/> is rendered.
+        /// </summary>
+        /// <remarks>
+        /// Call <see cref="PlotModel.InvalidatePlot"/> to refresh the view.
+        /// </remarks>
+        public void Invalidate()
+        {
+            this.image = null;
+        }
+
+        /// <summary>
         /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">
@@ -198,10 +214,13 @@ namespace OxyPlot.Series
             var s11 = this.Transform(right, top);
             var rect = OxyRect.Create(s00, s11);
 
-            if (this.image == null || this.Data.GetHashCode() != this.dataHash)
+            var currentDataHash = this.Data.GetHashCode();
+            var currentColorAxisHash = this.ColorAxis.GetHashCode();
+            if (this.image == null || currentDataHash != this.dataHash || currentColorAxisHash != this.colorAxisHash)
             {
                 this.UpdateImage();
-                this.dataHash = this.Data.GetHashCode();
+                this.dataHash = currentDataHash;
+                this.colorAxisHash = currentColorAxisHash;
             }
 
             var clip = this.GetClippingRect();
@@ -268,7 +287,7 @@ namespace OxyPlot.Series
             var text = this.Format(formatString, null, this.Title, this.XAxis.Title, p.X, this.YAxis.Title, p.Y, v);
             return new TrackerHitResult(this, p, point, null, -1, text);
         }
-        
+
         /// <summary>
         /// Ensures that the axes of the series is defined.
         /// </summary>
@@ -374,7 +393,7 @@ namespace OxyPlot.Series
         {
             return v.ToString(this.LabelFormatString, this.ActualCulture);
         }
-        
+
         /// <summary>
         /// Gets the interpolated value at the specified position in the data array (by bilinear interpolation).
         /// </summary>
