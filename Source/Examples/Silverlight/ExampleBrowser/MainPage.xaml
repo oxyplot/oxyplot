@@ -52,7 +52,7 @@
             <sdk:TabItem Header="Code">
                 <TextBox AcceptsReturn="True" FontFamily="Consolas" 
                          Text="{Binding SelectedExample.Code, Mode=OneWay}" BorderThickness="0"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         VerticalScrollBarVisibility="Auto"
                          />
             </sdk:TabItem>
         </sdk:TabControl>
