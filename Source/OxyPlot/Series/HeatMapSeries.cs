@@ -212,7 +212,7 @@ namespace OxyPlot.Series
 
             var s00 = this.Transform(left, bottom);
             var s11 = this.Transform(right, top);
-            var rect = OxyRect.Create(s00, s11);
+            var rect = new OxyRect(s00, s11);
 
             var currentDataHash = this.Data.GetHashCode();
             var currentColorAxisHash = this.ColorAxis.GetHashCode();

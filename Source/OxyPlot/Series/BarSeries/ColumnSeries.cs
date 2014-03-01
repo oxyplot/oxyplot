@@ -123,7 +123,7 @@ namespace OxyPlot.Series
         /// </returns>
         protected override OxyRect GetRectangle(double baseValue, double topValue, double beginValue, double endValue)
         {
-            return OxyRect.Create(this.Transform(beginValue, baseValue), this.Transform(endValue, topValue));
+            return new OxyRect(this.Transform(beginValue, baseValue), this.Transform(endValue, topValue));
         }
 
         /// <summary>

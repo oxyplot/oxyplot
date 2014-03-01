@@ -125,7 +125,7 @@ namespace OxyPlot.Annotations
                             ? this.YAxis.ActualMaximum
                             : this.MaximumY;
 
-            this.screenRectangle = OxyRect.Create(this.Transform(x0, y0), this.Transform(x1, y1));
+            this.screenRectangle = new OxyRect(this.Transform(x0, y0), this.Transform(x1, y1));
 
             // clip to the area defined by the axes
             var clipping = this.GetClippingRect();
