@@ -42,7 +42,7 @@ Build number format: %env.YEAR%.1.%build.counter%.1
 Artifact paths:
 build/**/*.* => Output.zip!/build/
 icons/**/*.* => Output.zip!/icons/
-output/**/*.zip => Output.zip!/output/
+output/**/*.* => Output.zip!/output/
 packages/**/*.* => Output.zip!/packages/
 source/.nuget/*.* => Output.zip!/source/.nuget/
 tools/**/*.* => Output.zip!/tools/
