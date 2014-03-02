@@ -39,7 +39,7 @@ Settings | Commit | Username: "First Last <email@address.com>"
 
 {Images/TortoiseHg_UserInformation.png}
 
-=== User information in Tortoise
+=== Set user information in Mercurial
 
 In your `~/.hgrc` (*nix) or `mercurial.ini` (Windows) file:
 
