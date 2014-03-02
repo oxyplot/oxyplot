@@ -371,7 +371,7 @@ namespace OxyPlot.XamarinIOS
         {
 			this.gctx.SetStrokeColor(c.ToCGColor());
             this.gctx.SetLineWidth((float)thickness);
-			this.gctx.SetLineCap(this.ConvertLineJoin(lineJoin));
+			this.gctx.SetLineJoin(this.ConvertLineJoin(lineJoin));
         }
 
 		private RectangleF ConvertRectangle(OxyRect rect, bool aliased)
@@ -398,19 +398,19 @@ namespace OxyPlot.XamarinIOS
 			return new PointF((float)p.X, (float)p.Y);
         }
 
-        private CGLineCap ConvertLineJoin(OxyPenLineJoin lineJoin)
+        private CGLineJoin ConvertLineJoin(OxyPenLineJoin lineJoin)
         {
             switch (lineJoin)
             {
                 case OxyPenLineJoin.Bevel:
-                    return CGLineCap.Butt;
+                    return CGLineJoin.Bevel;
                 case OxyPenLineJoin.Miter:
-                    return CGLineCap.Square;
+                    return CGLineJoin.Miter;
                 case OxyPenLineJoin.Round:
-                    return CGLineCap.Round;
+                    return CGLineJoin.Round;
             }
 
-            return CGLineCap.Square;
+            return CGLineJoin.Square;
         }
     }
 	public static class ExtensionMethods 
