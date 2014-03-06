@@ -35,7 +35,7 @@ Global
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = OxyPlot.XamarinAndroid\OxyPlot.XamarinAndroid.csproj
+		StartupItem = Examples\XamarinAndroid\ExampleBrowser\ExampleBrowser.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
