@@ -434,6 +434,24 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Converts the specified <see cref="OxyPenLineJoin"/> to a <see cref="LineJoin"/>.
+        /// </summary>
+        /// <param name="lineJoin">The value to convert.</param>
+        /// <returns>The converted value.</returns>
+        private static LineJoin Convert(OxyPenLineJoin lineJoin)
+        {
+            switch (lineJoin)
+            {
+                case OxyPenLineJoin.Bevel:
+                    return LineJoin.Bevel;
+                case OxyPenLineJoin.Miter:
+                    return LineJoin.Miter;
+                default:
+                    return LineJoin.Round;
+            }
+        }
+
+        /// <summary>
         /// Sets the width of the line.
         /// </summary>
         /// <param name="thickness">The thickness (in 1/96 inch units).</param>
@@ -451,24 +469,6 @@ namespace OxyPlot
         private void SetLineDashPattern(double[] dashArray, double dashPhase)
         {
             this.doc.SetLineDashPattern(dashArray.Select(d => d / 96 * 72).ToArray(), dashPhase / 96 * 72);
-        }
-
-        /// <summary>
-        /// Converts the specified <see cref="OxyPenLineJoin"/> to a <see cref="LineJoin"/>.
-        /// </summary>
-        /// <param name="lineJoin">The value to convert.</param>
-        /// <returns>The converted value.</returns>
-        private static LineJoin Convert(OxyPenLineJoin lineJoin)
-        {
-            switch (lineJoin)
-            {
-                case OxyPenLineJoin.Bevel:
-                    return LineJoin.Bevel;
-                case OxyPenLineJoin.Miter:
-                    return LineJoin.Miter;
-                default:
-                    return LineJoin.Round;
-            }
         }
     }
 }

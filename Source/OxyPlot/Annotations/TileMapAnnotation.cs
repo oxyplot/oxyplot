@@ -204,15 +204,15 @@ namespace OxyPlot.Annotations
 
             // draw the copyright notice
             var p = new ScreenPoint(clippingRect.Right - 5, clippingRect.Bottom - 5);
-			var textSize = rc.MeasureText(this.CopyrightNotice, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
+            var textSize = rc.MeasureText(this.CopyrightNotice, this.ActualFont, this.ActualFontSize, this.ActualFontWeight);
             rc.DrawRectangle(new OxyRect(p.X - textSize.Width - 2, p.Y - textSize.Height - 2, textSize.Width + 4, textSize.Height + 4), OxyColor.FromAColor(200, OxyColors.White), OxyColors.Undefined);
 
             rc.DrawText(
                 p,
                 this.CopyrightNotice,
                 OxyColors.Black,
-				this.ActualFont,
-				this.ActualFontSize,
+                this.ActualFont,
+                this.ActualFontSize,
                 500,
                 0,
                 HorizontalAlignment.Right,
@@ -250,7 +250,7 @@ namespace OxyPlot.Annotations
             int n = 1 << zoom;
             double lat = latitude / 180 * Math.PI;
             x = (longitude + 180.0) / 360.0 * n;
-            y = (1.0 - Math.Log(Math.Tan(lat) + 1.0 / Math.Cos(lat)) / Math.PI) / 2.0 * n;
+            y = (1.0 - (Math.Log(Math.Tan(lat) + (1.0 / Math.Cos(lat))) / Math.PI)) / 2.0 * n;
         }
 
         /// <summary>
@@ -332,7 +332,6 @@ namespace OxyPlot.Annotations
                            img = new OxyImage(buffer);
                            this.images[uri] = img;
                        }
-
                    }
                    catch (Exception e)
                    {

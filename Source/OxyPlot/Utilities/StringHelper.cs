@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StringHelper.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Provides support for string formatting.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
@@ -60,7 +61,11 @@ namespace OxyPlot
         /// The values.
         /// </param>
         /// <remarks>
-        /// The formatString and values works as in string.Format. In addition, you can format properties of the item object by using the syntax {PropertyName:Formatstring}. E.g. if you have a "Value" property in your item's class, use "{Value:0.00}" to output the value with two digits. Note that this formatting is using reflection and does not have the same performance as string.Format.
+        /// The format string and values works as in <c>String.Format</c>. 
+        /// In addition, you can format properties of the item object by using the syntax 
+        /// <c>{PropertyName:Formatstring}</c>. 
+        /// E.g. if you have a "Value" property in your item's class, use <c>"{Value:0.00}"</c> to output the value with two digits. 
+        /// Note that this formatting is using reflection and does not have the same performance as string.Format.
         /// </remarks>
         /// <returns>
         /// The formatted string.
@@ -71,25 +76,25 @@ namespace OxyPlot
             var s = FormattingExpression.Replace(
                 formatString,
                 delegate(Match match)
+                {
+                    var property = match.Groups["Property"].Value;
+                    if (property.Length > 0 && char.IsDigit(property[0]))
                     {
-                        var property = match.Groups["Property"].Value;
-                        if (property.Length > 0 && char.IsDigit(property[0]))
-                        {
-                            return match.Value;
-                        }
+                        return match.Value;
+                    }
 
-                        var pi = item.GetType().GetProperty(property);
-                        if (pi == null)
-                        {
-                            return string.Empty;
-                        }
+                    var pi = item.GetType().GetProperty(property);
+                    if (pi == null)
+                    {
+                        return string.Empty;
+                    }
 
-                        var v = pi.GetValue(item, null);
-                        var format = match.Groups["Format"].Value;
+                    var v = pi.GetValue(item, null);
+                    var format = match.Groups["Format"].Value;
 
-                        var fs = "{0" + format + "}";
-                        return string.Format(provider, fs, v);
-                    });
+                    var fs = "{0" + format + "}";
+                    return string.Format(provider, fs, v);
+                });
 
             // Also apply the standard formatting
             s = string.Format(provider, s, values);

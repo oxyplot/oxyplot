@@ -28,13 +28,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Provides functionality to render horizontal and vertical axes.
@@ -306,8 +304,8 @@ namespace OxyPlot
 
             var lpt = this.GetAxisTitlePositionAndAlignment(axis, titlePosition, ref angle, ref halign, ref valign);
 
-            this.rc.SetToolTip(axis.ToolTip);
-            this.rc.DrawMathText(
+            this.RenderContext.SetToolTip(axis.ToolTip);
+            this.RenderContext.DrawMathText(
                 lpt, 
                 axis.ActualTitle, 
                 axis.ActualTitleColor, 
@@ -318,7 +316,7 @@ namespace OxyPlot
                 halign, 
                 valign, 
                 maxSize);
-            this.rc.SetToolTip(null);
+            this.RenderContext.SetToolTip(null);
         }
 
         /// <summary>
@@ -458,7 +456,7 @@ namespace OxyPlot
                 }
 
                 string text = axis.FormatValue(value);
-                this.rc.DrawMathText(
+                this.RenderContext.DrawMathText(
                     pt, 
                     text, 
                     axis.ActualTextColor, 
@@ -476,11 +474,11 @@ namespace OxyPlot
                 double t0 = axis.Transform(0);
                 if (isHorizontal)
                 {
-                    this.rc.DrawLine(t0, plotAreaTop, t0, plotAreaBottom, this.ZeroPen);
+                    this.RenderContext.DrawLine(t0, plotAreaTop, t0, plotAreaBottom, this.ZeroPen);
                 }
                 else
                 {
-                    this.rc.DrawLine(plotAreaLeft, t0, plotAreaRight, t0, this.ZeroPen);
+                    this.RenderContext.DrawLine(plotAreaLeft, t0, plotAreaRight, t0, this.ZeroPen);
                 }
             }
 
@@ -497,11 +495,11 @@ namespace OxyPlot
                     double transformedValue = axis.Transform(value);
                     if (isHorizontal)
                     {
-                        this.rc.DrawLine(transformedValue, plotAreaTop, transformedValue, plotAreaBottom, this.ExtraPen);
+                        this.RenderContext.DrawLine(transformedValue, plotAreaTop, transformedValue, plotAreaBottom, this.ExtraPen);
                     }
                     else
                     {
-                        this.rc.DrawLine(plotAreaLeft, transformedValue, plotAreaRight, transformedValue, this.ExtraPen);
+                        this.RenderContext.DrawLine(plotAreaLeft, transformedValue, plotAreaRight, transformedValue, this.ExtraPen);
                     }
                 }
             }
@@ -509,7 +507,7 @@ namespace OxyPlot
             // Draw the axis line (across the tick marks)
             if (isHorizontal)
             {
-                this.rc.DrawLine(
+                this.RenderContext.DrawLine(
                     axis.Transform(actualMinimum), 
                     axisPosition, 
                     axis.Transform(actualMaximum), 
@@ -518,7 +516,7 @@ namespace OxyPlot
             }
             else
             {
-                this.rc.DrawLine(
+                this.RenderContext.DrawLine(
                     axisPosition, 
                     axis.Transform(actualMinimum), 
                     axisPosition, 
@@ -534,12 +532,12 @@ namespace OxyPlot
 
             if (this.MajorPen != null)
             {
-                this.rc.DrawLineSegments(majorSegments, this.MajorPen);
+                this.RenderContext.DrawLineSegments(majorSegments, this.MajorPen);
             }
 
             if (this.MajorTickPen != null)
             {
-                this.rc.DrawLineSegments(majorTickSegments, this.MajorTickPen);
+                this.RenderContext.DrawLineSegments(majorTickSegments, this.MajorTickPen);
             }
         }
 
@@ -639,12 +637,12 @@ namespace OxyPlot
             // Draw all the line segments);
             if (this.MinorPen != null)
             {
-                this.rc.DrawLineSegments(minorSegments, this.MinorPen);
+                this.RenderContext.DrawLineSegments(minorSegments, this.MinorPen);
             }
 
             if (this.MinorTickPen != null)
             {
-                this.rc.DrawLineSegments(minorTickSegments, this.MinorTickPen);
+                this.RenderContext.DrawLineSegments(minorTickSegments, this.MinorTickPen);
             }
         }
     }

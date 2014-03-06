@@ -111,6 +111,5 @@ namespace OxyPlot.Reporting
 
             return o != null ? o.ToString() : null;
         }
-
     }
 }

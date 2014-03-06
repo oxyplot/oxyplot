@@ -190,7 +190,7 @@ namespace OxyPlot.Series
             double minDistSquared = this.MinimumSegmentLength * this.MinimumSegmentLength;
 
             var clippingRect = this.GetClippingRect();
-			rc.SetClip (clippingRect);
+            rc.SetClip(clippingRect);
 
             // Transform all points to screen coordinates
             var points = this.Points;
@@ -268,7 +268,7 @@ namespace OxyPlot.Series
                 this.MarkerStrokeThickness,
                 1);
 
-			rc.ResetClip ();
+            rc.ResetClip();
         }
 
         /// <summary>

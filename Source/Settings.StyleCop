@@ -7,21 +7,31 @@
       <Value>Cornsilk</Value>
       <Value>CRC</Value>
       <Value>Gainsboro</Value>
+      <Value>github</Value>
+      <Value>Matlab</Value>
       <Value>Migra</Value>
       <Value>MigraDoc</Value>
+      <Value>Minase</Value>
+      <Value>Nayuki</Value>
       <Value>Oxy</Value>
+      <Value>Paeth</Value>
       <Value>pdf</Value>
       <Value>PdfSharp</Value>
+      <Value>Petzold</Value>
       <Value>pieslice</Value>
       <Value>pieslice-shaped</Value>
       <Value>png</Value>
       <Value>pt</Value>
       <Value>pubid</Value>
+      <Value>rectangularily</Value>
       <Value>RGB</Value>
       <Value>SilverPdf</Value>
       <Value>subpath</Value>
+      <Value>Sutherland-Hodgman</Value>
       <Value>svg</Value>
       <Value>sysid</Value>
+      <Value>th</Value>
+      <Value>underfilled</Value>
       <Value>veeness</Value>
       <Value>wpf</Value>
       <Value>xaml</Value>

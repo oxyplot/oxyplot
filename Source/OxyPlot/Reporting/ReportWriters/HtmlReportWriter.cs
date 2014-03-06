@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HtmlReportWriter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Specifies the html element type to use when writing plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Reporting
 {
     using System.Collections.Generic;
@@ -217,13 +218,13 @@ namespace OxyPlot.Reporting
                 case HtmlPlotElementType.Object:
                     // TODO: need a Func<string,Stream> to provide streams for the plot files?
 
-                    //string source = string.Format(
-                    //    "{0}_Plot{1}.svg", Path.GetFileNameWithoutExtension(this.outputFile), plot.FigureNumber);
-                    //plot.PlotModel.SaveSvg(this.GetFullFileName(source), plot.Width, plot.Height, this.textMeasurer);
-                    //this.WriteStartElement(this.PlotElementType == HtmlPlotElementType.Embed ? "embed" : "object");
-                    //this.WriteAttributeString("src", source);
-                    //this.WriteAttributeString("type", "image/svg+xml");
-                    //this.WriteEndElement();
+                    ////string source = string.Format(
+                    ////    "{0}_Plot{1}.svg", Path.GetFileNameWithoutExtension(this.outputFile), plot.FigureNumber);
+                    ////plot.PlotModel.SaveSvg(this.GetFullFileName(source), plot.Width, plot.Height, this.textMeasurer);
+                    ////this.WriteStartElement(this.PlotElementType == HtmlPlotElementType.Embed ? "embed" : "object");
+                    ////this.WriteAttributeString("src", source);
+                    ////this.WriteAttributeString("type", "image/svg+xml");
+                    ////this.WriteEndElement();
                     break;
                 case HtmlPlotElementType.Svg:
                     this.WriteRaw(plot.PlotModel.ToSvg(plot.Width, plot.Height, false, this.textMeasurer));
@@ -332,13 +333,13 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Creates the css section.
+        /// Creates the <c>css</c> section.
         /// </summary>
         /// <param name="style">
         /// The style.
         /// </param>
         /// <returns>
-        /// The css.
+        /// The <c>css</c>.
         /// </returns>
         private static string CreateCss(ReportStyle style)
         {
@@ -383,13 +384,13 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Converts a paragraphes style to css.
+        /// Converts a paragraph style to <c>css</c>.
         /// </summary>
         /// <param name="s">
         /// The style.
         /// </param>
         /// <returns>
-        /// A css string.
+        /// The <c>css</c>formatted style.
         /// </returns>
         private static string ParagraphStyleToCss(ParagraphStyle s)
         {
@@ -500,6 +501,5 @@ namespace OxyPlot.Reporting
             this.WriteStartElement("p");
             this.WriteClassId("figure");
         }
-
     }
 }

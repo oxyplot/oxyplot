@@ -42,8 +42,11 @@ namespace OxyPlot
         /// </summary>
         private readonly byte[] data;
 
-        // TODO: remove when PNG decoder is implemented
-        internal OxyColor[,] pixels;
+        /// <summary>
+        /// The pixels
+        /// </summary>
+        //// TODO: remove when PNG decoder is implemented
+        private OxyColor[,] pixels;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OxyImage"/> class from the specified stream.

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SutherlandHodgmanClipping.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,13 +27,14 @@
 //   Polygon clipping by the sutherland-hodgman algortihm.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
 
     /// <summary>
-    /// Provides polygon clipping by the Sutherland-Hodgman algortihm.
+    /// Provides polygon clipping by the Sutherland-Hodgman algorithm.
     /// </summary>
     public static class SutherlandHodgmanClipping
     {
@@ -67,7 +68,7 @@ namespace OxyPlot
         /// The Sutherland-Hodgman polygon clipping algorithm.
         /// </summary>
         /// <remarks>
-        /// See http://ezekiel.vancouver.wsu.edu/~cs442/lectures/clip/clip/index.html
+        /// See <a href="http://ezekiel.vancouver.wsu.edu/~cs442/lectures/clip/clip/index.html">link</a>.
         /// </remarks>
         /// <param name="bounds">
         /// The bounds.
@@ -186,7 +187,7 @@ namespace OxyPlot
         /// <returns>The interception.</returns>
         private static ScreenPoint LineIntercept(OxyRect bounds, RectangleEdge edge, ScreenPoint a, ScreenPoint b)
         {
-            if (a.x == b.x && a.y == b.y)
+            if (a.x.Equals(b.x) && a.y.Equals(b.y))
             {
                 return a;
             }
@@ -194,7 +195,7 @@ namespace OxyPlot
             switch (edge)
             {
                 case RectangleEdge.Bottom:
-                    if (b.Y == a.Y)
+                    if (b.Y.Equals(a.Y))
                     {
                         throw new ArgumentException("no intercept found");
                     }
@@ -202,7 +203,7 @@ namespace OxyPlot
                     return new ScreenPoint(a.X + (((b.X - a.X) * (bounds.Bottom - a.Y)) / (b.Y - a.Y)), bounds.Bottom);
 
                 case RectangleEdge.Left:
-                    if (b.X == a.X)
+                    if (b.X.Equals(a.X))
                     {
                         throw new ArgumentException("no intercept found");
                     }
@@ -210,7 +211,7 @@ namespace OxyPlot
                     return new ScreenPoint(bounds.Left, a.Y + (((b.Y - a.Y) * (bounds.Left - a.X)) / (b.X - a.X)));
 
                 case RectangleEdge.Right:
-                    if (b.X == a.X)
+                    if (b.X.Equals(a.X))
                     {
                         throw new ArgumentException("no intercept found");
                     }
@@ -218,7 +219,7 @@ namespace OxyPlot
                     return new ScreenPoint(bounds.Right, a.Y + (((b.Y - a.Y) * (bounds.Right - a.X)) / (b.X - a.X)));
 
                 case RectangleEdge.Top:
-                    if (b.Y == a.Y)
+                    if (b.Y.Equals(a.Y))
                     {
                         throw new ArgumentException("no intercept found");
                     }
@@ -228,6 +229,5 @@ namespace OxyPlot
 
             throw new ArgumentException("no intercept found");
         }
-
     }
 }

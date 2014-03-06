@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DataPointSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Base class for series that contain a collection of IDataPoints.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
     using System;
@@ -124,21 +125,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Gets the item at the specified index.
-        /// </summary>
-        /// <param name="i">The index of the item.</param>
-        /// <returns>The item of the index.</returns>
-        protected override object GetItem(int i)
-        {
-            if (this.ItemsSource == null && this.Points != null && i < this.Points.Count)
-            {
-                return this.Points[i];
-            }
-
-            return base.GetItem(i);
-        }
-
-        /// <summary>
         /// Updates the data.
         /// </summary>
         protected internal override void UpdateData()
@@ -152,12 +138,27 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Updates the max/min from the datapoints.
+        /// Updates the max/min from the data points.
         /// </summary>
         protected internal override void UpdateMaxMin()
         {
             base.UpdateMaxMin();
             this.InternalUpdateMaxMin(this.Points);
+        }
+
+        /// <summary>
+        /// Gets the item at the specified index.
+        /// </summary>
+        /// <param name="i">The index of the item.</param>
+        /// <returns>The item of the index.</returns>
+        protected override object GetItem(int i)
+        {
+            if (this.ItemsSource == null && this.Points != null && i < this.Points.Count)
+            {
+                return this.Points[i];
+            }
+
+            return base.GetItem(i);
         }
 
         /// <summary>
@@ -215,19 +216,19 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// The add data points.
+        /// Adds data points from the specified source to the specified destination.
         /// </summary>
         /// <param name="dest">
-        /// The dest.
+        /// The destination list.
         /// </param>
         /// <param name="itemsSource">
-        /// The items source.
+        /// The source.
         /// </param>
         /// <param name="dataFieldX">
-        /// The data field x.
+        /// The x-coordinate data field.
         /// </param>
         /// <param name="dataFieldY">
-        /// The data field y.
+        /// The y-coordinate data field.
         /// </param>
         protected void AddDataPoints(IList<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
         {
@@ -262,10 +263,10 @@ namespace OxyPlot.Series
                 dest.Add(pp);
             }
 
-            //var filler = new ListFiller<DataPoint>();
-            //filler.Add(dataFieldX, (item, value) => item.X = this.ToDouble(value));
-            //filler.Add(dataFieldY, (item, value) => item.Y = this.ToDouble(value));
-            //filler.Fill(dest, itemsSource);
+            ////var filler = new ListFiller<DataPoint>();
+            ////filler.Add(dataFieldX, (item, value) => item.X = this.ToDouble(value));
+            ////filler.Add(dataFieldY, (item, value) => item.Y = this.ToDouble(value));
+            ////filler.Fill(dest, itemsSource);
         }
 
         /// <summary>

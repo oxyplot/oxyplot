@@ -511,6 +511,5 @@ namespace OxyPlot.Series
         {
             return this.XAxis;
         }
-
     }
 }

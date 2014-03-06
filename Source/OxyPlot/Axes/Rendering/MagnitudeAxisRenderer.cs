@@ -28,13 +28,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Provides functionality to render <see cref="MagnitudeAxis"/>.
@@ -189,7 +187,7 @@ namespace OxyPlot
             var top = center.Y - radius;
             var height = width;
 
-            this.rc.DrawEllipse(new OxyRect(left, top, width, height), OxyColors.Undefined, pen.Color, pen.Thickness);
+            this.RenderContext.DrawEllipse(new OxyRect(left, top, width, height), OxyColors.Undefined, pen.Color, pen.Thickness);
         }
 
         /// <summary>
@@ -224,7 +222,7 @@ namespace OxyPlot
                 points.Add(axis.Transform(x, angle, angleAxis));
             }
 
-            this.rc.DrawLine(points, pen.Color, pen.Thickness, pen.DashArray);
+            this.RenderContext.DrawLine(points, pen.Color, pen.Thickness, pen.DashArray);
         }
 
         /// <summary>
@@ -247,7 +245,7 @@ namespace OxyPlot
             pt = new ScreenPoint(pt.X + dx, pt.Y + dy);
 
             string text = axis.FormatValue(x);
-            this.rc.DrawMathText(
+            this.RenderContext.DrawMathText(
                 pt,
                 text,
                 axis.ActualTextColor,

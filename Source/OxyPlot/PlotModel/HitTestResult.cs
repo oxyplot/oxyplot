@@ -75,6 +75,5 @@ namespace OxyPlot
         /// </summary>
         /// <value> The nearest hit point. </value>
         public ScreenPoint NearestHitPoint { get; set; }
-
     }
 }

@@ -50,6 +50,7 @@ namespace OxyPlot
         {
             var ms = new MemoryStream(bytes);
             var inputReader = new BinaryReader(ms);
+            // ReSharper disable UnusedVariable
             var signature = inputReader.ReadBytes(8);
             var headerLength = inputReader.ReadBigEndianUInt32();
             var headerType = inputReader.ReadString(4);
@@ -60,8 +61,10 @@ namespace OxyPlot
             var compressionMethod = (CompressionMethod)inputReader.ReadByte();
             var filterMethod = (FilterMethod)inputReader.ReadByte();
             var interlaceMethod = (InterlaceMethod)inputReader.ReadByte();
+            // ReSharper disable once InconsistentNaming
             var headerCRC = inputReader.ReadBigEndianUInt32();
 
+            // ReSharper restore UnusedVariable            
             double dpix = 96;
             double dpiy = 96;
             while (true)
@@ -84,6 +87,7 @@ namespace OxyPlot
 
                             var ppux = inputReader.ReadBigEndianUInt32();
                             var ppuy = inputReader.ReadBigEndianUInt32();
+                            // ReSharper disable once UnusedVariable
                             var unit = inputReader.ReadByte();
                             dpix = ppux * 0.0254;
                             dpiy = ppuy * 0.0254;
@@ -142,8 +146,12 @@ namespace OxyPlot
             var compressionMethod = (CompressionMethod)inputReader.ReadByte();
             var filterMethod = (FilterMethod)inputReader.ReadByte();
             var interlaceMethod = (InterlaceMethod)inputReader.ReadByte();
+            // ReSharper disable once UnusedVariable
+            // ReSharper disable once InconsistentNaming
             var headerCRC = inputReader.ReadBigEndianUInt32();
+            // ReSharper disable once NotAccessedVariable
             double dpix = 96;
+            // ReSharper disable once NotAccessedVariable
             double dpiy = 96;
 
             if (bitDepth != 8)
@@ -188,8 +196,10 @@ namespace OxyPlot
 
                     case "IDAT":
                         {
+                            // ReSharper disable UnusedVariable
                             var method = inputReader.ReadByte();
                             var check = inputReader.ReadByte();
+                            // ReSharper restore UnusedVariable
                             var bytes = inputReader.ReadBytes(length - 6);
                             var expectedCheckSum = inputReader.ReadBigEndianUInt32();
 
@@ -214,19 +224,24 @@ namespace OxyPlot
 
                             var ppux = inputReader.ReadBigEndianUInt32();
                             var ppuy = inputReader.ReadBigEndianUInt32();
+                            // ReSharper disable once UnusedVariable
                             var unit = inputReader.ReadByte();
+                            // ReSharper disable once RedundantAssignment
                             dpix = ppux * 0.0254;
+                            // ReSharper disable once RedundantAssignment
                             dpiy = ppuy * 0.0254;
                             break;
                         }
 
                     default:
                         {
+                            // ReSharper disable once UnusedVariable
                             var bytes = inputReader.ReadBytes(length);
                             break;
                         }
                 }
 
+                // ReSharper disable once UnusedVariable
                 var crc = inputReader.ReadBigEndianUInt32();
             }
 
@@ -270,6 +285,11 @@ namespace OxyPlot
             return pixels;
         }
 
+        /// <summary>
+        /// Deflates the specified bytes.
+        /// </summary>
+        /// <param name="bytes">The bytes.</param>
+        /// <returns>The deflated bytes.</returns>
         private static byte[] Deflate(byte[] bytes)
         {
             // http://en.wikipedia.org/wiki/DEFLATE
