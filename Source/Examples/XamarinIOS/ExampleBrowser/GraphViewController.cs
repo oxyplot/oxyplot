@@ -28,13 +28,13 @@
 namespace ExampleBrowser
 {
 
-  	using System.Drawing;
-  
-  	using MonoTouch.Foundation;
-  	using MonoTouch.UIKit;
-  	using MonoTouch.MessageUI;
-  
-  	using ExampleLibrary;
+	using System.Drawing;
+
+	using MonoTouch.Foundation;
+	using MonoTouch.UIKit;
+	using MonoTouch.MessageUI;
+
+	using ExampleLibrary;
 
 	using OxyPlot.XamarinIOS;
 
@@ -102,23 +102,21 @@ namespace ExampleBrowser
 			mail.Finished += HandleMailFinished;
 			mail.AddAttachmentData(nsData, attachmentType, title);
 
-			// TODO: obsolete method
-			this.PresentModalViewController (mail, true);
+			this.PresentViewController (mail, true, null);
 		}
 
 		private void HandleMailFinished (object sender, MFComposeResultEventArgs e)
 		{
-		    if (e.Result == MFMailComposeResult.Sent) {
-		        UIAlertView alert = new UIAlertView ("Mail Alert", "Mail Sent",
-		            null, "Yippie", null);
-		        alert.Show ();
+			if (e.Result == MFMailComposeResult.Sent) {
+				UIAlertView alert = new UIAlertView ("Mail Alert", "Mail Sent",
+					null, "Yippie", null);
+				alert.Show ();
 
-		        // you should handle other values that could be returned
-		        // in e.Result and also in e.Error
-		    }
+				// you should handle other values that could be returned
+				// in e.Result and also in e.Error
+			}
 
-			// TODO: obsolete method
-		    e.Controller.DismissModalViewControllerAnimated (true);
+			e.Controller.DismissViewController(true, null);
 		}
 	}
 }
