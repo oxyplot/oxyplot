@@ -371,8 +371,7 @@ namespace OxyPlot.Annotations
                     f = 0;
                 }
 
-                position.X += f * this.TextPadding * Math.Cos(angleInRadians);
-                position.Y += f * this.TextPadding * Math.Sin(angleInRadians);
+                position += new ScreenVector(f * this.TextPadding * Math.Cos(angleInRadians), f * this.TextPadding * Math.Sin(angleInRadians));
 
                 if (!string.IsNullOrEmpty(this.Text))
                 {

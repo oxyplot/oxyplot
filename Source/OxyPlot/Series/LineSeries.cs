@@ -345,7 +345,7 @@ namespace OxyPlot.Series
             this.VerifyAxes();
 
             var clippingRect = this.GetClippingRect();
-			rc.SetClip (clippingRect);
+            rc.SetClip(clippingRect);
 
             var contiguousLines = ExtractContiguousLines(this.Points).ToArray();
             var transformedContiguousLines = contiguousLines.Select(l => l.Select(Transform).ToArray());
@@ -377,7 +377,7 @@ namespace OxyPlot.Series
                 this.RenderPointLabels(rc, clippingRect);
             }
 
-			rc.ResetClip ();
+            rc.ResetClip();
 
             if (this.LineLegendPosition != LineLegendPosition.None && this.Points.Count > 0
                 && !string.IsNullOrEmpty(this.Title))
@@ -385,7 +385,7 @@ namespace OxyPlot.Series
                 // renders a legend on the line
                 this.RenderLegendOnLine(rc, clippingRect);
             }
-		}
+        }
 
         /// <summary>
         /// Renders the legend symbol for the line series on the
@@ -541,8 +541,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                var pt = this.Transform(point);
-                pt.Y -= this.LabelMargin;
+                var pt = this.Transform(point) + new ScreenVector(0, -this.LabelMargin);
 
                 if (!clippingRect.Contains(pt))
                 {
@@ -615,10 +614,9 @@ namespace OxyPlot.Series
                     break;
             }
 
-            var pt = Transform(point);
-            pt.X += dx;
+            var pt = Transform(point) + new ScreenVector(dx, 0);
 
-			// TODO: should not clip text when rendering at end of line, cf. example
+            // TODO: should not clip text when rendering at end of line, cf. example
 
             // Render the legend
             rc.DrawClippedText(

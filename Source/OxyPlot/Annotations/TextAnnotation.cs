@@ -52,8 +52,8 @@ namespace OxyPlot.Annotations
             this.Background = OxyColors.Undefined;
             this.StrokeThickness = 1;
             this.Rotation = 0;
-            this.HorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
-            this.VerticalAlignment = OxyPlot.VerticalAlignment.Bottom;
+            this.HorizontalAlignment = HorizontalAlignment.Center;
+            this.VerticalAlignment = VerticalAlignment.Bottom;
             this.Padding = new OxyThickness(4);
         }
 
@@ -123,9 +123,7 @@ namespace OxyPlot.Annotations
         {
             base.Render(rc, model);
 
-            var position = this.Transform(this.Position);
-            position.X += this.Offset.X;
-            position.Y += this.Offset.Y;
+            var position = this.Transform(this.Position) + this.Offset;
 
             var clippingRect = this.GetClippingRect();
 

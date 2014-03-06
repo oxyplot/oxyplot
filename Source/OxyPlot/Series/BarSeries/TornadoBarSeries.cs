@@ -298,7 +298,7 @@ namespace OxyPlot.Series
                 var p0 = this.Transform(item.Minimum, categoryIndex - 0.5 + barOffset);
                 var p1 = this.Transform(item.Maximum, categoryIndex - 0.5 + barOffset + actualBarWidth);
                 var p2 = this.Transform(baseValue, categoryIndex - 0.5 + barOffset);
-                p2.X = (int)p2.X;
+                p2 = new ScreenPoint((int)p2.X, p2.Y);
 
                 var minimumRectangle = OxyRect.Create(p0.X, p0.Y, p2.X, p1.Y);
                 var maximumRectangle = OxyRect.Create(p2.X, p0.Y, p1.X, p1.Y);
