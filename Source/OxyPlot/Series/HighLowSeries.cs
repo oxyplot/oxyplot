@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HighLowSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Represents a series for high-low plots.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
     using System;
@@ -38,7 +39,7 @@ namespace OxyPlot.Series
     /// Represents a series for high-low plots.
     /// </summary>
     /// <remarks>
-    /// See http://www.mathworks.com/help/toolbox/finance/highlowfts.html
+    /// See <a href="http://www.mathworks.com/help/toolbox/finance/highlowfts.html">link</a>
     /// </remarks>
     public class HighLowSeries : XYAxisSeries
     {
@@ -172,10 +173,12 @@ namespace OxyPlot.Series
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the mapping deleagte.
-        /// Example: series1.Mapping = item => new HighLowItem(((MyType)item).Time,((MyType)item).Value);
+        /// Gets or sets the mapping delegate.
         /// </summary>
         /// <value>The mapping.</value>
+        /// <remarks>        
+        /// Example: series1.Mapping = item => new HighLowItem(((MyType)item).Time,((MyType)item).Value);
+        /// </remarks>
         public Func<object, HighLowItem> Mapping { get; set; }
 
         /// <summary>
@@ -303,8 +306,8 @@ namespace OxyPlot.Series
 
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
-                    ScreenPoint high = this.Transform(v.X, v.High);
-                    ScreenPoint low = this.Transform(v.X, v.Low);
+                    var high = this.Transform(v.X, v.High);
+                    var low = this.Transform(v.X, v.Low);
 
                     rc.DrawClippedLine(
                         new[] { low, high },
@@ -317,9 +320,8 @@ namespace OxyPlot.Series
                         true);
                     if (!double.IsNaN(v.Open))
                     {
-                        ScreenPoint open = this.Transform(v.X, v.Open);
-                        ScreenPoint openTick = open;
-                        openTick.X -= this.TickLength;
+                        var open = this.Transform(v.X, v.Open);
+                        var openTick = open + new ScreenVector(-this.TickLength, 0);
                         rc.DrawClippedLine(
                             new[] { open, openTick },
                             clippingRect,
@@ -333,9 +335,8 @@ namespace OxyPlot.Series
 
                     if (!double.IsNaN(v.Close))
                     {
-                        ScreenPoint close = this.Transform(v.X, v.Close);
-                        ScreenPoint closeTick = close;
-                        closeTick.X += this.TickLength;
+                        var close = this.Transform(v.X, v.Close);
+                        var closeTick = close + new ScreenVector(this.TickLength, 0);
                         rc.DrawClippedLine(
                             new[] { close, closeTick },
                             clippingRect,
@@ -364,7 +365,7 @@ namespace OxyPlot.Series
             double xmid = (legendBox.Left + legendBox.Right) / 2;
             double yopen = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.7);
             double yclose = legendBox.Top + ((legendBox.Bottom - legendBox.Top) * 0.3);
-            double[] dashArray = LineStyleHelper.GetDashArray(this.LineStyle);
+            double[] dashArray = this.LineStyle.GetDashArray();
             var color = this.GetSelectableColor(this.ActualColor);
             rc.DrawLine(
                 new[] { new ScreenPoint(xmid, legendBox.Top), new ScreenPoint(xmid, legendBox.Bottom) },
@@ -496,6 +497,5 @@ namespace OxyPlot.Series
             this.MaxX = maxx;
             this.MaxY = maxy;
         }
-
     }
 }

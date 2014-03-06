@@ -31,6 +31,7 @@
 namespace OxyPlot
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Represents a vector defined in the screen coordinate system.
@@ -40,11 +41,15 @@ namespace OxyPlot
         /// <summary>
         /// The x-coordinate.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        // ReSharper disable once InconsistentNaming
         internal double x;
 
         /// <summary>
         /// The y-coordinate.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        // ReSharper disable once InconsistentNaming
         internal double y;
 
         /// <summary>
@@ -85,7 +90,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the x-coordinate.
+        /// Gets the x-coordinate.
         /// </summary>
         /// <value> The x-coordinate. </value>
         public double X
@@ -94,15 +99,10 @@ namespace OxyPlot
             {
                 return this.x;
             }
-
-            set
-            {
-                this.x = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the y-coordinate.
+        /// Gets the y-coordinate.
         /// </summary>
         /// <value> The y-coordinate. </value>
         public double Y
@@ -111,11 +111,17 @@ namespace OxyPlot
             {
                 return this.y;
             }
+        }
 
-            set
-            {
-                this.y = value;
-            }
+        /// <summary>
+        /// Implements the operator *.
+        /// </summary>
+        /// <param name="v"> The vector. </param>
+        /// <param name="d"> The multiplication factor. </param>
+        /// <returns> The result of the operator. </returns>
+        public static ScreenVector operator *(ScreenVector v, double d)
+        {
+            return new ScreenVector(v.x * d, v.y * d);
         }
 
         /// <summary>
@@ -140,17 +146,6 @@ namespace OxyPlot
         public override string ToString()
         {
             return this.x + " " + this.y;
-        }
-
-        /// <summary>
-        /// Implements the operator *.
-        /// </summary>
-        /// <param name="v"> The vector. </param>
-        /// <param name="d"> The multiplication factor. </param>
-        /// <returns> The result of the operator. </returns>
-        public static ScreenVector operator *(ScreenVector v, double d)
-        {
-            return new ScreenVector(v.x * d, v.y * d);
         }
     }
 }

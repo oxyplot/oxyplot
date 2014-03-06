@@ -212,8 +212,7 @@ namespace OxyPlot
                     var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
                     this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
 
-                    p.X += Math.Sin(rotate / 180.0 * Math.PI) * size.Height;
-                    p.Y -= Math.Cos(rotate / 180.0 * Math.PI) * size.Height;
+                    p += new ScreenVector(Math.Sin(rotate / 180.0 * Math.PI) * size.Height, Math.Cos(rotate / 180.0 * Math.PI) * size.Height);
                 }
             }
             else
@@ -223,8 +222,7 @@ namespace OxyPlot
                     var size = this.MeasureText(line, fontFamily, fontSize, fontWeight);
                     this.w.WriteText(p, line, c, fontFamily, fontSize, fontWeight, rotate, halign, valign);
 
-                    p.X -= Math.Sin(rotate / 180.0 * Math.PI) * size.Height;
-                    p.Y += Math.Cos(rotate / 180.0 * Math.PI) * size.Height;
+                    p += new ScreenVector(-Math.Sin(rotate / 180.0 * Math.PI) * size.Height, Math.Cos(rotate / 180.0 * Math.PI) * size.Height);
                 }
             }
         }

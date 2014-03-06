@@ -31,6 +31,7 @@
 namespace OxyPlot
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Represents a point defined in the screen coordinate system.
@@ -48,11 +49,15 @@ namespace OxyPlot
         /// <summary>
         /// The x-coordinate.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        // ReSharper disable once InconsistentNaming
         internal double x;
 
         /// <summary>
         /// The y-coordinate.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
+        // ReSharper disable once InconsistentNaming
         internal double y;
 
         /// <summary>
@@ -71,7 +76,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the x-coordinate.
+        /// Gets the x-coordinate.
         /// </summary>
         /// <value> The x-coordinate. </value>
         public double X
@@ -80,15 +85,10 @@ namespace OxyPlot
             {
                 return this.x;
             }
-
-            set
-            {
-                this.x = value;
-            }
         }
 
         /// <summary>
-        /// Gets or sets the y-coordinate.
+        /// Gets the y-coordinate.
         /// </summary>
         /// <value> The y-coordinate. </value>
         public double Y
@@ -96,11 +96,6 @@ namespace OxyPlot
             get
             {
                 return this.y;
-            }
-
-            set
-            {
-                this.y = value;
             }
         }
 
@@ -115,7 +110,42 @@ namespace OxyPlot
         /// </returns>
         public static bool IsUndefined(ScreenPoint point)
         {
-            return double.IsNaN(point.X) && double.IsNaN(point.Y);
+            return double.IsNaN(point.x) && double.IsNaN(point.y);
+        }
+
+        /// <summary>
+        /// Translates a <see cref="ScreenPoint"/> by a <see cref="ScreenVector"/>.
+        /// </summary>
+        /// <param name="p1"> The point. </param>
+        /// <param name="p2"> The vector. </param>
+        /// <returns> The translated point. </returns>
+        public static ScreenPoint operator +(ScreenPoint p1, ScreenVector p2)
+        {
+            return new ScreenPoint(p1.x + p2.x, p1.y + p2.y);
+        }
+
+        /// <summary>
+        /// Subtracts a <see cref="ScreenPoint"/> from a <see cref="ScreenPoint"/>
+        /// and returns the result as a <see cref="ScreenVector"/>.
+        /// </summary>
+        /// <param name="p1"> The point on which to perform the subtraction. </param>
+        /// <param name="p2"> The point to subtract from p1. </param>
+        /// <returns> A <see cref="ScreenVector"/> structure that represents the difference between p1 and p2. </returns>
+        public static ScreenVector operator -(ScreenPoint p1, ScreenPoint p2)
+        {
+            return new ScreenVector(p1.x - p2.x, p1.y - p2.y);
+        }
+
+        /// <summary>
+        /// Subtracts a <see cref="ScreenVector"/> from a <see cref="ScreenPoint"/> 
+        /// and returns the result as a <see cref="ScreenPoint"/>.
+        /// </summary>
+        /// <param name="point"> The point on which to perform the subtraction. </param>
+        /// <param name="vector"> The vector to subtract from p1. </param>
+        /// <returns> A <see cref="ScreenPoint"/> that represents point translated by the negative vector. </returns>
+        public static ScreenPoint operator -(ScreenPoint point, ScreenVector vector)
+        {
+            return new ScreenPoint(point.x - vector.x, point.y - vector.y);
         }
 
         /// <summary>
@@ -159,41 +189,6 @@ namespace OxyPlot
         public override string ToString()
         {
             return this.x + " " + this.y;
-        }
-
-        /// <summary>
-        /// Translates a <see cref="ScreenPoint"/> by a <see cref="ScreenVector"/>.
-        /// </summary>
-        /// <param name="p1"> The point. </param>
-        /// <param name="p2"> The vector. </param>
-        /// <returns> The translated point. </returns>
-        public static ScreenPoint operator +(ScreenPoint p1, ScreenVector p2)
-        {
-            return new ScreenPoint(p1.x + p2.x, p1.y + p2.y);
-        }
-
-        /// <summary>
-        /// Subtracts a <see cref="ScreenPoint"/> from a <see cref="ScreenPoint"/>
-        /// and returns the result as a <see cref="ScreenVector"/>.
-        /// </summary>
-        /// <param name="p1"> The point on which to perform the subtraction. </param>
-        /// <param name="p2"> The point to subtract from p1. </param>
-        /// <returns> A <see cref="ScreenVector"/> structure that represents the difference between p1 and p2. </returns>
-        public static ScreenVector operator -(ScreenPoint p1, ScreenPoint p2)
-        {
-            return new ScreenVector(p1.x - p2.x, p1.y - p2.y);
-        }
-
-        /// <summary>
-        /// Subtracts a <see cref="ScreenVector"/> from a <see cref="ScreenPoint"/> 
-        /// and returns the result as a <see cref="ScreenPoint"/>.
-        /// </summary>
-        /// <param name="point"> The point on which to perform the subtraction. </param>
-        /// <param name="vector"> The vector to subtract from p1. </param>
-        /// <returns> A <see cref="ScreenPoint"/> that represents point translated by the negative vector. </returns>
-        public static ScreenPoint operator -(ScreenPoint point, ScreenVector vector)
-        {
-            return new ScreenPoint(point.x - vector.x, point.y - vector.y);
         }
     }
 }
