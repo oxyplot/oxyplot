@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AxisRendererBase.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,11 +27,10 @@
 //   The axis renderer base.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace OxyPlot
+
+namespace OxyPlot.Axes
 {
     using System.Collections.Generic;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Provides an abstract base class for axis renderers.
@@ -41,62 +40,27 @@ namespace OxyPlot
         /// <summary>
         /// The plot.
         /// </summary>
-        protected readonly PlotModel Plot;
+        private readonly PlotModel plot;
 
         /// <summary>
         /// The render context.
         /// </summary>
-        protected readonly IRenderContext rc;
+        private readonly IRenderContext rc;
 
         /// <summary>
-        /// The axis lines pen.
+        /// The major label values
         /// </summary>
-        protected OxyPen AxislinePen;
+        private IList<double> majorLabelValues;
 
         /// <summary>
-        /// The extra grid lines pen.
+        /// The major tick values
         /// </summary>
-        protected OxyPen ExtraPen;
+        private IList<double> majorTickValues;
 
         /// <summary>
-        /// The major label values.
+        /// The minor tick values
         /// </summary>
-        protected IList<double> MajorLabelValues;
-
-        /// <summary>
-        /// The major grid lines pen.
-        /// </summary>
-        protected OxyPen MajorPen;
-
-        /// <summary>
-        /// The major tick pen.
-        /// </summary>
-        protected OxyPen MajorTickPen;
-
-        /// <summary>
-        /// The major tick values.
-        /// </summary>
-        protected IList<double> MajorTickValues;
-
-        /// <summary>
-        /// The minor grid lines pen.
-        /// </summary>
-        protected OxyPen MinorPen;
-
-        /// <summary>
-        /// The minor tick pen.
-        /// </summary>
-        protected OxyPen MinorTickPen;
-
-        /// <summary>
-        /// The minor tick values.
-        /// </summary>
-        protected IList<double> MinorTickValues;
-
-        /// <summary>
-        /// The zero grid line pen.
-        /// </summary>
-        protected OxyPen ZeroPen;
+        private IList<double> minorTickValues;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AxisRendererBase"/> class.
@@ -109,9 +73,120 @@ namespace OxyPlot
         /// </param>
         protected AxisRendererBase(IRenderContext rc, PlotModel plot)
         {
-            this.Plot = plot;
+            this.plot = plot;
             this.rc = rc;
         }
+
+        /// <summary>
+        /// Gets the plot.
+        /// </summary>
+        /// <value>
+        /// The plot.
+        /// </value>
+        protected PlotModel Plot
+        {
+            get
+            {
+                return this.plot;
+            }
+        }
+
+        /// <summary>
+        /// Gets the render context.
+        /// </summary>
+        /// <value>
+        /// The render context.
+        /// </value>
+        protected IRenderContext RenderContext
+        {
+            get
+            {
+                return this.rc;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the axis lines pen.
+        /// </summary>
+        protected OxyPen AxislinePen { get; set; }
+
+        /// <summary>
+        /// Gets or sets the extra grid lines pen.
+        /// </summary>
+        protected OxyPen ExtraPen { get; set; }
+
+        /// <summary>
+        /// Gets or sets the major label values.
+        /// </summary>
+        protected IList<double> MajorLabelValues
+        {
+            get
+            {
+                return this.majorLabelValues;
+            }
+
+            set
+            {
+                this.majorLabelValues = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the major grid lines pen.
+        /// </summary>
+        protected OxyPen MajorPen { get; set; }
+
+        /// <summary>
+        /// Gets or sets the major tick pen.
+        /// </summary>
+        protected OxyPen MajorTickPen { get; set; }
+
+        /// <summary>
+        /// Gets or sets the major tick values.
+        /// </summary>
+        protected IList<double> MajorTickValues
+        {
+            get
+            {
+                return this.majorTickValues;
+            }
+
+            set
+            {
+                this.majorTickValues = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the minor grid lines pen.
+        /// </summary>
+        protected OxyPen MinorPen { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minor tick pen.
+        /// </summary>
+        protected OxyPen MinorTickPen { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minor tick values.
+        /// </summary>
+        protected IList<double> MinorTickValues
+        {
+            get
+            {
+                return this.minorTickValues;
+            }
+
+            set
+            {
+                this.minorTickValues = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the zero grid line pen.
+        /// </summary>
+        protected OxyPen ZeroPen { get; set; }
 
         /// <summary>
         /// Renders the specified axis.
@@ -125,7 +200,7 @@ namespace OxyPlot
                 return;
             }
 
-            axis.GetTickValues(out this.MajorLabelValues, out this.MajorTickValues, out this.MinorTickValues);
+            axis.GetTickValues(out this.majorLabelValues, out this.majorTickValues, out this.minorTickValues);
             this.CreatePens(axis);
         }
 
@@ -152,11 +227,11 @@ namespace OxyPlot
         /// <param name="axis">
         /// The axis.
         /// </param>
-        /// <param name="glt">
-        /// The glt.
+        /// <param name="tickStyle">
+        /// The tick style.
         /// </param>
-        /// <param name="ticksize">
-        /// The ticksize.
+        /// <param name="tickSize">
+        /// The tick size.
         /// </param>
         /// <param name="position">
         /// The position.
@@ -167,24 +242,23 @@ namespace OxyPlot
         /// <param name="x1">
         /// The x 1.
         /// </param>
-        protected virtual void GetTickPositions(
-            Axis axis, TickStyle glt, double ticksize, AxisPosition position, out double x0, out double x1)
+        protected virtual void GetTickPositions(Axis axis, TickStyle tickStyle, double tickSize, AxisPosition position, out double x0, out double x1)
         {
             x0 = 0;
             x1 = 0;
             bool isTopOrLeft = position == AxisPosition.Top || position == AxisPosition.Left;
             double sign = isTopOrLeft ? -1 : 1;
-            switch (glt)
+            switch (tickStyle)
             {
                 case TickStyle.Crossing:
-                    x0 = -ticksize * sign * 0.75;
-                    x1 = ticksize * sign * 0.75;
+                    x0 = -tickSize * sign * 0.75;
+                    x1 = tickSize * sign * 0.75;
                     break;
                 case TickStyle.Inside:
-                    x0 = -ticksize * sign;
+                    x0 = -tickSize * sign;
                     break;
                 case TickStyle.Outside:
-                    x1 = ticksize * sign;
+                    x1 = tickSize * sign;
                     break;
             }
         }
@@ -193,7 +267,7 @@ namespace OxyPlot
         /// Determines whether the specified value is within the specified range.
         /// </summary>
         /// <param name="d">The value to check.</param>
-        /// <param name="min">The minium value of the range.</param>
+        /// <param name="min">The minimum value of the range.</param>
         /// <param name="max">The maximum value of the range.</param>
         /// <returns>
         ///  <c>true</c> if the specified value is within the range; otherwise, <c>false</c>.

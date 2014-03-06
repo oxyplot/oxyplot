@@ -1,4 +1,34 @@
-﻿namespace OxyPlot
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Deflate.cs" company="OxyPlot">
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// </copyright>
+// <summary>
+//   Implements DEFLATE decompression.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OxyPlot
 {
     using System;
     using System.IO;
@@ -7,8 +37,8 @@
     /// Implements DEFLATE decompression.
     /// </summary>
     /// <remarks>
-    /// The code is a c# port of Nayuki Minase's DEFLATE project at <a href="https://github.com/nayuki/DEFLATE">github</a>.
-    /// Original source code: <a href="https://github.com/nayuki/DEFLATE/blob/master/src/nayuki/deflate/Decompressor.java">Decompressor.java</a>.
+    /// The code is a c# port of the DEFLATE project by Nayuki Minase at <a href="https://github.com/nayuki/DEFLATE">github</a>.
+    /// Original source code: <a href="https://github.com/nayuki/DEFLATE/blob/master/src/nayuki/deflate/Decompressor.java"><c>Decompressor.java</c></a>.
     /// </remarks>
     public class Deflate
     {
@@ -413,7 +443,7 @@
             if (sym <= 284)
             {
                 var i = (sym - 261) / 4; // Number of extra bits to read
-                return (((sym - 265) % 4 + 4) << i) + 3 + this.ReadInt(i);
+                return ((((sym - 265) % 4) + 4) << i) + 3 + this.ReadInt(i);
             }
 
             return 258;

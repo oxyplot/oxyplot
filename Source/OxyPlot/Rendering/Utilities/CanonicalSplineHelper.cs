@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CanonicalSplineHelper.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Interpolates a list of points using a canonical spline.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
@@ -38,7 +39,7 @@ namespace OxyPlot
     /// </summary>
     /// <remarks>
     /// CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
-    /// www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html
+    /// See also <a href="http://www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html">blog post</a>.
     /// </remarks>
     internal static class CanonicalSplineHelper
     {
@@ -227,10 +228,10 @@ namespace OxyPlot
             double sx2 = t2 * (pt3.X - pt1.X);
             double sy2 = t2 * (pt3.Y - pt1.Y);
 
-            double ax = sx1 + sx2 + 2 * pt1.X - 2 * pt2.X;
-            double ay = sy1 + sy2 + 2 * pt1.Y - 2 * pt2.Y;
-            double bx = -2 * sx1 - sx2 - 3 * pt1.X + 3 * pt2.X;
-            double by = -2 * sy1 - sy2 - 3 * pt1.Y + 3 * pt2.Y;
+            double ax = sx1 + sx2 + (2 * pt1.X) - (2 * pt2.X);
+            double ay = sy1 + sy2 + (2 * pt1.Y) - (2 * pt2.Y);
+            double bx = (-2 * sx1) - sx2 - (3 * pt1.X) + (3 * pt2.X);
+            double by = (-2 * sy1) - sy2 - (3 * pt1.Y) + (3 * pt2.Y);
 
             double cx = sx1;
             double cy = sy1;
@@ -244,8 +245,8 @@ namespace OxyPlot
             {
                 double t = (double)i / (num - 1);
                 var pt = new ScreenPoint(
-                    ax * t * t * t + bx * t * t + cx * t + dx,
-                    ay * t * t * t + by * t * t + cy * t + dy);
+                    (ax * t * t * t) + (bx * t * t) + (cx * t) + dx,
+                    (ay * t * t * t) + (by * t * t) + (cy * t) + dy);
                 points.Add(pt);
             }
         }

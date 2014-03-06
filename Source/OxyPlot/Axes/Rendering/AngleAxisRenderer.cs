@@ -28,12 +28,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot
+namespace OxyPlot.Axes
 {
     using System;
     using System.Linq;
-
-    using OxyPlot.Axes;
 
     /// <summary>
     /// Provides functionality to render <see cref="AngleAxis"/>.
@@ -94,7 +92,7 @@ namespace OxyPlot
 
                 foreach (var screenPoint in screenPoints)
                 {
-                    this.rc.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, screenPoint.x, screenPoint.y, this.MinorPen, false);
+                    this.RenderContext.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, screenPoint.x, screenPoint.y, this.MinorPen, false);
                 }
             }
 
@@ -115,7 +113,7 @@ namespace OxyPlot
 
                 foreach (var point in screenPoints)
                 {
-                    this.rc.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, point.x, point.y, this.MajorPen, false);
+                    this.RenderContext.DrawLine(magnitudeAxis.MidPoint.x, magnitudeAxis.MidPoint.y, point.x, point.y, this.MajorPen, false);
                 }
             }
 
@@ -148,7 +146,7 @@ namespace OxyPlot
                     ha = HorizontalAlignment.Right;
                 }
 
-                this.rc.DrawMathText(
+                this.RenderContext.DrawMathText(
                     pt, text, axis.ActualTextColor, axis.ActualFont, axis.ActualFontSize, axis.ActualFontWeight, angle, ha, va);
             }
         }

@@ -113,6 +113,8 @@ namespace OxyPlot
         /// <summary>
         /// Increase margin size if needed, do it on all borders
         /// </summary>
+        /// <param name="currentMargin">The current margin.</param>
+        /// <param name="minBorderSize">Minimum size of the border.</param>
         private static void EnsureMarginIsBigEnough(ref OxyThickness currentMargin, double minBorderSize)
         {
             currentMargin.Bottom = Math.Max(currentMargin.Bottom, minBorderSize);
@@ -124,6 +126,9 @@ namespace OxyPlot
         /// <summary>
         /// Increase margin size if needed, do it on the specified border.
         /// </summary>
+        /// <param name="currentMargin">The current margin.</param>
+        /// <param name="minBorderSize">Minimum size of the border.</param>
+        /// <param name="borderPosition">The border position.</param>
         private static void EnsureMarginIsBigEnough(ref OxyThickness currentMargin, double minBorderSize, AxisPosition borderPosition)
         {
             switch (borderPosition)

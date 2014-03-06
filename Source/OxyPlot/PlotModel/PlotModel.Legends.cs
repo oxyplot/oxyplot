@@ -336,7 +336,7 @@ namespace OxyPlot
                 {
                     titleSize = rc.MeasureMathText(
                         this.LegendTitle,
-                        this.LegendTitleFont ?? DefaultFont,
+                        this.LegendTitleFont ?? this.DefaultFont,
                         this.LegendTitleFontSize,
                         this.LegendTitleFontWeight);
                 }
@@ -410,7 +410,7 @@ namespace OxyPlot
                     continue;
                 }
 
-                var textSize = rc.MeasureMathText(s.Title, this.LegendFont ?? DefaultFont, this.LegendFontSize, this.LegendFontWeight);
+                var textSize = rc.MeasureMathText(s.Title, this.LegendFont ?? this.DefaultFont, this.LegendFontSize, this.LegendFontWeight);
                 double itemWidth = this.LegendSymbolLength + this.LegendSymbolMargin + textSize.Width;
                 double itemHeight = textSize.Height;
 
@@ -498,7 +498,7 @@ namespace OxyPlot
                 size.Height = availableHeight;
             }
 
-            if (!double.IsNaN(LegendMaxWidth) && size.Width > this.LegendMaxWidth)
+            if (!double.IsNaN(this.LegendMaxWidth) && size.Width > this.LegendMaxWidth)
             {
                 size.Width = this.LegendMaxWidth;
             }

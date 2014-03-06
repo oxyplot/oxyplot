@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TextReportWriter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   ANSI text report writer.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Reporting
 {
     using System;
@@ -110,7 +111,7 @@ namespace OxyPlot.Reporting
                 return;
             }
 
-            WriteLine(h);
+            this.WriteLine(h);
             if (h.Level == 1)
             {
                 this.WriteLine("=".Repeat(h.Text.Length));
@@ -133,13 +134,13 @@ namespace OxyPlot.Reporting
         /// The write paragraph.
         /// </summary>
         /// <param name="p">
-        /// The p.
+        /// The content.
         /// </param>
         public void WriteParagraph(Paragraph p)
         {
             foreach (string line in p.Text.SplitLines(this.MaxLineLength))
             {
-                WriteLine(line);
+                this.WriteLine(line);
             }
 
             this.WriteLine();
@@ -173,33 +174,29 @@ namespace OxyPlot.Reporting
         /// The write table.
         /// </summary>
         /// <param name="t">
-        /// The t.
+        /// The table.
         /// </param>
         public void WriteTable(Table t)
         {
             if (t.Caption != null)
             {
                 this.tableCounter++;
-                this.WriteLine(string.Format("Table {0}. {1}", this.tableCounter, t.Caption));
+                this.WriteLine("Table {0}. {1}", this.tableCounter, t.Caption);
             }
 
             this.WriteLine();
-            int rows = t.Rows.Count;
             int cols = t.Columns.Count;
 
             var columnWidth = new int[cols];
-            int totalLength = 0;
             for (int j = 0; j < cols; j++)
             {
                 columnWidth[j] = 0;
                 foreach (var tr in t.Rows)
                 {
-                    TableCell cell = tr.Cells[j];
-                    string text = cell.Content;
+                    var cell = tr.Cells[j];
+                    var text = cell.Content;
                     columnWidth[j] = Math.Max(columnWidth[j], text != null ? text.Length : 0);
                 }
-
-                totalLength += columnWidth[j];
             }
 
             // WriteLine("-".Repeat(totalLength));
@@ -207,8 +204,8 @@ namespace OxyPlot.Reporting
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    TableCell cell = tr.Cells[j];
-                    string text = cell.Content;
+                    var cell = tr.Cells[j];
+                    var text = cell.Content;
                     this.Write(GetCellText(j, cols, PadString(text, t.Columns[j].Alignment, columnWidth[j])));
                 }
 
@@ -219,42 +216,42 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The get cell text.
+        /// Gets the formatted string for the specified cell.
         /// </summary>
-        /// <param name="i">
-        /// The i.
+        /// <param name="cellIndex">
+        /// The cell index (column).
         /// </param>
-        /// <param name="count">
-        /// The count.
+        /// <param name="columns">
+        /// The number of columns.
         /// </param>
-        /// <param name="p">
-        /// The p.
+        /// <param name="content">
+        /// The content of the cell.
         /// </param>
         /// <returns>
-        /// The get cell text.
+        /// The cell representation.
         /// </returns>
-        private static string GetCellText(int i, int count, string p)
+        private static string GetCellText(int cellIndex, int columns, string content)
         {
-            if (i == 0)
+            if (cellIndex == 0)
             {
-                p = TableRowStart + p;
+                content = TableRowStart + content;
             }
 
-            if (i + 1 < count)
+            if (cellIndex + 1 < columns)
             {
-                p += TableCellSeparator;
+                content += TableCellSeparator;
             }
 
-            if (i == count - 1)
+            if (cellIndex == columns - 1)
             {
-                p += TableRowEnd;
+                content += TableRowEnd;
             }
 
-            return p;
+            return content;
         }
 
         /// <summary>
-        /// The pad string.
+        /// Aligns the specified string.
         /// </summary>
         /// <param name="text">
         /// The text.
@@ -266,7 +263,7 @@ namespace OxyPlot.Reporting
         /// The width.
         /// </param>
         /// <returns>
-        /// The pad string.
+        /// The padded string.
         /// </returns>
         private static string PadString(string text, Alignment alignment, int width)
         {
@@ -288,6 +285,5 @@ namespace OxyPlot.Reporting
 
             return null;
         }
-
     }
 }

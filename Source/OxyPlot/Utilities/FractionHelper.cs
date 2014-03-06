@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FractionHelper.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Generates fraction strings from double values.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
@@ -100,7 +101,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Finds the greates common divisor.
+        /// Calculates the greatest common divisor.
         /// </summary>
         /// <param name="a">
         /// The a.
@@ -109,20 +110,20 @@ namespace OxyPlot
         /// The b.
         /// </param>
         /// <returns>
-        /// The gcd.
+        /// The greatest common divisor.
         /// </returns>
-        public static int gcd(int a, int b)
+        public static int GreatestCommonDivisor(int a, int b)
         {
             if (b == 0)
             {
                 return a;
             }
 
-            return gcd(b, a % b);
+            return GreatestCommonDivisor(b, a % b);
         }
 
         /// <summary>
-        /// Finds the greatest common factor.
+        /// Calculates the greatest common factor.
         /// </summary>
         /// <param name="x">
         /// The x.
@@ -131,9 +132,9 @@ namespace OxyPlot
         /// The y.
         /// </param>
         /// <returns>
-        /// The gcf.
+        /// The greatest common factor.
         /// </returns>
-        private static int GCF(int x, int y)
+        public static int GreatestCommonFactor(int x, int y)
         {
             x = Math.Abs(x);
             y = Math.Abs(y);

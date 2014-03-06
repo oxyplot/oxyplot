@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StringExtensions.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   The string extensions.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Reporting
 {
     using System.Collections.Generic;
@@ -38,16 +39,16 @@ namespace OxyPlot.Reporting
     public static class StringExtensions
     {
         /// <summary>
-        /// The repeat.
+        /// Repeats the specified string <paramref name="n"/> times.
         /// </summary>
         /// <param name="source">
         /// The source.
         /// </param>
         /// <param name="n">
-        /// The n.
+        /// The number of times to repeat.
         /// </param>
         /// <returns>
-        /// The repeat.
+        /// The repeated string.
         /// </returns>
         public static string Repeat(this string source, int n)
         {
@@ -61,15 +62,16 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The split lines.
+        /// Splits the specified string to lines of maximum <paramref name="lineLength"/> length.
         /// </summary>
         /// <param name="s">
-        /// The s.
+        /// The string to split.
         /// </param>
         /// <param name="lineLength">
         /// The line length.
         /// </param>
         /// <returns>
+        /// The split lines.
         /// </returns>
         public static string[] SplitLines(this string s, int lineLength = 80)
         {
@@ -91,19 +93,19 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// The find line length.
+        /// Finds the length of the line starting at <paramref name="i"/> that has maximum length <paramref name="maxLineLength"/>.
         /// </summary>
         /// <param name="text">
-        /// The text.
+        /// The text source.
         /// </param>
         /// <param name="i">
-        /// The i.
+        /// The start index.
         /// </param>
         /// <param name="maxLineLength">
-        /// The max line length.
+        /// The maximum line length.
         /// </param>
         /// <returns>
-        /// The find line length.
+        /// The length of the line.
         /// </returns>
         private static int FindLineLength(string text, int i, int maxLineLength)
         {
@@ -125,6 +127,5 @@ namespace OxyPlot.Reporting
 
             return len;
         }
-
     }
 }

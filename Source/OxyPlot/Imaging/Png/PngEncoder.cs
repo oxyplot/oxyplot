@@ -111,7 +111,7 @@ namespace OxyPlot
     public enum InterlaceMethod
     {
         /// <summary>
-        ///  The null method, pixels are extracted sequentially from left to right, and scanlines sequentially from top to bottom.
+        ///  The null method, pixels are extracted sequentially from left to right, and scan lines sequentially from top to bottom.
         /// </summary>
         None = 0,
 

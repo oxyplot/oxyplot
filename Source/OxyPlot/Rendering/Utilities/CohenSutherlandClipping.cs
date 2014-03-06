@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CohenSutherlandClipping.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Line clipping algorithm.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     /// <summary>
@@ -100,16 +101,16 @@ namespace OxyPlot
         /// Initializes a new instance of the <see cref="CohenSutherlandClipping"/> class.
         /// </summary>
         /// <param name="xmin">
-        /// The xmin.
+        /// The minimum x.
         /// </param>
         /// <param name="xmax">
-        /// The xmax.
+        /// The maximum x.
         /// </param>
         /// <param name="ymin">
-        /// The ymin.
+        /// The minimum y.
         /// </param>
         /// <param name="ymax">
-        /// The ymax.
+        /// The maximum y.
         /// </param>
         public CohenSutherlandClipping(double xmin, double xmax, double ymin, double ymax)
         {
@@ -122,7 +123,7 @@ namespace OxyPlot
         /// <summary>
         /// Cohen–Sutherland clipping algorithm clips a line from
         /// P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with
-        /// diagonal from (xmin, ymin) to (xmax, ymax).
+        /// diagonal from <code>(xmin, ymin)</code> to <code>(xmax, ymax)</code>.
         /// </summary>
         /// <param name="x0">X coordinate of the first point.</param>
         /// <param name="y0">Y coordinate of the first point.</param>
@@ -209,7 +210,7 @@ namespace OxyPlot
         /// <summary>
         /// Cohen–Sutherland clipping algorithm clips a line from
         /// P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with
-        /// diagonal from (xmin, ymin) to (xmax, ymax).
+        /// diagonal from <code>(xmin, ymin)</code> to <code>(xmax, ymax)</code>.
         /// </summary>
         /// <param name="s0">
         /// The s 0.
@@ -264,7 +265,7 @@ namespace OxyPlot
         /// </returns>
         /// <remarks>
         /// Compute the bit code for a point (x, y) using the clip rectangle
-        /// bounded diagonally by (xmin, ymin), and (xmax, ymax)
+        /// bounded diagonally by <code>(xmin, ymin)</code> to <code>(xmax, ymax)</code>.
         /// </remarks>
         private int ComputeOutCode(double x, double y)
         {

@@ -362,8 +362,8 @@ namespace OxyPlot.Series
 
             // Offset of the bins
             var binOffset = this.XAxis.Transform(this.MinX, this.MaxY, this.YAxis);
-            
-			rc.SetClip(clippingRect);
+
+            rc.SetClip(clippingRect);
 
             if (this.ColorAxis != null)
             {

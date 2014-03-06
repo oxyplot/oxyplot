@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ContourSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,9 +24,10 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a series for contour plots.
+//   Represents a series that renders contours.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Series
 {
     using System;
@@ -37,7 +38,7 @@ namespace OxyPlot.Series
     /// Represents a series that renders contours.
     /// </summary>
     /// <remarks>
-    /// See http://en.wikipedia.org/wiki/Contour_line and http://www.mathworks.se/help/techdoc/ref/contour.html.
+    /// See <a href="http://en.wikipedia.org/wiki/Contour_line">wikipedia</a> and <a href="http://www.mathworks.se/help/techdoc/ref/contour.html">link</a>.
     /// </remarks>
     public class ContourSeries : XYAxisSeries
     {
@@ -299,7 +300,7 @@ namespace OxyPlot.Series
             this.VerifyAxes();
 
             var clippingRect = this.GetClippingRect();
-			rc.SetClip (clippingRect);
+            rc.SetClip(clippingRect);
 
             var contourLabels = new List<ContourLabel>();
 
@@ -346,7 +347,7 @@ namespace OxyPlot.Series
                 this.RenderLabel(rc, cl);
             }
 
-			rc.ResetClip ();
+            rc.ResetClip();
         }
 
         /// <summary>
