@@ -299,6 +299,7 @@ namespace OxyPlot.Series
             this.VerifyAxes();
 
             var clippingRect = this.GetClippingRect();
+			rc.SetClip (clippingRect);
 
             var contourLabels = new List<ContourLabel>();
 
@@ -344,6 +345,8 @@ namespace OxyPlot.Series
             {
                 this.RenderLabel(rc, cl);
             }
+
+			rc.ResetClip ();
         }
 
         /// <summary>
