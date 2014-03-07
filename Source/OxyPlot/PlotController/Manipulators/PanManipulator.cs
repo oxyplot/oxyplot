@@ -24,23 +24,21 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The pan manipulator.
+//   Provides a plot control manipulator for panning functionality.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
-{
+{   
     /// <summary>
     /// Provides a plot control manipulator for panning functionality.
     /// </summary>
-    public class PanManipulator : ManipulatorBase
+    public class PanManipulator : MouseManipulator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PanManipulator"/> class.
         /// </summary>
-        /// <param name="plotControl">
-        /// The plot control.
-        /// </param>
+        /// <param name="plotControl">The plot control.</param>
         public PanManipulator(IPlotControl plotControl)
             : base(plotControl)
         {
@@ -55,23 +53,23 @@ namespace OxyPlot
         /// Occurs when the input device changes position during a manipulation.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="OxyPlot.ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
-        public override void Delta(ManipulationEventArgs e)
+        public override void Delta(OxyMouseEventArgs e)
         {
             base.Delta(e);
             if (this.XAxis != null)
             {
-                this.XAxis.Pan(this.PreviousPosition, e.CurrentPosition);
+                this.XAxis.Pan(this.PreviousPosition, e.Position);
             }
 
             if (this.YAxis != null)
             {
-                this.YAxis.Pan(this.PreviousPosition, e.CurrentPosition);
+                this.YAxis.Pan(this.PreviousPosition, e.Position);
             }
 
-            this.PlotControl.RefreshPlot(false);
-            this.PreviousPosition = e.CurrentPosition;
+            this.PlotControl.InvalidatePlot(false);
+            this.PreviousPosition = e.Position;
         }
 
         /// <summary>
@@ -89,12 +87,12 @@ namespace OxyPlot
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="OxyPlot.ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
-        public override void Started(ManipulationEventArgs e)
+        public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);
-            this.PreviousPosition = e.CurrentPosition;
+            this.PreviousPosition = e.Position;
         }
     }
 }

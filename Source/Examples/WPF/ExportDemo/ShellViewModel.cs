@@ -362,7 +362,7 @@ namespace ExportDemo
                 var textMeasurer = new ShapesRenderContext(new Canvas());
                 using (var s = File.Create(path))
                 {
-                    var exporter = new OxyPlot.Wpf.SvgExporter
+                    var exporter = new SvgExporter
                     {
                         Width = this.Plot.ActualWidth,
                         Height = this.Plot.ActualHeight,

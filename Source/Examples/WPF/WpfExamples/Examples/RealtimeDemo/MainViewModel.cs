@@ -27,13 +27,13 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 
 namespace RealtimeDemo
 {
-    using OxyPlot.Axes;
-    using OxyPlot.Series;
-
     public enum SimulationType
     {
         Waves,
@@ -42,20 +42,23 @@ namespace RealtimeDemo
 
     public class MainViewModel : INotifyPropertyChanged
     {
-        private readonly Stopwatch watch = new Stopwatch();
-        private int N;
+        // try to change might be lower or higher than the rendering interval
+        private const int UpdateInterval = 20;
 
-        private SimulationType _simulationType;
+        private readonly Timer timer;
+        private readonly Stopwatch watch = new Stopwatch();
+        private int numberOfSeries;
+        private SimulationType simulationType;
 
         public SimulationType SimulationType
         {
             get
             {
-                return this._simulationType;
+                return this.simulationType;
             }
             set
             {
-                this._simulationType = value;
+                this.simulationType = value;
                 this.RaisePropertyChanged("SimulationType");
                 this.SetupModel();
             }
@@ -63,44 +66,56 @@ namespace RealtimeDemo
 
         public MainViewModel()
         {
-            // try to change this value to TimeSimulation
-            SimulationType = SimulationType.Waves;
-            // SimulationType = SimulationType.TimeSimulation;
-
-            Function = (t, x, a) => Math.Cos(t * a) * (x == 0 ? 1 : Math.Sin(x * a) / x);
-
-            SetupModel();
+            this.timer = new Timer(OnTimerElapsed);
+            this.Function = (t, x, a) => Math.Cos(t * a) * (x == 0 ? 1 : Math.Sin(x * a) / x);
+            this.SimulationType = SimulationType.Waves;
         }
 
-        void SetupModel()
+        private void SetupModel()
         {
+            this.timer.Change(Timeout.Infinite, Timeout.Infinite);
+
             PlotModel = new PlotModel();
             PlotModel.Axes.Add(new LinearAxis(AxisPosition.Left, -2, 2));
 
-            this.N = this.SimulationType == SimulationType.TimeSimulation ? 1 : 20;
+            this.numberOfSeries = this.SimulationType == SimulationType.TimeSimulation ? 1 : 20;
 
-            for (int i = 0; i < N; i++)
+            for (int i = 0; i < this.numberOfSeries; i++)
             {
-                PlotModel.Series.Add(new LineSeries());
+                PlotModel.Series.Add(new LineSeries { LineStyle = LineStyle.Solid });
             }
             watch.Start();
+
+            RaisePropertyChanged("PlotModel");
+
+            this.timer.Change(1000, UpdateInterval);
         }
 
-        public int TotalNumberOfPoints { get; set; }
+        public int TotalNumberOfPoints { get; private set; }
 
         private Func<double, double, double, double> Function { get; set; }
 
-        public PlotModel PlotModel { get; set; }
+        public PlotModel PlotModel { get; private set; }
 
-        public void Update()
+        private void OnTimerElapsed(object state)
+        {
+            lock (this.PlotModel.SyncRoot)
+            {
+                this.Update();
+            }
+
+            this.PlotModel.InvalidatePlot(true);
+        }
+
+        private void Update()
         {
             double t = watch.ElapsedMilliseconds * 0.001;
             int n = 0;
 
             for (int i = 0; i < PlotModel.Series.Count; i++)
             {
-                var s = PlotModel.Series[i] as LineSeries;
-                s.LineStyle = LineStyle.Solid;
+                var s = (LineSeries)PlotModel.Series[i];
+
                 switch (SimulationType)
                 {
                     case SimulationType.TimeSimulation:
@@ -128,9 +143,9 @@ namespace RealtimeDemo
 
                 n += s.Points.Count;
             }
+
             TotalNumberOfPoints = n;
             RaisePropertyChanged("TotalNumberOfPoints");
-            RaisePropertyChanged("PlotModel");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -143,6 +158,5 @@ namespace RealtimeDemo
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-
     }
 }

@@ -77,10 +77,10 @@
     <Compile Include="Axes\LogarithmicAxis.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Converters\OxyColorConverter.cs" />
-    <Compile Include="Helpers\WeakEvents\RenderingEventListener.cs" />
-    <Compile Include="Helpers\WeakEvents\RenderingEventManager.cs" />
-    <Compile Include="Helpers\WeakEvents\WeakEventListenerT.cs" />
-    <Compile Include="Helpers\WeakEvents\WeakEventManagerBaseT.cs" />
+    <Compile Include="Utilities\WeakEvents\RenderingEventListener.cs" />
+    <Compile Include="Utilities\WeakEvents\RenderingEventManager.cs" />
+    <Compile Include="Utilities\WeakEvents\WeakEventListenerT.cs" />
+    <Compile Include="Utilities\WeakEvents\WeakEventManagerBaseT.cs" />
     <Compile Include="MoreColors.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Plot.TouchEvents.cs" />
@@ -90,9 +90,8 @@
     <Compile Include="Series\BarSeries\BarSeriesBase.cs" />
     <Compile Include="Series\BarSeries\BarSeriesBase{T}.cs" />
     <Compile Include="SvgExporter.cs" />
+    <Compile Include="Utilities\Keyboard.cs" />
     <Compile Include="XamlExporter.cs" />
-    <Compile Include="Helpers\InputBindingX.cs" />
-    <Compile Include="Helpers\KeyGestureExtension.cs" />
     <Compile Include="Plot.Properties.cs" />
     <Compile Include="PngExporter.cs" />
     <Compile Include="Series\BarSeries\BarSeries.cs" />
@@ -111,7 +110,7 @@
     <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Plot.cs" />
     <Compile Include="Series\DataPointSeries.cs" />
-    <Compile Include="Helpers\ConverterExtensions.cs" />
+    <Compile Include="Utilities\ConverterExtensions.cs" />
     <Compile Include="RenderContexts\ShapesRenderContext.cs" />
   </ItemGroup>
   <ItemGroup>

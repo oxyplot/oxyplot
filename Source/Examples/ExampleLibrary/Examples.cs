@@ -24,14 +24,13 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Linq;
-using System.Collections.Generic;
-using System.Reflection;
 
 namespace ExampleLibrary
 {
     using System;
-    using OxyPlot;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
     public static class Examples
     {

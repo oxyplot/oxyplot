@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainForm.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -23,6 +23,9 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace ExampleBrowser
@@ -40,34 +43,37 @@ namespace ExampleBrowser
         {
             this.InitializeComponent();
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
-            InitTree();
+            this.InitTree();
         }
 
         private void InitTree()
         {
             TreeNode node = null;
-            foreach (var ex in vm.Examples)
+            foreach (var ex in this.vm.Examples)
             {
                 if (node == null || node.Text != ex.Category)
                 {
                     node = new TreeNode(ex.Category);
-                    treeView1.Nodes.Add(node);
+                    this.treeView1.Nodes.Add(node);
                 }
+            
                 node.Nodes.Add(new TreeNode(ex.Title) { Tag = ex });
             }
-            treeView1.AfterSelect += this.TreeView1AfterSelect;
+
+            this.treeView1.AfterSelect += this.TreeView1AfterSelect;
         }
 
         void TreeView1AfterSelect(object sender, TreeViewEventArgs e)
         {
-            vm.SelectedExample = e.Node.Tag as ExampleInfo;
-            InitPlot();
+            this.vm.SelectedExample = e.Node.Tag as ExampleInfo;
+            this.InitPlot();
         }
 
         private void InitPlot()
         {
-            plot1.Model = vm.SelectedExample != null ? vm.SelectedExample.PlotModel : null;
-            plot1.BackColor = vm.PlotBackground;
+            this.plot1.Model = this.vm.SelectedExample != null ? this.vm.SelectedExample.PlotModel : null;
+            this.plot1.Controller = this.vm.SelectedExample != null ? this.vm.SelectedExample.PlotController : null;
+            this.plot1.BackColor = this.vm.PlotBackground;
         }
     }
 }

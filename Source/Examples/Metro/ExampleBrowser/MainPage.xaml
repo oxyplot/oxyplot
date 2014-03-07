@@ -19,9 +19,9 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.ColumnSpan="2" Text="OxyPlot Example Browser"  Style="{StaticResource PageHeaderTextStyle}" Margin="10,20,30,40"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Right" Text="{Binding Version}" Style="{StaticResource PageHeaderTextStyle}" FontSize="11"/>
+        <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Text="{Binding Version}" Style="{StaticResource PageHeaderTextStyle}" FontSize="11"/>
 
-        <ListBox Grid.Row="1" ItemsSource="{Binding ExamplesView}" 
+        <ListBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding ExamplesView}" 
                  SelectedItem="{Binding SelectedExample, Mode=TwoWay}" 
                  BorderThickness="0,0,0,1">
             <ListBox.GroupStyle>
@@ -35,6 +35,6 @@
             </ListBox.GroupStyle>
         </ListBox>     
                        
-        <oxy:Plot x:Name="Plot1" Grid.Row="1" Grid.Column="1" Model="{Binding SelectedExample.PlotModel}" Background="{Binding PlotBackground}"/>        
+        <oxy:Plot Grid.Row="1" Grid.Column="1" Model="{Binding PlotModel}" Controller="{Binding PlotController}" Background="{Binding PlotBackground}"/>        
     </Grid>
 </Page>

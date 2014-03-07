@@ -42,8 +42,8 @@
 
 = Plot controls
 @import WpfPlotControl
+@import PlotController
 @import Tracker
-@import MouseBindings
 
 = Guidelines
 @import Performance

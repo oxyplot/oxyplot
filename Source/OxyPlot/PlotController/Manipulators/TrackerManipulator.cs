@@ -35,7 +35,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides a plot control manipulator for tracker functionality.
     /// </summary>
-    public class TrackerManipulator : ManipulatorBase
+    public class TrackerManipulator : MouseManipulator
     {
         /// <summary>
         /// The current series.
@@ -43,16 +43,15 @@ namespace OxyPlot
         private ITrackableSeries currentSeries;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TrackerManipulator"/> class.
+        /// Initializes a new instance of the <see cref="TrackerManipulator" /> class.
         /// </summary>
-        /// <param name="plotControl">
-        /// The plot control.
-        /// </param>
+        /// <param name="plotControl">The plot control.</param>
         public TrackerManipulator(IPlotControl plotControl)
             : base(plotControl)
         {
             this.Snap = true;
             this.PointsOnly = false;
+            this.LockToInitialSeries = true;
         }
 
         /// <summary>
@@ -66,45 +65,69 @@ namespace OxyPlot
         public bool Snap { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to lock the tracker to the initial series.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if the tracker should be locked; otherwise, <c>false</c>.
+        /// </value>
+        public bool LockToInitialSeries { get; set; }
+
+        /// <summary>
         /// Occurs when a manipulation is complete.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="OxyPlot.ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
-        public override void Completed(ManipulationEventArgs e)
+        public override void Completed(OxyMouseEventArgs e)
         {
             base.Completed(e);
 
-            if (this.currentSeries == null)
-            {
-                return;
-            }
-
             this.currentSeries = null;
             this.PlotControl.HideTracker();
-            this.PlotControl.ActualModel.OnTrackerChanged(null);
+            if (this.PlotControl.ActualModel != null)
+            {
+                this.PlotControl.ActualModel.OnTrackerChanged(null);
+            }
         }
 
         /// <summary>
         /// Occurs when the input device changes position during a manipulation.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="OxyPlot.ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
-        public override void Delta(ManipulationEventArgs e)
+        public override void Delta(OxyMouseEventArgs e)
         {
             base.Delta(e);
+
+            if (this.currentSeries == null || !this.LockToInitialSeries)
+            {
+                // get the nearest
+                this.currentSeries = this.PlotControl.ActualModel != null ? this.PlotControl.ActualModel.GetSeriesFromPoint(e.Position, 20) : null;
+            }
+
             if (this.currentSeries == null)
             {
+                if (!this.LockToInitialSeries)
+                {
+                    this.PlotControl.HideTracker();
+                }
+
                 return;
             }
 
-            if (!this.PlotControl.ActualModel.PlotArea.Contains(e.CurrentPosition.X, e.CurrentPosition.Y))
+            var actualModel = this.PlotControl.ActualModel;
+            if (actualModel == null)
             {
                 return;
             }
 
-            var result = GetNearestHit(this.currentSeries, e.CurrentPosition, this.Snap, this.PointsOnly);
+            if (!actualModel.PlotArea.Contains(e.Position.X, e.Position.Y))
+            {
+                return;
+            }
+
+            var result = GetNearestHit(this.currentSeries, e.Position, this.Snap, this.PointsOnly);
             if (result != null)
             {
                 result.PlotModel = this.PlotControl.ActualModel;
@@ -128,12 +151,12 @@ namespace OxyPlot
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="OxyPlot.ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
-        public override void Started(ManipulationEventArgs e)
+        public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);
-            this.currentSeries = this.PlotModel != null ? this.PlotModel.GetSeriesFromPoint(e.CurrentPosition) : null;
+            this.currentSeries = this.PlotControl.ActualModel != null ? this.PlotControl.ActualModel.GetSeriesFromPoint(e.Position) : null;
             this.Delta(e);
         }
 

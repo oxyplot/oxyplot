@@ -35,39 +35,23 @@ namespace OxyPlot
     /// <summary>
     /// Provides an abstract base class for plot control manipulators.
     /// </summary>
-    public class ManipulatorBase
+    /// <typeparam name="T">The type of the event arguments.</typeparam>
+    public abstract class ManipulatorBase<T> where T : OxyInputEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ManipulatorBase"/> class.
+        /// Initializes a new instance of the <see cref="ManipulatorBase{T}"/> class.
         /// </summary>
-        /// <param name="plotControl">
-        /// The plot control.
-        /// </param>
+        /// <param name="plotControl">The plot control.</param>
         protected ManipulatorBase(IPlotControl plotControl)
         {
             this.PlotControl = plotControl;
         }
 
         /// <summary>
-        /// Gets the first position of the manipulation.
+        /// Gets the plot control where the event was raised.
         /// </summary>
-        public ScreenPoint StartPosition { get; private set; }
-
-        /// <summary>
-        /// Gets the plot control.
-        /// </summary>
-        protected IPlotControl PlotControl { get; private set; }
-
-        /// <summary>
-        /// Gets the plot model.
-        /// </summary>
-        protected PlotModel PlotModel
-        {
-            get
-            {
-                return this.PlotControl.ActualModel;
-            }
-        }
+        /// <value> The plot control. </value>
+        public IPlotControl PlotControl { get; private set; }
 
         /// <summary>
         /// Gets or sets the X axis.
@@ -85,9 +69,9 @@ namespace OxyPlot
         /// Occurs when a manipulation is complete.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="OxyPlot.ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="OxyInputEventArgs"/> instance containing the event data.
         /// </param>
-        public virtual void Completed(ManipulationEventArgs e)
+        public virtual void Completed(T e)
         {
             this.PlotControl.SetCursorType(CursorType.Default);
         }
@@ -96,9 +80,9 @@ namespace OxyPlot
         /// Occurs when the input device changes position during a manipulation.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="OxyPlot.ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="OxyInputEventArgs"/> instance containing the event data.
         /// </param>
-        public virtual void Delta(ManipulationEventArgs e)
+        public virtual void Delta(T e)
         {
         }
 
@@ -117,27 +101,10 @@ namespace OxyPlot
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="OxyPlot.ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="OxyInputEventArgs"/> instance containing the event data.
         /// </param>
-        public virtual void Started(ManipulationEventArgs e)
+        public virtual void Started(T e)
         {
-            Axis xaxis;
-            Axis yaxis;
-            if (this.PlotModel != null)
-            {
-                this.PlotModel.GetAxesFromPoint(e.CurrentPosition, out xaxis, out yaxis);
-            }
-            else
-            {
-                xaxis = null;
-                yaxis = null;
-            }
-
-            this.StartPosition = e.CurrentPosition;
-
-            this.XAxis = xaxis;
-            this.YAxis = yaxis;
-
             this.PlotControl.SetCursorType(this.GetCursorType());
         }
 
@@ -166,6 +133,28 @@ namespace OxyPlot
             }
 
             return new DataPoint();
+        }
+
+        /// <summary>
+        /// Assigns the axes to this manipulator by the specified position.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        protected void AssignAxes(ScreenPoint position)
+        {
+            Axis xaxis;
+            Axis yaxis;
+            if (this.PlotControl.ActualModel != null)
+            {
+                this.PlotControl.ActualModel.GetAxesFromPoint(position, out xaxis, out yaxis);
+            }
+            else
+            {
+                xaxis = null;
+                yaxis = null;
+            }
+
+            this.XAxis = xaxis;
+            this.YAxis = yaxis;
         }
     }
 }

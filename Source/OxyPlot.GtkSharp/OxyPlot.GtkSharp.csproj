@@ -69,7 +69,7 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Helpers\ConverterExtensions.cs" />
+    <Compile Include="Utilities\ConverterExtensions.cs" />
     <Compile Include="GraphicsRenderContext.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Plot.cs" />

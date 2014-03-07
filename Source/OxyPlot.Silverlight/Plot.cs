@@ -40,7 +40,6 @@ namespace OxyPlot.Silverlight
     using System.Windows.Markup;
     using System.Windows.Media.Imaging;
 
-    using OxyPlot.Axes;
     using OxyPlot.Series;
 
     /// <summary>
@@ -101,34 +100,19 @@ namespace OxyPlot.Silverlight
         private PlotModel internalModel;
 
         /// <summary>
+        /// The default controller.
+        /// </summary>
+        private IPlotController defaultController;
+
+        /// <summary>
         /// Invalidation flag (0: no update, 1: update visual elements only, 2:update data).
         /// </summary>
         private int isPlotInvalidated;
 
         /// <summary>
-        /// The mouse manipulator.
-        /// </summary>
-        private ManipulatorBase mouseManipulator;
-
-        /// <summary>
         /// The overlays.
         /// </summary>
         private Canvas overlays;
-
-        /// <summary>
-        /// The touch down point.
-        /// </summary>
-        private Point touchDownPoint;
-
-        /// <summary>
-        /// The touch pan manipulator.
-        /// </summary>
-        private PanManipulator touchPan;
-
-        /// <summary>
-        /// The touch zoom manipulator.
-        /// </summary>
-        private ZoomManipulator touchZoom;
 
         /// <summary>
         /// The zoom control.
@@ -147,6 +131,7 @@ namespace OxyPlot.Silverlight
             this.SizeChanged += this.OnSizeChanged;
 
             // http://nuggets.hammond-turner.org.uk/2009/01/quickie-simulating-datacontextchanged.html
+            // ReSharper disable once RedundantNameQualifier
             this.SetBinding(Plot.DataContextWatcherProperty, new Binding());
         }
 
@@ -162,6 +147,20 @@ namespace OxyPlot.Silverlight
             }
         }
 
+        /// <summary>
+        /// Gets the actual plot controller.
+        /// </summary>
+        /// <value>
+        /// The actual plot controller.
+        /// </value>
+        public IPlotController ActualController
+        {
+            get
+            {
+                return this.Controller ?? (this.defaultController ?? (this.defaultController = new PlotController()));
+            }
+        }
+        
         /// <summary>
         /// Gets the tracker definitions.
         /// </summary>
@@ -239,24 +238,6 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Pans the specified axis.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="ppt">
-        /// The previous point (screen coordinates).
-        /// </param>
-        /// <param name="cpt">
-        /// The current point (screen coordinates).
-        /// </param>
-        public void Pan(Axis axis, ScreenPoint ppt, ScreenPoint cpt)
-        {
-            axis.Pan(ppt, cpt);
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
         /// Refresh the plot immediately (not blocking UI thread)
         /// </summary>
         /// <param name="updateData">
@@ -265,17 +246,6 @@ namespace OxyPlot.Silverlight
         public void RefreshPlot(bool updateData)
         {
             this.InvalidatePlot(updateData);
-        }
-
-        /// <summary>
-        /// Resets the specified axis.
-        /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        public void Reset(Axis axis)
-        {
-            axis.Reset();
         }
 
         /// <summary>
@@ -409,54 +379,12 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Renders the plot to xaml.
+        /// Stores text on the clipboard.
         /// </summary>
-        /// <returns>
-        /// The to xaml.
-        /// </returns>
-        public string ToXaml()
+        /// <param name="text">The text.</param>
+        public void SetClipboardText(string text)
         {
-            throw new NotImplementedException();
-
-            // var sb = new StringBuilder();
-            // var tw = new StringWriter(sb);
-            // XmlWriter xw = XmlWriter.Create(tw, new XmlWriterSettings { Indent = true });
-            // if (this.canvas != null)
-            // {
-            // XamlWriter.Save(this.canvas, xw);
-            // }
-
-            // xw.Close();
-            // return sb.ToString();
-        }
-
-        /// <summary>
-        /// Zooms all axes.
-        /// </summary>
-        /// <param name="factor">
-        /// The zoom factor.
-        /// </param>
-        public void ZoomAllAxes(double factor)
-        {
-            if (this.ActualModel != null)
-            {
-                this.ActualModel.ZoomAllAxes(factor);
-            }
-
-            this.InvalidatePlot(false);
-        }
-
-        /// <summary>
-        /// Resets all axes.
-        /// </summary>
-        public void ResetAllAxes()
-        {
-            if (this.ActualModel != null)
-            {
-                this.ActualModel.ResetAllAxes();
-            }
-
-            this.InvalidatePlot(false);
+            TrySetClipboardText(text);
         }
 
         /// <summary>
@@ -467,128 +395,14 @@ namespace OxyPlot.Silverlight
         /// </param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            bool control = IsControlDown();
-            bool alt = IsAltDown();
-
-            switch (e.Key)
-            {
-                case Key.Home:
-                case Key.A:
-                    this.ResetAllAxes();
-                    e.Handled = true;
-                    break;
-            }
-
-            double dx = 0;
-            double dy = 0;
-            double zoom = 0;
-            switch (e.Key)
-            {
-                case Key.Up:
-                    dy = -1;
-                    break;
-                case Key.Down:
-                    dy = 1;
-                    break;
-                case Key.Left:
-                    dx = -1;
-                    break;
-                case Key.Right:
-                    dx = 1;
-                    break;
-                case Key.Add:
-                case Key.PageUp:
-                    zoom = 1;
-                    break;
-                case Key.Subtract:
-                case Key.PageDown:
-                    zoom = -1;
-                    break;
-            }
-
-            if ((dx * dx) + (dy * dy) > 0)
-            {
-                dx = dx * this.ActualModel.PlotArea.Width * this.KeyboardPanHorizontalStep;
-                dy = dy * this.ActualModel.PlotArea.Height * this.KeyboardPanVerticalStep;
-
-                // small steps if the user is pressing control
-                if (control)
-                {
-                    dx *= 0.2;
-                    dy *= 0.2;
-                }
-
-                this.PanAll(dx, dy);
-                e.Handled = true;
-            }
-
-            if (Math.Abs(zoom) > 0)
-            {
-                if (control)
-                {
-                    zoom *= 0.2;
-                }
-
-                this.ZoomAllAxes(1 + (zoom * 0.12));
-                e.Handled = true;
-            }
-
-            if (e.Key == Key.C && control)
-            {
-                // e.Handled = true;
-            }
-
-            if (control && alt && this.ActualModel != null)
-            {
-                switch (e.Key)
-                {
-                    case Key.R:
-                        TrySetClipboardText(this.ActualModel.CreateTextReport());
-                        break;
-                    case Key.C:
-                        TrySetClipboardText(this.ActualModel.ToCode());
-                        break;
-                    case Key.X:
-                        TrySetClipboardText(this.ToXaml());
-                        break;
-                }
-            }
-
             base.OnKeyDown(e);
-        }
+            if (e.Handled)
+            {
+                return;
+            }
 
-        /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted"/> event occurs.
-        /// </summary>
-        /// <param name="e">
-        /// The data for the event.
-        /// </param>
-        protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
-        {
-            base.OnManipulationCompleted(e);
-            var position = this.Add(this.touchDownPoint, e.TotalManipulation.Translation);
-            this.touchPan.Completed(new ManipulationEventArgs(position.ToScreenPoint()));
-            e.Handled = true;
-        }
-
-        /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
-        /// </summary>
-        /// <param name="e">
-        /// The data for the event.
-        /// </param>
-        protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
-        {
-            base.OnManipulationDelta(e);
-            var position = this.Add(this.touchDownPoint, e.CumulativeManipulation.Translation);
-            this.touchPan.Delta(new ManipulationEventArgs(position.ToScreenPoint()));
-            this.touchZoom.Delta(
-                new ManipulationEventArgs(position.ToScreenPoint())
-                    {
-                        ScaleX = e.DeltaManipulation.Scale.X,
-                        ScaleY = e.DeltaManipulation.Scale.Y
-                    });
-            e.Handled = true;
+            var args = new OxyKeyEventArgs { Modifiers = Keyboard.GetModifierKeys(), Key = e.Key.Convert() };
+            e.Handled = this.ActualController.HandleKeyDown(this, args);
         }
 
         /// <summary>
@@ -600,40 +414,46 @@ namespace OxyPlot.Silverlight
         protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
         {
             base.OnManipulationStarted(e);
-            this.touchPan = new PanManipulator(this);
-            this.touchPan.Started(new ManipulationEventArgs(e.ManipulationOrigin.ToScreenPoint()));
-            this.touchZoom = new ZoomManipulator(this);
-            this.touchZoom.Started(new ManipulationEventArgs(e.ManipulationOrigin.ToScreenPoint()));
-            this.touchDownPoint = e.ManipulationOrigin;
-            e.Handled = true;
+            if (e.Handled)
+            {
+                return;
+            }
+
+            e.Handled = this.ActualController.HandleTouchStarted(this, e.ToTouchEventArgs(this));
         }
 
         /// <summary>
-        /// Raises the MouseButtonUp event.
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
         /// </summary>
-        /// <param name="button">The button.</param>
-        /// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.</param>
-        protected void OnMouseButtonUp(OxyMouseButton button, MouseButtonEventArgs e)
+        /// <param name="e">
+        /// The data for the event.
+        /// </param>
+        protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
         {
-            this.ReleaseMouseCapture();
-
-            if (this.ActualModel != null)
+            base.OnManipulationDelta(e);
+            if (e.Handled)
             {
-                var args = this.CreateMouseEventArgs(button, e);
-                this.ActualModel.HandleMouseUp(this, args);
-                if (args.Handled)
-                {
-                    return;
-                }
+                return;
             }
 
-            if (this.mouseManipulator != null)
+            e.Handled = this.ActualController.HandleTouchDelta(this, e.ToTouchEventArgs(this));
+        }
+
+        /// <summary>
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted"/> event occurs.
+        /// </summary>
+        /// <param name="e">
+        /// The data for the event.
+        /// </param>
+        protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
+        {
+            base.OnManipulationCompleted(e);
+            if (e.Handled)
             {
-                this.mouseManipulator.Completed(this.CreateManipulationEventArgs(e));
-                e.Handled = true;
+                return;
             }
 
-            this.mouseManipulator = null;
+            e.Handled = this.ActualController.HandleTouchCompleted(this, e.ToTouchEventArgs(this));
         }
 
         /// <summary>
@@ -660,32 +480,6 @@ namespace OxyPlot.Silverlight
             base.OnMouseLeftButtonUp(e);
             this.OnMouseButtonUp(OxyMouseButton.Left, e);
             e.Handled = true;
-        }
-
-        /// <summary>
-        /// Called before the <see cref="E:System.Windows.UIElement.MouseMove"/> event occurs.
-        /// </summary>
-        /// <param name="e">
-        /// The data for the event.
-        /// </param>
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-
-            if (this.ActualModel != null)
-            {
-                var args = this.CreateMouseEventArgs(OxyMouseButton.None, e);
-                this.ActualModel.HandleMouseMove(this, args);
-                if (args.Handled)
-                {
-                    return;
-                }
-            }
-
-            if (this.mouseManipulator != null)
-            {
-                this.mouseManipulator.Delta(this.CreateManipulationEventArgs(e));
-            }
         }
 
         /// <summary>
@@ -721,6 +515,58 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
+        /// Called when a mouse button is pressed down.
+        /// </summary>
+        /// <param name="button">
+        /// The button.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.
+        /// </param>
+        protected void OnMouseButtonDown(OxyMouseButton button, MouseButtonEventArgs e)
+        {
+            if (e.Handled)
+            {
+                return;
+            }
+
+            this.Focus();
+            this.CaptureMouse();
+
+            e.Handled = this.ActualController.HandleMouseDown(this, e.ToMouseDownEventArgs(button, this));
+        }
+
+        /// <summary>
+        /// Called before the <see cref="E:System.Windows.UIElement.MouseMove"/> event occurs.
+        /// </summary>
+        /// <param name="e">
+        /// The data for the event.
+        /// </param>
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            this.ActualController.HandleMouseMove(this, e.ToMouseEventArgs(this));
+        }
+
+        /// <summary>
+        /// Raises the MouseButtonUp event.
+        /// </summary>
+        /// <param name="button">The button.</param>
+        /// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.</param>
+        protected void OnMouseButtonUp(OxyMouseButton button, MouseButtonEventArgs e)
+        {
+            if (e.Handled)
+            {
+                return;
+            }
+
+            this.ReleaseMouseCapture();
+
+            e.Handled = this.ActualController.HandleMouseUp(this, e.ToMouseUpEventArgs(button, this));
+        }
+
+        /// <summary>
         /// Called before the <see cref="E:System.Windows.UIElement.MouseWheel"/> event occurs to provide handling for the event in a derived class without attaching a delegate.
         /// </summary>
         /// <param name="e">
@@ -729,16 +575,32 @@ namespace OxyPlot.Silverlight
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
-
-            if (!this.IsMouseWheelEnabled)
+            if (e.Handled || !this.IsMouseWheelEnabled)
             {
                 return;
             }
 
-            bool isControlDown = IsControlDown();
+            e.Handled = this.ActualController.HandleMouseWheel(this, e.ToMouseWheelEventArgs(this));
+        }
 
-            var m = new ZoomStepManipulator(this, e.Delta * 0.001, isControlDown);
-            m.Started(new ManipulationEventArgs(e.GetPosition(this).ToScreenPoint()));
+        /// <summary>
+        /// Called before the <see cref="E:System.Windows.UIElement.MouseEnter" /> event occurs.
+        /// </summary>
+        /// <param name="e">The data for the event.</param>
+        protected override void OnMouseEnter(MouseEventArgs e)
+        {
+            base.OnMouseEnter(e);
+            this.ActualController.HandleMouseEnter(this, e.ToMouseEventArgs(this));
+        }
+
+        /// <summary>
+        /// Called before the <see cref="E:System.Windows.UIElement.MouseLeave" /> event occurs.
+        /// </summary>
+        /// <param name="e">The data for the event.</param>
+        protected override void OnMouseLeave(MouseEventArgs e)
+        {
+            base.OnMouseLeave(e);
+            this.ActualController.HandleMouseLeave(this, e.ToMouseEventArgs(this));
         }
 
         /// <summary>
@@ -783,42 +645,6 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Determines whether the alt key is down.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if alt is down; otherwise, <c>false</c> .
-        /// </returns>
-        private static bool IsAltDown()
-        {
-            ModifierKeys keys = Keyboard.Modifiers;
-            return (keys & ModifierKeys.Alt) != 0;
-        }
-
-        /// <summary>
-        /// Determines whether the control key is down.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if control is down; otherwise, <c>false</c> .
-        /// </returns>
-        private static bool IsControlDown()
-        {
-            ModifierKeys keys = Keyboard.Modifiers;
-            return (keys & ModifierKeys.Control) != 0;
-        }
-
-        /// <summary>
-        /// Determines whether the shift key is down.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if shift is down; otherwise, <c>false</c> .
-        /// </returns>
-        private static bool IsShiftDown()
-        {
-            ModifierKeys keys = Keyboard.Modifiers;
-            return (keys & ModifierKeys.Shift) != 0;
-        }
-
-        /// <summary>
         /// Called when the Model is changed.
         /// </summary>
         /// <param name="d">
@@ -848,109 +674,6 @@ namespace OxyPlot.Silverlight
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-
-        /// <summary>
-        /// Creates the mouse event arguments.
-        /// </summary>
-        /// <param name="button">The button.</param>
-        /// <param name="e">The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.</param>
-        /// <returns>
-        /// Mouse event arguments.
-        /// </returns>
-        private OxyMouseEventArgs CreateMouseEventArgs(OxyMouseButton button, MouseEventArgs e)
-        {
-            return new OxyMouseEventArgs
-            {
-                ChangedButton = button,
-                Position = e.GetPosition(this).ToScreenPoint(),
-                IsShiftDown = IsShiftDown(),
-                IsControlDown = IsControlDown(),
-                IsAltDown = IsAltDown()
-            };
-        }
-
-        /// <summary>
-        /// Adds the coordinates of two points.
-        /// </summary>
-        /// <param name="p1">
-        /// The first point.
-        /// </param>
-        /// <param name="p2">
-        /// The second point.
-        /// </param>
-        /// <returns>
-        /// The sum point.
-        /// </returns>
-        private Point Add(Point p1, Point p2)
-        {
-            return new Point(p1.X + p2.X, p1.Y + p2.Y);
-        }
-
-        /// <summary>
-        /// Creates the manipulation event args.
-        /// </summary>
-        /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
-        /// </param>
-        /// <returns>
-        /// A manipulation event args object.
-        /// </returns>
-        private ManipulationEventArgs CreateManipulationEventArgs(MouseEventArgs e)
-        {
-            return new ManipulationEventArgs(e.GetPosition(this).ToScreenPoint());
-        }
-
-        /// <summary>
-        /// Gets the manipulator for the current mouse button and modifier keys.
-        /// </summary>
-        /// <param name="button">The button.</param>
-        /// <param name="clickCount">The click count.</param>
-        /// <returns>
-        /// A manipulator or null if no gesture was recognized.
-        /// </returns>
-        private ManipulatorBase GetManipulator(OxyMouseButton button, int clickCount)
-        {
-            bool control = IsControlDown();
-            bool shift = IsShiftDown();
-            bool alt = IsAltDown();
-            bool lmb = button == OxyMouseButton.Left;
-            bool rmb = button == OxyMouseButton.Right;
-            bool mmb = button == OxyMouseButton.Middle;
-            bool xb1 = button == OxyMouseButton.XButton1;
-            bool xb2 = button == OxyMouseButton.XButton2;
-
-            // MMB / control RMB / control+alt LMB
-            if (mmb || (control && rmb) || (control && alt && lmb))
-            {
-                if (clickCount == 2)
-                {
-                    return new ResetManipulator(this);
-                }
-
-                return new ZoomRectangleManipulator(this);
-            }
-
-            // Right mouse button / alt+left mouse button
-            if (rmb || (lmb && alt))
-            {
-                return new PanManipulator(this);
-            }
-
-            // Left mouse button
-            if (lmb)
-            {
-                return new TrackerManipulator(this) { Snap = !control, PointsOnly = shift };
-            }
-
-            // XButtons are zoom-stepping
-            if (xb1 || xb2)
-            {
-                double d = xb1 ? 0.05 : -0.05;
-                return new ZoomStepManipulator(this, d, control);
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -1004,49 +727,6 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Called when a mouse button is pressed down.
-        /// </summary>
-        /// <param name="button">
-        /// The button.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.
-        /// </param>
-        private void OnMouseButtonDown(OxyMouseButton button, MouseButtonEventArgs e)
-        {
-            if (this.mouseManipulator != null)
-            {
-                return;
-            }
-
-            this.Focus();
-            this.CaptureMouse();
-
-            int clickCount = 1;
-            if (MouseButtonHelper.IsDoubleClick(this, e))
-            {
-                clickCount = 2;
-            }
-
-            if (this.ActualModel != null)
-            {
-                var args = this.CreateMouseEventArgs(button, e);
-                this.ActualModel.HandleMouseDown(this, args);
-                if (args.Handled)
-                {
-                    return;
-                }
-            }
-
-            this.mouseManipulator = this.GetManipulator(button, clickCount);
-
-            if (this.mouseManipulator != null)
-            {
-                this.mouseManipulator.Started(this.CreateManipulationEventArgs(e));
-            }
-        }
-
-        /// <summary>
         /// Called when the size of the control is changed.
         /// </summary>
         /// <param name="sender">
@@ -1058,32 +738,6 @@ namespace OxyPlot.Silverlight
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.InvalidatePlot(false);
-        }
-
-        /// <summary>
-        /// Pans all axes.
-        /// </summary>
-        /// <param name="dx">
-        /// The horizontal translation.
-        /// </param>
-        /// <param name="dy">
-        /// The vertical translation.
-        /// </param>
-        private void PanAll(double dx, double dy)
-        {
-            foreach (var a in this.ActualModel.Axes)
-            {
-                a.Pan(a.IsHorizontal() ? dx : dy);
-            }
-
-            this.RefreshPlot(false);
-        }
-
-        /// <summary>
-        /// Synchronize properties between the Silverlight control and the internal PlotModel (only if Model is undefined).
-        /// </summary>
-        private void SynchronizeProperties()
-        {
         }
 
         /// <summary>
@@ -1132,7 +786,6 @@ namespace OxyPlot.Silverlight
 
             if (this.ActualModel != null)
             {
-                this.SynchronizeProperties();
                 this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
             }
         }

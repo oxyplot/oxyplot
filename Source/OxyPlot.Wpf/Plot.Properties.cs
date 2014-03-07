@@ -46,6 +46,12 @@ namespace OxyPlot.Wpf
     public partial class Plot
     {
         /// <summary>
+        /// Defines the Controller property.
+        /// </summary>
+        public static readonly DependencyProperty ControllerProperty =
+            DependencyProperty.Register("Controller", typeof(IPlotController), typeof(Plot), new PropertyMetadata(null));
+
+        /// <summary>
         /// The auto adjust plot margins property.
         /// </summary>
         public static readonly DependencyProperty AutoAdjustPlotMarginsProperty =
@@ -75,20 +81,6 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty IsMouseWheelEnabledProperty =
             DependencyProperty.Register("IsMouseWheelEnabled", typeof(bool), typeof(Plot), new UIPropertyMetadata(true));
-
-        /// <summary>
-        /// The keyboard pan horizontal step property.
-        /// </summary>
-        public static readonly DependencyProperty KeyboardPanHorizontalStepProperty =
-            DependencyProperty.Register(
-                "KeyboardPanHorizontalStep", typeof(double), typeof(Plot), new UIPropertyMetadata(0.1));
-
-        /// <summary>
-        /// The keyboard pan vertical step property.
-        /// </summary>
-        public static readonly DependencyProperty KeyboardPanVerticalStepProperty =
-            DependencyProperty.Register(
-                "KeyboardPanVerticalStep", typeof(double), typeof(Plot), new UIPropertyMetadata(0.1));
 
         /// <summary>
         /// The legend background property.
@@ -265,13 +257,6 @@ namespace OxyPlot.Wpf
         /// </summary>
         public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
             "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
-
-        /// <summary>
-        /// The orthographic toggle gesture property.
-        /// </summary>
-        public static readonly DependencyProperty OrthographicToggleGestureProperty =
-            DependencyProperty.Register(
-                "ResetAxesGesture", typeof(InputGesture), typeof(Plot), new UIPropertyMetadata(new KeyGesture(Key.Home)));
 
         /// <summary>
         /// The pan cursor property.
@@ -531,40 +516,6 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(IsMouseWheelEnabledProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the keyboard pan horizontal step (fraction of plot area width).
-        /// </summary>
-        /// <value> The keyboard pan horizontal step. </value>
-        public double KeyboardPanHorizontalStep
-        {
-            get
-            {
-                return (double)this.GetValue(KeyboardPanHorizontalStepProperty);
-            }
-
-            set
-            {
-                this.SetValue(KeyboardPanHorizontalStepProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the keyboard pan vertical step size (fraction of plot area height).
-        /// </summary>
-        /// <value> The keyboard pan vertical step. </value>
-        public double KeyboardPanVerticalStep
-        {
-            get
-            {
-                return (double)this.GetValue(KeyboardPanVerticalStepProperty);
-            }
-
-            set
-            {
-                this.SetValue(KeyboardPanVerticalStepProperty, value);
             }
         }
 
@@ -1002,6 +953,18 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the plot controller.
+        /// </summary>
+        /// <value>
+        /// The plot controller.
+        /// </value>
+        public IPlotController Controller
+        {
+            get { return (IPlotController)GetValue(ControllerProperty); }
+            set { SetValue(ControllerProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the plot margins.
         /// </summary>
         /// <value> The plot margins. </value>
@@ -1031,23 +994,6 @@ namespace OxyPlot.Wpf
             set
             {
                 this.SetValue(PlotTypeProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the reset axes gesture.
-        /// </summary>
-        /// <value> The reset axes gesture. </value>
-        public InputGesture ResetAxesGesture
-        {
-            get
-            {
-                return (InputGesture)this.GetValue(OrthographicToggleGestureProperty);
-            }
-
-            set
-            {
-                this.SetValue(OrthographicToggleGestureProperty, value);
             }
         }
 

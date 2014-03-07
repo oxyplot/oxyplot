@@ -440,6 +440,11 @@ namespace OxyPlot.WindowsForms
             this.g.ResetClip();
         }
 
+        /// <summary>
+        /// Loads the image from the specified source.
+        /// </summary>
+        /// <param name="source">The image source.</param>
+        /// <returns>A <see cref="Image"/>.</returns>
         private Image GetImage(OxyImage source)
         {
             if (source == null)
@@ -473,6 +478,14 @@ namespace OxyPlot.WindowsForms
             return fill.ToBrush();
         }
 
+        /// <summary>
+        /// Gets a cached pen.
+        /// </summary>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <returns>A <see cref="Pen"/>.</returns>
         private Pen GetCachedPen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
             // TODO: cache
@@ -490,7 +503,7 @@ namespace OxyPlot.WindowsForms
                 case OxyPenLineJoin.Bevel:
                     pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
                     break;
-                // The default LineJoin is Miter
+                //// The default LineJoin is Miter
             }
 
             return pen;

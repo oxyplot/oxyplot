@@ -33,25 +33,15 @@ namespace OxyPlot
     /// <summary>
     /// Provides a plot control manipulator for stepwise zoom functionality.
     /// </summary>
-    public class ZoomStepManipulator : ManipulatorBase
+    public class ZoomStepManipulator : MouseManipulator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZoomStepManipulator"/> class.
+        /// Initializes a new instance of the <see cref="ZoomStepManipulator" /> class.
         /// </summary>
-        /// <param name="plotControl">
-        /// The plot control.
-        /// </param>
-        /// <param name="step">
-        /// The step.
-        /// </param>
-        /// <param name="fineControl">
-        /// The fine Control.
-        /// </param>
-        public ZoomStepManipulator(IPlotControl plotControl, double step, bool fineControl)
+        /// <param name="plotControl">The plot control.</param>
+        public ZoomStepManipulator(IPlotControl plotControl)
             : base(plotControl)
         {
-            this.Step = step;
-            this.FineControl = fineControl;
         }
 
         /// <summary>
@@ -65,16 +55,16 @@ namespace OxyPlot
         public double Step { get; set; }
 
         /// <summary>
-        /// The started.
+        /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// The <see cref="OxyInputEventArgs"/> instance containing the event data.
         /// </param>
-        public override void Started(ManipulationEventArgs e)
+        public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);
 
-            DataPoint current = this.InverseTransform(e.CurrentPosition.X, e.CurrentPosition.Y);
+            var current = this.InverseTransform(e.Position.X, e.Position.Y);
 
             double scale = this.Step;
             if (this.FineControl)

@@ -39,6 +39,12 @@ namespace OxyPlot.Silverlight
     public partial class Plot
     {
         /// <summary>
+        /// Defines the Controller property.
+        /// </summary>
+        public static readonly DependencyProperty ControllerProperty =
+            DependencyProperty.Register("Controller", typeof(IPlotController), typeof(Plot), new PropertyMetadata(null));
+
+        /// <summary>
         /// The data context watcher property.
         /// </summary>
         public static readonly DependencyProperty DataContextWatcherProperty =
@@ -117,6 +123,18 @@ namespace OxyPlot.Silverlight
         public static readonly DependencyProperty ZoomVerticalCursorProperty =
             DependencyProperty.Register(
                 "ZoomVerticalCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeNS));
+
+        /// <summary>
+        /// Gets or sets the plot controller.
+        /// </summary>
+        /// <value>
+        /// The plot controller.
+        /// </value>
+        public IPlotController Controller
+        {
+            get { return (IPlotController)GetValue(ControllerProperty); }
+            set { SetValue(ControllerProperty, value); }
+        }
 
         /// <summary>
         /// Gets or sets the default tracker template.

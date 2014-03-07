@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Plot.Properties.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   The Metro Plot control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Metro
 {
     using Windows.UI.Xaml;
@@ -47,6 +48,13 @@ namespace OxyPlot.Metro
     /// </summary>
     public partial class Plot
     {
+        /// <summary>
+        /// Defines the Controller property.
+        /// </summary>
+        // TODO: WINRT does not allow binding a dependency property to an interface?? this could be typeof(IPlotController)
+        public static readonly DependencyProperty ControllerProperty =
+            DependencyProperty.Register("Controller", typeof(PlotController), typeof(Plot), new PropertyMetadata(null));
+
         /// <summary>
         /// The default tracker property.
         /// </summary>
@@ -92,6 +100,18 @@ namespace OxyPlot.Metro
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
             DependencyProperty.Register(
                 "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets the plot controller.
+        /// </summary>
+        /// <value>
+        /// The plot controller.
+        /// </value>
+        public PlotController Controller
+        {
+            get { return (PlotController)GetValue(ControllerProperty); }
+            set { SetValue(ControllerProperty, value); }
+        }
 
         /// <summary>
         /// Gets or sets the default tracker template.
@@ -208,6 +228,5 @@ namespace OxyPlot.Metro
                 this.SetValue(ZoomRectangleTemplateProperty, value);
             }
         }
-
     }
 }
