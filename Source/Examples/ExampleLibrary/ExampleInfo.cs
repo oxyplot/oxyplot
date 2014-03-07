@@ -24,26 +24,63 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Reflection;
-using OxyPlot;
 
 namespace ExampleLibrary
 {
+    using System;
+    using System.Reflection;
+
+    using OxyPlot;
+
     public class ExampleInfo
     {
-        public string Category { get; set; }
-        public string Title { get; set; }
-        private MethodInfo Method { get; set; }
+        private readonly MethodInfo method;
 
-        private PlotModel plotModel;
+        private Lazy<object> result;
+
+        public ExampleInfo(string category, string title, MethodInfo method)
+        {
+            this.Category = category;
+            this.Title = title;
+            this.method = method;
+            this.result = new Lazy<object>(() => this.method.Invoke(null, null));
+        }
+
+        public string Category { get; set; }
+
+        public string Title { get; set; }
 
         public PlotModel PlotModel
         {
             get
             {
-                if (plotModel == null)
-                    plotModel = Method.Invoke(null, null) as PlotModel;
-                return plotModel;
+                var plotModel = this.result.Value as PlotModel;
+                if (plotModel != null)
+                {
+                    return plotModel;
+                }
+
+                var example = this.result.Value as Example;
+                if (example != null)
+                {
+                    return example.Model;
+                }
+
+                return null;
+            }
+        }
+
+        public IPlotController PlotController
+        {
+            get
+            {
+                var example = this.result.Value as Example;
+                if (example != null)
+                {
+                    return example.Controller;
+                }
+
+                return null;
             }
         }
 
@@ -55,16 +92,9 @@ namespace ExampleLibrary
             }
         }
 
-        public ExampleInfo(string category, string title, MethodInfo method)
-        {
-            this.Category = category;
-            this.Title = title;
-            this.Method = method;
-        }
-
         public override string ToString()
         {
-            return Title;
+            return this.Title;
         }
     }
 }

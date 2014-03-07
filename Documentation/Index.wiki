@@ -39,8 +39,8 @@
 
 == Plot controls
 - [WpfPlotControl|WPF plot control]
+- [PlotController|Plot controller]
 - [Tracker]
-- [MouseBindings|Mouse bindings]
 
 == Guidelines
 - [Performance]

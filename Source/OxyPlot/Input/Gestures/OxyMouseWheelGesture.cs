@@ -36,9 +36,18 @@ namespace OxyPlot
     public class OxyMouseWheelGesture : OxyInputGesture
     {
         /// <summary>
-        /// Gets or sets the modifier keys.
+        /// Initializes a new instance of the <see cref="OxyMouseWheelGesture"/> class.
         /// </summary>
-        public OxyModifierKeys Modifiers { get; set; }
+        /// <param name="modifiers">The modifiers.</param>
+        public OxyMouseWheelGesture(OxyModifierKeys modifiers = OxyModifierKeys.None)
+        {
+            this.Modifiers = modifiers;
+        }
+
+        /// <summary>
+        /// Gets the modifier keys.
+        /// </summary>
+        public OxyModifierKeys Modifiers { get; private set; }
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -49,7 +58,7 @@ namespace OxyPlot
         /// </returns>
         public override bool Equals(OxyInputGesture other)
         {
-            var mwg = other as OxyMouseGesture;
+            var mwg = other as OxyMouseWheelGesture;
             return mwg != null && mwg.Modifiers == this.Modifiers;
         }
     }

@@ -45,18 +45,31 @@ namespace OxyPlot.XamarinAndroid
 		/// <summary>
 		/// The rendering lock object.
 		/// </summary>
-		private readonly object renderingLock = new object();
+		private readonly object renderingLock = new object ();
 
 		/// <summary>
 		/// The invalidation lock object.
 		/// </summary>
-		private readonly object invalidateLock = new object();
+		private readonly object invalidateLock = new object ();
 
+		/// <summary>
+		/// The touch points of the previous touch event.
+		/// </summary>
+		private ScreenPoint[] previousTouchPoints;
 		/// <summary>
 		/// The current model.
 		/// </summary>
 		private PlotModel model;
 
+		/// <summary>
+		/// The current controller.
+		/// </summary>
+		private IPlotController controller;
+
+		/// <summary>
+		/// The default controller
+		/// </summary>
+		private IPlotController defaultController;
 		/// <summary>
 		/// The current render context.
 		/// </summary>
@@ -77,8 +90,8 @@ namespace OxyPlot.XamarinAndroid
 		/// </summary>
 		/// <param name="context">The context.</param>
 		/// <param name="attrs">The attribute set.</param>
-		public PlotView(Context context, IAttributeSet attrs) :
-		base(context, attrs)
+		public PlotView (Context context, IAttributeSet attrs) :
+			base (context, attrs)
 		{
 		}
 
@@ -88,8 +101,8 @@ namespace OxyPlot.XamarinAndroid
 		/// <param name="context">The context.</param>
 		/// <param name="attrs">The attribute set.</param>
 		/// <param name="defStyle">The definition style.</param>
-		public PlotView(Context context, IAttributeSet attrs, int defStyle) :
-		base(context, attrs, defStyle)
+		public PlotView (Context context, IAttributeSet attrs, int defStyle) :
+			base (context, attrs, defStyle)
 		{
 		}
 
@@ -111,7 +124,25 @@ namespace OxyPlot.XamarinAndroid
 				if (this.model != value)
 				{
 					this.model = value;
-					this.InvalidatePlot(true);
+					this.InvalidatePlot (true);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the plot controller.
+		/// </summary>
+		/// <value>
+		/// The controller.
+		/// </value>
+		public IPlotController Controller {
+			get {
+				return this.controller;
+			}
+
+			set {
+				if (this.controller != value) {
+					this.controller = value;
 				}
 			}
 		}
@@ -128,16 +159,28 @@ namespace OxyPlot.XamarinAndroid
 		}
 
 		/// <summary>
+		/// Gets the actual <see cref="IPlotController" /> of the control.
+		/// </summary>
+		/// <value>
+		/// The actual plot controller.
+		/// </value>
+		public IPlotController ActualController {
+			get {
+				return this.Controller ?? (this.defaultController ?? (this.defaultController = new PlotController ()));
+			}
+		}
+
+		/// <summary>
 		/// Hides the tracker.
 		/// </summary>
-		public void HideTracker()
+		public void HideTracker ()
 		{
 		}
 
 		/// <summary>
 		/// Hides the zoom rectangle.
 		/// </summary>
-		public void HideZoomRectangle()
+		public void HideZoomRectangle ()
 		{
 		}
 
@@ -145,7 +188,7 @@ namespace OxyPlot.XamarinAndroid
 		/// Invalidates the plot (not blocking the UI thread)
 		/// </summary>
 		/// <param name="updateData">if set to <c>true</c>, all data bindings will be updated.</param>
-		public void InvalidatePlot(bool updateData)
+		public void InvalidatePlot (bool updateData)
 		{
 			lock (this.invalidateLock)
 			{
@@ -153,23 +196,23 @@ namespace OxyPlot.XamarinAndroid
 				this.updateDataFlag = this.updateDataFlag || updateData;
 			}
 
-			this.Invalidate();
+			this.Invalidate ();
 		}
 
 		/// <summary>
 		/// Refreshes the plot immediately (blocking UI thread)
 		/// </summary>
 		/// <param name="updateData">if set to <c>true</c>, all data collections will be updated.</param>
-		public void RefreshPlot(bool updateData)
+		public void RefreshPlot (bool updateData)
 		{
-			this.InvalidatePlot(updateData);
+			this.InvalidatePlot (updateData);
 		}
 
 		/// <summary>
 		/// Sets the cursor type.
 		/// </summary>
 		/// <param name="cursorType">The cursor type.</param>
-		public void SetCursorType(CursorType cursorType)
+		public void SetCursorType (CursorType cursorType)
 		{
 		}
 
@@ -177,7 +220,7 @@ namespace OxyPlot.XamarinAndroid
 		/// Shows the tracker.
 		/// </summary>
 		/// <param name="trackerHitResult">The tracker data.</param>
-		public void ShowTracker(TrackerHitResult trackerHitResult)
+		public void ShowTracker (TrackerHitResult trackerHitResult)
 		{
 		}
 
@@ -185,7 +228,7 @@ namespace OxyPlot.XamarinAndroid
 		/// Shows the zoom rectangle.
 		/// </summary>
 		/// <param name="rectangle">The rectangle.</param>
-		public void ShowZoomRectangle(OxyRect rectangle)
+		public void ShowZoomRectangle (OxyRect rectangle)
 		{
 		}
 
@@ -193,17 +236,62 @@ namespace OxyPlot.XamarinAndroid
 		/// Stores text on the clipboard.
 		/// </summary>
 		/// <param name="text">The text.</param>
-		public void SetClipboardText(string text)
+		public void SetClipboardText (string text)
 		{
+		}
+
+		/// <summary>
+		/// Handles key down events.
+		/// </summary>
+		/// <param name="keyCode">The key code.</param>
+		/// <param name="e">The event arguments.</param>
+		/// <returns>
+		/// <c>true</c> if the event was handled.
+		/// </returns>
+		public override bool OnKeyDown (Keycode keyCode, KeyEvent e)
+		{
+			var handled = base.OnKeyDown (keyCode, e);
+			if (!handled) {
+				handled = this.ActualController.HandleKeyDown (this, e.ToKeyEventArgs ());
+			}
+
+			return handled;
+		}
+
+		/// <summary>
+		/// Handles touch screen motion events.
+		/// </summary>
+		/// <param name="e">The motion event arguments.</param>
+		/// <returns>
+		/// <c>true</c> if the event was handled.
+		/// </returns>
+		public override bool OnTouchEvent (MotionEvent e)
+		{
+			var handled = base.OnTouchEvent (e);
+			if (!handled) {
+				switch (e.Action) {
+				case MotionEventActions.Down:
+					handled = this.OnTouchDownEvent (e);
+					break;
+				case MotionEventActions.Move:
+					handled = this.OnTouchMoveEvent (e);
+					break;
+				case MotionEventActions.Up:
+					handled = this.OnTouchUpEvent (e);
+					break;
+				}
+			}
+
+			return handled;
 		}
 
 		/// <summary>
 		/// Draws the content of the control.
 		/// </summary>
 		/// <param name="canvas">The canvas to draw on.</param>
-		protected override void OnDraw(Canvas canvas)
+		protected override void OnDraw (Canvas canvas)
 		{
-			base.OnDraw(canvas);
+			base.OnDraw (canvas);
 			var actualModel = this.ActualModel;
 			if (actualModel == null)
 			{
@@ -211,13 +299,13 @@ namespace OxyPlot.XamarinAndroid
 			}
 
 			var background = actualModel.Background.IsVisible () ? actualModel.Background : OxyColors.White;
-			canvas.DrawColor(background.ToColor());
+			canvas.DrawColor (background.ToColor ());
 
 			lock (this.invalidateLock)
 			{
 				if (this.isModelInvalidated)
 				{
-					actualModel.Update(this.updateDataFlag);
+					actualModel.Update (this.updateDataFlag);
 					this.updateDataFlag = false;
 					this.isModelInvalidated = false;
 				}
@@ -227,16 +315,59 @@ namespace OxyPlot.XamarinAndroid
 			{
 				if (this.rc == null)
 				{
-					this.rc = new CanvasRenderContext();
+					this.rc = new CanvasRenderContext ();
 				}
 
-				this.rc.SetTarget(canvas);
+				this.rc.SetTarget (canvas);
 				using (var bounds = new Rect())
 				{
-					canvas.GetClipBounds(bounds);
-					actualModel.Render(this.rc, bounds.Right - bounds.Left, bounds.Bottom - bounds.Top);
+					canvas.GetClipBounds (bounds);
+					actualModel.Render (this.rc, bounds.Right - bounds.Left, bounds.Bottom - bounds.Top);
 				}
 			}
+		}
+
+		/// <summary>
+		/// Handles touch down events.
+		/// </summary>
+		/// <param name="e">The motion event arguments.</param>
+		/// <returns>
+		/// <c>true</c> if the event was handled.
+		/// </returns>
+		private bool OnTouchDownEvent (MotionEvent e)
+		{
+			var args = e.ToTouchEventArgs ();
+			var handled = this.ActualController.HandleTouchStarted (this, args);
+			this.previousTouchPoints = e.GetTouchPoints ();
+			return handled;
+		}
+
+		/// <summary>
+		/// Handles touch move events.
+		/// </summary>
+		/// <param name="e">The motion event arguments.</param>
+		/// <returns>
+		/// <c>true</c> if the event was handled.
+		/// </returns>
+		private bool OnTouchMoveEvent (MotionEvent e)
+		{
+			var currentTouchPoints = e.GetTouchPoints ();
+			var args = new OxyTouchEventArgs (currentTouchPoints, this.previousTouchPoints);
+			var handled = this.ActualController.HandleTouchDelta (this, args);
+			this.previousTouchPoints = currentTouchPoints;
+			return handled;
+		}
+
+		/// <summary>
+		/// Handles touch released events.
+		/// </summary>
+		/// <param name="e">The motion event arguments.</param>
+		/// <returns>
+		/// <c>true</c> if the event was handled.
+		/// </returns>
+		private bool OnTouchUpEvent (MotionEvent e)
+		{
+			return this.ActualController.HandleTouchCompleted (this, e.ToTouchEventArgs ());
 		}
 	}
 }

@@ -24,24 +24,39 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Data;
-using ExampleLibrary;
-using OxyPlot;
 
 namespace ExampleBrowser
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Windows.Data;
     using System.Windows.Media;
 
+    using ExampleLibrary;
+
+    using OxyPlot;
     using OxyPlot.Wpf;
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        public bool MeasureFrameRate { get; set; }
+        private IPlotController defaultController;
+
+        private IEnumerable<ExampleInfo> examples;
 
         private double frameRate;
+
+        private ExampleInfo selectedExample;
+
+        public MainWindowViewModel()
+        {
+            this.defaultController = new PlotController();
+            this.Examples = ExampleLibrary.Examples.GetList();
+            this.ExamplesView = CollectionViewSource.GetDefaultView(Examples.OrderBy(e => e.Category));
+            this.ExamplesView.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
+        }
+
+        public bool MeasureFrameRate { get; set; }
 
         public double FrameRate
         {
@@ -49,30 +64,60 @@ namespace ExampleBrowser
             {
                 return this.frameRate;
             }
+
             set
             {
-                this.frameRate = value; RaisePropertyChanged("FrameRate");
+                this.frameRate = value;
+                this.RaisePropertyChanged("FrameRate");
             }
         }
 
-        private IEnumerable<ExampleInfo> examples;
         public IEnumerable<ExampleInfo> Examples
         {
-            get { return examples; }
-            set { examples = value; RaisePropertyChanged("Examples"); }
+            get
+            {
+                return this.examples;
+            }
+
+            set
+            {
+                this.examples = value;
+                this.RaisePropertyChanged("Examples");
+            }
         }
 
         public ICollectionView ExamplesView { get; set; }
 
-        private ExampleInfo selectedExample;
         public ExampleInfo SelectedExample
         {
-            get { return selectedExample; }
+            get
+            {
+                return this.selectedExample;
+            }
+
             set
             {
-                selectedExample = value;
-                RaisePropertyChanged("SelectedExample");
-                RaisePropertyChanged("PlotBackground");
+                this.selectedExample = value;
+                this.RaisePropertyChanged("Model");
+                this.RaisePropertyChanged("Controller");
+                this.RaisePropertyChanged("SelectedExample");
+                this.RaisePropertyChanged("PlotBackground");
+            }
+        }
+
+        public PlotModel Model
+        {
+            get
+            {
+                return this.SelectedExample != null ? this.SelectedExample.PlotModel : null;
+            }
+        }
+
+        public IPlotController Controller
+        {
+            get
+            {
+                return this.SelectedExample != null && this.SelectedExample.PlotController != null ? this.SelectedExample.PlotController : this.defaultController;
             }
         }
 
@@ -82,13 +127,6 @@ namespace ExampleBrowser
             {
                 return selectedExample != null && selectedExample.PlotModel.Background.IsVisible() ? selectedExample.PlotModel.Background.ToBrush() : Brushes.Transparent;
             }
-        }
-
-        public MainWindowViewModel()
-        {
-            Examples = ExampleLibrary.Examples.GetList();
-            ExamplesView = CollectionViewSource.GetDefaultView(Examples.OrderBy(e => e.Category));
-            ExamplesView.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -101,6 +139,5 @@ namespace ExampleBrowser
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-
     }
 }

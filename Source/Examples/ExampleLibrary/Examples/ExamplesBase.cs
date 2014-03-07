@@ -32,8 +32,6 @@ namespace ExampleLibrary
     using System.Diagnostics;
     using System.Linq;
 
-    using OxyPlot;
-
     /// <summary>
     /// The examples base class.
     /// </summary>

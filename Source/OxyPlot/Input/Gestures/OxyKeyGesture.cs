@@ -36,6 +36,17 @@ namespace OxyPlot
     public class OxyKeyGesture : OxyInputGesture
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="OxyKeyGesture"/> class.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="modifiers">The modifier keys.</param>
+        public OxyKeyGesture(OxyKey key, OxyModifierKeys modifiers = OxyModifierKeys.None)
+        {
+            this.Key = key;
+            this.Modifiers = modifiers;
+        }
+
+        /// <summary>
         /// Gets or sets the modifier keys.
         /// </summary>
         public OxyModifierKeys Modifiers { get; set; }

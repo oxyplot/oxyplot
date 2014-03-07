@@ -44,18 +44,23 @@ namespace OxyPlot
         None = 0,
 
         /// <summary>
-        /// The Alt key.
-        /// </summary>
-        Alt = 1,
-
-        /// <summary>
         /// The Control key.
         /// </summary>
-        Control = 2,
+        Control = 1,
+
+        /// <summary>
+        /// The Alt/Menu key.
+        /// </summary>
+        Alt = 2,
 
         /// <summary>
         /// The Shift key.
         /// </summary>
-        Shift = 4
+        Shift = 4,
+
+        /// <summary>
+        /// The Windows key.
+        /// </summary>
+        Windows = 8
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OxyColorConverter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   Converts from OxyPlot colors to Windows.UI.Color and vice versa.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Metro
 {
     using System;
@@ -60,18 +61,20 @@ namespace OxyPlot.Metro
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is OxyColor)
+            if (!(value is OxyColor))
             {
-                var color = (OxyColor)value;
-                if (targetType == typeof(Color))
-                {
-                    return color.ToColor();
-                }
+                return null;
+            }
 
-                if (targetType == typeof(Brush))
-                {
-                    return color.ToBrush();
-                }
+            var color = (OxyColor)value;
+            if (targetType == typeof(Color))
+            {
+                return color.ToColor();
+            }
+
+            if (targetType == typeof(Brush))
+            {
+                return color.ToBrush();
             }
 
             return null;
@@ -97,24 +100,25 @@ namespace OxyPlot.Metro
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            if (targetType == typeof(OxyColor))
+            if (targetType != typeof(OxyColor))
             {
-                if (value is Color)
-                {
-                    var color = (Color)value;
-                    return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
-                }
+                return null;
+            }
 
-                if (value is SolidColorBrush)
-                {
-                    var brush = (SolidColorBrush)value;
-                    Color color = brush.Color;
-                    return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
-                }
+            if (value is Color)
+            {
+                var color = (Color)value;
+                return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
+            }
+
+            var scb = value as SolidColorBrush;
+            if (scb != null)
+            {
+                var color = scb.Color;
+                return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
             }
 
             return null;
         }
-
     }
 }

@@ -109,13 +109,12 @@
     </Compile>
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
-    <Compile Include="MouseButton.cs" />
     <Compile Include="Plot.Properties.cs" />
-    <Compile Include="Helpers\ConverterExtensions.cs" />
-    <Compile Include="Helpers\MouseButtonHelper.cs" />
+    <Compile Include="Utilities\ConverterExtensions.cs" />
+    <Compile Include="Utilities\MouseButtonHelper.cs" />
     <Compile Include="Plot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RenderContexts\MetroRenderContext.cs" />
+    <Compile Include="MetroRenderContext.cs" />
     <Compile Include="Tracker\TrackerControl.cs" />
     <Compile Include="Tracker\TrackerDefinition.cs" />
   </ItemGroup>

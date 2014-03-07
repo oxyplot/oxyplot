@@ -27,13 +27,13 @@
 //   The main entry point for the application.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Gtk;
 
 namespace ExampleBrowser
 {
+    using System;
+
+    using Gtk;
+
     static class Program
     {
         /// <summary>
@@ -43,7 +43,6 @@ namespace ExampleBrowser
         static void Main()
         {
             Application.Init();
-            //Application.SetCompatibleTextRenderingDefault(false);
             var window = new MainWindow();
             window.SetSizeRequest(943 + 100, 554 + 100);
             window.Visible = true;

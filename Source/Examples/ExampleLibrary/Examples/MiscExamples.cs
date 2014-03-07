@@ -1459,15 +1459,15 @@ namespace ExampleLibrary
             };
 
             // Update the c by the position where the mouse was clicked/moved
-            EventHandler<OxyMouseEventArgs> handleMouseEvent = (s, e) =>
+            Action<OxyMouseEventArgs> handleMouseEvent = e =>
             {
                 var c = jss.InverseTransform(e.Position);
                 setConstant(c.X, c.Y);
                 model.InvalidatePlot(true);
                 e.Handled = true;
             };
-            jss.MouseDown += handleMouseEvent;
-            jss.MouseMove += handleMouseEvent;
+            jss.MouseDown += (s, e) => handleMouseEvent(e);
+            jss.MouseMove += (s, e) => handleMouseEvent(e);
 
             // set the initial c
             setConstant(-0.726895347709114071439, 0.188887129043845954792);

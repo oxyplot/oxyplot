@@ -36,16 +36,6 @@ namespace OxyPlot
     public class OxyTouchGesture : OxyInputGesture
     {
         /// <summary>
-        /// Gets or sets the number of fingers for the touch gesture.
-        /// </summary>
-        public int FingerCount { get; set; }
-
-        /// <summary>
-        /// Gets or sets the number of taps.
-        /// </summary>
-        public int TapCount { get; set; }
-
-        /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
@@ -55,7 +45,7 @@ namespace OxyPlot
         public override bool Equals(OxyInputGesture other)
         {
             var tg = other as OxyTouchGesture;
-            return tg != null && tg.FingerCount == this.FingerCount && tg.TapCount == this.TapCount;
+            return tg != null;
         }
     }
 }

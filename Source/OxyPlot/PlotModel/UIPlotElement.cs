@@ -39,9 +39,14 @@ namespace OxyPlot
     public abstract class UIPlotElement : SelectablePlotElement
     {
         /// <summary>
+        /// Occurs when a key is pressed down when the plot view is in focus.
+        /// </summary>
+        public event EventHandler<OxyKeyEventArgs> KeyDown;
+
+        /// <summary>
         /// Occurs when a mouse button is pressed down on the model.
         /// </summary>
-        public event EventHandler<OxyMouseEventArgs> MouseDown;
+        public event EventHandler<OxyMouseDownEventArgs> MouseDown;
 
         /// <summary>
         /// Occurs when the mouse is moved on the plot element (only occurs after MouseDown).
@@ -62,7 +67,7 @@ namespace OxyPlot
         /// <param name="e">
         /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
-        protected internal virtual void OnMouseDown(object sender, OxyMouseEventArgs e)
+        protected internal virtual void OnMouseDown(object sender, OxyMouseDownEventArgs e)
         {
             if (this.MouseDown != null)
             {
@@ -84,6 +89,20 @@ namespace OxyPlot
             if (this.MouseMove != null)
             {
                 this.MouseMove(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="KeyDown"/> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="OxyKeyEventArgs"/> instance containing the event data.</param>
+        protected internal virtual void OnKeyDown(object sender, OxyKeyEventArgs e)
+        {
+            var handler = this.KeyDown;
+            if (handler != null)
+            {
+                handler(sender, e);
             }
         }
 

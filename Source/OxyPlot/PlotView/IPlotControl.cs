@@ -89,5 +89,11 @@ namespace OxyPlot
         /// The rectangle.
         /// </param>
         void ShowZoomRectangle(OxyRect rectangle);
+
+        /// <summary>
+        /// Stores text on the clipboard.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        void SetClipboardText(string text);
     }
 }

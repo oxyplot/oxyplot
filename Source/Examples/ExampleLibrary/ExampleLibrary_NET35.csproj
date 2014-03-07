@@ -43,6 +43,7 @@
     <Compile Include="CustomSeries\LineSegmentSeries.cs" />
     <Compile Include="CustomSeries\MatrixSeries.cs" />
     <Compile Include="CustomSeries\PolarHeatMapSeries.cs" />
+    <Compile Include="Example.cs" />
     <Compile Include="ExampleInfo.cs" />
     <Compile Include="Examples.cs" />
     <Compile Include="Attributes\ExamplesAttribute.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Examples\BarSeries\IntervalBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\RectangleBarSeriesExamples.cs" />
     <Compile Include="Examples\BarSeries\TornadoBarSeriesExamples.cs" />
+    <Compile Include="Examples\PlotControllerExamples.cs" />
     <Compile Include="Examples\CustomAxisExamples.cs" />
     <Compile Include="Examples\HeatMapSeriesExamples.cs" />
     <Compile Include="Examples\LinearColorAxisExamples.cs" />

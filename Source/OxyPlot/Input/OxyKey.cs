@@ -423,6 +423,11 @@ namespace OxyPlot
         /// <summary>
         /// The F12 key.
         /// </summary>
-        F12
+        F12,
+
+        /// <summary>
+        /// Unknown/not supported key.
+        /// </summary>
+        Unknown
     }
 }

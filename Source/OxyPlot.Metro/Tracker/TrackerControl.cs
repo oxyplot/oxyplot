@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TrackerControl.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,9 +24,10 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The tracker control.
+//   Provides a tracker control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Metro
 {
     using System;
@@ -38,7 +39,7 @@ namespace OxyPlot.Metro
     using Windows.UI.Xaml.Shapes;
 
     /// <summary>
-    /// The tracker control.
+    /// Provides a tracker control.
     /// </summary>
     public class TrackerControl : ContentControl
     {
@@ -81,10 +82,9 @@ namespace OxyPlot.Metro
             "LineDashArray", typeof(DoubleCollection), typeof(TrackerControl), new PropertyMetadata(null));
 
 #if WPF
-
-    // <summary>
-    // The border edge mode property.
-    /// </summary>
+        /// <summary>
+        /// The border edge mode property.
+        /// </summary>
         public static readonly DependencyProperty BorderEdgeModeProperty = DependencyProperty.Register(
             "BorderEdgeMode", typeof(EdgeMode), typeof(TrackerControl));
 #endif
@@ -131,27 +131,27 @@ namespace OxyPlot.Metro
             new PropertyMetadata(new ScreenPoint(), PositionChanged));
 
         /// <summary>
-        /// The path part string.
+        /// The path part.
         /// </summary>
         private const string PartPath = "PART_Path";
 
         /// <summary>
-        /// The content part string.
+        /// The content part.
         /// </summary>
         private const string PartContent = "PART_Content";
 
         /// <summary>
-        /// The content container part string.
+        /// The content container part.
         /// </summary>
         private const string PartContentcontainer = "PART_ContentContainer";
 
         /// <summary>
-        /// The horizontal line part string.
+        /// The horizontal line part.
         /// </summary>
         private const string PartHorizontalline = "PART_HorizontalLine";
 
         /// <summary>
-        /// The vertical line part string.
+        /// The vertical line part.
         /// </summary>
         private const string PartVerticalline = "PART_VerticalLine";
 
@@ -181,10 +181,9 @@ namespace OxyPlot.Metro
         private Line verticalLine;
 
 #if WPF
-
-    // <summary>
-    // Initializes static members of the <see cref="TrackerControl"/> class.
-    /// </summary>
+        /// <summary>
+        /// Initializes static members of the <see cref="TrackerControl"/> class.
+        /// </summary>
         static TrackerControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
@@ -193,8 +192,7 @@ namespace OxyPlot.Metro
 
 #endif
 
-#if SILVERLIGHT || METRO
-
+#if SILVERLIGHT || NETFX_CORE
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackerControl"/> class.
         /// </summary>
@@ -202,14 +200,12 @@ namespace OxyPlot.Metro
         {
             this.DefaultStyleKey = typeof(TrackerControl);
         }
-
 #endif
 
 #if WPF
-
-    // <summary>
-    // Gets or sets BorderEdgeMode.
-    /// </summary>
+        /// <summary>
+        /// Gets or sets BorderEdgeMode.
+        /// </summary>
         public EdgeMode BorderEdgeMode
         {
             get
@@ -403,7 +399,6 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Invoked whenever application code or internal processes (such as a rebuilding layout pass) call ApplyTemplate. In simplest terms, this means the method is called just before a UI element displays in your app. Override this method to influence the default post-template logic of a class.
         /// </summary>
-        /// <exception cref="System.InvalidOperationException"></exception>
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -415,23 +410,17 @@ namespace OxyPlot.Metro
 
             if (this.contentContainer == null)
             {
-                throw new InvalidOperationException(
-                    string.Format(
-                        "The TrackerControl template must contain a content container with name +'{0}'",
-                        PartContentcontainer));
+                throw new InvalidOperationException(string.Format("The TrackerControl template must contain a content container with name +'{0}'", PartContentcontainer));
             }
 
             if (this.path == null)
             {
-                throw new InvalidOperationException(
-                    string.Format("The TrackerControl template must contain a Path with name +'{0}'", PartPath));
+                throw new InvalidOperationException(string.Format("The TrackerControl template must contain a Path with name +'{0}'", PartPath));
             }
 
             if (this.content == null)
             {
-                throw new InvalidOperationException(
-                    string.Format(
-                        "The TrackerControl template must contain a ContentPresenter with name +'{0}'", PartContent));
+                throw new InvalidOperationException(string.Format("The TrackerControl template must contain a ContentPresenter with name +'{0}'", PartContent));
             }
 
             this.UpdatePositionAndBorder();
@@ -457,6 +446,7 @@ namespace OxyPlot.Metro
         /// <param name="e">
         /// The dependency property changed event args.
         /// </param>
+        // ReSharper disable once UnusedParameter.Local
         private void OnPositionChanged(DependencyPropertyChangedEventArgs e)
         {
             this.UpdatePositionAndBorder();
@@ -563,7 +553,8 @@ namespace OxyPlot.Metro
 
             this.contentContainer.RenderTransform = new TranslateTransform
                 {
-                   X = dx * contentSize.Width, Y = dy * contentSize.Height
+                    X = dx * contentSize.Width,
+                    Y = dy * contentSize.Height
                 };
 
 #if WPF
@@ -646,7 +637,7 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Create a border geometry with a 'pointer'.
+        /// Creates a border geometry with a 'pointer'.
         /// </summary>
         /// <param name="ha">
         /// The horizontal alignment.

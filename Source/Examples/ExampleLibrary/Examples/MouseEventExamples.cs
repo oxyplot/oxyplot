@@ -503,7 +503,7 @@ namespace ExampleLibrary
             };
             model.MouseMove += (s, e) =>
                 {
-                    if (e.ChangedButton == OxyMouseButton.Left && !double.IsNaN(startx))
+                    if (!double.IsNaN(startx))
                     {
                         var x = range.InverseTransform(e.Position).X;
                         range.MinimumX = Math.Min(x, startx);

@@ -35,40 +35,38 @@ namespace OxyPlot
     /// <summary>
     /// Provides a plot control manipulator for zoom by rectangle functionality.
     /// </summary>
-    public class ZoomRectangleManipulator : ManipulatorBase
+    public class ZoomRectangleManipulator : MouseManipulator
     {
+        /// <summary>
+        /// The zoom rectangle.
+        /// </summary>
+        private OxyRect zoomRectangle;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoomRectangleManipulator"/> class.
         /// </summary>
-        /// <param name="plotControl">
-        /// The plot control.
-        /// </param>
+        /// <param name="plotControl">The plot control.</param>
         public ZoomRectangleManipulator(IPlotControl plotControl)
             : base(plotControl)
         {
         }
 
         /// <summary>
-        /// Gets or sets the zoom rectangle.
-        /// </summary>
-        private OxyRect ZoomRectangle { get; set; }
-
-        /// <summary>
         /// Occurs when a manipulation is complete.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="OxyPlot.ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
-        public override void Completed(ManipulationEventArgs e)
+        public override void Completed(OxyMouseEventArgs e)
         {
             base.Completed(e);
 
             this.PlotControl.HideZoomRectangle();
 
-            if (this.ZoomRectangle.Width > 10 && this.ZoomRectangle.Height > 10)
+            if (this.zoomRectangle.Width > 10 && this.zoomRectangle.Height > 10)
             {
-                DataPoint p0 = this.InverseTransform(this.ZoomRectangle.Left, this.ZoomRectangle.Top);
-                DataPoint p1 = this.InverseTransform(this.ZoomRectangle.Right, this.ZoomRectangle.Bottom);
+                var p0 = this.InverseTransform(this.zoomRectangle.Left, this.zoomRectangle.Top);
+                var p1 = this.InverseTransform(this.zoomRectangle.Right, this.zoomRectangle.Bottom);
 
                 if (this.XAxis != null)
                 {
@@ -88,33 +86,33 @@ namespace OxyPlot
         /// Occurs when the input device changes position during a manipulation.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="OxyPlot.ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
-        public override void Delta(ManipulationEventArgs e)
+        public override void Delta(OxyMouseEventArgs e)
         {
             base.Delta(e);
 
-            OxyRect plotArea = this.PlotControl.ActualModel.PlotArea;
+            var plotArea = this.PlotControl.ActualModel.PlotArea;
 
-            double x = Math.Min(this.StartPosition.X, e.CurrentPosition.X);
-            double w = Math.Abs(this.StartPosition.X - e.CurrentPosition.X);
-            double y = Math.Min(this.StartPosition.Y, e.CurrentPosition.Y);
-            double h = Math.Abs(this.StartPosition.Y - e.CurrentPosition.Y);
+            double x = Math.Min(this.StartPosition.X, e.Position.X);
+            double w = Math.Abs(this.StartPosition.X - e.Position.X);
+            double y = Math.Min(this.StartPosition.Y, e.Position.Y);
+            double h = Math.Abs(this.StartPosition.Y - e.Position.Y);
 
-            if (this.XAxis == null)
+            if (this.XAxis == null || !this.XAxis.IsZoomEnabled)
             {
                 x = plotArea.Left;
                 w = plotArea.Width;
             }
 
-            if (this.YAxis == null)
+            if (this.YAxis == null || !this.YAxis.IsZoomEnabled)
             {
                 y = plotArea.Top;
                 h = plotArea.Height;
             }
 
-            this.ZoomRectangle = new OxyRect(x, y, w, h);
-            this.PlotControl.ShowZoomRectangle(this.ZoomRectangle);
+            this.zoomRectangle = new OxyRect(x, y, w, h);
+            this.PlotControl.ShowZoomRectangle(this.zoomRectangle);
         }
 
         /// <summary>
@@ -142,13 +140,13 @@ namespace OxyPlot
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="OxyPlot.ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
-        public override void Started(ManipulationEventArgs e)
+        public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);
-            this.ZoomRectangle = new OxyRect(this.StartPosition.X, this.StartPosition.Y, 0, 0);
-            this.PlotControl.ShowZoomRectangle(this.ZoomRectangle);
+            this.zoomRectangle = new OxyRect(this.StartPosition.X, this.StartPosition.Y, 0, 0);
+            this.PlotControl.ShowZoomRectangle(this.zoomRectangle);
         }
     }
 }

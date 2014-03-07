@@ -27,163 +27,79 @@
 
 namespace ExampleBrowser
 {
+    using System.Collections.Generic;
     using System.Linq;
-    using Gtk;
-    using Gdk;
-    using OxyPlot;
 
     using ExampleLibrary;
 
-    public partial class MainWindow : Gtk.Window
-    {
-        readonly MainWindowViewModel vm = new MainWindowViewModel();
+    using Gtk;
 
+    public partial class MainWindow : Window
+    {
+        private HBox hbox1;
+
+        private TreeView treeView1;
+
+        private OxyPlot.GtkSharp.Plot plot1;
+
+        private ExampleInfo selectedExample;
+
+        public MainWindow()
+            : base("Example Browser")
+        {
+            this.Examples = ExampleLibrary.Examples.GetList().OrderBy(e => e.Category).ToList();
+            this.InitializeComponent();
+            this.SelectedExample = this.Examples.FirstOrDefault();
+        }
+
+        public IList<ExampleInfo> Examples { get; private set; }
+
+        public ExampleInfo SelectedExample
+        {
+            get
+            {
+                return this.selectedExample;
+            }
+
+            set
+            {
+                this.selectedExample = value;
+                this.plot1.Model = this.selectedExample != null ? this.selectedExample.PlotModel : null;
+                this.plot1.Controller = this.selectedExample != null ? this.selectedExample.PlotController : null;
+            }
+        }
 
         private void InitializeComponent()
         {
-            OxyPlot.PlotModel plotModel1 = new OxyPlot.PlotModel();
-            this.hbox1 = new Gtk.HBox(false, 6);
-            this.treeView1 = new Gtk.TreeView();
             this.plot1 = new OxyPlot.GtkSharp.Plot();
-            this.hbox1.SetSizeRequest(943, 554);
-            this.hbox1.Name = "hbox1";
-            //this.hbox1.SplitterDistance = 314;
-            //this.hbox1.TabIndex = 0;
-            // 
-            // treeView1
-            // 
-            //this.treeView1.Dock = Gtk.DockStyle.Fill;
-            //this.treeView1.Location = new System.Drawing.Point(0, 0);
-            this.treeView1.Name = "treeView1";
+            this.plot1.SetSizeRequest(625, 554);
+
+            this.treeView1 = new TreeView();
             this.treeView1.SetSizeRequest(314, 554);
             this.treeView1.Visible = true;
 
-            //this.treeView1.TabIndex = 1;
-            // 
-            // plot1
-            // 
-            //this.plot1.Dock = Gtk.DockStyle.Fill;
-            this.plot1.KeyboardPanHorizontalStep = 0.1D;
-            this.plot1.KeyboardPanVerticalStep = 0.1D;
-            //this.plot1.Location = new System.Drawing.Point(0, 0);
-            plotModel1.Annotations = null;
-            plotModel1.AutoAdjustPlotMargins = true;
-            plotModel1.Axes = null;
-            plotModel1.AxisTierDistance = 4D;
-            plotModel1.Background = OxyColors.Transparent;
-            plotModel1.Culture = null;
-            plotModel1.DefaultColors = null;
-            plotModel1.DefaultFont = "Segoe UI";
-            plotModel1.DefaultFontSize = 12D;
-            plotModel1.IsLegendVisible = true;
-            plotModel1.LegendBackground = OxyColors.Undefined;
-            plotModel1.LegendBorder = OxyColors.Undefined;
-            plotModel1.LegendBorderThickness = 1D;
-            plotModel1.LegendColumnSpacing = 0D;
-            plotModel1.LegendFont = null;
-            plotModel1.LegendFontSize = 12D;
-            plotModel1.LegendFontWeight = 400D;
-            plotModel1.LegendItemAlignment = OxyPlot.HorizontalAlignment.Left;
-            plotModel1.LegendItemOrder = OxyPlot.LegendItemOrder.Normal;
-            plotModel1.LegendItemSpacing = 24D;
-            plotModel1.LegendMargin = 8D;
-            plotModel1.LegendMaxWidth = double.NaN;
-            plotModel1.LegendOrientation = OxyPlot.LegendOrientation.Vertical;
-            plotModel1.LegendPadding = 8D;
-            plotModel1.LegendPlacement = OxyPlot.LegendPlacement.Inside;
-            plotModel1.LegendPosition = OxyPlot.LegendPosition.RightTop;
-            plotModel1.LegendSymbolLength = 16D;
-            plotModel1.LegendSymbolMargin = 4D;
-            plotModel1.LegendSymbolPlacement = OxyPlot.LegendSymbolPlacement.Left;
-            plotModel1.LegendTextColor = OxyColors.Undefined;
-            plotModel1.LegendTitle = null;
-            plotModel1.LegendTitleColor = OxyColors.Undefined;
-            plotModel1.LegendTitleFont = null;
-            plotModel1.LegendTitleFontSize = 12D;
-            plotModel1.LegendTitleFontWeight = 700D;
-            plotModel1.PlotAreaBackground = OxyColors.Undefined;
-            plotModel1.PlotAreaBorderColor = OxyColors.Undefined;
-            plotModel1.PlotAreaBorderThickness = 1D;
-            plotModel1.PlotType = OxyPlot.PlotType.XY;
-            plotModel1.SelectionColor = OxyColors.Undefined;
-            plotModel1.Series = null;
-            plotModel1.Subtitle = null;
-            plotModel1.SubtitleColor = OxyColors.Undefined;
-            plotModel1.SubtitleFont = null;
-            plotModel1.SubtitleFontSize = 14D;
-            plotModel1.SubtitleFontWeight = 400D;
-            plotModel1.TextColor = OxyColors.Undefined;
-            plotModel1.Title = null;
-            plotModel1.TitleColor = OxyColors.Undefined;
-            plotModel1.TitleFont = null;
-            plotModel1.TitleFontSize = 18D;
-            plotModel1.TitleFontWeight = 700D;
-            plotModel1.TitlePadding = 6D;
-            this.plot1.Model = plotModel1;
-            this.plot1.Name = "plot1";
-            //this.plot1.PanCursor = Gtk.Cursors.Hand;
-            this.plot1.SetSizeRequest(625, 554);
-            //this.plot1.TabIndex = 0;
-            //this.plot1.Text = "plot1";
-            this.plot1.ZoomHorizontalCursor = new Gdk.Cursor(Gdk.CursorType.Sizing); // Cursors.SizeWE;
-            this.plot1.ZoomRectangleCursor = new Gdk.Cursor(Gdk.CursorType.Sizing); //Gtk.Cursors.SizeNWSE;
-            this.plot1.ZoomVerticalCursor = new Gdk.Cursor(Gdk.CursorType.Sizing); //Gtk.Cursors.SizeNS;
-            this.plot1.Visible = true;
-
-            vm.SelectedExample = vm.Examples.FirstOrDefault();
-            InitPlot();
-
-/*			Gtk.TreeViewColumn artistColumn = new Gtk.TreeViewColumn ();
-			artistColumn.Title = "Artist";
-
-			Gtk.CellRendererText artistNameCell = new Gtk.CellRendererText ();
-
-			artistColumn.PackStart (artistNameCell, true);
-
-			Gtk.TreeViewColumn songColumn = new Gtk.TreeViewColumn ();
-			songColumn.Title = "Song Title";
-
-			Gtk.CellRendererText songTitleCell = new Gtk.CellRendererText ();
-			songColumn.PackStart (songTitleCell, true);
-
-			treeView1.AppendColumn (artistColumn);
-			treeView1.AppendColumn (songColumn);
-
-			artistColumn.AddAttribute (artistNameCell, "text", 0);
-			songColumn.AddAttribute (songTitleCell, "text", 1);
-
-			Gtk.TreeStore musicListStore = new Gtk.TreeStore (typeof (string), typeof (string));
-
-			Gtk.TreeIter iter = musicListStore.AppendValues ("Dance");
-			musicListStore.AppendValues (iter, "Fannypack", "Nu Nu (Yeah Yeah) (double j and haze radio edit)");
-
-			iter = musicListStore.AppendValues ("Hip-hop");
-			musicListStore.AppendValues (iter, "Nelly", "Country Grammer");
-
-			treeView1.Model = musicListStore;
-*/
             var treeModel = new TreeStore(typeof(string), typeof(string));
-            TreeIter iter = new TreeIter();
+            var iter = new TreeIter();
             string last = null;
-            foreach (var ex in vm.Examples)
+            foreach (var ex in this.Examples)
             {
                 if (last == null || last != ex.Category)
                 {
                     iter = treeModel.AppendValues(ex.Category);
                     last = ex.Category;
                 }
+
                 treeModel.AppendValues(iter, ex.Title);
             }
-            treeView1.Model = treeModel;
-            Gtk.TreeViewColumn exampleNameColumn = new Gtk.TreeViewColumn();
-            exampleNameColumn.Title = "Example";
-            Gtk.CellRendererText exampleNameCell = new Gtk.CellRendererText();
 
+            this.treeView1.Model = treeModel;
+            var exampleNameColumn = new TreeViewColumn { Title = "Example" };
+            var exampleNameCell = new CellRendererText();
             exampleNameColumn.PackStart(exampleNameCell, true);
-            treeView1.AppendColumn(exampleNameColumn);
+            this.treeView1.AppendColumn(exampleNameColumn);
             exampleNameColumn.AddAttribute(exampleNameCell, "text", 0);
 
-            treeView1.Selection.Changed += (delegate(object sender, System.EventArgs ev)
+            this.treeView1.Selection.Changed += (s, e) =>
             {
                 TreeIter selectedNode;
                 TreeModel selectedModel;
@@ -192,51 +108,31 @@ namespace ExampleBrowser
                     string val1 = (string)selectedModel.GetValue(selectedNode, 0);
                     string val2 = (string)selectedModel.GetValue(selectedNode, 1);
 
-                    //treeView1.GetselectedNode
-                    //vm.SelectedExample = selectedNode.;
-                    //.Node.Tag as ExampleInfo;
-                    ExampleInfo info = vm.Examples.FirstOrDefault(ex => ex.Title == val1);
+                    var info = this.Examples.FirstOrDefault(ex => ex.Title == val1);
                     if (info != null)
                     {
-                        vm.SelectedExample = info;
-                        InitPlot();
+                        this.SelectedExample = info;
                     }
                 }
-            });
+            };
 
-			this.hbox1.PackStart(treeView1, false, false, 6);
-            this.hbox1.PackStart(plot1, false, false, 6);
+            this.hbox1 = new HBox(false, 6);
+            this.hbox1.SetSizeRequest(943, 554);
 
-			this.Add(this.hbox1);
-            // 
-            // MainWindow
-            // 
+            this.hbox1.PackStart(this.treeView1, false, false, 6);
+            this.hbox1.PackStart(this.plot1, false, false, 6);
+
+            this.Add(this.hbox1);
+
             //this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             //this.AutoScaleMode = Gtk.AutoScaleMode.Font;
             //this.ClientSize = new System.Drawing.Size(943, 554);
-            this.Name = "MainWindow";
             this.Title = "OxyPlot.GtkSharp Example Browser";
-            this.DeleteEvent += (delegate(object sender, DeleteEventArgs a)
+            this.DeleteEvent += (s, a) =>
             {
                 Application.Quit();
                 a.RetVal = true;
-            });
-        }
-
-        private Gtk.HBox hbox1;
-        private Gtk.TreeView treeView1;
-        private OxyPlot.GtkSharp.Plot plot1;
-        public MainWindow() : base("Example Browser")
-        {
-            this.InitializeComponent();
-            //this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
-        }
-
-
-        private void InitPlot()
-        {
-            plot1.Model = vm.SelectedExample != null ? vm.SelectedExample.PlotModel : null;
-            //plot1.BackColor = vm.PlotBackground;
+            };
         }
     }
 }

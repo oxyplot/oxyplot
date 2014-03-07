@@ -1223,7 +1223,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Updates all axes and series. 
+        /// Updates all axes and series.
         /// 0. Updates the owner PlotModel of all plot items (axes, series and annotations)
         /// 1. Updates the data of each Series (only if updateData==true).
         /// 2. Ensure that all series have axes assigned.

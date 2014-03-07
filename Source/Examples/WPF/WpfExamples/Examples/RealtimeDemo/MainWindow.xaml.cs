@@ -27,9 +27,7 @@
 //   Interaction logic for MainWindow.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
 using System.Windows;
-using System.Windows.Media;
 
 namespace RealtimeDemo
 {
@@ -45,15 +43,6 @@ namespace RealtimeDemo
             InitializeComponent();
 
             DataContext = vm;
-
-            CompositionTarget.Rendering += CompositionTarget_Rendering;
-        }
-
-        private void CompositionTarget_Rendering(object sender, EventArgs e)
-        {
-            vm.Update();
-            // todo: should not be necessary to refresh
-            plot1.RefreshPlot(true);
         }
     }
 }

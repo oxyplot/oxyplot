@@ -49,9 +49,14 @@ namespace OxyPlot
         private UIPlotElement currentMouseEventElement;
 
         /// <summary>
+        /// Occurs when a key is pressed down when the plot view is focused.
+        /// </summary>
+        public event EventHandler<OxyKeyEventArgs> KeyDown;
+
+        /// <summary>
         /// Occurs when a mouse button is pressed down on the model.
         /// </summary>
-        public event EventHandler<OxyMouseEventArgs> MouseDown;
+        public event EventHandler<OxyMouseDownEventArgs> MouseDown;
 
         /// <summary>
         /// Occurs when the mouse is moved on the plot element (only occurs after MouseDown).
@@ -72,7 +77,7 @@ namespace OxyPlot
         /// <param name="e">
         /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
-        public void HandleMouseDown(object sender, OxyMouseEventArgs e)
+        public void HandleMouseDown(object sender, OxyMouseDownEventArgs e)
         {
             // Revert the order to handle the top-level elements first
             foreach (var element in this.GetElements().Reverse())
@@ -152,6 +157,54 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Handles key down events.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="OxyKeyEventArgs"/> instance containing the event data.</param>
+        public void HandleKeyDown(object sender, OxyKeyEventArgs e)
+        {
+            // Revert the order to handle the top-level elements first
+            foreach (var element in this.GetElements().Reverse())
+            {
+                var uiElement = element as UIPlotElement;
+                if (uiElement == null)
+                {
+                    continue;
+                }
+
+                uiElement.OnKeyDown(sender, e);
+
+                if (e.Handled)
+                {
+                    break;
+                }
+            }
+
+            if (!e.Handled)
+            {
+                this.OnKeyDown(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="KeyDown"/> event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
+        /// </param>
+        protected virtual void OnKeyDown(object sender, OxyKeyEventArgs e)
+        {
+            var handler = this.KeyDown;
+            if (handler != null && !e.Handled)
+            {
+                handler(sender, e);
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="MouseDown"/> event.
         /// </summary>
         /// <param name="sender">
@@ -160,7 +213,7 @@ namespace OxyPlot
         /// <param name="e">
         /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
         /// </param>
-        protected virtual void OnMouseDown(object sender, OxyMouseEventArgs e)
+        protected virtual void OnMouseDown(object sender, OxyMouseDownEventArgs e)
         {
             if (this.MouseDown != null && !e.Handled)
             {
