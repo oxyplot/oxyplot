@@ -522,7 +522,8 @@ namespace OxyPlot.Silverlight
             return new OxyTouchEventArgs
             {
                 Position = e.ManipulationOrigin.ToScreenPoint() + e.CumulativeManipulation.Translation.ToScreenVector(),
-                Scale = e.DeltaManipulation.Scale.ToScreenVector()
+                DeltaTranslation = e.DeltaManipulation.Translation.ToScreenVector(),
+                DeltaScale = e.DeltaManipulation.Scale.ToScreenVector()
             };
         }
 

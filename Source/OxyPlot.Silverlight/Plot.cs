@@ -401,7 +401,7 @@ namespace OxyPlot.Silverlight
                 return;
             }
 
-            var args = new OxyKeyEventArgs { Modifiers = Keyboard.GetModifierKeys(), Key = e.Key.Convert() };
+            var args = new OxyKeyEventArgs { ModifierKeys = Keyboard.GetModifierKeys(), Key = e.Key.Convert() };
             e.Handled = this.ActualController.HandleKeyDown(this, args);
         }
 
