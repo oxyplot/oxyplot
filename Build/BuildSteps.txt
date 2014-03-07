@@ -14,7 +14,8 @@ OS: Windows 8.1
 
 - TeamCity 8.0.5
 - Visual Studio 2013
-- MS Build tools 2013 http://www.microsoft.com/en-us/download/details.aspx?id=40760
+- MS Build tools 2013: http://www.microsoft.com/en-us/download/details.aspx?id=40760
+- StyleCop: http://stylecop.codeplex.com/
 - Mercurial
 - 7-Zip in default folder
 - .NET 3.5
