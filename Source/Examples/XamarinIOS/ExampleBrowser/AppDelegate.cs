@@ -66,16 +66,16 @@ namespace ExampleBrowser
 
 			navigation = new UINavigationController();
 
-			var root = new RootElement ("OxyPlot Demo") {
-				new Section() {
-					from e in exampleInfoList
-					group e by e.Category into g
-					orderby g.Key
-					select (Element)new StyledStringElement (g.Key, delegate {
-							DisplayCategory(g.Key);
-						}) { Accessory = UITableViewCellAccessory.DisclosureIndicator }
-				}
-			};
+			var root = new RootElement ("OxyPlot Example Browser");
+			var section = new Section ();
+			section.AddAll (exampleInfoList
+				.GroupBy (e => e.Category)
+				.OrderBy (g => g.Key)
+				.Select (g => 
+					(Element)new StyledStringElement (g.Key, delegate { 
+						DisplayCategory (g.Key);
+					}) { Accessory = UITableViewCellAccessory.DisclosureIndicator }));
+			root.Add (section);
 
 			var dvc = new DialogViewController (root, true);
 
@@ -91,14 +91,16 @@ namespace ExampleBrowser
 
 		private void DisplayCategory(string category)
 		{
-			var root = new RootElement (category) {
-				new Section() {
-					from e in exampleInfoList
-					where e.Category == category
-					orderby e.Title
-					select (Element)new StyledStringElement (e.Title, delegate { GraphView(e); }) { Accessory = UITableViewCellAccessory.DisclosureIndicator }
-				}
-			};
+			var root = new RootElement (category);
+			var section = new Section ();
+			section.AddAll (exampleInfoList
+				.Where (e => e.Category == category)
+				.OrderBy (e => e.Title)
+				.Select (e => (Element)new StyledStringElement (e.Title, delegate {
+				GraphView (e);
+			}) { Accessory = UITableViewCellAccessory.DisclosureIndicator }
+			));
+			root.Add (section);
 
 			var dvc = new DialogViewController (root, true);
 
