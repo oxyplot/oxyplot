@@ -573,7 +573,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         protected void OnAppearanceChanged()
         {
-            this.InvalidatePlot();
+            this.InvalidatePlot(false);
         }
 
         /// <summary>
@@ -737,7 +737,7 @@ namespace OxyPlot.Wpf
         {
             base.OnVisualParentChanged(oldParent);
             var parent = VisualTreeHelper.GetParent(this);
-            this.IsRendering = parent != null;
+            this.IsRendering = parent != null && this.IsLoaded;
         }
 
         /// <summary>
@@ -891,7 +891,6 @@ namespace OxyPlot.Wpf
                     this.currentlyAttachedModel = this.Model;
                     this.internalModel = null;
 
-                    // TODO: @tibel - is it really OK to remove this?
                     if (this.IsLoaded)
                     {
                         this.currentlyAttachedModel.AttachPlotControl(this);
