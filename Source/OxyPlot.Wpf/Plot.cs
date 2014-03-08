@@ -239,7 +239,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return this.Model ?? this.internalModel;
+                return this.currentlyAttachedModel ?? this.internalModel;
             }
         }
 
@@ -287,7 +287,7 @@ namespace OxyPlot.Wpf
         /// </param>
         public void InvalidatePlot(bool updateData = true)
         {
-            if (!this.IsLoaded)
+            if (!this.IsRendering)
             {
                 return;
             }
@@ -983,7 +983,7 @@ namespace OxyPlot.Wpf
         {
             // If no model is set, create an internal model and copy the
             // axes/series/annotations and properties from the WPF objects to the internal model
-            if (this.Model == null)
+            if (this.currentlyAttachedModel == null)
             {
                 if (this.internalModel == null)
                 {
