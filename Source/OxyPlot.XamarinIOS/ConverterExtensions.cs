@@ -53,6 +53,25 @@ namespace OxyPlot.XamarinIOS
 		}
 
 		/// <summary>
+        /// Converts <see cref="UITouch" /> event arguments to <see cref="OxyTouchEventArgs" />.
+        /// </summary>
+        /// <param name="touch">The touch event arguments.</param>
+        /// <param name="view">The view.</param>
+        /// <returns>
+        /// The converted arguments.
+        /// </returns>
+        public static OxyTouchEventArgs ToTouchEventArgs(this UITouch touch, UIView view)
+        {
+            var location = touch.LocationInView(view);
+            return new OxyTouchEventArgs
+            {
+                Position = new ScreenPoint(location.X, location.Y),
+                DeltaTranslation = new ScreenVector(0, 0),
+                DeltaScale = new ScreenVector(1, 1)
+            };
+        }
+
+        /// <summary>
 		/// Converts a <see cref="OxyColor" /> to a <see cref="CGColor" />.
 		/// </summary>
 		/// <param name="c">The color to convert.</param>
