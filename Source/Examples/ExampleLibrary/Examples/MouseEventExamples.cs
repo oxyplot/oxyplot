@@ -24,13 +24,13 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using OxyPlot;
 
 namespace ExampleLibrary
 {
     using System;
     using System.Reflection;
 
+    using OxyPlot;
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -518,6 +518,102 @@ namespace ExampleLibrary
             model.MouseUp += (s, e) =>
             {
                 startx = double.NaN;
+            };
+
+            return model;
+        }
+
+        [Example("Hover")]
+        public static PlotModel Hover()
+        {
+            var model = new PlotModel("Hover");
+            LineSeries series = null;
+
+            model.MouseEnter += (s, e) =>
+            {
+                model.Subtitle = "The mouse entered";
+                series = new LineSeries();
+                model.Series.Add(series);
+                model.InvalidatePlot(false);
+                e.Handled = true;
+            };
+
+            model.MouseMove += (s, e) =>
+            {
+                if (series != null && series.XAxis != null)
+                {
+                    series.Points.Add(series.InverseTransform(e.Position));
+                    model.InvalidatePlot(false);
+                }
+            };
+
+            model.MouseLeave += (s, e) =>
+            {
+                model.Subtitle = "The mouse left";
+                model.InvalidatePlot(false);
+                e.Handled = true;
+            };
+
+            return model;
+        }
+
+        [Example("Touch")]
+        public static PlotModel Touch()
+        {
+            var model = new PlotModel("Touch");
+            var series = new LineSeries();
+            model.Series.Add(series);
+
+            model.TouchStarted += (s, e) =>
+            {
+                model.Subtitle = "The touch gesture started";
+                model.InvalidatePlot(false);
+                e.Handled = true;
+            };
+
+            model.TouchDelta += (s, e) =>
+            {
+                series.Points.Add(series.InverseTransform(e.Position));
+                model.InvalidatePlot(false);
+            };
+
+            model.TouchCompleted += (s, e) =>
+            {
+                model.Subtitle = "The touch gesture completed";
+                model.InvalidatePlot(false);
+                e.Handled = true;
+            };
+
+            return model;
+        }
+
+        [Example("Touch on a LineSeries")]
+        public static PlotModel TouchSeries()
+        {
+            var model = new PlotModel("Touch on a LineSeries");
+            var series = new LineSeries();
+            series.Points.Add(new DataPoint(0, 0));
+            series.Points.Add(new DataPoint(10, 10));
+            model.Series.Add(series);
+
+            series.TouchStarted += (s, e) =>
+            {
+                model.Subtitle = "The touch gesture started on the LineSeries";
+                model.InvalidatePlot(false);
+                e.Handled = true;
+            };
+
+            series.TouchDelta += (s, e) =>
+            {
+                series.Points.Add(series.InverseTransform(e.Position));
+                model.InvalidatePlot(false);
+            };
+
+            series.TouchCompleted += (s, e) =>
+            {
+                model.Subtitle = "The touch gesture completed";
+                model.InvalidatePlot(false);
+                e.Handled = true;
             };
 
             return model;
