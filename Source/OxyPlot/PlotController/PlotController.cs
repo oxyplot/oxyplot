@@ -55,6 +55,8 @@ namespace OxyPlot
             this.BindMouseDown(OxyMouseButton.Right, OxyModifierKeys.Control, 2, PlotCommands.ResetAt);
             this.BindMouseDown(OxyMouseButton.Left, OxyModifierKeys.Control | OxyModifierKeys.Alt, 2, PlotCommands.ResetAt);
             this.BindKeyDown(OxyKey.A, PlotCommands.Reset);
+            this.BindKeyDown(OxyKey.C, OxyModifierKeys.Control | OxyModifierKeys.Alt, PlotCommands.CopyCode);
+            this.BindKeyDown(OxyKey.R, OxyModifierKeys.Control | OxyModifierKeys.Alt, PlotCommands.CopyTextReport);
             this.BindKeyDown(OxyKey.Home, PlotCommands.Reset);
             this.BindCore(new OxyShakeGesture(), PlotCommands.Reset);
 
