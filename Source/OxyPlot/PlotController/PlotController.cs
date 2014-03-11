@@ -72,11 +72,10 @@ namespace OxyPlot
 
             this.BindTouchDown(PlotCommands.PanZoomByTouch);
 
-            // Tracker bindings: LMB, mouse hover
+            // Tracker bindings: LMB
             this.BindMouseDown(OxyMouseButton.Left, PlotCommands.SnapTrack);
             this.BindMouseDown(OxyMouseButton.Left, OxyModifierKeys.Control, PlotCommands.Track);
             this.BindMouseDown(OxyMouseButton.Left, OxyModifierKeys.Shift, PlotCommands.PointsOnlyTrack);
-            this.BindMouseEnter(PlotCommands.HoverPointsOnlyTrack);
 
             // Zoom in/out binding: XB1 / XB2 / mouse wheels / +/- keys
             this.BindMouseDown(OxyMouseButton.XButton1, PlotCommands.ZoomInAt);
