@@ -59,6 +59,21 @@ namespace OxyPlot
         public event EventHandler<OxyMouseEventArgs> MouseUp;
 
         /// <summary>
+        /// Occurs when a touch gesture starts.
+        /// </summary>
+        public event EventHandler<OxyTouchEventArgs> TouchStarted;
+
+        /// <summary>
+        /// Occurs when a touch gesture is changed.
+        /// </summary>
+        public event EventHandler<OxyTouchEventArgs> TouchDelta;
+
+        /// <summary>
+        /// Occurs when the touch gesture is completed.
+        /// </summary>
+        public event EventHandler<OxyTouchEventArgs> TouchCompleted;
+
+        /// <summary>
         /// Raises the <see cref="MouseDown"/> event.
         /// </summary>
         /// <param name="sender">
@@ -69,9 +84,10 @@ namespace OxyPlot
         /// </param>
         protected internal virtual void OnMouseDown(object sender, OxyMouseDownEventArgs e)
         {
-            if (this.MouseDown != null)
+            var handler = this.MouseDown;
+            if (handler != null)
             {
-                this.MouseDown(sender, e);
+                handler(sender, e);
             }
         }
 
@@ -86,9 +102,10 @@ namespace OxyPlot
         /// </param>
         protected internal virtual void OnMouseMove(object sender, OxyMouseEventArgs e)
         {
-            if (this.MouseMove != null)
+            var handler = this.MouseMove;
+            if (handler != null)
             {
-                this.MouseMove(sender, e);
+                handler(sender, e);
             }
         }
 
@@ -117,9 +134,64 @@ namespace OxyPlot
         /// </param>
         protected internal virtual void OnMouseUp(object sender, OxyMouseEventArgs e)
         {
-            if (this.MouseUp != null)
+            var handler = this.MouseUp;
+            if (handler != null)
             {
-                this.MouseUp(sender, e);
+                handler(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="TouchStarted"/> event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="OxyTouchEventArgs"/> instance containing the event data.
+        /// </param>
+        protected internal virtual void OnTouchStarted(object sender, OxyTouchEventArgs e)
+        {
+            var handler = this.TouchStarted;
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="TouchDelta"/> event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="OxyTouchEventArgs"/> instance containing the event data.
+        /// </param>
+        protected internal virtual void OnTouchDelta(object sender, OxyTouchEventArgs e)
+        {
+            var handler = this.TouchDelta;
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseUp"/> event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="OxyTouchEventArgs"/> instance containing the event data.
+        /// </param>
+        protected internal virtual void OnTouchCompleted(object sender, OxyTouchEventArgs e)
+        {
+            var handler = this.TouchCompleted;
+            if (handler != null)
+            {
+                handler(sender, e);
             }
         }
 

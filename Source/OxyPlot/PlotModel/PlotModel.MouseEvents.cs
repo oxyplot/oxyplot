@@ -44,9 +44,14 @@ namespace OxyPlot
         private const double MouseHitTolerance = 10;
 
         /// <summary>
-        /// The current mouse events element.
+        /// The element that receives mouse move events.
         /// </summary>
         private UIPlotElement currentMouseEventElement;
+
+        /// <summary>
+        /// The element that receives touch delta events.
+        /// </summary>
+        private UIPlotElement currentTouchEventElement;
 
         /// <summary>
         /// Occurs when a key is pressed down when the plot view is focused.
@@ -67,6 +72,31 @@ namespace OxyPlot
         /// Occurs when the mouse button is released on the plot element.
         /// </summary>
         public event EventHandler<OxyMouseEventArgs> MouseUp;
+
+        /// <summary>
+        /// Occurs when the mouse cursor enters the plot area.
+        /// </summary>
+        public event EventHandler<OxyMouseEventArgs> MouseEnter;
+
+        /// <summary>
+        /// Occurs when the mouse cursor leaves the plot area.
+        /// </summary>
+        public event EventHandler<OxyMouseEventArgs> MouseLeave;
+
+        /// <summary>
+        /// Occurs when a touch gesture is started.
+        /// </summary>
+        public event EventHandler<OxyTouchEventArgs> TouchStarted;
+
+        /// <summary>
+        /// Occurs when a touch gesture is changed.
+        /// </summary>
+        public event EventHandler<OxyTouchEventArgs> TouchDelta;
+
+        /// <summary>
+        /// Occurs when a touch gesture is completed.
+        /// </summary>
+        public event EventHandler<OxyTouchEventArgs> TouchCompleted;
 
         /// <summary>
         /// Handles the mouse down event.
@@ -157,6 +187,127 @@ namespace OxyPlot
         }
 
         /// <summary>
+        /// Handles the mouse enter event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
+        /// </param>
+        public void HandleMouseEnter(object sender, OxyMouseEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                this.OnMouseEnter(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Handles the mouse leave event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
+        /// </param>
+        public void HandleMouseLeave(object sender, OxyMouseEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                this.OnMouseLeave(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Handles the touch started event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// A <see cref="OxyPlot.OxyTouchEventArgs"/> instance containing the event data.
+        /// </param>
+        public void HandleTouchStarted(object sender, OxyTouchEventArgs e)
+        {
+            // Revert the order to handle the top-level elements first
+            foreach (var element in this.GetElements().Reverse())
+            {
+                var uiElement = element as UIPlotElement;
+                if (uiElement == null)
+                {
+                    continue;
+                }
+
+                var result = uiElement.HitTest(e.Position, MouseHitTolerance);
+                if (result != null)
+                {
+                    uiElement.OnTouchStarted(sender, e);
+                    if (e.Handled)
+                    {
+                        this.currentTouchEventElement = uiElement;
+                    }
+                }
+
+                if (e.Handled)
+                {
+                    break;
+                }
+            }
+
+            if (!e.Handled)
+            {
+                this.OnTouchStarted(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Handles the touch delta event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// A <see cref="OxyPlot.OxyTouchEventArgs"/> instance containing the event data.
+        /// </param>
+        public void HandleTouchDelta(object sender, OxyTouchEventArgs e)
+        {
+            if (this.currentTouchEventElement != null)
+            {
+                this.currentTouchEventElement.OnTouchDelta(sender, e);
+            }
+
+            if (!e.Handled)
+            {
+                this.OnTouchDelta(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Handles the touch completed event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// A <see cref="OxyPlot.OxyTouchEventArgs"/> instance containing the event data.
+        /// </param>
+        public void HandleTouchCompleted(object sender, OxyTouchEventArgs e)
+        {
+            if (this.currentTouchEventElement != null)
+            {
+                this.currentTouchEventElement.OnTouchCompleted(sender, e);
+                this.currentTouchEventElement = null;
+            }
+
+            if (!e.Handled)
+            {
+                this.OnTouchCompleted(sender, e);
+            }
+        }
+
+        /// <summary>
         /// Handles key down events.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -198,7 +349,7 @@ namespace OxyPlot
         protected virtual void OnKeyDown(object sender, OxyKeyEventArgs e)
         {
             var handler = this.KeyDown;
-            if (handler != null && !e.Handled)
+            if (handler != null)
             {
                 handler(sender, e);
             }
@@ -215,9 +366,10 @@ namespace OxyPlot
         /// </param>
         protected virtual void OnMouseDown(object sender, OxyMouseDownEventArgs e)
         {
-            if (this.MouseDown != null && !e.Handled)
+            var handler = this.MouseDown;
+            if (handler != null)
             {
-                this.MouseDown(sender, e);
+                handler(sender, e);
             }
         }
 
@@ -232,9 +384,10 @@ namespace OxyPlot
         /// </param>
         protected virtual void OnMouseMove(object sender, OxyMouseEventArgs e)
         {
-            if (this.MouseMove != null)
+            var handler = this.MouseMove;
+            if (handler != null)
             {
-                this.MouseMove(sender, e);
+                handler(sender, e);
             }
         }
 
@@ -249,9 +402,100 @@ namespace OxyPlot
         /// </param>
         protected virtual void OnMouseUp(object sender, OxyMouseEventArgs e)
         {
-            if (this.MouseUp != null)
+            var handler = this.MouseUp;
+            if (handler != null)
             {
-                this.MouseUp(sender, e);
+                handler(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseEnter"/> event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
+        /// </param>
+        protected virtual void OnMouseEnter(object sender, OxyMouseEventArgs e)
+        {
+            var handler = this.MouseEnter;
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseLeave"/> event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
+        /// </param>
+        protected virtual void OnMouseLeave(object sender, OxyMouseEventArgs e)
+        {
+            var handler = this.MouseLeave;
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseDown"/> event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
+        /// </param>
+        protected virtual void OnTouchStarted(object sender, OxyTouchEventArgs e)
+        {
+            var handler = this.TouchStarted;
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseMove"/> event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
+        /// </param>
+        protected virtual void OnTouchDelta(object sender, OxyTouchEventArgs e)
+        {
+            var handler = this.TouchDelta;
+            if (handler != null)
+            {
+                handler(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="MouseUp"/> event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
+        /// </param>
+        protected virtual void OnTouchCompleted(object sender, OxyTouchEventArgs e)
+        {
+            var handler = this.TouchCompleted;
+            if (handler != null)
+            {
+                handler(sender, e);
             }
         }
     }

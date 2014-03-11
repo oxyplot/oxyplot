@@ -117,6 +117,15 @@ namespace OxyPlot
         {
             lock (this.GetSyncRoot(view))
             {
+                if (view.ActualModel != null)
+                {
+                    view.ActualModel.HandleMouseEnter(this, args);
+                    if (args.Handled)
+                    {
+                        return true;
+                    }
+                }
+
                 var command = this.GetCommand(new OxyMouseEnterGesture(args.ModifierKeys));
                 return this.HandleCommand(command, view, args);
             }
@@ -132,6 +141,15 @@ namespace OxyPlot
         {
             lock (this.GetSyncRoot(view))
             {
+                if (view.ActualModel != null)
+                {
+                    view.ActualModel.HandleMouseLeave(this, args);
+                    if (args.Handled)
+                    {
+                        return true;
+                    }
+                }
+
                 foreach (var m in this.MouseHoverManipulators.ToArray())
                 {
                     m.Completed(args);
@@ -231,7 +249,7 @@ namespace OxyPlot
             {
                 if (view.ActualModel != null)
                 {
-                    // view.ActualModel.HandleTouchStarted(this, args);
+                    view.ActualModel.HandleTouchStarted(this, args);
                     if (args.Handled)
                     {
                         return true;
@@ -255,7 +273,7 @@ namespace OxyPlot
             {
                 if (view.ActualModel != null)
                 {
-                    ////  view.ActualModel.HandleTouchDelta(this, args);
+                    view.ActualModel.HandleTouchDelta(this, args);
                     if (args.Handled)
                     {
                         return true;
@@ -283,7 +301,7 @@ namespace OxyPlot
             {
                 if (view.ActualModel != null)
                 {
-                    ////   view.ActualModel.HandleTouchCompleted(this, args);
+                    view.ActualModel.HandleTouchCompleted(this, args);
                     if (args.Handled)
                     {
                         return true;
