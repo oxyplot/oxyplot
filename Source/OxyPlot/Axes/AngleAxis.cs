@@ -114,9 +114,9 @@ namespace OxyPlot.Axes
             var minimum = this.StartAngle / this.Scale;
             var maximum = this.EndAngle / this.Scale;
 
-            minorTickValues = Axis.CreateTickValues(minimum, maximum, this.ActualMinorStep);
-            majorTickValues = Axis.CreateTickValues(minimum, maximum, this.ActualMajorStep);
-            majorLabelValues = Axis.CreateTickValues(this.Minimum, this.Maximum, this.ActualMajorStep);
+            minorTickValues = AxisUtilities.CreateTickValues(minimum, maximum, this.ActualMinorStep);
+            majorTickValues = AxisUtilities.CreateTickValues(minimum, maximum, this.ActualMajorStep);
+            majorLabelValues = AxisUtilities.CreateTickValues(this.Minimum, this.Maximum, this.ActualMajorStep);
         }
 
         /// <summary>

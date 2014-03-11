@@ -27,11 +27,9 @@
 
 namespace ExampleLibrary
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
 
     using OxyPlot;
-    using OxyPlot.Annotations;
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
