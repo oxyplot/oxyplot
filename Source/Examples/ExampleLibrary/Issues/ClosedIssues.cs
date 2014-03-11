@@ -247,5 +247,13 @@ namespace ExampleLibrary
             plotModel1.Series.Add(new LineSeries { Smooth = true });
             return plotModel1;
         }
+
+        [Example("#10153: Floating-point inaccuracy")]
+        public static PlotModel FloatingPointInaccuracy()
+        {
+            var model = new PlotModel("Issue 10153");
+            model.Axes.Add(new LinearAxis(AxisPosition.Left, -0.0515724495834661, 0.016609368598352, 0.02, 0.002));
+            return model;
+        }
     }
 }

@@ -178,7 +178,7 @@ namespace ExampleLibrary
             plotModel1.Series.Add(lineSeries1);
             return plotModel1;
         }
-        
+
         [Example("#10080: LegendItemAlignment = Center")]
         public static PlotModel LegendItemAlignmentCenter()
         {

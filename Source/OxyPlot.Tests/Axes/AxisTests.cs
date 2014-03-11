@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AxisTests.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -23,19 +23,23 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Provides unit tests for the <see cref="Axis"/> class.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Tests
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
 
     using NUnit.Framework;
 
     using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    // ReSharper disable InconsistentNaming
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    /// <summary>
+    /// Provides unit tests for the <see cref="Axis"/> class.
+    /// </summary>
     [TestFixture]
     public class AxisTests
     {
@@ -146,7 +150,9 @@ namespace OxyPlot.Tests
         public void A13B_BadConditionedAxis_SettingMinimumRange()
         {
             var plot = new PlotModel("Bad conditioned axis with MinimumRange")
-                { PlotMargins = new OxyThickness(80, 60, 50, 50) };
+            {
+                PlotMargins = new OxyThickness(80, 60, 50, 50)
+            };
             plot.Axes.Add(new LinearAxis(AxisPosition.Bottom, "X-axis") { MinimumRange = 1e-3 });
             plot.Axes.Add(new LinearAxis(AxisPosition.Left, "Y-axis") { MinimumRange = 1e8, StringFormat = "0.00E00" });
 
@@ -261,8 +267,10 @@ namespace OxyPlot.Tests
         public void B04_LogarithmicAxis_Padding()
         {
             var plot = new PlotModel("Logarithmic axis with padding");
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X-axis") { MinimumPadding = 0.3, MaximumPadding = 0.3 });
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y-axis") { MinimumPadding = 0.3, MaximumPadding = 0.3 });
+            plot.Axes.Add(
+                new LogarithmicAxis(AxisPosition.Bottom, "X-axis") { MinimumPadding = 0.3, MaximumPadding = 0.3 });
+            plot.Axes.Add(
+                new LogarithmicAxis(AxisPosition.Left, "Y-axis") { MinimumPadding = 0.3, MaximumPadding = 0.3 });
 
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(1, 12));
@@ -278,8 +286,20 @@ namespace OxyPlot.Tests
         public void B05_LogarithmicAxis_SuperExponentialFormat()
         {
             var plot = new PlotModel("Logarithmic axis with SuperExponentialFormat");
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Bottom, "X-axis") { Minimum = 1.8e2, Maximum = 1e5, UseSuperExponentialFormat = true });
-            plot.Axes.Add(new LogarithmicAxis(AxisPosition.Left, "Y-axis") { Minimum = 1e18, Maximum = 1e38, UseSuperExponentialFormat = true });
+            plot.Axes.Add(
+                new LogarithmicAxis(AxisPosition.Bottom, "X-axis")
+                {
+                    Minimum = 1.8e2,
+                    Maximum = 1e5,
+                    UseSuperExponentialFormat = true
+                });
+            plot.Axes.Add(
+                new LogarithmicAxis(AxisPosition.Left, "Y-axis")
+                {
+                    Minimum = 1e18,
+                    Maximum = 1e38,
+                    UseSuperExponentialFormat = true
+                });
             OxyAssert.AreEqual(plot, "B05");
         }
 
@@ -287,8 +307,16 @@ namespace OxyPlot.Tests
         public void C01_DateTimeAxis()
         {
             var plot = new PlotModel("DateTime axis") { PlotMargins = new OxyThickness(100, 40, 20, 100) };
-            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days) { Angle = -46, MajorStep = 1 };
-            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days) { Angle = -45, MajorStep = 1 };
+            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days)
+            {
+                Angle = -46,
+                MajorStep = 1
+            };
+            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days)
+            {
+                Angle = -45,
+                MajorStep = 1
+            };
             plot.Axes.Add(xaxis);
             plot.Axes.Add(yaxis);
 
@@ -307,8 +335,16 @@ namespace OxyPlot.Tests
         public void C02_DateTimeAxis_WithSomeUndefinedPoints()
         {
             var plot = new PlotModel("DateTime axis") { PlotMargins = new OxyThickness(100, 40, 20, 100) };
-            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days) { Angle = -46, MajorStep = 1 };
-            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days) { Angle = -45, MajorStep = 1 };
+            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days)
+            {
+                Angle = -46,
+                MajorStep = 1
+            };
+            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days)
+            {
+                Angle = -45,
+                MajorStep = 1
+            };
             plot.Axes.Add(xaxis);
             plot.Axes.Add(yaxis);
 
@@ -327,8 +363,16 @@ namespace OxyPlot.Tests
         public void C03_DateTimeAxis_WithAllUndefinedPoints()
         {
             var plot = new PlotModel("DateTime axis") { PlotMargins = new OxyThickness(100, 40, 20, 100) };
-            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days) { Angle = -46, MajorStep = 1 };
-            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days) { Angle = -45, MajorStep = 1 };
+            var xaxis = new DateTimeAxis(AxisPosition.Bottom, "DateTime X", null, DateTimeIntervalType.Days)
+            {
+                Angle = -46,
+                MajorStep = 1
+            };
+            var yaxis = new DateTimeAxis(AxisPosition.Left, "DateTime Y", null, DateTimeIntervalType.Days)
+            {
+                Angle = -45,
+                MajorStep = 1
+            };
             plot.Axes.Add(xaxis);
             plot.Axes.Add(yaxis);
 
@@ -340,12 +384,12 @@ namespace OxyPlot.Tests
             OxyAssert.AreEqual(plot, "C03");
         }
 
-        [Test, ExpectedException]
+        [Test]
         public void D01_InvalidAbsoluteMaxMin()
         {
             var plot = new PlotModel("Simple plot");
             plot.Axes.Add(new LinearAxis { AbsoluteMaximum = 0, AbsoluteMinimum = 0 });
-            plot.Update();
+            Assert.Throws<InvalidOperationException>(() => plot.Update());
         }
 
         [Test]

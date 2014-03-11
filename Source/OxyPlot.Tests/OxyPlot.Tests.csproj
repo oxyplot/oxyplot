@@ -54,6 +54,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Axes\AxisTests.cs" />
+    <Compile Include="Axes\AxisUtilitiesTests.cs" />
     <Compile Include="Foundation\OxyColorTests.cs" />
     <Compile Include="Foundation\ListFillerTests.cs" />
     <Compile Include="Imaging\Deflate\DeflateStreamExtensions.cs" />

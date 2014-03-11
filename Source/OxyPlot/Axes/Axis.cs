@@ -857,8 +857,8 @@ namespace OxyPlot.Axes
         public virtual void GetTickValues(
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
-            minorTickValues = CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep);
-            majorTickValues = CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep);
+            minorTickValues = AxisUtilities.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMinorStep);
+            majorTickValues = AxisUtilities.CreateTickValues(this.ActualMinimum, this.ActualMaximum, this.ActualMajorStep);
             majorLabelValues = majorTickValues;
         }
 
@@ -1525,46 +1525,6 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Creates tick values at the specified interval.
-        /// </summary>
-        /// <param name="from">The start value.</param>
-        /// <param name="to">The end value.</param>
-        /// <param name="step">The interval.</param>
-        /// <param name="maxTicks">The maximum number of ticks (optional). The default value is 1000.</param>
-        /// <returns>A sequence of values.</returns>
-        /// <exception cref="System.ArgumentException">Axis: Step cannot be zero or negative.;step</exception>
-        protected static IList<double> CreateTickValues(double from, double to, double step, int maxTicks = 1000)
-        {
-            if (step <= 0)
-            {
-                throw new ArgumentException("Axis: Step cannot be zero or negative.", "step");
-            }
-
-            if (to <= from && step > 0)
-            {
-                step *= -1;
-            }
-
-            var value = Math.Round(from / step) * step;
-            var count = Math.Max((int)((to - from) / step), 1);
-            var epsilon = step * 1e-3 * Math.Sign(step);
-            var values = new List<double>(count);
-            var i = 0;
-            while (value <= to + epsilon && i < maxTicks)
-            {
-                i++;
-
-                // get rid of numerical noise, limit to 8 digits 
-                // have tried to use Math.Round(x, 8), but this does not work for very small numbers
-                // TODO: can this be improved?
-                values.Add(double.Parse(value.ToString("e8")));
-                value += step;
-            }
-
-            return values;
-        }
-
-        /// <summary>
         /// Calculates the actual maximum value of the axis, including the <see cref="MaximumPadding" />.
         /// </summary>
         /// <returns>The new actual maximum value of the axis.</returns>
@@ -1677,7 +1637,7 @@ namespace OxyPlot.Axes
 
             range = Math.Abs(range);
             double interval = Math.Pow(10, exponent(range));
-            double tempInterval = interval;
+            double intervalCandidate = interval;
 
             // Function to remove 'double precision noise'
             // TODO: can this be improved
@@ -1686,33 +1646,33 @@ namespace OxyPlot.Axes
             // decrease interval until interval count becomes less than maxIntervalCount
             while (true)
             {
-                var m = (int)mantissa(tempInterval);
+                var m = (int)mantissa(intervalCandidate);
                 if (m == 5)
                 {
                     // reduce 5 to 2
-                    tempInterval = removeNoise(tempInterval / 2.5);
+                    intervalCandidate = removeNoise(intervalCandidate / 2.5);
                 }
                 else if (m == 2 || m == 1 || m == 10)
                 {
                     // reduce 2 to 1, 10 to 5, 1 to 0.5
-                    tempInterval = removeNoise(tempInterval / 2.0);
+                    intervalCandidate = removeNoise(intervalCandidate / 2.0);
                 }
                 else
                 {
-                    tempInterval = removeNoise(tempInterval / 2.0);
+                    intervalCandidate = removeNoise(intervalCandidate / 2.0);
                 }
 
-                if (range / tempInterval > maxIntervalCount)
+                if (range / intervalCandidate > maxIntervalCount)
                 {
                     break;
                 }
 
-                if (double.IsNaN(tempInterval) || double.IsInfinity(tempInterval))
+                if (double.IsNaN(intervalCandidate) || double.IsInfinity(intervalCandidate))
                 {
                     break;
                 }
 
-                interval = tempInterval;
+                interval = intervalCandidate;
             }
 
             return interval;

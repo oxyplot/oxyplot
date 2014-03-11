@@ -696,7 +696,7 @@ namespace OxyPlot.Axes
             }
 
             // For shorter step sizes we use the method from Axis
-            return Axis.CreateTickValues(min, max, interval);
+            return AxisUtilities.CreateTickValues(min, max, interval);
         }
 
         /// <summary>
