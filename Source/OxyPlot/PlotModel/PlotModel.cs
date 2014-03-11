@@ -347,9 +347,12 @@ namespace OxyPlot
         public event EventHandler Updating;
 
         /// <summary>
-        /// Gets an object that can be used to synchronize access to the PlotModel.
+        /// Gets an object that can be used to synchronize access to the <see cref="PlotModel"/>.
         /// </summary>
-        /// <value>The sync root.</value>
+        /// <value>A synchronization object.</value>
+        /// <remarks>
+        /// This property can be used when modifying the <see cref="PlotModel"/> on a separate thread (not the thread updating or rendering the plot).
+        /// </remarks>
         public object SyncRoot
         {
             get { return this.syncRoot; }
