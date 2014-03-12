@@ -1,0 +1,173 @@
+= OxyPlot build system
+
+This document describes the configuration of the build server running on Team City.
+
+== Virtual machine (VirtualBox)
+
+Memory: 4096Mb
+Processors: 2
+Not enabling video acceleration
+Video memory: 128Mb
+OS: Windows 8.1
+
+== Installed software
+
+- TeamCity 8.0.5
+- Visual Studio 2013
+- MS Build tools 2013: http://www.microsoft.com/en-us/download/details.aspx?id=40760
+- StyleCop: http://stylecop.codeplex.com/
+- Mercurial
+- 7-Zip in default folder
+- .NET 3.5
+- GTK# / Xamarin Studio
+
+== Build parameters:
+
+Defined under "Parameters" in the TeamCity project.
+
+Environment variables:
+EnableNuGetPackageRestore = true
+NUGET_ACCESS_KEY = ####
+CODEPLEX_USERNAME = ####
+CODEPLEX_PASSWORD = ####
+OXYPLOT_FTP_SERVER = ftp.oxyplot.org
+OXYPLOT_FTP_USER = ####
+OXYPLOT_FTP_PWD = ####
+YEAR = 2014
+
+== OxyPlot :: Build
+
+Build configuration ID: OxyPlot_Build
+Build number format: %env.YEAR%.1.%build.counter%.1
+
+Artifact paths:
+build/**/*.* => Output.zip!/build/
+icons/**/*.* => Output.zip!/icons/
+output/**/*.* => Output.zip!/output/
+packages/**/*.* => Output.zip!/packages/
+source/.nuget/*.* => Output.zip!/source/.nuget/
+tools/**/*.* => Output.zip!/tools/
+web/**/*.* => Output.zip!/web/
+
+VCS root: 
+Type of VCS: Mercurial
+Pull changes from: https://hg.codeplex.com/oxyplot
+
+Automatically on agent
+
+Version Control Settings:
+Clean all files before build
+
+=== Build steps
+
+# Update verison number
+Directory: Tools\Lynx
+VersionUpdater.exe /Version=%build.number% /Directory=..\..
+
+# Create changeset ID file
+Commands:
+mkdir Output
+echo %build.vcs.number%> Output\changeset.id
+hg log > Output\changesets.log
+
+# Build WPF solution
+Solution: Source\OxyPlot.WPF.sln
+
+# Run unit tests
+NUnit runner: NUnit 2.6.3
+Platform: auto (MSIL)
+Version: 4.0
+Run tests from: 
+Source\OxyPlot.Tests\bin\Release\OxyPlot.Tests.dll
+Source\OxyPlot.Wpf.Tests\bin\Release\OxyPlot.Wpf.Tests.dll
+Coverage: dotCover
+Filters: 
++:OxyPlot*
+-:*.Tests*
+
+# Build Windows Forms solution
+Source\OxyPlot.WindowsForms.sln
+
+# Build GTK# solution
+Source\OxyPlot.GtkSharp.sln
+
+# Build Silverlight solution
+Source\OxyPlot.Silverlight.sln
+
+# Build Metro solution
+Source\OxyPlot.Metro.sln
+
+# Build Silverlight 4 solution (disabled)
+Source\OxyPlot.Silverlight4.sln
+
+# Build Windows Forms 4.0 solution
+Source\OxyPlot.WindowsForms_NET40.sln
+
+# Build WPF 4.0 solution
+Source\OxyPlot.WPF_NET40.sln
+
+# Create NuGet packages
+Build
+pack.cmd 
+
+# Generate documentation
+Build
+GenerateDocumentation.cmd %build.number%
+
+# Clean examples
+Build
+DeleteExamplePdbFiles.cmd
+
+# Create release
+Build
+ZipRelease.cmd %build.number%
+
+# Update web
+Build
+UpdateWeb.cmd
+
+=== Build triggers
+
+Triggers a build after a VCS check-in is detected
+
+
+== OxyPlot :: Upload
+Build configuration ID: OxyPlot_Upload
+Build number format: %dep.OxyPlot_Build.build.number%
+
+=== Build steps
+
+# Push packages to NuGet
+Build
+push.cmd
+
+# Upload example browser
+build
+UploadExampleBrowser.cmd
+
+# Update web pages
+Build
+UploadWeb.cmd
+
+# Upload documentation
+Build
+UploadDocumentation.cmd
+
+# Upload release
+Build
+UploadRelease.cmd %build.number%
+
+=== Build trigger
+
+Finish Build Trigger:
+Wait for a successful build in: OxyPlot build
+
+=== Dependencies 
+
+# Artifact dependency
+Source: OxyPlot :: Build
+Paths: 
+Output.zip!** => .
+
+Clean destination paths before downloading artifacts
+

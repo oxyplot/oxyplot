@@ -1,0 +1,12 @@
+﻿@syntax owiki
+@title Xamarin.iOS Example
+@keywords OxyPlot,Xamarin.iOS,Example
+
+== Xamarin.iOS Example
+
+// Under construction //
+
+- Download component
+- Add references
+- Add a control
+- Bind to a PlotModel

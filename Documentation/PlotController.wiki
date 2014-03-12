@@ -1,0 +1,33 @@
+﻿@syntax owiki
+@title PlotController
+@keywords OxyPlot,PlotController,controller
+
+== PlotController
+
+// TODO //
+
+=== Default bindings
+
+The default input bindings in the PlotController are:
+
+|| Action || Gesture |
+| Pan~* | Right mouse button |
+| Zoom~* | Mouse wheel |
+| Zoom by rectangle | Ctrl+Right mouse button |
+| Reset~* | Right mouse button double-click |
+| Show 'tracker' | Left mouse button |
+| Reset axes | 'A' |
+| Copy bitmap | Ctrl+C |
+| Copy code | Ctrl+Alt+C |
+| Copy properties | Ctrl+Alt+R |
+
+You can zoom/pan/reset a single axis by positioning the mouse cursor over the axis before starting the zoom/pan.
+
+=== Customizing the bindings
+
+- Create new PlotController
+- Set Controller in the Plot control
+- Unbinding
+- Binding
+- Creating new commands
+- Creating new manipulators

@@ -1,0 +1,49 @@
+﻿@syntax owiki
+@title WPF Example
+@keywords OxyPlot,WPF,Example
+
+== WPF Example
+
+This example shows how to create a WPF application where the content of the plot is defined in XAML.
+
+=== Create project
+Start Visual Studio and select "FILE -> New -> Project..." to create a new WPF application:
+
+{Images/WpfNewProject.png}
+
+=== Add references
+
+You need references to the OxyPlot and OxyPlot.Wpf assemblies. The easiest way to add these is to right click on the "References" item in the Solution Explorer and select "Manage NuGet Packages..." (this requires that the "NuGet Package Manager" extension is installed):
+
+{Images/WpfAddReference.png}
+
+In the "Manage NuGet packages" dialog, search for "OxyPlot" and select the "OxyPlot.Wpf" package:
+
+{Images/WpfInstallPackage.png}
+
+You can also use the [http://docs.nuget.org/docs/start-here/using-the-package-manager-console|Package Manager Console] to install the package:
+
+```
+PM> Install-Package OxyPlot.Wpf
+```
+
+=== Create a view model
+Then create class that defines the data to be plotted.
+
+```cs
+@include ..\Source\Examples\DocumentationExamples\HelloWorld\WpfApplication2\MainViewModel.cs
+```
+
+=== Create the view
+
+Define the namespace in the `Window` element, set the `DataContext` and add a [API/OxyPlot.Wpf.Plot|Plot] control:
+
+```xml
+@include ..\Source\Examples\DocumentationExamples\HelloWorld\WpfApplication2\MainWindow.xaml
+```
+
+The application should now look like this:
+
+{Images/WpfExample2.png}
+
+The source code can be found in `Documentation\Examples\WpfApplication2`.
