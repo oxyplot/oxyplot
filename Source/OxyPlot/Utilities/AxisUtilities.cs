@@ -60,31 +60,17 @@ namespace OxyPlot
             }
 
             var value = Math.Round(from / step) * step;
-            var count = Math.Max((int)((to - from) / step), 1);
+            var numberOfValues = Math.Max((int)((to - from) / step), 1);
             var epsilon = step * 1e-3 * Math.Sign(step);
-            var values = new List<double>(count);
+            var values = new List<double>(numberOfValues);
             var i = 0;
-
-            var n = Math.Log10(Math.Max(Math.Abs(from), Math.Abs(to)));
-            var p = Math.Pow(10, Math.Round(n));
-            var digits = (int)-Math.Log10(step / p) + 1;
-            if (digits < 0)
-            {
-                digits = 0;
-            }
-
-            if (digits > 15)
-            {
-                digits = 15;
-            }
 
             while (value <= to + epsilon && i < maxTicks)
             {
                 i++;
 
                 // try to get rid of numerical noise
-                var v = Math.Round(value / p, digits) * p;
-                v = double.Parse(v.ToString("e8"));
+                var v = Math.Round(value / step, 15) * step;
                 values.Add(v);
                 value += step;
             }

@@ -30,6 +30,8 @@
 
 namespace OxyPlot.Tests
 {
+    using System;
+
     using NUnit.Framework;
 
     /// <summary>
@@ -107,6 +109,17 @@ namespace OxyPlot.Tests
             {
                 var values = AxisUtilities.CreateTickValues(0.016609368598352e-30, 0.0515724495834661e-30, 0.02e-30);
                 CollectionAssert.AreEqual(new[] { 0.02e-30, 0.04e-30 }, values);
+            }
+
+            /// <summary>
+            /// Given step with many digits,
+            /// correct values are returned.
+            /// </summary>
+            [Test]
+            public void StepWithManyDigits()
+            {
+                var values = AxisUtilities.CreateTickValues(0, Math.PI * 2, Math.PI);
+                CollectionAssert.AreEqual(new[] { 0, Math.PI, Math.PI * 2 }, values);
             }
         }
     }
