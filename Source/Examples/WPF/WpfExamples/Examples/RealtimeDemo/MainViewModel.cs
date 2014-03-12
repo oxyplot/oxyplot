@@ -144,8 +144,11 @@ namespace RealtimeDemo
                 n += s.Points.Count;
             }
 
-            TotalNumberOfPoints = n;
-            RaisePropertyChanged("TotalNumberOfPoints");
+            if (TotalNumberOfPoints != n)
+            {
+                TotalNumberOfPoints = n;
+                RaisePropertyChanged("TotalNumberOfPoints");
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

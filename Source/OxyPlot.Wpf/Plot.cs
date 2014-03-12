@@ -298,8 +298,11 @@ namespace OxyPlot.Wpf
             }
 
             this.UpdateModel(updateData);
-            Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0);
-            this.Invoke(this.InvalidateArrange);
+
+            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
+            {
+                this.Invoke(this.InvalidateArrange);
+            }
         }
 
         /// <summary>
@@ -838,7 +841,7 @@ namespace OxyPlot.Wpf
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(DispatcherPriority.Normal, action);
+                this.Dispatcher.Invoke(DispatcherPriority.Render, action);
             }
             else
             {
