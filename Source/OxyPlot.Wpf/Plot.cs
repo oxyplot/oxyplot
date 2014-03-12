@@ -239,7 +239,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return this.currentlyAttachedModel ?? this.internalModel;
+                return this.Model ?? this.internalModel;
             }
         }
 
@@ -751,9 +751,10 @@ namespace OxyPlot.Wpf
 
             lock (this.modelLock)
             {
-                if (this.currentlyAttachedModel != null)
+                if (this.currentlyAttachedModel == null && this.ActualModel != null)
                 {
-                    this.currentlyAttachedModel.AttachPlotControl(this);
+                    this.ActualModel.AttachPlotControl(this);
+                    this.currentlyAttachedModel = this.ActualModel;
                 }
             }
 
@@ -776,7 +777,7 @@ namespace OxyPlot.Wpf
                     this.currentlyAttachedModel.AttachPlotControl(null);
                     this.currentlyAttachedModel = null;
                 }
-            } 
+            }
         }
 
         /// <summary>
@@ -885,16 +886,15 @@ namespace OxyPlot.Wpf
                 {
                     if (this.Model.PlotControl != null)
                     {
-                        throw new InvalidOperationException("This PlotModel is already in use by some other plot control.");
+                        throw new InvalidOperationException(
+                            "This PlotModel is already in use by some other plot control.");
                     }
+                }
 
-                    this.currentlyAttachedModel = this.Model;
-                    this.internalModel = null;
-
-                    if (this.IsLoaded)
-                    {
-                        this.currentlyAttachedModel.AttachPlotControl(this);
-                    }
+                if (this.IsLoaded && this.ActualModel != null)
+                {
+                    this.ActualModel.AttachPlotControl(this);
+                    this.currentlyAttachedModel = this.ActualModel;
                 }
             }
 
@@ -981,9 +981,12 @@ namespace OxyPlot.Wpf
         /// </param>
         private void UpdateModel(bool updateData = true)
         {
+            PlotModel model = null;
+            this.Invoke(() => model = this.Model);
+
             // If no model is set, create an internal model and copy the
             // axes/series/annotations and properties from the WPF objects to the internal model
-            if (this.currentlyAttachedModel == null)
+            if (model == null)
             {
                 if (this.internalModel == null)
                 {
@@ -995,9 +998,10 @@ namespace OxyPlot.Wpf
                 this.SynchronizeSeries();
                 this.SynchronizeAxes();
                 this.SynchronizeAnnotations();
+                model = this.internalModel;
             }
 
-            this.ActualModel.Update(updateData);
+            model.Update(updateData);
         }
 
         /// <summary>
