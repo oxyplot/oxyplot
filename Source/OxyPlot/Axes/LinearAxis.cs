@@ -143,7 +143,7 @@ namespace OxyPlot.Axes
         {
             if (this.FormatAsFractions)
             {
-                return FractionHelper.ConvertToFractionString(x, this.FractionUnit, this.FractionUnitSymbol);
+                return FractionHelper.ConvertToFractionString(x, this.FractionUnit, this.FractionUnitSymbol, 1e-6, this.ActualCulture, this.StringFormat);
             }
 
             return base.FormatValue(x);

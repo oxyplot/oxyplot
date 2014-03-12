@@ -67,7 +67,8 @@ namespace OxyPlot
             double unit = 1,
             string unitSymbol = null,
             double eps = 1e-6,
-            IFormatProvider formatProvider = null)
+            IFormatProvider formatProvider = null,
+            string formatString = null)
         {
             if (Math.Abs(value) < eps)
             {
@@ -97,7 +98,8 @@ namespace OxyPlot
                 }
             }
 
-            return string.Format(formatProvider ?? CultureInfo.CurrentCulture, "{0}{1}", value, unitSymbol);
+            var format = string.IsNullOrEmpty(formatString) ? "{0}{1}" : "{0:" + formatString + "}{1}";
+            return string.Format(formatProvider ?? CultureInfo.CurrentCulture, format, value, unitSymbol);
         }
 
         /// <summary>
