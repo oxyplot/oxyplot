@@ -44,21 +44,12 @@ namespace OxyPlot
         /// <summary>
         /// Converts a double to a fraction string.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="unit">
-        /// The unit.
-        /// </param>
-        /// <param name="unitSymbol">
-        /// The unit symbol.
-        /// </param>
-        /// <param name="eps">
-        /// The tolerance.
-        /// </param>
-        /// <param name="formatProvider">
-        /// The format Provider.
-        /// </param>
+        /// <param name="value">The value.</param>
+        /// <param name="unit">The unit.</param>
+        /// <param name="unitSymbol">The unit symbol.</param>
+        /// <param name="eps">The tolerance.</param>
+        /// <param name="formatProvider">The format Provider.</param>
+        /// <param name="formatString">The format string.</param>
         /// <returns>
         /// The convert to fraction string.
         /// </returns>
