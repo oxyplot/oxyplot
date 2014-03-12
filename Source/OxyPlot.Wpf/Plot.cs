@@ -80,6 +80,11 @@ namespace OxyPlot.Wpf
         private PlotModel currentlyAttachedModel;
 
         /// <summary>
+        /// The current model (synchronized with the <see cref="Model"/> property, but can be accessed from all threads.
+        /// </summary>
+        private PlotModel currentModel;
+
+        /// <summary>
         /// The current tracker.
         /// </summary>
         private FrameworkElement currentTracker;
@@ -876,6 +881,8 @@ namespace OxyPlot.Wpf
         {
             lock (this.modelLock)
             {
+                this.currentModel = this.Model;
+
                 if (this.currentlyAttachedModel != null)
                 {
                     this.currentlyAttachedModel.AttachPlotControl(null);
@@ -981,12 +988,9 @@ namespace OxyPlot.Wpf
         /// </param>
         private void UpdateModel(bool updateData = true)
         {
-            PlotModel model = null;
-            this.Invoke(() => model = this.Model);
-
             // If no model is set, create an internal model and copy the
             // axes/series/annotations and properties from the WPF objects to the internal model
-            if (model == null)
+            if (this.currentModel == null)
             {
                 if (this.internalModel == null)
                 {
@@ -998,10 +1002,12 @@ namespace OxyPlot.Wpf
                 this.SynchronizeSeries();
                 this.SynchronizeAxes();
                 this.SynchronizeAnnotations();
-                model = this.internalModel;
+                this.internalModel.Update(updateData);
             }
-
-            model.Update(updateData);
+            else
+            {
+                this.currentModel.Update(updateData);
+            }
         }
 
         /// <summary>
