@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="Axes\AxisTests.cs" />
     <Compile Include="Axes\AxisUtilitiesTests.cs" />
+    <Compile Include="Axes\LinearAxisTests.cs" />
     <Compile Include="Foundation\OxyColorTests.cs" />
     <Compile Include="Foundation\ListFillerTests.cs" />
     <Compile Include="Imaging\Deflate\DeflateStreamExtensions.cs" />
