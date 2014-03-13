@@ -301,7 +301,7 @@ namespace OxyPlot.Wpf
 
             if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
             {
-                this.Invoke(this.InvalidateArrange);
+                this.BeginInvoke(this.InvalidateArrange);
             }
         }
 
@@ -313,7 +313,17 @@ namespace OxyPlot.Wpf
         /// </param>
         public void RefreshPlot(bool updateData)
         {
-            this.InvalidatePlot(updateData);
+            if (!this.IsRendering)
+            {
+                return;
+            }
+
+            this.UpdateModel(updateData);
+
+            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
+            {
+                this.Invoke(this.InvalidateArrange);
+            }
         }
 
         /// <summary>
@@ -834,14 +844,30 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Invokes the specified action on the dispatcher, if necessary.
+        /// Invokes the specified action on the UI Thread (blocking the calling thread).
         /// </summary>
         /// <param name="action">The action.</param>
         private void Invoke(Action action)
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(DispatcherPriority.Render, action);
+                this.Dispatcher.Invoke(DispatcherPriority.Background, action);
+            }
+            else
+            {
+                action();
+            }
+        }
+
+        /// <summary>
+        /// Invokes the specified action on the UI Thread (without blocking the calling thread).
+        /// </summary>
+        /// <param name="action">The action.</param>
+        private void BeginInvoke(Action action)
+        {
+            if (!this.Dispatcher.CheckAccess())
+            {
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, action);
             }
             else
             {
