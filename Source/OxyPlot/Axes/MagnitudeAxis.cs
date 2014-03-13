@@ -42,7 +42,7 @@ namespace OxyPlot.Axes
         /// </summary>
         public MagnitudeAxis()
         {
-            this.Position = AxisPosition.Bottom;
+            this.Position = AxisPosition.None;
             this.IsPanEnabled = false;
             this.IsZoomEnabled = false;
 
