@@ -47,6 +47,8 @@ namespace OxyPlot.Annotations
         {
             this.Stroke = OxyColors.Black;
             this.Fill = OxyColors.LightBlue;
+            this.Width = double.NaN;
+            this.Height = double.NaN;
         }
 
         /// <summary>
