@@ -299,10 +299,10 @@ namespace OxyPlot.Wpf
 
             this.UpdateModel(updateData);
 
-            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
-            {
-                this.BeginInvoke(this.InvalidateArrange);
-            }
+            Interlocked.Exchange(ref this.isPlotInvalidated, 1);
+
+            // TODO: can replace by Invoke here, layout will be updated async
+            this.BeginInvoke(this.InvalidateArrange);
         }
 
         /// <summary>
@@ -320,10 +320,11 @@ namespace OxyPlot.Wpf
 
             this.UpdateModel(updateData);
 
-            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
-            {
-                this.Invoke(this.InvalidateArrange);
-            }
+            Interlocked.Exchange(ref this.isPlotInvalidated, 1);
+            this.Invoke(this.InvalidateArrange);
+
+            // ensure that all visual child elements are properly updated for layout
+            this.UpdateLayout();
         }
 
         /// <summary>
@@ -450,7 +451,7 @@ namespace OxyPlot.Wpf
             this.zoomControl = new ContentControl();
             this.overlays.Children.Add(this.zoomControl);
 
-            this.CommandBindings.Add(new CommandBinding(ResetAxesCommand, this.ResetAxesHandler));
+            this.CommandBindings.Add(new CommandBinding(ResetAxesCommand, (s, e) => this.ResetAllAxes()));
         }
 
         /// <summary>
@@ -969,20 +970,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The reset axes handler.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void ResetAxesHandler(object sender, ExecutedRoutedEventArgs e)
-        {
-            this.ResetAllAxes();
-        }
-
-        /// <summary>
         /// Synchronizes the logical tree.
         /// </summary>
         /// <param name="e">
@@ -1085,7 +1072,7 @@ namespace OxyPlot.Wpf
             m.LegendPosition = this.LegendPosition;
             m.LegendOrientation = this.LegendOrientation;
             m.LegendItemOrder = this.LegendItemOrder;
-            m.LegendItemAlignment = this.LegendItemAlignment.ToHorizontalTextAlign();
+            m.LegendItemAlignment = this.LegendItemAlignment.ToHorizontalAlignment();
             m.LegendSymbolPlacement = this.LegendSymbolPlacement;
 
             m.PlotAreaBackground = this.PlotAreaBackground.ToOxyColor();
