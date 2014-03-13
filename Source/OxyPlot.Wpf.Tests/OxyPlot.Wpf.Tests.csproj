@@ -58,6 +58,7 @@
     <Compile Include="AnnotationsTests.cs" />
     <Compile Include="OxyAssert.cs" />
     <Compile Include="AxesTests.cs" />
+    <Compile Include="PlotTests.cs" />
     <Compile Include="PngExporterTests.cs" />
     <Compile Include="SeriesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

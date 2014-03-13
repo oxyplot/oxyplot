@@ -244,7 +244,7 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return this.Model ?? this.internalModel;
+                return this.currentModel ?? this.internalModel;
             }
         }
 
