@@ -131,11 +131,10 @@ namespace OxyPlot.Wpf
         protected override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = this.InternalAxis as OxyPlot.Axes.LinearAxis;
+            var a = (Axes.LinearAxis)this.InternalAxis;
             a.FormatAsFractions = this.FormatAsFractions;
             a.FractionUnit = this.FractionUnit;
             a.FractionUnitSymbol = this.FractionUnitSymbol;
         }
-
     }
 }

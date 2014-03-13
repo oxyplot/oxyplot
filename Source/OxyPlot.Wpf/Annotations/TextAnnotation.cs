@@ -53,18 +53,18 @@ namespace OxyPlot.Wpf
         /// The Offset property.
         /// </summary>
         public static readonly DependencyProperty OffsetProperty = DependencyProperty.Register(
-            "Offset", 
-            typeof(Vector), 
-            typeof(TextAnnotation), 
+            "Offset",
+            typeof(Vector),
+            typeof(TextAnnotation),
             new PropertyMetadata(default(Vector), AppearanceChanged));
 
         /// <summary>
         /// The Padding property.
         /// </summary>
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
-            "Padding", 
-            typeof(Thickness), 
-            typeof(TextAnnotation), 
+            "Padding",
+            typeof(Thickness),
+            typeof(TextAnnotation),
             new PropertyMetadata(new Thickness(4), AppearanceChanged));
 
         /// <summary>
@@ -91,6 +91,15 @@ namespace OxyPlot.Wpf
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
                 "StrokeThickness", typeof(double), typeof(TextAnnotation), new PropertyMetadata(1.0, AppearanceChanged));
+
+        /// <summary>
+        /// Initializes static members of the <see cref = "TextAnnotation" /> class.
+        /// </summary>
+        static TextAnnotation()
+        {
+            HorizontalAlignmentProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(HorizontalAlignment.Center, AppearanceChanged));
+            VerticalAlignmentProperty.OverrideMetadata(typeof(TextAnnotation), new FrameworkPropertyMetadata(VerticalAlignment.Bottom, AppearanceChanged));
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "TextAnnotation" /> class.
@@ -247,12 +256,12 @@ namespace OxyPlot.Wpf
         {
             base.SynchronizeProperties();
             var a = (Annotations.TextAnnotation)this.InternalAnnotation;
-            a.HorizontalAlignment = this.HorizontalAlignment.ToHorizontalTextAlign();
+            a.HorizontalAlignment = this.HorizontalAlignment.ToHorizontalAlignment();
             a.Background = this.Background.ToOxyColor();
 
             a.Position = this.Position;
             a.Offset = this.Offset.ToScreenVector();
-            a.VerticalAlignment = this.VerticalAlignment.ToVerticalTextAlign();
+            a.VerticalAlignment = this.VerticalAlignment.ToVerticalAlignment();
             a.Padding = this.Padding.ToOxyThickness();
 
             a.TextColor = this.TextColor.ToOxyColor();

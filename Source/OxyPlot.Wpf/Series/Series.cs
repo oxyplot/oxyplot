@@ -73,6 +73,7 @@ namespace OxyPlot.Wpf
         static Series()
         {
             VisibilityProperty.OverrideMetadata(typeof(Series), new PropertyMetadata(Visibility.Visible, AppearanceChanged));
+            BackgroundProperty.OverrideMetadata(typeof(Series), new FrameworkPropertyMetadata(null, AppearanceChanged));
         }
 
         /// <summary>

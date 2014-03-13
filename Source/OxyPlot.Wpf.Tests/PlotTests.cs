@@ -31,6 +31,7 @@
 namespace OxyPlot.Wpf.Tests
 {
     using System.Threading.Tasks;
+    using System.Windows;
 
     using NUnit.Framework;
 
@@ -46,7 +47,20 @@ namespace OxyPlot.Wpf.Tests
         public class ActualModel
         {
             /// <summary>
-            /// Gets the actual model from the same thread as created the <see cref="Plot"/>.
+            /// Gets the actual model when model is not set.
+            /// </summary>
+            [Test, Ignore]
+            public void GetDefault()
+            {
+                var w = new Window();
+                var plot = new Plot();
+                w.Content = plot;
+                w.Show();
+                Assert.IsNotNull(plot.ActualModel);
+            }
+
+            /// <summary>
+            /// Gets the actual model from the same thread that created the <see cref="Plot"/>.
             /// </summary>
             [Test]
             public void GetFromSameThread()
@@ -67,6 +81,34 @@ namespace OxyPlot.Wpf.Tests
                 PlotModel actualModel = null;
                 Task.Factory.StartNew(() => actualModel = plot.ActualModel).Wait();
                 Assert.AreEqual(model, actualModel);
+            }
+        }
+
+        /// <summary>
+        /// Provides unit tests for the <see cref="Plot.InvalidatePlot"/> method.
+        /// </summary>
+        public class InvalidatePlot
+        {
+            /// <summary>
+            /// Invalidates the plot from the same thread that created the <see cref="Plot"/>.
+            /// </summary>
+            [Test]
+            public void InvalidateFromSameThread()
+            {
+                var model = new PlotModel();
+                var plot = new Plot { Model = model };
+                plot.InvalidatePlot();
+            }
+
+            /// <summary>
+            /// Invalidates the plot from a thread different from the one that created the <see cref="Plot"/>.
+            /// </summary>
+            [Test]
+            public void InvalidateFromOtherThread()
+            {
+                var model = new PlotModel();
+                var plot = new Plot { Model = model };
+                Task.Factory.StartNew(() => plot.InvalidatePlot()).Wait();
             }
         }
     }

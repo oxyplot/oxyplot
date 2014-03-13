@@ -46,7 +46,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         static BarSeries()
         {
-            TrackerFormatStringProperty.OverrideMetadata(typeof(BarSeries), new PropertyMetadata("{0} {1}: {2}", AppearanceChanged));
+            TrackerFormatStringProperty.OverrideMetadata(typeof(BarSeries), new PropertyMetadata("{0}, {1}: {2}", AppearanceChanged));
         }
 
         /// <summary>
