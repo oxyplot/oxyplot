@@ -146,8 +146,8 @@ namespace OxyPlot.Wpf
             }
 
             var text = this.Content.ToString();
-            var horizontalAlignment = this.HorizontalContentAlignment.ToHorizontalTextAlign();
-            var verticalAlignment = this.VerticalContentAlignment.ToVerticalTextAlign();
+            var horizontalAlignment = this.HorizontalContentAlignment.ToHorizontalAlignment();
+            var verticalAlignment = this.VerticalContentAlignment.ToVerticalAlignment();
             double fontWeight = this.FontWeight.ToOpenTypeWeight();
             double x = this.Padding.Left;
             switch (horizontalAlignment)

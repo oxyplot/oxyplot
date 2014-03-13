@@ -55,12 +55,13 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AnnotationsTests.cs" />
+    <Compile Include="Annotations\AnnotationsTests.cs" />
+    <Compile Include="Axes\LinearAxisTests.cs" />
     <Compile Include="OxyAssert.cs" />
-    <Compile Include="AxesTests.cs" />
+    <Compile Include="Axes\AxesTests.cs" />
     <Compile Include="PlotTests.cs" />
     <Compile Include="PngExporterTests.cs" />
-    <Compile Include="SeriesTests.cs" />
+    <Compile Include="Series\SeriesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -31,6 +31,8 @@ namespace OxyPlot.Wpf
 {
     using System.Windows;
 
+    using OxyPlot.Axes;
+
     /// <summary>
     /// This is a WPF wrapper of OxyPlot.MagnitudeAxis.
     /// </summary>
@@ -43,6 +45,9 @@ namespace OxyPlot.Wpf
         {
             MajorGridlineStyleProperty.OverrideMetadata(typeof(MagnitudeAxis), new PropertyMetadata(LineStyle.Solid));
             MinorGridlineStyleProperty.OverrideMetadata(typeof(MagnitudeAxis), new PropertyMetadata(LineStyle.Solid));
+            PositionProperty.OverrideMetadata(typeof(MagnitudeAxis), new PropertyMetadata(AxisPosition.None, AppearanceChanged));
+            IsPanEnabledProperty.OverrideMetadata(typeof(MagnitudeAxis), new PropertyMetadata(false));
+            IsZoomEnabledProperty.OverrideMetadata(typeof(MagnitudeAxis), new PropertyMetadata(false));
         }
 
         /// <summary>

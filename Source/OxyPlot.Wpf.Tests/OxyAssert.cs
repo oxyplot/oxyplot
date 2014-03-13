@@ -33,6 +33,7 @@ namespace OxyPlot.Wpf.Tests
     using System.Collections;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Media;
 
@@ -73,23 +74,42 @@ namespace OxyPlot.Wpf.Tests
         /// <summary>
         /// Check that all public properties in o1 exists in o2, and that the default values are equal.
         /// </summary>
-        public static void PropertiesAreEqual(object o1, object o2)
+        /// <param name="o1">The first object.</param>
+        /// <param name="o2">The second object.</param>
+        /// <param name="testType1">Type of the assertion.</param>
+        public static void PropertiesAreEqual(object o1, object o2, Type testType1 = null)
         {
-            var p1 = TypeDescriptor.GetProperties(o1);
+            if (testType1 == null)
+            {
+                testType1 = o1.GetType();
+            }
+
+            var p1 = TypeDescriptor.GetProperties(testType1);
             var p2 = TypeDescriptor.GetProperties(o2);
             var result = true;
             foreach (PropertyDescriptor pd1 in p1)
             {
-                if (pd1.ComponentType != o1.GetType())
+                if (pd1.IsReadOnly)
+                {
+                    continue;
+                }
+
+                var propertyName = pd1.Name;
+                if (propertyName == "IsVisible")
+                {
+                    propertyName = "Visibility";
+                }
+
+                if (propertyName == "FontSize")
                 {
                     continue;
                 }
 
                 var v1 = pd1.GetValue(o1);
-                var pd2 = p2[pd1.Name];
+                var pd2 = p2[propertyName];
                 if (pd2 == null)
                 {
-                    Console.WriteLine("Property {0} not found in {1}", pd1.Name, o2.GetType());
+                    Console.WriteLine("{0}: missing", propertyName);
                     continue;
                 }
 
@@ -97,6 +117,48 @@ namespace OxyPlot.Wpf.Tests
                 if (v2 is Color)
                 {
                     v2 = ((Color)v2).ToOxyColor();
+                }
+
+                if (typeof(Brush).IsAssignableFrom(pd2.PropertyType))
+                {
+                    v2 = ((Brush)v2).ToOxyColor();
+                }
+
+                if (v2 is Visibility)
+                {
+                    v2 = ((Visibility)v2) == Visibility.Visible;
+                }
+
+                if (v2 is Vector)
+                {
+                    v2 = ((Vector)v2).ToScreenVector();
+                }
+
+                if (v2 is Thickness)
+                {
+                    v2 = ((Thickness)v2).ToOxyThickness();
+                }
+
+                if (v2 is HorizontalAlignment)
+                {
+                    v2 = ((HorizontalAlignment)v2).ToHorizontalAlignment();
+                }
+
+                if (v2 is VerticalAlignment)
+                {
+                    v2 = ((VerticalAlignment)v2).ToVerticalAlignment();
+                }
+
+                if (v2 is FontWeight)
+                {
+                    v2 = (double)((FontWeight)v2).ToOpenTypeWeight();
+                }
+
+                var type1 = v1 != null ? v1.GetType() : null;
+                var type2 = v2 != null ? v2.GetType() : null;
+                if (!AreEqual(type1, type2))
+                {
+                    Console.WriteLine("{0}: {1} / {2}", pd1.Name, type1, type2);
                 }
 
                 if (AreEqual(v1, v2))
@@ -109,8 +171,7 @@ namespace OxyPlot.Wpf.Tests
                     continue;
                 }
 
-                Debug.WriteLine("The default values of property {0} is different in {1} and {2}.", pd1.Name, o1.GetType(), o2.GetType());
-                Debug.WriteLine("  {1}.{0} = {3} and {2}.{0} = {4}", pd1.Name, o1.GetType(), o2.GetType(), v1, v2);
+                Console.WriteLine("{0}: {1} / {2}", pd1.Name, v1, v2);
                 result = false;
             }
 

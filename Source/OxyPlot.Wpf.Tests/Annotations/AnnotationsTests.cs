@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AxesTests.cs" company="OxyPlot">
+// <copyright file="AnnotationsTests.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //
 //   Copyright (c) 2012 Oystein Bjorke
@@ -33,68 +33,57 @@ namespace OxyPlot.Wpf.Tests
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
-    public class AxesTests
+    public class AnnotationsTests
     {
-        [Test]
-        public void Axis()
+        public class DefaultValues
         {
-            OxyAssert.PropertiesExist(typeof(OxyPlot.Axes.Axis), typeof(Axis));
-        }
+            [Test]
+            public void LineAnnotation()
+            {
+                var s1 = new LineAnnotation();
+                var s2 = new Annotations.LineAnnotation();
+                OxyAssert.PropertiesAreEqual(s2, s1);
+            }
 
-        [Test]
-        public void LinearAxis()
-        {
-            var s1 = new OxyPlot.Axes.LinearAxis();
-            var s2 = new LinearAxis();
-            OxyAssert.PropertiesAreEqual(s1, s2);
-        }
+            [Test]
+            public void EllipseAnnotation()
+            {
+                var s1 = new EllipseAnnotation();
+                var s2 = new Annotations.EllipseAnnotation();
+                OxyAssert.PropertiesAreEqual(s2, s1);
+            }
 
-        [Test]
-        public void LogarithmicAxis()
-        {
-            var s1 = new OxyPlot.Axes.LogarithmicAxis();
-            var s2 = new LogarithmicAxis();
-            OxyAssert.PropertiesAreEqual(s1, s2);
-        }
+            [Test]
+            public void RectangleAnnotation()
+            {
+                var s1 = new RectangleAnnotation();
+                var s2 = new Annotations.RectangleAnnotation();
+                OxyAssert.PropertiesAreEqual(s2, s1);
+            }
 
-        [Test]
-        public void DateTimeAxis()
-        {
-            var s1 = new OxyPlot.Axes.DateTimeAxis();
-            var s2 = new DateTimeAxis();
-            OxyAssert.PropertiesAreEqual(s1, s2);
-        }
+            [Test]
+            public void ArrowAnnotation()
+            {
+                var s1 = new ArrowAnnotation();
+                var s2 = new Annotations.ArrowAnnotation();
+                OxyAssert.PropertiesAreEqual(s2, s1);
+            }
 
-        [Test]
-        public void TimeSpanAxis()
-        {
-            var s1 = new OxyPlot.Axes.TimeSpanAxis();
-            var s2 = new TimeSpanAxis();
-            OxyAssert.PropertiesAreEqual(s1, s2);
-        }
+            [Test]
+            public void PolygonAnnotation()
+            {
+                var s1 = new PolygonAnnotation();
+                var s2 = new Annotations.PolygonAnnotation();
+                OxyAssert.PropertiesAreEqual(s2, s1);
+            }
 
-        [Test]
-        public void CategoryAxis()
-        {
-            var s1 = new OxyPlot.Axes.CategoryAxis();
-            var s2 = new CategoryAxis();
-            OxyAssert.PropertiesAreEqual(s1, s2);
-        }
-
-        [Test]
-        public void AngleAxis()
-        {
-            var s1 = new OxyPlot.Axes.AngleAxis();
-            var s2 = new AngleAxis();
-            OxyAssert.PropertiesAreEqual(s1, s2);
-        }
-
-        [Test]
-        public void MagnitudeAxis()
-        {
-            var s1 = new OxyPlot.Axes.MagnitudeAxis();
-            var s2 = new MagnitudeAxis();
-            OxyAssert.PropertiesAreEqual(s1, s2);
+            [Test]
+            public void TextAnnotation()
+            {
+                var s1 = new TextAnnotation();
+                var s2 = new Annotations.TextAnnotation();
+                OxyAssert.PropertiesAreEqual(s2, s1);
+            }
         }
     }
 }

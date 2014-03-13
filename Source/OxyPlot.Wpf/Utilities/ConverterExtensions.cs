@@ -118,7 +118,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// A HorizontalAlignment.
         /// </returns>
-        public static HorizontalAlignment ToHorizontalTextAlign(this System.Windows.HorizontalAlignment alignment)
+        public static HorizontalAlignment ToHorizontalAlignment(this System.Windows.HorizontalAlignment alignment)
         {
             switch (alignment)
             {
@@ -140,7 +140,7 @@ namespace OxyPlot.Wpf
         /// <returns>
         /// A VerticalAlignment.
         /// </returns>
-        public static VerticalAlignment ToVerticalTextAlign(this System.Windows.VerticalAlignment alignment)
+        public static VerticalAlignment ToVerticalAlignment(this System.Windows.VerticalAlignment alignment)
         {
             switch (alignment)
             {

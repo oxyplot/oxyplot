@@ -52,13 +52,13 @@ namespace OxyPlot.Wpf
         /// The data field x property.
         /// </summary>
         public static readonly DependencyProperty DataFieldXProperty = DependencyProperty.Register(
-            "DataFieldX", typeof(string), typeof(DataPointSeries), new PropertyMetadata("X", DataChanged));
+            "DataFieldX", typeof(string), typeof(DataPointSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The data field y property.
         /// </summary>
         public static readonly DependencyProperty DataFieldYProperty = DependencyProperty.Register(
-            "DataFieldY", typeof(string), typeof(DataPointSeries), new PropertyMetadata("Y", DataChanged));
+            "DataFieldY", typeof(string), typeof(DataPointSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
         /// The mapping property.

@@ -170,8 +170,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         static LineSeries()
         {
-            CanTrackerInterpolatePointsProperty.OverrideMetadata(
-                typeof(LineSeries), new PropertyMetadata(true, AppearanceChanged));
+            CanTrackerInterpolatePointsProperty.OverrideMetadata(typeof(LineSeries), new PropertyMetadata(true, AppearanceChanged));
         }
 
         /// <summary>

@@ -92,6 +92,14 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(DateTimeIntervalType.Auto, DataChanged));
 
         /// <summary>
+        /// Initializes static members of the <see cref="DateTimeAxis"/> class.
+        /// </summary>
+        static DateTimeAxis()
+        {
+            PositionProperty.OverrideMetadata(typeof(DateTimeAxis), new PropertyMetadata(AxisPosition.Bottom, AppearanceChanged));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref = "DateTimeAxis" /> class.
         /// </summary>
         public DateTimeAxis()
