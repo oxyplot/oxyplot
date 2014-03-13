@@ -33,7 +33,7 @@ namespace OxyPlot.XamarinIOS
 	using OxyPlot;
 
 	[Register ("PlotView")]
-	public sealed class PlotView : UIView, IPlotControl
+	public class PlotView : UIView, IPlotControl
 	{
 		private PlotModel model;
 		private IPlotController controller;
