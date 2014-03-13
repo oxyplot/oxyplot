@@ -172,7 +172,7 @@ namespace OxyPlot.Wpf
         /// The font size property.
         /// </summary>
         public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
-            "FontSize", typeof(double), typeof(Axis), new PropertyMetadata(12.0, AppearanceChanged));
+            "FontSize", typeof(double), typeof(Axis), new PropertyMetadata(double.NaN, AppearanceChanged));
 
         /// <summary>
         /// The font weight property.
@@ -384,7 +384,7 @@ namespace OxyPlot.Wpf
         /// The title color property.
         /// </summary>
         public static readonly DependencyProperty TitleColorProperty = DependencyProperty.Register(
-            "TitleColor", typeof(Color), typeof(Axis), new UIPropertyMetadata(null));
+            "TitleColor", typeof(Color), typeof(Axis), new UIPropertyMetadata(OxyColors.Automatic.ToColor()));
 
         /// <summary>
         /// The title font property.
