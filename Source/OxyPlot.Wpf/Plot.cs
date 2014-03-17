@@ -299,10 +299,13 @@ namespace OxyPlot.Wpf
 
             this.UpdateModel(updateData);
 
-            Interlocked.Exchange(ref this.isPlotInvalidated, 1);
-
-            // TODO: can replace by Invoke here, layout will be updated async
-            this.BeginInvoke(this.InvalidateArrange);
+            if (this.IsRendering && Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
+            {
+                // Invalidate the arrange state for the element. 
+                // After the invalidation, the element will have its layout updated, 
+                // which will occur asynchronously unless subsequently forced by UpdateLayout.
+                this.Invoke(this.InvalidateArrange);
+            }
         }
 
         /// <summary>
@@ -320,11 +323,14 @@ namespace OxyPlot.Wpf
 
             this.UpdateModel(updateData);
 
-            Interlocked.Exchange(ref this.isPlotInvalidated, 1);
-            this.Invoke(this.InvalidateArrange);
+            if (this.IsRendering && Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
+            {
+                Interlocked.Exchange(ref this.isPlotInvalidated, 1);
+                this.Invoke(this.InvalidateArrange);
 
-            // ensure that all visual child elements are properly updated for layout
-            this.UpdateLayout();
+                // ensure that all visual child elements are properly updated for layout
+                this.UpdateLayout();
+            }
         }
 
         /// <summary>
@@ -777,6 +783,8 @@ namespace OxyPlot.Wpf
                 }
             }
 
+            // Make sure InvalidateArrange is called when the plot is invalidated
+            Interlocked.Exchange(ref this.isPlotInvalidated, 0);
             this.InvalidatePlot();
         }
 
