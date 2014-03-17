@@ -1,0 +1,12 @@
+﻿@syntax owiki
+@title Xamarin.Android Example
+@keywords OxyPlot,Xamarin.Android,Example
+
+== Xamarin.Android Example
+
+// Under construction //
+
+- Download component
+- Add references
+- Add a control
+- Bind to a PlotModel
