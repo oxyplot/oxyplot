@@ -70,7 +70,7 @@ namespace OxyPlot
                 i++;
 
                 // try to get rid of numerical noise
-                var v = Math.Round(value / step, 15) * step;
+                var v = Math.Round(value / step, 14) * step;
                 values.Add(v);
                 value += step;
             }
