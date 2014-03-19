@@ -36,10 +36,10 @@ namespace OxyPlot
     public interface ICodeGenerating
     {
         /// <summary>
-        /// Returns c# code that generates this instance.
+        /// Returns C# code that generates this instance.
         /// </summary>
         /// <returns>
-        /// C# code.
+        /// The C# code.
         /// </returns>
         string ToCode();
     }

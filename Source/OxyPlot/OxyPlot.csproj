@@ -75,6 +75,7 @@
     <Compile Include="Foundation\IDataPointProvider.cs" />
     <Compile Include="Foundation\DataPoint.cs" />
     <Compile Include="Foundation\MarkerType.cs" />
+    <Compile Include="Rendering\OxyColorExtensions.cs" />
     <Compile Include="Rendering\OxyPalette.cs" />
     <Compile Include="Rendering\OxyPalettes.cs" />
     <Compile Include="Rendering\ScreenVector.cs" />

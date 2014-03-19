@@ -28,6 +28,7 @@
 namespace ExampleLibrary
 {
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
 
     using OxyPlot;
     using OxyPlot.Axes;
@@ -123,6 +124,28 @@ namespace ExampleLibrary
                 hms.Invalidate();
                 model.InvalidatePlot(true);
             };
+            return model;
+        }
+
+        [Example("#539104: Reduced color saturation")]
+        public static PlotModel ReducedColorSaturation()
+        {
+            var model = new PlotModel
+            {
+                Title = "Reduced color saturation",
+                Subtitle = "Click the heat map to change the Maximum of the color axis and invoke the Invalidate method on the HeatMapSeries."
+            };
+            
+            // modify the saturation of the default colors
+            model.DefaultColors = model.DefaultColors.Select(c => c.ChangeSaturation(0.5)).ToList();
+
+            for (int i = 0; i < model.DefaultColors.Count; i++)
+            {
+                var columnSeries = new ColumnSeries();
+                columnSeries.Items.Add(new ColumnItem(10));
+                model.Series.Add(columnSeries);
+            }
+
             return model;
         }
     }
