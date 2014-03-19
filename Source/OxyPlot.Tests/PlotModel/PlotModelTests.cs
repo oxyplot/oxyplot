@@ -50,6 +50,37 @@ namespace OxyPlot.Tests
     [TestFixture]
     public class PlotModelTests
     {
+        /// <summary>
+        /// Tests the <see cref="PlotModel.Axes" /> collection.
+        /// </summary>
+        public class Axes
+        {
+            /// <summary>
+            /// The same axis cannot be added more than once.
+            /// </summary>
+            [Test]
+            public void AddAxisTwice()
+            {
+                var model = new PlotModel();
+                var axis = new LinearAxis();
+                model.Axes.Add(axis);
+                Assert.Throws<InvalidOperationException>(() => model.Axes.Add(axis));
+            }
+
+            /// <summary>
+            /// The same axis cannot be added to different PlotModels.
+            /// </summary>
+            [Test]
+            public void AddAxisToDifferentModels()
+            {
+                var model1 = new PlotModel();
+                var model2 = new PlotModel();
+                var axis = new LinearAxis();
+                model1.Axes.Add(axis);
+                Assert.Throws<InvalidOperationException>(() => model2.Axes.Add(axis));
+            }
+        }
+
         [Test]
         public void Update_AllExamples_ThrowsNoExceptions()
         {

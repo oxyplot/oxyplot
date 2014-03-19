@@ -111,7 +111,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Increase margin size if needed, do it on all borders
+        /// Increases margin size if needed, do it on all borders
         /// </summary>
         /// <param name="currentMargin">The current margin.</param>
         /// <param name="minBorderSize">Minimum size of the border.</param>
@@ -124,7 +124,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Increase margin size if needed, do it on the specified border.
+        /// Increases margin size if needed, do it on the specified border.
         /// </summary>
         /// <param name="currentMargin">The current margin.</param>
         /// <param name="minBorderSize">Minimum size of the border.</param>
@@ -193,7 +193,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Adjust the plot margins.
+        /// Adjusts the plot margins.
         /// </summary>
         /// <param name="rc">
         /// The render context.
@@ -278,11 +278,10 @@ namespace OxyPlot
         /// </returns>
         private OxySize MeasureTitles(IRenderContext rc)
         {
-            OxySize size1 = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
-            OxySize size2 = rc.MeasureText(
-                this.Subtitle, this.SubtitleFont ?? this.ActualSubtitleFont, this.SubtitleFontSize, this.SubtitleFontWeight);
-            double height = size1.Height + size2.Height;
-            double width = Math.Max(size1.Width, size2.Width);
+            var titleSize = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
+            var subtitleSize = rc.MeasureText(this.Subtitle, this.SubtitleFont ?? this.ActualSubtitleFont, this.SubtitleFontSize, this.SubtitleFontWeight);
+            double height = titleSize.Height + subtitleSize.Height;
+            double width = Math.Max(titleSize.Width, subtitleSize.Width);
             return new OxySize(width, height);
         }
 
@@ -341,15 +340,9 @@ namespace OxyPlot
                 rc.DrawRectangleAsPolygon(this.PlotArea, this.PlotAreaBackground, OxyColors.Undefined, 0);
             }
 
-            foreach (var s in this.VisibleSeries)
+            foreach (var s in this.VisibleSeries.Where(s => s is XYAxisSeries && s.Background.IsVisible()).Cast<XYAxisSeries>())
             {
-                var s2 = s as XYAxisSeries;
-                if (s2 == null || s2.Background.IsInvisible())
-                {
-                    continue;
-                }
-
-                rc.DrawRectangle(s2.GetScreenRectangle(), s2.Background, OxyColors.Undefined, 0);
+                rc.DrawRectangle(s.GetScreenRectangle(), s.Background, OxyColors.Undefined, 0);
             }
         }
 
@@ -364,7 +357,7 @@ namespace OxyPlot
         /// </param>
         private void RenderBox(IRenderContext rc)
         {
-            // The border is rendered by DrawBox to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
+            // The border is rendered by DrawRectangleAsPolygon to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
             if (this.Axes.Count > 0)
             {
                 rc.DrawRectangleAsPolygon(this.PlotArea, OxyColors.Undefined, this.PlotAreaBorderColor, this.PlotAreaBorderThickness);
@@ -379,13 +372,6 @@ namespace OxyPlot
         /// </param>
         private void RenderSeries(IRenderContext rc)
         {
-            // Update undefined colors
-            this.ResetDefaultColor();
-            foreach (var s in this.VisibleSeries)
-            {
-                s.SetDefaultValues(this);
-            }
-
             foreach (var s in this.VisibleSeries)
             {
                 s.Render(rc, this);
@@ -400,19 +386,15 @@ namespace OxyPlot
         /// </param>
         private void RenderTitle(IRenderContext rc)
         {
-            OxySize size1 = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
-            rc.MeasureText(
-                this.Subtitle, this.SubtitleFont ?? this.ActualSubtitleFont, this.SubtitleFontSize, this.SubtitleFontWeight);
+            var titleSize = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
 
-            // double height = size1.Height + size2.Height;
-            // double dy = (TitleArea.Top+TitleArea.Bottom-height)*0.5;
-            double dy = this.TitleArea.Top;
-            double dx = (this.TitleArea.Left + this.TitleArea.Right) * 0.5;
+            double x = (this.TitleArea.Left + this.TitleArea.Right) * 0.5;
+            double y = this.TitleArea.Top;
 
             if (!string.IsNullOrEmpty(this.Title))
             {
                 rc.DrawMathText(
-                    new ScreenPoint(dx, dy),
+                    new ScreenPoint(x, y),
                     this.Title,
                     this.TitleColor.GetActualColor(this.TextColor),
                     this.ActualTitleFont,
@@ -421,13 +403,13 @@ namespace OxyPlot
                     0,
                     HorizontalAlignment.Center,
                     VerticalAlignment.Top);
-                dy += size1.Height;
+                y += titleSize.Height;
             }
 
             if (!string.IsNullOrEmpty(this.Subtitle))
             {
                 rc.DrawMathText(
-                    new ScreenPoint(dx, dy),
+                    new ScreenPoint(x, y),
                     this.Subtitle,
                     this.SubtitleColor.GetActualColor(this.TextColor),
                     this.ActualSubtitleFont,
@@ -457,7 +439,7 @@ namespace OxyPlot
 
             if (titleSize.Height > 0)
             {
-                double titleHeight = titleSize.Height + this.TitlePadding;
+                var titleHeight = titleSize.Height + this.TitlePadding;
                 plotArea.Height -= titleHeight;
                 plotArea.Top += titleHeight;
             }
@@ -473,8 +455,8 @@ namespace OxyPlot
             plotArea.Width -= this.ActualPlotMargins.Right;
 
             // Find the available size for the legend box
-            double availableLegendWidth = plotArea.Width;
-            double availableLegendHeight = plotArea.Height;
+            var availableLegendWidth = plotArea.Width;
+            var availableLegendHeight = plotArea.Height;
             if (this.LegendPlacement == LegendPlacement.Inside)
             {
                 availableLegendWidth -= this.LegendMargin * 2;

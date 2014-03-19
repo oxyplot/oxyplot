@@ -142,6 +142,7 @@ namespace ExampleLibrary
                 s1.Points.Add(new DataPoint(18, 2));
                 s1.Points.Add(new DataPoint(40, 3));
             }
+
             model.Series.Add(s1);
             return model;
         }
@@ -172,6 +173,7 @@ namespace ExampleLibrary
                 LegendOrientation = LegendOrientation.Horizontal,
                 LegendBorderThickness = 0
             };
+
             var s1 = new TSeries { Title = "Series 1", BaseValue = 0.1, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
             s1.Items.Add(new TItem { Value = 25 });
             s1.Items.Add(new TItem { Value = 37 });
@@ -233,11 +235,13 @@ namespace ExampleLibrary
                 LegendOrientation = LegendOrientation.Horizontal,
                 LegendBorderThickness = 0
             };
+
             var s1 = new TSeries { Title = "Series 1", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
             s1.Items.Add(new TItem { Value = 25 });
             s1.Items.Add(new TItem { Value = 137 });
             s1.Items.Add(new TItem { Value = 18 });
             s1.Items.Add(new TItem { Value = 40 });
+
             var s2 = new TSeries { Title = "Series 2", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
             s2.Items.Add(new TItem { Value = -12 });
             s2.Items.Add(new TItem { Value = -14 });
@@ -249,6 +253,7 @@ namespace ExampleLibrary
             s3.Items.Add(new TItem { Value = 8 });
             s3.Items.Add(new TItem { Value = 48 });
             s3.Items.Add(new TItem { Value = 3 });
+
             var s4 = new TSeries { Title = "Series 4", IsStacked = stacked, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
             s4.Items.Add(new TItem { Value = -8 });
             s4.Items.Add(new TItem { Value = -21 });
@@ -260,6 +265,7 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category B");
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
+
             var valueAxis = new LinearAxis(ValueAxisPosition())
                 {
                     MinimumPadding = 0.06,
@@ -269,6 +275,7 @@ namespace ExampleLibrary
                     ExtraGridlineColor = OxyColors.Black,
                     ExtraGridlineThickness = 1
                 };
+
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Series.Add(s3);
