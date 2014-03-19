@@ -314,7 +314,7 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// The set default values.
+        /// Sets the default values.
         /// </summary>
         /// <param name="model">
         /// The model.
