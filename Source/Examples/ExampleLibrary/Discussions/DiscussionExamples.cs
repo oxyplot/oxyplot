@@ -27,6 +27,7 @@
 
 namespace ExampleLibrary
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
@@ -133,16 +134,118 @@ namespace ExampleLibrary
             var model = new PlotModel
             {
                 Title = "Reduced color saturation",
-                Subtitle = "Click the heat map to change the Maximum of the color axis and invoke the Invalidate method on the HeatMapSeries."
             };
-            
+
+            model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom });
+
             // modify the saturation of the default colors
             model.DefaultColors = model.DefaultColors.Select(c => c.ChangeSaturation(0.5)).ToList();
 
-            for (int i = 0; i < model.DefaultColors.Count; i++)
+            var r = new Random(37);
+            for (var i = 0; i < model.DefaultColors.Count; i++)
             {
                 var columnSeries = new ColumnSeries();
-                columnSeries.Items.Add(new ColumnItem(10));
+                columnSeries.Items.Add(new ColumnItem(50 + r.Next(50)));
+                columnSeries.Items.Add(new ColumnItem(40 + r.Next(50)));
+                model.Series.Add(columnSeries);
+            }
+
+            return model;
+        }
+
+        [Example("#539104: Medium intensity colors")]
+        public static PlotModel MediumIntensityColors()
+        {
+            var model = new PlotModel
+            {
+                Title = "Medium intensity colors",
+            };
+
+            model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom });
+
+            // See http://www.perceptualedge.com/articles/visual_business_intelligence/rules_for_using_color.pdf
+            model.DefaultColors = new[]
+            {
+                OxyColor.FromRgb(114, 114, 114),
+                OxyColor.FromRgb(241, 89, 95),
+                OxyColor.FromRgb(121, 195, 106),
+                OxyColor.FromRgb(89, 154, 211),
+                OxyColor.FromRgb(249, 166, 90),
+                OxyColor.FromRgb(158, 102, 171),
+                OxyColor.FromRgb(205, 112, 88),
+                OxyColor.FromRgb(215, 127, 179)
+            };
+
+            var r = new Random(37);
+            for (var i = 0; i < model.DefaultColors.Count; i++)
+            {
+                var columnSeries = new ColumnSeries();
+                columnSeries.Items.Add(new ColumnItem(50 + r.Next(50)));
+                columnSeries.Items.Add(new ColumnItem(40 + r.Next(50)));
+                model.Series.Add(columnSeries);
+            }
+
+            return model;
+        }
+
+        [Example("#539104: Brewer colors (4)")]
+        public static PlotModel BrewerColors4()
+        {
+            var model = new PlotModel
+            {
+                Title = "Brewer colors (Accent scheme)",
+            };
+
+            model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom });
+
+            // See http://colorbrewer2.org/?type=qualitative&scheme=Accent&n=4
+            model.DefaultColors = new[]
+            {
+                OxyColor.FromRgb(127, 201, 127),
+                OxyColor.FromRgb(190, 174, 212),
+                OxyColor.FromRgb(253, 192, 134),
+                OxyColor.FromRgb(255, 255, 153)
+            };
+
+            var r = new Random(37);
+            for (var i = 0; i < model.DefaultColors.Count; i++)
+            {
+                var columnSeries = new ColumnSeries();
+                columnSeries.Items.Add(new ColumnItem(50 + r.Next(50)));
+                columnSeries.Items.Add(new ColumnItem(40 + r.Next(50)));
+                model.Series.Add(columnSeries);
+            }
+
+            return model;
+        }
+
+        [Example("#539104: Brewer colors (6)")]
+        public static PlotModel BrewerColors6()
+        {
+            var model = new PlotModel
+            {
+                Title = "Brewer colors (Paired scheme)",
+            };
+
+            model.Axes.Add(new CategoryAxis { Position = AxisPosition.Bottom });
+
+            // See http://colorbrewer2.org/?type=qualitative&scheme=Paired&n=6
+            model.DefaultColors = new[]
+            {
+                OxyColor.FromRgb(166, 206, 227),
+                OxyColor.FromRgb(31, 120, 180),
+                OxyColor.FromRgb(178, 223, 138),
+                OxyColor.FromRgb(51, 160, 44),
+                OxyColor.FromRgb(251, 154, 153),
+                OxyColor.FromRgb(227, 26, 28)
+            };
+
+            var r = new Random(37);
+            for (var i = 0; i < model.DefaultColors.Count; i++)
+            {
+                var columnSeries = new ColumnSeries();
+                columnSeries.Items.Add(new ColumnItem(50 + r.Next(50)));
+                columnSeries.Items.Add(new ColumnItem(40 + r.Next(50)));
                 model.Series.Add(columnSeries);
             }
 
