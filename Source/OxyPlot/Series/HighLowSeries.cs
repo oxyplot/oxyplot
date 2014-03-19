@@ -296,7 +296,8 @@ namespace OxyPlot.Series
             this.VerifyAxes();
 
             var clippingRect = this.GetClippingRect();
-
+            var dashArray = this.LineStyle.GetDashArray();
+            var actualColor = this.GetSelectableColor(this.ActualColor);
             foreach (var v in this.items)
             {
                 if (!this.IsValidItem(v, this.XAxis, this.YAxis))
@@ -313,9 +314,9 @@ namespace OxyPlot.Series
                         new[] { low, high },
                         clippingRect,
                         0,
-                        this.GetSelectableColor(this.ActualColor),
+                        actualColor,
                         this.StrokeThickness,
-                        this.LineStyle,
+                        dashArray,
                         this.LineJoin,
                         true);
                     if (!double.IsNaN(v.Open))
@@ -326,9 +327,9 @@ namespace OxyPlot.Series
                             new[] { open, openTick },
                             clippingRect,
                             0,
-                            this.GetSelectableColor(this.ActualColor),
+                            actualColor,
                             this.StrokeThickness,
-                            this.LineStyle,
+                            dashArray,
                             this.LineJoin,
                             true);
                     }
@@ -341,9 +342,9 @@ namespace OxyPlot.Series
                             new[] { close, closeTick },
                             clippingRect,
                             0,
-                            this.GetSelectableColor(this.ActualColor),
+                            actualColor,
                             this.StrokeThickness,
-                            this.LineStyle,
+                            dashArray,
                             this.LineJoin,
                             true);
                     }

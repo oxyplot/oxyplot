@@ -195,13 +195,14 @@ namespace OxyPlot.Series
 
             var lowerErrorPoint = this.Transform(middleValue, lowerValue);
             var upperErrorPoint = this.Transform(middleValue, upperValue);
+
             rc.DrawClippedLine(
                 new List<ScreenPoint> { lowerErrorPoint, upperErrorPoint },
                 clippingRect,
                 0,
                 this.StrokeColor,
                 this.ErrorStrokeThickness,
-                LineStyle.Solid,
+                null,
                 OxyPenLineJoin.Miter,
                 true);
 
@@ -215,7 +216,7 @@ namespace OxyPlot.Series
                     0,
                     this.StrokeColor,
                     this.ErrorStrokeThickness,
-                    LineStyle.Solid,
+                    null,
                     OxyPenLineJoin.Miter,
                     true);
 
@@ -227,7 +228,7 @@ namespace OxyPlot.Series
                     0,
                     this.StrokeColor,
                     this.ErrorStrokeThickness,
-                    LineStyle.Solid,
+                    null,
                     OxyPenLineJoin.Miter,
                     true);
             }

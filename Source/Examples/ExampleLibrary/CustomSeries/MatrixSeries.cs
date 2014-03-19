@@ -199,11 +199,11 @@
                 points.Add(this.Transform(n, m));
             }
 
-            rc.DrawClippedLineSegments(points, clip, this.GridColor, 1, LineStyle.Solid, OxyPenLineJoin.Miter, true);
+            rc.DrawClippedLineSegments(points, clip, this.GridColor, 1, null, OxyPenLineJoin.Miter, true);
 
             if (this.BorderColor.IsVisible())
             {
-                var borderPoints = new List<ScreenPoint>
+                var borderPoints = new[]
                     {
                         this.Transform(0, 0),
                         this.Transform(m, 0),
@@ -215,8 +215,7 @@
                         this.Transform(m, n)
                     };
 
-                rc.DrawClippedLineSegments(
-                    borderPoints, clip, this.BorderColor, 1, LineStyle.Solid, OxyPenLineJoin.Miter, true);
+                rc.DrawClippedLineSegments(borderPoints, clip, this.BorderColor, 1, null, OxyPenLineJoin.Miter, true);
             }
         }
 

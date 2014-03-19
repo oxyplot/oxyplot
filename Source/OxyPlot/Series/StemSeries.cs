@@ -168,7 +168,10 @@ namespace OxyPlot.Series
 
             // Transform all points to screen coordinates
             // Render the line when invalid points occur
-            var markerPoints = new List<ScreenPoint>();
+            var dashArray = this.ActualDashArray;
+            var actualColor = this.GetSelectableColor(this.ActualColor);
+            var points = new ScreenPoint[2];
+            var markerPoints = this.MarkerType != MarkerType.None ? new List<ScreenPoint>(this.Points.Count) : null;
             foreach (var point in this.Points)
             {
                 if (!this.IsValidPoint(point, this.XAxis, this.YAxis))
@@ -176,35 +179,38 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                var p0 = this.Transform(point.X, this.Base);
-                var p1 = this.Transform(point.X, point.Y);
+                points[0] = this.Transform(point.X, this.Base);
+                points[1] = this.Transform(point.X, point.Y);
 
                 if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
                 {
                     rc.DrawClippedLine(
-                        new[] { p0, p1 }, 
-                        clippingRect, 
-                        minDistSquared, 
-                        this.GetSelectableColor(this.ActualColor), 
-                        this.StrokeThickness, 
-                        this.ActualLineStyle, 
-                        this.LineJoin, 
+                        points,
+                        clippingRect,
+                        minDistSquared,
+                        actualColor,
+                        this.StrokeThickness,
+                        dashArray,
+                        this.LineJoin,
                         false);
                 }
 
-                markerPoints.Add(p1);
+                if (markerPoints != null)
+                {
+                    markerPoints.Add(points[1]);
+                }
             }
 
             if (this.MarkerType != MarkerType.None)
             {
                 rc.DrawMarkers(
-                    markerPoints, 
-                    clippingRect, 
-                    this.MarkerType, 
-                    this.MarkerOutline, 
-                    new[] { this.MarkerSize }, 
-                    this.MarkerFill, 
-                    this.MarkerStroke, 
+                    markerPoints,
+                    clippingRect,
+                    this.MarkerType,
+                    this.MarkerOutline,
+                    new[] { this.MarkerSize },
+                    this.MarkerFill,
+                    this.MarkerStroke,
                     this.MarkerStrokeThickness);
             }
         }

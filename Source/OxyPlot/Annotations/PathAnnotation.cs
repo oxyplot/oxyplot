@@ -310,6 +310,7 @@ namespace OxyPlot.Annotations
             const double MinimumSegmentLength = 4;
 
             IList<ScreenPoint> clippedPoints = null;
+            var dashArray = this.LineStyle.GetDashArray();
 
             rc.DrawClippedLine(
                this.screenPoints,
@@ -317,7 +318,7 @@ namespace OxyPlot.Annotations
                MinimumSegmentLength * MinimumSegmentLength,
                this.GetSelectableColor(this.Color),
                this.StrokeThickness,
-               this.LineStyle,
+               dashArray,
                this.LineJoin,
                this.aliased,
                pts => clippedPoints = pts);

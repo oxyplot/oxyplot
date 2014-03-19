@@ -90,7 +90,7 @@ namespace OxyPlot
         /// <param name="minDistSquared">The squared minimum distance.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
-        /// <param name="lineStyle">The line style.</param>
+        /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join.</param>
         /// <param name="aliased">if set to <c>true</c> [aliased].</param>
         /// <param name="pointsRendered">The points rendered callback.</param>
@@ -101,7 +101,7 @@ namespace OxyPlot
             double minDistSquared,
             OxyColor stroke,
             double strokeThickness,
-            LineStyle lineStyle,
+            double[] dashArray,
             OxyPenLineJoin lineJoin,
             bool aliased,
             Action<IList<ScreenPoint>> pointsRendered = null)
@@ -155,7 +155,7 @@ namespace OxyPlot
                         if (pts.Count > 0)
                         {
                             EnsureNonEmptyLineIsVisible(pts);
-                            rc.DrawLine(pts, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
+                            rc.DrawLine(pts, stroke, strokeThickness, dashArray, lineJoin, aliased);
                             if (pointsRendered != null)
                             {
                                 pointsRendered(pts);
@@ -169,7 +169,7 @@ namespace OxyPlot
                 if (pts.Count > 0)
                 {
                     EnsureNonEmptyLineIsVisible(pts);
-                    rc.DrawLine(pts, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
+                    rc.DrawLine(pts, stroke, strokeThickness, dashArray, lineJoin, aliased);
 
                     // Execute the 'callback'.
                     if (pointsRendered != null)
@@ -188,7 +188,7 @@ namespace OxyPlot
         /// <param name="clippingRectangle">The clipping rectangle.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
-        /// <param name="lineStyle">The line style.</param>
+        /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join.</param>
         /// <param name="aliased">if set to <c>true</c> [aliased].</param>
         public static void DrawClippedLineSegments(
@@ -197,13 +197,13 @@ namespace OxyPlot
             OxyRect clippingRectangle,
             OxyColor stroke,
             double strokeThickness,
-            LineStyle lineStyle,
+            double[] dashArray,
             OxyPenLineJoin lineJoin,
             bool aliased)
         {
             if (rc.SetClip(clippingRectangle))
             {
-                rc.DrawLineSegments(points, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
+                rc.DrawLineSegments(points, stroke, strokeThickness, dashArray, lineJoin, aliased);
                 rc.ResetClip();
                 return;
             }
@@ -222,7 +222,7 @@ namespace OxyPlot
                 }
             }
 
-            rc.DrawLineSegments(clippedPoints, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
+            rc.DrawLineSegments(clippedPoints, stroke, strokeThickness, dashArray, lineJoin, aliased);
         }
 
         /// <summary>
@@ -627,7 +627,7 @@ namespace OxyPlot
                 new[] { new ScreenPoint(x0, y0), new ScreenPoint(x1, y1) },
                 pen.Color,
                 pen.Thickness,
-                pen.DashArray,
+                pen.ActualDashArray,
                 pen.LineJoin,
                 aliased);
         }
@@ -655,7 +655,7 @@ namespace OxyPlot
                 return;
             }
 
-            rc.DrawLineSegments(points, pen.Color, pen.Thickness, pen.DashArray, pen.LineJoin, aliased);
+            rc.DrawLineSegments(points, pen.Color, pen.Thickness, pen.ActualDashArray, pen.LineJoin, aliased);
         }
 
         /// <summary>

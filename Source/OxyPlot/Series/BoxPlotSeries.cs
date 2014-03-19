@@ -319,6 +319,8 @@ namespace OxyPlot.Series
             var strokeColor = this.GetSelectableColor(this.Stroke);
             var fillColor = this.GetSelectableFillColor(this.Fill);
 
+            var dashArray = this.LineStyle.GetDashArray();
+
             foreach (var item in this.Items)
             {
                 // Add the outlier points
@@ -334,7 +336,7 @@ namespace OxyPlot.Series
                     0,
                     strokeColor,
                     this.StrokeThickness,
-                    this.LineStyle,
+                    dashArray,
                     OxyPenLineJoin.Miter,
                     true);
                 rc.DrawClippedLine(
@@ -343,7 +345,7 @@ namespace OxyPlot.Series
                     0,
                     strokeColor,
                     this.StrokeThickness,
-                    this.LineStyle,
+                    dashArray,
                     OxyPenLineJoin.Miter,
                     true);
 
@@ -361,7 +363,7 @@ namespace OxyPlot.Series
                         0,
                         strokeColor,
                         this.StrokeThickness,
-                        LineStyle.Solid,
+                        null,
                         OxyPenLineJoin.Miter,
                         true);
                     rc.DrawClippedLine(
@@ -370,7 +372,7 @@ namespace OxyPlot.Series
                         0,
                         strokeColor,
                         this.StrokeThickness,
-                        LineStyle.Solid,
+                        null,
                         OxyPenLineJoin.Miter,
                         true);
                 }
@@ -393,7 +395,7 @@ namespace OxyPlot.Series
                         0,
                         strokeColor,
                         this.StrokeThickness * this.MedianThickness,
-                        LineStyle.Solid,
+                        null,
                         OxyPenLineJoin.Miter,
                         true);
                 }

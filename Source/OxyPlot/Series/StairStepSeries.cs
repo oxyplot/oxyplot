@@ -198,19 +198,23 @@ namespace OxyPlot.Series
             this.VerifyAxes();
 
             var clippingRect = this.GetClippingRect();
+            var dashArray = this.ActualDashArray;
+            var verticalLineDashArray = this.VerticalLineStyle.GetDashArray();
+            var lineStyle = this.ActualLineStyle;
+            var verticalStrokeThickness = double.IsNaN(this.VerticalStrokeThickness)
+                                              ? this.StrokeThickness
+                                              : this.VerticalStrokeThickness;
+            
+            var actualColor = this.GetSelectableColor(this.ActualColor);
 
             Action<IList<ScreenPoint>, IList<ScreenPoint>> renderPoints = (lpts, mpts) =>
                 {
-                    var lineStyle = this.ActualLineStyle;
-
                     // clip the line segments with the clipping rectangle
                     if (this.StrokeThickness > 0 && lineStyle != LineStyle.None)
                     {
-                        var verticalStrokeThickness = double.IsNaN(this.VerticalStrokeThickness)
-                                                          ? this.StrokeThickness
-                                                          : this.VerticalStrokeThickness;
                         if (!verticalStrokeThickness.Equals(this.StrokeThickness) || this.VerticalLineStyle != lineStyle)
                         {
+                            // TODO: change to array
                             var hlpts = new List<ScreenPoint>();
                             var vlpts = new List<ScreenPoint>();
                             for (int i = 0; i + 2 < lpts.Count; i += 2)
@@ -224,17 +228,17 @@ namespace OxyPlot.Series
                             rc.DrawClippedLineSegments(
                                 hlpts,
                                 clippingRect,
-                                this.GetSelectableColor(this.ActualColor),
+                                actualColor,
                                 this.StrokeThickness,
-                                lineStyle,
+                                dashArray,
                                 this.LineJoin,
                                 false);
                             rc.DrawClippedLineSegments(
                                 vlpts,
                                 clippingRect,
-                                this.GetSelectableColor(this.ActualColor),
+                                actualColor,
                                 verticalStrokeThickness,
-                                this.VerticalLineStyle,
+                                verticalLineDashArray,
                                 this.LineJoin,
                                 false);
                         }
@@ -244,9 +248,9 @@ namespace OxyPlot.Series
                                 lpts,
                                 clippingRect,
                                 0,
-                                this.GetSelectableColor(this.ActualColor),
+                                actualColor,
                                 this.StrokeThickness,
-                                lineStyle,
+                                dashArray,
                                 this.LineJoin,
                                 false);
                         }
@@ -282,7 +286,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                ScreenPoint transformedPoint = this.Transform(point);
+                var transformedPoint = this.Transform(point);
                 if (!double.IsNaN(previousY))
                 {
                     // Horizontal line from the previous point to the current x-coordinate
