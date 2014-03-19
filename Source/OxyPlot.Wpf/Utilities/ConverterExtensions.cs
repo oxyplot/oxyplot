@@ -559,6 +559,7 @@ namespace OxyPlot.Wpf
             };
         }
 
+#if !NET35
         /// <summary>
         /// Converts <see cref="ManipulationStartedEventArgs"/> to <see cref="OxyMouseEventArgs"/> for a touch started event.
         /// </summary>
@@ -602,5 +603,6 @@ namespace OxyPlot.Wpf
                 Position = e.ManipulationOrigin.ToScreenPoint()
             };
         }
+#endif
     }
 }

@@ -27,7 +27,6 @@
 
 namespace ExampleLibrary
 {
-    using System;
     using System.Reflection;
 
     using OxyPlot;
@@ -36,14 +35,13 @@ namespace ExampleLibrary
     {
         private readonly MethodInfo method;
 
-        private Lazy<object> result;
+        private object result;
 
         public ExampleInfo(string category, string title, MethodInfo method)
         {
             this.Category = category;
             this.Title = title;
             this.method = method;
-            this.result = new Lazy<object>(() => this.method.Invoke(null, null));
         }
 
         public string Category { get; set; }
@@ -54,19 +52,15 @@ namespace ExampleLibrary
         {
             get
             {
-                var plotModel = this.result.Value as PlotModel;
+
+                var plotModel = this.Result as PlotModel;
                 if (plotModel != null)
                 {
                     return plotModel;
                 }
 
-                var example = this.result.Value as Example;
-                if (example != null)
-                {
-                    return example.Model;
-                }
-
-                return null;
+                var example = this.Result as Example;
+                return example != null ? example.Model : null;
             }
         }
 
@@ -74,13 +68,8 @@ namespace ExampleLibrary
         {
             get
             {
-                var example = this.result.Value as Example;
-                if (example != null)
-                {
-                    return example.Controller;
-                }
-
-                return null;
+                var example = this.Result as Example;
+                return example != null ? example.Controller : null;
             }
         }
 
@@ -88,7 +77,15 @@ namespace ExampleLibrary
         {
             get
             {
-                return PlotModel.ToCode();
+                return this.PlotModel.ToCode();
+            }
+        }
+
+        private object Result
+        {
+            get
+            {
+                return this.result ?? (this.result = this.method.Invoke(null, null));
             }
         }
 
