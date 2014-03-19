@@ -618,5 +618,26 @@ namespace ExampleLibrary
 
             return model;
         }
+
+        [Example("RectangleAnnotation click")]
+        public static PlotModel RectangleAnnotationClick()
+        {
+            var plotModel = new PlotModel("RectangleAnnotation click");
+            
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            
+            var annotation = new RectangleAnnotation() { MinimumX = 10, MaximumX = 60, MinimumY = 10, MaximumY = 20 };
+            plotModel.Annotations.Add(annotation);
+
+            int i = 0;
+            annotation.MouseDown += (s, e) =>
+            {
+                annotation.Text = "Clicked " + (++i) + " times.";
+                plotModel.InvalidatePlot(false);
+            };
+
+            return plotModel;
+        }
     }
 }
