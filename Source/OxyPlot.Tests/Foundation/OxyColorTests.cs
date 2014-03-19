@@ -26,7 +26,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Tests
 {
-    using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
 
     using NUnit.Framework;
@@ -91,6 +90,18 @@ namespace OxyPlot.Tests
         public void ChangeIntensity()
         {
             Assert.AreEqual(OxyColor.FromArgb(255, 127, 0, 0), OxyColors.Red.ChangeIntensity(0.5));
+        }
+
+        [Test]
+        public void ChangeSaturation()
+        {
+            Assert.AreEqual(OxyColor.FromArgb(255, 255, 127, 127), OxyColors.Red.ChangeSaturation(0.5));
+        }
+
+        [Test]
+        public void ChangeSaturation_OverSaturate()
+        {
+            Assert.AreEqual(OxyColor.FromArgb(255, 255, 0, 0), OxyColors.Red.ChangeSaturation(2));
         }
 
         [Test]

@@ -27,12 +27,11 @@
 //   Describes a color in terms of alpha, red, green, and blue channels.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
     using System.Globalization;
-    using System.Linq;
-    using System.Reflection;
 
     /// <summary>
     /// Describes a color in terms of alpha, red, green, and blue channels.
@@ -67,10 +66,10 @@ namespace OxyPlot
         /// Parse a string.
         /// </summary>
         /// <param name="value">
-        /// The string in the format "#FFFFFF00" or "255,200,180,50".
+        /// The string in the format <c>"#FFFFFF00"</c> or <c>"255,200,180,50"</c>.
         /// </param>
         /// <returns>
-        /// The OxyColor.
+        /// The parsed color.
         /// </returns>
         /// <exception cref="System.FormatException">
         /// Invalid format.
@@ -121,7 +120,7 @@ namespace OxyPlot
         /// The second color.
         /// </param>
         /// <returns>
-        /// L2-norm in RGBA space
+        /// L2-norm in ARGB space
         /// </returns>
         public static double ColorDifference(OxyColor c1, OxyColor c2)
         {
@@ -174,8 +173,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Convert from HSV to <see cref="OxyColor"/>
-        /// http://en.wikipedia.org/wiki/HSL_Color_space
+        /// Converts from HSV to <see cref="OxyColor"/>
         /// </summary>
         /// <param name="hue">
         /// The hue value [0,1]
@@ -189,6 +187,9 @@ namespace OxyPlot
         /// <returns>
         /// The <see cref="OxyColor"/>.
         /// </returns>
+        /// <remarks>
+        /// See <a href="http://en.wikipedia.org/wiki/HSL_Color_space">Wikipedia</a>.
+        /// </remarks>
         public static OxyColor FromHsv(double hue, double sat, double val)
         {
             double g, b;
@@ -369,17 +370,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Convert OxyColor to double string.
-        /// </summary>
-        /// <returns>
-        /// A OxyColor string, e.g. "255,200,180,50".
-        /// </returns>
-        public string ToByteString()
-        {
-            return string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3}", this.A, this.R, this.G, this.B);
-        }
-
-        /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>
         /// <param name="obj">
@@ -418,26 +408,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the color name.
-        /// </summary>
-        /// <returns>
-        /// The color name.
-        /// </returns>
-        public string GetColorName()
-        {
-            var t = typeof(OxyColors);
-            var colors = t.GetFields(BindingFlags.Public | BindingFlags.Static);
-            var thisColor = this;
-            var colorField = colors.FirstOrDefault(
-                field =>
-                {
-                    var color = field.GetValue(null);
-                    return thisColor.Equals(color);
-                });
-            return colorField != null ? colorField.Name : null;
-        }
-
-        /// <summary>
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
@@ -465,133 +435,6 @@ namespace OxyPlot
         {
             return string.Format(
                 CultureInfo.InvariantCulture, "#{0:x2}{1:x2}{2:x2}{3:x2}", this.A, this.R, this.G, this.B);
-        }
-
-        /// <summary>
-        /// Create a new color based on the current color and the specified opacity value.
-        /// </summary>
-        /// <param name="newAlpha">
-        /// The new opacity (alpha) value.
-        /// </param>
-        /// <returns>
-        /// The new color.
-        /// </returns>
-        [Obsolete("Replace with FromAColor static method")]
-        public OxyColor ChangeAlpha(byte newAlpha)
-        {
-            return FromAColor(newAlpha, this);
-        }
-
-        /// <summary>
-        /// Calculates the complementary OxyColor.
-        /// </summary>
-        /// <returns>
-        /// The complementary OxyColor.
-        /// </returns>
-        public OxyColor Complementary()
-        {
-            // http://en.wikipedia.org/wiki/Complementary_Color
-            var hsv = this.ToHsv();
-            double newHue = hsv[0] - 0.5;
-
-            // clamp to [0,1]
-            if (newHue < 0)
-            {
-                newHue += 1.0;
-            }
-
-            return FromHsv(newHue, hsv[1], hsv[2]);
-        }
-
-        /// <summary>
-        /// Converts from a <see cref="OxyColor"/> to HSV values (double)
-        /// </summary>
-        /// <returns>
-        /// Array of [Hue,Saturation,Value] in the range [0,1]
-        /// </returns>
-        public double[] ToHsv()
-        {
-            byte r = this.R;
-            byte g = this.G;
-            byte b = this.B;
-
-            byte min = Math.Min(Math.Min(r, g), b);
-            byte v = Math.Max(Math.Max(r, g), b);
-            double delta = v - min;
-
-            double s = v.Equals(0) ? 0 : delta / v;
-            double h = 0;
-
-            if (s.Equals(0))
-            {
-                h = 0.0;
-            }
-            else
-            {
-                if (r == v)
-                {
-                    h = (g - b) / delta;
-                }
-                else if (g == v)
-                {
-                    h = 2 + ((b - r) / delta);
-                }
-                else if (b == v)
-                {
-                    h = 4 + ((r - g) / delta);
-                }
-
-                h *= 60;
-                if (h < 0.0)
-                {
-                    h += 360;
-                }
-            }
-
-            var hsv = new double[3];
-            hsv[0] = h / 360.0;
-            hsv[1] = s;
-            hsv[2] = v / 255.0;
-            return hsv;
-        }
-
-        /// <summary>
-        /// Changes the intensity.
-        /// </summary>
-        /// <param name="factor">
-        /// The factor.
-        /// </param>
-        /// <returns>
-        /// A OxyColor with the new intensity.
-        /// </returns>
-        public OxyColor ChangeIntensity(double factor)
-        {
-            var hsv = this.ToHsv();
-            hsv[2] *= factor;
-            if (hsv[2] > 1.0)
-            {
-                hsv[2] = 1.0;
-            }
-
-            return FromHsv(hsv);
-        }
-
-        /// <summary>
-        /// Converts to an unsigned integer.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="uint"/>.
-        /// </returns>
-        [CLSCompliant(false)]
-        public uint ToUint()
-        {
-            uint u = (uint)this.A << 24;
-            u += (uint)this.R << 16;
-            u += (uint)this.G << 8;
-            u += this.B;
-            return u;
-
-            // (UInt32)((UInt32)c.A << 24 + (UInt32)c.R << 16 + (UInt32)c.G << 8 + (UInt32)c.B);
         }
 
         /// <summary>
@@ -631,23 +474,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns C# code that generates this instance.
-        /// </summary>
-        /// <returns>
-        /// The code.
-        /// </returns>
-        public string ToCode()
-        {
-            string name = this.GetColorName();
-            if (name != null)
-            {
-                return string.Format("OxyColors.{0}", name);
-            }
-
-            return string.Format("OxyColor.FromArgb({0}, {1}, {2}, {3})", this.A, this.R, this.G, this.B);
-        }
-
-        /// <summary>
         /// Gets the actual color.
         /// </summary>
         /// <param name="defaultColor">The default color.</param>
@@ -655,6 +481,15 @@ namespace OxyPlot
         public OxyColor GetActualColor(OxyColor defaultColor)
         {
             return this.IsAutomatic() ? defaultColor : this;
+        }
+
+        /// <summary>
+        /// Returns C# code that generates this instance.
+        /// </summary>
+        /// <returns>The C# code.</returns>
+        string ICodeGenerating.ToCode()
+        {
+            return this.ToCode();
         }
     }
 }
