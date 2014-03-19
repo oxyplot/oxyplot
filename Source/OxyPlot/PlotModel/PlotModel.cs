@@ -32,7 +32,6 @@ namespace OxyPlot
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -235,9 +234,9 @@ namespace OxyPlot
         /// </summary>
         public PlotModel()
         {
-            this.Axes = new Collection<Axis>();
-            this.Series = new Collection<Series.Series>();
-            this.Annotations = new Collection<Annotation>();
+            this.Axes = new PlotElementCollection<Axis>(this);
+            this.Series = new PlotElementCollection<Series.Series>(this);
+            this.Annotations = new PlotElementCollection<Annotation>(this);
 
             this.PlotType = PlotType.XY;
 
@@ -408,10 +407,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets or sets the annotations.
+        /// Gets the annotations.
         /// </summary>
         /// <value> The annotations. </value>
-        public Collection<Annotation> Annotations { get; set; }
+        public PlotElementCollection<Annotation> Annotations { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to auto adjust plot margins.
@@ -419,10 +418,10 @@ namespace OxyPlot
         public bool AutoAdjustPlotMargins { get; set; }
 
         /// <summary>
-        /// Gets or sets the axes.
+        /// Gets the axes.
         /// </summary>
         /// <value> The axes. </value>
-        public Collection<Axis> Axes { get; set; }
+        public PlotElementCollection<Axis> Axes { get; private set; }
 
         /// <summary>
         /// Gets or sets the color of the background of the plot.
@@ -681,10 +680,10 @@ namespace OxyPlot
         public OxyColor SelectionColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the series.
+        /// Gets the series.
         /// </summary>
         /// <value> The series. </value>
-        public Collection<Series.Series> Series { get; set; }
+        public PlotElementCollection<Series.Series> Series { get; private set; }
 
         /// <summary>
         /// Gets or sets the subtitle.
@@ -1241,17 +1240,6 @@ namespace OxyPlot
             {
                 this.OnUpdating();
 
-                // update the owner PlotModel
-                foreach (var s in this.VisibleSeries)
-                {
-                    s.PlotModel = this;
-                }
-
-                foreach (var a in this.Annotations)
-                {
-                    a.PlotModel = this;
-                }
-
                 // Updates the default axes
                 this.EnsureDefaultAxes();
 
@@ -1266,19 +1254,7 @@ namespace OxyPlot
                     }
                 }
 
-                foreach (var a in this.Axes)
-                {
-                    a.PlotModel = this;
-                }
-
-                // Update valid data of the series
-                if (updateData)
-                {
-                    foreach (var s in visibleSeries)
-                    {
-                        s.UpdateValidData();
-                    }
-                }
+                // TODO: clean this up :-)
 
                 // Updates axes with information from the series
                 // This is used by the category axis that need to know the number of series using the axis.
@@ -1288,8 +1264,26 @@ namespace OxyPlot
                     a.ResetCurrentValues();
                 }
 
+                // Update valid data of the series
+                // This must be done after the axes are updated from series!
+                if (updateData)
+                {
+                    foreach (var s in visibleSeries)
+                    {
+                        s.UpdateValidData();
+                    }
+                }
+
                 // Update the max and min of the axes
                 this.UpdateMaxMin(updateData);
+
+                // Update undefined colors
+                this.ResetDefaultColor();
+                foreach (var s in this.VisibleSeries)
+                {
+                    s.SetDefaultValues(this);
+                }
+
                 this.OnUpdated();
             }
         }
@@ -1510,14 +1504,7 @@ namespace OxyPlot
                 }
             }
 
-            bool areAxesRequired = false;
-            foreach (var s in this.VisibleSeries)
-            {
-                if (s.AreAxesRequired())
-                {
-                    areAxesRequired = true;
-                }
-            }
+            var areAxesRequired = this.VisibleSeries.Any(s => s.AreAxesRequired());
 
             if (areAxesRequired)
             {
@@ -1540,7 +1527,7 @@ namespace OxyPlot
                 }
             }
 
-            // Update the x/index axes of series without axes defined
+            // Update the axes of series without axes defined
             foreach (var s in this.VisibleSeries)
             {
                 if (s.AreAxesRequired())
@@ -1549,7 +1536,7 @@ namespace OxyPlot
                 }
             }
 
-            // Update the x/index axes of annotations without axes defined
+            // Update the axes of annotations without axes defined
             foreach (var a in this.Annotations)
             {
                 a.EnsureAxes();
