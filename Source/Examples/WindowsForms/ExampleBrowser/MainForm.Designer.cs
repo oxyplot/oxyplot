@@ -77,9 +77,7 @@ namespace ExampleBrowser
             this.plot1.KeyboardPanHorizontalStep = 0.1D;
             this.plot1.KeyboardPanVerticalStep = 0.1D;
             this.plot1.Location = new System.Drawing.Point(0, 0);
-            plotModel1.Annotations = null;
             plotModel1.AutoAdjustPlotMargins = true;
-            plotModel1.Axes = null;
             plotModel1.AxisTierDistance = 4D;
             plotModel1.Background = OxyColors.Transparent;
             plotModel1.Culture = null;
@@ -117,7 +115,6 @@ namespace ExampleBrowser
             plotModel1.PlotAreaBorderThickness = 1D;
             plotModel1.PlotType = OxyPlot.PlotType.XY;
             plotModel1.SelectionColor = OxyColors.Undefined;
-            plotModel1.Series = null;
             plotModel1.Subtitle = null;
             plotModel1.SubtitleColor = OxyColors.Undefined;
             plotModel1.SubtitleFont = null;
