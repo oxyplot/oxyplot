@@ -218,6 +218,8 @@ namespace OxyPlot.Series
                 pts1 = CanonicalSplineHelper.CreateSpline(rpts1, 0.5, null, false, 0.25);
             }
 
+            var dashArray = this.ActualDashArray;
+
             // draw the clipped lines
             rc.DrawClippedLine(
                 pts0,
@@ -225,7 +227,7 @@ namespace OxyPlot.Series
                 minDistSquared,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
-                this.ActualLineStyle,
+                dashArray,
                 this.LineJoin,
                 false);
             rc.DrawClippedLine(
@@ -234,7 +236,7 @@ namespace OxyPlot.Series
                 minDistSquared,
                 this.GetSelectableColor(this.ActualColor2),
                 this.StrokeThickness,
-                this.ActualLineStyle,
+                dashArray,
                 this.LineJoin,
                 false);
 
@@ -246,13 +248,15 @@ namespace OxyPlot.Series
             // pts = SutherlandHodgmanClipping.ClipPolygon(clippingRect, pts);
             rc.DrawClippedPolygon(pts, clippingRect, minDistSquared, this.GetSelectableFillColor(this.ActualFill), OxyColors.Undefined);
 
+            var markerSizes = new[] { this.MarkerSize };
+
             // draw the markers on top
             rc.DrawMarkers(
                 pts0,
                 clippingRect,
                 this.MarkerType,
                 null,
-                new[] { this.MarkerSize },
+                markerSizes,
                 this.MarkerFill,
                 this.MarkerStroke,
                 this.MarkerStrokeThickness,
@@ -262,7 +266,7 @@ namespace OxyPlot.Series
                 clippingRect,
                 this.MarkerType,
                 null,
-                new[] { this.MarkerSize },
+                markerSizes,
                 this.MarkerFill,
                 this.MarkerStroke,
                 this.MarkerStrokeThickness,

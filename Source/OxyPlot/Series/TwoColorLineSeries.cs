@@ -76,6 +76,15 @@ namespace OxyPlot.Series
         public double Limit { get; set; }
 
         /// <summary>
+        /// Gets or sets the dash array for the rendered line that is below the limit (overrides <see cref="LineStyle" />).
+        /// </summary>
+        /// <value>The dash array.</value>
+        /// <remarks>
+        /// If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.
+        /// </remarks>
+        public double[] Dashes2 { get; set; }
+
+        /// <summary>
         /// Gets or sets the line style for the part of the line that is below the limit.
         /// </summary>
         /// <value>The line style.</value>
@@ -90,6 +99,17 @@ namespace OxyPlot.Series
             get
             {
                 return this.LineStyle2 != LineStyle.Undefined ? this.LineStyle2 : LineStyle.Solid;
+            }
+        }
+
+        /// <summary>
+        /// Gets the actual dash array for the line that is below the limit.
+        /// </summary>
+        protected double[] ActualDashArray2
+        {
+            get
+            {
+                return this.Dashes2 ?? this.ActualLineStyle2.GetDashArray();
             }
         }
 
@@ -143,6 +163,9 @@ namespace OxyPlot.Series
                 y = clippingRect.Bottom;
             }
 
+            var dashArray = this.ActualDashArray;
+            var dashArray2 = this.ActualDashArray2;
+            
             clippingRect.Bottom = y;
             rc.DrawClippedLine(
                 pointsToRender,
@@ -150,7 +173,7 @@ namespace OxyPlot.Series
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
-                this.ActualLineStyle,
+                dashArray,
                 this.LineJoin,
                 false);
             clippingRect.Top = y;
@@ -161,7 +184,7 @@ namespace OxyPlot.Series
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableColor(this.ActualColor2),
                 this.StrokeThickness,
-                this.ActualLineStyle2,
+                dashArray2,
                 this.LineJoin,
                 false);
         }

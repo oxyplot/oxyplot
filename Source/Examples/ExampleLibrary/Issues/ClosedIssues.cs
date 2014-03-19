@@ -173,7 +173,7 @@ namespace ExampleLibrary
 
             return model;
         }
-
+       
         [Example("#10076: Super exponential format")]
         public static PlotModel SuperExponentialFormat()
         {
@@ -253,6 +253,29 @@ namespace ExampleLibrary
         {
             var model = new PlotModel("Issue 10153");
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -0.0515724495834661, 0.016609368598352, 0.02, 0.002));
+            return model;
+        }
+
+        [Example("#10164: LineSeries.Dashes property")]
+        public static PlotModel DashesTest()
+        {
+            var model = new PlotModel("Dashed line test");
+
+            for (int y = 1; y <= 10; y++)
+            {
+                var line = new LineSeries
+                {
+                    StrokeThickness = y,
+                    Dashes = new double[] { 1, 2, 3 }
+                };
+                for (int i = 0; i < 20; i++)
+                {
+                    line.Points.Add(new DataPoint(i + 1, y));
+                }
+
+                model.Series.Add(line);
+            }
+
             return model;
         }
     }

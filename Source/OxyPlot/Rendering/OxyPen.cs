@@ -72,7 +72,7 @@ namespace OxyPlot
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the dash array.
+        /// Gets or sets the dash array (overrides <see cref="LineStyle"/>).
         /// </summary>
         /// <value>The dash array.</value>
         public double[] DashArray { get; set; }
@@ -84,7 +84,7 @@ namespace OxyPlot
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
-        /// Gets or sets the line style.
+        /// Gets or sets the line style (overridden by <see cref="DashArray"/>).
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
@@ -94,6 +94,20 @@ namespace OxyPlot
         /// </summary>
         /// <value>The line thickness.</value>
         public double Thickness { get; set; }
+
+        /// <summary>
+        /// Gets the actual dash array.
+        /// </summary>
+        /// <value>
+        /// The actual dash array.
+        /// </value>
+        public double[] ActualDashArray
+        {
+            get
+            {
+                return this.DashArray ?? this.LineStyle.GetDashArray();
+            }
+        }
 
         /// <summary>
         /// Creates the specified pen.

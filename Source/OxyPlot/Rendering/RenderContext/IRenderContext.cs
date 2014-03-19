@@ -93,7 +93,7 @@ namespace OxyPlot
         /// The stroke thickness (in device independent units, 1/96 inch).
         /// </param>
         /// <param name="dashArray">
-        /// The dash array (in device independent units, 1/96 inch).
+        /// The dash array (in device independent units, 1/96 inch). Use <c>null</c> to get a solid line.
         /// </param>
         /// <param name="lineJoin">
         /// The line join type.

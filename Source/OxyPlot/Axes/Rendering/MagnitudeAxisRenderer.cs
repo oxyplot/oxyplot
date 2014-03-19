@@ -159,7 +159,7 @@ namespace OxyPlot.Axes
         {
             var isFullCircle = Math.Abs(Math.Abs(angleAxis.EndAngle - angleAxis.StartAngle) - 360) < 1e-6;
 
-            if (isFullCircle && pen.DashArray == null)
+            if (isFullCircle && pen.ActualDashArray == null)
             {
                 this.RenderTickCircle(axis, angleAxis, x, pen);
             }
@@ -222,7 +222,7 @@ namespace OxyPlot.Axes
                 points.Add(axis.Transform(x, angle, angleAxis));
             }
 
-            this.RenderContext.DrawLine(points, pen.Color, pen.Thickness, pen.DashArray);
+            this.RenderContext.DrawLine(points, pen.Color, pen.Thickness, pen.ActualDashArray);
         }
 
         /// <summary>

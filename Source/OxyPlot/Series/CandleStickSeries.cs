@@ -141,6 +141,9 @@ namespace OxyPlot.Series
             this.VerifyAxes();
 
             var clippingRect = this.GetClippingRect();
+            var dashArray = this.LineStyle.GetDashArray();
+            var actualColor = this.GetSelectableColor(this.ActualColor);
+            var shadowEndColor = this.GetSelectableColor(this.ShadowEndColor);
 
             foreach (var v in this.Items)
             {
@@ -160,9 +163,9 @@ namespace OxyPlot.Series
                             new[] { low, high },
                             clippingRect,
                             0,
-                            this.GetSelectableColor(this.ActualColor),
+                            actualColor,
                             this.StrokeThickness,
-                            this.LineStyle,
+                            dashArray,
                             this.LineJoin,
                             false);
                     }
@@ -178,9 +181,9 @@ namespace OxyPlot.Series
                             new[] { high, min },
                             clippingRect,
                             0,
-                            this.GetSelectableColor(this.ActualColor),
+                            actualColor,
                             this.StrokeThickness,
-                            this.LineStyle,
+                            dashArray,
                             this.LineJoin,
                             true);
 
@@ -189,9 +192,9 @@ namespace OxyPlot.Series
                             new[] { max, low },
                             clippingRect,
                             0,
-                            this.GetSelectableColor(this.ActualColor),
+                            actualColor,
                             this.StrokeThickness,
-                            this.LineStyle,
+                            dashArray,
                             this.LineJoin,
                             true);
 
@@ -204,9 +207,9 @@ namespace OxyPlot.Series
                                  new[] { highLeft, highRight },
                                  clippingRect,
                                  0,
-                                 this.GetSelectableColor(this.ShadowEndColor),
+                                 shadowEndColor,
                                  this.StrokeThickness,
-                                 this.LineStyle,
+                                 dashArray,
                                  this.LineJoin,
                                  true);
 
@@ -216,9 +219,9 @@ namespace OxyPlot.Series
                                 new[] { lowLeft, lowRight },
                                 clippingRect,
                                 0,
-                                this.GetSelectableColor(this.ShadowEndColor),
+                                shadowEndColor,
                                 this.StrokeThickness,
-                                this.LineStyle,
+                                dashArray,
                                 this.LineJoin,
                                 true);
                         }
@@ -229,8 +232,7 @@ namespace OxyPlot.Series
                         var fillColor = v.Close > v.Open
                                             ? this.GetSelectableFillColor(this.ActualIncreasingFill)
                                             : this.GetSelectableFillColor(this.DecreasingFill);
-                        var strokeColor = this.GetSelectableColor(this.ActualColor);
-                        rc.DrawClippedRectangleAsPolygon(rect, clippingRect, fillColor, strokeColor, this.StrokeThickness);
+                        rc.DrawClippedRectangleAsPolygon(rect, clippingRect, fillColor, actualColor, this.StrokeThickness);
                     }
                 }
             }

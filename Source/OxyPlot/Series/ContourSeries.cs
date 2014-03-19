@@ -303,36 +303,29 @@ namespace OxyPlot.Series
             rc.SetClip(clippingRect);
 
             var contourLabels = new List<ContourLabel>();
+            var dashArray = this.LineStyle.GetDashArray();
 
             foreach (var contour in this.contours)
             {
                 if (this.StrokeThickness > 0 && this.LineStyle != LineStyle.None)
                 {
-                    var pts = new ScreenPoint[contour.Points.Count];
-                    {
-                        int i = 0;
-                        foreach (var pt in contour.Points)
-                        {
-                            pts[i++] = this.Transform(pt.X, pt.Y);
-                        }
-                    }
-
+                    var transformedPoints = contour.Points.Select(this.Transform).ToArray();
                     var strokeColor = contour.Color.GetActualColor(this.ActualColor);
 
                     rc.DrawClippedLine(
-                        pts,
+                        transformedPoints,
                         clippingRect,
                         4,
                         this.GetSelectableColor(strokeColor),
                         this.StrokeThickness,
-                        this.LineStyle,
+                        dashArray,
                         OxyPenLineJoin.Miter,
                         false);
 
-                    // rc.DrawClippedPolygon(pts, clippingRect, 4, model.GetDefaultColor(), OxyColors.Black);
-                    if (pts.Length > 10)
+                    // rc.DrawClippedPolygon(transformedPoints, clippingRect, 4, model.GetDefaultColor(), OxyColors.Black);
+                    if (transformedPoints.Length > 10)
                     {
-                        this.AddContourLabels(contour, pts, clippingRect, contourLabels);
+                        this.AddContourLabels(contour, transformedPoints, clippingRect, contourLabels);
                     }
                 }
             }

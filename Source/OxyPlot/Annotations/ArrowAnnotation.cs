@@ -155,13 +155,15 @@ namespace OxyPlot.Annotations
             OxyRect clippingRect = this.GetClippingRect();
             const double MinimumSegmentLength = 4;
 
+            var dashArray = this.LineStyle.GetDashArray();
+
             rc.DrawClippedLine(
                 new[] { this.screenStartPoint, p4 },
                 clippingRect,
                 MinimumSegmentLength * MinimumSegmentLength,
                 this.GetSelectableColor(this.Color),
                 this.StrokeThickness,
-                this.LineStyle,
+                dashArray,
                 this.LineJoin,
                 false);
 

@@ -142,10 +142,12 @@ namespace OxyPlot.Series
         public double BrokenLineThickness { get; set; }
 
         /// <summary>
-        /// Gets or sets the dashes array.
-        /// If this is not null it overrides the LineStyle property.
+        /// Gets or sets the dash array for the rendered line (overrides <see cref="LineStyle" />).
         /// </summary>
-        /// <value>The dashes.</value>
+        /// <value>The dash array.</value>
+        /// <remarks>
+        /// If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.
+        /// </remarks>
         public double[] Dashes { get; set; }
 
         /// <summary>
@@ -278,6 +280,17 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Gets the actual dash array for the line.
+        /// </summary>
+        protected double[] ActualDashArray
+        {
+            get
+            {
+                return this.Dashes ?? this.ActualLineStyle.GetDashArray();
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the smoothed points.
         /// </summary>
         /// <value>The smoothed points.</value>
@@ -358,6 +371,7 @@ namespace OxyPlot.Series
             {
                 var brokenLines = CalculateBrokenLines(contiguousLines);
                 var transformedBrokenLines = brokenLines.Select(l => new[] { Transform(l.Point1), Transform(l.Point2) });
+                var brokenLineDashArray = this.BrokenLineStyle.GetDashArray();
                 foreach (var transformedBrokenLine in transformedBrokenLines)
                 {
                     rc.DrawClippedLineSegments(
@@ -365,7 +379,7 @@ namespace OxyPlot.Series
                         clippingRect,
                         this.BrokenLineColor,
                         this.BrokenLineThickness,
-                        this.BrokenLineStyle,
+                        brokenLineDashArray,
                         this.LineJoin,
                         false);
                 }
@@ -690,16 +704,16 @@ namespace OxyPlot.Series
         /// <param name="pointsToRender">
         /// The points to render.
         /// </param>
-        protected virtual void RenderSmoothedLine(
-            IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
+        protected virtual void RenderSmoothedLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
+            var dashArray = this.ActualDashArray;
             rc.DrawClippedLine(
                 pointsToRender,
                 clippingRect,
                 this.MinimumSegmentLength * this.MinimumSegmentLength,
                 this.GetSelectableColor(this.ActualColor),
                 this.StrokeThickness,
-                this.ActualLineStyle,
+                dashArray,
                 this.LineJoin,
                 false);
         }

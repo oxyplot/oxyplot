@@ -222,7 +222,7 @@ namespace OxyPlot.Wpf
         /// <param name="points">The points.</param>
         /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array.</param>
+        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public void DrawLine(
@@ -255,24 +255,12 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The draw line segments.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">The aliased.</param>
         public void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -325,27 +313,13 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Draws the polygon from the specified points. The polygon can have stroke and/or fill.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The stroke thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join type.
-        /// </param>
-        /// <param name="aliased">
-        /// if set to <c>true</c> the shape will be aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
@@ -375,27 +349,13 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The draw polygons.
         /// </summary>
-        /// <param name="polygons">
-        /// The polygons.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="polygons">The polygons.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">The aliased.</param>
         public void DrawPolygons(
             IList<IList<ScreenPoint>> polygons,
             OxyColor fill,
@@ -971,24 +931,12 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Draws the line segments by stream geometry.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// Draw aliased line if set to <c>true</c> .
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">Draw aliased line if set to <c>true</c> .</param>
         private void DrawLineSegmentsByStreamGeometry(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -1086,13 +1034,13 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The set stroke.
+        /// Sets the stroke properties of the specified shape object.
         /// </summary>
         /// <param name="shape">The shape.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="thickness">The thickness.</param>
         /// <param name="lineJoin">The line join.</param>
-        /// <param name="dashArray">The dash array.</param>
+        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
         /// <param name="dashOffset">The dash offset.</param>
         /// <param name="aliased">The aliased.</param>
         private void SetStroke(
@@ -1182,7 +1130,7 @@ namespace OxyPlot.Wpf
         /// <param name="points">The points.</param>
         /// <param name="stroke">The stroke.</param>
         /// <param name="thickness">The thickness.</param>
-        /// <param name="dashArray">The dash array.</param>
+        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
         /// <param name="lineJoin">The line join.</param>
         /// <param name="aliased">Render aliased if set to <c>true</c>.</param>
         /// <remarks>
