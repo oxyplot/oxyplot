@@ -36,7 +36,6 @@ namespace ExampleBrowser
     using ExampleLibrary;
 
     using OxyPlot;
-    using OxyPlot.Wpf;
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
@@ -118,14 +117,6 @@ namespace ExampleBrowser
             get
             {
                 return this.SelectedExample != null && this.SelectedExample.PlotController != null ? this.SelectedExample.PlotController : this.defaultController;
-            }
-        }
-
-        public Brush PlotBackground
-        {
-            get
-            {
-                return selectedExample != null && selectedExample.PlotModel.Background.IsVisible() ? selectedExample.PlotModel.Background.ToBrush() : Brushes.Transparent;
             }
         }
 

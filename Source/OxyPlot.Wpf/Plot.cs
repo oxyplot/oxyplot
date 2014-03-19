@@ -1141,6 +1141,8 @@ namespace OxyPlot.Wpf
 
             if (this.ActualModel != null)
             {
+                this.canvas.Background = this.ActualModel.Background.ToBrush();
+
                 if (this.DisconnectCanvasWhileUpdating)
                 {
                     // TODO: profile... not sure if this makes any difference                    
