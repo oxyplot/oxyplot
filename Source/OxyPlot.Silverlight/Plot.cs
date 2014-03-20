@@ -33,9 +33,9 @@ namespace OxyPlot.Silverlight
     using System;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Markup;
     using System.Windows.Media.Imaging;
@@ -58,11 +58,6 @@ namespace OxyPlot.Silverlight
         /// The model lock.
         /// </summary>
         private readonly object modelLock = new object();
-
-        /// <summary>
-        /// The update model and visuals lock.
-        /// </summary>
-        private readonly object updateModelAndVisualsLock = new object();
 
         /// <summary>
         /// The tracker definitions.
@@ -95,11 +90,6 @@ namespace OxyPlot.Silverlight
         private Grid grid;
 
         /// <summary>
-        /// The internal model.
-        /// </summary>
-        private PlotModel internalModel;
-
-        /// <summary>
         /// The default controller.
         /// </summary>
         private IPlotController defaultController;
@@ -129,10 +119,6 @@ namespace OxyPlot.Silverlight
             this.trackerDefinitions = new ObservableCollection<TrackerDefinition>();
             this.Loaded += this.OnLoaded;
             this.SizeChanged += this.OnSizeChanged;
-
-            // http://nuggets.hammond-turner.org.uk/2009/01/quickie-simulating-datacontextchanged.html
-            // ReSharper disable once RedundantNameQualifier
-            this.SetBinding(Plot.DataContextWatcherProperty, new Binding());
         }
 
         /// <summary>
@@ -143,7 +129,7 @@ namespace OxyPlot.Silverlight
         {
             get
             {
-                return this.Model ?? this.internalModel;
+                return this.currentModel;
             }
         }
 
@@ -201,16 +187,34 @@ namespace OxyPlot.Silverlight
         /// </param>
         public void InvalidatePlot(bool updateData = true)
         {
-            if (updateData)
-            {
-                this.isPlotInvalidated = 2;
-            }
-            else
-            {
-                System.Threading.Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0);
-            }
+            this.UpdateModel(updateData);
 
-            this.Invoke(this.InvalidateArrange);
+            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
+            {
+                // Invalidate the arrange state for the element. 
+                // After the invalidation, the element will have its layout updated, 
+                // which will occur asynchronously unless subsequently forced by UpdateLayout.
+                this.BeginInvoke(this.InvalidateArrange);
+            }
+        }
+
+        /// <summary>
+        /// Refresh the plot immediately (not blocking UI thread)
+        /// </summary>
+        /// <param name="updateData">
+        /// if set to <c>true</c> , the data collections will be updated.
+        /// </param>
+        public void RefreshPlot(bool updateData)
+        {
+            this.UpdateModel(updateData);
+
+            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
+            {
+                this.BeginInvoke(this.InvalidateArrange);
+
+                // ensure that all visual child elements are properly updated for layout
+                this.BeginInvoke(this.UpdateLayout);
+            }
         }
 
         /// <summary>
@@ -235,17 +239,6 @@ namespace OxyPlot.Silverlight
 
             this.zoomControl = new ContentControl();
             this.overlays.Children.Add(this.zoomControl);
-        }
-
-        /// <summary>
-        /// Refresh the plot immediately (not blocking UI thread)
-        /// </summary>
-        /// <param name="updateData">
-        /// if set to <c>true</c> , the data collections will be updated.
-        /// </param>
-        public void RefreshPlot(bool updateData)
-        {
-            this.InvalidatePlot(updateData);
         }
 
         /// <summary>
@@ -612,36 +605,15 @@ namespace OxyPlot.Silverlight
         /// </returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
-            if (this.ActualWidth > 0 && this.ActualHeight > 0)
+            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 1) == 1)
             {
-                if (System.Threading.Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 1) == 1)
+                if (this.ActualWidth > 0 && this.ActualHeight > 0)
                 {
-                    this.UpdateModelAndVisuals(false);
-                }
-                else
-                {
-                    if (System.Threading.Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 2) == 2)
-                    {
-                        this.UpdateModelAndVisuals(true);
-                    }
+                    this.UpdateVisuals();
                 }
             }
 
             return base.ArrangeOverride(finalSize);
-        }
-
-        /// <summary>
-        /// Called when the DataContext is changed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
-        private static void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            ((Plot)sender).OnDataContextChanged();
         }
 
         /// <summary>
@@ -677,14 +649,6 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Called when data context is changed.
-        /// </summary>
-        private void OnDataContextChanged()
-        {
-            this.OnModelChanged();
-        }
-
-        /// <summary>
         /// Called when the control is loaded.
         /// </summary>
         /// <param name="sender">
@@ -695,7 +659,9 @@ namespace OxyPlot.Silverlight
         /// </param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.OnModelChanged();
+            // Make sure InvalidateArrange is called when the plot is invalidated
+            Interlocked.Exchange(ref this.isPlotInvalidated, 0);
+            this.InvalidatePlot();
         }
 
         /// <summary>
@@ -708,18 +674,20 @@ namespace OxyPlot.Silverlight
                 if (this.currentModel != null)
                 {
                     this.currentModel.AttachPlotControl(null);
+                    this.currentModel = null;
                 }
 
-                if (this.Model != null)
+                this.currentModel = this.Model;
+
+                if (this.currentModel != null)
                 {
-                    if (this.Model.PlotControl != null)
+                    if (this.currentModel.PlotControl != null)
                     {
                         throw new InvalidOperationException(
                             "This PlotModel is already in use by some other plot control.");
                     }
 
-                    this.Model.AttachPlotControl(this);
-                    this.currentModel = this.Model;
+                    this.currentModel.AttachPlotControl(this);
                 }
             }
 
@@ -748,26 +716,9 @@ namespace OxyPlot.Silverlight
         /// </param>
         private void UpdateModel(bool updateData = true)
         {
-            this.internalModel = this.Model;
-
             if (this.ActualModel != null)
             {
                 this.ActualModel.Update(updateData);
-            }
-        }
-
-        /// <summary>
-        /// Updates the model. If Model==null, an internal model will be created. The ActualModel.UpdateModel will be called (updates all series data).
-        /// </summary>
-        /// <param name="updateData">
-        /// if set to <c>true</c> , all data collections will be updated.
-        /// </param>
-        private void UpdateModelAndVisuals(bool updateData)
-        {
-            lock (this.updateModelAndVisualsLock)
-            {
-                this.UpdateModel(updateData);
-                this.UpdateVisuals();
             }
         }
 
@@ -794,7 +745,7 @@ namespace OxyPlot.Silverlight
         /// Invokes the specified action on the dispatcher, if necessary.
         /// </summary>
         /// <param name="action">The action.</param>
-        private void Invoke(Action action)
+        private void BeginInvoke(Action action)
         {
             if (!this.Dispatcher.CheckAccess())
             {
