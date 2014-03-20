@@ -27,24 +27,24 @@
 //   The plot control for Windows Store apps.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Metro
 {
     using System;
     using System.Collections.ObjectModel;
     using System.Linq;
-
-    using Windows.Devices.Input;
-
-    using OxyPlot.Series;
-
+    using System.Threading;
     using Windows.ApplicationModel.DataTransfer;
+    using Windows.Devices.Input;
+    using Windows.Foundation;
     using Windows.System;
     using Windows.UI.Core;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Input;
-    using Windows.UI.Xaml.Media;
     using Windows.UI.Xaml.Media.Imaging;
+
+    using OxyPlot.Series;
 
     /// <summary>
     /// The plot control for Windows Store apps.
@@ -88,11 +88,6 @@ namespace OxyPlot.Metro
         private Grid grid;
 
         /// <summary>
-        /// The internal model.
-        /// </summary>
-        private PlotModel internalModel;
-
-        /// <summary>
         /// The default controller.
         /// </summary>
         private IPlotController defaultController;
@@ -115,7 +110,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// The is plot invalidated.
         /// </summary>
-        private bool isPlotInvalidated;
+        private int isPlotInvalidated;
 
         /// <summary>
         /// The is shift pressed.
@@ -131,11 +126,6 @@ namespace OxyPlot.Metro
         /// The render context
         /// </summary>
         private MetroRenderContext renderContext;
-
-        /// <summary>
-        /// Data has been updated.
-        /// </summary>
-        private bool updateData;
 
         /// <summary>
         /// The zoom control.
@@ -154,7 +144,6 @@ namespace OxyPlot.Metro
             this.SizeChanged += this.OnSizeChanged;
             this.ManipulationMode = ManipulationModes.Scale | ManipulationModes.TranslateX
                                     | ManipulationModes.TranslateY;
-            CompositionTarget.Rendering += this.CompositionTargetRendering;
         }
 
         /// <summary>
@@ -177,7 +166,7 @@ namespace OxyPlot.Metro
         {
             get
             {
-                return this.Model ?? this.internalModel;
+                return this.currentModel;
             }
         }
 
@@ -223,10 +212,14 @@ namespace OxyPlot.Metro
         /// </param>
         public void InvalidatePlot(bool update = true)
         {
-            lock (this)
+            this.UpdateModel(update);
+
+            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
             {
-                this.isPlotInvalidated = true;
-                this.updateData = this.updateData || update;
+                // Invalidate the arrange state for the element. 
+                // After the invalidation, the element will have its layout updated, 
+                // which will occur asynchronously unless subsequently forced by UpdateLayout.
+                this.BeginInvoke(this.InvalidateArrange);
             }
         }
 
@@ -685,33 +678,6 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Called when the composition target rendering event occurs.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private void CompositionTargetRendering(object sender, object e)
-        {
-            lock (this)
-            {
-                if (this.isPlotInvalidated)
-                {
-                    this.isPlotInvalidated = false;
-                    if (this.ActualWidth > 0 && this.ActualHeight > 0)
-                    {
-                        this.UpdateModel(this.updateData);
-                        this.updateData = false;
-                    }
-
-                    this.UpdateVisuals();
-                }
-            }
-        }
-
-        /// <summary>
         /// Called when the control is loaded.
         /// </summary>
         /// <param name="sender">
@@ -722,7 +688,9 @@ namespace OxyPlot.Metro
         /// </param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.OnModelChanged();
+            // Make sure InvalidateArrange is called when the plot is invalidated
+            Interlocked.Exchange(ref this.isPlotInvalidated, 0);
+            this.InvalidatePlot();
         }
 
         /// <summary>
@@ -735,6 +703,7 @@ namespace OxyPlot.Metro
                 if (this.currentModel != null)
                 {
                     this.currentModel.AttachPlotControl(null);
+                    this.currentModel = null;
                 }
 
                 if (this.Model != null)
@@ -764,7 +733,27 @@ namespace OxyPlot.Metro
         /// </param>
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.InvalidatePlot();
+            this.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Provides the behavior for the Arrange pass of layout. Classes can override this method to define their own Arrange pass behavior.
+        /// </summary>
+        /// <param name="finalSize">The final area within the parent that this object should use to arrange itself and its children.</param>
+        /// <returns>
+        /// The actual size that is used after the element is arranged in layout.
+        /// </returns>
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (this.ActualWidth > 0 && this.ActualHeight > 0)
+            {
+                if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 1) == 1)
+                {
+                    this.UpdateVisuals();
+                }
+            }
+
+            return base.ArrangeOverride(finalSize);
         }
 
         /// <summary>
@@ -775,8 +764,6 @@ namespace OxyPlot.Metro
         /// </param>
         private void UpdateModel(bool update)
         {
-            this.internalModel = this.Model;
-
             if (this.ActualModel != null)
             {
                 this.ActualModel.Update(update);
@@ -799,6 +786,22 @@ namespace OxyPlot.Metro
             if (this.ActualModel != null)
             {
                 this.ActualModel.Render(this.renderContext, this.canvas.ActualWidth, this.canvas.ActualHeight);
+            }
+        }
+
+        /// <summary>
+        /// Invokes the specified action on the UI Thread (without blocking the calling thread).
+        /// </summary>
+        /// <param name="action">The action.</param>
+        private void BeginInvoke(Action action)
+        {
+            if (!this.Dispatcher.HasThreadAccess)
+            {
+                this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => action());
+            }
+            else
+            {
+                action();
             }
         }
     }
