@@ -109,7 +109,6 @@
     </Compile>
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
-    <Compile Include="Plot.Properties.cs" />
     <Compile Include="Utilities\ConverterExtensions.cs" />
     <Compile Include="Utilities\MouseButtonHelper.cs" />
     <Compile Include="Plot.cs" />

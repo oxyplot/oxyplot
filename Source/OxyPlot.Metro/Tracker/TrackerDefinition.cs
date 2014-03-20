@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The tracker definition.
+//   Represents a tracker definition.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,8 +34,13 @@ namespace OxyPlot.Metro
     using Windows.UI.Xaml.Controls;
 
     /// <summary>
-    /// The tracker definition.
+    /// Represents a tracker definition.
     /// </summary>
+    /// <remarks>
+    /// The tracker definitions make it possible to show different trackers for different series.
+    /// The <see cref="OxyPlot.Series.Series.TrackerKey" /> property is matched with the <see cref="TrackerDefinition.TrackerKey"/> 
+    /// in the TrackerDefinitions collection in the <see cref="Plot" /> control.
+    /// </remarks>
     public class TrackerDefinition : DependencyObject
     {
         /// <summary>
@@ -89,6 +94,5 @@ namespace OxyPlot.Metro
                 this.SetValue(TrackerTemplateProperty, value);
             }
         }
-
     }
 }

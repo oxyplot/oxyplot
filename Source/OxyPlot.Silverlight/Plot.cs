@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The Silverlight Plot control.
+//   Represents a control that displays plots in Silverlight applications.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -43,12 +43,77 @@ namespace OxyPlot.Silverlight
     using OxyPlot.Series;
 
     /// <summary>
-    /// The Silverlight Plot control.
+    /// Represents a control that displays plots in Silverlight applications.
     /// </summary>
     [ContentProperty("Series")]
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
-    public partial class Plot : Control, IPlotControl
+    public class Plot : Control, IPlotControl
     {
+        /// <summary>
+        /// Defines the Controller property.
+        /// </summary>
+        public static readonly DependencyProperty ControllerProperty =
+            DependencyProperty.Register("Controller", typeof(IPlotController), typeof(Plot), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The default tracker property.
+        /// </summary>
+        public static readonly DependencyProperty DefaultTrackerTemplateProperty =
+            DependencyProperty.Register(
+                "DefaultTrackerTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The handle right clicks property.
+        /// </summary>
+        public static readonly DependencyProperty HandleRightClicksProperty =
+            DependencyProperty.Register("HandleRightClicks", typeof(bool), typeof(Plot), new PropertyMetadata(true));
+
+        /// <summary>
+        /// The is mouse wheel enabled property.
+        /// </summary>
+        public static readonly DependencyProperty IsMouseWheelEnabledProperty =
+            DependencyProperty.Register("IsMouseWheelEnabled", typeof(bool), typeof(Plot), new PropertyMetadata(true));
+
+        /// <summary>
+        /// The model property.
+        /// </summary>
+        public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
+            "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
+
+        /// <summary>
+        /// The pan cursor property.
+        /// </summary>
+        public static readonly DependencyProperty PanCursorProperty = DependencyProperty.Register(
+            "PanCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.Hand));
+
+        /// <summary>
+        /// The zoom horizontal cursor property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomHorizontalCursorProperty =
+            DependencyProperty.Register(
+                "ZoomHorizontalCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeWE));
+
+        /// <summary>
+        /// The zoom rectangle cursor property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomRectangleCursorProperty =
+            DependencyProperty.Register(
+                "ZoomRectangleCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeNWSE));
+
+        /// <summary>
+        /// The zoom rectangle template property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomRectangleTemplateProperty =
+            DependencyProperty.Register(
+                "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The zoom vertical cursor property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomVerticalCursorProperty =
+            DependencyProperty.Register(
+                "ZoomVerticalCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeNS));
+
         /// <summary>
         /// The Grid PART constant.
         /// </summary>
@@ -122,6 +187,168 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
+        /// Gets or sets the plot controller.
+        /// </summary>
+        /// <value>
+        /// The plot controller.
+        /// </value>
+        public IPlotController Controller
+        {
+            get { return (IPlotController)this.GetValue(ControllerProperty); }
+            set { this.SetValue(ControllerProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the default tracker template.
+        /// </summary>
+        public ControlTemplate DefaultTrackerTemplate
+        {
+            get
+            {
+                return (ControlTemplate)this.GetValue(DefaultTrackerTemplateProperty);
+            }
+
+            set
+            {
+                this.SetValue(DefaultTrackerTemplateProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to handle right clicks.
+        /// </summary>
+        public bool HandleRightClicks
+        {
+            get
+            {
+                return (bool)this.GetValue(HandleRightClicksProperty);
+            }
+
+            set
+            {
+                this.SetValue(HandleRightClicksProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether IsMouseWheelEnabled.
+        /// </summary>
+        public bool IsMouseWheelEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsMouseWheelEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsMouseWheelEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the model.
+        /// </summary>
+        /// <value> The model. </value>
+        public PlotModel Model
+        {
+            get
+            {
+                return (PlotModel)this.GetValue(ModelProperty);
+            }
+
+            set
+            {
+                this.SetValue(ModelProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the pan cursor.
+        /// </summary>
+        /// <value> The pan cursor. </value>
+        public Cursor PanCursor
+        {
+            get
+            {
+                return (Cursor)this.GetValue(PanCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(PanCursorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the horizontal zoom cursor.
+        /// </summary>
+        /// <value> The zoom horizontal cursor. </value>
+        public Cursor ZoomHorizontalCursor
+        {
+            get
+            {
+                return (Cursor)this.GetValue(ZoomHorizontalCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomHorizontalCursorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the rectangle zoom cursor.
+        /// </summary>
+        /// <value> The zoom rectangle cursor. </value>
+        public Cursor ZoomRectangleCursor
+        {
+            get
+            {
+                return (Cursor)this.GetValue(ZoomRectangleCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomRectangleCursorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the zoom rectangle template.
+        /// </summary>
+        /// <value> The zoom rectangle template. </value>
+        public ControlTemplate ZoomRectangleTemplate
+        {
+            get
+            {
+                return (ControlTemplate)this.GetValue(ZoomRectangleTemplateProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomRectangleTemplateProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the vertical zoom cursor.
+        /// </summary>
+        /// <value> The zoom vertical cursor. </value>
+        public Cursor ZoomVerticalCursor
+        {
+            get
+            {
+                return (Cursor)this.GetValue(ZoomVerticalCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomVerticalCursorProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets the actual model.
         /// </summary>
         /// <value> The actual model. </value>
@@ -146,7 +373,7 @@ namespace OxyPlot.Silverlight
                 return this.Controller ?? (this.defaultController ?? (this.defaultController = new PlotController()));
             }
         }
-        
+
         /// <summary>
         /// Gets the tracker definitions.
         /// </summary>

@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The plot control for Windows Store apps.
+//   Represents a control that displays plots in Windows Store apps.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,6 +34,9 @@ namespace OxyPlot.Metro
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading;
+
+    using OxyPlot.Series;
+
     using Windows.ApplicationModel.DataTransfer;
     using Windows.Devices.Input;
     using Windows.Foundation;
@@ -44,14 +47,50 @@ namespace OxyPlot.Metro
     using Windows.UI.Xaml.Input;
     using Windows.UI.Xaml.Media.Imaging;
 
-    using OxyPlot.Series;
-
     /// <summary>
-    /// The plot control for Windows Store apps.
+    /// Represents a control that displays plots in Windows Store apps.
     /// </summary>
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
-    public partial class Plot : Control, IPlotControl
+    public class Plot : Control, IPlotControl
     {
+        /// <summary>
+        /// Defines the Controller property.
+        /// </summary>
+        public static readonly DependencyProperty ControllerProperty =
+            DependencyProperty.Register("Controller", typeof(PlotController), typeof(Plot), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The default tracker property.
+        /// </summary>
+        public static readonly DependencyProperty DefaultTrackerTemplateProperty =
+            DependencyProperty.Register(
+                "DefaultTrackerTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The handle right clicks property.
+        /// </summary>
+        public static readonly DependencyProperty HandleRightClicksProperty =
+            DependencyProperty.Register("HandleRightClicks", typeof(bool), typeof(Plot), new PropertyMetadata(true));
+
+        /// <summary>
+        /// The is mouse wheel enabled property.
+        /// </summary>
+        public static readonly DependencyProperty IsMouseWheelEnabledProperty =
+            DependencyProperty.Register("IsMouseWheelEnabled", typeof(bool), typeof(Plot), new PropertyMetadata(true));
+
+        /// <summary>
+        /// The model property.
+        /// </summary>
+        public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
+            "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
+
+        /// <summary>
+        /// The zoom rectangle template property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomRectangleTemplateProperty =
+            DependencyProperty.Register(
+                "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
+
         /// <summary>
         /// The Grid PART constant.
         /// </summary>
@@ -144,6 +183,100 @@ namespace OxyPlot.Metro
             this.SizeChanged += this.OnSizeChanged;
             this.ManipulationMode = ManipulationModes.Scale | ManipulationModes.TranslateX
                                     | ManipulationModes.TranslateY;
+        }
+
+        /// <summary>
+        /// Gets or sets the plot controller.
+        /// </summary>
+        /// <value>
+        /// The plot controller.
+        /// </value>
+        public PlotController Controller
+        {
+            get { return (PlotController)this.GetValue(ControllerProperty); }
+            set { this.SetValue(ControllerProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the default tracker template.
+        /// </summary>
+        public ControlTemplate DefaultTrackerTemplate
+        {
+            get
+            {
+                return (ControlTemplate)this.GetValue(DefaultTrackerTemplateProperty);
+            }
+
+            set
+            {
+                this.SetValue(DefaultTrackerTemplateProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to handle right clicks.
+        /// </summary>
+        public bool HandleRightClicks
+        {
+            get
+            {
+                return (bool)this.GetValue(HandleRightClicksProperty);
+            }
+
+            set
+            {
+                this.SetValue(HandleRightClicksProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether IsMouseWheelEnabled.
+        /// </summary>
+        public bool IsMouseWheelEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsMouseWheelEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsMouseWheelEnabledProperty, value);
+            }
+        }
+      
+        /// <summary>
+        /// Gets or sets the <see cref="PlotModel" /> to show.
+        /// </summary>
+        /// <value>The <see cref="PlotModel" />.</value>
+        public PlotModel Model
+        {
+            get
+            {
+                return (PlotModel)this.GetValue(ModelProperty);
+            }
+
+            set
+            {
+                this.SetValue(ModelProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the zoom rectangle template.
+        /// </summary>
+        /// <value>The zoom rectangle template.</value>
+        public ControlTemplate ZoomRectangleTemplate
+        {
+            get
+            {
+                return (ControlTemplate)this.GetValue(ZoomRectangleTemplateProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomRectangleTemplateProperty, value);
+            }
         }
 
         /// <summary>
@@ -368,8 +501,7 @@ namespace OxyPlot.Metro
                 return;
             }
 
-            this.canvas = new Canvas();
-            this.canvas.IsHitTestVisible = false;
+            this.canvas = new Canvas { IsHitTestVisible = false };
             this.grid.Children.Add(this.canvas);
             this.canvas.UpdateLayout();
 
@@ -533,21 +665,6 @@ namespace OxyPlot.Metro
             }
         }
 
-        protected override void OnHolding(HoldingRoutedEventArgs e)
-        {
-            base.OnHolding(e);
-        }
-
-        protected override void OnTapped(TappedRoutedEventArgs e)
-        {
-            base.OnTapped(e);
-        }
-
-        protected override void OnDoubleTapped(DoubleTappedRoutedEventArgs e)
-        {
-            base.OnDoubleTapped(e);
-        }
-
         /// <summary>
         /// Called before the PointerPressed event occurs.
         /// </summary>
@@ -664,7 +781,27 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Called when the Model property is changed.
+        /// Provides the behavior for the Arrange pass of layout. Classes can override this method to define their own Arrange pass behavior.
+        /// </summary>
+        /// <param name="finalSize">The final area within the parent that this object should use to arrange itself and its children.</param>
+        /// <returns>
+        /// The actual size that is used after the element is arranged in layout.
+        /// </returns>
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (this.ActualWidth > 0 && this.ActualHeight > 0)
+            {
+                if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 1) == 1)
+                {
+                    this.UpdateVisuals();
+                }
+            }
+
+            return base.ArrangeOverride(finalSize);
+        }
+
+        /// <summary>
+        /// Called when the <see cref="Model" /> property is changed.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -734,26 +871,6 @@ namespace OxyPlot.Metro
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.InvalidatePlot(false);
-        }
-
-        /// <summary>
-        /// Provides the behavior for the Arrange pass of layout. Classes can override this method to define their own Arrange pass behavior.
-        /// </summary>
-        /// <param name="finalSize">The final area within the parent that this object should use to arrange itself and its children.</param>
-        /// <returns>
-        /// The actual size that is used after the element is arranged in layout.
-        /// </returns>
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            if (this.ActualWidth > 0 && this.ActualHeight > 0)
-            {
-                if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 0, 1) == 1)
-                {
-                    this.UpdateVisuals();
-                }
-            }
-
-            return base.ArrangeOverride(finalSize);
         }
 
         /// <summary>

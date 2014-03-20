@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The oxy color converter.
+//   Converts between <see cref="OxyColor" /> and <see cref="Color" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OxyPlot.Wpf
@@ -35,7 +35,7 @@ namespace OxyPlot.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Converts between OxyColor and Color.
+    /// Converts between <see cref="OxyColor" /> and <see cref="Color" />.
     /// </summary>
     [ValueConversion(typeof(OxyColor), typeof(Color))]
     public class OxyColorConverter : IValueConverter

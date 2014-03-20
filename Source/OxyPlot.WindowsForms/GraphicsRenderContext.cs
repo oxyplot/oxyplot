@@ -363,15 +363,15 @@ namespace OxyPlot.WindowsForms
         /// </remarks>
         public override void CleanUp()
         {
-            var imagesToRelease = imageCache.Keys.Where(i => !imagesInUse.Contains(i)).ToList();
+            var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i)).ToList();
             foreach (var i in imagesToRelease)
             {
                 var image = this.GetImage(i);
                 image.Dispose();
-                imageCache.Remove(i);
+                this.imageCache.Remove(i);
             }
 
-            imagesInUse.Clear();
+            this.imagesInUse.Clear();
         }
 
         /// <summary>
@@ -409,13 +409,13 @@ namespace OxyPlot.WindowsForms
                     ia.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
                 }
 
-                g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
+                this.g.InterpolationMode = interpolate ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
                 int sx = (int)Math.Floor(x);
                 int sy = (int)Math.Floor(y);
                 int sw = (int)Math.Ceiling(x + w) - sx;
                 int sh = (int)Math.Ceiling(y + h) - sy;
                 var destRect = new Rectangle(sx, sy, sw, sh);
-                g.DrawImage(image, destRect, (float)srcX - 0.5f, (float)srcY - 0.5f, (float)srcWidth, (float)srcHeight, GraphicsUnit.Pixel, ia);
+                this.g.DrawImage(image, destRect, (float)srcX - 0.5f, (float)srcY - 0.5f, (float)srcWidth, (float)srcHeight, GraphicsUnit.Pixel, ia);
             }
         }
 
@@ -438,6 +438,22 @@ namespace OxyPlot.WindowsForms
         public override void ResetClip()
         {
             this.g.ResetClip();
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            // dispose images
+            foreach (var i in this.imageCache)
+            {
+                i.Value.Dispose();
+            }
+
+            // dispose pens
+
+            // dispose brushes
         }
 
         /// <summary>
@@ -473,8 +489,14 @@ namespace OxyPlot.WindowsForms
             return btm;
         }
 
+        /// <summary>
+        /// Gets the cached brush.
+        /// </summary>
+        /// <param name="fill">The fill color.</param>
+        /// <returns>A <see cref="Brush" />.</returns>
         private Brush GetCachedBrush(OxyColor fill)
         {
+            // TODO: cache
             return fill.ToBrush();
         }
 
@@ -558,18 +580,6 @@ namespace OxyPlot.WindowsForms
             }
 
             return r;
-        }
-
-        public void Dispose()
-        {
-            foreach (var i in this.imageCache)
-            {
-                i.Value.Dispose();
-            }
-
-            // pens
-
-            // brushes
         }
     }
 }

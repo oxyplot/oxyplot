@@ -110,13 +110,11 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         public Plot()
         {
-            this.renderContext = new GraphicsRenderContext(null);
+            this.renderContext = new GraphicsRenderContext();
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             this.DoubleBuffered = true;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
-            this.KeyboardPanHorizontalStep = 0.1;
-            this.KeyboardPanVerticalStep = 0.1;
             this.PanCursor = Cursors.Hand;
             this.ZoomRectangleCursor = Cursors.SizeNWSE;
             this.ZoomHorizontalCursor = Cursors.SizeWE;
@@ -148,20 +146,6 @@ namespace OxyPlot.WindowsForms
                 return this.Controller ?? (this.defaultController ?? (this.defaultController = new PlotController()));
             }
         }
-
-        /// <summary>
-        /// Gets or sets the keyboard pan horizontal step.
-        /// </summary>
-        /// <value> The keyboard pan horizontal step. </value>
-        [Category(OxyPlotCategory)]
-        public double KeyboardPanHorizontalStep { get; set; }
-
-        /// <summary>
-        /// Gets or sets the keyboard pan vertical step.
-        /// </summary>
-        /// <value> The keyboard pan vertical step. </value>
-        [Category(OxyPlotCategory)]
-        public double KeyboardPanVerticalStep { get; set; }
 
         /// <summary>
         /// Gets or sets the model.

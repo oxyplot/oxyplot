@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TrackerDefinition.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The tracker definition.
+//   Represents a tracker definition.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,8 +34,13 @@ namespace OxyPlot.Silverlight
     using System.Windows.Controls;
 
     /// <summary>
-    /// The tracker definition.
+    /// Represents a tracker definition.
     /// </summary>
+    /// <remarks>
+    /// The tracker definitions make it possible to show different trackers for different series.
+    /// The <see cref="OxyPlot.Series.Series.TrackerKey" /> property is matched with the <see cref="TrackerDefinition.TrackerKey"/> 
+    /// in the TrackerDefinitions collection in the <see cref="Plot" /> control.
+    /// </remarks>
     public class TrackerDefinition : DependencyObject
     {
         /// <summary>
@@ -74,7 +79,7 @@ namespace OxyPlot.Silverlight
         /// Gets or sets the tracker template.
         /// </summary>
         /// <remarks>
-        /// The tracker control will be added/removed from the Tracker overlay as neccessary.
+        /// The tracker control will be added/removed from the Tracker overlay as necessary.
         /// The DataContext of the tracker will be set to a TrackerHitResult with the current tracker data.
         /// </remarks>
         public ControlTemplate TrackerTemplate

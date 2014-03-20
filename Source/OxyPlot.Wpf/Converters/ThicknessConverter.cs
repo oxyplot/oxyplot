@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ThicknessConverter.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,11 +24,10 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Converts Thickness to double.
-//   This is used to convert BorderThickness properties to Path.StrokeThickness (double).
-//   The maximum thickness value is used.
+//   Converts from <see cref="Thickness" /> to the maximum thicknesses.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Wpf
 {
     using System;
@@ -37,30 +36,23 @@ namespace OxyPlot.Wpf
     using System.Windows.Data;
 
     /// <summary>
-    /// Converts Thickness to double.
-    /// This is used to convert BorderThickness properties to Path.StrokeThickness (double).
-    /// The maximum thickness value is used.
+    /// Converts from <see cref="Thickness" /> to the maximum thicknesses.
     /// </summary>
-    [ValueConversion(typeof(Thickness), typeof(double))]
+    /// <remarks>
+    /// This is used in the <see cref="TrackerControl" /> to convert BorderThickness properties to Path.StrokeThickness (double).
+    /// The maximum thickness value is used.
+    /// </remarks>    [ValueConversion(typeof(Thickness), typeof(double))]
     public class ThicknessConverter : IValueConverter
     {
         /// <summary>
-        /// The convert.
+        /// Converts a value.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="targetType">
-        /// The target type.
-        /// </param>
-        /// <param name="parameter">
-        /// The parameter.
-        /// </param>
-        /// <param name="culture">
-        /// The culture.
-        /// </param>
+        /// <param name="value">The value produced by the binding source.</param>
+        /// <param name="targetType">The type of the binding target property.</param>
+        /// <param name="parameter">The converter parameter to use.</param>
+        /// <param name="culture">The culture to use in the converter.</param>
         /// <returns>
-        /// The convert.
+        /// A converted value. If the method returns null, the valid null value is used.
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -77,27 +69,18 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The convert back.
+        /// Converts a value.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="targetType">
-        /// The target type.
-        /// </param>
-        /// <param name="parameter">
-        /// The parameter.
-        /// </param>
-        /// <param name="culture">
-        /// The culture.
-        /// </param>
+        /// <param name="value">The value that is produced by the binding target.</param>
+        /// <param name="targetType">The type to convert to.</param>
+        /// <param name="parameter">The converter parameter to use.</param>
+        /// <param name="culture">The culture to use in the converter.</param>
         /// <returns>
-        /// The convert back.
+        /// A converted value. If the method returns null, the valid null value is used.
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;
         }
-
     }
 }

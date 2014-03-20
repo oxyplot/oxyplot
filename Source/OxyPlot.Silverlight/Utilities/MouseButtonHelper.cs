@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MouseButtonHelper.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -25,9 +25,9 @@
 // </copyright>
 // <summary>
 //   Mouse button helper
-//   from http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Silverlight
 {
     using System;
@@ -36,77 +36,79 @@ namespace OxyPlot.Silverlight
 
     /// <summary>
     /// Mouse button helper
-    /// from http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx
     /// </summary>
+    /// <remarks>
+    /// See <a href="http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx">The simplest way to detect DoubleClick in Silverlight</a>.
+    /// </remarks>
     internal static class MouseButtonHelper
     {
         /// <summary>
-        /// The k_ double click speed.
+        /// The double click speed.
         /// </summary>
-        private const long k_DoubleClickSpeed = 500;
+        private const long DoubleClickSpeed = 500;
 
         /// <summary>
-        /// The k_ max move distance.
+        /// The max move distance.
         /// </summary>
-        private const double k_MaxMoveDistance = 10;
+        private const double MaxMoveDistance = 10;
 
         /// <summary>
-        /// The _ last click ticks.
+        /// The last click ticks.
         /// </summary>
-        private static long _LastClickTicks;
+        private static long lastClickTicks;
 
         /// <summary>
-        /// The _ last position.
+        /// The last position.
         /// </summary>
-        private static Point _LastPosition;
+        private static Point lastPosition;
 
         /// <summary>
-        /// The _ last sender.
+        /// The last sender.
         /// </summary>
-        private static WeakReference _LastSender;
+        private static WeakReference lastSender;
 
         /// <summary>
-        /// The is double click.
+        /// Determines if the click in the specified <see cref="MouseButtonEventArgs" /> is a double click.
         /// </summary>
         /// <param name="sender">
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments.
         /// </param>
         /// <returns>
-        /// The is double click.
+        /// <c>true</c> if the click is a double click.
         /// </returns>
         internal static bool IsDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Point position = e.GetPosition(null);
+            var position = e.GetPosition(null);
             long clickTicks = DateTime.Now.Ticks;
-            long elapsedTicks = clickTicks - _LastClickTicks;
+            long elapsedTicks = clickTicks - lastClickTicks;
             long elapsedTime = elapsedTicks / TimeSpan.TicksPerMillisecond;
-            bool quickClick = elapsedTime <= k_DoubleClickSpeed;
-            bool senderMatch = _LastSender != null && sender.Equals(_LastSender.Target);
+            bool quickClick = elapsedTime <= DoubleClickSpeed;
+            bool senderMatch = lastSender != null && sender.Equals(lastSender.Target);
 
-            if (senderMatch && quickClick && position.Distance(_LastPosition) <= k_MaxMoveDistance)
+            if (senderMatch && quickClick && position.Distance(lastPosition) <= MaxMoveDistance)
             {
                 // Double click!
-                _LastClickTicks = 0;
-                _LastSender = null;
+                lastClickTicks = 0;
+                lastSender = null;
                 return true;
             }
 
             // Not a double click
-            _LastClickTicks = clickTicks;
-            _LastPosition = position;
+            lastClickTicks = clickTicks;
+            lastPosition = position;
             if (!quickClick)
             {
-                _LastSender = new WeakReference(sender);
+                lastSender = new WeakReference(sender);
             }
 
             return false;
         }
 
         /// <summary>
-        /// The distance.
+        /// Calculates the distance between two points.
         /// </summary>
         /// <param name="pointA">
         /// The point a.
@@ -121,8 +123,7 @@ namespace OxyPlot.Silverlight
         {
             double x = pointA.X - pointB.X;
             double y = pointA.Y - pointB.Y;
-            return Math.Sqrt(x * x + y * y);
+            return Math.Sqrt((x * x) + (y * y));
         }
-
     }
 }

@@ -102,7 +102,7 @@
     <None Include="OxyPlot.Wpf.snk" />
     <None Include="RenderContexts\GeometryRenderContext.cs" />
     <None Include="RenderContexts\DrawingRenderContext.cs" />
-    <Compile Include="PlotFrame.cs" />
+    <None Include="PlotFrame.cs" />
     <Compile Include="Series\AreaSeries.cs" />
     <Compile Include="Series\LineSeries.cs" />
     <Compile Include="Plot.cs" />

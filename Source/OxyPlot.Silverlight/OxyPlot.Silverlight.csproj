@@ -71,7 +71,6 @@
     <Compile Include="Converters\ThicknessConverter.cs" />
     <Compile Include="Utilities\Keyboard.cs" />
     <Compile Include="NamespaceDoc.cs" />
-    <Compile Include="Plot.Properties.cs" />
     <Compile Include="Utilities\ConverterExtensions.cs" />
     <Compile Include="Utilities\MouseButtonHelper.cs" />
     <Compile Include="Plot.cs" />

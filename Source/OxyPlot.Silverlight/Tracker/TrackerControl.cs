@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TrackerControl.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -27,6 +27,7 @@
 //   The tracker control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Silverlight
 {
     using System;
@@ -409,6 +410,7 @@ namespace OxyPlot.Silverlight
         /// <param name="dependencyPropertyChangedEventArgs">
         /// The dependency property changed event args.
         /// </param>
+        // ReSharper disable once UnusedParameter.Local
         private void OnPositionChanged(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             this.UpdatePositionAndBorder();
@@ -448,17 +450,17 @@ namespace OxyPlot.Silverlight
             double contentHeight = this.content.DesiredSize.Height;
 
             // Minimum allowed margins around the tracker
-            const double marginLimit = 10;
+            const double MarginLimit = 10;
 
-            HorizontalAlignment ha = HorizontalAlignment.Center;
+            var ha = HorizontalAlignment.Center;
             if (this.CanCenterHorizontally)
             {
-                if (this.Position.X - contentWidth / 2 < marginLimit)
+                if (this.Position.X - (contentWidth / 2) < MarginLimit)
                 {
                     ha = HorizontalAlignment.Left;
                 }
 
-                if (this.Position.X + contentWidth / 2 > canvasWidth - marginLimit)
+                if (this.Position.X + (contentWidth / 2) > canvasWidth - MarginLimit)
                 {
                     ha = HorizontalAlignment.Right;
                 }
@@ -468,10 +470,10 @@ namespace OxyPlot.Silverlight
                 ha = this.Position.X < canvasWidth / 2 ? HorizontalAlignment.Left : HorizontalAlignment.Right;
             }
 
-            VerticalAlignment va = VerticalAlignment.Center;
+            var va = VerticalAlignment.Center;
             if (this.CanCenterVertically)
             {
-                if (this.Position.Y - contentHeight / 2 < marginLimit)
+                if (this.Position.Y - (contentHeight / 2) < MarginLimit)
                 {
                     va = VerticalAlignment.Top;
                 }
@@ -479,18 +481,18 @@ namespace OxyPlot.Silverlight
                 if (ha == HorizontalAlignment.Center)
                 {
                     va = VerticalAlignment.Bottom;
-                    if (this.Position.Y - contentHeight < marginLimit)
+                    if (this.Position.Y - contentHeight < MarginLimit)
                     {
                         va = VerticalAlignment.Top;
                     }
                 }
 
-                if (va == VerticalAlignment.Center && this.Position.Y + contentHeight / 2 > canvasHeight - marginLimit)
+                if (va == VerticalAlignment.Center && this.Position.Y + (contentHeight / 2) > canvasHeight - MarginLimit)
                 {
                     va = VerticalAlignment.Bottom;
                 }
 
-                if (va == VerticalAlignment.Top && this.Position.Y + contentHeight > canvasHeight - marginLimit)
+                if (va == VerticalAlignment.Top && this.Position.Y + contentHeight > canvasHeight - MarginLimit)
                 {
                     va = VerticalAlignment.Bottom;
                 }
@@ -511,11 +513,12 @@ namespace OxyPlot.Silverlight
             this.content.Margin = margin;
 
             this.contentContainer.Measure(new Size(canvasWidth, canvasHeight));
-            Size contentSize = this.contentContainer.DesiredSize;
+            var contentSize = this.contentContainer.DesiredSize;
 
             this.contentContainer.RenderTransform = new TranslateTransform
                 {
-                   X = dx * contentSize.Width, Y = dy * contentSize.Height
+                    X = dx * contentSize.Width,
+                    Y = dy * contentSize.Height
                 };
 
             var pos = this.Position.ToPoint(true);
@@ -628,8 +631,8 @@ namespace OxyPlot.Silverlight
                 margin = new Thickness(0, 0, 0, m);
                 points = new[]
                     {
-                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y1), new Point(x2 + m / 2, y1),
-                        new Point(x2, y1 + m), new Point(x2 - m / 2, y1), new Point(x0, y1)
+                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y1), new Point(x2 + (m / 2), y1),
+                        new Point(x2, y1 + m), new Point(x2 - (m / 2), y1), new Point(x0, y1)
                     };
             }
 
@@ -643,7 +646,7 @@ namespace OxyPlot.Silverlight
                 margin = new Thickness(0, m, 0, 0);
                 points = new[]
                     {
-                        new Point(x0, y0), new Point(x2 - m / 2, y0), new Point(x2, 0), new Point(x2 + m / 2, y0),
+                        new Point(x0, y0), new Point(x2 - (m / 2), y0), new Point(x2, 0), new Point(x2 + (m / 2), y0),
                         new Point(x1, y0), new Point(x1, y1), new Point(x0, y1)
                     };
             }
@@ -658,8 +661,8 @@ namespace OxyPlot.Silverlight
                 margin = new Thickness(m, 0, 0, 0);
                 points = new[]
                     {
-                        new Point(0, y2), new Point(x0, y2 - m / 2), new Point(x0, y0), new Point(x1, y0),
-                        new Point(x1, y1), new Point(x0, y1), new Point(x0, y2 + m / 2)
+                        new Point(0, y2), new Point(x0, y2 - (m / 2)), new Point(x0, y0), new Point(x1, y0),
+                        new Point(x1, y1), new Point(x0, y1), new Point(x0, y2 + (m / 2))
                     };
             }
 
@@ -673,8 +676,8 @@ namespace OxyPlot.Silverlight
                 margin = new Thickness(0, 0, m, 0);
                 points = new[]
                     {
-                        new Point(x1 + m, y2), new Point(x1, y2 + m / 2), new Point(x1, y1), new Point(x0, y1),
-                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y2 - m / 2)
+                        new Point(x1 + m, y2), new Point(x1, y2 + (m / 2)), new Point(x1, y1), new Point(x0, y1),
+                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y2 - (m / 2))
                     };
             }
 

@@ -74,8 +74,6 @@ namespace ExampleBrowser
             // plot1
             // 
             this.plot1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plot1.KeyboardPanHorizontalStep = 0.1D;
-            this.plot1.KeyboardPanVerticalStep = 0.1D;
             this.plot1.Location = new System.Drawing.Point(0, 0);
             plotModel1.AutoAdjustPlotMargins = true;
             plotModel1.AxisTierDistance = 4D;
