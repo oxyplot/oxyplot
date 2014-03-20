@@ -1,0 +1,13 @@
+﻿<Window x:Class="CoupledAxesDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Wpf="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" Title="CoupledAxesDemo" Height="480" Width="640">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Wpf:Plot Model="{Binding Model1}"/>
+        <Wpf:Plot Model="{Binding Model2}" Grid.Column="1"/>
+    </Grid>
+</Window>

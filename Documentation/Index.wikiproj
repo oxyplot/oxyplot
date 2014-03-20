@@ -1,0 +1,10 @@
+<WikiProject>
+<Format>html</Format>
+<Template>..\Documentation\Help_Template.html</Template>
+<LocalLinks>{0}.html</LocalLinks>
+<Input>*.wiki</Input>
+<Output>..\Output\Documentation</Output>
+<Variables>
+<Variable Key="version">2013</Variable>
+</Variables>
+</WikiProject>

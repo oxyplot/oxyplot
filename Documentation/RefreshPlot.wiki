@@ -1,0 +1,15 @@
+﻿@syntax owiki
+@title Refresh plot
+@keywords OxyPlot,Refresh plot
+
+== How to refresh a plot
+
+The OxyPlot controls do not automatically refresh when you change properties of the PlotModel (e.g. changing series, axes, annotations or general plot properties).
+
+You have the following options to update the plot:
+
+- Change the Model property of the Plot control
+- Call Invalidate/Refresh on the Plot control
+- Call Invalidate/Refresh on the PlotModel
+
+examples coming...
