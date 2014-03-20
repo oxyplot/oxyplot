@@ -47,7 +47,7 @@
 
         <sdk:TabControl Grid.Column="1" Grid.Row="1" TabStripPlacement="Bottom">
             <sdk:TabItem Header="Plot">
-                <oxy:Plot Model="{Binding SelectedExample.PlotModel}" Background="{Binding PlotBackground}"/>
+                <oxy:Plot Model="{Binding SelectedExample.PlotModel}" Controller="{Binding SelectedExample.PlotController}" Background="{Binding PlotBackground}"/>
             </sdk:TabItem>
             <sdk:TabItem Header="Code">
                 <TextBox AcceptsReturn="True" FontFamily="Consolas" 
