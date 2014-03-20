@@ -299,12 +299,12 @@ namespace OxyPlot.Wpf
 
             this.UpdateModel(updateData);
 
-            if (this.IsRendering && Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
+            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
             {
                 // Invalidate the arrange state for the element. 
                 // After the invalidation, the element will have its layout updated, 
                 // which will occur asynchronously unless subsequently forced by UpdateLayout.
-                this.Invoke(this.InvalidateArrange);
+                this.BeginInvoke(this.InvalidateArrange);
             }
         }
 
@@ -323,13 +323,12 @@ namespace OxyPlot.Wpf
 
             this.UpdateModel(updateData);
 
-            if (this.IsRendering && Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
+            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
             {
-                Interlocked.Exchange(ref this.isPlotInvalidated, 1);
                 this.Invoke(this.InvalidateArrange);
 
                 // ensure that all visual child elements are properly updated for layout
-                this.UpdateLayout();
+                this.Invoke(this.UpdateLayout);
             }
         }
 
@@ -919,17 +918,17 @@ namespace OxyPlot.Wpf
         {
             lock (this.modelLock)
             {
-                this.currentModel = this.Model;
-
                 if (this.currentlyAttachedModel != null)
                 {
                     this.currentlyAttachedModel.AttachPlotControl(null);
                     this.currentlyAttachedModel = null;
                 }
 
-                if (this.Model != null)
+                this.currentModel = this.Model;
+
+                if (this.currentModel != null)
                 {
-                    if (this.Model.PlotControl != null)
+                    if (this.currentModel.PlotControl != null)
                     {
                         throw new InvalidOperationException(
                             "This PlotModel is already in use by some other plot control.");
