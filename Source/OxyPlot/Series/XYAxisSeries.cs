@@ -2,7 +2,7 @@
 // <copyright file="XYAxisSeries.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
-//   Copyright (c) 2012 Oystein Bjorke
+//   Copyright (c) 2014 OxyPlot contributors
 //   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Abstract base class for series that contains an X-axis and Y-axis.
+//   Provides an abstract base class for series that are related to an X-axis and a Y-axis.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

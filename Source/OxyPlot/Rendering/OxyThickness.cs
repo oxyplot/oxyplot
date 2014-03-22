@@ -2,7 +2,7 @@
 // <copyright file="OxyThickness.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
-//   Copyright (c) 2012 Oystein Bjorke
+//   Copyright (c) 2014 OxyPlot contributors
 //   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Describes the thickness of a frame around a rectangle. Four Double values describe the Left, Top, Right, and Bottom sides of the rectangle, respectively.
+//   Describes the thickness of a frame around a rectangle. Four <see cref="System.Double"/> values describe the left, top, right, and bottom sides of the rectangle, respectively.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

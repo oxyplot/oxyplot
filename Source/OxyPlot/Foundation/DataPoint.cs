@@ -2,7 +2,7 @@
 // <copyright file="DataPoint.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
-//   Copyright (c) 2012 Oystein Bjorke
+//   Copyright (c) 2014 OxyPlot contributors
 //   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   DataPoint value type.
+//   Represents a point in the data coordinate system.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

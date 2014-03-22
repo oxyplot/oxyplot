@@ -2,7 +2,7 @@
 // <copyright file="OxyColorConverter.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
-//   Copyright (c) 2012 Oystein Bjorke
+//   Copyright (c) 2014 OxyPlot contributors
 //   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
@@ -24,9 +24,10 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Converts colors from one data type to another. Access this class through the TypeDescriptor.
+//   Converts between <see cref="OxyColor"/> and <see cref="System.String"/>. Access this class through the TypeDescriptor.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot
 {
     using System;
