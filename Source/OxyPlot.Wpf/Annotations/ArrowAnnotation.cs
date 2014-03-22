@@ -2,7 +2,7 @@
 // <copyright file="ArrowAnnotation.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
-//   Copyright (c) 2012 Oystein Bjorke
+//   Copyright (c) 2014 OxyPlot contributors
 //   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
@@ -27,6 +27,7 @@
 //   This is a WPF wrapper of OxyPlot.ArrowAnnotation
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace OxyPlot.Wpf
 {
     using System.Windows;
