@@ -121,7 +121,7 @@ namespace ExampleLibrary
                 {
                     angleAxis.StartAngle += increment;
                     angleAxis.EndAngle += increment;
-                    model.RefreshPlot(false);
+                    model.InvalidatePlot(false);
                     e.Handled = true;
                 }
             };

@@ -128,7 +128,7 @@ namespace TaskDemo
                 this.LineSeries1.Points = this.points.ToList();
             }
 
-            this.PlotModel.RefreshPlot(true);
+            this.PlotModel.InvalidatePlot(true);
         }
 
         public void Closing()

@@ -309,30 +309,6 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Refresh the plot immediately (blocking UI thread)
-        /// </summary>
-        /// <param name="updateData">
-        /// if set to <c>true</c> , the data collections will be updated.
-        /// </param>
-        public void RefreshPlot(bool updateData)
-        {
-            if (!this.IsRendering)
-            {
-                return;
-            }
-
-            this.UpdateModel(updateData);
-
-            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
-            {
-                this.Invoke(this.InvalidateArrange);
-
-                // ensure that all visual child elements are properly updated for layout
-                this.Invoke(this.UpdateLayout);
-            }
-        }
-
-        /// <summary>
         /// Sets the cursor type.
         /// </summary>
         /// <param name="cursorType">

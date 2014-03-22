@@ -97,25 +97,25 @@ namespace ExampleLibrary
             a1.MouseDown += (s, e) =>
             {
                 model.Subtitle = "Clicked annotation below axes";
-                model.RefreshPlot(true);
+                model.InvalidatePlot(true);
                 e.Handled = true;
             };
             a2.MouseDown += (s, e) =>
             {
                 model.Subtitle = "Clicked annotation below series";
-                model.RefreshPlot(true);
+                model.InvalidatePlot(true);
                 e.Handled = true;
             };
             a3.MouseDown += (s, e) =>
             {
                 model.Subtitle = "Clicked annotation above series";
-                model.RefreshPlot(true);
+                model.InvalidatePlot(true);
                 e.Handled = true;
             };
             s1.MouseDown += (s, e) =>
             {
                 model.Subtitle = "Clicked series";
-                model.RefreshPlot(true);
+                model.InvalidatePlot(true);
                 e.Handled = true;
             };
 

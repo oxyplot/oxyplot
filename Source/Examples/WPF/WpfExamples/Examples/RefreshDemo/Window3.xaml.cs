@@ -75,7 +75,7 @@ namespace RefreshDemo
             x += 0.1;
 
             // Refresh the PlotModel
-            this.PlotModel.RefreshPlot(true);
+            this.PlotModel.InvalidatePlot(true);
         }
     }
 }

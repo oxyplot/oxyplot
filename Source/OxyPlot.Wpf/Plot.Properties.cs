@@ -1245,7 +1245,7 @@ namespace OxyPlot.Wpf
         /// </summary>
         private void RefreshFlagChanged()
         {
-            this.RefreshPlot(true);
+            this.InvalidatePlot(true);
         }
     }
 }

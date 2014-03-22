@@ -103,14 +103,6 @@ namespace OxyPlot.XamarinIOS
 			this.SetNeedsDisplay ();
 		}
 
-		public void RefreshPlot (bool updateData = true)
-		{
-			if (this.model != null) {
-				this.model.Update (updateData);
-			}
-			this.SetNeedsDisplay ();
-		}
-
 		public void SetCursorType (CursorType cursorType)
 		{
 		}

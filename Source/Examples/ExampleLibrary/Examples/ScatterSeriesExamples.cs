@@ -320,13 +320,13 @@ namespace ExampleLibrary
                 {
                     var index = (int)e.HitTestResult.Index;
                     series.SelectItem(index);
-                    model.RefreshPlot(false);
+                    model.InvalidatePlot(false);
                     e.Handled = true;
                 };
             model.MouseDown += (s, e) =>
                 {
                     series.ClearSelection();
-                    model.RefreshPlot(false);
+                    model.InvalidatePlot(false);
                     e.Handled = true;
                 };
 
@@ -362,14 +362,14 @@ namespace ExampleLibrary
                     series.SelectItem(index);
                 }
 
-                model.RefreshPlot(false);
+                model.InvalidatePlot(false);
                 e.Handled = true;
             };
 
             model.MouseDown += (s, e) =>
             {
                 series.ClearSelection();
-                model.RefreshPlot(false);
+                model.InvalidatePlot(false);
                 e.Handled = true;
             };
 
@@ -402,7 +402,7 @@ namespace ExampleLibrary
             series.MouseDown += (s, e) =>
                 {
                     series.Select();
-                    model.RefreshPlot(false);
+                    model.InvalidatePlot(false);
                     e.Handled = !showTracker;
                 };
 
@@ -414,7 +414,7 @@ namespace ExampleLibrary
                 }
 
                 series.ClearSelection();
-                model.RefreshPlot(false);
+                model.InvalidatePlot(false);
                 e.Handled = true;
             };
 

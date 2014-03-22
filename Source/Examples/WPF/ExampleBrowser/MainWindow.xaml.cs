@@ -87,7 +87,7 @@ namespace ExampleBrowser
 
             if (this.vm.MeasureFrameRate)
             {
-                this.Plot1.RefreshPlot(true);
+                this.Plot1.InvalidatePlot(true);
             }
         }
 

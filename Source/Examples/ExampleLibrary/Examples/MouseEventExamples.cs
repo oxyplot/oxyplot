@@ -64,7 +64,7 @@ namespace ExampleLibrary
                     };
                     s1.Points.Add(Axis.InverseTransform(e.Position, xaxis, yaxis));
                     model.Series.Add(s1);
-                    model.RefreshPlot(false);
+                    model.InvalidatePlot(false);
                     e.Handled = true;
                 }
             };
@@ -74,7 +74,7 @@ namespace ExampleLibrary
                 if (s1 != null)
                 {
                     s1.Points.Add(Axis.InverseTransform(e.Position, xaxis, yaxis));
-                    model.RefreshPlot(false);
+                    model.InvalidatePlot(false);
                     e.Handled = true;
                 }
             };
@@ -172,7 +172,7 @@ namespace ExampleLibrary
                     s1.LineStyle = LineStyle.DashDot;
 
                     // Remember to refresh/invalidate of the plot
-                    model.RefreshPlot(false);
+                    model.InvalidatePlot(false);
 
                     // Set the event arguments to handled - no other handlers will be called.
                     e.Handled = true;
@@ -185,7 +185,7 @@ namespace ExampleLibrary
                     {
                         // Move the point being edited.
                         s1.Points[indexOfPointToMove] = s1.InverseTransform(e.Position);
-                        model.RefreshPlot(false);
+                        model.InvalidatePlot(false);
                         e.Handled = true;
                     }
                 };
@@ -195,7 +195,7 @@ namespace ExampleLibrary
                 // Stop editing
                 indexOfPointToMove = -1;
                 s1.LineStyle = LineStyle.Solid;
-                model.RefreshPlot(false);
+                model.InvalidatePlot(false);
                 e.Handled = true;
             };
 
@@ -207,7 +207,7 @@ namespace ExampleLibrary
                         s1.Points.Add(s1.InverseTransform(e.Position));
                         indexOfPointToMove = s1.Points.Count - 1;
 
-                        model.RefreshPlot(false);
+                        model.InvalidatePlot(false);
                         e.Handled = true;
                     }
                 };
@@ -249,7 +249,7 @@ namespace ExampleLibrary
                     tmp.Text = string.Format("Y = {0:0.###}", tmp.EndPoint.Y);
 
                     // Redraw the plot
-                    model.RefreshPlot(false);
+                    model.InvalidatePlot(false);
                     e.Handled = true;
                 }
             };
@@ -281,7 +281,7 @@ namespace ExampleLibrary
                     }
 
                     la.StrokeThickness *= 5;
-                    model.RefreshPlot(false);
+                    model.InvalidatePlot(false);
                     e.Handled = true;
                 };
 
@@ -289,13 +289,13 @@ namespace ExampleLibrary
             la.MouseMove += (s, e) =>
                 {
                     la.X = la.InverseTransform(e.Position).X;
-                    model.RefreshPlot(false);
+                    model.InvalidatePlot(false);
                     e.Handled = true;
                 };
             la.MouseUp += (s, e) =>
                 {
                     la.StrokeThickness /= 5;
-                    model.RefreshPlot(false);
+                    model.InvalidatePlot(false);
                     e.Handled = true;
                 };
             model.Annotations.Add(la);
@@ -471,7 +471,7 @@ namespace ExampleLibrary
                 {
                     double a = model.Series.Count + 1;
                     model.Series.Add(new FunctionSeries(x => Math.Sin(a * x), 0, 10, 1000));
-                    model.RefreshPlot(true);
+                    model.InvalidatePlot(true);
                     e.Handled = true;
                 }
             };
@@ -497,7 +497,7 @@ namespace ExampleLibrary
                     startx = range.InverseTransform(e.Position).X;
                     range.MinimumX = startx;
                     range.MaximumX = startx;
-                    model.RefreshPlot(true);
+                    model.InvalidatePlot(true);
                     e.Handled = true;
                 }
             };
@@ -510,7 +510,7 @@ namespace ExampleLibrary
                         range.MaximumX = Math.Max(x, startx);
                         range.Text = string.Format("∫ cos(x) dx =  {0:0.00}", Math.Sin(range.MaximumX) - Math.Sin(range.MinimumX));
                         model.Subtitle = string.Format("Integrating from {0:0.00} to {1:0.00}", range.MinimumX, range.MaximumX);
-                        model.RefreshPlot(true);
+                        model.InvalidatePlot(true);
                         e.Handled = true;
                     }
                 };

@@ -357,18 +357,6 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Refreshes the plot immediately (not blocking the UI thread).
-        /// </summary>
-        /// <param name="update">
-        /// if set to <c>true</c>, the data collections will be updated.
-        /// </param>
-        public void RefreshPlot(bool update)
-        {
-            // don't block ui thread
-            this.InvalidatePlot(update);
-        }
-
-        /// <summary>
         /// Sets the cursor.
         /// </summary>
         /// <param name="cursor">
@@ -914,6 +902,9 @@ namespace OxyPlot.Metro
         {
             if (!this.Dispatcher.HasThreadAccess)
             {
+                // TODO: Fix warning?
+                // Because this call is not awaited, execution of the current method continues before the call is completed. 
+                // Consider applying the 'await' operator to the result of the call.
                 this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => action());
             }
             else
