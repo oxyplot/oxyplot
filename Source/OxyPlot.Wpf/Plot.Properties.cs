@@ -372,11 +372,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The refresh flag property
         /// </summary>
-        public static readonly DependencyProperty RefreshFlagProperty = DependencyProperty.Register(
-            "RefreshFlag",
+        public static readonly DependencyProperty InvalidateFlagProperty = DependencyProperty.Register(
+            "InvalidateFlag",
             typeof(int),
             typeof(Plot),
-            new FrameworkPropertyMetadata(0, (s, e) => ((Plot)s).RefreshFlagChanged()));
+            new FrameworkPropertyMetadata(0, (s, e) => ((Plot)s).InvalidateFlagChanged()));
 
         /// <summary>
         /// The zoom horizontal cursor property.
@@ -1159,16 +1159,16 @@ namespace OxyPlot.Wpf
         /// Gets or sets the refresh flag (an integer value). When the flag is changed, the plot will be refreshed.
         /// </summary>
         /// <value>The refresh value.</value>
-        public int RefreshFlag
+        public int InvalidateFlag
         {
             get
             {
-                return (int)this.GetValue(RefreshFlagProperty);
+                return (int)this.GetValue(InvalidateFlagProperty);
             }
 
             set
             {
-                this.SetValue(RefreshFlagProperty, value);
+                this.SetValue(InvalidateFlagProperty, value);
             }
         }
 
@@ -1241,11 +1241,11 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Refreshes the plot when the refresh flag is changed.
+        /// Invalidates the plot control/view when the <see cref="InvalidateFlag" /> property is changed.
         /// </summary>
-        private void RefreshFlagChanged()
+        private void InvalidateFlagChanged()
         {
-            this.InvalidatePlot(true);
+            this.InvalidatePlot();
         }
     }
 }
