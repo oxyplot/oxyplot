@@ -426,25 +426,6 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Refresh the plot immediately (not blocking UI thread)
-        /// </summary>
-        /// <param name="updateData">
-        /// if set to <c>true</c> , the data collections will be updated.
-        /// </param>
-        public void RefreshPlot(bool updateData)
-        {
-            this.UpdateModel(updateData);
-
-            if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
-            {
-                this.BeginInvoke(this.InvalidateArrange);
-
-                // ensure that all visual child elements are properly updated for layout
-                this.BeginInvoke(this.UpdateLayout);
-            }
-        }
-
-        /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/> . In simplest terms, this means the method is called just before a UI element displays in an application. For more information, see Remarks.
         /// </summary>
         public override void OnApplyTemplate()

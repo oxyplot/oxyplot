@@ -63,7 +63,7 @@ namespace RefreshDemo
                         this.PlotModel.Series[0] = new FunctionSeries(Math.Sin, x, x + 4, 0.01);
                     }
                     x += 0.1;
-                    PlotModel.RefreshPlot(true);
+                    PlotModel.InvalidatePlot(true);
                     Thread.Sleep(100);
                 }
             };

@@ -269,22 +269,6 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Refresh the plot immediately (blocking UI thread)
-        /// </summary>
-        /// <param name="updateData">if set to <c>true</c>, all data collections will be updated.</param>
-        public void RefreshPlot(bool updateData)
-        {
-            lock (this.invalidateLock)
-            {
-                this.isModelInvalidated = true;
-                this.updateDataFlag = this.updateDataFlag || updateData;
-            }
-
-            this.QueueDraw();
-            this.GdkWindow.ProcessUpdates(false);
-        }
-
-        /// <summary>
         /// Sets the cursor type.
         /// </summary>
         /// <param name="cursorType">

@@ -926,21 +926,6 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Refreshes the plot.
-        /// </summary>
-        /// <param name="updateData">Updates all data sources if set to <c>true</c>.</param>
-        public void RefreshPlot(bool updateData)
-        {
-            var plotControl = this.PlotControl;
-            if (plotControl == null)
-            {
-                return;
-            }
-
-            plotControl.RefreshPlot(updateData);
-        }
-
-        /// <summary>
         /// Invalidates the plot.
         /// </summary>
         /// <param name="updateData">Updates all data sources if set to <c>true</c>.</param>

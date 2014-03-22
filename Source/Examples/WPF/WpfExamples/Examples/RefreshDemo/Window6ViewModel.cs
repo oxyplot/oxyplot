@@ -35,7 +35,7 @@
                         this.Title = "Plot updated: " + DateTime.Now;
                         this.Points.Add(new DataPoint(x, Math.Sin(x)));
 
-                        // Change the refresh flag, this will trig RefreshPlot() on the Plot control
+                        // Change the refresh flag, this will trig InvalidatePlot() on the Plot control
                         this.Refresh++;
 
                         x += 0.1;

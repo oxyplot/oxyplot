@@ -4,9 +4,9 @@
         Title="RefreshDemo" Height="480" Width="640">
     <StackPanel>
         <Button Content="Refresh by changing the Model property of the Plot control" Click="RefreshMethod1_Click"/>
-        <Button Content="Refresh by calling RefreshPlot on the Plot control" Click="RefreshMethod2_Click"/>
-        <Button Content="Refresh by calling RefreshPlot on the PlotModel" Click="RefreshMethod3_Click"/>
-        <Button Content="Refresh by calling RefreshPlot on the PlotModel from a non-UI thread" Click="RefreshMethod4_Click"/>
+        <Button Content="Refresh by calling InvalidatePlot on the Plot control" Click="RefreshMethod2_Click"/>
+        <Button Content="Refresh by calling InvalidatePlot on the PlotModel" Click="RefreshMethod3_Click"/>
+        <Button Content="Refresh by calling InvalidatePlot on the PlotModel from a non-UI thread" Click="RefreshMethod4_Click"/>
         <Button Content="Refresh by changing RefreshFlag on the Plot from a non-UI thread" Click="RefreshMethod6_Click"/>
     </StackPanel>
 </Window>

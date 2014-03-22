@@ -83,7 +83,7 @@ namespace OxyPlot
                 this.YAxis.ZoomAt(e.DeltaScale.Y, current.Y);
             }
 
-            this.PlotControl.RefreshPlot(false);
+            this.PlotControl.InvalidatePlot(false);
 
             this.previousPosition = newPosition;
         }

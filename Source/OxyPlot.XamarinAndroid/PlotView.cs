@@ -200,15 +200,6 @@ namespace OxyPlot.XamarinAndroid
 		}
 
 		/// <summary>
-		/// Refreshes the plot immediately (blocking UI thread)
-		/// </summary>
-		/// <param name="updateData">if set to <c>true</c>, all data collections will be updated.</param>
-		public void RefreshPlot (bool updateData)
-		{
-			this.InvalidatePlot (updateData);
-		}
-
-		/// <summary>
 		/// Sets the cursor type.
 		/// </summary>
 		/// <param name="cursorType">The cursor type.</param>

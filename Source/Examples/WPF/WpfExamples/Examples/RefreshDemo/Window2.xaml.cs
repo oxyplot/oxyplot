@@ -74,7 +74,7 @@ namespace RefreshDemo
             x += 0.1;
 
             // Refresh the plot control
-            this.plot1.RefreshPlot(true);
+            this.plot1.InvalidatePlot(true);
         }
     }
 }
