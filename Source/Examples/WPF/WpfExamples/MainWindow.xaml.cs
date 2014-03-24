@@ -39,7 +39,7 @@ namespace WpfExamples
     public partial class MainWindow
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// Initializes a new instance of the <see cref="MainWindow" /> class.
         /// </summary>
         public MainWindow()
         {
@@ -84,7 +84,7 @@ namespace WpfExamples
         /// Handles the MouseDoubleClick event of the ListBox control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs" /> instance containing the event data.</param>
         private void ListBoxMouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var lb = (ListBox)sender;

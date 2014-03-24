@@ -36,17 +36,11 @@ namespace OxyPlot.Reporting
     public class ReportStyle
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReportStyle"/> class.
+        /// Initializes a new instance of the <see cref="ReportStyle" /> class.
         /// </summary>
-        /// <param name="titleFontFamily">
-        /// The title font family.
-        /// </param>
-        /// <param name="bodyTextFontFamily">
-        /// The body text font family.
-        /// </param>
-        /// <param name="tableTextFontFamily">
-        /// The table text font family.
-        /// </param>
+        /// <param name="titleFontFamily">The title font family.</param>
+        /// <param name="bodyTextFontFamily">The body text font family.</param>
+        /// <param name="tableTextFontFamily">The table text font family.</param>
         public ReportStyle(
             string titleFontFamily = "Arial",
             string bodyTextFontFamily = "Verdana",

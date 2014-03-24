@@ -34,12 +34,12 @@ namespace OxyPlot.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    ///     This is a WPF wrapper of OxyPlot.RectangleAnnotation
+    /// This is a WPF wrapper of OxyPlot.RectangleAnnotation
     /// </summary>
     public class RectangleAnnotation : TextualAnnotation
     {
         /// <summary>
-        ///     The Fill property.
+        /// Identifies the <see cref="Fill"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill",
@@ -48,7 +48,7 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(Colors.LightBlue, AppearanceChanged));
 
         /// <summary>
-        ///     The Stroke property.
+        /// Identifies the <see cref="Stroke"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke",
@@ -57,7 +57,7 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
-        ///     The Stroke property.
+        /// Identifies the <see cref="StrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness",
@@ -66,37 +66,37 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
-        ///     The MaximumX property.
+        /// Identifies the <see cref="MaximumX"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumXProperty = DependencyProperty.Register(
             "MaximumX", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MaxValue, DataChanged));
 
         /// <summary>
-        ///     The MaximumY property.
+        /// Identifies the <see cref="MaximumY"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumYProperty = DependencyProperty.Register(
             "MaximumY", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MaxValue, DataChanged));
 
         /// <summary>
-        ///     The MinimumX property.
+        /// Identifies the <see cref="MinimumX"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumXProperty = DependencyProperty.Register(
             "MinimumX", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
-        ///     The MinimumY property.
+        /// Identifies the <see cref="MinimumY"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumYProperty = DependencyProperty.Register(
             "MinimumY", typeof(double), typeof(RectangleAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
-        ///     The text rotation property
+        /// Identifies the <see cref="TextRotation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextRotationProperty = DependencyProperty.Register(
             "TextRotation", typeof(double), typeof(RectangleAnnotation), new UIPropertyMetadata(0.0));
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RectangleAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="RectangleAnnotation" /> class.
         /// </summary>
         public RectangleAnnotation()
         {
@@ -104,7 +104,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the fill color.
+        /// Gets or sets the fill color.
         /// </summary>
         public Color Fill
         {
@@ -120,7 +120,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the stroke color.
+        /// Gets or sets the stroke color.
         /// </summary>
         public Color Stroke
         {
@@ -136,7 +136,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the stroke thickness.
+        /// Gets or sets the stroke thickness.
         /// </summary>
         public double StrokeThickness
         {
@@ -152,7 +152,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the Maximum X.
+        /// Gets or sets the Maximum X.
         /// </summary>
         public double MaximumX
         {
@@ -168,7 +168,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the Maximum Y.
+        /// Gets or sets the Maximum Y.
         /// </summary>
         public double MaximumY
         {
@@ -184,7 +184,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the Minimum X.
+        /// Gets or sets the Minimum X.
         /// </summary>
         public double MinimumX
         {
@@ -200,7 +200,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the Minimum Y.
+        /// Gets or sets the Minimum Y.
         /// </summary>
         public double MinimumY
         {
@@ -216,7 +216,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the text rotation (degrees).
+        /// Gets or sets the text rotation (degrees).
         /// </summary>
         /// <value>The text rotation in degrees.</value>
         public double TextRotation
@@ -233,11 +233,9 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Creates the internal annotation object.
+        /// Creates the internal annotation object.
         /// </summary>
-        /// <returns>
-        ///     The annotation.
-        /// </returns>
+        /// <returns>The annotation.</returns>
         public override Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();
@@ -245,7 +243,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Synchronizes the properties.
+        /// Synchronizes the properties.
         /// </summary>
         public override void SynchronizeProperties()
         {

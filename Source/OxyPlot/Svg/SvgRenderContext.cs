@@ -77,9 +77,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the text measurer.
         /// </summary>
-        /// <value>
-        /// The text measurer.
-        /// </value>
+        /// <value>The text measurer.</value>
         public IRenderContext TextMeasurer { get; set; }
 
         /// <summary>
@@ -242,9 +240,7 @@ namespace OxyPlot
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <returns>
-        /// The text size.
-        /// </returns>
+        /// <returns>The text size.</returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (string.IsNullOrEmpty(text))

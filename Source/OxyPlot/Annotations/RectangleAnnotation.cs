@@ -41,7 +41,7 @@ namespace OxyPlot.Annotations
         private OxyRect screenRectangle;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="RectangleAnnotation" /> class.
         /// </summary>
         public RectangleAnnotation()
         {
@@ -57,7 +57,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the fill color.
         /// </summary>
-        /// <value> The fill. </value>
+        /// <value>The fill.</value>
         public OxyColor Fill { get; set; }
 
         /// <summary>
@@ -103,12 +103,8 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Renders the polygon annotation.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The plot model.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             base.Render(rc, model);
@@ -137,15 +133,15 @@ namespace OxyPlot.Annotations
             {
                 var textPosition = this.screenRectangle.Center;
                 rc.DrawClippedText(
-                    clipping, 
-                    textPosition, 
-                    this.Text, 
-                    this.ActualTextColor, 
-                    this.ActualFont, 
-                    this.ActualFontSize, 
-                    this.ActualFontWeight, 
-                    this.TextRotation, 
-                    HorizontalAlignment.Center, 
+                    clipping,
+                    textPosition,
+                    this.Text,
+                    this.ActualTextColor,
+                    this.ActualFont,
+                    this.ActualFontSize,
+                    this.ActualFontWeight,
+                    this.TextRotation,
+                    HorizontalAlignment.Center,
                     VerticalAlignment.Middle);
             }
         }
@@ -153,15 +149,9 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="tolerance">
-        /// The tolerance.
-        /// </param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A hit test result.</returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
             if (this.screenRectangle.Contains(point))

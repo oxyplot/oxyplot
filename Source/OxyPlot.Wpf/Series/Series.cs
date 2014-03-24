@@ -41,35 +41,35 @@ namespace OxyPlot.Wpf
     public abstract class Series : ItemsControl
     {
         /// <summary>
-        /// The color property.
+        /// Identifies the <see cref="Color"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color), typeof(Series), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
-        /// The title property.
+        /// Identifies the <see cref="Title"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The tracker format string property.
+        /// Identifies the <see cref="TrackerFormatString"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TrackerFormatStringProperty =
             DependencyProperty.Register(
-                "TrackerFormatString", 
-                typeof(string), 
-                typeof(Series), 
+                "TrackerFormatString",
+                typeof(string),
+                typeof(Series),
                 new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The tracker key property.
+        /// Identifies the <see cref="TrackerKey"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TrackerKeyProperty = DependencyProperty.Register(
             "TrackerKey", typeof(string), typeof(Series), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// Initializes static members of the <see cref="Series"/> class.
+        /// Initializes static members of the <see cref="Series" /> class.
         /// </summary>
         static Series()
         {
@@ -149,20 +149,14 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the model.
         /// </summary>
-        /// <returns>
-        /// A series.
-        /// </returns>
+        /// <returns>A series.</returns>
         public abstract OxyPlot.Series.Series CreateModel();
 
         /// <summary>
         /// The appearance changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The e.</param>
         protected static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((Series)d).OnVisualChanged();
@@ -171,12 +165,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The data changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The e.</param>
         protected static void DataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((Series)d).OnDataChanged();
@@ -197,12 +187,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The on items source changed.
         /// </summary>
-        /// <param name="oldValue">
-        /// The old value.
-        /// </param>
-        /// <param name="newValue">
-        /// The new value.
-        /// </param>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
         protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
             base.OnItemsSourceChanged(oldValue, newValue);
@@ -224,9 +210,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Synchronizes the properties.
         /// </summary>
-        /// <param name="s">
-        /// The series.
-        /// </param>
+        /// <param name="s">The series.</param>
         protected virtual void SynchronizeProperties(OxyPlot.Series.Series s)
         {
             s.Background = this.Background.ToOxyColor();

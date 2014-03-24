@@ -31,7 +31,7 @@
 namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// Specifies the definition of the line in a <see cref="LineAnnotation"/>.
+    /// Specifies the definition of the line in a <see cref="LineAnnotation" />.
     /// </summary>
     public enum LineAnnotationType
     {

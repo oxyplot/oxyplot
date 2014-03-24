@@ -72,22 +72,18 @@ namespace OxyPlot.Pdf
         private ReportStyle style;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PdfReportWriter"/> class.
+        /// Initializes a new instance of the <see cref="PdfReportWriter" /> class.
         /// </summary>
-        /// <param name="filename">
-        /// The FileName.
-        /// </param>
+        /// <param name="filename">The FileName.</param>
         public PdfReportWriter(string filename)
             : this(File.Create(filename))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PdfReportWriter"/> class.
+        /// Initializes a new instance of the <see cref="PdfReportWriter" /> class.
         /// </summary>
-        /// <param name="output">
-        /// The output <see cref="Stream"/>.
-        /// </param>
+        /// <param name="output">The output <see cref="Stream" />.</param>
         public PdfReportWriter(Stream output)
         {
             this.Output = output;
@@ -118,12 +114,8 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Defines the styles used in the document.
         /// </summary>
-        /// <param name="document">
-        /// The document.
-        /// </param>
-        /// <param name="reportStyle">
-        /// The report Style.
-        /// </param>
+        /// <param name="document">The document.</param>
+        /// <param name="reportStyle">The report Style.</param>
         public static void DefineStyles(Document document, ReportStyle reportStyle)
         {
             SetStyle(document.Styles["Normal"], reportStyle.BodyTextStyle);
@@ -183,9 +175,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the specified drawing.
         /// </summary>
-        /// <param name="d">
-        /// The drawing.
-        /// </param>
+        /// <param name="d">The drawing.</param>
         void IReportWriter.WriteDrawing(DrawingFigure d)
         {
             var p = this.WriteStartFigure(d);
@@ -196,9 +186,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the specified equation.
         /// </summary>
-        /// <param name="equation">
-        /// The equation.
-        /// </param>
+        /// <param name="equation">The equation.</param>
         void IReportWriter.WriteEquation(Equation equation)
         {
             var p = this.CurrentSection.AddParagraph();
@@ -208,9 +196,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the specified header.
         /// </summary>
-        /// <param name="h">
-        /// The header.
-        /// </param>
+        /// <param name="h">The header.</param>
         void IReportWriter.WriteHeader(Header h)
         {
             if (h.Text == null)
@@ -229,9 +215,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the specified image.
         /// </summary>
-        /// <param name="i">
-        /// The image.
-        /// </param>
+        /// <param name="i">The image.</param>
         void IReportWriter.WriteImage(Image i)
         {
             var p = this.WriteStartFigure(i);
@@ -247,9 +231,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the specified paragraph.
         /// </summary>
-        /// <param name="p">
-        /// The paragraph.
-        /// </param>
+        /// <param name="p">The paragraph.</param>
         void IReportWriter.WriteParagraph(Reporting.Paragraph p)
         {
             this.CurrentSection.AddParagraph(p.Text ?? string.Empty);
@@ -258,9 +240,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the specified plot.
         /// </summary>
-        /// <param name="plot">
-        /// The plot.
-        /// </param>
+        /// <param name="plot">The plot.</param>
         void IReportWriter.WritePlot(PlotFigure plot)
         {
             var temporaryPlotFileName = Guid.NewGuid() + ".pdf";
@@ -277,12 +257,8 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the specified report.
         /// </summary>
-        /// <param name="report">
-        /// The report.
-        /// </param>
-        /// <param name="reportStyle">
-        /// The report style.
-        /// </param>
+        /// <param name="report">The report.</param>
+        /// <param name="reportStyle">The report style.</param>
         public void WriteReport(Report report, ReportStyle reportStyle)
         {
             this.style = reportStyle;
@@ -293,9 +269,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the specified table.
         /// </summary>
-        /// <param name="table">
-        /// The table.
-        /// </param>
+        /// <param name="table">The table.</param>
         void IReportWriter.WriteTable(Table table)
         {
             if (table.Rows == null)
@@ -351,12 +325,8 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the start of a figure.
         /// </summary>
-        /// <param name="f">
-        /// The figure.
-        /// </param>
-        /// <returns>
-        /// A paragraph
-        /// </returns>
+        /// <param name="f">The figure.</param>
+        /// <returns>A paragraph</returns>
         protected Paragraph WriteStartFigure(Figure f)
         {
             return this.CurrentSection.AddParagraph();
@@ -365,12 +335,8 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the figure text.
         /// </summary>
-        /// <param name="f">
-        /// The f.
-        /// </param>
-        /// <param name="pa">
-        /// The paragraph.
-        /// </param>
+        /// <param name="f">The f.</param>
+        /// <param name="pa">The paragraph.</param>
         protected void WriteEndFigure(Figure f, Paragraph pa)
         {
             if (f.FigureText == null)
@@ -385,12 +351,8 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Converts paragraph alignment.
         /// </summary>
-        /// <param name="alignment">
-        /// The alignment.
-        /// </param>
-        /// <returns>
-        /// The pdf alignment.
-        /// </returns>
+        /// <param name="alignment">The alignment.</param>
+        /// <returns>The pdf alignment.</returns>
         private static ParagraphAlignment ConvertToParagraphAlignment(Alignment alignment)
         {
             switch (alignment)
@@ -409,12 +371,8 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Sets a paragraph style.
         /// </summary>
-        /// <param name="style">
-        /// The style.
-        /// </param>
-        /// <param name="ps">
-        /// The ps.
-        /// </param>
+        /// <param name="style">The style.</param>
+        /// <param name="ps">The ps.</param>
         private static void SetStyle(Style style, ParagraphStyle ps)
         {
             style.Font.Name = ps.FontFamily;
@@ -433,12 +391,8 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Converts an OxyColor to a migra doc color.
         /// </summary>
-        /// <param name="c">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// The converted color.
-        /// </returns>
+        /// <param name="c">The color.</param>
+        /// <returns>The converted color.</returns>
         private static Color ToMigraDocColor(OxyColor c)
         {
             return new Color(c.A, c.R, c.G, c.B);
@@ -458,9 +412,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
-        /// </param>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         private void Dispose(bool disposing)
         {
             if (!this.disposed)

@@ -106,7 +106,7 @@ namespace ExampleLibrary
 
         private static List<MinuteRec> lst = new List<MinuteRec>
             {
-                new MinuteRec { QTime = TimeSpan.Parse("06:31:00"), O = 1672.5000, H = 1673.5000, L = 1671.7500, C = 1672.7500 }, 
+                new MinuteRec { QTime = TimeSpan.Parse("06:31:00"), O = 1672.5000, H = 1673.5000, L = 1671.7500, C = 1672.7500 },
                 new MinuteRec { QTime = TimeSpan.Parse("06:32:00"), O = 1672.5000, H = 1673.5000, L = 1672.5000, C = 1672.5000 },
                 new MinuteRec { QTime = TimeSpan.Parse("06:33:00"), O = 1672.5000, H = 1672.7500, L = 1670.7500, C = 1671.2500 },
                 new MinuteRec { QTime = TimeSpan.Parse("06:34:00"), O = 1671.2500, H = 1671.2500, L = 1670.2500, C = 1670.5000 },
@@ -125,7 +125,7 @@ namespace ExampleLibrary
                 new MinuteRec { QTime = TimeSpan.Parse("06:47:00"), O = 1671.7500, H = 1672.2500, L = 1671.5000, C = 1671.7500 },
                 new MinuteRec { QTime = TimeSpan.Parse("06:48:00"), O = 1671.7500, H = 1672.7500, L = 1671.7500, C = 1672.5000 },
                 new MinuteRec { QTime = TimeSpan.Parse("06:49:00"), O = 1672.2500, H = 1673.7500, L = 1672.2500, C = 1673.7500 },
-                new MinuteRec { QTime = TimeSpan.Parse("06:50:00"), O = 1673.7500, H = 1675.0000, L = 1673.5000, C = 1675.0000 }                    
+                new MinuteRec { QTime = TimeSpan.Parse("06:50:00"), O = 1673.7500, H = 1675.0000, L = 1673.5000, C = 1675.0000 }
             };
 
         [Example("Minute data (TimeSpanAxis)")]

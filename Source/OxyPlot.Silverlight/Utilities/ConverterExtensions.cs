@@ -43,15 +43,9 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Calculate the distance between two points.
         /// </summary>
-        /// <param name="p1">
-        /// The first point.
-        /// </param>
-        /// <param name="p2">
-        /// The second point.
-        /// </param>
-        /// <returns>
-        /// The distance.
-        /// </returns>
+        /// <param name="p1">The first point.</param>
+        /// <param name="p2">The second point.</param>
+        /// <returns>The distance.</returns>
         public static double DistanceTo(this Point p1, Point p2)
         {
             double dx = p1.X - p2.X;
@@ -62,12 +56,8 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Converts a color to a Brush.
         /// </summary>
-        /// <param name="c">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// A SolidColorBrush.
-        /// </returns>
+        /// <param name="c">The color.</param>
+        /// <returns>A SolidColorBrush.</returns>
         public static Brush ToBrush(this OxyColor c)
         {
             return new SolidColorBrush(c.ToColor());
@@ -76,12 +66,8 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Converts an OxyColor to a Color.
         /// </summary>
-        /// <param name="c">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// A Color.
-        /// </returns>
+        /// <param name="c">The color.</param>
+        /// <returns>A Color.</returns>
         public static Color ToColor(this OxyColor c)
         {
             return Color.FromArgb(c.A, c.R, c.G, c.B);
@@ -90,12 +76,8 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Converts a HorizontalAlignment to a HorizontalTextAlign.
         /// </summary>
-        /// <param name="alignment">
-        /// The alignment.
-        /// </param>
-        /// <returns>
-        /// A HorizontalTextAlign.
-        /// </returns>
+        /// <param name="alignment">The alignment.</param>
+        /// <returns>A HorizontalTextAlign.</returns>
         public static OxyPlot.HorizontalAlignment ToHorizontalTextAlign(this HorizontalAlignment alignment)
         {
             switch (alignment)
@@ -112,26 +94,18 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Converts a Color to an OxyColor.
         /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// An OxyColor.
-        /// </returns>
+        /// <param name="color">The color.</param>
+        /// <returns>An OxyColor.</returns>
         public static OxyColor ToOxyColor(this Color color)
         {
             return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
         }
 
         /// <summary>
-        /// Converts a <see cref="Brush"/> to an <see cref="OxyColor"/>.
+        /// Converts a <see cref="Brush" /> to an <see cref="OxyColor" />.
         /// </summary>
-        /// <param name="brush">
-        /// The brush to convert.
-        /// </param>
-        /// <returns>
-        /// An <see cref="OxyColor"/>.
-        /// </returns>
+        /// <param name="brush">The brush to convert.</param>
+        /// <returns>An <see cref="OxyColor" />.</returns>
         public static OxyColor ToOxyColor(this Brush brush)
         {
             var scb = brush as SolidColorBrush;
@@ -141,12 +115,8 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Converts a Thickness to an OxyThickness.
         /// </summary>
-        /// <param name="t">
-        /// The thickness.
-        /// </param>
-        /// <returns>
-        /// An OxyPlot thickness.
-        /// </returns>
+        /// <param name="t">The thickness.</param>
+        /// <returns>An OxyPlot thickness.</returns>
         public static OxyThickness ToOxyThickness(this Thickness t)
         {
             return new OxyThickness(t.Left, t.Top, t.Right, t.Bottom);
@@ -155,15 +125,9 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Converts a ScreenPoint to a Point.
         /// </summary>
-        /// <param name="pt">
-        /// The screen point.
-        /// </param>
-        /// <param name="aliased">
-        /// use pixel alignment conversion if set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// A point.
-        /// </returns>
+        /// <param name="pt">The screen point.</param>
+        /// <param name="aliased">use pixel alignment conversion if set to <c>true</c>.</param>
+        /// <returns>A point.</returns>
         public static Point ToPoint(this ScreenPoint pt, bool aliased)
         {
             // adding 0.5 to get pixel boundary alignment, seems to work
@@ -178,17 +142,11 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Converts an <see cref="OxyRect"/> to a <see cref="Rect"/>.
+        /// Converts an <see cref="OxyRect" /> to a <see cref="Rect" />.
         /// </summary>
-        /// <param name="r">
-        /// The rectangle to convert.
-        /// </param>
-        /// <param name="aliased">
-        /// use pixel alignment if set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// A <see cref="Rect"/>.
-        /// </returns>
+        /// <param name="r">The rectangle to convert.</param>
+        /// <param name="aliased">use pixel alignment if set to <c>true</c>.</param>
+        /// <returns>A <see cref="Rect" />.</returns>
         public static Rect ToRect(this OxyRect r, bool aliased)
         {
             if (aliased)
@@ -206,12 +164,8 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Converts a point to a ScreenPoint.
         /// </summary>
-        /// <param name="pt">
-        /// The point.
-        /// </param>
-        /// <returns>
-        /// A screen point.
-        /// </returns>
+        /// <param name="pt">The point.</param>
+        /// <returns>A screen point.</returns>
         public static ScreenPoint ToScreenPoint(this Point pt)
         {
             return new ScreenPoint(pt.X, pt.Y);
@@ -220,12 +174,8 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Converts the specified vector to a ScreenVector.
         /// </summary>
-        /// <param name="vector">
-        /// The vector.
-        /// </param>
-        /// <returns>
-        /// A <see cref="ScreenVector"/>.
-        /// </returns>
+        /// <param name="vector">The vector.</param>
+        /// <returns>A <see cref="ScreenVector" />.</returns>
         public static ScreenVector ToScreenVector(this Point vector)
         {
             return new ScreenVector(vector.X, vector.Y);
@@ -234,12 +184,8 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Converts a Point array to a ScreenPoint array.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <returns>
-        /// A ScreenPoint array.
-        /// </returns>
+        /// <param name="points">The points.</param>
+        /// <returns>A ScreenPoint array.</returns>
         public static ScreenPoint[] ToScreenPointArray(this Point[] points)
         {
             if (points == null)
@@ -427,11 +373,11 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Converts <see cref="MouseWheelEventArgs"/> to <see cref="OxyMouseWheelEventArgs"/> for a mouse wheel event.
+        /// Converts <see cref="MouseWheelEventArgs" /> to <see cref="OxyMouseWheelEventArgs" /> for a mouse wheel event.
         /// </summary>
-        /// <param name="e">The <see cref="MouseWheelEventArgs"/> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement"/> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseWheelEventArgs"/> containing the converted event arguments.</returns>
+        /// <param name="e">The <see cref="MouseWheelEventArgs" /> instance containing the event data.</param>
+        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <returns>A <see cref="OxyMouseWheelEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseWheelEventArgs ToMouseWheelEventArgs(this MouseWheelEventArgs e, UIElement relativeTo)
         {
             return new OxyMouseWheelEventArgs
@@ -448,9 +394,7 @@ namespace OxyPlot.Silverlight
         /// <param name="e">The <see cref="MouseButtonEventArgs" /> instance containing the event data.</param>
         /// <param name="button">The button.</param>
         /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
-        /// <returns>
-        /// A <see cref="OxyMouseDownEventArgs" /> containing the converted event arguments.
-        /// </returns>
+        /// <returns>A <see cref="OxyMouseDownEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseDownEventArgs ToMouseDownEventArgs(this MouseButtonEventArgs e, OxyMouseButton button, UIElement relativeTo)
         {
             return new OxyMouseDownEventArgs
@@ -468,9 +412,7 @@ namespace OxyPlot.Silverlight
         /// <param name="e">The <see cref="MouseButtonEventArgs" /> instance containing the event data.</param>
         /// <param name="button">The button.</param>
         /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
-        /// <returns>
-        /// A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.
-        /// </returns>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseEventArgs ToMouseUpEventArgs(this MouseButtonEventArgs e, OxyMouseButton button, UIElement relativeTo)
         {
             return new OxyMouseEventArgs
@@ -485,9 +427,7 @@ namespace OxyPlot.Silverlight
         /// </summary>
         /// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
         /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
-        /// <returns>
-        /// A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.
-        /// </returns>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseEventArgs ToMouseEventArgs(this MouseEventArgs e, UIElement relativeTo)
         {
             return new OxyMouseEventArgs
@@ -498,11 +438,11 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Converts <see cref="ManipulationStartedEventArgs"/> to <see cref="OxyMouseEventArgs"/> for a touch started event.
+        /// Converts <see cref="ManipulationStartedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch started event.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationStartedEventArgs"/> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement"/> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseEventArgs"/> containing the converted event arguments.</returns>
+        /// <param name="e">The <see cref="ManipulationStartedEventArgs" /> instance containing the event data.</param>
+        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationStartedEventArgs e, UIElement relativeTo)
         {
             return new OxyTouchEventArgs
@@ -512,11 +452,11 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Converts <see cref="ManipulationDeltaEventArgs"/> to <see cref="OxyMouseEventArgs"/> for a touch delta event.
+        /// Converts <see cref="ManipulationDeltaEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch delta event.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationDeltaEventArgs"/> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement"/> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseEventArgs"/> containing the converted event arguments.</returns>
+        /// <param name="e">The <see cref="ManipulationDeltaEventArgs" /> instance containing the event data.</param>
+        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationDeltaEventArgs e, UIElement relativeTo)
         {
             return new OxyTouchEventArgs
@@ -528,11 +468,11 @@ namespace OxyPlot.Silverlight
         }
 
         /// <summary>
-        /// Converts <see cref="ManipulationCompletedEventArgs"/> to <see cref="OxyMouseEventArgs"/> for a touch completed event.
+        /// Converts <see cref="ManipulationCompletedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch completed event.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationCompletedEventArgs"/> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement"/> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseEventArgs"/> containing the converted event arguments.</returns>
+        /// <param name="e">The <see cref="ManipulationCompletedEventArgs" /> instance containing the event data.</param>
+        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationCompletedEventArgs e, UIElement relativeTo)
         {
             return new OxyTouchEventArgs

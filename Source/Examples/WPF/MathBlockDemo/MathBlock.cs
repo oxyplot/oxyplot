@@ -55,7 +55,7 @@ namespace OxyPlot.Wpf
         private IRenderContext renderContext;
 
         /// <summary>
-        /// Initializes static members of the <see cref="MathBlock"/> class. 
+        /// Initializes static members of the <see cref="MathBlock" /> class.
         /// </summary>
         static MathBlock()
         {
@@ -78,12 +78,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called to measure a control.
         /// </summary>
-        /// <param name="constraint">
-        /// The maximum size that the method can return.
-        /// </param>
-        /// <returns>
-        /// The size of the control, up to the maximum specified by <paramref name="constraint"/>.
-        /// </returns>
+        /// <param name="constraint">The maximum size that the method can return.</param>
+        /// <returns>The size of the control, up to the maximum specified by <paramref name="constraint" />.</returns>
         protected override Size MeasureOverride(Size constraint)
         {
             if (this.Content == null)
@@ -118,12 +114,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Handles changes in control size.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="SizeChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="SizeChangedEventArgs" /> instance containing the event data.</param>
         private void HandleSizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.UpdateContent();

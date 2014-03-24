@@ -84,11 +84,9 @@ namespace OxyPlot
         /// <param name="maxsize">The maximum size of the text.</param>
         /// <param name="measure">Measure the size of the text if set to <c>true</c>.</param>
         /// <returns>The size of the text.</returns>
-        /// <example>
-        /// Subscript: H_{2}O
+        /// <example>Subscript: H_{2}O
         /// Superscript: E=mc^{2}
-        /// Both: A^{2}_{i,j}
-        /// </example>
+        /// Both: A^{2}_{i,j}</example>
         public static OxySize DrawMathText(
             this IRenderContext rc,
             ScreenPoint pt,
@@ -163,11 +161,9 @@ namespace OxyPlot
         /// <param name="ha">The horizontal alignment.</param>
         /// <param name="va">The vertical alignment.</param>
         /// <param name="maxsize">The maximum size of the text.</param>
-        /// <example>
-        /// Subscript: H_{2}O
+        /// <example>Subscript: H_{2}O
         /// Superscript: E=mc^{2}
-        /// Both: A^{2}_{i,j}
-        /// </example>
+        /// Both: A^{2}_{i,j}</example>
         public static void DrawMathText(
             this IRenderContext rc,
             ScreenPoint pt,
@@ -187,24 +183,12 @@ namespace OxyPlot
         /// <summary>
         /// The measure math text.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <returns>
-        /// The size of the text.
-        /// </returns>
+        /// <param name="rc">The render context.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <returns>The size of the text.</returns>
         public static OxySize MeasureMathText(
             this IRenderContext rc, string text, string fontFamily, double fontSize, double fontWeight)
         {
@@ -219,39 +203,17 @@ namespace OxyPlot
         /// <summary>
         /// The internal draw math text.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="x">
-        /// The x.
-        /// </param>
-        /// <param name="y">
-        /// The y.
-        /// </param>
-        /// <param name="s">
-        /// The s.
-        /// </param>
-        /// <param name="textColor">
-        /// The text color.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="measureOnly">
-        /// The measure only.
-        /// </param>
-        /// <param name="angle">
-        /// The angle of the text (degrees).
-        /// </param>
-        /// <returns>
-        /// The size of the text.
-        /// </returns>
+        /// <param name="rc">The render context.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="textColor">The text color.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="measureOnly">The measure only.</param>
+        /// <param name="angle">The angle of the text (degrees).</param>
+        /// <returns>The size of the text.</returns>
         private static OxySize InternalDrawMathText(
             IRenderContext rc,
             double x,

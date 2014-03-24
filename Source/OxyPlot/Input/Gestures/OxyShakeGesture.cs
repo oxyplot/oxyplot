@@ -33,18 +33,14 @@ namespace OxyPlot
     /// <summary>
     /// Defines a shake input gesture that can be used to invoke a command.
     /// </summary>
-    /// <remarks>
-    /// Applies primarily to mobiles...
-    /// </remarks>
+    /// <remarks>Applies primarily to mobiles...</remarks>
     public class OxyShakeGesture : OxyInputGesture
     {
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
-        /// </returns>
+        /// <returns><c>true</c> if the current object is equal to the <paramref name="other" /> parameter; otherwise, <c>false</c>.</returns>
         public override bool Equals(OxyInputGesture other)
         {
             var sg = other as OxyShakeGesture;

@@ -83,10 +83,10 @@ namespace ExampleBrowser
             {
                 return this.examples;
             }
-            
+
             set
             {
-                this.examples = value; 
+                this.examples = value;
                 this.RaisePropertyChanged("Examples");
             }
         }

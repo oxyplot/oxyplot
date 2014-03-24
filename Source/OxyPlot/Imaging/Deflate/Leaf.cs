@@ -38,7 +38,7 @@ namespace OxyPlot
     internal class Leaf : Node
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Leaf"/> class.
+        /// Initializes a new instance of the <see cref="Leaf" /> class.
         /// </summary>
         /// <param name="symbol">The symbol.</param>
         /// <exception cref="System.ArgumentException">Illegal symbol value;symbol</exception>
@@ -55,9 +55,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the symbol.
         /// </summary>
-        /// <value>
-        /// The symbol.
-        /// </value>
+        /// <value>The symbol.</value>
         public int Symbol { get; private set; }
     }
 }

@@ -44,22 +44,22 @@ namespace OxyPlot
         /// The Enter key.
         /// </summary>
         Enter,
-        
+
         /// <summary>
         /// The Esc key.
         /// </summary>
         Escape,
-        
+
         /// <summary>
         /// The Tab key.
         /// </summary>
         Tab,
-        
+
         /// <summary>
         /// The Backspace key.
         /// </summary>
         Backspace,
-        
+
         /// <summary>
         /// The Insert key.
         /// </summary>
@@ -344,22 +344,22 @@ namespace OxyPlot
         /// The add key.
         /// </summary>
         Add,
-        
+
         /// <summary>
         /// The subtract key.
         /// </summary>
         Subtract,
-        
+
         /// <summary>
         /// The multiply key.
         /// </summary>
         Multiply,
-        
+
         /// <summary>
         /// The divide key.
         /// </summary>
         Divide,
-        
+
         /// <summary>
         /// The decimal key.
         /// </summary>

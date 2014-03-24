@@ -44,7 +44,7 @@ namespace OxyPlot.Annotations
         private IList<ScreenPoint> screenPoints;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PolygonAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="PolygonAnnotation" /> class.
         /// </summary>
         public PolygonAnnotation()
         {
@@ -64,42 +64,38 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the fill color.
         /// </summary>
-        /// <value> The fill. </value>
+        /// <value>The fill.</value>
         public OxyColor Fill { get; set; }
 
         /// <summary>
         /// Gets or sets the line join.
         /// </summary>
-        /// <value> The line join. </value>
+        /// <value>The line join.</value>
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
         /// Gets or sets the line style.
         /// </summary>
-        /// <value> The line style. </value>
+        /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the points.
         /// </summary>
-        /// <value> The points. </value>
+        /// <value>The points.</value>
         public IList<IDataPoint> Points { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
         /// </summary>
-        /// <value> The stroke thickness. </value>
+        /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
         /// Renders the polygon annotation.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The plot model.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             base.Render(rc, model);
@@ -151,15 +147,9 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="tolerance">
-        /// The tolerance.
-        /// </param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A hit test result.</returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
             if (this.screenPoints == null)

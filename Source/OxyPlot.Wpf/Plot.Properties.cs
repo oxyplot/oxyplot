@@ -40,82 +40,80 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Represents the WPF Plot control.
     /// </summary>
-    /// <remarks>
-    /// This file contains dependency properties used for defining the plot in XAML. These properties are only used when Model is null. In this case an internal PlotModel is created and the dependency properties are copied from the control to the internal PlotModel.
-    /// </remarks>
+    /// <remarks>This file contains dependency properties used for defining the plot in XAML. These properties are only used when Model is <c>null</c>. In this case an internal PlotModel is created and the dependency properties are copied from the control to the internal PlotModel.</remarks>
     public partial class Plot
     {
         /// <summary>
-        /// Defines the Controller property.
+        /// Identifies the <see cref="Controller"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ControllerProperty =
             DependencyProperty.Register("Controller", typeof(IPlotController), typeof(Plot), new PropertyMetadata(null));
 
         /// <summary>
-        /// The auto adjust plot margins property.
+        /// Identifies the <see cref="AutoAdjustPlotMargins"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AutoAdjustPlotMarginsProperty =
             DependencyProperty.Register("AutoAdjustPlotMargins", typeof(bool), typeof(Plot), new PropertyMetadata(true));
 
         /// <summary>
-        /// The culture property.
+        /// Identifies the <see cref="Culture"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CultureProperty = DependencyProperty.Register(
             "Culture", typeof(CultureInfo), typeof(Plot), new UIPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The default tracker property.
+        /// Identifies the <see cref="DefaultTrackerTemplate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultTrackerTemplateProperty =
             DependencyProperty.Register("DefaultTrackerTemplate", typeof(ControlTemplate), typeof(Plot));
 
         /// <summary>
-        /// The is legend visible property.
+        /// Identifies the <see cref="IsLegendVisible"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsLegendVisibleProperty =
             DependencyProperty.Register(
                 "IsLegendVisible", typeof(bool), typeof(Plot), new PropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
-        /// The is mouse wheel enabled property.
+        /// Identifies the <see cref="IsMouseWheelEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsMouseWheelEnabledProperty =
             DependencyProperty.Register("IsMouseWheelEnabled", typeof(bool), typeof(Plot), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// The legend background property.
+        /// Identifies the <see cref="LegendBackground"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendBackgroundProperty =
             DependencyProperty.Register(
                 "LegendBackground", typeof(Color), typeof(Plot), new PropertyMetadata(MoreColors.Undefined, AppearanceChanged));
 
         /// <summary>
-        /// The legend border property.
+        /// Identifies the <see cref="LegendBorder"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendBorderProperty = DependencyProperty.Register(
             "LegendBorder", typeof(Color), typeof(Plot), new PropertyMetadata(MoreColors.Undefined, AppearanceChanged));
 
         /// <summary>
-        /// The legend border thickness property.
+        /// Identifies the <see cref="LegendBorderThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendBorderThicknessProperty =
             DependencyProperty.Register(
                 "LegendBorderThickness", typeof(double), typeof(Plot), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend font property.
+        /// Identifies the <see cref="LegendFont"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendFontProperty = DependencyProperty.Register(
             "LegendFont", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The legend font size property.
+        /// Identifies the <see cref="LegendFontSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendFontSizeProperty = DependencyProperty.Register(
             "LegendFontSize", typeof(double), typeof(Plot), new PropertyMetadata(12.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend font weight property.
+        /// Identifies the <see cref="LegendFontWeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendFontWeightProperty =
             DependencyProperty.Register(
@@ -125,7 +123,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(FontWeights.Normal, AppearanceChanged));
 
         /// <summary>
-        /// The legend item alignment property.
+        /// Identifies the <see cref="LegendItemAlignment"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendItemAlignmentProperty =
             DependencyProperty.Register(
@@ -135,7 +133,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(HorizontalAlignment.Left, AppearanceChanged));
 
         /// <summary>
-        /// The legend item order property.
+        /// Identifies the <see cref="LegendItemOrder"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendItemOrderProperty =
             DependencyProperty.Register(
@@ -145,26 +143,26 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(LegendItemOrder.Normal, AppearanceChanged));
 
         /// <summary>
-        /// The legend item spacing property.
+        /// Identifies the <see cref="LegendItemSpacing"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendItemSpacingProperty =
             DependencyProperty.Register(
                 "LegendItemSpacing", typeof(double), typeof(Plot), new PropertyMetadata(24.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend margin property.
+        /// Identifies the <see cref="LegendMargin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendMarginProperty = DependencyProperty.Register(
             "LegendMargin", typeof(double), typeof(Plot), new PropertyMetadata(8.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend max width property
+        /// Identifies the <see cref="LegendMaxWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendMaxWidthProperty =
             DependencyProperty.Register("LegendMaxWidth", typeof(double), typeof(Plot), new UIPropertyMetadata(double.NaN, AppearanceChanged));
 
         /// <summary>
-        /// The legend orientation property.
+        /// Identifies the <see cref="LegendOrientation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendOrientationProperty =
             DependencyProperty.Register(
@@ -174,19 +172,19 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(LegendOrientation.Vertical, AppearanceChanged));
 
         /// <summary>
-        /// The legend column spacing property.
+        /// Identifies the <see cref="LegendColumnSpacing"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendColumnSpacingProperty =
             DependencyProperty.Register("LegendColumnSpacing", typeof(double), typeof(Plot), new UIPropertyMetadata(8.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend padding property.
+        /// Identifies the <see cref="LegendPadding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendPaddingProperty = DependencyProperty.Register(
             "LegendPadding", typeof(double), typeof(Plot), new PropertyMetadata(8.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend placement property.
+        /// Identifies the <see cref="LegendPlacement"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendPlacementProperty =
             DependencyProperty.Register(
@@ -196,7 +194,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(LegendPlacement.Inside, AppearanceChanged));
 
         /// <summary>
-        /// The legend position property.
+        /// Identifies the <see cref="LegendPosition"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendPositionProperty = DependencyProperty.Register(
             "LegendPosition",
@@ -205,21 +203,21 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(LegendPosition.RightTop, AppearanceChanged));
 
         /// <summary>
-        /// The legend symbol length property.
+        /// Identifies the <see cref="LegendSymbolLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendSymbolLengthProperty =
             DependencyProperty.Register(
                 "LegendSymbolLength", typeof(double), typeof(Plot), new PropertyMetadata(16.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend symbol margin property.
+        /// Identifies the <see cref="LegendSymbolMargin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendSymbolMarginProperty =
             DependencyProperty.Register(
                 "LegendSymbolMargin", typeof(double), typeof(Plot), new PropertyMetadata(4.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend symbol placement property.
+        /// Identifies the <see cref="LegendSymbolPlacement"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendSymbolPlacementProperty =
             DependencyProperty.Register(
@@ -229,21 +227,21 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(LegendSymbolPlacement.Left, AppearanceChanged));
 
         /// <summary>
-        /// The legend title font property.
+        /// Identifies the <see cref="LegendTitleFont"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendTitleFontProperty =
             DependencyProperty.Register(
                 "LegendTitleFont", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The legend title font size property.
+        /// Identifies the <see cref="LegendTitleFontSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendTitleFontSizeProperty =
             DependencyProperty.Register(
                 "LegendTitleFontSize", typeof(double), typeof(Plot), new PropertyMetadata(12.0, AppearanceChanged));
 
         /// <summary>
-        /// The legend title font weight property.
+        /// Identifies the <see cref="LegendTitleFontWeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LegendTitleFontWeightProperty =
             DependencyProperty.Register(
@@ -253,19 +251,19 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(FontWeights.Bold, AppearanceChanged));
 
         /// <summary>
-        /// The model property.
+        /// Identifies the <see cref="Model"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
             "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
 
         /// <summary>
-        /// The pan cursor property.
+        /// Identifies the <see cref="PanCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PanCursorProperty = DependencyProperty.Register(
             "PanCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.Hand));
 
         /// <summary>
-        /// The plot area background property.
+        /// Identifies the <see cref="PlotAreaBackground"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PlotAreaBackgroundProperty =
             DependencyProperty.Register(
@@ -275,7 +273,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The plot area border color property.
+        /// Identifies the <see cref="PlotAreaBorderColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PlotAreaBorderColorProperty =
             DependencyProperty.Register(
@@ -285,14 +283,14 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
-        /// The plot area border thickness property.
+        /// Identifies the <see cref="PlotAreaBorderThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PlotAreaBorderThicknessProperty =
             DependencyProperty.Register(
                 "PlotAreaBorderThickness", typeof(double), typeof(Plot), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The plot margins property.
+        /// Identifies the <see cref="PlotMargins"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PlotMarginsProperty = DependencyProperty.Register(
             "PlotMargins",
@@ -301,20 +299,20 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(new Thickness(60, 4, 4, 40), AppearanceChanged));
 
         /// <summary>
-        /// The plot type property.
+        /// Identifies the <see cref="PlotType"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PlotTypeProperty = DependencyProperty.Register(
             "PlotType", typeof(PlotType), typeof(Plot), new PropertyMetadata(PlotType.XY, AppearanceChanged));
 
         /// <summary>
-        /// The subtitle font size property.
+        /// Identifies the <see cref="SubtitleFontSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SubtitleFontSizeProperty =
             DependencyProperty.Register(
                 "SubtitleFontSize", typeof(double), typeof(Plot), new PropertyMetadata(14.0, AppearanceChanged));
 
         /// <summary>
-        /// The subtitle font weight property.
+        /// Identifies the <see cref="SubtitleFontWeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SubtitleFontWeightProperty =
             DependencyProperty.Register(
@@ -324,31 +322,31 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(FontWeights.Normal, AppearanceChanged));
 
         /// <summary>
-        /// The subtitle property.
+        /// Identifies the <see cref="Subtitle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SubtitleProperty = DependencyProperty.Register(
             "Subtitle", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The text color property.
+        /// Identifies the <see cref="TextColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
             "TextColor", typeof(Color), typeof(Plot), new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
-        /// The title font property.
+        /// Identifies the <see cref="TitleFont"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleFontProperty = DependencyProperty.Register(
             "TitleFont", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The title font size property.
+        /// Identifies the <see cref="TitleFontSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleFontSizeProperty = DependencyProperty.Register(
             "TitleFontSize", typeof(double), typeof(Plot), new PropertyMetadata(18.0, AppearanceChanged));
 
         /// <summary>
-        /// The title font weight property.
+        /// Identifies the <see cref="TitleFontWeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleFontWeightProperty =
             DependencyProperty.Register(
@@ -358,19 +356,19 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(FontWeights.Bold, AppearanceChanged));
 
         /// <summary>
-        /// The title padding property.
+        /// Identifies the <see cref="TitlePadding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitlePaddingProperty = DependencyProperty.Register(
             "TitlePadding", typeof(double), typeof(Plot), new PropertyMetadata(6.0, AppearanceChanged));
 
         /// <summary>
-        /// The title property.
+        /// Identifies the <see cref="Title"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(Plot), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The refresh flag property
+        /// Identifies the <see cref="InvalidateFlag"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InvalidateFlagProperty = DependencyProperty.Register(
             "InvalidateFlag",
@@ -379,28 +377,28 @@ namespace OxyPlot.Wpf
             new FrameworkPropertyMetadata(0, (s, e) => ((Plot)s).InvalidateFlagChanged()));
 
         /// <summary>
-        /// The zoom horizontal cursor property.
+        /// Identifies the <see cref="ZoomHorizontalCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomHorizontalCursorProperty =
             DependencyProperty.Register(
                 "ZoomHorizontalCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeWE));
 
         /// <summary>
-        /// The zoom rectangle cursor property.
+        /// Identifies the <see cref="ZoomRectangleCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleCursorProperty =
             DependencyProperty.Register(
                 "ZoomRectangleCursor", typeof(Cursor), typeof(Plot), new PropertyMetadata(Cursors.SizeNWSE));
 
         /// <summary>
-        /// The zoom rectangle template property.
+        /// Identifies the <see cref="ZoomRectangleTemplate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
             DependencyProperty.Register(
                 "ZoomRectangleTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
 
         /// <summary>
-        /// The zoom vertical cursor property.
+        /// Identifies the <see cref="ZoomVerticalCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomVerticalCursorProperty =
             DependencyProperty.Register(
@@ -445,7 +443,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets the axes.
         /// </summary>
-        /// <value> The axes. </value>
+        /// <value>The axes.</value>
         public Collection<Axis> Axes
         {
             get
@@ -473,7 +471,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the tracker template.
         /// </summary>
-        /// <value> The tracker template. </value>
+        /// <value>The tracker template.</value>
         public ControlTemplate DefaultTrackerTemplate
         {
             get
@@ -757,7 +755,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the legend position.
         /// </summary>
-        /// <value> The legend position. </value>
+        /// <value>The legend position.</value>
         public LegendPosition LegendPosition
         {
             get
@@ -870,7 +868,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the model.
         /// </summary>
-        /// <value> The model. </value>
+        /// <value>The model.</value>
         public PlotModel Model
         {
             get
@@ -887,7 +885,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the pan cursor.
         /// </summary>
-        /// <value> The pan cursor. </value>
+        /// <value>The pan cursor.</value>
         public Cursor PanCursor
         {
             get
@@ -904,7 +902,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the background brush of the plot area.
         /// </summary>
-        /// <value> The brush.</value>
+        /// <value>The brush.</value>
         public Brush PlotAreaBackground
         {
             get
@@ -921,7 +919,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the color of the plot area border.
         /// </summary>
-        /// <value> The color of the plot area border. </value>
+        /// <value>The color of the plot area border.</value>
         public Color PlotAreaBorderColor
         {
             get
@@ -938,7 +936,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the thickness of the plot area border.
         /// </summary>
-        /// <value> The thickness of the plot area border. </value>
+        /// <value>The thickness of the plot area border.</value>
         public double PlotAreaBorderThickness
         {
             get
@@ -955,9 +953,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the plot controller.
         /// </summary>
-        /// <value>
-        /// The plot controller.
-        /// </value>
+        /// <value>The plot controller.</value>
         public IPlotController Controller
         {
             get { return (IPlotController)GetValue(ControllerProperty); }
@@ -967,7 +963,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the plot margins.
         /// </summary>
-        /// <value> The plot margins. </value>
+        /// <value>The plot margins.</value>
         public Thickness PlotMargins
         {
             get
@@ -1000,7 +996,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets the series.
         /// </summary>
-        /// <value> The series. </value>
+        /// <value>The series.</value>
         public Collection<Series> Series
         {
             get
@@ -1012,7 +1008,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the subtitle.
         /// </summary>
-        /// <value> The subtitle. </value>
+        /// <value>The subtitle.</value>
         public string Subtitle
         {
             get
@@ -1077,7 +1073,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the title.
         /// </summary>
-        /// <value> The title. </value>
+        /// <value>The title.</value>
         public string Title
         {
             get
@@ -1175,7 +1171,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the horizontal zoom cursor.
         /// </summary>
-        /// <value> The zoom horizontal cursor. </value>
+        /// <value>The zoom horizontal cursor.</value>
         public Cursor ZoomHorizontalCursor
         {
             get
@@ -1192,7 +1188,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the rectangle zoom cursor.
         /// </summary>
-        /// <value> The zoom rectangle cursor. </value>
+        /// <value>The zoom rectangle cursor.</value>
         public Cursor ZoomRectangleCursor
         {
             get
@@ -1209,7 +1205,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the zoom rectangle template.
         /// </summary>
-        /// <value> The zoom rectangle template. </value>
+        /// <value>The zoom rectangle template.</value>
         public ControlTemplate ZoomRectangleTemplate
         {
             get
@@ -1226,7 +1222,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the vertical zoom cursor.
         /// </summary>
-        /// <value> The zoom vertical cursor. </value>
+        /// <value>The zoom vertical cursor.</value>
         public Cursor ZoomVerticalCursor
         {
             get

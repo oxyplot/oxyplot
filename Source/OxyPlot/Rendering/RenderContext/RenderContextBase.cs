@@ -48,44 +48,26 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets a value indicating whether the context renders to screen.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if the context renders to screen; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if the context renders to screen; otherwise, <c>false</c>.</value>
         public bool RendersToScreen { get; set; }
 
         /// <summary>
         /// Draws an ellipse.
         /// </summary>
-        /// <param name="rect">
-        /// The rectangle.
-        /// </param>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The thickness.</param>
         public abstract void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness);
 
         /// <summary>
         /// Draws the collection of ellipses, where all have the same stroke and fill.
         /// This performs better than calling DrawEllipse multiple times.
         /// </summary>
-        /// <param name="rectangles">
-        /// The rectangles.
-        /// </param>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The stroke thickness.
-        /// </param>
+        /// <param name="rectangles">The rectangles.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         public virtual void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             foreach (var r in rectangles)
@@ -97,24 +79,12 @@ namespace OxyPlot
         /// <summary>
         /// Draws a polyline.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The stroke thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join type.
-        /// </param>
-        /// <param name="aliased">
-        /// if set to <c>true</c> the shape will be aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public abstract void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -127,24 +97,12 @@ namespace OxyPlot
         /// Draws multiple line segments defined by points (0,1) (2,3) (4,5) etc.
         /// This should have better performance than calling DrawLine for each segment.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The stroke thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join type.
-        /// </param>
-        /// <param name="aliased">
-        /// If set to <c>true</c> the shape will be aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">If set to <c>true</c> the shape will be aliased.</param>
         public virtual void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -162,27 +120,13 @@ namespace OxyPlot
         /// <summary>
         /// Draws a polygon. The polygon can have stroke and/or fill.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The stroke thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join type.
-        /// </param>
-        /// <param name="aliased">
-        /// If set to <c>true</c> the shape will be aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">If set to <c>true</c> the shape will be aliased.</param>
         public abstract void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
@@ -196,27 +140,13 @@ namespace OxyPlot
         /// Draws a collection of polygons, where all polygons have the same stroke and fill.
         /// This performs better than calling DrawPolygon multiple times.
         /// </summary>
-        /// <param name="polygons">
-        /// The polygons.
-        /// </param>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The stroke thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join type.
-        /// </param>
-        /// <param name="aliased">
-        /// if set to <c>true</c> the shape will be aliased.
-        /// </param>
+        /// <param name="polygons">The polygons.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public virtual void DrawPolygons(
             IList<IList<ScreenPoint>> polygons,
             OxyColor fill,
@@ -235,36 +165,20 @@ namespace OxyPlot
         /// <summary>
         /// Draws a rectangle.
         /// </summary>
-        /// <param name="rect">
-        /// The rectangle.
-        /// </param>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The stroke thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         public abstract void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness);
 
         /// <summary>
         /// Draws a collection of rectangles, where all have the same stroke and fill.
         /// This performs better than calling DrawRectangle multiple times.
         /// </summary>
-        /// <param name="rectangles">
-        /// The rectangles.
-        /// </param>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The stroke thickness.
-        /// </param>
+        /// <param name="rectangles">The rectangles.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         public virtual void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             foreach (var r in rectangles)
@@ -276,36 +190,16 @@ namespace OxyPlot
         /// <summary>
         /// Draws the text.
         /// </summary>
-        /// <param name="p">
-        /// The position of the text.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// Size of the font.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="rotate">
-        /// The rotation angle.
-        /// </param>
-        /// <param name="halign">
-        /// The horizontal alignment.
-        /// </param>
-        /// <param name="valign">
-        /// The vertical alignment.
-        /// </param>
-        /// <param name="maxSize">
-        /// The maximum size of the text.
-        /// </param>
+        /// <param name="p">The position of the text.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="rotate">The rotation angle.</param>
+        /// <param name="halign">The horizontal alignment.</param>
+        /// <param name="valign">The vertical alignment.</param>
+        /// <param name="maxSize">The maximum size of the text.</param>
         public abstract void DrawText(
             ScreenPoint p,
             string text,
@@ -321,32 +215,17 @@ namespace OxyPlot
         /// <summary>
         /// Measures the text.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// Size of the font.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <returns>
-        /// The text size.
-        /// </returns>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <returns>The text size.</returns>
         public abstract OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight);
 
         /// <summary>
         /// Sets the tool tip for the following items.
         /// </summary>
-        /// <param name="text">
-        /// The text in the tooltip.
-        /// </param>
-        /// <params>
-        /// This is only used in the plot controls.
-        /// </params>
+        /// <param name="text">The text in the tooltip.</param>
         public virtual void SetToolTip(string text)
         {
         }
@@ -354,15 +233,13 @@ namespace OxyPlot
         /// <summary>
         /// Cleans up resources not in use.
         /// </summary>
-        /// <remarks>
-        /// This method is called at the end of each rendering.
-        /// </remarks>
+        /// <remarks>This method is called at the end of each rendering.</remarks>
         public virtual void CleanUp()
         {
         }
 
         /// <summary>
-        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
+        /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
@@ -394,9 +271,7 @@ namespace OxyPlot
         /// Sets the clip rectangle.
         /// </summary>
         /// <param name="rect">The clip rectangle.</param>
-        /// <returns>
-        /// True if the clip rectangle was set.
-        /// </returns>
+        /// <returns>True if the clip rectangle was set.</returns>
         public virtual bool SetClip(OxyRect rect)
         {
             return false;

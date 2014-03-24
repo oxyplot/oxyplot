@@ -36,14 +36,10 @@ namespace OxyPlot
     public static class LineStyleHelper
     {
         /// <summary>
-        /// Gets the stroke dash array for a given <see cref="LineStyle"/>.
+        /// Gets the stroke dash array for a given <see cref="LineStyle" />.
         /// </summary>
-        /// <param name="style">
-        /// The line style.
-        /// </param>
-        /// <returns>
-        /// A dash array.
-        /// </returns>
+        /// <param name="style">The line style.</param>
+        /// <returns>A dash array.</returns>
         public static double[] GetDashArray(this LineStyle style)
         {
             switch (style)

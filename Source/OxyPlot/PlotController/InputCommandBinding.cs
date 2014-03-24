@@ -36,7 +36,7 @@ namespace OxyPlot
     public class InputCommandBinding
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InputCommandBinding"/> class by a gesture.
+        /// Initializes a new instance of the <see cref="InputCommandBinding" /> class by a gesture.
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command.</param>
@@ -47,7 +47,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InputCommandBinding"/> class by a key gesture.
+        /// Initializes a new instance of the <see cref="InputCommandBinding" /> class by a key gesture.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="modifiers">The modifiers.</param>
@@ -58,7 +58,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InputCommandBinding"/> class by a mouse gesture.
+        /// Initializes a new instance of the <see cref="InputCommandBinding" /> class by a mouse gesture.
         /// </summary>
         /// <param name="mouseButton">The mouse button.</param>
         /// <param name="modifiers">The modifiers.</param>

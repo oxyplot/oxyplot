@@ -69,7 +69,7 @@ namespace OxyPlot.Annotations
         private IList<ScreenPoint> screenPoints;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PathAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="PathAnnotation" /> class.
         /// </summary>
         protected PathAnnotation()
         {
@@ -164,19 +164,15 @@ namespace OxyPlot.Annotations
         /// Gets or sets the text position fraction.
         /// </summary>
         /// <value>The text position in the interval [0,1].</value>
-        /// <remarks>
-        /// Positions smaller than 0.25 are left aligned at the start of the line
+        /// <remarks>Positions smaller than 0.25 are left aligned at the start of the line
         /// Positions larger than 0.75 are right aligned at the end of the line
-        /// Other positions are center aligned at the specified position
-        /// </remarks>
+        /// Other positions are center aligned at the specified position</remarks>
         public double TextPosition { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to clip the text within the plot area.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if text should be clipped within the plot area; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if text should be clipped within the plot area; otherwise, <c>false</c>.</value>
         public bool ClipText { get; set; }
 
         /// <summary>
@@ -199,9 +195,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets a value indicating whether the path is aliased.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if is aliased; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if is aliased; otherwise, <c>false</c>.</value>
         protected bool Aliased
         {
             get
@@ -218,9 +212,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the actual minimum value on the x axis.
         /// </summary>
-        /// <value>
-        /// The actual minimum value on the x axis.
-        /// </value>
+        /// <value>The actual minimum value on the x axis.</value>
         protected double ActualMinimumX
         {
             get
@@ -237,9 +229,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the actual minimum value on the y axis.
         /// </summary>
-        /// <value>
-        /// The actual minimum value on the y axis.
-        /// </value>
+        /// <value>The actual minimum value on the y axis.</value>
         protected double ActualMinimumY
         {
             get
@@ -256,9 +246,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the actual maximum value on the x axis.
         /// </summary>
-        /// <value>
-        /// The actual maximum value on the x axis.
-        /// </value>
+        /// <value>The actual maximum value on the x axis.</value>
         protected double ActualMaximumX
         {
             get
@@ -275,9 +263,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the actual maximum value on the y axis.
         /// </summary>
-        /// <value>
-        /// The actual maximum value on the y axis.
-        /// </value>
+        /// <value>The actual maximum value on the y axis.</value>
         protected double ActualMaximumY
         {
             get
@@ -420,9 +406,7 @@ namespace OxyPlot.Annotations
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="tolerance">The tolerance.</param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
+        /// <returns>A hit test result.</returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
             var nearestPoint = ScreenPointHelper.FindNearestPointOnPolyline(point, this.screenPoints);
@@ -471,24 +455,12 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets the point on a curve at the specified relative distance along the curve.
         /// </summary>
-        /// <param name="pts">
-        /// The curve points.
-        /// </param>
-        /// <param name="p">
-        /// The relative distance along the curve.
-        /// </param>
-        /// <param name="margin">
-        /// The margins.
-        /// </param>
-        /// <param name="position">
-        /// The position.
-        /// </param>
-        /// <param name="angle">
-        /// The angle.
-        /// </param>
-        /// <returns>
-        /// True if a position was found.
-        /// </returns>
+        /// <param name="pts">The curve points.</param>
+        /// <param name="p">The relative distance along the curve.</param>
+        /// <param name="margin">The margins.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="angle">The angle.</param>
+        /// <returns>True if a position was found.</returns>
         private static bool GetPointAtRelativeDistance(
             IList<ScreenPoint> pts, double p, double margin, out ScreenPoint position, out double angle)
         {

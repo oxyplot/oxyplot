@@ -44,9 +44,9 @@ namespace OxyPlot.GtkSharp
     public static class ConverterExtensions
     {
         /// <summary>
-        /// Converts an <see cref="OxyPenLineJoin"/> to a <see cref="LineJoin"/>.
+        /// Converts an <see cref="OxyPenLineJoin" /> to a <see cref="LineJoin" />.
         /// </summary>
-        /// <param name="lineJoin">The <see cref="OxyPenLineJoin"/> to convert.</param>
+        /// <param name="lineJoin">The <see cref="OxyPenLineJoin" /> to convert.</param>
         /// <returns>The converted value.</returns>
         public static LineJoin ToLineJoin(this OxyPenLineJoin lineJoin)
         {
@@ -72,7 +72,7 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Converts a <see cref="ScreenPoint"/> to a Cairo <see cref="PointD"/>.
+        /// Converts a <see cref="ScreenPoint" /> to a Cairo <see cref="PointD" />.
         /// </summary>
         /// <param name="pt">The point to convert.</param>
         /// <param name="aliased">Alias if set to <c>true</c>.</param>
@@ -88,17 +88,11 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Converts an <see cref="OxyRect"/> to a <see cref="Cairo.Rectangle"/>.
+        /// Converts an <see cref="OxyRect" /> to a <see cref="Cairo.Rectangle" />.
         /// </summary>
-        /// <param name="r">
-        /// The rectangle.
-        /// </param>
-        /// <param name="aliased">
-        /// Use pixel alignment if set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// The converted rectangle.
-        /// </returns>
+        /// <param name="r">The rectangle.</param>
+        /// <param name="aliased">Use pixel alignment if set to <c>true</c>.</param>
+        /// <returns>The converted rectangle.</returns>
         public static Rectangle ToRect(this OxyRect r, bool aliased)
         {
             if (aliased)
@@ -116,12 +110,8 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Converts a point to a ScreenPoint.
         /// </summary>
-        /// <param name="pt">
-        /// The point.
-        /// </param>
-        /// <returns>
-        /// A screen point.
-        /// </returns>
+        /// <param name="pt">The point.</param>
+        /// <returns>A screen point.</returns>
         public static ScreenPoint ToScreenPoint(this Point pt)
         {
             return new ScreenPoint(pt.X, pt.Y);
@@ -130,12 +120,8 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Creates the mouse down event arguments.
         /// </summary>
-        /// <param name="e">
-        /// The instance containing the event data.
-        /// </param>
-        /// <returns>
-        /// Mouse event arguments.
-        /// </returns>
+        /// <param name="e">The instance containing the event data.</param>
+        /// <returns>Mouse event arguments.</returns>
         public static OxyMouseDownEventArgs ToMouseDownEventArgs(this EventButton e)
         {
             return new OxyMouseDownEventArgs
@@ -150,12 +136,8 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Creates the mouse up event arguments.
         /// </summary>
-        /// <param name="e">
-        /// The instance containing the event data.
-        /// </param>
-        /// <returns>
-        /// Mouse event arguments.
-        /// </returns>
+        /// <param name="e">The instance containing the event data.</param>
+        /// <returns>Mouse event arguments.</returns>
         public static OxyMouseEventArgs ToMouseUpEventArgs(this EventButton e)
         {
             return new OxyMouseEventArgs
@@ -169,9 +151,7 @@ namespace OxyPlot.GtkSharp
         /// Creates the mouse event arguments.
         /// </summary>
         /// <param name="e">The motion event args.</param>
-        /// <returns>
-        /// Mouse event arguments.
-        /// </returns>
+        /// <returns>Mouse event arguments.</returns>
         public static OxyMouseEventArgs ToMouseEventArgs(this EventMotion e)
         {
             return new OxyMouseEventArgs
@@ -185,9 +165,7 @@ namespace OxyPlot.GtkSharp
         /// Creates the mouse event arguments for an enter/leave event.
         /// </summary>
         /// <param name="e">The event crossing args.</param>
-        /// <returns>
-        /// Mouse event arguments.
-        /// </returns>
+        /// <returns>Mouse event arguments.</returns>
         public static OxyMouseEventArgs ToMouseEventArgs(this EventCrossing e)
         {
             return new OxyMouseEventArgs
@@ -201,9 +179,7 @@ namespace OxyPlot.GtkSharp
         /// Creates the mouse wheel event arguments.
         /// </summary>
         /// <param name="e">The scroll event args.</param>
-        /// <returns>
-        /// Mouse event arguments.
-        /// </returns>
+        /// <returns>Mouse event arguments.</returns>
         public static OxyMouseWheelEventArgs ToMouseWheelEventArgs(this EventScroll e)
         {
             return new OxyMouseWheelEventArgs
@@ -430,16 +406,11 @@ namespace OxyPlot.GtkSharp
             }
         }
 
-
         /// <summary>
         /// Converts the changed button.
         /// </summary>
-        /// <param name="e">
-        /// The instance containing the event data.
-        /// </param>
-        /// <returns>
-        /// The mouse button.
-        /// </returns>
+        /// <param name="e">The instance containing the event data.</param>
+        /// <returns>The mouse button.</returns>
         private static OxyMouseButton ConvertButton(EventButton e)
         {
             switch (e.Button)
@@ -460,7 +431,7 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Converts a <see cref="ModifierType"/> to a <see cref="OxyModifierKeys"/>.
+        /// Converts a <see cref="ModifierType" /> to a <see cref="OxyModifierKeys" />.
         /// </summary>
         /// <param name="state">The state.</param>
         /// <returns>The modifier keys.</returns>

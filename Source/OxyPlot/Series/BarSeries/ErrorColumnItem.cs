@@ -36,7 +36,7 @@ namespace OxyPlot.Series
     public class ErrorColumnItem : ColumnItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorColumnItem"/> class.
+        /// Initializes a new instance of the <see cref="ErrorColumnItem" /> class.
         /// </summary>
         public ErrorColumnItem()
         {
@@ -44,17 +44,11 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorColumnItem"/> class.
+        /// Initializes a new instance of the <see cref="ErrorColumnItem" /> class.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="error">
-        /// The error.
-        /// </param>
-        /// <param name="categoryIndex">
-        /// Index of the category.
-        /// </param>
+        /// <param name="value">The value.</param>
+        /// <param name="error">The error.</param>
+        /// <param name="categoryIndex">Index of the category.</param>
         public ErrorColumnItem(double value, double error, int categoryIndex = -1)
             : this()
         {
@@ -71,9 +65,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Returns c# code that generates this instance.
         /// </summary>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <returns>C# code.</returns>
         public override string ToCode()
         {
             if (!this.Color.IsUndefined())

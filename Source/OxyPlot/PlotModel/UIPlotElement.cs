@@ -74,14 +74,10 @@ namespace OxyPlot
         public event EventHandler<OxyTouchEventArgs> TouchCompleted;
 
         /// <summary>
-        /// Raises the <see cref="MouseDown"/> event.
+        /// Raises the <see cref="MouseDown" /> event.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
         protected internal virtual void OnMouseDown(object sender, OxyMouseDownEventArgs e)
         {
             var handler = this.MouseDown;
@@ -92,14 +88,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseMove"/> event.
+        /// Raises the <see cref="MouseMove" /> event.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
         protected internal virtual void OnMouseMove(object sender, OxyMouseEventArgs e)
         {
             var handler = this.MouseMove;
@@ -110,10 +102,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Raises the <see cref="KeyDown"/> event.
+        /// Raises the <see cref="KeyDown" /> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="OxyKeyEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="OxyKeyEventArgs" /> instance containing the event data.</param>
         protected internal virtual void OnKeyDown(object sender, OxyKeyEventArgs e)
         {
             var handler = this.KeyDown;
@@ -124,14 +116,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseUp"/> event.
+        /// Raises the <see cref="MouseUp" /> event.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="OxyMouseEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="OxyMouseEventArgs" /> instance containing the event data.</param>
         protected internal virtual void OnMouseUp(object sender, OxyMouseEventArgs e)
         {
             var handler = this.MouseUp;
@@ -142,14 +130,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Raises the <see cref="TouchStarted"/> event.
+        /// Raises the <see cref="TouchStarted" /> event.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="OxyTouchEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
         protected internal virtual void OnTouchStarted(object sender, OxyTouchEventArgs e)
         {
             var handler = this.TouchStarted;
@@ -160,14 +144,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Raises the <see cref="TouchDelta"/> event.
+        /// Raises the <see cref="TouchDelta" /> event.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="OxyTouchEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
         protected internal virtual void OnTouchDelta(object sender, OxyTouchEventArgs e)
         {
             var handler = this.TouchDelta;
@@ -178,14 +158,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Raises the <see cref="MouseUp"/> event.
+        /// Raises the <see cref="MouseUp" /> event.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="OxyTouchEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="OxyTouchEventArgs" /> instance containing the event data.</param>
         protected internal virtual void OnTouchCompleted(object sender, OxyTouchEventArgs e)
         {
             var handler = this.TouchCompleted;
@@ -200,9 +176,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="tolerance">The tolerance.</param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
+        /// <returns>A hit test result.</returns>
         protected internal abstract HitTestResult HitTest(ScreenPoint point, double tolerance);
     }
 }

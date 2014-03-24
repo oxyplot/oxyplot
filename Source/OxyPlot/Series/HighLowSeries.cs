@@ -38,9 +38,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents a series for high-low plots.
     /// </summary>
-    /// <remarks>
-    /// See <a href="http://www.mathworks.com/help/toolbox/finance/highlowfts.html">link</a>
-    /// </remarks>
+    /// <remarks>See <a href="http://www.mathworks.com/help/toolbox/finance/highlowfts.html">link</a></remarks>
     public class HighLowSeries : XYAxisSeries
     {
         /// <summary>
@@ -65,11 +63,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HighLowSeries"/> class.
+        /// Initializes a new instance of the <see cref="HighLowSeries" /> class.
         /// </summary>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="title">The title.</param>
         public HighLowSeries(string title)
             : this()
         {
@@ -77,17 +73,11 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HighLowSeries"/> class.
+        /// Initializes a new instance of the <see cref="HighLowSeries" /> class.
         /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <param name="strokeThickness">
-        /// The stroke thickness.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="color">The color.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="title">The title.</param>
         public HighLowSeries(OxyColor color, double strokeThickness = 1, string title = null)
             : this()
         {
@@ -113,7 +103,7 @@ namespace OxyPlot.Series
 
         /// <summary>
         /// Gets or sets the dashes array.
-        /// If this is not null it overrides the LineStyle property.
+        /// If this is not <c>null</c> it overrides the LineStyle property.
         /// </summary>
         /// <value>The dashes.</value>
         public double[] Dashes { get; set; }
@@ -176,9 +166,7 @@ namespace OxyPlot.Series
         /// Gets or sets the mapping delegate.
         /// </summary>
         /// <value>The mapping.</value>
-        /// <remarks>        
-        /// Example: series1.Mapping = item => new HighLowItem(((MyType)item).Time,((MyType)item).Value);
-        /// </remarks>
+        /// <remarks>Example: series1.Mapping = item => new HighLowItem(((MyType)item).Time,((MyType)item).Value);</remarks>
         public Func<object, HighLowItem> Mapping { get; set; }
 
         /// <summary>
@@ -198,9 +186,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (this.XAxis == null || this.YAxis == null)
@@ -268,9 +254,7 @@ namespace OxyPlot.Series
         /// <param name="pt">The point.</param>
         /// <param name="xaxis">The x axis.</param>
         /// <param name="yaxis">The y axis.</param>
-        /// <returns>
-        ///  <c>true</c> if [is valid point] [the specified pt]; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><c>true</c> if [is valid point] [the specified pt]; otherwise, <c>false</c>.</returns>
         public virtual bool IsValidItem(HighLowItem pt, Axis xaxis, Axis yaxis)
         {
             return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.High)
@@ -280,12 +264,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the series on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The owner plot model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.items.Count == 0)
@@ -355,12 +335,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the legend symbol for the series on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="legendBox">
-        /// The bounding rectangle of the legend box.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;
@@ -394,9 +370,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="model">The model.</param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
             if (this.Color.IsAutomatic())
@@ -450,9 +424,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Updates the Max/Min limits from the specified point list.
         /// </summary>
-        /// <param name="pts">
-        /// The PTS.
-        /// </param>
+        /// <param name="pts">The PTS.</param>
         protected void InternalUpdateMaxMin(IList<HighLowItem> pts)
         {
             if (pts == null || pts.Count == 0)

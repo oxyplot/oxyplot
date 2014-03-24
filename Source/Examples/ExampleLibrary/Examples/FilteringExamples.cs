@@ -59,7 +59,7 @@ namespace ExampleLibrary
             ls1.Points.Add(new DataPoint(7, 0));
             ls1.Points.Add(new DataPoint(double.NaN, double.NaN));
             plot.Series.Add(ls1);
-            
+
             var ls2 = new LineSeries("PositiveInfinity");
             ls2.Points.Add(new DataPoint(double.PositiveInfinity, double.PositiveInfinity));
             ls2.Points.Add(new DataPoint(1, 1));

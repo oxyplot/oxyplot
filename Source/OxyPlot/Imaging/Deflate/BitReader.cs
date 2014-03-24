@@ -44,7 +44,7 @@ namespace OxyPlot
         public abstract int Read();
 
         /// <summary>
-        /// Reads a bit from the stream. 
+        /// Reads a bit from the stream.
         /// </summary>
         /// <returns>Returns 0 or 1 if a bit is available, or throws an EOFException if the end of stream is reached.</returns>
         public abstract int ReadNoEof();

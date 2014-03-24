@@ -86,9 +86,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Gets a value indicating whether the context renders to screen.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if the context renders to screen; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if the context renders to screen; otherwise, <c>false</c>.</value>
         public bool RendersToScreen
         {
             get
@@ -100,18 +98,10 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Draws an ellipse.
         /// </summary>
-        /// <param name="rect">
-        /// The rectangle defining the ellipse.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle defining the ellipse.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var el = new Ellipse();
@@ -136,18 +126,10 @@ namespace OxyPlot.Metro
         /// <summary>
         /// The draw ellipses.
         /// </summary>
-        /// <param name="rectangles">
-        /// The rectangles.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rectangles">The rectangles.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = new Path();
@@ -176,24 +158,12 @@ namespace OxyPlot.Metro
         /// <summary>
         /// The draw line.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">The aliased.</param>
         public void DrawLine(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -219,24 +189,12 @@ namespace OxyPlot.Metro
         /// <summary>
         /// The draw line segments.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">The aliased.</param>
         public void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -274,27 +232,13 @@ namespace OxyPlot.Metro
         /// <summary>
         /// The draw polygon.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">The aliased.</param>
         public void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
@@ -326,27 +270,13 @@ namespace OxyPlot.Metro
         /// <summary>
         /// The draw polygons.
         /// </summary>
-        /// <param name="polygons">
-        /// The polygons.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="polygons">The polygons.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">The aliased.</param>
         public void DrawPolygons(
             IList<IList<ScreenPoint>> polygons,
             OxyColor fill,
@@ -391,18 +321,10 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Draws a rectangle.
         /// </summary>
-        /// <param name="rect">
-        /// The rectangle.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var el = new Rectangle();
@@ -428,18 +350,10 @@ namespace OxyPlot.Metro
         /// Draws a collection of rectangles, where all have the same stroke and fill.
         /// This performs better than calling DrawRectangle multiple times.
         /// </summary>
-        /// <param name="rectangles">
-        /// The rectangles.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rectangles">The rectangles.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = new Path();
@@ -462,36 +376,16 @@ namespace OxyPlot.Metro
         /// <summary>
         /// The draw text.
         /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="rotate">
-        /// The rotate.
-        /// </param>
-        /// <param name="halign">
-        /// The horizontal alignment.
-        /// </param>
-        /// <param name="valign">
-        /// The vertical alignment.
-        /// </param>
-        /// <param name="maxSize">
-        /// The maximum size of the text.
-        /// </param>
+        /// <param name="p">The p.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="rotate">The rotate.</param>
+        /// <param name="halign">The horizontal alignment.</param>
+        /// <param name="valign">The vertical alignment.</param>
+        /// <param name="maxSize">The maximum size of the text.</param>
         public void DrawText(
             ScreenPoint p,
             string text,
@@ -574,21 +468,11 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Measures the text.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// Size of the font.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <returns>
-        /// The text size.
-        /// </returns>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <returns>The text size.</returns>
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (string.IsNullOrEmpty(text))
@@ -618,18 +502,13 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Sets the tool tip for the following items.
         /// </summary>
-        /// <param name="text">
-        /// The text in the tooltip.
-        /// </param>
-        /// <params>
-        /// This is only used in the plot controls.
-        /// </params>
+        /// <param name="text">The text in the tooltip.</param>
         public void SetToolTip(string text)
         {
         }
 
         /// <summary>
-        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
+        /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
@@ -712,9 +591,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Cleans up resources not in use.
         /// </summary>
-        /// <remarks>
-        /// This method is called at the end of each rendering.
-        /// </remarks>
+        /// <remarks>This method is called at the end of each rendering.</remarks>
         public void CleanUp()
         {
             // Find the images in the cache that has not been used since last call to this method
@@ -732,12 +609,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Creates the dash array collection.
         /// </summary>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <returns>
-        /// The dash collection.
-        /// </returns>
+        /// <param name="dashArray">The dash array.</param>
+        /// <returns>The dash collection.</returns>
         private static DoubleCollection CreateDashArrayCollection(IList<double> dashArray)
         {
             var dac = new DoubleCollection();
@@ -752,12 +625,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts a font weight value to a FontWeight.
         /// </summary>
-        /// <param name="fontWeight">
-        /// The font weight value.
-        /// </param>
-        /// <returns>
-        /// The font weight.
-        /// </returns>
+        /// <param name="fontWeight">The font weight value.</param>
+        /// <returns>The font weight.</returns>
         private static FontWeight GetFontWeight(double fontWeight)
         {
             return fontWeight > OxyPlot.FontWeights.Normal ? FontWeights.Bold : FontWeights.Normal;
@@ -782,12 +651,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Gets a brush from the cache or creates a new one.
         /// </summary>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <returns>
-        /// The brush.
-        /// </returns>
+        /// <param name="stroke">The stroke.</param>
+        /// <returns>The brush.</returns>
         private Brush GetCachedBrush(OxyColor stroke)
         {
             Brush brush;
@@ -803,24 +668,12 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Sets the stroke properties of the specified shape.
         /// </summary>
-        /// <param name="shape">
-        /// The shape.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="aliased">The aliased.</param>
         // ReSharper disable UnusedParameter.Local
         private void SetStroke(
             Shape shape,

@@ -51,7 +51,7 @@ namespace RefreshDemo
         {
             new Window2().Show();
         }
-        
+
         private void RefreshMethod3_Click(object sender, RoutedEventArgs e)
         {
             new Window3().Show();

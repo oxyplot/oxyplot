@@ -39,7 +39,7 @@ namespace OxyPlot.Axes
     public class LinearColorAxis : LinearAxis, IColorAxis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearColorAxis"/> class.
+        /// Initializes a new instance of the <see cref="LinearColorAxis" /> class.
         /// </summary>
         public LinearColorAxis()
         {
@@ -58,43 +58,37 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets or sets the color used to represent NaN values.
         /// </summary>
-        /// <value>
-        /// A <see cref="OxyColor"/> that defines the color. The default value is <c>OxyColors.Gray</c>.
-        /// </value>
+        /// <value>A <see cref="OxyColor" /> that defines the color. The default value is <c>OxyColors.Gray</c>.</value>
         public OxyColor InvalidNumberColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of values above the maximum value.
         /// </summary>
-        /// <value> The color of the high values. </value>
+        /// <value>The color of the high values.</value>
         public OxyColor HighColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of values below the minimum value.
         /// </summary>
-        /// <value> The color of the low values. </value>
+        /// <value>The color of the low values.</value>
         public OxyColor LowColor { get; set; }
 
         /// <summary>
         /// Gets or sets the palette.
         /// </summary>
-        /// <value> The palette. </value>
+        /// <value>The palette.</value>
         public OxyPalette Palette { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to render the colors as an image.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if the rendering should use an image; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if the rendering should use an image; otherwise, <c>false</c>.</value>
         public bool RenderAsImage { get; set; }
 
         /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
-        /// <returns>
-        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> .
-        /// </returns>
+        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
         public override bool IsXyAxis()
         {
             return false;
@@ -103,12 +97,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the color.
         /// </summary>
-        /// <param name="paletteIndex">
-        /// The color map index (less than NumberOfEntries).
-        /// </param>
-        /// <returns>
-        /// The color.
-        /// </returns>
+        /// <param name="paletteIndex">The color map index (less than NumberOfEntries).</param>
+        /// <returns>The color.</returns>
         public OxyColor GetColor(int paletteIndex)
         {
             if (paletteIndex == int.MinValue)
@@ -147,15 +137,9 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the palette index of the specified value.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// The palette index.
-        /// </returns>
-        /// <remarks>
-        /// If the value is less than minimum, 0 is returned. If the value is greater than maximum, Palette.Colors.Count+1 is returned.
-        /// </remarks>
+        /// <param name="value">The value.</param>
+        /// <returns>The palette index.</returns>
+        /// <remarks>If the value is less than minimum, 0 is returned. If the value is greater than maximum, Palette.Colors.Count+1 is returned.</remarks>
         public int GetPaletteIndex(double value)
         {
             if (double.IsNaN(value))
@@ -300,12 +284,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the high value of the specified palette index.
         /// </summary>
-        /// <param name="paletteIndex">
-        /// Index of the palette.
-        /// </param>
-        /// <returns>
-        /// The value.
-        /// </returns>
+        /// <param name="paletteIndex">Index of the palette.</param>
+        /// <returns>The value.</returns>
         protected double GetHighValue(int paletteIndex)
         {
             return this.GetLowValue(paletteIndex + 1);
@@ -314,12 +294,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the low value of the specified palette index.
         /// </summary>
-        /// <param name="paletteIndex">
-        /// Index of the palette.
-        /// </param>
-        /// <returns>
-        /// The value.
-        /// </returns>
+        /// <param name="paletteIndex">Index of the palette.</param>
+        /// <returns>The value.</returns>
         protected double GetLowValue(int paletteIndex)
         {
             return ((double)paletteIndex / this.Palette.Colors.Count * (this.ActualMaximum - this.ActualMinimum))
@@ -330,9 +306,7 @@ namespace OxyPlot.Axes
         /// Generates the image used to render the color axis.
         /// </summary>
         /// <param name="reverse">Reverse the colors if set to <c>true</c>.</param>
-        /// <returns>
-        /// An <see cref="OxyImage" /> used to render the color axis.
-        /// </returns>
+        /// <returns>An <see cref="OxyImage" /> used to render the color axis.</returns>
         private OxyImage GenerateColorAxisImage(bool reverse)
         {
             int n = this.Palette.Colors.Count;

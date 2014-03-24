@@ -35,10 +35,8 @@ namespace ExampleLibrary
     /// <summary>
     /// Calculation of sunrise/sunset
     /// </summary>
-    /// <remarks>
-    /// http://williams.best.vwh.net/sunrise_sunset_algorithm.htm
-    /// based on code by Huysentruit Wouter, Fastload-Media.be
-    /// </remarks>
+    /// <remarks>http://williams.best.vwh.net/sunrise_sunset_algorithm.htm
+    /// based on code by Huysentruit Wouter, Fastload-Media.be</remarks>
     public static class Sun
     {
         private static double Deg2Rad(double angle)

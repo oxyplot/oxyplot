@@ -36,14 +36,14 @@ namespace OxyPlot
     public class OxyTouchEventArgs : OxyInputEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyTouchEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="OxyTouchEventArgs" /> class.
         /// </summary>
         public OxyTouchEventArgs()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyTouchEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="OxyTouchEventArgs" /> class.
         /// </summary>
         /// <param name="currentTouches">The current touches.</param>
         /// <param name="previousTouches">The previous touches.</param>
@@ -80,25 +80,19 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the position of the touch.
         /// </summary>
-        /// <value>
-        /// The position.
-        /// </value>
+        /// <value>The position.</value>
         public ScreenPoint Position { get; set; }
 
         /// <summary>
         /// Gets or sets the relative change in scale.
         /// </summary>
-        /// <value>
-        /// The scale change.
-        /// </value>
+        /// <value>The scale change.</value>
         public ScreenVector DeltaScale { get; set; }
 
         /// <summary>
         /// Gets or sets the change in x and y direction.
         /// </summary>
-        /// <value>
-        /// The translation.
-        /// </value>
+        /// <value>The translation.</value>
         public ScreenVector DeltaTranslation { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace OxyPlot.WindowsForms
     using System.Drawing;
 
     /// <summary>
-    /// Provides extension methods to the <see cref="PlotModel"/>.
+    /// Provides extension methods to the <see cref="PlotModel" />.
     /// </summary>
     public static class PlotModelExtensions
     {
@@ -45,7 +45,7 @@ namespace OxyPlot.WindowsForms
         /// <param name="width">The width (points).</param>
         /// <param name="height">The height (points).</param>
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
-        /// <returns>A <see cref="string"/>.</returns>
+        /// <returns>A <see cref="string" />.</returns>
         public static string ToSvg(this PlotModel model, double width, double height, bool isDocument)
         {
             using (var g = Graphics.FromHwnd(IntPtr.Zero))

@@ -50,22 +50,18 @@ namespace OxyPlot
         private OxyColor[,] pixels;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyImage"/> class from the specified stream.
+        /// Initializes a new instance of the <see cref="OxyImage" /> class from the specified stream.
         /// </summary>
-        /// <param name="s">
-        /// A stream that provides the image data.
-        /// </param>
+        /// <param name="s">A stream that provides the image data.</param>
         public OxyImage(Stream s)
             : this(GetBytes(s))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyImage"/> class from a byte array.
+        /// Initializes a new instance of the <see cref="OxyImage" /> class from a byte array.
         /// </summary>
-        /// <param name="bytes">
-        /// The image bytes.
-        /// </param>
+        /// <param name="bytes">The image bytes.</param>
         public OxyImage(byte[] bytes)
         {
             this.data = bytes;
@@ -76,49 +72,37 @@ namespace OxyPlot
         /// <summary>
         /// Gets the image format.
         /// </summary>
-        /// <value>
-        /// The format.
-        /// </value>
+        /// <value>The format.</value>
         public ImageFormat Format { get; private set; }
 
         /// <summary>
         /// Gets the width of the image.
         /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
+        /// <value>The width.</value>
         public int Width { get; private set; }
 
         /// <summary>
         /// Gets the height of the image.
         /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
+        /// <value>The height.</value>
         public int Height { get; private set; }
 
         /// <summary>
         /// Gets the number of bits per pixel.
         /// </summary>
-        /// <value>
-        /// The bits per pixel.
-        /// </value>
+        /// <value>The bits per pixel.</value>
         public int BitsPerPixel { get; private set; }
 
         /// <summary>
         /// Gets the horizontal resolution of the image.
         /// </summary>
-        /// <value>
-        /// The resolution in dots per inch (dpi).
-        /// </value>
+        /// <value>The resolution in dots per inch (dpi).</value>
         public double DpiX { get; private set; }
 
         /// <summary>
         /// Gets the vertical resolution of the image.
         /// </summary>
-        /// <value>
-        /// The resolution in dots per inch (dpi).
-        /// </value>
+        /// <value>The resolution in dots per inch (dpi).</value>
         public double DpiY { get; private set; }
 
         /// <summary>
@@ -128,7 +112,7 @@ namespace OxyPlot
         /// <param name="palette">The palette.</param>
         /// <param name="format">The image format.</param>
         /// <param name="encoderOptions">The encoder options.</param>
-        /// <returns>An <see cref="OxyImage"/></returns>
+        /// <returns>An <see cref="OxyImage" /></returns>
         public static OxyImage Create(
             byte[,] pixels,
             OxyColor[] palette,
@@ -140,17 +124,17 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Creates an image from 32-bit true-color pixels.
+        /// Creates an image from 32-bit <c>true</c>-color pixels.
         /// </summary>
         /// <param name="pixels">The pixels indexed as [x,y]. [0,0] is top-left.</param>
         /// <param name="format">The image format.</param>
         /// <param name="encoderOptions">The encoder options.</param>
-        /// <returns>An <see cref="OxyImage"/></returns>
+        /// <returns>An <see cref="OxyImage" /></returns>
         public static OxyImage Create(OxyColor[,] pixels, ImageFormat format, ImageEncoderOptions encoderOptions = null)
         {
             var encoder = GetEncoder(format, encoderOptions);
             var image = new OxyImage(encoder.Encode(pixels));
-            
+
             // TODO: remove when PNG decoder is implemented
             image.pixels = pixels;
 
@@ -160,9 +144,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the image data.
         /// </summary>
-        /// <returns>
-        /// The image data as a byte array.
-        /// </returns>
+        /// <returns>The image data as a byte array.</returns>
         public byte[] GetData()
         {
             return this.data;
@@ -186,10 +168,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the <see cref="IImageDecoder"/> for the specified format.
+        /// Gets the <see cref="IImageDecoder" /> for the specified format.
         /// </summary>
         /// <param name="format">The image format.</param>
-        /// <returns>The <see cref="IImageDecoder"/>.</returns>
+        /// <returns>The <see cref="IImageDecoder" />.</returns>
         private static IImageDecoder GetDecoder(ImageFormat format)
         {
             switch (format)
@@ -209,11 +191,11 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Gets the <see cref="IImageEncoder"/> for the specified format.
+        /// Gets the <see cref="IImageEncoder" /> for the specified format.
         /// </summary>
         /// <param name="format">The image format.</param>
         /// <param name="encoderOptions">The image encoder options.</param>
-        /// <returns>The <see cref="IImageEncoder"/>.</returns>
+        /// <returns>The <see cref="IImageEncoder" />.</returns>
         private static IImageEncoder GetEncoder(ImageFormat format, ImageEncoderOptions encoderOptions)
         {
             switch (format)
@@ -257,7 +239,7 @@ namespace OxyPlot
         /// Gets the image format.
         /// </summary>
         /// <param name="bytes">The image bytes.</param>
-        /// <returns>The <see cref="ImageFormat"/></returns>
+        /// <returns>The <see cref="ImageFormat" /></returns>
         private static ImageFormat GetImageFormat(byte[] bytes)
         {
             if (bytes.Length >= 2 && bytes[0] == 0xFF && bytes[1] == 0xD8)

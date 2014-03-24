@@ -115,9 +115,7 @@ namespace ExampleLibrary
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             var points = this.Points;

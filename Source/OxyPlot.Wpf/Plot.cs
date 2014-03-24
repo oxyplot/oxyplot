@@ -80,7 +80,7 @@ namespace OxyPlot.Wpf
         private PlotModel currentlyAttachedModel;
 
         /// <summary>
-        /// The current model (synchronized with the <see cref="Model"/> property, but can be accessed from all threads.
+        /// The current model (synchronized with the <see cref="Model" /> property, but can be accessed from all threads.
         /// </summary>
         private PlotModel currentModel;
 
@@ -135,7 +135,7 @@ namespace OxyPlot.Wpf
         private ContentControl zoomControl;
 
         /// <summary>
-        /// Initializes static members of the <see cref="Plot"/> class.
+        /// Initializes static members of the <see cref="Plot" /> class.
         /// </summary>
         static Plot()
         {
@@ -148,7 +148,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Plot"/> class.
+        /// Initializes a new instance of the <see cref="Plot" /> class.
         /// </summary>
         public Plot()
         {
@@ -177,7 +177,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets the annotations.
         /// </summary>
-        /// <value> The annotations. </value>
+        /// <value>The annotations.</value>
         public ObservableCollection<Annotation> Annotations
         {
             get
@@ -189,17 +189,13 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether to disconnect the canvas while updating.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if canvas should be disconnected while updating; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if canvas should be disconnected while updating; otherwise, <c>false</c>.</value>
         public bool DisconnectCanvasWhileUpdating { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is being rendered.
         /// </summary>
-        /// <remarks>
-        /// When the visual is removed from the visual tree, this property should be set to false.
-        /// </remarks>
+        /// <remarks>When the visual is removed from the visual tree, this property should be set to <c>false</c>.</remarks>
         public bool IsRendering
         {
             get
@@ -227,7 +223,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets the tracker definitions.
         /// </summary>
-        /// <value> The tracker definitions. </value>
+        /// <value>The tracker definitions.</value>
         public ObservableCollection<TrackerDefinition> TrackerDefinitions
         {
             get
@@ -239,7 +235,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets the actual model.
         /// </summary>
-        /// <value> The actual model. </value>
+        /// <value>The actual model.</value>
         public PlotModel ActualModel
         {
             get
@@ -251,9 +247,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets the actual plot controller.
         /// </summary>
-        /// <value>
-        /// The actual plot controller.
-        /// </value>
+        /// <value>The actual plot controller.</value>
         public IPlotController ActualController
         {
             get
@@ -287,9 +281,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Invalidate the plot (not blocking the UI thread)
         /// </summary>
-        /// <param name="updateData">
-        /// The update Data.
-        /// </param>
+        /// <param name="updateData">The update Data.</param>
         public void InvalidatePlot(bool updateData = true)
         {
             if (!this.IsRendering)
@@ -301,8 +293,8 @@ namespace OxyPlot.Wpf
 
             if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
             {
-                // Invalidate the arrange state for the element. 
-                // After the invalidation, the element will have its layout updated, 
+                // Invalidate the arrange state for the element.
+                // After the invalidation, the element will have its layout updated,
                 // which will occur asynchronously unless subsequently forced by UpdateLayout.
                 this.BeginInvoke(this.InvalidateArrange);
             }
@@ -311,9 +303,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Sets the cursor type.
         /// </summary>
-        /// <param name="cursorType">
-        /// The cursor type.
-        /// </param>
+        /// <param name="cursorType">The cursor type.</param>
         public void SetCursorType(CursorType cursorType)
         {
             switch (cursorType)
@@ -339,9 +329,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Shows the tracker.
         /// </summary>
-        /// <param name="trackerHitResult">
-        /// The tracker data.
-        /// </param>
+        /// <param name="trackerHitResult">The tracker data.</param>
         public void ShowTracker(TrackerHitResult trackerHitResult)
         {
             if (trackerHitResult == null)
@@ -386,9 +374,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Shows the zoom rectangle.
         /// </summary>
-        /// <param name="r">
-        /// The rectangle.
-        /// </param>
+        /// <param name="r">The rectangle.</param>
         public void ShowZoomRectangle(OxyRect r)
         {
             this.zoomControl.Width = r.Width;
@@ -409,7 +395,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> .
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" /> .
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -438,9 +424,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Pans all axes.
         /// </summary>
-        /// <param name="delta">
-        /// The delta.
-        /// </param>
+        /// <param name="delta">The delta.</param>
         public void PanAllAxes(Vector delta)
         {
             if (this.ActualModel != null)
@@ -454,9 +438,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Zooms all axes.
         /// </summary>
-        /// <param name="factor">
-        /// The zoom factor.
-        /// </param>
+        /// <param name="factor">The zoom factor.</param>
         public void ZoomAllAxes(double factor)
         {
             if (this.ActualModel != null)
@@ -483,18 +465,10 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Saves the plot as a bitmap.
         /// </summary>
-        /// <param name="fileName">
-        /// Name of the file.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="background">
-        /// The background.
-        /// </param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="background">The background.</param>
         public void SaveBitmap(string fileName, int width, int height, OxyColor background)
         {
             if (width == 0)
@@ -518,9 +492,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Saves the plot as xaml.
         /// </summary>
-        /// <param name="fileName">
-        /// Name of the file.
-        /// </param>
+        /// <param name="fileName">Name of the file.</param>
         public void SaveXaml(string fileName)
         {
             XamlExporter.Export(this.ActualModel, fileName, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
@@ -529,9 +501,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Renders the plot to a bitmap.
         /// </summary>
-        /// <returns>
-        /// A bitmap.
-        /// </returns>
+        /// <returns>A bitmap.</returns>
         public BitmapSource ToBitmap()
         {
             return PngExporter.ExportToBitmap(this.ActualModel, (int)this.ActualWidth, (int)this.ActualHeight, this.Background.ToOxyColor());
@@ -540,9 +510,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Renders the plot to xaml.
         /// </summary>
-        /// <returns>
-        /// The xaml.
-        /// </returns>
+        /// <returns>The xaml.</returns>
         public string ToXaml()
         {
             return XamlExporter.ExportToString(this.ActualModel, this.ActualWidth, this.ActualHeight, this.Background.ToOxyColor());
@@ -552,9 +520,7 @@ namespace OxyPlot.Wpf
         /// Called to arrange and size the content of a <see cref="T:System.Windows.Controls.Control" /> object.
         /// </summary>
         /// <param name="arrangeBounds">The computed size that is used to arrange the content.</param>
-        /// <returns>
-        /// The size of the control.
-        /// </returns>
+        /// <returns>The size of the control.</returns>
         protected override Size ArrangeOverride(Size arrangeBounds)
         {
             if (this.ActualWidth > 0 && this.ActualHeight > 0)
@@ -579,9 +545,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Invoked when an unhandled KeyDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.KeyEventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.KeyEventArgs" /> that contains the event data.</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -597,9 +561,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Invoked when an unhandled MouseDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.</param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
@@ -621,9 +583,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Invoked when an unhandled MouseMove attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs" /> that contains the event data.</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -639,9 +599,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Invoked when an unhandled MouseUp routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the mouse button was released.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. The event data reports that the mouse button was released.</param>
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
@@ -714,9 +672,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Invoked when an unhandled MouseWheel attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseWheelEventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseWheelEventArgs" /> that contains the event data.</param>
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
@@ -732,7 +688,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called when the parent of visual object is changed.
         /// </summary>
-        /// <param name="oldParent">A value of type <see cref="T:System.Windows.DependencyObject"/> that represents the previous parent of the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object. If the <see cref="T:System.Windows.Media.Media3D.Visual3D"/> object did not have a previous parent, the value of the parameter is null.</param>
+        /// <param name="oldParent">A value of type <see cref="T:System.Windows.DependencyObject" /> that represents the previous parent of the <see cref="T:System.Windows.Media.Media3D.Visual3D" /> object. If the <see cref="T:System.Windows.Media.Media3D.Visual3D" /> object did not have a previous parent, the value of the parameter is <c>null</c>.</param>
         protected override void OnVisualParentChanged(DependencyObject oldParent)
         {
             base.OnVisualParentChanged(oldParent);
@@ -744,7 +700,7 @@ namespace OxyPlot.Wpf
         /// Handles the Loaded event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         protected virtual void PlotLoaded(object sender, RoutedEventArgs e)
         {
             this.IsRendering = true;
@@ -767,7 +723,7 @@ namespace OxyPlot.Wpf
         /// Handles the Unloaded event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         protected virtual void PlotUnloaded(object sender, RoutedEventArgs e)
         {
             this.IsRendering = false;
@@ -785,12 +741,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called when the visual appearance is changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((Plot)d).OnAppearanceChanged();
@@ -799,12 +751,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called when the model is changed.
         /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="d">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((Plot)d).OnModelChanged();
@@ -813,12 +761,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Performs the copy operation.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.Input.ExecutedRoutedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.Input.ExecutedRoutedEventArgs" /> instance containing the event data.</param>
         private void DoCopy(object sender, ExecutedRoutedEventArgs e)
         {
             var background = ReferenceEquals(this.Background, Brushes.Transparent) ? Brushes.White : this.Background;
@@ -862,12 +806,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called when annotations is changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
         private void OnAnnotationsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             this.SyncLogicalTree(e);
@@ -876,12 +816,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called when axes is changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
         private void OnAxesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             this.SyncLogicalTree(e);
@@ -924,12 +860,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called when series is changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
         private void OnSeriesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             this.SyncLogicalTree(e);
@@ -938,12 +870,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called when size of the control is changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.SizeChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.SizeChangedEventArgs" /> instance containing the event data.</param>
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (e.NewSize.Height > 0 && e.NewSize.Width > 0)
@@ -955,9 +883,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Synchronizes the logical tree.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
         private void SyncLogicalTree(NotifyCollectionChangedEventArgs e)
         {
             // In order to get DataContext and binding to work with the series, axes and annotations
@@ -980,11 +906,9 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Updates the model. If Model==null, an internal model will be created. The ActualModel.Update will be called (updates all series data).
+        /// Updates the model. If Model==<c>null</c>, an internal model will be created. The ActualModel.Update will be called (updates all series data).
         /// </summary>
-        /// <param name="updateData">
-        /// if set to <c>true</c> , all data collections will be updated.
-        /// </param>
+        /// <param name="updateData">if set to <c>true</c> , all data collections will be updated.</param>
         private void UpdateModel(bool updateData = true)
         {
             // If no model is set, create an internal model and copy the
@@ -996,7 +920,7 @@ namespace OxyPlot.Wpf
                     this.internalModel = new PlotModel();
                 }
 
-                // Synchronize axes, series and properties from the WPF dependency objects to the internal model                
+                // Synchronize axes, series and properties from the WPF dependency objects to the internal model
                 this.SynchronizeProperties();
                 this.SynchronizeSeries();
                 this.SynchronizeAxes();
@@ -1120,7 +1044,7 @@ namespace OxyPlot.Wpf
 
                 if (this.DisconnectCanvasWhileUpdating)
                 {
-                    // TODO: profile... not sure if this makes any difference                    
+                    // TODO: profile... not sure if this makes any difference
                     int idx = this.grid.Children.IndexOf(this.canvas);
                     if (idx != -1)
                     {

@@ -84,12 +84,8 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Gets the full caption.
         /// </summary>
-        /// <param name="style">
-        /// The style.
-        /// </param>
-        /// <returns>
-        /// The caption string.
-        /// </returns>
+        /// <param name="style">The style.</param>
+        /// <returns>The caption string.</returns>
         public string GetFullCaption(ReportStyle style)
         {
             return string.Format(style.TableCaptionFormatString, this.TableNumber, this.Caption);
@@ -107,9 +103,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Writes the content of the table.
         /// </summary>
-        /// <param name="w">
-        /// The target <see cref="IReportWriter"/>.
-        /// </param>
+        /// <param name="w">The target <see cref="IReportWriter" />.</param>
         public override void WriteContent(IReportWriter w)
         {
             // todo

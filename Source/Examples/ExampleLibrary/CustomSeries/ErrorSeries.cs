@@ -42,7 +42,7 @@ namespace ExampleLibrary
     public class ErrorSeries : DataPointSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorSeries"/> class.
+        /// Initializes a new instance of the <see cref="ErrorSeries" /> class.
         /// </summary>
         public ErrorSeries()
         {
@@ -53,17 +53,13 @@ namespace ExampleLibrary
         /// <summary>
         /// Gets or sets the color.
         /// </summary>
-        /// <value>
-        /// The color.
-        /// </value>
+        /// <value>The color.</value>
         public OxyColor Color { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
         /// </summary>
-        /// <value>
-        /// The stroke thickness.
-        /// </value>
+        /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
 
         /// <summary>

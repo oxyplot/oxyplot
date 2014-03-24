@@ -37,9 +37,7 @@ namespace OxyPlot.Axes
     /// <summary>
     /// Represents an axis with logarithmic scale.
     /// </summary>
-    /// <remarks>
-    /// See http://en.wikipedia.org/wiki/Logarithmic_scale.
-    /// </remarks>
+    /// <remarks>See http://en.wikipedia.org/wiki/Logarithmic_scale.</remarks>
     public class LogarithmicAxis : Axis
     {
         /// <summary>
@@ -53,14 +51,10 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogarithmicAxis"/> class.
+        /// Initializes a new instance of the <see cref="LogarithmicAxis" /> class.
         /// </summary>
-        /// <param name="pos">
-        /// The position.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="pos">The position.</param>
+        /// <param name="title">The title.</param>
         public LogarithmicAxis(AxisPosition pos, string title)
             : this()
         {
@@ -69,20 +63,12 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogarithmicAxis"/> class.
+        /// Initializes a new instance of the <see cref="LogarithmicAxis" /> class.
         /// </summary>
-        /// <param name="position">
-        /// The position.
-        /// </param>
-        /// <param name="minimum">
-        /// The minimum.
-        /// </param>
-        /// <param name="maximum">
-        /// The maximum.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="position">The position.</param>
+        /// <param name="minimum">The minimum.</param>
+        /// <param name="maximum">The maximum.</param>
+        /// <param name="title">The title.</param>
         public LogarithmicAxis(
             AxisPosition position, double minimum = double.NaN, double maximum = double.NaN, string title = null)
             : this()
@@ -96,10 +82,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets or sets the logarithmic base (normally 10).
         /// </summary>
-        /// <remarks>
-        /// See http://en.wikipedia.org/wiki/Logarithm.
-        /// </remarks>
         /// <value>The logarithmic base.</value>
+        /// <remarks>See http://en.wikipedia.org/wiki/Logarithm.</remarks>
         public double Base { get; set; }
 
         /// <summary>
@@ -133,15 +117,9 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the coordinates used to draw ticks and tick labels (numbers or category names).
         /// </summary>
-        /// <param name="majorLabelValues">
-        /// The major label values.
-        /// </param>
-        /// <param name="majorTickValues">
-        /// The major tick values.
-        /// </param>
-        /// <param name="minorTickValues">
-        /// The minor tick values.
-        /// </param>
+        /// <param name="majorLabelValues">The major label values.</param>
+        /// <param name="majorTickValues">The major tick values.</param>
+        /// <param name="minorTickValues">The minor tick values.</param>
         public override void GetTickValues(
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
@@ -229,12 +207,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the specified value is valid.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the specified value is valid; otherwise, <c>false</c>.
-        /// </returns>
+        /// <param name="value">The value.</param>
+        /// <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c>.</returns>
         public override bool IsValidValue(double value)
         {
             return value > 0 && base.IsValidValue(value);
@@ -243,9 +217,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
-        /// <returns>
-        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> .
-        /// </returns>
+        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
         public override bool IsXyAxis()
         {
             return true;
@@ -254,12 +226,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Pans the specified axis.
         /// </summary>
-        /// <param name="ppt">
-        /// The previous point (screen coordinates).
-        /// </param>
-        /// <param name="cpt">
-        /// The current point (screen coordinates).
-        /// </param>
+        /// <param name="ppt">The previous point (screen coordinates).</param>
+        /// <param name="cpt">The current point (screen coordinates).</param>
         public override void Pan(ScreenPoint ppt, ScreenPoint cpt)
         {
             if (!this.IsPanEnabled)
@@ -302,12 +270,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Transforms the specified coordinate to screen coordinates.
         /// </summary>
-        /// <param name="x">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// The transformed value (screen coordinate).
-        /// </returns>
+        /// <param name="x">The value.</param>
+        /// <returns>The transformed value (screen coordinate).</returns>
         public override double Transform(double x)
         {
             if (x <= 0)
@@ -321,12 +285,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Zooms the axis at the specified coordinate.
         /// </summary>
-        /// <param name="factor">
-        /// The zoom factor.
-        /// </param>
-        /// <param name="x">
-        /// The coordinate to zoom at.
-        /// </param>
+        /// <param name="factor">The zoom factor.</param>
+        /// <param name="x">The coordinate to zoom at.</param>
         public override void ZoomAt(double factor, double x)
         {
             if (!this.IsZoomEnabled)
@@ -351,9 +311,7 @@ namespace OxyPlot.Axes
         /// Applies a transformation after the inverse transform of the value. This is used in logarithmic axis.
         /// </summary>
         /// <param name="x">The value to transform.</param>
-        /// <returns>
-        /// The transformed value.
-        /// </returns>
+        /// <returns>The transformed value.</returns>
         internal override double PostInverseTransform(double x)
         {
             return Math.Exp(x);
@@ -363,9 +321,7 @@ namespace OxyPlot.Axes
         /// Applies a transformation before the transform the value. This is used in logarithmic axis.
         /// </summary>
         /// <param name="x">The value to transform.</param>
-        /// <returns>
-        /// The transformed value.
-        /// </returns>
+        /// <returns>The transformed value.</returns>
         internal override double PreTransform(double x)
         {
             Debug.Assert(x > 0, "Value should be positive.");

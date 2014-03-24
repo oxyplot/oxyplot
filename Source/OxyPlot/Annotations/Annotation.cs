@@ -40,7 +40,7 @@ namespace OxyPlot.Annotations
     public abstract class Annotation : UIPlotElement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Annotation"/> class.
+        /// Initializes a new instance of the <see cref="Annotation" /> class.
         /// </summary>
         protected Annotation()
         {
@@ -48,7 +48,7 @@ namespace OxyPlot.Annotations
         }
 
         /// <summary>
-        /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.AboveSeries"/>.
+        /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.AboveSeries" />.
         /// </summary>
         public AnnotationLayer Layer { get; set; }
 
@@ -88,12 +88,8 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Renders the annotation on the specified context.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The model.</param>
         public virtual void Render(IRenderContext rc, PlotModel model)
         {
         }
@@ -101,15 +97,9 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Transforms the specified coordinates to a screen point.
         /// </summary>
-        /// <param name="x">
-        /// The x coordinate.
-        /// </param>
-        /// <param name="y">
-        /// The y coordinate.
-        /// </param>
-        /// <returns>
-        /// A screen point.
-        /// </returns>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <returns>A screen point.</returns>
         public ScreenPoint Transform(double x, double y)
         {
             return this.XAxis.Transform(x, y, this.YAxis);
@@ -118,12 +108,8 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Transforms the specified data point to a screen point.
         /// </summary>
-        /// <param name="p">
-        /// The point.
-        /// </param>
-        /// <returns>
-        /// A screen point.
-        /// </returns>
+        /// <param name="p">The point.</param>
+        /// <returns>A screen point.</returns>
         public ScreenPoint Transform(IDataPoint p)
         {
             return this.XAxis.Transform(p.X, p.Y, this.YAxis);
@@ -132,12 +118,8 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Transforms the specified screen position to a data point.
         /// </summary>
-        /// <param name="position">
-        /// The position.
-        /// </param>
-        /// <returns>
-        /// A data point
-        /// </returns>
+        /// <param name="position">The position.</param>
+        /// <returns>A data point</returns>
         public DataPoint InverseTransform(ScreenPoint position)
         {
             return Axis.InverseTransform(position, this.XAxis, this.YAxis);
@@ -148,9 +130,7 @@ namespace OxyPlot.Annotations
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="tolerance">The tolerance.</param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
+        /// <returns>A hit test result.</returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
             return null;
@@ -159,9 +139,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets the clipping rectangle.
         /// </summary>
-        /// <returns>
-        /// The clipping rectangle.
-        /// </returns>
+        /// <returns>The clipping rectangle.</returns>
         protected OxyRect GetClippingRect()
         {
             double minX = Math.Min(this.XAxis.ScreenMin.X, this.XAxis.ScreenMax.X);

@@ -42,7 +42,7 @@ namespace OxyPlot.Wpf
     public class DateTimeAxis : Axis
     {
         /// <summary>
-        /// The calendar week rule property.
+        /// Identifies the <see cref="CalendarWeekRule"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CalendarWeekRuleProperty =
             DependencyProperty.Register(
@@ -52,13 +52,13 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(CalendarWeekRule.FirstFourDayWeek, DataChanged));
 
         /// <summary>
-        /// The first date time property.
+        /// Identifies the <see cref="FirstDateTime"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FirstDateTimeProperty = DependencyProperty.Register(
             "FirstDateTime", typeof(DateTime), typeof(DateTimeAxis), new PropertyMetadata(DateTime.MinValue));
 
         /// <summary>
-        /// The first day of week property.
+        /// Identifies the <see cref="FirstDayOfWeek"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FirstDayOfWeekProperty = DependencyProperty.Register(
             "FirstDayOfWeek",
@@ -67,7 +67,7 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(DayOfWeek.Monday, DataChanged));
 
         /// <summary>
-        /// The interval type property.
+        /// Identifies the <see cref="IntervalType"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IntervalTypeProperty = DependencyProperty.Register(
             "IntervalType",
@@ -76,13 +76,13 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(DateTimeIntervalType.Auto));
 
         /// <summary>
-        /// The last date time property.
+        /// Identifies the <see cref="LastDateTime"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LastDateTimeProperty = DependencyProperty.Register(
             "LastDateTime", typeof(DateTime), typeof(DateTimeAxis), new PropertyMetadata(DateTime.MaxValue));
 
         /// <summary>
-        /// The minor interval type property.
+        /// Identifies the <see cref="MinorIntervalType"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinorIntervalTypeProperty =
             DependencyProperty.Register(
@@ -92,7 +92,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(DateTimeIntervalType.Auto, DataChanged));
 
         /// <summary>
-        /// Initializes static members of the <see cref="DateTimeAxis"/> class.
+        /// Initializes static members of the <see cref="DateTimeAxis" /> class.
         /// </summary>
         static DateTimeAxis()
         {
@@ -206,9 +206,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal model.
         /// </summary>
-        /// <returns>
-        /// The internal axis.
-        /// </returns>
+        /// <returns>The internal axis.</returns>
         public override Axes.Axis CreateModel()
         {
             this.SynchronizeProperties();

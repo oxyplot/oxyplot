@@ -60,20 +60,12 @@ namespace OxyPlot.Annotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImageAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="ImageAnnotation" /> class.
         /// </summary>
-        /// <param name="image">
-        /// The image.
-        /// </param>
-        /// <param name="position">
-        /// The position in screen coordinates.
-        /// </param>
-        /// <param name="horizontalAlignment">
-        /// The horizontal alignment.
-        /// </param>
-        /// <param name="verticalAlignment">
-        /// The vertical alignment.
-        /// </param>
+        /// <param name="image">The image.</param>
+        /// <param name="position">The position in screen coordinates.</param>
+        /// <param name="horizontalAlignment">The horizontal alignment.</param>
+        /// <param name="verticalAlignment">The vertical alignment.</param>
         public ImageAnnotation(
             OxyImage image,
             ScreenPoint position,
@@ -89,20 +81,12 @@ namespace OxyPlot.Annotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImageAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="ImageAnnotation" /> class.
         /// </summary>
-        /// <param name="image">
-        /// The image.
-        /// </param>
-        /// <param name="position">
-        /// The position in data coordinates.
-        /// </param>
-        /// <param name="horizontalAlignment">
-        /// The horizontal alignment.
-        /// </param>
-        /// <param name="verticalAlignment">
-        /// The vertical alignment.
-        /// </param>
+        /// <param name="image">The image.</param>
+        /// <param name="position">The position in data coordinates.</param>
+        /// <param name="horizontalAlignment">The horizontal alignment.</param>
+        /// <param name="verticalAlignment">The vertical alignment.</param>
         public ImageAnnotation(
             OxyImage image,
             IDataPoint position,
@@ -118,23 +102,13 @@ namespace OxyPlot.Annotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImageAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="ImageAnnotation" /> class.
         /// </summary>
-        /// <param name="image">
-        /// The image.
-        /// </param>
-        /// <param name="relativeX">
-        /// The x-coordinate relative to the plot area (0-1).
-        /// </param>
-        /// <param name="relativeY">
-        /// The y-coordinate relative to the plot area (0-1).
-        /// </param>
-        /// <param name="horizontalAlignment">
-        /// The horizontal alignment.
-        /// </param>
-        /// <param name="verticalAlignment">
-        /// The vertical alignment.
-        /// </param>
+        /// <param name="image">The image.</param>
+        /// <param name="relativeX">The x-coordinate relative to the plot area (0-1).</param>
+        /// <param name="relativeY">The y-coordinate relative to the plot area (0-1).</param>
+        /// <param name="horizontalAlignment">The horizontal alignment.</param>
+        /// <param name="verticalAlignment">The vertical alignment.</param>
         public ImageAnnotation(
             OxyImage image,
             double relativeX,
@@ -153,96 +127,74 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the image source.
         /// </summary>
-        /// <value>
-        /// The image source.
-        /// </value>
+        /// <value>The image source.</value>
         public OxyImage ImageSource { get; set; }
 
         /// <summary>
         /// Gets or sets the horizontal alignment.
         /// </summary>
-        /// <value> The horizontal alignment. </value>
+        /// <value>The horizontal alignment.</value>
         public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the X position of the image.
         /// </summary>
-        /// <value>
-        /// The X.
-        /// </value>
+        /// <value>The X.</value>
         public PlotLength X { get; set; }
 
         /// <summary>
         /// Gets or sets the Y position of the image.
         /// </summary>
-        /// <value>
-        /// The Y.
-        /// </value>
+        /// <value>The Y.</value>
         public PlotLength Y { get; set; }
 
         /// <summary>
         /// Gets or sets the X offset.
         /// </summary>
-        /// <value>
-        /// The offset X.
-        /// </value>
+        /// <value>The offset X.</value>
         public PlotLength OffsetX { get; set; }
 
         /// <summary>
         /// Gets or sets the Y offset.
         /// </summary>
-        /// <value>
-        /// The offset Y.
-        /// </value>
+        /// <value>The offset Y.</value>
         public PlotLength OffsetY { get; set; }
 
         /// <summary>
         /// Gets or sets the width.
         /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
+        /// <value>The width.</value>
         public PlotLength Width { get; set; }
 
         /// <summary>
         /// Gets or sets the height.
         /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
+        /// <value>The height.</value>
         public PlotLength Height { get; set; }
 
         /// <summary>
         /// Gets or sets the opacity (0-1).
         /// </summary>
-        /// <value>
-        /// The opacity value.
-        /// </value>
+        /// <value>The opacity value.</value>
         public double Opacity { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to apply smooth interpolation to the image.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if the image should be interpolated (using a high-quality bi-cubic interpolation); <c>false</c> if the nearest neighbor should be used.
-        /// </value>
+        /// <value><c>true</c> if the image should be interpolated (using a high-quality bi-cubic interpolation); <c>false</c> if the nearest neighbor should be used.</value>
         public bool Interpolate { get; set; }
 
         /// <summary>
         /// Gets or sets the vertical alignment.
         /// </summary>
-        /// <value> The vertical alignment. </value>
+        /// <value>The vertical alignment.</value>
         public VerticalAlignment VerticalAlignment { get; set; }
 
         /// <summary>
         /// Renders the image annotation.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The plot model.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             base.Render(rc, model);
@@ -315,15 +267,9 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="tolerance">
-        /// The tolerance.
-        /// </param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A hit test result.</returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
             if (this.actualBounds.Contains(point))
@@ -337,21 +283,11 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets the point.
         /// </summary>
-        /// <param name="x">
-        /// The x.
-        /// </param>
-        /// <param name="y">
-        /// The y.
-        /// </param>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <returns>
-        /// The point in screen coordinates.
-        /// </returns>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>The point in screen coordinates.</returns>
         protected ScreenPoint GetPoint(PlotLength x, PlotLength y, IRenderContext rc, PlotModel model)
         {
             if (x.Unit == PlotLengthUnit.Data || y.Unit == PlotLengthUnit.Data)
@@ -393,21 +329,11 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets the vector.
         /// </summary>
-        /// <param name="x">
-        /// The x component.
-        /// </param>
-        /// <param name="y">
-        /// The y component.
-        /// </param>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <returns>
-        /// The vector in screen coordinates.
-        /// </returns>
+        /// <param name="x">The x component.</param>
+        /// <param name="y">The y component.</param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The model.</param>
+        /// <returns>The vector in screen coordinates.</returns>
         protected ScreenVector GetVector(PlotLength x, PlotLength y, IRenderContext rc, PlotModel model)
         {
             double sx;

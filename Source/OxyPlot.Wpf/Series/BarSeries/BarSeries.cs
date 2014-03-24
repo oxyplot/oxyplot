@@ -35,18 +35,18 @@ namespace OxyPlot.Wpf
     using OxyPlot.Series;
 
     /// <summary>
-    ///     This is a WPF wrapper of OxyPlot.BarSeries
+    /// This is a WPF wrapper of OxyPlot.BarSeries
     /// </summary>
     public class BarSeries : BarSeriesBase<BarItem>
     {
         /// <summary>
-        ///     The bar width property.
+        /// Identifies the <see cref="BarWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BarWidthProperty = DependencyProperty.Register(
             "BarWidth", typeof(double), typeof(BarSeries), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        ///     Initializes static members of the <see cref="BarSeries" /> class.
+        /// Initializes static members of the <see cref="BarSeries" /> class.
         /// </summary>
         static BarSeries()
         {
@@ -54,7 +54,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="BarSeries" /> class.
+        /// Initializes a new instance of the <see cref="BarSeries" /> class.
         /// </summary>
         public BarSeries()
         {
@@ -62,7 +62,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the bar width.
+        /// Gets or sets the bar width.
         /// </summary>
         public double BarWidth
         {
@@ -78,7 +78,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Synchronizes the properties.
+        /// Synchronizes the properties.
         /// </summary>
         /// <param name="series">The series.</param>
         protected override void SynchronizeProperties(OxyPlot.Series.Series series)

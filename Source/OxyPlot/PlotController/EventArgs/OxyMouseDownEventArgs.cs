@@ -43,11 +43,11 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the number of times the button was clicked.
         /// </summary>
-        /// <value> The number of times the mouse button was clicked. </value>
+        /// <value>The number of times the mouse button was clicked.</value>
         public int ClickCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the hit test result. 
+        /// Gets or sets the hit test result.
         /// </summary>
         public HitTestResult HitTestResult { get; set; } // TODO: REMOVE THIS?
     }

@@ -38,9 +38,7 @@ namespace OxyPlot
         /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>
-        /// <returns>
-        /// The C# code.
-        /// </returns>
+        /// <returns>The C# code.</returns>
         string ToCode();
     }
 }

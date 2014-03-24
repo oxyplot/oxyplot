@@ -63,14 +63,10 @@ namespace OxyPlot.Axes
         private IList<double> minorTickValues;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AxisRendererBase"/> class.
+        /// Initializes a new instance of the <see cref="AxisRendererBase" /> class.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="plot">
-        /// The plot.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="plot">The plot.</param>
         protected AxisRendererBase(IRenderContext rc, PlotModel plot)
         {
             this.plot = plot;
@@ -80,9 +76,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the plot.
         /// </summary>
-        /// <value>
-        /// The plot.
-        /// </value>
+        /// <value>The plot.</value>
         protected PlotModel Plot
         {
             get
@@ -94,9 +88,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the render context.
         /// </summary>
-        /// <value>
-        /// The render context.
-        /// </value>
+        /// <value>The render context.</value>
         protected IRenderContext RenderContext
         {
             get
@@ -207,9 +199,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Creates the pens.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
+        /// <param name="axis">The axis.</param>
         protected virtual void CreatePens(Axis axis)
         {
             this.MinorPen = OxyPen.Create(axis.MinorGridlineColor, axis.MinorGridlineThickness, axis.MinorGridlineStyle);
@@ -224,24 +214,12 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the tick positions.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="tickStyle">
-        /// The tick style.
-        /// </param>
-        /// <param name="tickSize">
-        /// The tick size.
-        /// </param>
-        /// <param name="position">
-        /// The position.
-        /// </param>
-        /// <param name="x0">
-        /// The x 0.
-        /// </param>
-        /// <param name="x1">
-        /// The x 1.
-        /// </param>
+        /// <param name="axis">The axis.</param>
+        /// <param name="tickStyle">The tick style.</param>
+        /// <param name="tickSize">The tick size.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="x0">The x 0.</param>
+        /// <param name="x1">The x 1.</param>
         protected virtual void GetTickPositions(Axis axis, TickStyle tickStyle, double tickSize, AxisPosition position, out double x0, out double x1)
         {
             x0 = 0;
@@ -269,9 +247,7 @@ namespace OxyPlot.Axes
         /// <param name="d">The value to check.</param>
         /// <param name="min">The minimum value of the range.</param>
         /// <param name="max">The maximum value of the range.</param>
-        /// <returns>
-        ///  <c>true</c> if the specified value is within the range; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><c>true</c> if the specified value is within the range; otherwise, <c>false</c>.</returns>
         protected bool IsWithin(double d, double min, double max)
         {
             if (d < min)

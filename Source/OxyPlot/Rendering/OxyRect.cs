@@ -65,11 +65,9 @@ namespace OxyPlot
         /// <param name="top">The y-coordinate location of the top side of the rectangle.</param>
         /// <param name="width">The width of the rectangle.</param>
         /// <param name="height">The height of the rectangle.</param>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// width;The width should not be negative.
+        /// <exception cref="System.ArgumentOutOfRangeException">width;The width should not be negative.
         /// or
-        /// height;The height should not be negative.
-        /// </exception>
+        /// height;The height should not be negative.</exception>
         public OxyRect(double left, double top, double width, double height)
         {
             if (width < 0)
@@ -89,7 +87,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyRect"/> struct that is exactly large enough to contain the two specified points.
+        /// Initializes a new instance of the <see cref="OxyRect" /> struct that is exactly large enough to contain the two specified points.
         /// </summary>
         /// <param name="p0">The first point that the new rectangle must contain.</param>
         /// <param name="p1">The second point that the new rectangle must contain.</param>
@@ -101,9 +99,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the y-axis value of the bottom of the rectangle.
         /// </summary>
-        /// <value>
-        /// The bottom.
-        /// </value>
+        /// <value>The bottom.</value>
         public double Bottom
         {
             get
@@ -120,9 +116,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the height of the rectangle.
         /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
+        /// <value>The height.</value>
         public double Height
         {
             get
@@ -139,9 +133,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the x-axis value of the left side of the rectangle.
         /// </summary>
-        /// <value>
-        /// The left.
-        /// </value>
+        /// <value>The left.</value>
         public double Left
         {
             get
@@ -158,9 +150,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the x-axis value of the right side of the rectangle.
         /// </summary>
-        /// <value>
-        /// The right.
-        /// </value>
+        /// <value>The right.</value>
         public double Right
         {
             get
@@ -177,9 +167,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the y-axis position of the top of the rectangle.
         /// </summary>
-        /// <value>
-        /// The top.
-        /// </value>
+        /// <value>The top.</value>
         public double Top
         {
             get
@@ -196,9 +184,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the width of the rectangle.
         /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
+        /// <value>The width.</value>
         public double Width
         {
             get
@@ -227,21 +213,11 @@ namespace OxyPlot
         /// <summary>
         /// Creates a rectangle from the specified corner coordinates.
         /// </summary>
-        /// <param name="x0">
-        /// The x0.
-        /// </param>
-        /// <param name="y0">
-        /// The y0.
-        /// </param>
-        /// <param name="x1">
-        /// The x1.
-        /// </param>
-        /// <param name="y1">
-        /// The y1.
-        /// </param>
-        /// <returns>
-        /// A rectangle.
-        /// </returns>
+        /// <param name="x0">The x0.</param>
+        /// <param name="y0">The y0.</param>
+        /// <param name="x1">The x1.</param>
+        /// <param name="y1">The y1.</param>
+        /// <returns>A rectangle.</returns>
         public static OxyRect Create(double x0, double y0, double x1, double y1)
         {
             return new OxyRect(Math.Min(x0, x1), Math.Min(y0, y1), Math.Abs(x1 - x0), Math.Abs(y1 - y0));
@@ -250,15 +226,9 @@ namespace OxyPlot
         /// <summary>
         /// Determines whether the specified point is inside the rectangle.
         /// </summary>
-        /// <param name="x">
-        /// The x coordinate.
-        /// </param>
-        /// <param name="y">
-        /// The y coordinate.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.
-        /// </returns>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <returns><c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.</returns>
         public bool Contains(double x, double y)
         {
             return x >= this.Left && x <= this.Right && y >= this.Top && y <= this.Bottom;
@@ -268,20 +238,16 @@ namespace OxyPlot
         /// Determines whether the specified point is inside the rectangle.
         /// </summary>
         /// <param name="p">The point.</param>
-        /// <returns>
-        /// <c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><c>true</c> if the rectangle contains the specified point; otherwise, <c>false</c>.</returns>
         public bool Contains(ScreenPoint p)
         {
             return this.Contains(p.x, p.y);
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Format(

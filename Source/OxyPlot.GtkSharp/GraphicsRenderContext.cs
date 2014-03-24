@@ -67,9 +67,7 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Sets the graphics target.
         /// </summary>
-        /// <param name="graphics">
-        /// The graphics surface.
-        /// </param>
+        /// <param name="graphics">The graphics surface.</param>
         public void SetGraphicsTarget(Context graphics)
         {
             this.g = graphics;
@@ -79,18 +77,10 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Draws an ellipse.
         /// </summary>
-        /// <param name="rect">
-        /// The rectangle.
-        /// </param>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The thickness.</param>
         public override void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             // center of ellipse
@@ -135,30 +125,18 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Draws the line.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// if set to <c>true</c> [aliased].
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
         public override void DrawLine(
-            IList<ScreenPoint> points, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             if (stroke.IsVisible() && thickness > 0 && points.Count >= 2)
@@ -187,34 +165,20 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Draws the polygon.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="dashArray">
-        /// The dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// if set to <c>true</c> [aliased].
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="dashArray">The dash array.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
         public override void DrawPolygon(
-            IList<ScreenPoint> points, 
-            OxyColor fill, 
-            OxyColor stroke, 
-            double thickness, 
-            double[] dashArray, 
-            OxyPenLineJoin lineJoin, 
+            IList<ScreenPoint> points,
+            OxyColor fill,
+            OxyColor stroke,
+            double thickness,
+            double[] dashArray,
+            OxyPenLineJoin lineJoin,
             bool aliased)
         {
             if (fill.IsVisible() && points.Count >= 2)
@@ -308,15 +272,15 @@ namespace OxyPlot.GtkSharp
         /// <param name="valign">The vertical alignment.</param>
         /// <param name="maxSize">The maximum size of the text.</param>
         public override void DrawText(
-            ScreenPoint p, 
-            string text, 
-            OxyColor fill, 
-            string fontFamily, 
-            double fontSize, 
-            double fontWeight, 
-            double rotate, 
-            HorizontalAlignment halign, 
-            VerticalAlignment valign, 
+            ScreenPoint p,
+            string text,
+            OxyColor fill,
+            string fontFamily,
+            double fontSize,
+            double fontWeight,
+            double rotate,
+            HorizontalAlignment halign,
+            VerticalAlignment valign,
             OxySize? maxSize)
         {
             var fw = fontWeight >= 700 ? FontWeight.Bold : FontWeight.Normal;
@@ -374,21 +338,11 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// The measure text.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <returns>
-        /// The size of the text.
-        /// </returns>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <returns>The size of the text.</returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (text == null)
@@ -437,16 +391,16 @@ namespace OxyPlot.GtkSharp
         /// <param name="opacity">The opacity.</param>
         /// <param name="interpolate">Interpolate if set to <c>true</c>.</param>
         public override void DrawImage(
-            OxyImage source, 
-            double srcX, 
-            double srcY, 
-            double srcWidth, 
-            double srcHeight, 
-            double x, 
-            double y, 
-            double w, 
-            double h, 
-            double opacity, 
+            OxyImage source,
+            double srcX,
+            double srcY,
+            double srcWidth,
+            double srcHeight,
+            double x,
+            double y,
+            double w,
+            double h,
+            double opacity,
             bool interpolate)
         {
             var image = this.GetImage(source);
@@ -481,9 +435,9 @@ namespace OxyPlot.GtkSharp
                 this.g.Scale(scalex, scaley);
                 this.g.Rectangle(0, 0, rectw, recth);
                 CairoHelper.SetSourcePixbuf(
-                    this.g, 
-                    image, 
-                    (rectw - image.Width) / 2.0, 
+                    this.g,
+                    image,
+                    (rectw - image.Width) / 2.0,
                     (recth - image.Height) / 2.0);
                 this.g.Fill();
 
@@ -497,9 +451,7 @@ namespace OxyPlot.GtkSharp
         /// Sets the clip rectangle.
         /// </summary>
         /// <param name="rect">The clip rectangle.</param>
-        /// <returns>
-        /// True if the clip rectangle was set.
-        /// </returns>
+        /// <returns>True if the clip rectangle was set.</returns>
         public override bool SetClip(OxyRect rect)
         {
             this.g.Rectangle(rect.Left, rect.Top, rect.Width, rect.Height);
@@ -516,14 +468,10 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Gets the cached <see cref="Pixbuf"/> of the specified <see cref="OxyImage"/>.
+        /// Gets the cached <see cref="Pixbuf" /> of the specified <see cref="OxyImage" />.
         /// </summary>
-        /// <param name="source">
-        /// The source image.
-        /// </param>
-        /// <returns>
-        /// The <see cref="Pixbuf"/>.
-        /// </returns>
+        /// <param name="source">The source image.</param>
+        /// <returns>The <see cref="Pixbuf" />.</returns>
         private Pixbuf GetImage(OxyImage source)
         {
             if (source == null)

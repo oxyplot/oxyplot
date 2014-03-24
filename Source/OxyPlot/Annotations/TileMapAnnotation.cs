@@ -40,9 +40,7 @@ namespace OxyPlot.Annotations
     /// <summary>
     /// Provides a tile map annotation.
     /// </summary>
-    /// <remarks>
-    /// The longitude and latitude range of the map is defined by the range of the x and y axis, respectively.
-    /// </remarks>
+    /// <remarks>The longitude and latitude range of the map is defined by the range of the x and y axis, respectively.</remarks>
     public class TileMapAnnotation : Annotation
     {
         /// <summary>
@@ -75,68 +73,50 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the max number of simultaneous downloads.
         /// </summary>
-        /// <value>
-        /// The max number of downloads.
-        /// </value>
+        /// <value>The max number of downloads.</value>
         public int MaxNumberOfDownloads { get; set; }
 
         /// <summary>
         /// Gets or sets the URL.
         /// </summary>
-        /// <value>
-        /// The URL.
-        /// </value>
+        /// <value>The URL.</value>
         public string Url { get; set; }
 
         /// <summary>
         /// Gets or sets the copyright notice.
         /// </summary>
-        /// <value>
-        /// The copyright notice.
-        /// </value>
+        /// <value>The copyright notice.</value>
         public string CopyrightNotice { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the tiles.
         /// </summary>
-        /// <value>
-        /// The size of the tiles.
-        /// </value>
+        /// <value>The size of the tiles.</value>
         public int TileSize { get; set; }
 
         /// <summary>
         /// Gets or sets the min zoom level.
         /// </summary>
-        /// <value>
-        /// The min zoom level.
-        /// </value>
+        /// <value>The min zoom level.</value>
         public int MinZoomLevel { get; set; }
 
         /// <summary>
         /// Gets or sets the max zoom level.
         /// </summary>
-        /// <value>
-        /// The max zoom level.
-        /// </value>
+        /// <value>The max zoom level.</value>
         public int MaxZoomLevel { get; set; }
 
         /// <summary>
         /// Gets or sets the opacity.
         /// </summary>
-        /// <value>
-        /// The opacity.
-        /// </value>
+        /// <value>The opacity.</value>
         public double Opacity { get; set; }
 
         /// <summary>
         /// Renders the annotation on the specified context.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             base.Render(rc, model);
@@ -222,15 +202,9 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="tolerance">
-        /// The tolerance.
-        /// </param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A hit test result.</returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
             return null;
@@ -246,7 +220,7 @@ namespace OxyPlot.Annotations
         /// <param name="y">The y.</param>
         private static void LatLonToTile(double latitude, double longitude, int zoom, out double x, out double y)
         {
-            // http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames            
+            // http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
             int n = 1 << zoom;
             double lat = latitude / 180 * Math.PI;
             x = (longitude + 180.0) / 360.0 * n;
@@ -274,12 +248,8 @@ namespace OxyPlot.Annotations
         /// </summary>
         /// <param name="uri">The URI.</param>
         /// <param name="asyncLoading">Get the image asynchronously if set to <c>true</c>. The plot model will be invalidated when the image has been downloaded.</param>
-        /// <returns>
-        /// The image.
-        /// </returns>
-        /// <remarks>
-        /// This method gets the image from cache, or starts an async download.
-        /// </remarks>
+        /// <returns>The image.</returns>
+        /// <remarks>This method gets the image from cache, or starts an async download.</remarks>
         private OxyImage GetImage(string uri, bool asyncLoading)
         {
             OxyImage img;
@@ -434,18 +404,10 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets the tile URI.
         /// </summary>
-        /// <param name="x">
-        /// The tile x.
-        /// </param>
-        /// <param name="y">
-        /// The tile y.
-        /// </param>
-        /// <param name="zoom">
-        /// The zoom.
-        /// </param>
-        /// <returns>
-        /// The uri.
-        /// </returns>
+        /// <param name="x">The tile x.</param>
+        /// <param name="y">The tile y.</param>
+        /// <param name="zoom">The zoom.</param>
+        /// <returns>The uri.</returns>
         private string GetTileUri(int x, int y, int zoom)
         {
             string url = this.Url.Replace("{X}", x.ToString(CultureInfo.InvariantCulture));

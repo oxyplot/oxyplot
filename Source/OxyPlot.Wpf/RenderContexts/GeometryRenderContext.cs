@@ -168,16 +168,16 @@ namespace OxyPlot.Wpf
             Add(e);
         }
 
-        ///<summary>
+        /// <summary>
         /// Draws a rectangle.
-        ///</summary>
-        ///<param name="x"></param>
-        ///<param name="y"></param>
-        ///<param name="width"></param>
-        ///<param name="height"></param>
-        ///<param name="fill"></param>
-        ///<param name="stroke"></param>
-        ///<param name="thickness"></param>
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="fill"></param>
+        /// <param name="stroke"></param>
+        /// <param name="thickness"></param>
         public void DrawRectangle(double x, double y, double width, double height, OxyColor fill, OxyColor stroke,
                                 double thickness)
         {

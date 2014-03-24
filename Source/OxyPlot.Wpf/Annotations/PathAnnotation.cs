@@ -44,31 +44,31 @@ namespace OxyPlot.Wpf
     public abstract class PathAnnotation : TextualAnnotation
     {
         /// <summary>
-        /// The Color property.
+        /// Identifies the <see cref="Color"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color), typeof(LineAnnotation), new PropertyMetadata(Colors.Blue, AppearanceChanged));
 
         /// <summary>
-        /// The ClipByXAxis property.
+        /// Identifies the <see cref="ClipByXAxis"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ClipByXAxisProperty = DependencyProperty.Register(
             "ClipByXAxis", typeof(bool), typeof(LineAnnotation), new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
-        /// The ClipByYAxis property.
+        /// Identifies the <see cref="ClipByYAxis"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ClipByYAxisProperty = DependencyProperty.Register(
             "ClipByYAxis", typeof(bool), typeof(LineAnnotation), new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
-        /// The ClipText property.
+        /// Identifies the <see cref="ClipText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ClipTextProperty =
             DependencyProperty.Register("ClipText", typeof(bool), typeof(LineAnnotation), new PropertyMetadata(true));
 
         /// <summary>
-        /// The line join property.
+        /// Identifies the <see cref="LineJoin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
             "LineJoin",
@@ -77,7 +77,7 @@ namespace OxyPlot.Wpf
             new UIPropertyMetadata(OxyPenLineJoin.Miter, AppearanceChanged));
 
         /// <summary>
-        /// The line style property.
+        /// Identifies the <see cref="LineStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
             "LineStyle",
@@ -86,14 +86,14 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(LineStyle.Dash, AppearanceChanged));
 
         /// <summary>
-        /// The stroke thickness property.
+        /// Identifies the <see cref="StrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
                 "StrokeThickness", typeof(double), typeof(LineAnnotation), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The TextHorizontalAlignment property.
+        /// Identifies the <see cref="TextHorizontalAlignment"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextHorizontalAlignmentProperty =
             DependencyProperty.Register(
@@ -103,13 +103,13 @@ namespace OxyPlot.Wpf
                 new UIPropertyMetadata(OxyPlot.HorizontalAlignment.Right, AppearanceChanged));
 
         /// <summary>
-        /// The TextMargin property.
+        /// Identifies the <see cref="TextMargin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextMarginProperty = DependencyProperty.Register(
             "TextMargin", typeof(double), typeof(LineAnnotation), new UIPropertyMetadata(12.0, AppearanceChanged));
 
         /// <summary>
-        /// The TextOrientation property.
+        /// Identifies the <see cref="TextOrientation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextOrientationProperty =
             DependencyProperty.Register(
@@ -119,13 +119,13 @@ namespace OxyPlot.Wpf
                 new UIPropertyMetadata(AnnotationTextOrientation.AlongLine, AppearanceChanged));
 
         /// <summary>
-        /// The TextPosition property.
+        /// Identifies the <see cref="TextPosition"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextPositionProperty = DependencyProperty.Register(
             "TextPosition", typeof(double), typeof(LineAnnotation), new UIPropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The TextVerticalAlignment property.
+        /// Identifies the <see cref="TextVerticalAlignment"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextVerticalAlignmentProperty =
             DependencyProperty.Register(
@@ -171,9 +171,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether the text should be clipped within the plot area.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if text should be clipped; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if text should be clipped; otherwise, <c>false</c>.</value>
         public bool ClipText
         {
             get { return (bool)GetValue(ClipTextProperty); }
@@ -183,9 +181,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the annotation color.
         /// </summary>
-        /// <value>
-        /// The color.
-        /// </value>
+        /// <value>The color.</value>
         public Color Color
         {
             get { return (Color)this.GetValue(ColorProperty); }
@@ -296,11 +292,9 @@ namespace OxyPlot.Wpf
         /// Gets or sets the text position fraction.
         /// </summary>
         /// <value>The text position in the interval [0,1].</value>
-        /// <remarks>
-        /// Positions smaller than 0.25 are left aligned at the start of the line
+        /// <remarks>Positions smaller than 0.25 are left aligned at the start of the line
         /// Positions larger than 0.75 are right aligned at the end of the line
-        /// Other positions are center aligned at the specified position
-        /// </remarks>
+        /// Other positions are center aligned at the specified position</remarks>
         public double TextPosition
         {
             get
@@ -333,9 +327,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
-        /// <returns>
-        /// The annotation.
-        /// </returns>
+        /// <returns>The annotation.</returns>
         public override Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();

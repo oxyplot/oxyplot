@@ -33,12 +33,12 @@ namespace OxyPlot.Wpf.Tests
     using NUnit.Framework;
 
     /// <summary>
-    /// Provides unit tests for the <see cref="LinearAxis"/> class.
+    /// Provides unit tests for the <see cref="LinearAxis" /> class.
     /// </summary>
     public class LinearAxisTests
     {
         /// <summary>
-        /// Asserts that default values in the <see cref="LinearAxis"/> equal the default values in <see cref="Axes.LinearAxis"/>.
+        /// Asserts that default values in the <see cref="LinearAxis" /> equal the default values in <see cref="Axes.LinearAxis" />.
         /// </summary>
         public class DefaultValues
         {

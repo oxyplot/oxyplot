@@ -33,7 +33,7 @@ namespace OxyPlot.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Defines additional <see cref="Colors"/>.
+    /// Defines additional <see cref="Colors" />.
     /// </summary>
     public static class MoreColors
     {

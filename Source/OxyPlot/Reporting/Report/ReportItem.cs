@@ -60,9 +60,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Adds a report item to the report.
         /// </summary>
-        /// <param name="child">
-        /// The child.
-        /// </param>
+        /// <param name="child">The child.</param>
         public void Add(ReportItem child)
         {
             this.Children.Add(child);
@@ -71,12 +69,8 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Adds a drawing to the report.
         /// </summary>
-        /// <param name="content">
-        /// The content.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
+        /// <param name="content">The content.</param>
+        /// <param name="text">The text.</param>
         public void AddDrawing(string content, string text)
         {
             this.Add(new DrawingFigure { Content = content, FigureText = text });
@@ -97,12 +91,8 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Adds an equation to the report.
         /// </summary>
-        /// <param name="equation">
-        /// The equation.
-        /// </param>
-        /// <param name="caption">
-        /// The caption.
-        /// </param>
+        /// <param name="equation">The equation.</param>
+        /// <param name="caption">The caption.</param>
         public void AddEquation(string equation, string caption = null)
         {
             this.Add(new Equation { Content = equation, Caption = caption });
@@ -111,12 +101,8 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Adds a header to the report.
         /// </summary>
-        /// <param name="level">
-        /// The level.
-        /// </param>
-        /// <param name="header">
-        /// The header.
-        /// </param>
+        /// <param name="level">The level.</param>
+        /// <param name="header">The header.</param>
         public void AddHeader(int level, string header)
         {
             this.Add(new Header { Level = level, Text = header });
@@ -125,12 +111,8 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Adds an image to the report.
         /// </summary>
-        /// <param name="src">
-        /// The image source file.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
+        /// <param name="src">The image source file.</param>
+        /// <param name="text">The text.</param>
         public void AddImage(string src, string text)
         {
             this.Add(new Image { Source = src, FigureText = text });
@@ -139,15 +121,9 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Adds an items table to the report.
         /// </summary>
-        /// <param name="title">
-        /// The title.
-        /// </param>
-        /// <param name="items">
-        /// The items.
-        /// </param>
-        /// <param name="fields">
-        /// The fields.
-        /// </param>
+        /// <param name="title">The title.</param>
+        /// <param name="items">The items.</param>
+        /// <param name="fields">The fields.</param>
         public void AddItemsTable(string title, IEnumerable items, IList<ItemsTableField> fields)
         {
             this.Add(new ItemsTable { Caption = title, Items = items, Fields = fields });
@@ -156,9 +132,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Adds a paragraph to the report.
         /// </summary>
-        /// <param name="content">
-        /// The content.
-        /// </param>
+        /// <param name="content">The content.</param>
         public void AddParagraph(string content)
         {
             this.Add(new Paragraph { Text = content });
@@ -167,15 +141,9 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Adds a property table to the report.
         /// </summary>
-        /// <param name="title">
-        /// The title.
-        /// </param>
-        /// <param name="obj">
-        /// The object.
-        /// </param>
-        /// <returns>
-        /// A PropertyTable.
-        /// </returns>
+        /// <param name="title">The title.</param>
+        /// <param name="obj">The object.</param>
+        /// <returns>A PropertyTable.</returns>
         public PropertyTable AddPropertyTable(string title, object obj)
         {
             var items = obj as IEnumerable;
@@ -192,9 +160,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Adds a table of contents.
         /// </summary>
-        /// <param name="b">
-        /// The source for the table of contents.
-        /// </param>
+        /// <param name="b">The source for the table of contents.</param>
         public void AddTableOfContents(ReportItem b)
         {
             this.Add(new TableOfContents(b));
@@ -208,11 +174,9 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Writes the item to a <see cref="IReportWriter"/>.
+        /// Writes the item to a <see cref="IReportWriter" />.
         /// </summary>
-        /// <param name="w">
-        /// The target <see cref="IReportWriter"/>.
-        /// </param>
+        /// <param name="w">The target <see cref="IReportWriter" />.</param>
         public virtual void Write(IReportWriter w)
         {
             this.Update();
@@ -224,11 +188,9 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Writes the content of the item to the specified <see cref="IReportWriter"/>.
+        /// Writes the content of the item to the specified <see cref="IReportWriter" />.
         /// </summary>
-        /// <param name="w">
-        /// The target <see cref="IReportWriter"/>.
-        /// </param>
+        /// <param name="w">The target <see cref="IReportWriter" />.</param>
         public virtual void WriteContent(IReportWriter w)
         {
         }
@@ -245,9 +207,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Updates the Report property.
         /// </summary>
-        /// <param name="report">
-        /// The report.
-        /// </param>
+        /// <param name="report">The report.</param>
         protected void UpdateParent(Report report)
         {
             this.Report = report;
@@ -260,9 +220,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Updates the figure numbers.
         /// </summary>
-        /// <param name="fc">
-        /// The figure counter.
-        /// </param>
+        /// <param name="fc">The figure counter.</param>
         private void UpdateFigureNumbers(FigureCounter fc)
         {
             var table = this as Table;

@@ -36,7 +36,7 @@ namespace OxyPlot.Series
     public abstract class CategorizedItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategorizedItem"/> class. Initializes a new instance of the <see cref="CategorizedItem"/> class.
+        /// Initializes a new instance of the <see cref="CategorizedItem" /> class. Initializes a new instance of the <see cref="CategorizedItem" /> class.
         /// </summary>
         protected CategorizedItem()
         {
@@ -46,20 +46,14 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the index of the category.
         /// </summary>
-        /// <value>
-        /// The index of the category.
-        /// </value>
+        /// <value>The index of the category.</value>
         public int CategoryIndex { get; set; }
 
         /// <summary>
         /// Gets the index of the category.
         /// </summary>
-        /// <param name="defaultIndex">
-        /// The default index.
-        /// </param>
-        /// <returns>
-        /// The index.
-        /// </returns>
+        /// <param name="defaultIndex">The default index.</param>
+        /// <returns>The index.</returns>
         internal int GetCategoryIndex(int defaultIndex)
         {
             if (this.CategoryIndex < 0)

@@ -31,7 +31,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Provides binding extension methods for the <see cref="IPlotController"/>.
+    /// Provides binding extension methods for the <see cref="IPlotController" />.
     /// </summary>
     public static class PlotControllerExtensions
     {

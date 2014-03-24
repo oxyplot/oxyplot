@@ -305,7 +305,7 @@ namespace ExampleLibrary
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="interpolate">Interpolate the HeatMapSeries if set to <c>true</c>.</param>
-        /// <returns>A <see cref="PlotModel"/>.</returns>
+        /// <returns>A <see cref="PlotModel" />.</returns>
         private static PlotModel CreateExample(string title, bool interpolate)
         {
             var data = new double[2, 3];

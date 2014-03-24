@@ -31,7 +31,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents a font family that can be used in a <see cref="PortableDocument"/>.
+    /// Represents a font family that can be used in a <see cref="PortableDocument" />.
     /// </summary>
     public class PortableDocumentFontFamily
     {

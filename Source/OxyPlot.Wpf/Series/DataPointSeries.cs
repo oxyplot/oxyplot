@@ -39,7 +39,7 @@ namespace OxyPlot.Wpf
     public abstract class DataPointSeries : XYAxisSeries
     {
         /// <summary>
-        /// The can tracker interpolate points property.
+        /// Identifies the <see cref="CanTrackerInterpolatePoints"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanTrackerInterpolatePointsProperty =
             DependencyProperty.Register(
@@ -49,25 +49,25 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
-        /// The data field x property.
+        /// Identifies the <see cref="DataFieldX"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DataFieldXProperty = DependencyProperty.Register(
             "DataFieldX", typeof(string), typeof(DataPointSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The data field y property.
+        /// Identifies the <see cref="DataFieldY"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DataFieldYProperty = DependencyProperty.Register(
             "DataFieldY", typeof(string), typeof(DataPointSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The mapping property.
+        /// Identifies the <see cref="Mapping"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MappingProperty = DependencyProperty.Register(
             "Mapping", typeof(Func<object, IDataPoint>), typeof(DataPointSeries), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The smooth property.
+        /// Identifies the <see cref="Smooth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
             "Smooth", typeof(bool), typeof(DataPointSeries), new UIPropertyMetadata(false));
@@ -123,9 +123,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the mapping.
         /// </summary>
-        /// <value>
-        /// The mapping.
-        /// </value>
+        /// <value>The mapping.</value>
         public Func<object, IDataPoint> Mapping
         {
             get
@@ -140,11 +138,9 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="DataPointSeries"/> is smooth.
+        /// Gets or sets a value indicating whether this <see cref="DataPointSeries" /> is smooth.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if smooth; otherwise, <c>false</c> .
-        /// </value>
+        /// <value><c>true</c> if smooth; otherwise, <c>false</c> .</value>
         public bool Smooth
         {
             get

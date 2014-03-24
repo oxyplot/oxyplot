@@ -36,7 +36,7 @@ namespace OxyPlot.Series
     public class RectangleBarItem : ICodeGenerating
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleBarItem"/> class.
+        /// Initializes a new instance of the <see cref="RectangleBarItem" /> class.
         /// </summary>
         public RectangleBarItem()
         {
@@ -44,20 +44,12 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleBarItem"/> class.
+        /// Initializes a new instance of the <see cref="RectangleBarItem" /> class.
         /// </summary>
-        /// <param name="x0">
-        /// The x0.
-        /// </param>
-        /// <param name="y0">
-        /// The y0.
-        /// </param>
-        /// <param name="x1">
-        /// The x1.
-        /// </param>
-        /// <param name="y1">
-        /// The y1.
-        /// </param>
+        /// <param name="x0">The x0.</param>
+        /// <param name="y0">The y0.</param>
+        /// <param name="x1">The x1.</param>
+        /// <param name="y1">The y1.</param>
         public RectangleBarItem(double x0, double y0, double x1, double y1)
             : this()
         {
@@ -70,9 +62,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the color.
         /// </summary>
-        /// <remarks>
-        /// If set to Automatic, the FillColor of the RectangleBarSeries will be used.
-        /// </remarks>
+        /// <remarks>If set to Automatic, the FillColor of the RectangleBarSeries will be used.</remarks>
         public OxyColor Color { get; set; }
 
         /// <summary>
@@ -103,9 +93,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Returns c# code that generates this instance.
         /// </summary>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <returns>C# code.</returns>
         public string ToCode()
         {
             if (!this.Color.IsUndefined())

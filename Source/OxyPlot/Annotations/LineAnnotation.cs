@@ -48,25 +48,21 @@ namespace OxyPlot.Annotations
         {
             this.Type = LineAnnotationType.LinearEquation;
         }
-                
+
         /// <summary>
         /// Gets or sets the y-intercept when Type is LinearEquation.
         /// </summary>
         /// <value>The intercept value.</value>
-        /// <remarks>
-        /// Linear equation y-intercept (the b in y=mx+b).
-        /// http://en.wikipedia.org/wiki/Linear_equation
-        /// </remarks>
+        /// <remarks>Linear equation y-intercept (the b in y=mx+b).
+        /// http://en.wikipedia.org/wiki/Linear_equation</remarks>
         public double Intercept { get; set; }
 
         /// <summary>
         /// Gets or sets the slope when Type is LinearEquation.
         /// </summary>
         /// <value>The slope value.</value>
-        /// <remarks>
-        /// Linear equation slope (the m in y=mx+b)
-        /// http://en.wikipedia.org/wiki/Linear_equation
-        /// </remarks>
+        /// <remarks>Linear equation slope (the m in y=mx+b)
+        /// http://en.wikipedia.org/wiki/Linear_equation</remarks>
         public double Slope { get; set; }
 
         /// <summary>
@@ -87,9 +83,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets the screen points.
         /// </summary>
-        /// <returns>
-        /// The list of points to display on screen for this path.
-        /// </returns>
+        /// <returns>The list of points to display on screen for this path.</returns>
         protected override IList<ScreenPoint> GetScreenPoints()
         {
             this.Aliased = false;

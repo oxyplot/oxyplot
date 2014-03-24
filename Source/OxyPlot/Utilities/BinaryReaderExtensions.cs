@@ -96,7 +96,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="r">The reader.</param>
         /// <param name="isLittleEndian">Read as little endian (Intel convention) if set to <c>true</c>.</param>
-        /// <returns>The floating point number.</returns>        
+        /// <returns>The floating point number.</returns>
         public static double ReadDouble(this BinaryReader r, bool isLittleEndian)
         {
             return isLittleEndian ? r.ReadDouble() : r.ReadBigEndianDouble();
@@ -108,9 +108,7 @@ namespace OxyPlot
         /// <param name="r">The reader.</param>
         /// <param name="count">The number of values to read.</param>
         /// <param name="isLittleEndian">Read as little endian (Intel convention) if set to <c>true</c>.</param>
-        /// <returns>
-        /// The unsigned integer array.
-        /// </returns>
+        /// <returns>The unsigned integer array.</returns>
         [CLSCompliant(false)]
         public static uint[] ReadUInt32Array(this BinaryReader r, int count, bool isLittleEndian)
         {
@@ -129,9 +127,7 @@ namespace OxyPlot
         /// <param name="r">The reader.</param>
         /// <param name="count">The number of values to read.</param>
         /// <param name="isLittleEndian">Read as little endian (Intel convention) if set to <c>true</c>.</param>
-        /// <returns>
-        /// The unsigned integer array.
-        /// </returns>
+        /// <returns>The unsigned integer array.</returns>
         [CLSCompliant(false)]
         public static ushort[] ReadUInt16Array(this BinaryReader r, int count, bool isLittleEndian)
         {
@@ -186,7 +182,7 @@ namespace OxyPlot
         /// Reads a big endian (Motorola convention) 64-bit floating point number.
         /// </summary>
         /// <param name="r">The reader.</param>
-        /// <returns>A <see cref="double"/>.</returns>
+        /// <returns>A <see cref="double" />.</returns>
         public static double ReadBigEndianDouble(this BinaryReader r)
         {
             byte[] a = r.ReadBytes(8);

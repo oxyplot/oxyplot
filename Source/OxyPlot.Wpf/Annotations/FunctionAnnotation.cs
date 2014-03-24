@@ -41,7 +41,7 @@ namespace OxyPlot.Wpf
     public class FunctionAnnotation : PathAnnotation
     {
         /// <summary>
-        /// The line type property.
+        /// Identifies the <see cref="EquationType"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EquationTypeProperty = DependencyProperty.Register(
             "Type",
@@ -50,19 +50,19 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(FunctionAnnotationType.EquationX, DataChanged));
 
         /// <summary>
-        /// The equation property
+        /// Identifies the <see cref="Equation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EquationProperty =
             DependencyProperty.Register("Equation", typeof(Func<double, double>), typeof(FunctionAnnotation), new PropertyMetadata(null));
 
         /// <summary>
-        /// The resolution property
+        /// Identifies the <see cref="Resolution"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ResolutionProperty =
             DependencyProperty.Register("Resolution", typeof(int), typeof(FunctionAnnotation), new PropertyMetadata(400));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FunctionAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="FunctionAnnotation" /> class.
         /// </summary>
         public FunctionAnnotation()
         {
@@ -72,9 +72,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the equation.
         /// </summary>
-        /// <value>
-        /// The equation.
-        /// </value>
+        /// <value>The equation.</value>
         public Func<double, double> Equation
         {
             get
@@ -91,9 +89,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the resolution.
         /// </summary>
-        /// <value>
-        /// The resolution.
-        /// </value>
+        /// <value>The resolution.</value>
         public int Resolution
         {
             get
@@ -126,9 +122,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
-        /// <returns>
-        /// The annotation.
-        /// </returns>
+        /// <returns>The annotation.</returns>
         public override Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();

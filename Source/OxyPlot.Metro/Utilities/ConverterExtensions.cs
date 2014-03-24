@@ -48,15 +48,9 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Calculate the distance between two points.
         /// </summary>
-        /// <param name="p1">
-        /// The first point.
-        /// </param>
-        /// <param name="p2">
-        /// The second point.
-        /// </param>
-        /// <returns>
-        /// The distance.
-        /// </returns>
+        /// <param name="p1">The first point.</param>
+        /// <param name="p2">The second point.</param>
+        /// <returns>The distance.</returns>
         public static double DistanceTo(this Point p1, Point p2)
         {
             double dx = p1.X - p2.X;
@@ -65,14 +59,10 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Converts a <see cref="OxyColor"/> to a <see cref="Brush" />.
+        /// Converts a <see cref="OxyColor" /> to a <see cref="Brush" />.
         /// </summary>
-        /// <param name="c">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// A SolidColorBrush.
-        /// </returns>
+        /// <param name="c">The color.</param>
+        /// <returns>A SolidColorBrush.</returns>
         public static Brush ToBrush(this OxyColor c)
         {
             return new SolidColorBrush(c.ToColor());
@@ -81,12 +71,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts an <see cref="OxyColor" /> to a <see cref="Color" />.
         /// </summary>
-        /// <param name="c">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// A <see cref="Color" />.
-        /// </returns>
+        /// <param name="c">The color.</param>
+        /// <returns>A <see cref="Color" />.</returns>
         public static Color ToColor(this OxyColor c)
         {
             return new Color { A = c.A, R = c.R, G = c.G, B = c.B };
@@ -95,12 +81,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts a <see cref="HorizontalAlignment" /> to a <see cref="OxyPlot.HorizontalAlignment" />.
         /// </summary>
-        /// <param name="alignment">
-        /// The alignment.
-        /// </param>
-        /// <returns>
-        /// A <see cref="OxyPlot.HorizontalAlignment" />.
-        /// </returns>
+        /// <param name="alignment">The alignment.</param>
+        /// <returns>A <see cref="OxyPlot.HorizontalAlignment" />.</returns>
         public static OxyPlot.HorizontalAlignment ToHorizontalTextAlign(this HorizontalAlignment alignment)
         {
             switch (alignment)
@@ -117,26 +99,18 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts a <see cref="Color" /> to an <see cref="OxyColor" />.
         /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// An <see cref="OxyColor" />.
-        /// </returns>
+        /// <param name="color">The color.</param>
+        /// <returns>An <see cref="OxyColor" />.</returns>
         public static OxyColor ToOxyColor(this Color color)
         {
             return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
         }
 
         /// <summary>
-        /// Converts a <see cref="Nullable{Color}"/> to an <see cref="OxyColor" />.
+        /// Converts a <see cref="Nullable{Color}" /> to an <see cref="OxyColor" />.
         /// </summary>
-        /// <param name="color">
-        /// The color to convert.
-        /// </param>
-        /// <returns>
-        /// The converted color, or <see cref="OxyColors.Undefined"/> if the <paramref name="color"/> is <c>null</c>.
-        /// </returns>
+        /// <param name="color">The color to convert.</param>
+        /// <returns>The converted color, or <see cref="OxyColors.Undefined" /> if the <paramref name="color" /> is <c>null</c>.</returns>
         public static OxyColor ToOxyColor(this Color? color)
         {
             return color.HasValue ? color.Value.ToOxyColor() : OxyColors.Undefined;
@@ -145,12 +119,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts a <see cref="SolidColorBrush" /> to an <see cref="OxyColor" />.
         /// </summary>
-        /// <param name="brush">
-        /// The brush to convert.
-        /// </param>
-        /// <returns>
-        /// An <see cref="OxyColor"/>.
-        /// </returns>
+        /// <param name="brush">The brush to convert.</param>
+        /// <returns>An <see cref="OxyColor" />.</returns>
         public static OxyColor ToOxyColor(this Brush brush)
         {
             var scb = brush as SolidColorBrush;
@@ -160,12 +130,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts a <see cref="Thickness" /> to an <see cref="OxyThickness" />.
         /// </summary>
-        /// <param name="t">
-        /// The thickness.
-        /// </param>
-        /// <returns>
-        /// An <see cref="OxyThickness" />.
-        /// </returns>
+        /// <param name="t">The thickness.</param>
+        /// <returns>An <see cref="OxyThickness" />.</returns>
         public static OxyThickness ToOxyThickness(this Thickness t)
         {
             return new OxyThickness(t.Left, t.Top, t.Right, t.Bottom);
@@ -174,15 +140,9 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts a <see cref="ScreenPoint" /> to a <see cref="Point" />.
         /// </summary>
-        /// <param name="pt">
-        /// The point to convert.
-        /// </param>
-        /// <param name="aliased">
-        /// Use pixel alignment conversion if set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// A point.
-        /// </returns>
+        /// <param name="pt">The point to convert.</param>
+        /// <param name="aliased">Use pixel alignment conversion if set to <c>true</c>.</param>
+        /// <returns>A point.</returns>
         public static Point ToPoint(this ScreenPoint pt, bool aliased)
         {
             // adding 0.5 to get pixel boundary alignment, seems to work
@@ -197,17 +157,11 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Converts an <see cref="OxyRect" /> to a <see cref="Rect"/>.
+        /// Converts an <see cref="OxyRect" /> to a <see cref="Rect" />.
         /// </summary>
-        /// <param name="r">
-        /// The rectangle to convert.
-        /// </param>
-        /// <param name="aliased">
-        /// Use pixel alignment if set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// The converted rectangle.
-        /// </returns>
+        /// <param name="r">The rectangle to convert.</param>
+        /// <param name="aliased">Use pixel alignment if set to <c>true</c>.</param>
+        /// <returns>The converted rectangle.</returns>
         public static Rect ToRect(this OxyRect r, bool aliased)
         {
             if (aliased)
@@ -226,9 +180,7 @@ namespace OxyPlot.Metro
         /// Gets the pressed mouse button from the specified <see cref="PointerPointProperties" />.
         /// </summary>
         /// <param name="properties">The properties.</param>
-        /// <returns>
-        /// The pressed mouse button.
-        /// </returns>
+        /// <returns>The pressed mouse button.</returns>
         public static OxyMouseButton GetPressedMouseButton(this PointerPointProperties properties)
         {
             if (properties.IsLeftButtonPressed)
@@ -260,11 +212,11 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Converts <see cref="PointerRoutedEventArgs"/> to <see cref="OxyMouseEventArgs"/> for a mouse down event.
+        /// Converts <see cref="PointerRoutedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a mouse down event.
         /// </summary>
-        /// <param name="e">The <see cref="PointerRoutedEventArgs"/> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement"/> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseDownEventArgs"/> containing the converted event arguments.</returns>
+        /// <param name="e">The <see cref="PointerRoutedEventArgs" /> instance containing the event data.</param>
+        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <returns>A <see cref="OxyMouseDownEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseDownEventArgs ToMouseDownEventArgs(this PointerRoutedEventArgs e, UIElement relativeTo)
         {
             var point = e.GetCurrentPoint(relativeTo);
@@ -285,11 +237,11 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Converts <see cref="PointerRoutedEventArgs"/> to <see cref="OxyMouseEventArgs"/> for a mouse event.
+        /// Converts <see cref="PointerRoutedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a mouse event.
         /// </summary>
-        /// <param name="e">The <see cref="PointerRoutedEventArgs"/> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement"/> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseEventArgs"/> containing the converted event arguments.</returns>
+        /// <param name="e">The <see cref="PointerRoutedEventArgs" /> instance containing the event data.</param>
+        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseEventArgs ToMouseEventArgs(this PointerRoutedEventArgs e, UIElement relativeTo)
         {
             var point = e.GetCurrentPoint(relativeTo);
@@ -301,11 +253,11 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Converts <see cref="PointerRoutedEventArgs"/> to <see cref="OxyMouseWheelEventArgs"/> for a mouse wheel event.
+        /// Converts <see cref="PointerRoutedEventArgs" /> to <see cref="OxyMouseWheelEventArgs" /> for a mouse wheel event.
         /// </summary>
-        /// <param name="e">The <see cref="PointerRoutedEventArgs"/> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement"/> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseWheelEventArgs"/> containing the converted event arguments.</returns>
+        /// <param name="e">The <see cref="PointerRoutedEventArgs" /> instance containing the event data.</param>
+        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <returns>A <see cref="OxyMouseWheelEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseWheelEventArgs ToMouseWheelEventArgs(this PointerRoutedEventArgs e, UIElement relativeTo)
         {
             var point = e.GetCurrentPoint(relativeTo);
@@ -318,11 +270,11 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Converts <see cref="ManipulationStartedRoutedEventArgs"/> to <see cref="OxyMouseEventArgs"/> for a touch started event.
+        /// Converts <see cref="ManipulationStartedRoutedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch started event.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationStartedRoutedEventArgs"/> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement"/> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseEventArgs"/> containing the converted event arguments.</returns>
+        /// <param name="e">The <see cref="ManipulationStartedRoutedEventArgs" /> instance containing the event data.</param>
+        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationStartedRoutedEventArgs e, UIElement relativeTo)
         {
             return new OxyTouchEventArgs
@@ -332,11 +284,11 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Converts <see cref="ManipulationDeltaRoutedEventArgs"/> to <see cref="OxyMouseEventArgs"/> for a touch delta event.
+        /// Converts <see cref="ManipulationDeltaRoutedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch delta event.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationDeltaRoutedEventArgs"/> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement"/> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseEventArgs"/> containing the converted event arguments.</returns>
+        /// <param name="e">The <see cref="ManipulationDeltaRoutedEventArgs" /> instance containing the event data.</param>
+        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationDeltaRoutedEventArgs e, UIElement relativeTo)
         {
             return new OxyTouchEventArgs
@@ -348,11 +300,11 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Converts <see cref="ManipulationCompletedRoutedEventArgs"/> to <see cref="OxyMouseEventArgs"/> for a touch completed event.
+        /// Converts <see cref="ManipulationCompletedRoutedEventArgs" /> to <see cref="OxyMouseEventArgs" /> for a touch completed event.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationCompletedRoutedEventArgs"/> instance containing the event data.</param>
-        /// <param name="relativeTo">The <see cref="UIElement"/> that the event is relative to.</param>
-        /// <returns>A <see cref="OxyMouseEventArgs"/> containing the converted event arguments.</returns>
+        /// <param name="e">The <see cref="ManipulationCompletedRoutedEventArgs" /> instance containing the event data.</param>
+        /// <param name="relativeTo">The <see cref="UIElement" /> that the event is relative to.</param>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyTouchEventArgs ToTouchEventArgs(this ManipulationCompletedRoutedEventArgs e, UIElement relativeTo)
         {
             return new OxyTouchEventArgs
@@ -364,7 +316,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Gets the modifier keys.
         /// </summary>
-        /// <param name="e">The <see cref="PointerRoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="PointerRoutedEventArgs" /> instance containing the event data.</param>
         /// <returns>Modifier keys.</returns>
         public static OxyModifierKeys GetModifierKeys(this PointerRoutedEventArgs e)
         {
@@ -393,7 +345,7 @@ namespace OxyPlot.Metro
         }
 
         /// <summary>
-        /// Converts the specified key to an <see cref="OxyKey"/>.
+        /// Converts the specified key to an <see cref="OxyKey" />.
         /// </summary>
         /// <param name="k">The key to convert.</param>
         /// <returns>The converted key.</returns>
@@ -565,12 +517,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts a <see cref="Point" /> to a <see cref="ScreenPoint" />.
         /// </summary>
-        /// <param name="pt">
-        /// The point to convert.
-        /// </param>
-        /// <returns>
-        /// A <see cref="ScreenPoint" />.
-        /// </returns>
+        /// <param name="pt">The point to convert.</param>
+        /// <returns>A <see cref="ScreenPoint" />.</returns>
         public static ScreenPoint ToScreenPoint(this Point pt)
         {
             return new ScreenPoint(pt.X, pt.Y);
@@ -579,12 +527,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts a <see cref="Point" /> to a <see cref="ScreenVector" />.
         /// </summary>
-        /// <param name="pt">
-        /// The vector to convert.
-        /// </param>
-        /// <returns>
-        /// A <see cref="ScreenVector" />.
-        /// </returns>
+        /// <param name="pt">The vector to convert.</param>
+        /// <returns>A <see cref="ScreenVector" />.</returns>
         public static ScreenVector ToScreenVector(this Point pt)
         {
             return new ScreenVector(pt.X, pt.Y);
@@ -593,12 +537,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Converts a <see cref="Point" /> array to a <see cref="ScreenPoint" /> array.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <returns>
-        /// A <see cref="ScreenPoint" /> array.
-        /// </returns>
+        /// <param name="points">The points.</param>
+        /// <returns>A <see cref="ScreenPoint" /> array.</returns>
         public static ScreenPoint[] ToScreenPointArray(this Point[] points)
         {
             if (points == null)

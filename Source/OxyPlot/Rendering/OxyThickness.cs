@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.Globalization;
 
     /// <summary>
-    /// Describes the thickness of a frame around a rectangle. Four <see cref="System.Double"/> values describe the left, top, right, and bottom sides of the rectangle, respectively.
+    /// Describes the thickness of a frame around a rectangle. Four <see cref="System.Double" /> values describe the left, top, right, and bottom sides of the rectangle, respectively.
     /// </summary>
     public struct OxyThickness : ICodeGenerating
     {
@@ -58,31 +58,21 @@ namespace OxyPlot
         private double top;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyThickness"/> struct.
+        /// Initializes a new instance of the <see cref="OxyThickness" /> struct.
         /// </summary>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="thickness">The thickness.</param>
         public OxyThickness(double thickness)
             : this(thickness, thickness, thickness, thickness)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyThickness"/> struct.
+        /// Initializes a new instance of the <see cref="OxyThickness" /> struct.
         /// </summary>
-        /// <param name="left">
-        /// The left.
-        /// </param>
-        /// <param name="top">
-        /// The top.
-        /// </param>
-        /// <param name="right">
-        /// The right.
-        /// </param>
-        /// <param name="bottom">
-        /// The bottom.
-        /// </param>
+        /// <param name="left">The left.</param>
+        /// <param name="top">The top.</param>
+        /// <param name="right">The right.</param>
+        /// <param name="bottom">The bottom.</param>
         public OxyThickness(double left, double top, double right, double bottom)
         {
             this.left = left;
@@ -94,9 +84,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the bottom thickness.
         /// </summary>
-        /// <value>
-        /// The bottom thickness.
-        /// </value>
+        /// <value>The bottom thickness.</value>
         public double Bottom
         {
             get
@@ -124,9 +112,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the left thickness.
         /// </summary>
-        /// <value>
-        /// The left thickness.
-        /// </value>
+        /// <value>The left thickness.</value>
         public double Left
         {
             get
@@ -143,9 +129,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the right thickness.
         /// </summary>
-        /// <value>
-        /// The right thickness.
-        /// </value>
+        /// <value>The right thickness.</value>
         public double Right
         {
             get
@@ -162,9 +146,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the top thickness.
         /// </summary>
-        /// <value>
-        /// The top thickness.
-        /// </value>
+        /// <value>The top thickness.</value>
         public double Top
         {
             get
@@ -192,9 +174,7 @@ namespace OxyPlot
         /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>
-        /// <returns>
-        /// The to code.
-        /// </returns>
+        /// <returns>The to code.</returns>
         public string ToCode()
         {
             return string.Format(
@@ -207,11 +187,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()
         {
             return string.Format(

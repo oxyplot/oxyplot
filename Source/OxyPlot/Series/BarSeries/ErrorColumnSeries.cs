@@ -40,7 +40,7 @@ namespace OxyPlot.Series
     public class ErrorColumnSeries : ColumnSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorColumnSeries"/> class.
+        /// Initializes a new instance of the <see cref="ErrorColumnSeries" /> class.
         /// </summary>
         public ErrorColumnSeries()
         {
@@ -52,17 +52,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the stroke thickness of the error line.
         /// </summary>
-        /// <value>
-        /// The stroke thickness of the error line.
-        /// </value>
+        /// <value>The stroke thickness of the error line.</value>
         public double ErrorStrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the width of the error end lines.
         /// </summary>
-        /// <value>
-        /// The width of the error end lines.
-        /// </value>
+        /// <value>The width of the error end lines.</value>
         public double ErrorWidth { get; set; }
 
         /// <summary>
@@ -146,27 +142,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the bar/column item.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="clippingRect">
-        /// The clipping rectangle.
-        /// </param>
-        /// <param name="topValue">
-        /// The end value of the bar.
-        /// </param>
-        /// <param name="categoryValue">
-        /// The category value.
-        /// </param>
-        /// <param name="actualBarWidth">
-        /// The actual width of the bar.
-        /// </param>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <param name="rect">
-        /// The rectangle of the bar.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="topValue">The end value of the bar.</param>
+        /// <param name="categoryValue">The category value.</param>
+        /// <param name="actualBarWidth">The actual width of the bar.</param>
+        /// <param name="item">The item.</param>
+        /// <param name="rect">The rectangle of the bar.</param>
         protected override void RenderItem(
             IRenderContext rc,
             OxyRect clippingRect,

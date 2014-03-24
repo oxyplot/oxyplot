@@ -36,7 +36,7 @@ namespace OxyPlot.Series
     public class TornadoBarItem : CategorizedItem, ICodeGenerating
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TornadoBarItem"/> class.
+        /// Initializes a new instance of the <see cref="TornadoBarItem" /> class.
         /// </summary>
         public TornadoBarItem()
         {
@@ -75,9 +75,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Returns c# code that generates this instance.
         /// </summary>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <returns>C# code.</returns>
         public string ToCode()
         {
             if (!this.MaximumColor.IsUndefined())

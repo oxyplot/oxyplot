@@ -40,73 +40,73 @@ namespace OxyPlot.Wpf
     public class ScatterSeries : XYAxisSeries
     {
         /// <summary>
-        /// The bin size property.
+        /// Identifies the <see cref="BinSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BinSizeProperty = DependencyProperty.Register(
             "BinSize", typeof(int), typeof(ScatterSeries), new PropertyMetadata(0, AppearanceChanged));
 
         /// <summary>
-        /// The data field size property.
+        /// Identifies the <see cref="DataFieldSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DataFieldSizeProperty = DependencyProperty.Register(
             "DataFieldSize", typeof(string), typeof(ScatterSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The data field tag property.
+        /// Identifies the <see cref="DataFieldTag"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DataFieldTagProperty = DependencyProperty.Register(
             "DataFieldTag", typeof(string), typeof(ScatterSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The data field value property.
+        /// Identifies the <see cref="DataFieldValue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DataFieldValueProperty = DependencyProperty.Register(
             "DataFieldValue", typeof(string), typeof(ScatterSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The data field x property.
+        /// Identifies the <see cref="DataFieldX"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DataFieldXProperty = DependencyProperty.Register(
             "DataFieldX", typeof(string), typeof(ScatterSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The data field y property.
+        /// Identifies the <see cref="DataFieldY"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DataFieldYProperty = DependencyProperty.Register(
             "DataFieldY", typeof(string), typeof(ScatterSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The mapping property.
+        /// Identifies the <see cref="Mapping"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MappingProperty = DependencyProperty.Register(
             "Mapping", typeof(Func<object, IDataPoint>), typeof(ScatterSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The marker fill property.
+        /// Identifies the <see cref="MarkerFill"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(
             "MarkerFill", typeof(Color), typeof(ScatterSeries), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
-        /// The marker outline property.
+        /// Identifies the <see cref="MarkerOutline"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerOutlineProperty = DependencyProperty.Register(
             "MarkerOutline", typeof(ScreenPoint[]), typeof(ScatterSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The marker size property.
+        /// Identifies the <see cref="MarkerSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerSizeProperty = DependencyProperty.Register(
             "MarkerSize", typeof(double), typeof(ScatterSeries), new PropertyMetadata(5.0, AppearanceChanged));
 
         /// <summary>
-        /// The marker stroke property.
+        /// Identifies the <see cref="MarkerStroke"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeProperty = DependencyProperty.Register(
             "MarkerStroke", typeof(Color), typeof(ScatterSeries), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
-        /// The marker stroke thickness property.
+        /// Identifies the <see cref="MarkerStrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeThicknessProperty =
             DependencyProperty.Register(
@@ -116,7 +116,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The marker type property.
+        /// Identifies the <see cref="MarkerType"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerTypeProperty = DependencyProperty.Register(
             "MarkerType",
@@ -343,17 +343,13 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the color axis key.
         /// </summary>
-        /// <value>
-        /// The color axis key.
-        /// </value>
+        /// <value>The color axis key.</value>
         public string ColorAxisKey { get; set; }
 
         /// <summary>
         /// Creates the internal series.
         /// </summary>
-        /// <returns>
-        /// The series.
-        /// </returns>
+        /// <returns>The series.</returns>
         public override OxyPlot.Series.Series CreateModel()
         {
             this.SynchronizeProperties(this.InternalSeries);
@@ -363,9 +359,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Synchronizes the properties.
         /// </summary>
-        /// <param name="series">
-        /// The series.
-        /// </param>
+        /// <param name="series">The series.</param>
         protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);

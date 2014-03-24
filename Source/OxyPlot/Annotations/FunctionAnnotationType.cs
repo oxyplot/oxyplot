@@ -31,7 +31,7 @@
 namespace OxyPlot.Annotations
 {
     /// <summary>
-    /// Specifies the definition of function line in a <see cref="FunctionAnnotation"/>.
+    /// Specifies the definition of function line in a <see cref="FunctionAnnotation" />.
     /// </summary>
     public enum FunctionAnnotationType
     {

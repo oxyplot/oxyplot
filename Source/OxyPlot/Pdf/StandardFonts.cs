@@ -31,12 +31,12 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Defines the standard fonts that can be used in a <see cref="PortableDocument"/>.
+    /// Defines the standard fonts that can be used in a <see cref="PortableDocument" />.
     /// </summary>
     public static class StandardFonts
     {
         /// <summary>
-        /// Initializes static members of the <see cref="StandardFonts"/> class.
+        /// Initializes static members of the <see cref="StandardFonts" /> class.
         /// </summary>
         static StandardFonts()
         {

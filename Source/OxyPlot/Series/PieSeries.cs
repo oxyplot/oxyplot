@@ -39,9 +39,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents a series for pie/circle/doughnut charts.
     /// </summary>
-    /// <remarks>
-    /// The arc length/central angle/area of each slice is proportional to the quantity it represents. See http://en.wikipedia.org/wiki/Pie_chart
-    /// </remarks>
+    /// <remarks>The arc length/central angle/area of each slice is proportional to the quantity it represents. See http://en.wikipedia.org/wiki/Pie_chart</remarks>
     public class PieSeries : ItemsSeries
     {
         /// <summary>
@@ -50,7 +48,7 @@ namespace OxyPlot.Series
         private IList<PieSlice> slices;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PieSeries"/> class.
+        /// Initializes a new instance of the <see cref="PieSeries" /> class.
         /// </summary>
         public PieSeries()
         {
@@ -93,67 +91,67 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the name of the property containing the color.
         /// </summary>
-        /// <value> The color field. </value>
+        /// <value>The color field.</value>
         public string ColorField { get; set; }
 
         /// <summary>
         /// Gets or sets the diameter.
         /// </summary>
-        /// <value> The diameter. </value>
+        /// <value>The diameter.</value>
         public double Diameter { get; set; }
 
         /// <summary>
         /// Gets or sets the exploded distance.
         /// </summary>
-        /// <value> The exploded distance. </value>
+        /// <value>The exploded distance.</value>
         public double ExplodedDistance { get; set; }
 
         /// <summary>
         /// Gets or sets the inner diameter.
         /// </summary>
-        /// <value> The inner diameter. </value>
+        /// <value>The inner diameter.</value>
         public double InnerDiameter { get; set; }
 
         /// <summary>
         /// Gets or sets the inside label format.
         /// </summary>
-        /// <value> The inside label format. </value>
+        /// <value>The inside label format.</value>
         public string InsideLabelFormat { get; set; }
 
         /// <summary>
         /// Gets or sets the inside label position.
         /// </summary>
-        /// <value> The inside label position. </value>
+        /// <value>The inside label position.</value>
         public double InsideLabelPosition { get; set; }
 
         /// <summary>
         /// Gets or sets the is exploded field.
         /// </summary>
-        /// <value> The is exploded field. </value>
+        /// <value>The is exploded field.</value>
         public string IsExplodedField { get; set; }
 
         /// <summary>
         /// Gets or sets the label field.
         /// </summary>
-        /// <value> The label field. </value>
+        /// <value>The label field.</value>
         public string LabelField { get; set; }
 
         /// <summary>
         /// Gets or sets the legend format.
         /// </summary>
-        /// <value> The legend format. </value>
+        /// <value>The legend format.</value>
         public string LegendFormat { get; set; }
 
         /// <summary>
         /// Gets or sets the outside label format.
         /// </summary>
-        /// <value> The outside label format. </value>
+        /// <value>The outside label format.</value>
         public string OutsideLabelFormat { get; set; }
 
         /// <summary>
         /// Gets or sets the slices.
         /// </summary>
-        /// <value> The slices. </value>
+        /// <value>The slices.</value>
         public IList<PieSlice> Slices
         {
             get
@@ -170,63 +168,57 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the start angle.
         /// </summary>
-        /// <value> The start angle. </value>
+        /// <value>The start angle.</value>
         public double StartAngle { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke.
         /// </summary>
-        /// <value> The stroke. </value>
+        /// <value>The stroke.</value>
         public OxyColor Stroke { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
         /// </summary>
-        /// <value> The stroke thickness. </value>
+        /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the tick distance.
         /// </summary>
-        /// <value> The tick distance. </value>
+        /// <value>The tick distance.</value>
         public double TickDistance { get; set; }
 
         /// <summary>
         /// Gets or sets the length of the horizontal part of the tick.
         /// </summary>
-        /// <value> The length. </value>
+        /// <value>The length.</value>
         public double TickHorizontalLength { get; set; }
 
         /// <summary>
         /// Gets or sets the tick label distance.
         /// </summary>
-        /// <value> The tick label distance. </value>
+        /// <value>The tick label distance.</value>
         public double TickLabelDistance { get; set; }
 
         /// <summary>
         /// Gets or sets the length of the tick radial.
         /// </summary>
-        /// <value> The length of the tick radial. </value>
+        /// <value>The length of the tick radial.</value>
         public double TickRadialLength { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the property containing the value.
         /// </summary>
-        /// <value> The value field. </value>
+        /// <value>The value field.</value>
         public string ValueField { get; set; }
 
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// Interpolate the series if this flag is set to <c>true</c> .
-        /// </param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c> .</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             return null;
@@ -235,12 +227,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the series on the specified render context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.Slices.Count == 0)
@@ -385,12 +373,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the legend symbol on the specified render context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="legendBox">
-        /// The legend rectangle.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="legendBox">The legend rectangle.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
         }
@@ -398,9 +382,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Check if this data series requires X/Y axes. (e.g. Pie series do not require axes)
         /// </summary>
-        /// <returns>
-        /// True if no axes are required.
-        /// </returns>
+        /// <returns>True if no axes are required.</returns>
         protected internal override bool AreAxesRequired()
         {
             return false;
@@ -416,12 +398,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Check if the data series is using the specified axis.
         /// </summary>
-        /// <param name="axis">
-        /// An axis.
-        /// </param>
-        /// <returns>
-        /// True if the axis is in use.
-        /// </returns>
+        /// <param name="axis">An axis.</param>
+        /// <returns>True if the axis is in use.</returns>
         protected internal override bool IsUsing(Axis axis)
         {
             return false;
@@ -430,9 +408,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="model">The model.</param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
             foreach (var slice in this.Slices)

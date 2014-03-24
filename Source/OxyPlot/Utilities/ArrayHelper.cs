@@ -42,18 +42,10 @@ namespace OxyPlot
         /// <summary>
         /// Creates a vector.
         /// </summary>
-        /// <param name="x0">
-        /// The first value.
-        /// </param>
-        /// <param name="x1">
-        /// The last value.
-        /// </param>
-        /// <param name="n">
-        /// The number of steps.
-        /// </param>
-        /// <returns>
-        /// A vector.
-        /// </returns>
+        /// <param name="x0">The first value.</param>
+        /// <param name="x1">The last value.</param>
+        /// <param name="n">The number of steps.</param>
+        /// <returns>A vector.</returns>
         public static double[] CreateVector(double x0, double x1, int n)
         {
             var result = new double[n];
@@ -68,18 +60,10 @@ namespace OxyPlot
         /// <summary>
         /// Creates a vector.
         /// </summary>
-        /// <param name="x0">
-        /// The first value.
-        /// </param>
-        /// <param name="x1">
-        /// The last value.
-        /// </param>
-        /// <param name="dx">
-        /// The step size.
-        /// </param>
-        /// <returns>
-        /// A vector.
-        /// </returns>
+        /// <param name="x0">The first value.</param>
+        /// <param name="x1">The last value.</param>
+        /// <param name="dx">The step size.</param>
+        /// <returns>A vector.</returns>
         public static double[] CreateVector(double x0, double x1, double dx)
         {
             var n = (int)Math.Round((x1 - x0) / dx);
@@ -95,18 +79,10 @@ namespace OxyPlot
         /// <summary>
         /// Evaluates the specified function.
         /// </summary>
-        /// <param name="f">
-        /// The function.
-        /// </param>
-        /// <param name="x">
-        /// The x values.
-        /// </param>
-        /// <param name="y">
-        /// The y values.
-        /// </param>
-        /// <returns>
-        /// Array of evaluations. The value of f(x_i,y_j) will be placed at index [i, j].
-        /// </returns>
+        /// <param name="f">The function.</param>
+        /// <param name="x">The x values.</param>
+        /// <param name="y">The y values.</param>
+        /// <returns>Array of evaluations. The value of f(x_i,y_j) will be placed at index [i, j].</returns>
         public static double[,] Evaluate(Func<double, double, double> f, double[] x, double[] y)
         {
             int m = x.Length;
@@ -126,12 +102,8 @@ namespace OxyPlot
         /// <summary>
         /// Fills the array with the specified value.
         /// </summary>
-        /// <param name="array">
-        /// The array.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="array">The array.</param>
+        /// <param name="value">The value.</param>
         public static void Fill(this double[] array, double value)
         {
             for (var i = 0; i < array.Length; i++)
@@ -143,12 +115,8 @@ namespace OxyPlot
         /// <summary>
         /// Fills the two-dimensional array with the specified value.
         /// </summary>
-        /// <param name="array">
-        /// The two-dimensional array.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="array">The two-dimensional array.</param>
+        /// <param name="value">The value.</param>
         public static void Fill2D(this double[,] array, double value)
         {
             for (var i = 0; i < array.GetLength(0); i++)
@@ -187,9 +155,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="array">The array.</param>
         /// <param name="excludeNaN">Exclude NaN values if set to <c>true</c>.</param>
-        /// <returns>
-        /// The minimum value.
-        /// </returns>
+        /// <returns>The minimum value.</returns>
         public static double Min2D(this double[,] array, bool excludeNaN = false)
         {
             var min = double.MaxValue;
@@ -216,9 +182,7 @@ namespace OxyPlot
         /// Calculates a hash code for the specified sequence of items.
         /// </summary>
         /// <param name="items">A sequence of items.</param>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
-        /// </returns>
+        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public static int GetHashCode(this IEnumerable<object> items)
         {
             // See http://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode

@@ -54,38 +54,38 @@ namespace OxyPlot.Metro
     public class Plot : Control, IPlotControl
     {
         /// <summary>
-        /// Defines the Controller property.
+        /// Identifies the <see cref="Controller"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ControllerProperty =
             DependencyProperty.Register("Controller", typeof(PlotController), typeof(Plot), new PropertyMetadata(null));
 
         /// <summary>
-        /// The default tracker property.
+        /// Identifies the <see cref="DefaultTrackerTemplate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultTrackerTemplateProperty =
             DependencyProperty.Register(
                 "DefaultTrackerTemplate", typeof(ControlTemplate), typeof(Plot), new PropertyMetadata(null));
 
         /// <summary>
-        /// The handle right clicks property.
+        /// Identifies the <see cref="HandleRightClicks"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HandleRightClicksProperty =
             DependencyProperty.Register("HandleRightClicks", typeof(bool), typeof(Plot), new PropertyMetadata(true));
 
         /// <summary>
-        /// The is mouse wheel enabled property.
+        /// Identifies the <see cref="IsMouseWheelEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsMouseWheelEnabledProperty =
             DependencyProperty.Register("IsMouseWheelEnabled", typeof(bool), typeof(Plot), new PropertyMetadata(true));
 
         /// <summary>
-        /// The model property.
+        /// Identifies the <see cref="Model"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(
             "Model", typeof(PlotModel), typeof(Plot), new PropertyMetadata(null, ModelChanged));
 
         /// <summary>
-        /// The zoom rectangle template property.
+        /// Identifies the <see cref="ZoomRectangleTemplate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomRectangleTemplateProperty =
             DependencyProperty.Register(
@@ -188,9 +188,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Gets or sets the plot controller.
         /// </summary>
-        /// <value>
-        /// The plot controller.
-        /// </value>
+        /// <value>The plot controller.</value>
         public PlotController Controller
         {
             get { return (PlotController)this.GetValue(ControllerProperty); }
@@ -244,7 +242,7 @@ namespace OxyPlot.Metro
                 this.SetValue(IsMouseWheelEnabledProperty, value);
             }
         }
-      
+
         /// <summary>
         /// Gets or sets the <see cref="PlotModel" /> to show.
         /// </summary>
@@ -306,9 +304,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Gets the actual plot controller.
         /// </summary>
-        /// <value>
-        /// The actual plot controller.
-        /// </value>
+        /// <value>The actual plot controller.</value>
         public IPlotController ActualController
         {
             get
@@ -340,17 +336,15 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Invalidate the plot (not blocking the UI thread)
         /// </summary>
-        /// <param name="update">
-        /// if set to <c>true</c>, the data collections will be updated.
-        /// </param>
+        /// <param name="update">if set to <c>true</c>, the data collections will be updated.</param>
         public void InvalidatePlot(bool update = true)
         {
             this.UpdateModel(update);
 
             if (Interlocked.CompareExchange(ref this.isPlotInvalidated, 1, 0) == 0)
             {
-                // Invalidate the arrange state for the element. 
-                // After the invalidation, the element will have its layout updated, 
+                // Invalidate the arrange state for the element.
+                // After the invalidation, the element will have its layout updated,
                 // which will occur asynchronously unless subsequently forced by UpdateLayout.
                 this.BeginInvoke(this.InvalidateArrange);
             }
@@ -359,9 +353,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Sets the cursor.
         /// </summary>
-        /// <param name="cursor">
-        /// The cursor.
-        /// </param>
+        /// <param name="cursor">The cursor.</param>
         public void SetCursorType(CursorType cursor)
         {
             var type = CoreCursorType.Arrow;
@@ -390,9 +382,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Shows the tracker.
         /// </summary>
-        /// <param name="trackerHitResult">
-        /// The tracker data.
-        /// </param>
+        /// <param name="trackerHitResult">The tracker data.</param>
         public void ShowTracker(TrackerHitResult trackerHitResult)
         {
             if (trackerHitResult == null)
@@ -436,9 +426,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Shows the zoom rectangle.
         /// </summary>
-        /// <param name="r">
-        /// The rectangle.
-        /// </param>
+        /// <param name="r">The rectangle.</param>
         public void ShowZoomRectangle(OxyRect r)
         {
             this.zoomRectangle.Width = r.Width;
@@ -452,9 +440,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Renders the plot to a bitmap.
         /// </summary>
-        /// <returns>
-        /// A bitmap.
-        /// </returns>
+        /// <returns>A bitmap.</returns>
         public WriteableBitmap ToBitmap()
         {
             throw new NotImplementedException();
@@ -505,9 +491,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called before the KeyDown event occurs.
         /// </summary>
-        /// <param name="e">
-        /// The data for the event.
-        /// </param>
+        /// <param name="e">The data for the event.</param>
         protected override void OnKeyDown(KeyRoutedEventArgs e)
         {
             switch (e.Key)
@@ -565,9 +549,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called before the KeyUp event occurs.
         /// </summary>
-        /// <param name="e">
-        /// The data for the event.
-        /// </param>
+        /// <param name="e">The data for the event.</param>
         protected override void OnKeyUp(KeyRoutedEventArgs e)
         {
             base.OnKeyUp(e);
@@ -592,9 +574,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called before the ManipulationStarted event occurs.
         /// </summary>
-        /// <param name="e">
-        /// Event data for the event.
-        /// </param>
+        /// <param name="e">Event data for the event.</param>
         protected override void OnManipulationStarted(ManipulationStartedRoutedEventArgs e)
         {
             base.OnManipulationStarted(e);
@@ -614,9 +594,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called before the ManipulationDelta event occurs.
         /// </summary>
-        /// <param name="e">
-        /// Event data for the event.
-        /// </param>
+        /// <param name="e">Event data for the event.</param>
         protected override void OnManipulationDelta(ManipulationDeltaRoutedEventArgs e)
         {
             base.OnManipulationDelta(e);
@@ -635,9 +613,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called before the ManipulationCompleted event occurs.
         /// </summary>
-        /// <param name="e">
-        /// Event data for the event.
-        /// </param>
+        /// <param name="e">Event data for the event.</param>
         protected override void OnManipulationCompleted(ManipulationCompletedRoutedEventArgs e)
         {
             base.OnManipulationCompleted(e);
@@ -656,9 +632,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called before the PointerPressed event occurs.
         /// </summary>
-        /// <param name="e">
-        /// Event data for the event.
-        /// </param>
+        /// <param name="e">Event data for the event.</param>
         protected override void OnPointerPressed(PointerRoutedEventArgs e)
         {
             base.OnPointerPressed(e);
@@ -680,9 +654,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called before the PointerMoved event occurs.
         /// </summary>
-        /// <param name="e">
-        /// Event data for the event.
-        /// </param>
+        /// <param name="e">Event data for the event.</param>
         protected override void OnPointerMoved(PointerRoutedEventArgs e)
         {
             base.OnPointerMoved(e);
@@ -701,9 +673,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called before the PointerReleased event occurs.
         /// </summary>
-        /// <param name="e">
-        /// Event data for the event.
-        /// </param>
+        /// <param name="e">Event data for the event.</param>
         protected override void OnPointerReleased(PointerRoutedEventArgs e)
         {
             base.OnPointerReleased(e);
@@ -723,9 +693,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called before the PointerWheelChanged event occurs.
         /// </summary>
-        /// <param name="e">
-        /// Event data for the event.
-        /// </param>
+        /// <param name="e">Event data for the event.</param>
         protected override void OnPointerWheelChanged(PointerRoutedEventArgs e)
         {
             base.OnPointerWheelChanged(e);
@@ -772,9 +740,7 @@ namespace OxyPlot.Metro
         /// Provides the behavior for the Arrange pass of layout. Classes can override this method to define their own Arrange pass behavior.
         /// </summary>
         /// <param name="finalSize">The final area within the parent that this object should use to arrange itself and its children.</param>
-        /// <returns>
-        /// The actual size that is used after the element is arranged in layout.
-        /// </returns>
+        /// <returns>The actual size that is used after the element is arranged in layout.</returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
             if (this.ActualWidth > 0 && this.ActualHeight > 0)
@@ -791,12 +757,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called when the <see cref="Model" /> property is changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="Windows.UI.Xaml.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="Windows.UI.Xaml.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private static void ModelChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             ((Plot)sender).OnModelChanged();
@@ -805,12 +767,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called when the control is loaded.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="Windows.UI.Xaml.RoutedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="Windows.UI.Xaml.RoutedEventArgs" /> instance containing the event data.</param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             // Make sure InvalidateArrange is called when the plot is invalidated
@@ -850,12 +808,8 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Called when the size of the control is changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="Windows.UI.Xaml.SizeChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="Windows.UI.Xaml.SizeChangedEventArgs" /> instance containing the event data.</param>
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.InvalidatePlot(false);
@@ -864,9 +818,7 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Updates the model.
         /// </summary>
-        /// <param name="update">
-        /// if set to <c>true</c>, the data collections will be updated.
-        /// </param>
+        /// <param name="update">if set to <c>true</c>, the data collections will be updated.</param>
         private void UpdateModel(bool update)
         {
             if (this.ActualModel != null)
@@ -903,7 +855,7 @@ namespace OxyPlot.Metro
             if (!this.Dispatcher.HasThreadAccess)
             {
                 // TODO: Fix warning?
-                // Because this call is not awaited, execution of the current method continues before the call is completed. 
+                // Because this call is not awaited, execution of the current method continues before the call is completed.
                 // Consider applying the 'await' operator to the result of the call.
                 this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => action());
             }

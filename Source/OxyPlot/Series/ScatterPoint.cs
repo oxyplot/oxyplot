@@ -33,7 +33,7 @@ namespace OxyPlot.Series
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Represents a point in a <see cref="ScatterSeries"/>.
+    /// Represents a point in a <see cref="ScatterSeries" />.
     /// </summary>
     public class ScatterPoint : IDataPoint
     {
@@ -78,7 +78,7 @@ namespace OxyPlot.Series
         internal double y;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterPoint"/> class.
+        /// Initializes a new instance of the <see cref="ScatterPoint" /> class.
         /// </summary>
         public ScatterPoint()
         {
@@ -87,23 +87,13 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScatterPoint"/> class.
+        /// Initializes a new instance of the <see cref="ScatterPoint" /> class.
         /// </summary>
-        /// <param name="x">
-        /// The x.
-        /// </param>
-        /// <param name="y">
-        /// The y.
-        /// </param>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="tag">
-        /// The tag.
-        /// </param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="tag">The tag.</param>
         public ScatterPoint(double x, double y, double size = double.NaN, double value = double.NaN, object tag = null)
         {
             this.x = x;
@@ -201,9 +191,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <returns>C# code.</returns>
         public string ToCode()
         {
             if (double.IsNaN(this.size) && double.IsNaN(this.value))
@@ -221,11 +209,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()
         {
             return this.x + " " + this.y;

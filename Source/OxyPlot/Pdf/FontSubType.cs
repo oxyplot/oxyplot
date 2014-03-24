@@ -126,7 +126,7 @@ namespace OxyPlot
     public enum FontEncoding
     {
         /// <summary>
-        /// Windows Code Page 1252, often called the “Windows ANSI” encoding. This is the standard Windows encoding for Latin text in 
+        /// Windows Code Page 1252, often called the “Windows ANSI” encoding. This is the standard Windows encoding for Latin text in
         /// Western writing systems. PDF has a predefined encoding named WinAnsiEncoding that can be used with both Type 1 and TrueType fonts.
         /// </summary>
         WinAnsiEncoding
@@ -143,7 +143,7 @@ namespace OxyPlot
         Type1,
 
         /// <summary>
-        /// TrueType font.   
+        /// TrueType font.
         /// </summary>
         TrueType
     }

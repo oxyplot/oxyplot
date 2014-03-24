@@ -48,7 +48,7 @@ namespace AnnotationDemo
             this.InitializeComponent();
             this.PolygonPoints = new List<IDataPoint>
                 {
-                   new DataPoint(10, 10), new DataPoint(80, 30), new DataPoint(60, 70) 
+                   new DataPoint(10, 10), new DataPoint(80, 30), new DataPoint(60, 70)
                 };
             this.DataContext = this;
         }

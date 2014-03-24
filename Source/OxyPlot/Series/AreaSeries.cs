@@ -54,7 +54,7 @@ namespace OxyPlot.Series
 
         /// <summary>
         /// Gets or sets a constant value for the area definition.
-        /// This is used if DataFieldBase and BaselineValues are null.
+        /// This is used if DataFieldBase and BaselineValues are <c>null</c>.
         /// </summary>
         /// <value>The baseline.</value>
         public double ConstantY2 { get; set; }
@@ -96,9 +96,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the actual fill color.
         /// </summary>
-        /// <value>
-        /// The actual fill.
-        /// </value>
+        /// <value>The actual fill.</value>
         public OxyColor ActualFill
         {
             get
@@ -279,12 +277,8 @@ namespace OxyPlot.Series
         /// Renders the legend symbol for the line series on the
         /// specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="legendBox">
-        /// The bounding rectangle of the legend box.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double y0 = (legendBox.Top * 0.2) + (legendBox.Bottom * 0.8);

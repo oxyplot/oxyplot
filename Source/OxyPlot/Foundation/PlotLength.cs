@@ -31,7 +31,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents lengths in the plot. 
+    /// Represents lengths in the plot.
     /// </summary>
     public struct PlotLength
     {
@@ -46,14 +46,10 @@ namespace OxyPlot
         private readonly double value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotLength"/> struct.
+        /// Initializes a new instance of the <see cref="PlotLength" /> struct.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="unit">
-        /// The unit.
-        /// </param>
+        /// <param name="value">The value.</param>
+        /// <param name="unit">The unit.</param>
         public PlotLength(double value, PlotLengthUnit unit)
         {
             this.value = value;
@@ -63,9 +59,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the value.
         /// </summary>
-        /// <value>
-        /// The value.
-        /// </value>
+        /// <value>The value.</value>
         public double Value
         {
             get
@@ -77,9 +71,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the type of the unit.
         /// </summary>
-        /// <value>
-        /// The type of the unit.
-        /// </value>
+        /// <value>The type of the unit.</value>
         public PlotLengthUnit Unit
         {
             get

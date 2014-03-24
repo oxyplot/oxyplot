@@ -40,14 +40,10 @@ namespace OxyPlot.Axes
     public class HorizontalAndVerticalAxisRenderer : AxisRendererBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HorizontalAndVerticalAxisRenderer"/> class.
+        /// Initializes a new instance of the <see cref="HorizontalAndVerticalAxisRenderer" /> class.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="plot">
-        /// The plot.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="plot">The plot.</param>
         public HorizontalAndVerticalAxisRenderer(IRenderContext rc, PlotModel plot)
             : base(rc, plot)
         {
@@ -118,18 +114,10 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Interpolates linearly between two values.
         /// </summary>
-        /// <param name="x0">
-        /// The x0.
-        /// </param>
-        /// <param name="x1">
-        /// The x1.
-        /// </param>
-        /// <param name="f">
-        /// The interpolation factor.
-        /// </param>
-        /// <returns>
-        /// The interpolated value.
-        /// </returns>
+        /// <param name="x0">The x0.</param>
+        /// <param name="x1">The x1.</param>
+        /// <param name="f">The interpolation factor.</param>
+        /// <returns>The interpolated value.</returns>
         protected static double Lerp(double x0, double x1, double f)
         {
             // http://en.wikipedia.org/wiki/Linear_interpolation
@@ -139,15 +127,9 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Snaps v to value if it is within the the specified distance.
         /// </summary>
-        /// <param name="target">
-        /// The target value.
-        /// </param>
-        /// <param name="v">
-        /// The value to snap.
-        /// </param>
-        /// <param name="eps">
-        /// The distance tolerance.
-        /// </param>
+        /// <param name="target">The target value.</param>
+        /// <param name="v">The value to snap.</param>
+        /// <param name="eps">The distance tolerance.</param>
         protected static void SnapTo(double target, ref double v, double eps = 0.5)
         {
             if (v > target - eps && v < target + eps)
@@ -159,29 +141,17 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the axis title position, rotation and alignment.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="titlePosition">
-        /// The title position.
-        /// </param>
-        /// <param name="angle">
-        /// The angle.
-        /// </param>
-        /// <param name="halign">
-        /// The horizontal alignment.
-        /// </param>
-        /// <param name="valign">
-        /// The vertical alignment.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ScreenPoint"/>.
-        /// </returns>
+        /// <param name="axis">The axis.</param>
+        /// <param name="titlePosition">The title position.</param>
+        /// <param name="angle">The angle.</param>
+        /// <param name="halign">The horizontal alignment.</param>
+        /// <param name="valign">The vertical alignment.</param>
+        /// <returns>The <see cref="ScreenPoint" />.</returns>
         protected virtual ScreenPoint GetAxisTitlePositionAndAlignment(
-            Axis axis, 
-            double titlePosition, 
-            ref double angle, 
-            ref HorizontalAlignment halign, 
+            Axis axis,
+            double titlePosition,
+            ref double angle,
+            ref HorizontalAlignment halign,
             ref VerticalAlignment valign)
         {
             double middle = axis.IsHorizontal()
@@ -219,26 +189,16 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the alignments given the specified rotation angle.
         /// </summary>
-        /// <param name="angle">
-        /// The angle.
-        /// </param>
-        /// <param name="defaultHorizontalAlignment">
-        /// The default horizontal alignment.
-        /// </param>
-        /// <param name="defaultVerticalAlignment">
-        /// The default vertical alignment.
-        /// </param>
-        /// <param name="ha">
-        /// The rotated horizontal alignment.
-        /// </param>
-        /// <param name="va">
-        /// The rotated vertical alignment.
-        /// </param>
+        /// <param name="angle">The angle.</param>
+        /// <param name="defaultHorizontalAlignment">The default horizontal alignment.</param>
+        /// <param name="defaultVerticalAlignment">The default vertical alignment.</param>
+        /// <param name="ha">The rotated horizontal alignment.</param>
+        /// <param name="va">The rotated vertical alignment.</param>
         protected virtual void GetRotatedAlignments(
-            double angle, 
-            HorizontalAlignment defaultHorizontalAlignment, 
-            VerticalAlignment defaultVerticalAlignment, 
-            out HorizontalAlignment ha, 
+            double angle,
+            HorizontalAlignment defaultHorizontalAlignment,
+            VerticalAlignment defaultVerticalAlignment,
+            out HorizontalAlignment ha,
             out VerticalAlignment va)
         {
             ha = defaultHorizontalAlignment;
@@ -275,12 +235,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Renders the axis title.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="titlePosition">
-        /// The title position.
-        /// </param>
+        /// <param name="axis">The axis.</param>
+        /// <param name="titlePosition">The title position.</param>
         protected virtual void RenderAxisTitle(Axis axis, double titlePosition)
         {
             bool isHorizontal = axis.IsHorizontal();
@@ -306,15 +262,15 @@ namespace OxyPlot.Axes
 
             this.RenderContext.SetToolTip(axis.ToolTip);
             this.RenderContext.DrawMathText(
-                lpt, 
-                axis.ActualTitle, 
-                axis.ActualTitleColor, 
-                axis.ActualTitleFont, 
-                axis.ActualTitleFontSize, 
-                axis.ActualTitleFontWeight, 
-                angle, 
-                halign, 
-                valign, 
+                lpt,
+                axis.ActualTitle,
+                axis.ActualTitleColor,
+                axis.ActualTitleFont,
+                axis.ActualTitleFontSize,
+                axis.ActualTitleFontWeight,
+                angle,
+                halign,
+                valign,
                 maxSize);
             this.RenderContext.SetToolTip(null);
         }
@@ -322,15 +278,9 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Renders the major items.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="axisPosition">
-        /// The axis position.
-        /// </param>
-        /// <param name="titlePosition">
-        /// The title position.
-        /// </param>
+        /// <param name="axis">The axis.</param>
+        /// <param name="axisPosition">The axis position.</param>
+        /// <param name="titlePosition">The title position.</param>
         protected virtual void RenderMajorItems(Axis axis, double axisPosition, double titlePosition)
         {
             double eps = axis.ActualMinorStep * 1e-3;
@@ -457,14 +407,14 @@ namespace OxyPlot.Axes
 
                 string text = axis.FormatValue(value);
                 this.RenderContext.DrawMathText(
-                    pt, 
-                    text, 
-                    axis.ActualTextColor, 
-                    axis.ActualFont, 
-                    axis.ActualFontSize, 
-                    axis.ActualFontWeight, 
-                    axis.Angle, 
-                    ha, 
+                    pt,
+                    text,
+                    axis.ActualTextColor,
+                    axis.ActualFont,
+                    axis.ActualFontSize,
+                    axis.ActualFontWeight,
+                    axis.Angle,
+                    ha,
                     va);
             }
 
@@ -508,19 +458,19 @@ namespace OxyPlot.Axes
             if (isHorizontal)
             {
                 this.RenderContext.DrawLine(
-                    axis.Transform(actualMinimum), 
-                    axisPosition, 
-                    axis.Transform(actualMaximum), 
-                    axisPosition, 
+                    axis.Transform(actualMinimum),
+                    axisPosition,
+                    axis.Transform(actualMaximum),
+                    axisPosition,
                     this.AxislinePen);
             }
             else
             {
                 this.RenderContext.DrawLine(
-                    axisPosition, 
-                    axis.Transform(actualMinimum), 
-                    axisPosition, 
-                    axis.Transform(actualMaximum), 
+                    axisPosition,
+                    axis.Transform(actualMinimum),
+                    axisPosition,
+                    axis.Transform(actualMaximum),
                     this.AxislinePen);
             }
 
@@ -544,12 +494,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Renders the minor items.
         /// </summary>
-        /// <param name="axis">
-        /// The axis.
-        /// </param>
-        /// <param name="axisPosition">
-        /// The axis position.
-        /// </param>
+        /// <param name="axis">The axis.</param>
+        /// <param name="axisPosition">The axis position.</param>
         protected virtual void RenderMinorItems(Axis axis, double axisPosition)
         {
             double eps = axis.ActualMinorStep * 1e-3;

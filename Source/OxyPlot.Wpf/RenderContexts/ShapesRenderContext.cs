@@ -62,7 +62,7 @@ namespace OxyPlot.Wpf
     }
 
     /// <summary>
-    /// Provides a <see cref="IRenderContext"/> implementation that adds WPF shapes to a <see cref="Canvas"/>.
+    /// Provides a <see cref="IRenderContext" /> implementation that adds WPF shapes to a <see cref="Canvas" />.
     /// </summary>
     public class ShapesRenderContext : IRenderContext
     {
@@ -132,9 +132,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the text measurement method.
         /// </summary>
-        /// <value>
-        /// The text measurement method.
-        /// </value>
+        /// <value>The text measurement method.</value>
         public TextMeasurementMethod TextMeasurementMethod { get; set; }
 
         /// <summary>
@@ -145,20 +143,14 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether to use stream geometry for lines and polygons rendering.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if stream geometry should be used; otherwise, <c>false</c> .
-        /// </value>
-        /// <remarks>
-        /// The XamlWriter does not serialize StreamGeometry, so set this to false if you want to export to XAML. Using stream geometry seems to be slightly faster than using path geometry.
-        /// </remarks>
+        /// <value><c>true</c> if stream geometry should be used; otherwise, <c>false</c> .</value>
+        /// <remarks>The XamlWriter does not serialize StreamGeometry, so set this to <c>false</c> if you want to export to XAML. Using stream geometry seems to be slightly faster than using path geometry.</remarks>
         public bool UseStreamGeometry { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the context renders to screen.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if the context renders to screen; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if the context renders to screen; otherwise, <c>false</c>.</value>
         public bool RendersToScreen { get; set; }
 
         /// <summary>
@@ -186,18 +178,10 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The draw ellipses.
         /// </summary>
-        /// <param name="rectangles">
-        /// The rectangles.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rectangles">The rectangles.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = this.CreateAndAdd<Path>();
@@ -468,18 +452,10 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Draws the rectangle.
         /// </summary>
-        /// <param name="rect">
-        /// The rectangle.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var e = this.CreateAndAdd<Rectangle>(rect.Left, rect.Top);
@@ -636,9 +612,7 @@ namespace OxyPlot.Wpf
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <returns>
-        /// The text size.
-        /// </returns>
+        /// <returns>The text size.</returns>
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (string.IsNullOrEmpty(text))
@@ -676,17 +650,14 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Sets the tool tip for the following items.
         /// </summary>
-        /// <param name="text">
-        /// The text in the tooltip.
-        /// </param>
-        /// <params>This is only used in the plot controls.</params>
+        /// <param name="text">The text in the tooltip.</param>
         public void SetToolTip(string text)
         {
             this.currentToolTip = text;
         }
 
         /// <summary>
-        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
+        /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
@@ -768,9 +739,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Cleans up resources not in use.
         /// </summary>
-        /// <remarks>
-        /// This method is called at the end of each rendering.
-        /// </remarks>
+        /// <remarks>This method is called at the end of each rendering.</remarks>
         public void CleanUp()
         {
             // Find the images in the cache that has not been used since last call to this method
@@ -788,21 +757,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Measures the size of the specified text by a faster method (using GlyphTypefaces).
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size.
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <returns>
-        /// The size of the text.
-        /// </returns>
+        /// <param name="text">The text.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <returns>The size of the text.</returns>
         protected OxySize MeasureTextByGlyphTypeface(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (string.IsNullOrEmpty(text))
@@ -825,12 +784,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets the font weight.
         /// </summary>
-        /// <param name="fontWeight">
-        /// The font weight value.
-        /// </param>
-        /// <returns>
-        /// The font weight.
-        /// </returns>
+        /// <param name="fontWeight">The font weight value.</param>
+        /// <returns>The font weight.</returns>
         private static FontWeight GetFontWeight(double fontWeight)
         {
             return fontWeight > FontWeights.Normal ? System.Windows.FontWeights.Bold : System.Windows.FontWeights.Normal;
@@ -839,18 +794,10 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Fast text size calculation
         /// </summary>
-        /// <param name="glyphTypeface">
-        /// The glyph typeface.
-        /// </param>
-        /// <param name="sizeInEm">
-        /// The size.
-        /// </param>
-        /// <param name="s">
-        /// The text.
-        /// </param>
-        /// <returns>
-        /// The text size.
-        /// </returns>
+        /// <param name="glyphTypeface">The glyph typeface.</param>
+        /// <param name="sizeInEm">The size.</param>
+        /// <param name="s">The text.</param>
+        /// <returns>The text size.</returns>
         private static OxySize MeasureTextSize(GlyphTypeface glyphTypeface, double sizeInEm, string s)
         {
             double width = 0;
@@ -917,9 +864,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The apply tooltip.
         /// </summary>
-        /// <param name="element">
-        /// The element.
-        /// </param>
+        /// <param name="element">The element.</param>
         private void ApplyTooltip(FrameworkElement element)
         {
             if (!string.IsNullOrEmpty(this.currentToolTip))
@@ -987,12 +932,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets the cached brush.
         /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// The brush.
-        /// </returns>
+        /// <param name="color">The color.</param>
+        /// <returns>The brush.</returns>
         private Brush GetCachedBrush(OxyColor color)
         {
             if (color.A == 0)
@@ -1133,9 +1074,7 @@ namespace OxyPlot.Wpf
         /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
         /// <param name="lineJoin">The line join.</param>
         /// <param name="aliased">Render aliased if set to <c>true</c>.</param>
-        /// <remarks>
-        /// See <a href="https://oxyplot.codeplex.com/discussions/456679">discussion</a>.
-        /// </remarks>
+        /// <remarks>See <a href="https://oxyplot.codeplex.com/discussions/456679">discussion</a>.</remarks>
         private void DrawLineBalanced(IList<ScreenPoint> points, OxyColor stroke, double thickness, double[] dashArray, OxyPenLineJoin lineJoin, bool aliased)
         {
             // balance the number of points per polyline and the number of polylines

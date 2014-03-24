@@ -38,15 +38,14 @@ namespace OxyPlot.Wpf
     public class LogarithmicAxis : Axis
     {
         /// <summary>
-        /// Gets or sets the logarithmic base (normally 10).
-        /// http://en.wikipedia.org/wiki/Logarithm
+        /// Identifies the <see cref="Base"/> dependency property.
         /// </summary>
         /// <value>The logarithmic base.</value>
         public static readonly DependencyProperty BaseProperty = DependencyProperty.Register(
             "Base", typeof(double), typeof(LogarithmicAxis), new PropertyMetadata(10.0, DataChanged));
 
         /// <summary>
-        /// The power padding property.
+        /// Identifies the <see cref="PowerPadding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PowerPaddingProperty = DependencyProperty.Register(
             "PowerPadding", typeof(bool), typeof(LogarithmicAxis), new PropertyMetadata(true, DataChanged));
@@ -95,9 +94,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal axis.
         /// </summary>
-        /// <returns>
-        /// The internal axis.
-        /// </returns>
+        /// <returns>The internal axis.</returns>
         public override Axes.Axis CreateModel()
         {
             this.SynchronizeProperties();

@@ -34,7 +34,7 @@ namespace OxyPlot.Tests
     using System.IO.Compression;
 
     /// <summary>
-    /// Provides extension methods for <see cref="DeflateStream"/>.
+    /// Provides extension methods for <see cref="DeflateStream" />.
     /// </summary>
     public static class DeflateStreamExtensions
     {

@@ -40,7 +40,7 @@ namespace OxyPlot.WindowsForms
     public class PngExporter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PngExporter"/> class.
+        /// Initializes a new instance of the <see cref="PngExporter" /> class.
         /// </summary>
         public PngExporter()
         {
@@ -73,21 +73,11 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Exports the specified model.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="fileName">
-        /// The file name.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="background">
-        /// The background.
-        /// </param>
+        /// <param name="model">The model.</param>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="background">The background.</param>
         public static void Export(PlotModel model, string fileName, int width, int height, Brush background = null)
         {
             var exporter = new PngExporter { Width = width, Height = height, Background = background.ToOxyColor() };
@@ -98,7 +88,7 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Exports the specified <see cref="PlotModel"/> to the specified <see cref="Stream"/>.
+        /// Exports the specified <see cref="PlotModel" /> to the specified <see cref="Stream" />.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="stream">The output stream.</param>

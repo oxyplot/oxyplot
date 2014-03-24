@@ -185,11 +185,9 @@ namespace OxyPlot.OpenXml
         private ReportStyle style;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WordDocumentReportWriter"/> class.
+        /// Initializes a new instance of the <see cref="WordDocumentReportWriter" /> class.
         /// </summary>
-        /// <param name="filePath">
-        /// The file path.
-        /// </param>
+        /// <param name="filePath">The file path.</param>
         public WordDocumentReportWriter(string filePath)
         {
             this.FileName = filePath;
@@ -217,9 +215,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// Gets the name of the file.
         /// </summary>
-        /// <value>
-        /// The name of the file.
-        /// </value>
+        /// <value>The name of the file.</value>
         public string FileName { get; private set; }
 
         /// <summary>
@@ -273,9 +269,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The write drawing.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
+        /// <param name="d">The d.</param>
         public void WriteDrawing(DrawingFigure d)
         {
             this.body.AppendChild(CreateParagraph("DrawingFigures are not yet supported."));
@@ -284,9 +278,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The write equation.
         /// </summary>
-        /// <param name="equation">
-        /// The equation.
-        /// </param>
+        /// <param name="equation">The equation.</param>
         public void WriteEquation(Equation equation)
         {
             this.body.AppendChild(CreateParagraph("Equations are not yet supported."));
@@ -295,9 +287,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The write header.
         /// </summary>
-        /// <param name="h">
-        /// The h.
-        /// </param>
+        /// <param name="h">The h.</param>
         public void WriteHeader(Header h)
         {
             this.body.AppendChild(CreateParagraph(h.Text, string.Format(HeaderID, h.Level)));
@@ -306,9 +296,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The write image.
         /// </summary>
-        /// <param name="i">
-        /// The i.
-        /// </param>
+        /// <param name="i">The i.</param>
         public void WriteImage(Image i)
         {
             if (i.Source == null)
@@ -324,9 +312,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The write paragraph.
         /// </summary>
-        /// <param name="pa">
-        /// The pa.
-        /// </param>
+        /// <param name="pa">The pa.</param>
         public void WriteParagraph(Paragraph pa)
         {
             this.body.AppendChild(CreateParagraph(pa.Text));
@@ -335,9 +321,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The write plot.
         /// </summary>
-        /// <param name="plot">
-        /// The plot.
-        /// </param>
+        /// <param name="plot">The plot.</param>
         public void WritePlot(PlotFigure plot)
         {
             if (this.FileName == null)
@@ -368,12 +352,8 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The write report.
         /// </summary>
-        /// <param name="report">
-        /// The report.
-        /// </param>
-        /// <param name="reportStyle">
-        /// The style.
-        /// </param>
+        /// <param name="report">The report.</param>
+        /// <param name="reportStyle">The style.</param>
         public void WriteReport(Report report, ReportStyle reportStyle)
         {
             this.style = reportStyle;
@@ -384,9 +364,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The write table.
         /// </summary>
-        /// <param name="t">
-        /// The t.
-        /// </param>
+        /// <param name="t">The t.</param>
         public void WriteTable(Table t)
         {
             this.body.Append(CreateParagraph(t.GetFullCaption(this.style), TableCaptionID));
@@ -487,14 +465,9 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The create paragraph.
         /// </summary>
-        /// <param name="content">
-        /// The content.
-        /// </param>
-        /// <param name="styleID">
-        /// The style id.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="content">The content.</param>
+        /// <param name="styleID">The style id.</param>
+        /// <returns></returns>
         private static DocumentFormat.OpenXml.Wordprocessing.Paragraph CreateParagraph(
             string content, string styleID = null)
         {
@@ -515,29 +488,14 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The create style.
         /// </summary>
-        /// <param name="ps">
-        /// The ps.
-        /// </param>
-        /// <param name="styleID">
-        /// The style id.
-        /// </param>
-        /// <param name="styleName">
-        /// The style name.
-        /// </param>
-        /// <param name="basedOnStyleID">
-        /// The based on style id.
-        /// </param>
-        /// <param name="nextStyleID">
-        /// The next style id.
-        /// </param>
-        /// <param name="isDefault">
-        /// The is default.
-        /// </param>
-        /// <param name="isCustomStyle">
-        /// The is custom style.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="ps">The ps.</param>
+        /// <param name="styleID">The style id.</param>
+        /// <param name="styleName">The style name.</param>
+        /// <param name="basedOnStyleID">The based on style id.</param>
+        /// <param name="nextStyleID">The next style id.</param>
+        /// <param name="isDefault">The is default.</param>
+        /// <param name="isCustomStyle">The is custom style.</param>
+        /// <returns></returns>
         private static Style CreateStyle(
             ParagraphStyle ps,
             string styleID,
@@ -632,12 +590,8 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The add styles.
         /// </summary>
-        /// <param name="sdp">
-        /// The sdp.
-        /// </param>
-        /// <param name="style">
-        /// The style.
-        /// </param>
+        /// <param name="sdp">The sdp.</param>
+        /// <param name="style">The style.</param>
         private void AddStyles(StyleDefinitionsPart sdp, ReportStyle style)
         {
             sdp.Styles = new Styles();
@@ -666,12 +620,8 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The append image.
         /// </summary>
-        /// <param name="source">
-        /// The source.
-        /// </param>
-        /// <param name="name">
-        /// The name.
-        /// </param>
+        /// <param name="source">The source.</param>
+        /// <param name="name">The name.</param>
         private void AppendImage(string source, string name)
         {
             // http://msdn.microsoft.com/en-us/library/bb497430.aspx
@@ -701,8 +651,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The create document.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns></returns>
         private Document CreateDocument()
         {
             var d = new Document { MCAttributes = new MarkupCompatibilityAttributes { Ignorable = "w14 wp14" } };
@@ -727,23 +676,12 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The create image paragraph.
         /// </summary>
-        /// <param name="relationshipId">
-        /// The relationship id.
-        /// </param>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="description">
-        /// The description.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="relationshipId">The relationship id.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <returns></returns>
         private DocumentFormat.OpenXml.Wordprocessing.Paragraph CreateImageParagraph(
             string relationshipId, string name, string description, double width, double height)
         {
@@ -902,9 +840,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
-        /// </param>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         private void Dispose(bool disposing)
         {
             if (!this.disposed)
@@ -926,9 +862,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The set package properties.
         /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
+        /// <param name="p">The p.</param>
         private void SetPackageProperties(OpenXmlPackage p)
         {
             p.PackageProperties.Creator = this.Creator;

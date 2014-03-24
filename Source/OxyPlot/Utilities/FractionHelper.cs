@@ -36,9 +36,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides functionality to generate fraction strings from double values.
     /// </summary>
-    /// <remarks>
-    /// Examples: "3/4", "PI/2"
-    /// </remarks>
+    /// <remarks>Examples: "3/4", "PI/2"</remarks>
     public static class FractionHelper
     {
         /// <summary>
@@ -50,9 +48,7 @@ namespace OxyPlot
         /// <param name="eps">The tolerance.</param>
         /// <param name="formatProvider">The format Provider.</param>
         /// <param name="formatString">The format string.</param>
-        /// <returns>
-        /// The convert to fraction string.
-        /// </returns>
+        /// <returns>The convert to fraction string.</returns>
         public static string ConvertToFractionString(
             double value,
             double unit = 1,
@@ -96,15 +92,9 @@ namespace OxyPlot
         /// <summary>
         /// Calculates the greatest common divisor.
         /// </summary>
-        /// <param name="a">
-        /// The a.
-        /// </param>
-        /// <param name="b">
-        /// The b.
-        /// </param>
-        /// <returns>
-        /// The greatest common divisor.
-        /// </returns>
+        /// <param name="a">The a.</param>
+        /// <param name="b">The b.</param>
+        /// <returns>The greatest common divisor.</returns>
         public static int GreatestCommonDivisor(int a, int b)
         {
             if (b == 0)
@@ -118,15 +108,9 @@ namespace OxyPlot
         /// <summary>
         /// Calculates the greatest common factor.
         /// </summary>
-        /// <param name="x">
-        /// The x.
-        /// </param>
-        /// <param name="y">
-        /// The y.
-        /// </param>
-        /// <returns>
-        /// The greatest common factor.
-        /// </returns>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <returns>The greatest common factor.</returns>
         public static int GreatestCommonFactor(int x, int y)
         {
             x = Math.Abs(x);

@@ -35,10 +35,8 @@ namespace OxyPlot
     /// <summary>
     /// Provides a data container for a tracker hit result.
     /// </summary>
-    /// <remarks>
-    /// This is used as DataContext for the TrackerControl.
-    /// The TrackerControl is visible when the user use the left mouse button to "track" points on the series.
-    /// </remarks>
+    /// <remarks>This is used as DataContext for the TrackerControl.
+    /// The TrackerControl is visible when the user use the left mouse button to "track" points on the series.</remarks>
     public class TrackerHitResult
     {
         /// <summary>
@@ -47,7 +45,7 @@ namespace OxyPlot
         private const string DefaultFormatString = "{0}\n{1}: {2}\n{3}: {4}";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TrackerHitResult"/> class.
+        /// Initializes a new instance of the <see cref="TrackerHitResult" /> class.
         /// </summary>
         /// <param name="series">The series.</param>
         /// <param name="dp">The data point.</param>
@@ -123,11 +121,9 @@ namespace OxyPlot
         public Axes.Axis YAxis { get; set; }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()
         {
             if (this.Text != null)

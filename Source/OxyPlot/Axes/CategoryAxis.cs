@@ -40,51 +40,39 @@ namespace OxyPlot.Axes
     /// <summary>
     /// Represents a category axis.
     /// </summary>
-    /// <remarks>
-    /// The category axis is using the index of the label collection items as coordinates.
+    /// <remarks>The category axis is using the index of the label collection items as coordinates.
     /// If you have 5 categories in the Labels collection, the categories will be placed at coordinates 0 to 4.
-    /// The range of the axis will be from -0.5 to 4.5 (excluding padding).
-    /// </remarks>
+    /// The range of the axis will be from -0.5 to 4.5 (excluding padding).</remarks>
     public class CategoryAxis : LinearAxis
     {
         /// <summary>
         /// The current offset of the bars (not used for stacked bar series).
         /// </summary>
-        /// <remarks>
-        /// These offsets are modified during rendering.
-        /// </remarks>
+        /// <remarks>These offsets are modified during rendering.</remarks>
         private double[] currentBarOffset;
 
         /// <summary>
         /// The current max value per StackIndex and Label.
         /// </summary>
-        /// <remarks>
-        /// These values are modified during rendering.
-        /// </remarks>
+        /// <remarks>These values are modified during rendering.</remarks>
         private double[,] currentMaxValue;
 
         /// <summary>
         /// The current min value per StackIndex and Label.
         /// </summary>
-        /// <remarks>
-        /// These values are modified during rendering.
-        /// </remarks>
+        /// <remarks>These values are modified during rendering.</remarks>
         private double[,] currentMinValue;
 
         /// <summary>
         /// The base value per StackIndex and Label for positive values of stacked bar series.
         /// </summary>
-        /// <remarks>
-        /// These values are modified during rendering.
-        /// </remarks>
+        /// <remarks>These values are modified during rendering.</remarks>
         private double[,] currentPositiveBaseValues;
 
         /// <summary>
         /// The base value per StackIndex and Label for negative values of stacked bar series.
         /// </summary>
-        /// <remarks>
-        /// These values are modified during rendering.
-        /// </remarks>
+        /// <remarks>These values are modified during rendering.</remarks>
         private double[,] currentNegativeBaseValues;
 
         /// <summary>
@@ -98,7 +86,7 @@ namespace OxyPlot.Axes
         private double maxWidth;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
+        /// Initializes a new instance of the <see cref="CategoryAxis" /> class.
         /// </summary>
         public CategoryAxis()
         {
@@ -112,7 +100,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
+        /// Initializes a new instance of the <see cref="CategoryAxis" /> class.
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="title">The title.</param>
@@ -124,14 +112,10 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
+        /// Initializes a new instance of the <see cref="CategoryAxis" /> class.
         /// </summary>
-        /// <param name="title">
-        /// The title.
-        /// </param>
-        /// <param name="categories">
-        /// The categories.
-        /// </param>
+        /// <param name="title">The title.</param>
+        /// <param name="categories">The categories.</param>
         public CategoryAxis(string title, params string[] categories)
             : this()
         {
@@ -148,22 +132,18 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets or sets the gap width.
         /// </summary>
-        /// <remarks>
-        /// The default value is 1.0 (100%). The gap width is given as a fraction of the total width/height of the items in a category.
-        /// </remarks>
+        /// <remarks>The default value is 1.0 (100%). The gap width is given as a fraction of the total width/height of the items in a category.</remarks>
         public double GapWidth { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the ticks are centered. If this is false, ticks will be drawn between each category. If this is true, ticks will be drawn in the middle of each category.
+        /// Gets or sets a value indicating whether the ticks are centered. If this is <c>false</c>, ticks will be drawn between each category. If this is <c>true</c>, ticks will be drawn in the middle of each category.
         /// </summary>
         public bool IsTickCentered { get; set; }
 
         /// <summary>
         /// Gets or sets the items source (used to update the Labels collection).
         /// </summary>
-        /// <value>
-        /// The items source.
-        /// </value>
+        /// <value>The items source.</value>
         public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
@@ -199,12 +179,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Formats the value to be used on the axis.
         /// </summary>
-        /// <param name="x">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// The formatted value.
-        /// </returns>
+        /// <param name="x">The value.</param>
+        /// <returns>The formatted value.</returns>
         public override string FormatValue(double x)
         {
             var index = (int)x;
@@ -228,18 +204,10 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the category value.
         /// </summary>
-        /// <param name="categoryIndex">
-        /// Index of the category.
-        /// </param>
-        /// <param name="stackIndex">
-        /// Index of the stack.
-        /// </param>
-        /// <param name="actualBarWidth">
-        /// Actual width of the bar.
-        /// </param>
-        /// <returns>
-        /// The get category value.
-        /// </returns>
+        /// <param name="categoryIndex">Index of the category.</param>
+        /// <param name="stackIndex">Index of the stack.</param>
+        /// <param name="actualBarWidth">Actual width of the bar.</param>
+        /// <returns>The get category value.</returns>
         public double GetCategoryValue(int categoryIndex, int stackIndex, double actualBarWidth)
         {
             var offsetBegin = this.StackedBarOffset[stackIndex, categoryIndex];
@@ -250,12 +218,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the category value.
         /// </summary>
-        /// <param name="categoryIndex">
-        /// Index of the category.
-        /// </param>
-        /// <returns>
-        /// The get category value.
-        /// </returns>
+        /// <param name="categoryIndex">Index of the category.</param>
+        /// <returns>The get category value.</returns>
         public double GetCategoryValue(int categoryIndex)
         {
             return categoryIndex - 0.5 + this.BarOffset[categoryIndex];
@@ -264,15 +228,9 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the coordinates used to draw ticks and tick labels (numbers or category names).
         /// </summary>
-        /// <param name="majorLabelValues">
-        /// The major label values.
-        /// </param>
-        /// <param name="majorTickValues">
-        /// The major tick values.
-        /// </param>
-        /// <param name="minorTickValues">
-        /// The minor tick values.
-        /// </param>
+        /// <param name="majorLabelValues">The major label values.</param>
+        /// <param name="majorTickValues">The major tick values.</param>
+        /// <param name="minorTickValues">The minor tick values.</param>
         public override void GetTickValues(
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
@@ -297,12 +255,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the value from an axis coordinate, converts from double to the correct data type if necessary. e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
-        /// <param name="x">
-        /// The coordinate.
-        /// </param>
-        /// <returns>
-        /// The value.
-        /// </returns>
+        /// <param name="x">The coordinate.</param>
+        /// <returns>The value.</returns>
         public override object GetValue(double x)
         {
             return this.FormatValue(x);
@@ -438,12 +392,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Updates the axis with information from the plot series.
         /// </summary>
-        /// <param name="series">
-        /// The series collection.
-        /// </param>
-        /// <remarks>
-        /// This is used by the category axis that need to know the number of series using the axis.
-        /// </remarks>
+        /// <param name="series">The series collection.</param>
+        /// <remarks>This is used by the category axis that need to know the number of series using the axis.</remarks>
         internal override void UpdateFromSeries(Series[] series)
         {
             base.UpdateFromSeries(series);
@@ -546,9 +496,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Resets the current values.
         /// </summary>
-        /// <remarks>
-        /// The current values may be modified during update of max/min and rendering.
-        /// </remarks>
+        /// <remarks>The current values may be modified during update of max/min and rendering.</remarks>
         protected internal override void ResetCurrentValues()
         {
             base.ResetCurrentValues();
@@ -578,9 +526,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Creates Labels list if no labels were set
         /// </summary>
-        /// <param name="series">
-        /// The list of series which are rendered
-        /// </param>
+        /// <param name="series">The list of series which are rendered</param>
         private void UpdateLabels(IEnumerable<Series> series)
         {
             if (this.ItemsSource != null)

@@ -33,17 +33,13 @@ namespace OxyPlot.Series
     /// <summary>
     /// Provides functionality to return data for a tracker control.
     /// </summary>
-    /// <remarks>
-    /// The plot control will show a tracker with the current value when moving the mouse over the data.
-    /// </remarks>
+    /// <remarks>The plot control will show a tracker with the current value when moving the mouse over the data.</remarks>
     public interface ITrackableSeries
     {
         /// <summary>
         /// Gets a format string used for the tracker.
         /// </summary>
-        /// <remarks>
-        /// The fields that can be used in the format string depends on the series.
-        /// </remarks>
+        /// <remarks>The fields that can be used in the format string depends on the series.</remarks>
         string TrackerFormatString { get; }
 
         /// <summary>
@@ -54,15 +50,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// Interpolate the series if this flag is set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate);
     }
 }

@@ -31,7 +31,7 @@
 namespace OxyPlot.Wpf
 {
     /// <summary>
-    ///     This is a WPF wrapper of OxyPlot.BarSeries&lt;T&gt;.
+    /// This is a WPF wrapper of OxyPlot.BarSeries&lt;T&gt;.
     /// </summary>
     /// <typeparam name="T">The type of the items.</typeparam>
     public class BarSeriesBase<T> : BarSeriesBase

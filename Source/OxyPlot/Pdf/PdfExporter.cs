@@ -55,18 +55,10 @@ namespace OxyPlot
         /// <summary>
         /// Exports the specified model to a stream.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="stream">
-        /// The output stream.
-        /// </param>
-        /// <param name="width">
-        /// The width (points).
-        /// </param>
-        /// <param name="height">
-        /// The height (points).
-        /// </param>
+        /// <param name="model">The model.</param>
+        /// <param name="stream">The output stream.</param>
+        /// <param name="width">The width (points).</param>
+        /// <param name="height">The height (points).</param>
         public static void Export(PlotModel model, Stream stream, double width, double height)
         {
             var exporter = new PdfExporter { Width = width, Height = height, Background = model.Background };
@@ -74,7 +66,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Exports the specified <see cref="PlotModel"/> to the specified <see cref="Stream"/>.
+        /// Exports the specified <see cref="PlotModel" /> to the specified <see cref="Stream" />.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="stream">The stream.</param>

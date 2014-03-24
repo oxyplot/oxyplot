@@ -91,7 +91,6 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-
         [Example("#10055: Hit testing LineSeries with smoothing")]
         public static PlotModel MouseDownEvent()
         {

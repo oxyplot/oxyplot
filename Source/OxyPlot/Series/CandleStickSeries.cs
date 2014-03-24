@@ -35,10 +35,8 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents a series for candlestick charts.
     /// </summary>
-    /// <remarks>
-    /// See also <a href="http://en.wikipedia.org/wiki/Candlestick_chart">Wikipedia</a> and 
-    /// <a href="http://www.mathworks.com/help/toolbox/finance/candle.html">Matlab documentation</a>.
-    /// </remarks>
+    /// <remarks>See also <a href="http://en.wikipedia.org/wiki/Candlestick_chart">Wikipedia</a> and
+    /// <a href="http://www.mathworks.com/help/toolbox/finance/candle.html">Matlab documentation</a>.</remarks>
     public class CandleStickSeries : HighLowSeries
     {
         /// <summary>
@@ -54,11 +52,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CandleStickSeries"/> class.
+        /// Initializes a new instance of the <see cref="CandleStickSeries" /> class.
         /// </summary>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="title">The title.</param>
         public CandleStickSeries(string title)
             : this()
         {
@@ -66,17 +62,11 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CandleStickSeries"/> class.
+        /// Initializes a new instance of the <see cref="CandleStickSeries" /> class.
         /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <param name="strokeThickness">
-        /// The stroke thickness.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="color">The color.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="title">The title.</param>
         public CandleStickSeries(OxyColor color, double strokeThickness = 1, string title = null)
             : this(title)
         {
@@ -125,12 +115,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the series on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The owner plot model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.Items.Count == 0)
@@ -241,12 +227,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the legend symbol for the series on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="legendBox">
-        /// The bounding rectangle of the legend box.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;

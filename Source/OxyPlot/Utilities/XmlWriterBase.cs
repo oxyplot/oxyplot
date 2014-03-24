@@ -58,11 +58,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="XmlWriterBase"/> class.
+        /// Initializes a new instance of the <see cref="XmlWriterBase" /> class.
         /// </summary>
-        /// <param name="stream">
-        /// The stream.
-        /// </param>
+        /// <param name="stream">The stream.</param>
         protected XmlWriterBase(Stream stream)
         {
             this.w = XmlWriter.Create(stream, new XmlWriterSettings { Indent = true, Encoding = Encoding.UTF8 });
@@ -96,12 +94,8 @@ namespace OxyPlot
         /// <summary>
         /// The write attribute string.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
         protected void WriteAttributeString(string name, string value)
         {
             this.w.WriteAttributeString(name, value);
@@ -122,18 +116,10 @@ namespace OxyPlot
         /// <summary>
         /// The write doc type.
         /// </summary>
-        /// <param name="name">
-        /// The name of the DOCTYPE. This must be non-empty.
-        /// </param>
-        /// <param name="pubid">
-        /// If non-null it also writes PUBLIC "pubid" "sysid" where pubid and sysid are replaced with the value of the given arguments.
-        /// </param>
-        /// <param name="sysid">
-        /// If pubid is null and sysid is non-null it writes SYSTEM "sysid" where sysid is replaced with the value of this argument.
-        /// </param>
-        /// <param name="subset">
-        /// If non-null it writes [subset] where subset is replaced with the value of this argument.
-        /// </param>
+        /// <param name="name">The name of the DOCTYPE. This must be non-empty.</param>
+        /// <param name="pubid">If non-<c>null</c> it also writes PUBLIC "pubid" "sysid" where pubid and sysid are replaced with the value of the given arguments.</param>
+        /// <param name="sysid">If pubid is <c>null</c> and sysid is non-<c>null</c> it writes SYSTEM "sysid" where sysid is replaced with the value of this argument.</param>
+        /// <param name="subset">If non-<c>null</c> it writes [subset] where subset is replaced with the value of this argument.</param>
         protected void WriteDocType(string name, string pubid, string sysid, string subset)
         {
             this.w.WriteDocType(name, pubid, sysid, subset);
@@ -142,12 +128,8 @@ namespace OxyPlot
         /// <summary>
         /// The write element string.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
+        /// <param name="name">The name.</param>
+        /// <param name="text">The text.</param>
         protected void WriteElementString(string name, string text)
         {
             this.w.WriteElementString(name, text);
@@ -172,9 +154,7 @@ namespace OxyPlot
         /// <summary>
         /// The write raw.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
+        /// <param name="text">The text.</param>
         protected void WriteRaw(string text)
         {
             this.w.WriteRaw(text);
@@ -183,9 +163,7 @@ namespace OxyPlot
         /// <summary>
         /// The write start document.
         /// </summary>
-        /// <param name="standalone">
-        /// The standalone.
-        /// </param>
+        /// <param name="standalone">The standalone.</param>
         protected void WriteStartDocument(bool standalone)
         {
             this.w.WriteStartDocument(standalone);
@@ -194,9 +172,7 @@ namespace OxyPlot
         /// <summary>
         /// The write start element.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
+        /// <param name="name">The name.</param>
         protected void WriteStartElement(string name)
         {
             this.w.WriteStartElement(name);
@@ -205,12 +181,8 @@ namespace OxyPlot
         /// <summary>
         /// The write start element.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="ns">
-        /// The ns.
-        /// </param>
+        /// <param name="name">The name.</param>
+        /// <param name="ns">The ns.</param>
         protected void WriteStartElement(string name, string ns)
         {
             this.w.WriteStartElement(name, ns);
@@ -219,9 +191,7 @@ namespace OxyPlot
         /// <summary>
         /// The write string.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
+        /// <param name="text">The text.</param>
         protected void WriteString(string text)
         {
             this.w.WriteString(text);

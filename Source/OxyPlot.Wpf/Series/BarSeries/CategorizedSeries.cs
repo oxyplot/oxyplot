@@ -31,7 +31,7 @@
 namespace OxyPlot.Wpf
 {
     /// <summary>
-    ///     This is a WPF wrapper of OxyPlot.BarSeries
+    /// This is a WPF wrapper of OxyPlot.BarSeries
     /// </summary>
     public abstract class CategorizedSeries : XYAxisSeries
     {

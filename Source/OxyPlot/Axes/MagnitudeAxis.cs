@@ -38,7 +38,7 @@ namespace OxyPlot.Axes
     public class MagnitudeAxis : LinearAxis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MagnitudeAxis"/> class.
+        /// Initializes a new instance of the <see cref="MagnitudeAxis" /> class.
         /// </summary>
         public MagnitudeAxis()
         {
@@ -51,23 +51,13 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MagnitudeAxis"/> class.
+        /// Initializes a new instance of the <see cref="MagnitudeAxis" /> class.
         /// </summary>
-        /// <param name="minimum">
-        /// The minimum.
-        /// </param>
-        /// <param name="maximum">
-        /// The maximum.
-        /// </param>
-        /// <param name="majorStep">
-        /// The major step.
-        /// </param>
-        /// <param name="minorStep">
-        /// The minor step.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="minimum">The minimum.</param>
+        /// <param name="maximum">The maximum.</param>
+        /// <param name="majorStep">The major step.</param>
+        /// <param name="minorStep">The minor step.</param>
+        /// <param name="title">The title.</param>
         public MagnitudeAxis(
             double minimum = double.NaN,
             double maximum = double.NaN,
@@ -91,18 +81,10 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Inverse transform the specified screen point.
         /// </summary>
-        /// <param name="x">
-        /// The x coordinate.
-        /// </param>
-        /// <param name="y">
-        /// The y coordinate.
-        /// </param>
-        /// <param name="yaxis">
-        /// The y-axis.
-        /// </param>
-        /// <returns>
-        /// The data point.
-        /// </returns>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="yaxis">The y-axis.</param>
+        /// <returns>The data point.</returns>
         public override DataPoint InverseTransform(double x, double y, Axis yaxis)
         {
             var angleAxis = yaxis as AngleAxis;
@@ -124,9 +106,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
-        /// <returns>
-        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> .
-        /// </returns>
+        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
         public override bool IsXyAxis()
         {
             return false;
@@ -153,18 +133,10 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Transforms the specified point to screen coordinates.
         /// </summary>
-        /// <param name="x">
-        /// The x value (for the current axis).
-        /// </param>
-        /// <param name="y">
-        /// The y value.
-        /// </param>
-        /// <param name="yaxis">
-        /// The y axis.
-        /// </param>
-        /// <returns>
-        /// The transformed point.
-        /// </returns>
+        /// <param name="x">The x value (for the current axis).</param>
+        /// <param name="y">The y value.</param>
+        /// <param name="yaxis">The y axis.</param>
+        /// <returns>The transformed point.</returns>
         public override ScreenPoint Transform(double x, double y, Axis yaxis)
         {
             var angleAxis = yaxis as AngleAxis;
@@ -182,9 +154,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Updates the scale and offset properties of the transform from the specified boundary rectangle.
         /// </summary>
-        /// <param name="bounds">
-        /// The bounds.
-        /// </param>
+        /// <param name="bounds">The bounds.</param>
         internal override void UpdateTransform(OxyRect bounds)
         {
             double x0 = bounds.Left;

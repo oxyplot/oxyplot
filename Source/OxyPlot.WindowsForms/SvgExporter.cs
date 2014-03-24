@@ -34,7 +34,7 @@ namespace OxyPlot.WindowsForms
     using System.Drawing;
 
     /// <summary>
-    /// Provides functionality to export plots to scalable vector graphics using <see cref="Graphics"/> for text measuring.
+    /// Provides functionality to export plots to scalable vector graphics using <see cref="Graphics" /> for text measuring.
     /// </summary>
     public class SvgExporter : OxyPlot.SvgExporter, IDisposable
     {
@@ -49,7 +49,7 @@ namespace OxyPlot.WindowsForms
         private GraphicsRenderContext grc;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SvgExporter"/> class.
+        /// Initializes a new instance of the <see cref="SvgExporter" /> class.
         /// </summary>
         public SvgExporter()
         {

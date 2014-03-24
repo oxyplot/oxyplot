@@ -39,17 +39,11 @@ namespace OxyPlot.Reporting
     public static class StringExtensions
     {
         /// <summary>
-        /// Repeats the specified string <paramref name="n"/> times.
+        /// Repeats the specified string <paramref name="n" /> times.
         /// </summary>
-        /// <param name="source">
-        /// The source.
-        /// </param>
-        /// <param name="n">
-        /// The number of times to repeat.
-        /// </param>
-        /// <returns>
-        /// The repeated string.
-        /// </returns>
+        /// <param name="source">The source.</param>
+        /// <param name="n">The number of times to repeat.</param>
+        /// <returns>The repeated string.</returns>
         public static string Repeat(this string source, int n)
         {
             var sb = new StringBuilder(n * source.Length);
@@ -62,17 +56,11 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Splits the specified string to lines of maximum <paramref name="lineLength"/> length.
+        /// Splits the specified string to lines of maximum <paramref name="lineLength" /> length.
         /// </summary>
-        /// <param name="s">
-        /// The string to split.
-        /// </param>
-        /// <param name="lineLength">
-        /// The line length.
-        /// </param>
-        /// <returns>
-        /// The split lines.
-        /// </returns>
+        /// <param name="s">The string to split.</param>
+        /// <param name="lineLength">The line length.</param>
+        /// <returns>The split lines.</returns>
         public static string[] SplitLines(this string s, int lineLength = 80)
         {
             var lines = new List<string>();
@@ -93,20 +81,12 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Finds the length of the line starting at <paramref name="i"/> that has maximum length <paramref name="maxLineLength"/>.
+        /// Finds the length of the line starting at <paramref name="i" /> that has maximum length <paramref name="maxLineLength" />.
         /// </summary>
-        /// <param name="text">
-        /// The text source.
-        /// </param>
-        /// <param name="i">
-        /// The start index.
-        /// </param>
-        /// <param name="maxLineLength">
-        /// The maximum line length.
-        /// </param>
-        /// <returns>
-        /// The length of the line.
-        /// </returns>
+        /// <param name="text">The text source.</param>
+        /// <param name="i">The start index.</param>
+        /// <param name="maxLineLength">The maximum line length.</param>
+        /// <returns>The length of the line.</returns>
         private static int FindLineLength(string text, int i, int maxLineLength)
         {
             int i2 = i + 1;

@@ -34,19 +34,15 @@ namespace OxyPlot.Axes
     using System.Linq;
 
     /// <summary>
-    /// Provides functionality to render <see cref="AngleAxis"/>.
+    /// Provides functionality to render <see cref="AngleAxis" />.
     /// </summary>
     public class AngleAxisRenderer : AxisRendererBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AngleAxisRenderer"/> class.
+        /// Initializes a new instance of the <see cref="AngleAxisRenderer" /> class.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="plot">
-        /// The plot.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="plot">The plot.</param>
         public AngleAxisRenderer(IRenderContext rc, PlotModel plot)
             : base(rc, plot)
         {

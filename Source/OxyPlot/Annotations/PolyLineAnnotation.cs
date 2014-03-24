@@ -41,7 +41,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the points.
         /// </summary>
-        /// <value> The points. </value>
+        /// <value>The points.</value>
         public IList<IDataPoint> Points { get; set; }
 
         /// <summary>
@@ -61,9 +61,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets the screen points.
         /// </summary>
-        /// <returns>
-        /// The list of points to display on screen for this path.
-        /// </returns>
+        /// <returns>The list of points to display on screen for this path.</returns>
         protected override IList<ScreenPoint> GetScreenPoints()
         {
             var screenPoints = this.Points.Select(this.Transform).ToList();

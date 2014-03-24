@@ -35,13 +35,13 @@ namespace OxyPlot.Tests
     using NUnit.Framework;
 
     /// <summary>
-    /// Provides unit tests for the <see cref="AxisUtilities"/> class.
+    /// Provides unit tests for the <see cref="AxisUtilities" /> class.
     /// </summary>
     [TestFixture]
     public class AxisUtilitiesTests
     {
         /// <summary>
-        /// Provides unit tests for the <see cref="AxisUtilities.CreateTickValues"/> method.
+        /// Provides unit tests for the <see cref="AxisUtilities.CreateTickValues" /> method.
         /// </summary>
         public class CreateTickValues
         {

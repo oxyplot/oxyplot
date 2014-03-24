@@ -2177,7 +2177,7 @@ namespace ExampleLibrary
             model.Series.Add(fs);
 
             // Insert breaks at discontinuities
-            // TODO: this should be improved... 
+            // TODO: this should be improved...
             for (int i = 0; i + 1 < fs.Points.Count; i++)
             {
                 var dx = fs.Points[i + 1].X - fs.Points[i].X;
@@ -2200,18 +2200,14 @@ namespace ExampleLibrary
             /// <summary>
             /// Gets or sets the color axis.
             /// </summary>
-            /// <value>
-            /// The color axis.
-            /// </value>
-            /// <remarks>
-            /// The Maximum value of the ColorAxis defines the maximum number of iterations.
-            /// </remarks>
+            /// <value>The color axis.</value>
+            /// <remarks>The Maximum value of the ColorAxis defines the maximum number of iterations.</remarks>
             public LinearColorAxis ColorAxis { get; protected set; }
 
             /// <summary>
             /// Gets or sets the color axis key.
             /// </summary>
-            /// <value> The color axis key. </value>
+            /// <value>The color axis key.</value>
             public string ColorAxisKey { get; set; }
 
             /// <summary>
@@ -2219,9 +2215,7 @@ namespace ExampleLibrary
             /// </summary>
             /// <param name="point">The point.</param>
             /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
-            /// <returns>
-            /// A TrackerHitResult for the current hit.
-            /// </returns>
+            /// <returns>A TrackerHitResult for the current hit.</returns>
             public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
             {
                 var p = this.InverseTransform(point);
@@ -2275,9 +2269,7 @@ namespace ExampleLibrary
             /// <param name="x0">The x0.</param>
             /// <param name="y0">The y0.</param>
             /// <param name="maxIterations">The max number of iterations.</param>
-            /// <returns>
-            /// The number of iterations.
-            /// </returns>
+            /// <returns>The number of iterations.</returns>
             protected virtual int Solve(double x0, double y0, int maxIterations)
             {
                 int iteration = 0;

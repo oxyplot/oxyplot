@@ -38,7 +38,7 @@ namespace OxyPlot.Tests
     using OxyPlot.Series;
 
     /// <summary>
-    /// Provides unit tests for the <see cref="Axis"/> class.
+    /// Provides unit tests for the <see cref="Axis" /> class.
     /// </summary>
     [TestFixture]
     public class AxisTests

@@ -67,17 +67,13 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets a value indicating whether to lock the tracker to the initial series.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if the tracker should be locked; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if the tracker should be locked; otherwise, <c>false</c>.</value>
         public bool LockToInitialSeries { get; set; }
 
         /// <summary>
         /// Occurs when a manipulation is complete.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
         public override void Completed(OxyMouseEventArgs e)
         {
             base.Completed(e);
@@ -93,9 +89,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when the input device changes position during a manipulation.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
         public override void Delta(OxyMouseEventArgs e)
         {
             base.Delta(e);
@@ -139,9 +133,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the cursor for the manipulation.
         /// </summary>
-        /// <returns>
-        /// The cursor.
-        /// </returns>
+        /// <returns>The cursor.</returns>
         public override CursorType GetCursorType()
         {
             return CursorType.Default;
@@ -150,9 +142,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
         public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);
@@ -163,21 +153,11 @@ namespace OxyPlot
         /// <summary>
         /// Gets the nearest tracker hit.
         /// </summary>
-        /// <param name="s">
-        /// The series.
-        /// </param>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="snap">
-        /// Snap to points.
-        /// </param>
-        /// <param name="pointsOnly">
-        /// Check points only (no interpolation).
-        /// </param>
-        /// <returns>
-        /// A tracker hit result.
-        /// </returns>
+        /// <param name="s">The series.</param>
+        /// <param name="point">The point.</param>
+        /// <param name="snap">Snap to points.</param>
+        /// <param name="pointsOnly">Check points only (no interpolation).</param>
+        /// <returns>A tracker hit result.</returns>
         private static TrackerHitResult GetNearestHit(ITrackableSeries s, ScreenPoint point, bool snap, bool pointsOnly)
         {
             if (s == null)

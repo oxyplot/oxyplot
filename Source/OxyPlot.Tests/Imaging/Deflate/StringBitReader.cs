@@ -34,7 +34,7 @@ namespace OxyPlot.Tests
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// Provides a <see cref="BitReader"/> based on a <see cref="string"/> of bits.
+    /// Provides a <see cref="BitReader" /> based on a <see cref="string" /> of bits.
     /// </summary>
     public class StringBitReader : BitReader
     {
@@ -49,7 +49,7 @@ namespace OxyPlot.Tests
         private int index;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StringBitReader"/> class.
+        /// Initializes a new instance of the <see cref="StringBitReader" /> class.
         /// </summary>
         /// <param name="text">The source string.</param>
         public StringBitReader(string text)
@@ -66,9 +66,7 @@ namespace OxyPlot.Tests
         /// <summary>
         /// Reads a byte from the stream.
         /// </summary>
-        /// <returns>
-        /// The byte.
-        /// </returns>
+        /// <returns>The byte.</returns>
         public override int Read()
         {
             if (this.index == this.text.Length)
@@ -84,9 +82,7 @@ namespace OxyPlot.Tests
         /// <summary>
         /// Reads a bit from the stream.
         /// </summary>
-        /// <returns>
-        /// Returns 0 or 1 if a bit is available, or throws an EOFException if the end of stream is reached.
-        /// </returns>
+        /// <returns>Returns 0 or 1 if a bit is available, or throws an EOFException if the end of stream is reached.</returns>
         /// <exception cref="System.Exception">End of stream reached</exception>
         public override int ReadNoEof()
         {
@@ -110,9 +106,7 @@ namespace OxyPlot.Tests
         /// <summary>
         /// Returns the current bit position, which is between 0 and 7 inclusive. The number of bits remaining in the current byte is 8 minus this number.
         /// </summary>
-        /// <returns>
-        /// The bit position.
-        /// </returns>
+        /// <returns>The bit position.</returns>
         public override int GetBitPosition()
         {
             return this.index % 8;
@@ -121,9 +115,7 @@ namespace OxyPlot.Tests
         /// <summary>
         /// Discards the remainder of the current byte and reads the next byte from the stream.
         /// </summary>
-        /// <returns>
-        /// The byte.
-        /// </returns>
+        /// <returns>The byte.</returns>
         public override int ReadByte()
         {
             while (this.index % 8 != 0)

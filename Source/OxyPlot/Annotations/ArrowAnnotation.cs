@@ -46,7 +46,7 @@ namespace OxyPlot.Annotations
         private ScreenPoint screenStartPoint;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ArrowAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="ArrowAnnotation" /> class.
         /// </summary>
         public ArrowAnnotation()
         {
@@ -61,9 +61,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the arrow direction.
         /// </summary>
-        /// <remarks>
-        /// Setting this property overrides the StartPoint property.
-        /// </remarks>
+        /// <remarks>Setting this property overrides the StartPoint property.</remarks>
         public ScreenVector ArrowDirection { get; set; }
 
         /// <summary>
@@ -79,56 +77,50 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the length of the head (relative to the stroke thickness) (the default value is 10).
         /// </summary>
-        /// <value> The length of the head. </value>
+        /// <value>The length of the head.</value>
         public double HeadLength { get; set; }
 
         /// <summary>
         /// Gets or sets the width of the head (relative to the stroke thickness) (the default value is 3).
         /// </summary>
-        /// <value> The width of the head. </value>
+        /// <value>The width of the head.</value>
         public double HeadWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the line join type.
         /// </summary>
-        /// <value> The line join type. </value>
+        /// <value>The line join type.</value>
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
         /// Gets or sets the line style.
         /// </summary>
-        /// <value> The line style. </value>
+        /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the start point.
         /// </summary>
-        /// <remarks>
-        /// This property is overridden by the ArrowDirection property, if set.
-        /// </remarks>
+        /// <remarks>This property is overridden by the ArrowDirection property, if set.</remarks>
         public DataPoint StartPoint { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness (the default value is 2).
         /// </summary>
-        /// <value> The stroke thickness. </value>
+        /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the 'veeness' of the arrow head (relative to thickness) (the default value is 0).
         /// </summary>
-        /// <value> The 'veeness'. </value>
+        /// <value>The 'veeness'.</value>
         public double Veeness { get; set; }
 
         /// <summary>
         /// Renders the arrow annotation.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The plot model.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             base.Render(rc, model);
@@ -198,15 +190,9 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="tolerance">
-        /// The tolerance.
-        /// </param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A hit test result.</returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
             if ((point - this.screenStartPoint).Length < tolerance)

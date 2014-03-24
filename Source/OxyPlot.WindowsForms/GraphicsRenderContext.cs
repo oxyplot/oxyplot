@@ -67,7 +67,7 @@ namespace OxyPlot.WindowsForms
         private Graphics g;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GraphicsRenderContext"/> class.
+        /// Initializes a new instance of the <see cref="GraphicsRenderContext" /> class.
         /// </summary>
         /// <param name="graphics">The drawing surface.</param>
         public GraphicsRenderContext(Graphics graphics = null)
@@ -332,9 +332,7 @@ namespace OxyPlot.WindowsForms
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <returns>
-        /// The text size.
-        /// </returns>
+        /// <returns>The text size.</returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (text == null)
@@ -358,9 +356,7 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Cleans up resources not in use.
         /// </summary>
-        /// <remarks>
-        /// This method is called at the end of each rendering.
-        /// </remarks>
+        /// <remarks>This method is called at the end of each rendering.</remarks>
         public override void CleanUp()
         {
             var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i)).ToList();
@@ -423,9 +419,7 @@ namespace OxyPlot.WindowsForms
         /// Sets the clip rectangle.
         /// </summary>
         /// <param name="rect">The clip rectangle.</param>
-        /// <returns>
-        /// True if the clip rectangle was set.
-        /// </returns>
+        /// <returns>True if the clip rectangle was set.</returns>
         public override bool SetClip(OxyRect rect)
         {
             this.g.SetClip(rect.ToRect(false));
@@ -460,7 +454,7 @@ namespace OxyPlot.WindowsForms
         /// Loads the image from the specified source.
         /// </summary>
         /// <param name="source">The image source.</param>
-        /// <returns>A <see cref="Image"/>.</returns>
+        /// <returns>A <see cref="Image" />.</returns>
         private Image GetImage(OxyImage source)
         {
             if (source == null)
@@ -507,7 +501,7 @@ namespace OxyPlot.WindowsForms
         /// <param name="thickness">The thickness.</param>
         /// <param name="dashArray">The dash array.</param>
         /// <param name="lineJoin">The line join.</param>
-        /// <returns>A <see cref="Pen"/>.</returns>
+        /// <returns>A <see cref="Pen" />.</returns>
         private Pen GetCachedPen(OxyColor stroke, double thickness, double[] dashArray = null, OxyPenLineJoin lineJoin = OxyPenLineJoin.Miter)
         {
             // TODO: cache
@@ -534,12 +528,8 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Converts a double array to a float array.
         /// </summary>
-        /// <param name="a">
-        /// The a.
-        /// </param>
-        /// <returns>
-        /// The float array.
-        /// </returns>
+        /// <param name="a">The a.</param>
+        /// <returns>The float array.</returns>
         private float[] ToFloatArray(double[] a)
         {
             if (a == null)
@@ -559,12 +549,8 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Converts a list of point to an array of PointF.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <returns>
-        /// An array of points.
-        /// </returns>
+        /// <param name="points">The points.</param>
+        /// <returns>An array of points.</returns>
         private PointF[] ToPoints(IList<ScreenPoint> points)
         {
             if (points == null)

@@ -48,11 +48,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StairStepSeries"/> class.
+        /// Initializes a new instance of the <see cref="StairStepSeries" /> class.
         /// </summary>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="title">The title.</param>
         public StairStepSeries(string title)
             : base(title)
         {
@@ -62,17 +60,11 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StairStepSeries"/> class.
+        /// Initializes a new instance of the <see cref="StairStepSeries" /> class.
         /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <param name="strokeThickness">
-        /// The stroke thickness.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="color">The color.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="title">The title.</param>
         public StairStepSeries(OxyColor color, double strokeThickness = 1, string title = null)
             : base(color, strokeThickness, title)
         {
@@ -83,11 +75,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the stroke thickness of the vertical line segments.
         /// </summary>
-        /// <remarks>
-        /// Set the value to NaN to use the StrokeThickness property for both horizontal and vertical segments.
-        /// Using the VerticalStrokeThickness property will have a small performance hit.
-        /// </remarks>
         /// <value>The vertical stroke thickness.</value>
+        /// <remarks>Set the value to NaN to use the StrokeThickness property for both horizontal and vertical segments.
+        /// Using the VerticalStrokeThickness property will have a small performance hit.</remarks>
         public double VerticalStrokeThickness { get; set; }
 
         /// <summary>
@@ -99,15 +89,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the nearest point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// interpolate if set to <c>true</c> .
-        /// </param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (this.XAxis == null || this.YAxis == null)
@@ -183,12 +167,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the LineSeries on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The owner plot model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.Points.Count == 0)
@@ -205,7 +185,7 @@ namespace OxyPlot.Series
             var verticalStrokeThickness = double.IsNaN(this.VerticalStrokeThickness)
                                               ? this.StrokeThickness
                                               : this.VerticalStrokeThickness;
-            
+
             var actualColor = this.GetSelectableColor(this.ActualColor);
 
             Action<IList<ScreenPoint>, IList<ScreenPoint>> renderPoints = (lpts, mpts) =>

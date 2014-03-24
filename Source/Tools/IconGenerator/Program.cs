@@ -159,21 +159,21 @@ namespace IconGenerator
         private static GraphicsPath GetRoundedRect(RectangleF baseRect, float radius)
         {
             // Based on http://www.codeproject.com/Articles/5649/Extended-Graphics-An-implementation-of-Rounded-Rec
-            // create the arc for the rectangle sides and declare 
-            // a graphics path object for the drawing 
+            // create the arc for the rectangle sides and declare
+            // a graphics path object for the drawing
             float diameter = radius * 2f;
             var sizeF = new SizeF(diameter, diameter);
             var arc = new RectangleF(baseRect.Location, sizeF);
             var path = new GraphicsPath();
 
-            // top left arc 
+            // top left arc
             path.AddArc(arc, 180, 90);
 
-            // top right arc 
+            // top right arc
             arc.X = baseRect.Right - diameter;
             path.AddArc(arc, 270, 90);
 
-            // bottom right arc 
+            // bottom right arc
             arc.Y = baseRect.Bottom - diameter;
             path.AddArc(arc, 0, 90);
 

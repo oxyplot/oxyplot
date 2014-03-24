@@ -33,9 +33,7 @@ namespace OxyPlot
     /// <summary>
     /// Provides a line clipping algorithm.
     /// </summary>
-    /// <remarks>
-    /// See http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland
-    /// </remarks>
+    /// <remarks>See http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland</remarks>
     public class CohenSutherlandClipping
     {
         /// <summary>
@@ -84,11 +82,9 @@ namespace OxyPlot
         private readonly double ymin;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CohenSutherlandClipping"/> class.
+        /// Initializes a new instance of the <see cref="CohenSutherlandClipping" /> class.
         /// </summary>
-        /// <param name="rect">
-        /// The clipping rectangle.
-        /// </param>
+        /// <param name="rect">The clipping rectangle.</param>
         public CohenSutherlandClipping(OxyRect rect)
         {
             this.xmin = rect.Left;
@@ -98,20 +94,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CohenSutherlandClipping"/> class.
+        /// Initializes a new instance of the <see cref="CohenSutherlandClipping" /> class.
         /// </summary>
-        /// <param name="xmin">
-        /// The minimum x.
-        /// </param>
-        /// <param name="xmax">
-        /// The maximum x.
-        /// </param>
-        /// <param name="ymin">
-        /// The minimum y.
-        /// </param>
-        /// <param name="ymax">
-        /// The maximum y.
-        /// </param>
+        /// <param name="xmin">The minimum x.</param>
+        /// <param name="xmax">The maximum x.</param>
+        /// <param name="ymin">The minimum y.</param>
+        /// <param name="ymax">The maximum y.</param>
         public CohenSutherlandClipping(double xmin, double xmax, double ymin, double ymax)
         {
             this.xmin = xmin;
@@ -129,9 +117,7 @@ namespace OxyPlot
         /// <param name="y0">Y coordinate of the first point.</param>
         /// <param name="x1">X coordinate of the second point.</param>
         /// <param name="y1">Y coordinate of the second point.</param>
-        /// <returns>
-        /// true if the line is inside.
-        /// </returns>
+        /// <returns><c>true</c> if the line is inside.</returns>
         public bool ClipLine(ref double x0, ref double y0, ref double x1, ref double y1)
         {
             // compute outcodes for P0, P1, and whatever point lies outside the clip rectangle
@@ -212,15 +198,9 @@ namespace OxyPlot
         /// P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with
         /// diagonal from <code>(xmin, ymin)</code> to <code>(xmax, ymax)</code>.
         /// </summary>
-        /// <param name="s0">
-        /// The s 0.
-        /// </param>
-        /// <param name="s1">
-        /// The s 1.
-        /// </param>
-        /// <returns>
-        /// true if the line is inside
-        /// </returns>
+        /// <param name="s0">The s 0.</param>
+        /// <param name="s1">The s 1.</param>
+        /// <returns><c>true</c> if the line is inside</returns>
         public bool ClipLine(ref ScreenPoint s0, ref ScreenPoint s1)
         {
             return this.ClipLine(ref s0.x, ref s0.y, ref s1.x, ref s1.y);
@@ -231,9 +211,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
-        /// <returns>
-        ///  <c>true</c> if the specified point is inside; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><c>true</c> if the specified point is inside; otherwise, <c>false</c>.</returns>
         public bool IsInside(double x, double y)
         {
             return this.ComputeOutCode(x, y) == Inside;
@@ -243,9 +221,7 @@ namespace OxyPlot
         /// Determines whether the specified point is inside the rectangle.
         /// </summary>
         /// <param name="s">The point.</param>
-        /// <returns>
-        ///  <c>true</c> if the specified point is inside; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><c>true</c> if the specified point is inside; otherwise, <c>false</c>.</returns>
         public bool IsInside(ScreenPoint s)
         {
             return this.ComputeOutCode(s.X, s.Y) == Inside;
@@ -254,19 +230,11 @@ namespace OxyPlot
         /// <summary>
         /// Computes the out code.
         /// </summary>
-        /// <param name="x">
-        /// The x.
-        /// </param>
-        /// <param name="y">
-        /// The y.
-        /// </param>
-        /// <returns>
-        /// The out code.
-        /// </returns>
-        /// <remarks>
-        /// Compute the bit code for a point (x, y) using the clip rectangle
-        /// bounded diagonally by <code>(xmin, ymin)</code> to <code>(xmax, ymax)</code>.
-        /// </remarks>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <returns>The out code.</returns>
+        /// <remarks>Compute the bit code for a point (x, y) using the clip rectangle
+        /// bounded diagonally by <code>(xmin, ymin)</code> to <code>(xmax, ymax)</code>.</remarks>
         private int ComputeOutCode(double x, double y)
         {
             int code = Inside; // initialized as being inside of clip window

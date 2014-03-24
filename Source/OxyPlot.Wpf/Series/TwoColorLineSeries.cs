@@ -39,19 +39,19 @@ namespace OxyPlot.Wpf
     public class TwoColorLineSeries : LineSeries
     {
         /// <summary>
-        /// The color 2 property.
+        /// Identifies the <see cref="Color2"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty Color2Property = DependencyProperty.Register(
             "Color2", typeof(Color), typeof(TwoColorLineSeries), new UIPropertyMetadata(Colors.Blue, AppearanceChanged));
 
         /// <summary>
-        /// The limit property.
+        /// Identifies the <see cref="Limit"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LimitProperty = DependencyProperty.Register(
             "Limit", typeof(double), typeof(TwoColorLineSeries), new UIPropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
-        /// The line style 2 property.
+        /// Identifies the <see cref="LineStyle2"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineStyle2Property = DependencyProperty.Register(
             "LineStyle2",
@@ -118,9 +118,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Synchronizes the properties.
         /// </summary>
-        /// <param name="series">
-        /// The series.
-        /// </param>
+        /// <param name="series">The series.</param>
         protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);

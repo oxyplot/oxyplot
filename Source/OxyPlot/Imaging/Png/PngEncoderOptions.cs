@@ -31,7 +31,7 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents encoder options for the <see cref="PngEncoder"/>.
+    /// Represents encoder options for the <see cref="PngEncoder" />.
     /// </summary>
     public class PngEncoderOptions : ImageEncoderOptions
     {

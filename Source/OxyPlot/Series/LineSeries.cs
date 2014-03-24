@@ -85,11 +85,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries"/> class.
+        /// Initializes a new instance of the <see cref="LineSeries" /> class.
         /// </summary>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="title">The title.</param>
         public LineSeries(string title)
             : this()
         {
@@ -97,17 +95,11 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries"/> class.
+        /// Initializes a new instance of the <see cref="LineSeries" /> class.
         /// </summary>
-        /// <param name="color">
-        /// The color of the line stroke.
-        /// </param>
-        /// <param name="strokeThickness">
-        /// The stroke thickness (optional).
-        /// </param>
-        /// <param name="title">
-        /// The title (optional).
-        /// </param>
+        /// <param name="color">The color of the line stroke.</param>
+        /// <param name="strokeThickness">The stroke thickness (optional).</param>
+        /// <param name="title">The title (optional).</param>
         public LineSeries(OxyColor color, double strokeThickness = 1, string title = null)
             : this()
         {
@@ -126,9 +118,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the color of the broken line segments.
         /// </summary>
-        /// <remarks>
-        /// Add <c>DataPoint.Undefined</c> in the Points collection to create breaks in the line.
-        /// </remarks>
+        /// <remarks>Add <c>DataPoint.Undefined</c> in the Points collection to create breaks in the line.</remarks>
         public OxyColor BrokenLineColor { get; set; }
 
         /// <summary>
@@ -145,15 +135,13 @@ namespace OxyPlot.Series
         /// Gets or sets the dash array for the rendered line (overrides <see cref="LineStyle" />).
         /// </summary>
         /// <value>The dash array.</value>
-        /// <remarks>
-        /// If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.
-        /// </remarks>
+        /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.</remarks>
         public double[] Dashes { get; set; }
 
         /// <summary>
         /// Gets or sets the label format string.
         /// </summary>
-        /// <value> The label format string. </value>
+        /// <value>The label format string.</value>
         public string LabelFormatString { get; set; }
 
         /// <summary>
@@ -195,9 +183,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the marker resolution.
         /// </summary>
-        /// <value>
-        /// The marker resolution.
-        /// </value>
+        /// <value>The marker resolution.</value>
         public int MarkerResolution { get; set; }
 
         /// <summary>
@@ -222,9 +208,7 @@ namespace OxyPlot.Series
         /// Gets or sets the type of the marker.
         /// </summary>
         /// <value>The type of the marker.</value>
-        /// <remarks>
-        /// If MarkerType.Custom is used, the MarkerOutline property must be specified.
-        /// </remarks>
+        /// <remarks>If MarkerType.Custom is used, the MarkerOutline property must be specified.</remarks>
         public MarkerType MarkerType { get; set; }
 
         /// <summary>
@@ -268,9 +252,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the actual line style.
         /// </summary>
-        /// <value>
-        /// The actual line style.
-        /// </value>
+        /// <value>The actual line style.</value>
         protected LineStyle ActualLineStyle
         {
             get
@@ -312,9 +294,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (interpolate)
@@ -342,12 +322,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the series on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The owner plot model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.Points.Count == 0)
@@ -405,12 +381,8 @@ namespace OxyPlot.Series
         /// Renders the legend symbol for the line series on the
         /// specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="legendBox">
-        /// The bounding rectangle of the legend box.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="legendBox">The bounding rectangle of the legend box.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;
@@ -489,7 +461,7 @@ namespace OxyPlot.Series
         /// Calculates the collection of broken lines delimiting a collection of continuous lines.
         /// </summary>
         /// <param name="contiguousLineSegments">The collection of contiguous lines for which to calculate the delimiting broken lines.</param>
-        /// <returns><see cref="IDataPoint"/> pairs representing the broken lines delimiting the passed collection of contiguous lines.</returns>
+        /// <returns><see cref="IDataPoint" /> pairs representing the broken lines delimiting the passed collection of contiguous lines.</returns>
         protected static IEnumerable<Segment> CalculateBrokenLines(ICollection<ICollection<IDataPoint>> contiguousLineSegments)
         {
             for (var i = 1; i < contiguousLineSegments.ToArray().Count(); i++)
@@ -504,7 +476,7 @@ namespace OxyPlot.Series
         /// Extracts all contiguous line segments from the line represented by the collection of points passed to the method.
         /// </summary>
         /// <param name="points">The line from which to extract all contiguous segments.</param>
-        /// <returns>A collection of <see cref="IDataPoint"/> arrays which represent all contiguous line segments in the passed points collection.</returns>
+        /// <returns>A collection of <see cref="IDataPoint" /> arrays which represent all contiguous line segments in the passed points collection.</returns>
         protected static IEnumerable<IDataPoint[]> ExtractContiguousLines(IEnumerable<IDataPoint> points)
         {
             var enumerator = points.GetEnumerator();
@@ -649,15 +621,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the transformed points.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="clippingRect">
-        /// The clipping rectangle.
-        /// </param>
-        /// <param name="pointsToRender">
-        /// The points to render.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="pointsToRender">The points to render.</param>
         protected virtual void RenderPoints(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
             var screenPoints = pointsToRender;
@@ -695,15 +661,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the (smoothed) line.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="clippingRect">
-        /// The clipping rectangle.
-        /// </param>
-        /// <param name="pointsToRender">
-        /// The points to render.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="pointsToRender">The points to render.</param>
         protected virtual void RenderSmoothedLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
             var dashArray = this.ActualDashArray;
@@ -733,7 +693,7 @@ namespace OxyPlot.Series
         protected class Segment
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="Segment"/> class.
+            /// Initializes a new instance of the <see cref="Segment" /> class.
             /// </summary>
             /// <param name="point1">The first point of the segment.</param>
             /// <param name="point2">The second point of the segment.</param>

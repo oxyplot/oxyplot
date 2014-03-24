@@ -38,12 +38,8 @@ namespace OxyPlot
         /// <summary>
         /// Encodes the specified pixels.
         /// </summary>
-        /// <param name="pixels">
-        /// The pixel data. The indexing is [x,y] where [0,0] is top-left.
-        /// </param>
-        /// <returns>
-        /// The image data.
-        /// </returns>
+        /// <param name="pixels">The pixel data. The indexing is [x,y] where [0,0] is top-left.</param>
+        /// <returns>The image data.</returns>
         byte[] Encode(OxyColor[,] pixels);
 
         /// <summary>

@@ -40,7 +40,7 @@ namespace OxyPlot.Series
     public class BarSeries : BarSeriesBase<BarItem>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BarSeries"/> class.
+        /// Initializes a new instance of the <see cref="BarSeries" /> class.
         /// </summary>
         public BarSeries()
         {
@@ -50,23 +50,15 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the width (height) of the bars.
         /// </summary>
-        /// <value>
-        /// The width of the bars.
-        /// </value>
+        /// <value>The width of the bars.</value>
         public double BarWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the width of the columns/bars (as a fraction of the available space).
         /// </summary>
-        /// <returns>
-        /// The fractional width.
-        /// </returns>
-        /// <value>
-        /// The width of the bars.
-        /// </value>
-        /// <remarks>
-        /// The available space will be determined by the GapWidth of the CategoryAxis used by this series.
-        /// </remarks>
+        /// <value>The width of the bars.</value>
+        /// <returns>The fractional width.</returns>
+        /// <remarks>The available space will be determined by the GapWidth of the CategoryAxis used by this series.</remarks>
         internal override double GetBarWidth()
         {
             return this.BarWidth;
@@ -75,12 +67,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the actual width/height of the items of this series.
         /// </summary>
-        /// <returns>
-        /// The width or height.
-        /// </returns>
-        /// <remarks>
-        /// The actual width is also influenced by the GapWidth of the CategoryAxis used by this series.
-        /// </remarks>
+        /// <returns>The width or height.</returns>
+        /// <remarks>The actual width is also influenced by the GapWidth of the CategoryAxis used by this series.</remarks>
         protected override double GetActualBarWidth()
         {
             var categoryAxis = this.GetCategoryAxis();
@@ -90,9 +78,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the category axis.
         /// </summary>
-        /// <returns>
-        /// The category axis.
-        /// </returns>
+        /// <returns>The category axis.</returns>
         protected override CategoryAxis GetCategoryAxis()
         {
             if (!(this.YAxis is CategoryAxis))
@@ -107,21 +93,11 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the rectangle for the specified values.
         /// </summary>
-        /// <param name="baseValue">
-        /// The base value of the bar
-        /// </param>
-        /// <param name="topValue">
-        /// The top value of the bar
-        /// </param>
-        /// <param name="beginValue">
-        /// The begin value of the bar
-        /// </param>
-        /// <param name="endValue">
-        /// The end value of the bar
-        /// </param>
-        /// <returns>
-        /// The rectangle.
-        /// </returns>
+        /// <param name="baseValue">The base value of the bar</param>
+        /// <param name="topValue">The top value of the bar</param>
+        /// <param name="beginValue">The begin value of the bar</param>
+        /// <param name="endValue">The end value of the bar</param>
+        /// <returns>The rectangle.</returns>
         protected override OxyRect GetRectangle(double baseValue, double topValue, double beginValue, double endValue)
         {
             return new OxyRect(this.Transform(baseValue, beginValue), this.Transform(topValue, endValue));
@@ -130,9 +106,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the value axis.
         /// </summary>
-        /// <returns>
-        /// The value axis.
-        /// </returns>
+        /// <returns>The value axis.</returns>
         protected override Axis GetValueAxis()
         {
             return this.XAxis;

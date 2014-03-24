@@ -56,9 +56,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Gets or sets the culture.
         /// </summary>
-        /// <value>
-        /// The culture.
-        /// </value>
+        /// <value>The culture.</value>
         public CultureInfo Culture { get; set; }
 
         /// <summary>
@@ -72,11 +70,9 @@ namespace OxyPlot.Reporting
         public string Title { get; set; }
 
         /// <summary>
-        /// Writes the report to a <see cref="IReportWriter"/>.
+        /// Writes the report to a <see cref="IReportWriter" />.
         /// </summary>
-        /// <param name="w">
-        /// The target <see cref="IReportWriter"/>.
-        /// </param>
+        /// <param name="w">The target <see cref="IReportWriter" />.</param>
         public override void Write(IReportWriter w)
         {
             this.UpdateParent(this);

@@ -197,7 +197,7 @@ namespace ExampleLibrary
             Func<DateTime, DateTime> utcToLocalTime = utc => utc.AddHours(IsDaylightSaving(utc) ? 2 : 1);
 
             var sunData = CreateSunData(year, 59.91, 10.75, utcToLocalTime);
-            
+
             var plotModel1 = new PlotModel("Sunrise and sunset in Oslo", "UTC time");
 
             var dateTimeAxis1 = new DateTimeAxis

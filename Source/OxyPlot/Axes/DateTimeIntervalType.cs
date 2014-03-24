@@ -31,7 +31,7 @@
 namespace OxyPlot.Axes
 {
     /// <summary>
-    /// Specifies the date time interval for <see cref="DateTimeAxis"/>.
+    /// Specifies the date time interval for <see cref="DateTimeAxis" />.
     /// </summary>
     public enum DateTimeIntervalType
     {

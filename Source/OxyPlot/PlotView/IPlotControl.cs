@@ -36,7 +36,7 @@ namespace OxyPlot
     public interface IPlotControl
     {
         /// <summary>
-        /// Gets the actual <see cref="PlotModel"/> of the control.
+        /// Gets the actual <see cref="PlotModel" /> of the control.
         /// </summary>
         PlotModel ActualModel { get; }
 
@@ -53,33 +53,25 @@ namespace OxyPlot
         /// <summary>
         /// Invalidates the plot (not blocking the UI thread)
         /// </summary>
-        /// <param name="updateData">
-        /// if set to <c>true</c>, all data bindings will be updated.
-        /// </param>
+        /// <param name="updateData">if set to <c>true</c>, all data bindings will be updated.</param>
         void InvalidatePlot(bool updateData = true);
 
         /// <summary>
         /// Sets the cursor type.
         /// </summary>
-        /// <param name="cursorType">
-        /// The cursor type.
-        /// </param>
+        /// <param name="cursorType">The cursor type.</param>
         void SetCursorType(CursorType cursorType);
 
         /// <summary>
         /// Shows the tracker.
         /// </summary>
-        /// <param name="trackerHitResult">
-        /// The tracker data.
-        /// </param>
+        /// <param name="trackerHitResult">The tracker data.</param>
         void ShowTracker(TrackerHitResult trackerHitResult);
 
         /// <summary>
         /// Shows the zoom rectangle.
         /// </summary>
-        /// <param name="rectangle">
-        /// The rectangle.
-        /// </param>
+        /// <param name="rectangle">The rectangle.</param>
         void ShowZoomRectangle(OxyRect rectangle);
 
         /// <summary>

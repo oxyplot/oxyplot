@@ -38,7 +38,7 @@ namespace OxyPlot.Wpf
     public class SvgExporter : OxyPlot.SvgExporter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SvgExporter"/> class.
+        /// Initializes a new instance of the <see cref="SvgExporter" /> class.
         /// </summary>
         public SvgExporter()
         {

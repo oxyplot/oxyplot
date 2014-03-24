@@ -32,7 +32,7 @@ namespace ExampleBrowser
 {
     using System.Linq;
 
-	using OxyPlot.XamarinAndroid;
+    using OxyPlot.XamarinAndroid;
 
     [Activity(Label = "Plot")]
     public class PlotActivity : Activity

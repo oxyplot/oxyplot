@@ -52,7 +52,7 @@ namespace OxyPlot.Series
         private OxyColor[,] pixels;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PolarHeatMapSeries"/> class.
+        /// Initializes a new instance of the <see cref="PolarHeatMapSeries" /> class.
         /// </summary>
         public PolarHeatMapSeries()
         {
@@ -62,9 +62,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the size of the image - if set to 0, the image will be generated at every update.
         /// </summary>
-        /// <value>
-        /// The size of the image.
-        /// </value>
+        /// <value>The size of the image.</value>
         public int ImageSize { get; set; }
 
         /// <summary>
@@ -90,17 +88,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the data array.
         /// </summary>
-        /// <remarks>
-        /// Note that the indices of the data array refer to [x,y].
-        /// </remarks>
+        /// <remarks>Note that the indices of the data array refer to [x,y].</remarks>
         public double[,] Data { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to interpolate when rendering.
         /// </summary>
-        /// <remarks>
-        /// This property is not supported on all platforms.
-        /// </remarks>
+        /// <remarks>This property is not supported on all platforms.</remarks>
         public bool Interpolate { get; set; }
 
         /// <summary>
@@ -116,26 +110,20 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the color axis.
         /// </summary>
-        /// <value>
-        /// The color axis.
-        /// </value>
+        /// <value>The color axis.</value>
         public IColorAxis ColorAxis { get; protected set; }
 
         /// <summary>
         /// Gets or sets the color axis key.
         /// </summary>
-        /// <value> The color axis key. </value>
+        /// <value>The color axis key.</value>
         public string ColorAxisKey { get; set; }
 
         /// <summary>
         /// Renders the series on the specified render context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.Data == null)
@@ -361,15 +349,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// Interpolate the series if this flag is set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             return null;

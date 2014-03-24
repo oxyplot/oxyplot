@@ -33,9 +33,7 @@ namespace OxyPlot.Reporting
     /// <summary>
     /// Represents a drawing report item.
     /// </summary>
-    /// <remarks>
-    /// Drawing currently only supports SVG format.
-    /// </remarks>
+    /// <remarks>Drawing currently only supports SVG format.</remarks>
     public class DrawingFigure : Figure
     {
         /// <summary>
@@ -62,9 +60,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// The write content.
         /// </summary>
-        /// <param name="w">
-        /// The w.
-        /// </param>
+        /// <param name="w">The w.</param>
         public override void WriteContent(IReportWriter w)
         {
             w.WriteDrawing(this);

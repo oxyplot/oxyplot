@@ -114,13 +114,13 @@ namespace OxyPlot
     public enum InterlaceMethod
     {
         /// <summary>
-        ///  The null method, pixels are extracted sequentially from left to right, and scan lines sequentially from top to bottom.
+        /// The <c>null</c> method, pixels are extracted sequentially from left to right, and scan lines sequentially from top to bottom.
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// Adam7, defines seven distinct passes over the image. Each pass transmits a subset of the pixels in the reference image. 
-        /// The pass in which each pixel is transmitted (numbered from 1 to 7) is defined by replicating a 8-by-8 pattern over the 
+        /// Adam7, defines seven distinct passes over the image. Each pass transmits a subset of the pixels in the reference image.
+        /// The pass in which each pixel is transmitted (numbered from 1 to 7) is defined by replicating a 8-by-8 pattern over the
         /// entire image, starting at the upper left corner.
         /// </summary>
         Adam7 = 1
@@ -167,7 +167,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PngEncoder"/> class.
+        /// Initializes a new instance of the <see cref="PngEncoder" /> class.
         /// </summary>
         /// <param name="options">The options.</param>
         public PngEncoder(PngEncoderOptions options)
@@ -178,12 +178,8 @@ namespace OxyPlot
         /// <summary>
         /// Encodes the specified image data to png.
         /// </summary>
-        /// <param name="pixels">
-        /// The pixel data indexed as [x,y] (bottom line first).
-        /// </param>
-        /// <returns>
-        /// The png image data.
-        /// </returns>
+        /// <param name="pixels">The pixel data indexed as [x,y] (bottom line first).</param>
+        /// <returns>The png image data.</returns>
         public byte[] Encode(OxyColor[,] pixels)
         {
             int width = pixels.GetLength(0);
@@ -218,9 +214,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="pixels">The pixels.</param>
         /// <param name="palette">The palette.</param>
-        /// <returns>
-        /// The image data.
-        /// </returns>
+        /// <returns>The image data.</returns>
         public byte[] Encode(byte[,] pixels, OxyColor[] palette)
         {
             throw new NotImplementedException();
@@ -229,12 +223,8 @@ namespace OxyPlot
         /// <summary>
         /// Calculates the Adler-32 check sum.
         /// </summary>
-        /// <param name="data">
-        /// The data.
-        /// </param>
-        /// <returns>
-        /// The check sum.
-        /// </returns>
+        /// <param name="data">The data.</param>
+        /// <returns>The check sum.</returns>
         internal static uint Adler32(IEnumerable<byte> data)
         {
             // http://en.wikipedia.org/wiki/Adler-32
@@ -253,15 +243,9 @@ namespace OxyPlot
         /// <summary>
         /// Creates the header data.
         /// </summary>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <returns>
-        /// The header.
-        /// </returns>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <returns>The header.</returns>
         private static byte[] CreateHeaderData(int width, int height)
         {
             // http://www.w3.org/TR/PNG-Chunks.html
@@ -279,15 +263,9 @@ namespace OxyPlot
         /// <summary>
         /// Creates the physical dimensions data.
         /// </summary>
-        /// <param name="dpix">
-        /// The horizontal resolution.
-        /// </param>
-        /// <param name="dpiy">
-        /// The vertical resolution.
-        /// </param>
-        /// <returns>
-        /// The data.
-        /// </returns>
+        /// <param name="dpix">The horizontal resolution.</param>
+        /// <param name="dpiy">The vertical resolution.</param>
+        /// <returns>The data.</returns>
         private static byte[] CreatePhysicalDimensionsData(double dpix, double dpiy)
         {
             var ppux = (int)(dpix / 0.0254);
@@ -302,12 +280,8 @@ namespace OxyPlot
         /// <summary>
         /// Creates the uncompressed blocks.
         /// </summary>
-        /// <param name="bytes">
-        /// The data.
-        /// </param>
-        /// <returns>
-        /// The output data.
-        /// </returns>
+        /// <param name="bytes">The data.</param>
+        /// <returns>The output data.</returns>
         private static byte[] CreateUncompressedBlocks(byte[] bytes)
         {
             // http://www.w3.org/TR/PNG-Compression.html
@@ -337,15 +311,9 @@ namespace OxyPlot
         /// <summary>
         /// Updates the CRC check sum.
         /// </summary>
-        /// <param name="crc">
-        /// The input CRC.
-        /// </param>
-        /// <param name="data">
-        /// The data.
-        /// </param>
-        /// <returns>
-        /// The updated CRC.
-        /// </returns>
+        /// <param name="crc">The input CRC.</param>
+        /// <param name="data">The data.</param>
+        /// <returns>The updated CRC.</returns>
         private static ulong UpdateCrc(ulong crc, IEnumerable<byte> data)
         {
             return data.Aggregate(crc, (current, x) => CrcTable[(current ^ x) & 0xff] ^ (current >> 8));
@@ -354,12 +322,8 @@ namespace OxyPlot
         /// <summary>
         /// Writes the integer value with big endian byte order.
         /// </summary>
-        /// <param name="w">
-        /// The writer.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="w">The writer.</param>
+        /// <param name="value">The value.</param>
         private static void WriteBigEndian(BinaryWriter w, int value)
         {
             var bytes = BitConverter.GetBytes(value);
@@ -372,12 +336,8 @@ namespace OxyPlot
         /// <summary>
         /// Writes the unsigned integer value with big endian byte order.
         /// </summary>
-        /// <param name="w">
-        /// The writer.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="w">The writer.</param>
+        /// <param name="value">The value.</param>
         private static void WriteBigEndian(BinaryWriter w, uint value)
         {
             var bytes = BitConverter.GetBytes(value);
@@ -390,15 +350,9 @@ namespace OxyPlot
         /// <summary>
         /// Writes a png chunk.
         /// </summary>
-        /// <param name="w">
-        /// The writer.
-        /// </param>
-        /// <param name="type">
-        /// The chunk type.
-        /// </param>
-        /// <param name="data">
-        /// The chunk data.
-        /// </param>
+        /// <param name="w">The writer.</param>
+        /// <param name="type">The chunk type.</param>
+        /// <param name="data">The chunk data.</param>
         private static void WriteChunk(BinaryWriter w, string type, byte[] data)
         {
             var ty = type.ToCharArray().Select(ch => (byte)ch).ToArray();

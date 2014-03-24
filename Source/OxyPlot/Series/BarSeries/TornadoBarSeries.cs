@@ -39,9 +39,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents a series that can be used to create tornado plots.
     /// </summary>
-    /// <remarks>
-    /// See http://en.wikipedia.org/wiki/Tornado_diagram.
-    /// </remarks>
+    /// <remarks>See http://en.wikipedia.org/wiki/Tornado_diagram.</remarks>
     public class TornadoBarSeries : CategorizedSeries
     {
         /// <summary>
@@ -55,7 +53,7 @@ namespace OxyPlot.Series
         private OxyColor defaultMinimumFillColor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TornadoBarSeries"/> class.
+        /// Initializes a new instance of the <see cref="TornadoBarSeries" /> class.
         /// </summary>
         public TornadoBarSeries()
         {
@@ -79,25 +77,19 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the width of the bars (as a fraction of the available width). The default value is 0.5 (50%)
         /// </summary>
-        /// <value>
-        /// The width of the bars.
-        /// </value>
+        /// <value>The width of the bars.</value>
         public double BarWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the base value.
         /// </summary>
-        /// <value>
-        /// The base value.
-        /// </value>
+        /// <value>The base value.</value>
         public double BaseValue { get; set; }
 
         /// <summary>
         /// Gets the tornado bar items.
         /// </summary>
-        /// <value>
-        /// The items.
-        /// </value>
+        /// <value>The items.</value>
         public IList<TornadoBarItem> Items { get; private set; }
 
         /// <summary>
@@ -123,9 +115,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the color of the interior of the Maximum bars.
         /// </summary>
-        /// <value>
-        /// The color.
-        /// </value>
+        /// <value>The color.</value>
         public OxyColor MaximumFillColor { get; set; }
 
         /// <summary>
@@ -150,9 +140,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the default color of the interior of the Minimum bars.
         /// </summary>
-        /// <value>
-        /// The color.
-        /// </value>
+        /// <value>The color.</value>
         public OxyColor MinimumFillColor { get; set; }
 
         /// <summary>
@@ -172,17 +160,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the color of the border around the bars.
         /// </summary>
-        /// <value>
-        /// The color of the stroke.
-        /// </value>
+        /// <value>The color of the stroke.</value>
         public OxyColor StrokeColor { get; set; }
 
         /// <summary>
         /// Gets or sets the thickness of the bar border strokes.
         /// </summary>
-        /// <value>
-        /// The stroke thickness.
-        /// </value>
+        /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
@@ -208,15 +192,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the point in the dataset that is nearest the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// The interpolate.
-        /// </param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">The interpolate.</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             for (int i = 0; i < this.ActualMinimumBarRectangles.Count; i++)
@@ -250,15 +228,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Checks if the specified value is valid.
         /// </summary>
-        /// <param name="v">
-        /// The value.
-        /// </param>
-        /// <param name="yaxis">
-        /// The y axis.
-        /// </param>
-        /// <returns>
-        /// True if the value is valid.
-        /// </returns>
+        /// <param name="v">The value.</param>
+        /// <param name="yaxis">The y axis.</param>
+        /// <returns>True if the value is valid.</returns>
         public virtual bool IsValidPoint(double v, Axis yaxis)
         {
             return !double.IsNaN(v) && !double.IsInfinity(v);
@@ -267,12 +239,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the Series on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             this.ActualMinimumBarRectangles = new List<OxyRect>();
@@ -368,12 +336,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the legend symbol on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="legendBox">
-        /// The legend rectangle.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="legendBox">The legend rectangle.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;
@@ -395,15 +359,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the width/height of the columns/bars (as a fraction of the available space).
         /// </summary>
-        /// <returns>
-        /// The fractional width.
-        /// </returns>
-        /// <value>
-        /// The width of the bars.
-        /// </value>
-        /// <remarks>
-        /// The available space will be determined by the GapWidth of the CategoryAxis used by this series.
-        /// </remarks>
+        /// <value>The width of the bars.</value>
+        /// <returns>The fractional width.</returns>
+        /// <remarks>The available space will be determined by the GapWidth of the CategoryAxis used by this series.</remarks>
         internal override double GetBarWidth()
         {
             return this.BarWidth;
@@ -412,9 +370,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the items of this series.
         /// </summary>
-        /// <returns>
-        /// The items.
-        /// </returns>
+        /// <returns>The items.</returns>
         protected internal override IList<CategorizedItem> GetItems()
         {
             return this.Items.Cast<CategorizedItem>().ToList();
@@ -423,12 +379,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Check if the data series is using the specified axis.
         /// </summary>
-        /// <param name="axis">
-        /// An axis which should be checked if used
-        /// </param>
-        /// <returns>
-        /// True if the axis is in use.
-        /// </returns>
+        /// <param name="axis">An axis which should be checked if used</param>
+        /// <returns>True if the axis is in use.</returns>
         protected internal override bool IsUsing(Axis axis)
         {
             return this.XAxis == axis || this.YAxis == axis;
@@ -437,9 +389,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="model">The model.</param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
             if (this.MaximumFillColor.IsAutomatic())
@@ -526,12 +476,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the actual width/height of the items of this series.
         /// </summary>
-        /// <returns>
-        /// The width or height.
-        /// </returns>
-        /// <remarks>
-        /// The actual width is also influenced by the GapWidth of the CategoryAxis used by this series.
-        /// </remarks>
+        /// <returns>The width or height.</returns>
+        /// <remarks>The actual width is also influenced by the GapWidth of the CategoryAxis used by this series.</remarks>
         protected override double GetActualBarWidth()
         {
             var categoryAxis = this.GetCategoryAxis();
@@ -541,9 +487,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the category axis.
         /// </summary>
-        /// <returns>
-        /// The category axis.
-        /// </returns>
+        /// <returns>The category axis.</returns>
         protected override CategoryAxis GetCategoryAxis()
         {
             var categoryAxis = this.YAxis as CategoryAxis;
@@ -558,12 +502,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the item at the specified index.
         /// </summary>
-        /// <param name="i">
-        /// The index of the item.
-        /// </param>
-        /// <returns>
-        /// The item of the index.
-        /// </returns>
+        /// <param name="i">The index of the item.</param>
+        /// <returns>The item of the index.</returns>
         protected override object GetItem(int i)
         {
             if (this.ItemsSource != null || this.Items == null || this.Items.Count == 0)
@@ -577,9 +517,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the value axis.
         /// </summary>
-        /// <returns>
-        /// The value axis.
-        /// </returns>
+        /// <returns>The value axis.</returns>
         private Axis GetValueAxis()
         {
             return this.XAxis;

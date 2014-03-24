@@ -37,28 +37,26 @@ namespace OxyPlot
     /// <summary>
     /// A canonical Huffman code. Immutable. Code length 0 means no code.
     /// </summary>
-    /// <remarks>
-    /// <p>
+    /// <remarks><p>
     /// The code is a c# port of the DEFLATE project by Nayuki Minase at <a href="https://github.com/nayuki/DEFLATE">github</a>.
     /// Original source code: <a href="https://github.com/nayuki/DEFLATE/blob/master/src/nayuki/deflate/CircularDictionary.java">CircularDictionary.java</a>.
     /// </p>
     /// <p>
     /// A canonical Huffman code only describes the code length of each symbol. The codes can be reconstructed from this information. In this implementation, symbols with lower code lengths, breaking ties by lower symbols, are assigned lexicographically lower codes.
     /// Example:
-    ///  Code lengths (canonical code):
-    ///    Symbol A: 1
-    ///    Symbol B: 3
-    ///    Symbol C: 0 (no code)
-    ///    Symbol D: 2
-    ///    Symbol E: 3
-    ///  Huffman codes (generated from canonical code):
-    ///    Symbol A: 0
-    ///    Symbol B: 110
-    ///    Symbol C: None
-    ///    Symbol D: 10
-    ///    Symbol E: 111
-    /// </p>
-    /// </remarks>
+    /// Code lengths (canonical code):
+    /// Symbol A: 1
+    /// Symbol B: 3
+    /// Symbol C: 0 (no code)
+    /// Symbol D: 2
+    /// Symbol E: 3
+    /// Huffman codes (generated from canonical code):
+    /// Symbol A: 0
+    /// Symbol B: 110
+    /// Symbol C: None
+    /// Symbol D: 10
+    /// Symbol E: 111
+    /// </p></remarks>
     internal class CanonicalCode
     {
         /// <summary>
@@ -67,12 +65,10 @@ namespace OxyPlot
         private readonly int[] codeLengths;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CanonicalCode"/> class.
+        /// Initializes a new instance of the <see cref="CanonicalCode" /> class.
         /// </summary>
         /// <param name="codeLengths">The code lengths.</param>
-        /// <remarks>
-        /// The constructor does not check that the array of code lengths results in a complete Huffman tree, being neither underfilled nor overfilled.
-        /// </remarks>
+        /// <remarks>The constructor does not check that the array of code lengths results in a complete Huffman tree, being neither underfilled nor overfilled.</remarks>
         public CanonicalCode(int[] codeLengths)
         {
             if (codeLengths == null)
@@ -93,7 +89,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CanonicalCode"/> class based on the given code tree.
+        /// Initializes a new instance of the <see cref="CanonicalCode" /> class based on the given code tree.
         /// </summary>
         /// <param name="tree">The tree.</param>
         /// <param name="symbolLimit">The symbol limit.</param>
@@ -132,11 +128,9 @@ namespace OxyPlot
         /// Converts the canonical code to a code tree.
         /// </summary>
         /// <returns>The code tree.</returns>
-        /// <exception cref="System.Exception">
-        /// This canonical code does not represent a Huffman code tree
+        /// <exception cref="System.Exception">This canonical code does not represent a Huffman code tree
         /// or
-        /// This canonical code does not represent a Huffman code tree
-        /// </exception>
+        /// This canonical code does not represent a Huffman code tree</exception>
         public CodeTree ToCodeTree()
         {
             var nodes = new List<Node>();
@@ -179,13 +173,11 @@ namespace OxyPlot
         /// </summary>
         /// <param name="node">The node.</param>
         /// <param name="depth">The depth.</param>
-        /// <exception cref="System.Exception">
-        /// Symbol has more than one code
+        /// <exception cref="System.Exception">Symbol has more than one code
         /// or
         /// Symbol exceeds symbol limit
         /// or
-        /// Illegal node type
-        /// </exception>
+        /// Illegal node type</exception>
         private void BuildCodeLengths(Node node, int depth)
         {
             if (node is InternalNode)

@@ -157,15 +157,9 @@ namespace OxyPlot
         /// <summary>
         /// Calculates the maximum size of the specified axes.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="axesOfPositionTier">
-        /// The axes of position tier.
-        /// </param>
-        /// <returns>
-        /// The maximum size.
-        /// </returns>
+        /// <param name="rc">The render context.</param>
+        /// <param name="axesOfPositionTier">The axes of position tier.</param>
+        /// <returns>The maximum size.</returns>
         private static double MaxSizeOfPositionTier(IRenderContext rc, IEnumerable<Axis> axesOfPositionTier)
         {
             double maxSizeOfPositionTier = 0;
@@ -195,12 +189,8 @@ namespace OxyPlot
         /// <summary>
         /// Adjusts the plot margins.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <returns>
-        /// The adjust plot margins.
-        /// </returns>
+        /// <param name="rc">The render context.</param>
+        /// <returns>The adjust plot margins.</returns>
         private bool AdjustPlotMargins(IRenderContext rc)
         {
             var currentMargin = this.ActualPlotMargins;
@@ -270,12 +260,8 @@ namespace OxyPlot
         /// <summary>
         /// Measures the size of the title and subtitle.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <returns>
-        /// Size of the titles.
-        /// </returns>
+        /// <param name="rc">The rendering context.</param>
+        /// <returns>Size of the titles.</returns>
         private OxySize MeasureTitles(IRenderContext rc)
         {
             var titleSize = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
@@ -288,12 +274,8 @@ namespace OxyPlot
         /// <summary>
         /// Renders the annotations.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="layer">
-        /// The layer.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="layer">The layer.</param>
         private void RenderAnnotations(IRenderContext rc, AnnotationLayer layer)
         {
             foreach (var a in this.Annotations.Where(a => a.Layer == layer))
@@ -305,12 +287,8 @@ namespace OxyPlot
         /// <summary>
         /// Renders the axes.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="layer">
-        /// The layer.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="layer">The layer.</param>
         private void RenderAxes(IRenderContext rc, AxisLayer layer)
         {
             for (int i = 0; i < 2; i++)
@@ -328,9 +306,7 @@ namespace OxyPlot
         /// <summary>
         /// Renders the series backgrounds.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
+        /// <param name="rc">The render context.</param>
         private void RenderBackgrounds(IRenderContext rc)
         {
             // Render the main background of the plot area (only if there are axes)
@@ -349,12 +325,8 @@ namespace OxyPlot
         /// <summary>
         /// Renders the border around the plot area.
         /// </summary>
-        /// <remarks>
-        /// The border will only by rendered if there are axes in the plot.
-        /// </remarks>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <remarks>The border will only by rendered if there are axes in the plot.</remarks>
         private void RenderBox(IRenderContext rc)
         {
             // The border is rendered by DrawRectangleAsPolygon to ensure that it is pixel aligned with the tick marks (cannot use DrawRectangle here).
@@ -367,9 +339,7 @@ namespace OxyPlot
         /// <summary>
         /// Renders the series.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
+        /// <param name="rc">The render context.</param>
         private void RenderSeries(IRenderContext rc)
         {
             foreach (var s in this.VisibleSeries)
@@ -381,9 +351,7 @@ namespace OxyPlot
         /// <summary>
         /// Renders the title and subtitle.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
+        /// <param name="rc">The render context.</param>
         private void RenderTitle(IRenderContext rc)
         {
             var titleSize = rc.MeasureText(this.Title, this.ActualTitleFont, this.TitleFontSize, this.TitleFontWeight);
@@ -424,9 +392,7 @@ namespace OxyPlot
         /// <summary>
         /// Calculates the plot area (subtract padding, title size and outside legends)
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
         private void UpdatePlotArea(IRenderContext rc)
         {
             var plotArea = new OxyRect(

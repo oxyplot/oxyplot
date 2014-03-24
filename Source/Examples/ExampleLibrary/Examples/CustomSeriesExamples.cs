@@ -230,7 +230,6 @@ namespace ExampleLibrary
                 data[i, i] = -1;
             }
 
-
             var model = new PlotModel("Design structure matrix (DSM)");
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.None, Palette = new OxyPalette(OxyColors.White, OxyColors.LightGreen), LowColor = OxyColors.Black, Minimum = 0, IsAxisVisible = false });
             model.Axes.Add(new CategoryAxis(AxisPosition.Top, null, new[] { "A", "B", "C", "D", "E", "F", "G" }));
