@@ -31,6 +31,8 @@
 namespace OxyPlot.Wpf
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media;
@@ -167,19 +169,69 @@ namespace OxyPlot.Wpf
         /// Converts a <see cref="ScreenPoint" /> to a <see cref="Point" />.
         /// </summary>
         /// <param name="pt">The screen point.</param>
-        /// <param name="aliased">use pixel alignment conversion if set to <c>true</c>.</param>
         /// <returns>A <see cref="Point" />.</returns>
-        public static Point ToPoint(this ScreenPoint pt, bool aliased)
+        public static Point ToPoint(this ScreenPoint pt)
+        {
+            return new Point(pt.X, pt.Y);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="ScreenPoint" /> to a pixel aligned<see cref="Point" />.
+        /// </summary>
+        /// <param name="pt">The screen point.</param>
+        /// <returns>A pixel aligned <see cref="Point" />.</returns>
+        public static Point ToPixelAlignedPoint(this ScreenPoint pt)
         {
             // adding 0.5 to get pixel boundary alignment, seems to work
             // http://weblogs.asp.net/mschwarz/archive/2008/01/04/silverlight-rectangles-paths-and-line-comparison.aspx
             // http://www.wynapse.com/Silverlight/Tutor/Silverlight_Rectangles_Paths_And_Lines_Comparison.aspx
-            if (aliased)
-            {
-                return new Point(0.5 + (int)pt.X, 0.5 + (int)pt.Y);
-            }
+            return new Point(0.5 + (int)pt.X, 0.5 + (int)pt.Y);
+        }
 
-            return new Point(pt.X, pt.Y);
+        /// <summary>
+        /// Converts an <see cref="OxyRect" /> to a <see cref="Rect" />.
+        /// </summary>
+        /// <param name="r">The rectangle.</param>
+        /// <returns>A <see cref="Rect" />.</returns>
+        public static Rect ToRect(this OxyRect r)
+        {
+            return new Rect(r.Left, r.Top, r.Width, r.Height);
+        }
+
+        /// <summary>
+        /// Converts an <see cref="OxyRect" /> to a pixel aligned <see cref="Rect" />.
+        /// </summary>
+        /// <param name="r">The rectangle.</param>
+        /// <returns>A pixel aligned<see cref="Rect" />.</returns>
+        public static Rect ToPixelAlignedRect(this OxyRect r)
+        {
+            double x = 0.5 + (int)r.Left;
+            double y = 0.5 + (int)r.Top;
+            double ri = 0.5 + (int)r.Right;
+            double bo = 0.5 + (int)r.Bottom;
+            return new Rect(x, y, ri - x, bo - y);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="ScreenPoint" /> to a <see cref="Point" />.
+        /// </summary>
+        /// <param name="pt">The screen point.</param>
+        /// <param name="aliased">use pixel alignment conversion if set to <c>true</c>.</param>
+        /// <returns>A <see cref="Point" />.</returns>
+        public static Point ToPoint(this ScreenPoint pt, bool aliased)
+        {
+            return aliased ? ToPixelAlignedPoint(pt) : ToPoint(pt);
+        }
+
+        /// <summary>
+        /// Creates a point collection from the specified points.
+        /// </summary>
+        /// <param name="points">The points to convert.</param>
+        /// <param name="aliased">convert to pixel aligned points if set to <c>true</c>.</param>
+        /// <returns>The point collection.</returns>
+        public static PointCollection ToPointCollection(this IEnumerable<ScreenPoint> points, bool aliased)
+        {
+            return new PointCollection(aliased ? points.Select(p => p.ToPixelAlignedPoint()) : points.Select(p => p.ToPoint()));
         }
 
         /// <summary>
@@ -190,16 +242,7 @@ namespace OxyPlot.Wpf
         /// <returns>A <see cref="Rect" />.</returns>
         public static Rect ToRect(this OxyRect r, bool aliased)
         {
-            if (aliased)
-            {
-                double x = 0.5 + (int)r.Left;
-                double y = 0.5 + (int)r.Top;
-                double ri = 0.5 + (int)r.Right;
-                double bo = 0.5 + (int)r.Bottom;
-                return new Rect(x, y, ri - x, bo - y);
-            }
-
-            return new Rect(r.Left, r.Top, r.Width, r.Height);
+            return aliased ? ToPixelAlignedRect(r) : ToRect(r);
         }
 
         /// <summary>

@@ -194,7 +194,7 @@ namespace OxyPlot.Wpf
             var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
             foreach (var rect in rectangles)
             {
-                gg.Children.Add(new EllipseGeometry(rect.ToRect(true)));
+                gg.Children.Add(new EllipseGeometry(rect.ToRect()));
             }
 
             path.Data = gg;
@@ -226,14 +226,7 @@ namespace OxyPlot.Wpf
             var e = this.CreateAndAdd<Polyline>();
             this.SetStroke(e, stroke, thickness, lineJoin, dashArray, 0, aliased);
 
-            var pc = new PointCollection(points.Count);
-            foreach (var p in points)
-            {
-                pc.Add(p.ToPoint(aliased));
-            }
-
-            // var pc = new PointCollection(points.Select(p => p.ToPoint(aliased)));
-            e.Points = pc;
+            e.Points = points.ToPointCollection(aliased);
         }
 
         /// <summary>
@@ -321,13 +314,7 @@ namespace OxyPlot.Wpf
                 e.Fill = this.GetCachedBrush(fill);
             }
 
-            var pc = new PointCollection(points.Count);
-            foreach (var p in points)
-            {
-                pc.Add(p.ToPoint(aliased));
-            }
-
-            e.Points = pc;
+            e.Points = points.ToPointCollection(aliased);
         }
 
         /// <summary>
@@ -382,20 +369,21 @@ namespace OxyPlot.Wpf
                 bool first = true;
                 foreach (var p in polygon)
                 {
+                    var point = aliased ? p.ToPixelAlignedPoint() : p.ToPoint();
                     if (first)
                     {
                         if (usg)
                         {
-                            sgc.BeginFigure(p.ToPoint(aliased), !fill.IsUndefined(), true);
+                            sgc.BeginFigure(point, !fill.IsUndefined(), true);
                         }
                         else
                         {
                             figure = new PathFigure
-                                {
-                                    StartPoint = p.ToPoint(aliased),
-                                    IsFilled = !fill.IsUndefined(),
-                                    IsClosed = true
-                                };
+                            {
+                                StartPoint = point,
+                                IsFilled = !fill.IsUndefined(),
+                                IsClosed = true
+                            };
                             pathGeometry.Figures.Add(figure);
                         }
 
@@ -405,12 +393,11 @@ namespace OxyPlot.Wpf
                     {
                         if (usg)
                         {
-                            sgc.LineTo(p.ToPoint(aliased), !stroke.IsUndefined(), true);
+                            sgc.LineTo(point, !stroke.IsUndefined(), true);
                         }
                         else
                         {
-                            figure.Segments.Add(
-                                new LineSegment(p.ToPoint(aliased), !stroke.IsUndefined()) { IsSmoothJoin = true });
+                            figure.Segments.Add(new LineSegment(point, !stroke.IsUndefined()) { IsSmoothJoin = true });
                         }
                     }
                 }
@@ -492,7 +479,7 @@ namespace OxyPlot.Wpf
             var gg = new GeometryGroup { FillRule = FillRule.Nonzero };
             foreach (var rect in rectangles)
             {
-                gg.Children.Add(new RectangleGeometry { Rect = rect.ToRect(true) });
+                gg.Children.Add(new RectangleGeometry { Rect = rect.ToPixelAlignedRect() });
             }
 
             path.Data = gg;
@@ -724,7 +711,7 @@ namespace OxyPlot.Wpf
         /// <returns>True if the clip rectangle was set.</returns>
         public bool SetClip(OxyRect clippingRect)
         {
-            this.clip = clippingRect.ToRect(false);
+            this.clip = clippingRect.ToRect();
             return true;
         }
 
@@ -1090,7 +1077,7 @@ namespace OxyPlot.Wpf
             var last = new Point();
             for (int i = 0; i < n; i++)
             {
-                var p = points[i].ToPoint(aliased);
+                var p = aliased ? points[i].ToPixelAlignedPoint() : points[i].ToPoint();
                 pc.Add(p);
 
                 // alt. 1
