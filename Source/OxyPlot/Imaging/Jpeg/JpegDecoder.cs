@@ -180,11 +180,8 @@ namespace OxyPlot
         /// Gets information about the image in the specified byte array.
         /// </summary>
         /// <param name="bytes">The image data.</param>
-        /// <returns>
-        /// An <see cref="OxyImageInfo" /> structure.
-        /// </returns>
-        /// <exception cref="System.FormatException">
-        /// Invalid SOI
+        /// <returns>An <see cref="OxyImageInfo" /> structure.</returns>
+        /// <exception cref="System.FormatException">Invalid SOI
         /// or
         /// Invalid APP0 marker
         /// or
@@ -192,8 +189,7 @@ namespace OxyPlot
         /// or
         /// Invalid Exif identifier
         /// or
-        /// Invalid TIFF identifier
-        /// </exception>
+        /// Invalid TIFF identifier</exception>
         public OxyImageInfo GetImageInfo(byte[] bytes)
         {
             int width = -1;
@@ -443,9 +439,7 @@ namespace OxyPlot
         /// Decodes an image from the specified stream.
         /// </summary>
         /// <param name="s">The stream.</param>
-        /// <returns>
-        /// The 32-bit pixel data.
-        /// </returns>
+        /// <returns>The 32-bit pixel data.</returns>
         public OxyColor[,] Decode(Stream s)
         {
             throw new NotImplementedException();

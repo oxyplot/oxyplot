@@ -27,189 +27,189 @@
 
 namespace OxyPlot.XamarinIOS
 {
-	using MonoTouch.CoreGraphics;
-	using MonoTouch.Foundation;
-	using MonoTouch.UIKit;
-	using OxyPlot;
+    using MonoTouch.CoreGraphics;
+    using MonoTouch.Foundation;
+    using MonoTouch.UIKit;
+    using OxyPlot;
 
-	[Register ("PlotView")]
-	public class PlotView : UIView, IPlotControl
-	{
-		private PlotModel model;
-		private IPlotController controller;
-		private IPlotController defaultController;
+    [Register ("PlotView")]
+    public class PlotView : UIView, IPlotControl
+    {
+        private PlotModel model;
+        private IPlotController controller;
+        private IPlotController defaultController;
 
-		public PlotView ()
-		{
-			this.UserInteractionEnabled = true;
-			this.MultipleTouchEnabled = true;
-			this.KeepAspectRatioWhenPinching = true;
-		}
-			
-		public PlotModel Model {
-			get {
-				return this.model;
-			}
+        public PlotView ()
+        {
+            this.UserInteractionEnabled = true;
+            this.MultipleTouchEnabled = true;
+            this.KeepAspectRatioWhenPinching = true;
+        }
 
-			set {
-				if (this.model != value) {
-					this.model = value;
-					this.InvalidatePlot (true);
-				}
-			}
+        public PlotModel Model {
+            get {
+                return this.model;
+            }
 
-		}
+            set {
+                if (this.model != value) {
+                    this.model = value;
+                    this.InvalidatePlot (true);
+                }
+            }
 
-		public IPlotController Controller {
-			get {
-				return this.controller;
-			}
+        }
 
-			set {
-				if (this.controller != value) {
-					this.controller = value;
-				}
-			}
-		}
+        public IPlotController Controller {
+            get {
+                return this.controller;
+            }
 
-		public PlotModel ActualModel {
-			get {
-				return this.Model;
-			}
-		}
+            set {
+                if (this.controller != value) {
+                    this.controller = value;
+                }
+            }
+        }
 
-		public IPlotController ActualController {
-			get {
-				return this.Controller ?? (this.defaultController ?? (this.defaultController = new PlotController ()));
-			}
-		}
+        public PlotModel ActualModel {
+            get {
+                return this.Model;
+            }
+        }
 
-		public bool KeepAspectRatioWhenPinching { get; set;}
+        public IPlotController ActualController {
+            get {
+                return this.Controller ?? (this.defaultController ?? (this.defaultController = new PlotController ()));
+            }
+        }
 
-		public void HideTracker ()
-		{
-		}
+        public bool KeepAspectRatioWhenPinching { get; set;}
 
-		public void HideZoomRectangle ()
-		{
-		}
+        public void HideTracker ()
+        {
+        }
 
-		public void InvalidatePlot (bool updateData = true)
-		{
-			if (this.model != null) {
-				this.model.Update (updateData);
-			}
+        public void HideZoomRectangle ()
+        {
+        }
 
-			this.SetNeedsDisplay ();
-		}
+        public void InvalidatePlot (bool updateData = true)
+        {
+            if (this.model != null) {
+                this.model.Update (updateData);
+            }
 
-		public void SetCursorType (CursorType cursorType)
-		{
-		}
+            this.SetNeedsDisplay ();
+        }
 
-		public void ShowTracker (TrackerHitResult trackerHitResult)
-		{
-		}
+        public void SetCursorType (CursorType cursorType)
+        {
+        }
 
-		public void ShowZoomRectangle (OxyRect rectangle)
-		{
-		}
+        public void ShowTracker (TrackerHitResult trackerHitResult)
+        {
+        }
 
-		public void SetClipboardText (string text)
-		{
-		}
+        public void ShowZoomRectangle (OxyRect rectangle)
+        {
+        }
 
-		public override void InvalidateIntrinsicContentSize ()
-		{
-			base.InvalidateIntrinsicContentSize ();
-			System.Diagnostics.Debug.WriteLine ("InvalidateIntrinsicContentSize()");
-		}
+        public void SetClipboardText (string text)
+        {
+        }
 
-		public override void Draw (System.Drawing.RectangleF rect)
-		{
-			var context = UIGraphics.GetCurrentContext ();
-			if (this.model.Background.IsVisible ()) {
-				context.SetFillColor (this.model.Background.ToCGColor ());
-				context.FillRect (rect);
-				// TODO: is it possible to set the background color?
-				// this.BackgroundColor = plot.Background.ToUIColor ();
-			}
-		
-			var renderer = new MonoTouchRenderContext (context);
-			this.model.Render (renderer, rect.Width, rect.Height);
-		}
+        public override void InvalidateIntrinsicContentSize ()
+        {
+            base.InvalidateIntrinsicContentSize ();
+            System.Diagnostics.Debug.WriteLine ("InvalidateIntrinsicContentSize()");
+        }
 
-		public override void MotionBegan (UIEventSubtype motion, UIEvent evt)
-		{
-			base.MotionBegan (motion, evt);
-			if (motion == UIEventSubtype.MotionShake) {
-				this.ActualController.HandleGesture (this, new OxyShakeGesture (), new OxyKeyEventArgs());
-			}
-		}
+        public override void Draw (System.Drawing.RectangleF rect)
+        {
+            var context = UIGraphics.GetCurrentContext ();
+            if (this.model.Background.IsVisible ()) {
+                context.SetFillColor (this.model.Background.ToCGColor ());
+                context.FillRect (rect);
+                // TODO: is it possible to set the background color?
+                // this.BackgroundColor = plot.Background.ToUIColor ();
+            }
 
-		public override void TouchesBegan (NSSet touches, UIEvent evt)
-		{
-			base.TouchesBegan (touches, evt);
-			var touch = touches.AnyObject as UITouch;
-			if (touch != null) {
-				this.ActualController.HandleTouchStarted (this, touch.ToTouchEventArgs (this));
-			}
-		}
+            var renderer = new MonoTouchRenderContext (context);
+            this.model.Render (renderer, rect.Width, rect.Height);
+        }
 
-		public override void TouchesMoved (NSSet touches, UIEvent evt)
-		{
-			// it seems to be easier to handle touch events here than using UIPanGesturRecognizer and UIPinchGestureRecognizer
-			base.TouchesMoved (touches, evt);
+        public override void MotionBegan (UIEventSubtype motion, UIEvent evt)
+        {
+            base.MotionBegan (motion, evt);
+            if (motion == UIEventSubtype.MotionShake) {
+                this.ActualController.HandleGesture (this, new OxyShakeGesture (), new OxyKeyEventArgs());
+            }
+        }
 
-			// convert the touch points to an array
-			var ta = touches.ToArray<UITouch> ();
+        public override void TouchesBegan (NSSet touches, UIEvent evt)
+        {
+            base.TouchesBegan (touches, evt);
+            var touch = touches.AnyObject as UITouch;
+            if (touch != null) {
+                this.ActualController.HandleTouchStarted (this, touch.ToTouchEventArgs (this));
+            }
+        }
 
-			if (ta.Length > 0) {
-				// get current and previous location of the first touch point
-				var t1 = ta [0];
-				var l1 = t1.LocationInView (this).ToScreenPoint ();
-				var pl1 = t1.PreviousLocationInView (this).ToScreenPoint ();
-				var l = l1;
-				var t = l1 - pl1;
-				var s = new ScreenVector (1, 1);
-				if (ta.Length > 1) {
-					// get current and previous location of the second touch point
-					var t2 = ta [1];
-					var l2 = t2.LocationInView (this).ToScreenPoint ();
-					var pl2 = t2.PreviousLocationInView (this).ToScreenPoint ();
-					var d = l1 - l2;
-					var pd = pl1 - pl2;
-					if (!this.KeepAspectRatioWhenPinching) {
-						var scalex = System.Math.Abs (pd.X) > 0 ? System.Math.Abs (d.X / pd.X) : 1;
-						var scaley = System.Math.Abs (pd.Y) > 0 ? System.Math.Abs (d.Y / pd.Y) : 1;
-						s = new ScreenVector (scalex, scaley);
-					} else {
-						var scale = pd.Length > 0 ? d.Length / pd.Length : 1;
-						s = new ScreenVector (scale, scale);
-					}
-				} 
-			
-				var e = new OxyTouchEventArgs { Position = l, DeltaTranslation = t, DeltaScale = s };
-				this.ActualController.HandleTouchDelta (this, e);
-			}
-		}
+        public override void TouchesMoved (NSSet touches, UIEvent evt)
+        {
+            // it seems to be easier to handle touch events here than using UIPanGesturRecognizer and UIPinchGestureRecognizer
+            base.TouchesMoved (touches, evt);
 
-		public override void TouchesEnded (NSSet touches, UIEvent evt)
-		{
-			base.TouchesEnded (touches, evt);
-			var touch = touches.AnyObject as UITouch;
-			if (touch != null) {
-				this.ActualController.HandleTouchCompleted (this, touch.ToTouchEventArgs (this));
-			}
-		}
+            // convert the touch points to an array
+            var ta = touches.ToArray<UITouch> ();
 
-		public override void TouchesCancelled (NSSet touches, UIEvent evt)
-		{
-			base.TouchesCancelled (touches, evt);
-			var touch = touches.AnyObject as UITouch;
-			if (touch != null) {
-				this.ActualController.HandleTouchCompleted (this, touch.ToTouchEventArgs (this));
-			}
-		}
-	}
+            if (ta.Length > 0) {
+                // get current and previous location of the first touch point
+                var t1 = ta [0];
+                var l1 = t1.LocationInView (this).ToScreenPoint ();
+                var pl1 = t1.PreviousLocationInView (this).ToScreenPoint ();
+                var l = l1;
+                var t = l1 - pl1;
+                var s = new ScreenVector (1, 1);
+                if (ta.Length > 1) {
+                    // get current and previous location of the second touch point
+                    var t2 = ta [1];
+                    var l2 = t2.LocationInView (this).ToScreenPoint ();
+                    var pl2 = t2.PreviousLocationInView (this).ToScreenPoint ();
+                    var d = l1 - l2;
+                    var pd = pl1 - pl2;
+                    if (!this.KeepAspectRatioWhenPinching) {
+                        var scalex = System.Math.Abs (pd.X) > 0 ? System.Math.Abs (d.X / pd.X) : 1;
+                        var scaley = System.Math.Abs (pd.Y) > 0 ? System.Math.Abs (d.Y / pd.Y) : 1;
+                        s = new ScreenVector (scalex, scaley);
+                    } else {
+                        var scale = pd.Length > 0 ? d.Length / pd.Length : 1;
+                        s = new ScreenVector (scale, scale);
+                    }
+                }
+
+                var e = new OxyTouchEventArgs { Position = l, DeltaTranslation = t, DeltaScale = s };
+                this.ActualController.HandleTouchDelta (this, e);
+            }
+        }
+
+        public override void TouchesEnded (NSSet touches, UIEvent evt)
+        {
+            base.TouchesEnded (touches, evt);
+            var touch = touches.AnyObject as UITouch;
+            if (touch != null) {
+                this.ActualController.HandleTouchCompleted (this, touch.ToTouchEventArgs (this));
+            }
+        }
+
+        public override void TouchesCancelled (NSSet touches, UIEvent evt)
+        {
+            base.TouchesCancelled (touches, evt);
+            var touch = touches.AnyObject as UITouch;
+            if (touch != null) {
+                this.ActualController.HandleTouchCompleted (this, touch.ToTouchEventArgs (this));
+            }
+        }
+    }
 }

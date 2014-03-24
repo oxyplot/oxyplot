@@ -38,9 +38,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the annotation text.
         /// </summary>
-        /// <value>
-        /// The text.
-        /// </value>
+        /// <value>The text.</value>
         public string Text { get; set; }
     }
 }

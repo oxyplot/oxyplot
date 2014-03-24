@@ -57,9 +57,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="OxyInputEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="OxyInputEventArgs" /> instance containing the event data.</param>
         public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);

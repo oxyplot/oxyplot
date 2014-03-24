@@ -40,37 +40,37 @@ namespace OxyPlot.Wpf
     public class CategoryAxis : LinearAxis
     {
         /// <summary>
-        /// The gap width property.
+        /// Identifies the <see cref="GapWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty GapWidthProperty = DependencyProperty.Register(
             "GapWidth", typeof(double), typeof(CategoryAxis), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// The is tick centered property.
+        /// Identifies the <see cref="IsTickCentered"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsTickCenteredProperty = DependencyProperty.Register(
             "IsTickCentered", typeof(bool), typeof(CategoryAxis), new PropertyMetadata(false, DataChanged));
 
         /// <summary>
-        /// The items source property.
+        /// Identifies the <see cref="ItemsSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
             "ItemsSource", typeof(IEnumerable), typeof(CategoryAxis), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The label field property.
+        /// Identifies the <see cref="LabelField"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LabelFieldProperty = DependencyProperty.Register(
             "LabelField", typeof(string), typeof(CategoryAxis), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The labels property.
+        /// Identifies the <see cref="Labels"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LabelsProperty = DependencyProperty.Register(
             "Labels", typeof(IList<string>), typeof(CategoryAxis), new PropertyMetadata(new List<string>(), DataChanged));
 
         /// <summary>
-        /// Initializes static members of the <see cref="CategoryAxis"/> class.
+        /// Initializes static members of the <see cref="CategoryAxis" /> class.
         /// </summary>
         static CategoryAxis()
         {
@@ -81,7 +81,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryAxis"/> class.
+        /// Initializes a new instance of the <see cref="CategoryAxis" /> class.
         /// </summary>
         public CategoryAxis()
         {
@@ -91,9 +91,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the gap width.
         /// </summary>
-        /// <value>
-        /// The width of the gap.
-        /// </value>
+        /// <value>The width of the gap.</value>
         public double GapWidth
         {
             get
@@ -174,9 +172,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal axis.
         /// </summary>
-        /// <returns>
-        /// The internal axis.
-        /// </returns>
+        /// <returns>The internal axis.</returns>
         public override OxyPlot.Axes.Axis CreateModel()
         {
             this.SynchronizeProperties();

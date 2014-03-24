@@ -33,18 +33,18 @@ namespace OxyPlot
     using System;
 
     /// <summary>
-    /// Provides utilities for <see cref="Array"/>s.
+    /// Provides utilities for <see cref="Array" />s.
     /// </summary>
     public static class Arrays
     {
         /// <summary>
-        /// Copies a range of the specified <see cref="Array"/>.
+        /// Copies a range of the specified <see cref="Array" />.
         /// </summary>
         /// <typeparam name="T">The type of the array items.</typeparam>
         /// <param name="source">The source array.</param>
         /// <param name="from">The start index.</param>
         /// <param name="to">The end index.</param>
-        /// <returns>An <see cref="Array"/> containing the items from index <paramref name="from"/> to index <paramref name="to"/>.</returns>
+        /// <returns>An <see cref="Array" /> containing the items from index <paramref name="from" /> to index <paramref name="to" />.</returns>
         public static T[] CopyOfRange<T>(T[] source, int from, int to)
         {
             var result = new T[to - from];
@@ -57,12 +57,12 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Copies the first items of the specified <see cref="Array"/>.
+        /// Copies the first items of the specified <see cref="Array" />.
         /// </summary>
         /// <typeparam name="T">The type of the array items.</typeparam>
         /// <param name="source">The source array.</param>
         /// <param name="newLength">The number of items to copy.</param>
-        /// <returns>An <see cref="Array"/> containing the items from index 0 to index <paramref name="newLength"/>.</returns>
+        /// <returns>An <see cref="Array" /> containing the items from index 0 to index <paramref name="newLength" />.</returns>
         public static T[] CopyOf<T>(T[] source, int newLength)
         {
             var result = new T[newLength];

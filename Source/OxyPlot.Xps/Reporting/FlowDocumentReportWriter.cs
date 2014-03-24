@@ -69,7 +69,7 @@ namespace OxyPlot.Xps
         private bool disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FlowDocumentReportWriter"/> class.
+        /// Initializes a new instance of the <see cref="FlowDocumentReportWriter" /> class.
         /// </summary>
         public FlowDocumentReportWriter()
         {
@@ -135,9 +135,7 @@ namespace OxyPlot.Xps
         /// <summary>
         /// The write drawing.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
+        /// <param name="d">The d.</param>
         public void WriteDrawing(DrawingFigure d)
         {
         }
@@ -145,9 +143,7 @@ namespace OxyPlot.Xps
         /// <summary>
         /// The write equation.
         /// </summary>
-        /// <param name="equation">
-        /// The equation.
-        /// </param>
+        /// <param name="equation">The equation.</param>
         public void WriteEquation(Equation equation)
         {
         }
@@ -155,9 +151,7 @@ namespace OxyPlot.Xps
         /// <summary>
         /// The write header.
         /// </summary>
-        /// <param name="h">
-        /// The h.
-        /// </param>
+        /// <param name="h">The h.</param>
         public void WriteHeader(Header h)
         {
             var run = new Run { Text = h.Text };
@@ -169,9 +163,7 @@ namespace OxyPlot.Xps
         /// <summary>
         /// The write image.
         /// </summary>
-        /// <param name="i">
-        /// The i.
-        /// </param>
+        /// <param name="i">The i.</param>
         public void WriteImage(Image i)
         {
             // var figure = new Figure();
@@ -188,9 +180,7 @@ namespace OxyPlot.Xps
         /// <summary>
         /// The write paragraph.
         /// </summary>
-        /// <param name="pa">
-        /// The pa.
-        /// </param>
+        /// <param name="pa">The pa.</param>
         public void WriteParagraph(Paragraph pa)
         {
             this.doc.Blocks.Add(this.CreateParagraph(pa.Text, this.Style.BodyTextStyle));
@@ -199,9 +189,7 @@ namespace OxyPlot.Xps
         /// <summary>
         /// The write plot.
         /// </summary>
-        /// <param name="plot">
-        /// The plot.
-        /// </param>
+        /// <param name="plot">The plot.</param>
         public void WritePlot(PlotFigure plot)
         {
         }
@@ -209,12 +197,8 @@ namespace OxyPlot.Xps
         /// <summary>
         /// The write report.
         /// </summary>
-        /// <param name="report">
-        /// The report.
-        /// </param>
-        /// <param name="reportStyle">
-        /// The style.
-        /// </param>
+        /// <param name="report">The report.</param>
+        /// <param name="reportStyle">The style.</param>
         public void WriteReport(Report report, ReportStyle reportStyle)
         {
             this.Style = reportStyle;
@@ -224,9 +208,7 @@ namespace OxyPlot.Xps
         /// <summary>
         /// The write table.
         /// </summary>
-        /// <param name="t">
-        /// The t.
-        /// </param>
+        /// <param name="t">The t.</param>
         public void WriteTable(Table t)
         {
             var p = new System.Windows.Documents.Paragraph();
@@ -282,12 +264,8 @@ namespace OxyPlot.Xps
         /// <summary>
         /// The set style.
         /// </summary>
-        /// <param name="run">
-        /// The run.
-        /// </param>
-        /// <param name="s">
-        /// The s.
-        /// </param>
+        /// <param name="run">The run.</param>
+        /// <param name="s">The s.</param>
         private static void SetStyle(TextElement run, ParagraphStyle s)
         {
             run.FontFamily = new FontFamily(s.FontFamily);
@@ -305,18 +283,10 @@ namespace OxyPlot.Xps
         /// <summary>
         /// The add page body.
         /// </summary>
-        /// <param name="sourceFlowDocPaginator">
-        /// The source flow doc paginator.
-        /// </param>
-        /// <param name="pageNo">
-        /// The page no.
-        /// </param>
-        /// <param name="pageCanvas">
-        /// The page canvas.
-        /// </param>
-        /// <param name="margins">
-        /// The margins.
-        /// </param>
+        /// <param name="sourceFlowDocPaginator">The source flow doc paginator.</param>
+        /// <param name="pageNo">The page no.</param>
+        /// <param name="pageCanvas">The page canvas.</param>
+        /// <param name="margins">The margins.</param>
         private void AddPageBody(DocumentPaginator sourceFlowDocPaginator, int pageNo, Canvas pageCanvas, Thickness margins)
         {
             var dpv = new DocumentPageView { DocumentPaginator = sourceFlowDocPaginator, PageNumber = pageNo };
@@ -328,15 +298,9 @@ namespace OxyPlot.Xps
         /// <summary>
         /// The add page to document.
         /// </summary>
-        /// <param name="fixedDocument">
-        /// The fixed document.
-        /// </param>
-        /// <param name="pageCanvas">
-        /// The page canvas.
-        /// </param>
-        /// <param name="pageSize">
-        /// The page size.
-        /// </param>
+        /// <param name="fixedDocument">The fixed document.</param>
+        /// <param name="pageCanvas">The page canvas.</param>
+        /// <param name="pageSize">The page size.</param>
         private void AddPageToDocument(FixedDocument fixedDocument, Canvas pageCanvas, Size pageSize)
         {
             var fp = new FixedPage { Width = pageSize.Width, Height = pageSize.Height };
@@ -408,9 +372,7 @@ namespace OxyPlot.Xps
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
-        /// </param>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         private void Dispose(bool disposing)
         {
             if (!this.disposed)

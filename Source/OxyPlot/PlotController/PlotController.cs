@@ -97,9 +97,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the input bindings.
         /// </summary>
-        /// <remarks>
-        /// This collection is used to specify the customized input gestures (both key, mouse and touch).
-        /// </remarks>
+        /// <remarks>This collection is used to specify the customized input gestures (both key, mouse and touch).</remarks>
         public List<InputCommandBinding> InputCommandBindings { get; private set; }
 
         /// <summary>
@@ -191,9 +189,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="gesture">The gesture.</param>
         /// <param name="command">The command. If <c>null</c>, the binding will be removed.</param>
-        /// <remarks>
-        /// This method was created to avoid calling a virtual method in the constructor.
-        /// </remarks>
+        /// <remarks>This method was created to avoid calling a virtual method in the constructor.</remarks>
         protected void BindCore(OxyInputGesture gesture, IPlotControllerCommand command)
         {
             var current = this.InputCommandBindings.FirstOrDefault(icb => icb.Gesture.Equals(gesture));
@@ -212,9 +208,7 @@ namespace OxyPlot
         /// Gets the command for the specified <see cref="OxyInputGesture" />.
         /// </summary>
         /// <param name="gesture">The input gesture.</param>
-        /// <returns>
-        /// A command.
-        /// </returns>
+        /// <returns>A command.</returns>
         protected override IPlotControllerCommand GetCommand(OxyInputGesture gesture)
         {
             var binding = this.InputCommandBindings.FirstOrDefault(b => b.Gesture.Equals(gesture));

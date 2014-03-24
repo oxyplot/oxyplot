@@ -35,9 +35,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Provides an abstract base class for plot series.
     /// </summary>
-    /// <remarks>
-    /// This class contains internal methods that should be called only from the PlotModel.
-    /// </remarks>
+    /// <remarks>This class contains internal methods that should be called only from the PlotModel.</remarks>
     public abstract class Series : UIPlotElement, ITrackableSeries
     {
         /// <summary>
@@ -52,7 +50,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the background color of the series. The background area is defined by the x and y axes.
         /// </summary>
-        /// <value> The background color. </value>
+        /// <value>The background color.</value>
         public OxyColor Background { get; set; }
 
         /// <summary>
@@ -63,7 +61,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the title of the Series.
         /// </summary>
-        /// <value> The title. </value>
+        /// <value>The title.</value>
         public string Title { get; set; }
 
         /// <summary>
@@ -81,9 +79,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public virtual TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             return null;
@@ -92,23 +88,15 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the series on the specified render context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The model.</param>
         public abstract void Render(IRenderContext rc, PlotModel model);
 
         /// <summary>
         /// Renders the legend symbol on the specified render context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="legendBox">
-        /// The legend rectangle.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="legendBox">The legend rectangle.</param>
         public abstract void RenderLegend(IRenderContext rc, OxyRect legendBox);
 
         /// <summary>
@@ -116,9 +104,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="tolerance">The tolerance.</param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
+        /// <returns>A hit test result.</returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
             var thr = this.GetNearestPoint(point, true) ?? this.GetNearestPoint(point, false);
@@ -140,9 +126,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Check if this data series requires X/Y axes. (e.g. Pie series do not require axes)
         /// </summary>
-        /// <returns>
-        /// True if no axes are required.
-        /// </returns>
+        /// <returns>True if no axes are required.</returns>
         protected internal abstract bool AreAxesRequired();
 
         /// <summary>
@@ -153,20 +137,14 @@ namespace OxyPlot.Series
         /// <summary>
         /// Check if the data series is using the specified axis.
         /// </summary>
-        /// <param name="axis">
-        /// An axis which should be checked if used
-        /// </param>
-        /// <returns>
-        /// True if the axis is in use.
-        /// </returns>
+        /// <param name="axis">An axis which should be checked if used</param>
+        /// <returns>True if the axis is in use.</returns>
         protected internal abstract bool IsUsing(Axis axis);
 
         /// <summary>
         /// Sets default values (colors, line style etc) from the plot model.
         /// </summary>
-        /// <param name="model">
-        /// A plot model.
-        /// </param>
+        /// <param name="model">A plot model.</param>
         protected internal abstract void SetDefaultValues(PlotModel model);
 
         /// <summary>

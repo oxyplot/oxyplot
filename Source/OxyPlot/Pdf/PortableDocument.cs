@@ -122,7 +122,7 @@ namespace OxyPlot
         private double currentFontSize;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PortableDocument"/> class.
+        /// Initializes a new instance of the <see cref="PortableDocument" /> class.
         /// </summary>
         public PortableDocument()
         {
@@ -152,17 +152,13 @@ namespace OxyPlot
         /// <summary>
         /// Gets the width of the current page.
         /// </summary>
-        /// <value>
-        /// The width measured in points (1/72 inch).
-        /// </value>
+        /// <value>The width measured in points (1/72 inch).</value>
         public double PageWidth { get; private set; }
 
         /// <summary>
         /// Gets the height of the current page.
         /// </summary>
-        /// <value>
-        /// The height measured in points (1/72 inch).
-        /// </value>
+        /// <value>The height measured in points (1/72 inch).</value>
         public double PageHeight { get; private set; }
 
         /// <summary>
@@ -272,13 +268,11 @@ namespace OxyPlot
         /// </summary>
         /// <param name="dashArray">The dash array specifies the lengths of alternating dashes and gaps; the numbers must be nonnegative and not all zero.</param>
         /// <param name="dashPhase">The dash phase specifies the distance into dash pattern at which to start the dash.</param>
-        /// <remarks>
-        /// Before beginning to stroke a path, the dash array is cycled through, adding up the lengths of 
-        /// dashes and gaps. When the accumulated length equals the value specified by the dash phase, stroking 
-        /// of the path begins, and the dash array is used cyclically from that point onward. 
-        /// Table 4.6 shows examples of line dash patterns. As can be seen from the table, an empty dash array 
-        /// and zero phase can be used to restore the dash pattern to a solid line.
-        /// </remarks>
+        /// <remarks>Before beginning to stroke a path, the dash array is cycled through, adding up the lengths of
+        /// dashes and gaps. When the accumulated length equals the value specified by the dash phase, stroking
+        /// of the path begins, and the dash array is used cyclically from that point onward.
+        /// Table 4.6 shows examples of line dash patterns. As can be seen from the table, an empty dash array
+        /// and zero phase can be used to restore the dash pattern to a solid line.</remarks>
         public void SetLineDashPattern(double[] dashArray, double dashPhase)
         {
             this.Append("[");
@@ -308,11 +302,9 @@ namespace OxyPlot
         /// </summary>
         /// <param name="x1">The x1.</param>
         /// <param name="y1">The y1.</param>
-        /// <remarks>
-        /// Begin a new subpath by moving the current point to coordinates (x, y), omitting any connecting line segment. 
-        /// If the previous path construction operator in the current path was also m, the new m overrides it; 
-        /// no vestige of the previous m operation remains in the path.
-        /// </remarks>
+        /// <remarks>Begin a new subpath by moving the current point to coordinates (x, y), omitting any connecting line segment.
+        /// If the previous path construction operator in the current path was also m, the new m overrides it;
+        /// no vestige of the previous m operation remains in the path.</remarks>
         public void MoveTo(double x1, double y1)
         {
             this.AppendLine("{0:0.####} {1:0.####} m", x1, y1);
@@ -323,16 +315,14 @@ namespace OxyPlot
         /// </summary>
         /// <param name="x1">The x1.</param>
         /// <param name="y1">The y1.</param>
-        /// <remarks>
-        /// Append a straight line segment from the current point to the point (x, y). The new current point is (x, y).
-        /// </remarks>
+        /// <remarks>Append a straight line segment from the current point to the point (x, y). The new current point is (x, y).</remarks>
         public void LineTo(double x1, double y1)
         {
             this.AppendLine("{0:0.####} {1:0.####} l", x1, y1);
         }
 
         /// <summary>
-        /// Appends a cubic Bézier curve to the current path. 
+        /// Appends a cubic Bézier curve to the current path.
         /// </summary>
         /// <param name="x1">The x1.</param>
         /// <param name="y1">The y1.</param>
@@ -340,10 +330,8 @@ namespace OxyPlot
         /// <param name="y2">The y2.</param>
         /// <param name="x3">The x3.</param>
         /// <param name="y3">The y3.</param>
-        /// <remarks>
-        /// The curve extends from the current point to the point (x3 , y3 ), using (x1 , y1 ) and (x2 , y2 ) 
-        /// as the Bézier control points (see “Cubic Bézier Curves,” below). The new current point is (x3 , y3 ).
-        /// </remarks>
+        /// <remarks>The curve extends from the current point to the point (x3 , y3 ), using (x1 , y1 ) and (x2 , y2 )
+        /// as the Bézier control points (see “Cubic Bézier Curves,” below). The new current point is (x3 , y3 ).</remarks>
         public void AppendCubicBezier(double x1, double y1, double x2, double y2, double x3, double y3)
         {
             this.AppendLine("{0:0.####} {1:0.####} {2:0.####} {3:0.####} {4:0.####} {5:0.####} c", x1, y1, x2, y2, x3, y3);
@@ -394,11 +382,9 @@ namespace OxyPlot
         /// <param name="d">The d.</param>
         /// <param name="e">The e.</param>
         /// <param name="f">The f.</param>
-        /// <remarks>
-        /// Modify the current transformation matrix (CTM) by concatenating the specified matrix 
-        /// (see Section 4.2.1, “Coordinate Spaces”). Although the operands specify a matrix, they 
-        /// are written as six separate numbers, not as an array.
-        /// </remarks>
+        /// <remarks>Modify the current transformation matrix (CTM) by concatenating the specified matrix
+        /// (see Section 4.2.1, “Coordinate Spaces”). Although the operands specify a matrix, they
+        /// are written as six separate numbers, not as an array.</remarks>
         public void Transform(double a, double b, double c, double d, double e, double f)
         {
             // Modify the current transformation matrix (CTM) by concatenating the specified matrix.
@@ -504,10 +490,8 @@ namespace OxyPlot
         /// <summary>
         /// Ends the path.
         /// </summary>
-        /// <remarks>
-        /// End the path object without filling or stroking it. This operator is a path-painting no-op, 
-        /// used primarily for the side effect of changing the current clipping path (see Section 4.4.3, “Clipping Path Operators”).
-        /// </remarks>
+        /// <remarks>End the path object without filling or stroking it. This operator is a path-painting no-op,
+        /// used primarily for the side effect of changing the current clipping path (see Section 4.4.3, “Clipping Path Operators”).</remarks>
         public void EndPath()
         {
             this.AppendLine("n");
@@ -516,12 +500,10 @@ namespace OxyPlot
         /// <summary>
         /// Closes the subpath.
         /// </summary>
-        /// <remarks>
-        /// Close the current subpath by appending a straight line segment from the current point 
-        /// to the starting point of the subpath. If the current subpath is already closed, h does nothing. 
-        /// This operator terminates the current subpath. Appending another segment to the current 
-        /// path begins a new subpath, even if the new segment begins at the endpoint reached by the h operation.
-        /// </remarks>
+        /// <remarks>Close the current subpath by appending a straight line segment from the current point
+        /// to the starting point of the subpath. If the current subpath is already closed, h does nothing.
+        /// This operator terminates the current subpath. Appending another segment to the current
+        /// path begins a new subpath, even if the new segment begins at the endpoint reached by the h operation.</remarks>
         public void CloseSubPath()
         {
             this.AppendLine("h");
@@ -534,10 +516,8 @@ namespace OxyPlot
         /// <param name="y">The y-coordinate of the lower-left corner.</param>
         /// <param name="w">The width.</param>
         /// <param name="h">The height.</param>
-        /// <remarks>
-        /// Append a rectangle to the current path as a complete subpath, 
-        /// with lower-left corner (x, y) and dimensions width and height in user space.
-        /// </remarks>
+        /// <remarks>Append a rectangle to the current path as a complete subpath,
+        /// with lower-left corner (x, y) and dimensions width and height in user space.</remarks>
         public void AppendRectangle(double x, double y, double w, double h)
         {
             this.AppendLine("{0:0.####} {1:0.####} {2:0.####} {3:0.####} re", x, y, w, h);
@@ -1130,7 +1110,7 @@ namespace OxyPlot
         /// <returns>The added object.</returns>
         private string AddFont(PortableDocumentFont font)
         {
-            //// For the standard 14 fonts, the entries FirstChar, LastChar, Widths, and FontDescriptor must either all be 
+            //// For the standard 14 fonts, the entries FirstChar, LastChar, Widths, and FontDescriptor must either all be
             //// present or all be absent. Ordinarily, they are absent; specifying them enables a standard font to be overridden
 
             PortableDocumentObject fd = null;
@@ -1204,11 +1184,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Represents an object in the <see cref="PortableDocument"/>.
+        /// Represents an object in the <see cref="PortableDocument" />.
         /// </summary>
-        /// <remarks>
-        /// The object contains a dictionary and text content.
-        /// </remarks>
+        /// <remarks>The object contains a dictionary and text content.</remarks>
         internal class PortableDocumentObject : PdfWriter.IPortableDocumentObject
         {
             /// <summary>
@@ -1227,7 +1205,7 @@ namespace OxyPlot
             private readonly StringBuilder contents;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="PortableDocumentObject"/> class.
+            /// Initializes a new instance of the <see cref="PortableDocumentObject" /> class.
             /// </summary>
             /// <param name="objectNumber">The object number.</param>
             public PortableDocumentObject(int objectNumber)
@@ -1240,9 +1218,7 @@ namespace OxyPlot
             /// <summary>
             /// Gets the object number.
             /// </summary>
-            /// <value>
-            /// The object number.
-            /// </value>
+            /// <value>The object number.</value>
             public int ObjectNumber
             {
                 get
@@ -1254,9 +1230,7 @@ namespace OxyPlot
             /// <summary>
             /// Sets the dictionary value for the specified key.
             /// </summary>
-            /// <value>
-            /// The <see cref="System.Object"/>.
-            /// </value>
+            /// <value>The <see cref="System.Object" />.</value>
             /// <param name="key">The key.</param>
             /// <returns>The object.</returns>
             public object this[string key]
@@ -1288,7 +1262,7 @@ namespace OxyPlot
             }
 
             /// <summary>
-            /// Writes the object to the specified <see cref="PdfWriter"/>.
+            /// Writes the object to the specified <see cref="PdfWriter" />.
             /// </summary>
             /// <param name="w">The writer.</param>
             public void Write(PdfWriter w)

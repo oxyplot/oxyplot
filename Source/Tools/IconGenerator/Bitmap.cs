@@ -99,22 +99,12 @@ namespace IcoMaker
         public uint OffBits { get; set; }
         public int Width { get; private set; }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <remarks>
-        /// Unless BITMAPCOREHEADER is used, uncompressed Windows bitmaps also can be stored from the top to bottom, when the Image Height value is negative.
-        /// </remarks>
+        /// <remarks>Unless BITMAPCOREHEADER is used, uncompressed Windows bitmaps also can be stored from the top to bottom, when the Image Height value is negative.</remarks>
         public int Height { get; private set; }
 
         public ushort Planes { get; private set; }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <remarks>
-        /// Contemporary DIB Headers allow pixel formats with 1, 2, 4, 8, 16, 24 and 32 bits per pixel (bpp).
-        /// </remarks>
+        /// <remarks>Contemporary DIB Headers allow pixel formats with 1, 2, 4, 8, 16, 24 and 32 bits per pixel (bpp).</remarks>
         public ushort BitCount { get; private set; }
         public uint Compression { get; private set; }
         public uint SizeImage { get; private set; }

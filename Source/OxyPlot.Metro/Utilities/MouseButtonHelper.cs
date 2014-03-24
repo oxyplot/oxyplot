@@ -37,9 +37,7 @@ namespace OxyPlot.Metro
     /// <summary>
     /// Mouse button helper
     /// </summary>
-    /// <remarks>
-    /// See <a href="http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx">Jim McCurdy's Tech Blog</a>.
-    /// </remarks>
+    /// <remarks>See <a href="http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx">Jim McCurdy's Tech Blog</a>.</remarks>
     internal static class MouseButtonHelper
     {
         /// <summary>
@@ -70,15 +68,9 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Determines whether the last click is a double click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="position">
-        /// The position.
-        /// </param>
-        /// <returns>
-        /// True if the click was a double click.
-        /// </returns>
+        /// <param name="sender">The sender.</param>
+        /// <param name="position">The position.</param>
+        /// <returns>True if the click was a double click.</returns>
         internal static bool IsDoubleClick(object sender, Point position)
         {
             long clickTicks = DateTime.Now.Ticks;
@@ -109,15 +101,9 @@ namespace OxyPlot.Metro
         /// <summary>
         /// Calculates the distance.
         /// </summary>
-        /// <param name="pointA">
-        /// The point a.
-        /// </param>
-        /// <param name="pointB">
-        /// The point b.
-        /// </param>
-        /// <returns>
-        /// The distance.
-        /// </returns>
+        /// <param name="pointA">The point a.</param>
+        /// <param name="pointB">The point b.</param>
+        /// <returns>The distance.</returns>
         private static double Distance(this Point pointA, Point pointB)
         {
             double x = pointA.X - pointB.X;

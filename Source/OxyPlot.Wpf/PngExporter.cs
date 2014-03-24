@@ -42,7 +42,7 @@ namespace OxyPlot.Wpf
     public class PngExporter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PngExporter"/> class.
+        /// Initializes a new instance of the <see cref="PngExporter" /> class.
         /// </summary>
         public PngExporter()
         {
@@ -65,9 +65,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the resolution of the output image.
         /// </summary>
-        /// <value>
-        /// The resolution in dots per inch (dpi).
-        /// </value>
+        /// <value>The resolution in dots per inch (dpi).</value>
         public int Resolution { get; set; }
 
         /// <summary>
@@ -82,7 +80,7 @@ namespace OxyPlot.Wpf
         /// <param name="fileName">The file name.</param>
         /// <param name="width">The width of the output bitmap.</param>
         /// <param name="height">The height of the output bitmap.</param>
-        /// <param name="background">The background color. The default value is null.</param>
+        /// <param name="background">The background color. The default value is <c>null</c>.</param>
         /// <param name="resolution">The resolution (resolution). The default value is 96.</param>
         public static void Export(PlotModel model, string fileName, int width, int height, OxyColor background, int resolution = 96)
         {
@@ -99,7 +97,7 @@ namespace OxyPlot.Wpf
         /// <param name="stream">The stream.</param>
         /// <param name="width">The width of the output bitmap.</param>
         /// <param name="height">The height of the output bitmap.</param>
-        /// <param name="background">The background color. The default value is null.</param>
+        /// <param name="background">The background color. The default value is <c>null</c>.</param>
         /// <param name="resolution">The resolution (resolution). The default value is 96.</param>
         public static void Export(PlotModel model, Stream stream, int width, int height, OxyColor background, int resolution = 96)
         {
@@ -128,7 +126,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Exports the specified <see cref="PlotModel"/> to the specified <see cref="Stream"/>.
+        /// Exports the specified <see cref="PlotModel" /> to the specified <see cref="Stream" />.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="stream">The output stream.</param>

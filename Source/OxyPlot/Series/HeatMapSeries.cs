@@ -71,7 +71,7 @@ namespace OxyPlot.Series
         private OxyImage image;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HeatMapSeries"/> class.
+        /// Initializes a new instance of the <see cref="HeatMapSeries" /> class.
         /// </summary>
         public HeatMapSeries()
         {
@@ -103,19 +103,15 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the data array.
         /// </summary>
-        /// <remarks>
-        /// Note that the indices of the data array refer to [x,y].
+        /// <remarks>Note that the indices of the data array refer to [x,y].
         /// The first dimension is along the x-axis.
-        /// The second dimension is along the y-axis.
-        /// </remarks>
+        /// The second dimension is along the y-axis.</remarks>
         public double[,] Data { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to interpolate when rendering. The default value is <c>true</c>.
         /// </summary>
-        /// <remarks>
-        /// This property is not supported on all platforms.
-        /// </remarks>
+        /// <remarks>This property is not supported on all platforms.</remarks>
         public bool Interpolate { get; set; }
 
         /// <summary>
@@ -131,32 +127,26 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the color axis.
         /// </summary>
-        /// <value>
-        /// The color axis.
-        /// </value>
+        /// <value>The color axis.</value>
         public IColorAxis ColorAxis { get; protected set; }
 
         /// <summary>
         /// Gets or sets the color axis key.
         /// </summary>
-        /// <value> The color axis key. </value>
+        /// <value>The color axis key.</value>
         public string ColorAxisKey { get; set; }
 
         /// <summary>
-        /// Gets or sets the coordinate definition. The default value is <see cref="HeatMapCoordinateDefinition.Center"/>.
+        /// Gets or sets the coordinate definition. The default value is <see cref="HeatMapCoordinateDefinition.Center" />.
         /// </summary>
-        /// <value>
-        /// The coordinate definition.
-        /// </value>
+        /// <value>The coordinate definition.</value>
         public HeatMapCoordinateDefinition CoordinateDefinition { get; set; }
 
         /// <summary>
         /// Gets or sets the format string for the cell labels.
         /// </summary>
         /// <value>The format string.</value>
-        /// <remarks>
-        /// The label format string is only used when <see cref="LabelFontSize"/> is greater than 0.
-        /// </remarks>
+        /// <remarks>The label format string is only used when <see cref="LabelFontSize" /> is greater than 0.</remarks>
         public string LabelFormatString { get; set; }
 
         /// <summary>
@@ -165,11 +155,9 @@ namespace OxyPlot.Series
         public double LabelFontSize { get; set; }
 
         /// <summary>
-        /// Invalidates the image that renders the heat map. The image will be regenerated the next time the <see cref="HeatMapSeries"/> is rendered.
+        /// Invalidates the image that renders the heat map. The image will be regenerated the next time the <see cref="HeatMapSeries" /> is rendered.
         /// </summary>
-        /// <remarks>
-        /// Call <see cref="PlotModel.InvalidatePlot"/> to refresh the view.
-        /// </remarks>
+        /// <remarks>Call <see cref="PlotModel.InvalidatePlot" /> to refresh the view.</remarks>
         public void Invalidate()
         {
             this.image = null;
@@ -178,12 +166,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the series on the specified render context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.Data == null)
@@ -238,15 +222,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// Interpolate the series if this flag is set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (!this.Interpolate)
@@ -345,7 +323,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the labels.
         /// </summary>
-        /// <param name="rc">The <see cref="IRenderContext"/></param>
+        /// <param name="rc">The <see cref="IRenderContext" /></param>
         /// <param name="rect">The bounding rectangle for the data.</param>
         protected virtual void RenderLabels(IRenderContext rc, OxyRect rect)
         {
@@ -442,9 +420,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Tests if a <see cref="DataPoint"/> is inside the heat map
+        /// Tests if a <see cref="DataPoint" /> is inside the heat map
         /// </summary>
-        /// <param name="p">The <see cref="DataPoint"/> to test.</param>
+        /// <param name="p">The <see cref="DataPoint" /> to test.</param>
         /// <returns><c>True</c> if the point is inside the heat map.</returns>
         private bool IsPointInRange(DataPoint p)
         {

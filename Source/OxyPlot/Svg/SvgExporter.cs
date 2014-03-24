@@ -38,7 +38,7 @@ namespace OxyPlot
     public class SvgExporter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SvgExporter"/> class.
+        /// Initializes a new instance of the <see cref="SvgExporter" /> class.
         /// </summary>
         public SvgExporter()
         {
@@ -100,9 +100,7 @@ namespace OxyPlot
         /// <param name="height">The height (points).</param>
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
         /// <param name="textMeasurer">The text measurer.</param>
-        /// <returns>
-        /// The plot as a svg string.
-        /// </returns>
+        /// <returns>The plot as a svg string.</returns>
         public static string ExportToString(PlotModel model, double width, double height, bool isDocument, IRenderContext textMeasurer = null)
         {
             string svg;
@@ -119,7 +117,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Exports the specified <see cref="PlotModel"/> to a <see cref="Stream"/>.
+        /// Exports the specified <see cref="PlotModel" /> to a <see cref="Stream" />.
         /// </summary>
         /// <param name="model">The model to export.</param>
         /// <param name="stream">The target stream.</param>
@@ -129,7 +127,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Exports the specified <see cref="PlotModel"/> to a string.
+        /// Exports the specified <see cref="PlotModel" /> to a string.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns>the SVG content as a string.</returns>

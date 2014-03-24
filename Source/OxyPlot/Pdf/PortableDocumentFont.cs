@@ -31,12 +31,12 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents a font that can be used in a <see cref="PortableDocument"/>.
+    /// Represents a font that can be used in a <see cref="PortableDocument" />.
     /// </summary>
     public class PortableDocumentFont
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PortableDocumentFont"/> class.
+        /// Initializes a new instance of the <see cref="PortableDocumentFont" /> class.
         /// </summary>
         public PortableDocumentFont()
         {
@@ -63,7 +63,7 @@ namespace OxyPlot
         /// Gets or sets the first character in the Widths array.
         /// </summary>
         public int FirstChar { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the character Widths array.
         /// </summary>

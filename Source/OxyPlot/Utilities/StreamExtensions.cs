@@ -33,7 +33,7 @@ namespace OxyPlot
     using System.IO;
 
     /// <summary>
-    /// Implements <see cref="Stream"/> extension methods.
+    /// Implements <see cref="Stream" /> extension methods.
     /// </summary>
     public static class StreamExtensions
     {

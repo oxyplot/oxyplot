@@ -39,7 +39,7 @@ namespace OxyPlot.Axes
     public class CategoryColorAxis : CategoryAxis, IColorAxis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryColorAxis"/> class.
+        /// Initializes a new instance of the <see cref="CategoryColorAxis" /> class.
         /// </summary>
         public CategoryColorAxis()
         {
@@ -162,12 +162,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the high value of the specified palette index.
         /// </summary>
-        /// <param name="paletteIndex">
-        /// Index of the palette.
-        /// </param>
-        /// <returns>
-        /// The value.
-        /// </returns>
+        /// <param name="paletteIndex">Index of the palette.</param>
+        /// <returns>The value.</returns>
         protected double GetHighValue(int paletteIndex)
         {
             IList<double> majorLabelValues;

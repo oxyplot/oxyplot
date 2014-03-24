@@ -38,13 +38,13 @@ namespace OxyPlot.Tests
     using OxyPlot.Axes;
 
     /// <summary>
-    /// Provides unit tests for the <see cref="LinearAxis"/> class.
+    /// Provides unit tests for the <see cref="LinearAxis" /> class.
     /// </summary>
     [TestFixture]
     public class LinearAxisTests
     {
         /// <summary>
-        /// Tests the <see cref="LinearAxis.FormatAsFractions"/> property.
+        /// Tests the <see cref="LinearAxis.FormatAsFractions" /> property.
         /// </summary>
         public class FormatAsFractions
         {

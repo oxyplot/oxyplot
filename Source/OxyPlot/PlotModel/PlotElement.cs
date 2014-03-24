@@ -34,12 +34,12 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Provides an abstract base class for elements contained in a <see cref="PlotModel"/>.
+    /// Provides an abstract base class for elements contained in a <see cref="PlotModel" />.
     /// </summary>
     public abstract class PlotElement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlotElement"/> class.
+        /// Initializes a new instance of the <see cref="PlotElement" /> class.
         /// </summary>
         protected PlotElement()
         {
@@ -52,25 +52,21 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the font.
         /// </summary>
-        /// <value> The font. </value>
-        /// <remarks>
-        /// If the value is null, the parent PlotModel's DefaultFont will be used.
-        /// </remarks>
+        /// <value>The font.</value>
+        /// <remarks>If the value is <c>null</c>, the parent PlotModel's DefaultFont will be used.</remarks>
         public string Font { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the font.
         /// </summary>
-        /// <value> The size of the font. </value>
-        /// <remarks>
-        /// If the value is NaN, the parent PlotModel's DefaultFontSize will be used.
-        /// </remarks>
+        /// <value>The size of the font.</value>
+        /// <remarks>If the value is NaN, the parent PlotModel's DefaultFontSize will be used.</remarks>
         public double FontSize { get; set; }
 
         /// <summary>
         /// Gets or sets the font weight.
         /// </summary>
-        /// <value> The font weight. </value>
+        /// <value>The font weight.</value>
         public double FontWeight { get; set; }
 
         /// <summary>
@@ -81,19 +77,15 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets an arbitrary object value that can be used to store custom information about this plot element.
         /// </summary>
-        /// <value> The intended value. This property has no default value. </value>
-        /// <remarks>
-        /// This property is analogous to Tag properties in other Microsoft programming models. Tag is intended to provide a pre-existing property location where you can store some basic custom information about any PlotElement without requiring you to subclass an element.
-        /// </remarks>
+        /// <value>The intended value. This property has no default value.</value>
+        /// <remarks>This property is analogous to Tag properties in other Microsoft programming models. Tag is intended to provide a pre-existing property location where you can store some basic custom information about any PlotElement without requiring you to subclass an element.</remarks>
         public object Tag { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the text.
         /// </summary>
-        /// <value> The color of the text. </value>
-        /// <remarks>
-        /// If the value is null, the TextColor of the parent PlotModel will be used.
-        /// </remarks>
+        /// <value>The color of the text.</value>
+        /// <remarks>If the value is <c>null</c>, the TextColor of the parent PlotModel will be used.</remarks>
         public OxyColor TextColor { get; set; }
 
         /// <summary>
@@ -110,7 +102,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the actual size of the font.
         /// </summary>
-        /// <value> The actual size of the font. </value>
+        /// <value>The actual size of the font.</value>
         protected internal double ActualFontSize
         {
             get
@@ -133,7 +125,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the actual color of the text.
         /// </summary>
-        /// <value> The actual color of the text. </value>
+        /// <value>The actual color of the text.</value>
         protected internal OxyColor ActualTextColor
         {
             get
@@ -145,9 +137,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the actual culture.
         /// </summary>
-        /// <remarks>
-        /// The culture is defined in the parent PlotModel.
-        /// </remarks>
+        /// <remarks>The culture is defined in the parent PlotModel.</remarks>
         protected CultureInfo ActualCulture
         {
             get
@@ -159,9 +149,7 @@ namespace OxyPlot
         /// <summary>
         /// Returns a hash code for this instance by reflection (!) on all public properties.
         /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
-        /// </returns>
+        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
             // Get the values of all properties in the object (this is slow, any better ideas?)

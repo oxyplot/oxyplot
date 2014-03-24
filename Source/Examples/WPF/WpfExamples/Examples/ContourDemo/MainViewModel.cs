@@ -48,7 +48,7 @@ namespace ContourDemo
         private Example selectedExample;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MainViewModel"/> class.
+        /// Initializes a new instance of the <see cref="MainViewModel" /> class.
         /// </summary>
         public MainViewModel()
         {
@@ -95,9 +95,7 @@ namespace ContourDemo
         /// <summary>
         /// Raises the property changed event.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         protected void RaisePropertyChanged(string property)
         {
             PropertyChangedEventHandler handler = this.PropertyChanged;
@@ -233,44 +231,20 @@ namespace ContourDemo
             private readonly double[] Z;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Example"/> class.
+            /// Initializes a new instance of the <see cref="Example" /> class.
             /// </summary>
-            /// <param name="title">
-            /// The title.
-            /// </param>
-            /// <param name="minx">
-            /// The minx.
-            /// </param>
-            /// <param name="maxx">
-            /// The maxx.
-            /// </param>
-            /// <param name="dx">
-            /// The dx.
-            /// </param>
-            /// <param name="miny">
-            /// The miny.
-            /// </param>
-            /// <param name="maxy">
-            /// The maxy.
-            /// </param>
-            /// <param name="dy">
-            /// The dy.
-            /// </param>
-            /// <param name="minz">
-            /// The minz.
-            /// </param>
-            /// <param name="maxz">
-            /// The maxz.
-            /// </param>
-            /// <param name="dz">
-            /// The dz.
-            /// </param>
-            /// <param name="f">
-            /// The f.
-            /// </param>
-            /// <param name="formatString">
-            /// The format string.
-            /// </param>
+            /// <param name="title">The title.</param>
+            /// <param name="minx">The minx.</param>
+            /// <param name="maxx">The maxx.</param>
+            /// <param name="dx">The dx.</param>
+            /// <param name="miny">The miny.</param>
+            /// <param name="maxy">The maxy.</param>
+            /// <param name="dy">The dy.</param>
+            /// <param name="minz">The minz.</param>
+            /// <param name="maxz">The maxz.</param>
+            /// <param name="dz">The dz.</param>
+            /// <param name="f">The f.</param>
+            /// <param name="formatString">The format string.</param>
             public Example(
                 string title,
                 double minx,
@@ -329,11 +303,9 @@ namespace ContourDemo
             public string Title { get; set; }
 
             /// <summary>
-            /// Returns a <see cref="System.String"/> that represents this instance.
+            /// Returns a <see cref="System.String" /> that represents this instance.
             /// </summary>
-            /// <returns>
-            /// A <see cref="System.String"/> that represents this instance.
-            /// </returns>
+            /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
             public override string ToString()
             {
                 return this.Title;

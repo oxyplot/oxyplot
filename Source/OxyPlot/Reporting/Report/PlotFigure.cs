@@ -51,11 +51,9 @@ namespace OxyPlot.Reporting
         public double Width { get; set; }
 
         /// <summary>
-        /// Writes the figure to the specified <see cref="IReportWriter"/>.
+        /// Writes the figure to the specified <see cref="IReportWriter" />.
         /// </summary>
-        /// <param name="w">
-        /// The target <see cref="IReportWriter"/>.
-        /// </param>
+        /// <param name="w">The target <see cref="IReportWriter" />.</param>
         public override void WriteContent(IReportWriter w)
         {
             w.WritePlot(this);

@@ -41,9 +41,7 @@ namespace OxyPlot.Pdf
     /// <summary>
     /// Provides a render context for portable document format using PdfSharp (and SilverPDF for Silverlight)
     /// </summary>
-    /// <remarks>
-    /// see http://pdfsharp.codeplex.com and http://silverpdf.codeplex.com
-    /// </remarks>
+    /// <remarks>see http://pdfsharp.codeplex.com and http://silverpdf.codeplex.com</remarks>
     internal class PdfRenderContext : RenderContextBase, IDisposable
     {
         /// <summary>
@@ -347,9 +345,7 @@ namespace OxyPlot.Pdf
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <returns>
-        /// The text size.
-        /// </returns>
+        /// <returns>The text size.</returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (text == null)
@@ -377,9 +373,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Saves the document to a stream.
         /// </summary>
-        /// <param name="s">
-        /// The stream.
-        /// </param>
+        /// <param name="s">The stream.</param>
         public void Save(Stream s)
         {
             this.doc.Save(s);
@@ -430,9 +424,7 @@ namespace OxyPlot.Pdf
         /// Sets the clip rectangle.
         /// </summary>
         /// <param name="rect">The clip rectangle.</param>
-        /// <returns>
-        /// True if the clip rectangle was set.
-        /// </returns>
+        /// <returns>True if the clip rectangle was set.</returns>
         public override bool SetClip(OxyRect rect)
         {
             this.g.Save();
@@ -451,12 +443,8 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Converts an OxyColor to a brush.
         /// </summary>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <returns>
-        /// The brush.
-        /// </returns>
+        /// <param name="fill">The fill color.</param>
+        /// <returns>The brush.</returns>
         private static XBrush ToBrush(OxyColor fill)
         {
             if (fill.IsVisible())
@@ -470,12 +458,8 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Converts an OxyColor to an XColor.
         /// </summary>
-        /// <param name="c">
-        /// The source color.
-        /// </param>
-        /// <returns>
-        /// The color.
-        /// </returns>
+        /// <param name="c">The source color.</param>
+        /// <returns>The color.</returns>
         private static XColor ToColor(OxyColor c)
         {
             return XColor.FromArgb(c.A, c.R, c.G, c.B);
@@ -484,12 +468,8 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Converts a list of points.
         /// </summary>
-        /// <param name="points">
-        /// The list of points.
-        /// </param>
-        /// <returns>
-        /// The points.
-        /// </returns>
+        /// <param name="points">The list of points.</param>
+        /// <returns>The points.</returns>
         private static XPoint[] ToPoints(IList<ScreenPoint> points)
         {
             if (points == null)
@@ -508,7 +488,7 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// Gets or creates a <see cref="XImage"/> from the specified image.
+        /// Gets or creates a <see cref="XImage" /> from the specified image.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>The image</returns>
@@ -553,9 +533,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
-        /// </param>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         private void Dispose(bool disposing)
         {
             if (!this.disposed)

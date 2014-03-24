@@ -81,11 +81,9 @@ namespace OxyPlot.Silverlight
         private bool clip;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SilverlightRenderContext"/> class.
+        /// Initializes a new instance of the <see cref="SilverlightRenderContext" /> class.
         /// </summary>
-        /// <param name="canvas">
-        /// The canvas.
-        /// </param>
+        /// <param name="canvas">The canvas.</param>
         public SilverlightRenderContext(Canvas canvas)
         {
             this.canvas = canvas;
@@ -103,9 +101,7 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Gets a value indicating whether to paint the background.
         /// </summary>
-        /// <value>
-        ///  <c>true</c> if the background should be painted; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if the background should be painted; otherwise, <c>false</c>.</value>
         public bool PaintBackground
         {
             get
@@ -123,9 +119,7 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Gets or sets a value indicating whether the context renders to screen.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if the context renders to screen; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if the context renders to screen; otherwise, <c>false</c>.</value>
         public bool RendersToScreen { get; set; }
 
         /// <summary>
@@ -519,9 +513,7 @@ namespace OxyPlot.Silverlight
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <returns>
-        /// The text size.
-        /// </returns>
+        /// <returns>The text size.</returns>
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (string.IsNullOrEmpty(text))
@@ -551,19 +543,14 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Sets the tool tip for the following items.
         /// </summary>
-        /// <param name="text">
-        /// The text in the tooltip.
-        /// </param>
-        /// <params>
-        /// This is only used in the plot controls.
-        /// </params>
+        /// <param name="text">The text in the tooltip.</param>
         public void SetToolTip(string text)
         {
             this.currentToolTip = text;
         }
 
         /// <summary>
-        /// Draws the specified portion of the specified <see cref="OxyImage"/> at the specified location and with the specified size.
+        /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
@@ -646,9 +633,7 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Cleans up resources not in use.
         /// </summary>
-        /// <remarks>
-        /// This method is called at the end of each rendering.
-        /// </remarks>
+        /// <remarks>This method is called at the end of each rendering.</remarks>
         public void CleanUp()
         {
             // Find the images in the cache that has not been used since last call to this method
@@ -683,7 +668,7 @@ namespace OxyPlot.Silverlight
         /// Gets the font weight.
         /// </summary>
         /// <param name="fontWeight">The font weight.</param>
-        /// <returns>A <see cref="FontWeight"/></returns>
+        /// <returns>A <see cref="FontWeight" /></returns>
         private static FontWeight GetFontWeight(double fontWeight)
         {
             return fontWeight > FontWeights.Normal ? System.Windows.FontWeights.Bold : System.Windows.FontWeights.Normal;
@@ -708,9 +693,7 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Applies the tooltip to the specified element.
         /// </summary>
-        /// <param name="element">
-        /// The element.
-        /// </param>
+        /// <param name="element">The element.</param>
         private void ApplyTooltip(DependencyObject element)
         {
             if (!string.IsNullOrEmpty(this.currentToolTip))
@@ -722,12 +705,8 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Gets the cached brush.
         /// </summary>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <returns>
-        /// The brush.
-        /// </returns>
+        /// <param name="stroke">The stroke.</param>
+        /// <returns>The brush.</returns>
         private Brush GetCachedBrush(OxyColor stroke)
         {
             Brush brush;

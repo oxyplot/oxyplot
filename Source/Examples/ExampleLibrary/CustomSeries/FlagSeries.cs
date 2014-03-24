@@ -38,22 +38,22 @@ namespace ExampleLibrary
     using OxyPlot.Series;
 
     /// <summary>
-    ///     Renders a 'flag' above the x-axis at the specified positions (in the Values list).
+    /// Renders a 'flag' above the x-axis at the specified positions (in the Values list).
     /// </summary>
     public class FlagSeries : ItemsSeries
     {
         /// <summary>
-        ///     The symbol position (y coordinate).
+        /// The symbol position (y coordinate).
         /// </summary>
         private double symbolPosition;
 
         /// <summary>
-        ///     The symbol text size.
+        /// The symbol text size.
         /// </summary>
         private OxySize symbolSize;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="FlagSeries" /> class.
+        /// Initializes a new instance of the <see cref="FlagSeries" /> class.
         /// </summary>
         public FlagSeries()
         {
@@ -66,60 +66,58 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        ///     Gets or sets the color of the symbols.
+        /// Gets or sets the color of the symbols.
         /// </summary>
         /// <value>The color.</value>
         public OxyColor Color { get; set; }
 
         /// <summary>
-        ///     Gets or sets the font family of the symbols.
+        /// Gets or sets the font family of the symbols.
         /// </summary>
         /// <value>The font family.</value>
         public string FontFamily { get; set; }
 
         /// <summary>
-        ///     Gets the maximum value.
+        /// Gets the maximum value.
         /// </summary>
         /// <value>The maximum value.</value>
         public double MaximumX { get; private set; }
 
         /// <summary>
-        ///     Gets the minimum value.
+        /// Gets the minimum value.
         /// </summary>
         /// <value>The minimum value.</value>
         public double MinimumX { get; private set; }
 
         /// <summary>
-        ///     Gets or sets the symbol to draw at each value.
+        /// Gets or sets the symbol to draw at each value.
         /// </summary>
         /// <value>The symbol.</value>
         public string Symbol { get; set; }
 
         /// <summary>
-        ///     Gets the values.
+        /// Gets the values.
         /// </summary>
         /// <value>The values.</value>
         public List<double> Values { get; private set; }
 
         /// <summary>
-        ///     Gets the x-axis.
+        /// Gets the x-axis.
         /// </summary>
-        /// <value> The x-axis. </value>
+        /// <value>The x-axis.</value>
         public Axis XAxis { get; private set; }
 
         /// <summary>
-        ///     Gets or sets the x-axis key.
+        /// Gets or sets the x-axis key.
         /// </summary>
-        /// <value> The x-axis key. </value>
+        /// <value>The x-axis key.</value>
         public string XAxisKey { get; set; }
 
         /// <summary>
-        ///     Gets the point on the series that is nearest the specified point.
+        /// Gets the point on the series that is nearest the specified point.
         /// </summary>
         /// <param name="point">The point.</param>
-        /// <param name="interpolate">
-        ///     Interpolate the series if this flag is set to <c>true</c>.
-        /// </param>
+        /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
         /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
@@ -151,7 +149,7 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        ///     Renders the series on the specified render context.
+        /// Renders the series on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
         /// <param name="model">The model.</param>
@@ -163,7 +161,7 @@ namespace ExampleLibrary
             }
 
             this.symbolPosition = model.PlotArea.Bottom;
-			this.symbolSize = rc.MeasureText(this.Symbol, this.ActualFont, this.ActualFontSize);
+            this.symbolSize = rc.MeasureText(this.Symbol, this.ActualFont, this.ActualFontSize);
             foreach (var v in this.Values)
             {
                 if (double.IsNaN(v) || v < this.XAxis.ActualMinimum || v > this.XAxis.ActualMaximum)
@@ -176,8 +174,8 @@ namespace ExampleLibrary
                     new ScreenPoint(x, this.symbolPosition),
                     this.Symbol,
                     this.Color,
-					this.ActualFont,
-					this.ActualFontSize,
+                    this.ActualFont,
+                    this.ActualFontSize,
                     FontWeights.Normal,
                     0,
                     HorizontalAlignment.Center,
@@ -186,7 +184,7 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        ///     Renders the legend symbol on the specified render context.
+        /// Renders the legend symbol on the specified render context.
         /// </summary>
         /// <param name="rc">The rendering context.</param>
         /// <param name="legendBox">The legend rectangle.</param>
@@ -205,7 +203,7 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        ///     Check if this data series requires X/Y axes. (e.g. Pie series do not require axes)
+        /// Check if this data series requires X/Y axes. (e.g. Pie series do not require axes)
         /// </summary>
         /// <returns>True if no axes are required.</returns>
         protected override bool AreAxesRequired()
@@ -214,7 +212,7 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        ///     Ensures that the axes of the series is defined.
+        /// Ensures that the axes of the series is defined.
         /// </summary>
         protected override void EnsureAxes()
         {
@@ -222,7 +220,7 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        ///     Check if the data series is using the specified axis.
+        /// Check if the data series is using the specified axis.
         /// </summary>
         /// <param name="axis">An axis which should be checked if used</param>
         /// <returns>True if the axis is in use.</returns>
@@ -232,7 +230,7 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        ///     Sets default values (colors, line style etc) from the plotmodel.
+        /// Sets default values (colors, line style etc) from the plotmodel.
         /// </summary>
         /// <param name="model">A plot model.</param>
         protected override void SetDefaultValues(PlotModel model)
@@ -240,7 +238,7 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        ///     Updates the axis maximum and minimum values.
+        /// Updates the axis maximum and minimum values.
         /// </summary>
         protected override void UpdateAxisMaxMin()
         {
@@ -249,7 +247,7 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        ///     Updates the data from the ItemsSource.
+        /// Updates the data from the ItemsSource.
         /// </summary>
         protected override void UpdateData()
         {
@@ -257,7 +255,7 @@ namespace ExampleLibrary
         }
 
         /// <summary>
-        ///     Updates the maximum and minimum of the series.
+        /// Updates the maximum and minimum of the series.
         /// </summary>
         protected override void UpdateMaxMin()
         {

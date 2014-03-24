@@ -31,10 +31,10 @@ namespace OxyPlot.Wpf
     using System.Windows;
     using System.Windows.Media;
 
-    // <summary>
-    // Represents a control that renders a PlotModel using a DrawingContext.
-    // This should give the highest performance with WPF.
-    // The problem is currently to mix aliased (axes) and anti-aliased (curves) elements...
+    /// <summary>
+    /// Represents a control that renders a PlotModel using a DrawingContext.
+    /// This should give the highest performance with WPF.
+    /// The problem is currently to mix aliased (axes) and anti-aliased (curves) elements...
     /// Currently we are rendering to two different PlotFrames, with and without the Alias property set.
     /// </summary>
     internal class PlotFrame : FrameworkElement

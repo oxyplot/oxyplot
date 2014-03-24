@@ -38,7 +38,7 @@ namespace OxyPlot.Wpf
     public abstract class TextualAnnotation : Annotation
     {
         /// <summary>
-        /// The text property.
+        /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
             "Text", typeof(string), typeof(TextualAnnotation), new PropertyMetadata(null, AppearanceChanged));

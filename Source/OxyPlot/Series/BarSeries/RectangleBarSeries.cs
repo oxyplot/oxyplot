@@ -44,7 +44,7 @@ namespace OxyPlot.Series
         private OxyColor defaultFillColor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RectangleBarSeries"/> class.
+        /// Initializes a new instance of the <see cref="RectangleBarSeries" /> class.
         /// </summary>
         public RectangleBarSeries()
         {
@@ -65,9 +65,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the default color of the interior of the rectangles.
         /// </summary>
-        /// <value>
-        /// The color.
-        /// </value>
+        /// <value>The color.</value>
         public OxyColor FillColor { get; set; }
 
         /// <summary>
@@ -97,17 +95,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the color of the border around the rectangles.
         /// </summary>
-        /// <value>
-        /// The color of the stroke.
-        /// </value>
+        /// <value>The color of the stroke.</value>
         public OxyColor StrokeColor { get; set; }
 
         /// <summary>
         /// Gets or sets the thickness of the border around the rectangles.
         /// </summary>
-        /// <value>
-        /// The stroke thickness.
-        /// </value>
+        /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
@@ -118,15 +112,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the point in the dataset that is nearest the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// Specifies whether to interpolate or not.
-        /// </param>
-        /// <returns>
-        /// A <see cref="TrackerHitResult"/> for the current hit.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">Specifies whether to interpolate or not.</param>
+        /// <returns>A <see cref="TrackerHitResult" /> for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (this.ActualBarRectangles == null)
@@ -161,12 +149,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the series on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.Items.Count == 0)
@@ -236,12 +220,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the legend symbol on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="legendBox">
-        /// The legend rectangle.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="legendBox">The legend rectangle.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;
@@ -258,9 +238,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="model">The model.</param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
             if (this.FillColor.IsAutomatic())
@@ -324,12 +302,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Checks if the specified value is valid.
         /// </summary>
-        /// <param name="v">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// True if the value is valid.
-        /// </returns>
+        /// <param name="v">The value.</param>
+        /// <returns>True if the value is valid.</returns>
         protected virtual bool IsValid(double v)
         {
             return !double.IsNaN(v) && !double.IsInfinity(v);

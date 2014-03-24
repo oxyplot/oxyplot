@@ -49,15 +49,16 @@ namespace OxyPlot
     }
 
     /// <summary>
-    /// Provides extension methods for <see cref="IDataPoint"/>.
+    /// Provides extension methods for <see cref="IDataPoint" />.
     /// </summary>
     public static class DataPointExtensions
     {
         /// <summary>
         /// Returns whether the coordinate contains a NaN value.
         /// </summary>
+        /// <value><c>true</c></value>
         /// <param name="p">The point to evaluate.</param>
-        /// <returns><value>true</value> if neither the X nor Y coordinates are NaN values; otherwise, <value>false</value>.</returns>
+        /// <returns><value><c>true</c></value> if neither the X nor Y coordinates are NaN values; otherwise, <value><c>false</c></value>.</returns>
         public static bool IsValid(this IDataPoint p)
         {
             return !double.IsNaN(p.X) && !double.IsNaN(p.Y);

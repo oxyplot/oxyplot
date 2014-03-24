@@ -36,24 +36,20 @@ namespace OxyPlot
     using System.Reflection;
 
     /// <summary>
-    ///     Provides functionality to fill a list by specified properties of another list.
+    /// Provides functionality to fill a list by specified properties of another list.
     /// </summary>
-    /// <remarks>
-    ///     This class uses reflection.
-    /// </remarks>
-    /// <typeparam name="T">
-    ///     The target list item type.
-    /// </typeparam>
+    /// <typeparam name="T">The target list item type.</typeparam>
+    /// <remarks>This class uses reflection.</remarks>
     public class ListFiller<T>
         where T : class, new()
     {
         /// <summary>
-        ///     The properties.
+        /// The properties.
         /// </summary>
         private readonly Dictionary<string, Action<T, object>> properties;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ListFiller{T}" /> class.
+        /// Initializes a new instance of the <see cref="ListFiller{T}" /> class.
         /// </summary>
         public ListFiller()
         {
@@ -61,14 +57,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///     Adds a setter for the specified property.
+        /// Adds a setter for the specified property.
         /// </summary>
-        /// <param name="propertyName">
-        ///     Name of the property.
-        /// </param>
-        /// <param name="setter">
-        ///     The setter.
-        /// </param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="setter">The setter.</param>
         public void Add(string propertyName, Action<T, object> setter)
         {
             if (string.IsNullOrEmpty(propertyName))
@@ -80,7 +72,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///     Fills the specified target list.
+        /// Fills the specified target list.
         /// </summary>
         /// <param name="target">The target.</param>
         /// <param name="source">The source.</param>
@@ -90,14 +82,10 @@ namespace OxyPlot
         }
 
         /// <summary>
-        ///     Fills the specified target list.
+        /// Fills the specified target list.
         /// </summary>
-        /// <param name="target">
-        ///     The target.
-        /// </param>
-        /// <param name="source">
-        ///     The source list.
-        /// </param>
+        /// <param name="target">The target.</param>
+        /// <param name="source">The source list.</param>
         public void Fill(IList target, IEnumerable source)
         {
             PropertyInfo[] pi = null;
@@ -144,6 +132,6 @@ namespace OxyPlot
 
                 target.Add(item);
             }
-        }       
+        }
     }
 }

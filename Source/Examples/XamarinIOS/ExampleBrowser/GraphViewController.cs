@@ -28,95 +28,95 @@
 namespace ExampleBrowser
 {
 
-	using System.Drawing;
+    using System.Drawing;
 
-	using MonoTouch.Foundation;
-	using MonoTouch.UIKit;
-	using MonoTouch.MessageUI;
+    using MonoTouch.Foundation;
+    using MonoTouch.UIKit;
+    using MonoTouch.MessageUI;
 
-	using ExampleLibrary;
+    using ExampleLibrary;
 
-	using OxyPlot.XamarinIOS;
+    using OxyPlot.XamarinIOS;
 
-	public class GraphViewController : UIViewController
-	{
-		private readonly ExampleInfo exampleInfo;
+    public class GraphViewController : UIViewController
+    {
+        private readonly ExampleInfo exampleInfo;
 
-		public GraphViewController (ExampleInfo exampleInfo)
-		{
-			this.exampleInfo = exampleInfo;
-		}
+        public GraphViewController (ExampleInfo exampleInfo)
+        {
+            this.exampleInfo = exampleInfo;
+        }
 
-		public override void LoadView ()
-		{
-			NavigationItem.RightBarButtonItem= new UIBarButtonItem(UIBarButtonSystemItem.Compose,
-				delegate {
-					var actionSheet = new UIActionSheet ("Email", null, "Cancel", "PNG", "PDF"){
-						Style = UIActionSheetStyle.Default
-					};
+        public override void LoadView ()
+        {
+            NavigationItem.RightBarButtonItem= new UIBarButtonItem(UIBarButtonSystemItem.Compose,
+                delegate {
+                    var actionSheet = new UIActionSheet ("Email", null, "Cancel", "PNG", "PDF"){
+                        Style = UIActionSheetStyle.Default
+                    };
 
-					actionSheet.Clicked += delegate (object sender, UIButtonEventArgs args){
+                    actionSheet.Clicked += delegate (object sender, UIButtonEventArgs args){
 
-						if(args.ButtonIndex > 1)
-							return;
+                        if(args.ButtonIndex > 1)
+                            return;
 
-						Email(args.ButtonIndex == 0 ? "png" : "pdf");
-					};
+                        Email(args.ButtonIndex == 0 ? "png" : "pdf");
+                    };
 
-					actionSheet.ShowInView (View);
-				});
+                    actionSheet.ShowInView (View);
+                });
 
-			// Only for iOS 7 and later?
-			this.EdgesForExtendedLayout = UIRectEdge.None;
+            // Only for iOS 7 and later?
+            this.EdgesForExtendedLayout = UIRectEdge.None;
 
-			var plot = new PlotView ();
-			plot.Model = exampleInfo.PlotModel;
-			plot.BackgroundColor = UIColor.White;
-			this.View = plot;
-		}
+            var plot = new PlotView ();
+            plot.Model = exampleInfo.PlotModel;
+            plot.BackgroundColor = UIColor.White;
+            this.View = plot;
+        }
 
-		private void Email(string exportType)
-		{
-			if(!MFMailComposeViewController.CanSendMail)
-				return;
+        private void Email(string exportType)
+        {
+            if(!MFMailComposeViewController.CanSendMail)
+                return;
 
-			var title = exampleInfo.Title + "." + exportType;
-			NSData nsData = null;
-			string attachmentType = "text/plain";
-			var rect = new RectangleF(0,0,800,600);
-			switch(exportType)
-			{
-			case "png":
-				nsData =  View.ToPng(rect);
-				attachmentType = "image/png";
-				break;
-			case "pdf":
-				nsData = View.ToPdf(rect);
-				attachmentType = "text/x-pdf";
-				break;
-			}
+            var title = exampleInfo.Title + "." + exportType;
+            NSData nsData = null;
+            string attachmentType = "text/plain";
+            var rect = new RectangleF(0,0,800,600);
+            switch(exportType)
+            {
+            case "png":
+                nsData =  View.ToPng(rect);
+                attachmentType = "image/png";
+                break;
+            case "pdf":
+                nsData = View.ToPdf(rect);
+                attachmentType = "text/x-pdf";
+                break;
+            }
 
-			var mail = new MFMailComposeViewController ();
-			mail.SetSubject("OxyPlot - " + title);
-			mail.SetMessageBody ("Please find attached " + title, false);
-			mail.Finished += HandleMailFinished;
-			mail.AddAttachmentData(nsData, attachmentType, title);
+            var mail = new MFMailComposeViewController ();
+            mail.SetSubject("OxyPlot - " + title);
+            mail.SetMessageBody ("Please find attached " + title, false);
+            mail.Finished += HandleMailFinished;
+            mail.AddAttachmentData(nsData, attachmentType, title);
 
-			this.PresentViewController (mail, true, null);
-		}
+            this.PresentViewController (mail, true, null);
+        }
 
-		private void HandleMailFinished (object sender, MFComposeResultEventArgs e)
-		{
-			if (e.Result == MFMailComposeResult.Sent) {
-				UIAlertView alert = new UIAlertView ("Mail Alert", "Mail Sent",
-					null, "Yippie", null);
-				alert.Show ();
+        private void HandleMailFinished (object sender, MFComposeResultEventArgs e)
+        {
+            if (e.Result == MFMailComposeResult.Sent) {
+                UIAlertView alert = new UIAlertView ("Mail Alert", "Mail Sent",
+                    null, "Yippie", null);
+                alert.Show ();
 
-				// you should handle other values that could be returned
-				// in e.Result and also in e.Error
-			}
+                // you should handle other values that could be returned
+                // in e.Result and also in e.Error
+            }
 
-			e.Controller.DismissViewController(true, null);
-		}
-	}
+            e.Controller.DismissViewController(true, null);
+        }
+    }
 }

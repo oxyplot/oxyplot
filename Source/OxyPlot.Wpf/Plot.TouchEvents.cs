@@ -39,11 +39,9 @@ namespace OxyPlot.Wpf
     public partial class Plot
     {
         /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted"/> event occurs.
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationStarted" /> event occurs.
         /// </summary>
-        /// <param name="e">
-        /// The data for the event.
-        /// </param>
+        /// <param name="e">The data for the event.</param>
         protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
         {
             base.OnManipulationStarted(e);
@@ -56,11 +54,9 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta" /> event occurs.
         /// </summary>
-        /// <param name="e">
-        /// The data for the event.
-        /// </param>
+        /// <param name="e">The data for the event.</param>
         protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
         {
             base.OnManipulationDelta(e);
@@ -73,11 +69,9 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted"/> event occurs.
+        /// Called when the <see cref="E:System.Windows.UIElement.ManipulationCompleted" /> event occurs.
         /// </summary>
-        /// <param name="e">
-        /// The data for the event.
-        /// </param>
+        /// <param name="e">The data for the event.</param>
         protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
         {
             base.OnManipulationCompleted(e);

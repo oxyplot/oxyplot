@@ -39,7 +39,7 @@ namespace OxyPlot.Axes
     public class AngleAxis : LinearAxis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AngleAxis"/> class.
+        /// Initializes a new instance of the <see cref="AngleAxis" /> class.
         /// </summary>
         public AngleAxis()
         {
@@ -54,23 +54,13 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AngleAxis"/> class.
+        /// Initializes a new instance of the <see cref="AngleAxis" /> class.
         /// </summary>
-        /// <param name="minimum">
-        /// The minimum value.
-        /// </param>
-        /// <param name="maximum">
-        /// The maximum value.
-        /// </param>
-        /// <param name="majorStep">
-        /// The major step.
-        /// </param>
-        /// <param name="minorStep">
-        /// The minor step.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="minimum">The minimum value.</param>
+        /// <param name="maximum">The maximum value.</param>
+        /// <param name="majorStep">The major step.</param>
+        /// <param name="minorStep">The minor step.</param>
+        /// <param name="title">The title.</param>
         public AngleAxis(
             double minimum = double.NaN,
             double maximum = double.NaN,
@@ -99,15 +89,9 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Gets the coordinates used to draw ticks and tick labels (numbers or category names).
         /// </summary>
-        /// <param name="majorLabelValues">
-        /// The major label values.
-        /// </param>
-        /// <param name="majorTickValues">
-        /// The major tick values.
-        /// </param>
-        /// <param name="minorTickValues">
-        /// The minor tick values.
-        /// </param>
+        /// <param name="majorLabelValues">The major label values.</param>
+        /// <param name="majorTickValues">The major tick values.</param>
+        /// <param name="minorTickValues">The minor tick values.</param>
         public override void GetTickValues(
             out IList<double> majorLabelValues, out IList<double> majorTickValues, out IList<double> minorTickValues)
         {
@@ -122,12 +106,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the specified value is valid.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the specified value is valid; otherwise, <c>false</c> .
-        /// </returns>
+        /// <param name="value">The value.</param>
+        /// <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c> .</returns>
         public override bool IsValidValue(double value)
         {
             return !double.IsNaN(value) &&
@@ -143,9 +123,7 @@ namespace OxyPlot.Axes
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// <param name="yaxis">The y-axis.</param>
-        /// <returns>
-        /// The data point.
-        /// </returns>
+        /// <returns>The data point.</returns>
         /// <exception cref="System.InvalidOperationException">Angle axis should always be the y-axis.</exception>
         public override DataPoint InverseTransform(double x, double y, Axis yaxis)
         {
@@ -155,9 +133,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
-        /// <returns>
-        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> .
-        /// </returns>
+        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
         public override bool IsXyAxis()
         {
             return false;
@@ -184,18 +160,10 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Transforms the specified point to screen coordinates.
         /// </summary>
-        /// <param name="x">
-        /// The x value (for the current axis).
-        /// </param>
-        /// <param name="y">
-        /// The y value.
-        /// </param>
-        /// <param name="yaxis">
-        /// The y axis.
-        /// </param>
-        /// <returns>
-        /// The transformed point.
-        /// </returns>
+        /// <param name="x">The x value (for the current axis).</param>
+        /// <param name="y">The y value.</param>
+        /// <param name="yaxis">The y axis.</param>
+        /// <returns>The transformed point.</returns>
         public override ScreenPoint Transform(double x, double y, Axis yaxis)
         {
             throw new InvalidOperationException("Angle axis should always be the y-axis.");

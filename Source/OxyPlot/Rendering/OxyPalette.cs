@@ -39,7 +39,7 @@ namespace OxyPlot
     public class OxyPalette
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPalette"/> class.
+        /// Initializes a new instance of the <see cref="OxyPalette" /> class.
         /// </summary>
         public OxyPalette()
         {
@@ -47,22 +47,18 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPalette"/> class.
+        /// Initializes a new instance of the <see cref="OxyPalette" /> class.
         /// </summary>
-        /// <param name="colors">
-        /// The colors.
-        /// </param>
+        /// <param name="colors">The colors.</param>
         public OxyPalette(params OxyColor[] colors)
         {
             this.Colors = new List<OxyColor>(colors);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPalette"/> class.
+        /// Initializes a new instance of the <see cref="OxyPalette" /> class.
         /// </summary>
-        /// <param name="colors">
-        /// The colors.
-        /// </param>
+        /// <param name="colors">The colors.</param>
         public OxyPalette(IEnumerable<OxyColor> colors)
         {
             this.Colors = new List<OxyColor>(colors);
@@ -71,21 +67,15 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the colors.
         /// </summary>
-        /// <value> The colors. </value>
+        /// <value>The colors.</value>
         public IList<OxyColor> Colors { get; set; }
 
         /// <summary>
         /// Interpolates the specified colors to a palette of the specified size.
         /// </summary>
-        /// <param name="paletteSize">
-        /// The size of the palette.
-        /// </param>
-        /// <param name="colors">
-        /// The colors.
-        /// </param>
-        /// <returns>
-        /// A palette.
-        /// </returns>
+        /// <param name="paletteSize">The size of the palette.</param>
+        /// <param name="colors">The colors.</param>
+        /// <returns>A palette.</returns>
         public static OxyPalette Interpolate(int paletteSize, params OxyColor[] colors)
         {
             var palette = new OxyColor[paletteSize];
@@ -104,7 +94,7 @@ namespace OxyPlot
         /// <summary>
         /// Creates a palette with reversed color order.
         /// </summary>
-        /// <returns>The reversed <see cref="OxyPalette"/>.</returns>
+        /// <returns>The reversed <see cref="OxyPalette" />.</returns>
         public OxyPalette Reverse()
         {
             return new OxyPalette(this.Colors.Reverse());

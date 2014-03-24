@@ -39,37 +39,37 @@ namespace OxyPlot.Wpf
     public class AreaSeries : LineSeries
     {
         /// <summary>
-        /// The color property.
+        /// Identifies the <see cref="Color2"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty Color2Property = DependencyProperty.Register(
             "Color2", typeof(Color), typeof(Series), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
-        /// The constant y 2 property.
+        /// Identifies the <see cref="ConstantY2"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ConstantY2Property = DependencyProperty.Register(
             "ConstantY2", typeof(double), typeof(AreaSeries), new PropertyMetadata(0.0, DataChanged));
 
         /// <summary>
-        /// The data field x 2 property.
+        /// Identifies the <see cref="DataFieldX2"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DataFieldX2Property = DependencyProperty.Register(
             "DataFieldX2", typeof(string), typeof(AreaSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The data field y 2 property.
+        /// Identifies the <see cref="DataFieldY2"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DataFieldY2Property = DependencyProperty.Register(
             "DataFieldY2", typeof(string), typeof(AreaSeries), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The fill property.
+        /// Identifies the <see cref="Fill"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof(Color), typeof(AreaSeries), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
-        /// The reverse 2 property.
+        /// Identifies the <see cref="Reverse2"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty Reverse2Property = DependencyProperty.Register(
             "Reverse2", typeof(bool), typeof(AreaSeries), new PropertyMetadata(true, AppearanceChanged));
@@ -181,9 +181,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal series.
         /// </summary>
-        /// <returns>
-        /// The internal series.
-        /// </returns>
+        /// <returns>The internal series.</returns>
         public override OxyPlot.Series.Series CreateModel()
         {
             this.SynchronizeProperties(this.InternalSeries);
@@ -193,9 +191,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Synchronizes the properties.
         /// </summary>
-        /// <param name="series">
-        /// The series.
-        /// </param>
+        /// <param name="series">The series.</param>
         protected override void SynchronizeProperties(OxyPlot.Series.Series series)
         {
             base.SynchronizeProperties(series);

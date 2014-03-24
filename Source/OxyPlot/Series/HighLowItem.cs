@@ -31,7 +31,7 @@
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Represents an item in a <see cref="HighLowSeries"/>.
+    /// Represents an item in a <see cref="HighLowSeries" />.
     /// </summary>
     public class HighLowItem
     {
@@ -66,30 +66,20 @@ namespace OxyPlot.Series
         private double x;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HighLowItem"/> class.
+        /// Initializes a new instance of the <see cref="HighLowItem" /> class.
         /// </summary>
         public HighLowItem()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HighLowItem"/> class.
+        /// Initializes a new instance of the <see cref="HighLowItem" /> class.
         /// </summary>
-        /// <param name="x">
-        /// The x value.
-        /// </param>
-        /// <param name="high">
-        /// The high value.
-        /// </param>
-        /// <param name="low">
-        /// The low value.
-        /// </param>
-        /// <param name="open">
-        /// The open value.
-        /// </param>
-        /// <param name="close">
-        /// The close value.
-        /// </param>
+        /// <param name="x">The x value.</param>
+        /// <param name="high">The high value.</param>
+        /// <param name="low">The low value.</param>
+        /// <param name="open">The open value.</param>
+        /// <param name="close">The close value.</param>
         public HighLowItem(double x, double high, double low, double open = double.NaN, double close = double.NaN)
         {
             this.x = x;

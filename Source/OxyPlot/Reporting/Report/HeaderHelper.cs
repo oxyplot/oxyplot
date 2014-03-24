@@ -43,12 +43,8 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Gets the header.
         /// </summary>
-        /// <param name="level">
-        /// The header level.
-        /// </param>
-        /// <returns>
-        /// The header.
-        /// </returns>
+        /// <param name="level">The header level.</param>
+        /// <returns>The header.</returns>
         public string GetHeader(int level)
         {
             for (int i = level - 1; i > 0; i--)

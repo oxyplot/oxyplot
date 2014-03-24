@@ -36,10 +36,8 @@ namespace OxyPlot
     /// <summary>
     /// Provides a circular dictionary.
     /// </summary>
-    /// <remarks>
-    /// The code is a c# port of the DEFLATE project by Nayuki Minase at <a href="https://github.com/nayuki/DEFLATE">github</a>.
-    /// Original source code: <a href="https://github.com/nayuki/DEFLATE/blob/master/src/nayuki/deflate/CircularDictionary.java">CircularDictionary.java</a>.
-    /// </remarks>
+    /// <remarks>The code is a c# port of the DEFLATE project by Nayuki Minase at <a href="https://github.com/nayuki/DEFLATE">github</a>.
+    /// Original source code: <a href="https://github.com/nayuki/DEFLATE/blob/master/src/nayuki/deflate/CircularDictionary.java">CircularDictionary.java</a>.</remarks>
     internal class CircularDictionary
     {
         /// <summary>
@@ -58,7 +56,7 @@ namespace OxyPlot
         private int index;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CircularDictionary"/> class.
+        /// Initializes a new instance of the <see cref="CircularDictionary" /> class.
         /// </summary>
         /// <param name="size">The size of the dictionary.</param>
         public CircularDictionary(int size)

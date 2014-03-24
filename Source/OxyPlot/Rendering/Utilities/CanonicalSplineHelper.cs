@@ -37,33 +37,19 @@ namespace OxyPlot
     /// <summary>
     /// Provides functionality to interpolate a list of points by a canonical spline.
     /// </summary>
-    /// <remarks>
-    /// CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
-    /// See also <a href="http://www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html">blog post</a>.
-    /// </remarks>
+    /// <remarks>CanonicalSplineHelper.cs (c) 2009 by Charles Petzold (WPF and Silverlight)
+    /// See also <a href="http://www.charlespetzold.com/blog/2009/01/Canonical-Splines-in-WPF-and-Silverlight.html">blog post</a>.</remarks>
     internal static class CanonicalSplineHelper
     {
         /// <summary>
         /// Creates a spline of data points.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="tension">
-        /// The tension.
-        /// </param>
-        /// <param name="tensions">
-        /// The tensions.
-        /// </param>
-        /// <param name="isClosed">
-        /// True if the spline is closed.
-        /// </param>
-        /// <param name="tolerance">
-        /// The tolerance.
-        /// </param>
-        /// <returns>
-        /// A list of data points.
-        /// </returns>
+        /// <param name="points">The points.</param>
+        /// <param name="tension">The tension.</param>
+        /// <param name="tensions">The tensions.</param>
+        /// <param name="isClosed">True if the spline is closed.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A list of data points.</returns>
         internal static List<IDataPoint> CreateSpline(
             IList<IDataPoint> points, double tension, IList<double> tensions, bool isClosed, double tolerance)
         {
@@ -82,24 +68,12 @@ namespace OxyPlot
         /// <summary>
         /// Creates a spline of screen points.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="tension">
-        /// The tension.
-        /// </param>
-        /// <param name="tensions">
-        /// The tensions.
-        /// </param>
-        /// <param name="isClosed">
-        /// True if the spline is closed.
-        /// </param>
-        /// <param name="tolerance">
-        /// The tolerance.
-        /// </param>
-        /// <returns>
-        /// A list of screen points.
-        /// </returns>
+        /// <param name="points">The points.</param>
+        /// <param name="tension">The tension.</param>
+        /// <param name="tensions">The tensions.</param>
+        /// <param name="isClosed">True if the spline is closed.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A list of screen points.</returns>
         internal static List<ScreenPoint> CreateSpline(
             IList<ScreenPoint> points, double tension, IList<double> tensions, bool isClosed, double tolerance)
         {
@@ -186,30 +160,14 @@ namespace OxyPlot
         /// <summary>
         /// The segment.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="pt0">
-        /// The pt 0.
-        /// </param>
-        /// <param name="pt1">
-        /// The pt 1.
-        /// </param>
-        /// <param name="pt2">
-        /// The pt 2.
-        /// </param>
-        /// <param name="pt3">
-        /// The pt 3.
-        /// </param>
-        /// <param name="t1">
-        /// The t 1.
-        /// </param>
-        /// <param name="t2">
-        /// The t 2.
-        /// </param>
-        /// <param name="tolerance">
-        /// The tolerance.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="pt0">The pt 0.</param>
+        /// <param name="pt1">The pt 1.</param>
+        /// <param name="pt2">The pt 2.</param>
+        /// <param name="pt3">The pt 3.</param>
+        /// <param name="t1">The t 1.</param>
+        /// <param name="t2">The t 2.</param>
+        /// <param name="tolerance">The tolerance.</param>
         private static void Segment(
             IList<ScreenPoint> points,
             ScreenPoint pt0,

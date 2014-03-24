@@ -36,7 +36,7 @@ namespace OxyPlot.Series
     public abstract class BarItemBase : CategorizedItem, ICodeGenerating
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BarItemBase"/> class. Initializes a new instance of the <see cref="BarItem"/> class.
+        /// Initializes a new instance of the <see cref="BarItemBase" /> class. Initializes a new instance of the <see cref="BarItem" /> class.
         /// </summary>
         protected BarItemBase()
         {
@@ -48,9 +48,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the color of the item.
         /// </summary>
-        /// <remarks>
-        /// If the color is not specified (default), the color of the series will be used.
-        /// </remarks>
+        /// <remarks>If the color is not specified (default), the color of the series will be used.</remarks>
         public OxyColor Color { get; set; }
 
         /// <summary>
@@ -61,9 +59,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Returns c# code that generates this instance.
         /// </summary>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <returns>C# code.</returns>
         public virtual string ToCode()
         {
             if (!this.Color.IsUndefined())

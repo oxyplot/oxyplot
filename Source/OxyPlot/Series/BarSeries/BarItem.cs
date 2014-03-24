@@ -36,21 +36,17 @@ namespace OxyPlot.Series
     public class BarItem : BarItemBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BarItem"/> class.
+        /// Initializes a new instance of the <see cref="BarItem" /> class.
         /// </summary>
         public BarItem()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BarItem"/> class.
+        /// Initializes a new instance of the <see cref="BarItem" /> class.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="categoryIndex">
-        /// Index of the category.
-        /// </param>
+        /// <param name="value">The value.</param>
+        /// <param name="categoryIndex">Index of the category.</param>
         public BarItem(double value, int categoryIndex = -1)
         {
             this.Value = value;

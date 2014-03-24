@@ -37,9 +37,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents a series that renders contours.
     /// </summary>
-    /// <remarks>
-    /// See <a href="http://en.wikipedia.org/wiki/Contour_line">wikipedia</a> and <a href="http://www.mathworks.se/help/techdoc/ref/contour.html">link</a>.
-    /// </remarks>
+    /// <remarks>See <a href="http://en.wikipedia.org/wiki/Contour_line">wikipedia</a> and <a href="http://www.mathworks.se/help/techdoc/ref/contour.html">link</a>.</remarks>
     public class ContourSeries : XYAxisSeries
     {
         /// <summary>
@@ -113,10 +111,8 @@ namespace OxyPlot.Series
         /// Gets or sets the contour colors.
         /// </summary>
         /// <value>The contour colors.</value>
-        /// <remarks>
-        /// These colors will override the Color of the series.
-        /// If there are less colors than the number of contour levels, the colors will cycle.
-        /// </remarks>
+        /// <remarks>These colors will override the Color of the series.
+        /// If there are less colors than the number of contour levels, the colors will cycle.</remarks>
         public OxyColor[] ContourColors { get; set; }
 
         /// <summary>
@@ -234,15 +230,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the point in the dataset that is nearest the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// The interpolate.
-        /// </param>
-        /// <returns>
-        /// A hit result object.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">The interpolate.</param>
+        /// <returns>A hit result object.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             TrackerHitResult result = null;
@@ -279,12 +269,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the series on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.contours == null)
@@ -370,18 +356,10 @@ namespace OxyPlot.Series
         /// <summary>
         /// Determines if two values are close.
         /// </summary>
-        /// <param name="x1">
-        /// The first value.
-        /// </param>
-        /// <param name="x2">
-        /// The second value.
-        /// </param>
-        /// <param name="eps">
-        /// The squared tolerance.
-        /// </param>
-        /// <returns>
-        /// True if the values are close.
-        /// </returns>
+        /// <param name="x1">The first value.</param>
+        /// <param name="x2">The second value.</param>
+        /// <param name="eps">The squared tolerance.</param>
+        /// <returns>True if the values are close.</returns>
         private static bool AreClose(double x1, double x2, double eps = 1e-6)
         {
             double dx = x1 - x2;
@@ -391,18 +369,10 @@ namespace OxyPlot.Series
         /// <summary>
         /// Determines if two points are close.
         /// </summary>
-        /// <param name="p0">
-        /// The first point.
-        /// </param>
-        /// <param name="p1">
-        /// The second point.
-        /// </param>
-        /// <param name="eps">
-        /// The squared tolerance.
-        /// </param>
-        /// <returns>
-        /// True if the points are close.
-        /// </returns>
+        /// <param name="p0">The first point.</param>
+        /// <param name="p1">The second point.</param>
+        /// <param name="eps">The squared tolerance.</param>
+        /// <returns>True if the points are close.</returns>
         private static bool AreClose(DataPoint p0, DataPoint p1, double eps = 1e-6)
         {
             double dx = p0.X - p1.X;
@@ -436,18 +406,10 @@ namespace OxyPlot.Series
         /// <summary>
         /// The add contour labels.
         /// </summary>
-        /// <param name="contour">
-        /// The contour.
-        /// </param>
-        /// <param name="pts">
-        /// The points of the contour.
-        /// </param>
-        /// <param name="clippingRect">
-        /// The clipping rectangle.
-        /// </param>
-        /// <param name="contourLabels">
-        /// The contour labels.
-        /// </param>
+        /// <param name="contour">The contour.</param>
+        /// <param name="pts">The points of the contour.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="contourLabels">The contour labels.</param>
         private void AddContourLabels(Contour contour, ScreenPoint[] pts, OxyRect clippingRect, ICollection<ContourLabel> contourLabels)
         {
             // todo: support label spacing and label step
@@ -489,21 +451,11 @@ namespace OxyPlot.Series
         /// <summary>
         /// Finds the connected segment.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="contourLevel">
-        /// The contour level.
-        /// </param>
-        /// <param name="eps">
-        /// The distance tolerance.
-        /// </param>
-        /// <param name="reverse">
-        /// reverse the segment if set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// The connected segment, or null if no segment was found.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="contourLevel">The contour level.</param>
+        /// <param name="eps">The distance tolerance.</param>
+        /// <param name="reverse">reverse the segment if set to <c>true</c>.</param>
+        /// <returns>The connected segment, or <c>null</c> if no segment was found.</returns>
         private ContourSegment FindConnectedSegment(DataPoint point, double contourLevel, double eps, out bool reverse)
         {
             reverse = false;
@@ -532,9 +484,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Joins the contour segments.
         /// </summary>
-        /// <param name="eps">
-        /// The tolerance for segment ends to connect (squared distance).
-        /// </param>
+        /// <param name="eps">The tolerance for segment ends to connect (squared distance).</param>
         private void JoinContourSegments(double eps = 1e-10)
         {
             // This is a simple, slow, naïve method - should be improved:
@@ -601,12 +551,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the contour label.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="cl">
-        /// The contour label.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="cl">The contour label.</param>
         private void RenderLabel(IRenderContext rc, ContourLabel cl)
         {
             if (this.ActualFontSize > 0)
@@ -627,12 +573,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the contour label background.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="cl">
-        /// The contour label.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="cl">The contour label.</param>
         private void RenderLabelBackground(IRenderContext rc, ContourLabel cl)
         {
             if (this.LabelBackground.IsInvisible())
@@ -681,14 +623,10 @@ namespace OxyPlot.Series
             internal readonly IList<IDataPoint> Points;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Contour"/> class.
+            /// Initializes a new instance of the <see cref="Contour" /> class.
             /// </summary>
-            /// <param name="points">
-            /// The points.
-            /// </param>
-            /// <param name="contourLevel">
-            /// The contour level.
-            /// </param>
+            /// <param name="points">The points.</param>
+            /// <param name="contourLevel">The contour level.</param>
             public Contour(IList<IDataPoint> points, double contourLevel)
             {
                 this.Points = points;
@@ -747,17 +685,11 @@ namespace OxyPlot.Series
             internal readonly DataPoint StartPoint;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="ContourSegment"/> class.
+            /// Initializes a new instance of the <see cref="ContourSegment" /> class.
             /// </summary>
-            /// <param name="startPoint">
-            /// The start point.
-            /// </param>
-            /// <param name="endPoint">
-            /// The end point.
-            /// </param>
-            /// <param name="contourLevel">
-            /// The contour level.
-            /// </param>
+            /// <param name="startPoint">The start point.</param>
+            /// <param name="endPoint">The end point.</param>
+            /// <param name="contourLevel">The contour level.</param>
             public ContourSegment(DataPoint startPoint, DataPoint endPoint, double contourLevel)
             {
                 this.ContourLevel = contourLevel;

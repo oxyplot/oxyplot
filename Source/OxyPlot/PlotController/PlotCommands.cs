@@ -36,7 +36,7 @@ namespace OxyPlot
     public static class PlotCommands
     {
         /// <summary>
-        /// Initializes static members of the <see cref="PlotCommands"/> class.
+        /// Initializes static members of the <see cref="PlotCommands" /> class.
         /// </summary>
         static PlotCommands()
         {

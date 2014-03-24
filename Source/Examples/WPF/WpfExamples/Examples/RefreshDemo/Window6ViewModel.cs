@@ -40,7 +40,7 @@ namespace RefreshDemo
     using OxyPlot;
 
     /// <summary>
-    /// Represents a view-model for <see cref="Window6"/>.
+    /// Represents a view-model for <see cref="Window6" />.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class Window6ViewModel : INotifyPropertyChanged

@@ -61,25 +61,25 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the fill color of the background rectangle.
         /// </summary>
-        /// <value> The background. </value>
+        /// <value>The background.</value>
         public OxyColor Background { get; set; }
 
         /// <summary>
         /// Gets or sets the horizontal alignment.
         /// </summary>
-        /// <value> The horizontal alignment. </value>
+        /// <value>The horizontal alignment.</value>
         public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the position offset (screen coordinates).
         /// </summary>
-        /// <value> The offset. </value>
+        /// <value>The offset.</value>
         public ScreenVector Offset { get; set; }
 
         /// <summary>
         /// Gets or sets the padding of the background rectangle.
         /// </summary>
-        /// <value> The padding. </value>
+        /// <value>The padding.</value>
         public OxyThickness Padding { get; set; }
 
         /// <summary>
@@ -90,36 +90,32 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the rotation angle (degrees).
         /// </summary>
-        /// <value> The rotation. </value>
+        /// <value>The rotation.</value>
         public double Rotation { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke color of the background rectangle.
         /// </summary>
-        /// <value> The stroke color. </value>
+        /// <value>The stroke color.</value>
         public OxyColor Stroke { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness of the background rectangle.
         /// </summary>
-        /// <value> The stroke thickness. </value>
+        /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the vertical alignment.
         /// </summary>
-        /// <value> The vertical alignment. </value>
+        /// <value>The vertical alignment.</value>
         public VerticalAlignment VerticalAlignment { get; set; }
 
         /// <summary>
         /// Renders the text annotation.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="model">
-        /// The plot model.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="model">The plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             base.Render(rc, model);
@@ -153,15 +149,9 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="tolerance">
-        /// The tolerance.
-        /// </param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="tolerance">The tolerance.</param>
+        /// <returns>A hit test result.</returns>
         protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
         {
             if (this.actualBounds == null)
@@ -176,27 +166,13 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets the coordinates of the (rotated) background rectangle.
         /// </summary>
-        /// <param name="position">
-        /// The position.
-        /// </param>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        /// <param name="padding">
-        /// The padding.
-        /// </param>
-        /// <param name="rotation">
-        /// The rotation.
-        /// </param>
-        /// <param name="horizontalAlignment">
-        /// The horizontal alignment.
-        /// </param>
-        /// <param name="verticalAlignment">
-        /// The vertical alignment.
-        /// </param>
-        /// <returns>
-        /// The background rectangle coordinates.
-        /// </returns>
+        /// <param name="position">The position.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="padding">The padding.</param>
+        /// <param name="rotation">The rotation.</param>
+        /// <param name="horizontalAlignment">The horizontal alignment.</param>
+        /// <param name="verticalAlignment">The vertical alignment.</param>
+        /// <returns>The background rectangle coordinates.</returns>
         private static IList<ScreenPoint> GetTextBounds(
             ScreenPoint position,
             OxySize size,

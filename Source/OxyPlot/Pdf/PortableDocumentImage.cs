@@ -31,12 +31,12 @@
 namespace OxyPlot
 {
     /// <summary>
-    /// Represents an image that can be included in a <see cref="PortableDocument"/>.
+    /// Represents an image that can be included in a <see cref="PortableDocument" />.
     /// </summary>
     public class PortableDocumentImage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PortableDocumentImage"/> class.
+        /// Initializes a new instance of the <see cref="PortableDocumentImage" /> class.
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
@@ -60,57 +60,43 @@ namespace OxyPlot
         /// <summary>
         /// Gets the width.
         /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
+        /// <value>The width.</value>
         public int Width { get; private set; }
 
         /// <summary>
         /// Gets the height.
         /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
+        /// <value>The height.</value>
         public int Height { get; private set; }
 
         /// <summary>
         /// Gets the bits per component.
         /// </summary>
-        /// <value>
-        /// The bits per component.
-        /// </value>
+        /// <value>The bits per component.</value>
         public int BitsPerComponent { get; private set; }
 
         /// <summary>
         /// Gets the color space.
         /// </summary>
-        /// <value>
-        /// The color space.
-        /// </value>
+        /// <value>The color space.</value>
         public ColorSpace ColorSpace { get; private set; }
 
         /// <summary>
         /// Gets the bits.
         /// </summary>
-        /// <value>
-        /// The bits.
-        /// </value>
+        /// <value>The bits.</value>
         public byte[] Bits { get; private set; }
 
         /// <summary>
         /// Gets the mask bits.
         /// </summary>
-        /// <value>
-        /// The mask bits.
-        /// </value>
+        /// <value>The mask bits.</value>
         public byte[] MaskBits { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the image is interpolated.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if interpolated; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if interpolated; otherwise, <c>false</c>.</value>
         public bool Interpolate { get; private set; }
     }
 }

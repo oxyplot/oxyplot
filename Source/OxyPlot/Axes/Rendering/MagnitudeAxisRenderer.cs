@@ -35,19 +35,15 @@ namespace OxyPlot.Axes
     using System.Linq;
 
     /// <summary>
-    /// Provides functionality to render <see cref="MagnitudeAxis"/>.
+    /// Provides functionality to render <see cref="MagnitudeAxis" />.
     /// </summary>
     public class MagnitudeAxisRenderer : AxisRendererBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MagnitudeAxisRenderer"/> class.
+        /// Initializes a new instance of the <see cref="MagnitudeAxisRenderer" /> class.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="plot">
-        /// The plot.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="plot">The plot.</param>
         public MagnitudeAxisRenderer(IRenderContext rc, PlotModel plot)
             : base(rc, plot)
         {
@@ -58,7 +54,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="axis">The axis.</param>
         /// <param name="pass">The pass.</param>
-        /// <exception cref="System.NullReferenceException">Angle axis should not be null.</exception>
+        /// <exception cref="System.NullReferenceException">Angle axis should not be <c>null</c>.</exception>
         public override void Render(Axis axis, int pass)
         {
             base.Render(axis, pass);
@@ -147,7 +143,7 @@ namespace OxyPlot.Axes
                 va = VerticalAlignment.Bottom;
             }
         }
-        
+
         /// <summary>
         /// Renders a tick, chooses the best implementation
         /// </summary>

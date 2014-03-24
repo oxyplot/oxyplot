@@ -41,12 +41,8 @@ namespace OxyPlot
         /// <summary>
         /// Converts the value of this instance to c# code.
         /// </summary>
-        /// <param name="value">
-        /// The instance.
-        /// </param>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <param name="value">The instance.</param>
+        /// <returns>C# code.</returns>
         public static string ToCode(this string value)
         {
             value = value.Replace("\"", "\\\"");
@@ -59,12 +55,8 @@ namespace OxyPlot
         /// <summary>
         /// Converts the value of this instance to c# code.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <param name="value">The value.</param>
+        /// <returns>C# code.</returns>
         public static string ToCode(this bool value)
         {
             return value.ToString().ToLower();
@@ -73,12 +65,8 @@ namespace OxyPlot
         /// <summary>
         /// Converts the value of this instance to c# code.
         /// </summary>
-        /// <param name="value">
-        /// The instance.
-        /// </param>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <param name="value">The instance.</param>
+        /// <returns>C# code.</returns>
         public static string ToCode(this int value)
         {
             return value.ToString(CultureInfo.InvariantCulture);
@@ -87,12 +75,8 @@ namespace OxyPlot
         /// <summary>
         /// Converts the value of this instance to c# code.
         /// </summary>
-        /// <param name="value">
-        /// The instance.
-        /// </param>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <param name="value">The instance.</param>
+        /// <returns>C# code.</returns>
         public static string ToCode(this Enum value)
         {
             return string.Format("{0}.{1}", value.GetType().Name, value);
@@ -101,12 +85,8 @@ namespace OxyPlot
         /// <summary>
         /// Converts the value of this instance to c# code.
         /// </summary>
-        /// <param name="value">
-        /// The instance.
-        /// </param>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <param name="value">The instance.</param>
+        /// <returns>C# code.</returns>
         public static string ToCode(this double value)
         {
             if (double.IsNaN(value))
@@ -140,12 +120,8 @@ namespace OxyPlot
         /// <summary>
         /// Converts the value of this instance to c# code.
         /// </summary>
-        /// <param name="value">
-        /// The instance.
-        /// </param>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <param name="value">The instance.</param>
+        /// <returns>C# code.</returns>
         public static string ToCode(this object value)
         {
             if (value == null)

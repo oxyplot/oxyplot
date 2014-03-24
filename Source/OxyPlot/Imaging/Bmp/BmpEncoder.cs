@@ -44,7 +44,7 @@ namespace OxyPlot
         private readonly BmpEncoderOptions options;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BmpEncoder"/> class.
+        /// Initializes a new instance of the <see cref="BmpEncoder" /> class.
         /// </summary>
         /// <param name="options">The options.</param>
         public BmpEncoder(BmpEncoderOptions options)
@@ -55,12 +55,8 @@ namespace OxyPlot
         /// <summary>
         /// Encodes the specified image data to png.
         /// </summary>
-        /// <param name="pixels">
-        /// The pixel data (bottom line first).
-        /// </param>
-        /// <returns>
-        /// The png image data.
-        /// </returns>
+        /// <param name="pixels">The pixel data (bottom line first).</param>
+        /// <returns>The png image data.</returns>
         public byte[] Encode(OxyColor[,] pixels)
         {
             int width = pixels.GetLength(0);
@@ -110,9 +106,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="pixels">The pixels.</param>
         /// <param name="palette">The palette.</param>
-        /// <returns>
-        /// The image data.
-        /// </returns>
+        /// <returns>The image data.</returns>
         public byte[] Encode(byte[,] pixels, OxyColor[] palette)
         {
             if (palette.Length == 0)
@@ -184,30 +178,14 @@ namespace OxyPlot
         /// <summary>
         /// Writes the bitmap info header.
         /// </summary>
-        /// <param name="w">
-        /// The writer.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="bitsPerPixel">
-        /// The number of bits per pixel.
-        /// </param>
-        /// <param name="length">
-        /// The length of the pixel data.
-        /// </param>
-        /// <param name="dpix">
-        /// The horizontal resolution (dpi).
-        /// </param>
-        /// <param name="dpiy">
-        /// The vertical resolution (dpi).
-        /// </param>
-        /// <param name="colors">
-        /// The number of colors.
-        /// </param>
+        /// <param name="w">The writer.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="bitsPerPixel">The number of bits per pixel.</param>
+        /// <param name="length">The length of the pixel data.</param>
+        /// <param name="dpix">The horizontal resolution (dpi).</param>
+        /// <param name="dpiy">The vertical resolution (dpi).</param>
+        /// <param name="colors">The number of colors.</param>
         private static void WriteBitmapInfoHeader(BinaryWriter w, int width, int height, int bitsPerPixel, int length, double dpix, double dpiy, int colors = 0)
         {
             w.Write((uint)40);
@@ -229,27 +207,13 @@ namespace OxyPlot
         /// <summary>
         /// Writes the bitmap V4 header.
         /// </summary>
-        /// <param name="w">
-        /// The writer.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="bitsPerPixel">
-        /// The number of bits per pixel.
-        /// </param>
-        /// <param name="length">
-        /// The length.
-        /// </param>
-        /// <param name="dpi">
-        /// The resolution.
-        /// </param>
-        /// <param name="colors">
-        /// The number of colors.
-        /// </param>
+        /// <param name="w">The writer.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="bitsPerPixel">The number of bits per pixel.</param>
+        /// <param name="length">The length.</param>
+        /// <param name="dpi">The resolution.</param>
+        /// <param name="colors">The number of colors.</param>
         private static void WriteBitmapV4Header(BinaryWriter w, int width, int height, int bitsPerPixel, int length, int dpi, int colors = 0)
         {
             // Convert resolution to pixels per meter

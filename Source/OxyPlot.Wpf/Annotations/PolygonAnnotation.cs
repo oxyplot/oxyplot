@@ -40,37 +40,37 @@ namespace OxyPlot.Wpf
     public class PolygonAnnotation : TextualAnnotation
     {
         /// <summary>
-        /// The color property.
+        /// Identifies the <see cref="Color"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color), typeof(PolygonAnnotation), new PropertyMetadata(Colors.Blue, AppearanceChanged));
 
         /// <summary>
-        /// The maximum x property.
+        /// Identifies the <see cref="Fill"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill", typeof(Color), typeof(PolygonAnnotation), new PropertyMetadata(Colors.LightBlue, AppearanceChanged));
 
         /// <summary>
-        /// The line join property.
+        /// Identifies the <see cref="LineJoin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
             "LineJoin", typeof(OxyPenLineJoin), typeof(PolygonAnnotation), new UIPropertyMetadata(OxyPenLineJoin.Miter, AppearanceChanged));
 
         /// <summary>
-        /// The line style property.
+        /// Identifies the <see cref="LineStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
             "LineStyle", typeof(LineStyle), typeof(PolygonAnnotation), new PropertyMetadata(LineStyle.Solid, AppearanceChanged));
 
         /// <summary>
-        /// The Points property.
+        /// Identifies the <see cref="Points"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
             "Points", typeof(IList<IDataPoint>), typeof(PolygonAnnotation), new PropertyMetadata(new List<IDataPoint>(), DataChanged));
 
         /// <summary>
-        /// The stroke thickness property.
+        /// Identifies the <see cref="StrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
@@ -184,9 +184,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
-        /// <returns>
-        /// The annotation.
-        /// </returns>
+        /// <returns>The annotation.</returns>
         public override OxyPlot.Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();

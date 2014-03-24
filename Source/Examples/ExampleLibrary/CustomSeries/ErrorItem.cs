@@ -38,14 +38,14 @@ namespace ExampleLibrary
     public class ErrorItem : IDataPoint
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorItem"/> class.
+        /// Initializes a new instance of the <see cref="ErrorItem" /> class.
         /// </summary>
         public ErrorItem()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorItem"/> class.
+        /// Initializes a new instance of the <see cref="ErrorItem" /> class.
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
@@ -82,9 +82,7 @@ namespace ExampleLibrary
         /// <summary>
         /// Returns c# code that generates this instance.
         /// </summary>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <returns>C# code.</returns>
         public string ToCode()
         {
             return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1},{2},{3}", this.X, this.Y, this.XError, this.YError);

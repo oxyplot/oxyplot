@@ -41,7 +41,7 @@ namespace OxyPlot.Series
     public class BoxPlotSeries : XYAxisSeries
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoxPlotSeries"/> class.
+        /// Initializes a new instance of the <see cref="BoxPlotSeries" /> class.
         /// </summary>
         public BoxPlotSeries()
         {
@@ -67,79 +67,57 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the width of the boxes (specified in x-axis units).
         /// </summary>
-        /// <value>
-        /// The width of the boxes.
-        /// </value>
+        /// <value>The width of the boxes.</value>
         public double BoxWidth { get; set; }
 
         /// <summary>
-        /// Gets or sets the fill color. If null, this color will be automatically set.
+        /// Gets or sets the fill color. If <c>null</c>, this color will be automatically set.
         /// </summary>
-        /// <value>
-        /// The fill color.
-        /// </value>
+        /// <value>The fill color.</value>
         public OxyColor Fill { get; set; }
 
         /// <summary>
         /// Gets or sets the box plot items.
         /// </summary>
-        /// <value>
-        /// The items.
-        /// </value>
+        /// <value>The items.</value>
         public IList<BoxPlotItem> Items { get; set; }
 
         /// <summary>
         /// Gets or sets the line style.
         /// </summary>
-        /// <value>
-        /// The line style.
-        /// </value>
+        /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the median point.
         /// </summary>
-        /// <remarks>
-        /// This property is only used when MedianStyle = Dot.
-        /// </remarks>
+        /// <remarks>This property is only used when MedianStyle = Dot.</remarks>
         public double MedianPointSize { get; set; }
 
         /// <summary>
         /// Gets or sets the median thickness, relative to the StrokeThickness.
         /// </summary>
-        /// <value>
-        /// The median thickness.
-        /// </value>
+        /// <value>The median thickness.</value>
         public double MedianThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the diameter of the outlier circles (specified in points).
         /// </summary>
-        /// <value>
-        /// The size of the outlier.
-        /// </value>
+        /// <value>The size of the outlier.</value>
         public double OutlierSize { get; set; }
 
         /// <summary>
         /// Gets or sets the tracker format string for the outliers.
         /// </summary>
-        /// <value>
-        /// The tracker format string for the outliers.
-        /// </value>
-        /// <remarks>
-        /// Use {0} for series title, {1} for x- and {2} for y-value.
-        /// </remarks>
+        /// <value>The tracker format string for the outliers.</value>
+        /// <remarks>Use {0} for series title, {1} for x- and {2} for y-value.</remarks>
         public string OutlierTrackerFormatString { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the outliers.
         /// </summary>
-        /// <value>
-        /// The type of the outliers.
-        /// </value>
-        /// <remarks>
-        /// MarkerType.Custom is currently not supported.
-        /// </remarks>
+        /// <value>The type of the outliers.</value>
+        /// <remarks>MarkerType.Custom is currently not supported.</remarks>
         public MarkerType OutlierType { get; set; }
 
         /// <summary>
@@ -155,39 +133,27 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the stroke.
         /// </summary>
-        /// <value>
-        /// The stroke.
-        /// </value>
+        /// <value>The stroke.</value>
         public OxyColor Stroke { get; set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.
         /// </summary>
-        /// <value>
-        /// The stroke thickness.
-        /// </value>
+        /// <value>The stroke thickness.</value>
         public double StrokeThickness { get; set; }
 
         /// <summary>
         /// Gets or sets the width of the whiskers (relative to the BoxWidth).
         /// </summary>
-        /// <value>
-        /// The width of the whiskers.
-        /// </value>
+        /// <value>The width of the whiskers.</value>
         public double WhiskerWidth { get; set; }
 
         /// <summary>
         /// Gets the nearest point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// interpolate if set to <c>true</c> .
-        /// </param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">interpolate if set to <c>true</c> .</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (this.XAxis == null || this.YAxis == null)
@@ -276,18 +242,10 @@ namespace OxyPlot.Series
         /// <summary>
         /// Determines whether the specified item contains a valid point.
         /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <param name="xaxis">
-        /// The x axis.
-        /// </param>
-        /// <param name="yaxis">
-        /// The y axis.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the point is valid; otherwise, <c>false</c> .
-        /// </returns>
+        /// <param name="item">The item.</param>
+        /// <param name="xaxis">The x axis.</param>
+        /// <param name="yaxis">The y axis.</param>
+        /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c> .</returns>
         public virtual bool IsValidPoint(BoxPlotItem item, Axis xaxis, Axis yaxis)
         {
             return !double.IsNaN(item.X) && !double.IsInfinity(item.X) && !item.Values.Any(double.IsNaN)
@@ -298,12 +256,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the series on the specified render context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.Items.Count == 0)
@@ -430,12 +384,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the legend symbol on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="legendBox">
-        /// The legend rectangle.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="legendBox">The legend rectangle.</param>
         public override void RenderLegend(IRenderContext rc, OxyRect legendBox)
         {
             double xmid = (legendBox.Left + legendBox.Right) / 2;
@@ -538,9 +488,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Updates the max and min of the series.
         /// </summary>
-        /// <param name="items">
-        /// The items.
-        /// </param>
+        /// <param name="items">The items.</param>
         protected void InternalUpdateMaxMin(IList<BoxPlotItem> items)
         {
             if (items == null || items.Count == 0)
@@ -594,12 +542,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the screen rectangle for the box.
         /// </summary>
-        /// <param name="item">
-        /// The box item.
-        /// </param>
-        /// <returns>
-        /// A rectangle.
-        /// </returns>
+        /// <param name="item">The box item.</param>
+        /// <returns>A rectangle.</returns>
         private OxyRect GetBoxRect(BoxPlotItem item)
         {
             var halfBoxWidth = this.BoxWidth * 0.5;

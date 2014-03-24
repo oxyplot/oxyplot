@@ -63,25 +63,19 @@ namespace OxyPlot
         /// <summary>
         /// Render markers as crosses (note: this marker type requires the stroke color to be set).
         /// </summary>
-        /// <remarks>
-        /// This marker type requires the stroke color to be set.
-        /// </remarks>
+        /// <remarks>This marker type requires the stroke color to be set.</remarks>
         Cross,
 
         /// <summary>
         /// Renders markers as plus signs (note: this marker type requires the stroke color to be set).
         /// </summary>
-        /// <remarks>
-        /// This marker type requires the stroke color to be set.
-        /// </remarks>
+        /// <remarks>This marker type requires the stroke color to be set.</remarks>
         Plus,
 
         /// <summary>
         /// Renders markers as stars (note: this marker type requires the stroke color to be set).
         /// </summary>
-        /// <remarks>
-        /// This marker type requires the stroke color to be set.
-        /// </remarks>
+        /// <remarks>This marker type requires the stroke color to be set.</remarks>
         Star,
 
         /// <summary>

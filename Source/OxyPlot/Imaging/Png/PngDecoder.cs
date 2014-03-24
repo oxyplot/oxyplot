@@ -42,9 +42,7 @@ namespace OxyPlot
         /// Gets information about the image in the specified byte array.
         /// </summary>
         /// <param name="bytes">The image data.</param>
-        /// <returns>
-        /// An <see cref="OxyImageInfo" /> structure.
-        /// </returns>
+        /// <returns>An <see cref="OxyImageInfo" /> structure.</returns>
         /// <exception cref="System.FormatException">Wrong length of pHYs chunk.</exception>
         public OxyImageInfo GetImageInfo(byte[] bytes)
         {
@@ -64,7 +62,7 @@ namespace OxyPlot
             // ReSharper disable once InconsistentNaming
             var headerCRC = inputReader.ReadBigEndianUInt32();
 
-            // ReSharper restore UnusedVariable            
+            // ReSharper restore UnusedVariable
             double dpix = 96;
             double dpiy = 96;
             while (true)
@@ -112,9 +110,7 @@ namespace OxyPlot
         /// Decodes an image from the specified stream.
         /// </summary>
         /// <param name="s">The stream.</param>
-        /// <returns>
-        /// The 32-bit pixel data, indexed as [x,y].
-        /// </returns>
+        /// <returns>The 32-bit pixel data, indexed as [x,y].</returns>
         public OxyColor[,] Decode(Stream s)
         {
             // http://www.w3.org/TR/PNG/

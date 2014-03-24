@@ -33,7 +33,7 @@ namespace OxyPlot.Reporting
     using System.Runtime.CompilerServices;
 
     /// <summary>
-    ///     The OxyPlot.Reporting namespace contains a simple report model.
+    /// The OxyPlot.Reporting namespace contains a simple report model.
     /// </summary>
     [CompilerGenerated]
     internal class NamespaceDoc

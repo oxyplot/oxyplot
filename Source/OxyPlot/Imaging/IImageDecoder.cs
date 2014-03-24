@@ -41,7 +41,7 @@ namespace OxyPlot
         /// Gets information about the image in the specified byte array.
         /// </summary>
         /// <param name="bytes">The image data.</param>
-        /// <returns>An <see cref="OxyImageInfo"/> structure.</returns>
+        /// <returns>An <see cref="OxyImageInfo" /> structure.</returns>
         OxyImageInfo GetImageInfo(byte[] bytes);
 
         /// <summary>

@@ -64,10 +64,8 @@ namespace OxyPlot.Reporting
         /// Gets or sets the width.
         /// </summary>
         /// <value>The width.</value>
-        /// <remarks>
-        /// NaN: auto width.
-        /// Negative numbers: weights
-        /// </remarks>
+        /// <remarks>NaN: auto width.
+        /// Negative numbers: weights</remarks>
         public double Width { get; set; }
     }
 }

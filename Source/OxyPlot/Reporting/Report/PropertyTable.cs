@@ -37,20 +37,14 @@ namespace OxyPlot.Reporting
     /// <summary>
     /// Represents a table of auto generated property values.
     /// </summary>
-    /// <remarks>
-    /// The PropertyTable auto generates columns or rows based on reflecting the Items type.
-    /// </remarks>
+    /// <remarks>The PropertyTable auto generates columns or rows based on reflecting the Items type.</remarks>
     public class PropertyTable : ItemsTable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyTable"/> class.
+        /// Initializes a new instance of the <see cref="PropertyTable" /> class.
         /// </summary>
-        /// <param name="items">
-        /// The items.
-        /// </param>
-        /// <param name="itemsInRows">
-        /// The items in rows.
-        /// </param>
+        /// <param name="items">The items.</param>
+        /// <param name="itemsInRows">The items in rows.</param>
         public PropertyTable(IEnumerable items, bool itemsInRows)
             : base(itemsInRows)
         {
@@ -63,12 +57,8 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Gets the item type.
         /// </summary>
-        /// <param name="items">
-        /// The items.
-        /// </param>
-        /// <returns>
-        /// The type of the items.
-        /// </returns>
+        /// <param name="items">The items.</param>
+        /// <returns>The type of the items.</returns>
         private Type GetItemType(IEnumerable items)
         {
             Type result = null;
@@ -92,9 +82,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Updates the fields.
         /// </summary>
-        /// <param name="items">
-        /// The items.
-        /// </param>
+        /// <param name="items">The items.</param>
         private void UpdateFields(IEnumerable items)
         {
             Type type = this.GetItemType(items);

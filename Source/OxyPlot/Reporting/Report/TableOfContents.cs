@@ -38,11 +38,9 @@ namespace OxyPlot.Reporting
     public class TableOfContents : ItemsTable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TableOfContents"/> class.
+        /// Initializes a new instance of the <see cref="TableOfContents" /> class.
         /// </summary>
-        /// <param name="b">
-        /// The source.
-        /// </param>
+        /// <param name="b">The source.</param>
         public TableOfContents(ReportItem b)
         {
             this.Base = b;
@@ -74,14 +72,10 @@ namespace OxyPlot.Reporting
         }
 
         /// <summary>
-        /// Appends headers (recursively) to the <see cref="Contents"/> of the object.
+        /// Appends headers (recursively) to the <see cref="Contents" /> of the object.
         /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <param name="hh">
-        /// The header formatter.
-        /// </param>
+        /// <param name="item">The item.</param>
+        /// <param name="hh">The header formatter.</param>
         private void AppendHeaders(ReportItem item, HeaderHelper hh)
         {
             var h = item as Header;

@@ -55,24 +55,19 @@ namespace ExportDemo
     [Export(typeof(IShell))]
     public class ShellViewModel : PropertyChangedBase, IShell
     {
-        #region Constants and Fields
 
         private ModelType currentModel;
 
         private PlotModel model;
 
-        #endregion
 
-        #region Constructors and Destructors
 
         public ShellViewModel()
         {
             this.CurrentModel = ModelType.SineWave;
         }
 
-        #endregion
 
-        #region Public Properties
 
         public ModelType CurrentModel
         {
@@ -123,9 +118,7 @@ namespace ExportDemo
             }
         }
 
-        #endregion
 
-        #region Public Methods
 
         public void Attach(Window owner, Plot plot)
         {
@@ -413,9 +406,7 @@ namespace ExportDemo
             }
         }
 
-        #endregion
 
-        #region Methods
 
         private static void OpenContainingFolder(string fileName)
         {
@@ -508,7 +499,7 @@ namespace ExportDemo
 
                 var fields = new List<ItemsTableField>
                     {
-                        new ItemsTableField("X", "X") { Width = 60, StringFormat = "0.00" }, 
+                        new ItemsTableField("X", "X") { Width = 60, StringFormat = "0.00" },
                         new ItemsTableField("Y", "Y") { Width = 60, StringFormat = "0.00" }
                     };
                 main.Add(new ItemsTable { Caption = "Data", Fields = fields, Items = s.Points });
@@ -526,6 +517,5 @@ namespace ExportDemo
             return dlg.ShowDialog(this.Owner).Value ? dlg.FileName : null;
         }
 
-        #endregion
     }
 }

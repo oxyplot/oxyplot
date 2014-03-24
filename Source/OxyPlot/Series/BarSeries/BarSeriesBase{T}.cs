@@ -37,14 +37,12 @@ namespace OxyPlot.Series
     /// <summary>
     /// Generic base class that provides common properties and methods for the BarSeries and ColumnSeries.
     /// </summary>
-    /// <typeparam name="T">
-    /// The type of the items.
-    /// </typeparam>
+    /// <typeparam name="T">The type of the items.</typeparam>
     public abstract class BarSeriesBase<T> : BarSeriesBase
         where T : BarItemBase, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BarSeriesBase{T}"/> class. Initializes a new instance of the <see cref="BarSeriesBase&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="BarSeriesBase{T}" /> class. Initializes a new instance of the <see cref="BarSeriesBase&lt;T&gt;" /> class.
         /// </summary>
         protected BarSeriesBase()
         {
@@ -54,17 +52,13 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the items.
         /// </summary>
-        /// <value>
-        /// The items.
-        /// </value>
+        /// <value>The items.</value>
         public IList<T> Items { get; private set; }
 
         /// <summary>
         /// Gets the items of this series.
         /// </summary>
-        /// <returns>
-        /// The items.
-        /// </returns>
+        /// <returns>The items.</returns>
         protected internal override IList<CategorizedItem> GetItems()
         {
             return this.Items.Cast<CategorizedItem>().ToList();
@@ -93,12 +87,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the item at the specified index.
         /// </summary>
-        /// <param name="i">
-        /// The index of the item.
-        /// </param>
-        /// <returns>
-        /// The item of the index.
-        /// </returns>
+        /// <param name="i">The index of the item.</param>
+        /// <returns>The item of the index.</returns>
         protected override object GetItem(int i)
         {
             if (this.ItemsSource != null || this.Items == null || this.Items.Count == 0)

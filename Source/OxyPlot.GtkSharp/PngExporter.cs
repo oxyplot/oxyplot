@@ -61,7 +61,7 @@ namespace OxyPlot.GtkSharp
         public OxyColor Background { get; set; }
 
         /// <summary>
-        /// Exports the specified <see cref="PlotModel"/> to a png file.
+        /// Exports the specified <see cref="PlotModel" /> to a png file.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="fileName">Name of the output file.</param>
@@ -93,7 +93,7 @@ namespace OxyPlot.GtkSharp
         }
 
         /// <summary>
-        /// Exports the specified <see cref="PlotModel"/> to the specified <see cref="Stream"/>.
+        /// Exports the specified <see cref="PlotModel" /> to the specified <see cref="Stream" />.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="stream">The output stream.</param>
@@ -128,7 +128,7 @@ namespace OxyPlot.GtkSharp
 
                     // write to the stream
                     stream.Write(bytes, 0, bytes.Length);
-                    
+
                     // delete the temporary file
                     File.Delete(tmp);
                 }

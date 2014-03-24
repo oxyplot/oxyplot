@@ -69,19 +69,15 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets or sets the limit.
         /// </summary>
-        /// <remarks>
-        /// The parts of the line that is below this limit will be rendered with Color2.
-        /// The parts of the line that is above the limit will be rendered with Color.
-        /// </remarks>
+        /// <remarks>The parts of the line that is below this limit will be rendered with Color2.
+        /// The parts of the line that is above the limit will be rendered with Color.</remarks>
         public double Limit { get; set; }
 
         /// <summary>
         /// Gets or sets the dash array for the rendered line that is below the limit (overrides <see cref="LineStyle" />).
         /// </summary>
         /// <value>The dash array.</value>
-        /// <remarks>
-        /// If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.
-        /// </remarks>
+        /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.</remarks>
         public double[] Dashes2 { get; set; }
 
         /// <summary>
@@ -116,9 +112,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
+        /// <param name="model">The model.</param>
         protected internal override void SetDefaultValues(PlotModel model)
         {
             base.SetDefaultValues(model);
@@ -137,15 +131,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the smoothed line.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="clippingRect">
-        /// The clipping rectangle.
-        /// </param>
-        /// <param name="pointsToRender">
-        /// The points.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="pointsToRender">The points.</param>
         protected override void RenderSmoothedLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
             double bottom = clippingRect.Bottom;
@@ -165,7 +153,7 @@ namespace OxyPlot.Series
 
             var dashArray = this.ActualDashArray;
             var dashArray2 = this.ActualDashArray2;
-            
+
             clippingRect.Bottom = y;
             rc.DrawClippedLine(
                 pointsToRender,

@@ -60,7 +60,7 @@ namespace OverlayDemo
             this.model.Axes.Add(this.verticalAxis);
             plot1.Model = this.model;
             this.DataContext = this;
-            
+
             // Subscribe to transform changes on both axes
             this.horizontalAxis.TransformChanged += this.HandleTransformChanged;
             this.verticalAxis.TransformChanged += this.HandleTransformChanged;
@@ -80,7 +80,7 @@ namespace OverlayDemo
             this.rect.Height = Math.Abs(p2.Y - p1.Y);
             Canvas.SetLeft(this.rect, Math.Min(p1.X, p2.X));
             Canvas.SetTop(this.rect, Math.Min(p1.Y, p2.Y));
-            
+
             // Update the clipping rectangle for the canvas
             var plotArea = new Rect(this.model.PlotArea.Left, this.model.PlotArea.Top, this.model.PlotArea.Width, this.model.PlotArea.Height);
             canvas1.Clip = new RectangleGeometry(plotArea);

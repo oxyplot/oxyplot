@@ -50,14 +50,12 @@ namespace OxyPlot.Tests
             test("1 11 00000", "");
         }
 
-
         [Test, ExpectedException]
         public void testEofInBlockType()
         {
             // Partial block type
             test("1 0", "");
         }
-
 
         [Test]
         public void testUncompressedEmpty()
@@ -66,14 +64,12 @@ namespace OxyPlot.Tests
             test("1 00 00000   0000000000000000 1111111111111111", "");
         }
 
-
         [Test]
         public void testUncompressedThreeBytes()
         {
             // Uncompressed block len=3: 05 14 23
             test("1 00 00000   1100000000000000 0011111111111111   10100000 00101000 11000100", "05 14 23");
         }
-
 
         [Test, Ignore]
         public void testUncompressedTwoBlocks()
@@ -83,14 +79,12 @@ namespace OxyPlot.Tests
             test("0 00 00000   0100000000000000 1011111111111111   10100000 00101000   1 00 00000   1000000000000000 0111111111111111   11000100", "05 14 23");
         }
 
-
         [Test, ExpectedException, Ignore]
         public void testUncompressedEofBeforeLength()
         {
             // Uncompressed block (partial padding) (no length)
             test("1 00 000", "");
         }
-
 
         [Test, ExpectedException]
         public void testUncompressedEofInLength()
@@ -99,14 +93,12 @@ namespace OxyPlot.Tests
             test("1 00 00000 0000000000", "");
         }
 
-
         [Test, ExpectedException]
         public void testUncompressedMismatchedLength()
         {
             // Uncompressed block (mismatched len and nlen)
             test("1 00 00000 0010000000010000 1111100100110101", "");
         }
-
 
         [Test, ExpectedException, Ignore]
         public void testUncompressedBlockNoFinalBlock()
@@ -116,14 +108,12 @@ namespace OxyPlot.Tests
             test("0 00 00000   0000000000000000 1111111111111111", "");
         }
 
-
         [Test]
         public void testFixedHuffmanEmpty()
         {
             // Fixed Huffman block: End
             test("1 10 0000000", "");
         }
-
 
         [Test]
         public void testFixedHuffmanLiterals()
@@ -132,14 +122,12 @@ namespace OxyPlot.Tests
             test("1 10 00110000 10110000 10111111 110010000 111000000 111111111 0000000", "00 80 8F 90 C0 FF");
         }
 
-
         [Test]
         public void testFixedHuffmanNonOverlappingRun()
         {
             // Fixed Huffman block: 00 01 02 (3,3) End
             test("1 10 00110000 00110001 00110010 0000001 00010 0000000", "00 01 02 00 01 02");
         }
-
 
         [Test]
         public void testFixedHuffmanOverlappingRun0()
@@ -148,14 +136,12 @@ namespace OxyPlot.Tests
             test("1 10 00110001 0000010 00000 0000000", "01 01 01 01 01");
         }
 
-
         [Test]
         public void testFixedHuffmanOverlappingRun1()
         {
             // Fixed Huffman block: 8E 8F (2,5) End
             test("1 10 10111110 10111111 0000011 00001 0000000", "8E 8F 8E 8F 8E 8F 8E");
         }
-
 
         [Test, ExpectedException]
         public void testFixedHuffmanInvalidLengthCode286()
@@ -164,14 +150,12 @@ namespace OxyPlot.Tests
             test("1 10 11000110", "");
         }
 
-
         [Test, ExpectedException]
         public void testFixedHuffmanInvalidLengthCode287()
         {
             // Fixed Huffman block: #287
             test("1 10 11000111", "");
         }
-
 
         [Test, ExpectedException]
         public void testFixedHuffmanInvalidDistanceCode30()
@@ -180,14 +164,12 @@ namespace OxyPlot.Tests
             test("1 10 00110000 0000001 11110", "");
         }
 
-
         [Test, ExpectedException]
         public void testFixedHuffmanInvalidDistanceCode31()
         {
             // Fixed Huffman block: 00 #257 #31
             test("1 10 00110000 0000001 11111", "");
         }
-
 
         [Test]
         public void testDynamicHuffmanEmpty()
@@ -207,7 +189,6 @@ namespace OxyPlot.Tests
             test(blockHeader + codeCounts + codeLenCodeLens + codeLens + data, "");
         }
 
-
         [Test]
         public void testDynamicHuffmanEmptyNoDistanceCode()
         {
@@ -226,7 +207,6 @@ namespace OxyPlot.Tests
             test(blockHeader + codeCounts + codeLenCodeLens + codeLens + data, "");
         }
 
-
         [Test, ExpectedException]
         public void testDynamicHuffmanCodeLengthRepeatAtStart()
         {
@@ -241,7 +221,6 @@ namespace OxyPlot.Tests
             test(blockHeader + codeCounts + codeLenCodeLens + codeLens, "");
         }
 
-
         [Test, ExpectedException]
         public void testDynamicHuffmanTooManyCodeLengthItems()
         {
@@ -255,8 +234,6 @@ namespace OxyPlot.Tests
             String codeLens = "0 0 11111111 10011011";
             test(blockHeader + codeCounts + codeLenCodeLens + codeLens, "");
         }
-
-
 
         /* Utility method */
 

@@ -29,14 +29,14 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OxyPlot
-{   
+{
     /// <summary>
     /// Provides a plot control manipulator for panning functionality.
     /// </summary>
     public class PanManipulator : MouseManipulator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PanManipulator"/> class.
+        /// Initializes a new instance of the <see cref="PanManipulator" /> class.
         /// </summary>
         /// <param name="plotControl">The plot control.</param>
         public PanManipulator(IPlotControl plotControl)
@@ -52,9 +52,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when the input device changes position during a manipulation.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
         public override void Delta(OxyMouseEventArgs e)
         {
             base.Delta(e);
@@ -75,9 +73,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the cursor for the manipulation.
         /// </summary>
-        /// <returns>
-        /// The cursor.
-        /// </returns>
+        /// <returns>The cursor.</returns>
         public override CursorType GetCursorType()
         {
             return CursorType.Pan;
@@ -86,9 +82,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="OxyPlot.OxyMouseEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="OxyPlot.OxyMouseEventArgs" /> instance containing the event data.</param>
         public override void Started(OxyMouseEventArgs e)
         {
             base.Started(e);

@@ -35,12 +35,11 @@ namespace OxyPlot
     /// <summary>
     /// Provides functionality to create contours from a triangular mesh.
     /// </summary>
-    /// <remarks>
-    /// <para>
+    /// <remarks><para>
     /// Ported from C / Fortran code by Paul Bourke.
     /// See <a href="http://paulbourke.net/papers/conrec/">Conrec</a> for
     /// full description of code and the original source.
-    ///  </para>
+    /// </para>
     /// <para>
     /// Contouring aids in visualizing three dimensional surfaces on a two dimensional
     /// medium (on paper or in this case a computer graphics screen). Two most common
@@ -49,28 +48,17 @@ namespace OxyPlot
     /// of two variables, the longitude and latitude or x and y axis. One problem with
     /// computer contouring is the process is usually CPU intensive and the algorithms
     /// often use advanced mathematical techniques making them susceptible to error.
-    ///  </para>
-    /// </remarks>
+    /// </para></remarks>
     public static class Conrec
     {
         /// <summary>
         /// Renderer delegate
         /// </summary>
-        /// <param name="x1">
-        /// Start point x-coordinate
-        /// </param>
-        /// <param name="y1">
-        /// Start point y-coordinate
-        /// </param>
-        /// <param name="x2">
-        /// End point x-coordinate
-        /// </param>
-        /// <param name="y2">
-        /// End point y-coordinate
-        /// </param>
-        /// <param name="z">
-        /// Contour level
-        /// </param>
+        /// <param name="x1">Start point x-coordinate</param>
+        /// <param name="y1">Start point y-coordinate</param>
+        /// <param name="x2">End point x-coordinate</param>
+        /// <param name="y2">End point y-coordinate</param>
+        /// <param name="z">Contour level</param>
         public delegate void RendererDelegate(double x1, double y1, double x2, double y2, double z);
 
         /// <summary>
@@ -82,21 +70,11 @@ namespace OxyPlot
         /// Any number of contour levels may be specified but they must be
         /// in order of increasing value.
         /// </summary>
-        /// <param name="d">
-        /// Matrix of data to contour.
-        /// </param>
-        /// <param name="x">
-        /// Data matrix column coordinates.
-        /// </param>
-        /// <param name="y">
-        /// Data matrix row coordinates.
-        /// </param>
-        /// <param name="z">
-        /// Contour levels in increasing order.
-        /// </param>
-        /// <param name="renderer">
-        /// The renderer.
-        /// </param>
+        /// <param name="d">Matrix of data to contour.</param>
+        /// <param name="x">Data matrix column coordinates.</param>
+        /// <param name="y">Data matrix row coordinates.</param>
+        /// <param name="z">Contour levels in increasing order.</param>
+        /// <param name="renderer">The renderer.</param>
         public static void Contour(double[,] d, double[] x, double[] y, double[] z, RendererDelegate renderer)
         {
             double x1 = 0.0;

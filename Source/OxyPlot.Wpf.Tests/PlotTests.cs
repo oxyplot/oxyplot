@@ -36,13 +36,13 @@ namespace OxyPlot.Wpf.Tests
     using NUnit.Framework;
 
     /// <summary>
-    /// Provides unit tests for the <see cref="Plot"/> class.
+    /// Provides unit tests for the <see cref="Plot" /> class.
     /// </summary>
     [TestFixture]
     public class PlotTests
     {
         /// <summary>
-        /// Provides unit tests for the <see cref="Plot.ActualModel"/> property.
+        /// Provides unit tests for the <see cref="Plot.ActualModel" /> property.
         /// </summary>
         public class ActualModel
         {
@@ -60,7 +60,7 @@ namespace OxyPlot.Wpf.Tests
             }
 
             /// <summary>
-            /// Gets the actual model from the same thread that created the <see cref="Plot"/>.
+            /// Gets the actual model from the same thread that created the <see cref="Plot" />.
             /// </summary>
             [Test]
             public void GetFromSameThread()
@@ -71,7 +71,7 @@ namespace OxyPlot.Wpf.Tests
             }
 
             /// <summary>
-            /// Gets the actual model from a thread different from the one that created the <see cref="Plot"/>.
+            /// Gets the actual model from a thread different from the one that created the <see cref="Plot" />.
             /// </summary>
             [Test]
             public void GetFromOtherThread()
@@ -85,12 +85,12 @@ namespace OxyPlot.Wpf.Tests
         }
 
         /// <summary>
-        /// Provides unit tests for the <see cref="Plot.InvalidatePlot"/> method.
+        /// Provides unit tests for the <see cref="Plot.InvalidatePlot" /> method.
         /// </summary>
         public class InvalidatePlot
         {
             /// <summary>
-            /// Invalidates the plot from the same thread that created the <see cref="Plot"/>.
+            /// Invalidates the plot from the same thread that created the <see cref="Plot" />.
             /// </summary>
             [Test]
             public void InvalidateFromSameThread()
@@ -101,7 +101,7 @@ namespace OxyPlot.Wpf.Tests
             }
 
             /// <summary>
-            /// Invalidates the plot from a thread different from the one that created the <see cref="Plot"/>.
+            /// Invalidates the plot from a thread different from the one that created the <see cref="Plot" />.
             /// </summary>
             [Test]
             public void InvalidateFromOtherThread()

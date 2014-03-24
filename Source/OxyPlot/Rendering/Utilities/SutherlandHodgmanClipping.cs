@@ -67,18 +67,10 @@ namespace OxyPlot
         /// <summary>
         /// The Sutherland-Hodgman polygon clipping algorithm.
         /// </summary>
-        /// <remarks>
-        /// See <a href="http://ezekiel.vancouver.wsu.edu/~cs442/lectures/clip/clip/index.html">link</a>.
-        /// </remarks>
-        /// <param name="bounds">
-        /// The bounds.
-        /// </param>
-        /// <param name="v">
-        /// The polygon points.
-        /// </param>
-        /// <returns>
-        /// The clipped points.
-        /// </returns>
+        /// <param name="bounds">The bounds.</param>
+        /// <param name="v">The polygon points.</param>
+        /// <returns>The clipped points.</returns>
+        /// <remarks>See <a href="http://ezekiel.vancouver.wsu.edu/~cs442/lectures/clip/clip/index.html">link</a>.</remarks>
         public static List<ScreenPoint> ClipPolygon(OxyRect bounds, IList<ScreenPoint> v)
         {
             List<ScreenPoint> p1 = ClipOneAxis(bounds, RectangleEdge.Left, v);
@@ -90,18 +82,10 @@ namespace OxyPlot
         /// <summary>
         /// Clips to one axis.
         /// </summary>
-        /// <param name="bounds">
-        /// The bounds.
-        /// </param>
-        /// <param name="edge">
-        /// The edge.
-        /// </param>
-        /// <param name="v">
-        /// The points of the polygon.
-        /// </param>
-        /// <returns>
-        /// The clipped points.
-        /// </returns>
+        /// <param name="bounds">The bounds.</param>
+        /// <param name="edge">The edge.</param>
+        /// <param name="v">The points of the polygon.</param>
+        /// <returns>The clipped points.</returns>
         private static List<ScreenPoint> ClipOneAxis(OxyRect bounds, RectangleEdge edge, IList<ScreenPoint> v)
         {
             if (v.Count == 0)
@@ -153,9 +137,7 @@ namespace OxyPlot
         /// <param name="bounds">The bounds.</param>
         /// <param name="edge">The edge to test.</param>
         /// <param name="p">The point.</param>
-        /// <returns>
-        ///  <c>true</c> if the specified point is inside; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><c>true</c> if the specified point is inside; otherwise, <c>false</c>.</returns>
         private static bool IsInside(OxyRect bounds, RectangleEdge edge, ScreenPoint p)
         {
             switch (edge)

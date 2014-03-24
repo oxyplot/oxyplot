@@ -38,7 +38,7 @@ namespace OxyPlot
     internal sealed class InternalNode : Node
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InternalNode"/> class.
+        /// Initializes a new instance of the <see cref="InternalNode" /> class.
         /// </summary>
         /// <param name="leftChild">The left child.</param>
         /// <param name="rightChild">The right child.</param>

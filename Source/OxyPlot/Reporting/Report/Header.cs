@@ -53,9 +53,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Returns a string that represents the header.
         /// </summary>
-        /// <returns>
-        /// A string that represents the header.
-        /// </returns>
+        /// <returns>A string that represents the header.</returns>
         public override string ToString()
         {
             string h = string.Empty;
@@ -71,9 +69,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// The write content.
         /// </summary>
-        /// <param name="w">
-        /// The w.
-        /// </param>
+        /// <param name="w">The w.</param>
         public override void WriteContent(IReportWriter w)
         {
             w.WriteHeader(this);

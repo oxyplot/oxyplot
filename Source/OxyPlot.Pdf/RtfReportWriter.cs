@@ -40,11 +40,9 @@ namespace OxyPlot.Pdf
     public class RtfReportWriter : PdfReportWriter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RtfReportWriter"/> class.
+        /// Initializes a new instance of the <see cref="RtfReportWriter" /> class.
         /// </summary>
-        /// <param name="filename">
-        /// The FileName.
-        /// </param>
+        /// <param name="filename">The FileName.</param>
         public RtfReportWriter(string filename)
             : base(filename)
         {

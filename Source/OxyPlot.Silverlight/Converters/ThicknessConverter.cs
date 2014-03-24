@@ -38,10 +38,8 @@ namespace OxyPlot.Silverlight
     /// <summary>
     /// Converts from <see cref="Thickness" /> to the maximum thicknesses.
     /// </summary>
-    /// <remarks>
-    /// This is used in the <see cref="TrackerControl" /> to convert BorderThickness properties to Path.StrokeThickness (double).
-    /// The maximum thickness value is used.
-    /// </remarks>
+    /// <remarks>This is used in the <see cref="TrackerControl" /> to convert BorderThickness properties to Path.StrokeThickness (double).
+    /// The maximum thickness value is used.</remarks>
     public class ThicknessConverter : IValueConverter
     {
         /// <summary>
@@ -51,9 +49,7 @@ namespace OxyPlot.Silverlight
         /// <param name="targetType">The <see cref="T:System.Type" /> of data expected by the target dependency property.</param>
         /// <param name="parameter">An optional parameter to be used in the converter logic.</param>
         /// <param name="culture">The culture of the conversion.</param>
-        /// <returns>
-        /// The value to be passed to the target dependency property.
-        /// </returns>
+        /// <returns>The value to be passed to the target dependency property.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is Thickness)
@@ -75,9 +71,7 @@ namespace OxyPlot.Silverlight
         /// <param name="targetType">The <see cref="T:System.Type" /> of data expected by the source object.</param>
         /// <param name="parameter">An optional parameter to be used in the converter logic.</param>
         /// <param name="culture">The culture of the conversion.</param>
-        /// <returns>
-        /// The value to be passed to the source object.
-        /// </returns>
+        /// <returns>The value to be passed to the source object.</returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;

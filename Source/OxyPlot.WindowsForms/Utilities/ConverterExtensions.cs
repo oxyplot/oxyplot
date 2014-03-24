@@ -42,15 +42,9 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Calculate the distance between two points.
         /// </summary>
-        /// <param name="p1">
-        /// The first point.
-        /// </param>
-        /// <param name="p2">
-        /// The second point.
-        /// </param>
-        /// <returns>
-        /// The distance.
-        /// </returns>
+        /// <param name="p1">The first point.</param>
+        /// <param name="p2">The second point.</param>
+        /// <returns>The distance.</returns>
         public static double DistanceTo(this Point p1, Point p2)
         {
             double dx = p1.X - p2.X;
@@ -61,12 +55,8 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Converts a color to a Brush.
         /// </summary>
-        /// <param name="c">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// A SolidColorBrush.
-        /// </returns>
+        /// <param name="c">The color.</param>
+        /// <returns>A SolidColorBrush.</returns>
         public static Brush ToBrush(this OxyColor c)
         {
             return new SolidBrush(c.ToColor());
@@ -75,12 +65,8 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Converts an OxyColor to a Color.
         /// </summary>
-        /// <param name="c">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// A Color.
-        /// </returns>
+        /// <param name="c">The color.</param>
+        /// <returns>A Color.</returns>
         public static Color ToColor(this OxyColor c)
         {
             return Color.FromArgb(c.A, c.R, c.G, c.B);
@@ -89,12 +75,8 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Converts a HorizontalAlignment to a HorizontalTextAlign.
         /// </summary>
-        /// <param name="alignment">
-        /// The alignment.
-        /// </param>
-        /// <returns>
-        /// A HorizontalTextAlign.
-        /// </returns>
+        /// <param name="alignment">The alignment.</param>
+        /// <returns>A HorizontalTextAlign.</returns>
         public static OxyPlot.HorizontalAlignment ToHorizontalTextAlign(this HorizontalAlignment alignment)
         {
             switch (alignment)
@@ -109,28 +91,20 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Converts a <see cref="Color"/> to an <see cref="OxyColor"/>.
+        /// Converts a <see cref="Color" /> to an <see cref="OxyColor" />.
         /// </summary>
-        /// <param name="color">
-        /// The color to convert.
-        /// </param>
-        /// <returns>
-        /// An <see cref="OxyColor"/>.
-        /// </returns>
+        /// <param name="color">The color to convert.</param>
+        /// <returns>An <see cref="OxyColor" />.</returns>
         public static OxyColor ToOxyColor(this Color color)
         {
             return OxyColor.FromArgb(color.A, color.R, color.G, color.B);
         }
 
         /// <summary>
-        /// Converts a <see cref="Brush"/> to an <see cref="OxyColor"/>.
+        /// Converts a <see cref="Brush" /> to an <see cref="OxyColor" />.
         /// </summary>
-        /// <param name="brush">
-        /// The brush to convert.
-        /// </param>
-        /// <returns>
-        /// An <see cref="OxyColor"/>.
-        /// </returns>
+        /// <param name="brush">The brush to convert.</param>
+        /// <returns>An <see cref="OxyColor" />.</returns>
         public static OxyColor ToOxyColor(this Brush brush)
         {
             var scb = brush as SolidBrush;
@@ -140,21 +114,9 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Converts a Thickness to an OxyThickness.
         /// </summary>
-        /// <returns>
-        /// An OxyPlot thickness.
-        /// </returns>
-        /// <summary>
-        /// Converts a ScreenPoint to a Point.
-        /// </summary>
-        /// <param name="pt">
-        /// The screen point.
-        /// </param>
-        /// <param name="aliased">
-        /// use pixel alignment conversion if set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// A point.
-        /// </returns>
+        /// <param name="pt">The screen point.</param>
+        /// <param name="aliased">use pixel alignment conversion if set to <c>true</c>.</param>
+        /// <returns>An OxyPlot thickness.</returns>
         public static Point ToPoint(this ScreenPoint pt, bool aliased)
         {
             // adding 0.5 to get pixel boundary alignment, seems to work
@@ -169,17 +131,11 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Converts an <see cref="OxyRect"/> to a <see cref="Rectangle"/>.
+        /// Converts an <see cref="OxyRect" /> to a <see cref="Rectangle" />.
         /// </summary>
-        /// <param name="r">
-        /// The rectangle.
-        /// </param>
-        /// <param name="aliased">
-        /// use pixel alignment if set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// A <see cref="Rectangle"/>.
-        /// </returns>
+        /// <param name="r">The rectangle.</param>
+        /// <param name="aliased">use pixel alignment if set to <c>true</c>.</param>
+        /// <returns>A <see cref="Rectangle" />.</returns>
         public static Rectangle ToRect(this OxyRect r, bool aliased)
         {
             if (aliased)
@@ -198,12 +154,8 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Converts a point to a ScreenPoint.
         /// </summary>
-        /// <param name="pt">
-        /// The point.
-        /// </param>
-        /// <returns>
-        /// A screen point.
-        /// </returns>
+        /// <param name="pt">The point.</param>
+        /// <returns>A screen point.</returns>
         public static ScreenPoint ToScreenPoint(this Point pt)
         {
             return new ScreenPoint(pt.X, pt.Y);
@@ -212,12 +164,8 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Converts a Point array to a ScreenPoint array.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <returns>
-        /// A ScreenPoint array.
-        /// </returns>
+        /// <param name="points">The points.</param>
+        /// <returns>A ScreenPoint array.</returns>
         public static ScreenPoint[] ToScreenPointArray(this Point[] points)
         {
             if (points == null)
@@ -235,12 +183,10 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Converts a <see cref="MouseButtons"/> to a <see cref="OxyMouseButton"/>.
+        /// Converts a <see cref="MouseButtons" /> to a <see cref="OxyMouseButton" />.
         /// </summary>
         /// <param name="button">The button to convert.</param>
-        /// <returns>
-        /// The converted mouse button.
-        /// </returns>
+        /// <returns>The converted mouse button.</returns>
         public static OxyMouseButton Convert(this MouseButtons button)
         {
             switch (button)
@@ -265,9 +211,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         /// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
         /// <param name="modifiers">The modifiers.</param>
-        /// <returns>
-        /// A <see cref="OxyMouseWheelEventArgs" /> containing the converted event arguments.
-        /// </returns>
+        /// <returns>A <see cref="OxyMouseWheelEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseWheelEventArgs ToMouseWheelEventArgs(this MouseEventArgs e, OxyModifierKeys modifiers)
         {
             return new OxyMouseWheelEventArgs
@@ -283,9 +227,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         /// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
         /// <param name="modifiers">The modifiers.</param>
-        /// <returns>
-        /// A <see cref="OxyMouseDownEventArgs" /> containing the converted event arguments.
-        /// </returns>
+        /// <returns>A <see cref="OxyMouseDownEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseDownEventArgs ToMouseDownEventArgs(this MouseEventArgs e, OxyModifierKeys modifiers)
         {
             return new OxyMouseDownEventArgs
@@ -302,9 +244,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         /// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
         /// <param name="modifiers">The modifiers.</param>
-        /// <returns>
-        /// A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.
-        /// </returns>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseEventArgs ToMouseUpEventArgs(this MouseEventArgs e, OxyModifierKeys modifiers)
         {
             return new OxyMouseEventArgs
@@ -319,9 +259,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         /// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
         /// <param name="modifiers">The modifiers.</param>
-        /// <returns>
-        /// A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.
-        /// </returns>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseEventArgs ToMouseEventArgs(this MouseEventArgs e, OxyModifierKeys modifiers)
         {
             return new OxyMouseEventArgs
@@ -336,9 +274,7 @@ namespace OxyPlot.WindowsForms
         /// </summary>
         /// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
         /// <param name="modifiers">The modifiers.</param>
-        /// <returns>
-        /// A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.
-        /// </returns>
+        /// <returns>A <see cref="OxyMouseEventArgs" /> containing the converted event arguments.</returns>
         public static OxyMouseEventArgs ToMouseEventArgs(this EventArgs e, OxyModifierKeys modifiers)
         {
             return new OxyMouseEventArgs

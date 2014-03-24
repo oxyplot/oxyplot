@@ -36,7 +36,7 @@ namespace OxyPlot
     public class OxyMouseDownGesture : OxyInputGesture
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyMouseDownGesture"/> class.
+        /// Initializes a new instance of the <see cref="OxyMouseDownGesture" /> class.
         /// </summary>
         /// <param name="mouseButton">The mouse button.</param>
         /// <param name="modifiers">The modifiers.</param>
@@ -67,9 +67,7 @@ namespace OxyPlot
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
-        /// </returns>
+        /// <returns><c>true</c> if the current object is equal to the <paramref name="other" /> parameter; otherwise, <c>false</c>.</returns>
         public override bool Equals(OxyInputGesture other)
         {
             var mg = other as OxyMouseDownGesture;

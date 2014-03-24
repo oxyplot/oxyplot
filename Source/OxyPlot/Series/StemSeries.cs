@@ -35,10 +35,8 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents a series that plots discrete data in a stem plot.
     /// </summary>
-    /// <remarks>
-    /// See <a href="http://en.wikipedia.org/wiki/Stemplot">Stem plot</a> and
-    /// <a href="http://www.mathworks.com/help/techdoc/ref/stem.html">stem</a>.
-    /// </remarks>
+    /// <remarks>See <a href="http://en.wikipedia.org/wiki/Stemplot">Stem plot</a> and
+    /// <a href="http://www.mathworks.com/help/techdoc/ref/stem.html">stem</a>.</remarks>
     public class StemSeries : LineSeries
     {
         /// <summary>
@@ -50,11 +48,9 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StemSeries"/> class.
+        /// Initializes a new instance of the <see cref="StemSeries" /> class.
         /// </summary>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="title">The title.</param>
         public StemSeries(string title)
             : base(title)
         {
@@ -62,17 +58,11 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StemSeries"/> class.
+        /// Initializes a new instance of the <see cref="StemSeries" /> class.
         /// </summary>
-        /// <param name="color">
-        /// The color of the line stroke.
-        /// </param>
-        /// <param name="strokeThickness">
-        /// The stroke thickness (optional).
-        /// </param>
-        /// <param name="title">
-        /// The title (optional).
-        /// </param>
+        /// <param name="color">The color of the line stroke.</param>
+        /// <param name="strokeThickness">The stroke thickness (optional).</param>
+        /// <param name="title">The title (optional).</param>
         public StemSeries(OxyColor color, double strokeThickness = 1, string title = null)
             : base(color, strokeThickness, title)
         {
@@ -86,15 +76,9 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the point on the series that is nearest the specified point.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="interpolate">
-        /// Interpolate the series if this flag is set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <param name="point">The point.</param>
+        /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (this.XAxis == null || this.YAxis == null)
@@ -148,12 +132,8 @@ namespace OxyPlot.Series
         /// <summary>
         /// Renders the LineSeries on the specified rendering context.
         /// </summary>
-        /// <param name="rc">
-        /// The rendering context.
-        /// </param>
-        /// <param name="model">
-        /// The owner plot model.
-        /// </param>
+        /// <param name="rc">The rendering context.</param>
+        /// <param name="model">The owner plot model.</param>
         public override void Render(IRenderContext rc, PlotModel model)
         {
             if (this.Points.Count == 0)

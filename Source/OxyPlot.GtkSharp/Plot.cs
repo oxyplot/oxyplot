@@ -111,7 +111,7 @@ namespace OxyPlot.GtkSharp
         private IPlotController defaultController;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Plot"/> class.
+        /// Initializes a new instance of the <see cref="Plot" /> class.
         /// </summary>
         public Plot()
         {
@@ -166,9 +166,7 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Gets the actual plot controller.
         /// </summary>
-        /// <value>
-        /// The actual plot controller.
-        /// </value>
+        /// <value>The actual plot controller.</value>
         public IPlotController ActualController
         {
             get
@@ -180,9 +178,7 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Gets or sets the plot controller.
         /// </summary>
-        /// <value>
-        /// The controller.
-        /// </value>
+        /// <value>The controller.</value>
         public IPlotController Controller { get; set; }
 
         /// <summary>
@@ -271,9 +267,7 @@ namespace OxyPlot.GtkSharp
         /// <summary>
         /// Sets the cursor type.
         /// </summary>
-        /// <param name="cursorType">
-        /// The cursor type.
-        /// </param>
+        /// <param name="cursorType">The cursor type.</param>
         public void SetCursorType(OxyPlot.CursorType cursorType)
         {
             switch (cursorType)

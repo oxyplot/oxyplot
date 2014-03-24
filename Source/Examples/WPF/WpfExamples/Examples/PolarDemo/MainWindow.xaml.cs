@@ -44,7 +44,7 @@ namespace PolarDemo
     public partial class MainWindow : Window
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// Initializes a new instance of the <see cref="MainWindow" /> class.
         /// </summary>
         public MainWindow()
         {
@@ -91,9 +91,7 @@ namespace PolarDemo
         /// <summary>
         /// Creates the model.
         /// </summary>
-        /// <returns>
-        /// A PlotModel.
-        /// </returns>
+        /// <returns>A PlotModel.</returns>
         private PlotModel CreateModel()
         {
             var model = new PlotModel("Polar plot", "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π")

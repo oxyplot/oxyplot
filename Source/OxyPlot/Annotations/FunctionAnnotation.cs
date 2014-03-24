@@ -35,12 +35,12 @@ namespace OxyPlot.Annotations
     using System.Linq;
 
     /// <summary>
-    /// Represents a line annotation defined 
+    /// Represents a line annotation defined
     /// </summary>
     public class FunctionAnnotation : PathAnnotation
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FunctionAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="FunctionAnnotation" /> class.
         /// </summary>
         public FunctionAnnotation()
         {
@@ -51,9 +51,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the type of function. Can be either f(x) or f(y).
         /// </summary>
-        /// <value>
-        /// The type of the function.
-        /// </value>
+        /// <value>The type of the function.</value>
         public FunctionAnnotationType Type { get; set; }
 
         /// <summary>
@@ -64,9 +62,7 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Gets or sets the resolution.
         /// </summary>
-        /// <value>
-        /// The resolution.
-        /// </value>
+        /// <value>The resolution.</value>
         public int Resolution { get; set; }
 
         /// <summary>

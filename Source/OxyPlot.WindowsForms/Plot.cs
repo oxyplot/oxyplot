@@ -106,7 +106,7 @@ namespace OxyPlot.WindowsForms
         private Rectangle zoomRectangle;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Plot"/> class.
+        /// Initializes a new instance of the <see cref="Plot" /> class.
         /// </summary>
         public Plot()
         {
@@ -124,7 +124,7 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Gets the actual model.
         /// </summary>
-        /// <value> The actual model. </value>
+        /// <value>The actual model.</value>
         public PlotModel ActualModel
         {
             get
@@ -136,9 +136,7 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Gets the actual plot controller.
         /// </summary>
-        /// <value>
-        /// The actual plot controller.
-        /// </value>
+        /// <value>The actual plot controller.</value>
         public IPlotController ActualController
         {
             get
@@ -173,9 +171,7 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Gets or sets the plot controller.
         /// </summary>
-        /// <value>
-        /// The controller.
-        /// </value>
+        /// <value>The controller.</value>
         [Browsable(false)]
         [DefaultValue(null)]
         [Category(OxyPlotCategory)]
@@ -271,9 +267,7 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Sets the cursor type.
         /// </summary>
-        /// <param name="cursorType">
-        /// The cursor type.
-        /// </param>
+        /// <param name="cursorType">The cursor type.</param>
         public void SetCursorType(CursorType cursorType)
         {
             switch (cursorType)
@@ -368,11 +362,9 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp" /> event.
         /// </summary>
-        /// <param name="e">
-        /// A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
@@ -401,11 +393,9 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseWheel"/> event.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseWheel" /> event.
         /// </summary>
-        /// <param name="e">
-        /// A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs" /> that contains the event data.</param>
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
@@ -413,11 +403,9 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.Paint"/> event.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.Paint" /> event.
         /// </summary>
-        /// <param name="e">
-        /// A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs" /> that contains the event data.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -472,11 +460,9 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.PreviewKeyDown"/> event.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.PreviewKeyDown" /> event.
         /// </summary>
-        /// <param name="e">
-        /// A <see cref="T:System.Windows.Forms.PreviewKeyDownEventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.PreviewKeyDownEventArgs" /> that contains the event data.</param>
         protected override void OnPreviewKeyDown(PreviewKeyDownEventArgs e)
         {
             base.OnPreviewKeyDown(e);
@@ -486,11 +472,9 @@ namespace OxyPlot.WindowsForms
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.Resize"/> event.
+        /// Raises the <see cref="E:System.Windows.Forms.Control.Resize" /> event.
         /// </summary>
-        /// <param name="e">
-        /// An <see cref="T:System.EventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
@@ -500,7 +484,7 @@ namespace OxyPlot.WindowsForms
         /// <summary>
         /// Gets the current modifier keys.
         /// </summary>
-        /// <returns>A <see cref="OxyModifierKeys"/> value.</returns>
+        /// <returns>A <see cref="OxyModifierKeys" /> value.</returns>
         private static OxyModifierKeys GetModifiers()
         {
             var modifiers = OxyModifierKeys.None;

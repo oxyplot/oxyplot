@@ -46,9 +46,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal axis.
         /// </summary>
-        /// <returns>
-        /// The internal axis.
-        /// </returns>
+        /// <returns>The internal axis.</returns>
         public override Axes.Axis CreateModel()
         {
             this.SynchronizeProperties();

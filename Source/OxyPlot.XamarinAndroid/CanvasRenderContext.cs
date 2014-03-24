@@ -76,7 +76,7 @@ namespace OxyPlot.XamarinAndroid
         private Canvas canvas;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CanvasRenderContext"/> class.
+        /// Initializes a new instance of the <see cref="CanvasRenderContext" /> class.
         /// </summary>
         public CanvasRenderContext()
         {
@@ -317,8 +317,8 @@ namespace OxyPlot.XamarinAndroid
                 }
 
                 this.canvas.Save();
-				this.canvas.Translate((float)p.X, (float)p.Y);
-				this.canvas.Rotate((float)rotate);
+                this.canvas.Translate((float)p.X, (float)p.Y);
+                this.canvas.Rotate((float)rotate);
                 this.canvas.Translate((float)dx, (float)dy);
                 this.canvas.DrawText(text, 0, 0, this.paint);
                 this.canvas.Restore();
@@ -332,9 +332,7 @@ namespace OxyPlot.XamarinAndroid
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <returns>
-        /// The text size.
-        /// </returns>
+        /// <returns>The text size.</returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (string.IsNullOrEmpty(text))
@@ -355,9 +353,7 @@ namespace OxyPlot.XamarinAndroid
         /// Sets the clip rectangle.
         /// </summary>
         /// <param name="rect">The clip rectangle.</param>
-        /// <returns>
-        /// True if the clip rectangle was set.
-        /// </returns>
+        /// <returns>True if the clip rectangle was set.</returns>
         public override bool SetClip(OxyRect rect)
         {
             this.canvas.Save();
@@ -418,9 +414,7 @@ namespace OxyPlot.XamarinAndroid
         /// <summary>
         /// Cleans up resources not in use.
         /// </summary>
-        /// <remarks>
-        /// This method is called at the end of each rendering.
-        /// </remarks>
+        /// <remarks>This method is called at the end of each rendering.</remarks>
         public override void CleanUp()
         {
             var imagesToRelease = this.imageCache.Keys.Where(i => !this.imagesInUse.Contains(i)).ToList();
@@ -469,10 +463,10 @@ namespace OxyPlot.XamarinAndroid
         }
 
         /// <summary>
-        /// Gets the image from cache or creates a new <see cref="Bitmap"/>.
+        /// Gets the image from cache or creates a new <see cref="Bitmap" />.
         /// </summary>
         /// <param name="source">The source image.</param>
-        /// <returns>A <see cref="Bitmap"/>.</returns>
+        /// <returns>A <see cref="Bitmap" />.</returns>
         private Bitmap GetImage(OxyImage source)
         {
             if (source == null)

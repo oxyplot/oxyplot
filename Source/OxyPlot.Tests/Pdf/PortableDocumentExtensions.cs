@@ -34,7 +34,7 @@ namespace OxyPlot.Tests
     using System.IO;
 
     /// <summary>
-    /// Provides extension methods for <see cref="PortableDocument"/>.
+    /// Provides extension methods for <see cref="PortableDocument" />.
     /// </summary>
     public static class PortableDocumentExtensions
     {

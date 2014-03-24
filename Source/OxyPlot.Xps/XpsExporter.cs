@@ -45,7 +45,7 @@ namespace OxyPlot.Xps
     public class XpsExporter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="XpsExporter"/> class.
+        /// Initializes a new instance of the <see cref="XpsExporter" /> class.
         /// </summary>
         public XpsExporter()
         {
@@ -70,7 +70,7 @@ namespace OxyPlot.Xps
         public OxyColor Background { get; set; }
 
         /// <summary>
-        ///     Exports the specified plot model to an xps file.
+        /// Exports the specified plot model to an xps file.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="fileName">The file name.</param>
@@ -100,7 +100,7 @@ namespace OxyPlot.Xps
         }
 
         /// <summary>
-        /// Exports the specified <see cref="PlotModel"/> to the specified <see cref="Stream"/>.
+        /// Exports the specified <see cref="PlotModel" /> to the specified <see cref="Stream" />.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="stream">The stream.</param>
@@ -125,7 +125,7 @@ namespace OxyPlot.Xps
         }
 
         /// <summary>
-        /// Exports the specified <see cref="PlotModel"/> to the specified <see cref="Stream"/>.
+        /// Exports the specified <see cref="PlotModel" /> to the specified <see cref="Stream" />.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="stream">The stream.</param>

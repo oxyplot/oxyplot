@@ -34,14 +34,12 @@ namespace OxyPlot.Axes
     using System.Linq;
 
     /// <summary>
-    /// Represents an axis presenting <see cref="System.TimeSpan"/> values.
+    /// Represents an axis presenting <see cref="System.TimeSpan" /> values.
     /// </summary>
-    /// <remarks>
-    /// The values should be in seconds.
+    /// <remarks>The values should be in seconds.
     /// The StringFormat value can be used to force formatting of the axis values
     /// <code>"h:mm"</code> shows hours and minutes
-    /// <code>"m:ss"</code> shows minutes and seconds
-    /// </remarks>
+    /// <code>"m:ss"</code> shows minutes and seconds</remarks>
     public class TimeSpanAxis : LinearAxis
     {
         /// <summary>
@@ -52,17 +50,11 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanAxis"/> class.
+        /// Initializes a new instance of the <see cref="TimeSpanAxis" /> class.
         /// </summary>
-        /// <param name="pos">
-        /// The position.
-        /// </param>
-        /// <param name="title">
-        /// The axis title.
-        /// </param>
-        /// <param name="format">
-        /// The string format for the axis values.
-        /// </param>
+        /// <param name="pos">The position.</param>
+        /// <param name="title">The axis title.</param>
+        /// <param name="format">The string format for the axis values.</param>
         public TimeSpanAxis(AxisPosition pos, string title = null, string format = "m:ss")
             : base(pos, title)
         {
@@ -70,23 +62,13 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanAxis"/> class.
+        /// Initializes a new instance of the <see cref="TimeSpanAxis" /> class.
         /// </summary>
-        /// <param name="pos">
-        /// The position.
-        /// </param>
-        /// <param name="min">
-        /// The min.
-        /// </param>
-        /// <param name="max">
-        /// The max.
-        /// </param>
-        /// <param name="title">
-        /// The axis title.
-        /// </param>
-        /// <param name="format">
-        /// The string format for the axis values.
-        /// </param>
+        /// <param name="pos">The position.</param>
+        /// <param name="min">The min.</param>
+        /// <param name="max">The max.</param>
+        /// <param name="title">The axis title.</param>
+        /// <param name="format">The string format for the axis values.</param>
         public TimeSpanAxis(
             AxisPosition pos = AxisPosition.Bottom,
             double min = double.NaN,
@@ -101,12 +83,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Converts a time span to a double.
         /// </summary>
-        /// <param name="s">
-        /// The time span.
-        /// </param>
-        /// <returns>
-        /// A double value.
-        /// </returns>
+        /// <param name="s">The time span.</param>
+        /// <returns>A double value.</returns>
         public static double ToDouble(TimeSpan s)
         {
             return s.TotalSeconds;
@@ -115,12 +93,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Converts a double to a time span.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// A time span.
-        /// </returns>
+        /// <param name="value">The value.</param>
+        /// <returns>A time span.</returns>
         public static TimeSpan ToTimeSpan(double value)
         {
             return TimeSpan.FromSeconds(value);
@@ -129,12 +103,8 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Formats the value.
         /// </summary>
-        /// <param name="x">
-        /// The x.
-        /// </param>
-        /// <returns>
-        /// The format value.
-        /// </returns>
+        /// <param name="x">The x.</param>
+        /// <returns>The format value.</returns>
         public override string FormatValue(double x)
         {
             TimeSpan span = TimeSpan.FromSeconds(x);
@@ -154,9 +124,7 @@ namespace OxyPlot.Axes
         /// Gets the value from an axis coordinate, converts from double to the correct data type if necessary. e.g. DateTimeAxis returns the DateTime and CategoryAxis returns category strings.
         /// </summary>
         /// <param name="x">The coordinate.</param>
-        /// <returns>
-        /// The value.
-        /// </returns>
+        /// <returns>The value.</returns>
         public override object GetValue(double x)
         {
             return TimeSpan.FromSeconds(x);
@@ -167,9 +135,7 @@ namespace OxyPlot.Axes
         /// </summary>
         /// <param name="availableSize">Size of the available area.</param>
         /// <param name="maxIntervalSize">Maximum length of the intervals.</param>
-        /// <returns>
-        /// The calculate actual interval.
-        /// </returns>
+        /// <returns>The calculate actual interval.</returns>
         protected override double CalculateActualInterval(double availableSize, double maxIntervalSize)
         {
             double range = Math.Abs(this.ActualMinimum - this.ActualMaximum);

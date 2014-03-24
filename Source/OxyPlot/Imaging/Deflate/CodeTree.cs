@@ -38,28 +38,22 @@ namespace OxyPlot
     /// <summary>
     /// The code tree.
     /// </summary>
-    /// <remarks>
-    /// The code is a c# port of Nayuki Minase's DEFLATE project at <a href="https://github.com/nayuki/DEFLATE">GitHub</a>.
-    /// Original source code: <a href="https://github.com/nayuki/DEFLATE/blob/master/src/nayuki/deflate/CodeTree.java">CodeTree.java</a>.
-    /// </remarks>
+    /// <remarks>The code is a c# port of Nayuki Minase's DEFLATE project at <a href="https://github.com/nayuki/DEFLATE">GitHub</a>.
+    /// Original source code: <a href="https://github.com/nayuki/DEFLATE/blob/master/src/nayuki/deflate/CodeTree.java">CodeTree.java</a>.</remarks>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
     internal class CodeTree
     {
         /// <summary>
-        /// Stores the code for each symbol, or null if the symbol has no code.
+        /// Stores the code for each symbol, or <c>null</c> if the symbol has no code.
         /// For example, if symbol 5 has code 10011, then codes.get(5) is the list [1, 0, 0, 1, 1].
         /// </summary>
         private readonly List<List<int>> codes;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CodeTree"/> class. Every symbol in the tree 'root' must be strictly less than 'symbolLimit'.
+        /// Initializes a new instance of the <see cref="CodeTree" /> class. Every symbol in the tree 'root' must be strictly less than 'symbolLimit'.
         /// </summary>
-        /// <param name="root">
-        /// The root.
-        /// </param>
-        /// <param name="symbolLimit">
-        /// The symbol limit.
-        /// </param>
+        /// <param name="root">The root.</param>
+        /// <param name="symbolLimit">The symbol limit.</param>
         public CodeTree(InternalNode root, int symbolLimit)
         {
             if (root == null)
@@ -86,12 +80,8 @@ namespace OxyPlot
         /// <summary>
         /// Gets the code for the specified symbol.
         /// </summary>
-        /// <param name="symbol">
-        /// The symbol.
-        /// </param>
-        /// <returns>
-        /// A <see cref="List{T}"/> of codes.
-        /// </returns>
+        /// <param name="symbol">The symbol.</param>
+        /// <returns>A <see cref="List{T}" /> of codes.</returns>
         public List<int> GetCode(int symbol)
         {
             if (symbol < 0)
@@ -110,9 +100,7 @@ namespace OxyPlot
         /// <summary>
         /// Returns a string showing all the codes in this tree. The format is subject to change. Useful for debugging.
         /// </summary>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
+        /// <returns>The <see cref="string" />.</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -121,7 +109,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Appends the code of the specified node to the specified <see cref="StringBuilder"/>.
+        /// Appends the code of the specified node to the specified <see cref="StringBuilder" />.
         /// </summary>
         /// <param name="prefix">The prefix.</param>
         /// <param name="node">The node.</param>
@@ -153,12 +141,8 @@ namespace OxyPlot
         /// <summary>
         /// Builds the code list.
         /// </summary>
-        /// <param name="node">
-        /// The node.
-        /// </param>
-        /// <param name="prefix">
-        /// The prefix.
-        /// </param>
+        /// <param name="node">The node.</param>
+        /// <param name="prefix">The prefix.</param>
         private void BuildCodeList(Node node, List<int> prefix)
         {
             if (node is InternalNode)

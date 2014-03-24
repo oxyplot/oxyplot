@@ -40,7 +40,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets the current modifier keys.
         /// </summary>
-        /// <returns>A <see cref="OxyModifierKeys"/> value.</returns>
+        /// <returns>A <see cref="OxyModifierKeys" /> value.</returns>
         public static OxyModifierKeys GetModifierKeys()
         {
             var modifiers = OxyModifierKeys.None;

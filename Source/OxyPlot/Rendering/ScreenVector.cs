@@ -53,14 +53,10 @@ namespace OxyPlot
         internal double y;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScreenVector"/> structure.
+        /// Initializes a new instance of the <see cref="ScreenVector" /> structure.
         /// </summary>
-        /// <param name="x">
-        /// The x-coordinate.
-        /// </param>
-        /// <param name="y">
-        /// The y-coordinate.
-        /// </param>
+        /// <param name="x">The x-coordinate.</param>
+        /// <param name="y">The y-coordinate.</param>
         public ScreenVector(double x, double y)
         {
             this.x = x;
@@ -92,7 +88,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the x-coordinate.
         /// </summary>
-        /// <value> The x-coordinate. </value>
+        /// <value>The x-coordinate.</value>
         public double X
         {
             get
@@ -104,7 +100,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the y-coordinate.
         /// </summary>
-        /// <value> The y-coordinate. </value>
+        /// <value>The y-coordinate.</value>
         public double Y
         {
             get
@@ -116,9 +112,9 @@ namespace OxyPlot
         /// <summary>
         /// Implements the operator *.
         /// </summary>
-        /// <param name="v"> The vector. </param>
-        /// <param name="d"> The multiplication factor. </param>
-        /// <returns> The result of the operator. </returns>
+        /// <param name="v">The vector.</param>
+        /// <param name="d">The multiplication factor.</param>
+        /// <returns>The result of the operator.</returns>
         public static ScreenVector operator *(ScreenVector v, double d)
         {
             return new ScreenVector(v.x * d, v.y * d);
@@ -138,11 +134,9 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()
         {
             return this.x + " " + this.y;

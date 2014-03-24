@@ -36,7 +36,7 @@ namespace OxyPlot
     public static class OxyPalettes
     {
         /// <summary>
-        /// Initializes static members of the <see cref="OxyPalettes"/> class.
+        /// Initializes static members of the <see cref="OxyPalettes" /> class.
         /// </summary>
         static OxyPalettes()
         {
@@ -63,12 +63,8 @@ namespace OxyPlot
         /// <summary>
         /// Creates a black/white/red palette with the specified number of colors.
         /// </summary>
-        /// <param name="numberOfColors">
-        /// The number of colors to create for the palette.
-        /// </param>
-        /// <returns>
-        /// A palette.
-        /// </returns>
+        /// <param name="numberOfColors">The number of colors to create for the palette.</param>
+        /// <returns>A palette.</returns>
         public static OxyPalette BlackWhiteRed(int numberOfColors)
         {
             return OxyPalette.Interpolate(numberOfColors, OxyColors.Black, OxyColors.White, OxyColors.Red);
@@ -77,12 +73,8 @@ namespace OxyPlot
         /// <summary>
         /// Creates a blue/white/red palette with the specified number of colors.
         /// </summary>
-        /// <param name="numberOfColors">
-        /// The number of colors to create for the palette.
-        /// </param>
-        /// <returns>
-        /// A palette.
-        /// </returns>
+        /// <param name="numberOfColors">The number of colors to create for the palette.</param>
+        /// <returns>A palette.</returns>
         public static OxyPalette BlueWhiteRed(int numberOfColors)
         {
             return OxyPalette.Interpolate(numberOfColors, OxyColors.Blue, OxyColors.White, OxyColors.Red);
@@ -91,12 +83,8 @@ namespace OxyPlot
         /// <summary>
         /// Creates a 'cool' palette with the specified number of colors.
         /// </summary>
-        /// <param name="numberOfColors">
-        /// The number of colors to create for the palette.
-        /// </param>
-        /// <returns>
-        /// A palette.
-        /// </returns>
+        /// <param name="numberOfColors">The number of colors to create for the palette.</param>
+        /// <returns>A palette.</returns>
         public static OxyPalette Cool(int numberOfColors)
         {
             return OxyPalette.Interpolate(numberOfColors, OxyColors.Cyan, OxyColors.Magenta);
@@ -105,12 +93,8 @@ namespace OxyPlot
         /// <summary>
         /// Creates a gray-scale palette with the specified number of colors.
         /// </summary>
-        /// <param name="numberOfColors">
-        /// The number of colors to create for the palette.
-        /// </param>
-        /// <returns>
-        /// A palette.
-        /// </returns>
+        /// <param name="numberOfColors">The number of colors to create for the palette.</param>
+        /// <returns>A palette.</returns>
         public static OxyPalette Gray(int numberOfColors)
         {
             return OxyPalette.Interpolate(numberOfColors, OxyColors.Black, OxyColors.White);
@@ -119,12 +103,8 @@ namespace OxyPlot
         /// <summary>
         /// Creates a 'hot' palette with the specified number of colors.
         /// </summary>
-        /// <param name="numberOfColors">
-        /// The number of colors to create for the palette.
-        /// </param>
-        /// <returns>
-        /// A palette.
-        /// </returns>
+        /// <param name="numberOfColors">The number of colors to create for the palette.</param>
+        /// <returns>A palette.</returns>
         public static OxyPalette Hot(int numberOfColors)
         {
             return OxyPalette.Interpolate(
@@ -139,15 +119,9 @@ namespace OxyPlot
         /// <summary>
         /// Creates a palette from the hue component of the HSV color model.
         /// </summary>
-        /// <param name="numberOfColors">
-        /// The number of colors.
-        /// </param>
-        /// <returns>
-        /// The palette.
-        /// </returns>
-        /// <remarks>
-        /// This palette is particularly appropriate for displaying periodic functions.
-        /// </remarks>
+        /// <param name="numberOfColors">The number of colors.</param>
+        /// <returns>The palette.</returns>
+        /// <remarks>This palette is particularly appropriate for displaying periodic functions.</remarks>
         public static OxyPalette Hue(int numberOfColors)
         {
             return OxyPalette.Interpolate(
@@ -164,15 +138,9 @@ namespace OxyPlot
         /// <summary>
         /// Creates a hue-based palette from magenta to red.
         /// </summary>
-        /// <param name="numberOfColors">
-        /// The number of colors.
-        /// </param>
-        /// <returns>
-        /// The palette.
-        /// </returns>
-        /// <remarks>
-        /// This palette contains only distinct colors and with the cool colors (blues) first.
-        /// </remarks>
+        /// <param name="numberOfColors">The number of colors.</param>
+        /// <returns>The palette.</returns>
+        /// <remarks>This palette contains only distinct colors and with the cool colors (blues) first.</remarks>
         public static OxyPalette HueDistinct(int numberOfColors)
         {
             return OxyPalette.Interpolate(
@@ -188,12 +156,8 @@ namespace OxyPlot
         /// <summary>
         /// Creates a 'jet' palette with the specified number of colors.
         /// </summary>
-        /// <param name="numberOfColors">
-        /// The number of colors to create for the palette.
-        /// </param>
-        /// <returns>
-        /// A palette.
-        /// </returns>
+        /// <param name="numberOfColors">The number of colors to create for the palette.</param>
+        /// <returns>A palette.</returns>
         public static OxyPalette Jet(int numberOfColors)
         {
             return OxyPalette.Interpolate(
@@ -208,12 +172,8 @@ namespace OxyPlot
         /// <summary>
         /// Creates a rainbow palette with the specified number of colors.
         /// </summary>
-        /// <param name="numberOfColors">
-        /// The number of colors to create for the palette.
-        /// </param>
-        /// <returns>
-        /// A palette.
-        /// </returns>
+        /// <param name="numberOfColors">The number of colors to create for the palette.</param>
+        /// <returns>A palette.</returns>
         public static OxyPalette Rainbow(int numberOfColors)
         {
             return OxyPalette.Interpolate(

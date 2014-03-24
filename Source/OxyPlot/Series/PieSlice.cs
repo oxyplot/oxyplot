@@ -31,7 +31,7 @@
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Represent a slice of a <see cref="PieSeries"/>.
+    /// Represent a slice of a <see cref="PieSeries" />.
     /// </summary>
     public class PieSlice
     {
@@ -44,14 +44,10 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PieSlice"/> class.
+        /// Initializes a new instance of the <see cref="PieSlice" /> class.
         /// </summary>
-        /// <param name="label">
-        /// The label.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="label">The label.</param>
+        /// <param name="value">The value.</param>
         public PieSlice(string label, double value)
             : this()
         {

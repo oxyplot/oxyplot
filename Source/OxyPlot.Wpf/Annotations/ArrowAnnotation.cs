@@ -39,62 +39,62 @@ namespace OxyPlot.Wpf
     public class ArrowAnnotation : TextualAnnotation
     {
         /// <summary>
-        /// The ArrowDirection property.
+        /// Identifies the <see cref="ArrowDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ArrowDirectionProperty = DependencyProperty.Register(
             "ArrowDirection", typeof(ScreenVector), typeof(ArrowAnnotation), new PropertyMetadata(DataChanged));
 
         /// <summary>
-        /// The Color property.
+        /// Identifies the <see cref="Color"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", typeof(Color), typeof(ArrowAnnotation), new PropertyMetadata(Colors.Blue, AppearanceChanged));
 
         /// <summary>
-        /// The EndPoint property.
+        /// Identifies the <see cref="EndPoint"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EndPointProperty = DependencyProperty.Register(
             "EndPoint", typeof(DataPoint), typeof(ArrowAnnotation), new PropertyMetadata(DataChanged));
 
         /// <summary>
-        /// The HeadLength property.
+        /// Identifies the <see cref="HeadLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HeadLengthProperty = DependencyProperty.Register(
             "HeadLength", typeof(double), typeof(ArrowAnnotation), new PropertyMetadata(10.0, AppearanceChanged));
 
         /// <summary>
-        /// The HeadWidth property.
+        /// Identifies the <see cref="HeadWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HeadWidthProperty = DependencyProperty.Register(
             "HeadWidth", typeof(double), typeof(ArrowAnnotation), new PropertyMetadata(3.0, AppearanceChanged));
 
         /// <summary>
-        /// The LineJoin property.
+        /// Identifies the <see cref="LineJoin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
             "LineJoin", typeof(OxyPenLineJoin), typeof(ArrowAnnotation), new UIPropertyMetadata(OxyPenLineJoin.Miter, AppearanceChanged));
 
         /// <summary>
-        /// The LineStyle property.
+        /// Identifies the <see cref="LineStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
             "LineStyle", typeof(LineStyle), typeof(ArrowAnnotation), new PropertyMetadata(LineStyle.Solid, AppearanceChanged));
 
         /// <summary>
-        /// The StartPoint property.
+        /// Identifies the <see cref="StartPoint"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StartPointProperty = DependencyProperty.Register(
             "StartPoint", typeof(DataPoint), typeof(ArrowAnnotation), new PropertyMetadata(DataChanged));
 
         /// <summary>
-        /// The StrokeThickness property.
+        /// Identifies the <see cref="StrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
                 "StrokeThickness", typeof(double), typeof(ArrowAnnotation), new PropertyMetadata(2.0, AppearanceChanged));
 
         /// <summary>
-        /// The Veeness property.
+        /// Identifies the <see cref="Veeness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VeenessProperty = DependencyProperty.Register(
             "Veeness", typeof(double), typeof(ArrowAnnotation), new PropertyMetadata(0.0, AppearanceChanged));
@@ -158,7 +158,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the length of the head (relative to the stroke thickness).
         /// </summary>
-        /// <value> The length of the head. </value>
+        /// <value>The length of the head.</value>
         public double HeadLength
         {
             get
@@ -175,7 +175,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the width of the head (relative to the stroke thickness).
         /// </summary>
-        /// <value> The width of the head. </value>
+        /// <value>The width of the head.</value>
         public double HeadWidth
         {
             get
@@ -225,9 +225,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the start point.
         /// </summary>
-        /// <remarks>
-        /// This property is overridden by the ArrowDirection property, if set.
-        /// </remarks>
+        /// <remarks>This property is overridden by the ArrowDirection property, if set.</remarks>
         public DataPoint StartPoint
         {
             get
@@ -276,9 +274,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
-        /// <returns>
-        /// The annotation.
-        /// </returns>
+        /// <returns>The annotation.</returns>
         public override Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();

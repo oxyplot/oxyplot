@@ -46,8 +46,7 @@ namespace ExampleLibrary
         /// <summary>
         /// The graph 1.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns></returns>
         [Example("Q1 2003 Calls by Region")]
         public static PlotModel Graph1()
         {
@@ -79,8 +78,7 @@ namespace ExampleLibrary
         /// <summary>
         /// The graph 2.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns></returns>
         [Example("2003 Sales")]
         public static PlotModel Graph2()
         {
@@ -123,8 +121,7 @@ namespace ExampleLibrary
         /// <summary>
         /// The graph 3.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns></returns>
         [Example("Headcount")]
         public static PlotModel Graph3()
         {
@@ -160,8 +157,7 @@ namespace ExampleLibrary
         /// <summary>
         /// The graph 4.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns></returns>
         [Example("Regional % of Total Expenses")]
         public static PlotModel Graph4()
         {
@@ -200,8 +196,7 @@ namespace ExampleLibrary
         /// <summary>
         /// The graph 5.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns></returns>
         [Example("Actual to Plan Variance")]
         public static PlotModel Graph5()
         {
@@ -239,8 +234,7 @@ namespace ExampleLibrary
         /// <summary>
         /// The graph 6.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns></returns>
         [Example("Order Count by Order Size")]
         public static PlotModel Graph6()
         {
@@ -276,8 +270,7 @@ namespace ExampleLibrary
         /// <summary>
         /// The graph 7.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <returns></returns>
         [Example("Correlation of Employee Heights and Salaries")]
         public static PlotModel Graph7()
         {

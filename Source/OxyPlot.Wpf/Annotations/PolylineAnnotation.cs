@@ -39,25 +39,25 @@ namespace OxyPlot.Wpf
     public class PolylineAnnotation : PathAnnotation
     {
         /// <summary>
-        /// The smooth property.
+        /// Identifies the <see cref="Smooth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SmoothProperty = DependencyProperty.Register(
             "Smooth", typeof(bool), typeof(PolylineAnnotation), new PropertyMetadata(false, DataChanged));
 
         /// <summary>
-        /// The minimum segment length property
+        /// Identifies the <see cref="MinimumSegmentLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumSegmentLengthProperty =
             DependencyProperty.Register("MinimumSegmentLength", typeof(double), typeof(PolylineAnnotation), new PropertyMetadata(0));
 
         /// <summary>
-        /// The points property
+        /// Identifies the <see cref="Points"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PointsProperty =
             DependencyProperty.Register("Points", typeof(IList<IDataPoint>), typeof(PolylineAnnotation), new PropertyMetadata(new List<IDataPoint>()));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PolylineAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="PolylineAnnotation" /> class.
         /// </summary>
         public PolylineAnnotation()
         {
@@ -67,9 +67,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the points.
         /// </summary>
-        /// <value>
-        /// The points.
-        /// </value>
+        /// <value>The points.</value>
         public IList<IDataPoint> Points
         {
             get
@@ -98,9 +96,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether the polyline should be smoothed.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if smooth; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if smooth; otherwise, <c>false</c>.</value>
         public bool Smooth
         {
             get { return (bool)this.GetValue(SmoothProperty); }
@@ -110,9 +106,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
-        /// <returns>
-        /// The annotation.
-        /// </returns>
+        /// <returns>The annotation.</returns>
         public override Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();

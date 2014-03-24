@@ -38,20 +38,20 @@ namespace OxyPlot.Wpf
     public class LinearAxis : Axis
     {
         /// <summary>
-        /// The format as fractions property.
+        /// Identifies the <see cref="FormatAsFractions"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FormatAsFractionsProperty =
             DependencyProperty.Register(
                 "FormatAsFractions", typeof(bool), typeof(LinearAxis), new PropertyMetadata(false));
 
         /// <summary>
-        /// The fraction unit property.
+        /// Identifies the <see cref="FractionUnit"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FractionUnitProperty = DependencyProperty.Register(
             "FractionUnit", typeof(double), typeof(LinearAxis), new PropertyMetadata(1.0));
 
         /// <summary>
-        /// The fraction unit symbol property.
+        /// Identifies the <see cref="FractionUnitSymbol"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FractionUnitSymbolProperty =
             DependencyProperty.Register(
@@ -116,9 +116,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal axis.
         /// </summary>
-        /// <returns>
-        /// The internal axis.
-        /// </returns>
+        /// <returns>The internal axis.</returns>
         public override Axes.Axis CreateModel()
         {
             this.SynchronizeProperties();

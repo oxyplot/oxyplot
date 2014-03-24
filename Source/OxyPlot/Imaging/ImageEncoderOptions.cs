@@ -36,7 +36,7 @@ namespace OxyPlot
     public abstract class ImageEncoderOptions
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImageEncoderOptions"/> class.
+        /// Initializes a new instance of the <see cref="ImageEncoderOptions" /> class.
         /// </summary>
         protected ImageEncoderOptions()
         {
@@ -47,17 +47,13 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the horizontal resolution (in dots per inch).
         /// </summary>
-        /// <value>
-        /// The resolution. The default value is 96 dpi.
-        /// </value>
+        /// <value>The resolution. The default value is 96 dpi.</value>
         public double DpiX { get; set; }
 
         /// <summary>
         /// Gets or sets the vertical resolution (in dots per inch).
         /// </summary>
-        /// <value>
-        /// The resolution. The default value is 96 dpi.
-        /// </value>
+        /// <value>The resolution. The default value is 96 dpi.</value>
         public double DpiY { get; set; }
     }
 }

@@ -36,14 +36,14 @@ namespace OxyPlot.Pdf
 
     /// <summary>
     /// Provides extension methods for OxyPlot to PdfSharp type conversion.
-    /// </summary>    
+    /// </summary>
     public static class PdfSharpExtensions
     {
         /// <summary>
-        /// Converts an <see cref="OxyRect"/> to an <see cref="XRect"/>.
+        /// Converts an <see cref="OxyRect" /> to an <see cref="XRect" />.
         /// </summary>
         /// <param name="r">The rectangle.</param>
-        /// <returns>The <see cref="XRect"/></returns>
+        /// <returns>The <see cref="XRect" /></returns>
         public static XRect ToXRect(this OxyRect r)
         {
             return new XRect((int)Math.Round(r.Left), (int)Math.Round(r.Top), (int)Math.Round(r.Width), (int)Math.Round(r.Height));

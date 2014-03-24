@@ -31,7 +31,7 @@
 namespace OxyPlot.Axes
 {
     /// <summary>
-    /// Provides extension methods for <see cref="IColorAxis"/>.
+    /// Provides extension methods for <see cref="IColorAxis" />.
     /// </summary>
     public static class ColorAxisExtensions
     {

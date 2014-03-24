@@ -43,9 +43,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Writes the content of the paragraph.
         /// </summary>
-        /// <param name="w">
-        /// The target <see cref="IReportWriter"/>.
-        /// </param>
+        /// <param name="w">The target <see cref="IReportWriter" />.</param>
         public override void WriteContent(IReportWriter w)
         {
             w.WriteParagraph(this);

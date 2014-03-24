@@ -38,10 +38,8 @@ namespace OxyPlot.Wpf
     /// <summary>
     /// Converts from <see cref="Thickness" /> to the maximum thicknesses.
     /// </summary>
-    /// <remarks>
-    /// This is used in the <see cref="TrackerControl" /> to convert BorderThickness properties to Path.StrokeThickness (double).
-    /// The maximum thickness value is used.
-    /// </remarks>    [ValueConversion(typeof(Thickness), typeof(double))]
+    /// <remarks>This is used in the <see cref="TrackerControl" /> to convert BorderThickness properties to Path.StrokeThickness (double).
+    /// The maximum thickness value is used.</remarks>
     public class ThicknessConverter : IValueConverter
     {
         /// <summary>
@@ -51,9 +49,7 @@ namespace OxyPlot.Wpf
         /// <param name="targetType">The type of the binding target property.</param>
         /// <param name="parameter">The converter parameter to use.</param>
         /// <param name="culture">The culture to use in the converter.</param>
-        /// <returns>
-        /// A converted value. If the method returns null, the valid null value is used.
-        /// </returns>
+        /// <returns>A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is Thickness)
@@ -75,9 +71,7 @@ namespace OxyPlot.Wpf
         /// <param name="targetType">The type to convert to.</param>
         /// <param name="parameter">The converter parameter to use.</param>
         /// <param name="culture">The culture to use in the converter.</param>
-        /// <returns>
-        /// A converted value. If the method returns null, the valid null value is used.
-        /// </returns>
+        /// <returns>A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.</returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;

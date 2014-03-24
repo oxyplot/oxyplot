@@ -91,9 +91,7 @@ namespace ExampleLibrary
         /// <summary>
         /// Gets or sets a value indicating whether to show the diagonal.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if the diagonal should be shown; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if the diagonal should be shown; otherwise, <c>false</c>.</value>
         public bool ShowDiagonal { get; set; }
 
         /// <summary>
@@ -104,17 +102,13 @@ namespace ExampleLibrary
         /// <summary>
         /// Gets or sets the color of the grid.
         /// </summary>
-        /// <value>
-        /// The color of the grid.
-        /// </value>
+        /// <value>The color of the grid.</value>
         public OxyColor GridColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the border around the matrix.
         /// </summary>
-        /// <value>
-        /// The color of the border.
-        /// </value>
+        /// <value>The color of the border.</value>
         public OxyColor BorderColor { get; set; }
 
         /// <summary>
@@ -125,9 +119,7 @@ namespace ExampleLibrary
         /// <summary>
         /// Gets or sets the zero tolerance (inclusive).
         /// </summary>
-        /// <value>
-        /// The zero tolerance.
-        /// </value>
+        /// <value>The zero tolerance.</value>
         public double ZeroTolerance { get; set; }
 
         /// <summary>
@@ -135,9 +127,7 @@ namespace ExampleLibrary
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             var dp = this.InverseTransform(point);

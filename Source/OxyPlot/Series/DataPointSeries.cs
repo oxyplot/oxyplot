@@ -36,7 +36,7 @@ namespace OxyPlot.Series
     using System.Reflection;
 
     /// <summary>
-    /// Provides an abstract base class for series that contain a collection of <see cref="IDataPoint"/>s.
+    /// Provides an abstract base class for series that contain a collection of <see cref="IDataPoint" />s.
     /// </summary>
     public abstract class DataPointSeries : XYAxisSeries
     {
@@ -106,9 +106,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
-        /// <returns>
-        /// A TrackerHitResult for the current hit.
-        /// </returns>
+        /// <returns>A TrackerHitResult for the current hit.</returns>
         public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
         {
             if (interpolate && !this.CanTrackerInterpolatePoints)
@@ -164,9 +162,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The add data points.
         /// </summary>
-        /// <param name="pts">
-        /// The points.
-        /// </param>
+        /// <param name="pts">The points.</param>
         protected void AddDataPoints(IList<IDataPoint> pts)
         {
             pts.Clear();
@@ -218,18 +214,10 @@ namespace OxyPlot.Series
         /// <summary>
         /// Adds data points from the specified source to the specified destination.
         /// </summary>
-        /// <param name="dest">
-        /// The destination list.
-        /// </param>
-        /// <param name="itemsSource">
-        /// The source.
-        /// </param>
-        /// <param name="dataFieldX">
-        /// The x-coordinate data field.
-        /// </param>
-        /// <param name="dataFieldY">
-        /// The y-coordinate data field.
-        /// </param>
+        /// <param name="dest">The destination list.</param>
+        /// <param name="itemsSource">The source.</param>
+        /// <param name="dataFieldX">The x-coordinate data field.</param>
+        /// <param name="dataFieldY">The y-coordinate data field.</param>
         protected void AddDataPoints(IList<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
         {
             PropertyInfo pix = null;
@@ -272,9 +260,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Updates the Max/Min limits from the specified point list.
         /// </summary>
-        /// <param name="pts">
-        /// The points.
-        /// </param>
+        /// <param name="pts">The points.</param>
         protected void InternalUpdateMaxMin(IList<IDataPoint> pts)
         {
             if (pts == null || pts.Count == 0)

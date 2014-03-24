@@ -34,12 +34,12 @@ namespace OxyPlot.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    ///     This is a WPF wrapper of OxyPlot.EllipseAnnotation
+    /// This is a WPF wrapper of OxyPlot.EllipseAnnotation
     /// </summary>
     public class EllipseAnnotation : TextualAnnotation
     {
         /// <summary>
-        ///     The Fill property.
+        /// Identifies the <see cref="Fill"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FillProperty = DependencyProperty.Register(
             "Fill",
@@ -48,7 +48,7 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(Colors.LightBlue, AppearanceChanged));
 
         /// <summary>
-        ///     The Stroke property.
+        /// Identifies the <see cref="Stroke"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke",
@@ -57,7 +57,7 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
-        ///     The Stroke property.
+        /// Identifies the <see cref="StrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
             "StrokeThickness",
@@ -66,25 +66,25 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
-        ///     The X property.
+        /// Identifies the <see cref="X"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty XProperty = DependencyProperty.Register(
             "X", typeof(double), typeof(EllipseAnnotation), new PropertyMetadata(0.0, DataChanged));
 
         /// <summary>
-        ///     The Y property.
+        /// Identifies the <see cref="Y"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty YProperty = DependencyProperty.Register(
             "Y", typeof(double), typeof(EllipseAnnotation), new PropertyMetadata(0.0, DataChanged));
 
         /// <summary>
-        ///     The text rotation property
+        /// Identifies the <see cref="TextRotation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextRotationProperty = DependencyProperty.Register(
             "TextRotation", typeof(double), typeof(EllipseAnnotation), new UIPropertyMetadata(0.0));
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="EllipseAnnotation" /> class.
+        /// Initializes a new instance of the <see cref="EllipseAnnotation" /> class.
         /// </summary>
         public EllipseAnnotation()
         {
@@ -92,7 +92,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the fill color.
+        /// Gets or sets the fill color.
         /// </summary>
         public Color Fill
         {
@@ -108,7 +108,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the stroke color.
+        /// Gets or sets the stroke color.
         /// </summary>
         public Color Stroke
         {
@@ -124,7 +124,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the stroke thickness.
+        /// Gets or sets the stroke thickness.
         /// </summary>
         public double StrokeThickness
         {
@@ -140,7 +140,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the  X.
+        /// Gets or sets the  X.
         /// </summary>
         public double X
         {
@@ -156,7 +156,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the  Y.
+        /// Gets or sets the  Y.
         /// </summary>
         public double Y
         {
@@ -172,7 +172,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the text rotation (degrees).
+        /// Gets or sets the text rotation (degrees).
         /// </summary>
         /// <value>The text rotation in degrees.</value>
         public double TextRotation
@@ -189,11 +189,9 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Creates the internal annotation object.
+        /// Creates the internal annotation object.
         /// </summary>
-        /// <returns>
-        ///     The annotation.
-        /// </returns>
+        /// <returns>The annotation.</returns>
         public override Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();
@@ -201,7 +199,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        ///     Synchronizes the properties.
+        /// Synchronizes the properties.
         /// </summary>
         public override void SynchronizeProperties()
         {

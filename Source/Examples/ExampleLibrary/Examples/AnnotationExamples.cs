@@ -472,7 +472,7 @@ namespace ExampleLibrary
             pixels[1, 0] = OxyColors.Yellow;
             pixels[0, 1] = OxyColors.Green;
             pixels[1, 1] = OxyColors.Red;
-            
+
             var image = OxyImage.Create(pixels, ImageFormat.Png);
 
             model.Annotations.Add(

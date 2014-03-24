@@ -70,23 +70,13 @@ namespace OxyPlot.Pdf
         private string indent = string.Empty;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LatexReportWriter"/> class.
+        /// Initializes a new instance of the <see cref="LatexReportWriter" /> class.
         /// </summary>
-        /// <param name="s">
-        /// The s.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
-        /// <param name="author">
-        /// The author.
-        /// </param>
-        /// <param name="fontsize">
-        /// The font size.
-        /// </param>
-        /// <param name="documentType">
-        /// The document type.
-        /// </param>
+        /// <param name="s">The s.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="author">The author.</param>
+        /// <param name="fontsize">The font size.</param>
+        /// <param name="documentType">The document type.</param>
         public LatexReportWriter(Stream s, string title, string author, string fontsize = "12pt", string documentType = "report")
             : base(s)
         {
@@ -136,9 +126,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the drawing.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
+        /// <param name="d">The d.</param>
         public void WriteDrawing(DrawingFigure d)
         {
         }
@@ -146,9 +134,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the equation.
         /// </summary>
-        /// <param name="equation">
-        /// The equation.
-        /// </param>
+        /// <param name="equation">The equation.</param>
         public void WriteEquation(Equation equation)
         {
             this.WriteIndentedLine(@"\begin{eqnarray*}");
@@ -165,9 +151,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the header.
         /// </summary>
-        /// <param name="h">
-        /// The h.
-        /// </param>
+        /// <param name="h">The h.</param>
         public void WriteHeader(Header h)
         {
             if (h.Text == null)
@@ -202,9 +186,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the image.
         /// </summary>
-        /// <param name="i">
-        /// The i.
-        /// </param>
+        /// <param name="i">The i.</param>
         public void WriteImage(Image i)
         {
             this.WriteIndentedLine(@"\begin{figure}[h]");
@@ -237,9 +219,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the paragraph.
         /// </summary>
-        /// <param name="p">
-        /// The p.
-        /// </param>
+        /// <param name="p">The p.</param>
         public void WriteParagraph(Paragraph p)
         {
             foreach (string line in p.Text.SplitLines())
@@ -253,9 +233,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the plot.
         /// </summary>
-        /// <param name="plot">
-        /// The plot.
-        /// </param>
+        /// <param name="plot">The plot.</param>
         public void WritePlot(PlotFigure plot)
         {
             // string path = "plot" + plotNumber + ".pdf";
@@ -265,12 +243,8 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the report.
         /// </summary>
-        /// <param name="report">
-        /// The report.
-        /// </param>
-        /// <param name="reportStyle">
-        /// The style.
-        /// </param>
+        /// <param name="report">The report.</param>
+        /// <param name="reportStyle">The style.</param>
         public void WriteReport(Report report, ReportStyle reportStyle)
         {
             report.Write(this);
@@ -279,9 +253,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the table.
         /// </summary>
-        /// <param name="t">
-        /// The t.
-        /// </param>
+        /// <param name="t">The t.</param>
         public void WriteTable(Table t)
         {
             this.WriteIndentedLine(@"\begin{table}[h]");
@@ -331,14 +303,10 @@ namespace OxyPlot.Pdf
         }
 
         /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="T:System.IO.StreamWriter"/> and optionally releases the managed resources.
+        /// Releases the unmanaged resources used by the <see cref="T:System.IO.StreamWriter" /> and optionally releases the managed resources.
         /// </summary>
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources; false to release only unmanaged resources.
-        /// </param>
-        /// <exception cref="T:System.Text.EncoderFallbackException">
-        /// The current encoding does not support displaying half of a Unicode surrogate pair.
-        /// </exception>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        /// <exception cref="T:System.Text.EncoderFallbackException">The current encoding does not support displaying half of a Unicode surrogate pair.</exception>
         protected override void Dispose(bool disposing)
         {
             if (!this.isDocumentEnded)
@@ -352,12 +320,8 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Encodes text.
         /// </summary>
-        /// <param name="t">
-        /// The text to encode.
-        /// </param>
-        /// <returns>
-        /// The encoded text.
-        /// </returns>
+        /// <param name="t">The text to encode.</param>
+        /// <returns>The encoded text.</returns>
         private static string LatexEncodeText(string t)
         {
             if (t == null)
@@ -390,9 +354,7 @@ namespace OxyPlot.Pdf
         /// <summary>
         /// Writes the indented line.
         /// </summary>
-        /// <param name="s">
-        /// The s.
-        /// </param>
+        /// <param name="s">The s.</param>
         private void WriteIndentedLine(string s)
         {
             this.WriteIndent();

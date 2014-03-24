@@ -53,7 +53,7 @@ namespace ExampleBrowser
                     node = new TreeNode(ex.Category);
                     this.treeView1.Nodes.Add(node);
                 }
-            
+
                 node.Nodes.Add(new TreeNode(ex.Title) { Tag = ex });
             }
 

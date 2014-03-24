@@ -146,7 +146,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Represents an item in a <see cref="Selection"/>.
+        /// Represents an item in a <see cref="Selection" />.
         /// </summary>
         public struct SelectionItem : IEquatable<SelectionItem>
         {
@@ -161,7 +161,7 @@ namespace OxyPlot
             private readonly Enum feature;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="SelectionItem"/> struct.
+            /// Initializes a new instance of the <see cref="SelectionItem" /> struct.
             /// </summary>
             /// <param name="index">The index.</param>
             /// <param name="feature">The feature.</param>
@@ -199,7 +199,7 @@ namespace OxyPlot
             /// Indicates whether the current object is equal to another object of the same type.
             /// </summary>
             /// <param name="other">An object to compare with this object.</param>
-            /// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
+            /// <returns><c>true</c> if the current object is equal to the <paramref name="other" /> parameter; otherwise, <c>false</c>.</returns>
             public bool Equals(SelectionItem other)
             {
                 // ReSharper disable RedundantNameQualifier

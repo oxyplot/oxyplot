@@ -42,9 +42,7 @@ namespace OxyPlot
         /// <summary>
         /// Makes the LegendOrientation property safe.
         /// </summary>
-        /// <remarks>
-        /// If Legend is positioned left or right, force it to vertical orientation
-        /// </remarks>
+        /// <remarks>If Legend is positioned left or right, force it to vertical orientation</remarks>
         private void EnsureLegendProperties()
         {
             switch (this.LegendPosition)
@@ -189,15 +187,9 @@ namespace OxyPlot
         /// <summary>
         /// Renders the legend for the specified series.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="s">
-        /// The series.
-        /// </param>
-        /// <param name="rect">
-        /// The position and size of the legend.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="s">The series.</param>
+        /// <param name="rect">The position and size of the legend.</param>
         private void RenderLegend(IRenderContext rc, Series.Series s, OxyRect rect)
         {
             double x = rect.Left;
@@ -269,15 +261,9 @@ namespace OxyPlot
         /// <summary>
         /// Measures the legends.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="availableSize">
-        /// The available size for the legend box.
-        /// </param>
-        /// <returns>
-        /// The size of the legend box.
-        /// </returns>
+        /// <param name="rc">The render context.</param>
+        /// <param name="availableSize">The available size for the legend box.</param>
+        /// <returns>The size of the legend box.</returns>
         private OxySize MeasureLegends(IRenderContext rc, OxySize availableSize)
         {
             return this.RenderOrMeasureLegends(rc, new OxyRect(0, 0, availableSize.Width, availableSize.Height), true);
@@ -286,12 +272,8 @@ namespace OxyPlot
         /// <summary>
         /// Renders or measures the legends.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="rect">
-        /// The rectangle.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="rect">The rectangle.</param>
         private void RenderLegends(IRenderContext rc, OxyRect rect)
         {
             this.RenderOrMeasureLegends(rc, rect);
@@ -300,18 +282,10 @@ namespace OxyPlot
         /// <summary>
         /// Renders or measures the legends.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="rect">
-        /// Provides the available size if measuring, otherwise it provides the position and size of the legend.
-        /// </param>
-        /// <param name="measureOnly">
-        /// Specify if the size of the legend box should be measured only (not rendered).
-        /// </param>
-        /// <returns>
-        /// The size of the legend box.
-        /// </returns>
+        /// <param name="rc">The render context.</param>
+        /// <param name="rect">Provides the available size if measuring, otherwise it provides the position and size of the legend.</param>
+        /// <param name="measureOnly">Specify if the size of the legend box should be measured only (not rendered).</param>
+        /// <returns>The size of the legend box.</returns>
         private OxySize RenderOrMeasureLegends(IRenderContext rc, OxyRect rect, bool measureOnly = false)
         {
             // Render background and border around legend

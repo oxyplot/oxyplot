@@ -39,19 +39,19 @@ namespace OxyPlot.Wpf
     public class TextAnnotation : TextualAnnotation
     {
         /// <summary>
-        /// The Background property.
+        /// Identifies the <see cref="Background"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Color), typeof(TextAnnotation), new PropertyMetadata(MoreColors.Undefined, AppearanceChanged));
 
         /// <summary>
-        /// The TextColor property.
+        /// Identifies the <see cref="TextColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
             "TextColor", typeof(Color), typeof(TextAnnotation), new PropertyMetadata(Colors.Blue, AppearanceChanged));
 
         /// <summary>
-        /// The Offset property.
+        /// Identifies the <see cref="Offset"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OffsetProperty = DependencyProperty.Register(
             "Offset",
@@ -60,7 +60,7 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(default(Vector), AppearanceChanged));
 
         /// <summary>
-        /// The Padding property.
+        /// Identifies the <see cref="Padding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
             "Padding",
@@ -69,25 +69,25 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(new Thickness(4), AppearanceChanged));
 
         /// <summary>
-        /// The Position property.
+        /// Identifies the <see cref="Position"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position", typeof(DataPoint), typeof(TextAnnotation), new PropertyMetadata(AppearanceChanged));
 
         /// <summary>
-        /// The Rotation property.
+        /// Identifies the <see cref="Rotation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RotationProperty = DependencyProperty.Register(
             "Rotation", typeof(double), typeof(TextAnnotation), new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
-        /// The Stroke property.
+        /// Identifies the <see cref="Stroke"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
             "Stroke", typeof(Color), typeof(TextAnnotation), new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
-        /// The StrokeThickness property.
+        /// Identifies the <see cref="StrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
@@ -241,9 +241,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
-        /// <returns>
-        /// The annotation.
-        /// </returns>
+        /// <returns>The annotation.</returns>
         public override Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();

@@ -38,7 +38,7 @@ namespace IconGenerator
     public static class Functions
     {
         /// <summary>
-        /// Initializes static members of the <see cref="Functions"/> class.
+        /// Initializes static members of the <see cref="Functions" /> class.
         /// </summary>
         static Functions()
         {

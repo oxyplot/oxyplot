@@ -42,9 +42,7 @@ namespace OxyPlot
         /// Gets information about the image in the specified byte array.
         /// </summary>
         /// <param name="bytes">The image data.</param>
-        /// <returns>
-        /// An <see cref="OxyImageInfo" /> structure.
-        /// </returns>
+        /// <returns>An <see cref="OxyImageInfo" /> structure.</returns>
         public OxyImageInfo GetImageInfo(byte[] bytes)
         {
             var ms = new MemoryStream(bytes);
@@ -56,7 +54,7 @@ namespace OxyPlot
             var reserved = r.ReadBytes(4);
             var imageDataOffset = r.ReadUInt32();
 
-            // BITMAPINFOHEADER 
+            // BITMAPINFOHEADER
             var headerSize = r.ReadUInt32();
             var width = r.ReadInt32();
             var height = r.ReadInt32();
@@ -83,9 +81,7 @@ namespace OxyPlot
         /// Decodes an image from the specified stream.
         /// </summary>
         /// <param name="s">The stream.</param>
-        /// <returns>
-        /// The 32-bit pixel data.
-        /// </returns>
+        /// <returns>The 32-bit pixel data.</returns>
         public OxyColor[,] Decode(Stream s)
         {
             throw new NotImplementedException();

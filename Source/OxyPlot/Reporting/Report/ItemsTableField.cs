@@ -39,20 +39,12 @@ namespace OxyPlot.Reporting
     public class ItemsTableField
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsTableField"/> class.
+        /// Initializes a new instance of the <see cref="ItemsTableField" /> class.
         /// </summary>
-        /// <param name="header">
-        /// The header.
-        /// </param>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <param name="stringFormat">
-        /// The string format.
-        /// </param>
-        /// <param name="alignment">
-        /// The alignment.
-        /// </param>
+        /// <param name="header">The header.</param>
+        /// <param name="path">The path.</param>
+        /// <param name="stringFormat">The string format.</param>
+        /// <param name="alignment">The alignment.</param>
         public ItemsTableField(
             string header, string path, string stringFormat = null, Alignment alignment = Alignment.Center)
         {
@@ -90,15 +82,9 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Gets the text.
         /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <param name="formatProvider">
-        /// The format provider.
-        /// </param>
-        /// <returns>
-        /// The text.
-        /// </returns>
+        /// <param name="item">The item.</param>
+        /// <param name="formatProvider">The format provider.</param>
+        /// <returns>The text.</returns>
         public string GetText(object item, IFormatProvider formatProvider)
         {
             PropertyInfo pi = item.GetType().GetProperty(this.Path);

@@ -40,11 +40,9 @@ namespace OxyPlot.Reporting
     public class ItemsTable : Table
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsTable"/> class.
+        /// Initializes a new instance of the <see cref="ItemsTable" /> class.
         /// </summary>
-        /// <param name="itemsInRows">
-        /// The items in rows.
-        /// </param>
+        /// <param name="itemsInRows">The items in rows.</param>
         public ItemsTable(bool itemsInRows = true)
         {
             this.Fields = new List<ItemsTableField>();
@@ -66,9 +64,7 @@ namespace OxyPlot.Reporting
         /// Gets or sets the items.
         /// </summary>
         /// <value>The items.</value>
-        /// <remarks>
-        /// The table will be filled when this property is set.
-        /// </remarks>
+        /// <remarks>The table will be filled when this property is set.</remarks>
         public IEnumerable Items { get; set; }
 
         /// <summary>
@@ -79,9 +75,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Determines if the table has a header.
         /// </summary>
-        /// <returns>
-        /// <c>true</c> if the table has a header.
-        /// </returns>
+        /// <returns><c>true</c> if the table has a header.</returns>
         public bool HasHeader()
         {
             return this.Fields.Any(c => c.Header != null);
@@ -90,9 +84,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Converts the table to an array of strings.
         /// </summary>
-        /// <returns>
-        /// A string array.
-        /// </returns>
+        /// <returns>A string array.</returns>
         public string[,] ToArray()
         {
             List<object> items = this.Items.Cast<object>().ToList();
@@ -202,9 +194,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Writes the content of the item.
         /// </summary>
-        /// <param name="w">
-        /// The writer.
-        /// </param>
+        /// <param name="w">The writer.</param>
         public override void WriteContent(IReportWriter w)
         {
             w.WriteTable(this);
@@ -213,12 +203,8 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// Transposes the specified string array.
         /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
-        /// <returns>
-        /// A transposed string array.
-        /// </returns>
+        /// <param name="input">The input.</param>
+        /// <returns>A transposed string array.</returns>
         private static string[,] Transpose(string[,] input)
         {
             int rows = input.GetUpperBound(0) + 1;

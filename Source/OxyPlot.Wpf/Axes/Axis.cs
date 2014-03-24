@@ -40,7 +40,7 @@ namespace OxyPlot.Wpf
     public abstract class Axis : FrameworkElement
     {
         /// <summary>
-        /// The absolute maximum property.
+        /// Identifies the <see cref="AbsoluteMaximum"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AbsoluteMaximumProperty =
             DependencyProperty.Register(
@@ -50,7 +50,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(double.MaxValue, AppearanceChanged));
 
         /// <summary>
-        /// The absolute minimum property.
+        /// Identifies the <see cref="AbsoluteMinimum"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AbsoluteMinimumProperty =
             DependencyProperty.Register(
@@ -60,69 +60,69 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(double.MinValue, AppearanceChanged));
 
         /// <summary>
-        /// The angle property.
+        /// Identifies the <see cref="Angle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AngleProperty = DependencyProperty.Register(
             "Angle", typeof(double), typeof(Axis), new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
-        /// The axis tick to label distance property.
+        /// Identifies the <see cref="AxisTickToLabelDistance"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxisTickToLabelDistanceProperty =
             DependencyProperty.Register(
                 "AxisTickToLabelDistance", typeof(double), typeof(Axis), new PropertyMetadata(4.0));
 
         /// <summary>
-        /// The axis title distance property.
+        /// Identifies the <see cref="AxisTitleDistance"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxisTitleDistanceProperty =
             DependencyProperty.Register("AxisTitleDistance", typeof(double), typeof(Axis), new PropertyMetadata(4.0));
 
         /// <summary>
-        /// The axis distance property.
+        /// Identifies the <see cref="AxisDistance"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxisDistanceProperty =
             DependencyProperty.Register("AxisDistance", typeof(double), typeof(Axis), new PropertyMetadata(0.0));
 
         /// <summary>
-        /// The axis line color property.
+        /// Identifies the <see cref="AxislineColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxislineColorProperty = DependencyProperty.Register(
             "AxislineColor", typeof(Color), typeof(Axis), new UIPropertyMetadata(Colors.Black));
 
         /// <summary>
-        /// The axis line style property.
+        /// Identifies the <see cref="AxislineStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxislineStyleProperty = DependencyProperty.Register(
             "AxislineStyle", typeof(LineStyle), typeof(Axis), new UIPropertyMetadata(LineStyle.None));
 
         /// <summary>
-        /// The axis line thickness property.
+        /// Identifies the <see cref="AxislineThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AxislineThicknessProperty =
             DependencyProperty.Register("AxislineThickness", typeof(double), typeof(Axis), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// The clip title property.
+        /// Identifies the <see cref="ClipTitle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ClipTitleProperty = DependencyProperty.Register(
             "ClipTitle", typeof(bool), typeof(Axis), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// The end position property.
+        /// Identifies the <see cref="EndPosition"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EndPositionProperty = DependencyProperty.Register(
             "EndPosition", typeof(double), typeof(Axis), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The extra gridline color property.
+        /// Identifies the <see cref="ExtraGridlineColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ExtraGridlineColorProperty =
             DependencyProperty.Register(
                 "ExtraGridlineColor", typeof(Color), typeof(Axis), new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
-        /// The extra gridline style property.
+        /// Identifies the <see cref="ExtraGridlineStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ExtraGridlineStyleProperty =
             DependencyProperty.Register(
@@ -132,92 +132,92 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(LineStyle.Solid, AppearanceChanged));
 
         /// <summary>
-        /// The extra gridline thickness property.
+        /// Identifies the <see cref="ExtraGridlineThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ExtraGridlineThicknessProperty =
             DependencyProperty.Register(
                 "ExtraGridlineThickness", typeof(double), typeof(Axis), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The extra gridlines property.
+        /// Identifies the <see cref="ExtraGridlines"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ExtraGridlinesProperty = DependencyProperty.Register(
             "ExtraGridLines", typeof(double[]), typeof(Axis), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The filter function property.
+        /// Identifies the <see cref="FilterFunction"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FilterFunctionProperty = DependencyProperty.Register(
             "FilterFunction", typeof(Func<double, bool>), typeof(Axis), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The filter max value property.
+        /// Identifies the <see cref="FilterMaxValue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FilterMaxValueProperty = DependencyProperty.Register(
             "FilterMaxValue", typeof(double), typeof(Axis), new PropertyMetadata(double.MaxValue, DataChanged));
 
         /// <summary>
-        /// The filter min value property.
+        /// Identifies the <see cref="FilterMinValue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FilterMinValueProperty = DependencyProperty.Register(
             "FilterMinValue", typeof(double), typeof(Axis), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
-        /// The font property.
+        /// Identifies the <see cref="Font"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontProperty = DependencyProperty.Register(
             "Font", typeof(string), typeof(Axis), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The font size property.
+        /// Identifies the <see cref="FontSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
             "FontSize", typeof(double), typeof(Axis), new PropertyMetadata(double.NaN, AppearanceChanged));
 
         /// <summary>
-        /// The font weight property.
+        /// Identifies the <see cref="FontWeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FontWeightProperty = DependencyProperty.Register(
             "FontWeight", typeof(FontWeight), typeof(Axis), new PropertyMetadata(FontWeights.Normal, AppearanceChanged));
 
         /// <summary>
-        /// The interval length property.
+        /// Identifies the <see cref="IntervalLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IntervalLengthProperty = DependencyProperty.Register(
             "IntervalLength", typeof(double), typeof(Axis), new PropertyMetadata(60.0));
 
         /// <summary>
-        /// The is axis visible property.
+        /// Identifies the <see cref="IsAxisVisible"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsAxisVisibleProperty = DependencyProperty.Register(
             "IsAxisVisible", typeof(bool), typeof(Axis), new PropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
-        /// The is pan enabled property.
+        /// Identifies the <see cref="IsPanEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsPanEnabledProperty = DependencyProperty.Register(
             "IsPanEnabled", typeof(bool), typeof(Axis), new PropertyMetadata(true));
 
         /// <summary>
-        /// The is zoom enabled property.
+        /// Identifies the <see cref="IsZoomEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsZoomEnabledProperty = DependencyProperty.Register(
             "IsZoomEnabled", typeof(bool), typeof(Axis), new PropertyMetadata(true));
 
         /// <summary>
-        /// The key property.
+        /// Identifies the <see cref="Key"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty KeyProperty = DependencyProperty.Register(
             "Key", typeof(string), typeof(Axis), new PropertyMetadata(null, DataChanged));
 
         /// <summary>
-        /// The layer property.
+        /// Identifies the <see cref="Layer"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LayerProperty = DependencyProperty.Register(
             "Layer", typeof(Axes.AxisLayer), typeof(Axis), new PropertyMetadata(Axes.AxisLayer.BelowSeries));
 
         /// <summary>
-        /// The major gridline color property.
+        /// Identifies the <see cref="MajorGridlineColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MajorGridlineColorProperty =
             DependencyProperty.Register(
@@ -227,7 +227,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(Color.FromArgb(0x40, 0, 0, 0), AppearanceChanged));
 
         /// <summary>
-        /// The major gridline style property.
+        /// Identifies the <see cref="MajorGridlineStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MajorGridlineStyleProperty =
             DependencyProperty.Register(
@@ -237,56 +237,56 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(LineStyle.None, AppearanceChanged));
 
         /// <summary>
-        /// The major gridline thickness property.
+        /// Identifies the <see cref="MajorGridlineThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MajorGridlineThicknessProperty =
             DependencyProperty.Register(
                 "MajorGridlineThickness", typeof(double), typeof(Axis), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The major step property.
+        /// Identifies the <see cref="MajorStep"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MajorStepProperty = DependencyProperty.Register(
             "MajorStep", typeof(double), typeof(Axis), new PropertyMetadata(double.NaN, AppearanceChanged));
 
         /// <summary>
-        /// The major tick size property.
+        /// Identifies the <see cref="MajorTickSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MajorTickSizeProperty = DependencyProperty.Register(
             "MajorTickSize", typeof(double), typeof(Axis), new PropertyMetadata(7.0, AppearanceChanged));
 
         /// <summary>
-        /// The maximum padding property.
+        /// Identifies the <see cref="MaximumPadding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumPaddingProperty = DependencyProperty.Register(
             "MaximumPadding", typeof(double), typeof(Axis), new PropertyMetadata(0.01, AppearanceChanged));
 
         /// <summary>
-        /// The maximum property.
+        /// Identifies the <see cref="Maximum"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
             "Maximum", typeof(double), typeof(Axis), new PropertyMetadata(double.NaN, AppearanceChanged));
 
         /// <summary>
-        /// The minimum padding property.
+        /// Identifies the <see cref="MinimumPadding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumPaddingProperty = DependencyProperty.Register(
             "MinimumPadding", typeof(double), typeof(Axis), new PropertyMetadata(0.01, AppearanceChanged));
 
         /// <summary>
-        /// The minimum property.
+        /// Identifies the <see cref="Minimum"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
             "Minimum", typeof(double), typeof(Axis), new PropertyMetadata(double.NaN, AppearanceChanged));
 
         /// <summary>
-        /// The minimum range property.
+        /// Identifies the <see cref="MinimumRange"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumRangeProperty = DependencyProperty.Register(
             "MinimumRange", typeof(double), typeof(Axis), new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
-        /// The minor gridline color property.
+        /// Identifies the <see cref="MinorGridlineColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinorGridlineColorProperty =
             DependencyProperty.Register(
@@ -296,7 +296,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(Color.FromArgb(0x20, 0, 0, 0), AppearanceChanged));
 
         /// <summary>
-        /// The minor gridline style property.
+        /// Identifies the <see cref="MinorGridlineStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinorGridlineStyleProperty =
             DependencyProperty.Register(
@@ -306,132 +306,132 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(LineStyle.None, AppearanceChanged));
 
         /// <summary>
-        /// The minor gridline thickness property.
+        /// Identifies the <see cref="MinorGridlineThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinorGridlineThicknessProperty =
             DependencyProperty.Register(
                 "MinorGridlineThickness", typeof(double), typeof(Axis), new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The minor step property.
+        /// Identifies the <see cref="MinorStep"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinorStepProperty = DependencyProperty.Register(
             "MinorStep", typeof(double), typeof(Axis), new PropertyMetadata(double.NaN, AppearanceChanged));
 
         /// <summary>
-        /// The minor tick size property.
+        /// Identifies the <see cref="MinorTickSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinorTickSizeProperty = DependencyProperty.Register(
             "MinorTickSize", typeof(double), typeof(Axis), new PropertyMetadata(4.0, AppearanceChanged));
 
         /// <summary>
-        /// The position at zero crossing property.
+        /// Identifies the <see cref="PositionAtZeroCrossing"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PositionAtZeroCrossingProperty =
             DependencyProperty.Register(
                 "PositionAtZeroCrossing", typeof(bool), typeof(Axis), new PropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
-        /// The position property.
+        /// Identifies the <see cref="Position"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position", typeof(Axes.AxisPosition), typeof(Axis), new PropertyMetadata(Axes.AxisPosition.Left, AppearanceChanged));
 
         /// <summary>
-        /// The positionTier property
+        /// Identifies the <see cref="PositionTier"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PositionTierProperty = DependencyProperty.Register(
             "PositionTier", typeof(int), typeof(Axis), new PropertyMetadata(0, AppearanceChanged));
 
         /// <summary>
-        /// The show minor ticks property.
+        /// Identifies the <see cref="ShowMinorTicks"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ShowMinorTicksProperty = DependencyProperty.Register(
             "ShowMinorTicks", typeof(bool), typeof(Axis), new PropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
-        /// The start position property.
+        /// Identifies the <see cref="StartPosition"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StartPositionProperty = DependencyProperty.Register(
             "StartPosition", typeof(double), typeof(Axis), new PropertyMetadata(0.0, AppearanceChanged));
 
         /// <summary>
-        /// The string format property.
+        /// Identifies the <see cref="StringFormat"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register(
             "StringFormat", typeof(string), typeof(Axis), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The tick style property.
+        /// Identifies the <see cref="TickStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TickStyleProperty = DependencyProperty.Register(
             "TickStyle", typeof(Axes.TickStyle), typeof(Axis), new PropertyMetadata(Axes.TickStyle.Outside, AppearanceChanged));
 
         /// <summary>
-        /// The tick line color property.
+        /// Identifies the <see cref="TicklineColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TicklineColorProperty = DependencyProperty.Register(
             "TicklineColor", typeof(Color), typeof(Axis), new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
-        /// The title clipping length property.
+        /// Identifies the <see cref="TitleClippingLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleClippingLengthProperty =
             DependencyProperty.Register(
                 "TitleClippingLength", typeof(double), typeof(Axis), new UIPropertyMetadata(0.9));
 
         /// <summary>
-        /// The title color property.
+        /// Identifies the <see cref="TitleColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleColorProperty = DependencyProperty.Register(
             "TitleColor", typeof(Color), typeof(Axis), new UIPropertyMetadata(OxyColors.Automatic.ToColor()));
 
         /// <summary>
-        /// The title font property.
+        /// Identifies the <see cref="TitleFont"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleFontProperty = DependencyProperty.Register(
             "TitleFont", typeof(string), typeof(Axis), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The title font size property.
+        /// Identifies the <see cref="TitleFontSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleFontSizeProperty = DependencyProperty.Register(
             "TitleFontSize", typeof(double), typeof(Axis), new UIPropertyMetadata(double.NaN));
 
         /// <summary>
-        /// The title font weight property.
+        /// Identifies the <see cref="TitleFontWeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleFontWeightProperty =
             DependencyProperty.Register(
                 "TitleFontWeight", typeof(FontWeight), typeof(Axis), new UIPropertyMetadata(FontWeights.Normal));
 
         /// <summary>
-        /// The title format string property.
+        /// Identifies the <see cref="TitleFormatString"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleFormatStringProperty =
             DependencyProperty.Register(
                 "TitleFormatString", typeof(string), typeof(Axis), new PropertyMetadata("{0} [{1}]", AppearanceChanged));
 
         /// <summary>
-        /// The title position property.
+        /// Identifies the <see cref="TitlePosition"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitlePositionProperty = DependencyProperty.Register(
             "TitlePosition", typeof(double), typeof(Axis), new PropertyMetadata(0.5, AppearanceChanged));
 
         /// <summary>
-        /// The title property.
+        /// Identifies the <see cref="Title"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(Axis), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The unit property.
+        /// Identifies the <see cref="Unit"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UnitProperty = DependencyProperty.Register(
             "Unit", typeof(string), typeof(Axis), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The use super exponential format property.
+        /// Identifies the <see cref="UseSuperExponentialFormat"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UseSuperExponentialFormatProperty =
             DependencyProperty.Register(
@@ -541,9 +541,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the color of the axis line.
         /// </summary>
-        /// <value>
-        /// The color of the axis line.
-        /// </value>
+        /// <value>The color of the axis line.</value>
         public Color AxislineColor
         {
             get
@@ -560,9 +558,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the axis line style.
         /// </summary>
-        /// <value>
-        /// The axis line style.
-        /// </value>
+        /// <value>The axis line style.</value>
         public LineStyle AxislineStyle
         {
             get
@@ -579,9 +575,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the axis line thickness.
         /// </summary>
-        /// <value>
-        /// The axis line thickness.
-        /// </value>
+        /// <value>The axis line thickness.</value>
         public double AxislineThickness
         {
             get
@@ -598,9 +592,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether [clip title].
         /// </summary>
-        /// <value>
-        /// <c>true</c> if [clip title]; otherwise, <c>false</c> .
-        /// </value>
+        /// <value><c>true</c> if [clip title]; otherwise, <c>false</c> .</value>
         public bool ClipTitle
         {
             get
@@ -697,9 +689,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the filter function.
         /// </summary>
-        /// <value>
-        /// The filter function.
-        /// </value>
+        /// <value>The filter function.</value>
         public Func<double, bool> FilterFunction
         {
             get
@@ -1164,9 +1154,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the position tier which defines in which tier the axis is displayed.
         /// </summary>
-        /// <remarks>
-        /// The bigger the value the the further afar is the axis from the graph.
-        /// </remarks>
+        /// <remarks>The bigger the value the the further afar is the axis from the graph.</remarks>
         public int PositionTier
         {
             get
@@ -1279,9 +1267,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the length of the title clipping.
         /// </summary>
-        /// <value>
-        /// The length of the title clipping.
-        /// </value>
+        /// <value>The length of the title clipping.</value>
         public double TitleClippingLength
         {
             get
@@ -1298,9 +1284,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the color of the title.
         /// </summary>
-        /// <value>
-        /// The color of the title.
-        /// </value>
+        /// <value>The color of the title.</value>
         public Color TitleColor
         {
             get
@@ -1317,9 +1301,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the title font.
         /// </summary>
-        /// <value>
-        /// The title font.
-        /// </value>
+        /// <value>The title font.</value>
         public string TitleFont
         {
             get
@@ -1336,9 +1318,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the size of the title font.
         /// </summary>
-        /// <value>
-        /// The size of the title font.
-        /// </value>
+        /// <value>The size of the title font.</value>
         public double TitleFontSize
         {
             get
@@ -1355,9 +1335,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the title font weight.
         /// </summary>
-        /// <value>
-        /// The title font weight.
-        /// </value>
+        /// <value>The title font weight.</value>
         public FontWeight TitleFontWeight
         {
             get
@@ -1444,12 +1422,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The visual appearance changed.
         /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event args.
-        /// </param>
+        /// <param name="d">The sender.</param>
+        /// <param name="e">The event args.</param>
         protected static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((Axis)d).OnVisualChanged();
@@ -1458,12 +1432,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The data changed.
         /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event args.
-        /// </param>
+        /// <param name="d">The sender.</param>
+        /// <param name="e">The event args.</param>
         protected static void DataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((Axis)d).OnDataChanged();
@@ -1484,9 +1454,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// The on property changed handler.
         /// </summary>
-        /// <param name="e">
-        /// The event args.
-        /// </param>
+        /// <param name="e">The event args.</param>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);

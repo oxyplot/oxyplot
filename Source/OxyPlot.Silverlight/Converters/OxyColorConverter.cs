@@ -47,9 +47,7 @@ namespace OxyPlot.Silverlight
         /// <param name="targetType">The <see cref="T:System.Type" /> of data expected by the target dependency property.</param>
         /// <param name="parameter">An optional parameter to be used in the converter logic.</param>
         /// <param name="culture">The culture of the conversion.</param>
-        /// <returns>
-        /// The value to be passed to the target dependency property.
-        /// </returns>
+        /// <returns>The value to be passed to the target dependency property.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is OxyColor)
@@ -76,9 +74,7 @@ namespace OxyPlot.Silverlight
         /// <param name="targetType">The <see cref="T:System.Type" /> of data expected by the source object.</param>
         /// <param name="parameter">An optional parameter to be used in the converter logic.</param>
         /// <param name="culture">The culture of the conversion.</param>
-        /// <returns>
-        /// The value to be passed to the source object.
-        /// </returns>
+        /// <returns>The value to be passed to the source object.</returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (targetType == typeof(OxyColor))

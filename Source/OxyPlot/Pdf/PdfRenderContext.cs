@@ -36,7 +36,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Implements an <see cref="IRenderContext"/> producing PDF documents by <see cref="PortableDocument"/>.
+    /// Implements an <see cref="IRenderContext" /> producing PDF documents by <see cref="PortableDocument" />.
     /// </summary>
     internal class PdfRenderContext : RenderContextBase
     {
@@ -51,7 +51,7 @@ namespace OxyPlot
         private readonly Dictionary<OxyImage, PortableDocumentImage> images = new Dictionary<OxyImage, PortableDocumentImage>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PdfRenderContext"/> class.
+        /// Initializes a new instance of the <see cref="PdfRenderContext" /> class.
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
@@ -348,9 +348,7 @@ namespace OxyPlot
         /// <param name="fontFamily">The font family.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <returns>
-        /// The text size.
-        /// </returns>
+        /// <returns>The text size.</returns>
         public override OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             this.doc.SetFont(fontFamily, fontSize / 96 * 72, fontWeight > 500);
@@ -363,9 +361,7 @@ namespace OxyPlot
         /// Sets the clip rectangle.
         /// </summary>
         /// <param name="rect">The clip rectangle.</param>
-        /// <returns>
-        /// True if the clip rectangle was set.
-        /// </returns>
+        /// <returns>True if the clip rectangle was set.</returns>
         public override bool SetClip(OxyRect rect)
         {
             this.doc.SaveState();
@@ -434,7 +430,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Converts the specified <see cref="OxyPenLineJoin"/> to a <see cref="LineJoin"/>.
+        /// Converts the specified <see cref="OxyPenLineJoin" /> to a <see cref="LineJoin" />.
         /// </summary>
         /// <param name="lineJoin">The value to convert.</param>
         /// <returns>The converted value.</returns>

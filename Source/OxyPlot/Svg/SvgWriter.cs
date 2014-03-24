@@ -57,20 +57,12 @@ namespace OxyPlot
         private int clipPathNumber = 1;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SvgWriter"/> class.
+        /// Initializes a new instance of the <see cref="SvgWriter" /> class.
         /// </summary>
-        /// <param name="stream">
-        /// The stream.
-        /// </param>
-        /// <param name="width">
-        /// The width (in user units).
-        /// </param>
-        /// <param name="height">
-        /// The height (in user units).
-        /// </param>
-        /// <param name="isDocument">
-        /// if set to <c>true</c>, the writer will write the xml headers (?xml and !DOCTYPE).
-        /// </param>
+        /// <param name="stream">The stream.</param>
+        /// <param name="width">The width (in user units).</param>
+        /// <param name="height">The height (in user units).</param>
+        /// <param name="isDocument">if set to <c>true</c>, the writer will write the xml headers (?xml and !DOCTYPE).</param>
         public SvgWriter(Stream stream, double width, double height, bool isDocument = true)
             : base(stream)
         {
@@ -120,24 +112,12 @@ namespace OxyPlot
         /// <summary>
         /// Creates a style.
         /// </summary>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The stroke thickness (in user units).
-        /// </param>
-        /// <param name="dashArray">
-        /// The line dash array.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join type.
-        /// </param>
-        /// <returns>
-        /// A style string.
-        /// </returns>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness (in user units).</param>
+        /// <param name="dashArray">The line dash array.</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <returns>A style string.</returns>
         public string CreateStyle(
             OxyColor fill,
             OxyColor stroke,
@@ -200,21 +180,11 @@ namespace OxyPlot
         /// <summary>
         /// Writes an ellipse.
         /// </summary>
-        /// <param name="x">
-        /// The x-coordinate of the center.
-        /// </param>
-        /// <param name="y">
-        /// The y-coordinate of the center.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="style">
-        /// The style.
-        /// </param>
+        /// <param name="x">The x-coordinate of the center.</param>
+        /// <param name="y">The y-coordinate of the center.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="style">The style.</param>
         public void WriteEllipse(double x, double y, double width, double height, string style)
         {
             // http://www.w3.org/TR/SVG/shapes.html#EllipseElement
@@ -326,15 +296,9 @@ namespace OxyPlot
         /// <summary>
         /// Writes a line.
         /// </summary>
-        /// <param name="p1">
-        /// The first point.
-        /// </param>
-        /// <param name="p2">
-        /// The second point.
-        /// </param>
-        /// <param name="style">
-        /// The style.
-        /// </param>
+        /// <param name="p1">The first point.</param>
+        /// <param name="p2">The second point.</param>
+        /// <param name="style">The style.</param>
         public void WriteLine(ScreenPoint p1, ScreenPoint p2, string style)
         {
             // http://www.w3.org/TR/SVG/shapes.html#LineElement
@@ -352,12 +316,8 @@ namespace OxyPlot
         /// <summary>
         /// Writes a polygon.
         /// </summary>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="style">
-        /// The style.
-        /// </param>
+        /// <param name="points">The points.</param>
+        /// <param name="style">The style.</param>
         public void WritePolygon(IEnumerable<ScreenPoint> points, string style)
         {
             // http://www.w3.org/TR/SVG/shapes.html#PolygonElement
@@ -371,12 +331,8 @@ namespace OxyPlot
         /// <summary>
         /// Writes a polyline.
         /// </summary>
-        /// <param name="pts">
-        /// The points.
-        /// </param>
-        /// <param name="style">
-        /// The style.
-        /// </param>
+        /// <param name="pts">The points.</param>
+        /// <param name="style">The style.</param>
         public void WritePolyline(IEnumerable<ScreenPoint> pts, string style)
         {
             // http://www.w3.org/TR/SVG/shapes.html#PolylineElement
@@ -390,21 +346,11 @@ namespace OxyPlot
         /// <summary>
         /// Writes a rectangle.
         /// </summary>
-        /// <param name="x">
-        /// The x coordinate.
-        /// </param>
-        /// <param name="y">
-        /// The y coordinate.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="style">
-        /// The style.
-        /// </param>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="style">The style.</param>
         public void WriteRectangle(double x, double y, double width, double height, string style)
         {
             // http://www.w3.org/TR/SVG/shapes.html#RectangleElement
@@ -421,33 +367,15 @@ namespace OxyPlot
         /// <summary>
         /// Writes text.
         /// </summary>
-        /// <param name="position">
-        /// The position.
-        /// </param>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="fill">
-        /// The text color.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="fontSize">
-        /// The font size (in user units).
-        /// </param>
-        /// <param name="fontWeight">
-        /// The font weight.
-        /// </param>
-        /// <param name="rotate">
-        /// The rotation angle.
-        /// </param>
-        /// <param name="halign">
-        /// The horizontal alignment.
-        /// </param>
-        /// <param name="valign">
-        /// The vertical alignment.
-        /// </param>
+        /// <param name="position">The position.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="fill">The text color.</param>
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The font size (in user units).</param>
+        /// <param name="fontWeight">The font weight.</param>
+        /// <param name="rotate">The rotation angle.</param>
+        /// <param name="halign">The horizontal alignment.</param>
+        /// <param name="valign">The vertical alignment.</param>
         public void WriteText(
             ScreenPoint position,
             string text,
@@ -541,12 +469,8 @@ namespace OxyPlot
         /// <summary>
         /// Writes an double attribute.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
         protected void WriteAttributeString(string name, double value)
         {
             this.WriteAttributeString(name, value.ToString(this.NumberFormat, CultureInfo.InvariantCulture));
@@ -601,12 +525,8 @@ namespace OxyPlot
         /// <summary>
         /// Writes the header.
         /// </summary>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
         private void WriteHeader(double width, double height)
         {
             // http://www.w3.org/TR/SVG/struct.html#SVGElement

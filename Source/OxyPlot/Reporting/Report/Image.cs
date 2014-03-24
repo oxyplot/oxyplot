@@ -43,9 +43,7 @@ namespace OxyPlot.Reporting
         /// <summary>
         /// The write content.
         /// </summary>
-        /// <param name="w">
-        /// The w.
-        /// </param>
+        /// <param name="w">The w.</param>
         public override void WriteContent(IReportWriter w)
         {
             w.WriteImage(this);

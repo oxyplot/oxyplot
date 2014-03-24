@@ -37,9 +37,7 @@ namespace OxyPlot.Silverlight
     /// <summary>
     /// Mouse button helper
     /// </summary>
-    /// <remarks>
-    /// See <a href="http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx">The simplest way to detect DoubleClick in Silverlight</a>.
-    /// </remarks>
+    /// <remarks>See <a href="http://yinyangme.com/blog/post/The-simplest-way-to-detect-DoubleClick-in-Silverlight.aspx">The simplest way to detect DoubleClick in Silverlight</a>.</remarks>
     internal static class MouseButtonHelper
     {
         /// <summary>
@@ -70,15 +68,9 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Determines if the click in the specified <see cref="MouseButtonEventArgs" /> is a double click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the click is a double click.
-        /// </returns>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event arguments.</param>
+        /// <returns><c>true</c> if the click is a double click.</returns>
         internal static bool IsDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var position = e.GetPosition(null);
@@ -110,15 +102,9 @@ namespace OxyPlot.Silverlight
         /// <summary>
         /// Calculates the distance between two points.
         /// </summary>
-        /// <param name="pointA">
-        /// The point a.
-        /// </param>
-        /// <param name="pointB">
-        /// The point b.
-        /// </param>
-        /// <returns>
-        /// The distance.
-        /// </returns>
+        /// <param name="pointA">The point a.</param>
+        /// <param name="pointB">The point b.</param>
+        /// <returns>The distance.</returns>
         private static double Distance(this Point pointA, Point pointB)
         {
             double x = pointA.X - pointB.X;

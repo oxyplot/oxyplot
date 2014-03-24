@@ -38,9 +38,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the data point.
         /// </summary>
-        /// <returns>
-        /// The data point.
-        /// </returns>
+        /// <returns>The data point.</returns>
         DataPoint GetDataPoint();
     }
 }

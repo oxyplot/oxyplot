@@ -40,7 +40,7 @@ namespace OxyPlot.Wpf
     public class LineAnnotation : PathAnnotation
     {
         /// <summary>
-        /// The line type property.
+        /// Identifies the <see cref="LineType"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineTypeProperty = DependencyProperty.Register(
             "Type",
@@ -49,49 +49,49 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(LineAnnotationType.LinearEquation, DataChanged));
 
         /// <summary>
-        /// The intercept property.
+        /// Identifies the <see cref="Intercept"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InterceptProperty = DependencyProperty.Register(
             "Intercept", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0, DataChanged));
 
         /// <summary>
-        /// The maximum x property.
+        /// Identifies the <see cref="MaximumX"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumXProperty = DependencyProperty.Register(
             "MaximumX", typeof(double), typeof(LineAnnotation), new PropertyMetadata(double.MaxValue, DataChanged));
 
         /// <summary>
-        /// The maximum y property.
+        /// Identifies the <see cref="MaximumY"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumYProperty = DependencyProperty.Register(
             "MaximumY", typeof(double), typeof(LineAnnotation), new PropertyMetadata(double.MaxValue, DataChanged));
 
         /// <summary>
-        /// The minimum x property.
+        /// Identifies the <see cref="MinimumX"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumXProperty = DependencyProperty.Register(
             "MinimumX", typeof(double), typeof(LineAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
-        /// The minimum y property.
+        /// Identifies the <see cref="MinimumY"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumYProperty = DependencyProperty.Register(
             "MinimumY", typeof(double), typeof(LineAnnotation), new PropertyMetadata(double.MinValue, DataChanged));
 
         /// <summary>
-        /// The slope property.
+        /// Identifies the <see cref="Slope"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SlopeProperty = DependencyProperty.Register(
             "Slope", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0, DataChanged));
 
         /// <summary>
-        /// The x property.
+        /// Identifies the <see cref="X"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty XProperty = DependencyProperty.Register(
             "X", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0, DataChanged));
 
         /// <summary>
-        /// The y property.
+        /// Identifies the <see cref="Y"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty YProperty = DependencyProperty.Register(
             "Y", typeof(double), typeof(LineAnnotation), new PropertyMetadata(0.0, DataChanged));
@@ -251,9 +251,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
-        /// <returns>
-        /// The annotation.
-        /// </returns>
+        /// <returns>The annotation.</returns>
         public override Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();

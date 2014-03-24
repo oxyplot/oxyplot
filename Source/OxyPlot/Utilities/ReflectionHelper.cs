@@ -44,18 +44,10 @@ namespace OxyPlot
         /// <summary>
         /// Fills a list by the specified property of a source list/enumerable.
         /// </summary>
-        /// <param name="source">
-        /// The source list.
-        /// </param>
-        /// <param name="propertyName">
-        /// The property name.
-        /// </param>
-        /// <param name="list">
-        /// The list to be filled.
-        /// </param>
-        /// <typeparam name="T">
-        /// The type of the destination list items (and the source property).
-        /// </typeparam>
+        /// <typeparam name="T">The type of the destination list items (and the source property).</typeparam>
+        /// <param name="source">The source list.</param>
+        /// <param name="propertyName">The property name.</param>
+        /// <param name="list">The list to be filled.</param>
         public static void FillList<T>(IEnumerable source, string propertyName, IList<T> list)
         {
             PropertyInfo pi = null;

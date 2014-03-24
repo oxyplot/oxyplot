@@ -38,13 +38,13 @@ namespace OxyPlot.Wpf
     public abstract class XYAxisSeries : ItemsSeries
     {
         /// <summary>
-        /// The x axis key property.
+        /// Identifies the <see cref="XAxisKey"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty XAxisKeyProperty = DependencyProperty.Register(
             "XAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The y axis key property.
+        /// Identifies the <see cref="YAxisKey"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty YAxisKeyProperty = DependencyProperty.Register(
             "YAxisKey", typeof(string), typeof(XYAxisSeries), new PropertyMetadata(null, AppearanceChanged));

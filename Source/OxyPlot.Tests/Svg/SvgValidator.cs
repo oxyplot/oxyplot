@@ -42,12 +42,8 @@ namespace OxyPlot.Tests
         /// <summary>
         /// Determines whether the specified file is a valid svg file.
         /// </summary>
-        /// <param name="path">
-        /// The path to the file.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the specified file is valid; otherwise, <c>false</c> .
-        /// </returns>
+        /// <param name="path">The path to the file.</param>
+        /// <returns><c>true</c> if the specified file is valid; otherwise, <c>false</c> .</returns>
         public static bool IsValid(string path)
         {
             return Validate(path) == null;
@@ -56,12 +52,8 @@ namespace OxyPlot.Tests
         /// <summary>
         /// Validates the specified svg file.
         /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <returns>
-        /// A validation result string.
-        /// </returns>
+        /// <param name="path">The path.</param>
+        /// <returns>A validation result string.</returns>
         public static string Validate(string path)
         {
             var sc = new XmlSchemaSet();
@@ -75,15 +67,9 @@ namespace OxyPlot.Tests
         /// <summary>
         /// Validates the specified XML file against a XSL schema.
         /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <param name="sc">
-        /// The schema.
-        /// </param>
-        /// <returns>
-        /// Number of errors and warnings, or null if the number of errors and warnings is zero.
-        /// </returns>
+        /// <param name="path">The path.</param>
+        /// <param name="sc">The schema.</param>
+        /// <returns>Number of errors and warnings, or <c>null</c> if the number of errors and warnings is zero.</returns>
         private static string Validate(string path, XmlSchemaSet sc)
         {
             // http://msdn.microsoft.com/en-us/library/as3tta56.aspx

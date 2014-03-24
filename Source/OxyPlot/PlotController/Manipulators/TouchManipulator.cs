@@ -52,9 +52,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when a touch delta event is handled.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="OxyPlot.OxyTouchEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
         public override void Delta(OxyTouchEventArgs e)
         {
             base.Delta(e);
@@ -91,9 +89,7 @@ namespace OxyPlot
         /// <summary>
         /// Occurs when an input device begins a manipulation on the plot.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="OxyPlot.OxyTouchEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="OxyPlot.OxyTouchEventArgs" /> instance containing the event data.</param>
         public override void Started(OxyTouchEventArgs e)
         {
             this.AssignAxes(e.Position);

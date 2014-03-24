@@ -43,9 +43,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Gets the stack group.
         /// </summary>
-        /// <value>
-        /// The stack group.
-        /// </value>
+        /// <value>The stack group.</value>
         string StackGroup { get; }
     }
 }

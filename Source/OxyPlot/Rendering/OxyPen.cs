@@ -38,20 +38,12 @@ namespace OxyPlot
     public class OxyPen
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OxyPen"/> class.
+        /// Initializes a new instance of the <see cref="OxyPen" /> class.
         /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
-        /// <param name="lineStyle">
-        /// The line style.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
+        /// <param name="color">The color.</param>
+        /// <param name="thickness">The thickness.</param>
+        /// <param name="lineStyle">The line style.</param>
+        /// <param name="lineJoin">The line join.</param>
         public OxyPen(
             OxyColor color,
             double thickness = 1.0,
@@ -72,7 +64,7 @@ namespace OxyPlot
         public OxyColor Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the dash array (overrides <see cref="LineStyle"/>).
+        /// Gets or sets the dash array (overrides <see cref="LineStyle" />).
         /// </summary>
         /// <value>The dash array.</value>
         public double[] DashArray { get; set; }
@@ -84,7 +76,7 @@ namespace OxyPlot
         public OxyPenLineJoin LineJoin { get; set; }
 
         /// <summary>
-        /// Gets or sets the line style (overridden by <see cref="DashArray"/>).
+        /// Gets or sets the line style (overridden by <see cref="DashArray" />).
         /// </summary>
         /// <value>The line style.</value>
         public LineStyle LineStyle { get; set; }
@@ -98,9 +90,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the actual dash array.
         /// </summary>
-        /// <value>
-        /// The actual dash array.
-        /// </value>
+        /// <value>The actual dash array.</value>
         public double[] ActualDashArray
         {
             get
@@ -134,9 +124,7 @@ namespace OxyPlot
         /// <summary>
         /// Returns a hash code for this instance.
         /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
-        /// </returns>
+        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
             unchecked

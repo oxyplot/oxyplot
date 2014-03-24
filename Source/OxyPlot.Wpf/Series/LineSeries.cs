@@ -41,44 +41,44 @@ namespace OxyPlot.Wpf
     public class LineSeries : DataPointSeries
     {
         /// <summary>
-        /// The BrokenLineColor property.
+        /// Identifies the <see cref="BrokenLineColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BrokenLineColorProperty = DependencyProperty.Register(
             "BrokenLineColor", typeof(Color), typeof(LineSeries), new PropertyMetadata(MoreColors.Undefined, AppearanceChanged));
 
         /// <summary>
-        /// The BrokenLineStyle property.
+        /// Identifies the <see cref="BrokenLineStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BrokenLineStyleProperty = DependencyProperty.Register(
             "BrokenLineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(LineStyle.Solid, AppearanceChanged));
 
         /// <summary>
-        /// The BrokenLineThickness property.
+        /// Identifies the <see cref="BrokenLineThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BrokenLineThicknessProperty = DependencyProperty.Register(
             "BrokenLineThickness", typeof(double), typeof(LineSeries), new PropertyMetadata(0d, AppearanceChanged));
 
         /// <summary>
-        /// The dashes property.
+        /// Identifies the <see cref="Dashes"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DashesProperty = DependencyProperty.Register(
             "Dashes", typeof(double[]), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The label format string property.
+        /// Identifies the <see cref="LabelFormatString"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LabelFormatStringProperty =
             DependencyProperty.Register(
                 "LabelFormatString", typeof(string), typeof(LineSeries), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The label margin property.
+        /// Identifies the <see cref="LabelMargin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LabelMarginProperty = DependencyProperty.Register(
             "LabelMargin", typeof(double), typeof(LineSeries), new UIPropertyMetadata(6.0));
 
         /// <summary>
-        /// The line join property.
+        /// Identifies the <see cref="LineJoin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineJoinProperty = DependencyProperty.Register(
             "LineJoin",
@@ -87,7 +87,7 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(OxyPenLineJoin.Bevel, AppearanceChanged));
 
         /// <summary>
-        /// The line legend position property.
+        /// Identifies the <see cref="LineLegendPosition"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineLegendPositionProperty =
             DependencyProperty.Register(
@@ -97,43 +97,43 @@ namespace OxyPlot.Wpf
                 new UIPropertyMetadata(LineLegendPosition.None));
 
         /// <summary>
-        /// The line style property.
+        /// Identifies the <see cref="LineStyle"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineStyleProperty = DependencyProperty.Register(
             "LineStyle", typeof(LineStyle), typeof(LineSeries), new PropertyMetadata(LineStyle.Undefined, AppearanceChanged));
 
         /// <summary>
-        /// The marker fill property.
+        /// Identifies the <see cref="MarkerFill"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(
             "MarkerFill", typeof(Color), typeof(LineSeries), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
-        /// The marker outline property.
+        /// Identifies the <see cref="MarkerOutline"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerOutlineProperty = DependencyProperty.Register(
             "MarkerOutline", typeof(Point[]), typeof(LineSeries), new PropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The marker resolution property.
+        /// Identifies the <see cref="MarkerResolution"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerResolutionProperty =
             DependencyProperty.Register("MarkerResolution", typeof(int), typeof(LineSeries), new PropertyMetadata(0, AppearanceChanged));
 
         /// <summary>
-        /// The marker size property.
+        /// Identifies the <see cref="MarkerSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerSizeProperty = DependencyProperty.Register(
             "MarkerSize", typeof(double), typeof(LineSeries), new PropertyMetadata(3.0, AppearanceChanged));
 
         /// <summary>
-        /// The marker stroke property.
+        /// Identifies the <see cref="MarkerStroke"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeProperty = DependencyProperty.Register(
             "MarkerStroke", typeof(Color), typeof(LineSeries), new PropertyMetadata(MoreColors.Automatic, AppearanceChanged));
 
         /// <summary>
-        /// The marker stroke thickness property.
+        /// Identifies the <see cref="MarkerStrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerStrokeThicknessProperty =
             DependencyProperty.Register(
@@ -143,7 +143,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(1.0, AppearanceChanged));
 
         /// <summary>
-        /// The marker type property.
+        /// Identifies the <see cref="MarkerType"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MarkerTypeProperty = DependencyProperty.Register(
             "MarkerType",
@@ -152,21 +152,21 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(MarkerType.None, AppearanceChanged));
 
         /// <summary>
-        /// The minimum segment length property.
+        /// Identifies the <see cref="MinimumSegmentLength"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumSegmentLengthProperty =
             DependencyProperty.Register(
                 "MinimumSegmentLength", typeof(double), typeof(LineSeries), new PropertyMetadata(2.0, AppearanceChanged));
 
         /// <summary>
-        /// The stroke thickness property.
+        /// Identifies the <see cref="StrokeThickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StrokeThicknessProperty =
             DependencyProperty.Register(
                 "StrokeThickness", typeof(double), typeof(LineSeries), new PropertyMetadata(2.0, AppearanceChanged));
 
         /// <summary>
-        /// Initializes static members of the <see cref="LineSeries"/> class.
+        /// Initializes static members of the <see cref="LineSeries" /> class.
         /// </summary>
         static LineSeries()
         {
@@ -174,7 +174,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSeries"/> class.
+        /// Initializes a new instance of the <see cref="LineSeries" /> class.
         /// </summary>
         public LineSeries()
         {
@@ -248,9 +248,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the label format string.
         /// </summary>
-        /// <value>
-        /// The label format string.
-        /// </value>
+        /// <value>The label format string.</value>
         public string LabelFormatString
         {
             get
@@ -267,9 +265,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the label margin.
         /// </summary>
-        /// <value>
-        /// The label margin.
-        /// </value>
+        /// <value>The label margin.</value>
         public double LabelMargin
         {
             get
@@ -366,9 +362,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the marker resolution.
         /// </summary>
-        /// <value>
-        /// The marker resolution.
-        /// </value>
+        /// <value>The marker resolution.</value>
         public int MarkerResolution
         {
             get { return (int)GetValue(MarkerResolutionProperty); }
@@ -474,9 +468,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal series.
         /// </summary>
-        /// <returns>
-        /// The internal series.
-        /// </returns>
+        /// <returns>The internal series.</returns>
         public override OxyPlot.Series.Series CreateModel()
         {
             this.SynchronizeProperties(this.InternalSeries);

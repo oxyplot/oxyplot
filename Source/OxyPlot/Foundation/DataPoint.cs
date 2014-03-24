@@ -35,9 +35,7 @@ namespace OxyPlot
     /// <summary>
     /// Represents a point in the data coordinate system.
     /// </summary>
-    /// <remarks>
-    /// <see cref="DataPoint"/>s are transformed to <see cref="ScreenPoint"/>s.
-    /// </remarks>
+    /// <remarks><see cref="DataPoint" />s are transformed to <see cref="ScreenPoint" />s.</remarks>
     public struct DataPoint : IDataPoint, ICodeGenerating
     {
         /// <summary>
@@ -60,14 +58,10 @@ namespace OxyPlot
         internal double y;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataPoint"/> struct.
+        /// Initializes a new instance of the <see cref="DataPoint" /> struct.
         /// </summary>
-        /// <param name="x">
-        /// The x.
-        /// </param>
-        /// <param name="y">
-        /// The y.
-        /// </param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
         public DataPoint(double x, double y)
         {
             this.x = x;
@@ -77,9 +71,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the X.
         /// </summary>
-        /// <value>
-        /// The X.
-        /// </value>
+        /// <value>The X.</value>
         public double X
         {
             get
@@ -96,9 +88,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the Y.
         /// </summary>
-        /// <value>
-        /// The Y.
-        /// </value>
+        /// <value>The Y.</value>
         public double Y
         {
             get
@@ -115,20 +105,16 @@ namespace OxyPlot
         /// <summary>
         /// Returns C# code that generates this instance.
         /// </summary>
-        /// <returns>
-        /// The to code.
-        /// </returns>
+        /// <returns>The to code.</returns>
         public string ToCode()
         {
             return CodeGenerator.FormatConstructor(this.GetType(), "{0},{1}", this.x, this.y);
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()
         {
             return this.x + " " + this.y;

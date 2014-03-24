@@ -35,7 +35,7 @@ namespace OxyPlot
     using System.Linq;
 
     /// <summary>
-    /// Provides extension methods for <see cref="IRenderContext"/>.
+    /// Provides extension methods for <see cref="IRenderContext" />.
     /// </summary>
     public static class RenderingExtensions
     {
@@ -52,7 +52,7 @@ namespace OxyPlot
          /________________\  _|_
          |--------|-------|
               1       1
-        
+
                   |
             \     |     /     ---
               \   |   /        | M3
@@ -320,36 +320,16 @@ namespace OxyPlot
         /// <summary>
         /// Draws the polygon within the specified clipping rectangle.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="clippingRectangle">
-        /// The clipping rectangle.
-        /// </param>
-        /// <param name="minDistSquared">
-        /// The squared minimum distance between points.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="strokeThickness">
-        /// The stroke thickness.
-        /// </param>
-        /// <param name="lineStyle">
-        /// The line style.
-        /// </param>
-        /// <param name="lineJoin">
-        /// The line join.
-        /// </param>
-        /// <param name="aliased">
-        /// The aliased.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="points">The points.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="minDistSquared">The squared minimum distance between points.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="strokeThickness">The stroke thickness.</param>
+        /// <param name="lineStyle">The line style.</param>
+        /// <param name="lineJoin">The line join.</param>
+        /// <param name="aliased">The aliased.</param>
         public static void DrawClippedPolygon(
             this IRenderContext rc,
             IList<ScreenPoint> points,
@@ -378,24 +358,12 @@ namespace OxyPlot
         /// <summary>
         /// Draws the clipped rectangle.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="rect">
-        /// The rectangle to draw.
-        /// </param>
-        /// <param name="clippingRectangle">
-        /// The clipping rectangle.
-        /// </param>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The stroke thickness.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="rect">The rectangle to draw.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         public static void DrawClippedRectangle(
             this IRenderContext rc,
             OxyRect rect,
@@ -423,24 +391,12 @@ namespace OxyPlot
         /// <summary>
         /// Draws the clipped rectangle as a polygon.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="rect">
-        /// The rectangle to draw.
-        /// </param>
-        /// <param name="clippingRectangle">
-        /// The clipping rectangle.
-        /// </param>
-        /// <param name="fill">
-        /// The fill color.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke color.
-        /// </param>
-        /// <param name="thickness">
-        /// The stroke thickness.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="rect">The rectangle to draw.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <param name="fill">The fill color.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness.</param>
         public static void DrawClippedRectangleAsPolygon(
             this IRenderContext rc,
             OxyRect rect,
@@ -594,27 +550,13 @@ namespace OxyPlot
         /// <summary>
         /// Draws a line specified by coordinates.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="x0">
-        /// The x0.
-        /// </param>
-        /// <param name="y0">
-        /// The y0.
-        /// </param>
-        /// <param name="x1">
-        /// The x1.
-        /// </param>
-        /// <param name="y1">
-        /// The y1.
-        /// </param>
-        /// <param name="pen">
-        /// The pen.
-        /// </param>
-        /// <param name="aliased">
-        /// Aliased line if set to <c>true</c>.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="x0">The x0.</param>
+        /// <param name="y0">The y0.</param>
+        /// <param name="x1">The x1.</param>
+        /// <param name="y1">The y1.</param>
+        /// <param name="pen">The pen.</param>
+        /// <param name="aliased">Aliased line if set to <c>true</c>.</param>
         public static void DrawLine(
             this IRenderContext rc, double x0, double y0, double x1, double y1, OxyPen pen, bool aliased = true)
         {
@@ -635,18 +577,10 @@ namespace OxyPlot
         /// <summary>
         /// Draws the line segments.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="points">
-        /// The points.
-        /// </param>
-        /// <param name="pen">
-        /// The pen.
-        /// </param>
-        /// <param name="aliased">
-        /// if set to <c>true</c> [aliased].
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="points">The points.</param>
+        /// <param name="pen">The pen.</param>
+        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
         public static void DrawLineSegments(
             this IRenderContext rc, IList<ScreenPoint> points, OxyPen pen, bool aliased = true)
         {
@@ -687,39 +621,17 @@ namespace OxyPlot
         /// <summary>
         /// Draws a list of markers.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="markerPoints">
-        /// The marker points.
-        /// </param>
-        /// <param name="clippingRect">
-        /// The clipping rectangle.
-        /// </param>
-        /// <param name="markerType">
-        /// Type of the marker.
-        /// </param>
-        /// <param name="markerOutline">
-        /// The marker outline.
-        /// </param>
-        /// <param name="markerSize">
-        /// Size of the marker.
-        /// </param>
-        /// <param name="markerFill">
-        /// The marker fill.
-        /// </param>
-        /// <param name="markerStroke">
-        /// The marker stroke.
-        /// </param>
-        /// <param name="markerStrokeThickness">
-        /// The marker stroke thickness.
-        /// </param>
-        /// <param name="resolution">
-        /// The resolution.
-        /// </param>
-        /// <param name="binOffset">
-        /// The bin Offset.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="markerPoints">The marker points.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="markerType">Type of the marker.</param>
+        /// <param name="markerOutline">The marker outline.</param>
+        /// <param name="markerSize">Size of the marker.</param>
+        /// <param name="markerFill">The marker fill.</param>
+        /// <param name="markerStroke">The marker stroke.</param>
+        /// <param name="markerStrokeThickness">The marker stroke thickness.</param>
+        /// <param name="resolution">The resolution.</param>
+        /// <param name="binOffset">The bin Offset.</param>
         public static void DrawMarkers(
             this IRenderContext rc,
             IList<ScreenPoint> markerPoints,
@@ -750,39 +662,17 @@ namespace OxyPlot
         /// <summary>
         /// Draws a list of markers.
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="markerPoints">
-        /// The marker points.
-        /// </param>
-        /// <param name="clippingRect">
-        /// The clipping rectangle.
-        /// </param>
-        /// <param name="markerType">
-        /// Type of the marker.
-        /// </param>
-        /// <param name="markerOutline">
-        /// The marker outline.
-        /// </param>
-        /// <param name="markerSize">
-        /// Size of the markers.
-        /// </param>
-        /// <param name="markerFill">
-        /// The marker fill.
-        /// </param>
-        /// <param name="markerStroke">
-        /// The marker stroke.
-        /// </param>
-        /// <param name="markerStrokeThickness">
-        /// The marker stroke thickness.
-        /// </param>
-        /// <param name="resolution">
-        /// The resolution.
-        /// </param>
-        /// <param name="binOffset">
-        /// The bin Offset.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="markerPoints">The marker points.</param>
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <param name="markerType">Type of the marker.</param>
+        /// <param name="markerOutline">The marker outline.</param>
+        /// <param name="markerSize">Size of the markers.</param>
+        /// <param name="markerFill">The marker fill.</param>
+        /// <param name="markerStroke">The marker stroke.</param>
+        /// <param name="markerStrokeThickness">The marker stroke thickness.</param>
+        /// <param name="resolution">The resolution.</param>
+        /// <param name="binOffset">The bin Offset.</param>
         public static void DrawMarkers(
             this IRenderContext rc,
             IList<ScreenPoint> markerPoints,
@@ -867,21 +757,11 @@ namespace OxyPlot
         /// Draws the rectangle as an aliased polygon.
         /// (makes sure pixel alignment is the same as for lines)
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="rect">
-        /// The rectangle.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public static void DrawRectangleAsPolygon(
             this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
@@ -896,21 +776,11 @@ namespace OxyPlot
         /// Draws the rectangle as an aliased polygon.
         /// (makes sure pixel alignment is the same as for lines)
         /// </summary>
-        /// <param name="rc">
-        /// The render context.
-        /// </param>
-        /// <param name="rect">
-        /// The rectangle.
-        /// </param>
-        /// <param name="fill">
-        /// The fill.
-        /// </param>
-        /// <param name="stroke">
-        /// The stroke.
-        /// </param>
-        /// <param name="thickness">
-        /// The thickness.
-        /// </param>
+        /// <param name="rc">The render context.</param>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="fill">The fill.</param>
+        /// <param name="stroke">The stroke.</param>
+        /// <param name="thickness">The thickness.</param>
         public static void DrawRectangleAsPolygon(
             this IRenderContext rc, OxyRect rect, OxyColor fill, OxyColor stroke, OxyThickness thickness)
         {
@@ -935,30 +805,14 @@ namespace OxyPlot
         /// <summary>
         /// Adds a marker geometry.
         /// </summary>
-        /// <param name="p">
-        /// The position of the marker.
-        /// </param>
-        /// <param name="type">
-        /// The type.
-        /// </param>
-        /// <param name="outline">
-        /// The outline.
-        /// </param>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        /// <param name="ellipses">
-        /// The ellipse collection.
-        /// </param>
-        /// <param name="rects">
-        /// The rectangle collection.
-        /// </param>
-        /// <param name="polygons">
-        /// The polygon collection.
-        /// </param>
-        /// <param name="lines">
-        /// The line collection.
-        /// </param>
+        /// <param name="p">The position of the marker.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="outline">The outline.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="ellipses">The ellipse collection.</param>
+        /// <param name="rects">The rectangle collection.</param>
+        /// <param name="polygons">The polygon collection.</param>
+        /// <param name="lines">The line collection.</param>
         private static void AddMarkerGeometry(
             ScreenPoint p,
             MarkerType type,
@@ -1045,15 +899,9 @@ namespace OxyPlot
         /// <summary>
         /// Calculates the clipped version of a rectangle.
         /// </summary>
-        /// <param name="rect">
-        /// The rectangle to clip.
-        /// </param>
-        /// <param name="clippingRectangle">
-        /// The clipping rectangle.
-        /// </param>
-        /// <returns>
-        /// The clipped rectangle, or null if the rectangle is outside the clipping area.
-        /// </returns>
+        /// <param name="rect">The rectangle to clip.</param>
+        /// <param name="clippingRectangle">The clipping rectangle.</param>
+        /// <returns>The clipped rectangle, or <c>null</c> if the rectangle is outside the clipping area.</returns>
         private static OxyRect? ClipRect(OxyRect rect, OxyRect clippingRectangle)
         {
             if (rect.Right < clippingRectangle.Left)
@@ -1110,10 +958,8 @@ namespace OxyPlot
         /// Makes sure that a non empty line is visible.
         /// </summary>
         /// <param name="pts">The points (screen coordinates).</param>
-        /// <remarks>
-        /// If the line contains one point, another point is added.
-        /// If the line contains two points at the same position, the points are moved 2 pixels apart.
-        /// </remarks>
+        /// <remarks>If the line contains one point, another point is added.
+        /// If the line contains two points at the same position, the points are moved 2 pixels apart.</remarks>
         private static void EnsureNonEmptyLineIsVisible(IList<ScreenPoint> pts)
         {
             // Check if the line contains two points and they are at the same point

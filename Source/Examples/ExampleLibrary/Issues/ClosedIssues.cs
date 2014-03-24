@@ -173,7 +173,7 @@ namespace ExampleLibrary
 
             return model;
         }
-       
+
         [Example("#10076: Super exponential format")]
         public static PlotModel SuperExponentialFormat()
         {

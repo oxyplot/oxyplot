@@ -48,7 +48,7 @@ namespace OxyPlot
         private BinaryWriter w;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PdfWriter"/> class.
+        /// Initializes a new instance of the <see cref="PdfWriter" /> class.
         /// </summary>
         /// <param name="s">The s.</param>
         public PdfWriter(Stream s)
@@ -186,7 +186,7 @@ namespace OxyPlot
             this.w.Dispose();
 #endif
         }
-        
+
         /// <summary>
         /// Writes an object.
         /// </summary>

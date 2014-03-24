@@ -36,7 +36,7 @@ namespace OxyPlot.Axes
     public class LinearAxis : Axis
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
+        /// Initializes a new instance of the <see cref="LinearAxis" /> class.
         /// </summary>
         public LinearAxis()
         {
@@ -46,14 +46,10 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
+        /// Initializes a new instance of the <see cref="LinearAxis" /> class.
         /// </summary>
-        /// <param name="pos">
-        /// The position of the axis.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="pos">The position of the axis.</param>
+        /// <param name="title">The title.</param>
         public LinearAxis(AxisPosition pos, string title)
             : this()
         {
@@ -62,20 +58,12 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
+        /// Initializes a new instance of the <see cref="LinearAxis" /> class.
         /// </summary>
-        /// <param name="pos">
-        /// The position of the axis.
-        /// </param>
-        /// <param name="minimum">
-        /// The minimum.
-        /// </param>
-        /// <param name="maximum">
-        /// The maximum.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="pos">The position of the axis.</param>
+        /// <param name="minimum">The minimum.</param>
+        /// <param name="maximum">The maximum.</param>
+        /// <param name="title">The title.</param>
         public LinearAxis(
             AxisPosition pos, double minimum = double.NaN, double maximum = double.NaN, string title = null)
             : this(pos, minimum, maximum, double.NaN, double.NaN, title)
@@ -83,26 +71,14 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinearAxis"/> class.
+        /// Initializes a new instance of the <see cref="LinearAxis" /> class.
         /// </summary>
-        /// <param name="pos">
-        /// The position of the axis.
-        /// </param>
-        /// <param name="minimum">
-        /// The minimum.
-        /// </param>
-        /// <param name="maximum">
-        /// The maximum.
-        /// </param>
-        /// <param name="majorStep">
-        /// The major step.
-        /// </param>
-        /// <param name="minorStep">
-        /// The minor step.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="pos">The position of the axis.</param>
+        /// <param name="minimum">The minimum.</param>
+        /// <param name="maximum">The maximum.</param>
+        /// <param name="majorStep">The major step.</param>
+        /// <param name="minorStep">The minor step.</param>
+        /// <param name="title">The title.</param>
         public LinearAxis(
             AxisPosition pos, double minimum, double maximum, double majorStep, double minorStep, string title = null)
             : this(pos, title)
@@ -119,26 +95,22 @@ namespace OxyPlot.Axes
         public bool FormatAsFractions { get; set; }
 
         /// <summary>
-        /// Gets or sets the fraction unit. Remember to set FormatAsFractions to true.
+        /// Gets or sets the fraction unit. Remember to set FormatAsFractions to <c>true</c>.
         /// </summary>
-        /// <value> The fraction unit. </value>
+        /// <value>The fraction unit.</value>
         public double FractionUnit { get; set; }
 
         /// <summary>
-        /// Gets or sets the fraction unit symbol. Use FractionUnit = Math.PI and FractionUnitSymbol = "π" if you want the axis to show "π/2,π,3π/2,2π" etc. Use FractionUnit = 1 and FractionUnitSymbol = "L" if you want the axis to show "0,L/2,L" etc. Remember to set FormatAsFractions to true.
+        /// Gets or sets the fraction unit symbol. Use FractionUnit = Math.PI and FractionUnitSymbol = "π" if you want the axis to show "π/2,π,3π/2,2π" etc. Use FractionUnit = 1 and FractionUnitSymbol = "L" if you want the axis to show "0,L/2,L" etc. Remember to set FormatAsFractions to <c>true</c>.
         /// </summary>
-        /// <value> The fraction unit symbol. </value>
+        /// <value>The fraction unit symbol.</value>
         public string FractionUnitSymbol { get; set; }
 
         /// <summary>
         /// Formats the value to be used on the axis.
         /// </summary>
-        /// <param name="x">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// The formatted value.
-        /// </returns>
+        /// <param name="x">The value.</param>
+        /// <returns>The formatted value.</returns>
         public override string FormatValue(double x)
         {
             if (this.FormatAsFractions)
@@ -152,9 +124,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Determines whether the axis is used for X/Y values.
         /// </summary>
-        /// <returns>
-        /// <c>true</c> if it is an XY axis; otherwise, <c>false</c> .
-        /// </returns>
+        /// <returns><c>true</c> if it is an XY axis; otherwise, <c>false</c> .</returns>
         public override bool IsXyAxis()
         {
             return true;

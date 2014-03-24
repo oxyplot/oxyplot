@@ -42,7 +42,7 @@ namespace OxyPlot.Wpf
     public class TrackerControl : ContentControl
     {
         /// <summary>
-        /// The horizontal line visibility property.
+        /// Identifies the <see cref="HorizontalLineVisibility"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HorizontalLineVisibilityProperty =
             DependencyProperty.Register(
@@ -52,7 +52,7 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(Visibility.Visible));
 
         /// <summary>
-        /// The vertical line visibility property.
+        /// Identifies the <see cref="VerticalLineVisibility"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VerticalLineVisibilityProperty =
             DependencyProperty.Register(
@@ -62,63 +62,63 @@ namespace OxyPlot.Wpf
                 new PropertyMetadata(Visibility.Visible));
 
         /// <summary>
-        /// The line stroke property.
+        /// Identifies the <see cref="LineStroke"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineStrokeProperty = DependencyProperty.Register(
             "LineStroke", typeof(Brush), typeof(TrackerControl), new PropertyMetadata(null));
 
         /// <summary>
-        /// The line extents property.
+        /// Identifies the <see cref="LineExtents"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineExtentsProperty = DependencyProperty.Register(
             "LineExtents", typeof(OxyRect), typeof(TrackerControl), new PropertyMetadata(new OxyRect()));
 
         /// <summary>
-        /// The line dash array property.
+        /// Identifies the <see cref="LineDashArray"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LineDashArrayProperty = DependencyProperty.Register(
             "LineDashArray", typeof(DoubleCollection), typeof(TrackerControl), new PropertyMetadata(null));
 
         /// <summary>
-        /// The border edge mode property.
+        /// Identifies the <see cref="BorderEdgeMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BorderEdgeModeProperty = DependencyProperty.Register(
             "BorderEdgeMode", typeof(EdgeMode), typeof(TrackerControl));
 
         /// <summary>
-        /// The show arrow property.
+        /// Identifies the <see cref="ShowPointer"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ShowPointerProperty = DependencyProperty.Register(
             "ShowPointer", typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
 
         /// <summary>
-        /// The corner radius property.
+        /// Identifies the <see cref="CornerRadius"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(double), typeof(TrackerControl), new PropertyMetadata(0.0));
 
         /// <summary>
-        /// The distance property.
+        /// Identifies the <see cref="Distance"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DistanceProperty = DependencyProperty.Register(
             "Distance", typeof(double), typeof(TrackerControl), new PropertyMetadata(7.0));
 
         /// <summary>
-        /// The can center horizontally property.
+        /// Identifies the <see cref="CanCenterHorizontally"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanCenterHorizontallyProperty =
             DependencyProperty.Register(
                 "CanCenterHorizontally", typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
 
         /// <summary>
-        /// The can center vertically property.
+        /// Identifies the <see cref="CanCenterVertically"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanCenterVerticallyProperty =
             DependencyProperty.Register(
                 "CanCenterVertically", typeof(bool), typeof(TrackerControl), new PropertyMetadata(true));
 
         /// <summary>
-        /// The position property.
+        /// Identifies the <see cref="Position"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position",
@@ -298,7 +298,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the corner radius (only used when ShowPoint=false).
+        /// Gets or sets the corner radius (only used when ShowPoint=<c>false</c>).
         /// </summary>
         public double CornerRadius
         {
@@ -378,7 +378,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -416,12 +416,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called when the position is changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private static void PositionChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             ((TrackerControl)sender).OnPositionChanged(e);
@@ -430,9 +426,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Called when the position is changed.
         /// </summary>
-        /// <param name="dependencyPropertyChangedEventArgs">
-        /// The dependency property changed event args.
-        /// </param>
+        /// <param name="dependencyPropertyChangedEventArgs">The dependency property changed event args.</param>
         private void OnPositionChanged(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             this.UpdatePositionAndBorder();
@@ -582,24 +576,12 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Create the border geometry.
         /// </summary>
-        /// <param name="ha">
-        /// The horizontal alignment.
-        /// </param>
-        /// <param name="va">
-        /// The vertical alignment.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="margin">
-        /// The margin.
-        /// </param>
-        /// <returns>
-        /// The border geometry.
-        /// </returns>
+        /// <param name="ha">The horizontal alignment.</param>
+        /// <param name="va">The vertical alignment.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="margin">The margin.</param>
+        /// <returns>The border geometry.</returns>
         private Geometry CreateBorderGeometry(
             HorizontalAlignment ha, VerticalAlignment va, double width, double height, out Thickness margin)
         {
@@ -617,24 +599,12 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Create a border geometry with a 'pointer'.
         /// </summary>
-        /// <param name="ha">
-        /// The horizontal alignment.
-        /// </param>
-        /// <param name="va">
-        /// The vertical alignment.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="margin">
-        /// The margin.
-        /// </param>
-        /// <returns>
-        /// The border geometry.
-        /// </returns>
+        /// <param name="ha">The horizontal alignment.</param>
+        /// <param name="va">The vertical alignment.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="margin">The margin.</param>
+        /// <returns>The border geometry.</returns>
         private Geometry CreatePointerBorderGeometry(
             HorizontalAlignment ha, VerticalAlignment va, double width, double height, out Thickness margin)
         {

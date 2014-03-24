@@ -40,7 +40,7 @@ namespace OxyPlot.Wpf
     public abstract class Annotation : FrameworkElement
     {
         /// <summary>
-        /// The layer property.
+        /// Identifies the <see cref="Layer"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LayerProperty = DependencyProperty.Register(
             "Layer",
@@ -49,7 +49,7 @@ namespace OxyPlot.Wpf
             new PropertyMetadata(AnnotationLayer.AboveSeries, AppearanceChanged));
 
         /// <summary>
-        /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.AboveSeries"/>.
+        /// Gets or sets the rendering layer of the annotation. The default value is <see cref="AnnotationLayer.AboveSeries" />.
         /// </summary>
         public AnnotationLayer Layer
         {
@@ -72,9 +72,7 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Creates the internal annotation object.
         /// </summary>
-        /// <returns>
-        /// The annotation.
-        /// </returns>
+        /// <returns>The annotation.</returns>
         public abstract Annotations.Annotation CreateModel();
 
         /// <summary>
@@ -89,12 +87,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Handles changes in appearance.
         /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="d">The sender.</param>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var pc = ((Annotation)d).Parent as IPlotControl;
@@ -107,12 +101,8 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Handles changes in data.
         /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="d">The sender.</param>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected static void DataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var pc = ((Annotation)d).Parent as IPlotControl;

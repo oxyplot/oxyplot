@@ -31,7 +31,7 @@
 namespace OxyPlot.Series
 {
     /// <summary>
-    /// Specifies the position of legends rendered on a <see cref="LineSeries"/>.
+    /// Specifies the position of legends rendered on a <see cref="LineSeries" />.
     /// </summary>
     public enum LineLegendPosition
     {

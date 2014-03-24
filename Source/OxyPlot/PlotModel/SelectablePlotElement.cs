@@ -44,7 +44,7 @@ namespace OxyPlot
         private Selection selection;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectablePlotElement"/> class.
+        /// Initializes a new instance of the <see cref="SelectablePlotElement" /> class.
         /// </summary>
         protected SelectablePlotElement()
         {
@@ -66,9 +66,7 @@ namespace OxyPlot
         /// Gets or sets the selection mode of items in this element.
         /// </summary>
         /// <value>The selection mode.</value>
-        /// <remarks>
-        /// This is only used by the select/unselect functionality, not by the rendering.
-        /// </remarks>
+        /// <remarks>This is only used by the select/unselect functionality, not by the rendering.</remarks>
         public SelectionMode SelectionMode { get; set; }
 
 #if X
@@ -87,7 +85,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets the actual selection color.
         /// </summary>
-        /// <value> The actual selection color. </value>
+        /// <value>The actual selection color.</value>
         protected OxyColor ActualSelectedColor
         {
             get
@@ -183,7 +181,7 @@ namespace OxyPlot
             {
                 this.selection.Clear();
             }
-            
+
             this.selection.Select(index);
             this.OnSelectionChanged();
         }
@@ -209,9 +207,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="originalColor">The unselected color of the element.</param>
         /// <param name="index">The index of the item to check (use -1 for all items).</param>
-        /// <returns>
-        /// A color.
-        /// </returns>
+        /// <returns>A color.</returns>
         protected OxyColor GetSelectableColor(OxyColor originalColor, int index = -1)
         {
             // TODO: rename to GetActualColor (33 usages)
@@ -233,9 +229,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="originalColor">The unselected fill color of the element.</param>
         /// <param name="index">The index of the item to check (use -1 for all items).</param>
-        /// <returns>
-        /// A fill color.
-        /// </returns>
+        /// <returns>A fill color.</returns>
         protected OxyColor GetSelectableFillColor(OxyColor originalColor, int index = -1)
         {
             // TODO: rename to GetActualFillColor (13 usages)
@@ -243,7 +237,7 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Ensures that the selection field is not null.
+        /// Ensures that the selection field is not <c>null</c>.
         /// </summary>
         private void EnsureSelection()
         {
@@ -256,7 +250,7 @@ namespace OxyPlot
         /// <summary>
         /// Raises the <see cref="SelectionChanged" /> event.
         /// </summary>
-        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void OnSelectionChanged(EventArgs args = null)
         {
             var e = this.SelectionChanged;

@@ -36,7 +36,7 @@ namespace OxyPlot.Series
     public class IntervalBarItem : CategorizedItem, ICodeGenerating
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="IntervalBarItem"/> class.
+        /// Initializes a new instance of the <see cref="IntervalBarItem" /> class.
         /// </summary>
         public IntervalBarItem()
         {
@@ -44,17 +44,11 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IntervalBarItem"/> class.
+        /// Initializes a new instance of the <see cref="IntervalBarItem" /> class.
         /// </summary>
-        /// <param name="start">
-        /// The start.
-        /// </param>
-        /// <param name="end">
-        /// The end.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
+        /// <param name="start">The start.</param>
+        /// <param name="end">The end.</param>
+        /// <param name="title">The title.</param>
         public IntervalBarItem(double start, double end, string title = null)
             : this()
         {
@@ -86,9 +80,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// Returns c# code that generates this instance.
         /// </summary>
-        /// <returns>
-        /// C# code.
-        /// </returns>
+        /// <returns>C# code.</returns>
         public string ToCode()
         {
             if (this.Color.IsUndefined())

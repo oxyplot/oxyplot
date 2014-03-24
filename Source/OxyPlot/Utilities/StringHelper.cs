@@ -48,28 +48,16 @@ namespace OxyPlot
         /// <summary>
         /// Replaces the format items in the specified string.
         /// </summary>
-        /// <param name="provider">
-        /// The culture specific format provider.
-        /// </param>
-        /// <param name="formatString">
-        /// The format string.
-        /// </param>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <param name="values">
-        /// The values.
-        /// </param>
-        /// <remarks>
-        /// The format string and values works as in <c>String.Format</c>. 
-        /// In addition, you can format properties of the item object by using the syntax 
-        /// <c>{PropertyName:Formatstring}</c>. 
-        /// E.g. if you have a "Value" property in your item's class, use <c>"{Value:0.00}"</c> to output the value with two digits. 
-        /// Note that this formatting is using reflection and does not have the same performance as string.Format.
-        /// </remarks>
-        /// <returns>
-        /// The formatted string.
-        /// </returns>
+        /// <param name="provider">The culture specific format provider.</param>
+        /// <param name="formatString">The format string.</param>
+        /// <param name="item">The item.</param>
+        /// <param name="values">The values.</param>
+        /// <returns>The formatted string.</returns>
+        /// <remarks>The format string and values works as in <c>String.Format</c>.
+        /// In addition, you can format properties of the item object by using the syntax
+        /// <c>{PropertyName:Formatstring}</c>.
+        /// E.g. if you have a "Value" property in your item's class, use <c>"{Value:0.00}"</c> to output the value with two digits.
+        /// Note that this formatting is using reflection and does not have the same performance as string.Format.</remarks>
         public static string Format(IFormatProvider provider, string formatString, object item, params object[] values)
         {
             // Replace items on the format {Property[:Formatstring]}
@@ -104,15 +92,9 @@ namespace OxyPlot
         /// <summary>
         /// Creates a valid file name.
         /// </summary>
-        /// <param name="title">
-        /// The title.
-        /// </param>
-        /// <param name="extension">
-        /// The extension.
-        /// </param>
-        /// <returns>
-        /// A file name.
-        /// </returns>
+        /// <param name="title">The title.</param>
+        /// <param name="extension">The extension.</param>
+        /// <returns>A file name.</returns>
         public static string CreateValidFileName(string title, string extension)
         {
             string validFileName = title.Trim();
@@ -139,21 +121,11 @@ namespace OxyPlot
         /// <summary>
         /// Creates a string from a collection of items.
         /// </summary>
-        /// <param name="provider">
-        /// The provider.
-        /// </param>
-        /// <param name="items">
-        /// The items.
-        /// </param>
-        /// <param name="formatstring">
-        /// The format string to apply to each item.
-        /// </param>
-        /// <param name="separator">
-        /// The separator.
-        /// </param>
-        /// <returns>
-        /// The collection as a string.
-        /// </returns>
+        /// <param name="provider">The provider.</param>
+        /// <param name="items">The items.</param>
+        /// <param name="formatstring">The format string to apply to each item.</param>
+        /// <param name="separator">The separator.</param>
+        /// <returns>The collection as a string.</returns>
         public static object CreateList(
             IFormatProvider provider, IEnumerable items, string formatstring, string separator = ", ")
         {
