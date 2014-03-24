@@ -34,6 +34,9 @@ using OxyPlot;
 
 namespace Visiblox.Charts.Examples
 {
+    using OxyPlot.Axes;
+    using OxyPlot.Series;
+
     public class OxyPlotTestHarness : HistogramTestHarness
     {
         private readonly OxyPlotChart _chart;
@@ -61,10 +64,10 @@ namespace Visiblox.Charts.Examples
             _chart.Chart.Model = model;
         }
 
-        private ISeries ListToSeries(List<Histogram.DataPoint> data, OxyColor color)
+        private Series ListToSeries(List<Histogram.DataPoint> data, OxyColor color)
         {
             var pts = data.Select(pt => new OxyPlot.DataPoint(pt.Location, pt.Intensity));
-            return new OxyPlot.LineSeries { Points = pts.ToList(), StrokeThickness = 1.0, Color = color };
+            return new LineSeries { Points = pts.Cast<IDataPoint>().ToList(), StrokeThickness = 1.0, Color = color };
         }
     }
 }
