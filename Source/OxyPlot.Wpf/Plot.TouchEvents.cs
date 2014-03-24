@@ -28,7 +28,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if !NET35
 namespace OxyPlot.Wpf
 {
     using System.Windows.Input;
@@ -84,4 +83,3 @@ namespace OxyPlot.Wpf
         }
     }
 }
-#endif

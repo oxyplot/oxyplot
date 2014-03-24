@@ -85,7 +85,6 @@
     <Compile Include="Utilities\WeakEvents\WeakEventManagerBaseT.cs" />
     <Compile Include="MoreColors.cs" />
     <Compile Include="NamespaceDoc.cs" />
-    <Compile Include="Plot.TouchEvents.cs" />
     <Compile Include="RenderingControl.cs" />
     <Compile Include="Series\BarSeries\ColumnSeries.cs" />
     <Compile Include="Series\BarSeries\CategorizedSeries.cs" />
