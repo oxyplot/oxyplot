@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   XPS report writer using MigraDoc.
+//   Provides an XPS report writer.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -54,12 +54,12 @@ namespace OxyPlot.Xps
     using TableRow = System.Windows.Documents.TableRow;
 
     /// <summary>
-    /// XPS report writer using MigraDoc.
+    /// Provides an XPS report writer.
     /// </summary>
     public class FlowDocumentReportWriter : IDisposable, IReportWriter
     {
         /// <summary>
-        /// The doc.
+        /// The document.
         /// </summary>
         private readonly FlowDocument doc;
 
@@ -77,7 +77,7 @@ namespace OxyPlot.Xps
         }
 
         /// <summary>
-        /// Gets FlowDocument.
+        /// Gets the FlowDocument.
         /// </summary>
         public FlowDocument FlowDocument
         {
@@ -88,7 +88,7 @@ namespace OxyPlot.Xps
         }
 
         /// <summary>
-        /// Gets or sets Style.
+        /// Gets or sets the report style.
         /// </summary>
         public ReportStyle Style { get; set; }
 
@@ -102,7 +102,7 @@ namespace OxyPlot.Xps
         }
 
         /// <summary>
-        /// The print.
+        /// Prints the document.
         /// </summary>
         public void Print()
         {
@@ -133,15 +133,15 @@ namespace OxyPlot.Xps
         }
 
         /// <summary>
-        /// The write drawing.
+        /// Writes a drawing.
         /// </summary>
-        /// <param name="d">The d.</param>
+        /// <param name="d">The drawing.</param>
         public void WriteDrawing(DrawingFigure d)
         {
         }
 
         /// <summary>
-        /// The write equation.
+        /// Writes an equation.
         /// </summary>
         /// <param name="equation">The equation.</param>
         public void WriteEquation(Equation equation)
@@ -149,9 +149,9 @@ namespace OxyPlot.Xps
         }
 
         /// <summary>
-        /// The write header.
+        /// Writes a header.
         /// </summary>
-        /// <param name="h">The h.</param>
+        /// <param name="h">The header.</param>
         public void WriteHeader(Header h)
         {
             var run = new Run { Text = h.Text };
@@ -161,9 +161,9 @@ namespace OxyPlot.Xps
         }
 
         /// <summary>
-        /// The write image.
+        /// Writes an image.
         /// </summary>
-        /// <param name="i">The i.</param>
+        /// <param name="i">The image.</param>
         public void WriteImage(Image i)
         {
             // var figure = new Figure();
@@ -178,16 +178,16 @@ namespace OxyPlot.Xps
         }
 
         /// <summary>
-        /// The write paragraph.
+        /// Writes a paragraph.
         /// </summary>
-        /// <param name="pa">The pa.</param>
+        /// <param name="pa">The paragraph.</param>
         public void WriteParagraph(Paragraph pa)
         {
             this.doc.Blocks.Add(this.CreateParagraph(pa.Text, this.Style.BodyTextStyle));
         }
 
         /// <summary>
-        /// The write plot.
+        /// Writes a plot.
         /// </summary>
         /// <param name="plot">The plot.</param>
         public void WritePlot(PlotFigure plot)
@@ -195,7 +195,7 @@ namespace OxyPlot.Xps
         }
 
         /// <summary>
-        /// The write report.
+        /// Writes a report.
         /// </summary>
         /// <param name="report">The report.</param>
         /// <param name="reportStyle">The style.</param>
@@ -206,7 +206,7 @@ namespace OxyPlot.Xps
         }
 
         /// <summary>
-        /// The write table.
+        /// Writes a table.
         /// </summary>
         /// <param name="t">The t.</param>
         public void WriteTable(Table t)
@@ -281,22 +281,22 @@ namespace OxyPlot.Xps
         }
 
         /// <summary>
-        /// The add page body.
+        /// Adds a page body.
         /// </summary>
-        /// <param name="sourceFlowDocPaginator">The source flow doc paginator.</param>
-        /// <param name="pageNo">The page no.</param>
+        /// <param name="sourceFlowDocPaginator">The source flow document paginator.</param>
+        /// <param name="pageNumber">The page number.</param>
         /// <param name="pageCanvas">The page canvas.</param>
         /// <param name="margins">The margins.</param>
-        private void AddPageBody(DocumentPaginator sourceFlowDocPaginator, int pageNo, Canvas pageCanvas, Thickness margins)
+        private void AddPageBody(DocumentPaginator sourceFlowDocPaginator, int pageNumber, Canvas pageCanvas, Thickness margins)
         {
-            var dpv = new DocumentPageView { DocumentPaginator = sourceFlowDocPaginator, PageNumber = pageNo };
+            var dpv = new DocumentPageView { DocumentPaginator = sourceFlowDocPaginator, PageNumber = pageNumber };
             Canvas.SetTop(dpv, margins.Top);
             Canvas.SetLeft(dpv, margins.Left);
             pageCanvas.Children.Add(dpv);
         }
 
         /// <summary>
-        /// The add page to document.
+        /// Adds a page to the document.
         /// </summary>
         /// <param name="fixedDocument">The fixed document.</param>
         /// <param name="pageCanvas">The page canvas.</param>

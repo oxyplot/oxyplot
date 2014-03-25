@@ -383,6 +383,5 @@ namespace OxyPlot.Wpf
                 s.ColorAxisKey = this.ColorAxisKey;
             }
         }
-
     }
 }

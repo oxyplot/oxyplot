@@ -129,9 +129,7 @@ namespace OxyPlot.Tests
                 {
                     Console.Error.WriteLine("IO error: {0}", e.Message);
                 }*/
-
             }
         }
-
     }
 }

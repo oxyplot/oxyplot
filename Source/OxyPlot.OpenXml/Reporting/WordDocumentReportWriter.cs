@@ -78,16 +78,16 @@ namespace OxyPlot.OpenXml
     using Transform2D = DocumentFormat.OpenXml.Drawing.Transform2D;
 
     /// <summary>
-    /// Provides a report writer for Word/OpenXML (.docx) output using OpenXML SDK 2.0.
+    /// Provides a report writer for Word/OpenXML output using OpenXML SDK 2.0.
     /// </summary>
+    /// <seealso cref="http://www.codeproject.com/KB/office/OpenXML-SDK-HelloWorld.aspx" />
+    /// <seealso cref="http://msdn.microsoft.com/en-us/library/documentformat.openxml.wordprocessing.aspx" />
     public class WordDocumentReportWriter : IDisposable, IReportWriter
     {
-        // http://www.codeproject.com/KB/office/OpenXML-SDK-HelloWorld.aspx
-        // http://msdn.microsoft.com/en-us/library/documentformat.openxml.wordprocessing.aspx
         /// <summary>
         /// The body text id.
         /// </summary>
-        private const string BodyTextID = "Normal";
+        private const string BodyTextId = "Normal";
 
         /// <summary>
         /// The body text name.
@@ -97,7 +97,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The figure text id.
         /// </summary>
-        private const string FigureTextID = "FigureText";
+        private const string FigureTextId = "FigureText";
 
         /// <summary>
         /// The figure text name.
@@ -107,7 +107,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The header id.
         /// </summary>
-        private const string HeaderID = "Heading{0}";
+        private const string HeaderId = "Heading{0}";
 
         /// <summary>
         /// The header name.
@@ -117,7 +117,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The table caption id.
         /// </summary>
-        private const string TableCaptionID = "TableCaption";
+        private const string TableCaptionId = "TableCaption";
 
         /// <summary>
         /// The table caption name.
@@ -127,7 +127,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The table header id.
         /// </summary>
-        private const string TableHeaderID = "TableHeader";
+        private const string TableHeaderId = "TableHeader";
 
         /// <summary>
         /// The table header name.
@@ -137,7 +137,7 @@ namespace OxyPlot.OpenXml
         /// <summary>
         /// The table text id.
         /// </summary>
-        private const string TableTextID = "TableText";
+        private const string TableTextId = "TableText";
 
         /// <summary>
         /// The table text name.
@@ -198,7 +198,7 @@ namespace OxyPlot.OpenXml
             this.stylePart = this.mainPart.AddNewPart<StyleDefinitionsPart>();
 
             // fontTablePart = mainPart.AddNewPart<FontTablePart>();
-            this.document = this.CreateDocument();
+            this.document = CreateDocument();
             this.body = new Body();
         }
 
@@ -258,7 +258,7 @@ namespace OxyPlot.OpenXml
         public void Save()
         {
             this.SetPackageProperties(this.package);
-            this.document.Append(this.body);
+            this.document.AppendChild(this.body);
             this.mainPart.Document = this.document;
 
             this.stylePart.Styles.Save();
@@ -290,7 +290,7 @@ namespace OxyPlot.OpenXml
         /// <param name="h">The h.</param>
         public void WriteHeader(Header h)
         {
-            this.body.AppendChild(CreateParagraph(h.Text, string.Format(HeaderID, h.Level)));
+            this.body.AppendChild(CreateParagraph(h.Text, string.Format(HeaderId, h.Level)));
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace OxyPlot.OpenXml
 
             this.AppendImage(i.Source, "Picture " + i.FigureNumber);
 
-            this.body.Append(CreateParagraph(i.GetFullCaption(this.style), FigureTextID));
+            this.body.AppendChild(CreateParagraph(i.GetFullCaption(this.style), FigureTextId));
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace OxyPlot.OpenXml
             // append the image to the document
             this.AppendImage(sourceFullPath, "Plot" + plot.FigureNumber);
 
-            this.body.Append(CreateParagraph(plot.GetFullCaption(this.style), FigureTextID));
+            this.body.AppendChild(CreateParagraph(plot.GetFullCaption(this.style), FigureTextId));
         }
 
         /// <summary>
@@ -367,7 +367,7 @@ namespace OxyPlot.OpenXml
         /// <param name="t">The t.</param>
         public void WriteTable(Table t)
         {
-            this.body.Append(CreateParagraph(t.GetFullCaption(this.style), TableCaptionID));
+            this.body.AppendChild(CreateParagraph(t.GetFullCaption(this.style), TableCaptionId));
 
             var table = new DocumentFormat.OpenXml.Wordprocessing.Table();
 
@@ -385,16 +385,17 @@ namespace OxyPlot.OpenXml
                     NoVerticalBand = true
                 };
 
-            tableProperties1.Append(tableStyle1);
-            tableProperties1.Append(tableWidth1);
-            tableProperties1.Append(tableLook1);
+            tableProperties1.AppendChild(tableStyle1);
+            tableProperties1.AppendChild(tableWidth1);
+            tableProperties1.AppendChild(tableLook1);
 
             var tableGrid1 = new TableGrid();
+            // ReSharper disable once UnusedVariable
             foreach (var tc in t.Columns)
             {
-                // tc.Width
+                // TODO: use tc.Width to set the width of the column
                 var gridColumn1 = new GridColumn { Width = "3070" };
-                tableGrid1.Append(gridColumn1);
+                tableGrid1.AppendChild(gridColumn1);
             }
 
             foreach (var row in t.Rows)
@@ -405,8 +406,8 @@ namespace OxyPlot.OpenXml
                 {
                     var trp = new TableRowProperties();
                     var tableHeader1 = new TableHeader();
-                    trp.Append(tableHeader1);
-                    tr.Append(trp);
+                    trp.AppendChild(tableHeader1);
+                    tr.AppendChild(trp);
                 }
 
                 int j = 0;
@@ -416,243 +417,79 @@ namespace OxyPlot.OpenXml
                     var cell = new TableCell();
                     var tcp = new TableCellProperties();
                     var borders = new TableCellBorders();
-                    borders.Append(
+                    borders.AppendChild(
                         new BottomBorder
                             {
                                 Val = BorderValues.Single,
-                                Size = (UInt32Value)4U,
-                                Space = (UInt32Value)0U,
+                                Size = 4U,
+                                Space = 0U,
                                 Color = "auto"
                             });
-                    borders.Append(
+                    borders.AppendChild(
                         new TopBorder
                             {
                                 Val = BorderValues.Single,
-                                Size = (UInt32Value)4U,
-                                Space = (UInt32Value)0U,
+                                Size = 4U,
+                                Space = 0U,
                                 Color = "auto"
                             });
-                    borders.Append(
+                    borders.AppendChild(
                         new LeftBorder
                             {
                                 Val = BorderValues.Single,
-                                Size = (UInt32Value)4U,
-                                Space = (UInt32Value)0U,
+                                Size = 4U,
+                                Space = 0U,
                                 Color = "auto"
                             });
-                    borders.Append(
+                    borders.AppendChild(
                         new RightBorder
                             {
                                 Val = BorderValues.Single,
-                                Size = (UInt32Value)4U,
-                                Space = (UInt32Value)0U,
+                                Size = 4U,
+                                Space = 0U,
                                 Color = "auto"
                             });
-                    tcp.Append(borders);
+                    tcp.AppendChild(borders);
 
-                    cell.Append(tcp);
-                    string styleID = isHeader ? "TableHeader" : "TableText";
-                    cell.Append(CreateParagraph(c.Content, styleID));
-                    tr.Append(cell);
+                    cell.AppendChild(tcp);
+                    string styleId = isHeader ? "TableHeader" : "TableText";
+                    cell.AppendChild(CreateParagraph(c.Content, styleId));
+                    tr.AppendChild(cell);
                 }
 
-                table.Append(tr);
+                table.AppendChild(tr);
             }
 
-            this.body.Append(table);
+            this.body.AppendChild(table);
         }
 
         /// <summary>
         /// The create paragraph.
         /// </summary>
         /// <param name="content">The content.</param>
-        /// <param name="styleID">The style id.</param>
-        /// <returns></returns>
-        private static DocumentFormat.OpenXml.Wordprocessing.Paragraph CreateParagraph(
-            string content, string styleID = null)
+        /// <param name="styleId">The style id.</param>
+        /// <returns>The paragraph.</returns>
+        private static DocumentFormat.OpenXml.Wordprocessing.Paragraph CreateParagraph(string content, string styleId = null)
         {
             var p = new DocumentFormat.OpenXml.Wordprocessing.Paragraph();
 
-            if (styleID != null)
+            if (styleId != null)
             {
-                var pp = new ParagraphProperties { ParagraphStyleId = new ParagraphStyleId { Val = styleID } };
-                p.Append(pp);
+                var pp = new ParagraphProperties { ParagraphStyleId = new ParagraphStyleId { Val = styleId } };
+                p.AppendChild(pp);
             }
 
             var text = new Text(content);
             var run = new Run(text);
-            p.Append(run);
+            p.AppendChild(run);
             return p;
         }
 
         /// <summary>
-        /// The create style.
+        /// Creates the document.
         /// </summary>
-        /// <param name="ps">The ps.</param>
-        /// <param name="styleID">The style id.</param>
-        /// <param name="styleName">The style name.</param>
-        /// <param name="basedOnStyleID">The based on style id.</param>
-        /// <param name="nextStyleID">The next style id.</param>
-        /// <param name="isDefault">The is default.</param>
-        /// <param name="isCustomStyle">The is custom style.</param>
-        /// <returns></returns>
-        private static Style CreateStyle(
-            ParagraphStyle ps,
-            string styleID,
-            string styleName,
-            string basedOnStyleID,
-            string nextStyleID,
-            bool isDefault = false,
-            bool isCustomStyle = true)
-        {
-            // todo: add font to FontTable?
-            var rPr = new StyleRunProperties();
-
-            // http://msdn.microsoft.com/en-us/library/documentformat.openxml.wordprocessing.color.aspx
-            var color = new Color { Val = ps.TextColor.ToString().Trim('#').Substring(2) };
-            rPr.Append(color);
-
-            // http://msdn.microsoft.com/en-us/library/cc850848.aspx
-            rPr.Append(new RunFonts { Ascii = ps.FontFamily, HighAnsi = ps.FontFamily });
-            rPr.Append(new FontSize { Val = new StringValue((ps.FontSize * 2).ToString(CultureInfo.InvariantCulture)) });
-            rPr.Append(
-                new FontSizeComplexScript
-                    {
-                        Val = new StringValue((ps.FontSize * 2).ToString(CultureInfo.InvariantCulture))
-                    });
-
-            if (ps.Bold)
-            {
-                rPr.Append(new Bold());
-            }
-
-            if (ps.Italic)
-            {
-                rPr.Append(new Italic());
-            }
-
-            var pPr = new StyleParagraphProperties();
-            var spacingBetweenLines2 = new SpacingBetweenLines
-                {
-                    After = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingAfter * 20),
-                    Before = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingBefore * 20),
-                    Line = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LineSpacing * 240),
-                    LineRule = LineSpacingRuleValues.Auto
-                };
-            var indentation = new Indentation
-                {
-                    Left = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LeftIndentation * 20),
-                    Right = string.Format(CultureInfo.InvariantCulture, "{0}", ps.RightIndentation * 20)
-                };
-            var contextualSpacing1 = new ContextualSpacing();
-
-            pPr.Append(spacingBetweenLines2);
-            pPr.Append(contextualSpacing1);
-            pPr.Append(indentation);
-
-            // StyleRunProperties styleRunProperties7 = new StyleRunProperties();
-            // RunFonts runFonts8 = new RunFonts() { Ascii = "Verdana", HighAnsi = "Verdana" };
-            // Color color7 = new Color() { Val = "000000" };
-
-            // styleRunProperties7.Append(runFonts8);
-            // styleRunProperties7.Append(color7);
-
-            // http://msdn.microsoft.com/en-us/library/documentformat.openxml.wordprocessing.style.aspx
-            var style = new Style
-                {
-                    Default = new OnOffValue(isDefault),
-                    CustomStyle = new OnOffValue(isCustomStyle),
-                    StyleId = styleID,
-                    Type = StyleValues.Paragraph
-                };
-
-            style.Append(new Name { Val = styleName });
-            if (basedOnStyleID != null)
-            {
-                style.Append(new BasedOn { Val = basedOnStyleID });
-            }
-
-            var rsid = new Rsid();
-
-            // style.Append(rsid);
-            var primaryStyle = new PrimaryStyle();
-            style.Append(primaryStyle);
-            if (nextStyleID != null)
-            {
-                style.Append(new NextParagraphStyle { Val = nextStyleID });
-            }
-
-            style.Append(rPr);
-            style.Append(pPr);
-            return style;
-        }
-
-        /// <summary>
-        /// The add styles.
-        /// </summary>
-        /// <param name="sdp">The sdp.</param>
-        /// <param name="style">The style.</param>
-        private void AddStyles(StyleDefinitionsPart sdp, ReportStyle style)
-        {
-            sdp.Styles = new Styles();
-
-            sdp.Styles.Append(CreateStyle(style.BodyTextStyle, BodyTextID, BodyTextName, null, null, true, false));
-            for (int i = 0; i < style.HeaderStyles.Length; i++)
-            {
-                sdp.Styles.Append(
-                    CreateStyle(
-                        style.HeaderStyles[i],
-                        string.Format(HeaderID, i + 1),
-                        string.Format(HeaderName, i + 1),
-                        "Heading1",
-                        BodyTextID,
-                        false,
-                        false));
-            }
-
-            sdp.Styles.Append(CreateStyle(style.TableTextStyle, TableTextID, TableTextName, null, null));
-            sdp.Styles.Append(CreateStyle(style.TableHeaderStyle, TableHeaderID, TableHeaderName, null, null));
-            sdp.Styles.Append(CreateStyle(style.TableCaptionStyle, TableCaptionID, TableCaptionName, null, null));
-
-            sdp.Styles.Append(CreateStyle(style.FigureTextStyle, FigureTextID, FigureTextName, null, null));
-        }
-
-        /// <summary>
-        /// The append image.
-        /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="name">The name.</param>
-        private void AppendImage(string source, string name)
-        {
-            // http://msdn.microsoft.com/en-us/library/bb497430.aspx
-            string ext = Path.GetExtension(source).ToLower();
-            ImagePartType ipt = ImagePartType.Jpeg;
-            if (ext == ".png")
-            {
-                ipt = ImagePartType.Png;
-            }
-
-            var imagePart = this.mainPart.AddImagePart(ipt);
-            using (var stream = new FileStream(source, FileMode.Open))
-            {
-                imagePart.FeedData(stream);
-            }
-
-            using (var bmp = new Bitmap(source))
-            {
-                double width = bmp.Width / bmp.HorizontalResolution; // inches
-                double height = bmp.Height / bmp.VerticalResolution; // inches
-                double w = 15 / 2.54;
-                double h = height / width * w;
-                this.body.Append(this.CreateImageParagraph(this.mainPart.GetIdOfPart(imagePart), name, source, w, h));
-            }
-        }
-
-        /// <summary>
-        /// The create document.
-        /// </summary>
-        /// <returns></returns>
-        private Document CreateDocument()
+        /// <returns>The <see cref="Document" />.</returns>
+        private static Document CreateDocument()
         {
             var d = new Document { MCAttributes = new MarkupCompatibilityAttributes { Ignorable = "w14 wp14" } };
             d.AddNamespaceDeclaration("wpc", "http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas");
@@ -674,14 +511,177 @@ namespace OxyPlot.OpenXml
         }
 
         /// <summary>
-        /// The create image paragraph.
+        /// Creates a style.
+        /// </summary>
+        /// <param name="ps">The paragraph style.</param>
+        /// <param name="styleId">The style id.</param>
+        /// <param name="styleName">The style name.</param>
+        /// <param name="basedOnStyleId">The based on style id.</param>
+        /// <param name="nextStyleId">The next style id.</param>
+        /// <param name="isDefault"><c>true</c> if the style is default.</param>
+        /// <param name="isCustomStyle"><c>true</c> if the style is a custom style.</param>
+        /// <returns>The <see cref="Style" />.</returns>
+        private static Style CreateStyle(
+            ParagraphStyle ps,
+            string styleId,
+            string styleName,
+            string basedOnStyleId,
+            string nextStyleId,
+            bool isDefault = false,
+            bool isCustomStyle = true)
+        {
+            // todo: add font to FontTable?
+            var rPr = new StyleRunProperties();
+
+            // http://msdn.microsoft.com/en-us/library/documentformat.openxml.wordprocessing.color.aspx
+            var color = new Color { Val = ps.TextColor.ToString().Trim('#').Substring(2) };
+            rPr.AppendChild(color);
+
+            // http://msdn.microsoft.com/en-us/library/cc850848.aspx
+            rPr.AppendChild(new RunFonts { Ascii = ps.FontFamily, HighAnsi = ps.FontFamily });
+            rPr.AppendChild(new FontSize { Val = new StringValue((ps.FontSize * 2).ToString(CultureInfo.InvariantCulture)) });
+            rPr.AppendChild(
+                new FontSizeComplexScript
+                    {
+                        Val = new StringValue((ps.FontSize * 2).ToString(CultureInfo.InvariantCulture))
+                    });
+
+            if (ps.Bold)
+            {
+                rPr.AppendChild(new Bold());
+            }
+
+            if (ps.Italic)
+            {
+                rPr.AppendChild(new Italic());
+            }
+
+            var pPr = new StyleParagraphProperties();
+            var spacingBetweenLines2 = new SpacingBetweenLines
+                {
+                    After = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingAfter * 20),
+                    Before = string.Format(CultureInfo.InvariantCulture, "{0}", ps.SpacingBefore * 20),
+                    Line = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LineSpacing * 240),
+                    LineRule = LineSpacingRuleValues.Auto
+                };
+            var indentation = new Indentation
+                {
+                    Left = string.Format(CultureInfo.InvariantCulture, "{0}", ps.LeftIndentation * 20),
+                    Right = string.Format(CultureInfo.InvariantCulture, "{0}", ps.RightIndentation * 20)
+                };
+            var contextualSpacing1 = new ContextualSpacing();
+
+            pPr.AppendChild(spacingBetweenLines2);
+            pPr.AppendChild(contextualSpacing1);
+            pPr.AppendChild(indentation);
+
+            // StyleRunProperties styleRunProperties7 = new StyleRunProperties();
+            // RunFonts runFonts8 = new RunFonts() { Ascii = "Verdana", HighAnsi = "Verdana" };
+            // Color color7 = new Color() { Val = "000000" };
+
+            // styleRunProperties7.AppendChild(runFonts8);
+            // styleRunProperties7.AppendChild(color7);
+
+            // http://msdn.microsoft.com/en-us/library/documentformat.openxml.wordprocessing.style.aspx
+            var style = new Style
+                {
+                    Default = new OnOffValue(isDefault),
+                    CustomStyle = new OnOffValue(isCustomStyle),
+                    StyleId = styleId,
+                    Type = StyleValues.Paragraph
+                };
+
+            style.AppendChild(new Name { Val = styleName });
+            if (basedOnStyleId != null)
+            {
+                style.AppendChild(new BasedOn { Val = basedOnStyleId });
+            }
+
+            //// var rsid = new Rsid();
+
+            // style.AppendChild(rsid);
+            var primaryStyle = new PrimaryStyle();
+            style.AppendChild(primaryStyle);
+            if (nextStyleId != null)
+            {
+                style.AppendChild(new NextParagraphStyle { Val = nextStyleId });
+            }
+
+            style.AppendChild(rPr);
+            style.AppendChild(pPr);
+            return style;
+        }
+
+        /// <summary>
+        /// Adds a style to the specified part.
+        /// </summary>
+        /// <param name="sdp">The style definition part.</param>
+        /// <param name="styleToAdd">The style.</param>
+        private void AddStyles(StyleDefinitionsPart sdp, ReportStyle styleToAdd)
+        {
+            sdp.Styles = new Styles();
+
+            sdp.Styles.AppendChild(CreateStyle(styleToAdd.BodyTextStyle, BodyTextId, BodyTextName, null, null, true, false));
+            for (int i = 0; i < styleToAdd.HeaderStyles.Length; i++)
+            {
+                sdp.Styles.AppendChild(
+                    CreateStyle(
+                        styleToAdd.HeaderStyles[i],
+                        string.Format(HeaderId, i + 1),
+                        string.Format(HeaderName, i + 1),
+                        "Heading1",
+                        BodyTextId,
+                        false,
+                        false));
+            }
+
+            sdp.Styles.AppendChild(CreateStyle(styleToAdd.TableTextStyle, TableTextId, TableTextName, null, null));
+            sdp.Styles.AppendChild(CreateStyle(styleToAdd.TableHeaderStyle, TableHeaderId, TableHeaderName, null, null));
+            sdp.Styles.AppendChild(CreateStyle(styleToAdd.TableCaptionStyle, TableCaptionId, TableCaptionName, null, null));
+
+            sdp.Styles.AppendChild(CreateStyle(styleToAdd.FigureTextStyle, FigureTextId, FigureTextName, null, null));
+        }
+
+        /// <summary>
+        /// The append image.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="name">The name.</param>
+        private void AppendImage(string source, string name)
+        {
+            // http://msdn.microsoft.com/en-us/library/bb497430.aspx
+            var ext = (Path.GetExtension(source) ?? string.Empty).ToLower();
+            var ipt = ImagePartType.Jpeg;
+            if (ext == ".png")
+            {
+                ipt = ImagePartType.Png;
+            }
+
+            var imagePart = this.mainPart.AddImagePart(ipt);
+            using (var stream = new FileStream(source, FileMode.Open))
+            {
+                imagePart.FeedData(stream);
+            }
+
+            using (var bmp = new Bitmap(source))
+            {
+                double width = bmp.Width / bmp.HorizontalResolution; // inches
+                double height = bmp.Height / bmp.VerticalResolution; // inches
+                double w = 15 / 2.54;
+                double h = height / width * w;
+                this.body.AppendChild(this.CreateImageParagraph(this.mainPart.GetIdOfPart(imagePart), name, source, w, h));
+            }
+        }
+
+        /// <summary>
+        /// Creates an image paragraph.
         /// </summary>
         /// <param name="relationshipId">The relationship id.</param>
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="Paragraph" /> containing the image.</returns>
         private DocumentFormat.OpenXml.Wordprocessing.Paragraph CreateImageParagraph(
             string relationshipId, string name, string description, double width, double height)
         {
@@ -712,7 +712,7 @@ namespace OxyPlot.OpenXml
             var runProperties1 = new RunProperties();
             var noProof1 = new NoProof();
 
-            runProperties1.Append(noProof1);
+            runProperties1.AppendChild(noProof1);
 
             var drawing1 = new Drawing();
 
@@ -735,7 +735,7 @@ namespace OxyPlot.OpenXml
             var graphicFrameLocks1 = new GraphicFrameLocks { NoChangeAspect = true };
             graphicFrameLocks1.AddNamespaceDeclaration("a", "http://schemas.openxmlformats.org/drawingml/2006/main");
 
-            nonVisualGraphicFrameDrawingProperties1.Append(graphicFrameLocks1);
+            nonVisualGraphicFrameDrawingProperties1.AppendChild(graphicFrameLocks1);
 
             var graphic1 = new Graphic();
             graphic1.AddNamespaceDeclaration("a", "http://schemas.openxmlformats.org/drawingml/2006/main");
@@ -756,10 +756,10 @@ namespace OxyPlot.OpenXml
             var nonVisualPictureDrawingProperties1 = new NonVisualPictureDrawingProperties();
             var pictureLocks1 = new PictureLocks { NoChangeAspect = true, NoChangeArrowheads = true };
 
-            nonVisualPictureDrawingProperties1.Append(pictureLocks1);
+            nonVisualPictureDrawingProperties1.AppendChild(pictureLocks1);
 
-            nonVisualPictureProperties1.Append(nonVisualDrawingProperties1);
-            nonVisualPictureProperties1.Append(nonVisualPictureDrawingProperties1);
+            nonVisualPictureProperties1.AppendChild(nonVisualDrawingProperties1);
+            nonVisualPictureProperties1.AppendChild(nonVisualPictureDrawingProperties1);
 
             var blipFill1 = new BlipFill();
 
@@ -772,21 +772,21 @@ namespace OxyPlot.OpenXml
             var useLocalDpi1 = new UseLocalDpi { Val = false };
             useLocalDpi1.AddNamespaceDeclaration("a14", "http://schemas.microsoft.com/office/drawing/2010/main");
 
-            blipExtension1.Append(useLocalDpi1);
+            blipExtension1.AppendChild(useLocalDpi1);
 
-            blipExtensionList1.Append(blipExtension1);
+            blipExtensionList1.AppendChild(blipExtension1);
 
-            blip1.Append(blipExtensionList1);
+            blip1.AppendChild(blipExtensionList1);
             var sourceRectangle1 = new SourceRectangle();
 
             var stretch1 = new Stretch();
             var fillRectangle1 = new FillRectangle();
 
-            stretch1.Append(fillRectangle1);
+            stretch1.AppendChild(fillRectangle1);
 
-            blipFill1.Append(blip1);
-            blipFill1.Append(sourceRectangle1);
-            blipFill1.Append(stretch1);
+            blipFill1.AppendChild(blip1);
+            blipFill1.AppendChild(sourceRectangle1);
+            blipFill1.AppendChild(stretch1);
 
             var shapeProperties1 = new ShapeProperties { BlackWhiteMode = BlackWhiteModeValues.Auto };
 
@@ -794,45 +794,45 @@ namespace OxyPlot.OpenXml
             var offset1 = new Offset { X = 0L, Y = 0L };
             var extents1 = new Extents { Cx = extent1.Cx, Cy = extent1.Cy };
 
-            transform2D1.Append(offset1);
-            transform2D1.Append(extents1);
+            transform2D1.AppendChild(offset1);
+            transform2D1.AppendChild(extents1);
 
             var presetGeometry1 = new PresetGeometry { Preset = ShapeTypeValues.Rectangle };
             var adjustValueList1 = new AdjustValueList();
 
-            presetGeometry1.Append(adjustValueList1);
+            presetGeometry1.AppendChild(adjustValueList1);
             var noFill1 = new NoFill();
 
             var outline1 = new Outline();
             var noFill2 = new NoFill();
 
-            outline1.Append(noFill2);
+            outline1.AppendChild(noFill2);
 
-            shapeProperties1.Append(transform2D1);
-            shapeProperties1.Append(presetGeometry1);
-            shapeProperties1.Append(noFill1);
-            shapeProperties1.Append(outline1);
+            shapeProperties1.AppendChild(transform2D1);
+            shapeProperties1.AppendChild(presetGeometry1);
+            shapeProperties1.AppendChild(noFill1);
+            shapeProperties1.AppendChild(outline1);
 
-            picture1.Append(nonVisualPictureProperties1);
-            picture1.Append(blipFill1);
-            picture1.Append(shapeProperties1);
+            picture1.AppendChild(nonVisualPictureProperties1);
+            picture1.AppendChild(blipFill1);
+            picture1.AppendChild(shapeProperties1);
 
-            graphicData1.Append(picture1);
+            graphicData1.AppendChild(picture1);
 
-            graphic1.Append(graphicData1);
+            graphic1.AppendChild(graphicData1);
 
-            inline1.Append(extent1);
-            inline1.Append(effectExtent1);
-            inline1.Append(docProperties1);
-            inline1.Append(nonVisualGraphicFrameDrawingProperties1);
-            inline1.Append(graphic1);
+            inline1.AppendChild(extent1);
+            inline1.AppendChild(effectExtent1);
+            inline1.AppendChild(docProperties1);
+            inline1.AppendChild(nonVisualGraphicFrameDrawingProperties1);
+            inline1.AppendChild(graphic1);
 
-            drawing1.Append(inline1);
+            drawing1.AppendChild(inline1);
 
-            run1.Append(runProperties1);
-            run1.Append(drawing1);
+            run1.AppendChild(runProperties1);
+            run1.AppendChild(drawing1);
 
-            paragraph1.Append(run1);
+            paragraph1.AppendChild(run1);
 
             return paragraph1;
         }
@@ -860,9 +860,9 @@ namespace OxyPlot.OpenXml
         }
 
         /// <summary>
-        /// The set package properties.
+        /// Sets the package properties.
         /// </summary>
-        /// <param name="p">The p.</param>
+        /// <param name="p">The package.</param>
         private void SetPackageProperties(OpenXmlPackage p)
         {
             p.PackageProperties.Creator = this.Creator;
@@ -877,6 +877,5 @@ namespace OxyPlot.OpenXml
             p.PackageProperties.Modified = DateTime.Now;
             p.PackageProperties.LastModifiedBy = this.Creator;
         }
-
     }
 }

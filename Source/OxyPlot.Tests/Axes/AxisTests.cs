@@ -31,6 +31,7 @@
 namespace OxyPlot.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using NUnit.Framework;
 
@@ -41,6 +42,8 @@ namespace OxyPlot.Tests
     /// Provides unit tests for the <see cref="Axis" /> class.
     /// </summary>
     [TestFixture]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    // ReSharper disable InconsistentNaming
     public class AxisTests
     {
         [Test]

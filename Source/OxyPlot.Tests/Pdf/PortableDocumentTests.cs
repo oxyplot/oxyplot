@@ -479,8 +479,8 @@ namespace OxyPlot.Tests
         {
             var doc = new PortableDocument();
             doc.AddPage(200, 100);
-            //var image = new PortableDocument.Image() { };
-            //doc.DrawImage(image);
+            //// var image = new PortableDocument.Image() { };
+            //// doc.DrawImage(image);
             doc.Save(Folder + "DrawImage.pdf");
         }
 

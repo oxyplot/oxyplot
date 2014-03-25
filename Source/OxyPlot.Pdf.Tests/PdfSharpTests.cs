@@ -27,6 +27,8 @@
 
 namespace OxyPlot.Pdf.Tests
 {
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
 
     using NUnit.Framework;
@@ -34,6 +36,8 @@ namespace OxyPlot.Pdf.Tests
     using PdfSharp.Drawing;
     using PdfSharp.Pdf;
 
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class PdfSharpTests
     {
         private const string Folder = @"PdfSharpTests\";
@@ -80,9 +84,9 @@ namespace OxyPlot.Pdf.Tests
             var font = new XFont("Arial", 18);
             for (int i = 32; i < 256; i++)
             {
-                double x = 10 + 20 * (i % 16);
-                double y = 10 + 20 * (i / 16);
-                var s = ((char)i).ToString();
+                double x = 10 + (20 * (i % 16));
+                double y = 10 + (20 * (i / 16));
+                var s = ((char)i).ToString(CultureInfo.InvariantCulture);
                 g.DrawString(s, font, XBrushes.Black, x, y);
             }
 

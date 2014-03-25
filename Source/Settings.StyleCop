@@ -8,6 +8,7 @@
       <Value>CRC</Value>
       <Value>Gainsboro</Value>
       <Value>github</Value>
+      <Value>GTK</Value>
       <Value>Matlab</Value>
       <Value>Migra</Value>
       <Value>MigraDoc</Value>
@@ -15,6 +16,7 @@
       <Value>Nayuki</Value>
       <Value>Oxy</Value>
       <Value>Paeth</Value>
+      <Value>paginator</Value>
       <Value>pdf</Value>
       <Value>PdfSharp</Value>
       <Value>Petzold</Value>
@@ -39,6 +41,15 @@
       <Value>XY</Value>
     </CollectionProperty>
   </GlobalSettings>
+  <Parsers>
+    <Parser ParserId="StyleCop.CSharp.CsParser">
+      <ParserSettings>
+        <CollectionProperty Name="GeneratedFileFilters">
+          <Value>TemporaryGeneratedFile_.*\.cs$</Value>
+        </CollectionProperty>
+      </ParserSettings>
+    </Parser>
+  </Parsers>
   <Analyzers>
     <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
       <AnalyzerSettings>
