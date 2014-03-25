@@ -134,5 +134,55 @@ namespace OxyPlot
         {
             controller.Bind(new OxyMouseWheelGesture(modifiers), command);
         }
+
+        /// <summary>
+        /// Unbinds the specified mouse down gesture.
+        /// </summary>
+        /// <param name="controller">The controller.</param>
+        /// <param name="mouseButton">The mouse button.</param>
+        /// <param name="modifiers">The modifier keys.</param>
+        /// <param name="clickCount">The click count.</param>
+        public static void UnbindMouseDown(this IPlotController controller, OxyMouseButton mouseButton, OxyModifierKeys modifiers = OxyModifierKeys.None, int clickCount = 1)
+        {
+            controller.Unbind(new OxyMouseDownGesture(mouseButton, modifiers, clickCount));
+        }
+
+        /// <summary>
+        /// Unbinds the specified key down gesture.
+        /// </summary>
+        /// <param name="controller">The controller.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="modifiers">The modifier keys.</param>
+        public static void UnbindKeyDown(this IPlotController controller, OxyKey key, OxyModifierKeys modifiers = OxyModifierKeys.None)
+        {
+            controller.Unbind(new OxyKeyGesture(key, modifiers));
+        }
+
+        /// <summary>
+        /// Unbinds the mouse enter gesture.
+        /// </summary>
+        /// <param name="controller">The controller.</param>
+        public static void UnbindMouseEnter(this IPlotController controller)
+        {
+            controller.Unbind(new OxyMouseEnterGesture());
+        }
+
+        /// <summary>
+        /// Unbinds the touch down gesture.
+        /// </summary>
+        /// <param name="controller">The controller.</param>
+        public static void UnbindTouchDown(this IPlotController controller)
+        {
+            controller.Unbind(new OxyTouchGesture());
+        }
+
+        /// <summary>
+        /// Unbinds the mouse wheel gesture.
+        /// </summary>
+        /// <param name="controller">The controller.</param>
+        public static void UnbindMouseWheel(this IPlotController controller)
+        {
+            controller.Unbind(new OxyMouseWheelGesture());
+        }
     }
 }

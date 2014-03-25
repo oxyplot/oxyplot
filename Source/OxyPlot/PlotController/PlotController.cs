@@ -157,7 +157,7 @@ namespace OxyPlot
         public override void Unbind(OxyInputGesture gesture)
         {
             // ReSharper disable once RedundantNameQualifier
-            foreach (var icb in this.InputCommandBindings.Where(icb => object.ReferenceEquals(icb.Gesture, gesture)).ToArray())
+            foreach (var icb in this.InputCommandBindings.Where(icb => icb.Gesture.Equals(gesture)).ToArray())
             {
                 this.InputCommandBindings.Remove(icb);
             }
