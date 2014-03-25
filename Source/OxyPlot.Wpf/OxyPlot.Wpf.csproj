@@ -76,8 +76,8 @@
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="Utilities\WeakEvents\RenderingEventListener.cs" />
     <Compile Include="Utilities\WeakEvents\RenderingEventManager.cs" />
-    <Compile Include="Utilities\WeakEvents\WeakEventListenerT.cs" />
-    <Compile Include="Utilities\WeakEvents\WeakEventManagerBaseT.cs" />
+    <Compile Include="Utilities\WeakEvents\WeakEventListener{TEventManager,TEventArgs}.cs" />
+    <Compile Include="Utilities\WeakEvents\WeakEventManagerBase{TManager}.cs" />
     <Compile Include="MoreColors.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Plot.TouchEvents.cs" />
@@ -147,6 +147,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(ProjectDir)\..\..\Tools\StyleCop\StyleCop.targets" Condition=" '$(OS)' == 'Windows_NT' " />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

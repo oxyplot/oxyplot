@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WeakEventListenerT.cs" company="OxyPlot">
+// <copyright file="WeakEventListener{TEventManager,TEventArgs}.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors

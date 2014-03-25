@@ -76,6 +76,5 @@ namespace OxyPlot.Metro
         {
             return null;
         }
-
     }
 }

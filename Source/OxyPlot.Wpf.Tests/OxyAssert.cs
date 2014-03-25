@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Check that all public properties in t1 exists in t2.
+//   Provides specialized unit test assertion methods.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,11 +33,12 @@ namespace OxyPlot.Wpf.Tests
     using System;
     using System.Collections;
     using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Media;
 
+    /// <summary>
+    /// Provides specialized unit test assertion methods.
+    /// </summary>
     public class OxyAssert
     {
         /// <summary>
@@ -61,7 +62,7 @@ namespace OxyPlot.Wpf.Tests
                 var pd2 = p2[pd1.Name];
                 if (pd2 == null)
                 {
-                    Console.WriteLine("Property {0} not found in {1}", pd1.Name, t2);
+                    Console.WriteLine(@"Property {0} not found in {1}", pd1.Name, t2);
                     if (failOnMissingProperty)
                     {
                         result = false;
@@ -110,7 +111,7 @@ namespace OxyPlot.Wpf.Tests
                 var pd2 = p2[propertyName];
                 if (pd2 == null)
                 {
-                    Console.WriteLine("{0}: missing", propertyName);
+                    Console.WriteLine(@"{0}: missing", propertyName);
                     continue;
                 }
 
@@ -159,7 +160,7 @@ namespace OxyPlot.Wpf.Tests
                 var type2 = v2 != null ? v2.GetType() : null;
                 if (!AreEqual(type1, type2))
                 {
-                    Console.WriteLine("{0}: {1} / {2}", pd1.Name, type1, type2);
+                    Console.WriteLine(@"{0}: {1} / {2}", pd1.Name, type1, type2);
                 }
 
                 if (AreEqual(v1, v2))
@@ -172,13 +173,19 @@ namespace OxyPlot.Wpf.Tests
                     continue;
                 }
 
-                Console.WriteLine("{0}: {1} / {2}", pd1.Name, v1, v2);
+                Console.WriteLine(@"{0}: {1} / {2}", pd1.Name, v1, v2);
                 result = false;
             }
 
             NUnit.Framework.Assert.IsTrue(result);
         }
 
+        /// <summary>
+        /// Determines if the specified objects are equal. Converts from Wpf to OxyPlot types if necessary.
+        /// </summary>
+        /// <param name="v1">The first object to compare.</param>
+        /// <param name="v2">The second object to compare.</param>
+        /// <returns><c>true</c> if the objects are equal.</returns>
         private static bool AreEqual(object v1, object v2)
         {
             if (v1 == null || v2 == null)
@@ -209,6 +216,12 @@ namespace OxyPlot.Wpf.Tests
             return v1.Equals(v2);
         }
 
+        /// <summary>
+        /// Determines if the specified lists are equal. Converts from Wpf to OxyPlot types if necessary.
+        /// </summary>
+        /// <param name="v1">The first list to compare.</param>
+        /// <param name="v2">The second list to compare.</param>
+        /// <returns><c>true</c> if the lists are equal.</returns>
         private static bool AreEqual(IList v1, IList v2)
         {
             if (v1.Count != v2.Count)
@@ -223,6 +236,7 @@ namespace OxyPlot.Wpf.Tests
                     return false;
                 }
             }
+
             return true;
         }
     }

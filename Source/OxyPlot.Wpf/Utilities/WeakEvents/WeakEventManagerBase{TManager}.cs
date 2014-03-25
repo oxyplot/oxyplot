@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WeakEventManagerBaseT.cs" company="OxyPlot">
+// <copyright file="WeakEventManagerBase{TManager}.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors

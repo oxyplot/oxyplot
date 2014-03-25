@@ -45,8 +45,7 @@ namespace OxyPlot.Tests
         [SetUp]
         public void Setup()
         {
-            src = new List<TestObject>();
-            src.Add(new TestObject() { A = 3.14 });
+            this.src = new List<TestObject> { new TestObject { A = 3.14 } };
         }
 
         [Test]
@@ -56,7 +55,7 @@ namespace OxyPlot.Tests
 
             var filler = new ListFiller<ScatterPoint>();
             filler.Add("A", (p, v) => p.X = Convert.ToDouble(v));
-            filler.Fill(target, src);
+            filler.Fill(target, this.src);
 
             Assert.AreEqual(1, target.Count);
             Assert.AreEqual(3.14, target[0].X);
@@ -69,7 +68,7 @@ namespace OxyPlot.Tests
 
             var filler = new ListFiller<ScatterPoint>();
             filler.Add("B", (p, v) => p.X = Convert.ToDouble(v));
-            filler.Fill(target, src);
+            filler.Fill(target, this.src);
         }
 
         [Test]
@@ -79,7 +78,7 @@ namespace OxyPlot.Tests
 
             var filler = new ListFiller<ScatterPoint>();
             filler.Add(null, (p, v) => { });
-            filler.Fill(target, src);
+            filler.Fill(target, this.src);
 
             Assert.AreEqual(1, target.Count);
             Assert.AreEqual(0, target[0].X);

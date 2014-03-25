@@ -427,6 +427,7 @@ namespace OxyPlot.Wpf
         /// Called when the position is changed.
         /// </summary>
         /// <param name="dependencyPropertyChangedEventArgs">The dependency property changed event args.</param>
+        // ReSharper disable once UnusedParameter.Local
         private void OnPositionChanged(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             this.UpdatePositionAndBorder();
@@ -466,17 +467,17 @@ namespace OxyPlot.Wpf
             double contentHeight = this.content.DesiredSize.Height;
 
             // Minimum allowed margins around the tracker
-            const double marginLimit = 10;
+            const double MarginLimit = 10;
 
             var ha = HorizontalAlignment.Center;
             if (this.CanCenterHorizontally)
             {
-                if (this.Position.X - contentWidth / 2 < marginLimit)
+                if (this.Position.X - (contentWidth / 2) < MarginLimit)
                 {
                     ha = HorizontalAlignment.Left;
                 }
 
-                if (this.Position.X + contentWidth / 2 > canvasWidth - marginLimit)
+                if (this.Position.X + (contentWidth / 2) > canvasWidth - MarginLimit)
                 {
                     ha = HorizontalAlignment.Right;
                 }
@@ -489,7 +490,7 @@ namespace OxyPlot.Wpf
             var va = VerticalAlignment.Center;
             if (this.CanCenterVertically)
             {
-                if (this.Position.Y - contentHeight / 2 < marginLimit)
+                if (this.Position.Y - (contentHeight / 2) < MarginLimit)
                 {
                     va = VerticalAlignment.Top;
                 }
@@ -497,18 +498,18 @@ namespace OxyPlot.Wpf
                 if (ha == HorizontalAlignment.Center)
                 {
                     va = VerticalAlignment.Bottom;
-                    if (this.Position.Y - contentHeight < marginLimit)
+                    if (this.Position.Y - contentHeight < MarginLimit)
                     {
                         va = VerticalAlignment.Top;
                     }
                 }
 
-                if (va == VerticalAlignment.Center && this.Position.Y + contentHeight / 2 > canvasHeight - marginLimit)
+                if (va == VerticalAlignment.Center && this.Position.Y + (contentHeight / 2) > canvasHeight - MarginLimit)
                 {
                     va = VerticalAlignment.Bottom;
                 }
 
-                if (va == VerticalAlignment.Top && this.Position.Y + contentHeight > canvasHeight - marginLimit)
+                if (va == VerticalAlignment.Top && this.Position.Y + contentHeight > canvasHeight - MarginLimit)
                 {
                     va = VerticalAlignment.Bottom;
                 }
@@ -533,7 +534,8 @@ namespace OxyPlot.Wpf
 
             this.contentContainer.RenderTransform = new TranslateTransform
                 {
-                   X = dx * contentSize.Width, Y = dy * contentSize.Height
+                    X = dx * contentSize.Width,
+                    Y = dy * contentSize.Height
                 };
 
             var pos = this.Position;
@@ -622,8 +624,8 @@ namespace OxyPlot.Wpf
                 margin = new Thickness(0, 0, 0, m);
                 points = new[]
                     {
-                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y1), new Point(x2 + m / 2, y1),
-                        new Point(x2, y1 + m), new Point(x2 - m / 2, y1), new Point(x0, y1)
+                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y1), new Point(x2 + (m / 2), y1),
+                        new Point(x2, y1 + m), new Point(x2 - (m / 2), y1), new Point(x0, y1)
                     };
             }
 
@@ -637,7 +639,7 @@ namespace OxyPlot.Wpf
                 margin = new Thickness(0, m, 0, 0);
                 points = new[]
                     {
-                        new Point(x0, y0), new Point(x2 - m / 2, y0), new Point(x2, 0), new Point(x2 + m / 2, y0),
+                        new Point(x0, y0), new Point(x2 - (m / 2), y0), new Point(x2, 0), new Point(x2 + (m / 2), y0),
                         new Point(x1, y0), new Point(x1, y1), new Point(x0, y1)
                     };
             }
@@ -652,8 +654,8 @@ namespace OxyPlot.Wpf
                 margin = new Thickness(m, 0, 0, 0);
                 points = new[]
                     {
-                        new Point(0, y2), new Point(x0, y2 - m / 2), new Point(x0, y0), new Point(x1, y0),
-                        new Point(x1, y1), new Point(x0, y1), new Point(x0, y2 + m / 2)
+                        new Point(0, y2), new Point(x0, y2 - (m / 2)), new Point(x0, y0), new Point(x1, y0),
+                        new Point(x1, y1), new Point(x0, y1), new Point(x0, y2 + (m / 2))
                     };
             }
 
@@ -667,8 +669,8 @@ namespace OxyPlot.Wpf
                 margin = new Thickness(0, 0, m, 0);
                 points = new[]
                     {
-                        new Point(x1 + m, y2), new Point(x1, y2 + m / 2), new Point(x1, y1), new Point(x0, y1),
-                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y2 - m / 2)
+                        new Point(x1 + m, y2), new Point(x1, y2 + (m / 2)), new Point(x1, y1), new Point(x0, y1),
+                        new Point(x0, y0), new Point(x1, y0), new Point(x1, y2 - (m / 2))
                     };
             }
 

@@ -126,6 +126,5 @@ namespace OxyPlot.Wpf
             s.Limit = this.Limit;
             s.Color2 = this.Color2.ToOxyColor();
         }
-
     }
 }

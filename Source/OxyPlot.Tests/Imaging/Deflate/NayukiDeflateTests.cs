@@ -31,13 +31,18 @@
 namespace OxyPlot.Tests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
     using NUnit.Framework;
 
     /// <summary>
-    /// Unit tests based on <a href="https://github.com/nayuki/DEFLATE/blob/master/test/nayuki/deflate/DecompressorTest.java">DecompressorTest.java</a>.
+    /// Unit tests based on Nayjuki's <a href="https://github.com/nayuki/DEFLATE/blob/master/test/nayuki/deflate/DecompressorTest.java">DEFLATE</a> project.
     /// </summary>
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class NayukiDeflateTests
     {
@@ -47,21 +52,21 @@ namespace OxyPlot.Tests
         public void testReservedBlockType()
         {
             // Reserved block type
-            test("1 11 00000", "");
+            test("1 11 00000", string.Empty);
         }
 
         [Test, ExpectedException]
         public void testEofInBlockType()
         {
             // Partial block type
-            test("1 0", "");
+            test("1 0", string.Empty);
         }
 
         [Test]
         public void testUncompressedEmpty()
         {
             // Uncompressed block len=0: (empty)
-            test("1 00 00000   0000000000000000 1111111111111111", "");
+            test("1 00 00000   0000000000000000 1111111111111111", string.Empty);
         }
 
         [Test]
@@ -83,21 +88,21 @@ namespace OxyPlot.Tests
         public void testUncompressedEofBeforeLength()
         {
             // Uncompressed block (partial padding) (no length)
-            test("1 00 000", "");
+            test("1 00 000", string.Empty);
         }
 
         [Test, ExpectedException]
         public void testUncompressedEofInLength()
         {
             // Uncompressed block (partial length)
-            test("1 00 00000 0000000000", "");
+            test("1 00 00000 0000000000", string.Empty);
         }
 
         [Test, ExpectedException]
         public void testUncompressedMismatchedLength()
         {
             // Uncompressed block (mismatched len and nlen)
-            test("1 00 00000 0010000000010000 1111100100110101", "");
+            test("1 00 00000 0010000000010000 1111100100110101", string.Empty);
         }
 
         [Test, ExpectedException, Ignore]
@@ -105,14 +110,14 @@ namespace OxyPlot.Tests
         {
             // Uncompressed block len=0: (empty)
             // No final block
-            test("0 00 00000   0000000000000000 1111111111111111", "");
+            test("0 00 00000   0000000000000000 1111111111111111", string.Empty);
         }
 
         [Test]
         public void testFixedHuffmanEmpty()
         {
             // Fixed Huffman block: End
-            test("1 10 0000000", "");
+            test("1 10 0000000", string.Empty);
         }
 
         [Test]
@@ -147,28 +152,28 @@ namespace OxyPlot.Tests
         public void testFixedHuffmanInvalidLengthCode286()
         {
             // Fixed Huffman block: #286
-            test("1 10 11000110", "");
+            test("1 10 11000110", string.Empty);
         }
 
         [Test, ExpectedException]
         public void testFixedHuffmanInvalidLengthCode287()
         {
             // Fixed Huffman block: #287
-            test("1 10 11000111", "");
+            test("1 10 11000111", string.Empty);
         }
 
         [Test, ExpectedException]
         public void testFixedHuffmanInvalidDistanceCode30()
         {
             // Fixed Huffman block: 00 #257 #30
-            test("1 10 00110000 0000001 11110", "");
+            test("1 10 00110000 0000001 11110", string.Empty);
         }
 
         [Test, ExpectedException]
         public void testFixedHuffmanInvalidDistanceCode31()
         {
             // Fixed Huffman block: 00 #257 #31
-            test("1 10 00110000 0000001 11111", "");
+            test("1 10 00110000 0000001 11111", string.Empty);
         }
 
         [Test]
@@ -181,12 +186,12 @@ namespace OxyPlot.Tests
             //     litLenCodeLen = 0:1, 1:0, ..., 255:0, 256:1
             //     distCodeLen = 0:1, 1:1
             //   Data: End
-            String blockHeader = "1 01";
-            String codeCounts = "00000 10000 1111";
-            String codeLenCodeLens = "000 000 100 000 000 000 000 000 000 000 000 000 000 000 000 000 000 100 000";
-            String codeLens = "0 11111111 10101011 0 0 0";
-            String data = "1";
-            test(blockHeader + codeCounts + codeLenCodeLens + codeLens + data, "");
+            var blockHeader = "1 01";
+            var codeCounts = "00000 10000 1111";
+            var codeLenCodeLens = "000 000 100 000 000 000 000 000 000 000 000 000 000 000 000 000 000 100 000";
+            var codeLens = "0 11111111 10101011 0 0 0";
+            var data = "1";
+            test(blockHeader + codeCounts + codeLenCodeLens + codeLens + data, string.Empty);
         }
 
         [Test]
@@ -199,12 +204,12 @@ namespace OxyPlot.Tests
             //     litLenCodeLen = 0:0, ..., 254:0, 255:1, 256:1
             //     distCodeLen = 0:0
             //   Data: End
-            String blockHeader = "1 01";
-            String codeCounts = "00000 00000 0111";
-            String codeLenCodeLens = "000 000 100 010 000 000 000 000 000 000 000 000 000 000 000 000 000 010";
-            String codeLens = "01111111 00101011 11 11 10";
-            String data = "1";
-            test(blockHeader + codeCounts + codeLenCodeLens + codeLens + data, "");
+            var blockHeader = "1 01";
+            var codeCounts = "00000 00000 0111";
+            var codeLenCodeLens = "000 000 100 010 000 000 000 000 000 000 000 000 000 000 000 000 000 010";
+            var codeLens = "01111111 00101011 11 11 10";
+            var data = "1";
+            test(blockHeader + codeCounts + codeLenCodeLens + codeLens + data, string.Empty);
         }
 
         [Test, ExpectedException]
@@ -214,11 +219,11 @@ namespace OxyPlot.Tests
             //   numLitLen=257, numDist=1, numCodeLen=18
             //   codeLenCodeLen = 0:0, 1:1, 2:0, ..., 15:0, 16:1, 17:0, 18:0
             //   Literal/length/distance code lengths: #16+00
-            String blockHeader = "1 01";
-            String codeCounts = "00000 00000 0111";
-            String codeLenCodeLens = "100 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 100";
-            String codeLens = "1";
-            test(blockHeader + codeCounts + codeLenCodeLens + codeLens, "");
+            var blockHeader = "1 01";
+            var codeCounts = "00000 00000 0111";
+            var codeLenCodeLens = "100 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 100";
+            var codeLens = "1";
+            test(blockHeader + codeCounts + codeLenCodeLens + codeLens, string.Empty);
         }
 
         [Test, ExpectedException]
@@ -228,11 +233,11 @@ namespace OxyPlot.Tests
             //   numLitLen=257, numDist=1, numCodeLen=18
             //   codeLenCodeLen = 0:0, 1:1, 2:0, ..., 15:0, 16:0, 17:0, 18:1
             //   Literal/length/distance code lengths: 1 1 #18+1111111 #18+1101100
-            String blockHeader = "1 01";
-            String codeCounts = "00000 00000 0111";
-            String codeLenCodeLens = "000 000 100 000 000 000 000 000 000 000 000 000 000 000 000 000 000 100";
-            String codeLens = "0 0 11111111 10011011";
-            test(blockHeader + codeCounts + codeLenCodeLens + codeLens, "");
+            var blockHeader = "1 01";
+            var codeCounts = "00000 00000 0111";
+            var codeLenCodeLens = "000 000 100 000 000 000 000 000 000 000 000 000 000 000 000 000 000 100";
+            var codeLens = "0 0 11111111 10011011";
+            test(blockHeader + codeCounts + codeLenCodeLens + codeLens, string.Empty);
         }
 
         /* Utility method */
@@ -240,16 +245,21 @@ namespace OxyPlot.Tests
         // 'input' is a string of 0's and 1's (with optional spaces) representing the input bit sequence.
         // 'refOutput' is a string of pairs of hexadecimal digits (with optional spaces) representing
         // the expected decompressed output byte sequence.
-        private static void test(String input, string refOutput)
+        private static void test(string input, string refOutput)
         {
-            refOutput = refOutput.Replace(" ", "");
+            refOutput = refOutput.Replace(" ", string.Empty);
             if (refOutput.Length % 2 != 0)
+            {
                 throw new ArgumentException();
-            byte[] refOut = new byte[refOutput.Length / 2];
-            for (int i = 0; i < refOut.Length; i++)
-                refOut[i] = (byte)int.Parse(refOutput.Substring(i * 2, 2), NumberStyles.HexNumber);
+            }
 
-            input = input.Replace(" ", "");
+            var refOut = new byte[refOutput.Length / 2];
+            for (int i = 0; i < refOut.Length; i++)
+            {
+                refOut[i] = (byte)int.Parse(refOutput.Substring(i * 2, 2), NumberStyles.HexNumber);
+            }
+
+            input = input.Replace(" ", string.Empty);
             var inputStream = new StringBitReader(input);
             byte[] actualOut = Deflate.Decompress(inputStream);
             AssertArrayEquals(refOut, actualOut);

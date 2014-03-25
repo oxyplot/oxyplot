@@ -199,6 +199,5 @@ namespace OxyPlot.Wpf
                 }
             }
         }
-
     }
 }

@@ -35,7 +35,7 @@ namespace OxyPlot.Pdf
     using OxyPlot.Reporting;
 
     /// <summary>
-    /// Provides a report writer for LaTeX2e.
+    /// Provides a report writer for <c>LaTeX2e</c>.
     /// </summary>
     public class LatexReportWriter : StreamWriter, IReportWriter
     {
@@ -50,7 +50,7 @@ namespace OxyPlot.Pdf
         private readonly string author;
 
         /// <summary>
-        /// The fontsize.
+        /// The font size.
         /// </summary>
         private readonly string fontsize;
 
@@ -277,9 +277,9 @@ namespace OxyPlot.Pdf
                 this.WriteIndent();
                 for (int j = 0; j < columns; j++)
                 {
-                    TableCell cell = row.Cells[j];
+                    var cell = row.Cells[j];
                     string text = LatexEncodeText(cell.Content);
-                    Write(text);
+                    this.Write(text);
                     if (j < columns - 1)
                     {
                         this.Write(" & ");
@@ -358,8 +358,7 @@ namespace OxyPlot.Pdf
         private void WriteIndentedLine(string s)
         {
             this.WriteIndent();
-            WriteLine(s);
+            this.WriteLine(s);
         }
-
     }
 }

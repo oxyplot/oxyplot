@@ -81,8 +81,8 @@
     <Compile Include="Converters\OxyColorConverter.cs" />
     <Compile Include="Utilities\WeakEvents\RenderingEventListener.cs" />
     <Compile Include="Utilities\WeakEvents\RenderingEventManager.cs" />
-    <Compile Include="Utilities\WeakEvents\WeakEventListenerT.cs" />
-    <Compile Include="Utilities\WeakEvents\WeakEventManagerBaseT.cs" />
+    <Compile Include="Utilities\WeakEvents\WeakEventListener{TEventManager,TEventArgs}.cs" />
+    <Compile Include="Utilities\WeakEvents\WeakEventManagerBase{TManager}.cs" />
     <Compile Include="MoreColors.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="RenderingControl.cs" />

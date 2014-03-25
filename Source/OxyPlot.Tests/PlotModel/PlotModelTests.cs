@@ -41,46 +41,13 @@ namespace OxyPlot.Tests
     using NUnit.Framework;
 
     using OxyPlot.Axes;
-
-    using LineSeries = OxyPlot.Series.LineSeries;
-    using LinearAxis = OxyPlot.Axes.LinearAxis;
+    using OxyPlot.Series;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     [TestFixture]
     public class PlotModelTests
     {
-        /// <summary>
-        /// Tests the <see cref="PlotModel.Axes" /> collection.
-        /// </summary>
-        public class Axes
-        {
-            /// <summary>
-            /// The same axis cannot be added more than once.
-            /// </summary>
-            [Test]
-            public void AddAxisTwice()
-            {
-                var model = new PlotModel();
-                var axis = new LinearAxis();
-                model.Axes.Add(axis);
-                Assert.Throws<InvalidOperationException>(() => model.Axes.Add(axis));
-            }
-
-            /// <summary>
-            /// The same axis cannot be added to different PlotModels.
-            /// </summary>
-            [Test]
-            public void AddAxisToDifferentModels()
-            {
-                var model1 = new PlotModel();
-                var model2 = new PlotModel();
-                var axis = new LinearAxis();
-                model1.Axes.Add(axis);
-                Assert.Throws<InvalidOperationException>(() => model2.Axes.Add(axis));
-            }
-        }
-
         [Test]
         public void Update_AllExamples_ThrowsNoExceptions()
         {
@@ -156,6 +123,37 @@ namespace OxyPlot.Tests
 
             // Verify that the reference is lost
             Assert.IsNull(pm.PlotControl);
+        }
+
+        /// <summary>
+        /// Tests the <see cref="PlotModel.Axes" /> collection.
+        /// </summary>
+        public class Axes
+        {
+            /// <summary>
+            /// The same axis cannot be added more than once.
+            /// </summary>
+            [Test]
+            public void AddAxisTwice()
+            {
+                var model = new PlotModel();
+                var axis = new LinearAxis();
+                model.Axes.Add(axis);
+                Assert.Throws<InvalidOperationException>(() => model.Axes.Add(axis));
+            }
+
+            /// <summary>
+            /// The same axis cannot be added to different PlotModels.
+            /// </summary>
+            [Test]
+            public void AddAxisToDifferentModels()
+            {
+                var model1 = new PlotModel();
+                var model2 = new PlotModel();
+                var axis = new LinearAxis();
+                model1.Axes.Add(axis);
+                Assert.Throws<InvalidOperationException>(() => model2.Axes.Add(axis));
+            }
         }
     }
 }
