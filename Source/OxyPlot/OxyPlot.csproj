@@ -61,6 +61,7 @@
     <Compile Include="PlotController\Manipulators\TouchManipulator.cs" />
     <Compile Include="PlotController\PlotCommands.cs" />
     <Compile Include="PlotController\PlotControllerExtensions.cs" />
+    <Compile Include="PlotModel\HitTestArguments.cs" />
     <Compile Include="PlotModel\PlotElementCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LibraryDoc.cs" />

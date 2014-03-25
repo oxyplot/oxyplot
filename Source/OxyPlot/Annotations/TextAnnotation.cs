@@ -149,10 +149,11 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="tolerance">The tolerance.</param>
-        /// <returns>A hit test result.</returns>
-        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
+        /// <param name="args">The hit test arguments.</param>
+        /// <returns>
+        /// A hit test result.
+        /// </returns>
+        protected internal override HitTestResult HitTest(HitTestArguments args)
         {
             if (this.actualBounds == null)
             {
@@ -160,7 +161,7 @@ namespace OxyPlot.Annotations
             }
 
             // Todo: see if performance can be improved by checking rectangle (with rotation and alignment), not polygon
-            return ScreenPointHelper.IsPointInPolygon(point, this.actualBounds) ? new HitTestResult(point) : null;
+            return ScreenPointHelper.IsPointInPolygon(args.Point, this.actualBounds) ? new HitTestResult(args.Point) : null;
         }
 
         /// <summary>

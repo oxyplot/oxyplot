@@ -114,7 +114,8 @@ namespace OxyPlot
                     continue;
                 }
 
-                var result = uiElement.HitTest(e.Position, MouseHitTolerance);
+                var args = new HitTestArguments(e.Position, MouseHitTolerance);
+                var result = uiElement.HitTest(args);
                 if (result != null)
                 {
                     e.HitTestResult = result;
@@ -216,7 +217,8 @@ namespace OxyPlot
                     continue;
                 }
 
-                var result = uiElement.HitTest(e.Position, MouseHitTolerance);
+                var args = new HitTestArguments(e.Position, MouseHitTolerance);
+                var result = uiElement.HitTest(args);
                 if (result != null)
                 {
                     uiElement.OnTouchStarted(sender, e);

@@ -108,17 +108,18 @@ namespace OxyPlot.Series
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="tolerance">The tolerance.</param>
-        /// <returns>A hit test result.</returns>
-        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
+        /// <param name="args">The hit test arguments.</param>
+        /// <returns>
+        /// A hit test result.
+        /// </returns>
+        protected internal override HitTestResult HitTest(HitTestArguments args)
         {
-            var thr = this.GetNearestPoint(point, true) ?? this.GetNearestPoint(point, false);
+            var thr = this.GetNearestPoint(args.Point, true) ?? this.GetNearestPoint(args.Point, false);
 
             if (thr != null)
             {
-                double distance = thr.Position.DistanceTo(point);
-                if (distance > tolerance)
+                double distance = thr.Position.DistanceTo(args.Point);
+                if (distance > args.Tolerance)
                 {
                     return null;
                 }

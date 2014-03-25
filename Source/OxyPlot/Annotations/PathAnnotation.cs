@@ -404,14 +404,15 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="tolerance">The tolerance.</param>
-        /// <returns>A hit test result.</returns>
-        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
+        /// <param name="args">The hit test arguments.</param>
+        /// <returns>
+        /// A hit test result.
+        /// </returns>
+        protected internal override HitTestResult HitTest(HitTestArguments args)
         {
-            var nearestPoint = ScreenPointHelper.FindNearestPointOnPolyline(point, this.screenPoints);
-            double dist = (point - nearestPoint).Length;
-            if (dist < tolerance)
+            var nearestPoint = ScreenPointHelper.FindNearestPointOnPolyline(args.Point, this.screenPoints);
+            double dist = (args.Point - nearestPoint).Length;
+            if (dist < args.Tolerance)
             {
                 return new HitTestResult(nearestPoint);
             }
