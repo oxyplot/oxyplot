@@ -53,10 +53,10 @@ namespace OxyPlot.Annotations
         public AnnotationLayer Layer { get; set; }
 
         /// <summary>
-        /// Gets or sets the X axis.
+        /// Gets the X axis.
         /// </summary>
         /// <value>The X axis.</value>
-        public Axis XAxis { get; set; }
+        public Axis XAxis { get; private set; }
 
         /// <summary>
         /// Gets or sets the X axis key.
@@ -65,10 +65,10 @@ namespace OxyPlot.Annotations
         public string XAxisKey { get; set; }
 
         /// <summary>
-        /// Gets or sets the Y axis.
+        /// Gets the Y axis.
         /// </summary>
         /// <value>The Y axis.</value>
-        public Axis YAxis { get; set; }
+        public Axis YAxis { get; private set; }
 
         /// <summary>
         /// Gets or sets the Y axis key.
