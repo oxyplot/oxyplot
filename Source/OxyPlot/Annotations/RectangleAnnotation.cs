@@ -149,14 +149,15 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="tolerance">The tolerance.</param>
-        /// <returns>A hit test result.</returns>
-        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
+        /// <param name="args">The hit test arguments.</param>
+        /// <returns>
+        /// A hit test result.
+        /// </returns>
+        protected internal override HitTestResult HitTest(HitTestArguments args)
         {
-            if (this.screenRectangle.Contains(point))
+            if (this.screenRectangle.Contains(args.Point))
             {
-                return new HitTestResult(point);
+                return new HitTestResult(args.Point);
             }
 
             return null;

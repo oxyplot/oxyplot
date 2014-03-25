@@ -190,23 +190,24 @@ namespace OxyPlot.Annotations
         /// <summary>
         /// Tests if the plot element is hit by the specified point.
         /// </summary>
-        /// <param name="point">The point.</param>
-        /// <param name="tolerance">The tolerance.</param>
-        /// <returns>A hit test result.</returns>
-        protected internal override HitTestResult HitTest(ScreenPoint point, double tolerance)
+        /// <param name="args">The hit test arguments.</param>
+        /// <returns>
+        /// A hit test result.
+        /// </returns>
+        protected internal override HitTestResult HitTest(HitTestArguments args)
         {
-            if ((point - this.screenStartPoint).Length < tolerance)
+            if ((args.Point - this.screenStartPoint).Length < args.Tolerance)
             {
                 return new HitTestResult(this.screenStartPoint, null, 1);
             }
 
-            if ((point - this.screenEndPoint).Length < tolerance)
+            if ((args.Point - this.screenEndPoint).Length < args.Tolerance)
             {
                 return new HitTestResult(this.screenEndPoint, null, 2);
             }
 
-            var p = ScreenPointHelper.FindPointOnLine(point, this.screenStartPoint, this.screenEndPoint);
-            if ((p - point).Length < tolerance)
+            var p = ScreenPointHelper.FindPointOnLine(args.Point, this.screenStartPoint, this.screenEndPoint);
+            if ((p - args.Point).Length < args.Tolerance)
             {
                 return new HitTestResult(p);
             }
