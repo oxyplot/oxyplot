@@ -48,7 +48,7 @@ namespace OxyPlot.Axes
         /// <summary>
         /// Mantissa function.
         /// </summary>
-        /// <remarks>See also <a href="http://en.wikipedia.org/wiki/Mantissa">Wikipedia</a>.</remarks>
+        /// <seealso cref="http://en.wikipedia.org/wiki/Mantissa" />
         protected static readonly Func<double, double> Mantissa = x => x / Math.Pow(10, Exponent(x));
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace OxyPlot.Axes
         private double scale;
 
         /// <summary>
-        /// The position.
+        /// The position of the axis.
         /// </summary>
         private AxisPosition position;
 
