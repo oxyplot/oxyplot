@@ -420,11 +420,6 @@ namespace OxyPlot.Wpf
         private readonly ObservableCollection<Series> series;
 
         /// <summary>
-        /// Gets the reset axes command.
-        /// </summary>
-        public static RoutedCommand ResetAxesCommand { get; private set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether AutoAdjustPlotMargins.
         /// </summary>
         public bool AutoAdjustPlotMargins
