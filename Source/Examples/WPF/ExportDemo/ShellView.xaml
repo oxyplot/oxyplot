@@ -30,6 +30,9 @@
                 <MenuItem Header="Copy bitmap" Name="CopyBitmap"/>
                 <MenuItem Header="Copy xaml" Name="CopyXaml"/>
             </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Reset axes" Command="oxy:PlotCommands.ResetAxes"/>
+            </MenuItem>
             <p:EnumMenuItem x:Name="ModelMenu" Header="Model" SelectedValue="{Binding CurrentModel}"/>
             <MenuItem Header="Help">
                 <MenuItem Header="Home page" Name="HelpHome"/>
