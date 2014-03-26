@@ -417,8 +417,7 @@ namespace OxyPlot.Wpf
 
             this.zoomControl = new ContentControl();
             this.overlays.Children.Add(this.zoomControl);
-
-            this.CommandBindings.Add(new CommandBinding(ResetAxesCommand, (s, e) => this.ResetAllAxes()));
+            this.CommandBindings.Add(new CommandBinding(PlotCommands.ResetAxes, (s, e) => this.ResetAllAxes()));
         }
 
         /// <summary>
