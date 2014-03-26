@@ -268,6 +268,17 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
+        /// Inverse transforms the specified screen coordinate. This method can only be used with non-polar coordinate systems.
+        /// </summary>
+        /// <param name="sx">The screen coordinate.</param>
+        /// <returns>The value.</returns>
+        public override double InverseTransform(double sx)
+        {
+            // Inline the <see cref="PostInverseTransform" /> method here.
+            return Math.Exp((sx / this.Scale) + this.Offset);
+        }
+
+        /// <summary>
         /// Transforms the specified coordinate to screen coordinates.
         /// </summary>
         /// <param name="x">The value.</param>
@@ -279,6 +290,7 @@ namespace OxyPlot.Axes
                 return -1;
             }
 
+            // Inline the <see cref="PreTransform" /> method here.
             return (Math.Log(x) - this.Offset) * this.Scale;
         }
 
@@ -308,38 +320,13 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Applies a transformation after the inverse transform of the value. This is used in logarithmic axis.
+        /// Updates the <see cref="ActualMaximum" /> and <see cref="ActualMinimum" /> values.
         /// </summary>
-        /// <param name="x">The value to transform.</param>
-        /// <returns>The transformed value.</returns>
-        internal override double PostInverseTransform(double x)
-        {
-            return Math.Exp(x);
-        }
-
-        /// <summary>
-        /// Applies a transformation before the transform the value. This is used in logarithmic axis.
-        /// </summary>
-        /// <param name="x">The value to transform.</param>
-        /// <returns>The transformed value.</returns>
-        internal override double PreTransform(double x)
-        {
-            Debug.Assert(x > 0, "Value should be positive.");
-
-            if (x <= 0)
-            {
-                return 0;
-            }
-
-            return Math.Log(x);
-        }
-
-        /// <summary>
-        /// Updates the actual maximum and minimum values.
-        /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum values will be used.
-        /// If Maximum or Minimum have been set, these values will be used.
-        /// Otherwise the maximum and minimum values of the series will be used, including the 'padding'.
-        /// </summary>
+        /// <remarks>
+        /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum
+        /// values will be used. If Maximum or Minimum have been set, these values will be used. Otherwise the maximum and minimum values
+        /// of the series will be used, including the 'padding'.
+        /// </remarks>
         internal override void UpdateActualMaxMin()
         {
             if (this.PowerPadding)
@@ -359,6 +346,33 @@ namespace OxyPlot.Axes
             }
 
             base.UpdateActualMaxMin();
+        }
+
+        /// <summary>
+        /// Applies a transformation after the inverse transform of the value. This is used in logarithmic axis.
+        /// </summary>
+        /// <param name="x">The value to transform.</param>
+        /// <returns>The transformed value.</returns>
+        protected override double PostInverseTransform(double x)
+        {
+            return Math.Exp(x);
+        }
+
+        /// <summary>
+        /// Applies a transformation before the transform the value. This is used in logarithmic axis.
+        /// </summary>
+        /// <param name="x">The value to transform.</param>
+        /// <returns>The transformed value.</returns>
+        protected override double PreTransform(double x)
+        {
+            Debug.Assert(x > 0, "Value should be positive.");
+
+            if (x <= 0)
+            {
+                return 0;
+            }
+
+            return Math.Log(x);
         }
     }
 }

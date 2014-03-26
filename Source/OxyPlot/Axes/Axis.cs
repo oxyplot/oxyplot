@@ -844,7 +844,7 @@ namespace OxyPlot.Axes
         /// <returns>The value.</returns>
         public virtual double InverseTransform(double sx)
         {
-            return this.PostInverseTransform((sx / this.scale) + this.offset);
+            return (sx / this.scale) + this.offset;
         }
 
         /// <summary>
@@ -1084,8 +1084,6 @@ namespace OxyPlot.Axes
         public virtual double Transform(double x)
         {
             return (x - this.offset) * this.scale;
-
-            // return (this.PreTransform(x) - this.Offset) * this.Scale;
         }
 
         /// <summary>
@@ -1216,27 +1214,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Applies a transformation after the inverse transform of the value. This is used in logarithmic axis.
-        /// </summary>
-        /// <param name="x">The value to transform.</param>
-        /// <returns>The transformed value.</returns>
-        internal virtual double PostInverseTransform(double x)
-        {
-            return x;
-        }
-
-        /// <summary>
-        /// Applies a transformation before the transform the value. This is used in logarithmic axis.
-        /// </summary>
-        /// <param name="x">The value to transform.</param>
-        /// <returns>The transformed value.</returns>
-        internal virtual double PreTransform(double x)
-        {
-            return x;
-        }
-
-        /// <summary>
-        /// Resets the data maximum and minimum.
+        /// Resets the <see cref="DataMaximum" /> and <see cref="DataMinimum" /> values.
         /// </summary>
         internal virtual void ResetDataMaxMin()
         {
@@ -1390,6 +1368,30 @@ namespace OxyPlot.Axes
         /// <remarks>The current values may be modified during update of max/min and rendering.</remarks>
         protected internal virtual void ResetCurrentValues()
         {
+        }
+
+        /// <summary>
+        /// Applies a transformation after the inverse transform of the value.
+        /// </summary>
+        /// <param name="x">The value to transform.</param>
+        /// <returns>The transformed value.</returns>
+        /// <remarks>If this method is overridden, the <see cref="InverseTransform(double)" /> method must also be overridden.
+        /// See <see cref="LogarithmicAxis" /> for examples on how to implement this.</remarks>
+        protected virtual double PostInverseTransform(double x)
+        {
+            return x;
+        }
+
+        /// <summary>
+        /// Applies a transformation before the transform the value.
+        /// </summary>
+        /// <param name="x">The value to transform.</param>
+        /// <returns>The transformed value.</returns>
+        /// <remarks>If this method is overridden, the <see cref="Transform(double)" /> method must also be overridden.
+        /// See <see cref="LogarithmicAxis" /> for examples on how to implement this.</remarks>
+        protected virtual double PreTransform(double x)
+        {
+            return x;
         }
 
         /// <summary>
