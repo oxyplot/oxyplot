@@ -142,9 +142,6 @@ namespace OxyPlot.Wpf
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Plot), new FrameworkPropertyMetadata(typeof(Plot)));
             PaddingProperty.OverrideMetadata(
                 typeof(Plot), new FrameworkPropertyMetadata(new Thickness(8, 8, 16, 8), AppearanceChanged));
-
-            // ReSharper disable once RedundantNameQualifier
-            Plot.ResetAxesCommand = new RoutedCommand();
         }
 
         /// <summary>
