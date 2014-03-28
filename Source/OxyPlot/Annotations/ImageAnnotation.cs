@@ -55,8 +55,8 @@ namespace OxyPlot.Annotations
             this.Height = new PlotLength(double.NaN, PlotLengthUnit.ScreenUnits);
             this.Opacity = 1.0;
             this.Interpolate = true;
-            this.HorizontalAlignment = OxyPlot.HorizontalAlignment.Center;
-            this.VerticalAlignment = OxyPlot.VerticalAlignment.Middle;
+            this.HorizontalAlignment = HorizontalAlignment.Center;
+            this.VerticalAlignment = VerticalAlignment.Middle;
         }
 
         /// <summary>
@@ -69,8 +69,8 @@ namespace OxyPlot.Annotations
         public ImageAnnotation(
             OxyImage image,
             ScreenPoint position,
-            HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Center,
-            VerticalAlignment verticalAlignment = OxyPlot.VerticalAlignment.Middle)
+            HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment verticalAlignment = VerticalAlignment.Middle)
             : this()
         {
             this.ImageSource = image;
@@ -90,8 +90,8 @@ namespace OxyPlot.Annotations
         public ImageAnnotation(
             OxyImage image,
             IDataPoint position,
-            HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Center,
-            VerticalAlignment verticalAlignment = OxyPlot.VerticalAlignment.Middle)
+            HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment verticalAlignment = VerticalAlignment.Middle)
             : this()
         {
             this.ImageSource = image;
@@ -113,8 +113,8 @@ namespace OxyPlot.Annotations
             OxyImage image,
             double relativeX,
             double relativeY,
-            HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Center,
-            VerticalAlignment verticalAlignment = OxyPlot.VerticalAlignment.Middle)
+            HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment verticalAlignment = VerticalAlignment.Middle)
             : this()
         {
             this.ImageSource = image;
@@ -265,13 +265,13 @@ namespace OxyPlot.Annotations
         }
 
         /// <summary>
-        /// Tests if the plot element is hit by the specified point.
+        /// When overridden in a derived class, tests if the plot element is hit by the specified point.
         /// </summary>
         /// <param name="args">The hit test arguments.</param>
         /// <returns>
-        /// A hit test result.
+        /// The result of the hit test.
         /// </returns>
-        protected internal override HitTestResult HitTest(HitTestArguments args)
+        protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
             if (this.actualBounds.Contains(args.Point))
             {

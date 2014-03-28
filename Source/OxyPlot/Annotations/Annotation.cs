@@ -132,7 +132,7 @@ namespace OxyPlot.Annotations
         /// <returns>
         /// A hit test result.
         /// </returns>
-        protected internal override HitTestResult HitTest(HitTestArguments args)
+        protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
             return null;
         }
