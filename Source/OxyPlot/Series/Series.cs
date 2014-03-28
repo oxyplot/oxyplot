@@ -106,13 +106,13 @@ namespace OxyPlot.Series
         public abstract void RenderLegend(IRenderContext rc, OxyRect legendBox);
 
         /// <summary>
-        /// Tests if the plot element is hit by the specified point.
+        /// When overridden in a derived class, tests if the plot element is hit by the specified point.
         /// </summary>
         /// <param name="args">The hit test arguments.</param>
         /// <returns>
-        /// A hit test result.
+        /// The result of the hit test.
         /// </returns>
-        protected internal override HitTestResult HitTest(HitTestArguments args)
+        protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
             var thr = this.GetNearestPoint(args.Point, true) ?? this.GetNearestPoint(args.Point, false);
 

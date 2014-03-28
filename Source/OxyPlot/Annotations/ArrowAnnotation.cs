@@ -188,13 +188,13 @@ namespace OxyPlot.Annotations
         }
 
         /// <summary>
-        /// Tests if the plot element is hit by the specified point.
+        /// When overridden in a derived class, tests if the plot element is hit by the specified point.
         /// </summary>
         /// <param name="args">The hit test arguments.</param>
         /// <returns>
-        /// A hit test result.
+        /// The result of the hit test.
         /// </returns>
-        protected internal override HitTestResult HitTest(HitTestArguments args)
+        protected override HitTestResult HitTestOverride(HitTestArguments args)
         {
             if ((args.Point - this.screenStartPoint).Length < args.Tolerance)
             {

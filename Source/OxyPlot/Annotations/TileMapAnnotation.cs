@@ -200,18 +200,6 @@ namespace OxyPlot.Annotations
         }
 
         /// <summary>
-        /// Tests if the plot element is hit by the specified point.
-        /// </summary>
-        /// <param name="args">The hit test arguments.</param>
-        /// <returns>
-        /// A hit test result.
-        /// </returns>
-        protected internal override HitTestResult HitTest(HitTestArguments args)
-        {
-            return null;
-        }
-
-        /// <summary>
         /// Transforms a position to a tile coordinate.
         /// </summary>
         /// <param name="latitude">The latitude.</param>
