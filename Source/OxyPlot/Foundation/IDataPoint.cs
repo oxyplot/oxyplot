@@ -56,9 +56,8 @@ namespace OxyPlot
         /// <summary>
         /// Returns whether the coordinate contains a NaN value.
         /// </summary>
-        /// <value><c>true</c></value>
         /// <param name="p">The point to evaluate.</param>
-        /// <returns><value><c>true</c></value> if neither the X nor Y coordinates are NaN values; otherwise, <value><c>false</c></value>.</returns>
+        /// <returns><c>true</c> if neither the X nor Y coordinates are NaN values; otherwise, <value><c>false</c></value>.</returns>
         public static bool IsValid(this IDataPoint p)
         {
             return !double.IsNaN(p.X) && !double.IsNaN(p.Y);
