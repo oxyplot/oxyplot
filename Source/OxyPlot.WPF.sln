@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyPlot.Wpf", "OxyPlot.Wpf\OxyPlot.Wpf.csproj", "{698CCD8E-ADCC-4565-8517-5EDD36F07155}"
 EndProject
@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BA1B7B
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTest", "Examples\PerformanceTest\PerformanceTest.csproj", "{EDD52464-AD60-4EA1-B774-87AAFD930B6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -116,6 +118,10 @@ Global
 		{D301156F-622D-4821-8C9A-10B895057634}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D301156F-622D-4821-8C9A-10B895057634}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D301156F-622D-4821-8C9A-10B895057634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +130,7 @@ Global
 		{831970F4-9390-4214-848B-70E6250443DC} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{FACB89E5-53A5-4748-9F5B-E0714EBB37B2} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{4BB6F831-E215-488E-8ED8-F73C98C4B23F} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
+		{EDD52464-AD60-4EA1-B774-87AAFD930B6B} = {B630CA82-A785-49CA-8FA0-3D3AF4D6626A}
 		{11B45D63-8D63-4527-A537-41F6E8B4F9C0} = {831970F4-9390-4214-848B-70E6250443DC}
 		{6B677A5B-BF20-48C2-8435-5594BB3BC65F} = {831970F4-9390-4214-848B-70E6250443DC}
 		{F97B3093-EBDD-46C9-890E-0501922B9168} = {831970F4-9390-4214-848B-70E6250443DC}
