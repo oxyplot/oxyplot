@@ -30,6 +30,8 @@
 
 namespace OxyPlot
 {
+    using System.Runtime.CompilerServices;
+
     /// <summary>
     /// Provides a line clipping algorithm.
     /// </summary>
@@ -235,6 +237,7 @@ namespace OxyPlot
         /// <returns>The out code.</returns>
         /// <remarks>Compute the bit code for a point (x, y) using the clip rectangle
         /// bounded diagonally by <code>(xmin, ymin)</code> to <code>(xmax, ymax)</code>.</remarks>
+        [MethodImpl((MethodImplOptions)256)]
         private int ComputeOutCode(double x, double y)
         {
             int code = Inside; // initialized as being inside of clip window
