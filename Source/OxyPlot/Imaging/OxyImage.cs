@@ -163,8 +163,7 @@ namespace OxyPlot
             }
 
             var decoder = GetDecoder(this.Format);
-            var ms = new MemoryStream(this.data);
-            return decoder.Decode(ms);
+            return decoder.Decode(this.data);
         }
 
         /// <summary>
