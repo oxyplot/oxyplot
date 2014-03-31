@@ -219,14 +219,14 @@ namespace OxyPlot
         void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double destX, double destY, double destWidth, double destHeight, double opacity, bool interpolate);
 
         /// <summary>
-        /// Sets the clip rectangle.
+        /// Sets the clipping rectangle.
         /// </summary>
-        /// <param name="rect">The clip rectangle.</param>
-        /// <returns>True if the clip rectangle was set.</returns>
-        bool SetClip(OxyRect rect);
+        /// <param name="clippingRect">The clipping rectangle.</param>
+        /// <returns><c>true</c> if the clip rectangle was set.</returns>
+        bool SetClip(OxyRect clippingRect);
 
         /// <summary>
-        /// Resets the clip rectangle.
+        /// Resets the clipping rectangle.
         /// </summary>
         void ResetClip();
     }
