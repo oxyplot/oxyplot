@@ -36,6 +36,30 @@ namespace OxyPlot.Series
     public class ScatterErrorPoint : ScatterPoint
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ScatterErrorPoint"/> class.
+        /// </summary>
+        public ScatterErrorPoint()
+            : base()
+        {
+            this.Error = double.NaN;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScatterErrorPoint"/> class.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="error">The error.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="tag">The tag.</param>
+        public ScatterErrorPoint(double x, double y, double error, double size = double.NaN, double value = double.NaN, object tag = null)
+            : base(x, y, size, value, tag)
+        {
+            this.Error = error;
+        }
+
+        /// <summary>
         /// Gets or sets the error.
         /// </summary>
         /// <value>

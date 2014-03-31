@@ -28,7 +28,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot.Wpf.Series
+namespace OxyPlot.Wpf
 {
     using System;
     using System.Collections.Generic;
@@ -98,7 +98,7 @@ namespace OxyPlot.Wpf.Series
         /// </value>
         public Color ErrorBarColor
         {
-            get { return (OxyColor)GetValue(ErrorBarColorProperty); }
+            get { return (Color)GetValue(ErrorBarColorProperty); }
             set { SetValue(ErrorBarColorProperty, value); }
         }
 
