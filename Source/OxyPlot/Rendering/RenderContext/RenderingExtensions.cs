@@ -82,17 +82,18 @@ namespace OxyPlot
         private static readonly double M3 = Math.Tan(Math.PI / 4);
 
         /// <summary>
-        /// Draws the clipped line.
+        /// Draws a clipped polyline through the specified points.
         /// </summary>
         /// <param name="rc">The render context.</param>
         /// <param name="points">The points.</param>
         /// <param name="clippingRectangle">The clipping rectangle.</param>
-        /// <param name="minDistSquared">The squared minimum distance.</param>
-        /// <param name="stroke">The stroke.</param>
+        /// <param name="minDistSquared">The minimum line segment length (squared).</param>
+        /// <param name="stroke">The stroke color.</param>
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
+        /// <param name="aliased">Set to <c>true</c> to draw as an aliased line.</param>
+        /// <param name="outputBuffer">The output buffer.</param>
         /// <param name="pointsRendered">The points rendered callback.</param>
         public static void DrawClippedLine(
             this IRenderContext rc,
@@ -104,79 +105,93 @@ namespace OxyPlot
             double[] dashArray,
             OxyPenLineJoin lineJoin,
             bool aliased,
+            IList<ScreenPoint> outputBuffer = null,
             Action<IList<ScreenPoint>> pointsRendered = null)
         {
-            var clipping = new CohenSutherlandClipping(clippingRectangle.Left, clippingRectangle.Right, clippingRectangle.Top, clippingRectangle.Bottom);
-
-            var pts = new List<ScreenPoint>();
-            int n = points.Count;
-            if (n > 0)
+            var n = points.Count;
+            if (n == 0)
             {
-                if (n == 1)
+                return;
+            }
+
+            if (outputBuffer != null)
+            {
+                outputBuffer.Clear();
+            }
+            else
+            {
+                outputBuffer = new List<ScreenPoint>(n);
+            }
+
+            // draws the points in the output buffer and calls the callback (if specified)
+            Action drawLine = () =>
+            {
+                EnsureNonEmptyLineIsVisible(outputBuffer);
+                rc.DrawLine(outputBuffer, stroke, strokeThickness, dashArray, lineJoin, aliased);
+
+                // Execute the 'callback'
+                if (pointsRendered != null)
                 {
-                    pts.Add(points[0]);
+                    pointsRendered(outputBuffer);
+                }
+            };
+
+            var clipping = new CohenSutherlandClipping(clippingRectangle);
+            if (n == 1 && clipping.IsInside(points[0]))
+            {
+                outputBuffer.Add(points[0]);
+            }
+
+            var lastX = points[0].X;
+            var lastY = points[0].Y;
+            for (int i = 1; i < n; i++)
+            {
+                // Calculate the clipped version of previous and this point.
+                var sc0X = points[i - 1].X;
+                var sc0Y = points[i - 1].Y;
+                var sc1X = points[i].X;
+                var sc1Y = points[i].Y;
+                bool isInside = clipping.ClipLine(ref sc0X, ref sc0Y, ref sc1X, ref sc1Y);
+
+                if (!isInside)
+                {
+                    // the line segment is outside the clipping rectangle
+                    // keep the previous coordinate for minimum distance comparison
+                    continue;
                 }
 
-                var last = points[0];
-                for (int i = 1; i < n; i++)
+                // length calculation (inlined for performance)
+                var dx = sc1X - lastX;
+                var dy = sc1Y - lastY;
+
+                if ((dx * dx) + (dy * dy) > minDistSquared || outputBuffer.Count == 0 || i == n - 1)
                 {
-                    var s0 = points[i - 1];
-                    var s1 = points[i];
-
-                    // Clipped version of this and next point.
-                    var sc0 = s0;
-                    var sc1 = s1;
-                    bool isInside = clipping.ClipLine(ref sc0, ref sc1);
-
-                    if (!isInside)
+                    // point comparison inlined for performance
+                    // ReSharper disable CompareOfFloatsByEqualityOperator
+                    if (sc0X != lastX || sc0Y != lastY || outputBuffer.Count == 0)
+                    // ReSharper restore disable CompareOfFloatsByEqualityOperator
                     {
-                        // keep the previous coordinate
-                        continue;
+                        outputBuffer.Add(new ScreenPoint(sc0X, sc0Y));
                     }
 
-                    // render from s0c-s1c
-                    double dx = sc1.x - last.x;
-                    double dy = sc1.y - last.y;
-
-                    if ((dx * dx) + (dy * dy) > minDistSquared || i == 1 || i == n - 1)
-                    {
-                        if (!sc0.Equals(last) || i == 1)
-                        {
-                            pts.Add(sc0);
-                        }
-
-                        pts.Add(sc1);
-                        last = sc1;
-                    }
-
-                    // render the line if we are leaving the clipping region););
-                    if (!clipping.IsInside(s1))
-                    {
-                        if (pts.Count > 0)
-                        {
-                            EnsureNonEmptyLineIsVisible(pts);
-                            rc.DrawLine(pts, stroke, strokeThickness, dashArray, lineJoin, aliased);
-                            if (pointsRendered != null)
-                            {
-                                pointsRendered(pts);
-                            }
-
-                            pts = new List<ScreenPoint>();
-                        }
-                    }
+                    outputBuffer.Add(new ScreenPoint(sc1X, sc1Y));
+                    lastX = sc1X;
+                    lastY = sc1Y;
                 }
 
-                if (pts.Count > 0)
+                if (clipping.IsInside(points[i]) || outputBuffer.Count == 0)
                 {
-                    EnsureNonEmptyLineIsVisible(pts);
-                    rc.DrawLine(pts, stroke, strokeThickness, dashArray, lineJoin, aliased);
-
-                    // Execute the 'callback'.
-                    if (pointsRendered != null)
-                    {
-                        pointsRendered(pts);
-                    }
+                    continue;
                 }
+
+                // we are leaving the clipping region - render the line
+                drawLine();
+                outputBuffer.Clear();
+            }
+
+            if (outputBuffer.Count > 0)
+            {
+                drawLine();
             }
         }
 
@@ -190,7 +205,7 @@ namespace OxyPlot
         /// <param name="strokeThickness">The stroke thickness.</param>
         /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">if set to <c>true</c> [aliased].</param>
+        /// <param name="aliased">Set to <c>true</c> to draw as an aliased line.</param>
         public static void DrawClippedLineSegments(
             this IRenderContext rc,
             IList<ScreenPoint> points,
@@ -350,9 +365,7 @@ namespace OxyPlot
             }
 
             var clippedPoints = SutherlandHodgmanClipping.ClipPolygon(clippingRectangle, points);
-
-            rc.DrawPolygon(
-                clippedPoints, fill, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
+            rc.DrawPolygon(clippedPoints, fill, stroke, strokeThickness, lineStyle.GetDashArray(), lineJoin, aliased);
         }
 
         /// <summary>

@@ -45,6 +45,11 @@ namespace OxyPlot.Series
         private const double ToleranceDivisor = 200;
 
         /// <summary>
+        /// The output buffer.
+        /// </summary>
+        private readonly IList<ScreenPoint> outputBuffer;
+
+        /// <summary>
         /// The default color.
         /// </summary>
         private OxyColor defaultColor;
@@ -82,6 +87,7 @@ namespace OxyPlot.Series
             this.MarkerStrokeThickness = 1;
             this.CanTrackerInterpolatePoints = true;
             this.LabelMargin = 6;
+            this.outputBuffer = new List<ScreenPoint>();
         }
 
         /// <summary>
@@ -637,7 +643,7 @@ namespace OxyPlot.Series
             // clip the line segments with the clipping rectangle
             if (this.StrokeThickness > 0 && this.ActualLineStyle != LineStyle.None)
             {
-                this.RenderSmoothedLine(rc, clippingRect, screenPoints);
+                this.RenderLine(rc, clippingRect, screenPoints);
             }
 
             if (this.MarkerType != MarkerType.None)
@@ -664,7 +670,7 @@ namespace OxyPlot.Series
         /// <param name="rc">The render context.</param>
         /// <param name="clippingRect">The clipping rectangle.</param>
         /// <param name="pointsToRender">The points to render.</param>
-        protected virtual void RenderSmoothedLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
+        protected virtual void RenderLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
             var dashArray = this.ActualDashArray;
             rc.DrawClippedLine(
@@ -675,7 +681,8 @@ namespace OxyPlot.Series
                 this.StrokeThickness,
                 dashArray,
                 this.LineJoin,
-                false);
+                false,
+                this.outputBuffer);
         }
 
         /// <summary>

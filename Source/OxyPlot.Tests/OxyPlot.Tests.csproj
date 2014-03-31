@@ -58,6 +58,7 @@
     <Compile Include="Axes\LinearAxisTests.cs" />
     <Compile Include="Foundation\OxyColorTests.cs" />
     <Compile Include="Foundation\ListFillerTests.cs" />
+    <Compile Include="Foundation\RenderingExtensionsTests.cs" />
     <Compile Include="Imaging\Deflate\DeflateStreamExtensions.cs" />
     <Compile Include="Imaging\Deflate\NayukiDeflateTests.cs" />
     <Compile Include="Imaging\Deflate\DeflateTests.cs" />

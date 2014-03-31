@@ -311,6 +311,7 @@ namespace OxyPlot.Annotations
                dashArray,
                this.LineJoin,
                this.aliased,
+               null,
                pts => clippedPoints = pts);
 
             ScreenPoint position;
