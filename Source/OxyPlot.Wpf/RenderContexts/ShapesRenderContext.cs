@@ -157,9 +157,9 @@ namespace OxyPlot.Wpf
         /// Draws an ellipse.
         /// </summary>
         /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The thickness.</param>
+        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the ellipse will not be filled.</param>
+        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipse will not be stroked.</param>
+        /// <param name="thickness">The thickness (in device independent units, 1/96 inch).</param>
         public void DrawEllipse(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var e = this.CreateAndAdd<Ellipse>(rect.Left, rect.Top);
@@ -176,12 +176,13 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The draw ellipses.
+        /// Draws a collection of ellipses, where all have the same stroke and fill.
+        /// This performs better than calling DrawEllipse multiple times.
         /// </summary>
         /// <param name="rectangles">The rectangles.</param>
-        /// <param name="fill">The fill.</param>
-        /// <param name="stroke">The stroke.</param>
-        /// <param name="thickness">The thickness.</param>
+        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be filled.</param>
+        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be stroked.</param>
+        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         public void DrawEllipses(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = this.CreateAndAdd<Path>();
@@ -201,12 +202,12 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Draws the polyline from the specified points.
+        /// Draws a polyline.
         /// </summary>
         /// <param name="points">The points.</param>
         /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
+        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="dashArray">The dash array (in device independent units, 1/96 inch). Use <c>null</c> to get a solid line.</param>
         /// <param name="lineJoin">The line join type.</param>
         /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public void DrawLine(
@@ -230,14 +231,15 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The draw line segments.
+        /// Draws line segments defined by points (0,1) (2,3) (4,5) etc.
+        /// This should have better performance than calling DrawLine for each segment.
         /// </summary>
         /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke.</param>
-        /// <param name="thickness">The thickness.</param>
-        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
-        /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">The aliased.</param>
+        /// <param name="stroke">The stroke color.</param>
+        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public void DrawLineSegments(
             IList<ScreenPoint> points,
             OxyColor stroke,
@@ -288,15 +290,15 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Draws the polygon from the specified points. The polygon can have stroke and/or fill.
+        /// Draws a polygon.
         /// </summary>
         /// <param name="points">The points.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
-        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
+        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the polygon will not be filled.</param>
+        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the polygon will not be stroked.</param>
+        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
         /// <param name="lineJoin">The line join type.</param>
-        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
+        /// <param name="aliased">If set to <c>true</c> the polygon will be aliased.</param>
         public void DrawPolygon(
             IList<ScreenPoint> points,
             OxyColor fill,
@@ -318,15 +320,16 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// The draw polygons.
+        /// Draws a collection of polygons, where all polygons have the same stroke and fill.
+        /// This performs better than calling DrawPolygon multiple times.
         /// </summary>
         /// <param name="polygons">The polygons.</param>
-        /// <param name="fill">The fill.</param>
-        /// <param name="stroke">The stroke.</param>
-        /// <param name="thickness">The thickness.</param>
-        /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
-        /// <param name="lineJoin">The line join.</param>
-        /// <param name="aliased">The aliased.</param>
+        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the polygons will not be filled.</param>
+        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the polygons will not be stroked.</param>
+        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
+        /// <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
+        /// <param name="lineJoin">The line join type.</param>
+        /// <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
         public void DrawPolygons(
             IList<IList<ScreenPoint>> polygons,
             OxyColor fill,
@@ -437,12 +440,12 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Draws the rectangle.
+        /// Draws a rectangle.
         /// </summary>
         /// <param name="rect">The rectangle.</param>
-        /// <param name="fill">The fill.</param>
-        /// <param name="stroke">The stroke.</param>
-        /// <param name="thickness">The thickness.</param>
+        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be filled.</param>
+        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangle will not be stroked.</param>
+        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         public void DrawRectangle(OxyRect rect, OxyColor fill, OxyColor stroke, double thickness)
         {
             var e = this.CreateAndAdd<Rectangle>(rect.Left, rect.Top);
@@ -464,9 +467,9 @@ namespace OxyPlot.Wpf
         /// This performs better than calling DrawRectangle multiple times.
         /// </summary>
         /// <param name="rectangles">The rectangles.</param>
-        /// <param name="fill">The fill color.</param>
-        /// <param name="stroke">The stroke color.</param>
-        /// <param name="thickness">The stroke thickness.</param>
+        /// <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be filled.</param>
+        /// <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the rectangles will not be stroked.</param>
+        /// <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
         public void DrawRectangles(IList<OxyRect> rectangles, OxyColor fill, OxyColor stroke, double thickness)
         {
             var path = this.CreateAndAdd<Path>();
@@ -486,18 +489,18 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Draws the text.
+        /// Draws text.
         /// </summary>
         /// <param name="p">The position.</param>
         /// <param name="text">The text.</param>
-        /// <param name="fill">The fill color.</param>
+        /// <param name="fill">The text color.</param>
         /// <param name="fontFamily">The font family.</param>
-        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
         /// <param name="fontWeight">The font weight.</param>
         /// <param name="rotate">The rotation angle.</param>
         /// <param name="halign">The horizontal alignment.</param>
         /// <param name="valign">The vertical alignment.</param>
-        /// <param name="maxSize">The maximum size of the text.</param>
+        /// <param name="maxSize">The maximum size of the text (in device independent units, 1/96 inch).</param>
         public void DrawText(
             ScreenPoint p,
             string text,
@@ -593,13 +596,15 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Measures the text.
+        /// Measures the size of the specified text.
         /// </summary>
         /// <param name="text">The text.</param>
         /// <param name="fontFamily">The font family.</param>
-        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
         /// <param name="fontWeight">The font weight.</param>
-        /// <returns>The text size.</returns>
+        /// <returns>
+        /// The size of the text (in device independent units, 1/96 inch).
+        /// </returns>
         public OxySize MeasureText(string text, string fontFamily, double fontSize, double fontWeight)
         {
             if (string.IsNullOrEmpty(text))
@@ -644,7 +649,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Draws the specified portion of the specified <see cref="OxyImage" /> at the specified location and with the specified size.
+        /// Draws a portion of the specified <see cref="OxyImage" />.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="srcX">The x-coordinate of the upper-left corner of the portion of the source image to draw.</param>
@@ -705,10 +710,10 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Sets the clip rectangle.
+        /// Sets the clipping rectangle.
         /// </summary>
         /// <param name="clippingRect">The clipping rectangle.</param>
-        /// <returns>True if the clip rectangle was set.</returns>
+        /// <returns><c>true</c> if the clip rectangle was set.</returns>
         public bool SetClip(OxyRect clippingRect)
         {
             this.clip = clippingRect.ToRect();
@@ -864,7 +869,7 @@ namespace OxyPlot.Wpf
         /// Draws the line segments by stream geometry.
         /// </summary>
         /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke.</param>
+        /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
         /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
         /// <param name="lineJoin">The line join.</param>
@@ -965,7 +970,7 @@ namespace OxyPlot.Wpf
         /// Sets the stroke properties of the specified shape object.
         /// </summary>
         /// <param name="shape">The shape.</param>
-        /// <param name="stroke">The stroke.</param>
+        /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
         /// <param name="lineJoin">The line join.</param>
         /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
@@ -1056,7 +1061,7 @@ namespace OxyPlot.Wpf
         /// Draws the line using the MaxPolylinesPerLine and MinPointsPerPolyline properties.
         /// </summary>
         /// <param name="points">The points.</param>
-        /// <param name="stroke">The stroke.</param>
+        /// <param name="stroke">The stroke color.</param>
         /// <param name="thickness">The thickness.</param>
         /// <param name="dashArray">The dash array. Use <c>null</c> to get a solid line.</param>
         /// <param name="lineJoin">The line join.</param>

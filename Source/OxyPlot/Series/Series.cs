@@ -106,31 +106,6 @@ namespace OxyPlot.Series
         public abstract void RenderLegend(IRenderContext rc, OxyRect legendBox);
 
         /// <summary>
-        /// When overridden in a derived class, tests if the plot element is hit by the specified point.
-        /// </summary>
-        /// <param name="args">The hit test arguments.</param>
-        /// <returns>
-        /// The result of the hit test.
-        /// </returns>
-        protected override HitTestResult HitTestOverride(HitTestArguments args)
-        {
-            var thr = this.GetNearestPoint(args.Point, true) ?? this.GetNearestPoint(args.Point, false);
-
-            if (thr != null)
-            {
-                double distance = thr.Position.DistanceTo(args.Point);
-                if (distance > args.Tolerance)
-                {
-                    return null;
-                }
-
-                return new HitTestResult(thr.Position, thr.Item, thr.Index);
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Checks if this data series requires X/Y axes. (e.g. Pie series do not require axes)
         /// </summary>
         /// <returns><c>true</c> if axes are required.</returns>
@@ -174,5 +149,30 @@ namespace OxyPlot.Series
         /// </summary>
         /// <remarks>This method is called when the <see cref="PlotModel" /> is updated with the <c>updateData</c> parameter set to <c>true</c>.</remarks>
         protected internal abstract void UpdateMaxMin();
+
+        /// <summary>
+        /// When overridden in a derived class, tests if the plot element is hit by the specified point.
+        /// </summary>
+        /// <param name="args">The hit test arguments.</param>
+        /// <returns>
+        /// The result of the hit test.
+        /// </returns>
+        protected override HitTestResult HitTestOverride(HitTestArguments args)
+        {
+            var thr = this.GetNearestPoint(args.Point, true) ?? this.GetNearestPoint(args.Point, false);
+
+            if (thr != null)
+            {
+                double distance = thr.Position.DistanceTo(args.Point);
+                if (distance > args.Tolerance)
+                {
+                    return null;
+                }
+
+                return new HitTestResult(thr.Position, thr.Item, thr.Index);
+            }
+
+            return null;
+        }
     }
 }
