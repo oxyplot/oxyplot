@@ -27,6 +27,7 @@
 
 namespace OxyPlot.Tests
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
 
@@ -42,28 +43,23 @@ namespace OxyPlot.Tests
         public void Decode_32bitTestImages(string path, int w, int h)
         {
             var d = new PngDecoder();
-            using (var s = File.OpenRead(path))
-            {
-                var pixels = d.Decode(s);
-                Assert.AreEqual(w, pixels.GetLength(0));
-                Assert.AreEqual(h, pixels.GetLength(1));
-                Assert.IsNotNull(pixels);
-                var e = new PngEncoder(new PngEncoderOptions());
-                var encodedPixels = e.Encode(pixels);
-                File.WriteAllBytes(Path.ChangeExtension(path, "out.png"), encodedPixels);
-            }
+            var pixels = d.Decode(File.ReadAllBytes(path));
+            Assert.AreEqual(w, pixels.GetLength(0));
+            Assert.AreEqual(h, pixels.GetLength(1));
+            Assert.IsNotNull(pixels);
+            var e = new PngEncoder(new PngEncoderOptions());
+            var encodedPixels = e.Encode(pixels);
+            File.WriteAllBytes(Path.ChangeExtension(path, "out.png"), encodedPixels);
         }
 
-        [Test, ExpectedException]
+        [Test]
         [TestCase(@"Imaging\TestImages\test_8bit.png", 137, 59)]
         public void Decode_8bitTestImages(string path, int w, int h)
         {
             var d = new PngDecoder();
-            using (var s = File.OpenRead(path))
-            {
-                // Expect exception here, 8bit pngs are not yet supported
-                d.Decode(s);
-            }
+
+            // Expect exception here, 8bit pngs are not yet supported
+            Assert.Throws<NotImplementedException>(() => d.Decode(File.ReadAllBytes(path)));
         }
     }
 }

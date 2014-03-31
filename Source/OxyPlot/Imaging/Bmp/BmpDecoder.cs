@@ -42,30 +42,32 @@ namespace OxyPlot
         /// Gets information about the image in the specified byte array.
         /// </summary>
         /// <param name="bytes">The image data.</param>
-        /// <returns>An <see cref="OxyImageInfo" /> structure.</returns>
+        /// <returns>
+        /// An <see cref="OxyImageInfo" /> structure.
+        /// </returns>
         public OxyImageInfo GetImageInfo(byte[] bytes)
         {
             var ms = new MemoryStream(bytes);
             var r = new BinaryReader(ms);
 
             // bitmap file header
-            var headerField = r.ReadBytes(2);
-            var size = r.ReadUInt32();
-            var reserved = r.ReadBytes(4);
-            var imageDataOffset = r.ReadUInt32();
+            r.ReadBytes(2); // headerField
+            r.ReadUInt32(); // size
+            r.ReadBytes(4); // reserved
+            r.ReadUInt32(); // imageDataOffset
 
-            // BITMAPINFOHEADER
-            var headerSize = r.ReadUInt32();
+            // BITMAPINFOHEADER 
+            r.ReadUInt32(); // headerSize
             var width = r.ReadInt32();
             var height = r.ReadInt32();
-            var colorPlanes = r.ReadInt16();
+            r.ReadInt16(); // colorPlane
             var bitsPerPixel = r.ReadInt16();
-            var compressionMethod = r.ReadInt32();
-            var imageSize = r.ReadInt32();
+            r.ReadInt32(); // compressionMethod
+            r.ReadInt32(); // imageSize
             var horizontalResolution = r.ReadInt32();
             var verticalResolution = r.ReadInt32();
-            var numberOfColors = r.ReadInt32();
-            var importantColors = r.ReadInt32();
+            r.ReadInt32(); // numberOfColors
+            r.ReadInt32(); // importantColors
 
             return new OxyImageInfo
             {
@@ -78,11 +80,13 @@ namespace OxyPlot
         }
 
         /// <summary>
-        /// Decodes an image from the specified stream.
+        /// Decodes an image from the specified byte array.
         /// </summary>
-        /// <param name="s">The stream.</param>
-        /// <returns>The 32-bit pixel data.</returns>
-        public OxyColor[,] Decode(Stream s)
+        /// <param name="bytes">The image data.</param>
+        /// <returns>
+        /// The 32-bit pixel data.
+        /// </returns>
+        public OxyColor[,] Decode(byte[] bytes)
         {
             throw new NotImplementedException();
         }

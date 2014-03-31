@@ -30,8 +30,6 @@
 
 namespace OxyPlot
 {
-    using System.IO;
-
     /// <summary>
     /// Provides functionality to decode an image.
     /// </summary>
@@ -45,10 +43,10 @@ namespace OxyPlot
         OxyImageInfo GetImageInfo(byte[] bytes);
 
         /// <summary>
-        /// Decodes an image from the specified stream.
+        /// Decodes an image from the specified byte array.
         /// </summary>
-        /// <param name="s">The stream.</param>
+        /// <param name="bytes">The image data.</param>
         /// <returns>The 32-bit pixel data. The indexing is [x,y] where [0,0] is top-left.</returns>
-        OxyColor[,] Decode(Stream s);
+        OxyColor[,] Decode(byte[] bytes);
     }
 }
