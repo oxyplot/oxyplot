@@ -30,8 +30,6 @@
 
 namespace OxyPlot
 {
-    using System.Runtime.CompilerServices;
-
     /// <summary>
     /// Provides a line clipping algorithm.
     /// </summary>
@@ -93,106 +91,6 @@ namespace OxyPlot
             this.xmax = rect.Right;
             this.ymin = rect.Top;
             this.ymax = rect.Bottom;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CohenSutherlandClipping" /> class.
-        /// </summary>
-        /// <param name="xmin">The minimum x.</param>
-        /// <param name="xmax">The maximum x.</param>
-        /// <param name="ymin">The minimum y.</param>
-        /// <param name="ymax">The maximum y.</param>
-        public CohenSutherlandClipping(double xmin, double xmax, double ymin, double ymax)
-        {
-            this.xmin = xmin;
-            this.ymin = ymin;
-            this.xmax = xmax;
-            this.ymax = ymax;
-        }
-
-        /// <summary>
-        /// Cohen–Sutherland clipping algorithm clips a line from
-        /// P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with
-        /// diagonal from <code>(xmin, ymin)</code> to <code>(xmax, ymax)</code>.
-        /// </summary>
-        /// <param name="x0">X coordinate of the first point.</param>
-        /// <param name="y0">Y coordinate of the first point.</param>
-        /// <param name="x1">X coordinate of the second point.</param>
-        /// <param name="y1">Y coordinate of the second point.</param>
-        /// <returns><c>true</c> if the line is inside.</returns>
-        public bool ClipLine(ref double x0, ref double y0, ref double x1, ref double y1)
-        {
-            // compute outcodes for P0, P1, and whatever point lies outside the clip rectangle
-            int outcode0 = this.ComputeOutCode(x0, y0);
-            int outcode1 = this.ComputeOutCode(x1, y1);
-            bool accept = false;
-
-            while (true)
-            {
-                if ((outcode0 | outcode1) == 0)
-                {
-                    // logical or is 0. Trivially accept and get out of loop
-                    accept = true;
-                    break;
-                }
-
-                if ((outcode0 & outcode1) != 0)
-                {
-                    // logical and is not 0. Trivially reject and get out of loop
-                    break;
-                }
-
-                // failed both tests, so calculate the line segment to clip
-                // from an outside point to an intersection with clip edge
-                double x = 0, y = 0;
-
-                // At least one endpoint is outside the clip rectangle; pick it.
-                int outcodeOut = outcode0 != 0 ? outcode0 : outcode1;
-
-                // Now find the intersection point;
-                // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
-                if ((outcodeOut & Top) != 0)
-                {
-                    // point is above the clip rectangle
-                    x = x0 + ((x1 - x0) * (this.ymax - y0) / (y1 - y0));
-                    y = this.ymax;
-                }
-                else if ((outcodeOut & Bottom) != 0)
-                {
-                    // point is below the clip rectangle
-                    x = x0 + ((x1 - x0) * (this.ymin - y0) / (y1 - y0));
-                    y = this.ymin;
-                }
-                else if ((outcodeOut & Right) != 0)
-                {
-                    // point is to the right of clip rectangle
-                    y = y0 + ((y1 - y0) * (this.xmax - x0) / (x1 - x0));
-                    x = this.xmax;
-                }
-                else if ((outcodeOut & Left) != 0)
-                {
-                    // point is to the left of clip rectangle
-                    y = y0 + ((y1 - y0) * (this.xmin - x0) / (x1 - x0));
-                    x = this.xmin;
-                }
-
-                // Now we move outside point to intersection point to clip
-                // and get ready for next pass.
-                if (outcodeOut == outcode0)
-                {
-                    x0 = x;
-                    y0 = y;
-                    outcode0 = this.ComputeOutCode(x0, y0);
-                }
-                else
-                {
-                    x1 = x;
-                    y1 = y;
-                    outcode1 = this.ComputeOutCode(x1, y1);
-                }
-            }
-
-            return accept;
         }
 
         /// <summary>
@@ -316,13 +214,63 @@ namespace OxyPlot
                 {
                     p0.x = x;
                     p0.y = y;
-                    outcode0 = this.ComputeOutCode(p0.x, p0.y);
+
+                    // the following code is inlined
+                    // outcode0 = this.ComputeOutCode(p0.x, p0.y);
+                    outcode0 = Inside; // initialized as being inside of clip window
+
+                    if (p0.x < this.xmin)
+                    {
+                        // to the left of clip window
+                        outcode0 |= Left;
+                    }
+                    else if (p0.x > this.xmax)
+                    {
+                        // to the right of clip window
+                        outcode0 |= Right;
+                    }
+
+                    if (p0.y < this.ymin)
+                    {
+                        // below the clip window
+                        outcode0 |= Bottom;
+                    }
+                    else if (p0.y > this.ymax)
+                    {
+                        // above the clip window
+                        outcode0 |= Top;
+                    }
                 }
                 else
                 {
                     p1.x = x;
                     p1.y = y;
-                    outcode1 = this.ComputeOutCode(p1.x, p1.y);
+
+                    // the following method is inlined manually
+                    // outcode1 = this.ComputeOutCode(p1.x, p1.y);
+                    outcode1 = Inside; // initialized as being inside of clip window
+
+                    if (p1.x < this.xmin)
+                    {
+                        // to the left of clip window
+                        outcode1 |= Left;
+                    }
+                    else if (p1.x > this.xmax)
+                    {
+                        // to the right of clip window
+                        outcode1 |= Right;
+                    }
+
+                    if (p1.y < this.ymin)
+                    {
+                        // below the clip window
+                        outcode1 |= Bottom;
+                    }
+                    else if (p1.y > this.ymax)
+                    {
+                        // above the clip window
+                        outcode1 |= Top;
+                    }
                 }
             }
 
@@ -332,60 +280,31 @@ namespace OxyPlot
         /// <summary>
         /// Determines whether the specified point is inside the rectangle.
         /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <returns><c>true</c> if the specified point is inside; otherwise, <c>false</c>.</returns>
-        public bool IsInside(double x, double y)
-        {
-            return this.ComputeOutCode(x, y) == Inside;
-        }
-
-        /// <summary>
-        /// Determines whether the specified point is inside the rectangle.
-        /// </summary>
         /// <param name="s">The point.</param>
         /// <returns><c>true</c> if the specified point is inside; otherwise, <c>false</c>.</returns>
         public bool IsInside(ScreenPoint s)
         {
-            return this.ComputeOutCode(s.X, s.Y) == Inside;
-        }
-
-        /// <summary>
-        /// Computes the out code.
-        /// </summary>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        /// <returns>The out code.</returns>
-        /// <remarks>Compute the bit code for a point (x, y) using the clip rectangle
-        /// bounded diagonally by <code>(xmin, ymin)</code> to <code>(xmax, ymax)</code>.</remarks>
-        [MethodImpl((MethodImplOptions)256)]
-        private int ComputeOutCode(double x, double y)
-        {
-            int code = Inside; // initialized as being inside of clip window
-
-            if (x < this.xmin)
+            if (s.x < this.xmin)
             {
-                // to the left of clip window
-                code |= Left;
-            }
-            else if (x > this.xmax)
-            {
-                // to the right of clip window
-                code |= Right;
+                return false;
             }
 
-            if (y < this.ymin)
+            if (s.x > this.xmax)
             {
-                // below the clip window
-                code |= Bottom;
-            }
-            else if (y > this.ymax)
-            {
-                // above the clip window
-                code |= Top;
+                return false;
             }
 
-            return code;
+            if (s.y < this.ymin)
+            {
+                return false;
+            }
+
+            if (s.y > this.ymax)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

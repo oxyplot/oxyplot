@@ -36,7 +36,7 @@ namespace OxyPlot.Tests
     public class CohenSutherlandClippingTests
     {
         /// <summary>
-        /// Tests the <see cref="CohenSutherlandClipping.IsInside(double,double)" /> method.
+        /// Tests the <see cref="CohenSutherlandClipping.IsInside" /> method.
         /// </summary>
         public class IsInside
         {
@@ -46,8 +46,8 @@ namespace OxyPlot.Tests
             [Test]
             public void InsidePoint()
             {
-                var clipping = new CohenSutherlandClipping(0, 1, 0, 1);
-                Assert.IsTrue(clipping.IsInside(0.5, 0.5));
+                var clipping = new CohenSutherlandClipping(new OxyRect(0, 0, 1, 1));
+                Assert.IsTrue(clipping.IsInside(new ScreenPoint(0.5, 0.5)));
             }
 
             /// <summary>
@@ -56,8 +56,8 @@ namespace OxyPlot.Tests
             [Test]
             public void OutsidePoint()
             {
-                var clipping = new CohenSutherlandClipping(0, 1, 0, 1);
-                Assert.IsFalse(clipping.IsInside(-0.5, 0.5));
+                var clipping = new CohenSutherlandClipping(new OxyRect(0, 0, 1, 1));
+                Assert.IsFalse(clipping.IsInside(new ScreenPoint(-0.5, 0.5)));
             }
         }
 
@@ -73,7 +73,7 @@ namespace OxyPlot.Tests
             [Test]
             public void EndpointsOutsideArea()
             {
-                var clipping = new CohenSutherlandClipping(0, 1, 0, 1);
+                var clipping = new CohenSutherlandClipping(new OxyRect(0, 0, 1, 1));
                 var p0 = new ScreenPoint(0.3, -0.2);
                 var p1 = new ScreenPoint(0.6, 1.3);
                 Assert.IsTrue(clipping.ClipLine(ref p0, ref p1));
@@ -102,7 +102,7 @@ namespace OxyPlot.Tests
             [Test]
             public void EndpointsInsideArea()
             {
-                var clipping = new CohenSutherlandClipping(0, 1, 0, 1);
+                var clipping = new CohenSutherlandClipping(new OxyRect(0, 0, 1, 1));
                 var p0 = new ScreenPoint(0.3, 0.2);
                 var p1 = new ScreenPoint(0.6, 0.8);
                 Assert.IsTrue(clipping.ClipLine(ref p0, ref p1));
@@ -116,7 +116,7 @@ namespace OxyPlot.Tests
             [Test]
             public void LineOutsideArea()
             {
-                var clipping = new CohenSutherlandClipping(0, 1, 0, 1);
+                var clipping = new CohenSutherlandClipping(new OxyRect(0, 0, 1, 1));
                 var p0 = new ScreenPoint(0.3, -0.2);
                 var p1 = new ScreenPoint(0.6, -0.2);
                 Assert.IsFalse(clipping.ClipLine(ref p0, ref p1));

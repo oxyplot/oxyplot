@@ -219,7 +219,7 @@ namespace OxyPlot
                 return;
             }
 
-            var clipping = new CohenSutherlandClipping(clippingRectangle.Left, clippingRectangle.Right, clippingRectangle.Top, clippingRectangle.Bottom);
+            var clipping = new CohenSutherlandClipping(clippingRectangle);
 
             var clippedPoints = new List<ScreenPoint>(points.Count);
             for (int i = 0; i + 1 < points.Count; i += 2)
