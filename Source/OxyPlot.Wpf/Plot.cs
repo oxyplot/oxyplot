@@ -607,11 +607,7 @@ namespace OxyPlot.Wpf
 
             this.ReleaseMouseCapture();
 
-            if (this.ActualController.HandleMouseUp(this, e.ToMouseReleasedEventArgs(this)))
-            {
-                e.Handled = true;
-                return;
-            }
+            e.Handled = this.ActualController.HandleMouseUp(this, e.ToMouseReleasedEventArgs(this));
 
             // Open the context menu
             var p = e.GetPosition(this).ToScreenPoint();
