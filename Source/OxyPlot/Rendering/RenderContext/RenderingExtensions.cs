@@ -105,7 +105,7 @@ namespace OxyPlot
             double[] dashArray,
             OxyPenLineJoin lineJoin,
             bool aliased,
-            IList<ScreenPoint> outputBuffer = null,
+            List<ScreenPoint> outputBuffer = null,
             Action<IList<ScreenPoint>> pointsRendered = null)
         {
             var n = points.Count;
@@ -142,16 +142,13 @@ namespace OxyPlot
                 outputBuffer.Add(points[0]);
             }
 
-            var lastX = points[0].X;
-            var lastY = points[0].Y;
+            int lastPointIndex = 0;
             for (int i = 1; i < n; i++)
             {
                 // Calculate the clipped version of previous and this point.
-                var sc0X = points[i - 1].X;
-                var sc0Y = points[i - 1].Y;
-                var sc1X = points[i].X;
-                var sc1Y = points[i].Y;
-                bool isInside = clipping.ClipLine(ref sc0X, ref sc0Y, ref sc1X, ref sc1Y);
+                var sc0 = points[i - 1];
+                var sc1 = points[i];
+                bool isInside = clipping.ClipLine(ref sc0, ref sc1);
 
                 if (!isInside)
                 {
@@ -161,22 +158,21 @@ namespace OxyPlot
                 }
 
                 // length calculation (inlined for performance)
-                var dx = sc1X - lastX;
-                var dy = sc1Y - lastY;
+                var dx = sc1.X - points[lastPointIndex].X;
+                var dy = sc1.Y - points[lastPointIndex].Y;
 
                 if ((dx * dx) + (dy * dy) > minDistSquared || outputBuffer.Count == 0 || i == n - 1)
                 {
                     // point comparison inlined for performance
                     // ReSharper disable CompareOfFloatsByEqualityOperator
-                    if (sc0X != lastX || sc0Y != lastY || outputBuffer.Count == 0)
+                    if (sc0.X != points[lastPointIndex].X || sc0.Y != points[lastPointIndex].Y || outputBuffer.Count == 0)
                     // ReSharper restore disable CompareOfFloatsByEqualityOperator
                     {
-                        outputBuffer.Add(new ScreenPoint(sc0X, sc0Y));
+                        outputBuffer.Add(new ScreenPoint(sc0.X, sc0.Y));
                     }
 
-                    outputBuffer.Add(new ScreenPoint(sc1X, sc1Y));
-                    lastX = sc1X;
-                    lastY = sc1Y;
+                    outputBuffer.Add(new ScreenPoint(sc1.X, sc1.Y));
+                    lastPointIndex = i;
                 }
 
                 if (clipping.IsInside(points[i]) || outputBuffer.Count == 0)

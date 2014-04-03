@@ -47,7 +47,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The output buffer.
         /// </summary>
-        private readonly IList<ScreenPoint> outputBuffer;
+        private List<ScreenPoint> outputBuffer;
 
         /// <summary>
         /// The default color.
@@ -87,7 +87,6 @@ namespace OxyPlot.Series
             this.MarkerStrokeThickness = 1;
             this.CanTrackerInterpolatePoints = true;
             this.LabelMargin = 6;
-            this.outputBuffer = new List<ScreenPoint>();
         }
 
         /// <summary>
@@ -673,6 +672,12 @@ namespace OxyPlot.Series
         protected virtual void RenderLine(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender)
         {
             var dashArray = this.ActualDashArray;
+
+            if (this.outputBuffer == null)
+            {
+                this.outputBuffer = new List<ScreenPoint>(pointsToRender.Count);
+            }
+
             rc.DrawClippedLine(
                 pointsToRender,
                 clippingRect,

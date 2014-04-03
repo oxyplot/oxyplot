@@ -47,8 +47,9 @@ namespace PerformanceTest
         /// <param name="args">The arguments.</param>
         public static void Main(string[] args)
         {
-            TestDrawClippedLine(10000, 1000, false);
-            TestDrawClippedLine(10000, 1000, true);
+            var t0 = TestDrawClippedLine(10000, 1000, false);
+            var t1 = TestDrawClippedLine(10000, 1000, true);
+            Console.WriteLine("{0:P1}", (t0 - t1) / t0);
             Console.ReadKey();
         }
 
@@ -58,7 +59,8 @@ namespace PerformanceTest
         /// <param name="n">The number of points.</param>
         /// <param name="m">The number of repetitions.</param>
         /// <param name="useOutputBuffer"><c>true</c> to use an output buffer.</param>
-        public static void TestDrawClippedLine(int n, int m, bool useOutputBuffer)
+        /// <returns>The elapsed time in milliseconds.</returns>
+        public static double TestDrawClippedLine(int n, int m, bool useOutputBuffer)
         {
             var points = new ScreenPoint[n];
             for (int i = 0; i < n; i++)
@@ -68,7 +70,7 @@ namespace PerformanceTest
 
             var clippingRectangle = new OxyRect(0.3, -0.5, 0.5, 1);
             var rc = new EmptyRenderContext();
-            IList<ScreenPoint> outputBuffer = useOutputBuffer ? new List<ScreenPoint>(n) : null;
+            var outputBuffer = useOutputBuffer ? new List<ScreenPoint>(n) : null;
             var stopwatch = Stopwatch.StartNew();
             for (int i = 0; i < m; i++)
             {
@@ -84,7 +86,9 @@ namespace PerformanceTest
                     outputBuffer);
             }
 
+            stopwatch.Stop();
             Console.WriteLine((double)stopwatch.ElapsedMilliseconds);
+            return stopwatch.ElapsedMilliseconds;
         }
     }
 }
