@@ -54,6 +54,7 @@ namespace WpfExamples
                     new Example(typeof(BindingDemo.MainWindow), null, "Demonstrates data binding."),
                     new Example(typeof(ColorBindingDemo.MainWindow), null, "Binds fore and background colors."),
                     new Example(typeof(ColumnSeriesDemo.MainWindow), null, "Shows column series."),
+                    new Example(typeof(ContextMenuDemo.MainWindow), null, "Integrate with a ContextMenu"),
                     new Example(typeof(ContourDemo.MainWindow), null, "Plotting with contour series."),
                     new Example(typeof(CoupledAxesDemo.MainWindow), null, "Shows how to keep two axes in sync."),
                     new Example(typeof(CsvDemo.MainWindow), null, "Plotting data from CSV files."),
