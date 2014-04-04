@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The performance test main program.
+//   A performance test program.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -35,22 +35,76 @@ namespace PerformanceTest
     using System.Diagnostics;
 
     using OxyPlot;
+    using OxyPlot.Series;
 
     /// <summary>
-    /// The performance test main program.
+    /// A performance test program.
     /// </summary>
+    /// <remarks>
+    /// Build with the Release configuration.
+    /// To be used with a profiler or as a standalone program (remember to run outside the Visual Studio IDE).
+    /// </remarks>
     public class Program
     {
         /// <summary>
         /// The program entry point.
         /// </summary>
-        /// <param name="args">The arguments.</param>
-        public static void Main(string[] args)
+        public static void Main()
         {
+            TestModelUpdate(100000);
+            Console.ReadKey();
+
+            TestModelRender(100000);
+            Console.ReadKey();
+
             var t0 = TestDrawClippedLine(10000, 1000, false);
             var t1 = TestDrawClippedLine(10000, 1000, true);
             Console.WriteLine("{0:P1}", (t0 - t1) / t0);
             Console.ReadKey();
+        }
+
+        public static double TestModelUpdate(int n, int m = 1000)
+        {
+            var model = CreateModel(n);
+
+            var stopwatch = Stopwatch.StartNew();
+            for (int i = 0; i < m; i++)
+            {
+                model.Update(true);
+            }
+
+            stopwatch.Stop();
+            Console.WriteLine((double)stopwatch.ElapsedMilliseconds);
+            return stopwatch.ElapsedMilliseconds;
+        }
+
+        public static double TestModelRender(int n, int m = 100)
+        {
+            var model = CreateModel(n);
+            var rc = new EmptyRenderContext();
+            var stopwatch = Stopwatch.StartNew();
+            for (int i = 0; i < m; i++)
+            {
+                model.Render(rc, 800, 600);
+            }
+
+            stopwatch.Stop();
+            Console.WriteLine((double)stopwatch.ElapsedMilliseconds);
+            return stopwatch.ElapsedMilliseconds;
+        }
+
+        private static PlotModel CreateModel(int n)
+        {
+            var model = new PlotModel();
+            var series = new LineSeries();
+            for (int i = 0; i < n; i++)
+            {
+                series.Points.Add(new DataPoint(i, Math.Sin(i)));
+            }
+
+            model.Series.Add(series);
+            model.Update(true);
+            return model;
         }
 
         /// <summary>

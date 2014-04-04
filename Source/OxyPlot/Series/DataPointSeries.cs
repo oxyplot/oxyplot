@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides an abstract base class for series that contain a collection of <see cref="IDataPoint"/>s.
+//   Provides an abstract base class for series that contain a collection of <see cref="DataPoint"/>s.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -36,14 +36,14 @@ namespace OxyPlot.Series
     using System.Reflection;
 
     /// <summary>
-    /// Provides an abstract base class for series that contain a collection of <see cref="IDataPoint" />s.
+    /// Provides an abstract base class for series that contain a collection of <see cref="DataPoint" />s.
     /// </summary>
     public abstract class DataPointSeries : XYAxisSeries
     {
         /// <summary>
         /// The list of data points.
         /// </summary>
-        private IList<IDataPoint> points = new List<IDataPoint>();
+        private readonly List<DataPoint> points = new List<DataPoint>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "DataPointSeries" /> class.
@@ -76,22 +76,17 @@ namespace OxyPlot.Series
         /// Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
         /// </summary>
         /// <value>The mapping.</value>
-        public Func<object, IDataPoint> Mapping { get; set; }
+        public Func<object, DataPoint> Mapping { get; set; }
 
         /// <summary>
-        /// Gets or sets the points list.
+        /// Gets the list of points.
         /// </summary>
-        /// <value>The points list.</value>
-        public IList<IDataPoint> Points
+        /// <value>A list of <see cref="DataPoint" />.</value>
+        public List<DataPoint> Points
         {
             get
             {
                 return this.points;
-            }
-
-            set
-            {
-                this.points = value;
             }
         }
 
@@ -163,7 +158,7 @@ namespace OxyPlot.Series
         /// The add data points.
         /// </summary>
         /// <param name="pts">The points.</param>
-        protected void AddDataPoints(IList<IDataPoint> pts)
+        protected void AddDataPoints(List<DataPoint> pts)
         {
             pts.Clear();
 
@@ -185,10 +180,9 @@ namespace OxyPlot.Series
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    var dp = item as IDataPoint;
-                    if (dp != null)
+                    if (item is DataPoint)
                     {
-                        pts.Add(dp);
+                        pts.Add((DataPoint)item);
                         continue;
                     }
 
@@ -214,11 +208,11 @@ namespace OxyPlot.Series
         /// <summary>
         /// Adds data points from the specified source to the specified destination.
         /// </summary>
-        /// <param name="dest">The destination list.</param>
+        /// <param name="target">The destination list.</param>
         /// <param name="itemsSource">The source.</param>
         /// <param name="dataFieldX">The x-coordinate data field.</param>
         /// <param name="dataFieldY">The y-coordinate data field.</param>
-        protected void AddDataPoints(IList<IDataPoint> dest, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
+        protected void AddDataPoints(List<DataPoint> target, IEnumerable itemsSource, string dataFieldX, string dataFieldY)
         {
             PropertyInfo pix = null;
             PropertyInfo piy = null;
@@ -248,65 +242,106 @@ namespace OxyPlot.Series
                 double y = this.ToDouble(piy.GetValue(o, null));
 
                 var pp = new DataPoint(x, y);
-                dest.Add(pp);
+                target.Add(pp);
             }
 
             ////var filler = new ListFiller<DataPoint>();
             ////filler.Add(dataFieldX, (item, value) => item.X = this.ToDouble(value));
             ////filler.Add(dataFieldY, (item, value) => item.Y = this.ToDouble(value));
-            ////filler.Fill(dest, itemsSource);
+            ////filler.Fill(target, itemsSource);
         }
 
         /// <summary>
         /// Updates the Max/Min limits from the specified point list.
         /// </summary>
         /// <param name="pts">The points.</param>
-        protected void InternalUpdateMaxMin(IList<IDataPoint> pts)
+        protected void InternalUpdateMaxMin(List<DataPoint> pts)
         {
             if (pts == null || pts.Count == 0)
             {
                 return;
             }
 
-            double minx = this.MinX;
-            double miny = this.MinY;
-            double maxx = this.MaxX;
-            double maxy = this.MaxY;
+            double minx = double.MaxValue;
+            double miny = double.MaxValue;
+            double maxx = double.MinValue;
+            double maxy = double.MinValue;
+
+            if (double.IsNaN(minx))
+            {
+                minx = double.MaxValue;
+            }
+
+            if (double.IsNaN(miny))
+            {
+                miny = double.MaxValue;
+            }
+
+            if (double.IsNaN(maxx))
+            {
+                maxx = double.MinValue;
+            }
+
+            if (double.IsNaN(maxy))
+            {
+                maxy = double.MinValue;
+            }
 
             foreach (var pt in pts)
             {
-                if (!this.IsValidPoint(pt, this.XAxis, this.YAxis))
+                double x = pt.X;
+                double y = pt.Y;
+
+                // Check if the point is defined (the code below is faster than double.IsNaN)
+                // ReSharper disable EqualExpressionComparison
+                // ReSharper disable CompareOfFloatsByEqualityOperator
+                if (x != x || y != y)
+                // ReSharper restore CompareOfFloatsByEqualityOperator
+                // ReSharper restore EqualExpressionComparison
                 {
                     continue;
                 }
 
-                double x = pt.X;
-                double y = pt.Y;
-                if (x < minx || double.IsNaN(minx))
+                if (x < minx)
                 {
                     minx = x;
                 }
 
-                if (x > maxx || double.IsNaN(maxx))
+                if (x > maxx)
                 {
                     maxx = x;
                 }
 
-                if (y < miny || double.IsNaN(miny))
+                if (y < miny)
                 {
                     miny = y;
                 }
 
-                if (y > maxy || double.IsNaN(maxy))
+                if (y > maxy)
                 {
                     maxy = y;
                 }
             }
 
-            this.MinX = minx;
-            this.MinY = miny;
-            this.MaxX = maxx;
-            this.MaxY = maxy;
+            if (minx < double.MaxValue)
+            {
+                this.MinX = minx;
+            }
+
+            if (miny < double.MaxValue)
+            {
+                this.MinY = miny;
+            }
+
+            if (maxx > double.MinValue)
+            {
+                this.MaxX = maxx;
+            }
+
+            if (maxy > double.MinValue)
+            {
+                this.MaxY = maxy;
+            }
         }
     }
 }

@@ -139,7 +139,7 @@ namespace ExampleLibrary
         {
             var model = new PlotModel("Noisy data");
 
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
             var rng = new Random();
             for (int i = 0; i < 500; i++)
             {

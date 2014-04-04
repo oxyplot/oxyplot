@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataPoint.cs" company="OxyPlot">
+// <copyright file="DataPointTests.cs" company="OxyPlot">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 OxyPlot contributors
@@ -24,43 +24,48 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines a point.
+//   Provides unit tests for the <see cref="DataPoint" /> type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OxyPlot
+namespace OxyPlot.Tests
 {
-    /// <summary>
-    /// Defines a point.
-    /// </summary>
-    public interface IDataPoint
-    {
-        /// <summary>
-        /// Gets or sets the x-coordinate.
-        /// </summary>
-        /// <value>The x-coordinate.</value>
-        double X { get; set; }
-
-        /// <summary>
-        /// Gets or sets the y-coordinate.
-        /// </summary>
-        /// <value>The y-coordinate.</value>
-        double Y { get; set; }
-    }
+    using NUnit.Framework;
 
     /// <summary>
-    /// Provides extension methods for <see cref="IDataPoint" />.
+    /// Provides unit tests for the <see cref="DataPoint" /> type.
     /// </summary>
-    public static class DataPointExtensions
+    [TestFixture]
+    public class DataPointTests
     {
         /// <summary>
-        /// Returns whether the coordinate contains a NaN value.
+        /// Tests the <see cref="DataPoint.IsDefined" /> method.
         /// </summary>
-        /// <param name="p">The point to evaluate.</param>
-        /// <returns><c>true</c> if neither the X nor Y coordinates are NaN values; otherwise, <value><c>false</c></value>.</returns>
-        public static bool IsValid(this IDataPoint p)
+        public class IsDefined
         {
-            return !double.IsNaN(p.X) && !double.IsNaN(p.Y);
+            /// <summary>
+            /// Given valid points, <c>true</c> is returned.
+            /// </summary>
+            [Test]
+            public void ValidPoints()
+            {
+                Assert.IsTrue(new DataPoint(1, 2).IsDefined());
+                Assert.IsTrue(new DataPoint(double.MaxValue, double.MaxValue).IsDefined());
+                Assert.IsTrue(new DataPoint(double.MinValue, double.MinValue).IsDefined());
+            }
+
+            /// <summary>
+            /// Given invalid points, <c>false</c> is returned.
+            /// </summary>
+            [Test]
+            public void InvalidPoints()
+            {
+                Assert.IsFalse(new DataPoint(double.NaN, double.NaN).IsDefined());
+                Assert.IsFalse(new DataPoint(double.NaN, 2).IsDefined());
+                Assert.IsFalse(new DataPoint(2, double.NaN).IsDefined());
+                var p = DataPoint.Undefined;
+                Assert.IsFalse(p.IsDefined());
+            }
         }
     }
 }

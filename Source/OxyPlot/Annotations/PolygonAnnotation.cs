@@ -53,7 +53,7 @@ namespace OxyPlot.Annotations
             this.StrokeThickness = 1;
             this.LineStyle = LineStyle.Solid;
             this.LineJoin = OxyPenLineJoin.Miter;
-            this.Points = new List<IDataPoint>();
+            this.Points = new List<DataPoint>();
         }
 
         /// <summary>
@@ -80,10 +80,10 @@ namespace OxyPlot.Annotations
         public LineStyle LineStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the points.
+        /// Gets the points.
         /// </summary>
         /// <value>The points.</value>
-        public IList<IDataPoint> Points { get; set; }
+        public List<DataPoint> Points { get; private set; }
 
         /// <summary>
         /// Gets or sets the stroke thickness.

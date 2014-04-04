@@ -67,7 +67,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="Points"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(
-            "Points", typeof(IList<IDataPoint>), typeof(PolygonAnnotation), new PropertyMetadata(new List<IDataPoint>(), DataChanged));
+            "Points", typeof(IList<DataPoint>), typeof(PolygonAnnotation), new PropertyMetadata(new List<DataPoint>(), DataChanged));
 
         /// <summary>
         /// Identifies the <see cref="StrokeThickness"/> dependency property.
@@ -152,11 +152,11 @@ namespace OxyPlot.Wpf
         /// <summary>
         /// Gets or sets the points.
         /// </summary>
-        public IList<IDataPoint> Points
+        public IList<DataPoint> Points
         {
             get
             {
-                return (IList<IDataPoint>)this.GetValue(PointsProperty);
+                return (IList<DataPoint>)this.GetValue(PointsProperty);
             }
 
             set
@@ -185,7 +185,7 @@ namespace OxyPlot.Wpf
         /// Creates the internal annotation object.
         /// </summary>
         /// <returns>The annotation.</returns>
-        public override OxyPlot.Annotations.Annotation CreateModel()
+        public override Annotations.Annotation CreateModel()
         {
             this.SynchronizeProperties();
             return this.InternalAnnotation;
@@ -197,8 +197,9 @@ namespace OxyPlot.Wpf
         public override void SynchronizeProperties()
         {
             base.SynchronizeProperties();
-            var a = (OxyPlot.Annotations.PolygonAnnotation)this.InternalAnnotation;
-            a.Points = this.Points;
+            var a = (Annotations.PolygonAnnotation)this.InternalAnnotation;
+            a.Points.Clear();
+            a.Points.AddRange(this.Points);
 
             a.Fill = this.Fill.ToOxyColor();
             a.Color = this.Color.ToOxyColor();

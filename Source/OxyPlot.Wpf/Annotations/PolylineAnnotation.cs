@@ -54,7 +54,7 @@ namespace OxyPlot.Wpf
         /// Identifies the <see cref="Points"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PointsProperty =
-            DependencyProperty.Register("Points", typeof(IList<IDataPoint>), typeof(PolylineAnnotation), new PropertyMetadata(new List<IDataPoint>()));
+            DependencyProperty.Register("Points", typeof(IList<DataPoint>), typeof(PolylineAnnotation), new PropertyMetadata(new List<DataPoint>()));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PolylineAnnotation" /> class.
@@ -68,11 +68,11 @@ namespace OxyPlot.Wpf
         /// Gets or sets the points.
         /// </summary>
         /// <value>The points.</value>
-        public IList<IDataPoint> Points
+        public IList<DataPoint> Points
         {
             get
             {
-                return (IList<IDataPoint>)this.GetValue(PointsProperty);
+                return (IList<DataPoint>)this.GetValue(PointsProperty);
             }
 
             set
@@ -121,7 +121,8 @@ namespace OxyPlot.Wpf
             base.SynchronizeProperties();
 
             var a = (Annotations.PolylineAnnotation)this.InternalAnnotation;
-            a.Points = this.Points;
+            a.Points.Clear();
+            a.Points.AddRange(this.Points);
             a.Smooth = this.Smooth;
             a.MinimumSegmentLength = this.MinimumSegmentLength;
         }

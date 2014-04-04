@@ -41,9 +41,9 @@ namespace OxyPlot.Wpf
     public class FunctionAnnotation : PathAnnotation
     {
         /// <summary>
-        /// Identifies the <see cref="EquationType"/> dependency property.
+        /// Identifies the <see cref="Type"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty EquationTypeProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty TypeProperty = DependencyProperty.Register(
             "Type",
             typeof(FunctionAnnotationType),
             typeof(FunctionAnnotation),
@@ -110,12 +110,12 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (FunctionAnnotationType)this.GetValue(EquationTypeProperty);
+                return (FunctionAnnotationType)this.GetValue(TypeProperty);
             }
 
             set
             {
-                this.SetValue(EquationTypeProperty, value);
+                this.SetValue(TypeProperty, value);
             }
         }
 

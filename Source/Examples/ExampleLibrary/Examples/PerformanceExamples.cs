@@ -93,7 +93,7 @@ namespace ExampleLibrary
         {
             var model = new PlotModel("LineSeries, 100k points, ItemsSource, List<IDataPoint>");
             var s1 = new LineSeries();
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
             AddPoints(points, 100000);
             s1.ItemsSource = points;
             model.Series.Add(s1);
@@ -106,7 +106,7 @@ namespace ExampleLibrary
         {
             var model = new PlotModel("LineSeries, 100k points, ItemsSource, List<OxyRect>");
             var s1 = new LineSeries();
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
             AddPoints(points, 100000);
             var rects = points.Select(pt => new OxyRect(pt.X, pt.Y, 0, 0)).ToList();
             s1.ItemsSource = rects;
@@ -284,19 +284,28 @@ namespace ExampleLibrary
             return model;
         }
 
-        private static IList<IDataPoint> GetPoints(int n)
+        private static List<DataPoint> GetPoints(int n)
         {
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
             AddPoints(points, n);
             return points;
         }
 
-        private static void AddPoints(IList<IDataPoint> points, int n)
+        private static void AddPoints(List<DataPoint> points, int n)
         {
             for (int i = 0; i < n; i++)
             {
                 double x = Math.PI * 10 * i / (n - 1);
                 points.Add(new DataPoint(x * Math.Cos(x), x * Math.Sin(x)));
+            }
+        }
+
+        private static void AddPoints(List<ScatterPoint> points, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                double x = Math.PI * 10 * i / (n - 1);
+                points.Add(new ScatterPoint(x * Math.Cos(x), x * Math.Sin(x)));
             }
         }
     }

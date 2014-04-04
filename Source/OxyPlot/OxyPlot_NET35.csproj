@@ -76,7 +76,6 @@
     <Compile Include="Foundation\CodeGenerator\CodeGenerator.cs" />
     <Compile Include="Foundation\CodeGenerator\CodeGeneratorStringExtensions.cs" />
     <Compile Include="Foundation\CodeGenerator\ICodeGenerating.cs" />
-    <Compile Include="Foundation\IDataPoint.cs" />
     <Compile Include="Foundation\IDataPointProvider.cs" />
     <Compile Include="Foundation\DataPoint.cs" />
     <Compile Include="Foundation\MarkerType.cs" />

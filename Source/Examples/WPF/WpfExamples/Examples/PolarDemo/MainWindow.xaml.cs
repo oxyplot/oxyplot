@@ -86,7 +86,7 @@ namespace PolarDemo
         /// <summary>
         /// Gets or sets SpiralPoints.
         /// </summary>
-        public IList<IDataPoint> SpiralPoints { get; set; }
+        public IList<DataPoint> SpiralPoints { get; set; }
 
         /// <summary>
         /// Creates the model.

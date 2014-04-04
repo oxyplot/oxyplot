@@ -39,10 +39,21 @@ namespace OxyPlot.Annotations
     public class PolylineAnnotation : PathAnnotation
     {
         /// <summary>
-        /// Gets or sets the points.
+        /// The points.
+        /// </summary>
+        private readonly List<DataPoint> points = new List<DataPoint>();
+
+        /// <summary>
+        /// Gets the points.
         /// </summary>
         /// <value>The points.</value>
-        public IList<IDataPoint> Points { get; set; }
+        public List<DataPoint> Points
+        {
+            get
+            {
+                return this.points;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the minimum length of the segment.

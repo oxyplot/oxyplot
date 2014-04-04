@@ -72,8 +72,8 @@ namespace OverlayDemo
         void HandleTransformChanged(object sender, EventArgs e)
         {
             // Transform to screen coordinates
-            var p1 = Axis.Transform(0, 0, this.horizontalAxis, this.verticalAxis);
-            var p2 = Axis.Transform(100, 100, this.horizontalAxis, this.verticalAxis);
+            var p1 = this.horizontalAxis.Transform(0, 0, this.verticalAxis);
+            var p2 = this.horizontalAxis.Transform(100, 100, this.verticalAxis);
 
             // Change the position and size of the WPF shape
             this.rect.Width = Math.Abs(p2.X - p1.X);

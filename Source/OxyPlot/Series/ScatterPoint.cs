@@ -35,7 +35,7 @@ namespace OxyPlot.Series
     /// <summary>
     /// Represents a point in a <see cref="ScatterSeries" />.
     /// </summary>
-    public class ScatterPoint : IDataPoint
+    public class ScatterPoint
     {
         /// <summary>
         /// The size.

@@ -77,7 +77,7 @@ namespace ExampleLibrary
                 (v, c, a) =>
                 {
                     var point = series.InverseTransform(a.Position);
-                    series.Points.Add(point);
+                    series.Points.Add(new ScatterPoint(point.X, point.Y));
                     model.InvalidatePlot(true);
                 });
 

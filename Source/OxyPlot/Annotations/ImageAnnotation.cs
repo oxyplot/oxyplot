@@ -89,7 +89,7 @@ namespace OxyPlot.Annotations
         /// <param name="verticalAlignment">The vertical alignment.</param>
         public ImageAnnotation(
             OxyImage image,
-            IDataPoint position,
+            DataPoint position,
             HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment verticalAlignment = VerticalAlignment.Middle)
             : this()

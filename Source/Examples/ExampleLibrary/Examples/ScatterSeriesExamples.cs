@@ -123,7 +123,7 @@ namespace ExampleLibrary
         /// <param name="points">The points.</param>
         /// <param name="a">The slope.</param>
         /// <param name="b">The intercept.</param>
-        public static void LeastSquaresFit(IEnumerable<IDataPoint> points, out double a, out double b)
+        public static void LeastSquaresFit(IEnumerable<ScatterPoint> points, out double a, out double b)
         {
             // http://en.wikipedia.org/wiki/Least_squares
             // http://mathworld.wolfram.com/LeastSquaresFitting.html
@@ -186,10 +186,9 @@ namespace ExampleLibrary
         public static PlotModel DataPoints()
         {
             var model = new PlotModel("Scatter plot of DataPoints");
-            model.Series.Add(new ScatterSeries
-            {
-                Points = CreateRandomPoints(100)
-            });
+            var series = new ScatterSeries();
+            series.Points.AddRange(CreateRandomPoints(100));
+            model.Series.Add(series);
             return model;
         }
 
@@ -213,7 +212,7 @@ namespace ExampleLibrary
             model.Series.Add(new ScatterSeries
             {
                 ItemsSource = CreateRandomPoints(100),
-                Mapping = item => new ScatterPoint(((IDataPoint)item).X, ((IDataPoint)item).Y)
+                Mapping = item => new ScatterPoint(((ScatterPoint)item).X, ((ScatterPoint)item).Y)
             });
             return model;
         }
@@ -426,15 +425,19 @@ namespace ExampleLibrary
         {
             var model = new PlotModel("TrackerFormatString");
 
-            var s1 = new ScatterSeries { TrackerFormatString = "{Sum:0.0}" };
-            s1.Points.Add(new MyPoint { X = 10, Y = 40 });
-            s1.Points.Add(new MyPoint { X = 40, Y = 20 });
-            s1.Points.Add(new MyPoint { X = 60, Y = 30 });
+            var s1 = new ScatterSeries { TrackerFormatString = "{Sum:0.0}", DataFieldX = "X", DataFieldY = "Y" };
+            var myPoints = new List<MyPoint>
+            {
+                new MyPoint { X = 10, Y = 40 },
+                new MyPoint { X = 40, Y = 20 },
+                new MyPoint { X = 60, Y = 30 }
+            };
+            s1.ItemsSource = myPoints;
             model.Series.Add(s1);
             return model;
         }
 
-        public struct MyPoint : IDataPoint
+        public struct MyPoint
         {
             public double X { get; set; }
 
@@ -488,26 +491,27 @@ namespace ExampleLibrary
 
         private static ScatterSeries CreateRandomScatterSeries2(int n, string title, MarkerType markerType)
         {
-            return new ScatterSeries
+            var series = new ScatterSeries
             {
                 Title = title,
                 MarkerType = markerType,
                 MarkerStroke = OxyColors.Black,
                 MarkerStrokeThickness = 1.0,
-                Points = CreateRandomPoints(n)
             };
+            series.Points.AddRange(CreateRandomPoints(n));
+            return series;
         }
 
-        private static IList<IDataPoint> CreateRandomPoints(int n)
+        private static IList<ScatterPoint> CreateRandomPoints(int n)
         {
             var r = new Random(12345);
 
-            var points = new List<IDataPoint>();
+            var points = new List<ScatterPoint>();
             for (int i = 0; i < n; i++)
             {
                 double x = r.NextDouble() * 10;
                 double y = r.NextDouble() * 10;
-                var p = new DataPoint(x, y);
+                var p = new ScatterPoint(x, y);
                 points.Add(p);
             }
 

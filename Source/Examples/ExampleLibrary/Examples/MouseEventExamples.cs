@@ -62,7 +62,7 @@ namespace ExampleLibrary
                         MarkerType = MarkerType.None,
                         StrokeThickness = 2
                     };
-                    s1.Points.Add(Axis.InverseTransform(e.Position, xaxis, yaxis));
+                    s1.Points.Add(xaxis.InverseTransform(e.Position.X, e.Position.Y, yaxis));
                     model.Series.Add(s1);
                     model.InvalidatePlot(false);
                     e.Handled = true;
@@ -73,7 +73,7 @@ namespace ExampleLibrary
             {
                 if (s1 != null)
                 {
-                    s1.Points.Add(Axis.InverseTransform(e.Position, xaxis, yaxis));
+                    s1.Points.Add(xaxis.InverseTransform(e.Position.X, e.Position.Y, yaxis));
                     model.InvalidatePlot(false);
                     e.Handled = true;
                 }
@@ -108,10 +108,10 @@ namespace ExampleLibrary
                 };
 
             var s2 = new ScatterSeries();
-            s2.Points.Add(new DataPoint(0, 15));
-            s2.Points.Add(new DataPoint(10, 45));
-            s2.Points.Add(new DataPoint(40, 25));
-            s2.Points.Add(new DataPoint(60, 35));
+            s2.Points.Add(new ScatterPoint(0, 15));
+            s2.Points.Add(new ScatterPoint(10, 45));
+            s2.Points.Add(new ScatterPoint(40, 25));
+            s2.Points.Add(new ScatterPoint(60, 35));
             model.Series.Add(s2);
             s2.MouseDown += (s, e) =>
                 {
@@ -233,7 +233,7 @@ namespace ExampleLibrary
                 {
                     // Create a new arrow annotation
                     tmp = new ArrowAnnotation();
-                    tmp.StartPoint = tmp.EndPoint = Axis.InverseTransform(e.Position, xaxis, yaxis);
+                    tmp.StartPoint = tmp.EndPoint = xaxis.InverseTransform(e.Position.X, e.Position.Y, yaxis);
                     model.Annotations.Add(tmp);
                     e.Handled = true;
                 }
@@ -245,7 +245,7 @@ namespace ExampleLibrary
                 if (tmp != null)
                 {
                     // Modify the end point
-                    tmp.EndPoint = Axis.InverseTransform(e.Position, xaxis, yaxis);
+                    tmp.EndPoint = xaxis.InverseTransform(e.Position.X, e.Position.Y, yaxis);
                     tmp.Text = string.Format("Y = {0:0.###}", tmp.EndPoint.Y);
 
                     // Redraw the plot
@@ -371,14 +371,13 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
             var pa = new PolygonAnnotation
                 {
-                    Points =
-                        new IDataPoint[]
+                    Text = "Polygon 1"
+                };
+            pa.Points.AddRange(new[]
                             {
                                 new DataPoint(4, -2), new DataPoint(8, -4), new DataPoint(17, 7), new DataPoint(5, 8),
                                 new DataPoint(2, 5)
-                            },
-                    Text = "Polygon 1"
-                };
+                            });
 
             // Handle left mouse clicks
             int hitCount = 1;

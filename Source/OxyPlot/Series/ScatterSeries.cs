@@ -40,8 +40,13 @@ namespace OxyPlot.Series
     /// Represents a series for scatter plots.
     /// </summary>
     /// <remarks>See http://en.wikipedia.org/wiki/Scatter_plot</remarks>
-    public class ScatterSeries : DataPointSeries
+    public class ScatterSeries : XYAxisSeries
     {
+        /// <summary>
+        /// The list of data points.
+        /// </summary>
+        private List<ScatterPoint> points = new List<ScatterPoint>();
+
         /// <summary>
         /// The default fill color.
         /// </summary>
@@ -63,6 +68,25 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Gets the list of points.
+        /// </summary>
+        /// <value>A list of <see cref="ScatterPoint" />.</value>
+        public List<ScatterPoint> Points
+        {
+            get
+            {
+                return this.points;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the mapping delegate.
+        /// Example: series1.Mapping = item => new DataPoint(((MyType)item).Time,((MyType)item).Value);
+        /// </summary>
+        /// <value>The mapping.</value>
+        public Func<object, ScatterPoint> Mapping { get; set; }
+
+        /// <summary>
         /// Gets or sets the screen resolution. If this number is greater than 1, bins of that size is created for both x and y directions. Only one point will be drawn in each bin.
         /// </summary>
         public int BinSize { get; set; }
@@ -79,6 +103,18 @@ namespace OxyPlot.Series
         /// </summary>
         /// <value>The color axis key.</value>
         public string ColorAxisKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data field X.
+        /// </summary>
+        /// <value>The data field X.</value>
+        public string DataFieldX { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data field Y.
+        /// </summary>
+        /// <value>The data field Y.</value>
+        public string DataFieldY { get; set; }
 
         /// <summary>
         /// Gets or sets the data field for the size.
@@ -199,8 +235,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                var dp = new DataPoint(p.X, p.Y);
-                var sp = Axis.Transform(dp, this.XAxis, this.YAxis);
+                var sp = this.XAxis.Transform(p.X, p.Y, this.YAxis);
                 double dx = sp.x - point.x;
                 double dy = sp.y - point.y;
                 double d2 = (dx * dx) + (dy * dy);
@@ -209,17 +244,13 @@ namespace OxyPlot.Series
                 {
                     var item = this.GetItem(i);
 
-                    object xvalue = this.XAxis.GetValue(dp.X);
-                    object yvalue = this.YAxis.GetValue(dp.Y);
+                    object xvalue = this.XAxis.GetValue(p.X);
+                    object yvalue = this.YAxis.GetValue(p.Y);
                     object zvalue = null;
 
-                    var scatterPoint = p as ScatterPoint;
-                    if (scatterPoint != null)
+                    if (!double.IsNaN(p.Value) && !double.IsInfinity(p.Value))
                     {
-                        if (!double.IsNaN(scatterPoint.Value) && !double.IsInfinity(scatterPoint.Value))
-                        {
-                            zvalue = scatterPoint.Value;
-                        }
+                        zvalue = p.Value;
                     }
 
                     var text = this.Format(
@@ -233,7 +264,7 @@ namespace OxyPlot.Series
                         colorAxisTitle,
                         zvalue);
 
-                    result = new TrackerHitResult(this, dp, sp, item, i, text);
+                    result = new TrackerHitResult(this, new DataPoint(p.X, p.Y), sp, item, i, text);
 
                     minimumDistance = d2;
                 }
@@ -271,8 +302,7 @@ namespace OxyPlot.Series
 
             var clippingRect = this.GetClippingRect();
 
-            var points = this.Points;
-            int n = points.Count;
+            int n = this.points.Count;
             var allPoints = new List<ScreenPoint>(n);
             var allMarkerSizes = new List<double>(n);
             var selectedPoints = new List<ScreenPoint>();
@@ -286,11 +316,11 @@ namespace OxyPlot.Series
             // Transform all points to screen coordinates
             for (int i = 0; i < n; i++)
             {
-                var dp = new DataPoint(points[i].X, points[i].Y);
+                var dp = new DataPoint(this.points[i].X, this.points[i].Y);
                 double size = double.NaN;
                 double value = double.NaN;
 
-                var scatterPoint = points[i] as ScatterPoint;
+                var scatterPoint = this.points[i];
                 if (scatterPoint != null)
                 {
                     size = scatterPoint.Size;
@@ -447,15 +477,14 @@ namespace OxyPlot.Series
                 return;
             }
 
-            var points = this.Points;
-            points.Clear();
+            this.points.Clear();
 
             // Use the mapping to generate the points
             if (this.Mapping != null)
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    points.Add(this.Mapping(item));
+                    this.points.Add(this.Mapping(item));
                 }
 
                 return;
@@ -480,7 +509,7 @@ namespace OxyPlot.Series
                 return;
             }*/
 
-            var dest = new List<IDataPoint>();
+            this.Points.Clear();
 
             // Using reflection to add points
             var filler = new ListFiller<ScatterPoint>();
@@ -489,9 +518,7 @@ namespace OxyPlot.Series
             filler.Add(this.DataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
             filler.Add(this.DataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
             filler.Add(this.DataFieldTag, (item, value) => item.Tag = value);
-            filler.Fill(dest, this.ItemsSource);
-
-            this.Points = dest;
+            filler.Fill(this.Points, this.ItemsSource);
         }
 
         /// <summary>
@@ -504,9 +531,143 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
+        /// Updates the Max/Min limits from the values in the specified point list.
+        /// </summary>
+        /// <param name="pts">The points.</param>
+        protected void InternalUpdateMaxMinValue(List<ScatterPoint> pts)
+        {
+            if (pts == null || pts.Count == 0)
+            {
+                return;
+            }
+
+            double minx = double.MaxValue;
+            double miny = double.MaxValue;
+            double minvalue = double.MaxValue;
+            double maxx = double.MinValue;
+            double maxy = double.MinValue;
+            double maxvalue = double.MinValue;
+
+            if (double.IsNaN(minx))
+            {
+                minx = double.MaxValue;
+            }
+
+            if (double.IsNaN(miny))
+            {
+                miny = double.MaxValue;
+            }
+
+            if (double.IsNaN(maxx))
+            {
+                maxx = double.MinValue;
+            }
+
+            if (double.IsNaN(maxy))
+            {
+                maxy = double.MinValue;
+            }
+
+            if (double.IsNaN(minvalue))
+            {
+                minvalue = double.MinValue;
+            }
+
+            if (double.IsNaN(maxvalue))
+            {
+                maxvalue = double.MinValue;
+            }
+
+            foreach (var pt in pts)
+            {
+                double x = pt.X;
+                double y = pt.Y;
+
+                // Check if the point is defined (the code below is faster than double.IsNaN)
+                // ReSharper disable EqualExpressionComparison
+                // ReSharper disable CompareOfFloatsByEqualityOperator
+                if (x != x || y != y)
+                // ReSharper restore CompareOfFloatsByEqualityOperator
+                // ReSharper restore EqualExpressionComparison
+                {
+                    continue;
+                }
+
+                double value = pt.value;
+
+                if (x < minx)
+                {
+                    minx = x;
+                }
+
+                if (x > maxx)
+                {
+                    maxx = x;
+                }
+
+                if (y < miny)
+                {
+                    miny = y;
+                }
+
+                if (y > maxy)
+                {
+                    maxy = y;
+                }
+
+                if (value < minvalue)
+                {
+                    minvalue = value;
+                }
+
+                if (value > maxvalue)
+                {
+                    maxvalue = value;
+                }
+            }
+
+            if (minx < double.MaxValue)
+            {
+                this.MinX = minx;
+            }
+
+            if (miny < double.MaxValue)
+            {
+                this.MinY = miny;
+            }
+
+            if (maxx > double.MinValue)
+            {
+                this.MaxX = maxx;
+            }
+
+            if (maxy > double.MinValue)
+            {
+                this.MaxY = maxy;
+            }
+
+            if (minvalue < double.MaxValue)
+            {
+                this.MinValue = minvalue;
+            }
+
+            if (maxvalue > double.MinValue)
+            {
+                this.MaxValue = maxvalue;
+            }
+
+            var colorAxis = this.ColorAxis as Axis;
+            if (colorAxis != null)
+            {
+                colorAxis.Include(this.MinValue);
+                colorAxis.Include(this.MaxValue);
+            }
+        }
+
+        /// <summary>
         /// Adds scatter points specified by a items source and data fields.
         /// </summary>
-        /// <param name="dest">The destination collection.</param>
+        /// <param name="target">The destination collection.</param>
         /// <param name="itemsSource">The items source.</param>
         /// <param name="dataFieldX">The data field x.</param>
         /// <param name="dataFieldY">The data field y.</param>
@@ -514,7 +675,7 @@ namespace OxyPlot.Series
         /// <param name="dataFieldValue">The data field value.</param>
         /// <param name="dataFieldTag">The data field tag.</param>
         protected void AddScatterPoints(
-            IList<ScatterPoint> dest,
+            IList<ScatterPoint> target,
             IEnumerable itemsSource,
             string dataFieldX,
             string dataFieldY,
@@ -528,14 +689,14 @@ namespace OxyPlot.Series
             filler.Add(dataFieldSize, (item, value) => item.Size = Convert.ToDouble(value));
             filler.Add(dataFieldValue, (item, value) => item.Value = Convert.ToDouble(value));
             filler.Add(dataFieldTag, (item, value) => item.Tag = value);
-            filler.FillT(dest, itemsSource);
+            filler.FillT(target, itemsSource);
         }
 
         /// <summary>
         /// Updates the Max/Min limits from the values in the specified point list.
         /// </summary>
         /// <param name="pts">The points.</param>
-        protected void InternalUpdateMaxMinValue(IList<IDataPoint> pts)
+        protected void InternalUpdateMaxMinValue(IList<ScatterPoint> pts)
         {
             if (pts == null || pts.Count == 0)
             {
@@ -547,12 +708,7 @@ namespace OxyPlot.Series
 
             foreach (var pt in pts)
             {
-                if (!(pt is ScatterPoint))
-                {
-                    continue;
-                }
-
-                double value = ((ScatterPoint)pt).value;
+                double value = pt.value;
 
                 if (value < minvalue || double.IsNaN(minvalue))
                 {

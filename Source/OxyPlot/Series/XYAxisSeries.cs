@@ -132,7 +132,7 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="p">The point.</param>
         /// <returns>A screen point.</returns>
-        public ScreenPoint Transform(IDataPoint p)
+        public ScreenPoint Transform(DataPoint p)
         {
             return this.XAxis.Transform(p.X, p.Y, this.YAxis);
         }
@@ -219,7 +219,7 @@ namespace OxyPlot.Series
         /// <param name="points">The point list.</param>
         /// <param name="point">The point.</param>
         /// <returns>A tracker hit result if a point was found.</returns>
-        protected TrackerHitResult GetNearestInterpolatedPointInternal(IList<IDataPoint> points, ScreenPoint point)
+        protected TrackerHitResult GetNearestInterpolatedPointInternal(List<DataPoint> points, ScreenPoint point)
         {
             if (this.XAxis == null || this.YAxis == null || points == null)
             {
@@ -281,10 +281,10 @@ namespace OxyPlot.Series
         /// <param name="points">The points (data coordinates).</param>
         /// <param name="point">The point (screen coordinates).</param>
         /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
-        protected TrackerHitResult GetNearestPointInternal(IEnumerable<IDataPoint> points, ScreenPoint point)
+        protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, ScreenPoint point)
         {
             var spn = default(ScreenPoint);
-            IDataPoint dpn = default(DataPoint);
+            var dpn = default(DataPoint);
             double index = -1;
 
             double minimumDistance = double.MaxValue;
@@ -297,7 +297,7 @@ namespace OxyPlot.Series
                     continue;
                 }
 
-                var sp = Axis.Transform(p, this.XAxis, this.YAxis);
+                var sp = this.XAxis.Transform(p.x, p.y, this.YAxis);
                 double d2 = (sp - point).LengthSquared;
 
                 if (d2 < minimumDistance)
@@ -327,9 +327,9 @@ namespace OxyPlot.Series
         /// <param name="xaxis">The x axis.</param>
         /// <param name="yaxis">The y axis.</param>
         /// <returns><c>true</c> if the point is valid; otherwise, <c>false</c> .</returns>
-        protected virtual bool IsValidPoint(IDataPoint pt, Axis xaxis, Axis yaxis)
+        protected virtual bool IsValidPoint(DataPoint pt, Axis xaxis, Axis yaxis)
         {
-            return pt != null && !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
+            return !double.IsNaN(pt.X) && !double.IsInfinity(pt.X) && !double.IsNaN(pt.Y) && !double.IsInfinity(pt.Y)
                    && (xaxis != null && xaxis.IsValidValue(pt.X)) && (yaxis != null && yaxis.IsValidValue(pt.Y));
         }
 

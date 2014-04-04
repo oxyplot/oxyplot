@@ -208,8 +208,12 @@ namespace ExampleLibrary
             var model = new PlotModel("PolylineAnnotation");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, 0, 30));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, 0, 30));
-            model.Annotations.Add(new PolylineAnnotation { Points = new IDataPoint[] { new DataPoint(0, 10), new DataPoint(5, 5), new DataPoint(20, 1), new DataPoint(30, 20) }, Text = "Polyline" });
-            model.Annotations.Add(new PolylineAnnotation { Points = new IDataPoint[] { new DataPoint(0, 15), new DataPoint(3, 23), new DataPoint(9, 30), new DataPoint(20, 12), new DataPoint(30, 10) }, Smooth = true, Text = "Smooth Polyline" });
+            var a1 = new PolylineAnnotation { Text = "Polyline" };
+            a1.Points.AddRange(new[] { new DataPoint(0, 10), new DataPoint(5, 5), new DataPoint(20, 1), new DataPoint(30, 20) });
+            var a2 = new PolylineAnnotation { Smooth = true, Text = "Smooth Polyline" };
+            a2.Points.AddRange(new[] { new DataPoint(0, 15), new DataPoint(3, 23), new DataPoint(9, 30), new DataPoint(20, 12), new DataPoint(30, 10) });
+            model.Annotations.Add(a1);
+            model.Annotations.Add(a2);
             return model;
         }
 
@@ -219,7 +223,9 @@ namespace ExampleLibrary
             var model = new PlotModel("PolygonAnnotation");
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 20));
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
-            model.Annotations.Add(new PolygonAnnotation { Points = new IDataPoint[] { new DataPoint(4, -2), new DataPoint(8, -4), new DataPoint(17, 7), new DataPoint(5, 8), new DataPoint(2, 5) }, Text = "Polygon 1" });
+            var a1 = new PolygonAnnotation { Text = "Polygon 1" };
+            a1.Points.AddRange(new[] { new DataPoint(4, -2), new DataPoint(8, -4), new DataPoint(17, 7), new DataPoint(5, 8), new DataPoint(2, 5) });
+            model.Annotations.Add(a1);
             return model;
         }
 
@@ -230,9 +236,31 @@ namespace ExampleLibrary
             model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 30) { MajorGridlineStyle = LineStyle.Solid, MajorGridlineThickness = 1 });
             model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10) { MajorGridlineStyle = LineStyle.Solid, MajorGridlineThickness = 1 });
 
-            model.Annotations.Add(new PolygonAnnotation { Layer = AnnotationLayer.BelowAxes, Points = new IDataPoint[] { new DataPoint(-11, -2), new DataPoint(-7, -4), new DataPoint(-3, 7), new DataPoint(-10, 8), new DataPoint(-13, 5) }, Text = "Layer = BelowAxes" });
-            model.Annotations.Add(new PolygonAnnotation { Layer = AnnotationLayer.BelowSeries, Points = new IDataPoint[] { new DataPoint(4, -2), new DataPoint(8, -4), new DataPoint(12, 7), new DataPoint(5, 8), new DataPoint(2, 5) }, Text = "Layer = BelowSeries" });
-            model.Annotations.Add(new PolygonAnnotation { Layer = AnnotationLayer.AboveSeries, Points = new IDataPoint[] { new DataPoint(19, -2), new DataPoint(23, -4), new DataPoint(27, 7), new DataPoint(20, 8), new DataPoint(17, 5) }, Text = "Layer = AboveSeries" });
+            var a1 = new PolygonAnnotation
+            {
+                Layer = AnnotationLayer.BelowAxes,
+                Text = "Layer = BelowAxes"
+            };
+            a1.Points.AddRange(new[]
+                    {
+                        new DataPoint(-11, -2), new DataPoint(-7, -4), new DataPoint(-3, 7), new DataPoint(-10, 8),
+                        new DataPoint(-13, 5)
+                    });
+            model.Annotations.Add(a1);
+            var a2 = new PolygonAnnotation
+            {
+                Layer = AnnotationLayer.BelowSeries,
+                Text = "Layer = BelowSeries"
+            };
+            a2.Points.AddRange(new DataPoint[]
+                    {
+                        new DataPoint(4, -2), new DataPoint(8, -4), new DataPoint(12, 7), new DataPoint(5, 8),
+                        new DataPoint(2, 5)
+                    });
+            model.Annotations.Add(a2);
+            var a3 = new PolygonAnnotation { Layer = AnnotationLayer.AboveSeries, Text = "Layer = AboveSeries" };
+            a3.Points.AddRange(new[] { new DataPoint(19, -2), new DataPoint(23, -4), new DataPoint(27, 7), new DataPoint(20, 8), new DataPoint(17, 5) });
+            model.Annotations.Add(a3);
 
             model.Series.Add(new FunctionSeries(Math.Sin, -20, 30, 400));
             return model;
@@ -258,17 +286,19 @@ namespace ExampleLibrary
 
             double d = 0.05;
 
-            Action<double, double> addPoint = (x, y) => model.Annotations.Add(
-                new PolygonAnnotation
-                    {
-                        Layer = AnnotationLayer.BelowAxes,
-                        Points =
-                            new IDataPoint[]
-                                {
-                                    new DataPoint(x-d, y-d), new DataPoint(x+d, y-d), new DataPoint(x+d, y+d),
-                                    new DataPoint(x-d,y+d), new DataPoint(x-d,y-d)
-                                }
-                    });
+            Action<double, double> addPoint = (x, y) =>
+            {
+                var annotation = new PolygonAnnotation
+                {
+                    Layer = AnnotationLayer.BelowAxes,
+                };
+                annotation.Points.AddRange(new[]
+                        {
+                            new DataPoint(x - d, y - d), new DataPoint(x + d, y - d), new DataPoint(x + d, y + d),
+                            new DataPoint(x - d, y + d), new DataPoint(x - d, y - d)
+                        });
+                model.Annotations.Add(annotation);
+            };
 
             addPoint(-6, 2);
             addPoint(-7, 6);
