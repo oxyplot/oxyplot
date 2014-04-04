@@ -53,7 +53,7 @@ namespace OxyPlot
         /// <param name="item">The item.</param>
         /// <param name="index">The index.</param>
         /// <param name="text">The text.</param>
-        public TrackerHitResult(Series.Series series, IDataPoint dp, ScreenPoint sp, object item = null, double index = -1, string text = null)
+        public TrackerHitResult(Series.Series series, DataPoint dp, ScreenPoint sp, object item = null, double index = -1, string text = null)
         {
             this.DataPoint = dp;
             this.Position = sp;
@@ -72,7 +72,7 @@ namespace OxyPlot
         /// <summary>
         /// Gets or sets the nearest or interpolated data point.
         /// </summary>
-        public IDataPoint DataPoint { get; set; }
+        public DataPoint DataPoint { get; set; }
 
         /// <summary>
         /// Gets or sets the source item of the point.

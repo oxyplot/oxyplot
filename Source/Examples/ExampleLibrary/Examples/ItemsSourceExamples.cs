@@ -93,7 +93,7 @@ namespace ExampleLibrary
             }
         }
 
-        private class MeasurementType2 : IDataPoint
+        private class MeasurementType2 : IDataPointProvider, ICodeGenerating
         {
             public double Abscissa { get; set; }
             public double Ordinate { get; set; }

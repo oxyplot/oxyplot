@@ -685,31 +685,6 @@ namespace OxyPlot.Axes
         protected double ViewMinimum { get; set; }
 
         /// <summary>
-        /// Transforms the specified point to screen coordinates.
-        /// </summary>
-        /// <param name="p">The point.</param>
-        /// <param name="xaxis">The x axis.</param>
-        /// <param name="yaxis">The y axis.</param>
-        /// <returns>The transformed point.</returns>
-        public static ScreenPoint Transform(DataPoint p, Axis xaxis, Axis yaxis)
-        {
-            return xaxis.Transform(p.x, p.y, yaxis);
-        }
-
-        /// <summary>
-        /// Transforms the specified point to screen coordinates.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the point.</param>
-        /// <param name="y">The y-coordinate of the point.</param>
-        /// <param name="xaxis">The x-axis.</param>
-        /// <param name="yaxis">The y-axis.</param>
-        /// <returns>The transformed point.</returns>
-        public static ScreenPoint Transform(double x, double y, Axis xaxis, Axis yaxis)
-        {
-            return xaxis.Transform(x, y, yaxis);
-        }
-
-        /// <summary>
         /// Transform the specified screen point to data coordinates.
         /// </summary>
         /// <param name="p">The point.</param>
@@ -719,18 +694,6 @@ namespace OxyPlot.Axes
         public static DataPoint InverseTransform(ScreenPoint p, Axis xaxis, Axis yaxis)
         {
             return xaxis.InverseTransform(p.x, p.y, yaxis);
-        }
-
-        /// <summary>
-        /// Transforms the specified point to screen coordinates.
-        /// </summary>
-        /// <param name="p">The point.</param>
-        /// <param name="xaxis">The x axis.</param>
-        /// <param name="yaxis">The y axis.</param>
-        /// <returns>The transformed point.</returns>
-        public static ScreenPoint Transform(IDataPoint p, Axis xaxis, Axis yaxis)
-        {
-            return xaxis.Transform(p.X, p.Y, yaxis);
         }
 
         /// <summary>

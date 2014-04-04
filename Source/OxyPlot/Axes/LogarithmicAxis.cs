@@ -320,7 +320,7 @@ namespace OxyPlot.Axes
         }
 
         /// <summary>
-        /// Updates the <see cref="ActualMaximum" /> and <see cref="ActualMinimum" /> values.
+        /// Updates the <see cref="Axis.ActualMaximum" /> and <see cref="Axis.ActualMinimum" /> values.
         /// </summary>
         /// <remarks>
         /// If the user has zoomed/panned the axis, the internal ViewMaximum/ViewMinimum

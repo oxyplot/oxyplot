@@ -78,14 +78,13 @@ namespace ExampleLibrary
                                 LegendOrientation = LegendOrientation.Horizontal
                             };
             model.Series.Add(new FunctionSeries(exact, 0, 4, 100) { Title = "Exact solution", StrokeThickness = 5 });
-
-            model.Series.Add(
-                new LineSeries("Euler, h=0.25")
-                    {
-                        MarkerType = MarkerType.Circle,
-                        MarkerFill = OxyColors.Black,
-                        Points = Euler(f, t0, y0, 4, 0.25)
-                    });
+            var eulerSeries = new LineSeries("Euler, h=0.25")
+            {
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColors.Black,
+            };
+            eulerSeries.Points.AddRange(Euler(f, t0, y0, 4, 0.25));
+            model.Series.Add(eulerSeries);
 
             //model.Series.Add(new LineSeries("Euler, h=1")
             //    {
@@ -93,30 +92,29 @@ namespace ExampleLibrary
             //        MarkerFill = OxyColors.Black,
             //        Points = Euler(f, t0, y0, 4, 1)
             //    });
+            var heunSeries = new LineSeries("Heun, h=0.25")
+            {
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColors.Black,
+            };
+            heunSeries.Points.AddRange(Heun(f, t0, y0, 4, 0.25));
+            model.Series.Add(heunSeries);
 
-            model.Series.Add(
-                new LineSeries("Heun, h=0.25")
-                    {
-                        MarkerType = MarkerType.Circle,
-                        MarkerFill = OxyColors.Black,
-                        Points = Heun(f, t0, y0, 4, 0.25)
-                    });
+            var midpointSeries = new LineSeries("Midpoint, h=0.25")
+            {
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColors.Black,
+            };
+            midpointSeries.Points.AddRange(Midpoint(f, t0, y0, 4, 0.25));
+            model.Series.Add(midpointSeries);
 
-            model.Series.Add(
-                new LineSeries("Midpoint, h=0.25")
-                    {
-                        MarkerType = MarkerType.Circle,
-                        MarkerFill = OxyColors.Black,
-                        Points = Midpoint(f, t0, y0, 4, 0.25)
-                    });
-
-            model.Series.Add(
-                new LineSeries("RK4, h=0.25")
-                    {
-                        MarkerType = MarkerType.Circle,
-                        MarkerFill = OxyColors.Black,
-                        Points = RungeKutta4(f, t0, y0, 4, 0.25)
-                    });
+            var rkSeries = new LineSeries("RK4, h=0.25")
+            {
+                MarkerType = MarkerType.Circle,
+                MarkerFill = OxyColors.Black,
+            };
+            rkSeries.Points.AddRange(RungeKutta4(f, t0, y0, 4, 0.25));
+            model.Series.Add(rkSeries);
 
             //model.Series.Add(new LineSeries("RK4, h=1")
             //{
@@ -129,10 +127,10 @@ namespace ExampleLibrary
             return model;
         }
 
-        private static IList<IDataPoint> Euler(
+        private static List<DataPoint> Euler(
             Func<double, double, double> f, double t0, double y0, double t1, double h)
         {
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
             double y = y0;
             for (double t = t0; t < t1 + h / 2; t += h)
             {
@@ -143,9 +141,9 @@ namespace ExampleLibrary
             return points;
         }
 
-        private static IList<IDataPoint> Heun(Func<double, double, double> f, double t0, double y0, double t1, double h)
+        private static IList<DataPoint> Heun(Func<double, double, double> f, double t0, double y0, double t1, double h)
         {
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
             double y = y0;
             for (double t = t0; t < t1 + h / 2; t += h)
             {
@@ -157,10 +155,10 @@ namespace ExampleLibrary
             return points;
         }
 
-        private static IList<IDataPoint> Midpoint(
+        private static List<DataPoint> Midpoint(
             Func<double, double, double> f, double t0, double y0, double t1, double h)
         {
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
             double y = y0;
             for (double t = t0; t < t1 + h / 2; t += h)
             {
@@ -171,10 +169,10 @@ namespace ExampleLibrary
             return points;
         }
 
-        private static IList<IDataPoint> RungeKutta4(
+        private static List<DataPoint> RungeKutta4(
             Func<double, double, double> f, double t0, double y0, double t1, double h)
         {
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
             double y = y0;
             for (double t = t0; t < t1 + h / 2; t += h)
             {
@@ -478,9 +476,9 @@ namespace ExampleLibrary
             }
         }
 
-        private static IEnumerable<IDataPoint> GetLineaPoints()
+        private static IEnumerable<DataPoint> GetLineaPoints()
         {
-            var points = new List<IDataPoint>();
+            var points = new List<DataPoint>();
 
             // The original image was vectorized by http://www.autotracer.org/
             // Then inkscape was used to convert from svg to xaml http://inkscape.org/

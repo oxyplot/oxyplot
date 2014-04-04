@@ -67,7 +67,7 @@ namespace OxyPlot.Series
         /// <summary>
         /// The smoothed points.
         /// </summary>
-        private IList<IDataPoint> smoothedPoints;
+        private List<DataPoint> smoothedPoints;
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "LineSeries" /> class.
@@ -281,7 +281,7 @@ namespace OxyPlot.Series
         /// Gets or sets the smoothed points.
         /// </summary>
         /// <value>The smoothed points.</value>
-        protected IList<IDataPoint> SmoothedPoints
+        protected List<DataPoint> SmoothedPoints
         {
             get
             {
@@ -466,8 +466,8 @@ namespace OxyPlot.Series
         /// Calculates the collection of broken lines delimiting a collection of continuous lines.
         /// </summary>
         /// <param name="contiguousLineSegments">The collection of contiguous lines for which to calculate the delimiting broken lines.</param>
-        /// <returns><see cref="IDataPoint" /> pairs representing the broken lines delimiting the passed collection of contiguous lines.</returns>
-        protected static IEnumerable<Segment> CalculateBrokenLines(ICollection<ICollection<IDataPoint>> contiguousLineSegments)
+        /// <returns><see cref="DataPoint" /> pairs representing the broken lines delimiting the passed collection of contiguous lines.</returns>
+        protected static IEnumerable<Segment> CalculateBrokenLines(ICollection<ICollection<DataPoint>> contiguousLineSegments)
         {
             for (var i = 1; i < contiguousLineSegments.ToArray().Count(); i++)
             {
@@ -481,8 +481,8 @@ namespace OxyPlot.Series
         /// Extracts all contiguous line segments from the line represented by the collection of points passed to the method.
         /// </summary>
         /// <param name="points">The line from which to extract all contiguous segments.</param>
-        /// <returns>A collection of <see cref="IDataPoint" /> arrays which represent all contiguous line segments in the passed points collection.</returns>
-        protected static IEnumerable<IDataPoint[]> ExtractContiguousLines(IEnumerable<IDataPoint> points)
+        /// <returns>A collection of <see cref="DataPoint" /> arrays which represent all contiguous line segments in the passed points collection.</returns>
+        protected static IEnumerable<DataPoint[]> ExtractContiguousLines(IEnumerable<DataPoint> points)
         {
             var enumerator = points.GetEnumerator();
             while (enumerator.MoveNext())
@@ -497,9 +497,9 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="enumerator">The enumerator to use to traverse the collection. The enumerator must be on a valid element.</param>
         /// <returns>A collection of contiguous data points.</returns>
-        protected static IEnumerable<IDataPoint> ExtractNextContiguousLineSegment(IEnumerator<IDataPoint> enumerator)
+        protected static IEnumerable<DataPoint> ExtractNextContiguousLineSegment(IEnumerator<DataPoint> enumerator)
         {
-            while (!enumerator.Current.IsValid())
+            while (!enumerator.Current.IsDefined())
             {
                 if (!enumerator.MoveNext())
                 {
@@ -509,7 +509,7 @@ namespace OxyPlot.Series
 
             yield return enumerator.Current;
 
-            while (enumerator.MoveNext() && enumerator.Current.IsValid())
+            while (enumerator.MoveNext() && enumerator.Current.IsDefined())
             {
                 yield return enumerator.Current;
             }
@@ -585,7 +585,7 @@ namespace OxyPlot.Series
         protected void RenderLegendOnLine(IRenderContext rc, OxyRect clippingRect)
         {
             // Find the position
-            IDataPoint point;
+            DataPoint point;
             var ha = HorizontalAlignment.Left;
             double dx;
             switch (this.LineLegendPosition)
@@ -709,7 +709,7 @@ namespace OxyPlot.Series
             /// </summary>
             /// <param name="point1">The first point of the segment.</param>
             /// <param name="point2">The second point of the segment.</param>
-            public Segment(IDataPoint point1, IDataPoint point2)
+            public Segment(DataPoint point1, DataPoint point2)
             {
                 this.Point1 = point1;
                 this.Point2 = point2;
@@ -718,12 +718,12 @@ namespace OxyPlot.Series
             /// <summary>
             /// Gets the first point1 of the segment.
             /// </summary>
-            public IDataPoint Point1 { get; private set; }
+            public DataPoint Point1 { get; private set; }
 
             /// <summary>
             /// Gets the second point of the segment.
             /// </summary>
-            public IDataPoint Point2 { get; private set; }
+            public DataPoint Point2 { get; private set; }
         }
     }
 }

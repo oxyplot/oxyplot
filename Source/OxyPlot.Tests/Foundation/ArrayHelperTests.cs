@@ -27,7 +27,6 @@
 
 namespace OxyPlot.Tests
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 

@@ -40,9 +40,9 @@ namespace OxyPlot.Wpf
     public class LineAnnotation : PathAnnotation
     {
         /// <summary>
-        /// Identifies the <see cref="LineType"/> dependency property.
+        /// Identifies the <see cref="Type"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty LineTypeProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty TypeProperty = DependencyProperty.Register(
             "Type",
             typeof(LineAnnotationType),
             typeof(LineAnnotation),
@@ -207,12 +207,12 @@ namespace OxyPlot.Wpf
         {
             get
             {
-                return (LineAnnotationType)this.GetValue(LineTypeProperty);
+                return (LineAnnotationType)this.GetValue(TypeProperty);
             }
 
             set
             {
-                this.SetValue(LineTypeProperty, value);
+                this.SetValue(TypeProperty, value);
             }
         }
 

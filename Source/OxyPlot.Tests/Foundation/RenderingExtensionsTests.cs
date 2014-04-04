@@ -91,7 +91,7 @@ namespace OxyPlot.Tests
             }
 
             /// <summary>
-            /// Given a ine that crosses the clipping rectangle.
+            /// Given a line that crosses the clipping rectangle.
             /// </summary>
             [Test]
             public void CrossingLine()
