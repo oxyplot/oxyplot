@@ -30,6 +30,7 @@ using OxyPlot;
 namespace ExampleLibrary
 {
     using System;
+	using System.Linq;
     using System.Reflection;
 
     using OxyPlot.Annotations;
@@ -270,19 +271,19 @@ namespace ExampleLibrary
         public static PlotModel TextAnnotations()
         {
             var model = new PlotModel("TextAnnotation");
-            model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -20, 20));
-            model.Axes.Add(new LinearAxis(AxisPosition.Left, -10, 10));
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(-6, 2), Text = "Text annotation 1" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(-7, 6), Rotation = 60, Text = "Text annotation 2" });
+			model.Axes.Add(new LinearAxis(AxisPosition.Bottom, -15, 25));
+			model.Axes.Add(new LinearAxis(AxisPosition.Left, -5, 18));
+			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(-6, 0), Text = "Text annotation 1" });
+			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(-7, 10), Rotation = 80, Text = "Text annotation 2" });
             model.Annotations.Add(new TextAnnotation { Position = new DataPoint(2, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top, Text = "Right/Top" });
             model.Annotations.Add(new TextAnnotation { Position = new DataPoint(2, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Middle, Text = "Right/Middle" });
             model.Annotations.Add(new TextAnnotation { Position = new DataPoint(2, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom, Text = "Right/Bottom" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(6, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Top, Text = "Center/Top" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(6, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Middle, Text = "Center/Middle" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(6, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Bottom, Text = "Center/Bottom" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top, Text = "Left/Top" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Middle, Text = "Left/Middle" });
-            model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom, Text = "Left/Bottom" });
+			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Top, Text = "Center/Top" });
+			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Middle, Text = "Center/Middle" });
+			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(10, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Bottom, Text = "Center/Bottom" });
+			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(18, 2), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top, Text = "Left/Top" });
+			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(18, 4), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Middle, Text = "Left/Middle" });
+			model.Annotations.Add(new TextAnnotation { Position = new DataPoint(18, 6), Rotation = 20, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom, Text = "Left/Bottom" });
 
             double d = 0.05;
 
@@ -300,18 +301,14 @@ namespace ExampleLibrary
                 model.Annotations.Add(annotation);
             };
 
-            addPoint(-6, 2);
-            addPoint(-7, 6);
-            addPoint(2, 2);
-            addPoint(2, 4);
-            addPoint(2, 6);
-            addPoint(6, 2);
-            addPoint(6, 4);
-            addPoint(6, 6);
-            addPoint(10, 2);
-            addPoint(10, 4);
-            addPoint(10, 6);
-            return model;
+			foreach (var a in model.Annotations.ToArray()) {
+				var ta = a as TextAnnotation;
+				if (ta != null) {
+					addPoint (ta.Position.X, ta.Position.Y);
+				}
+			}
+
+			return model;
         }
 
         [Example("LineAnnotation on reversed axes")]
