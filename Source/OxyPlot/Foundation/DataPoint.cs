@@ -127,11 +127,13 @@ namespace OxyPlot
         public bool IsDefined()
         {
             // check that x and y is not NaN (the code below is faster than double.IsNaN)
+			#pragma warning disable 1718
             // ReSharper disable EqualExpressionComparison
             // ReSharper disable CompareOfFloatsByEqualityOperator
             return this.x == this.x && this.y == this.y;
             // ReSharper restore CompareOfFloatsByEqualityOperator
             // ReSharper restore EqualExpressionComparison
+			#pragma warning restore 1718
         }
     }
 }
