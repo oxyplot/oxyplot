@@ -41,12 +41,17 @@ namespace OxyPlot.XamarinIOS
 
         public PlotView ()
         {
+			// TODO: virtual method calls in constructor, how to avoid this?
             this.UserInteractionEnabled = true;
             this.MultipleTouchEnabled = true;
             this.KeepAspectRatioWhenPinching = true;
         }
 
-        public PlotModel Model {
+		/// <summary>
+		/// Gets or sets the <see cref="PlotModel"/> tho show in the view. 
+		/// </summary>
+		/// <value>The <see cref="PlotModel"/>.</value>
+		public PlotModel Model {
             get {
                 return this.model;
             }
@@ -60,6 +65,10 @@ namespace OxyPlot.XamarinIOS
 
         }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IPlotController"/> that handles input events.
+		/// </summary>
+		/// <value>The <see cref="IPlotController"/>.</value>
         public IPlotController Controller {
             get {
                 return this.controller;
@@ -72,12 +81,20 @@ namespace OxyPlot.XamarinIOS
             }
         }
 
+		/// <summary>
+		/// Gets the actual <see cref="PlotModel"/> to show.
+		/// </summary>
+		/// <value>The actual model.</value>
         public PlotModel ActualModel {
             get {
                 return this.Model;
             }
         }
 
+		/// <summary>
+		/// Gets the actual <see cref="IPlotController"/>.
+		/// </summary>
+		/// <value>The actual plot controller.</value>
         public IPlotController ActualController {
             get {
                 return this.Controller ?? (this.defaultController ?? (this.defaultController = new PlotController ()));
@@ -97,6 +114,7 @@ namespace OxyPlot.XamarinIOS
         public void InvalidatePlot (bool updateData = true)
         {
             if (this.model != null) {
+				// TODO: update the model on a background thread
                 this.model.Update (updateData);
             }
 
@@ -105,26 +123,29 @@ namespace OxyPlot.XamarinIOS
 
         public void SetCursorType (CursorType cursorType)
         {
+			// No cursor on iOS
         }
 
         public void ShowTracker (TrackerHitResult trackerHitResult)
         {
+			// TODO: how to show a tracker on iOS
+			// the tracker must be moved away from the finger...
         }
 
         public void ShowZoomRectangle (OxyRect rectangle)
         {
+			// Not needed - better with pinch events on iOS?
         }
 
         public void SetClipboardText (string text)
         {
+			// TODO: how to set clipboard on iOS
         }
 
-        public override void InvalidateIntrinsicContentSize ()
-        {
-            base.InvalidateIntrinsicContentSize ();
-            System.Diagnostics.Debug.WriteLine ("InvalidateIntrinsicContentSize()");
-        }
-
+		/// <summary>
+		/// Draws the content of the view.
+		/// </summary>
+		/// <param name="rect">The rectangle to draw.</param>
         public override void Draw (System.Drawing.RectangleF rect)
         {
             var context = UIGraphics.GetCurrentContext ();
