@@ -334,6 +334,12 @@ namespace OxyPlot.Wpf
             "TextColor", typeof(Color), typeof(Plot), new PropertyMetadata(Colors.Black, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="TitleHorizontalAlignment"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TitleAlignmentProperty =
+            DependencyProperty.Register("TitleHorizontalAlignment", typeof(TitleHorizontalAlignment), typeof(Plot), new PropertyMetadata(TitleHorizontalAlignment.CenteredWithinPlotArea, AppearanceChanged));
+
+        /// <summary>
         /// Identifies the <see cref="TitleFont"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleFontProperty = DependencyProperty.Register(
@@ -1018,7 +1024,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets SubtitleFontSize.
+        /// Gets or sets the font size of the subtitle.
         /// </summary>
         public double SubtitleFontSize
         {
@@ -1034,7 +1040,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets SubtitleFontWeight.
+        /// Gets or sets the font weight of the subtitle.
         /// </summary>
         public FontWeight SubtitleFontWeight
         {
@@ -1050,7 +1056,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TextColor.
+        /// Gets or sets text color.
         /// </summary>
         public Color TextColor
         {
@@ -1083,7 +1089,19 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TitleFont.
+        /// Gets or sets the horizontal alignment of the title and subtitle.
+        /// </summary>
+        /// <value>
+        /// The alignment.
+        /// </value>
+        public TitleHorizontalAlignment TitleHorizontalAlignment
+        {
+            get { return (TitleHorizontalAlignment)GetValue(TitleAlignmentProperty); }
+            set { SetValue(TitleAlignmentProperty, value); }
+        }
+        
+        /// <summary>
+        /// Gets or sets font of the title.
         /// </summary>
         public string TitleFont
         {
@@ -1099,7 +1117,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TitleFontSize.
+        /// Gets or sets font size of the title.
         /// </summary>
         public double TitleFontSize
         {
@@ -1115,7 +1133,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TitleFontWeight.
+        /// Gets or sets font weight of the title.
         /// </summary>
         public FontWeight TitleFontWeight
         {
@@ -1131,7 +1149,7 @@ namespace OxyPlot.Wpf
         }
 
         /// <summary>
-        /// Gets or sets TitlePadding.
+        /// Gets or sets padding around the title.
         /// </summary>
         public double TitlePadding
         {

@@ -196,6 +196,22 @@ namespace OxyPlot
     }
 
     /// <summary>
+    /// Specifies the horizontal alignment of the titles.
+    /// </summary>
+    public enum TitleHorizontalAlignment
+    {
+        /// <summary>
+        /// Centered within the plot area.
+        /// </summary>
+        CenteredWithinPlotArea,
+
+        /// <summary>
+        /// Centered within the client view (excluding padding defined in <see cref="PlotModel.Padding" />).
+        /// </summary>
+        CenteredWithinView
+    }
+
+    /// <summary>
     /// Represents a plot (including axes, series and annotations).
     /// </summary>
     public partial class PlotModel
@@ -707,6 +723,14 @@ namespace OxyPlot
         /// </summary>
         /// <value>The color of the subtitle.</value>
         public OxyColor SubtitleColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the horizontal alignement of the title and subtitle.
+        /// </summary>
+        /// <value>
+        /// The alignment.
+        /// </value>
+        public TitleHorizontalAlignment TitleHorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets the title area.
