@@ -489,7 +489,25 @@ namespace OxyPlot
                 plotArea.Top - this.ActualPlotMargins.Top,
                 plotArea.Width + this.ActualPlotMargins.Left + this.ActualPlotMargins.Right,
                 plotArea.Height + this.ActualPlotMargins.Top + this.ActualPlotMargins.Bottom);
-            this.TitleArea = new OxyRect(this.PlotArea.Left, this.Padding.Top, this.PlotArea.Width, titleSize.Height + (this.TitlePadding * 2));
+            
+            switch (this.TitleHorizontalAlignment)
+            {
+                case TitleHorizontalAlignment.CenteredWithinView:
+                    this.TitleArea = new OxyRect(
+                        0,
+                        this.Padding.Top,
+                        this.Width,
+                        titleSize.Height + (this.TitlePadding * 2));
+                    break;
+                default:
+                    this.TitleArea = new OxyRect(
+                        this.PlotArea.Left,
+                        this.Padding.Top,
+                        this.PlotArea.Width,
+                        titleSize.Height + (this.TitlePadding * 2));
+                    break;
+            }
+
             this.LegendArea = this.GetLegendRectangle(legendSize);
         }
     }

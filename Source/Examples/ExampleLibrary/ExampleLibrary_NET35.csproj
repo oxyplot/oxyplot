@@ -74,6 +74,7 @@
     <Compile Include="Examples\ItemsSourceExamples.cs" />
     <Compile Include="Examples\FunctionSeriesExamples.cs" />
     <Compile Include="Examples\PerformanceExamples.cs" />
+    <Compile Include="Examples\PlotModelExamples.cs" />
     <Compile Include="Examples\RangeColorAxisExamples.cs" />
     <Compile Include="Examples\ShowMeTheNumbersExamples.cs" />
     <Compile Include="Examples\DiscreteDataSeriesExamples.cs" />
