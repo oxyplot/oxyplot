@@ -205,7 +205,7 @@ namespace OxyPlot.Reporting
                     ////this.WriteEndElement();
                     break;
                 case HtmlPlotElementType.Svg:
-                    this.WriteRaw(plot.PlotModel.ToSvg(plot.Width, plot.Height, false, this.textMeasurer));
+                    this.WriteRaw(SvgExporter.ExportToString(plot.PlotModel, plot.Width, plot.Height, false, this.textMeasurer));
                     break;
             }
 

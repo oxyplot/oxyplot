@@ -58,28 +58,6 @@ namespace OxyPlot.Tests
         }
 
         [Test]
-        public void ToSvg_TestPlot_ValidSvgString()
-        {
-            var plotModel = TestModels.CreateTestModel1();
-
-            var svg1 = plotModel.ToSvg(800, 500, true);
-            SvgAssert.IsValidDocument(svg1);
-            var svg2 = plotModel.ToSvg(800, 500, false);
-            SvgAssert.IsValidElement(svg2);
-        }
-
-        [Test]
-        public void SaveSvg_TestPlot_ValidSvgFile()
-        {
-            var plotModel = TestModels.CreateTestModel1();
-
-            const string FileName = "PlotModelTests_Test1.svg";
-            var svg = plotModel.ToSvg(800, 500, false);
-            File.WriteAllText(FileName, svg);
-            SvgAssert.IsValidFile(FileName);
-        }
-
-        [Test]
         public void B11_Backgrounds()
         {
             var plot = new PlotModel("Backgrounds");

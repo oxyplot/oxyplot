@@ -99,7 +99,7 @@ namespace CsvDemo
                         break;
                     case ".svg":
                         var rc = new ShapesRenderContext(null);
-                        var svg = vm.Model.ToSvg(plot1.ActualWidth, plot1.ActualHeight, false, rc);
+                        var svg = OxyPlot.SvgExporter.ExportToString(this.vm.Model, plot1.ActualWidth, plot1.ActualHeight, false, rc);
                         File.WriteAllText(dlg.FileName, svg);
                         break;
                     case ".pdf":
@@ -139,7 +139,8 @@ namespace CsvDemo
         private void CopySvg_Click(object sender, RoutedEventArgs e)
         {
             var rc = new ShapesRenderContext(null);
-            Clipboard.SetText(vm.Model.ToSvg(plot1.ActualWidth, plot1.ActualHeight, true, rc));
+            var svg = OxyPlot.SvgExporter.ExportToString(this.vm.Model, plot1.ActualWidth, plot1.ActualHeight, true, rc);
+            Clipboard.SetText(svg);
         }
 
         private void CopyBitmap_Click(object sender, RoutedEventArgs e)
