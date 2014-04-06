@@ -295,11 +295,11 @@ namespace OxyPlot.Series
                 // Check if the point is defined (the code below is faster than double.IsNaN)
                 // ReSharper disable EqualExpressionComparison
                 // ReSharper disable CompareOfFloatsByEqualityOperator
-				#pragma warning disable 1718
+#pragma warning disable 1718
                 if (x != x || y != y)
                 // ReSharper restore CompareOfFloatsByEqualityOperator
                 // ReSharper restore EqualExpressionComparison
-				#pragma warning restore 1718
+#pragma warning restore 1718
                 {
                     continue;
                 }
