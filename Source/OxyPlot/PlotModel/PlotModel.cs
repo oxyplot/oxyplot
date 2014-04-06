@@ -725,7 +725,7 @@ namespace OxyPlot
         public OxyColor SubtitleColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the horizontal alignement of the title and subtitle.
+        /// Gets or sets the horizontal alignment of the title and subtitle.
         /// </summary>
         /// <value>
         /// The alignment.
@@ -1131,6 +1131,7 @@ namespace OxyPlot
         /// <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
         /// <param name="textMeasurer">The text measurer.</param>
         /// <returns>The svg string.</returns>
+        [Obsolete("Use SvgExporter instead")]
         public string ToSvg(double width, double height, bool isDocument, IRenderContext textMeasurer = null)
         {
             return SvgExporter.ExportToString(this, width, height, isDocument, textMeasurer);

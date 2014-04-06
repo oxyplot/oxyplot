@@ -136,7 +136,8 @@ namespace ExportDemo
         public void CopySvg()
         {
             var rc = new ShapesRenderContext(null);
-            Clipboard.SetText(this.Model.ToSvg(this.Plot.ActualWidth, this.Plot.ActualHeight, true, rc));
+            var svg = SvgExporter.ExportToString(this.Model, this.Plot.ActualWidth, this.Plot.ActualHeight, true, rc);
+            Clipboard.SetText(svg);
         }
 
         public void CopyXaml()
