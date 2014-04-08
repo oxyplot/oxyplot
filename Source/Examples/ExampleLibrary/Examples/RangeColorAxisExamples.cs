@@ -52,7 +52,7 @@ namespace ExampleLibrary
 
             var s1 = new ScatterSeries { MarkerType = MarkerType.Square, MarkerSize = 6, };
 
-            var random = new Random();
+            var random = new Random(13);
             for (int i = 0; i < n; i++)
             {
                 double x = random.NextDouble() * 2.2 - 1.1;

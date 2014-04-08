@@ -104,7 +104,7 @@ namespace DateTimeDemo
             tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             // Create a random data collection
-            var r = new Random();
+            var r = new Random(13);
             Data = new Collection<DateValue>();
             var date = start;
             while (date <= end)
@@ -135,7 +135,7 @@ namespace DateTimeDemo
             tmp.Axes.Add(new TimeSpanAxis() { StringFormat = "h:mm" });
 
             // Create a random data collection
-            var r = new Random();
+            var r = new Random(13);
             Data2 = new Collection<TimeValue>();
             var current = start;
             while (current <= end)

@@ -360,7 +360,7 @@ namespace ExampleLibrary
                 bins[i] = new HistogramBin { Label = i.ToString() };
             }
 
-            var r = new Random();
+            var r = new Random(31);
             for (int i = 0; i < n; i++)
             {
                 int value = r.Next(binCount);

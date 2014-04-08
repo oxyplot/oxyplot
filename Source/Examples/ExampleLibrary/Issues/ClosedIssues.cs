@@ -141,7 +141,7 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = "Noisy data" };
 
             var points = new List<DataPoint>();
-            var rng = new Random();
+            var rng = new Random(7);
             for (int i = 0; i < 500; i++)
             {
                 points.Add(new DataPoint(i + 1, rng.NextDouble()));
@@ -226,7 +226,7 @@ namespace ExampleLibrary
             return plotModel1;
         }
 
-        [Example("#10084: AreaSeries should respect CanTrackerInterpolatePoints")]
+        [Example("#10084: AreaSeries should respect CanTrackerInterpolatePoints=true")]
         public static PlotModel AreaSeries_CanTrackerInterpolatePointsTrue()
         {
             var plotModel1 = new PlotModel { Title = "AreaSeries with CanTrackerInterpolatePoints=true" };

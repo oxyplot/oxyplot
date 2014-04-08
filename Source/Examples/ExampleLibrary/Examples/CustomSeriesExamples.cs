@@ -45,7 +45,7 @@ namespace ExampleLibrary
             var model = new PlotModel { Title = "ErrorSeries" };
 
             var s1 = new ErrorSeries { Title = "Measurements" };
-            var random = new Random();
+            var random = new Random(31);
             double x = 0;
             double y = 0;
             for (int i = 0; i < n; i++)
