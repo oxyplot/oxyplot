@@ -331,6 +331,7 @@ namespace OxyPlot
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="subtitle">The subtitle.</param>
+        [Obsolete]
         public PlotModel(string title, string subtitle = null)
             : this()
         {
