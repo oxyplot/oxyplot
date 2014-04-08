@@ -66,6 +66,7 @@ namespace OxyPlot.Annotations
         /// <param name="position">The position in screen coordinates.</param>
         /// <param name="horizontalAlignment">The horizontal alignment.</param>
         /// <param name="verticalAlignment">The vertical alignment.</param>
+        [Obsolete]
         public ImageAnnotation(
             OxyImage image,
             ScreenPoint position,
@@ -87,6 +88,7 @@ namespace OxyPlot.Annotations
         /// <param name="position">The position in data coordinates.</param>
         /// <param name="horizontalAlignment">The horizontal alignment.</param>
         /// <param name="verticalAlignment">The vertical alignment.</param>
+        [Obsolete]
         public ImageAnnotation(
             OxyImage image,
             DataPoint position,
@@ -109,6 +111,7 @@ namespace OxyPlot.Annotations
         /// <param name="relativeY">The y-coordinate relative to the plot area (0-1).</param>
         /// <param name="horizontalAlignment">The horizontal alignment.</param>
         /// <param name="verticalAlignment">The vertical alignment.</param>
+        [Obsolete]
         public ImageAnnotation(
             OxyImage image,
             double relativeX,

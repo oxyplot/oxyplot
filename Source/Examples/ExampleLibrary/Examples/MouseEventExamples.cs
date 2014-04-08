@@ -439,7 +439,7 @@ namespace ExampleLibrary
                 image = new OxyImage(stream);
             }
 
-            var ia = new ImageAnnotation(image, new DataPoint(4, 2), HorizontalAlignment.Right);
+            var ia = new ImageAnnotation { ImageSource = image, X = new PlotLength(4, PlotLengthUnit.Data), Y = new PlotLength(2, PlotLengthUnit.Data), HorizontalAlignment = HorizontalAlignment.Right };
             model.Annotations.Add(ia);
 
             // Handle left mouse clicks
