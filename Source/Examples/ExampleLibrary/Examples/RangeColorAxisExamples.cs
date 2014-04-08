@@ -40,8 +40,9 @@ namespace ExampleLibrary
         public static PlotModel RangeColorAxis()
         {
             int n = 1000;
-            var model = new PlotModel(string.Format("ScatterSeries and RangeColorAxis (n={0})", n))
+            var model = new PlotModel
                 {
+                    Title = string.Format("ScatterSeries and RangeColorAxis (n={0})", n),
                     Background = OxyColors.LightGray
                 };
             var rca = new RangeColorAxis { Position = AxisPosition.Right, Maximum = 2, Minimum = -2 };

@@ -39,7 +39,7 @@ namespace ExampleLibrary
         [Example("Basic controller example")]
         public static Example BasicExample()
         {
-            var model = new PlotModel("Basic Controller example", "Panning with left mouse button");
+            var model = new PlotModel { Title = "Basic Controller example", Subtitle = "Panning with left mouse button" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             var controller = new PlotController();
@@ -51,7 +51,7 @@ namespace ExampleLibrary
         [Example("Show tracker without clicking")]
         public static Example HoverTracking()
         {
-            var model = new PlotModel("Show tracker without clicking");
+            var model = new PlotModel { Title = "Show tracker without clicking" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             model.Series.Add(new FunctionSeries(t => (Math.Cos(t) * 5) + Math.Cos(t * 50), t => (Math.Sin(t) * 5) + Math.Sin(t * 50), 0, Math.PI * 2, 20000));
@@ -68,7 +68,7 @@ namespace ExampleLibrary
         [Example("Mouse handling example")]
         public static Example MouseHandlingExample()
         {
-            var model = new PlotModel("Mouse handling example");
+            var model = new PlotModel { Title = "Mouse handling example" };
             var series = new ScatterSeries();
             model.Series.Add(series);
 

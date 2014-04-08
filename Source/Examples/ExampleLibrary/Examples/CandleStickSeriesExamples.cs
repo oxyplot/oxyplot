@@ -40,7 +40,7 @@ namespace ExampleLibrary
         [Example("CandleStickSeries")]
         public static PlotModel CandleStickSeries()
         {
-            var model = new PlotModel("CandleStickSeries") { LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "CandleStickSeries", LegendSymbolLength = 24 };
             var s1 = new CandleStickSeries
                 {
                     Title = "random values",
@@ -81,7 +81,7 @@ namespace ExampleLibrary
         [Example("Minute data (DateTimeAxis)")]
         public static PlotModel MinuteData_DateTimeAxis()
         {
-            var pm = new PlotModel("Minute Data (DateTimeAxis)");
+            var pm = new PlotModel { Title = "Minute Data (DateTimeAxis)" };
 
             var timeSpanAxis1 = new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "hh:mm" };
             pm.Axes.Add(timeSpanAxis1);
@@ -133,7 +133,7 @@ namespace ExampleLibrary
         public static PlotModel MinuteData_TimeSpan()
         {
 
-            var pm = new PlotModel("Minute Data (TimeSpanAxis)");
+            var pm = new PlotModel { Title = "Minute Data (TimeSpanAxis)" };
 
             var timeSpanAxis1 = new TimeSpanAxis { Position = AxisPosition.Bottom, StringFormat = "hh:mm" };
             pm.Axes.Add(timeSpanAxis1);

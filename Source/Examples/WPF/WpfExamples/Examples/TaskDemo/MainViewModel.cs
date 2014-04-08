@@ -52,7 +52,7 @@ namespace TaskDemo
         public MainViewModel()
         {
             // Create a plot model
-            this.PlotModel = new PlotModel("Updating by task running on the UI thread");
+            this.PlotModel = new PlotModel { Title = "Updating by task running on the UI thread" };
             this.LineSeries1 = new LineSeries();
             this.points.Add(new DataPoint(0, 0));
             this.PlotModel.Series.Add(this.LineSeries1);

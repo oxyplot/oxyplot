@@ -42,7 +42,7 @@ namespace ExampleLibrary
         [Example("LineSeries")]
         public static PlotModel OneSeries()
         {
-            var model = new PlotModel("LineSeries") { LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "LineSeries", LegendSymbolLength = 24 };
             var s1 = new LineSeries
             {
                 Title = "Series 1",
@@ -65,7 +65,7 @@ namespace ExampleLibrary
         [Example("Two LineSeries")]
         public static PlotModel TwoLineSeries()
         {
-            var model = new PlotModel("Two LineSeries") { LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "Two LineSeries", LegendSymbolLength = 24 };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -1, Maximum = 71, Title = "Y-Axis" });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1, Maximum = 61, Title = "X-Axis" });
             var s1 = new LineSeries
@@ -105,7 +105,7 @@ namespace ExampleLibrary
         [Example("Invisible LineSeries")]
         public static PlotModel InvisibleLineSeries()
         {
-            var model = new PlotModel("Invisible LineSeries");
+            var model = new PlotModel { Title = "Invisible LineSeries" };
             var s1 = new LineSeries { Title = "Series 1" };
 
             s1.Points.Add(new DataPoint(0, 10));
@@ -121,7 +121,7 @@ namespace ExampleLibrary
         [Example("Marker types")]
         public static PlotModel MarkerTypes()
         {
-            var model = new PlotModel("Marker types");
+            var model = new PlotModel { Title = "Marker types" };
             model.Series.Add(CreateRandomLineSeries(10, "Circle", MarkerType.Circle));
             model.Series.Add(CreateRandomLineSeries(10, "Cross", MarkerType.Cross));
             model.Series.Add(CreateRandomLineSeries(10, "Diamond", MarkerType.Diamond));
@@ -135,7 +135,7 @@ namespace ExampleLibrary
         [Example("LineSeries with labels")]
         public static PlotModel LineSeriesWithLabels()
         {
-            var model = new PlotModel("LineSeries with labels") { LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "LineSeries with labels", LegendSymbolLength = 24 };
             var s1 = new LineSeries
             {
                 Title = "Series 1",
@@ -177,7 +177,7 @@ namespace ExampleLibrary
         [Example("Custom markers")]
         public static PlotModel CustomMarkers()
         {
-            var model = new PlotModel("LineSeries with custom markers") { LegendSymbolLength = 30, PlotType = PlotType.Cartesian };
+            var model = new PlotModel { Title = "LineSeries with custom markers", LegendSymbolLength = 30, PlotType = PlotType.Cartesian };
             const int N = 6;
             var customMarkerOutline = new ScreenPoint[N];
             for (int i = 0; i < N; i++)
@@ -301,7 +301,7 @@ namespace ExampleLibrary
         [Example("Smooth Line")]
         public static PlotModel SmoothLine()
         {
-            var model = new PlotModel("Smooth Line") { LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "Smooth Line", LegendSymbolLength = 24 };
             var s1 = new LineSeries
             {
                 Title = "Series 1",
@@ -345,7 +345,7 @@ namespace ExampleLibrary
         [Example("Complex Smooth Line")]
         public static PlotModel ComplexSmoothLine()
         {
-            var model = new PlotModel("Complex Smooth Lines");
+            var model = new PlotModel { Title = "Complex Smooth Lines" };
 
             var s1 = new LineSeries
             {
@@ -365,7 +365,7 @@ namespace ExampleLibrary
 
         private static PlotModel CreateModel(string title, int n = 20)
         {
-            var model = new PlotModel(title);
+            var model = new PlotModel { Title = title };
             for (int i = 1; i <= n; i++)
             {
                 var s = new LineSeries { Title = "Series " + i };
@@ -380,7 +380,7 @@ namespace ExampleLibrary
         [Example("Two-color LineSeries")]
         public static PlotModel TwoColorLineSeries()
         {
-            var model = new PlotModel("TwoColorLineSeries") { LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "TwoColorLineSeries", LegendSymbolLength = 24 };
             var s1 = new TwoColorLineSeries()
             {
                 Title = "Temperature at Eidesmoen, December 1986.",
@@ -415,7 +415,7 @@ namespace ExampleLibrary
         public static PlotModel LineLegendPositionAtEnd()
         {
             // http://www.perceptualedge.com/example2.php
-            var model = new PlotModel("Average (Mean) monthly temperatures in 2003") { PlotMargins = new OxyThickness(60, 4, 60, 40), PlotAreaBorderThickness = 0, IsLegendVisible = false };
+            var model = new PlotModel { Title = "Average (Mean) monthly temperatures in 2003", PlotMargins = new OxyThickness(60, 4, 60, 40), PlotAreaBorderThickness = 0, IsLegendVisible = false };
             var phoenix = new LineSeries { Title = "Phoenix", LineLegendPosition = LineLegendPosition.End };
             var raleigh = new LineSeries { Title = "Raleigh", LineLegendPosition = LineLegendPosition.End };
             var minneapolis = new LineSeries { Title = "Minneapolis", LineLegendPosition = LineLegendPosition.End };
@@ -449,7 +449,7 @@ namespace ExampleLibrary
         [Example("Broken line")]
         public static PlotModel BrokenLine()
         {
-            var model = new PlotModel("Broken line");
+            var model = new PlotModel { Title = "Broken line" };
             var s1 = new LineSeries
                 {
                     BrokenLineColor = OxyColors.Gray,
@@ -473,7 +473,7 @@ namespace ExampleLibrary
         [Example("Invisible LineSeries")]
         public static PlotModel InvisibleSeries()
         {
-            var model = new PlotModel("Invisible LineSeries");
+            var model = new PlotModel { Title = "Invisible LineSeries" };
             var s1 = new LineSeries { Title = "Series 1 (visible)" };
             s1.Points.Add(new DataPoint(0, 5));
             s1.Points.Add(new DataPoint(10, 20));

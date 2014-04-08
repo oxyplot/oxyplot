@@ -38,7 +38,7 @@ namespace ExampleLibrary
         public static PlotModel UsingIDataPointProvider()
         {
             var measurements = new[] { new MeasurementType1(0, 10), new MeasurementType1(10, 8), new MeasurementType1(15, 12) };
-            var model = new PlotModel("Using IDataPointProvider");
+            var model = new PlotModel { Title = "Using IDataPointProvider" };
             model.Series.Add(new LineSeries { ItemsSource = measurements });
             return model;
         }
@@ -47,7 +47,7 @@ namespace ExampleLibrary
         public static PlotModel UsingIDataPoint()
         {
             var measurements = new[] { new MeasurementType2(0, 8), new MeasurementType2(10, 10), new MeasurementType2(15, 12) };
-            var model = new PlotModel("Using IDataPoint");
+            var model = new PlotModel { Title = "Using IDataPoint" };
             model.Series.Add(new LineSeries { ItemsSource = measurements });
             return model;
         }
@@ -56,7 +56,7 @@ namespace ExampleLibrary
         public static PlotModel UsingReflection()
         {
             var measurements = new[] { new MeasurementType3(0, 12), new MeasurementType3(10, 8), new MeasurementType3(15, 10) };
-            var model = new PlotModel("Using reflection");
+            var model = new PlotModel { Title = "Using reflection" };
             model.Series.Add(new LineSeries { ItemsSource = measurements, DataFieldX = "Abscissa", DataFieldY = "Ordinate" });
             return model;
         }
@@ -65,7 +65,7 @@ namespace ExampleLibrary
         public static PlotModel UsingMappingProperty()
         {
             var measurements = new[] { new MeasurementType3(0, 12), new MeasurementType3(10, 8), new MeasurementType3(15, 10) };
-            var model = new PlotModel("Using Mapping property");
+            var model = new PlotModel { Title = "Using Mapping property" };
             model.Series.Add(
                 new LineSeries
                     {

@@ -55,7 +55,7 @@ namespace ColumnSeriesDemo
                             };
 
             // Create the plot model
-            var tmp = new PlotModel("Column series") { LegendPlacement = LegendPlacement.Outside, LegendPosition = LegendPosition.RightTop, LegendOrientation = LegendOrientation.Vertical };
+            var tmp = new PlotModel { Title = "Column series", LegendPlacement = LegendPlacement.Outside, LegendPosition = LegendPosition.RightTop, LegendOrientation = LegendOrientation.Vertical };
 
             // Add the axes, note that MinimumPadding and AbsoluteMinimum should be set on the value axis.
             tmp.Axes.Add(new CategoryAxis { ItemsSource = this.Items, LabelField = "Label" });

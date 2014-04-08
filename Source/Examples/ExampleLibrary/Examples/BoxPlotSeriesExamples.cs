@@ -47,7 +47,7 @@ namespace ExampleLibrary
         {
             const int boxes = 10;
 
-            var model = new PlotModel(string.Format("BoxPlot (n={0})", boxes)) { LegendPlacement = LegendPlacement.Outside };
+            var model = new PlotModel { Title = string.Format("BoxPlot (n={0})", boxes), LegendPlacement = LegendPlacement.Outside };
 
             var s1 = new BoxPlotSeries
                 {

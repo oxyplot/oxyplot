@@ -165,7 +165,7 @@ namespace ExportDemo
                                new DataPoint(0, 0)};
             for (int i = 0; i < n; i++)
                 data = Fractalise(data, KochDetail);
-            var model = new PlotModel("Koch curve");
+            var model = new PlotModel { Title = "Koch curve" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MinimumPadding = 0.1, MaximumPadding = 0.1 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 });
             model.PlotType = PlotType.Cartesian;
@@ -183,10 +183,10 @@ namespace ExportDemo
                                new DataPoint(0, Math.Sqrt(3)), new DataPoint(-1, 0) };
             for (int i = 0; i < n; i++)
                 data = Fractalise(data, KochDetail);
-            var model = new PlotModel("Koch Snowflake") { PlotType = PlotType.Cartesian };
+            var model = new PlotModel { Title = "Koch Snowflake", PlotType = PlotType.Cartesian };
             if (areaSeries)
             {
-                var s = new AreaSeries { ItemsSource = data, LineJoin = OxyPenLineJoin.Bevel, Fill=OxyColors.LightGray };
+                var s = new AreaSeries { ItemsSource = data, LineJoin = OxyPenLineJoin.Bevel, Fill = OxyColors.LightGray };
                 model.Series.Add(s);
             }
             else
@@ -199,7 +199,7 @@ namespace ExportDemo
 
         private static PlotModel CreateZigZagCurve(int n)
         {
-            var model = new PlotModel("Zigzag curve");
+            var model = new PlotModel { Title = "Zigzag curve" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MinimumPadding = 0.1, MaximumPadding = 0.1 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 });
             var ls = new LineSeries();

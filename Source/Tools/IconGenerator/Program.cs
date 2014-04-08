@@ -293,8 +293,8 @@ namespace IconGenerator
                              Padding = new OxyThickness(size * 0.02),
                              PlotMargins = new OxyThickness(size * 0.05, size * 0.05, size * 0.07, size * 0.07)
                          };
-            pm.Axes.Add(new LinearAxis(AxisPosition.Left) { TextColor = OxyColors.Transparent });
-            pm.Axes.Add(new LinearAxis(AxisPosition.Bottom) { TextColor = OxyColors.Transparent });
+            pm.Axes.Add(new LinearAxis { Position = AxisPosition.Left, TextColor = OxyColors.Transparent });
+            pm.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, TextColor = OxyColors.Transparent });
             this.AddPeaks(pm);
             pm.Update();
             pm.Render(rc, size, size);

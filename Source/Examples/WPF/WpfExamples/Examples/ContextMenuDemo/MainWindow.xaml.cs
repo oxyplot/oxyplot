@@ -50,7 +50,7 @@ namespace ContextMenuDemo
         {
             this.InitializeComponent();
 
-            var model = new PlotModel("ContextMenu");
+            var model = new PlotModel { Title = "ContextMenu" };
             model.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 200));
             this.Model = model;
 

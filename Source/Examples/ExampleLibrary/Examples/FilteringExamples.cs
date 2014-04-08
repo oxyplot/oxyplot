@@ -41,7 +41,7 @@ namespace ExampleLibrary
         [Example("Filtering invalid points")]
         public static PlotModel FilteringInvalidPoints()
         {
-            var plot = new PlotModel("Filtering invalid points");
+            var plot = new PlotModel { Title = "Filtering invalid points" };
             plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
             plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
@@ -96,7 +96,7 @@ namespace ExampleLibrary
         [Example("Filtering invalid points (log axis)")]
         public static PlotModel FilteringInvalidPointsLog()
         {
-            var plot = new PlotModel("Filtering invalid points on logarithmic axes");
+            var plot = new PlotModel { Title = "Filtering invalid points on logarithmic axes" };
             plot.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
             plot.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Title = "Y-axis" });
 
@@ -120,7 +120,7 @@ namespace ExampleLibrary
         [Example("Filtering points outside (-1,1)")]
         public static PlotModel FilteringPointsOutsideRange()
         {
-            var plot = new PlotModel("Filtering points outside (-1,1)");
+            var plot = new PlotModel { Title = "Filtering points outside (-1,1)" };
             plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis", FilterMinValue = -1, FilterMaxValue = 1 });
             plot.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-axis", FilterMinValue = -1, FilterMaxValue = 1 });
 

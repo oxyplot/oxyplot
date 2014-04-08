@@ -99,9 +99,9 @@ namespace DateTimeDemo
 
         private PlotModel CreateModel(DateTime start, DateTime end, double increment)
         {
-            var tmp = new PlotModel("DateTime axis (PlotModel)");
-            tmp.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom});
-            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left});
+            var tmp = new PlotModel { Title = "DateTime axis (PlotModel)" };
+            tmp.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom });
+            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             // Create a random data collection
             var r = new Random();
@@ -131,7 +131,7 @@ namespace DateTimeDemo
 
         private PlotModel CreateModel2(TimeSpan start, TimeSpan end, double increment)
         {
-            var tmp = new PlotModel("TimeSpan axis (PlotModel)");
+            var tmp = new PlotModel { Title = "TimeSpan axis (PlotModel)" };
             tmp.Axes.Add(new TimeSpanAxis() { StringFormat = "h:mm" });
 
             // Create a random data collection

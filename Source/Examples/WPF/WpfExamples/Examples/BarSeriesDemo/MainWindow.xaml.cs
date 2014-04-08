@@ -55,7 +55,7 @@ namespace BarSeriesDemo
                             };
 
             // Create the plot model
-            var tmp = new PlotModel("Bar series") { LegendPlacement = LegendPlacement.Outside, LegendPosition = LegendPosition.RightTop, LegendOrientation = LegendOrientation.Vertical };
+            var tmp = new PlotModel { Title = "Bar series", LegendPlacement = LegendPlacement.Outside, LegendPosition = LegendPosition.RightTop, LegendOrientation = LegendOrientation.Vertical };
 
             // Add the axes, note that MinimumPadding and AbsoluteMinimum should be set on the value axis.
             tmp.Axes.Add(new CategoryAxis { Position = AxisPosition.Left, ItemsSource = this.Items, LabelField = "Label" });

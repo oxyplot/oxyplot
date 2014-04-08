@@ -45,7 +45,7 @@ namespace OxyPlot.Tests
         /// <returns>A plot model.</returns>
         public static PlotModel CreateTestModel1()
         {
-            var model = new PlotModel("Test 1");
+            var model = new PlotModel { Title = "Test 1" };
             model.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 8, 200, "sin(x)"));
             return model;
         }

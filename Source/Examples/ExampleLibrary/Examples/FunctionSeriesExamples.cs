@@ -149,7 +149,7 @@ namespace ExampleLibrary
         {
             // http://en.wikipedia.org/wiki/Rose_curve
 
-            var m = new PlotModel("Rose curve");
+            var m = new PlotModel { Title = "Rose curve" };
             m.PlotType = PlotType.Polar;
             m.PlotAreaBorderThickness = 0;
 
@@ -179,7 +179,7 @@ namespace ExampleLibrary
         {
             // http://en.wikipedia.org/wiki/Lima%C3%A7on
 
-            var m = new PlotModel("Limaçon of Pascal") { PlotType = PlotType.Cartesian };
+            var m = new PlotModel { Title = "Limaçon of Pascal", PlotType = PlotType.Cartesian };
             for (int a = 4; a <= 4; a++)
                 for (int b = 0; b <= 10; b++)
                 {
@@ -200,7 +200,7 @@ namespace ExampleLibrary
         {
             // http://www.wolframalpha.com/input/?i=folium+of+Descartes
 
-            var m = new PlotModel("Folium of Descartes") { PlotType = PlotType.Cartesian };
+            var m = new PlotModel { Title = "Folium of Descartes", PlotType = PlotType.Cartesian };
             m.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -3, Maximum = 3 });
             m.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -3, Maximum = 3 });
             double a = 1;
@@ -215,7 +215,7 @@ namespace ExampleLibrary
             // http://en.wikipedia.org/wiki/Trisectrix_of_Maclaurin
             // http://mathworld.wolfram.com/MaclaurinTrisectrix.html
 
-            var m = new PlotModel("Trisectrix of Maclaurin") { PlotType = PlotType.Cartesian };
+            var m = new PlotModel { Title = "Trisectrix of Maclaurin", PlotType = PlotType.Cartesian };
             double a = 1;
             m.Series.Add(new FunctionSeries(t => a * (t * t - 3) / (t * t + 1), t => a * t * (t * t - 3) / (t * t + 1), -5, 5, 1000));
             return m;
@@ -226,7 +226,7 @@ namespace ExampleLibrary
         {
             // http://en.wikipedia.org/wiki/Fermat's_spiral
             // http://www.wolframalpha.com/input/?i=Fermat%27s+spiral
-            var m = new PlotModel("Fermat's spiral") { PlotType = PlotType.Cartesian };
+            var m = new PlotModel { Title = "Fermat's spiral", PlotType = PlotType.Cartesian };
             double a = 1;
             m.Series.Add(new FunctionSeries(t => a * Math.Sqrt(t) * Math.Cos(t), t => a * Math.Sqrt(t) * Math.Sin(t), 0, 20, 1000));
             m.Series.Add(new FunctionSeries(t => -a * Math.Sqrt(t) * Math.Cos(t), t => -a * Math.Sqrt(t) * Math.Sin(t), 0, 20, 1000));
@@ -237,7 +237,7 @@ namespace ExampleLibrary
         public static PlotModel FishCurve()
         {
             // http://www.wolframalpha.com/input/?i=fish+curve
-            var m = new PlotModel("Fish curve") { PlotType = PlotType.Cartesian };
+            var m = new PlotModel { Title = "Fish curve", PlotType = PlotType.Cartesian };
             for (double a = 0.1; a < 1; a += 0.1)
             {
                 m.Series.Add(new FunctionSeries(t => a * (Math.Cos(t) - Math.Sin(t) * Math.Sin(t) / Math.Sqrt(2)), t => a * Math.Cos(t) * Math.Sin(t), 0, 2 * Math.PI, 1000));
@@ -251,7 +251,7 @@ namespace ExampleLibrary
         {
             // http://en.wikipedia.org/wiki/Heaviside_step_function
 
-            var m = new PlotModel("Heaviside step function") { PlotType = PlotType.Cartesian };
+            var m = new PlotModel { Title = "Heaviside step function", PlotType = PlotType.Cartesian };
             m.Series.Add(new FunctionSeries(x =>
             {
                 // make a gap in the curve at x=0
@@ -265,11 +265,13 @@ namespace ExampleLibrary
         [Example("FunctionSeries")]
         public static PlotModel FunctionSeries()
         {
-            var pm = new PlotModel("Trigonometric functions", "Example using the FunctionSeries")
-                {
-                    PlotType = PlotType.Cartesian,
-                    PlotAreaBackground = OxyColors.White
-                };
+            var pm = new PlotModel
+            {
+                Title = "Trigonometric functions",
+                Subtitle = "Example using the FunctionSeries",
+                PlotType = PlotType.Cartesian,
+                PlotAreaBackground = OxyColors.White
+            };
             pm.Series.Add(new FunctionSeries(Math.Sin, -10, 10, 0.1, "sin(x)"));
             pm.Series.Add(new FunctionSeries(Math.Cos, -10, 10, 0.1, "cos(x)"));
             pm.Series.Add(new FunctionSeries(t => 5 * Math.Cos(t), t => 5 * Math.Sin(t), 0, 2 * Math.PI, 1000, "cos(t),sin(t)"));

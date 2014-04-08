@@ -46,7 +46,7 @@ namespace OxyPlot.GtkSharp
         public static string ToSvg(this PlotModel model, double width, double height, bool isDocument)
         {
             var rc = new GraphicsRenderContext { RendersToScreen = false };
-            return model.ToSvg(width, height, isDocument, rc);
+            return SvgExporter.ExportToString(model, width, height, isDocument, rc);
         }
     }
 }

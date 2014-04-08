@@ -37,7 +37,7 @@ namespace ExampleLibrary
         [Example("IntervalBarSeries")]
         public static PlotModel IntervalBarSeries()
         {
-            var model = new PlotModel("IntervalBarSeries") { LegendPlacement = LegendPlacement.Outside };
+            var model = new PlotModel { Title = "IntervalBarSeries", LegendPlacement = LegendPlacement.Outside };
 
             var s1 = new IntervalBarSeries { Title = "IntervalBarSeries 1" };
             s1.Items.Add(new IntervalBarItem { Start = 6, End = 8 });
@@ -57,7 +57,7 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Activity B");
             categoryAxis.Labels.Add("Activity C");
             categoryAxis.Labels.Add("Activity D");
-            var valueAxis = new LinearAxis { Position = AxisPosition.Bottom,  MinimumPadding = 0.1, MaximumPadding = 0.1 };
+            var valueAxis = new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1 };
             model.Axes.Add(categoryAxis);
             model.Axes.Add(valueAxis);
             return model;

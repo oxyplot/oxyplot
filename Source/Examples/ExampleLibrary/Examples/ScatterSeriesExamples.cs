@@ -49,7 +49,7 @@ namespace ExampleLibrary
 
         public static PlotModel CreateRandomScatterSeriesWithColorAxisPlotModel(int n, OxyPalette palette, MarkerType markerType, AxisPosition colorAxisPosition, OxyColor highColor, OxyColor lowColor)
         {
-            var model = new PlotModel(string.Format("ScatterSeries (n={0})", n)) { Background = OxyColors.LightGray };
+            var model = new PlotModel { Title = string.Format("ScatterSeries (n={0})", n), Background = OxyColors.LightGray };
             model.Axes.Add(new LinearColorAxis { Position = colorAxisPosition, Palette = palette, Minimum = -1, Maximum = 1, HighColor = highColor, LowColor = lowColor });
 
             var s1 = new ScatterSeries
@@ -76,7 +76,7 @@ namespace ExampleLibrary
 
         public static PlotModel RandomSize(int n, int binsize)
         {
-            var model = new PlotModel(string.Format("ScatterSeries with random MarkerSize (n={0})", n), "BinSize = " + binsize);
+            var model = new PlotModel { Title = string.Format("ScatterSeries with random MarkerSize (n={0})", n), Subtitle = "BinSize = " + binsize };
 
             var s1 = new ScatterSeries()
             {
@@ -97,7 +97,7 @@ namespace ExampleLibrary
         public static PlotModel RandomWithFit()
         {
             const int n = 20;
-            var model = new PlotModel(string.Format("Random data (n={0})", n)) { LegendPosition = LegendPosition.LeftTop };
+            var model = new PlotModel { Title = string.Format("Random data (n={0})", n), LegendPosition = LegendPosition.LeftTop };
 
             var s1 = new ScatterSeries { Title = "Measurements" };
             var random = new Random();
@@ -155,7 +155,7 @@ namespace ExampleLibrary
 
         public static PlotModel MarkersOnly(int n)
         {
-            var model = new PlotModel(string.Format("LineSeries with markers only (n={0})", n));
+            var model = new PlotModel { Title = string.Format("LineSeries with markers only (n={0})", n) };
 
             var s1 = new LineSeries { Title = "Series 1", StrokeThickness = 0, MarkerType = MarkerType.Square, MarkerFill = OxyColors.Blue, MarkerStrokeThickness = 0 };
             var random = new Random();
@@ -170,7 +170,7 @@ namespace ExampleLibrary
         [Example("Marker types")]
         public static PlotModel MarkerTypes()
         {
-            var model = new PlotModel("Marker types");
+            var model = new PlotModel { Title = "Marker types" };
             var r = new Random(12345);
             model.Series.Add(CreateRandomScatterSeries(r, 10, "Circle", MarkerType.Circle));
             model.Series.Add(CreateRandomScatterSeries(r, 10, "Cross", MarkerType.Cross));
@@ -185,7 +185,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries defined by Points collection")]
         public static PlotModel DataPoints()
         {
-            var model = new PlotModel("Scatter plot of DataPoints");
+            var model = new PlotModel { Title = "Scatter plot of DataPoints" };
             var series = new ScatterSeries();
             series.Points.AddRange(CreateRandomPoints(100));
             model.Series.Add(series);
@@ -195,7 +195,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries defined by ItemsSource")]
         public static PlotModel FromItemsSource()
         {
-            var model = new PlotModel("Scatter plot from ItemsSource");
+            var model = new PlotModel { Title = "Scatter plot from ItemsSource" };
             model.Series.Add(new ScatterSeries
             {
                 ItemsSource = CreateRandomPoints(100),
@@ -208,7 +208,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries defined by Mapping")]
         public static PlotModel FromMapping()
         {
-            var model = new PlotModel("Scatter plot from Mapping");
+            var model = new PlotModel { Title = "Scatter plot from Mapping" };
             model.Series.Add(new ScatterSeries
             {
                 ItemsSource = CreateRandomPoints(100),
@@ -423,7 +423,7 @@ namespace ExampleLibrary
         [Example("TrackerFormatString")]
         public static PlotModel TrackerFormatString()
         {
-            var model = new PlotModel("TrackerFormatString");
+            var model = new PlotModel { Title = "TrackerFormatString" };
 
             var s1 = new ScatterSeries { TrackerFormatString = "{Sum:0.0}", DataFieldX = "X", DataFieldY = "Y" };
             var myPoints = new List<MyPoint>
@@ -455,7 +455,7 @@ namespace ExampleLibrary
 
         private static PlotModel RandomScatter(int n, int binSize)
         {
-            var model = new PlotModel(string.Format("ScatterSeries (n={0})", n), "BinSize = " + binSize);
+            var model = new PlotModel { Title = string.Format("ScatterSeries (n={0})", n), Subtitle = "BinSize = " + binSize };
 
             var s1 = new ScatterSeries()
             {

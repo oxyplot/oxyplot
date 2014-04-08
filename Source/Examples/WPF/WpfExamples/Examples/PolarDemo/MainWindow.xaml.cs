@@ -94,12 +94,14 @@ namespace PolarDemo
         /// <returns>A PlotModel.</returns>
         private PlotModel CreateModel()
         {
-            var model = new PlotModel("Polar plot", "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π")
-                {
-                    PlotType = PlotType.Polar,
-                    PlotMargins = new OxyThickness(20, 20, 4, 40),
-                    PlotAreaBorderThickness = 0
-                };
+            var model = new PlotModel
+            {
+                Title = "Polar plot",
+                Subtitle = "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π",
+                PlotType = PlotType.Polar,
+                PlotMargins = new OxyThickness(20, 20, 4, 40),
+                PlotAreaBorderThickness = 0
+            };
             model.Axes.Add(
                 new AngleAxis
                 {

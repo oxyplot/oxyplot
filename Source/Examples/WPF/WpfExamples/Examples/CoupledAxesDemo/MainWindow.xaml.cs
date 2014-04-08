@@ -60,10 +60,10 @@ namespace CoupledAxesDemo
             this.InitializeComponent();
             this.DataContext = this;
 
-            this.Model1 = new PlotModel("Model 1");
-            this.Model2 = new PlotModel("Model 2");
-            var axis1 = new LinearAxis { Position = AxisPosition.Bottom};
-            var axis2 = new LinearAxis { Position = AxisPosition.Bottom};
+            this.Model1 = new PlotModel { Title = "Model 1" };
+            this.Model2 = new PlotModel { Title = "Model 2" };
+            var axis1 = new LinearAxis { Position = AxisPosition.Bottom };
+            var axis2 = new LinearAxis { Position = AxisPosition.Bottom };
             this.Model1.Axes.Add(axis1);
             this.Model2.Axes.Add(axis2);
             this.Model1.Series.Add(new FunctionSeries(Math.Sin, 0, 10, 1000));

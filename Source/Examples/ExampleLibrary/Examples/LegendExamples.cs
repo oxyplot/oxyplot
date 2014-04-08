@@ -130,7 +130,7 @@ namespace ExampleLibrary
 
         private static PlotModel CreateModel(int n = 20)
         {
-            var model = new PlotModel("LineSeries") { LegendBackground = OxyColor.FromAColor(200, OxyColors.White), LegendBorder = OxyColors.Black };
+            var model = new PlotModel { Title = "LineSeries", LegendBackground = OxyColor.FromAColor(200, OxyColors.White), LegendBorder = OxyColors.Black };
             for (int i = 1; i <= n; i++)
             {
                 var s = new LineSeries { Title = "Series " + i };

@@ -281,7 +281,7 @@ namespace ContourDemo
             {
                 get
                 {
-                    var m = new PlotModel(this.Title);
+                    var m = new PlotModel { Title = this.Title };
                     var cs = new ContourSeries
                         {
                             ColumnCoordinates = this.X,

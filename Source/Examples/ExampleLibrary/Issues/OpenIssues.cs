@@ -94,7 +94,7 @@ namespace ExampleLibrary
         [Example("#10055: Hit testing LineSeries with smoothing")]
         public static PlotModel MouseDownEvent()
         {
-            var model = new PlotModel("LineSeries with smoothing", "Tracker uses wrong points");
+            var model = new PlotModel { Title = "LineSeries with smoothing", Subtitle = "Tracker uses wrong points" };
             var logarithmicAxis1 = new LogarithmicAxis { Position = AxisPosition.Bottom };
             model.Axes.Add(logarithmicAxis1);
 
@@ -181,7 +181,7 @@ namespace ExampleLibrary
         [Example("#10080: LegendItemAlignment = Center")]
         public static PlotModel LegendItemAlignmentCenter()
         {
-            var plotModel1 = new PlotModel("LegendItemAlignment = Center");
+            var plotModel1 = new PlotModel { Title = "LegendItemAlignment = Center" };
             plotModel1.LegendItemAlignment = HorizontalAlignment.Center;
             plotModel1.LegendBorder = OxyColors.Black;
             plotModel1.LegendBorderThickness = 1;
@@ -193,14 +193,14 @@ namespace ExampleLibrary
         [Example("#10115: GetNearestPoint return DataPoint even when custom IDataPoint used")]
         public static PlotModel GetNearestPointReturnsDataPoint()
         {
-            var plotModel1 = new PlotModel("Issue 10115");
+            var plotModel1 = new PlotModel { Title = "Issue 10115" };
             return plotModel1;
         }
 
         [Example("#10117: Selecting points changes the legend colours")]
         public static PlotModel SelectingPointsChangesTheLegendColors()
         {
-            var plotModel1 = new PlotModel("Issue 10117");
+            var plotModel1 = new PlotModel { Title = "Issue 10117" };
             return plotModel1;
         }
     }

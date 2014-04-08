@@ -38,7 +38,7 @@ namespace ExampleLibrary
         public static PlotModel TornadoDiagram1()
         {
             // http://en.wikipedia.org/wiki/Tornado_diagram
-            var model = new PlotModel("Tornado diagram 1") { LegendPlacement = LegendPlacement.Outside };
+            var model = new PlotModel { Title = "Tornado diagram 1", LegendPlacement = LegendPlacement.Outside };
 
             var s1 = new BarSeries
                 {
@@ -73,7 +73,7 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Inflation");
             categoryAxis.Labels.Add("Price");
             categoryAxis.Labels.Add("Conversion");
-            var valueAxis = new LinearAxis { Position = AxisPosition.Bottom,  ExtraGridlines = new[] { 7.0 } };
+            var valueAxis = new LinearAxis { Position = AxisPosition.Bottom, ExtraGridlines = new[] { 7.0 } };
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Axes.Add(categoryAxis);
@@ -84,7 +84,7 @@ namespace ExampleLibrary
         [Example("Tornado diagram 2")]
         public static PlotModel TornadoDiagram2()
         {
-            var model = new PlotModel("Tornado diagram 2") { LegendPlacement = LegendPlacement.Outside };
+            var model = new PlotModel { Title = "Tornado diagram 2", LegendPlacement = LegendPlacement.Outside };
 
             var s1 = new TornadoBarSeries { Title = "TornadoBarSeries", BaseValue = 7 };
             s1.Items.Add(new TornadoBarItem { Minimum = 6, Maximum = 8 });
@@ -97,7 +97,7 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Inflation");
             categoryAxis.Labels.Add("Price");
             categoryAxis.Labels.Add("Conversion");
-            var valueAxis = new LinearAxis { Position = AxisPosition.Bottom,  ExtraGridlines = new[] { 7.0 }, MinimumPadding = 0.1, MaximumPadding = 0.1 };
+            var valueAxis = new LinearAxis { Position = AxisPosition.Bottom, ExtraGridlines = new[] { 7.0 }, MinimumPadding = 0.1, MaximumPadding = 0.1 };
             model.Series.Add(s1);
             model.Axes.Add(categoryAxis);
             model.Axes.Add(valueAxis);

@@ -44,7 +44,7 @@ namespace ExampleLibrary
         [Example("#9971: Don't show minor ticks")]
         public static PlotModel DontShowMinorTicks()
         {
-            var model = new PlotModel("ShowMinorTicks = false");
+            var model = new PlotModel { Title = "ShowMinorTicks = false" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, ShowMinorTicks = false });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, ShowMinorTicks = false });
             return model;
@@ -85,7 +85,7 @@ namespace ExampleLibrary
         [Example("#10060: AnnotationLayers")]
         public static PlotModel AnnotationLayers()
         {
-            var model = new PlotModel("AnnotationLayers");
+            var model = new PlotModel { Title = "AnnotationLayers" };
 
             var a1 = new RectangleAnnotation { MinimumX = 10, MaximumX = 20, MinimumY = -1, MaximumY = 1, Layer = AnnotationLayer.BelowAxes };
             var a2 = new RectangleAnnotation { MinimumX = 30, MaximumX = 40, MinimumY = -1, MaximumY = 1, Layer = AnnotationLayer.BelowSeries };
@@ -126,7 +126,7 @@ namespace ExampleLibrary
         [Example("#10061: Argument out of range in OxyPlot mouse over")]
         public static PlotModel ArgumentOutOfRangeInMouseOver()
         {
-            var model = new PlotModel("Argument out of range in OxyPlot mouse over");
+            var model = new PlotModel { Title = "Argument out of range in OxyPlot mouse over" };
             var ls = new LineSeries();
             ls.Points.Add(new DataPoint(10, 10));
             ls.Points.Add(new DataPoint(10, 10));
@@ -138,7 +138,7 @@ namespace ExampleLibrary
         [Example("#10076: Slow redraws with noisy data")]
         public static PlotModel NoisyData()
         {
-            var model = new PlotModel("Noisy data");
+            var model = new PlotModel { Title = "Noisy data" };
 
             var points = new List<DataPoint>();
             var rng = new Random();
@@ -154,7 +154,7 @@ namespace ExampleLibrary
         [Example("#10076: Dashed line test")]
         public static PlotModel DashedLineTest()
         {
-            var model = new PlotModel("Dashed line test");
+            var model = new PlotModel { Title = "Dashed line test" };
 
             for (int y = 1; y <= 24; y++)
             {
@@ -178,7 +178,7 @@ namespace ExampleLibrary
         [Example("#10076: Super exponential format")]
         public static PlotModel SuperExponentialFormat()
         {
-            var model = new PlotModel("UseSuperExponentialFormat=true and 0");
+            var model = new PlotModel { Title = "UseSuperExponentialFormat=true and 0" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100, MajorStep = 10, MinorStep = 1, UseSuperExponentialFormat = true });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -100, Maximum = 100, MajorStep = 20, MinorStep = 10, UseSuperExponentialFormat = true });
             return model;
@@ -187,7 +187,7 @@ namespace ExampleLibrary
         [Example("#10079: AreaSeries draws on top of other elements")]
         public static PlotModel DefaultAnnotationLayer()
         {
-            var plotModel1 = new PlotModel("Annotations should be drawn on top by default", "The line annotation should be on top!");
+            var plotModel1 = new PlotModel { Title = "Annotations should be drawn on top by default", Subtitle = "The line annotation should be on top!" };
             var areaSeries1 = new AreaSeries();
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 40));
@@ -214,7 +214,7 @@ namespace ExampleLibrary
         [Example("#10084: AreaSeries should respect CanTrackerInterpolatePoints")]
         public static PlotModel AreaSeries_CanTrackerInterpolatePointsFalse()
         {
-            var plotModel1 = new PlotModel("AreaSeries with CanTrackerInterpolatePoints=false");
+            var plotModel1 = new PlotModel { Title = "AreaSeries with CanTrackerInterpolatePoints=false" };
             var areaSeries1 = new AreaSeries { CanTrackerInterpolatePoints = false };
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 40));
@@ -229,7 +229,7 @@ namespace ExampleLibrary
         [Example("#10084: AreaSeries should respect CanTrackerInterpolatePoints")]
         public static PlotModel AreaSeries_CanTrackerInterpolatePointsTrue()
         {
-            var plotModel1 = new PlotModel("AreaSeries with CanTrackerInterpolatePoints=true");
+            var plotModel1 = new PlotModel { Title = "AreaSeries with CanTrackerInterpolatePoints=true" };
             var areaSeries1 = new AreaSeries { CanTrackerInterpolatePoints = true };
             areaSeries1.Points.Add(new DataPoint(0, 50));
             areaSeries1.Points.Add(new DataPoint(10, 40));
@@ -244,7 +244,7 @@ namespace ExampleLibrary
         [Example("#10118: Empty LineSeries with smoothing")]
         public static PlotModel EmptyLineSeriesWithSmoothing_ThrowsException()
         {
-            var plotModel1 = new PlotModel("Empty LineSeries with smoothing");
+            var plotModel1 = new PlotModel { Title = "Empty LineSeries with smoothing" };
             plotModel1.Series.Add(new LineSeries { Smooth = true });
             return plotModel1;
         }
@@ -252,7 +252,7 @@ namespace ExampleLibrary
         [Example("#10153: Floating-point inaccuracy")]
         public static PlotModel FloatingPointInaccuracy()
         {
-            var model = new PlotModel("Issue 10153");
+            var model = new PlotModel { Title = "Issue 10153" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -0.0515724495834661, Maximum = 0.016609368598352, MajorStep = 0.02, MinorStep = 0.002 });
             return model;
         }
@@ -260,7 +260,7 @@ namespace ExampleLibrary
         [Example("#10164: LineSeries.Dashes property")]
         public static PlotModel DashesTest()
         {
-            var model = new PlotModel("Dashed line test");
+            var model = new PlotModel { Title = "Dashed line test" };
 
             for (int y = 1; y <= 10; y++)
             {

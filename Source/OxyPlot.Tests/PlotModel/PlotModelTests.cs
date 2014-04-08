@@ -60,7 +60,7 @@ namespace OxyPlot.Tests
         [Test]
         public void B11_Backgrounds()
         {
-            var plot = new PlotModel("Backgrounds");
+            var plot = new PlotModel { Title = "Backgrounds" };
             plot.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-axis" });
             var yaxis1 = new LinearAxis { Position = AxisPosition.Left, Title = "Y1", Key = "Y1", StartPosition = 0, EndPosition = 0.5 };
             var yaxis2 = new LinearAxis { Position = AxisPosition.Left, Title = "Y2", Key = "Y2", StartPosition = 0.5, EndPosition = 1 };

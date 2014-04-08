@@ -39,8 +39,10 @@ namespace ExampleLibrary
         [Example("Spiral")]
         public static PlotModel ArchimedeanSpiral()
         {
-            var model = new PlotModel("Polar plot", "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π")
+            var model = new PlotModel
             {
+                Title = "Polar plot",
+                Subtitle = "Archimedean spiral with equation r(θ) = θ for 0 < θ < 6π",
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = 0,
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
@@ -92,8 +94,9 @@ namespace ExampleLibrary
         [Example("Angle axis with offset angle")]
         public static PlotModel OffsetAngles()
         {
-            var model = new PlotModel("Offset angle axis", "")
+            var model = new PlotModel
             {
+                Title = "Offset angle axis",
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = 0,
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
@@ -137,8 +140,9 @@ namespace ExampleLibrary
         [Example("Semi-circle")]
         public static PlotModel SemiCircle()
         {
-            var model = new PlotModel("Semi-circle polar plot", "")
+            var model = new PlotModel
             {
+                Title = "Semi-circle polar plot",
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = 0,
                 PlotMargins = new OxyThickness(60, 20, 4, 40)
@@ -169,8 +173,10 @@ namespace ExampleLibrary
         [Example("Semi-circle offset angle axis range")]
         public static PlotModel SemiCircleOffsetAngleAxisRange()
         {
-            var model = new PlotModel("Semi-circle polar plot", "Angle axis range offset to -180 - 180")
+            var model = new PlotModel
             {
+                Title = "Semi-circle polar plot",
+                Subtitle = "Angle axis range offset to -180 - 180",
                 PlotType = PlotType.Polar,
                 PlotAreaBorderThickness = 0,
                 PlotMargins = new OxyThickness(60, 20, 4, 40)

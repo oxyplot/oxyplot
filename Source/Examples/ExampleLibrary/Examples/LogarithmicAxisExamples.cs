@@ -39,7 +39,7 @@ namespace ExampleLibrary
         [Example("Amdahl's Law")]
         public static PlotModel AmdahlsLaw()
         {
-            var model = new PlotModel("Amdahl's law") { LegendTitle = "Parallel portion" };
+            var model = new PlotModel { Title = "Amdahl's law", LegendTitle = "Parallel portion" };
 
             // http://en.wikipedia.org/wiki/Amdahl's_law
             Func<double, int, double> maxSpeedup = (p, n) => 1.0 / ((1.0 - p) + (double)p / n);
@@ -65,14 +65,15 @@ namespace ExampleLibrary
         {
             // http://en.wikipedia.org/wiki/Richter_magnitude_scale
 
-            var model = new PlotModel("The Richter magnitude scale")
-                            {
-                                PlotMargins = new OxyThickness(80, 0, 80, 40),
-                                LegendPlacement = LegendPlacement.Inside,
-                                LegendPosition = LegendPosition.TopCenter,
-                                LegendOrientation = LegendOrientation.Horizontal,
-                                LegendSymbolLength = 24
-                            };
+            var model = new PlotModel
+            {
+                Title = "The Richter magnitude scale",
+                PlotMargins = new OxyThickness(80, 0, 80, 40),
+                LegendPlacement = LegendPlacement.Inside,
+                LegendPosition = LegendPosition.TopCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendSymbolLength = 24
+            };
 
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Richter magnitude scale", MajorGridlineStyle = LineStyle.None, TickStyle = TickStyle.None });
 
@@ -132,7 +133,7 @@ namespace ExampleLibrary
         [Example("LogarithmicAxis with AbsoluteMaximum")]
         public static PlotModel AbsoluteMaximum()
         {
-            var model = new PlotModel("AbsoluteMaximum = 1000");
+            var model = new PlotModel { Title = "AbsoluteMaximum = 1000" };
             model.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Minimum = 0.1, Maximum = 1000, AbsoluteMaximum = 1000 });
             model.Series.Add(new FunctionSeries(Math.Exp, 0, Math.Log(900), 100));
             return model;
@@ -141,7 +142,7 @@ namespace ExampleLibrary
         [Example("LogarithmicAxis with AxisChanged event handler")]
         public static PlotModel AxisChangedEventHAndler()
         {
-            var model = new PlotModel("AxisChanged event handler");
+            var model = new PlotModel { Title = "AxisChanged event handler" };
             var logAxis = new LogarithmicAxis { Position = AxisPosition.Left, Minimum = 0.1, Maximum = 1000 };
             int n = 0;
             logAxis.AxisChanged += (s, e) => { model.Subtitle = "Changed " + (n++) + " times. ActualMaximum=" + logAxis.ActualMaximum; };
