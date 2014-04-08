@@ -59,7 +59,7 @@ namespace MemoryTest
             Plots = new List<PlotModel>();
             for (int i = 0; i < 10; i++)
             {
-                var p = new PlotModel("Plot " + i);
+                var p = new PlotModel { Title = "Plot " + i };
                 p.Series.Add(new FunctionSeries(x => Math.Cos(x * i), 0, 10, 0.01));
                 Plots.Add(p);
             }

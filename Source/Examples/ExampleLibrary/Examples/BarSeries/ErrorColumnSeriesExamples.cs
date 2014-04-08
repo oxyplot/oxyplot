@@ -37,8 +37,9 @@ namespace ExampleLibrary
         [Example("ErrorColumnSeries")]
         public static PlotModel GetErrorColumnSeries()
         {
-            var model = new PlotModel("ErrorColumnSeries")
+            var model = new PlotModel
             {
+                Title = "ErrorColumnSeries",
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
@@ -63,7 +64,7 @@ namespace ExampleLibrary
             categoryAxis.Labels.Add("Category C");
             categoryAxis.Labels.Add("Category D");
 
-            var valueAxis = new LinearAxis { Position = AxisPosition.Left,  MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 };
+            var valueAxis = new LinearAxis { Position = AxisPosition.Left, MinimumPadding = 0, MaximumPadding = 0.06, AbsoluteMinimum = 0 };
             model.Series.Add(s1);
             model.Series.Add(s2);
             model.Axes.Add(categoryAxis);

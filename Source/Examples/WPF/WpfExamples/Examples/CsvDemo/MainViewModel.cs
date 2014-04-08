@@ -60,7 +60,7 @@ namespace CsvDemo
         {
             var doc = new CsvDocument();
             doc.Load(file);
-            var tmp = new PlotModel(Path.GetFileNameWithoutExtension(file));
+            var tmp = new PlotModel { Title = Path.GetFileNameWithoutExtension(file) };
             tmp.LegendPosition = LegendPosition.RightTop;
             tmp.LegendPlacement = LegendPlacement.Outside;
             tmp.PlotMargins = new OxyThickness(50, 0, 0, 40);

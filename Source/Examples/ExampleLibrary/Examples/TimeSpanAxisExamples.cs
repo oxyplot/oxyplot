@@ -60,7 +60,7 @@ namespace ExampleLibrary
                 current = current.Add(new TimeSpan(0, 0, (int)increment));
             }
 
-            var plotModel1 = new PlotModel("TimeSpan axis");
+            var plotModel1 = new PlotModel { Title = "TimeSpan axis" };
             var timeSpanAxis1 = new TimeSpanAxis { Position = AxisPosition.Bottom, StringFormat = "h:mm" };
             plotModel1.Axes.Add(timeSpanAxis1);
             var linearAxis1 = new LinearAxis { Position = AxisPosition.Left };

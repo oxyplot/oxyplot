@@ -67,7 +67,7 @@ namespace ExampleLibrary
         [Example("Empty series")]
         public static PlotModel EmptySeries()
         {
-            var model = new PlotModel("Empty series");
+            var model = new PlotModel { Title = "Empty series" };
 
             var s1 = new TSeries { Title = "Series 1" };
             var s2 = new TSeries { Title = "Series 2" };
@@ -83,7 +83,7 @@ namespace ExampleLibrary
         [Example("Empty category axis")]
         public static PlotModel EmptyCategoryAxis()
         {
-            var model = new PlotModel("Empty category axis");
+            var model = new PlotModel { Title = "Empty category axis" };
 
             var s1 = new TSeries { Title = "Series 1" };
             s1.Items.Add(new TItem { Value = 25 });
@@ -169,8 +169,9 @@ namespace ExampleLibrary
         [Example("Logarithmic axis")]
         public static PlotModel LogAxis()
         {
-            var model = new PlotModel("Logarithmic axis")
+            var model = new PlotModel
             {
+                Title = "Logarithmic axis",
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
@@ -196,8 +197,9 @@ namespace ExampleLibrary
 
         private static PlotModel CreateSimpleModel(bool stacked, string title)
         {
-            var model = new PlotModel(title)
+            var model = new PlotModel
             {
+                Title = title,
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
@@ -231,8 +233,9 @@ namespace ExampleLibrary
 
         private static PlotModel CreateModelWithNegativeValues(bool stacked, string title)
         {
-            var model = new PlotModel(title)
+            var model = new PlotModel
             {
+                Title = title,
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
@@ -397,7 +400,7 @@ namespace ExampleLibrary
         [Example("Different colors within the same series")]
         public static PlotModel DifferentColors()
         {
-            var model = new PlotModel("Different colors within the same series");
+            var model = new PlotModel { Title = "Different colors within the same series" };
             var series = new TSeries { Title = "Series 1" };
             series.Items.Add(new TItem { Value = 1, Color = OxyColors.Red });
             series.Items.Add(new TItem { Value = 2, Color = OxyColors.Green });
@@ -410,7 +413,7 @@ namespace ExampleLibrary
         [Example("Different stacking groups")]
         public static PlotModel StackingGroups()
         {
-            var model = new PlotModel("Stacking groups");
+            var model = new PlotModel { Title = "Stacking groups" };
             var series = new TSeries { Title = "Series 1", StackGroup = "1", IsStacked = true };
             series.Items.Add(new TItem { Value = 1 });
             series.Items.Add(new TItem { Value = 2 });
@@ -433,7 +436,7 @@ namespace ExampleLibrary
         [Example("Different widths")]
         public static PlotModel DifferentWidths()
         {
-            var model = new PlotModel("Different widths", "Series1=0.6 and Series2=0.3");
+            var model = new PlotModel { Title = "Different widths", Subtitle = "Series1=0.6 and Series2=0.3" };
             var series1 = new TSeries { Title = "Series 1" };
             SetBarWidth(series1, 0.6);
             series1.Items.Add(new TItem { Value = 1 });
@@ -465,7 +468,7 @@ namespace ExampleLibrary
         [Example("Different widths (stacked)")]
         public static PlotModel DifferentWidthsStacked()
         {
-            var model = new PlotModel("Different widths (stacked)");
+            var model = new PlotModel { Title = "Different widths (stacked)" };
             var series1 = new TSeries { Title = "Series 1", IsStacked = true };
             SetBarWidth(series1, 0.6);
             series1.Items.Add(new TItem { Value = 1 });
@@ -485,7 +488,7 @@ namespace ExampleLibrary
         [Example("Invalid values")]
         public static PlotModel InvalidValues()
         {
-            var model = new PlotModel("Invalid values", "Series 1 contains a NaN value for category B.");
+            var model = new PlotModel { Title = "Invalid values", Subtitle = "Series 1 contains a NaN value for category B." };
             var series1 = new TSeries { Title = "Series 1" };
             series1.Items.Add(new TItem { Value = 1 });
             series1.Items.Add(new TItem { Value = double.NaN });
@@ -503,7 +506,7 @@ namespace ExampleLibrary
         [Example("Missing values")]
         public static PlotModel MissingValues()
         {
-            var model = new PlotModel("Missing values", "Series 1 contains only one item with CategoryIndex = 1");
+            var model = new PlotModel { Title = "Missing values", Subtitle = "Series 1 contains only one item with CategoryIndex = 1" };
             var series1 = new TSeries { Title = "Series 1" };
             series1.Items.Add(new TItem { Value = 1, CategoryIndex = 1 });
             model.Series.Add(series1);
@@ -520,7 +523,7 @@ namespace ExampleLibrary
         [Example("CategoryIndex")]
         public static PlotModel CategoryIndex()
         {
-            var model = new PlotModel("CategoryIndex", "Setting CategoryIndex = 0 for both items in the series.");
+            var model = new PlotModel { Title = "CategoryIndex", Subtitle = "Setting CategoryIndex = 0 for both items in the series." };
             var series = new TSeries { Title = "Series 1", StrokeThickness = 1 };
             series.Items.Add(new TItem { Value = 1, CategoryIndex = 0 });
             series.Items.Add(new TItem { Value = 2, CategoryIndex = 0 });
@@ -533,7 +536,7 @@ namespace ExampleLibrary
         [Example("CategoryIndex (stacked)")]
         public static PlotModel CategoryIndexStacked()
         {
-            var model = new PlotModel("CategoryIndex (stacked)", "Setting CategoryIndex = 0 for both items in the series.");
+            var model = new PlotModel { Title = "CategoryIndex (stacked)", Subtitle = "Setting CategoryIndex = 0 for both items in the series." };
             var series = new TSeries { Title = "Series 1", IsStacked = true, StrokeThickness = 1 };
             series.Items.Add(new TItem { Value = 1, CategoryIndex = 0 });
             series.Items.Add(new TItem { Value = 2, CategoryIndex = 0 });
@@ -546,7 +549,7 @@ namespace ExampleLibrary
         [Example("BaseValue")]
         public static PlotModel BaseValue()
         {
-            var model = new PlotModel("BaseValue", "BaseValue = -1");
+            var model = new PlotModel { Title = "BaseValue", Subtitle = "BaseValue = -1" };
             var series1 = new TSeries { Title = "Series 1", BaseValue = -1 };
             series1.Items.Add(new TItem { Value = 1 });
             series1.Items.Add(new TItem { Value = 2 });
@@ -563,7 +566,7 @@ namespace ExampleLibrary
         [Example("BaseValue (stacked)")]
         public static PlotModel BaseValueStacked()
         {
-            var model = new PlotModel("BaseValue (stacked)", "BaseValue = -1");
+            var model = new PlotModel { Title = "BaseValue (stacked)", Subtitle = "BaseValue = -1" };
             var series1 = new TSeries { Title = "Series 1", IsStacked = true, BaseValue = -1 };
             series1.Items.Add(new TItem { Value = 1 });
             series1.Items.Add(new TItem { Value = 2 });
@@ -605,8 +608,9 @@ namespace ExampleLibrary
         // [Example("All in one")]
         public static PlotModel AllInOne()
         {
-            var model = new PlotModel("All in one")
+            var model = new PlotModel
             {
+                Title = "All in one",
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,

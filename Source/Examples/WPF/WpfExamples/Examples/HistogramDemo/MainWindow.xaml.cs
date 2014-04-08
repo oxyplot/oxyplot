@@ -62,7 +62,7 @@ namespace HistogramDemo
 
             var throttledEvent = new ThrottledMouseMoveEvent(image);
             throttledEvent.ThrottledMouseMove += ThrottledEvent_ThrottledMouseMove;
-            var pm = new PlotModel("RGB histogram");
+            var pm = new PlotModel { Title = "RGB histogram" };
             redLine = new LineSeries { Color = OxyColors.Red };
             greenLine = new LineSeries { Color = OxyColors.Green };
             blueLine = new LineSeries { Color = OxyColors.Blue };

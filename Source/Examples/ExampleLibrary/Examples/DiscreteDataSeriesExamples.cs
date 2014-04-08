@@ -38,7 +38,7 @@ namespace ExampleLibrary
         [Example("StairStepSeries")]
         public static PlotModel StairStepSeries()
         {
-            var model = new PlotModel("StairStepSeries") { LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "StairStepSeries", LegendSymbolLength = 24 };
             var s1 = new StairStepSeries
                          {
                              Title = "sin(x)",
@@ -59,7 +59,7 @@ namespace ExampleLibrary
         [Example("StairStepSeries with thin vertical lines")]
         public static PlotModel StairStepSeriesThinVertical()
         {
-            var model = new PlotModel("StairStepSeries", "With thin vertical lines");
+            var model = new PlotModel { Title = "StairStepSeries", Subtitle = "With thin vertical lines" };
             var s1 = new StairStepSeries
             {
                 Title = "sin(x)",
@@ -78,7 +78,7 @@ namespace ExampleLibrary
         [Example("StairStepSeries with dashed vertical lines")]
         public static PlotModel StairStepSeriesDashedVertical()
         {
-            var model = new PlotModel("StairStepSeries", "With dashed vertical lines");
+            var model = new PlotModel { Title = "StairStepSeries", Subtitle = "With dashed vertical lines" };
             var s1 = new StairStepSeries
             {
                 Title = "sin(x)",
@@ -96,7 +96,7 @@ namespace ExampleLibrary
         [Example("StemSeries")]
         public static PlotModel StemSeries()
         {
-            var model = new PlotModel("StemSeries") { LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "StemSeries", LegendSymbolLength = 24 };
             var s1 = new StemSeries
                          {
                              Title = "sin(x)",

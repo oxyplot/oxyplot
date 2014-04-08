@@ -41,7 +41,7 @@ namespace ExampleLibrary
         [Example("LineSeries, 100k points")]
         public static PlotModel LineSeries1()
         {
-            var model = new PlotModel("LineSeries, 100k points");
+            var model = new PlotModel { Title = "LineSeries, 100k points" };
             var s1 = new LineSeries();
             AddPoints(s1.Points, 100000);
             model.Series.Add(s1);
@@ -51,7 +51,7 @@ namespace ExampleLibrary
         [Example("LineSeries, 100k points (dashed line)")]
         public static PlotModel LineSeries1d()
         {
-            var model = new PlotModel("LineSeries, 100k points");
+            var model = new PlotModel { Title = "LineSeries, 100k points" };
             var s1 = new LineSeries { LineStyle = LineStyle.Dash };
             AddPoints(s1.Points, 100000);
             model.Series.Add(s1);
@@ -61,7 +61,7 @@ namespace ExampleLibrary
         [Example("LineSeries, 100k points, markers")]
         public static PlotModel LineSeries1WithMarkers()
         {
-            var model = new PlotModel("LineSeries, 100k points, markers");
+            var model = new PlotModel { Title = "LineSeries, 100k points, markers" };
             var s1 = new LineSeries { MarkerType = MarkerType.Square };
             AddPoints(s1.Points, 100000);
             model.Series.Add(s1);
@@ -71,7 +71,7 @@ namespace ExampleLibrary
         [Example("LineSeries, 100k points, markers, low res")]
         public static PlotModel LineSeries1WithMarkersLowRes()
         {
-            var model = new PlotModel("LineSeries, 100k points, markers, lower resolution");
+            var model = new PlotModel { Title = "LineSeries, 100k points, markers, lower resolution" };
             var s1 = new LineSeries { MarkerType = MarkerType.Square, MarkerResolution = 3 };
             AddPoints(s1.Points, 100000);
             model.Series.Add(s1);
@@ -81,7 +81,7 @@ namespace ExampleLibrary
         [Example("LineSeries, 100k points, round line joins")]
         public static PlotModel LineSeries1Round()
         {
-            var model = new PlotModel("LineSeries, 100k points, round line joins");
+            var model = new PlotModel { Title = "LineSeries, 100k points, round line joins" };
             var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Round };
             AddPoints(s1.Points, 100000);
             model.Series.Add(s1);
@@ -91,7 +91,7 @@ namespace ExampleLibrary
         [Example("LineSeries, 100k points, ItemsSource, List<IDataPoint>")]
         public static PlotModel LineSeries10()
         {
-            var model = new PlotModel("LineSeries, 100k points, ItemsSource, List<IDataPoint>");
+            var model = new PlotModel { Title = "LineSeries, 100k points, ItemsSource, List<IDataPoint>" };
             var s1 = new LineSeries();
             var points = new List<DataPoint>();
             AddPoints(points, 100000);
@@ -104,7 +104,7 @@ namespace ExampleLibrary
         [Example("LineSeries, 100k points, ItemsSource, List<OxyRect>")]
         public static PlotModel LineSeries10b()
         {
-            var model = new PlotModel("LineSeries, 100k points, ItemsSource, List<OxyRect>");
+            var model = new PlotModel { Title = "LineSeries, 100k points, ItemsSource, List<OxyRect>" };
             var s1 = new LineSeries();
             var points = new List<DataPoint>();
             AddPoints(points, 100000);
@@ -120,7 +120,7 @@ namespace ExampleLibrary
         [Example("LineSeries, 100k points (thick)")]
         public static PlotModel LineSeries1b()
         {
-            var model = new PlotModel("LineSeries, 100k points (thick)");
+            var model = new PlotModel { Title = "LineSeries, 100k points (thick)" };
             var s1 = new LineSeries();
             s1.StrokeThickness = 10;
             AddPoints(s1.Points, 100000);
@@ -132,7 +132,7 @@ namespace ExampleLibrary
         [Example("LineSeries, 100k points (by ItemsSource)")]
         public static PlotModel LineSeries1c()
         {
-            var model = new PlotModel("LineSeries, 100k points (by ItemsSource)");
+            var model = new PlotModel { Title = "LineSeries, 100k points (by ItemsSource)" };
             model.Series.Add(new LineSeries { ItemsSource = GetPoints(100000) });
             return model;
         }
@@ -140,8 +140,8 @@ namespace ExampleLibrary
         [Example("LineSeries 2, 3k points, miter line joins")]
         public static PlotModel LineSeries2miter()
         {
-            var model = new PlotModel("LineSeries, 3k points, miter line joins");
-            var s1 = new LineSeries() { LineJoin = OxyPenLineJoin.Miter, StrokeThickness = 8.0 };
+            var model = new PlotModel { Title = "LineSeries, 3k points, miter line joins" };
+            var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Miter, StrokeThickness = 8.0 };
             for (int i = 0; i < 3000; i++)
                 s1.Points.Add(new DataPoint(i, i % 2));
             model.Series.Add(s1);
@@ -152,8 +152,8 @@ namespace ExampleLibrary
         [Example("LineSeries 2, 3k points, round line joins")]
         public static PlotModel LineSeries2Round()
         {
-            var model = new PlotModel("LineSeries, 3k points, round line joins");
-            var s1 = new LineSeries() { LineJoin = OxyPenLineJoin.Round, StrokeThickness = 8.0 };
+            var model = new PlotModel { Title = "LineSeries, 3k points, round line joins" };
+            var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Round, StrokeThickness = 8.0 };
             for (int i = 0; i < 3000; i++)
                 s1.Points.Add(new DataPoint(i, i % 2));
             model.Series.Add(s1);
@@ -163,8 +163,8 @@ namespace ExampleLibrary
         [Example("LineSeries 2, 3k points, bevel line joins")]
         public static PlotModel LineSeries2Bevel()
         {
-            var model = new PlotModel("LineSeries, 3k points, bevel line joins");
-            var s1 = new LineSeries() { LineJoin = OxyPenLineJoin.Bevel, StrokeThickness = 8.0 };
+            var model = new PlotModel { Title = "LineSeries, 3k points, bevel line joins" };
+            var s1 = new LineSeries { LineJoin = OxyPenLineJoin.Bevel, StrokeThickness = 8.0 };
             for (int i = 0; i < 3000; i++)
                 s1.Points.Add(new DataPoint(i, i % 2));
             model.Series.Add(s1);
@@ -174,7 +174,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries (squares)")]
         public static PlotModel ScatterSeries1()
         {
-            var model = new PlotModel("ScatterSeries (squares)");
+            var model = new PlotModel { Title = "ScatterSeries (squares)" };
             var s1 = new ScatterSeries();
             AddPoints(s1.Points, 2000);
             model.Series.Add(s1);
@@ -184,7 +184,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries (squares with outline)")]
         public static PlotModel ScatterSeries1b()
         {
-            var model = new PlotModel("ScatterSeries (squares with outline)");
+            var model = new PlotModel { Title = "ScatterSeries (squares with outline)" };
             var s1 = new ScatterSeries();
             s1.MarkerStroke = OxyColors.Black;
             AddPoints(s1.Points, 2000);
@@ -195,7 +195,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries (squares without fill color)")]
         public static PlotModel ScatterSeries1c()
         {
-            var model = new PlotModel("ScatterSeries (squares without fill color)");
+            var model = new PlotModel { Title = "ScatterSeries (squares without fill color)" };
             var s1 = new ScatterSeries();
             s1.MarkerFill = OxyColors.Transparent;
             s1.MarkerStroke = OxyColors.Black;
@@ -207,7 +207,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries (by ItemsSource)")]
         public static PlotModel ScatterSeries2()
         {
-            var model = new PlotModel("ScatterSeries (by ItemsSource)");
+            var model = new PlotModel { Title = "ScatterSeries (by ItemsSource)" };
             model.Series.Add(new ScatterSeries { ItemsSource = GetPoints(2000), DataFieldX = "X", DataFieldY = "Y" });
             return model;
         }
@@ -215,7 +215,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries (circles)")]
         public static PlotModel ScatterSeries3()
         {
-            var model = new PlotModel("ScatterSeries (circles)");
+            var model = new PlotModel { Title = "ScatterSeries (circles)" };
             var s1 = new ScatterSeries();
             s1.MarkerType = MarkerType.Circle;
             AddPoints(s1.Points, 2000);
@@ -226,7 +226,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries (circles with outline)")]
         public static PlotModel ScatterSeries4()
         {
-            var model = new PlotModel("ScatterSeries (circles with outline)");
+            var model = new PlotModel { Title = "ScatterSeries (circles with outline)" };
             var s1 = new ScatterSeries();
             s1.MarkerType = MarkerType.Circle;
             s1.MarkerStroke = OxyColors.Black;
@@ -238,7 +238,7 @@ namespace ExampleLibrary
         [Example("ScatterSeries (cross)")]
         public static PlotModel ScatterSeries5()
         {
-            var model = new PlotModel("ScatterSeries (cross)");
+            var model = new PlotModel { Title = "ScatterSeries (cross)" };
             var s1 = new ScatterSeries();
             s1.MarkerType = MarkerType.Cross;
             s1.MarkerFill = OxyColors.Undefined;
@@ -251,36 +251,36 @@ namespace ExampleLibrary
         [Example("LinearAxis (no gridlines)")]
         public static PlotModel LinearAxis1()
         {
-            var model = new PlotModel("LinearAxis (no gridlines)");
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1});
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1});
+            var model = new PlotModel { Title = "LinearAxis (no gridlines)" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100, MajorStep = 1, MinorStep = 1 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100, MajorStep = 1, MinorStep = 1 });
             return model;
         }
 
         [Example("LinearAxis (solid gridlines)")]
         public static PlotModel LinearAxis2()
         {
-            var model = new PlotModel("LinearAxis (solid gridlines)");
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1, MajorGridlineStyle = LineStyle.Solid });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1, MajorGridlineStyle = LineStyle.Solid });
+            var model = new PlotModel { Title = "LinearAxis (solid gridlines)" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100, MajorStep = 1, MinorStep = 1, MajorGridlineStyle = LineStyle.Solid });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100, MajorStep = 1, MinorStep = 1, MajorGridlineStyle = LineStyle.Solid });
             return model;
         }
 
         [Example("LinearAxis (dashed gridlines)")]
         public static PlotModel LinearAxis3()
         {
-            var model = new PlotModel("LinearAxis (dashed gridlines)");
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1, MajorGridlineStyle = LineStyle.Dash });
-            model.Axes.Add(new LinearAxis { Position =AxisPosition.Bottom, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1, MajorGridlineStyle = LineStyle.Dash });
+            var model = new PlotModel { Title = "LinearAxis (dashed gridlines)" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100, MajorStep = 1, MinorStep = 1, MajorGridlineStyle = LineStyle.Dash });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100, MajorStep = 1, MinorStep = 1, MajorGridlineStyle = LineStyle.Dash });
             return model;
         }
 
         [Example("LinearAxis (dotted gridlines)")]
         public static PlotModel LinearAxis4()
         {
-            var model = new PlotModel("LinearAxis (dotted gridlines)");
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1, MajorGridlineStyle = LineStyle.Dot });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum=0, Maximum=100, MajorStep=1, MinorStep=1, MajorGridlineStyle = LineStyle.Dot });
+            var model = new PlotModel { Title = "LinearAxis (dotted gridlines)" };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100, MajorStep = 1, MinorStep = 1, MajorGridlineStyle = LineStyle.Dot });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100, MajorStep = 1, MinorStep = 1, MajorGridlineStyle = LineStyle.Dot });
             return model;
         }
 

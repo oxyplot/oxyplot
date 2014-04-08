@@ -44,7 +44,7 @@ namespace SimpleDemo
         public MainViewModel()
         {
             // Create the plot model
-            var tmp = new PlotModel("Simple example", "using OxyPlot");
+            var tmp = new PlotModel { Title = "Simple example", Subtitle = "using OxyPlot" };
 
             // Create two line series (markers are hidden by default)
             var series1 = new LineSeries { Title = "Series 1", MarkerType = MarkerType.Circle };

@@ -42,7 +42,7 @@ namespace ExampleLibrary
         {
             int n = 20;
 
-            var model = new PlotModel("ErrorSeries");
+            var model = new PlotModel { Title = "ErrorSeries" };
 
             var s1 = new ErrorSeries { Title = "Measurements" };
             var random = new Random();
@@ -64,7 +64,7 @@ namespace ExampleLibrary
         [Example("LineSegmentSeries")]
         public static PlotModel LineSegmentSeries()
         {
-            var model = new PlotModel("LineSegmentSeries");
+            var model = new PlotModel { Title = "LineSegmentSeries" };
 
             var lss1 = new LineSegmentSeries { Title = "The first series" };
 
@@ -100,7 +100,7 @@ namespace ExampleLibrary
         [Example("FlagSeries")]
         public static PlotModel FlagSeries()
         {
-            var model = new PlotModel("FlagSeries");
+            var model = new PlotModel { Title = "FlagSeries" };
 
             var s1 = new FlagSeries { Title = "Incidents", Color = OxyColors.Red };
             s1.Values.Add(2);
@@ -232,7 +232,7 @@ namespace ExampleLibrary
                 data[i, i] = -1;
             }
 
-            var model = new PlotModel("Design structure matrix (DSM)");
+            var model = new PlotModel { Title = "Design structure matrix (DSM)" };
             model.Axes.Add(new LinearColorAxis { Position = AxisPosition.None, Palette = new OxyPalette(OxyColors.White, OxyColors.LightGreen), LowColor = OxyColors.Black, Minimum = 0, IsAxisVisible = false });
             model.Axes.Add(new CategoryAxis
             {

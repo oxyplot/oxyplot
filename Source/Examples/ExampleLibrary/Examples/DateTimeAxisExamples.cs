@@ -50,7 +50,7 @@ namespace ExampleLibrary
         // [Example("DateTime Minimum bug")]
         public static PlotModel Example1()
         {
-            var tmp = new PlotModel("Test");
+            var tmp = new PlotModel { Title = "Test" };
             tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, TickStyle = TickStyle.Outside });
             var dt = new DateTime(2010, 1, 1);
             tmp.Axes.Add(new DateTimeAxis
@@ -133,7 +133,7 @@ namespace ExampleLibrary
                 date = date.AddSeconds(increment);
             }
 
-            var plotModel1 = new PlotModel("DateTime axis");
+            var plotModel1 = new PlotModel { Title = "DateTime axis" };
             var dateTimeAxis1 = new DateTimeAxis
                 {
                     CalendarWeekRule = CalendarWeekRule.FirstFourDayWeek,
@@ -202,7 +202,7 @@ namespace ExampleLibrary
 
             var sunData = CreateSunData(year, 59.91, 10.75, utcToLocalTime);
 
-            var plotModel1 = new PlotModel("Sunrise and sunset in Oslo", "UTC time");
+            var plotModel1 = new PlotModel { Title = "Sunrise and sunset in Oslo", Subtitle = "UTC time" };
 
             var dateTimeAxis1 = new DateTimeAxis
                 {

@@ -42,11 +42,11 @@ namespace ExportDemo
         public MainPage()
         {
             this.InitializeComponent();
-            var tmp = new PlotModel("Export demo");
-            tmp.Axes.Add(new LinearAxis(AxisPosition.Bottom));
-            tmp.Axes.Add(new LinearAxis(AxisPosition.Top));
-            tmp.Axes.Add(new LinearAxis(AxisPosition.Left));
-            tmp.Axes.Add(new LinearAxis(AxisPosition.Right));
+            var tmp = new PlotModel { Title = "Export demo" };
+            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Top });
+            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Right });
             tmp.Series.Add(new FunctionSeries(Math.Sin, 0, Math.PI * 2, 100, "sin(x)"));
 
             //var assembly = Assembly.GetExecutingAssembly();

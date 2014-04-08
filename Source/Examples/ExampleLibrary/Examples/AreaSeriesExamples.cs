@@ -37,7 +37,7 @@ namespace ExampleLibrary
         [Example("Default style")]
         public static PlotModel DefaultStyle()
         {
-            var plotModel1 = new PlotModel("AreaSeries with default style");
+            var plotModel1 = new PlotModel { Title = "AreaSeries with default style" };
             plotModel1.Series.Add(CreateExampleSeries());
             return plotModel1;
         }
@@ -45,7 +45,7 @@ namespace ExampleLibrary
         [Example("Different stroke colors")]
         public static PlotModel DifferentColors()
         {
-            var plotModel1 = new PlotModel("Different stroke colors");
+            var plotModel1 = new PlotModel { Title = "Different stroke colors" };
             var areaSeries1 = CreateExampleSeries();
             areaSeries1.Color = OxyColors.Red;
             areaSeries1.Color2 = OxyColors.Blue;
@@ -56,7 +56,7 @@ namespace ExampleLibrary
         [Example("Crossing lines")]
         public static PlotModel CrossingLines()
         {
-            var plotModel1 = new PlotModel("Crossing lines");
+            var plotModel1 = new PlotModel { Title = "Crossing lines" };
             plotModel1.Series.Add(CreateExampleSeries2());
             return plotModel1;
         }
@@ -88,7 +88,7 @@ namespace ExampleLibrary
         [Example("LineSeries and AreaSeries")]
         public static PlotModel LineSeriesandAreaSeries()
         {
-            var plotModel1 = new PlotModel("LineSeries and AreaSeries");
+            var plotModel1 = new PlotModel { Title = "LineSeries and AreaSeries" };
             var linearAxis1 = new LinearAxis { Position = AxisPosition.Bottom };
             plotModel1.Axes.Add(linearAxis1);
             var linearAxis2 = new LinearAxis();

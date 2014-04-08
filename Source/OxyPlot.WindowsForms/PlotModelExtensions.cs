@@ -52,7 +52,7 @@ namespace OxyPlot.WindowsForms
             {
                 using (var rc = new GraphicsRenderContext(g) { RendersToScreen = false })
                 {
-                    return model.ToSvg(width, height, isDocument, rc);
+                    return OxyPlot.SvgExporter.ExportToString(model, width, height, isDocument, rc);
                 }
             }
         }

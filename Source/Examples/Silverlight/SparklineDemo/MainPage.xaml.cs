@@ -79,7 +79,7 @@ namespace SparklineDemo
                          };
             model.Series.Add(ls);
             model.Axes.Add(new DateTimeAxis { IsAxisVisible = false });
-            model.Axes.Add(new LinearAxis(AxisPosition.Left) { IsAxisVisible = false });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, IsAxisVisible = false });
             return model;
         }
 

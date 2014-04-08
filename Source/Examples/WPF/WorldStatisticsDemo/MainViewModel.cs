@@ -73,7 +73,7 @@ namespace WorldStatisticsDemo
 
         private void UpdatePlot()
         {
-            var pm = new PlotModel(this.year.ToString(), "data from gapminder.org") { LegendPosition = LegendPosition.RightBottom };
+            var pm = new PlotModel { Title = this.year.ToString(), Subtitle = "data from gapminder.org", LegendPosition = LegendPosition.RightBottom };
             var ss = new ScatterSeries
                 {
                     MarkerType = MarkerType.Circle,

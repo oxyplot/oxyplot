@@ -46,13 +46,13 @@ namespace ScatterDemo
         {
             InitializeComponent();
             DataContext = this;
-            var tmp = new PlotModel("Scatter plot","Barnsley fern (IFS)");
+            var tmp = new PlotModel { Title = "Scatter plot", Subtitle = "Barnsley fern (IFS)" };
             var s1 = new LineSeries
                          {
                              StrokeThickness = 0,
                              MarkerSize = 3,
                              // MarkerFill = OxyColors.Blue,
-                             MarkerStroke=OxyColors.ForestGreen,
+                             MarkerStroke = OxyColors.ForestGreen,
                              MarkerType = MarkerType.Plus
                          };
 

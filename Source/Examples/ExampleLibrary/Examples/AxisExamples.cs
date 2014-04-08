@@ -571,8 +571,7 @@ namespace ExampleLibrary
         [Example("AbsoluteMinimum and AbsoluteMaximum")]
         public static PlotModel AbsoluteMinimumAndMaximum()
         {
-            var model = new PlotModel(
-                "AbsoluteMinimum=-17, AbsoluteMaximum=63", "Zooming and panning is limited to these values.");
+            var model = new PlotModel { Title = "AbsoluteMinimum=-17, AbsoluteMaximum=63", Subtitle = "Zooming and panning is limited to these values." };
             model.Axes.Add(
                 new LinearAxis
                 {
@@ -597,7 +596,7 @@ namespace ExampleLibrary
         [Example("Title with unit")]
         public static PlotModel TitleWithUnit()
         {
-            var model = new PlotModel("Axis titles with units");
+            var model = new PlotModel { Title = "Axis titles with units" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Speed", Unit = "km/h" });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Temperature", Unit = "°C" });
             return model;
@@ -606,7 +605,7 @@ namespace ExampleLibrary
         [Example("Invisible vertical axis")]
         public static PlotModel InvisibleVerticalAxis()
         {
-            var model = new PlotModel("Invisible vertical axis");
+            var model = new PlotModel { Title = "Invisible vertical axis" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, IsAxisVisible = false });
             model.Series.Add(new FunctionSeries(x => Math.Sin(x) / x, -5, 5, 0.1));
@@ -616,7 +615,7 @@ namespace ExampleLibrary
         [Example("Invisible horizontal axis")]
         public static PlotModel InvisibleHorizontalAxis()
         {
-            var model = new PlotModel("Invisible horizontal axis");
+            var model = new PlotModel { Title = "Invisible horizontal axis" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, IsAxisVisible = false });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
             model.Series.Add(new FunctionSeries(x => Math.Sin(x) * x * x, -5, 5, 0.1));
@@ -626,7 +625,7 @@ namespace ExampleLibrary
         [Example("Zooming disabled")]
         public static PlotModel ZoomingDisabled()
         {
-            var model = new PlotModel("Zooming disabled");
+            var model = new PlotModel { Title = "Zooming disabled" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, IsZoomEnabled = false });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, IsZoomEnabled = false });
             return model;
@@ -635,7 +634,7 @@ namespace ExampleLibrary
         [Example("Panning disabled")]
         public static PlotModel PanningDisabled()
         {
-            var model = new PlotModel("Panning disabled");
+            var model = new PlotModel { Title = "Panning disabled" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, IsPanEnabled = false });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, IsPanEnabled = false });
             return model;
@@ -644,7 +643,7 @@ namespace ExampleLibrary
         [Example("Dense intervals")]
         public static PlotModel DenseIntervals()
         {
-            var model = new PlotModel("Dense intervals");
+            var model = new PlotModel { Title = "Dense intervals" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, IntervalLength = 30 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, IntervalLength = 20 });
             return model;
@@ -653,7 +652,7 @@ namespace ExampleLibrary
         [Example("Graph Paper")]
         public static PlotModel GraphPaper()
         {
-            var model = new PlotModel("Graph Paper");
+            var model = new PlotModel { Title = "Graph Paper" };
             var c = OxyColors.DarkBlue;
             model.PlotType = PlotType.Cartesian;
             model.Axes.Add(
@@ -682,7 +681,7 @@ namespace ExampleLibrary
         [Example("Log-Log Paper")]
         public static PlotModel LogLogPaper()
         {
-            var model = new PlotModel("Log-Log Paper");
+            var model = new PlotModel { Title = "Log-Log Paper" };
             var c = OxyColors.DarkBlue;
             model.Axes.Add(
                 new LogarithmicAxis
@@ -714,7 +713,7 @@ namespace ExampleLibrary
         [Example("Black background")]
         public static PlotModel OnBlack()
         {
-            var model = new PlotModel("Black background");
+            var model = new PlotModel { Title = "Black background" };
             model.Background = OxyColors.Black;
             model.TextColor = OxyColors.White;
             model.PlotAreaBorderColor = OxyColors.White;
@@ -753,7 +752,7 @@ namespace ExampleLibrary
         [Example("Background and PlotAreaBackground")]
         public static PlotModel Backgrounds()
         {
-            var model = new PlotModel("Background and PlotAreaBackground");
+            var model = new PlotModel { Title = "Background and PlotAreaBackground" };
             model.Background = OxyColors.Silver;
             model.PlotAreaBackground = OxyColors.Gray;
             model.PlotAreaBorderColor = OxyColors.Black;
@@ -766,7 +765,7 @@ namespace ExampleLibrary
         [Example("Auto adjusting plot margins")]
         public static PlotModel AutoAdjustingMargins()
         {
-            var model = new PlotModel("Auto adjusting plot margins");
+            var model = new PlotModel { Title = "Auto adjusting plot margins" };
             model.LegendPosition = LegendPosition.RightBottom;
             model.PlotMargins = new OxyThickness(0);
             model.AutoAdjustPlotMargins = true;
@@ -779,7 +778,7 @@ namespace ExampleLibrary
         [Example("Manual plot margins")]
         public static PlotModel ManualAdjustingMargins()
         {
-            var model = new PlotModel("Manual plot margins");
+            var model = new PlotModel { Title = "Manual plot margins" };
             model.LegendPosition = LegendPosition.RightBottom;
             model.AutoAdjustPlotMargins = false;
             model.PlotMargins = new OxyThickness(60, 4, 4, 40);
@@ -792,7 +791,7 @@ namespace ExampleLibrary
         [Example("Current culture")]
         public static PlotModel CurrentCulture()
         {
-            var model = new PlotModel("Current culture");
+            var model = new PlotModel { Title = "Current culture" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1, Maximum = 1 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -1, Maximum = 1 });
             model.Series.Add(new FunctionSeries(Math.Sin, -1, 1, 100));
@@ -802,7 +801,7 @@ namespace ExampleLibrary
         [Example("Invariant culture")]
         public static PlotModel InvariantCulture()
         {
-            var model = new PlotModel("Invariant culture");
+            var model = new PlotModel { Title = "Invariant culture" };
             model.Culture = CultureInfo.InvariantCulture;
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1, Maximum = 1 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -1, MaximumPadding = 1 });
@@ -813,7 +812,7 @@ namespace ExampleLibrary
         [Example("Custom culture")]
         public static PlotModel CustomCulture()
         {
-            var model = new PlotModel("Custom culture");
+            var model = new PlotModel { Title = "Custom culture" };
             model.Culture = new CultureInfo("en-GB") { NumberFormat = { NumberDecimalSeparator = "·" } };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1, Maximum = 1 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -1, Maximum = 1 });
@@ -841,7 +840,7 @@ namespace ExampleLibrary
             var longTitle =
                 "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
             var tooltip = "The tooltip is " + longTitle;
-            var plotModel1 = new PlotModel("Long axis titles (clipped at 90%)");
+            var plotModel1 = new PlotModel { Title = "Long axis titles (clipped at 90%)" };
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = longTitle, ToolTip = tooltip });
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = longTitle, ToolTip = tooltip });
             return plotModel1;
@@ -853,7 +852,7 @@ namespace ExampleLibrary
             var longTitle =
                 "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
             var tooltip = "The tooltip is " + longTitle;
-            var plotModel1 = new PlotModel("Long axis titles (clipped at 100%)");
+            var plotModel1 = new PlotModel { Title = "Long axis titles (clipped at 100%)" };
             plotModel1.Axes.Add(
                 new LinearAxis { Position = AxisPosition.Left, Title = longTitle, ToolTip = tooltip, TitleClippingLength = 1.0 });
             plotModel1.Axes.Add(
@@ -867,7 +866,7 @@ namespace ExampleLibrary
             var longTitle =
                 "Long title 12345678901234567890123456789012345678901234567890123456789012345678901234567890";
             var tooltip = "The tooltip is " + longTitle;
-            var plotModel1 = new PlotModel("Long axis titles (not clipped)");
+            var plotModel1 = new PlotModel { Title = "Long axis titles (not clipped)" };
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = longTitle, ToolTip = tooltip, ClipTitle = false });
             plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = longTitle, ToolTip = tooltip, ClipTitle = false });
             return plotModel1;
@@ -968,7 +967,7 @@ namespace ExampleLibrary
         [Example("Custom axis title color")]
         public static PlotModel TitleColor()
         {
-            var model = new PlotModel("Custom axis title color");
+            var model = new PlotModel { Title = "Custom axis title color" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1, Maximum = 1, Title = "Bottom axis", TitleColor = OxyColors.Red });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -1, Maximum = 1, Title = "Left axis", TitleColor = OxyColors.Blue });
             model.Series.Add(new FunctionSeries(Math.Sin, -1, 1, 100));
@@ -978,7 +977,7 @@ namespace ExampleLibrary
         [Example("Custom axis label color")]
         public static PlotModel LabelColor()
         {
-            var model = new PlotModel("Custom axis label color");
+            var model = new PlotModel { Title = "Custom axis label color" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1, Maximum = 1, Title = "Bottom axis", TextColor = OxyColors.Red });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -1, Maximum = 1, Title = "Left axis", TextColor = OxyColors.Blue });
             model.Series.Add(new FunctionSeries(Math.Sin, -1, 1, 100));
@@ -996,7 +995,7 @@ namespace ExampleLibrary
         [Example("Angled axis numbers")]
         public static PlotModel AngledAxisNumbers()
         {
-            var model = new PlotModel("Angled axis numbers");
+            var model = new PlotModel { Title = "Angled axis numbers" };
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -1, Maximum = 1, Title = "Bottom axis", Angle = 45 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -1, Maximum = 1, Title = "Left axis", Angle = 45 });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Top, Minimum = -1, Maximum = 1, Title = "Top axis", Angle = 45 });
@@ -1007,36 +1006,11 @@ namespace ExampleLibrary
         [Example("Axis distance")]
         public static PlotModel AxisDistance()
         {
-            var plotModel = new PlotModel("AxisDistance = 20")
-                {
-                    Axes =
-                        {
-                            new LinearAxis
-                                {
-                                    AxislineStyle = LineStyle.Solid,
-                                    AxisDistance = 20,
-                                    Position = AxisPosition.Bottom
-                                },
-                            new LinearAxis
-                                {
-                                    AxislineStyle = LineStyle.Solid,
-                                    AxisDistance = 20,
-                                    Position = AxisPosition.Left
-                                },
-                            new LinearAxis
-                                {
-                                    AxislineStyle = LineStyle.Solid,
-                                    AxisDistance = 20,
-                                    Position = AxisPosition.Right
-                                },
-                            new LinearAxis
-                                {
-                                    AxislineStyle = LineStyle.Solid,
-                                    AxisDistance = 20,
-                                    Position = AxisPosition.Top
-                                }
-                        }
-                };
+            var plotModel = new PlotModel { Title = "AxisDistance = 20" };
+            plotModel.Axes.Add(new LinearAxis { AxislineStyle = LineStyle.Solid, AxisDistance = 20, Position = AxisPosition.Bottom });
+            plotModel.Axes.Add(new LinearAxis { AxislineStyle = LineStyle.Solid, AxisDistance = 20, Position = AxisPosition.Left });
+            plotModel.Axes.Add(new LinearAxis { AxislineStyle = LineStyle.Solid, AxisDistance = 20, Position = AxisPosition.Right });
+            plotModel.Axes.Add(new LinearAxis { AxislineStyle = LineStyle.Solid, AxisDistance = 20, Position = AxisPosition.Top });
             return plotModel;
         }
     }

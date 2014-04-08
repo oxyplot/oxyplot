@@ -39,7 +39,7 @@ namespace ExampleLibrary
         [Example("HighLowSeries")]
         public static PlotModel HighLowSeries()
         {
-            var model = new PlotModel("HighLowSeries") { LegendSymbolLength = 24 };
+            var model = new PlotModel { Title = "HighLowSeries", LegendSymbolLength = 24 };
             var s1 = new HighLowSeries { Title = "random values", Color = OxyColors.Black, };
             var r = new Random(314);
             var price = 100.0;

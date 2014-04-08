@@ -91,7 +91,7 @@ namespace RefreshDemo
 
         private PlotModel CreatePlot()
         {
-            var pm = new PlotModel("Plot updated: " + DateTime.Now);
+            var pm = new PlotModel { Title = "Plot updated: " + DateTime.Now };
             pm.Series.Add(new FunctionSeries(Math.Sin, x, x + 4, 0.01));
             x += 0.1;
             return pm;

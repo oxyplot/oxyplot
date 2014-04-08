@@ -37,7 +37,7 @@ namespace ExampleLibrary
         [Example("World population")]
         public static PlotModel LinearAxes()
         {
-            var model = new PlotModel("World population by continent");
+            var model = new PlotModel { Title = "World population by continent" };
             // http://www.nationsonline.org/oneworld/world_population.htm
             // http://en.wikipedia.org/wiki/Continent
 
