@@ -805,6 +805,7 @@ namespace OxyPlot.Axes
         /// <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c> .</returns>
         public virtual bool IsValidValue(double value)
         {
+#pragma warning disable 1718
             // ReSharper disable EqualExpressionComparison
             // ReSharper disable CompareOfFloatsByEqualityOperator
             return value == value &&
@@ -815,6 +816,7 @@ namespace OxyPlot.Axes
                 (this.FilterFunction == null || this.FilterFunction(value));
             // ReSharper restore CompareOfFloatsByEqualityOperator
             // ReSharper restore EqualExpressionComparison
+#pragma warning restore 1718
         }
 
         /// <summary>

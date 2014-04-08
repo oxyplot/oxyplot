@@ -178,89 +178,6 @@ namespace OxyPlot.Series
         }
 
         /// <summary>
-        /// Clears or creates the <see cref="itemsSourcePoints"/> list.
-        /// </summary>
-        private void ClearItemsSourcePoints()
-        {
-            if (!this.ownsItemsSourcePoints || this.itemsSourcePoints == null)
-            {
-                this.itemsSourcePoints = new List<DataPoint>();
-            }
-            else
-            {
-                this.itemsSourcePoints.Clear();
-            }
-
-            this.ownsItemsSourcePoints = true;
-        }
-
-        /// <summary>
-        /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
-        /// </summary>
-        private void UpdateItemsSourcePoints()
-        {
-            // Use the mapping to generate the points
-            if (this.Mapping != null)
-            {
-                this.ClearItemsSourcePoints();
-                foreach (var item in this.ItemsSource)
-                {
-                    this.itemsSourcePoints.Add(this.Mapping(item));
-                }
-
-                return;
-            }
-
-            var sourceAsListOfDataPoints = this.ItemsSource as List<DataPoint>;
-            if (sourceAsListOfDataPoints != null)
-            {
-                this.itemsSourcePoints = sourceAsListOfDataPoints;
-                this.ownsItemsSourcePoints = false;
-                return;
-            }
-
-            this.ClearItemsSourcePoints();
-
-            var sourceAsEnumerableDataPoints = this.ItemsSource as IEnumerable<DataPoint>;
-            if (sourceAsEnumerableDataPoints != null)
-            {
-                this.itemsSourcePoints.AddRange(sourceAsEnumerableDataPoints);
-                return;
-            }
-
-            // Get DataPoints from the items in ItemsSource
-            // if they implement IDataPointProvider
-            // If DataFields are set, this is not used
-            if (this.DataFieldX == null || this.DataFieldY == null)
-            {
-                foreach (var item in this.ItemsSource)
-                {
-                    if (item is DataPoint)
-                    {
-                        this.itemsSourcePoints.Add((DataPoint)item);
-                        continue;
-                    }
-
-                    var idpp = item as IDataPointProvider;
-                    if (idpp == null)
-                    {
-                        continue;
-                    }
-
-                    this.itemsSourcePoints.Add(idpp.GetDataPoint());
-                }
-            }
-            else
-            {
-                // TODO: is there a better way to do this?
-                // http://msdn.microsoft.com/en-us/library/bb613546.aspx
-
-                // Using reflection on DataFieldX and DataFieldY
-                this.AddDataPoints(this.itemsSourcePoints, this.ItemsSource, this.DataFieldX, this.DataFieldY);
-            }
-        }
-
-        /// <summary>
         /// Adds data points from the specified source to the specified destination.
         /// </summary>
         /// <param name="target">The destination list.</param>
@@ -398,6 +315,89 @@ namespace OxyPlot.Series
             if (maxy > double.MinValue)
             {
                 this.MaxY = maxy;
+            }
+        }
+
+        /// <summary>
+        /// Clears or creates the <see cref="itemsSourcePoints"/> list.
+        /// </summary>
+        private void ClearItemsSourcePoints()
+        {
+            if (!this.ownsItemsSourcePoints || this.itemsSourcePoints == null)
+            {
+                this.itemsSourcePoints = new List<DataPoint>();
+            }
+            else
+            {
+                this.itemsSourcePoints.Clear();
+            }
+
+            this.ownsItemsSourcePoints = true;
+        }
+
+        /// <summary>
+        /// Updates the points from the <see cref="ItemsSeries.ItemsSource" />.
+        /// </summary>
+        private void UpdateItemsSourcePoints()
+        {
+            // Use the mapping to generate the points
+            if (this.Mapping != null)
+            {
+                this.ClearItemsSourcePoints();
+                foreach (var item in this.ItemsSource)
+                {
+                    this.itemsSourcePoints.Add(this.Mapping(item));
+                }
+
+                return;
+            }
+
+            var sourceAsListOfDataPoints = this.ItemsSource as List<DataPoint>;
+            if (sourceAsListOfDataPoints != null)
+            {
+                this.itemsSourcePoints = sourceAsListOfDataPoints;
+                this.ownsItemsSourcePoints = false;
+                return;
+            }
+
+            this.ClearItemsSourcePoints();
+
+            var sourceAsEnumerableDataPoints = this.ItemsSource as IEnumerable<DataPoint>;
+            if (sourceAsEnumerableDataPoints != null)
+            {
+                this.itemsSourcePoints.AddRange(sourceAsEnumerableDataPoints);
+                return;
+            }
+
+            // Get DataPoints from the items in ItemsSource
+            // if they implement IDataPointProvider
+            // If DataFields are set, this is not used
+            if (this.DataFieldX == null || this.DataFieldY == null)
+            {
+                foreach (var item in this.ItemsSource)
+                {
+                    if (item is DataPoint)
+                    {
+                        this.itemsSourcePoints.Add((DataPoint)item);
+                        continue;
+                    }
+
+                    var idpp = item as IDataPointProvider;
+                    if (idpp == null)
+                    {
+                        continue;
+                    }
+
+                    this.itemsSourcePoints.Add(idpp.GetDataPoint());
+                }
+            }
+            else
+            {
+                // TODO: is there a better way to do this?
+                // http://msdn.microsoft.com/en-us/library/bb613546.aspx
+
+                // Using reflection on DataFieldX and DataFieldY
+                this.AddDataPoints(this.itemsSourcePoints, this.ItemsSource, this.DataFieldX, this.DataFieldY);
             }
         }
     }
