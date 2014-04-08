@@ -55,6 +55,11 @@ namespace OxyPlot.Series
         private List<ScreenPoint> contiguousScreenPointsBuffer;
 
         /// <summary>
+        /// The buffer for decimated points.
+        /// </summary>
+        private List<ScreenPoint> decimatorBuffer;
+
+        /// <summary>
         /// The default color.
         /// </summary>
         private OxyColor defaultColor;
@@ -149,6 +154,15 @@ namespace OxyPlot.Series
         /// <value>The dash array.</value>
         /// <remarks>If this is not <c>null</c> it overrides the <see cref="LineStyle" /> property.</remarks>
         public double[] Dashes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the decimator.
+        /// </summary>
+        /// <value>
+        /// The decimator action.
+        /// </value>
+        /// <remarks>The decimator can be used to improve the performance of the rendering. See the example.</remarks>
+        public Action<List<ScreenPoint>, List<ScreenPoint>> Decimator { get; set; }
 
         /// <summary>
         /// Gets or sets the label format string.
@@ -487,7 +501,25 @@ namespace OxyPlot.Series
                     lastValidPoint = null;
                 }
 
-                this.RenderLineAndMarkers(rc, clippingRect, this.contiguousScreenPointsBuffer);
+                if (this.Decimator != null)
+                {
+                    if (this.decimatorBuffer == null)
+                    {
+                        this.decimatorBuffer = new List<ScreenPoint>(this.contiguousScreenPointsBuffer.Count);
+                    }
+                    else
+                    {
+                        this.decimatorBuffer.Clear();
+                    }
+
+                    this.Decimator(this.contiguousScreenPointsBuffer, this.decimatorBuffer);
+                    this.RenderLineAndMarkers(rc, clippingRect, this.decimatorBuffer);
+                }
+                else
+                {
+                    this.RenderLineAndMarkers(rc, clippingRect, this.contiguousScreenPointsBuffer);
+                }
+
                 this.contiguousScreenPointsBuffer.Clear();
             }
         }
